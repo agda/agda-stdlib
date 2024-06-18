@@ -1,47 +1,53 @@
 Version 2.1-dev
 ===============
 
-The library has been tested using Agda 2.6.4, 2.6.4.1, and 2.6.4.3.
+The library has been tested using Agda 2.6.4.3.
 
 Highlights
 ----------
 
+* The size of the dependency graph for many modules has been
+  reduced. This may lead to speed ups for first-time loading of some
+  modules.
+
+* Added bindings for file handles in `IO.Handle`.
+
+* Added bindings for random number generation in `System.Random`
+  
+* Added support for 8-bit words and bytestrings in `Data.Word8` and `Data.ByteString`.
+
 Bug-fixes
 ---------
 
-* Fix statement of `Data.Vec.Properties.toList-replicate`, where `replicate`
+* Fixed type of `toList-replicate` in `Data.Vec.Properties`, where `replicate`
   was mistakenly applied to the level of the type `A` instead of the
   variable `x` of type `A`.
 
 * Module `Data.List.Relation.Ternary.Appending.Setoid.Properties` no longer
-  exports the `Setoid` module under the alias `S`.
+  incorrectly publicly exports the `Setoid` module under the alias `S`.
 
-* Remove unbound parameter from `Data.List.Properties.length-alignWith`,
-  `alignWith-map` and `map-alignWith`.
+* Removed unbound parameter from `length-alignWith`,
+  `alignWith-map` and `map-alignWith` in `Data.List.Properties`.
 
 Non-backwards compatible changes
 --------------------------------
 
-* The modules and morphisms in `Algebra.Module.Morphism.Structures` are now
-  parametrized by _raw_ bundles rather than lawful bundles, in line with other
-  modules defining morphism structures.
-* The definitions in `Algebra.Module.Morphism.Construct.Composition` are now
-  parametrized by _raw_ bundles, and as such take a proof of transitivity.
-* The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
-  parametrized by _raw_ bundles, and as such take a proof of reflexivity.
-* The module `IO.Primitive` was moved to `IO.Primitive.Core`.
-* The modules in the `Data.Word` hierarchy were moved to the `Data.Word64`
-  one instead.
+* The recently added modules and (therefore their contents) in:
+  ```agda
+  Algebra.Module.Morphism.Structures
+  Algebra.Module.Morphism.Construct.Composition
+  Algebra.Module.Morphism.Construct.Identity
+  ```
+  have been changed so they are now parametrized by _raw_ bundles rather 
+  than lawful bundles.
+  This is in line with other modules that define morphisms.
+  As a result many of the `Composition` lemmas now take a proof of 
+  transitivity and the `Identity` lemmas now take a proof of reflexivity.
 
-Other major improvements
-------------------------
+* The module `IO.Primitive` was moved to `IO.Primitive.Core`.
 
 Minor improvements
 ------------------
-
-* The size of the dependency graph for many modules has been
-  reduced. This may lead to speed ups for first-time loading of some
-  modules.
 
 * The definition of the `Pointwise` relational combinator in
   `Data.Product.Relation.Binary.Pointwise.NonDependent.Pointwise`
@@ -51,17 +57,25 @@ Minor improvements
   `Algebra.Lattice.Structures` have been redefined as aliases of
   `IsCommutativeBand` and `IsIdempotentMonoid` in `Algebra.Structures`.
 
-
 Deprecated modules
 ------------------
 
-* `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
-  `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
+* All modules in the `Data.Word` hierarchy have been deprecated in favour
+  of their newly introduced counterparts in `Data.Word64`.
 
-* The modules `Function.Endomorphism.Propositional` and
-  `Function.Endomorphism.Setoid` that use the old `Function`
-  hierarchy. Use `Function.Endo.Propositional` and
-  `Function.Endo.Setoid` instead.
+* The module `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` 
+  has been deprecated in favour of `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
+
+* The modules 
+  ```
+  Function.Endomorphism.Propositional
+  Function.Endomorphism.Setoid
+  ```
+  that used the old `Function` hierarchy have been deprecated in favour of:
+  ```
+  Function.Endo.Propositional
+  Function.Endo.Setoid
+  ```
 
 Deprecated names
 ----------------
@@ -76,15 +90,20 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
-* In `Data.Maybe.Base`:
-  ```agda
-  decToMaybe  ↦  Relation.Nullary.Decidable.Core.dec⇒maybe
-  ```
-
 * In `Algebra.Structures.Biased`:
   ```agda
   IsRing*  ↦  Algebra.Structures.IsRing
   isRing*  ↦  Algebra.Structures.isRing
+  ```
+
+* In `Data.Float.Base`:
+  ```agda
+  toWord ↦ toWord64
+  ```
+
+* In `Data.Float.Properties`:
+  ```agda
+  toWord-injective ↦ toWord64-injective
   ```
 
 * In `Data.List.Base`:
@@ -104,6 +123,11 @@ Deprecated names
   map-compose  ↦  map-∘
   ```
 
+* In `Data.Maybe.Base`:
+  ```agda
+  decToMaybe  ↦  Relation.Nullary.Decidable.Core.dec⇒maybe
+  ```
+
 * In `Data.Nat.Base`: the following pattern synonyms and definitions are all
   deprecated in favour of direct pattern matching on `Algebra.Definitions.RawMagma._∣ˡ_._,_`
   ```agda
@@ -111,7 +135,7 @@ Deprecated names
   pattern ≤″-offset k = k , refl
   pattern <″-offset k = k , refl
   s≤″s⁻¹
- ```
+  ```
 
 * In `Data.Nat.Divisibility.Core`:
   ```agda
@@ -127,16 +151,6 @@ Deprecated names
 * In `IO.Base`:
   ```agda
   untilRight  ↦  untilInj₂
-  ```
-
-* In `Data.Float.Base`:
-  ```agda
-  toWord ↦ toWord64
-  ```
-
-* In `Data.Float.Properties`:
-  ```agda
-  toWord-injective ↦ toWord64-injective
   ```
 
 New modules
@@ -164,6 +178,16 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
+* Bytestrings and builders:
+  ```agda
+  Data.Bytestring.Base
+  Data.Bytestring.Builder.Base
+  Data.Bytestring.Builder.Primitive
+  Data.Bytestring.IO
+  Data.Bytestring.IO.Primitive
+  Data.Bytestring.Primitive
+  ```
+
 * Pointwise and equality relations over indexed containers:
   ```agda
   Data.Container.Indexed.Relation.Binary.Pointwise
@@ -177,115 +201,16 @@ New modules
   Data.List.Scans.Properties
   ```
 
-* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
-  ```
-  Data.List.Relation.Binary.Equality.Setoid.Properties
-  ```
-
-* `Data.List.Relation.Binary.Sublist.Propositional.Slice`
-  replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
-  and adding new functions:
-  - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
-  - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
-  ```
-
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
-  ```agda
-  _↭_ : IRel (Vector A) _
-  ```
-
-* `Data.Vec.Functional.Relation.Binary.Permutation.Properties` of the above:
-  ```agda
-  ↭-refl      : Reflexive (Vector A) _↭_
-  ↭-reflexive : xs ≡ ys → xs ↭ ys
-  ↭-sym       : Symmetric (Vector A) _↭_
-  ↭-trans     : Transitive (Vector A) _↭_
-  isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
-  indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
-  ```
-
-* The modules `Function.Endo.Propositional` and
-  `Function.Endo.Setoid` are new but are actually proper ports of
-  `Function.Endomorphism.Propositional` and
-  `Function.Endomorphism.Setoid`.
-
-* `Function.Relation.Binary.Equality`
-  ```agda
-  setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
-  ```
-  and a convenient infix version
-  ```agda
-  _⇨_ = setoid
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
-  ```agda
-  Induction.InfiniteDescent
-  ```
-
-* Symmetric interior of a binary relation
-  ```
-  Relation.Binary.Construct.Interior.Symmetric
-  ```
-
-* Properties of `Setoid`s with decidable equality relation:
-  ```
-  Relation.Binary.Properties.DecSetoid
-  ```
-
-* Systematise the use of `Recomputable A = .A → A`:
-  ```agda
-  Relation.Nullary.Recomputable
-  ```
-  with `Recomputable` exported publicly from `Relation.Nullary`.
-
-* New IO primitives to handle buffering
-  ```agda
-  IO.Primitive.Handle
-  IO.Handle
-  ```
-
-* `System.Random` bindings:
-  ```agda
-  System.Random.Primitive
-  System.Random
-  ```
-
-* Show modules:
+* Various show modules for lists and vector types:
   ```agda
   Data.List.Show
   Data.Vec.Show
   Data.Vec.Bounded.Show
   ```
 
-* Word64 literals and bit-based functions:
-  ```agda
-  Data.Word64.Literals
-  Data.Word64.Unsafe
-  Data.Word64.Show
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
   ```
-
-* A type of bytes:
-  ```agda
-  Data.Word8.Primitive
-  Data.Word8.Base
-  Data.Word8.Literals
-  Data.Word8.Show
-  ```
-
-* Bytestrings and builders:
-  ```agda
-  Data.Bytestring.Base
-  Data.Bytestring.Builder.Base
-  Data.Bytestring.Builder.Primitive
-  Data.Bytestring.IO
-  Data.Bytestring.IO.Primitive
-  Data.Bytestring.Primitive
+  Data.List.Relation.Binary.Equality.Setoid.Properties
   ```
 
 * Decidability for the subset relation on lists:
@@ -300,10 +225,75 @@ New modules
   Data.List.Relation.Binary.Disjoint.DecPropositional
   ```
 
+* Prime factorisation of natural numbers.
+  ```agda
+  Data.Nat.Primality.Factorisation
+  ```
+
+* Permutations of vectors as functions:
+  ```agda
+  Data.Vec.Functional.Relation.Binary.Permutation
+  Data.Vec.Functional.Relation.Binary.Permutation.Properties
+  ```
+
+* A type of bytes:
+  ```agda
+  Data.Word8.Primitive
+  Data.Word8.Base
+  Data.Word8.Literals
+  Data.Word8.Show
+  ```
+
+* Word64 literals and bit-based functions:
+  ```agda
+  Data.Word64.Literals
+  Data.Word64.Unsafe
+  Data.Word64.Show
+  ```
+
+
+* Pointwise equality over functions 
+  ```
+  Function.Relation.Binary.Equality`
+  ```
+
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
+  ```
+
+* New IO primitives to handle buffering
+  ```agda
+  IO.Primitive.Handle
+  IO.Handle
+  ```
+
+* Symmetric interior of a binary relation
+  ```
+  Relation.Binary.Construct.Interior.Symmetric
+  ```
+
+* Properties of `Setoid`s with decidable equality relation:
+  ```
+  Relation.Binary.Properties.DecSetoid
+  ```
+
+* Collection of results about recomputability in
+  ```agda
+  Relation.Nullary.Recomputable
+  ```
+  with the main definition `Recomputable` exported publicly from `Relation.Nullary`.
+
+* New bindings to random numbers:
+  ```agda
+  System.Random.Primitive
+  System.Random
+  ```
+
 Additions to existing modules
 -----------------------------
 
-* In `Algebra.Bundles`
+* Added new definitions in `Algebra.Bundles`:
   ```agda
   record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ))
@@ -315,28 +305,21 @@ Additions to existing modules
   IdempotentSemiring
   ```
 
-
-* In `Algebra.Bundles.Raw`
+* Added new definition in `Algebra.Bundles.Raw`
   ```agda
   record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
-* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
-  ```agda
-  rawNearSemiring   : RawNearSemiring _ _
-  rawRingWithoutOne : RawRingWithoutOne _ _
-  +-rawGroup        : RawGroup _ _
-  ```
-
-* In `Algebra.Construct.Terminal`:
+* Added new proofs in `Algebra.Construct.Terminal`:
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
   nearSemiring    : NearSemiring c ℓ
   ```
 
-* In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
+* In `Algebra.Module.Bundles`, raw bundles are now re-exported and bundles 
+  consistently expose their raw counterparts.
 
-* In `Algebra.Module.Construct.DirectProduct`:
+* Added proofs in `Algebra.Module.Construct.DirectProduct`:
   ```agda
   rawLeftSemimodule  : RawLeftSemimodule R m ℓm → RawLeftSemimodule m′ ℓm′ → RawLeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
   rawLeftModule      : RawLeftModule R m ℓm → RawLeftModule m′ ℓm′ → RawLeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
@@ -348,7 +331,7 @@ Additions to existing modules
   rawModule          : RawModule R m ℓm → RawModule m′ ℓm′ → RawModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
   ```
 
-* In `Algebra.Module.Construct.TensorUnit`:
+* Added proofs in `Algebra.Module.Construct.TensorUnit`:
   ```agda
   rawLeftSemimodule  : RawLeftSemimodule _ c ℓ
   rawLeftModule      : RawLeftModule _ c ℓ
@@ -360,7 +343,7 @@ Additions to existing modules
   rawModule          : RawModule _ c ℓ
   ```
 
-* In `Algebra.Module.Construct.Zero`:
+* Added proofs in `Algebra.Module.Construct.Zero`:
   ```agda
   rawLeftSemimodule  : RawLeftSemimodule R c ℓ
   rawLeftModule      : RawLeftModule R c ℓ
@@ -372,23 +355,23 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
-* In `Algebra.Morphism.Structures`:
+* Added definitions in `Algebra.Morphism.Structures`:
   ```agda
-  module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
-    record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier →  N₂.Carrier) : Set _
+  record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+  record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+  record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier →  N₂.Carrier) : Set _
 
   IsSemigroupHomomorphism : (A → B) → Set _
   IsSemigroupMonomorphism : (A → B) → Set _
   IsSemigroupIsomorphism : (A → B) → Set _
   ```
-* In `Algebra.Properties.AbelianGroup`:
+
+* Added proof in `Algebra.Properties.AbelianGroup`:
   ```
   ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
   ```
 
-* In `Algebra.Properties.Group`:
+* Added proofs in `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
   quasigroup      : Quasigroup _ _
@@ -411,52 +394,42 @@ Additions to existing modules
   ⁻¹-anti-homo-\\ : (x \\ y) ⁻¹ ≈ y \\ x
   ```
 
-* In `Algebra.Properties.Loop`:
+* Added new proofs in `Algebra.Properties.Loop`:
   ```agda
   identityˡ-unique : x ∙ y ≈ y → x ≈ ε
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
   ```
 
-* In `Algebra.Properties.Monoid.Mult`:
+* Added new proofs in `Algebra.Properties.Monoid.Mult`:
   ```agda
-  ×-homo-0 : ∀ x → 0 × x ≈ 0#
-  ×-homo-1 : ∀ x → 1 × x ≈ x
+  ×-homo-0 : 0 × x ≈ 0#
+  ×-homo-1 : 1 × x ≈ x
   ```
 
-* In `Algebra.Properties.Semiring.Mult`:
+* Added new proofs in `Algebra.Properties.Semiring.Mult`:
   ```agda
-  ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
-  ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
+  ×-homo-0#     : 0 × x ≈ 0# * x
+  ×-homo-1#     : 1 × x ≈ 1# * x
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
-* In `Algebra.Structures`
+* Added new definitions to `Algebra.Structures`:
   ```agda
   record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
   record IsCommutativeBand (∙ : Op₂ A) : Set _
   record IsIdempotentMonoid (∙ : Op₂ A) (ε : A) : Set _
   ```
-  and additional manifest fields for substructures arising from these in:
-  ```agda
-  IsIdempotentCommutativeMonoid
-  IsIdempotentSemiring
-  ```
 
-* In `Algebra.Structures.IsGroup`:
+* Added new definitions in `IsGroup` record in `Algebra.Structures`:
   ```agda
-  infixl 6 _//_
-  _//_ : Op₂ A
   x // y = x ∙ (y ⁻¹)
-  infixr 6 _\\_
-  _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
   ```
 
-* In `Algebra.Structures.IsCancellativeCommutativeSemiring` add the
-  extra property as an exposed definition:
+* Added new proof to `IsCancellativeCommutativeSemiring` record in `Algebra.Structures`:
   ```agda
-    *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  *-cancelʳ-nonZero : AlmostRightCancellative 0# *
   ```
 
 * In `Data.Bool.Show`:
@@ -484,7 +457,7 @@ Additions to existing modules
   _≤_ : Rel Float _
   ```
 
-* In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
+* In `Data.Integer.Divisibility` introduced `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
   ```
@@ -496,11 +469,12 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
-* In `Data.List.Base` redefine `inits` and `tails` in terms of:
+* In `Data.List.Base` added two new functions:
   ```agda
   tail∘inits : List A → List (List A)
   tail∘tails : List A → List (List A)
   ```
+  and redefined `inits` and `tails` in terms of them.
 
 * In `Data.List.Membership.Propositional.Properties.Core`:
   ```agda
@@ -683,8 +657,8 @@ Additions to existing modules
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
-  m≤n+o⇒m∸n≤o    : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
-  m<n+o⇒m∸n<o    : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+  m≤n+o⇒m∸n≤o    : m ≤ n + o → m ∸ n ≤ o
+  m<n+o⇒m∸n<o    : .{{NonZero o}} → m < n + o → m ∸ n < o
   pred-cancel-≤  : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
   pred-cancel-<  : pred m < pred n → m < n
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
@@ -715,6 +689,12 @@ Additions to existing modules
   mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Slice`:
+  ```agda
+  ⊆-upper-bound-is-cospan : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → IsCospan (⊆-upper-bound τ₁ τ₂)
+  ⊆-upper-bound-cospan    : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Cospan τ₁ τ₂
+  ```
+  
 * Added some very-dependent map and zipWith to `Data.Product`.
   ```agda
   map-Σ : {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Set q} →
@@ -729,7 +709,6 @@ Additions to existing modules
     (_*_ : (x : C) → (y : R x) → S x y) →
     ((a , p) : Σ A P) → ((b , q) : Σ B Q) →
         S (a ∙ b) (p ∘ q)
-
   ```
 
 * In `Data.Rational.Properties`:
@@ -789,7 +768,7 @@ Additions to existing modules
   ```
 
 * Added new definition in `Relation.Unary`
-  ```
+  ```agda
   Stable : Pred A ℓ → Set _
   ```
 
@@ -808,7 +787,7 @@ Additions to existing modules
   ```
 
 * Added new definitions in `Relation.Binary.Definitions`
-  ```
+  ```agda
   Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
   Empty  _∼_ = ∀ {x y} → ¬ (x ∼ y)
   ```
@@ -821,7 +800,7 @@ Additions to existing modules
   ```
 
 * Added new definitions in `Relation.Nullary`
-  ```
+  ```agda
   Recomputable    : Set _
   WeaklyDecidable : Set _
   ```
@@ -851,7 +830,7 @@ Additions to existing modules
  ```
 
 * Added new definitions in `Relation.Unary`
-  ```
+  ```agda
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
   ```
