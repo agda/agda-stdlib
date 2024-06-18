@@ -13,7 +13,7 @@ Highlights
 * Added bindings for file handles in `IO.Handle`.
 
 * Added bindings for random number generation in `System.Random`
-  
+
 * Added support for 8-bit words and bytestrings in `Data.Word8` and `Data.ByteString`.
 
 Bug-fixes
@@ -38,10 +38,10 @@ Non-backwards compatible changes
   Algebra.Module.Morphism.Construct.Composition
   Algebra.Module.Morphism.Construct.Identity
   ```
-  have been changed so they are now parametrized by _raw_ bundles rather 
+  have been changed so they are now parametrized by _raw_ bundles rather
   than lawful bundles.
   This is in line with other modules that define morphisms.
-  As a result many of the `Composition` lemmas now take a proof of 
+  As a result many of the `Composition` lemmas now take a proof of
   transitivity and the `Identity` lemmas now take a proof of reflexivity.
 
 * The module `IO.Primitive` was moved to `IO.Primitive.Core`.
@@ -63,10 +63,10 @@ Deprecated modules
 * All modules in the `Data.Word` hierarchy have been deprecated in favour
   of their newly introduced counterparts in `Data.Word64`.
 
-* The module `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` 
+* The module `Data.List.Relation.Binary.Sublist.Propositional.Disjoint`
   has been deprecated in favour of `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
 
-* The modules 
+* The modules
   ```
   Function.Endomorphism.Propositional
   Function.Endomorphism.Setoid
@@ -252,7 +252,7 @@ New modules
   ```
 
 
-* Pointwise equality over functions 
+* Pointwise equality over functions
   ```
   Function.Relation.Binary.Equality`
   ```
@@ -316,7 +316,7 @@ Additions to existing modules
   nearSemiring    : NearSemiring c ℓ
   ```
 
-* In `Algebra.Module.Bundles`, raw bundles are now re-exported and bundles 
+* In `Algebra.Module.Bundles`, raw bundles are now re-exported and bundles
   consistently expose their raw counterparts.
 
 * Added proofs in `Algebra.Module.Construct.DirectProduct`:
@@ -694,7 +694,7 @@ Additions to existing modules
   ⊆-upper-bound-is-cospan : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → IsCospan (⊆-upper-bound τ₁ τ₂)
   ⊆-upper-bound-cospan    : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Cospan τ₁ τ₂
   ```
-  
+
 * Added some very-dependent map and zipWith to `Data.Product`.
   ```agda
   map-Σ : {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Set q} →
