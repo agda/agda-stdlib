@@ -42,67 +42,35 @@ Unlike standard libraries of traditional programming languages, the Agda standar
 just standard utility functions and data structures, but also large parts of basic mathematics
 that are essential for proving the correctness of programs.
 
+# Motivation
+
+Agda is a functional programming language that doubles as an interactive theorem prover. 
+It's purpose is to write.
+Agda is 
+
+The essence of a proof assistant is to have as small a set of axioms as possible and derive almost everything else from those axioms. 
+Agda is no exception, and provides a small set of primitive operations, including the ability to define new types, pattern-matching and X. 
+From this, it is possible to define all of constructive mathematics (and, given suitable postulates, non-constructive mathematics). 
+
+Indeed, things that many programmers would have thought of as basics, (e.g. numbers, strings etc.) have to be derived. This however means that there is vast amount of mathematics to rederive, before one can . 
+
 # Design
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+Designing a standard libary for interactive theorem provers is typically a much bigger challenge than those for standard programming langauges.
+This is because, not only do they have to provide all the basics of programming (e.g. common data structures, file-system access libraries), they also have to provide a large fraction of basic mathematics.
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+Organising mathematics is relatively hard, as there is a lot of it. 
+The Agda standard library has taken approach somewhere in the middle of the Coq standard library (which is minimal) and that of Lean (which is maximal). 
 
-# Mathematics
+The focus of the standard library is predominantly on discrete mathematics, which is result of the fact that one of the primary uses of Agda is as a tool for programming language design and research.
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+# Prominent use cases
 
-Double dollars make self-standing equations:
-
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
-
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
-
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
+The Agda Standard Library has been used in a wide variety of projects, far too many to be exhaustively listed here. A diverse selection, which is in no-way the meant to be an endorsement of these projects above others, are as follows:
+- Formalisation of Category Theory
+- Verification of Hardware
+- Verification of network routing protocols 
+- ...
 
 # Acknowledgements
 
