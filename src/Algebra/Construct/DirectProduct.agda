@@ -347,8 +347,6 @@ nonAssociativeRing R S = record
       ; *-identity       = UnitalMagma.identity (unitalMagma R.*-unitalMagma S.*-unitalMagma)
       ; distrib          = (λ x y z → (R.distribˡ , S.distribˡ) <*> x <*> y <*> z)
                             , (λ x y z → (R.distribʳ , S.distribʳ) <*> x <*> y <*> z)
-      ; zero             = uncurry (λ x y → R.zeroˡ x , S.zeroˡ y)
-                            , uncurry (λ x y → R.zeroʳ x , S.zeroʳ y)
       }
 
   } where module R = NonAssociativeRing R; module S = NonAssociativeRing S
