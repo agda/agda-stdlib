@@ -146,12 +146,12 @@ ap fs as = concatMap (λ f → map f as) fs
 -- Inits
 
 inits : List A → List⁺ (List A)
-inits xs = [] ∷ List.tail∘inits xs
+inits xs = [] ∷ List.initsTail xs
 
 -- Tails
 
 tails : List A → List⁺ (List A)
-tails xs = xs ∷ List.tail∘tails xs
+tails xs = xs ∷ List.tailsTail xs
 
 -- Reverse
 
