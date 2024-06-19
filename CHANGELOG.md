@@ -427,7 +427,7 @@ Additions to existing modules
   x \\ y = (x ⁻¹) ∙ y
   ```
 
-* Added new proof to `IsCancellativeCommutativeSemiring` record in `Algebra.Structures`:
+* In `Algebra.Structures` added new proof to `IsCancellativeCommutativeSemiring` record:
   ```agda
   *-cancelʳ-nonZero : AlmostRightCancellative 0# *
   ```
@@ -488,18 +488,6 @@ Additions to existing modules
   reverse⁻ : x ∈ reverse xs → x ∈ xs
   ```
 
-* In `Data.List.NonEmpty.Base`:
-  ```agda
-  inits : List A → List⁺ (List A)
-  tails : List A → List⁺ (List A)
-  ```
-
-* In `Data.List.NonEmpty.Properties`:
-  ```agda
-  toList-inits : toList ∘ List⁺.inits ≗ List.inits
-  toList-tails : toList ∘ List⁺.tails ≗ List.tails
-  ```
-
 * In `Data.List.Properties`:
   ```agda
   length-catMaybes       : length (catMaybes xs) ≤ length xs
@@ -558,11 +546,6 @@ Additions to existing modules
   unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
   ```
 
-* In `Data.Maybe.Relation.Binary.Pointwise`:
-  ```agda
-  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
-  ```
-
 * In `Data.List.Relation.Binary.Sublist.Setoid`:
   ```agda
   ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
@@ -578,15 +561,6 @@ Additions to existing modules
                              trans p (trans q r) ≡ trans (trans p q) r) →
                   (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
                   ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
-  ```
-
-* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
-  ```agda
-  map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
-
-  reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
-  reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
-  reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
 * In `Data.List.Relation.Unary.All`:
@@ -610,6 +584,34 @@ Additions to existing modules
   ```agda
   map-cong : (f g : P ⋐ Q) → (∀ {x} (p : P x) → f p ≡ g p) →
              (p : Any P xs) → Any.map f p ≡ Any.map g p
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  product-↭   : product Preserves _↭_ ⟶ _≡_
+  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Setoid.Properties.Maybe`:
+  ```agda
+  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
+
+  reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
+  reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
+  reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Slice`:
+  ```agda
+  ⊆-upper-bound-is-cospan : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → IsCospan (⊆-upper-bound τ₁ τ₂)
+  ⊆-upper-bound-cospan    : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Cospan τ₁ τ₂
   ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
@@ -638,6 +640,23 @@ Additions to existing modules
                          ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
   ```
 
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits : List A → List⁺ (List A)
+  tails : List A → List⁺ (List A)
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-inits : toList ∘ List⁺.inits ≗ List.inits
+  toList-tails : toList ∘ List⁺.tails ≗ List.tails
+  ```
+
+* In `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
+  ```
+
 * In `Data.Nat.Divisibility`:
   ```agda
   quotient≢0       : m ∣ n → .{{NonZero n}} → NonZero quotient
@@ -655,6 +674,13 @@ Additions to existing modules
   nonZeroDivisor : DivMod dividend divisor → NonZero divisor
   ```
 
+* Added new proofs to `Data.Nat.Primality`:
+  ```agda
+  rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
+  productOfPrimes≢0 : All Prime as → NonZero (product as)
+  productOfPrimes≥1 : All Prime as → product as ≥ 1
+  ```
+
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
   m≤n+o⇒m∸n≤o    : m ≤ n + o → m ∸ n ≤ o
@@ -667,32 +693,6 @@ Additions to existing modules
   <⇒<″          : _<_ ⇒ _<″_
   m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
   guarded-∸≗∸   : .(m≤n : m ≤ n) → let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k ≡ n ∸ m
-  ```
-
-* Added new proofs to `Data.Nat.Primality`:
-  ```agda
-  rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
-  productOfPrimes≢0 : All Prime as → NonZero (product as)
-  productOfPrimes≥1 : All Prime as → product as ≥ 1
-  ```
-
-* Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
-  ```agda
-  product-↭   : product Preserves _↭_ ⟶ _≡_
-  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
-  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
-  ```
-
-* Added new proofs to `Data.List.Relation.Binary.Permutation.Setoid.Properties.Maybe`:
-  ```agda
-  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
-  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
-  ```
-
-* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Slice`:
-  ```agda
-  ⊆-upper-bound-is-cospan : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → IsCospan (⊆-upper-bound τ₁ τ₂)
-  ⊆-upper-bound-cospan    : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Cospan τ₁ τ₂
   ```
 
 * Added some very-dependent map and zipWith to `Data.Product`.
@@ -730,6 +730,21 @@ Additions to existing modules
   between : String → String → String → String
   ```
 
+* Added new functions in `Data.Vec.Bounded.Base`:
+  ```agda
+  isBounded : (as : Vec≤ A n) → Vec≤.length as ≤ n
+  toVec     : (as : Vec≤ A n) → Vec A (Vec≤.length as)
+  ```
+
+* In `Data.Word64.Base`:
+  ```agda
+  _≤_ : Rel Word64 zero
+  show : Word64 → String
+  ```
+
+* In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
+  be used infix.
+
 * Re-exported new types and functions in `IO`:
   ```agda
   BufferMode : Set
@@ -756,30 +771,10 @@ Additions to existing modules
   _>>_ : IO A → IO B → IO B
   ```
 
-* In `Data.Word64.Base`:
-  ```agda
-  _≤_ : Rel Word64 zero
-  show : Word64 → String
-  ```
-
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
   ```agda
   transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
   ```
-
-* Added new definition in `Relation.Unary`
-  ```agda
-  Stable : Pred A ℓ → Set _
-  ```
-
-* Added new functions in `Data.Vec.Bounded.Base`:
-  ```agda
-  isBounded : (as : Vec≤ A n) → Vec≤.length as ≤ n
-  toVec     : (as : Vec≤ A n) → Vec A (Vec≤.length as)
-  ```
-
-* In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
-  be used infix.
 
 * Added new proofs in `Relation.Binary.Construct.Composition`:
   ```agda
@@ -805,17 +800,17 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new definition and proof in `Relation.Nullary.Decidable.Core`:
-  ```agda
-  dec⇒maybe : Dec A → Maybe A
-  recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
-  toSum              : Dec A → A ⊎ ¬ A
-  fromSum            : A ⊎ ¬ A → Dec A
-  ```
-
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added new definitions and proofs in `Relation.Nullary.Decidable.Core`:
+  ```agda
+  dec⇒maybe          : Dec A → Maybe A
+  recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+  toSum              : Dec A → A ⊎ ¬ A
+  fromSum            : A ⊎ ¬ A → Dec A
   ```
 
 * Added new definitions in `Relation.Nullary.Negation.Core`:
