@@ -498,8 +498,8 @@ Additions to existing modules
 
 * In `Data.List.Base` redefine `inits` and `tails` in terms of:
   ```agda
-  initsTail : List A → List (List A)
-  tailsTail : List A → List (List A)
+  Inits.tail : List A → List (List A)
+  Tails.tail : List A → List (List A)
   ```
 
 * In `Data.List.Membership.Propositional.Properties.Core`:
