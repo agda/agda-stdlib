@@ -58,6 +58,11 @@ infixl 8 _:*_ _*N_ _*H_ _*NH_ _*HN_
 infixl 7 _:+_ _:-_ _+H_ _+N_
 infix  4 _≈H_ _≈N_
 
+private
+  variable
+    n : ℕ
+
+
 ------------------------------------------------------------------------
 -- Polynomials
 
@@ -76,16 +81,16 @@ data Polynomial (m : ℕ) : Set r₁ where
 
 -- Short-hand notation.
 
-_:+_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
+_:+_ : Polynomial n → Polynomial n → Polynomial n
 _:+_ = op [+]
 
-_:*_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
+_:*_ : Polynomial n → Polynomial n → Polynomial n
 _:*_ = op [*]
 
-_:-_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
+_:-_ : Polynomial n → Polynomial n → Polynomial n
 x :- y = x :+ :- y
 
-_:×_ : ∀ {n} → ℕ → Polynomial n → Polynomial n
+_:×_ : ℕ → Polynomial n → Polynomial n
 zero :× p = con C.0#
 suc m :× p = p :+ m :× p
 
@@ -95,7 +100,12 @@ sem : Op → Op₂ Carrier
 sem [+] = _+_
 sem [*] = _*_
 
-⟦_⟧ : ∀ {n} → Polynomial n → Vec Carrier n → Carrier
+-- An environment contains one value for every variable.
+
+Env : ℕ → Set _
+Env = Vec Carrier
+
+⟦_⟧ : Polynomial n → Env n → Carrier
 ⟦ op o p₁ p₂ ⟧ ρ = ⟦ p₁ ⟧ ρ ⟨ sem o ⟩ ⟦ p₂ ⟧ ρ
 ⟦ con c      ⟧ ρ = ⟦ c ⟧′
 ⟦ var x      ⟧ ρ = lookup ρ x
@@ -132,12 +142,12 @@ mutual
   -- degree.
 
   data HNF : ℕ → Set r₁ where
-    ∅     : ∀ {n} → HNF (suc n)
-    _*x+_ : ∀ {n} → HNF (suc n) → Normal n → HNF (suc n)
+    ∅     : HNF (suc n)
+    _*x+_ : HNF (suc n) → Normal n → HNF (suc n)
 
   data Normal : ℕ → Set r₁ where
     con  : C.Carrier → Normal zero
-    poly : ∀ {n} → HNF (suc n) → Normal (suc n)
+    poly : HNF (suc n) → Normal (suc n)
 
   -- Note that the data types above do /not/ ensure uniqueness of
   -- normal forms: the zero polynomial of degree one can be
@@ -147,11 +157,11 @@ mutual
 
   -- Semantics.
 
-  ⟦_⟧H : ∀ {n} → HNF (suc n) → Vec Carrier (suc n) → Carrier
+  ⟦_⟧H : HNF (suc n) → Env (suc n) → Carrier
   ⟦ ∅       ⟧H _       = 0#
   ⟦ p *x+ c ⟧H (x ∷ ρ) = ⟦ p ⟧H (x ∷ ρ) * x + ⟦ c ⟧N ρ
 
-  ⟦_⟧N : ∀ {n} → Normal n → Vec Carrier n → Carrier
+  ⟦_⟧N : Normal n → Env n → Carrier
   ⟦ con c  ⟧N _ = ⟦ c ⟧′
   ⟦ poly p ⟧N ρ = ⟦ p ⟧H ρ
 
@@ -162,12 +172,12 @@ mutual
 
   -- Equality.
 
-  data _≈H_ : ∀ {n} → HNF n → HNF n → Set (r₁ ⊔ r₃) where
-    ∅     : ∀ {n} → _≈H_ {suc n} ∅ ∅
+  data _≈H_ : HNF n → HNF n → Set (r₁ ⊔ r₃) where
+    ∅     : _≈H_ {suc n} ∅ ∅
     _*x+_ : ∀ {n} {p₁ p₂ : HNF (suc n)} {c₁ c₂ : Normal n} →
             p₁ ≈H p₂ → c₁ ≈N c₂ → (p₁ *x+ c₁) ≈H (p₂ *x+ c₂)
 
-  data _≈N_ : ∀ {n} → Normal n → Normal n → Set (r₁ ⊔ r₃) where
+  data _≈N_ : Normal n → Normal n → Set (r₁ ⊔ r₃) where
     con  : ∀ {c₁ c₂} → ⟦ c₁ ⟧′ ≈ ⟦ c₂ ⟧′ → con c₁ ≈N con c₂
     poly : ∀ {n} {p₁ p₂ : HNF (suc n)} → p₁ ≈H p₂ → poly p₁ ≈N poly p₂
 
@@ -177,7 +187,7 @@ mutual
 
   infix 4 _≟H_ _≟N_
 
-  _≟H_ : ∀ {n} → WeaklyDecidable (_≈H_ {n = n})
+  _≟H_ : WeaklyDecidable (_≈H_ {n = n})
   ∅           ≟H ∅           = just ∅
   ∅           ≟H (_ *x+ _)   = nothing
   (_ *x+ _)   ≟H ∅           = nothing
@@ -186,7 +196,7 @@ mutual
   ... | _          | nothing    = nothing
   ... | nothing    | _          = nothing
 
-  _≟N_ : ∀ {n} → WeaklyDecidable (_≈N_ {n = n})
+  _≟N_ : WeaklyDecidable (_≈N_ {n = n})
   con c₁ ≟N con c₂ with c₁ coeff≟ c₂
   ... | just c₁≈c₂ = just (con c₁≈c₂)
   ... | nothing    = nothing
@@ -198,7 +208,7 @@ mutual
 
   -- The semantics respect the equality relations defined above.
 
-  ⟦_⟧H-cong : ∀ {n} {p₁ p₂ : HNF (suc n)} →
+  ⟦_⟧H-cong : {p₁ p₂ : HNF (suc n)} →
               p₁ ≈H p₂ → ∀ ρ → ⟦ p₁ ⟧H ρ ≈ ⟦ p₂ ⟧H ρ
   ⟦ ∅               ⟧H-cong _       = refl
   ⟦ p₁≈p₂ *x+ c₁≈c₂ ⟧H-cong (x ∷ ρ) =
@@ -206,9 +216,8 @@ mutual
       ⟨ +-cong ⟩
     ⟦ c₁≈c₂ ⟧N-cong ρ
 
-  ⟦_⟧N-cong :
-    ∀ {n} {p₁ p₂ : Normal n} →
-    p₁ ≈N p₂ → ∀ ρ → ⟦ p₁ ⟧N ρ ≈ ⟦ p₂ ⟧N ρ
+  ⟦_⟧N-cong : {p₁ p₂ : Normal n} →
+              p₁ ≈N p₂ → ∀ ρ → ⟦ p₁ ⟧N ρ ≈ ⟦ p₂ ⟧N ρ
   ⟦ con c₁≈c₂  ⟧N-cong _ = c₁≈c₂
   ⟦ poly p₁≈p₂ ⟧N-cong ρ = ⟦ p₁≈p₂ ⟧H-cong ρ
 
@@ -217,10 +226,10 @@ mutual
 
 -- Zero.
 
-0H : ∀ {n} → HNF (suc n)
+0H : HNF (suc n)
 0H = ∅
 
-0N : ∀ {n} → Normal n
+0N : Normal n
 0N {zero}  = con C.0#
 0N {suc n} = poly 0H
 
@@ -228,16 +237,16 @@ mutual
 
   -- One.
 
-  1H : ∀ {n} → HNF (suc n)
+  1H : HNF (suc n)
   1H {n} = ∅ *x+ 1N {n}
 
-  1N : ∀ {n} → Normal n
+  1N : Normal n
   1N {zero}  = con C.1#
   1N {suc n} = poly 1H
 
 -- A simplifying variant of _*x+_.
 
-_*x+HN_ : ∀ {n} → HNF (suc n) → Normal n → HNF (suc n)
+_*x+HN_ : HNF (suc n) → Normal n → HNF (suc n)
 (p *x+ c′) *x+HN c = (p *x+ c′) *x+ c
 ∅          *x+HN c with c ≟N 0N
 ... | just c≈0 = ∅
@@ -247,49 +256,49 @@ mutual
 
   -- Addition.
 
-  _+H_ : ∀ {n} → HNF (suc n) → HNF (suc n) → HNF (suc n)
+  _+H_ : HNF (suc n) → HNF (suc n) → HNF (suc n)
   ∅           +H p           = p
   p           +H ∅           = p
   (p₁ *x+ c₁) +H (p₂ *x+ c₂) = (p₁ +H p₂) *x+HN (c₁ +N c₂)
 
-  _+N_ : ∀ {n} → Normal n → Normal n → Normal n
+  _+N_ : Normal n → Normal n → Normal n
   con c₁  +N con c₂  = con (c₁ C.+ c₂)
   poly p₁ +N poly p₂ = poly (p₁ +H p₂)
 
 -- Multiplication.
 
-_*x+H_ : ∀ {n} → HNF (suc n) → HNF (suc n) → HNF (suc n)
+_*x+H_ : HNF (suc n) → HNF (suc n) → HNF (suc n)
 p₁         *x+H (p₂ *x+ c) = (p₁ +H p₂) *x+HN c
 ∅          *x+H ∅          = ∅
 (p₁ *x+ c) *x+H ∅          = (p₁ *x+ c) *x+ 0N
 
 mutual
 
-  _*NH_ : ∀ {n} → Normal n → HNF (suc n) → HNF (suc n)
+  _*NH_ : Normal n → HNF (suc n) → HNF (suc n)
   c *NH ∅          = ∅
   c *NH (p *x+ c′) with c ≟N 0N
   ... | just c≈0 = ∅
   ... | nothing  = (c *NH p) *x+ (c *N c′)
 
-  _*HN_ : ∀ {n} → HNF (suc n) → Normal n → HNF (suc n)
+  _*HN_ : HNF (suc n) → Normal n → HNF (suc n)
   ∅          *HN c = ∅
   (p *x+ c′) *HN c with c ≟N 0N
   ... | just c≈0 = ∅
   ... | nothing  = (p *HN c) *x+ (c′ *N c)
 
-  _*H_ : ∀ {n} → HNF (suc n) → HNF (suc n) → HNF (suc n)
+  _*H_ : HNF (suc n) → HNF (suc n) → HNF (suc n)
   ∅           *H _           = ∅
   (_ *x+ _)   *H ∅           = ∅
   (p₁ *x+ c₁) *H (p₂ *x+ c₂) =
     ((p₁ *H p₂) *x+H (p₁ *HN c₂ +H c₁ *NH p₂)) *x+HN (c₁ *N c₂)
 
-  _*N_ : ∀ {n} → Normal n → Normal n → Normal n
+  _*N_ : Normal n → Normal n → Normal n
   con c₁  *N con c₂  = con (c₁ C.* c₂)
   poly p₁ *N poly p₂ = poly (p₁ *H p₂)
 
 -- Exponentiation.
 
-_^N_ : ∀ {n} → Normal n → ℕ → Normal n
+_^N_ : Normal n → ℕ → Normal n
 p ^N zero  = 1N
 p ^N suc n = p *N (p ^N n)
 
@@ -297,25 +306,25 @@ mutual
 
   -- Negation.
 
-  -H_ : ∀ {n} → HNF (suc n) → HNF (suc n)
+  -H_ : HNF (suc n) → HNF (suc n)
   -H p = (-N 1N) *NH p
 
-  -N_ : ∀ {n} → Normal n → Normal n
+  -N_ : Normal n → Normal n
   -N con c  = con (C.- c)
   -N poly p = poly (-H p)
 
 ------------------------------------------------------------------------
 -- Normalisation
 
-normalise-con : ∀ {n} → C.Carrier → Normal n
+normalise-con : C.Carrier → Normal n
 normalise-con {zero}  c = con c
 normalise-con {suc n} c = poly (∅ *x+HN normalise-con c)
 
-normalise-var : ∀ {n} → Fin n → Normal n
+normalise-var : Fin n → Normal n
 normalise-var zero    = poly ((∅ *x+ 1N) *x+ 0N)
 normalise-var (suc i) = poly (∅ *x+HN normalise-var i)
 
-normalise : ∀ {n} → Polynomial n → Normal n
+normalise : Polynomial n → Normal n
 normalise (op [+] t₁ t₂) = normalise t₁ +N normalise t₂
 normalise (op [*] t₁ t₂) = normalise t₁ *N normalise t₂
 normalise (con c)        = normalise-con c
@@ -325,7 +334,7 @@ normalise (:- t)         = -N normalise t
 
 -- Evaluation after normalisation.
 
-⟦_⟧↓ : ∀ {n} → Polynomial n → Vec Carrier n → Carrier
+⟦_⟧↓ : Polynomial n → Env n → Carrier
 ⟦ p ⟧↓ ρ = ⟦ normalise p ⟧N ρ
 
 ------------------------------------------------------------------------
@@ -502,7 +511,7 @@ mutual
 ------------------------------------------------------------------------
 -- Correctness
 
-correct-con : ∀ {n} (c : C.Carrier) (ρ : Vec Carrier n) →
+correct-con : ∀ {n} (c : C.Carrier) (ρ : Env n) →
               ⟦ normalise-con c ⟧N ρ ≈ ⟦ c ⟧′
 correct-con c []      = refl
 correct-con c (x ∷ ρ) = begin

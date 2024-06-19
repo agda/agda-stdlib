@@ -71,6 +71,23 @@ Deprecated names
   1×-identityʳ  ↦  ×-homo-1
   ```
 
+* In `Algebra.Solver.CommutativeMonoid`:
+  ```agda
+  normalise-correct  ↦  Algebra.Solver.CommutativeMonoid.Normal.correct
+  ```
+
+* In `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  flip12             ↦  Algebra.Properties.CommutativeSemigroup.xy∙z≈y∙xz
+  normalise-correct  ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct
+  ```
+
+* In `Algebra.Solver.Monoid`:
+  ```agda
+  homomorphic        ↦  Algebra.Solver.Monoid.Normal.comp-correct
+  normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
+  ```
+
 * In `Algebra.Structures.IsGroup`:
   ```agda
   _-_  ↦  _//_
@@ -162,6 +179,17 @@ New modules
   ```agda
   Algebra.Morphism.Construct.Initial
   Algebra.Morphism.Construct.Terminal
+  ```
+
+* Refactoring of the `Algebra.Solver.*Monoid` implementations, via
+  a single `Tactic` module API based on the existing `Expr`, and
+  a common `Normal`-form API:
+  ```agda
+  Algebra.Solver.CommutativeMonoid.Normal
+  Algebra.Solver.IdempotentCommutativeMonoid.Normal
+  Algebra.Solver.Monoid.Expression
+  Algebra.Solver.Monoid.Normal
+  Algebra.Solver.Monoid.Tactic
   ```
 
 * Pointwise and equality relations over indexed containers:
@@ -429,6 +457,12 @@ Additions to existing modules
   ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
   ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
+  ```
+
+* In `Algebra.Solver.Ring`
+  ```agda
+  Env : ℕ → Set _
+  Env = Vec Carrier
   ```
 
 * In `Algebra.Structures`
