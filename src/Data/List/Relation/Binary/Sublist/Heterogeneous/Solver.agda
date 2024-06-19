@@ -21,7 +21,7 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe.Base as Maybe
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
@@ -33,7 +33,6 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 open import Function.Base using (_$_; case_of_)
 
 open import Relation.Binary.Consequences using (dec⇒weaklyDec)
-open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
 open import Relation.Binary.PropositionalEquality.Properties as ≡

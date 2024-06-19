@@ -17,6 +17,7 @@ open import Data.Maybe.Base as Maybe
 open import Data.Product.Base using (_×_; uncurry)
 open import Function.Base using (_∘_)
 
+
 ------------------------------------------------------------------------
 -- Normal forms
 

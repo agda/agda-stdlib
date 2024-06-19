@@ -30,6 +30,8 @@ Non-backwards compatible changes
 * The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
   parametrized by _raw_ bundles, and as such take a proof of reflexivity.
 * The module `IO.Primitive` was moved to `IO.Primitive.Core`.
+* The modules in the `Data.Word` hierarchy were moved to the `Data.Word64`
+  one instead.
 
 Other major improvements
 ------------------------
@@ -91,6 +93,11 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Data.Maybe.Base`:
+  ```agda
+  decToMaybe  ↦  Relation.Nullary.Decidable.Core.dec⇒maybe
+  ```
+
 * In `Algebra.Structures.Biased`:
   ```agda
   IsRing*  ↦  Algebra.Structures.IsRing
@@ -114,14 +121,39 @@ Deprecated names
   map-compose  ↦  map-∘
   ```
 
+* In `Data.Nat.Base`: the following pattern synonyms and definitions are all
+  deprecated in favour of direct pattern matching on `Algebra.Definitions.RawMagma._∣ˡ_._,_`
+  ```agda
+  pattern less-than-or-equal {k} eq = k , eq
+  pattern ≤″-offset k = k , refl
+  pattern <″-offset k = k , refl
+  s≤″s⁻¹
+ ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
   ```
 
+* In `Data.Sum`:
+  ```agda
+  fromDec  ↦  Relation.Nullary.Decidable.Core.toSum
+  toDec    ↦  Relation.Nullary.Decidable.Core.fromSum
+  ```
+
 * In `IO.Base`:
   ```agda
   untilRight  ↦  untilInj₂
+  ```
+
+* In `Data.Float.Base`:
+  ```agda
+  toWord ↦ toWord64
+  ```
+
+* In `Data.Float.Properties`:
+  ```agda
+  toWord-injective ↦ toWord64-injective
   ```
 
 New modules
@@ -257,6 +289,31 @@ New modules
   Data.List.Show
   Data.Vec.Show
   Data.Vec.Bounded.Show
+  ```
+
+* Word64 literals and bit-based functions:
+  ```agda
+  Data.Word64.Literals
+  Data.Word64.Unsafe
+  Data.Word64.Show
+  ```
+
+* A type of bytes:
+  ```agda
+  Data.Word8.Primitive
+  Data.Word8.Base
+  Data.Word8.Literals
+  Data.Word8.Show
+  ```
+
+* Bytestrings and builders:
+  ```agda
+  Data.Bytestring.Base
+  Data.Bytestring.Builder.Base
+  Data.Bytestring.Builder.Primitive
+  Data.Bytestring.IO
+  Data.Bytestring.IO.Primitive
+  Data.Bytestring.Primitive
   ```
 
 * Decidability for the subset relation on lists:
@@ -434,6 +491,11 @@ Additions to existing modules
   extra property as an exposed definition:
   ```agda
     *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  ```
+
+* In `Data.Bool.Show`:
+  ```agda
+  showBit : Bool → Char
   ```
 
 * In `Data.Container.Indexed.Core`:
@@ -655,12 +717,16 @@ Additions to existing modules
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
-  m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
-  m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
-  pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
-  pred-cancel-< : pred m < pred n → m < n
+  m≤n+o⇒m∸n≤o    : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
+  m<n+o⇒m∸n<o    : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+  pred-cancel-≤  : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+  pred-cancel-<  : pred m < pred n → m < n
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
-  pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+  pred-cancel-≡  : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+
+  <⇒<″          : _<_ ⇒ _<″_
+  m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
+  guarded-∸≗∸   : .(m≤n : m ≤ n) → let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k ≡ n ∸ m
   ```
 
 * Added new proofs to `Data.Nat.Primality`:
@@ -745,9 +811,10 @@ Additions to existing modules
   _>>_ : IO A → IO B → IO B
   ```
 
-* In `Data.Word.Base`:
+* In `Data.Word64.Base`:
   ```agda
   _≤_ : Rel Word64 zero
+  show : Word64 → String
   ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
@@ -758,6 +825,12 @@ Additions to existing modules
 * Added new definition in `Relation.Unary`
   ```
   Stable : Pred A ℓ → Set _
+  ```
+
+* Added new functions in `Data.Vec.Bounded.Base`:
+  ```agda
+  isBounded : (as : Vec≤ A n) → Vec≤.length as ≤ n
+  toVec     : (as : Vec≤ A n) → Vec A (Vec≤.length as)
   ```
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
@@ -787,9 +860,12 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new proof in `Relation.Nullary.Decidable.Core`:
+* Added new definition and proof in `Relation.Nullary.Decidable.Core`:
   ```agda
+  dec⇒maybe : Dec A → Maybe A
   recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+  toSum              : Dec A → A ⊎ ¬ A
+  fromSum            : A ⊎ ¬ A → Dec A
   ```
 
 * Added new proof in `Relation.Nullary.Decidable`:
@@ -806,7 +882,7 @@ Additions to existing modules
   ```agda
   recompute          : Reflects A b → Recomputable A
   recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
-  ```
+ ```
 
 * Added new definitions in `Relation.Unary`
   ```

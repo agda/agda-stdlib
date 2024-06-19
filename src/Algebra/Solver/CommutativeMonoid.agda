@@ -17,6 +17,7 @@ import Algebra.Solver.Monoid.Tactic as Tactic
 
 open CommutativeMonoid M using (monoid)
 
+
 ------------------------------------------------------------------------
 -- Normal forms
 
