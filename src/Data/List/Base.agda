@@ -189,19 +189,19 @@ iterate : (A → A) → A → ℕ → List A
 iterate f e zero    = []
 iterate f e (suc n) = e ∷ iterate f (f e) n
 
-tail∘inits : List A → List (List A)
-tail∘inits []       = []
-tail∘inits (x ∷ xs) = [ x ] ∷ map (x ∷_) (tail∘inits xs)
-
 inits : List A → List (List A)
-inits xs = [] ∷ tail∘inits xs
-
-tail∘tails : List A → List (List A)
-tail∘tails []       = []
-tail∘tails (_ ∷ xs) = xs ∷ tail∘tails xs
+inits {A = A} = λ xs → [] ∷ tail xs
+  module Inits where
+    tail : List A → List (List A)
+    tail []       = []
+    tail (x ∷ xs) = [ x ] ∷ map (x ∷_) (tail xs)
 
 tails : List A → List (List A)
-tails xs = xs ∷ tail∘tails xs
+tails {A = A} = λ xs → xs ∷ tail xs
+  module Tails where
+    tail : List A → List (List A)
+    tail []       = []
+    tail (_ ∷ xs) = xs ∷ tail xs
 
 insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
 insertAt xs       zero    v = v ∷ xs
