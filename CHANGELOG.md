@@ -800,9 +800,11 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new proof in `Relation.Nullary.Decidable`:
+* Added new proofs in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  does-⇔  : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
+  does-≡  : (a? b? : Dec A) → does a? ≡ does b?
   ```
 
 * Added new definitions and proofs in `Relation.Nullary.Decidable.Core`:
@@ -822,12 +824,19 @@ Additions to existing modules
   ```agda
   recompute          : Reflects A b → Recomputable A
   recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
- ```
+  ```
 
-* Added new definitions in `Relation.Unary`
+* Added new definitions in `Relation.Unary`:
   ```agda
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
+  ```
+
+* Added new proofs in `Relation.Nullary.Properties`:
+  ```agda
+  ≐?     : P ≐ Q → Decidable P → Decidable Q
+  does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
+  does-≡ : (P? P?′ : Decidable P) → does ∘ P? ≗ does ∘ P?′
   ```
 
 * Enhancements to `Tactic.Cong` - see `README.Tactic.Cong` for details.
