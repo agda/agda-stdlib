@@ -11,9 +11,10 @@ module Relation.Nullary.Decidable where
 open import Level using (Level)
 open import Data.Bool.Base using (true; false)
 open import Data.Product.Base using (∃; _,_)
-open import Function.Base using (id; _∘_)
+open import Function.Base using (_∘_)
 open import Function.Bundles using
   (Injection; module Injection; module Equivalence; _⇔_; mk⇔; _↔_; mk↔ₛ′)
+open import Function.Construct.Identity using (⇔-id)
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary using (Irrelevant)
@@ -87,4 +88,4 @@ does-⇔ A⇔B a? (yes b) = dec-true a? (Equivalence.from A⇔B b)
 does-⇔ A⇔B a? (no ¬b) = dec-false a? (¬b ∘ Equivalence.to A⇔B)
 
 does-≡ : (a? b? : Dec A) → does a? ≡ does b?
-does-≡ = does-⇔ (mk⇔ id id)
+does-≡ = does-⇔ (⇔-id _)
