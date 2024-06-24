@@ -49,7 +49,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     module T = Semigroup To
   open Definitions F.Carrier T.Carrier T._≈_
 
-  record IsSemigroupMorphism (⟦_⟧ : Morphism) :
+  record IsSemigroupMorphism (⟦_⟧ : F.Carrier → T.Carrier) :
          Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
     field
       ⟦⟧-cong : ⟦_⟧ Preserves F._≈_ ⟶ T._≈_
@@ -67,7 +67,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     module T = Monoid To
   open Definitions F.Carrier T.Carrier T._≈_
 
-  record IsMonoidMorphism (⟦_⟧ : Morphism) :
+  record IsMonoidMorphism (⟦_⟧ : F.Carrier → T.Carrier) :
          Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
     field
       sm-homo : IsSemigroupMorphism F.semigroup T.semigroup ⟦_⟧
@@ -87,7 +87,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     module T = CommutativeMonoid To
   open Definitions F.Carrier T.Carrier T._≈_
 
-  record IsCommutativeMonoidMorphism (⟦_⟧ : Morphism) :
+  record IsCommutativeMonoidMorphism (⟦_⟧ : F.Carrier → T.Carrier) :
          Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
     field
       mn-homo : IsMonoidMorphism F.monoid T.monoid ⟦_⟧
@@ -106,7 +106,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     module T = IdempotentCommutativeMonoid To
   open Definitions F.Carrier T.Carrier T._≈_
 
-  record IsIdempotentCommutativeMonoidMorphism (⟦_⟧ : Morphism) :
+  record IsIdempotentCommutativeMonoidMorphism (⟦_⟧ : F.Carrier → T.Carrier) :
          Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
     field
       mn-homo : IsMonoidMorphism F.monoid T.monoid ⟦_⟧
@@ -129,7 +129,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     module T = Group To
   open Definitions F.Carrier T.Carrier T._≈_
 
-  record IsGroupMorphism (⟦_⟧ : Morphism) :
+  record IsGroupMorphism (⟦_⟧ : F.Carrier → T.Carrier) :
          Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
     field
       mn-homo : IsMonoidMorphism F.monoid T.monoid ⟦_⟧
@@ -155,7 +155,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     module T = AbelianGroup To
   open Definitions F.Carrier T.Carrier T._≈_
 
-  record IsAbelianGroupMorphism (⟦_⟧ : Morphism) :
+  record IsAbelianGroupMorphism (⟦_⟧ : F.Carrier → T.Carrier) :
          Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
     field
       gp-homo : IsGroupMorphism F.group T.group ⟦_⟧
@@ -174,7 +174,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     module T = Ring To
   open Definitions F.Carrier T.Carrier T._≈_
 
-  record IsRingMorphism (⟦_⟧ : Morphism) :
+  record IsRingMorphism (⟦_⟧ : F.Carrier → T.Carrier) :
          Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
     field
       +-abgp-homo : ⟦_⟧ Is F.+-abelianGroup -AbelianGroup⟶ T.+-abelianGroup
