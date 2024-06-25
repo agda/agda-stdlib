@@ -15,7 +15,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base as Product
-  using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃)
+  using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃; ∃-syntax)
 open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties using (swap-involutive)
@@ -106,23 +106,43 @@ private
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
 
 ------------------------------------------------------------------------
--- Properties of × and ⊎
+-- Properties of ∃ and ⊎
 
--- × distributes over ⊎
+-- ∃ distributes over ⊎
 
-×-distribˡ-⊎ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribˡ-⊎ ℓ _ _ _ = mk↔ₛ′
+Σ-distribˡ-⊎ : {P : A → Set a} {Q : A → Set b} →
+  (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
+Σ-distribˡ-⊎ = mk↔ₛ′
   (uncurry λ x → [ inj₁ ∘′ (x ,_) , inj₂ ∘′ (x ,_) ]′)
   [ Product.map₂ inj₁ , Product.map₂ inj₂ ]′
   [ (λ _ → refl) , (λ _ → refl) ]
   (uncurry λ _ → [ (λ _ → refl) , (λ _ → refl) ])
 
-×-distribʳ-⊎ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribʳ-⊎ ℓ _ _ _ = mk↔ₛ′
-  (uncurry [ curry inj₁ , curry inj₂ ]′)
-  [ Product.map₁ inj₁ , Product.map₁ inj₂ ]′
+Σ-distribʳ-⊎ : {P : Set a} {Q : Set b} {R : P ⊎ Q → Set c} →
+  (Σ (P ⊎ Q) R) ↔ (Σ P (R ∘ inj₁) ⊎ Σ Q (R ∘ inj₂))
+Σ-distribʳ-⊎ = mk↔ₛ′
+  (uncurry [ curry inj₁ , curry inj₂ ])
+  [ Product.dmap inj₁ id , Product.dmap inj₂ id ]
   [ (λ _ → refl) , (λ _ → refl) ]
   (uncurry [ (λ _ _ → refl) , (λ _ _ → refl) ])
+
+------------------------------------------------------------------------
+-- Properties of × and ⊎
+
+-- × distributes over ⊎
+-- primed variants are more level polymorphic
+
+×-distribˡ-⊎′ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+×-distribˡ-⊎′ = Σ-distribˡ-⊎
+
+×-distribˡ-⊎ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribˡ-⊎ ℓ _ _ _ = ×-distribˡ-⊎′
+
+×-distribʳ-⊎′ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+×-distribʳ-⊎′ = Σ-distribʳ-⊎
+
+×-distribʳ-⊎ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribʳ-⊎ ℓ _ _ _ = ×-distribʳ-⊎′
 
 ×-distrib-⊎ : ∀ ℓ → _DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
 ×-distrib-⊎ ℓ = ×-distribˡ-⊎ ℓ , ×-distribʳ-⊎ ℓ
@@ -332,3 +352,11 @@ True↔ ( true because  [p]) irr =
   mk↔ₛ′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → refl)
 True↔ (false because ofⁿ ¬p) _ =
   mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (λ x → flip contradiction ¬p x) (λ ())
+
+------------------------------------------------------------------------
+-- Relating a predicate to an existentially quantified one with the
+-- restriction that the quantified variable is equal to the given one
+
+∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+∃-≡ P {x} = mk↔ₛ′ (λ Px → x , refl , Px) (λ where (_ , (refl , Py)) → Py)
+  (λ where (_ , refl , _) → refl) (λ where _ → refl)
