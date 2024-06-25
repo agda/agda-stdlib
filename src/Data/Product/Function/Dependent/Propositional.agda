@@ -317,7 +317,5 @@ cong {B = B} {k = leftInverse}        I↔J A↩B = ↩⇒↪ (Σ-↩ (↔⇒↩
 cong {k = surjection}                 I↔J A↠B = Σ-↠ (↔⇒↠ I↔J) A↠B
 cong {k = bijection}                  I↔J A↔B = Σ-↔ I↔J A↔B
 
-cong′ : ∀ {k} → {A : Set a} {B₁ : A → Set b} {B₂ : A → Set c} →
-        (∀ {x} → B₁ x ∼[ k ] B₂ x) →
-        Σ A B₁ ∼[ k ] Σ A B₂
+cong′ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
 cong′ = cong (refl _)

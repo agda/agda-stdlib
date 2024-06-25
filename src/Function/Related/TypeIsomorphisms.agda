@@ -357,6 +357,6 @@ True↔ (false because ofⁿ ¬p) _ =
 -- Relating a predicate to an existentially quantified one with the
 -- restriction that the quantified variable is equal to the given one
 
-∃-≡ : ∀ {A : Set a} (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
 ∃-≡ P {x} = mk↔ₛ′ (λ Px → x , refl , Px) (λ where (_ , (refl , Py)) → Py)
   (λ where (_ , refl , _) → refl) (λ where _ → refl)
