@@ -17,7 +17,8 @@ open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Unary
-open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does) renaming (does-≡ to does-≡′)
+import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
 open import Function.Base using (id; _$_; _∘_)
 
 private
@@ -239,7 +240,7 @@ _~? P? = P? ∘ swap
 
 does-≡ : {P : Pred A ℓ} → (P? P?′ : Decidable P) →
          does ∘ P? ≗ does ∘ P?′
-does-≡ P? P?′ x = does-≡′ (P? x) (P?′ x)
+does-≡ P? P?′ x = Dec.does-≡ (P? x) (P?′ x)
 
 does-≐ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} → P ≐ Q →
          (P? : Decidable P) → (Q? : Decidable Q) →
