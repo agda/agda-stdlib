@@ -20,6 +20,7 @@ open import Data.Nat.Properties
 open import Data.Vec.Base
 open import Data.Vec.Properties
 open import Data.Vec.Relation.Binary.Equality.Cast
+open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
 
@@ -187,7 +188,7 @@ example3a-fromList-++-++ {xs = xs} {ys} {zs} eq = begin
   fromList (xs List.++ ys List.++ zs)
     ≈⟨ fromList-++ xs ⟩
   fromList xs ++ fromList (ys List.++ zs)
-    ≈⟨ ≈-cong (fromList xs ++_) (cast-++ʳ (List.length-++ ys) (fromList xs)) (fromList-++ ys) ⟩
+    ≈⟨ ≈-cong′ (fromList xs ++_) (fromList-++ ys) ⟩
   fromList xs ++ fromList ys ++ fromList zs
     ∎
   where open CastReasoning
@@ -218,9 +219,7 @@ example4-cong² : ∀ .(eq : (m + 1) + n ≡ n + suc m) a (xs : Vec A m) ys →
           cast eq (reverse ((xs ++ [ a ]) ++ ys)) ≡ ys ʳ++ reverse (xs ∷ʳ a)
 example4-cong² {m = m} {n} eq a xs ys = begin
   reverse ((xs ++ [ a ]) ++ ys)
-    ≈⟨ ≈-cong reverse (cast-reverse (cong (_+ n) (+-comm 1 m)) ((xs ∷ʳ a) ++ ys))
-                                             (≈-cong (_++ ys) (cast-++ˡ (+-comm 1 m) (xs ∷ʳ a))
-                                                     (unfold-∷ʳ _ a xs)) ⟨
+    ≈⟨ ≈-cong′ (reverse ∘ (_++ ys)) (unfold-∷ʳ (+-comm 1 m) a xs) ⟨
   reverse ((xs ∷ʳ a) ++ ys)
     ≈⟨ reverse-++ (+-comm (suc m) n) (xs ∷ʳ a) ys ⟩
   reverse ys ++ reverse (xs ∷ʳ a)
@@ -264,7 +263,7 @@ example6a-reverse-∷ʳ {n = n} x xs = begin-≡
   reverse (xs ∷ʳ x)
     ≡⟨ ≈-reflexive refl ⟨
   reverse (xs ∷ʳ x)
-    ≈⟨ ≈-cong reverse (cast-reverse _ _) (unfold-∷ʳ (+-comm 1 n) x xs) ⟩
+    ≈⟨ ≈-cong′ reverse (unfold-∷ʳ (+-comm 1 n) x xs) ⟩
   reverse (xs ++ [ x ])
     ≈⟨ reverse-++ (+-comm n 1) xs [ x ] ⟩
   x ∷ reverse xs
