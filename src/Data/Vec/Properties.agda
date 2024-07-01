@@ -1035,8 +1035,7 @@ reverse-++-eqFree : ∀ (xs : Vec A m) (ys : Vec A n) → let eq = +-comm m n in
 reverse-++-eqFree {m = zero}  {n = n} []       ys = ≈-sym (++-identityʳ-eqFree (reverse ys))
 reverse-++-eqFree {m = suc m} {n = n} (x ∷ xs) ys = begin
   reverse (x ∷ xs ++ ys)              ≂⟨ reverse-∷ x (xs ++ ys) ⟩
-  reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys)))
-                                                (reverse-++-eqFree xs ys) ⟩
+  reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong′ (_∷ʳ x) (reverse-++-eqFree xs ys) ⟩
   (reverse ys ++ reverse xs) ∷ʳ x     ≈⟨ ++-∷ʳ-eqFree x (reverse ys) (reverse xs) ⟩
   reverse ys ++ (reverse xs ∷ʳ x)     ≂⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟨
   reverse ys ++ (reverse (x ∷ xs))    ∎
@@ -1087,8 +1086,7 @@ map-ʳ++ {ys = ys} f xs = begin
                 cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
 ++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} = begin
   ((xs ++ ys) ʳ++ zs)              ≂⟨ unfold-ʳ++ (xs ++ ys) zs ⟩
-  reverse (xs ++ ys) ++ zs         ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (xs ++ ys)))
-                                             (reverse-++-eqFree xs ys) ⟩
+  reverse (xs ++ ys) ++ zs         ≈⟨ ≈-cong′ (_++ zs) (reverse-++-eqFree xs ys) ⟩
   (reverse ys ++ reverse xs) ++ zs ≈⟨ ++-assoc-eqFree (reverse ys) (reverse xs) zs ⟩
   reverse ys ++ (reverse xs ++ zs) ≂⟨ cong (reverse ys ++_) (unfold-ʳ++ xs zs) ⟨
   reverse ys ++ (xs ʳ++ zs)        ≂⟨ unfold-ʳ++ ys (xs ʳ++ zs) ⟨
@@ -1100,8 +1098,7 @@ map-ʳ++ {ys = ys} f xs = begin
 ʳ++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} = begin
   (xs ʳ++ ys) ʳ++ zs                         ≂⟨ cong (_ʳ++ zs) (unfold-ʳ++ xs ys) ⟩
   (reverse xs ++ ys) ʳ++ zs                  ≂⟨ unfold-ʳ++ (reverse xs ++ ys) zs ⟩
-  reverse (reverse xs ++ ys) ++ zs           ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (reverse xs ++ ys)))
-                                                       (reverse-++-eqFree (reverse xs) ys) ⟩
+  reverse (reverse xs ++ ys) ++ zs           ≈⟨ ≈-cong′ (_++ zs) (reverse-++-eqFree (reverse xs) ys) ⟩
   (reverse ys ++ reverse (reverse xs)) ++ zs ≂⟨ cong ((_++ zs) ∘ (reverse ys ++_)) (reverse-involutive xs) ⟩
   (reverse ys ++ xs) ++ zs                   ≈⟨ ++-assoc-eqFree (reverse ys) xs zs ⟩
   reverse ys ++ (xs ++ zs)                   ≂⟨ unfold-ʳ++ ys (xs ++ zs) ⟨
@@ -1331,8 +1328,7 @@ fromList-reverse (x List.∷ xs) = begin
   fromList (List.reverse (x List.∷ xs))         ≈⟨ cast-fromList (List.ʳ++-defn xs) ⟩
   fromList (List.reverse xs List.++ List.[ x ]) ≈⟨ fromList-++ (List.reverse xs) ⟩
   fromList (List.reverse xs) ++ [ x ]           ≈⟨ unfold-∷ʳ-eqFree x (fromList (List.reverse xs)) ⟨
-  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (List.length-reverse xs)) _ _)
-                                                          (fromList-reverse xs) ⟩
+  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong′ (_∷ʳ x) (fromList-reverse xs) ⟩
   reverse (fromList xs) ∷ʳ x                    ≂⟨ reverse-∷ x (fromList xs) ⟨
   reverse (x ∷ fromList xs)                     ≈⟨⟩
   reverse (fromList (x List.∷ xs))              ∎
