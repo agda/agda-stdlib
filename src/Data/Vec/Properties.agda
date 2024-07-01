@@ -404,9 +404,7 @@ map-const (_ ∷ xs) y = cong (y ∷_) (map-const xs y)
 
 map-cast : (f : A → B) .(eq : m ≡ n) (xs : Vec A m) →
            map f (cast eq xs) ≡ cast eq (map f xs)
-map-cast {n = zero}  f eq []       = refl
-map-cast {n = suc _} f eq (x ∷ xs)
-  = cong (f x ∷_) (map-cast f (suc-injective eq) xs)
+map-cast f _ _ = sym (≈-cong′ (map f) refl)
 
 map-++ : ∀ (f : A → B) (xs : Vec A m) (ys : Vec A n) →
          map f (xs ++ ys) ≡ map f xs ++ map f ys
@@ -500,13 +498,11 @@ toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 
 cast-++ˡ : ∀ .(eq : m ≡ o) (xs : Vec A m) {ys : Vec A n} →
            cast (cong (_+ n) eq) (xs ++ ys) ≡ cast eq xs ++ ys
-cast-++ˡ {o = zero}  eq []       {ys} = cast-is-id refl (cast eq [] ++ ys)
-cast-++ˡ {o = suc o} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ˡ (cong pred eq) xs)
+cast-++ˡ _ _ {ys} = ≈-cong′ (_++ ys) refl
 
 cast-++ʳ : ∀ .(eq : n ≡ o) (xs : Vec A m) {ys : Vec A n} →
            cast (cong (m +_) eq) (xs ++ ys) ≡ xs ++ cast eq ys
-cast-++ʳ {m = zero}  eq []       {ys} = refl
-cast-++ʳ {m = suc m} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ʳ eq xs)
+cast-++ʳ _ xs = ≈-cong′ (xs ++_) refl
 
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
@@ -935,8 +931,7 @@ map-∷ʳ f x (y ∷ xs) = cong (f y ∷_) (map-∷ʳ f x xs)
 
 cast-∷ʳ : ∀ .(eq : suc n ≡ suc m) x (xs : Vec A n) →
           cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
-cast-∷ʳ {m = zero}  eq x []       = refl
-cast-∷ʳ {m = suc m} eq x (y ∷ xs) = cong (y ∷_) (cast-∷ʳ (cong pred eq) x xs)
+cast-∷ʳ _ x _ = ≈-cong′ (_∷ʳ x) refl
 
 -- _++_ and _∷ʳ_
 
@@ -1048,15 +1043,7 @@ reverse-++-eqFree {m = suc m} {n = n} (x ∷ xs) ys = begin
   where open CastReasoning
 
 cast-reverse : ∀ .(eq : m ≡ n) → cast eq ∘ reverse {A = A} {n = m} ≗ reverse ∘ cast eq
-cast-reverse {n = zero}  eq []       = refl
-cast-reverse {n = suc n} eq (x ∷ xs) = begin
-  reverse (x ∷ xs)           ≂⟨ reverse-∷ x xs ⟩
-  reverse xs ∷ʳ x            ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ eq x (reverse xs))
-                                       (cast-reverse (cong pred eq) xs) ⟩
-  reverse (cast _ xs) ∷ʳ x   ≂⟨ reverse-∷ x (cast (cong pred eq) xs) ⟨
-  reverse (x ∷ cast _ xs)    ≈⟨⟩
-  reverse (cast eq (x ∷ xs)) ∎
-  where open CastReasoning
+cast-reverse _ _ = ≈-cong′ reverse refl
 
 ------------------------------------------------------------------------
 -- _ʳ++_
