@@ -34,7 +34,7 @@ open import Algebra.Definitions _≈_
 -- Definition
 
 open import Algebra.Definitions.RawMonoid rawMonoid public
-  using (_×_)
+  using (_×_; _×′_)
 
 ------------------------------------------------------------------------
 -- Properties of _×_
@@ -60,8 +60,8 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-homo-+ : ∀ x m n → (m ℕ.+ n) × x ≈ m × x + n × x
 ×-homo-+ x 0       n = sym (+-identityˡ (n × x))
 ×-homo-+ x (suc m) n = begin
-  x + (m ℕ.+ n) × x    ≈⟨ +-cong refl (×-homo-+ x m n) ⟩
-  x + (m × x + n × x)  ≈⟨ sym (+-assoc x (m × x) (n × x)) ⟩
+  x + (m ℕ.+ n) × x    ≈⟨ +-congˡ (×-homo-+ x m n) ⟩
+  x + (m × x + n × x)  ≈⟨ +-assoc x (m × x) (n × x) ⟨
   x + m × x + n × x    ∎
 
 ×-idem : ∀ {c} → _+_ IdempotentOn c →
@@ -78,3 +78,25 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
   n × x + m × n × x     ≈⟨ +-congˡ (×-assocˡ x m n) ⟩
   n × x + (m ℕ.* n) × x ≈⟨ ×-homo-+ x n (m ℕ.* n) ⟨
   (suc m ℕ.* n) × x     ∎
+
+------------------------------------------------------------------------
+-- Properties of _×′_
+
+1+×′ : ∀ n x → suc n ×′ x ≈ x + n ×′ x
+1+×′ 0               x = sym (+-identityʳ x)
+1+×′ 1               x = refl
+1+×′ (suc n@(suc _)) x = begin
+  suc n ×′ x + x ≈⟨ +-congʳ (1+×′ n x) ⟩
+  x + n ×′ x + x ≈⟨ +-assoc x (n ×′ x) x ⟩
+  x + (suc n) ×′ x ∎
+
+-- _×′_ and _×_ are extensionally equal (up to setoid equivalence).
+
+×′≈× : ∀ n x → n ×′ x ≈ n × x
+×′≈× 0               x = refl
+×′≈× 1               x = sym (×-homo-1 x)
+×′≈× (suc n@(suc _)) x = begin
+  n ×′ x + x  ≈⟨ 1+×′ n x ⟩
+  x + n ×′ x  ≈⟨ +-congˡ (×′≈× n x) ⟩
+  suc n × x   ∎
+
