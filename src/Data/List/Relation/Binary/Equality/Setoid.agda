@@ -116,6 +116,12 @@ foldr⁺ ∙⇔◦ e≈f xs≋ys = PW.foldr⁺ ∙⇔◦ e≈f xs≋ys
 ++⁺ : ∀ {ws xs ys zs} → ws ≋ xs → ys ≋ zs → ws ++ ys ≋ xs ++ zs
 ++⁺ = PW.++⁺
 
+++⁺ʳ : ∀ xs {ys zs} → ys ≋ zs → xs ++ ys ≋ xs ++ zs
+++⁺ʳ xs = PW.++⁺ʳ refl xs
+
+++⁺ˡ : ∀ {ws xs} → ws ≋ xs → ∀ zs → ws ++ zs ≋ xs ++ zs
+++⁺ˡ rs = PW.++⁺ˡ refl rs
+
 ++-cancelˡ : ∀ xs {ys zs} → xs ++ ys ≋ xs ++ zs → ys ≋ zs
 ++-cancelˡ xs = PW.++-cancelˡ xs
 
