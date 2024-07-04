@@ -25,14 +25,14 @@ open import Relation.Binary.Reasoning.Setoid setoid
 ------------------------------------------------------------------------
 -- Distributivity
 
-distrˡ : _∙_ DistributesOverˡ _∙_
-distrˡ a b c = begin
+∙-distrˡ-∙ : _∙_ DistributesOverˡ _∙_
+∙-distrˡ-∙ a b c = begin
     a ∙ (b ∙ c)        ≈⟨ ∙-congʳ (idem a) ⟨
     (a ∙ a) ∙ (b ∙ c)  ≈⟨ interchange _ _ _ _ ⟩
     (a ∙ b) ∙ (a ∙ c)  ∎
 
-distrʳ : _∙_ DistributesOverʳ _∙_
-distrʳ = comm∧distrˡ⇒distrʳ ∙-cong comm distrˡ
+∙-distrʳ-∙ : _∙_ DistributesOverʳ _∙_
+∙-distrʳ-∙ = comm∧distrˡ⇒distrʳ ∙-cong comm ∙-distrˡ-∙
 
-distr : _∙_ DistributesOver _∙_
-distr = comm∧distrˡ⇒distr ∙-cong comm distrˡ
+∙-distr-∙ : _∙_ DistributesOver _∙_
+∙-distr-∙ = comm∧distrˡ⇒distr ∙-cong comm ∙-distrˡ-∙
