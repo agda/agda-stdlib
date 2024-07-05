@@ -124,6 +124,11 @@ Additions to existing modules
   All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
   ```
 
+* In `Data.List.Membership.Propositional.Properties.WithK`:
+  ```agda
+  unique∧set⇒bag : Unique xs → Unique ys → xs ∼[ set ] ys → xs ∼[ bag ] ys
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   product≢0 : All NonZero ns → NonZero (product ns)
