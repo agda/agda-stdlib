@@ -1163,13 +1163,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
   filter-all {[]}     []         = refl
   filter-all {x ∷ xs} (px ∷ pxs) with P? x
-  ... | false because [¬px] = contradiction px (invert [¬px])
-  ... | true  because _     = cong (x ∷_) (filter-all pxs)
+  ... | no          ¬px = contradiction px ¬px
+  ... | true  because _ = cong (x ∷_) (filter-all pxs)
 
   filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
   filter-notAll (x ∷ xs) (here ¬px) with P? x
-  ... | false because _    = s≤s (length-filter xs)
-  ... | true  because [px] = contradiction (invert [px]) ¬px
+  ... | false because _ = s≤s (length-filter xs)
+  ... | yes          px = contradiction px ¬px
   filter-notAll (x ∷ xs) (there any) with ih ← filter-notAll xs any | does (P? x)
   ... | false = m≤n⇒m≤1+n ih
   ... | true  = s≤s ih
@@ -1185,8 +1185,8 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
   filter-none {[]}     []           = refl
   filter-none {x ∷ xs} (¬px ∷ ¬pxs) with P? x
-  ... | false because _    = filter-none ¬pxs
-  ... | true  because [px] = contradiction (invert [px]) ¬px
+  ... | false because _ = filter-none ¬pxs
+  ... | yes          px = contradiction px ¬px
 
   filter-complete : ∀ {xs} → length (filter P? xs) ≡ length xs →
                     filter P? xs ≡ xs
@@ -1197,13 +1197,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-accept : ∀ {x xs} → P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
   filter-accept {x} Px with P? x
-  ... | true  because _     = refl
-  ... | false because [¬Px] = contradiction Px (invert [¬Px])
+  ... | true because _ = refl
+  ... | no         ¬Px = contradiction Px ¬Px
 
   filter-reject : ∀ {x xs} → ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
   filter-reject {x} ¬Px with P? x
-  ... | true  because [Px] = contradiction (invert [Px]) ¬Px
-  ... | false because _    = refl
+  ... | yes          Px = contradiction Px ¬Px
+  ... | false because _ = refl
 
   filter-idem : filter P? ∘ filter P? ≗ filter P?
   filter-idem []       = refl
@@ -1241,13 +1241,13 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
 
   derun-reject : ∀ {x y} xs → R x y → derun R? (x ∷ y ∷ xs) ≡ derun R? (y ∷ xs)
   derun-reject {x} {y} xs Rxy with R? x y
-  ... | true  because _      = refl
-  ... | false because [¬Rxy] = contradiction Rxy (invert [¬Rxy])
+  ... | yes _    = refl
+  ... | no  ¬Rxy = contradiction Rxy ¬Rxy
 
   derun-accept : ∀ {x y} xs → ¬ R x y → derun R? (x ∷ y ∷ xs) ≡ x ∷ derun R? (y ∷ xs)
   derun-accept {x} {y} xs ¬Rxy with R? x y
-  ... | true  because [Rxy] = contradiction (invert [Rxy]) ¬Rxy
-  ... | false because  _    = refl
+  ... | yes Rxy = contradiction Rxy ¬Rxy
+  ... | no  _   = refl
 
 ------------------------------------------------------------------------
 -- partition
@@ -1260,7 +1260,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ...  | true  = cong (Product.map (x ∷_) id) ih
   ...  | false = cong (Product.map id (x ∷_)) ih
 
-  length-partition : ∀ xs → (let ys , zs = partition P? xs) →
+  length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
   length-partition (x ∷ xs) with ih ← length-partition xs | does (P? x)
