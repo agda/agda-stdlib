@@ -118,6 +118,11 @@ Additions to existing modules
   Env = Vec Carrier
  ```
 
+* In `Data.List.Base`:
+  ```agda
+  lookupMaybe : List A → ℕ → Maybe A
+  ```
+
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
   Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys

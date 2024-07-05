@@ -229,6 +229,12 @@ lookup : ∀ (xs : List A) → Fin (length xs) → A
 lookup (x ∷ xs) zero    = x
 lookup (x ∷ xs) (suc i) = lookup xs i
 
+lookupMaybe : List A → ℕ → Maybe A
+lookupMaybe = λ where
+  []       _       → nothing
+  (x ∷ _)  zero    → just x
+  (_ ∷ xs) (suc n) → lookupMaybe xs n
+
 -- Numerical
 
 upTo : ℕ → List ℕ
