@@ -149,6 +149,6 @@ showDefinition (data-type pars cs) =
  "datatype" <+> ℕ.show pars <+> braces (intersperse ", " (map showName cs))
 showDefinition (record′ c fs)      =
  "record" <+> showName c <+> braces (intersperse ", " (map (showName ∘′ unArg) fs))
-showDefinition (constructor′ d)    = "constructor" <+> showName d
+showDefinition (constructor′ d q)  = "constructor" <+> showName d <+> showQuantity q
 showDefinition axiom               = "axiom"
 showDefinition primitive′          = "primitive"
