@@ -386,10 +386,10 @@ cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs[eq]≡yys =
   in cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs[eq]≡ys)
 
 ≈-cong′ : ∀ {f-len : ℕ → ℕ} (f : ∀ {n} → Vec A n → Vec B (f-len n))
-          {xs : Vec A m} {ys : Vec A n} .{eq} → xs ≈[ eq ] ys →
+          {m n} {xs : Vec A m} {ys : Vec A n} .{eq} → xs ≈[ eq ] ys →
           f xs ≈[ cong f-len eq ] f ys
-≈-cong′ f {xs = []}     {ys = []}     refl = cast-is-id refl (f [])
-≈-cong′ f {xs = x ∷ xs} {ys = y ∷ ys} refl = ≈-cong′ (f ∘ (x ∷_)) refl
+≈-cong′ f {m = zero}  {n = zero}  {xs = []}     {ys = []}     refl = cast-is-id refl (f [])
+≈-cong′ f {m = suc m} {n = suc n} {xs = x ∷ xs} {ys = y ∷ ys} refl = ≈-cong′ (f ∘ (x ∷_)) refl
 
 ------------------------------------------------------------------------
 -- map
