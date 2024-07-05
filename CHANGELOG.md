@@ -834,7 +834,7 @@ Additions to existing modules
 
 * Added new proofs in `Relation.Nullary.Properties`:
   ```agda
-  ≐?     : P ≐ Q → Decidable P → Decidable Q
+  map    : P ≐ Q → Decidable P → Decidable Q
   does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
   does-≡ : (P? P?′ : Decidable P) → does ∘ P? ≗ does ∘ P?′
   ```

@@ -200,9 +200,9 @@ U-Universal = λ _ → _
 ------------------------------------------------------------------------
 -- Decidability properties
 
-≐? : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
-     P ≐ Q → Decidable P → Decidable Q
-≐? (P⊆Q , Q⊆P) P? x = map′ P⊆Q Q⊆P (P? x)
+map : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
+      P ≐ Q → Decidable P → Decidable Q
+map (P⊆Q , Q⊆P) P? x = map′ P⊆Q Q⊆P (P? x)
 
 ∁? : {P : Pred A ℓ} → Decidable P → Decidable (∁ P)
 ∁? P? x = ¬? (P? x)
@@ -244,7 +244,7 @@ does-≡ P? P?′ x = Dec.does-≡ (P? x) (P?′ x)
 does-≐ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} → P ≐ Q →
          (P? : Decidable P) → (Q? : Decidable Q) →
          does ∘ P? ≗ does ∘ Q?
-does-≐ P≐Q P? = does-≡ (≐? P≐Q P?)
+does-≐ P≐Q P? = does-≡ (map P≐Q P?)
 
 ------------------------------------------------------------------------
 -- Irrelevant properties
