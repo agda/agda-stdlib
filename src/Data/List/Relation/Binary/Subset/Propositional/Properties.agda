@@ -10,8 +10,8 @@ module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
 open import Data.Bool.Base using (Bool; true; false; T)
-open import Data.List.Base using (List; map; _∷_; _++_; concat; applyUpTo;
-  any; filter)
+open import Data.List.Base
+  using (List; map; _∷_; _++_; concat; concatMap; applyUpTo; any; filter)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
@@ -178,6 +178,12 @@ module _ {xss yss : List (List A)} where
     Inverse.to concat-∈↔ ∘
     Product.map₂ (Product.map₂ xss⊆yss) ∘
     Inverse.from concat-∈↔
+
+------------------------------------------------------------------------
+-- concatMap
+
+concatMap⁺ : ∀ (f : A → List B) → xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
+concatMap⁺ _ = concat⁺ ∘ map⁺ _
 
 ------------------------------------------------------------------------
 -- applyUpTo

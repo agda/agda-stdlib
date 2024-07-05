@@ -157,6 +157,11 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
+* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  concatMap⁺ : ∀ (f : A → List B) → xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
+  ```
+
 * In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   Sublist-[]-universal : Universal (Sublist R [])
