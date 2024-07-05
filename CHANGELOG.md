@@ -152,6 +152,16 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
+  ```agda
+  Sublist-[]-universal : Universal (Sublist R [])
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  []⊆-universal : Universal ([] ⊆_)
+  ```
+
 * In `Data.Maybe.Properties`:
   ```agda
   maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
