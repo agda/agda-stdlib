@@ -129,6 +129,11 @@ Additions to existing modules
   All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
   ```
 
+* In `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-AllPairs₂ : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
+  ```
+
 * In `Data.List.Membership.Propositional.Properties.WithK`:
   ```agda
   unique∧set⇒bag : Unique xs → Unique ys → xs ∼[ set ] ys → xs ∼[ bag ] ys

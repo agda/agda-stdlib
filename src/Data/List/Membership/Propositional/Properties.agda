@@ -401,3 +401,16 @@ there-injective-≢∈ : ∀ {xs} {x y z : A} {x∈xs : x ∈ xs} {y∈xs : y �
                      there {x = z} x∈xs ≢∈ there y∈xs →
                      x∈xs ≢∈ y∈xs
 there-injective-≢∈ neq refl eq = neq refl (≡.cong there eq)
+
+------------------------------------------------------------------------
+-- AllPairs
+
+open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
+import Data.List.Relation.Unary.All as All
+
+module _ {R : A → A → Set ℓ} where
+  ∈-AllPairs₂ : ∀ {xs x y} → AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
+  ∈-AllPairs₂ (_ ∷ _)  (here refl) (here refl) = inj₁ refl
+  ∈-AllPairs₂ (p ∷ _)  (here refl) (there y∈)  = inj₂ $ inj₁ $ All.lookup p y∈
+  ∈-AllPairs₂ (p ∷ _)  (there x∈)  (here refl) = inj₂ $ inj₂ $ All.lookup p x∈
+  ∈-AllPairs₂ (_ ∷ ps) (there x∈)  (there y∈)  = ∈-AllPairs₂ ps x∈ y∈
