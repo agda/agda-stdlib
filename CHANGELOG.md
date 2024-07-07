@@ -148,6 +148,19 @@ Deprecated names
   toDec    ↦  Relation.Nullary.Decidable.Core.fromSum
   ```
 
+* In `Data.Vec.Properties`:
+  ```agda
+  ++-assoc-eqFree      ↦  ++-assoc
+  ++-identityʳ-eqFree  ↦  ++-identityʳ
+  unfold-∷ʳ-eqFree     ↦  unfold-∷ʳ
+  ++-∷ʳ-eqFree         ↦  ++-∷ʳ
+  ∷ʳ-++-eqFree         ↦  ∷ʳ-++
+  reverse-++-eqFree    ↦  reverse-++
+  ∷-ʳ++-eqFree         ↦  ∷-ʳ++
+  ++-ʳ++-eqFree        ↦  ++-ʳ++
+  ʳ++-ʳ++-eqFree       ↦  ʳ++-ʳ++
+  ```
+
 * In `IO.Base`:
   ```agda
   untilRight  ↦  untilInj₂
