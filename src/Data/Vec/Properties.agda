@@ -373,7 +373,7 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 -- cast
 
 open VecCast public
-  using (cast-is-id; cast-trans)
+  using (cast-is-id; cast-trans; ≈-cong′)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
@@ -384,12 +384,6 @@ cast-sym eq {xs = []}     {ys = []}     _ = refl
 cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs[eq]≡yys =
   let x≡y , xs[eq]≡ys = ∷-injective xxs[eq]≡yys
   in cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs[eq]≡ys)
-
-≈-cong′ : ∀ {f-len : ℕ → ℕ} (f : ∀ {n} → Vec A n → Vec B (f-len n))
-          {m n} {xs : Vec A m} {ys : Vec A n} .{eq} → xs ≈[ eq ] ys →
-          f xs ≈[ cong f-len eq ] f ys
-≈-cong′ f {m = zero}  {n = zero}  {xs = []}     {ys = []}     refl = cast-is-id refl (f [])
-≈-cong′ f {m = suc m} {n = suc n} {xs = x ∷ xs} {ys = y ∷ ys} refl = ≈-cong′ (f ∘ (x ∷_)) refl
 
 ------------------------------------------------------------------------
 -- map

@@ -13,6 +13,7 @@
 module Data.Vec.Relation.Binary.Equality.Cast where
 
 open import Level using (Level)
+open import Function using (_∘_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Vec.Base
@@ -25,8 +26,8 @@ open import Relation.Binary.PropositionalEquality.Properties
 
 private
   variable
-    a : Level
-    A : Set a
+    a b : Level
+    A B : Set a
     l m n o : ℕ
     xs ys zs : Vec A n
 
@@ -69,6 +70,12 @@ xs ≈[ eq ] ys = cast eq xs ≡ ys
   cast n≡o ys             ≡⟨ ys≈zs ⟩
   zs                      ∎
   where open ≡-Reasoning
+
+≈-cong′ : ∀ {f-len : ℕ → ℕ} (f : ∀ {n} → Vec A n → Vec B (f-len n))
+          {m n} {xs : Vec A m} {ys : Vec A n} .{eq} → xs ≈[ eq ] ys →
+          f xs ≈[ cong f-len eq ] f ys
+≈-cong′ f {m = zero}  {n = zero}  {xs = []}     {ys = []}     refl = cast-is-id refl (f [])
+≈-cong′ f {m = suc m} {n = suc n} {xs = x ∷ xs} {ys = y ∷ ys} refl = ≈-cong′ (f ∘ (x ∷_)) refl
 
 ------------------------------------------------------------------------
 -- Reasoning combinators
