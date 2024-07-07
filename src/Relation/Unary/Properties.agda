@@ -8,6 +8,7 @@
 
 module Relation.Unary.Properties where
 
+open import Data.Bool.Base using (not)
 open import Data.Product.Base as Product using (_×_; _,_; swap; proj₁; zip′)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
@@ -15,10 +16,11 @@ open import Level using (Level)
 open import Relation.Binary.Core as Binary
 open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
-open import Relation.Binary.PropositionalEquality.Core using (refl)
+open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Unary
-open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_; ¬?)
+open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does; does-⇔)
 open import Function.Base using (id; _$_; _∘_)
+open import Function.Bundles using (mk⇔)
 
 private
   variable
@@ -200,6 +202,10 @@ U-Universal = λ _ → _
 ------------------------------------------------------------------------
 -- Decidability properties
 
+≐? : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
+     P ≐ Q → Decidable P → Decidable Q
+≐? (P⊆Q , Q⊆P) P? x = map′ P⊆Q Q⊆P (P? x)
+
 ∁? : {P : Pred A ℓ} → Decidable P → Decidable (∁ P)
 ∁? P? x = ¬? (P? x)
 
@@ -232,6 +238,15 @@ _⊎?_ P? Q? (inj₂ b) = Q? b
 
 _~? : {P : Pred (A × B) ℓ} → Decidable P → Decidable (P ~)
 _~? P? = P? ∘ swap
+
+does-≐ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} → P ≐ Q →
+         (P? : Decidable P) → (Q? : Decidable Q) →
+         does ∘ P? ≗ does ∘ Q?
+does-≐ (P⊆Q , Q⊆P) P? Q? x = does-⇔ (mk⇔ P⊆Q Q⊆P) (P? x) (Q? x)
+
+does-≡ : {P : Pred A ℓ} → (P? P?′ : Decidable P) →
+         does ∘ P? ≗ does ∘ P?′
+does-≡ {P} P? P?′ = does-≐ ≐-refl P? P?′
 
 ------------------------------------------------------------------------
 -- Irrelevant properties
