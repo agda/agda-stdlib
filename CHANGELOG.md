@@ -822,9 +822,9 @@ Additions to existing modules
   ```agda
   recompute          : Reflects A b → Recomputable A
   recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
- ```
+  ```
 
-* Added new definitions in `Relation.Unary`
+* Added new definitions in `Relation.Unary`:
   ```agda
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
