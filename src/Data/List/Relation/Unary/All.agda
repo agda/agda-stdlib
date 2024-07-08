@@ -14,7 +14,7 @@ open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.List.Membership.Setoid as SetoidMembership
 open import Data.Product.Base as Product
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
-open import Data.Sum.Base as Sum using (_⊎_;inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; const)
@@ -233,7 +233,7 @@ decide p∪q (x ∷ xs) with p∪q x
 ... | inj₁ px = Sum.map (px ∷_) there (decide p∪q xs)
 
 search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
-search P? = decide (Sum.swap ∘ (Dec.toSum ∘ P?))
+search P? = decide (Sum.swap ∘ Dec.toSum ∘ P?)
 
 ------------------------------------------------------------------------
 -- DEPRECATED
