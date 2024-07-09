@@ -369,7 +369,7 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 -- cast
 
 open VecCast public
-  using (cast-is-id; cast-trans)
+  using (cast-is-id; cast-trans; ≈-cong′)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
@@ -394,9 +394,7 @@ map-const (_ ∷ xs) y = cong (y ∷_) (map-const xs y)
 
 map-cast : (f : A → B) .(eq : m ≡ n) (xs : Vec A m) →
            map f (cast eq xs) ≡ cast eq (map f xs)
-map-cast {n = zero}  f eq []       = refl
-map-cast {n = suc _} f eq (x ∷ xs)
-  = cong (f x ∷_) (map-cast f (suc-injective eq) xs)
+map-cast f _ _ = sym (≈-cong′ (map f) refl)
 
 map-++ : ∀ (f : A → B) (xs : Vec A m) (ys : Vec A n) →
          map f (xs ++ ys) ≡ map f xs ++ map f ys
@@ -475,13 +473,11 @@ toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 
 cast-++ˡ : ∀ .(eq : m ≡ o) (xs : Vec A m) {ys : Vec A n} →
            cast (cong (_+ n) eq) (xs ++ ys) ≡ cast eq xs ++ ys
-cast-++ˡ {o = zero}  eq []       {ys} = cast-is-id refl (cast eq [] ++ ys)
-cast-++ˡ {o = suc o} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ˡ (cong pred eq) xs)
+cast-++ˡ _ _ {ys} = ≈-cong′ (_++ ys) refl
 
 cast-++ʳ : ∀ .(eq : n ≡ o) (xs : Vec A m) {ys : Vec A n} →
            cast (cong (m +_) eq) (xs ++ ys) ≡ xs ++ cast eq ys
-cast-++ʳ {m = zero}  eq []       {ys} = refl
-cast-++ʳ {m = suc m} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ʳ eq xs)
+cast-++ʳ _ xs = ≈-cong′ (xs ++_) refl
 
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
@@ -910,8 +906,7 @@ map-∷ʳ f x (y ∷ xs) = cong (f y ∷_) (map-∷ʳ f x xs)
 
 cast-∷ʳ : ∀ .(eq : suc n ≡ suc m) x (xs : Vec A n) →
           cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
-cast-∷ʳ {m = zero}  eq x []       = refl
-cast-∷ʳ {m = suc m} eq x (y ∷ xs) = cong (y ∷_) (cast-∷ʳ (cong pred eq) x xs)
+cast-∷ʳ _ x _ = ≈-cong′ (_∷ʳ x) refl
 
 -- _++_ and _∷ʳ_
 
@@ -1015,23 +1010,14 @@ reverse-++ : ∀ .(eq : m + n ≡ n + m) (xs : Vec A m) (ys : Vec A n) →
 reverse-++ {m = zero}  {n = n} eq []       ys = ≈-sym (++-identityʳ (sym eq) (reverse ys))
 reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin
   reverse (x ∷ xs ++ ys)              ≂⟨ reverse-∷ x (xs ++ ys) ⟩
-  reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys)))
-                                                (reverse-++ _ xs ys) ⟩
+  reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong′ (_∷ʳ x) (reverse-++ (+-comm m n) xs ys) ⟩
   (reverse ys ++ reverse xs) ∷ʳ x     ≈⟨ ++-∷ʳ (sym (+-suc n m)) x (reverse ys) (reverse xs) ⟩
   reverse ys ++ (reverse xs ∷ʳ x)     ≂⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟨
   reverse ys ++ (reverse (x ∷ xs))    ∎
   where open CastReasoning
 
 cast-reverse : ∀ .(eq : m ≡ n) → cast eq ∘ reverse {A = A} {n = m} ≗ reverse ∘ cast eq
-cast-reverse {n = zero}  eq []       = refl
-cast-reverse {n = suc n} eq (x ∷ xs) = begin
-  reverse (x ∷ xs)           ≂⟨ reverse-∷ x xs ⟩
-  reverse xs ∷ʳ x            ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ eq x (reverse xs))
-                                       (cast-reverse (cong pred eq) xs) ⟩
-  reverse (cast _ xs) ∷ʳ x   ≂⟨ reverse-∷ x (cast (cong pred eq) xs) ⟨
-  reverse (x ∷ cast _ xs)    ≈⟨⟩
-  reverse (cast eq (x ∷ xs)) ∎
-  where open CastReasoning
+cast-reverse _ _ = ≈-cong′ reverse refl
 
 ------------------------------------------------------------------------
 -- _ʳ++_
@@ -1075,8 +1061,7 @@ map-ʳ++ {ys = ys} f xs = begin
          cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
 ++-ʳ++ {m = m} {n} {o} eq xs {ys} {zs} = begin
   ((xs ++ ys) ʳ++ zs)              ≂⟨ unfold-ʳ++ (xs ++ ys) zs ⟩
-  reverse (xs ++ ys) ++ zs         ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (xs ++ ys)))
-                                             (reverse-++ (+-comm m n) xs ys) ⟩
+  reverse (xs ++ ys) ++ zs         ≈⟨ ≈-cong′ (_++ zs) (reverse-++ (+-comm m n) xs ys) ⟩
   (reverse ys ++ reverse xs) ++ zs ≈⟨ ++-assoc (trans (cong (_+ o) (+-comm n m)) eq) (reverse ys) (reverse xs) zs ⟩
   reverse ys ++ (reverse xs ++ zs) ≂⟨ cong (reverse ys ++_) (unfold-ʳ++ xs zs) ⟨
   reverse ys ++ (xs ʳ++ zs)        ≂⟨ unfold-ʳ++ ys (xs ʳ++ zs) ⟨
@@ -1088,8 +1073,7 @@ map-ʳ++ {ys = ys} f xs = begin
 ʳ++-ʳ++ {m = m} {n} {o} eq xs {ys} {zs} = begin
   (xs ʳ++ ys) ʳ++ zs                         ≂⟨ cong (_ʳ++ zs) (unfold-ʳ++ xs ys) ⟩
   (reverse xs ++ ys) ʳ++ zs                  ≂⟨ unfold-ʳ++ (reverse xs ++ ys) zs ⟩
-  reverse (reverse xs ++ ys) ++ zs           ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (reverse xs ++ ys)))
-                                                       (reverse-++ (+-comm m n) (reverse xs) ys) ⟩
+  reverse (reverse xs ++ ys) ++ zs           ≈⟨ ≈-cong′ (_++ zs) (reverse-++ (+-comm m n) (reverse xs) ys) ⟩
   (reverse ys ++ reverse (reverse xs)) ++ zs ≂⟨ cong ((_++ zs) ∘ (reverse ys ++_)) (reverse-involutive xs) ⟩
   (reverse ys ++ xs) ++ zs                   ≈⟨ ++-assoc (+-assoc n m o) (reverse ys) xs zs ⟩
   reverse ys ++ (xs ++ zs)                   ≂⟨ unfold-ʳ++ ys (xs ++ zs) ⟨
@@ -1319,8 +1303,7 @@ fromList-reverse (x List.∷ xs) = begin
   fromList (List.reverse (x List.∷ xs))         ≈⟨ cast-fromList (List.ʳ++-defn xs) ⟩
   fromList (List.reverse xs List.++ List.[ x ]) ≈⟨ fromList-++ (List.reverse xs) ⟩
   fromList (List.reverse xs) ++ [ x ]           ≈⟨ unfold-∷ʳ (+-comm 1 _) x (fromList (List.reverse xs)) ⟨
-  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (List.length-reverse xs)) _ _)
-                                                          (fromList-reverse xs) ⟩
+  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong′ (_∷ʳ x) (fromList-reverse xs) ⟩
   reverse (fromList xs) ∷ʳ x                    ≂⟨ reverse-∷ x (fromList xs) ⟨
   reverse (x ∷ fromList xs)                     ≈⟨⟩
   reverse (fromList (x List.∷ xs))              ∎

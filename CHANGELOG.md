@@ -736,6 +736,13 @@ Additions to existing modules
   toVec     : (as : Vec≤ A n) → Vec A (Vec≤.length as)
   ```
 
+* Added new proofs to `Data.Vec.Relation.Binary.Equality.Cast`:
+  ```agda
+  ≈-cong′ : ∀ {f-len : ℕ → ℕ} (f : ∀ {n} → Vec A n → Vec B (f-len n))
+    {m n} {xs : Vec A m} {ys : Vec A n} .{eq} →
+    xs ≈[ eq ] ys → f xs ≈[ _ ] f ys
+  ```
+
 * In `Data.Word64.Base`:
   ```agda
   _≤_ : Rel Word64 zero
