@@ -2,26 +2,28 @@
 title: 'The Agda standard library: version 2.0'
 tags:
   - Agda
-  - interactive theorem proving
-  - verification
-  - functional programming
+  - Interactive theorem proving
+  - Verification
+  - Functional programming
 authors:
-  - name: Adrian M. Price-Whelan
+  - name: Daggitt, Matthew L.
     orcid: 0000-0000-0000-0000
     equal-contrib: true
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
+    affiliation: 1
+  - name: Allais, Guillaume
+	orcid: 0000-0000-0000-0000
+    equal-contrib: true
     affiliation: 2
-  - name: Author with no affiliation
+  - name: Carrete, Jacques
+	orcid: 0000-0000-0000-0000
+    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
+    affiliation: 3
+  - name: McKinna, James
+	orcid: 0000-0000-0000-0000
     corresponding: true # (This is how to denote the corresponding author)
-    affiliation: 3
-  - given-names: Ludwig
-    dropping-particle: van
-    surname: Beethoven
-    affiliation: 3
+    affiliation: 4
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
+ - name: University of Western Australia, Australia
    index: 1
  - name: Institution Name, Country
    index: 2
@@ -33,50 +35,53 @@ bibliography: paper.bib
 
 # Summary
 
-Agda CITE is a programming language used as a platform for cutting-edge
-research into programming language technology.
-Agda functions both as a traditional programming language and as an interactive
-theorem prover, allowing users to  write proofs as well as programs.
-The Agda standard library therefore provides a foundation for Agda users to develop proofs and programs.
-Unlike standard libraries of traditional programming languages, the Agda standard library must provide not
-just standard utility functions and data structures, but also large parts of basic mathematics
-that are essential for proving the correctness of programs.
+Agda[@norell2009dependently] is a functional, dependently-typed programming language that doubles as both a traditional programming language and as an interactive theorem prover (ITP).
+The Agda standard library provides the vital building blocks with which users can develop Agda programs.
+Unlike the standard libraries of traditional programming languages, as the standard library for an ITP the Agda standard library provides not only standard utilities and data structures, but also a large part of the basic mathematics that is essential for proving the correctness of programs.
 
-# Motivation
+# Statement of need
 
-Agda is a functional programming language that doubles as an interactive theorem prover. 
-It's purpose is to write.
-Agda is 
+Similar to many ITPs, Agda provides a minimal set of core primitives from which programs can be constructed.
+In particular, Agda provides core operators such as the ability to declare new data types, functions, pattern-matching and records.
+From these operations, it is possible to define all of constructive mathematics and, given suitable postulated axioms, non-constructive mathematics.
 
-The essence of a proof assistant is to have as small a set of axioms as possible and derive almost everything else from those axioms. 
-Agda is no exception, and provides a small set of primitive operations, including the ability to define new types, pattern-matching and X. 
-From this, it is possible to define all of constructive mathematics (and, given suitable postulates, non-constructive mathematics). 
-
-Indeed, things that many programmers would have thought of as basics, (e.g. numbers, strings etc.) have to be derived. This however means that there is vast amount of mathematics to rederive, before one can . 
+While having a minimal set of primitives is desirable in that it decreases the complexity of the implementation of Agda, and therefore increases the trustworthiness of it as an ITP, one immediate consequence is that many things that programmers typically think as basics, (e.g. numbers, strings etc.) have to be first defined.
+This makes a standard however means that there is a vast amount of mathematics to rederive, before one can . 
 
 # Design
 
-Designing a standard libary for interactive theorem provers is typically a much bigger challenge than those for standard programming langauges.
+Designing a standard libary for interactive theorem provers is typically a much bigger challenge than those for standard programming languages.
 This is because, not only do they have to provide all the basics of programming (e.g. common data structures, file-system access libraries), they also have to provide a large fraction of basic mathematics.
 
-Organising mathematics is relatively hard, as there is a lot of it. 
+Organising mathematics is relatively hard. 
 The Agda standard library has taken approach somewhere in the middle of the Coq standard library (which is minimal) and that of Lean (which is maximal). 
 
-The focus of the standard library is predominantly on discrete mathematics, which is result of the fact that one of the primary uses of Agda is as a tool for programming language design and research.
+The focus of the standard library is predominantly on discrete mathematics, which is result of the fact that one of the most popular uses of Agda is as a tool for programming language design and research.
+
+
+Practical design concerns
+
+* Loading performance, dependency cycles.
+
+* 
 
 # Prominent use cases
 
 The Agda Standard Library has been used in a wide variety of projects, far too many to be exhaustively listed here. A diverse selection, which is in no-way the meant to be an endorsement of these projects above others, are as follows:
-- Formalisation of Category Theory
-- Verification of Hardware
-- Verification of network routing protocols 
+- Formalisation of Category Theory [@]
+- Verification of Hardware [@]
+- Verification of network routing protocols [@]
 - ...
 
 # Acknowledgements
 
-We acknowledge the work of the core Agda development team who are not authors
-on this paper including, but not limited to, Andreas Abel, Ulf Norell,
-Nils Anders Danielsson, Andrés Sicard-Ramírez, Jesper Cockx and Andrea Vezzosi,
+We acknowledge the work of the core Agda development team who are not authors on this paper including, but not limited to, 
+Andreas Abel, 
+Ulf Norell,
+Nils Anders Danielsson, 
+Andrés Sicard-Ramírez, 
+Jesper Cockx and 
+Andrea Vezzosi,
 without whom Agda itself would not exist.
 
 # References
