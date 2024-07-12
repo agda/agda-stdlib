@@ -46,6 +46,9 @@ Non-backwards compatible changes
 
 * The module `IO.Primitive` was moved to `IO.Primitive.Core`.
 
+* Removed unnecessary parameter `#-trans : Transitive _#_` from
+  `Relation.Binary.Reasoning.Base.Apartness`.
+
 Minor improvements
 ------------------
 

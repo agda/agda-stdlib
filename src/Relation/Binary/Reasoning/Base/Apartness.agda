@@ -20,7 +20,7 @@ open import Relation.Binary.Reasoning.Syntax
 module Relation.Binary.Reasoning.Base.Apartness {a ℓ₁ ℓ₂} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_#_ : Rel A ℓ₂}
   (≈-equiv : IsEquivalence _≈_)
-  (#-trans : Transitive _#_) (#-sym   : Symmetric _#_)
+  (#-sym   : Symmetric _#_)
   (#-≈-trans : Trans _#_ _≈_ _#_) (≈-#-trans : Trans _≈_ _#_ _#_)
   where
 
