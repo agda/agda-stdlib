@@ -162,6 +162,11 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
+≰⇒≥ : _≰_ ⇒ _≥_
+≰⇒≥ {m} {zero} m≰n = z≤n
+≰⇒≥ {zero} {suc n} m≰n = contradiction z≤n m≰n
+≰⇒≥ {suc m} {suc n} m≰n = s≤s (≰⇒≥ (m≰n ∘ s≤s))
+
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
 
@@ -330,9 +335,6 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ≰⇒> {zero}          z≰n = contradiction z≤n z≰n
 ≰⇒> {suc m} {zero}  _   = z<s
 ≰⇒> {suc m} {suc n} m≰n = s<s (≰⇒> (m≰n ∘ s≤s))
-
-≰⇒≥ : _≰_ ⇒ _≥_
-≰⇒≥ = <⇒≤ ∘ ≰⇒>
 
 ≮⇒≥ : _≮_ ⇒ _≥_
 ≮⇒≥ {_}     {zero}  _       = z≤n
