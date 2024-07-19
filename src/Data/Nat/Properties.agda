@@ -185,11 +185,6 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤-trans z≤n       _         = z≤n
 ≤-trans (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
-≤-total : Total _≤_
-≤-total zero    _       = inj₁ z≤n
-≤-total _       zero    = inj₂ z≤n
-≤-total (suc m) (suc n) = Sum.map s≤s s≤s (≤-total m n)
-
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant z≤n        z≤n        = refl
 ≤-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevant m≤n₁ m≤n₂)
@@ -207,6 +202,11 @@ m ≤? n = map′ (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ (T? (m ≤ᵇ n))
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
+
+≤-total : Total _≤_
+≤-total m n with m ≤? n
+... | yes m≤n = inj₁ m≤n
+... | no  m≰n = inj₂ (≰⇒≥ m≰n)
 
 ------------------------------------------------------------------------
 -- Structures
