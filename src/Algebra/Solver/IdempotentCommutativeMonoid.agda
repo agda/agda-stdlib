@@ -36,9 +36,9 @@ open Tactic monoid (record { N }) public
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.1
+-- Version 2.2
 
 {-# WARNING_ON_USAGE normalise-correct
-"Warning: normalise-correct was deprecated in v2.1.
+"Warning: normalise-correct was deprecated in v2.2.
 Please use Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct instead."
 #-}

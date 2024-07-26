@@ -151,10 +151,10 @@ correct (e₁ ⊕ e₂) ρ = begin
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.1
+-- Version 2.2
 
 flip12 = x∙yz≈y∙xz
 {-# WARNING_ON_USAGE flip12
-"Warning: flip12 was deprecated in v2.1.
+"Warning: flip12 was deprecated in v2.2.
 Please use Algebra.Properties.CommutativeSemigroup.x∙yz≈y∙xz instead."
 #-}
