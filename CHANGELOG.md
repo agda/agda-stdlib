@@ -24,5 +24,10 @@ Deprecated names
 New modules
 -----------
 
+* `Number` literals derivable from any `RawSuccessorSet`:
+  ```
+  Algebra.Literals
+  ```
+
 Additions to existing modules
 -----------------------------
