@@ -10,7 +10,7 @@ module Reflection.AST.Name where
 
 open import Data.List.Base              using (List)
 import Data.Product.Properties as Prodₚ using (≡-dec)
-import Data.Word.Properties as Wₚ       using (_≟_)
+import Data.Word64.Properties as Wₚ       using (_≟_)
 open import Function.Base               using (_on_)
 open import Relation.Nullary.Decidable.Core            using (map′)
 open import Relation.Binary.Core                       using (Rel)

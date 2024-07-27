@@ -13,11 +13,12 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.List.Relation.Unary.First
-import Data.Sum as Sum
-open import Function.Base using (_∘′_; _$_; _∘_; id)
+import Data.Sum.Base as Sum
+open import Function.Base using (_∘′_; _∘_; id)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; _≗_)
+import Relation.Nullary.Decidable.Core as Dec
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Unary using (Pred; _⊆_; ∁; Irrelevant; Decidable)
-open import Relation.Nullary.Negation using (contradiction)
 
 ------------------------------------------------------------------------
 -- map
@@ -80,14 +81,14 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 module _ {a p} {A : Set a} {P : Pred A p} where
 
   first? : Decidable P → Decidable (First P (∁ P))
-  first? P? xs = Sum.toDec
-               $ Sum.map₂ (All⇒¬First contradiction)
-               $ first (Sum.fromDec ∘ P?) xs
+  first? P? = Dec.fromSum
+            ∘ Sum.map₂ (All⇒¬First contradiction)
+            ∘ first (Dec.toSum ∘ P?)
 
   cofirst? : Decidable P → Decidable (First (∁ P) P)
-  cofirst? P? xs = Sum.toDec
-                 $ Sum.map₂ (All⇒¬First id)
-                 $ first (Sum.swap ∘ Sum.fromDec ∘ P?) xs
+  cofirst? P? = Dec.fromSum
+              ∘ Sum.map₂ (All⇒¬First id)
+              ∘ first (Sum.swap ∘ Dec.toSum ∘ P?)
 
 ------------------------------------------------------------------------
 -- Conversion to Any
