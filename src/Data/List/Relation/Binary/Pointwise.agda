@@ -26,7 +26,7 @@ open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core renaming (Rel to Rel₂)
-open import Relation.Binary.Definitions using (Reflexive;_Respects_; _Respects₂_)
+open import Relation.Binary.Definitions using (Reflexive; _Respects_; _Respects₂_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder; Poset)
 open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence; IsPartialOrder; IsPreorder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -168,11 +168,11 @@ tabulate⁻ {n = suc n} (x∼y ∷ xs∼ys) (fsuc i) = tabulate⁻ xs∼ys i
 
 module _ (rfl : Reflexive R) where
 
-  ++⁺ʳ : ∀ xs → Pointwise R ys zs → Pointwise R (xs ++ ys) (xs ++ zs)
+  ++⁺ʳ : ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
   ++⁺ʳ xs = ++⁺ (refl rfl)
 
-  ++⁺ˡ : Pointwise R ws xs → ∀ zs → Pointwise R (ws ++ zs) (xs ++ zs)
-  ++⁺ˡ rs zs = ++⁺ rs (refl rfl)
+  ++⁺ˡ : ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ˡ zs rs = ++⁺ rs (refl rfl)
 
 
 ------------------------------------------------------------------------
