@@ -14,7 +14,7 @@ module Algebra.Solver.CommutativeMonoid {m₁ m₂} (M : CommutativeMonoid m₁ 
 
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe
-  using (Maybe; decToMaybe; From-just; from-just)
+  using (Maybe; From-just; from-just)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Product.Base using (_×_; uncurry)
@@ -27,8 +27,9 @@ import Relation.Binary.Reflection as Reflection
 import Relation.Nullary.Decidable as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary.Decidable using (Dec)
+open import Relation.Nullary.Decidable as Dec using (Dec)
 
 open CommutativeMonoid M
 open ≈-Reasoning setoid
@@ -184,7 +185,7 @@ nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
 
 prove′ : (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
-  Maybe.map lemma (decToMaybe (normalise e₁ ≟ normalise e₂))
+  Maybe.map lemma (dec⇒weaklyDec _≟_ (normalise e₁) (normalise e₂))
   where
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =

@@ -247,9 +247,9 @@ fromℕ<-injective (suc _) (suc _) {o = suc _} m<n n<o r
 
 fromℕ<≡fromℕ<″ : ∀ (m<n : m ℕ.< n) (m<″n : m ℕ.<″ n) →
                  fromℕ< m<n ≡ fromℕ<″ m m<″n
-fromℕ<≡fromℕ<″ {m = zero}  m<n (ℕ.<″-offset _) = refl
-fromℕ<≡fromℕ<″ {m = suc m} m<n (ℕ.<″-offset _)
-  = cong suc (fromℕ<≡fromℕ<″ (ℕ.s<s⁻¹ m<n) (ℕ.<″-offset _))
+fromℕ<≡fromℕ<″ {m = zero}  {n = suc _} _ _ = refl
+fromℕ<≡fromℕ<″ {m = suc m} {n = suc _} m<n m<″n
+  = cong suc (fromℕ<≡fromℕ<″ (ℕ.s<s⁻¹ m<n) (ℕ.s<″s⁻¹ m<″n))
 
 toℕ-fromℕ<″ : ∀ (m<n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<n) ≡ m
 toℕ-fromℕ<″ {m} {n} m<n = begin
