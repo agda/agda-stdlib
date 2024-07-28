@@ -16,7 +16,7 @@ import Algebra.Properties.CommutativeSemigroup as CSProperties
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
-open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
+open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -77,8 +77,7 @@ sg (suc i) = 0 ∷ sg i
 infixr 10 _•_
 
 _•_  : (v w : Normal n) → Normal n
-[]      • []      = []
-(l ∷ v) • (m ∷ w) = l + m ∷ v • w
+_•_ = zipWith _+_
 
 ------------------------------------------------------------------------
 -- Correctness of the constructions on normal forms
