@@ -20,13 +20,13 @@ open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite) renaming (_ℕ-ℕ_ to _-_)
 import Data.Fin.Properties as Fin
 open import Data.Product.Base as Prod using (∃; _×_; _,_)
-open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
-open import Data.Empty
+open import Data.Maybe.Base as Maybe using (Maybe)
+open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Function.Base using (_$_; _∘′_; _∘_; id)
-open import Relation.Nullary
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
@@ -238,7 +238,7 @@ preds (c & g) (suc i) =
             (List.map (Prod.map suc id) $ preds g i)
   where
   p : ∀ {e} {E : Set e} {n} (i : Fin n) → E × Fin n → Maybe (Fin′ (suc i) × E)
-  p i (e , j) = Maybe.map (λ{ refl → zero , e }) (decToMaybe (i ≟ j))
+  p i (e , j) = Maybe.map (λ{ refl → zero , e }) (dec⇒weaklyDec _≟_ i j)
 
 private
 

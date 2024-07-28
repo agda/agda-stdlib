@@ -18,7 +18,7 @@ import Data.Nat.Show as ℕ
 open import Data.String.Base as String using (String; _++_; intersperse; braces; parens; _<+>_)
 open import Data.String as String using (parensIfSpace)
 open import Data.Product.Base using (_×_; _,_)
-import Data.Word.Base as Word
+import Data.Word64.Base as Word64
 open import Function.Base using (id; _∘′_; case_of_)
 open import Relation.Nullary.Decidable.Core using (yes; no)
 
@@ -60,7 +60,7 @@ showVisibility instance′ = "instance"
 
 showLiteral : Literal → String
 showLiteral (nat x)    = ℕ.show x
-showLiteral (word64 x) = ℕ.show (Word.toℕ x)
+showLiteral (word64 x) = ℕ.show (Word64.toℕ x)
 showLiteral (float x)  = Float.show x
 showLiteral (char x)   = Char.show x
 showLiteral (string x) = String.show x
