@@ -39,6 +39,10 @@ Tree = Tree′ (MkValue (Vec String) (subst (Vec String)))
 -- key-to-value-type function passed as MkValue's first argument is
 -- a normal way to create such a function.
 
+-- Note that there is no need to define the type of keys separately:
+-- Passing a key-to-value-type function to MkValue and providing
+-- the result of MkValue to Data.Tree.AVL.Tree is enough.
+
 ------------------------------------------------------------------------
 -- Construction of trees
 
