@@ -24,7 +24,7 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Nullary.Decidable       as Dec
 
 open IdempotentCommutativeMonoid M
-open CSProperties commutativeSemigroup using (x∙yz≈y∙xz)
+open CSProperties commutativeSemigroup using (interchange; x∙yz≈xy∙z; x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 private
@@ -103,9 +103,7 @@ sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
 distr a b c = begin
     a ∙ (b ∙ c)        ≈⟨ ∙-congʳ (idem a) ⟨
-    (a ∙ a) ∙ (b ∙ c)  ≈⟨ assoc _ _ _ ⟩
-    a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-congˡ (x∙yz≈y∙xz _ _ _) ⟩
-    a ∙ (b ∙ (a ∙ c))  ≈⟨ assoc _ _ _ ⟨
+    (a ∙ a) ∙ (b ∙ c)  ≈⟨ interchange _ _ _ _ ⟩
     (a ∙ b) ∙ (a ∙ c)  ∎
 
 comp-correct : ∀ v w (ρ : Env n) →
@@ -114,7 +112,7 @@ comp-correct [] [] ρ = sym (identityˡ _)
 comp-correct (true ∷ v) (true ∷ w) (a ∷ ρ) =
   trans (∙-congˡ (comp-correct v w ρ)) (distr _ _ _)
 comp-correct (true ∷ v) (false ∷ w) (a ∷ ρ) =
-  trans (∙-congˡ (comp-correct v w ρ)) (sym (assoc _ _ _))
+  trans (∙-congˡ (comp-correct v w ρ)) (x∙yz≈xy∙z _ _ _)
 comp-correct (false ∷ v) (true ∷ w) (a ∷ ρ) =
   trans (∙-congˡ (comp-correct v w ρ)) (x∙yz≈y∙xz _ _ _)
 comp-correct (false ∷ v) (false ∷ w) (a ∷ ρ) =
