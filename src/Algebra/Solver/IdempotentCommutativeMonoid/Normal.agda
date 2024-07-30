@@ -8,14 +8,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (CommutativeMonoid)
+open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 
-module Algebra.Solver.CommutativeMonoid.Normal
-  {c ℓ} (M : CommutativeMonoid c ℓ) where
+module Algebra.Solver.IdempotentCommutativeMonoid.Normal
+  {c ℓ} (M : IdempotentCommutativeMonoid c ℓ) where
 
 open import Algebra.Bundles.Raw using (RawMonoid)
 import Algebra.Properties.CommutativeSemigroup as CSProperties
-import Algebra.Properties.Monoid.Mult as MultProperties
+open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
@@ -25,9 +25,8 @@ open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Nullary.Decidable as Dec
 
-open CommutativeMonoid M
-open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
-open CSProperties commutativeSemigroup using (interchange)
+open IdempotentCommutativeMonoid M
+open CSProperties commutativeSemigroup using  (interchange; x∙yz≈xy∙z; x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 private
@@ -47,26 +46,26 @@ open import Algebra.Solver.Monoid.Expression monoid public
 
 private
   N : ℕ → Set
-  N n = Vec ℕ n
+  N n = Vec Bool n
 
 -- Constructions on normal forms
 
 -- The empty bag.
 
   empty : N n
-  empty = replicate _ 0
+  empty = replicate _ false
 
 -- A singleton bag.
 
   sg : (i : Fin n) → N n
-  sg zero    = 1 ∷ empty
-  sg (suc i) = 0 ∷ sg i
+  sg zero    = true ∷ empty
+  sg (suc i) = false ∷ sg i
 
 -- The composition of normal forms.
   infixr 10 _•_
 
   _•_  : (v w : N n) → N n
-  _•_ = zipWith _+_
+  _•_ = zipWith _∨_
 
 -- Packaging up the normal forms
 
@@ -77,14 +76,14 @@ NF n = record { Carrier = N n ; _≈_ = _≡_ ; _∙_ = _•_ ; ε = empty }
 
 ⟦_⟧⇓ : N n → Env n → Carrier
 ⟦ []    ⟧⇓ _       = ε
-⟦ n ∷ v ⟧⇓ (a ∷ ρ) = (n × a) ∙ (⟦ v ⟧⇓ ρ)
+⟦ b ∷ v ⟧⇓ (a ∷ ρ) = if b then a ∙ (⟦ v ⟧⇓ ρ) else (⟦ v ⟧⇓ ρ)
 
 -- We can decide if two normal forms are /syntactically/ equal.
 
 infix 5 _≟_
 
 _≟_ : DecidableEquality (N n)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
+nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable Bool._≟_ nf₁ nf₂)
   where open Pointwise using (Pointwise-≡↔≡; decidable)
 
 ------------------------------------------------------------------------
@@ -94,34 +93,36 @@ nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
 
 ε-homo : (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
 ε-homo [] = refl
-ε-homo (a ∷ ρ) = begin
-    ε ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ identityˡ _ ⟩
-    ⟦ empty ⟧⇓ ρ       ≈⟨ ε-homo ρ ⟩
-    ε                  ∎
+ε-homo (a ∷ ρ) = ε-homo ρ
 
 -- The singleton bag stands for a single variable.
 
 sg-correct : (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
-    (1 × x) ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congʳ (×-homo-1 _) ⟩
     x ∙ ⟦ empty ⟧⇓ ρ         ≈⟨ ∙-congˡ (ε-homo ρ) ⟩
     x ∙ ε                    ≈⟨ identityʳ _ ⟩
     x                        ∎
-sg-correct (suc x) (_ ∷ ρ) = begin
-    ε ∙ ⟦ sg x ⟧⇓ ρ   ≈⟨ identityˡ _ ⟩
-    ⟦ sg x ⟧⇓ ρ       ≈⟨ sg-correct x ρ ⟩
-    lookup ρ x        ∎
+sg-correct (suc x) (_ ∷ ρ) = sg-correct x ρ
 
 -- Normal form composition corresponds to the composition of the monoid.
 
+distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
+distr a b c = begin
+    a ∙ (b ∙ c)        ≈⟨ ∙-congʳ (idem a) ⟨
+    (a ∙ a) ∙ (b ∙ c)  ≈⟨ interchange _ _ _ _ ⟩
+    (a ∙ b) ∙ (a ∙ c)  ∎
+
 ∙-homo : ∀ v w (ρ : Env n) →
                ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
-∙-homo [] [] _ =  sym (identityˡ _)
-∙-homo (l ∷ v) (m ∷ w) (a ∷ ρ) = begin
-  ((l + m) × a) ∙ ⟦ v • w ⟧⇓ ρ              ≈⟨ ∙-congʳ  (×-homo-+ a l m) ⟩
-  (l × a) ∙ (m × a) ∙ ⟦ v • w ⟧⇓ ρ          ≈⟨ ∙-congˡ  (∙-homo v w ρ) ⟩
-  (l × a) ∙ (m × a) ∙ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ) ≈⟨ interchange _ _ _ _ ⟩
-  ⟦ l ∷ v ⟧⇓ (a ∷ ρ) ∙ ⟦ m ∷ w ⟧⇓ (a ∷ ρ)   ∎
+∙-homo [] [] ρ = sym (identityˡ _)
+∙-homo (true ∷ v) (true ∷ w) (a ∷ ρ) =
+  trans (∙-congˡ (∙-homo v w ρ)) (distr _ _ _)
+∙-homo (true ∷ v) (false ∷ w) (a ∷ ρ) =
+  trans (∙-congˡ (∙-homo v w ρ)) (x∙yz≈xy∙z _ _ _)
+∙-homo (false ∷ v) (true ∷ w) (a ∷ ρ) =
+  trans (∙-congˡ (∙-homo v w ρ)) (x∙yz≈y∙xz _ _ _)
+∙-homo (false ∷ v) (false ∷ w) (a ∷ ρ) =
+  ∙-homo v w ρ
 
 ------------------------------------------------------------------------
 -- Packaging everything up
@@ -145,3 +146,18 @@ normal = record
 
 open NormalAPI normal public
   using (correct)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.2
+
+flip12 = x∙yz≈y∙xz
+{-# WARNING_ON_USAGE flip12
+"Warning: flip12 was deprecated in v2.2.
+Please use Algebra.Properties.CommutativeSemigroup.x∙yz≈y∙xz instead."
+#-}
