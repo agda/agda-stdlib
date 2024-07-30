@@ -144,4 +144,4 @@ normal = record
   }
 
 open NormalAPI normal public
-  using (correct)
+  using (normalise; correct)
