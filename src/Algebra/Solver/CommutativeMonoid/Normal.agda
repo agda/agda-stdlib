@@ -12,7 +12,6 @@ open import Algebra.Bundles using (CommutativeMonoid)
 
 module Algebra.Solver.CommutativeMonoid.Normal {c ℓ} (M : CommutativeMonoid c ℓ) where
 
-import Algebra.Definitions.RawMonoid as Definitions
 import Algebra.Properties.CommutativeSemigroup as CSProperties
 import Algebra.Properties.Monoid.Mult as MultProperties
 open import Data.Fin.Base using (Fin; zero; suc)
@@ -24,8 +23,7 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Nullary.Decidable as Dec
 
 open CommutativeMonoid M
-open Definitions rawMonoid using (_×_)
-open MultProperties monoid using (×-homo-1; ×-homo-+)
+open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
 open CSProperties commutativeSemigroup using (interchange)
 open ≈-Reasoning setoid
 
