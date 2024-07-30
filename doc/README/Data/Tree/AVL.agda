@@ -28,20 +28,20 @@ open import Relation.Binary.PropositionalEquality
 open Data.Tree.AVL <-strictTotalOrder renaming (Tree to Tree′)
 Tree = Tree′ (MkValue (Vec String) (subst (Vec String)))
 
--- The first argument to MkValue should be a function from a key
--- (a ℕ in this case) to a value type (a String vector type).
--- [Since (Vec String) is missing Vec's second parameter, a ℕ,
--- it's the required kind of function.]
+-- The first argument to `MkValue` should be a function from a key
+-- (a `ℕ` in this case) to a value type (a `String` vector type).
+-- Since `(Vec String)` is missing `Vec`'s second parameter, a `ℕ`,
+-- it's equivalent to `λ n → Vec String n`.
 
--- The second argument to MkValue is a function that can accept
+-- The second argument to `MkValue` is a function that can accept
 -- a proof that two keys are equal, and then substitute a unique key
---  for an equivalent key that is passed in.  Applying subst to the
--- key-to-value-type function passed as MkValue's first argument is
+-- for an equivalent key that is passed in.  Applying `subst` to the
+-- key-to-value-type function passed as `MkValue`'s first argument is
 -- a normal way to create such a function.
 
 -- Note that there is no need to define the type of keys separately:
--- Passing a key-to-value-type function to MkValue and providing
--- the result of MkValue to Data.Tree.AVL.Tree is enough.
+-- passing a key-to-value-type function to `MkValue` and providing
+-- the result of `MkValue` to `Data.Tree.AVL.Tree` is enough.
 
 ------------------------------------------------------------------------
 -- Construction of trees
