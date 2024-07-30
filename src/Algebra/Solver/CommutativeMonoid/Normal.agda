@@ -12,10 +12,11 @@ open import Algebra.Bundles using (CommutativeMonoid)
 
 module Algebra.Solver.CommutativeMonoid.Normal {c ℓ} (M : CommutativeMonoid c ℓ) where
 
+import Algebra.Definitions.RawMonoid as Definitions
 import Algebra.Properties.CommutativeSemigroup as CSProperties
+import Algebra.Properties.Monoid.Mult as MultProperties
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
-open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 open import Relation.Binary.Definitions using (DecidableEquality)
@@ -23,7 +24,9 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Nullary.Decidable as Dec
 
 open CommutativeMonoid M
-open CSProperties commutativeSemigroup using (x∙yz≈y∙xz)
+open Definitions rawMonoid using (_×_)
+open MultProperties monoid using (×-homo-1; ×-homo-+)
+open CSProperties commutativeSemigroup using (interchange)
 open ≈-Reasoning setoid
 
 private
@@ -49,7 +52,7 @@ Normal n = Vec ℕ n
 
 ⟦_⟧⇓ : Normal n → Env n → Carrier
 ⟦ []    ⟧⇓ _       = ε
-⟦ n ∷ v ⟧⇓ (a ∷ ρ) = fold (⟦ v ⟧⇓ ρ) (a ∙_) n
+⟦ n ∷ v ⟧⇓ (a ∷ ρ) = (n × a) ∙ (⟦ v ⟧⇓ ρ)
 
 -- We can decide if two normal forms are /syntactically/ equal.
 
@@ -86,29 +89,34 @@ _•_ = zipWith _+_
 
 empty-correct : (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
 empty-correct [] = refl
-empty-correct (a ∷ ρ) = empty-correct ρ
+empty-correct (a ∷ ρ) = begin
+    ε ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ identityˡ _ ⟩
+    ⟦ empty ⟧⇓ ρ       ≈⟨ empty-correct ρ ⟩
+    ε                  ∎
 
 -- The singleton bag stands for a single variable.
 
 sg-correct : (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
-    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
-    x ∙ ε              ≈⟨ identityʳ _ ⟩
-    x                  ∎
-sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
+    (1 × x) ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congʳ (×-homo-1 _) ⟩
+    x ∙ ⟦ empty ⟧⇓ ρ         ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
+    x ∙ ε                    ≈⟨ identityʳ _ ⟩
+    x                        ∎
+sg-correct (suc x) (m ∷ ρ) = begin
+    ε ∙ ⟦ sg x ⟧⇓ ρ   ≈⟨ identityˡ _ ⟩
+    ⟦ sg x ⟧⇓ ρ       ≈⟨ sg-correct x ρ ⟩
+    lookup ρ x        ∎
 
 -- Normal form composition corresponds to the composition of the monoid.
 
 comp-correct : ∀ v w (ρ : Env n) →
                ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 comp-correct [] [] _ =  sym (identityˡ _)
-comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = lemma l m (comp-correct v w ρ)
-  where
-  lemma : ∀ l m {d b c} (p : d ≈ b ∙ c) →
-          fold d (a ∙_) (l + m) ≈ fold b (a ∙_) l ∙ fold c (a ∙_) m
-  lemma zero    zero    p = p
-  lemma zero    (suc m) p = trans (∙-congˡ (lemma zero m p)) (x∙yz≈y∙xz _ _ _)
-  lemma (suc l) m       p = trans (∙-congˡ (lemma l m p)) (sym (assoc a _ _))
+comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = begin
+  ((l + m) × a) ∙ ⟦ v • w ⟧⇓ ρ              ≈⟨ ∙-congʳ  (×-homo-+ a l m) ⟩
+  (l × a) ∙ (m × a) ∙ ⟦ v • w ⟧⇓ ρ          ≈⟨ ∙-congˡ  (comp-correct v w ρ) ⟩
+  (l × a) ∙ (m × a) ∙ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ) ≈⟨ interchange _ _ _ _ ⟩
+  ⟦ l ∷ v ⟧⇓ (a ∷ ρ) ∙ ⟦ m ∷ w ⟧⇓ (a ∷ ρ)   ∎
 
 ------------------------------------------------------------------------
 -- Normalization
