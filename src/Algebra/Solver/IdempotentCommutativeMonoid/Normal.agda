@@ -14,19 +14,19 @@ module Algebra.Solver.IdempotentCommutativeMonoid.Normal
   {c ℓ} (M : IdempotentCommutativeMonoid c ℓ) where
 
 open import Algebra.Bundles.Raw using (RawMonoid)
-import Algebra.Properties.CommutativeSemigroup as CSProperties
+import Algebra.Properties.CommutativeSemigroup as CommutativeSemigroupProperties
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
-import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
+open import Data.Vec.Relation.Binary.Equality.DecPropositional using (_≡?_)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable as Dec
 
 open IdempotentCommutativeMonoid M
-open CSProperties commutativeSemigroup using  (interchange; x∙yz≈xy∙z; x∙yz≈y∙xz)
+open CommutativeSemigroupProperties commutativeSemigroup
+  using  (interchange; x∙yz≈xy∙z; x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 private
@@ -83,8 +83,7 @@ NF n = record { Carrier = N n ; _≈_ = _≡_ ; _∙_ = _•_ ; ε = empty }
 infix 5 _≟_
 
 _≟_ : DecidableEquality (N n)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable Bool._≟_ nf₁ nf₂)
-  where open Pointwise using (Pointwise-≡↔≡; decidable)
+_≟_ = _≡?_ Bool._≟_
 
 ------------------------------------------------------------------------
 -- Correctness of the constructions on normal forms
@@ -113,7 +112,7 @@ distr a b c = begin
     (a ∙ b) ∙ (a ∙ c)  ∎
 
 ∙-homo : ∀ v w (ρ : Env n) →
-               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
+         ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 ∙-homo [] [] ρ = sym (identityˡ _)
 ∙-homo (true ∷ v) (true ∷ w) (a ∷ ρ) =
   trans (∙-congˡ (∙-homo v w ρ)) (distr _ _ _)
