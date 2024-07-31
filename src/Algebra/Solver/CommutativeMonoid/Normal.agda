@@ -19,7 +19,7 @@ import Algebra.Properties.Monoid.Mult as MultProperties
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
-import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
+open import Data.Vec.Relation.Binary.Equality.DecPropositional using (_≡?_)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -84,8 +84,7 @@ NF n = record { Carrier = N n ; _≈_ = _≡_ ; _∙_ = _•_ ; ε = empty }
 infix 5 _≟_
 
 _≟_ : DecidableEquality (N n)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
-  where open Pointwise using (Pointwise-≡↔≡; decidable)
+_≟_ = _≡?_ ℕ._≟_
 
 ------------------------------------------------------------------------
 -- Correctness of the constructions on normal forms
