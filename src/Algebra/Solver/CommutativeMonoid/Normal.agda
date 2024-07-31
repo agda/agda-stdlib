@@ -23,7 +23,6 @@ open import Data.Vec.Relation.Binary.Equality.DecPropositional using (_≡?_)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable as Dec
 
 open CommutativeMonoid M
 open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
@@ -114,7 +113,7 @@ sg-correct (suc x) (_ ∷ ρ) = begin
 -- Normal form composition corresponds to the composition of the monoid.
 
 ∙-homo : ∀ v w (ρ : Env n) →
-               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
+         ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 ∙-homo [] [] _ =  sym (identityˡ _)
 ∙-homo (l ∷ v) (m ∷ w) (a ∷ ρ) = begin
   ((l + m) × a) ∙ ⟦ v • w ⟧⇓ ρ              ≈⟨ ∙-congʳ  (×-homo-+ a l m) ⟩
