@@ -27,7 +27,7 @@ private
   variable
     n : ℕ
 
-  module M = Monoid M
+open Monoid M using (Carrier; _≈_; ε; _∙_; rawMonoid; isMonoid)
 
 
 ------------------------------------------------------------------------
@@ -46,15 +46,15 @@ data Expr (n : ℕ) : Set where
 -- An environment contains one value for every variable.
 
 Env : ℕ → Set _
-Env n = Vec M.Carrier n
+Env n = Vec Carrier n
 
 -- The semantics of an expression is a function from an environment to
 -- a value.
 
-⟦_⟧ : Expr n → Env n → M.Carrier
+⟦_⟧ : Expr n → Env n → Carrier
 ⟦ ‵var x   ⟧ ρ = lookup ρ x
-⟦ ‵ε       ⟧ ρ = M.ε
-⟦ e₁ ‵∙ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ M.∙ ⟦ e₂ ⟧ ρ
+⟦ ‵ε       ⟧ ρ = ε
+⟦ e₁ ‵∙ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
 
 ------------------------------------------------------------------------
 -- API for normal expressions
@@ -79,20 +79,20 @@ record NormalAPI {a r} : Set (suc (a ⊔ r) ⊔ c ⊔ ℓ) where
     _≟_       : DecidableEquality (N n)
 
 -- The semantics of a normal form.
-    ⟦_⟧⇓     : N n → Env n → M.Carrier
+    ⟦_⟧⇓     : N n → Env n → Carrier
 
 -- Which "agrees with the environment on variables".
-    ⟦var_⟧⇓  : ∀ x ρ → ⟦ var x ⟧⇓ ρ M.≈ lookup {n = n} ρ x
+    ⟦var_⟧⇓  : ∀ x ρ → ⟦ var x ⟧⇓ ρ ≈ lookup {n = n} ρ x
 
 -- And which is a monoid homomorphism between NF and M
-    ⟦⟧⇓-homo : ∀ ρ → IsMonoidHomomorphism (NF n) M.rawMonoid λ e → ⟦ e ⟧⇓ ρ
+    ⟦⟧⇓-homo : ∀ ρ → IsMonoidHomomorphism (NF n) rawMonoid λ e → ⟦ e ⟧⇓ ρ
 
 ------------------------------------------------------------------------
 -- The normaliser and its correctness proof, as manifest fields of `Normal`
 
   module _ {n} where
 
-    open module N = RawMonoid (NF n)
+    private module N = RawMonoid (NF n)
 
 -- Definition
 
@@ -103,19 +103,19 @@ record NormalAPI {a r} : Set (suc (a ⊔ r) ⊔ c ⊔ ℓ) where
 
 -- The normaliser preserves the semantics of the expression.
 
-    correct : ∀ e ρ → ⟦ normalise e ⟧⇓ ρ M.≈ ⟦ e ⟧ ρ
+    correct : ∀ e ρ → ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
     correct (‵var x)   ρ = ⟦var x ⟧⇓ ρ
     correct ‵ε         ρ = ε-homo
       where open IsMonoidHomomorphism (⟦⟧⇓-homo ρ)
     correct (e₁ ‵∙ e₂) ρ = begin
       ⟦ normalise e₁ N.∙ normalise e₂ ⟧⇓ ρ
         ≈⟨ homo (normalise e₁) (normalise e₂) ⟩
-      ⟦ normalise e₁ ⟧⇓ ρ M.∙ ⟦ normalise e₂ ⟧⇓ ρ
+      ⟦ normalise e₁ ⟧⇓ ρ ∙ ⟦ normalise e₂ ⟧⇓ ρ
         ≈⟨ ∙-cong (correct e₁ ρ) (correct e₂ ρ) ⟩
-      ⟦ e₁ ⟧ ρ M.∙ ⟦ e₂ ⟧ ρ
+      ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
         ∎
       where
-      open IsMonoid M.isMonoid using (∙-cong; setoid)
+      open IsMonoid isMonoid using (∙-cong; setoid)
       open ≈-Reasoning setoid
       open IsMonoidHomomorphism (⟦⟧⇓-homo ρ)
 
