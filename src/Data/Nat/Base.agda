@@ -440,5 +440,5 @@ pattern <″-offset k = k , refl
 s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
 s≤″s⁻¹ (k , eq) = k , cong pred eq
 {-# WARNING_ON_USAGE s≤″s⁻¹
-"Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.Definitions.RawMagma._∣ˡ_ instead. "
+"Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using constructor Algebra.Definitions.RawMagma._∣ˡ_._,_ instead. "
 #-}
