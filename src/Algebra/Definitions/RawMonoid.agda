@@ -7,6 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (RawMonoid)
+open import Data.Bool.Base as Bool using (Bool; true; false; if_then_else_)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Vec.Functional as Vector using (Vector)
 
@@ -21,7 +22,7 @@ open RawMonoid M renaming ( _∙_ to _+_ ; ε to 0# )
 open import Algebra.Definitions.RawMagma rawMagma public
 
 ------------------------------------------------------------------------
--- Multiplication by natural number
+-- Multiplication by natural number: action of the (0,+)-rawMonoid
 ------------------------------------------------------------------------
 -- Standard definition
 
@@ -65,3 +66,18 @@ suc n ×′ x = n ×′ x + x
 
 sum : ∀ {n} → Vector Carrier n → Carrier
 sum = Vector.foldr _+_ 0#
+
+------------------------------------------------------------------------
+-- 'Conjunction' with a Boolean: action of the Boolean (true,∧)-rawMonoid
+------------------------------------------------------------------------
+
+infixr 8 _∧_
+
+_∧_ : Bool → Carrier → Carrier
+b ∧ x = if b then x else 0#
+
+-- tail-recursive optimisation
+infixl 8 _∧′_∙_
+
+_∧′_∙_ : Bool → Carrier → Carrier → Carrier
+b ∧′ x ∙ y = if b then x + y else y

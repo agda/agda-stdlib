@@ -7,6 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
+open import Data.Bool.Base as Bool using (Bool; true; false; if_then_else_)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -34,7 +35,7 @@ open import Algebra.Definitions _≈_
 -- Definition
 
 open import Algebra.Definitions.RawMonoid rawMonoid public
-  using (_×_)
+  using (_×_; _∧_; _∧′_∙_)
 
 ------------------------------------------------------------------------
 -- Properties of _×_
@@ -60,7 +61,7 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-homo-+ : ∀ x m n → (m ℕ.+ n) × x ≈ m × x + n × x
 ×-homo-+ x 0       n = sym (+-identityˡ (n × x))
 ×-homo-+ x (suc m) n = begin
-  x + (m ℕ.+ n) × x    ≈⟨ +-cong refl (×-homo-+ x m n) ⟩
+  x + (m ℕ.+ n) × x    ≈⟨ +-congˡ (×-homo-+ x m n) ⟩
   x + (m × x + n × x)  ≈⟨ sym (+-assoc x (m × x) (n × x)) ⟩
   x + m × x + n × x    ∎
 
@@ -78,3 +79,16 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
   n × x + m × n × x     ≈⟨ +-congˡ (×-assocˡ x m n) ⟩
   n × x + (m ℕ.* n) × x ≈⟨ ×-homo-+ x n (m ℕ.* n) ⟨
   (suc m ℕ.* n) × x     ∎
+
+-- _∧_ is homomorphic with respect to _Bool∧_.
+
+∧-homo-true : ∀ x → true ∧ x ≈ x
+∧-homo-true x = refl
+
+∧-assocˡ : ∀ b b′ x → b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
+∧-assocˡ false b x = refl
+∧-assocˡ true  b x = refl
+
+∧∙-≗∧+ : ∀ b x y → b ∧′ x ∙ y ≈ (b ∧ x) + y
+∧∙-≗∧+ true  x y = refl
+∧∙-≗∧+ false x y = sym (+-identityˡ y)

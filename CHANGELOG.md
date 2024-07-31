@@ -26,3 +26,16 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Definitions.RawMonoid` action of a Boolean on a RawMonoid:
+  ```agda
+  _∧_    : Bool → Carrier → Carrier
+  _∧′_∙_ : Bool → Carrier → Carrier → Carrier
+  ```
+
+* Properties of the Boolean action on a RawMonoid:
+  ```agda
+  ∧-homo-true : true ∧ x ≈ x
+  -assocˡ     : b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
+  ∧∙-≗∧+      : b ∧′ x ∙ y ≈ (b ∧ x) + y
+  ```
