@@ -14,23 +14,19 @@ module Algebra.Solver.Monoid.Normal {c ℓ} (M : Monoid c ℓ) where
 
 open import Algebra.Bundles.Raw using (RawMonoid)
 import Algebra.Properties.Monoid.Mult as MultProperties
-import Algebra.Properties.Semigroup as Properties
-open import Data.Fin.Base using (Fin; zero; suc)
-import Data.Fin.Properties as Fin
-open import Data.List.Base as List using (List; []; _∷_; [_]; _++_)
-import Data.List.Properties as List
-import Data.List.Relation.Binary.Equality.DecPropositional as ≋
-open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
-open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
-import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
+import Algebra.Properties.Semigroup as SemigroupProperties
+open import Data.Fin as Fin using (Fin)
+open import Data.List.Base using (List; []; _∷_; [_]; _++_; ++-[]-rawMonoid)
+open import Data.List.Relation.Binary.Equality.DecPropositional using (_≡?_)
+open import Data.Nat.Base using (ℕ)
+open import Data.Vec.Base using (lookup)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable as Dec
 
 open Monoid M
 open MultProperties M using (_×_; ×-homo-1; ×-homo-+)
-open Properties semigroup using (x∙yz≈xy∙z)
+open SemigroupProperties semigroup using (x∙yz≈xy∙z)
 open ≈-Reasoning setoid
 
 private
@@ -49,7 +45,7 @@ open import Algebra.Solver.Monoid.Expression M public
 -- A normal form is a list of variables.
 
 NF : ℕ → RawMonoid _ _
-NF n = List.++-[]-rawMonoid (Fin n)
+NF n = ++-[]-rawMonoid (Fin n)
 
 private
 
@@ -58,14 +54,14 @@ private
 
 -- The semantics of a normal form.
 
-⟦_⟧⇓ : ∀ {n} → N n → Env n → Carrier
+⟦_⟧⇓ : N n → Env n → Carrier
 ⟦ []     ⟧⇓ ρ = ε
 ⟦ x ∷ nf ⟧⇓ ρ = lookup ρ x ∙ ⟦ nf ⟧⇓ ρ
 
 -- The normaliser is homomorphic with respect to _++_/_∙_.
 
-∙-homo : ∀ {n} (nf₁ nf₂ : N n) (ρ : Env n) →
-              ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
+∙-homo : (nf₁ nf₂ : N n) (ρ : Env n) →
+         ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
 ∙-homo [] nf₂ ρ = begin
   ⟦ nf₂ ⟧⇓ ρ      ≈⟨ identityˡ _ ⟨
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
@@ -78,9 +74,8 @@ private
 
 infix 5 _≟_
 
-_≟_ : ∀ {n} → DecidableEquality (N n)
-nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
-  where open ≋ Fin._≟_ using (≋⇒≡; ≡⇒≋; _≋?_)
+_≟_ : DecidableEquality (N n)
+_≟_ = _≡?_ Fin._≟_
 
 ------------------------------------------------------------------------
 -- Packaging everything up
@@ -104,4 +99,4 @@ normal = record
   }
 
 open NormalAPI normal public
-  using (correct)
+  using (normalise; correct)
