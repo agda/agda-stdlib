@@ -26,3 +26,8 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Data.Vec.Relation.Binary.Equality.DecPropositional`:
+  ```agda
+  _≡?_ : DecidableEquality (Vec A n)
+  ```
