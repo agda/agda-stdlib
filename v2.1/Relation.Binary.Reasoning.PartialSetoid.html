@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Reasoning.PartialSetoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Convenient syntax for reasoning with a partial setoid</a>
+<a id="163" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="237" class="Symbol">{-#</a> <a id="241" class="Keyword">OPTIONS</a> <a id="249" class="Pragma">--cubical-compatible</a> <a id="270" class="Pragma">--safe</a> <a id="277" class="Symbol">#-}</a>
+
+<a id="282" class="Keyword">open</a> <a id="287" class="Keyword">import</a> <a id="294" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="318" class="Keyword">using</a> <a id="324" class="Symbol">(</a><a id="325" href="Relation.Binary.Bundles.html#780" class="Record">PartialSetoid</a><a id="338" class="Symbol">)</a>
+<a id="340" class="Keyword">open</a> <a id="345" class="Keyword">import</a> <a id="352" href="Relation.Binary.Reasoning.Syntax.html" class="Module">Relation.Binary.Reasoning.Syntax</a>
+
+<a id="386" class="Keyword">module</a> <a id="393" href="Relation.Binary.Reasoning.PartialSetoid.html" class="Module">Relation.Binary.Reasoning.PartialSetoid</a>
+  <a id="435" class="Symbol">{</a><a id="436" href="Relation.Binary.Reasoning.PartialSetoid.html#436" class="Bound">s₁</a> <a id="439" href="Relation.Binary.Reasoning.PartialSetoid.html#439" class="Bound">s₂</a><a id="441" class="Symbol">}</a> <a id="443" class="Symbol">(</a><a id="444" href="Relation.Binary.Reasoning.PartialSetoid.html#444" class="Bound">S</a> <a id="446" class="Symbol">:</a> <a id="448" href="Relation.Binary.Bundles.html#780" class="Record">PartialSetoid</a> <a id="462" href="Relation.Binary.Reasoning.PartialSetoid.html#436" class="Bound">s₁</a> <a id="465" href="Relation.Binary.Reasoning.PartialSetoid.html#439" class="Bound">s₂</a><a id="467" class="Symbol">)</a> <a id="469" class="Keyword">where</a>
+
+<a id="476" class="Keyword">open</a> <a id="481" href="Relation.Binary.Bundles.html#780" class="Module">PartialSetoid</a> <a id="495" href="Relation.Binary.Reasoning.PartialSetoid.html#444" class="Bound">S</a>
+
+<a id="498" class="Keyword">import</a> <a id="505" href="Relation.Binary.Reasoning.Base.Partial.html" class="Module">Relation.Binary.Reasoning.Base.Partial</a> <a id="544" href="Relation.Binary.Bundles.html#883" class="Field Operator">_≈_</a> <a id="548" href="Relation.Binary.Structures.html#1226" class="Function">trans</a>
+  as <a id="≈-Reasoning"></a><a id="559" href="Relation.Binary.Reasoning.PartialSetoid.html#559" class="Module">≈-Reasoning</a>
+
+<a id="572" class="Comment">------------------------------------------------------------------------</a>
+<a id="645" class="Comment">-- Reasoning combinators</a>
+
+<a id="671" class="Comment">-- Export the combinators for partial relation reasoning, hiding the</a>
+<a id="740" class="Comment">-- single misnamed combinator.</a>
+<a id="771" class="Keyword">open</a> <a id="776" href="Relation.Binary.Reasoning.PartialSetoid.html#559" class="Module">≈-Reasoning</a> <a id="788" class="Keyword">public</a> <a id="795" class="Keyword">hiding</a> <a id="802" class="Symbol">(</a><a id="803" href="Relation.Binary.Reasoning.Syntax.html#5273" class="Function">step-∼</a><a id="809" class="Symbol">)</a>
+
+<a id="812" class="Comment">-- Re-export the equality-based combinators instead</a>
+<a id="864" class="Keyword">open</a> <a id="869" href="Relation.Binary.Reasoning.Syntax.html#7057" class="Module">≈-syntax</a> <a id="878" href="Relation.Binary.Reasoning.Base.Partial.html#1050" class="Datatype Operator">_IsRelatedTo_</a> <a id="892" href="Relation.Binary.Reasoning.Base.Partial.html#1050" class="Datatype Operator">_IsRelatedTo_</a> <a id="906" href="Relation.Binary.Reasoning.Base.Partial.html#1185" class="Function">≈-Reasoning.∼-go</a> <a id="923" href="Relation.Binary.Structures.html#1200" class="Function">sym</a> <a id="927" class="Keyword">public</a>
+</pre></body></html>
