@@ -36,3 +36,8 @@ Additions to existing modules
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
   ```
+
+* In `Data.Vec.Relation.Binary.Equality.DecPropositional`:
+  ```agda
+  _≡?_ : DecidableEquality (Vec A n)
+  ```
