@@ -24,8 +24,19 @@ Deprecated names
 New modules
 -----------
 
+* Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  Algebra.Properties.IdempotentCommutativeMonoid
+  ```
+
 Additions to existing modules
 -----------------------------
+
+* In `Data.List.Relation.Binary.Equality.Setoid`:
+  ```agda
+  ++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
+  ++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
+  ```
 
 * In `Data.List.Relation.Binary.Pointwise`:
   ```agda
@@ -33,8 +44,7 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
-* In `Data.List.Relation.Binary.Equality.Setoid`:
+* New lemma in `Data.Vec.Properties`:
   ```agda
-  ++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
-  ++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
+  map-concat : map f (concat xss) ≡ concat (map (map f) xss)
   ```
