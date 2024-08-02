@@ -24,5 +24,10 @@ Deprecated names
 New modules
 -----------
 
+* Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  Algebra.Properties.IdempotentCommutativeMonoid
+  ```
+
 Additions to existing modules
 -----------------------------
