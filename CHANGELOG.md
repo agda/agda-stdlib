@@ -31,3 +31,8 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* New lemma in `Data.Vec.Properties`:
+  ```agda
+  map-concat : map f (concat xss) ≡ concat (map (map f) xss)
+  ```
