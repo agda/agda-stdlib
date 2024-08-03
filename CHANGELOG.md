@@ -24,10 +24,20 @@ Deprecated names
 New modules
 -----------
 
+* Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  Algebra.Properties.IdempotentCommutativeMonoid
+  ```
+
 Additions to existing modules
 -----------------------------
 
 * In `Data.List.Relation.Unary.All`:
   ```agda
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
+  ```
+
+* New lemma in `Data.Vec.Properties`:
+  ```agda
+  map-concat : map f (concat xss) ≡ concat (map (map f) xss)
   ```
