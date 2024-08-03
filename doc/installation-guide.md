@@ -3,7 +3,7 @@ Installation instructions
 
 Note: the full story on installing Agda libraries can be found at [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
 
-Use version v2.1 of the standard library with Agda 2.6.4.X.
+Use version v2.1 of the standard library with Agda 2.6.4.X. You can find the correct version of the library to use for different Agda versions on the [Agda Wiki](https://wiki.portal.chalmers.se/agda/Libraries/StandardLibrary).
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where
    you would like to install the library.

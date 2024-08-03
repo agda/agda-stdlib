@@ -25,9 +25,19 @@ New modules
 -----------
 
 * `Number` literals derivable from any `RawSuccessorSet`:
-  ```
+  ```agda
   Algebra.Literals
+  ```
+
+* Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
 Additions to existing modules
 -----------------------------
+
+* New lemma in `Data.Vec.Properties`:
+  ```agda
+  map-concat : map f (concat xss) ≡ concat (map (map f) xss)
+  ```
