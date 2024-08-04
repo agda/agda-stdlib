@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - experimental
+      - 'v*-branch'
   pull_request:
     branches:
       - master
