@@ -29,17 +29,17 @@ New modules
   Algebra.Morphism.Bundles
   ```
 
+* Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  Algebra.Properties.IdempotentCommutativeMonoid
+  ```
+
 Additions to existing modules
 -----------------------------
 
 * In `Algebra.Bundles.KleeneAlgebra`:
   ```agda
   rawKleeneAlgebra : RawKleeneAlgebra _ _
-  ```
-
-* In `Algebra.Bundles.Raw`
-  ```agda
-  record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * In `Algebra.Bundles.Raw.RawRingWithoutOne`
@@ -114,14 +114,6 @@ Additions to existing modules
   loopHomomorphism           : LoopHomomorphism M.rawLoop M.rawLoop
   ```
 
-* In `Algebra.Morphism.Structures`:
-  ```agda
-  module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
-    record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-  ```
-
 * In `Algebra.Morphism.Structures.RingMorphisms`
   ```agda
   isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism ⟦_⟧
@@ -135,4 +127,9 @@ Additions to existing modules
 * In `Algebra.Structures.RingWithoutOne`:
   ```agda
   isNearSemiring      : IsNearSemiring _ _
+  ```
+
+* New lemma in `Data.Vec.Properties`:
+  ```agda
+  map-concat : map f (concat xss) ≡ concat (map (map f) xss)
   ```
