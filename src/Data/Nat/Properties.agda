@@ -275,6 +275,9 @@ s≤s-injective refl = refl
 sm≤n⇒m≤pn : suc m ≤ n → m ≤ pred n
 sm≤n⇒m≤pn {n = suc _} = s≤s⁻¹
 
+m≤pn⇒sm≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+m≤pn⇒sm≤n {n = suc _} = {!s≤s!}
+
 ≤-pred : suc m ≤ suc n → m ≤ n
 ≤-pred = sm≤n⇒m≤pn
 
