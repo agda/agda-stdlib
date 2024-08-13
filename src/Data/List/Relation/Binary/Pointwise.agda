@@ -26,7 +26,7 @@ open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core renaming (Rel to Rel₂)
-open import Relation.Binary.Definitions using (_Respects_; _Respects₂_)
+open import Relation.Binary.Definitions using (Reflexive; _Respects_; _Respects₂_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder; Poset)
 open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence; IsPartialOrder; IsPreorder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -166,6 +166,15 @@ tabulate⁻ {n = suc n} (x∼y ∷ xs∼ys) (fsuc i) = tabulate⁻ xs∼ys i
 ++-cancelʳ {xs = xs}     (y ∷ ys) []       eq   =
   contradiction (≡.trans (≡.sym (length-++ (y ∷ ys))) (Pointwise-length eq)) (m≢1+n+m (length xs) ∘ ≡.sym)
 
+module _ (rfl : Reflexive R) where
+
+  ++⁺ʳ : ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ʳ xs = ++⁺ (refl rfl)
+
+  ++⁺ˡ : ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ˡ zs rs = ++⁺ rs (refl rfl)
+
+
 ------------------------------------------------------------------------
 -- concat
 
@@ -261,8 +270,7 @@ lookup⁺ (_   ∷ Rxys) (fsuc i) = lookup⁺ Rxys i
 
 Pointwise-≡⇒≡ : Pointwise {A = A} _≡_ ⇒ _≡_
 Pointwise-≡⇒≡ []               = ≡.refl
-Pointwise-≡⇒≡ (≡.refl ∷ xs∼ys) with Pointwise-≡⇒≡ xs∼ys
-... | ≡.refl = ≡.refl
+Pointwise-≡⇒≡ (≡.refl ∷ xs∼ys) = ≡.cong (_ ∷_) (Pointwise-≡⇒≡ xs∼ys)
 
 ≡⇒Pointwise-≡ :  _≡_ ⇒ Pointwise {A = A} _≡_
 ≡⇒Pointwise-≡ ≡.refl = refl ≡.refl
