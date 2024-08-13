@@ -32,6 +32,11 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* New lemma in `Data.Nat.Properties`:
+  ```agda
+  sm≤n⇒m≤pn : suc m ≤ n → m ≤ pred n
+  ```
+
 * New lemma in `Data.Vec.Properties`:
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)

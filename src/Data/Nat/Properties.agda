@@ -272,8 +272,11 @@ _≥?_ = flip _≤?_
 s≤s-injective : {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
+sm≤n⇒m≤pn : suc m ≤ n → m ≤ pred n
+sm≤n⇒m≤pn {n = suc _} = s≤s⁻¹
+
 ≤-pred : suc m ≤ suc n → m ≤ n
-≤-pred = s≤s⁻¹
+≤-pred = sm≤n⇒m≤pn
 
 m≤n⇒m≤1+n : m ≤ n → m ≤ 1 + n
 m≤n⇒m≤1+n z≤n       = z≤n
