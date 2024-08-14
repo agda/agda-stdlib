@@ -443,6 +443,21 @@ map-⊛ : ∀ (f : A → B → C) (g : A → B) (xs : Vec A n) →
 map-⊛ f g []       = refl
 map-⊛ f g (x ∷ xs) = cong (f x (g x) ∷_) (map-⊛ f g xs)
 
+map-concat : (f : A → B) (xss : Vec (Vec A m) n) →
+             map f (concat xss) ≡ concat (map (map f) xss)
+map-concat f [] = refl
+map-concat f (xs ∷ xss) = begin
+  map f (concat (xs ∷ xss))
+    ≡⟨⟩
+  map f (xs ++ concat xss)
+    ≡⟨ map-++ f xs (concat xss) ⟩
+  map f xs ++ map f (concat xss)
+    ≡⟨ cong (map f xs ++_) (map-concat f xss) ⟩
+  map f xs ++ concat (map (map f) xss)
+    ≡⟨⟩
+  concat (map (map f) (xs ∷ xss))
+    ∎ where open ≡-Reasoning
+
 toList-map : ∀ (f : A → B) (xs : Vec A n) →
              toList (map f xs) ≡ List.map f (toList xs)
 toList-map f [] = refl

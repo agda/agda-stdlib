@@ -58,7 +58,7 @@ private
 ∘-isMagma : IsMagma _≈_ _∘_
 ∘-isMagma = record
   { isEquivalence = isEquivalence
-  ; ∙-cong        = λ {_} {_} {_} {v} x≈y u≈v → S.trans u≈v (cong v x≈y)
+  ; ∙-cong        = λ {_} {_} {_} {k} f≈g h≈k x → S.trans (h≈k _) (cong k (f≈g x))
   }
 
 ∘-magma : Magma (c ⊔ e) (c ⊔ e)
@@ -67,7 +67,7 @@ private
 ∘-isSemigroup : IsSemigroup _≈_ _∘_
 ∘-isSemigroup = record
   { isMagma = ∘-isMagma
-  ; assoc   = λ _ _ _ → S.refl
+  ; assoc   = λ _ _ _ _ → S.refl
   }
 
 ∘-semigroup : Semigroup (c ⊔ e) (c ⊔ e)
@@ -76,7 +76,7 @@ private
 ∘-id-isMonoid : IsMonoid _≈_ _∘_ id
 ∘-id-isMonoid = record
   { isSemigroup = ∘-isSemigroup
-  ; identity    = (λ _ → S.refl) , (λ _ → S.refl)
+  ; identity    = (λ _ _ → S.refl) , (λ _ _ → S.refl)
   }
 
 ∘-id-monoid : Monoid (c ⊔ e) (c ⊔ e)
@@ -112,6 +112,6 @@ module _ (f : Endo) where
   ^-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
   ^-isMonoidHomomorphism = record
     { isMagmaHomomorphism = ^-isMagmaHomomorphism
-    ; ε-homo = S.refl
+    ; ε-homo = λ _ → S.refl
     }
 
