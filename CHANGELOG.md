@@ -71,3 +71,16 @@ Additions to existing modules
   ```agda
   _≡?_ : DecidableEquality (Vec A n)
   ```
+
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  does-⇔  : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
+  does-≡  : (a? b? : Dec A) → does a? ≡ does b?
+  ```
+
+* In `Relation.Nullary.Properties`:
+  ```agda
+  map    : P ≐ Q → Decidable P → Decidable Q
+  does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
+  does-≡ : (P? P?′ : Decidable P) → does ∘ P? ≗ does ∘ P?′
+  ```
