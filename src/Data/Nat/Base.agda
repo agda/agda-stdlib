@@ -18,7 +18,7 @@ open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl)
+  using (_≡_; _≢_; refl; cong)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 
@@ -375,7 +375,7 @@ m >″ n = n <″ m
 -- Smart destructor of _<″_
 
 s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
-s<″s⁻¹ (k , refl) = k , refl
+s<″s⁻¹ (k , eq) = k , cong pred eq
 
 -- _≤‴_: this definition is useful for induction with an upper bound.
 
@@ -435,10 +435,10 @@ pattern <″-offset k = k , refl
 "Warning: <″-offset was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.Definitions.RawMagma._∣ˡ_ instead. "
 #-}
 
--- Smart destructors of _<″_
+-- Smart destructor of _≤″_
 
 s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
-s≤″s⁻¹ (k , refl) = k , refl
+s≤″s⁻¹ (k , eq) = k , cong pred eq
 {-# WARNING_ON_USAGE s≤″s⁻¹
-"Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.Definitions.RawMagma._∣ˡ_ instead. "
+"Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using constructor Algebra.Definitions.RawMagma._∣ˡ_._,_ instead. "
 #-}
