@@ -32,6 +32,11 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
+  ```
+
 * In `Data.List.Relation.Binary.Equality.Setoid`:
   ```agda
   ++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
