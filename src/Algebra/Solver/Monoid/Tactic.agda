@@ -11,7 +11,6 @@ import Algebra.Solver.Monoid.Expression as Expression
 
 module Algebra.Solver.Monoid.Tactic {a r c ℓ}
   (M : Monoid c ℓ)
-  (open Monoid M using (setoid; _≈_))
   (open Expression M)
   (N : NormalAPI {a} {r})
   where
@@ -22,6 +21,7 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Reflection as Reflection
 
+open Monoid M using (setoid; _≈_)
 open NormalAPI N
 
 

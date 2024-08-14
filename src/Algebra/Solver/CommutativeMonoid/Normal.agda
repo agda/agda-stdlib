@@ -14,8 +14,8 @@ module Algebra.Solver.CommutativeMonoid.Normal
   {c ℓ} (M : CommutativeMonoid c ℓ) where
 
 open import Algebra.Bundles.Raw using (RawMonoid)
-import Algebra.Properties.CommutativeSemigroup as CSProperties
-import Algebra.Properties.Monoid.Mult as MultProperties
+import Algebra.Properties.CommutativeSemigroup as CommutativeSemigroupProperties
+import Algebra.Properties.Monoid.Mult as MonoidMultProperties
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
@@ -25,8 +25,8 @@ open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open CommutativeMonoid M
-open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
-open CSProperties commutativeSemigroup using (interchange)
+open MonoidMultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
+open CommutativeSemigroupProperties commutativeSemigroup using (interchange)
 open ≈-Reasoning setoid
 
 private
@@ -61,7 +61,7 @@ private
   sg zero    = 1 ∷ empty
   sg (suc i) = 0 ∷ sg i
 
--- The composition of normal forms.
+-- The composition of normal forms: bag union.
   infixr 10 _•_
 
   _•_  : (v w : N n) → N n
