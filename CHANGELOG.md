@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Removed unnecessary parameter `#-trans : Transitive _#_` from
+  `Relation.Binary.Reasoning.Base.Apartness`.
+
 Non-backwards compatible changes
 --------------------------------
 
