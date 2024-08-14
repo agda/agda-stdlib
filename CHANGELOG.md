@@ -21,6 +21,19 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Data.Vec.Properties`:
+  ```agda
+  ++-assoc _      ↦  ++-assoc-eqFree
+  ++-identityʳ _  ↦  ++-identityʳ-eqFree
+  unfold-∷ʳ _     ↦  unfold-∷ʳ-eqFree
+  ++-∷ʳ _         ↦  ++-∷ʳ-eqFree
+  ∷ʳ-++ _         ↦  ∷ʳ-++-eqFree
+  reverse-++ _    ↦  reverse-++-eqFree
+  ∷-ʳ++ _         ↦  ∷-ʳ++-eqFree
+  ++-ʳ++ _        ↦  ++-ʳ++-eqFree
+  ʳ++-ʳ++ _       ↦  ʳ++-ʳ++-eqFree
+  ```
+
 New modules
 -----------
 
@@ -127,6 +140,11 @@ Additions to existing modules
 * In `Algebra.Structures.RingWithoutOne`:
   ```agda
   isNearSemiring      : IsNearSemiring _ _
+  ```
+
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
   ```
 
 * In `Data.List.Relation.Binary.Equality.Setoid`:
