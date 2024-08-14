@@ -46,8 +46,8 @@ Additions to existing modules
 
 * New lemmas in `Data.Nat.Properties`: adjunction between `suc` and `pred`
   ```agda
-  sm≤n⇒m≤pn : suc m ≤ n → m ≤ pred n
-  m≤pn⇒sm≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+  suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
+  m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
   ```
 
 * New lemma in `Data.Vec.Properties`:
