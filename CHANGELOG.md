@@ -37,7 +37,24 @@ Additions to existing modules
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
   ```
 
+* In `Data.List.Relation.Binary.Equality.Setoid`:
+  ```agda
+  ++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
+  ++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
+  ```
+
+* In `Data.List.Relation.Binary.Pointwise`:
+  ```agda
+  ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ```
+
 * New lemma in `Data.Vec.Properties`:
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
+  ```
+
+* In `Data.Vec.Relation.Binary.Equality.DecPropositional`:
+  ```agda
+  _≡?_ : DecidableEquality (Vec A n)
   ```
