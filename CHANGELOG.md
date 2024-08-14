@@ -32,6 +32,18 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.List.Relation.Binary.Equality.Setoid`:
+  ```agda
+  ++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
+  ++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
+  ```
+
+* In `Data.List.Relation.Binary.Pointwise`:
+  ```agda
+  ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ```
+
 * New lemmas in `Data.Nat.Properties`: adjunction between `suc` and `pred`
   ```agda
   sm≤n⇒m≤pn : suc m ≤ n → m ≤ pred n
