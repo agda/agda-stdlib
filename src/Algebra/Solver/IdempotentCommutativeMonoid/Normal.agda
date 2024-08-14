@@ -15,6 +15,7 @@ module Algebra.Solver.IdempotentCommutativeMonoid.Normal
 
 open import Algebra.Bundles.Raw using (RawMonoid)
 import Algebra.Properties.CommutativeSemigroup as CommutativeSemigroupProperties
+import Algebra.Properties.IdempotentCommutativeMonoid as IdempotentCommutativeMonoidProperties
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
@@ -25,8 +26,9 @@ open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open IdempotentCommutativeMonoid M
+open IdempotentCommutativeMonoidProperties M using (∙-distrˡ-∙)
 open CommutativeSemigroupProperties commutativeSemigroup
-  using  (interchange; x∙yz≈xy∙z; x∙yz≈y∙xz)
+  using  (x∙yz≈xy∙z; x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 private
@@ -42,7 +44,7 @@ open import Algebra.Solver.Monoid.Expression monoid public
 ------------------------------------------------------------------------
 -- Normal forms
 
--- A normal form is a vector of multiplicities (a bag).
+-- A normal form is a vector of Booleans (a set of variable occurrences).
 
 private
   N : ℕ → Set
@@ -50,18 +52,18 @@ private
 
 -- Constructions on normal forms
 
--- The empty bag.
+-- The empty set.
 
   empty : N n
   empty = replicate _ false
 
--- A singleton bag.
+-- A singleton set.
 
   sg : (i : Fin n) → N n
   sg zero    = true ∷ empty
   sg (suc i) = false ∷ sg i
 
--- The composition of normal forms.
+-- The composition of normal forms: set union.
   infixr 10 _•_
 
   _•_  : (v w : N n) → N n
@@ -98,24 +100,18 @@ _≟_ = _≡?_ Bool._≟_
 
 sg-correct : (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
-    x ∙ ⟦ empty ⟧⇓ ρ         ≈⟨ ∙-congˡ (ε-homo ρ) ⟩
-    x ∙ ε                    ≈⟨ identityʳ _ ⟩
-    x                        ∎
+    x ∙ ⟦ empty ⟧⇓ ρ  ≈⟨ ∙-congˡ (ε-homo ρ) ⟩
+    x ∙ ε             ≈⟨ identityʳ _ ⟩
+    x                 ∎
 sg-correct (suc x) (_ ∷ ρ) = sg-correct x ρ
 
 -- Normal form composition corresponds to the composition of the monoid.
-
-distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
-distr a b c = begin
-    a ∙ (b ∙ c)        ≈⟨ ∙-congʳ (idem a) ⟨
-    (a ∙ a) ∙ (b ∙ c)  ≈⟨ interchange _ _ _ _ ⟩
-    (a ∙ b) ∙ (a ∙ c)  ∎
 
 ∙-homo : ∀ v w (ρ : Env n) →
          ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 ∙-homo [] [] ρ = sym (identityˡ _)
 ∙-homo (true ∷ v) (true ∷ w) (a ∷ ρ) =
-  trans (∙-congˡ (∙-homo v w ρ)) (distr _ _ _)
+  trans (∙-congˡ (∙-homo v w ρ)) (∙-distrˡ-∙ _ _ _)
 ∙-homo (true ∷ v) (false ∷ w) (a ∷ ρ) =
   trans (∙-congˡ (∙-homo v w ρ)) (x∙yz≈xy∙z _ _ _)
 ∙-homo (false ∷ v) (true ∷ w) (a ∷ ρ) =
@@ -159,4 +155,10 @@ flip12 = x∙yz≈y∙xz
 {-# WARNING_ON_USAGE flip12
 "Warning: flip12 was deprecated in v2.2.
 Please use Algebra.Properties.CommutativeSemigroup.x∙yz≈y∙xz instead."
+#-}
+
+distr = ∙-distrˡ-∙
+{-# WARNING_ON_USAGE distr
+"Warning: distr was deprecated in v2.2.
+Please use Algebra.Properties.IdempotentCommutativeMonoid.∙-distrˡ-∙ instead."
 #-}

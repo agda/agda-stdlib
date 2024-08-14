@@ -10,7 +10,7 @@
 
 open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 
-module Algebra.Solver.IdempotentCommutativeMonoidNEW
+module Algebra.Solver.IdempotentCommutativeMonoid
   {c ℓ} (M : IdempotentCommutativeMonoid c ℓ) where
 
 import Algebra.Solver.IdempotentCommutativeMonoid.Normal as Normal
