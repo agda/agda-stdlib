@@ -226,6 +226,13 @@ true  <? _     = no  (λ())
   }
 
 ------------------------------------------------------------------------
+-- Properties of strictify
+
+strictify≗id : ∀ b → strictify b ≡ b
+strictify≗id true  = refl
+strictify≗id false = refl
+
+------------------------------------------------------------------------
 -- Properties of _∨_
 
 ∨-assoc : Associative _∨_

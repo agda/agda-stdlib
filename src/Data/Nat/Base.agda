@@ -330,6 +330,13 @@ zero  ! = 1
 suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
+-- Other operations
+
+strictify : ℕ → ℕ
+strictify zero    = zero
+strictify (suc n) = suc (strictify n)
+
+------------------------------------------------------------------------
 -- Extensionally equivalent alternative definitions of _≤_/_<_ etc.
 
 -- _≤′_: this definition is more suitable for well-founded induction

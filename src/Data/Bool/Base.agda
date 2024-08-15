@@ -73,3 +73,7 @@ infix 0 if_then_else_
 if_then_else_ : Bool → A → A → A
 if true  then t else f = t
 if false then t else f = f
+
+strictify : Bool → Bool
+strictify b = if b then true else false
+

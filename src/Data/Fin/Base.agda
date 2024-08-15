@@ -270,6 +270,13 @@ pinch {suc n} zero    (suc j) = j
 pinch {suc n} (suc i) (suc j) = suc (pinch i j)
 
 ------------------------------------------------------------------------
+-- Other operations
+
+strictify : Fin n → Fin n
+strictify zero    = zero
+strictify (suc i) = suc (strictify i)
+
+------------------------------------------------------------------------
 -- Order relations
 
 infix 4 _≤_ _≥_ _<_ _>_

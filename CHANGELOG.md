@@ -48,6 +48,26 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* New operation in `Data.Bool.Base`:
+  ```agda
+  strictify : Bool → Bool
+  ```
+
+* New lemma in `Data.Bool.Properties`:
+  ```agda
+  strictify≗id : strictify b ≡ b
+  ```
+
+* New operation in `Data.Fin.Base`:
+  ```agda
+  strictify : Fin n → Fin n
+  ```
+
+* New lemma in `Data.Fin.Properties`:
+  ```agda
+  strictify≗id : strictify i ≡ i
+  ```
+
 * In `Data.List.Relation.Unary.All`:
   ```agda
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
@@ -65,10 +85,17 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
+* New operation in `Data.Nat.Base`:
+  ```agda
+  strictify : ℕ → ℕ
+  ```
+
 * New lemmas in `Data.Nat.Properties`: adjunction between `suc` and `pred`
   ```agda
   suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+
+  strictify≗id : strictify n ≡ n
   ```
 
 * New lemma in `Data.Vec.Properties`:

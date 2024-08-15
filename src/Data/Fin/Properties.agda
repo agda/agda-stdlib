@@ -280,6 +280,14 @@ cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
   cong suc (cast-trans (ℕ.suc-injective eq₁) (ℕ.suc-injective eq₂) k)
 
 ------------------------------------------------------------------------
+-- Properties of strictify
+------------------------------------------------------------------------
+
+strictify≗id : (i : Fin n) → strictify i ≡ i
+strictify≗id zero    = refl
+strictify≗id (suc i) = cong suc (strictify≗id i)
+
+------------------------------------------------------------------------
 -- Properties of _≤_
 ------------------------------------------------------------------------
 -- Relational properties
