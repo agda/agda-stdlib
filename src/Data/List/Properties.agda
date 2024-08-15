@@ -842,6 +842,19 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 
+nonZero-product : ∀ {ns} → All NonZero ns → NonZero (product ns)
+nonZero-product [] = _
+nonZero-product (nzn ∷ nzns) = m*n≢0 _ _ ⦃ nzn ⦄ ⦃ nonZero-product nzns ⦄
+
+∈⇒≤product : ∀ {n ns} → n ∈ ns → All NonZero ns → n ≤ product ns
+∈⇒≤product {n} {n ∷ ms} (here  refl) (_ ∷ nzms) =
+  ≤-trans (≤-reflexive (sym (*-identityʳ n)))
+          (*-monoʳ-≤ n (>-nonZero⁻¹ (product ms)))
+  where instance _ = nonZero-product nzms
+∈⇒≤product {n} {m ∷ ms} (there n∈ns) (nz ∷ nzns) =
+  ≤-trans (≤-reflexive (sym (+-identityʳ n)))
+          (*-mono-≤ (>-nonZero⁻¹ m ⦃ nz ⦄) (∈⇒≤product n∈ns nzns))
+
 ------------------------------------------------------------------------
 -- applyUpTo
 
