@@ -49,8 +49,10 @@ NF n = ++-[]-rawMonoid (Fin n)
 
 private
 
+  module NF {n : ℕ} = RawMonoid (NF n)
+  
   N : ℕ → Set _
-  N n = RawMonoid.Carrier (NF n)
+  N n = NF.Carrier {n}
 
 -- The semantics of a normal form.
 
@@ -58,15 +60,15 @@ private
 ⟦ []     ⟧⇓ ρ = ε
 ⟦ x ∷ nf ⟧⇓ ρ = lookup ρ x ∙ ⟦ nf ⟧⇓ ρ
 
--- The normaliser is homomorphic with respect to _++_/_∙_.
+-- The normaliser is homomorphic with respect to _++_ =def NF._∙_.
 
 ∙-homo : (nf₁ nf₂ : N n) (ρ : Env n) →
-         ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
+         ⟦ nf₁ NF.∙ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
 ∙-homo [] nf₂ ρ = begin
   ⟦ nf₂ ⟧⇓ ρ      ≈⟨ identityˡ _ ⟨
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
 ∙-homo (x ∷ nf₁) nf₂ ρ = begin
-  lookup ρ x ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-congˡ (∙-homo nf₁ nf₂ ρ) ⟩
+  lookup ρ x ∙ ⟦ nf₁ NF.∙ nf₂ ⟧⇓ ρ        ≈⟨ ∙-congˡ (∙-homo nf₁ nf₂ ρ) ⟩
   lookup ρ x ∙ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)  ≈⟨ x∙yz≈xy∙z _ _ _ ⟩
   lookup ρ x ∙ ⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ    ∎
 
