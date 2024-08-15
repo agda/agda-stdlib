@@ -50,7 +50,7 @@ NF n = ++-[]-rawMonoid (Fin n)
 private
 
   module NF {n : ℕ} = RawMonoid (NF n)
-  
+
   N : ℕ → Set _
   N n = NF.Carrier {n}
 
