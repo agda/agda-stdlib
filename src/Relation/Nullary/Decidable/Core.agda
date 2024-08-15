@@ -17,7 +17,7 @@ open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 
 open import Agda.Builtin.Equality using (_≡_)
 open import Level using (Level)
-open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_; strictify)
+open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
@@ -134,7 +134,8 @@ fromSum (inj₂ ¬p) = no ¬p
 -- for proof automation.
 
 isYes : Dec A → Bool
-isYes = strictify ∘ does
+isYes (true  because _) = true
+isYes (false because _) = false
 
 isNo : Dec A → Bool
 isNo = not ∘ isYes
