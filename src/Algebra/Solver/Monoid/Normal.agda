@@ -63,7 +63,7 @@ private
 -- The normaliser is homomorphic with respect to _++_ =def NF._∙_.
 
 ∙-homo : (nf₁ nf₂ : N n) (ρ : Env n) →
-         ⟦ nf₁ NF.∙ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
+         ⟦ nf₁ NF.∙ nf₂ ⟧⇓ ρ ≈ ⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ
 ∙-homo [] nf₂ ρ = begin
   ⟦ nf₂ ⟧⇓ ρ      ≈⟨ identityˡ _ ⟨
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
