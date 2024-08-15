@@ -65,6 +65,12 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
+* New lemmas in `Data.Nat.Properties`: adjunction between `suc` and `pred`
+  ```agda
+  suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
+  m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+  ```
+
 * New lemma in `Data.Vec.Properties`:
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
