@@ -80,15 +80,15 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
   n × x + (m ℕ.* n) × x ≈⟨ ×-homo-+ x n (m ℕ.* n) ⟨
   (suc m ℕ.* n) × x     ∎
 
--- _∧_ is homomorphic with respect to _Bool∧_.
+-- _∧_ is homomorphic with respect to Bool._∧_.
 
 ∧-homo-true : ∀ x → true ∧ x ≈ x
-∧-homo-true x = refl
+∧-homo-true _ = refl
 
 ∧-assocˡ : ∀ b b′ x → b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
-∧-assocˡ false b x = refl
-∧-assocˡ true  b x = refl
+∧-assocˡ false _ _ = refl
+∧-assocˡ true  _ _ = refl
 
-∧∙-≗∧+ : ∀ b x y → b ∧′ x ∙ y ≈ (b ∧ x) + y
-∧∙-≗∧+ true  x y = refl
-∧∙-≗∧+ false x y = sym (+-identityˡ y)
+b∧x∙y≈b∧x+y : ∀ b x y → b ∧′ x ∙ y ≈ (b ∧ x) + y
+b∧x∙y≈b∧x+y true  _ _ = refl
+b∧x∙y≈b∧x+y false _ y = sym (+-identityˡ y)

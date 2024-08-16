@@ -36,6 +36,6 @@ Additions to existing modules
 * Properties of the Boolean action on a RawMonoid:
   ```agda
   ∧-homo-true : true ∧ x ≈ x
-  -assocˡ     : b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
-  ∧∙-≗∧+      : b ∧′ x ∙ y ≈ (b ∧ x) + y
+  ∧-assocˡ    : b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
+  b∧x∙y≈b∧x+y : b ∧′ x ∙ y ≈ (b ∧ x) + y
   ```
