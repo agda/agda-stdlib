@@ -48,6 +48,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.List.Properties`:
+  ```agda
+  nonZero-product : All NonZero ns → NonZero (product ns)
+  ∈⇒≤product : n ∈ ns → All NonZero ns → n ≤ product ns
+  ```
+
 * In `Data.List.Relation.Unary.All`:
   ```agda
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
