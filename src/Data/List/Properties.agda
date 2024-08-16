@@ -844,16 +844,24 @@ sum-++ (x ∷ xs) ys = begin
 
 nonZero-product : ∀ {ns} → All NonZero ns → NonZero (product ns)
 nonZero-product [] = _
-nonZero-product (nzn ∷ nzns) = m*n≢0 _ _ ⦃ nzn ⦄ ⦃ nonZero-product nzns ⦄
+nonZero-product {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n (product ns)
+  where instance
+    _ = nzn
+    _ = nonZero-product nzns
 
-∈⇒≤product : ∀ {n ns} → n ∈ ns → All NonZero ns → n ≤ product ns
-∈⇒≤product {n} {n ∷ ms} (here  refl) (_ ∷ nzms) =
-  ≤-trans (≤-reflexive (sym (*-identityʳ n)))
-          (*-monoʳ-≤ n (>-nonZero⁻¹ (product ms)))
-  where instance _ = nonZero-product nzms
-∈⇒≤product {n} {m ∷ ms} (there n∈ns) (nz ∷ nzns) =
-  ≤-trans (≤-reflexive (sym (+-identityʳ n)))
-          (*-mono-≤ (>-nonZero⁻¹ m ⦃ nz ⦄) (∈⇒≤product n∈ns nzns))
+module _ where
+  open ≤-Reasoning using (step-≤)
+    renaming ( begin_ to begin-ordered_ ; _∎ to _∎-ordered)
+
+  ∈⇒≤product : ∀ {n ns} → n ∈ ns → All NonZero ns → n ≤ product ns
+  ∈⇒≤product {n} {m ∷ ms} (here n≡m) (_ ∷ nzms) rewrite n≡m =
+    m≤m*n m (product ms)
+    where instance _ = nonZero-product nzms
+  ∈⇒≤product {n} {m ∷ ms} (there n∈ns) (nz ∷ nzns) = begin-ordered
+    n               ≤⟨ ∈⇒≤product n∈ns nzns ⟩
+    product ms      ≤⟨ m≤n*m (product ms) m ⟩
+    m * product ms  ∎-ordered
+    where instance _ = nz
 
 ------------------------------------------------------------------------
 -- applyUpTo
