@@ -842,25 +842,20 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 
-nonZero-product : ∀ {ns} → All NonZero ns → NonZero (product ns)
-nonZero-product [] = _
-nonZero-product {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n (product ns)
+product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
+product≢0 [] = _
+product≢0 {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n (product ns)
   where instance
     _ = nzn
-    _ = nonZero-product nzns
+    _ = product≢0 nzns
 
-∈⇒≤product : ∀ {n ns} → n ∈ ns → All NonZero ns → n ≤ product ns
-∈⇒≤product {n} {m ∷ ms} (here n≡m) (_ ∷ nzms) rewrite n≡m =
+∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
+∈⇒≤product {n} {m ∷ ms} (_ ∷ nzms) (here refl) =
   m≤m*n m (product ms)
-  where instance _ = nonZero-product nzms
-∈⇒≤product {n} {m ∷ ms} (there n∈ns) (nz ∷ nzns) = begin-ordered
-  n               ≤⟨ ∈⇒≤product n∈ns nzns ⟩
-  product ms      ≤⟨ m≤n*m (product ms) m ⟩
-  m * product ms  ∎-ordered
-  where
-  instance _ = nz
-  open ≤-Reasoning using (step-≤)
-    renaming ( begin_ to begin-ordered_ ; _∎ to _∎-ordered)
+  where instance _ = product≢0 nzms
+∈⇒≤product {n} {m ∷ ms} (nz ∷ nzns) (there n∈ns) =
+  m≤n⇒m≤o*n m (∈⇒≤product nzns n∈ns)
+  where instance _ = nz
 
 
 ------------------------------------------------------------------------

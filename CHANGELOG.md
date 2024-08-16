@@ -50,8 +50,8 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
-  nonZero-product : All NonZero ns → NonZero (product ns)
-  ∈⇒≤product : n ∈ ns → All NonZero ns → n ≤ product ns
+  product≢0 : All NonZero ns → NonZero (product ns)
+  ∈⇒≤product : All NonZero ns → n ∈ ns → n ≤ product ns
   ```
 
 * In `Data.List.Relation.Unary.All`:
@@ -73,6 +73,8 @@ Additions to existing modules
 
 * New lemmas in `Data.Nat.Properties`: adjunction between `suc` and `pred`
   ```agda
+  m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
+  m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
   suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
   ```
