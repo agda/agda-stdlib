@@ -13,7 +13,6 @@ open import Algebra.Bundles using (Monoid)
 module Algebra.Solver.Monoid.Normal {c ℓ} (M : Monoid c ℓ) where
 
 open import Algebra.Bundles.Raw using (RawMonoid)
-import Algebra.Properties.Monoid.Mult as MultProperties
 import Algebra.Properties.Semigroup as SemigroupProperties
 open import Data.Fin as Fin using (Fin)
 open import Data.List.Base using (List; []; _∷_; [_]; _++_; ++-[]-rawMonoid)
@@ -21,11 +20,10 @@ open import Data.List.Relation.Binary.Equality.DecPropositional using (_≡?_)
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Base using (lookup)
 open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Core as ≡
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open Monoid M
-open MultProperties M using (_×_; ×-homo-1; ×-homo-+)
 open SemigroupProperties semigroup using (x∙yz≈xy∙z)
 open ≈-Reasoning setoid
 
@@ -49,7 +47,7 @@ NF n = ++-[]-rawMonoid (Fin n)
 
 private
 
-  module NF {n : ℕ} = RawMonoid (NF n)
+  module NF {n} = RawMonoid (NF n)
 
   N : ℕ → Set _
   N n = NF.Carrier {n}
