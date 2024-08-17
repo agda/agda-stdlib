@@ -850,11 +850,11 @@ product≢0 {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n (product ns)
     _ = product≢0 nzns
 
 ∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
-∈⇒≤product {n} {m ∷ ms} (_ ∷ nzms) (here refl) =
-  m≤m*n m (product ms)
-  where instance _ = product≢0 nzms
-∈⇒≤product {n} {m ∷ ms} (nz ∷ nzns) (there n∈ns) =
-  m≤n⇒m≤o*n m (∈⇒≤product nzns n∈ns)
+∈⇒≤product {ns = n ∷ ns} (_ ∷ nzns) (here refl) =
+  m≤m*n n (product ns)
+  where instance _ = product≢0 nzns
+∈⇒≤product {ns = n ∷ _} (nz ∷ nzns) (there n∈ns) =
+  m≤n⇒m≤o*n n (∈⇒≤product nzns n∈ns)
   where instance _ = nz
 
 
