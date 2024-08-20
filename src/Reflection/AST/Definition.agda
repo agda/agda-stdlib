@@ -68,8 +68,6 @@ constructor′-injective = < constructor′-injective₁ , constructor′-inject
 
 infix 4 _≟_
 
-infix 4 _≟_
-
 _≟_ : DecidableEquality Definition
 function cs       ≟ function cs′        =
   map′ (cong function) function-injective (cs Term.≟-Clauses cs′)
