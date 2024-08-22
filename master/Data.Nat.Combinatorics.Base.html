@@ -11,7 +11,7 @@
 
 <a id="295" class="Keyword">open</a> <a id="300" class="Keyword">import</a> <a id="307" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="322" class="Keyword">using</a> <a id="328" class="Symbol">(</a><a id="329" href="Data.Bool.Base.html#1505" class="Function Operator">if_then_else_</a><a id="342" class="Symbol">)</a>
 <a id="344" class="Keyword">open</a> <a id="349" class="Keyword">import</a> <a id="356" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
-<a id="370" class="Keyword">open</a> <a id="375" class="Keyword">import</a> <a id="382" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="402" class="Keyword">using</a> <a id="408" class="Symbol">(</a><a id="409" href="Data.Nat.Properties.html#63787" class="Function Operator">_!≢0</a><a id="413" class="Symbol">)</a>
+<a id="370" class="Keyword">open</a> <a id="375" class="Keyword">import</a> <a id="382" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="402" class="Keyword">using</a> <a id="408" class="Symbol">(</a><a id="409" href="Data.Nat.Properties.html#63873" class="Function Operator">_!≢0</a><a id="413" class="Symbol">)</a>
 
 <a id="416" class="Comment">-- NOTE: These operators are not implemented as efficiently as they</a>
 <a id="484" class="Comment">-- could be. See the following link for more details.</a>
@@ -53,7 +53,7 @@
 
 <a id="_C′_"></a><a id="1441" href="Data.Nat.Combinatorics.Base.html#1441" class="Function Operator">_C′_</a> <a id="1446" class="Symbol">:</a> <a id="1448" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1450" class="Symbol">→</a> <a id="1452" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1454" class="Symbol">→</a> <a id="1456" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
 <a id="1458" href="Data.Nat.Combinatorics.Base.html#1458" class="Bound">n</a> <a id="1460" href="Data.Nat.Combinatorics.Base.html#1441" class="Function Operator">C′</a> <a id="1463" href="Data.Nat.Combinatorics.Base.html#1463" class="Bound">k</a> <a id="1465" class="Symbol">=</a> <a id="1467" class="Symbol">(</a><a id="1468" href="Data.Nat.Combinatorics.Base.html#1458" class="Bound">n</a> <a id="1470" href="Data.Nat.Combinatorics.Base.html#941" class="Function Operator">P′</a> <a id="1473" href="Data.Nat.Combinatorics.Base.html#1463" class="Bound">k</a><a id="1474" class="Symbol">)</a> <a id="1476" href="Data.Nat.Base.html#7102" class="Function Operator">/</a> <a id="1478" href="Data.Nat.Combinatorics.Base.html#1463" class="Bound">k</a> <a id="1480" href="Data.Nat.Base.html#7391" class="Function Operator">!</a>
-  <a id="1484" class="Keyword">where</a> <a id="1490" class="Keyword">instance</a> <a id="1499" href="Data.Nat.Combinatorics.Base.html#1499" class="Function">_</a> <a id="1501" class="Symbol">=</a> <a id="1503" href="Data.Nat.Combinatorics.Base.html#1463" class="Bound">k</a> <a id="1505" href="Data.Nat.Properties.html#63787" class="Function Operator">!≢0</a>
+  <a id="1484" class="Keyword">where</a> <a id="1490" class="Keyword">instance</a> <a id="1499" href="Data.Nat.Combinatorics.Base.html#1499" class="Function">_</a> <a id="1501" class="Symbol">=</a> <a id="1503" href="Data.Nat.Combinatorics.Base.html#1463" class="Bound">k</a> <a id="1505" href="Data.Nat.Properties.html#63873" class="Function Operator">!≢0</a>
 
 <a id="1510" class="Comment">-- Main definition. Valid for all k.</a>
 <a id="1547" class="Comment">-- Deals with boundary case and exploits symmetry to improve performance.</a>
