@@ -9,6 +9,7 @@
 module Data.Nat.Primality where
 
 open import Data.List.Base using ([]; _∷_; product)
+open import Data.List.Properties using (product≢0)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
@@ -324,10 +325,6 @@ prime⇒¬composite (prime p) = p
 
 productOfPrimes≢0 : ∀ {as} → All Prime as → NonZero (product as)
 productOfPrimes≢0 pas = product≢0 (All.map prime⇒nonZero pas)
-  where
-  product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
-  product≢0 [] = _
-  product≢0 {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n _ {{nzn}} {{product≢0 nzns}}
 
 productOfPrimes≥1 : ∀ {as} → All Prime as → product as ≥ 1
 productOfPrimes≥1 {as} pas = >-nonZero⁻¹ _ {{productOfPrimes≢0 pas}}

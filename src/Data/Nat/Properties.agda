@@ -1000,6 +1000,12 @@ m≤n*m m n@(suc _) = begin
   m * n ≡⟨ *-comm m n ⟩
   n * m ∎
 
+m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+m≤n⇒m≤o*n o m≤n = ≤-trans m≤n (m≤n*m _ o)
+
+m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
+m≤n⇒m≤n*o o m≤n = ≤-trans m≤n (m≤m*n _ o)
+
 m<m*n : ∀ m n .{{_ : NonZero m}} → 1 < n → m < m * n
 m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m           <⟨ s≤s (s≤s (m≤n+m m-1 n-2)) ⟩
@@ -1008,13 +1014,10 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m * n       ∎
 
 m<n⇒m<n*o : ∀ o .{{_ : NonZero o}} → m < n → m < n * o
-m<n⇒m<n*o {n = n} o m<n = <-≤-trans m<n (m≤m*n n o)
+m<n⇒m<n*o = m≤n⇒m≤n*o
 
 m<n⇒m<o*n : ∀ {m n} o .{{_ : NonZero o}} → m < n → m < o * n
-m<n⇒m<o*n {m} {n} o m<n = begin-strict
-  m     <⟨ m<n⇒m<n*o o m<n ⟩
-  n * o ≡⟨ *-comm n o ⟩
-  o * n ∎
+m<n⇒m<o*n = m≤n⇒m≤o*n
 
 *-cancelʳ-< : RightCancellative _<_ _*_
 *-cancelʳ-< zero    zero    (suc o) _     = 0<1+n

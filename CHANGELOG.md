@@ -48,6 +48,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.List.Properties`:
+  ```agda
+  product≢0 : All NonZero ns → NonZero (product ns)
+  ∈⇒≤product : All NonZero ns → n ∈ ns → n ≤ product ns
+  ```
+
 * In `Data.List.Relation.Unary.All`:
   ```agda
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
@@ -65,7 +71,13 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
-* New lemmas in `Data.Nat.Properties`: adjunction between `suc` and `pred`
+* New lemmas in `Data.Nat.Properties`:
+  ```agda
+  m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
+  m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+  ```
+
+  adjunction between `suc` and `pred`
   ```agda
   suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
