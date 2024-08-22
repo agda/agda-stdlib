@@ -844,18 +844,13 @@ sum-++ (x ∷ xs) ys = begin
 
 product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
 product≢0 [] = _
-product≢0 {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n (product ns)
-  where instance
-    _ = nzn
-    _ = product≢0 nzns
+product≢0 {n ∷ ns} (n≢0 ∷ ns≢0) = m*n≢0 n (product ns) {{n≢0}} {{product≢0 ns≢0}}
 
 ∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
-∈⇒≤product {ns = n ∷ ns} (_ ∷ nzns) (here refl) =
-  m≤m*n n (product ns)
-  where instance _ = product≢0 nzns
-∈⇒≤product {ns = n ∷ _} (nz ∷ nzns) (there n∈ns) =
-  m≤n⇒m≤o*n n (∈⇒≤product nzns n∈ns)
-  where instance _ = nz
+∈⇒≤product {ns = n ∷ ns} (_ ∷ ns≢0) (here refl) =
+  m≤m*n n (product ns) {{product≢0 ns≢0}}
+∈⇒≤product {ns = n ∷ _} (n≢0 ∷ ns≢0) (there n∈ns) =
+  m≤n⇒m≤o*n n {{n≢0}} (∈⇒≤product ns≢0 n∈ns)
 
 
 ------------------------------------------------------------------------
