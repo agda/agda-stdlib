@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Removed unnecessary parameter `#-trans : Transitive _#_` from
+  `Relation.Binary.Reasoning.Base.Apartness`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -79,6 +82,12 @@ Additions to existing modules
   Env = Vec Carrier
  ```
 
+* In `Data.List.Properties`:
+  ```agda
+  product≢0 : All NonZero ns → NonZero (product ns)
+  ∈⇒≤product : All NonZero ns → n ∈ ns → n ≤ product ns
+  ```
+
 * In `Data.List.Relation.Unary.All`:
   ```agda
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
@@ -96,6 +105,18 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
+* New lemmas in `Data.Nat.Properties`:
+  ```agda
+  m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
+  m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+  ```
+
+  adjunction between `suc` and `pred`
+  ```agda
+  suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
+  m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+  ```
+
 * New lemma in `Data.Vec.Properties`:
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
@@ -104,4 +125,17 @@ Additions to existing modules
 * In `Data.Vec.Relation.Binary.Equality.DecPropositional`:
   ```agda
   _≡?_ : DecidableEquality (Vec A n)
+  ```
+
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  does-⇔  : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
+  does-≡  : (a? b? : Dec A) → does a? ≡ does b?
+  ```
+
+* In `Relation.Nullary.Properties`:
+  ```agda
+  map    : P ≐ Q → Decidable P → Decidable Q
+  does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
+  does-≡ : (P? P?′ : Decidable P) → does ∘ P? ≗ does ∘ P?′
   ```
