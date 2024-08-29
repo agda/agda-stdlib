@@ -17,11 +17,14 @@ import Algebra.Solver.Monoid.Solver as Solver
 
 open CommutativeMonoid M using (monoid)
 
+private
+  module N = Normal M
+
 
 ------------------------------------------------------------------------
 -- Normal forms
 
-open module N = Normal M public
+open N public
   renaming (correct to normalise-correct)
 
 ------------------------------------------------------------------------

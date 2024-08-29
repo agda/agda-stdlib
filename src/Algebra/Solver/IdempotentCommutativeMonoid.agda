@@ -14,20 +14,24 @@ module Algebra.Solver.IdempotentCommutativeMonoid
   {c ℓ} (M : IdempotentCommutativeMonoid c ℓ) where
 
 import Algebra.Solver.IdempotentCommutativeMonoid.Normal as Normal
-import Algebra.Solver.Monoid.Tactic as Tactic
+import Algebra.Solver.Monoid.Solver as Solver
 
 open IdempotentCommutativeMonoid M using (monoid)
+
+private
+  module N = Normal M
+
 
 ------------------------------------------------------------------------
 -- Normal forms
 
-open module N = Normal M public
+open N public
   renaming (correct to normalise-correct)
 
 ------------------------------------------------------------------------
--- Tactic
+-- Proof procedures
 
-open Tactic monoid (record { N }) public
+open Solver monoid (record { N }) public
 
 
 ------------------------------------------------------------------------
