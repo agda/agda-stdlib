@@ -51,7 +51,7 @@ Env n = Vec Carrier n
 ------------------------------------------------------------------------
 -- API for normal expressions
 
-record NormalAPI {a} : Set (suc a ⊔ c ⊔ ℓ) where
+record NormalAPI a : Set (suc a ⊔ c ⊔ ℓ) where
   infix 5 _≟_
 
   field
