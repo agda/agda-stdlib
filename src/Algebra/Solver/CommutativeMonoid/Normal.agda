@@ -70,9 +70,9 @@ empty = replicate _ 0
 
 -- A singleton bag.
 
-sg : (i : Fin n) → Normal n
-sg zero    = 1 ∷ empty
-sg (suc i) = 0 ∷ sg i
+singleton : (i : Fin n) → Normal n
+singleton zero    = 1 ∷ empty
+singleton (suc i) = 0 ∷ singleton i
 
 -- The composition of normal forms.
 infixr 10 _•_
@@ -94,15 +94,16 @@ empty-correct (a ∷ ρ) = begin
 
 -- The singleton bag stands for a single variable.
 
-sg-correct : (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
-sg-correct zero (x ∷ ρ) = begin
+singleton-correct : (x : Fin n) (ρ : Env n) →
+                    ⟦ singleton x ⟧⇓ ρ ≈ lookup ρ x
+singleton-correct zero (x ∷ ρ) = begin
     (1 × x) ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congʳ (×-homo-1 _) ⟩
     x ∙ ⟦ empty ⟧⇓ ρ         ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε                    ≈⟨ identityʳ _ ⟩
     x                        ∎
-sg-correct (suc x) (m ∷ ρ) = begin
-    ε ∙ ⟦ sg x ⟧⇓ ρ   ≈⟨ identityˡ _ ⟩
-    ⟦ sg x ⟧⇓ ρ       ≈⟨ sg-correct x ρ ⟩
+singleton-correct (suc x) (m ∷ ρ) = begin
+    ε ∙ ⟦ singleton x ⟧⇓ ρ   ≈⟨ identityˡ _ ⟩
+    ⟦ singleton x ⟧⇓ ρ       ≈⟨ singleton-correct x ρ ⟩
     lookup ρ x        ∎
 
 -- Normal form composition corresponds to the composition of the monoid.
@@ -122,14 +123,14 @@ comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = begin
 -- A normaliser.
 
 normalise : Expr n → Normal n
-normalise (var x)   = sg x
+normalise (var x)   = singleton x
 normalise id        = empty
 normalise (e₁ ⊕ e₂) = normalise e₁ • normalise e₂
 
 -- The normaliser preserves the semantics of the expression.
 
 correct : ∀ e ρ → ⟦ normalise {n = n} e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
-correct (var x)   ρ = sg-correct x ρ
+correct (var x)   ρ = singleton-correct x ρ
 correct id        ρ = empty-correct ρ
 correct (e₁ ⊕ e₂) ρ = begin
   ⟦ normalise e₁ • normalise e₂ ⟧⇓ ρ
@@ -138,3 +139,23 @@ correct (e₁ ⊕ e₂) ρ = begin
     ≈⟨ ∙-cong (correct e₁ ρ) (correct e₂ ρ) ⟩
   ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
     ∎
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.2
+
+sg = singleton
+{-# WARNING_ON_USAGE sg
+"Warning: sg was deprecated in v2.2.
+Please use singleton instead."
+#-}
+sg-correct = singleton-correct
+{-# WARNING_ON_USAGE sg-correct
+"Warning: sg-correct was deprecated in v2.2.
+Please use singleton-correct instead."
+#-}
