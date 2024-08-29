@@ -27,12 +27,17 @@ Deprecated names
 * In `Algebra.Solver.CommutativeMonoid`:
   ```agda
   normalise-correct  ↦  Algebra.Solver.CommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton-correct
   ```
 
 * In `Algebra.Solver.IdempotentCommutativeMonoid`:
   ```agda
   flip12             ↦  Algebra.Properties.CommutativeSemigroup.xy∙z≈y∙xz
+  distr              ↦  Algebra.Properties.IdempotentCommutativeMonoid.∙-distrˡ-∙
   normalise-correct  ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton-correct
   ```
 
 * In `Algebra.Solver.Monoid`:
