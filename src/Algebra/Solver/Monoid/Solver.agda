@@ -30,6 +30,7 @@ private
   module
     R = Reflection setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) correct
 
+
 ------------------------------------------------------------------------
 -- Proof procedures
 

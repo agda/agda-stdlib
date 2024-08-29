@@ -11,23 +11,26 @@ open import Algebra.Bundles using (Monoid)
 module Algebra.Solver.Monoid {c ℓ} (M : Monoid c ℓ) where
 
 import Algebra.Solver.Monoid.Normal as Normal
-import Algebra.Solver.Monoid.Tactic as Tactic
+import Algebra.Solver.Monoid.Solver as Solver
 open import Data.Maybe.Base as Maybe
   using (From-just; from-just)
 open import Data.Product.Base using (_×_; uncurry)
 open import Function.Base using (_∘_)
 
+private
+  module N = Normal M
+
 
 ------------------------------------------------------------------------
 -- Normal forms
 
-open module N = Normal M public
+open N public
   renaming (comp-correct to homomorphic; correct to normalise-correct)
 
 ------------------------------------------------------------------------
 -- Tactic
 
-open module T = Tactic M (record { N }) public
+open Solver M (record { N }) public
   hiding (prove)
 
 prove : ∀ n (es : Expr n × Expr n) → From-just (uncurry prove′ es)
