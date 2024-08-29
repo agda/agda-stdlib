@@ -85,7 +85,7 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
       ∙-homo              : Homomorphic₂ ⟦_⟧ _∙_ _◦_
 
-      -- Deprecated.
+    -- Deprecated.
     homo = ∙-homo
     {-# WARNING_ON_USAGE homo
     "Warning: homo was deprecated in v2.2.
