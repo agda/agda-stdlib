@@ -106,7 +106,7 @@ module _ (f : Endo) where
   ^-isMagmaHomomorphism : IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
   ^-isMagmaHomomorphism = record
     { isRelHomomorphism = record { cong = ^-cong₂ }
-    ; homo = ^-homo
+    ; ∙-homo = ^-homo
     }
 
   ^-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)

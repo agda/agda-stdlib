@@ -83,7 +83,14 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
   record IsMagmaHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
-      homo              : Homomorphic₂ ⟦_⟧ _∙_ _◦_
+      ∙-homo              : Homomorphic₂ ⟦_⟧ _∙_ _◦_
+
+      -- Deprecated.
+    homo = ∙-homo
+    {-# WARNING_ON_USAGE homo
+    "Warning: homo was deprecated in v2.2.
+    Please use ∙-homo instead. "
+    #-}
 
     open IsRelHomomorphism isRelHomomorphism public
       renaming (cong to ⟦⟧-cong)
@@ -200,7 +207,6 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
       injective           : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsGroupHomomorphism isGroupHomomorphism public
-      renaming (homo to ∙-homo)
 
     isMonoidMonomorphism : IsMonoidMonomorphism ⟦_⟧
     isMonoidMonomorphism = record
@@ -265,7 +271,7 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
     *-isMagmaHomomorphism : *.IsMagmaHomomorphism ⟦_⟧
     *-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
-      ; homo = *-homo
+      ; ∙-homo = *-homo
       }
 
   record IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -430,7 +436,7 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
     *-isMagmaHomomorphism : *.IsMagmaHomomorphism ⟦_⟧
     *-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
-      ; homo = *-homo
+      ; ∙-homo = *-homo
       }
 
   record IsRingWithoutOneMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -623,19 +629,19 @@ module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup
     ∙-isMagmaHomomorphism : ∙.IsMagmaHomomorphism ⟦_⟧
     ∙-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
-      ; homo = ∙-homo
+      ; ∙-homo = ∙-homo
       }
 
     \\-isMagmaHomomorphism : \\.IsMagmaHomomorphism ⟦_⟧
     \\-isMagmaHomomorphism = record
       { isRelHomomorphism  = isRelHomomorphism
-      ; homo = \\-homo
+      ; ∙-homo = \\-homo
       }
 
     //-isMagmaHomomorphism : //.IsMagmaHomomorphism ⟦_⟧
     //-isMagmaHomomorphism = record
       { isRelHomomorphism  = isRelHomomorphism
-      ; homo = //-homo
+      ; ∙-homo = //-homo
       }
 
   record IsQuasigroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
