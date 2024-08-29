@@ -78,6 +78,8 @@ New modules
   Algebra.Solver.Monoid.Tactic
   ```
 
+  NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
+
 Additions to existing modules
 -----------------------------
 
