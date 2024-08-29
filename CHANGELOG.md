@@ -45,8 +45,19 @@ New modules
   Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
+* Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Data.List.Relation.Unary.All.Properties.Core
+  ```
+
 Additions to existing modules
 -----------------------------
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  any∈sym :  Any (_∈ ys) xs → Any (_∈ xs) ys
+  all∉sym :  All (_∉ ys) xs → All (_∉ xs) ys
+  ```
 
 * In `Data.List.Properties`:
   ```agda
