@@ -13,7 +13,7 @@ open import Algebra.Bundles using (CommutativeMonoid)
 module Algebra.Solver.CommutativeMonoid {c ℓ} (M : CommutativeMonoid c ℓ) where
 
 import Algebra.Solver.CommutativeMonoid.Normal as Normal
-import Algebra.Solver.Monoid.Tactic as Tactic
+import Algebra.Solver.Monoid.Solver as Solver
 
 open CommutativeMonoid M using (monoid)
 
@@ -25,9 +25,9 @@ open module N = Normal M public
   renaming (correct to normalise-correct)
 
 ------------------------------------------------------------------------
--- Tactic
+-- Proof procedures
 
-open Tactic monoid (record { N }) public
+open Solver monoid (record { N }) public
 
 
 ------------------------------------------------------------------------
