@@ -699,7 +699,7 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
 toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕ.+-rawMagma toℕ
 toℕ-isMagmaHomomorphism-+ = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
-  ; homo              = toℕ-homo-+
+  ; ∙-homo            = toℕ-homo-+
   }
 
 toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕ.+-0-rawMonoid toℕ
@@ -1012,7 +1012,7 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕ.≤-refl
 toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕ.*-rawMagma toℕ
 toℕ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
-  ; homo              = toℕ-homo-*
+  ; ∙-homo            = toℕ-homo-*
   }
 
 toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕ.*-1-rawMonoid toℕ
