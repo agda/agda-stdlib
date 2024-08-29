@@ -9,10 +9,10 @@
 open import Algebra.Bundles using (Monoid)
 import Algebra.Solver.Monoid.Expression as Expression
 
-module Algebra.Solver.Monoid.Tactic {a c ℓ} (M : Monoid c ℓ)
+module Algebra.Solver.Monoid.Solver {a c ℓ} (M : Monoid c ℓ)
   (open Monoid M using (rawMonoid; setoid; _≈_))
   (open Expression rawMonoid using (Expr; Env; var; ⟦_⟧; NormalAPI))
-  (N : NormalAPI {a}) where
+  (N : NormalAPI a) where
 
 open import Data.Maybe.Base as Maybe
   using (Maybe; From-just; from-just)
@@ -23,16 +23,20 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 import Relation.Binary.Reflection as Reflection
 
 open NormalAPI N
-open module R = Reflection setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) correct public
-  using (solve; _⊜_)
 
 private
   variable
     n : ℕ
-
+  module
+    R = Reflection setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) correct
 
 ------------------------------------------------------------------------
--- Tactic
+-- Proof procedures
+
+-- Re-export the existing solver machinery from `Reflection`
+
+open R public
+  using (solve; _⊜_)
 
 -- We can also give a sound, but not necessarily complete, procedure
 -- for determining if two expressions have the same semantics.
@@ -46,7 +50,7 @@ prove′ e₁ e₂ = Maybe.map lemma $ dec⇒weaklyDec _≟_ (normalise e₁) (n
     ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
     ⟦ normalise e₂ ⟧⇓ ρ  ∎
 
--- This procedure can be combined with from-just.
+-- This procedure can then be combined with from-just.
 
 prove : ∀ n (e₁ e₂ : Expr n) → From-just (prove′ e₁ e₂)
 prove _ e₁ e₂ = from-just $ prove′ e₁ e₂
