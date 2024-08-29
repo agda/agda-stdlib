@@ -68,14 +68,14 @@ New modules
   ```
 
 * Refactoring of the `Algebra.Solver.*Monoid` implementations, via
-  a single `Tactic` module API based on the existing `Expr`, and
+  a single `Solver` module API based on the existing `Expr`, and
   a common `Normal`-form API:
   ```agda
   Algebra.Solver.CommutativeMonoid.Normal
   Algebra.Solver.IdempotentCommutativeMonoid.Normal
   Algebra.Solver.Monoid.Expression
   Algebra.Solver.Monoid.Normal
-  Algebra.Solver.Monoid.Tactic
+  Algebra.Solver.Monoid.Solver
   ```
 
   NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
