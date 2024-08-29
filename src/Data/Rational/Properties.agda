@@ -870,7 +870,7 @@ toℚᵘ-homo-+ p@record{} q@record{} with +-nf p q ℤ.≟ 0ℤ
 toℚᵘ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℚᵘ.+-rawMagma toℚᵘ
 toℚᵘ-isMagmaHomomorphism-+ = record
   { isRelHomomorphism = toℚᵘ-isRelHomomorphism
-  ; homo              = toℚᵘ-homo-+
+  ; ∙-homo            = toℚᵘ-homo-+
   }
 
 toℚᵘ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℚᵘ.+-0-rawMonoid toℚᵘ
@@ -1085,7 +1085,7 @@ toℚᵘ-homo-1/ (mkℚ -[1+ _ ] _ _) = ℚᵘ.≃-refl
 toℚᵘ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
 toℚᵘ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℚᵘ-isRelHomomorphism
-  ; homo              = toℚᵘ-homo-*
+  ; ∙-homo              = toℚᵘ-homo-*
   }
 
 toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℚᵘ.*-1-rawMonoid toℚᵘ
