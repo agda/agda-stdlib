@@ -14,6 +14,7 @@ module Algebra.Solver.IdempotentCommutativeMonoid.Normal
   {c ℓ} (M : IdempotentCommutativeMonoid c ℓ) where
 
 import Algebra.Properties.CommutativeSemigroup as CSProperties
+open import Algebra.Properties.IdempotentCommutativeMonoid M using (∙-distrˡ-∙)
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ)
@@ -24,7 +25,7 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Nullary.Decidable       as Dec
 
 open IdempotentCommutativeMonoid M
-open CSProperties commutativeSemigroup using (interchange; x∙yz≈xy∙z; x∙yz≈y∙xz)
+open CSProperties commutativeSemigroup using (x∙yz≈xy∙z; x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 private
@@ -70,9 +71,9 @@ empty = replicate _ false
 
 -- A singleton set.
 
-sg : (i : Fin n) → Normal n
-sg zero    = true ∷ empty
-sg (suc i) = false ∷ sg i
+singleton : (i : Fin n) → Normal n
+singleton zero    = true ∷ empty
+singleton (suc i) = false ∷ singleton i
 
 -- The composition of normal forms.
 infixr 10 _•_
@@ -91,26 +92,21 @@ empty-correct (a ∷ ρ) = empty-correct ρ
 
 -- The singleton set stands for a single variable.
 
-sg-correct : (x : Fin n) (ρ : Env n) → ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
-sg-correct zero (x ∷ ρ) = begin
+singleton-correct : (x : Fin n) (ρ : Env n) →
+                    ⟦ singleton x ⟧⇓ ρ ≈ lookup ρ x
+singleton-correct zero (x ∷ ρ) = begin
     x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε              ≈⟨ identityʳ _ ⟩
     x                  ∎
-sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
+singleton-correct (suc x) (m ∷ ρ) = singleton-correct x ρ
 
 -- Normal form composition corresponds to the composition of the monoid.
-
-distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
-distr a b c = begin
-    a ∙ (b ∙ c)        ≈⟨ ∙-congʳ (idem a) ⟨
-    (a ∙ a) ∙ (b ∙ c)  ≈⟨ interchange _ _ _ _ ⟩
-    (a ∙ b) ∙ (a ∙ c)  ∎
 
 comp-correct : ∀ v w (ρ : Env n) →
                ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 comp-correct [] [] ρ = sym (identityˡ _)
 comp-correct (true ∷ v) (true ∷ w) (a ∷ ρ) =
-  trans (∙-congˡ (comp-correct v w ρ)) (distr _ _ _)
+  trans (∙-congˡ (comp-correct v w ρ)) (∙-distrˡ-∙ _ _ _)
 comp-correct (true ∷ v) (false ∷ w) (a ∷ ρ) =
   trans (∙-congˡ (comp-correct v w ρ)) (x∙yz≈xy∙z _ _ _)
 comp-correct (false ∷ v) (true ∷ w) (a ∷ ρ) =
@@ -124,14 +120,14 @@ comp-correct (false ∷ v) (false ∷ w) (a ∷ ρ) =
 -- A normaliser.
 
 normalise : Expr n → Normal n
-normalise (var x)   = sg x
+normalise (var x)   = singleton x
 normalise id        = empty
 normalise (e₁ ⊕ e₂) = normalise e₁ • normalise e₂
 
 -- The normaliser preserves the semantics of the expression.
 
 correct : ∀ e ρ → ⟦ normalise {n = n} e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
-correct (var x)   ρ = sg-correct x ρ
+correct (var x)   ρ = singleton-correct x ρ
 correct id        ρ = empty-correct ρ
 correct (e₁ ⊕ e₂) ρ = begin
   ⟦ normalise e₁ • normalise e₂ ⟧⇓ ρ
@@ -154,4 +150,19 @@ flip12 = x∙yz≈y∙xz
 {-# WARNING_ON_USAGE flip12
 "Warning: flip12 was deprecated in v2.2.
 Please use Algebra.Properties.CommutativeSemigroup.x∙yz≈y∙xz instead."
+#-}
+distr = ∙-distrˡ-∙
+{-# WARNING_ON_USAGE distr
+"Warning: distr was deprecated in v2.2.
+Please use Algebra.Properties.IdempotentCommutativeMonoid.∙-distrˡ-∙ instead."
+#-}
+sg = singleton
+{-# WARNING_ON_USAGE sg
+"Warning: sg was deprecated in v2.2.
+Please use singleton instead."
+#-}
+sg-correct = singleton-correct
+{-# WARNING_ON_USAGE sg-correct
+"Warning: sg-correct was deprecated in v2.2.
+Please use singleton-correct instead."
 #-}
