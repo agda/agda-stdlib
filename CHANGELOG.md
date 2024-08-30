@@ -71,6 +71,11 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
+* In `Data.Maybe.Properties`:
+  ```agda
+  maybe′-∘ : ∀ {b} (f : B → C) (g : A → B) → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
+  ```
+
 * New lemmas in `Data.Nat.Properties`:
   ```agda
   m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
