@@ -48,6 +48,11 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  cong′ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   product≢0 : All NonZero ns → NonZero (product ns)
@@ -92,6 +97,15 @@ Additions to existing modules
   ```agda
   _≡?_ : DecidableEquality (Vec A n)
   ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  Σ-distribˡ-⊎ : {P : A → Set a} {Q : A → Set b} → (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
+  Σ-distribʳ-⊎ : {P : Set a} {Q : Set b} {R : P ⊎ Q → Set c} → (Σ (P ⊎ Q) R) ↔ (Σ P (R ∘ inj₁) ⊎ Σ Q (R ∘ inj₂))
+  ×-distribˡ-⊎′ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+  ×-distribʳ-⊎′ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+  ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+ ```
 
 * In `Relation.Nullary.Decidable`:
   ```agda
