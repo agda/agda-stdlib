@@ -7,10 +7,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Magma)
-open import Data.Product.Base using (_×_; _,_; ∃; map; swap)
-open import Relation.Binary.Definitions
 
 module Algebra.Properties.Magma.Divisibility {a ℓ} (M : Magma a ℓ) where
+
+open import Data.Product.Base using (_,_; swap)
+open import Relation.Binary.Definitions
+  using (_Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Symmetric)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open Magma M
 
@@ -39,6 +42,18 @@ xy≈z⇒y∣z : ∀ x y {z} → x ∙ y ≈ z → y ∣ z
 xy≈z⇒y∣z x y xy≈z = ∣-respʳ xy≈z (x∣yx y x)
 
 ------------------------------------------------------------------------
+-- Properties of non-divisibility
+
+∤-respˡ : _∤_ Respectsˡ _≈_
+∤-respˡ x≈y x∤z y∣z = contradiction (∣-respˡ (sym x≈y) y∣z) x∤z
+
+∤-respʳ : _∤_ Respectsʳ _≈_
+∤-respʳ x≈y z∤x z∣y = contradiction (∣-respʳ (sym x≈y) z∣y) z∤x
+
+∤-resp : _∤_ Respects₂ _≈_
+∤-resp = ∤-respʳ , ∤-respˡ
+
+------------------------------------------------------------------------
 -- Properties of mutual divisibility _∣∣_
 
 ∣∣-sym : Symmetric _∣∣_
@@ -52,3 +67,19 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ xy≈z (x∣yx y x)
 
 ∣∣-resp-≈ : _∣∣_ Respects₂ _≈_
 ∣∣-resp-≈ = ∣∣-respʳ-≈ , ∣∣-respˡ-≈
+
+------------------------------------------------------------------------
+-- Properties of mutual non-divisibility _∤∤_
+
+∤∤-sym : Symmetric _∤∤_
+∤∤-sym x∤∤y y∣∣x = contradiction (∣∣-sym y∣∣x) x∤∤y
+
+∤∤-respˡ : _∤∤_ Respectsˡ _≈_
+∤∤-respˡ x≈y x∤∤z y∣∣z = contradiction (∣∣-respˡ-≈ (sym x≈y) y∣∣z) x∤∤z
+
+∤∤-respʳ : _∤∤_ Respectsʳ _≈_
+∤∤-respʳ x≈y z∤∤x z∣∣y = contradiction (∣∣-respʳ-≈ (sym x≈y) z∣∣y) z∤∤x
+
+∤∤-resp : _∤∤_ Respects₂ _≈_
+∤∤-resp = ∤∤-respʳ , ∤∤-respˡ
+
