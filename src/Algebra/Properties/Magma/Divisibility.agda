@@ -82,4 +82,3 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ xy≈z (x∣yx y x)
 
 ∤∤-resp : _∤∤_ Respects₂ _≈_
 ∤∤-resp = ∤∤-respʳ , ∤∤-respˡ
-
