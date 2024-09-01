@@ -73,7 +73,7 @@ Additions to existing modules
 
 * In `Data.Maybe.Properties`:
   ```agda
-  maybe′-∘ : ∀ {b} (f : B → C) (g : A → B) → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
+  maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
   ```
 
 * New lemmas in `Data.Nat.Properties`:
