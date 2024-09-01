@@ -52,6 +52,6 @@ Please use x|xy∧y|xy instead. "
 #-}
 ∣-factors-≈ = xy≈z⇒x|z∧y|z
 {-# WARNING_ON_USAGE ∣-factors-≈
-"Warning: ∣-factors was deprecated in v2.2.
+"Warning: ∣-factors-≈ was deprecated in v2.2.
 Please use xy≈z⇒x|z∧y|z instead. "
 #-}
