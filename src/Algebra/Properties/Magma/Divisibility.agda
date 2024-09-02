@@ -26,32 +26,32 @@ open import Algebra.Definitions.RawMagma rawMagma public
 ------------------------------------------------------------------------
 -- Properties of divisibility
 
-∣-respʳ : _∣_ Respectsʳ _≈_
-∣-respʳ y≈z (q , qx≈y) = q , trans qx≈y y≈z
+∣-respʳ-≈ : _∣_ Respectsʳ _≈_
+∣-respʳ-≈ y≈z (q , qx≈y) = q , trans qx≈y y≈z
 
-∣-respˡ : _∣_ Respectsˡ _≈_
-∣-respˡ x≈z (q , qx≈y) = q , trans (∙-congˡ (sym x≈z)) qx≈y
+∣-respˡ-≈ : _∣_ Respectsˡ _≈_
+∣-respˡ-≈ x≈z (q , qx≈y) = q , trans (∙-congˡ (sym x≈z)) qx≈y
 
-∣-resp : _∣_ Respects₂ _≈_
-∣-resp = ∣-respʳ , ∣-respˡ
+∣-resp-≈ : _∣_ Respects₂ _≈_
+∣-resp-≈ = ∣-respʳ-≈ , ∣-respˡ-≈
 
 x∣yx : ∀ x y → x ∣ y ∙ x
 x∣yx x y = y , refl
 
 xy≈z⇒y∣z : ∀ x y {z} → x ∙ y ≈ z → y ∣ z
-xy≈z⇒y∣z x y xy≈z = ∣-respʳ xy≈z (x∣yx y x)
+xy≈z⇒y∣z x y xy≈z = ∣-respʳ-≈ xy≈z (x∣yx y x)
 
 ------------------------------------------------------------------------
 -- Properties of non-divisibility
 
-∤-respˡ : _∤_ Respectsˡ _≈_
-∤-respˡ x≈y x∤z y∣z = contradiction (∣-respˡ (sym x≈y) y∣z) x∤z
+∤-respˡ-≈ : _∤_ Respectsˡ _≈_
+∤-respˡ-≈ x≈y x∤z y∣z = contradiction (∣-respˡ-≈ (sym x≈y) y∣z) x∤z
 
-∤-respʳ : _∤_ Respectsʳ _≈_
-∤-respʳ x≈y z∤x z∣y = contradiction (∣-respʳ (sym x≈y) z∣y) z∤x
+∤-respʳ-≈ : _∤_ Respectsʳ _≈_
+∤-respʳ-≈ x≈y z∤x z∣y = contradiction (∣-respʳ-≈ (sym x≈y) z∣y) z∤x
 
-∤-resp : _∤_ Respects₂ _≈_
-∤-resp = ∤-respʳ , ∤-respˡ
+∤-resp-≈ : _∤_ Respects₂ _≈_
+∤-resp-≈ = ∤-respʳ-≈ , ∤-respˡ-≈
 
 ------------------------------------------------------------------------
 -- Properties of mutual divisibility _∣∣_
@@ -59,11 +59,11 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ xy≈z (x∣yx y x)
 ∣∣-sym : Symmetric _∣∣_
 ∣∣-sym = swap
 
-∣∣-respʳ-≈ : _∣∣_ Respectsʳ _≈_
-∣∣-respʳ-≈ y≈z (x∣y , y∣x) = ∣-respʳ y≈z x∣y , ∣-respˡ y≈z y∣x
-
 ∣∣-respˡ-≈ : _∣∣_ Respectsˡ _≈_
-∣∣-respˡ-≈ x≈z (x∣y , y∣x) = ∣-respˡ x≈z x∣y , ∣-respʳ x≈z y∣x
+∣∣-respˡ-≈ x≈z (x∣y , y∣x) = ∣-respˡ-≈ x≈z x∣y , ∣-respʳ-≈ x≈z y∣x
+
+∣∣-respʳ-≈ : _∣∣_ Respectsʳ _≈_
+∣∣-respʳ-≈ y≈z (x∣y , y∣x) = ∣-respʳ-≈ y≈z x∣y , ∣-respˡ-≈ y≈z y∣x
 
 ∣∣-resp-≈ : _∣∣_ Respects₂ _≈_
 ∣∣-resp-≈ = ∣∣-respʳ-≈ , ∣∣-respˡ-≈
@@ -74,11 +74,36 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ xy≈z (x∣yx y x)
 ∤∤-sym : Symmetric _∤∤_
 ∤∤-sym x∤∤y y∣∣x = contradiction (∣∣-sym y∣∣x) x∤∤y
 
-∤∤-respˡ : _∤∤_ Respectsˡ _≈_
-∤∤-respˡ x≈y x∤∤z y∣∣z = contradiction (∣∣-respˡ-≈ (sym x≈y) y∣∣z) x∤∤z
+∤∤-respˡ-≈ : _∤∤_ Respectsˡ _≈_
+∤∤-respˡ-≈ x≈y x∤∤z y∣∣z = contradiction (∣∣-respˡ-≈ (sym x≈y) y∣∣z) x∤∤z
 
-∤∤-respʳ : _∤∤_ Respectsʳ _≈_
-∤∤-respʳ x≈y z∤∤x z∣∣y = contradiction (∣∣-respʳ-≈ (sym x≈y) z∣∣y) z∤∤x
+∤∤-respʳ-≈ : _∤∤_ Respectsʳ _≈_
+∤∤-respʳ-≈ x≈y z∤∤x z∣∣y = contradiction (∣∣-respʳ-≈ (sym x≈y) z∣∣y) z∤∤x
 
-∤∤-resp : _∤∤_ Respects₂ _≈_
-∤∤-resp = ∤∤-respʳ , ∤∤-respˡ
+∤∤-resp-≈ : _∤∤_ Respects₂ _≈_
+∤∤-resp-≈ = ∤∤-respʳ-≈ , ∤∤-respˡ-≈
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.2
+
+∣-respˡ = ∣-respˡ-≈
+{-# WARNING_ON_USAGE ∣-respˡ
+"Warning: ∣-respˡ was deprecated in v2.2.
+Please use ∣-respˡ-≈ instead. "
+#-}
+∣-respʳ = ∣-respʳ-≈
+{-# WARNING_ON_USAGE ∣-respʳ
+"Warning: ∣-respʳ was deprecated in v2.2.
+Please use ∣-respʳ-≈ instead. "
+#-}
+∣-resp = ∣-resp-≈
+{-# WARNING_ON_USAGE ∣-resp
+"Warning: ∣-resp was deprecated in v2.2.
+Please use ∣-resp-≈ instead. "
+#-}

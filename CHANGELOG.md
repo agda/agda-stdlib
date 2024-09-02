@@ -50,13 +50,13 @@ Additions to existing modules
 
 * Properties of non-divisibility in `Algebra.Properties.Magma.Divisibility`:
   ```agda
-  ∤-respˡ : _∤_ Respectsˡ _≈_
-  ∤-respʳ : _∤_ Respectsʳ _≈_
-  ∤-resp  : _∤_ Respects₂ _≈_
-  ∤∤-sym   : Symmetric _∤∤_
-  ∤∤-respˡ : _∤∤_ Respectsˡ _≈_
-  ∤∤-respʳ : _∤∤_ Respectsʳ _≈_
-  ∤∤-resp  : _∤∤_ Respects₂ _≈_
+  ∤-respˡ-≈ : _∤_ Respectsˡ _≈_
+  ∤-respʳ-≈ : _∤_ Respectsʳ _≈_
+  ∤-resp-≈  : _∤_ Respects₂ _≈_
+  ∤∤-sym    : Symmetric _∤∤_
+  ∤∤-respˡ-≈ : _∤∤_ Respectsˡ _≈_
+  ∤∤-respʳ-≈ : _∤∤_ Respectsʳ _≈_
+  ∤∤-resp-≈  : _∤∤_ Respects₂ _≈_
   ```
 
 * In `Data.List.Properties`:
