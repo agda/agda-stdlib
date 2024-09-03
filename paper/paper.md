@@ -94,7 +94,7 @@ On the other hand, MathLib[@van2020maintaining] for Lean aims to provide a repos
 The design of the Agda standard library leans more towards the Lean approach, with a high bar set for adding alternative formalisations of the same result.
 
 A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default. 
-With the exception of Idris, a more recent entrant to the field, other major theorem provers either do not support dependent types or encourage them only to be used sparingly.
+With the exception of Idris, a more recent entrant to the field [citation?], other major theorem provers either do not support dependent types or encourage them only to be used sparingly.
 In contrast, nearly everything in the Agda standard library makes use of dependent types, with proofs consisting of evidence-bearing terms of the relevant dependent types.
 As a result, the library provides relatively sophisticated features like polymorphic n-ary functions[@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers.
 While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an on-going journey. 
