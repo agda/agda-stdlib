@@ -24,6 +24,13 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣-respˡ   ↦  ∣-respˡ-≈
+  ∣-respʳ   ↦  ∣-respʳ-≈
+  ∣-resp    ↦  ∣-resp-≈
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
