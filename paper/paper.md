@@ -13,7 +13,7 @@ authors:
   - name: Allais, Guillaume
 	orcid: 0000-0000-0000-0000
     affiliation: 2
-  - name: Carrete, Jacques
+  - name: Carette, Jacques
 	orcid: 0000-0000-0000-0000
     affiliation: 3
   - name: McKinna, James
