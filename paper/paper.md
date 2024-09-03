@@ -17,7 +17,7 @@ authors:
 	orcid: 0000-0000-0000-0000
     affiliation: 3
   - name: McKinna, James
-	orcid: 0000-0000-0000-0000
+	orcid: 0000-0001-6745-2560
     affiliation: 4
   - name: van Doorn, Nathan
 	orcid: 0000-0000-0000-0000
