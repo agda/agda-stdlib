@@ -460,5 +460,5 @@ module _ (S : Setoid c ℓ) where
   Any-∈-swap = Any.swap ∘ Any.map (Any.map sym)
 
   All-∉-swap :  ∀ {xs ys} → All (_∉ ys) xs → All (_∉ xs) ys
-  All-∉-swap p = All.¬Any⇒All¬ _ ((All.All¬⇒¬Any p) ∘ any∈sym)
+  All-∉-swap p = All.¬Any⇒All¬ _ ((All.All¬⇒¬Any p) ∘ Any-∈-swap)
 
