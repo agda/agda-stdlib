@@ -62,7 +62,7 @@ Without the Agda standard library, something as simple as defining a function to
 # Impact
 
 The Agda standard library has been used in a wide range of projects, too numerous to list exhaustively. 
-A diverse selection, not intended as endorsements of these projects over others, includes:
+A diverse selection of such projects, not intended as endorsements over any others, includes:
 
 - Formalisation of category theory [@hu2021categories]
 
