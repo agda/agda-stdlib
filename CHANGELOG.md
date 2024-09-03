@@ -55,8 +55,8 @@ Additions to existing modules
 
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
-  any∈sym :  Any (_∈ ys) xs → Any (_∈ xs) ys
-  all∉sym :  All (_∉ ys) xs → All (_∉ xs) ys
+  Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
   ```
 
 * In `Data.List.Properties`:

@@ -456,9 +456,9 @@ module _ (S : Setoid c ℓ) where
   open Setoid S using (sym)
   open Membership S
 
-  any∈sym :  ∀ {xs ys} → Any (_∈ ys) xs → Any (_∈ xs) ys
-  any∈sym = Any.swap ∘ Any.map (Any.map sym)
+  Any-∈-swap :  ∀ {xs ys} → Any (_∈ ys) xs → Any (_∈ xs) ys
+  Any-∈-swap = Any.swap ∘ Any.map (Any.map sym)
 
-  all∉sym :  ∀ {xs ys} → All (_∉ ys) xs → All (_∉ xs) ys
-  all∉sym p = All.¬Any⇒All¬ _ ((All.All¬⇒¬Any p) ∘ any∈sym)
+  All-∉-swap :  ∀ {xs ys} → All (_∉ ys) xs → All (_∉ xs) ys
+  All-∉-swap p = All.¬Any⇒All¬ _ ((All.All¬⇒¬Any p) ∘ any∈sym)
 
