@@ -23,7 +23,8 @@ open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as List
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
-open import Function.Base using (_∘_; _⟨_⟩_)
+open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Function.Base using (_∘_; _⟨_⟩_; _$_)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
@@ -40,6 +41,7 @@ private
     a b p : Level
     A : Set a
     B : Set b
+    xs ys : List A
 
 ------------------------------------------------------------------------
 -- Permutations of empty and singleton lists
@@ -378,3 +380,22 @@ product-↭ p = foldr-commMonoid ℕ-*-1.isCommutativeMonoid (↭⇒↭ₛ p)
   where
   module ℕ-*-1 = CommutativeMonoid ℕ.*-1-commutativeMonoid
   open Permutation ℕ-*-1.setoid
+
+------------------------------------------------------------------------
+-- catMaybes
+
+catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+catMaybes-↭ refl                         = refl
+catMaybes-↭ (trans xs↭ ↭ys)              = trans (catMaybes-↭ xs↭) (catMaybes-↭ ↭ys)
+catMaybes-↭ (prep nothing  xs↭)          = catMaybes-↭ xs↭
+catMaybes-↭ (prep (just x) xs↭)          = prep x $ catMaybes-↭ xs↭
+catMaybes-↭ (swap nothing  nothing  xs↭) = catMaybes-↭ xs↭
+catMaybes-↭ (swap nothing  (just y) xs↭) = prep y $ catMaybes-↭ xs↭
+catMaybes-↭ (swap (just x) nothing  xs↭) = prep x $ catMaybes-↭ xs↭
+catMaybes-↭ (swap (just x) (just y) xs↭) = swap x y $ catMaybes-↭ xs↭
+
+------------------------------------------------------------------------
+-- mapMaybe
+
+mapMaybe-↭ : (f : A → Maybe B) → xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
+mapMaybe-↭ f = catMaybes-↭ ∘ map⁺ f

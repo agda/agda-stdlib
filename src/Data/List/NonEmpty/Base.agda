@@ -143,6 +143,16 @@ concatMap f = concat ∘′ map f
 ap : List⁺ (A → B) → List⁺ A → List⁺ B
 ap fs as = concatMap (λ f → map f as) fs
 
+-- Inits
+
+inits : List A → List⁺ (List A)
+inits xs = [] ∷ List.Inits.tail xs
+
+-- Tails
+
+tails : List A → List⁺ (List A)
+tails xs = xs ∷ List.Tails.tail xs
+
 -- Reverse
 
 reverse : List⁺ A → List⁺ A

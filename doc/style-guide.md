@@ -229,6 +229,34 @@ automate most of this.
     }
   ```
 
+#### Layout of initial `private` block
+
+* Since the introduction of generalizable `variable`s (see below),
+  this block provides a very useful way to 'fix'/standardise notation
+  for the rest of the module, as well as introducing local
+  instantiations of parameterised `module` definitions, again for the
+  sake of fixing notation via qualified names.
+
+* It should typically follow the `import` and `open` declarations, as
+  above, separated by one blankline, and be followed by *two* blank
+  lines ahead of the main module body.
+
+* The current preferred layout is to use successive indentation by two spaces, eg.
+  ```agda
+  private
+    variable
+      a : Level
+      A : Set a
+  ```
+  rather than to use the more permissive 'stacked' style, available
+  since [agda/agda#5319](https://github.com/agda/agda/pull/5319).
+
+* A possible exception to the above rule is when a *single* declaration
+  is made, such as eg.
+  ```agda
+  private open module M = ...
+  ```
+
 #### Layout of `where` blocks
 
 * `where` blocks are preferred rather than the `let` construction.
@@ -525,6 +553,66 @@ word within a compound word is capitalized except for the first word.
 * Any exceptions to these conventions should be flagged on the GitHub
   `agda-stdlib` issue tracker in the usual way.
 
+#### Fixity
+
+All functions and operators that are not purely prefix (typically
+anything that has a `_` in its name) should have an explicit fixity
+declared for it. The guidelines for these are as follows:
+
+General operations and relations:
+
+* binary relations of all kinds are `infix 4`
+
+* unary prefix relations `infix 4 ε∣_`
+
+* unary postfix relations `infixr 8 _∣0`
+
+* multiplication-like: `infixl 7 _*_`
+
+* addition-like  `infixl 6 _+_`
+
+* arithmetic prefix minus-like  `infix  8 -_`
+
+* arithmetic infix binary minus-like `infixl 6 _-_`
+
+* and-like  `infixr 7 _∧_`
+
+* or-like  `infixr 6 _∨_`
+
+* negation-like `infix 3 ¬_`
+
+* post-fix inverse  `infix  8 _⁻¹`
+
+* bind `infixl 1 _>>=_`
+
+* list concat-like `infixr 5 _∷_`
+
+* ternary reasoning `infix 1 _⊢_≈_`
+
+* composition `infixr 9 _∘_`
+
+* application `infixr -1 _$_ _$!_`
+
+* combinatorics `infixl 6.5 _P_ _P′_ _C_ _C′_`
+
+* pair `infixr 4 _,_`
+
+Reasoning:
+
+* QED  `infix  3 _∎`
+
+* stepping  `infixr 2 _≡⟨⟩_ step-≡ step-≡˘`
+
+* begin  `infix  1 begin_`
+
+Type formers:
+
+* product-like `infixr 2 _×_ _-×-_ _-,-_`
+
+* sum-like `infixr 1 _⊎_`
+
+*  binary properties `infix 4 _Absorbs_`
+
 #### Functions and relations over specific datatypes
 
 * When defining a new relation `P` over a datatype `X` in a `Data.X.Relation` module,
@@ -568,6 +656,14 @@ word within a compound word is capitalized except for the first word.
   additional backtick.
 
 #### Specific pragmatics/idiomatic patterns
+
+## Use of `pattern` synonyms
+
+In general, these are intended to be used to provide specialised
+constructors for `Data` types (and sometimes, inductive
+families/binary relations such as `Data.Nat.Divisibility._∣_`), and as
+such, their use should be restricted to `Base` or `Core` modules, and
+not pollute the namespaces of `Properties` or other modules.
 
 ## Use of `with` notation
 

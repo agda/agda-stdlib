@@ -1,18 +1,20 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Endomorphisms on a Setoid
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
--- Disabled to prevent warnings from deprecated names
-{-# OPTIONS --warn=noUserWarning #-}
 
 open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.Bundles using (Setoid)
 
 module Function.Endomorphism.Setoid {c e} (S : Setoid c e) where
+
+{-# WARNING_ON_IMPORT
+"Function.Endomorphism.Setoid was deprecated in v2.1.
+Use Function.Endo.Setoid instead."
+#-}
 
 open import Agda.Builtin.Equality
 

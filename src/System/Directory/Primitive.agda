@@ -21,12 +21,12 @@ open import System.FilePath.Posix.Primitive
 {-# FOREIGN GHC import Data.Text        #-}
 
 data XdgDirectory : Set where
-  XdgData XdgConfig XdgCache : XdgDirectory
+  XdgData XdgConfig XdgCache XdgState : XdgDirectory
 
 data XdgDirectoryList : Set where
   XdgDataDirs XdgConfigDirs : XdgDirectoryList
 
-{-# COMPILE GHC XdgDirectory     = data XdgDirectory (XdgData|XdgConfig|XdgCache)    #-}
+{-# COMPILE GHC XdgDirectory     = data XdgDirectory (XdgData|XdgConfig|XdgCache|XdgState) #-}
 {-# COMPILE GHC XdgDirectoryList = data XdgDirectoryList (XdgDataDirs|XdgConfigDirs) #-}
 
 private

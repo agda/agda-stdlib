@@ -31,6 +31,8 @@ RightIdentity a _∙ᴮ_ = ∀ m → (m ∙ᴮ a) ≈ m
 Associative : Op₂ A → Opᵣ A B → Set _
 Associative _∙ᴬ_ _∙ᴮ_ = ∀ m x y → ((m ∙ᴮ x) ∙ᴮ y) ≈ (m ∙ᴮ (x ∙ᴬ y))
 
+infix 4 _DistributesOverʳ_ _DistributesOverˡ_⟶_
+
 _DistributesOverˡ_⟶_ : Opᵣ A B → Op₂ A → Op₂ B → Set _
 _*_ DistributesOverˡ _+ᴬ_ ⟶ _+ᴮ_ =
   ∀ m x y → (m * (x +ᴬ y)) ≈ ((m * x) +ᴮ (m * y))

@@ -396,13 +396,13 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (to xs≈ys (proj₂
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    index-of (proj₂ (Prod.map id (to xs≈ys)
-      (from (Fin-length xs) (to (Fin-length xs) (z , p)))))  ≡⟨⟩
+    index-of (proj₂ (Product.map₂ (to xs≈ys)
+      (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    to (Fin-length ys) (Prod.map id (to xs≈ys)
-      (from (Fin-length xs) (index-of p)))                          ≡⟨⟩
+    to (Fin-length ys) (Product.map₂ (to xs≈ys)
+      (from (Fin-length xs) (index-of p)))                    ≡⟨⟩
 
-    to (Fin-length-cong xs≈ys) (index-of p)                        ∎
+    to (Fin-length-cong xs≈ys) (index-of p)                   ∎
     where
     open ≡-Reasoning
     open Inverse
@@ -429,10 +429,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (Inverse.to xs≈ys p) ≡
     index-of (Inverse.to xs≈ys q)
   index-equality-preserved {p = p} {q} xs≈ys eq =
-    index-of (Inverse.to xs≈ys p)                  ≡⟨ index-of-commutes xs≈ys p ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of p)  ≡⟨ ≡.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of q)  ≡⟨ ≡.sym $ index-of-commutes xs≈ys q ⟩
-    index-of (Inverse.to xs≈ys q)                  ∎
+    index-of (Inverse.to xs≈ys p)                   ≡⟨ index-of-commutes xs≈ys p ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of p) ≡⟨ ≡.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of q) ≡⟨ ≡.sym $ index-of-commutes xs≈ys q ⟩
+    index-of (Inverse.to xs≈ys q)                   ∎
     where
     open ≡-Reasoning
 
@@ -520,13 +520,13 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₁ a″ , eq₄ = ⊥-elim $ from-hyp eq₃ eq₄
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₂ b′ , eq₄ = inj₂-injective (
         let lemma =
-              inj₁ a′             ≡⟨ ≡.sym eq₃ ⟩
+              inj₁ a′            ≡⟨ ≡.sym eq₃ ⟩
               from f (inj₂ c)    ≡⟨ to-from f eq₂ ⟩
               inj₁ a             ∎
         in
         inj₂ b′             ≡⟨ ≡.sym eq₄ ⟩
         from f (inj₁ a′)    ≡⟨ ≡.cong (from f ∘ inj₁) $ inj₁-injective lemma ⟩
-        from f (inj₁ a)    ≡⟨ to-from f eq₁ ⟩
+        from f (inj₁ a)     ≡⟨ to-from f eq₁ ⟩
         inj₂ b              ∎)
 
   -- Some final lemmas.

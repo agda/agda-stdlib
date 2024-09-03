@@ -22,6 +22,7 @@ open import Codata.Sized.Stream as Stream using (Stream; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
+import Data.List.Scans.Base as Scans
 open import Data.List.Relation.Binary.Equality.Propositional using (≋-refl)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybe
@@ -283,7 +284,7 @@ fromList-++ []       bs = refl
 fromList-++ (a ∷ as) bs = ≡.refl ∷ λ where .force → fromList-++ as bs
 
 fromList-scanl : ∀ (c : B → A → B) n as →
-                 i ⊢ fromList (List.scanl c n as) ≈ scanl c n (fromList as)
+                 i ⊢ fromList (Scans.scanl c n as) ≈ scanl c n (fromList as)
 fromList-scanl c n []       = ≡.refl ∷ λ where .force → refl
 fromList-scanl c n (a ∷ as) =
   ≡.refl ∷ λ where .force → fromList-scanl c (c n a) as

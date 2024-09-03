@@ -243,6 +243,30 @@ record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   commutativeMagma : CommutativeMagma c ℓ
   commutativeMagma = record { isCommutativeMagma = isCommutativeMagma }
 
+record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ
+    _∙_                : Op₂ Carrier
+    isCommutativeBand  : IsCommutativeBand _≈_ _∙_
+
+  open IsCommutativeBand isCommutativeBand public
+
+  band : Band _ _
+  band = record { isBand = isBand }
+
+  open Band band public
+    using (_≉_; magma; rawMagma; semigroup)
+
+  commutativeSemigroup : CommutativeSemigroup c ℓ
+  commutativeSemigroup = record { isCommutativeSemigroup = isCommutativeSemigroup }
+
+  open CommutativeSemigroup commutativeSemigroup public
+    using (commutativeMagma)
+
+
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation & 1 element
 ------------------------------------------------------------------------
@@ -315,6 +339,27 @@ record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   open CommutativeSemigroup commutativeSemigroup public
     using (commutativeMagma)
 
+record IdempotentMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ
+    _∙_                : Op₂ Carrier
+    ε                  : Carrier
+    isIdempotentMonoid : IsIdempotentMonoid _≈_ _∙_ ε
+
+  open IsIdempotentMonoid isIdempotentMonoid public
+
+  monoid : Monoid _ _
+  monoid = record { isMonoid = isMonoid }
+
+  open Monoid monoid public
+    using (_≉_; rawMagma; magma; semigroup; unitalMagma; rawMonoid)
+
+  band : Band _ _
+  band = record { isBand = isBand }
+
 
 record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -331,6 +376,12 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   commutativeMonoid : CommutativeMonoid _ _
   commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
 
+  idempotentMonoid : IdempotentMonoid _ _
+  idempotentMonoid = record { isIdempotentMonoid = isIdempotentMonoid }
+
+  commutativeBand : CommutativeBand _ _
+  commutativeBand = record { isCommutativeBand = isCommutativeBand }
+
   open CommutativeMonoid commutativeMonoid public
     using
     ( _≉_; rawMagma; magma; unitalMagma; commutativeMagma
@@ -338,6 +389,8 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawMonoid; monoid
     )
 
+  open CommutativeBand commutativeBand public
+    using (band)
 
 -- Idempotent commutative monoids are also known as bounded lattices.
 -- Note that the BoundedLattice necessarily uses the notation inherited
@@ -778,6 +831,16 @@ record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring
     )
 
+  +-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+  +-idempotentCommutativeMonoid = record { isIdempotentCommutativeMonoid = +-isIdempotentCommutativeMonoid }
+
+  open IdempotentCommutativeMonoid +-idempotentCommutativeMonoid public
+    using ()
+    renaming ( band to +-band
+             ; commutativeBand to +-commutativeBand
+             ; idempotentMonoid to +-idempotentMonoid
+             )
+
 record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⋆
   infixl 7 _*_
@@ -917,6 +980,7 @@ record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     using () renaming (magma to *-magma; identity to *-identity)
 
 record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
   infixl 7 _*_
   infixl 6 _+_
   infix  4 _≈_
