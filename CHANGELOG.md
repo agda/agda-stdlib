@@ -1,10 +1,9 @@
 Version 2.2-dev
 ===============
 
-The library has been tested using Agda 2.6.4.3.
+The library has been tested using Agda 2.7.0.
 
-Highlights
-----------
+* Fixed `Reflection.AST.Definition` to take into account Agda now exposes a `Quantity` argument on the reflection `constructor` constructor.
 
 Bug-fixes
 ---------
