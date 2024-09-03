@@ -24,6 +24,12 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.CommutativeMagma.Divisibility`:
+  ```agda
+  ∣-factors    ↦  x|xy∧y|xy
+  ∣-factors-≈  ↦  xy≈z⇒x|z∧y|z
+  ```
+
 * In `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∣-respˡ   ↦  ∣-respˡ-≈
@@ -87,6 +93,11 @@ Additions to existing modules
   ```agda
   ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ```
+
+* In `Data.Maybe.Properties`:
+  ```agda
+  maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
   ```
 
 * New lemmas in `Data.Nat.Properties`:
