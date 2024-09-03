@@ -115,7 +115,7 @@ zip = zipWith id
 unzip : All (P ∩ Q) ⊆ All P ∩ All Q
 unzip = unzipWith id
 
-module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
+module _ (S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
   open Setoid S renaming (refl to ≈-refl)
   open SetoidMembership S
 

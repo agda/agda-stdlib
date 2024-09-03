@@ -24,6 +24,34 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.CommutativeMagma.Divisibility`:
+  ```agda
+  ∣-factors    ↦  x|xy∧y|xy
+  ∣-factors-≈  ↦  xy≈z⇒x|z∧y|z
+  ```
+
+* In `Algebra.Solver.CommutativeMonoid`:
+  ```agda
+  normalise-correct  ↦  Algebra.Solver.CommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton-correct
+  ```
+
+* In `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  flip12             ↦  Algebra.Properties.CommutativeSemigroup.xy∙z≈y∙xz
+  distr              ↦  Algebra.Properties.IdempotentCommutativeMonoid.∙-distrˡ-∙
+  normalise-correct  ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton-correct
+  ```
+
+* In `Algebra.Solver.Monoid`:
+  ```agda
+  homomorphic        ↦  Algebra.Solver.Monoid.Normal.comp-correct
+  normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
@@ -45,6 +73,19 @@ New modules
   Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
+* Refactoring of the `Algebra.Solver.*Monoid` implementations, via
+  a single `Solver` module API based on the existing `Expr`, and
+  a common `Normal`-form API:
+  ```agda
+  Algebra.Solver.CommutativeMonoid.Normal
+  Algebra.Solver.IdempotentCommutativeMonoid.Normal
+  Algebra.Solver.Monoid.Expression
+  Algebra.Solver.Monoid.Normal
+  Algebra.Solver.Monoid.Solver
+  ```
+
+  NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
+
 * Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
   ```agda
   Data.List.Relation.Unary.All.Properties.Core
@@ -52,6 +93,12 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Solver.Ring`
+  ```agda
+  Env : ℕ → Set _
+  Env = Vec Carrier
+ ```
 
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
@@ -80,6 +127,11 @@ Additions to existing modules
   ```agda
   ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ```
+
+* In `Data.Maybe.Properties`:
+  ```agda
+  maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
   ```
 
 * New lemmas in `Data.Nat.Properties`:
