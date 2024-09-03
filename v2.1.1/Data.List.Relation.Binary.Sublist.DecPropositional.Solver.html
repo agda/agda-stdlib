@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Sublist.DecPropositional.Solver</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- A solver for proving that one list is a sublist of the other for</a>
+<a id="174" class="Comment">-- types which enjoy decidable equalities.</a>
+<a id="217" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="291" class="Symbol">{-#</a> <a id="295" class="Keyword">OPTIONS</a> <a id="303" class="Pragma">--cubical-compatible</a> <a id="324" class="Pragma">--safe</a> <a id="331" class="Symbol">#-}</a>
+
+<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a> <a id="376" class="Keyword">using</a> <a id="382" class="Symbol">(</a><a id="383" href="Relation.Binary.Definitions.html#6834" class="Function">DecidableEquality</a><a id="400" class="Symbol">)</a>
+
+<a id="403" class="Keyword">module</a> <a id="410" href="Data.List.Relation.Binary.Sublist.DecPropositional.Solver.html" class="Module">Data.List.Relation.Binary.Sublist.DecPropositional.Solver</a>
+       <a id="475" class="Symbol">{</a><a id="476" href="Data.List.Relation.Binary.Sublist.DecPropositional.Solver.html#476" class="Bound">a</a><a id="477" class="Symbol">}</a> <a id="479" class="Symbol">{</a><a id="480" href="Data.List.Relation.Binary.Sublist.DecPropositional.Solver.html#480" class="Bound">A</a> <a id="482" class="Symbol">:</a> <a id="484" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="488" href="Data.List.Relation.Binary.Sublist.DecPropositional.Solver.html#476" class="Bound">a</a><a id="489" class="Symbol">}</a> <a id="491" class="Symbol">(</a><a id="492" href="Data.List.Relation.Binary.Sublist.DecPropositional.Solver.html#492" class="Bound Operator">_≟_</a> <a id="496" class="Symbol">:</a> <a id="498" href="Relation.Binary.Definitions.html#6834" class="Function">DecidableEquality</a> <a id="516" href="Data.List.Relation.Binary.Sublist.DecPropositional.Solver.html#480" class="Bound">A</a><a id="517" class="Symbol">)</a>
+       <a id="526" class="Keyword">where</a>
+
+<a id="533" class="Keyword">open</a> <a id="538" class="Keyword">import</a> <a id="545" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a> <a id="594" class="Keyword">using</a> <a id="600" class="Symbol">(</a><a id="601" href="Relation.Binary.PropositionalEquality.Properties.html#5818" class="Function">decSetoid</a><a id="610" class="Symbol">)</a>
+
+<a id="613" class="Keyword">open</a> <a id="618" class="Keyword">import</a> <a id="625" href="Data.List.Relation.Binary.Sublist.DecSetoid.Solver.html" class="Module">Data.List.Relation.Binary.Sublist.DecSetoid.Solver</a> <a id="676" class="Symbol">(</a><a id="677" href="Relation.Binary.PropositionalEquality.Properties.html#5818" class="Function">decSetoid</a> <a id="687" href="Data.List.Relation.Binary.Sublist.DecPropositional.Solver.html#492" class="Bound Operator">_≟_</a><a id="690" class="Symbol">)</a> <a id="692" class="Keyword">public</a>
+</pre></body></html>
