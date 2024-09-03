@@ -97,6 +97,9 @@ maybe′-map : ∀ j (n : C) (f : A → B) ma →
              maybe′ j n (map f ma) ≡ maybe′ (j ∘′ f) n ma
 maybe′-map = maybe-map
 
+maybe′-∘ : ∀ {b} (f : B → C) (g : A → B) → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
+maybe′-∘ _ _ = maybe (λ _ → refl) refl
+
 ------------------------------------------------------------------------
 -- _<∣>_
 

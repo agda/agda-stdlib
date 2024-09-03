@@ -80,3 +80,10 @@ dec-yes-irr a? irr a with a′ , eq ← dec-yes a? a rewrite irr a a′ = eq
 
 ⌊⌋-map′ : ∀ t f (a? : Dec A) → ⌊ map′ {B = B} t f a? ⌋ ≡ ⌊ a? ⌋
 ⌊⌋-map′ t f a? = trans (isYes≗does (map′ t f a?)) (sym (isYes≗does a?))
+
+does-≡ : (a? b? : Dec A) → does a? ≡ does b?
+does-≡ a? (yes a) = dec-true a? a
+does-≡ a? (no ¬a) = dec-false a? ¬a
+
+does-⇔ : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
+does-⇔ A⇔B a? = does-≡ (map A⇔B a?)

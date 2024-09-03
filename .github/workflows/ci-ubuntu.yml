@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - experimental
+      - 'v*-release'
   pull_request:
     branches:
       - master
