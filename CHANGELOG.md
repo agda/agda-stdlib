@@ -35,6 +35,28 @@ Deprecated names
   ∣-respˡ   ↦  ∣-respˡ-≈
   ∣-respʳ   ↦  ∣-respʳ-≈
   ∣-resp    ↦  ∣-resp-≈
+ ```
+
+* In `Algebra.Solver.CommutativeMonoid`:
+  ```agda
+  normalise-correct  ↦  Algebra.Solver.CommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton-correct
+  ```
+
+* In `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  flip12             ↦  Algebra.Properties.CommutativeSemigroup.xy∙z≈y∙xz
+  distr              ↦  Algebra.Properties.IdempotentCommutativeMonoid.∙-distrˡ-∙
+  normalise-correct  ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton-correct
+  ```
+
+* In `Algebra.Solver.Monoid`:
+  ```agda
+  homomorphic        ↦  Algebra.Solver.Monoid.Normal.comp-correct
+  normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
 * In `Data.Vec.Properties`:
@@ -58,6 +80,19 @@ New modules
   Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
+* Refactoring of the `Algebra.Solver.*Monoid` implementations, via
+  a single `Solver` module API based on the existing `Expr`, and
+  a common `Normal`-form API:
+  ```agda
+  Algebra.Solver.CommutativeMonoid.Normal
+  Algebra.Solver.IdempotentCommutativeMonoid.Normal
+  Algebra.Solver.Monoid.Expression
+  Algebra.Solver.Monoid.Normal
+  Algebra.Solver.Monoid.Solver
+  ```
+
+  NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
+
 Additions to existing modules
 -----------------------------
 
@@ -71,6 +106,12 @@ Additions to existing modules
   ∤∤-respʳ-≈ : _∤∤_ Respectsʳ _≈_
   ∤∤-resp-≈  : _∤∤_ Respects₂ _≈_
   ```
+
+* In `Algebra.Solver.Ring`
+  ```agda
+  Env : ℕ → Set _
+  Env = Vec Carrier
+ ```
 
 * In `Data.List.Properties`:
   ```agda

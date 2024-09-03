@@ -33,9 +33,7 @@ open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 module Ops where
   zero-homo : ∀ x → T (is-just (0≟ x)) → 0# ≈ x
-  zero-homo x _ with 0≟ x
-  zero-homo x _  | just p = p
-  zero-homo x () | nothing
+  zero-homo x _ with just p ← 0≟ x = p
 
   homo : Homomorphism ℓ₁ ℓ₂ ℓ₁ ℓ₂
   homo = record
