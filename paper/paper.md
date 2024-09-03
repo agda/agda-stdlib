@@ -42,7 +42,7 @@ bibliography: paper.bib
 
 # Summary
 
-Agda[@norell2009dependently] is a functional, dependently-typed language that serves both as a traditional programming language and as an interactive theorem prover (ITP).
+Agda[@norell2009dependently] is a dependently-typed functional language that serves both as a traditional programming language and as an interactive theorem prover (ITP).
 This paper introduces the Agda standard library, which offers many of the fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
 Unlike the standard libraries of traditional programming languages, the Agda standard library not only provides standard utilities and data structures, but also a substantial portion of the basic mathematics essential for proving the correctness of programs.
 
