@@ -76,7 +76,7 @@ A diverse selection of such projects, not intended as endorsements over any othe
 
 As one of the largest existing Agda libraries, the standard library has had a synergistic relationship with the development of Agda itself, prompting the implementation of several new language features.
 For example, the standard library is designed to be compatible with several different compiler options, including `--cubical` and `--safe`. 
-To enable this, in 2019 Agda categorised all language options into two categories of ''infective'' and ''coinfective'', allowing the library to precisely partition code that can be used under certain flag combinations
+To enable this, in 2019 Agda categorised all language options into two categories of ''infective'' and ''coinfective'', allowing the library to precisely partition code that can be used under certain flag combinations.
 This categorisation enables the library to integrate safe code natively defined in Agda with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
  
 Additionally, the library has directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings.
