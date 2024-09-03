@@ -57,7 +57,7 @@ While this approach reduces compiler complexity and enhances its reliability, it
 For example, in a fresh Agda environment, there is no predefined notion of an integer or a string, let alone more complex data structures such as arrays or maps.
 
 Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct." Therefore, the standard library must provide not only the operations for these data types but also proofs of their correctness (e.g., proving that integer addition is commutative or that string concatenation is associative).
-Without the Agda standard library, something as simple as defining a function to reverse a string and proving that it preserves the lenght of the string would require hundreds of lines of code.
+Without the Agda standard library, something as simple as defining a function to reverse a string and proving that it preserves the length of the string would require hundreds of lines of code.
 
 # Impact
 
@@ -83,10 +83,10 @@ Additionally, the library has directly influenced the language by requesting the
 
 # Design
 
-Designing a standard libary for an ITP such as Agda presents several challenges.
+Designing a standard library for an ITP such as Agda presents several challenges.
 
 Firstly, as discussed, the standard library contains many of the foundational mathematical results used to prove program correctness.
-Even though the library currently focuses on discrete mathematics - reflecting the bias in its user base towards programming language theory - organizing this material into a coherent and logical structure is extremely challenging[@carette2020leveraging].
+Even though the library currently focuses on discrete mathematics - reflecting the bias in its user base towards programming language theory - organising this material into a coherent and logical structure is extremely challenging[@carette2020leveraging].
 There is a constant tension between being as general as possible (e.g., defining operations over general algebraic structures) and providing clear, straightforward, and intuitive definitions (e.g., defining operations concretely over integers).
 Additionally, there is a persistent temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular problem, which comes at the cost of duplicating the theory for the new representation.
 Theorem provers like Isabelle[@paulson1994isabelle] and Coq[@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts.
@@ -116,7 +116,7 @@ However, the library’s test suite does address two critical areas.
 The first area is the interface with the underlying operating system (e.g., reading from the command line, file access, timers). 
 Since the correctness of the underlying OS cannot be reasoned about in Agda itself, these operations are included in the test suite.
 The second area is performance. 
-The performance of a program cannot be analyzed within Agda, making it necessary to include performance tests. 
+The performance of a program cannot be analysed within Agda, making it necessary to include performance tests. 
 Although the library currently includes a few performance tests, this is not a major priority for the community, and remains an area in need of further work.
 
 # Notable achievements in version 2.0
@@ -133,7 +133,7 @@ This short paper outlines the state of version 2.0 of the Agda standard library,
 
 # Acknowledgements
 
-We would like to thank the core Agda development team who are not authors on this paper, but nonetheless whose work on Agda makes the standrad library possible. This includes, but is not limited to, 
+We would like to thank the core Agda development team who are not authors on this paper, but nonetheless whose work on Agda makes the standard library possible. This includes, but is not limited to, 
 Andreas Abel, 
 Ulf Norell,
 Nils Anders Danielsson, 
