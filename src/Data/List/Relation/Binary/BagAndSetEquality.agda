@@ -30,7 +30,7 @@ open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭-refl; ↭-sym; ↭-prep; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
   using (∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ∈-resp-[σ∘σ⁻¹]; shift; ++-comm)
-open import Data.Product.Base as Prod using (∃; _,_; proj₁; proj₂; _×_)
+open import Data.Product.Base as Product using (∃; _,_; proj₁; proj₂; _×_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Data.Sum.Properties using (inj₂-injective; inj₁-injective)
