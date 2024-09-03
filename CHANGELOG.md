@@ -24,6 +24,12 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.CommutativeMagma.Divisibility`:
+  ```agda
+  ∣-factors    ↦  x|xy∧y|xy
+  ∣-factors-≈  ↦  xy≈z⇒x|z∧y|z
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
