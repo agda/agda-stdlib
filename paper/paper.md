@@ -44,16 +44,16 @@ bibliography: paper.bib
 
 Agda[@norell2009dependently] is a dependently-typed functional language that serves both as a traditional programming language and as an interactive theorem prover (ITP).
 This paper introduces the Agda standard library, which offers many of the fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
-Unlike the standard libraries of traditional programming languages, the Agda standard library not only provides standard utilities and data structures, but also a substantial portion of the basic mathematics essential for proving the correctness of programs.
+Unlike the standard libraries of traditional programming languages, the Agda standard library not only provides standard utilities and data structures, but also a substantial portion of the basic discrete mathematics essential for proving the correctness of programs.
 
 # Statement of need
 
 Most programming languages include a "standard" library that offers a basic set of algorithms, data structures, and operating system operations.
 However, there are two reasons why a standard library is particularly important in Agda compared to traditional programming languages.
 
-First, like other theorem provers, the Agda language provides only a minimal core set of primitives from which programs can be constructed. 
-As a result, many concepts traditionally considered part of a language must be defined within the program itself. 
-While this approach reduces compiler complexity and enhances its reliability, it also means that users have access to fewer built-in definitions initially. 
+First, like other theorem provers, the Agda language provides only a minimal core set of primitives from which programs can be constructed.
+As a result, many concepts traditionally considered part of a language must be defined within the program itself.
+While this approach reduces compiler complexity and enhances its reliability, it also means that users have access to fewer built-in definitions initially.
 For example, in a fresh Agda environment, there is no predefined notion of an integer or a string, let alone more complex data structures such as arrays or maps.
 
 Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct." Therefore, the standard library must provide not only the operations for these data types but also proofs of their correctness (e.g., proving that integer addition is commutative or that string concatenation is associative).
@@ -61,7 +61,7 @@ Without the Agda standard library, something as simple as defining a function to
 
 # Impact
 
-The Agda standard library has been used in a wide range of projects, too numerous to list exhaustively. 
+The Agda standard library has been used in a wide range of projects, too numerous to list exhaustively.
 A diverse selection of such projects, not intended as endorsements over any others, includes:
 
 - Formalisation of category theory [@hu2021categories]
@@ -75,10 +75,10 @@ A diverse selection of such projects, not intended as endorsements over any othe
 - Verification of routing protocols [@daggitt2023routing]
 
 As one of the largest existing Agda libraries, the standard library has had a synergistic relationship with the development of Agda itself, prompting the implementation of several new language features.
-For example, the standard library is designed to be compatible with several different compiler options, including `--cubical` and `--safe`. 
+For example, the standard library is designed to be compatible with several different compiler options, including `--cubical` and `--safe`.
 To enable this, in 2019 Agda categorised all language options into two categories of ''infective'' and ''coinfective'', allowing the library to precisely partition code that can be used under certain flag combinations.
 This categorisation enables the library to integrate safe code natively defined in Agda with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
- 
+
 Additionally, the library has directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings.
 
 # Design
@@ -133,12 +133,12 @@ This short paper outlines the state of version 2.0 of the Agda standard library,
 
 # Acknowledgements
 
-We would like to thank the core Agda development team who are not authors on this paper, but nonetheless whose work on Agda makes the standard library possible. This includes, but is not limited to, 
-Andreas Abel, 
+We would like to thank the core Agda development team who are not authors on this paper, but nonetheless whose work on Agda makes the standard library possible. This includes, but is not limited to,
+Andreas Abel,
 Ulf Norell,
-Nils Anders Danielsson, 
-Andrés Sicard-Ramírez, 
-Jesper Cockx and 
+Nils Anders Danielsson,
+Andrés Sicard-Ramírez,
+Jesper Cockx and
 Andrea Vezzosi,
 without whom Agda itself would not exist.
 
