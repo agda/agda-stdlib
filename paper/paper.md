@@ -42,7 +42,7 @@ bibliography: paper.bib
 
 # Summary
 
-Agda[@norell2009dependently] is a dependently-typed functional language that serves both as a traditional programming language and as an interactive theorem prover (ITP).
+Agda [@norell2009dependently] is a dependently-typed functional language that serves both as a traditional programming language and as an interactive theorem prover (ITP).
 This paper introduces the Agda standard library, which offers many of the fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
 Unlike the standard libraries of traditional programming languages, the Agda standard library not only provides standard utilities and data structures, but also a substantial portion of the basic discrete mathematics essential for proving the correctness of programs.
 
@@ -86,22 +86,22 @@ Additionally, the library has directly influenced the language by requesting the
 Designing a standard library for an ITP such as Agda presents several challenges.
 
 Firstly, as discussed, the standard library contains many of the foundational mathematical results used to prove program correctness.
-Even though the library currently focuses on discrete mathematics - reflecting the bias in its user base towards programming language theory - organising this material into a coherent and logical structure is extremely challenging[@carette2020leveraging].
+Even though the library currently focuses on discrete mathematics - reflecting the bias in its user base towards programming language theory - organising this material into a coherent and logical structure is extremely challenging [@carette2020leveraging].
 There is a constant tension between being as general as possible (e.g., defining operations over general algebraic structures) and providing clear, straightforward, and intuitive definitions (e.g., defining operations concretely over integers).
 Additionally, there is a persistent temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular problem, which comes at the cost of duplicating the theory for the new representation.
-Theorem provers like Isabelle[@paulson1994isabelle] and Coq[@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts.
-On the other hand, MathLib[@van2020maintaining] for Lean aims to provide a repository of canonical definitions.
+Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts.
+On the other hand, MathLib [@van2020maintaining] for Lean aims to provide a repository of canonical definitions.
 The design of the Agda standard library leans more towards the Lean approach, with a high bar set for adding alternative formalisations of the same result.
 
 A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default.
 With the exception of Idris, a more recent entrant to the field [@brady2013idris], other major theorem provers either do not support dependent types or encourage them only to be used sparingly.
 In contrast, nearly everything in the Agda standard library makes use of dependent types, with proofs consisting of evidence-bearing terms of the relevant dependent types.
-As a result, the library provides relatively sophisticated features like polymorphic n-ary functions[@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers [citation?].
+As a result, the library provides relatively sophisticated features like polymorphic n-ary functions [@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers [citation?].
 While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an on-going journey.
 Relatedly, the standard library has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
 Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
-Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell[@haskell2010], the Agda standard library has so far found little need to use them extensively.
+Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], the Agda standard library has so far found little need to use them extensively.
 While Agda supports a very general form of type classes via instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce their necessity compared to other functional languages.
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of the standard library is also constructive.
