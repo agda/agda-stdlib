@@ -101,7 +101,7 @@ While this provides powerful tools for users, learning how to design such a larg
 Relatedly, the standard library has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
 Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
-Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages, the Agda standard library has so far found little need to use them extensively.
+Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell[@haskell2010], the Agda standard library has so far found little need to use them extensively.
 While Agda supports a very general form of type classes via instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce their necessity compared to other functional languages.
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of the standard library is also constructive.
