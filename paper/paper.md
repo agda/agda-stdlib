@@ -48,7 +48,7 @@ Unlike the standard libraries of traditional programming languages, the Agda sta
 
 # Statement of need
 
-Most programming languages include a "standard" library that offers a basic set of algorithms, data structures, and operating system operations.
+Most programming languages include a "standard" library offering a basic set of algorithms, data structures, and operating system operations.
 However, there are two reasons why a standard library is particularly important in Agda compared to traditional programming languages.
 
 First, like other theorem provers, the Agda language provides only a minimal core set of primitives from which programs can be constructed.
