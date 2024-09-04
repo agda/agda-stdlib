@@ -50,7 +50,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ (x ∙ y) ∙ z ⟧          ≈⟨ ∙-homo (x ∙ y) z ⟩
     ⟦ x ∙ y ⟧ ◦ ⟦ z ⟧        ≈⟨ ◦-cong (∙-homo x y) refl ⟩
     (⟦ x ⟧ ◦ ⟦ y ⟧) ◦ ⟦ z ⟧  ≈⟨ assoc ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈⟨ ◦-cong refl (homo y z) ⟨
+    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈⟨ ◦-cong refl (∙-homo y z) ⟨
     ⟦ x ⟧ ◦ ⟦ y ∙ z ⟧        ≈⟨ ∙-homo x (y ∙ z) ⟨
     ⟦ x ∙ (y ∙ z) ⟧          ∎)
 

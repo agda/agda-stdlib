@@ -83,7 +83,7 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
   record IsMagmaHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
-      ∙-homo              : Homomorphic₂ ⟦_⟧ _∙_ _◦_
+      ∙-homo            : Homomorphic₂ ⟦_⟧ _∙_ _◦_
 
     -- Deprecated.
     homo = ∙-homo
@@ -277,7 +277,7 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
   record IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
-      injective          : Injective _≈₁_ _≈₂_ ⟦_⟧
+      injective                  : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsNearSemiringHomomorphism isNearSemiringHomomorphism public
 
@@ -449,7 +449,7 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
     +-isGroupMonomorphism : +.IsGroupMonomorphism ⟦_⟧
     +-isGroupMonomorphism = record
       { isGroupHomomorphism = +-isGroupHomomorphism
-      ; injective            = injective
+      ; injective           = injective
       }
 
     open +.IsGroupMonomorphism +-isGroupMonomorphism public
@@ -472,7 +472,7 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
     +-isGroupIsomorphism   : +.IsGroupIsomorphism ⟦_⟧
     +-isGroupIsomorphism  = record
       { isGroupMonomorphism = +-isGroupMonomorphism
-      ; surjective           = surjective
+      ; surjective          = surjective
       }
 
     open +.IsGroupIsomorphism +-isGroupIsomorphism public
