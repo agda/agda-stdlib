@@ -93,30 +93,30 @@ Theorem provers like Isabelle[@paulson1994isabelle] and Coq[@coq2024manual] appr
 On the other hand, MathLib[@van2020maintaining] for Lean aims to provide a repository of canonical definitions.
 The design of the Agda standard library leans more towards the Lean approach, with a high bar set for adding alternative formalisations of the same result.
 
-A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default. 
+A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default.
 With the exception of Idris, a more recent entrant to the field [@brady2013idris], other major theorem provers either do not support dependent types or encourage them only to be used sparingly.
 In contrast, nearly everything in the Agda standard library makes use of dependent types, with proofs consisting of evidence-bearing terms of the relevant dependent types.
 As a result, the library provides relatively sophisticated features like polymorphic n-ary functions[@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers [citation?].
-While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an on-going journey. 
+While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an on-going journey.
 Relatedly, the standard library has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
-Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design. 
+Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
 Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages, the Agda standard library has so far found little need to use them extensively.
 While Agda supports a very general form of type classes via instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce their necessity compared to other functional languages.
-Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system. 
-Since Agda is entirely constructive, the vast majority of the standard library is also constructive. 
+Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
+Since Agda is entirely constructive, the vast majority of the standard library is also constructive.
 However, the library provides the option to perform non-constructive, classical reasoning, such as the law of excluded middle, by passing the relevant axioms as module parameters.
 This allows users to write such code without directly having to postulate the non-constructive axioms, which would prevent them from using the code with the `--safe` compiler flag.
 
 # Testing
 
-One of the advantages of creating a standard library for an ITP is that proving the correctness of the defined operations is an integral part of the library itself. 
-As a result, there is no need for test suites to verify functional correctness. 
+One of the advantages of creating a standard library for an ITP is that proving the correctness of the defined operations is an integral part of the library itself.
+As a result, there is no need for test suites to verify functional correctness.
 However, the library’s test suite does address two critical areas.
-The first area is the interface with the underlying operating system (e.g., reading from the command line, file access, timers). 
-Since the correctness of the underlying OS cannot be reasoned about in Agda itself, these operations are included in the test suite.
-The second area is performance. 
-The performance of a program cannot be analysed within Agda, making it necessary to include performance tests. 
+The first area is the foreign function interface with the underlying operating system (e.g., reading from the command line, file access, timers).
+Since the correctness of the bindings to external libraries or the underlying OS' primitives cannot be reasoned about in Agda itself, these operations are included in the test suite.
+The second area is performance.
+The performance of a program cannot be analysed within Agda, making it necessary to include performance tests.
 Although the library currently includes a few performance tests, this is not a major priority for the community, and remains an area in need of further work.
 
 # Notable achievements in version 2.0
