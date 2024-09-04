@@ -117,7 +117,7 @@ The first area is the foreign function interface with the underlying operating s
 Since the correctness of the bindings to external libraries or the underlying OS' primitives cannot be reasoned about in Agda itself, these operations are included in the test suite.
 The second area is performance.
 The performance of a program cannot be analysed within Agda, making it necessary to include performance tests.
-Although the library currently includes a few performance tests, this is not a major priority for the community, and remains an area in need of further work.
+Although the library currently includes a few performance tests, this has not so far been a major priority for the community, and remains an area in need of further work.
 
 # Notable achievements in version 2.0
 
