@@ -81,8 +81,8 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
   cancelˡ : LeftCancellative _≈₂_ _◦_ → LeftCancellative _≈₁_ _∙_
   cancelˡ cancelˡ x y z x∙y≈x∙z = injective (cancelˡ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
     ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ ∙-homo x y ⟨
-    ⟦ x ∙ y ⟧      ≈⟨  ⟦⟧-cong x∙y≈x∙z ⟩
-    ⟦ x ∙ z ⟧      ≈⟨  ∙-homo x z ⟩
+    ⟦ x ∙ y ⟧      ≈⟨ ⟦⟧-cong x∙y≈x∙z ⟩
+    ⟦ x ∙ z ⟧      ≈⟨ ∙-homo x z ⟩
     ⟦ x ⟧ ◦ ⟦ z ⟧  ∎))
 
   cancelʳ : RightCancellative _≈₂_ _◦_ → RightCancellative _≈₁_ _∙_
