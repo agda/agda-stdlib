@@ -122,7 +122,7 @@ This part of the test suite is sparser, as this has not yet been a major priorit
 
 # Notable achievements in version 2.0
 
-We outline the state of version 2.0 of `agda-stdlib`, where we believe we have successfully addressed some of the significant design challenges present in versions 1.0-1.7. Key improvements include:
+We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0], where we believe we have successfully addressed some of the significant design challenges present in versions 1.0-1.7. Key improvements include:
 
 - Minimized Dependency Graphs: We have reduced the depth of dependency graphs within the library, ensuring that the most commonly used modules rely on fewer parts of the library. This change has resulted in significantly faster load times for users during interactive development.
 
