@@ -98,8 +98,8 @@ With the exception of Idris, a more recent entrant to the field [@brady2013idris
 In contrast, nearly everything in `agda-stdlib` makes use of dependent types, with correctness-related invariants being closely integrated with definitions.
 Furthermore most proofs consist of evidence-bearing terms for the relevant types, rather than being "irrelevant".
 As a result, the library provides relatively sophisticated features like polymorphic n-ary functions [@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers [citation?].
-While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. `agda-stdlib` is the first library to tackle this challenge.
-Relatedly, the standard library has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
+While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. The Agda standard library is the first such to tackle this challenge.
+Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
 Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
 Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, `agda-stdlib` has so far found little need to exploit such an approach.
