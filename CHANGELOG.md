@@ -125,13 +125,19 @@ Additions to existing modules
 
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
-  Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys
-  All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
+  Any-∈-swap    :  Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap    :  All (_∉ ys) xs → All (_∉ xs) ys
+  ∈-map∘filter⁻ : y ∈₂ map f (filter P? xs) → ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
+  ∈-map∘filter⁺ : f Preserves _≈₁_ ⟶ _≈₂_ →
+                  ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
+                  y ∈₂ map f (filter P? xs)
   ```
 
 * In `Data.List.Membership.Propositional.Properties`:
   ```agda
-  ∈-AllPairs₂ : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
+  ∈-AllPairs₂   : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
+  ∈-map∘filter⁻ : y ∈ map f (filter P? xs) → (∃[ x ] x ∈ xs × y ≡ f x × P x)
+  ∈-map∘filter⁺ : (∃[ x ] x ∈ xs × y ≡ f x × P x) → y ∈ map f (filter P? xs)
   ```
 
 * In `Data.List.Membership.Propositional.Properties.WithK`:

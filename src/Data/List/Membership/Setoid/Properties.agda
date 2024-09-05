@@ -21,11 +21,11 @@ import Data.List.Relation.Unary.All.Properties.Core as All
 import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat.Base using (suc; z<s; _<_)
-open import Data.Product.Base as Product using (∃; _×_; _,_ ; ∃₂)
+open import Data.Product.Base as Product using (∃; _×_; _,_ ; ∃₂; ∃-syntax)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_$_; flip; _∘_; _∘′_; id)
-open import Function.Bundles using (_↔_)
+open import Function.Bundles using (_↔_; mk↔)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_; _Preserves_⟶_)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
@@ -362,6 +362,33 @@ module _ (S : Setoid c ℓ) {P : Pred (Carrier S) p}
   ... |  true because [Px] with v∈f[x∷xs]
   ...   | here  v≈x   = here v≈x , resp (sym v≈x) (invert [Px])
   ...   | there v∈fxs = Product.map there id (∈-filter⁻ v∈fxs)
+
+------------------------------------------------------------------------
+-- map∘filter
+
+module _
+  (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂)
+  {P : Pred (S₁ .Carrier) p} (P? : Decidable P) (resp : P Respects (S₁ .Setoid._≈_))
+  {f xs y} where
+
+  open Setoid     S₁ renaming (_≈_ to _≈₁_)
+  open Setoid     S₂ renaming (_≈_ to _≈₂_; sym to sym₂)
+  open Membership S₁ renaming (_∈_ to _∈₁_)
+  open Membership S₂ renaming (_∈_ to _∈₂_)
+
+  ∈-map∘filter⁻ : y ∈₂ map f (filter P? xs) →
+                  ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
+  ∈-map∘filter⁻ h =
+    let x , x∈ , y≈ = ∈-map⁻ S₁ S₂ h
+        y∈ , Py     = ∈-filter⁻ S₁ P? resp x∈
+    in x , y∈ , y≈ , Py
+
+  ∈-map∘filter⁺ : f Preserves _≈₁_ ⟶ _≈₂_ →
+                  ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
+                  y ∈₂ map f (filter P? xs)
+  ∈-map∘filter⁺ pres (x , x∈ , y≈ , Px)
+    = ∈-resp-≈ S₂ (sym₂ y≈)
+    $ ∈-map⁺ S₁ S₂ pres (∈-filter⁺ S₁ P? resp x∈ Px)
 
 ------------------------------------------------------------------------
 -- derun and deduplicate

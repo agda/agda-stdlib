@@ -24,7 +24,7 @@ open import Data.List.Relation.Unary.Any.Properties
 open import Data.Nat.Base using (ℕ; suc; s≤s; _≤_; _<_; _≰_)
 open import Data.Nat.Properties
   using (suc-injective; m≤n⇒m≤1+n; _≤?_; <⇒≢; ≰⇒>)
-open import Data.Product.Base using (∃; ∃₂; _×_; _,_)
+open import Data.Product.Base using (∃; ∃₂; _×_; _,_; ∃-syntax)
 open import Data.Product.Properties using (×-≡,≡↔≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
@@ -251,6 +251,19 @@ module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ = Membership.∈-filter⁻ (≡.setoid A) P? (≡.resp P)
+
+------------------------------------------------------------------------
+-- map∘filter
+
+module _ (f : A → B) {p} {P : A → Set p} (P? : Decidable P) {f xs y} where
+
+  private Sᴬ = ≡.setoid A; Sᴮ = ≡.setoid B; respP = ≡.resp P
+
+  ∈-map∘filter⁻ : y ∈ map f (filter P? xs) → (∃[ x ] x ∈ xs × y ≡ f x × P x)
+  ∈-map∘filter⁻ = Membership.∈-map∘filter⁻ Sᴬ Sᴮ P? respP
+
+  ∈-map∘filter⁺ : (∃[ x ] x ∈ xs × y ≡ f x × P x) → y ∈ map f (filter P? xs)
+  ∈-map∘filter⁺ = Membership.∈-map∘filter⁺ Sᴬ Sᴮ P? respP (cong f)
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
