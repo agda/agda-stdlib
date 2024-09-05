@@ -55,10 +55,10 @@ First, like other theorem provers, the Agda language provides only a minimal cor
 As a result, many concepts traditionally considered part of a language must be defined within the program itself.
 This approach reduces compiler complexity and enhances its reliability, and also shows the strength of the core language
 itself as it can indeed push these concepts out to the library.
-For example, in a fresh Agda environment, there is no predefined notion of an integer or a string, let alone more complex data structures such as arrays or maps. Thus the crucial need for a standard library.
+For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as arrays or maps. Thus the crucial need for a standard library.
 
 Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct." 
-Therefore, the standard library needs to provide all the necessary building blocks: not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a string reversing function and proving that it preserves the length of the string would require hundreds of lines of code.
+Therefore, the standard library needs to provide all the necessary building blocks: not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a string-reversing function and proving that it preserves the length of the string would require hundreds of lines of code.
 
 # Impact
 
@@ -75,12 +75,12 @@ A diverse selection of such projects, not intended as endorsements over any othe
 
 - Verification of routing protocols [@daggitt2023routing]
 
-`agda-stdlib` has had a synergistic relationship with the development of Agda itself, prompting the implementation of several new language features.
+The development of `agda-stdlib` has had a synergistic relationship with that of Agda itself, prompting the implementation of several new language features.
 For example, `agda-stdlib` is designed to be compatible with several different compiler options, including `--cubical` and `--safe`.
 To enable this, in 2019 Agda categorised all language options into two categories of ''infective'' and ''coinfective'', allowing any library to precisely partition code that can be used under certain flag combinations.
 This categorisation enables libraries to integrate safe Agda code with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
 
-Additionally, the development needs of `agda-stdlib` has directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings. This lets ends users more easily evolve their code along with the evolution of `agda-stdlib`.
+Additionally, the development needs of `agda-stdlib` have directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings. This lets end-users more easily evolve their code along with the evolution of `agda-stdlib`.
 
 # Design
 
@@ -98,20 +98,20 @@ With the exception of Idris, a more recent entrant to the field [@brady2013idris
 In contrast, nearly everything in `agda-stdlib` makes use of dependent types, with correctness-related invariants being closely integrated with definitions.
 Furthermore most proofs consist of evidence-bearing terms for the relevant types, rather than being "irrelevant".
 As a result, the library provides relatively sophisticated features like polymorphic n-ary functions [@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers [citation?].
-While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an on-going journey. `agda-stdlib` is the first library to tackle this challenge.
+While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. `agda-stdlib` is the first library to tackle this challenge.
 Relatedly, the standard library has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
 Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
-Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use then extensively as a core feature of their design, the Agda standard library has so far found little need to use them much.
+Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, `agda-stdlib` has so far found little need to exploit such an approach.
 While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce their necessity compared to the languages mentioned above. 
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
-Non-constructive classical reasoning can be achieved by passing the relevant axioms as module parameters.
-This enables users to write provably 'safe' non-constructive code, i.e. with having to *postulate* non-constructive axioms.
+Non-constructive methods, such as classical reasoning, can be achieved by passing the relevant axioms as module parameters.
+This enables users to write provably 'safe' non-constructive code, i.e. without having to *postulate* non-constructive axioms.
 
 # Testing
 
-One of the advantages of ITPs is that correctness proofs are regarding as an integral part of creating a collection of structures and operations.
+One of the advantages of ITPs is that correctness proofs are regarded as an integral part of creating a collection of structures and operations.
 Thus there is no need for test suites to verify functional correctness.
 However the library’s test suite does address two critical areas.
 First is the foreign function interface with the underlying operating system (e.g., reading from the command line, file access, timers).
