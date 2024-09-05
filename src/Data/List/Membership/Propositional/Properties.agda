@@ -161,6 +161,19 @@ module _ {v : A} where
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
+-- concatMap
+
+module _ (f : A → List B) {xs y} where
+
+  private Sᴬ = ≡.setoid A; Sᴮ = ≡.setoid B
+
+  ∈-concatMap⁺ : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁺ = Membership.∈-concatMap⁺ Sᴬ Sᴮ
+
+  ∈-concatMap⁻ : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ∈-concatMap⁻ = Membership.∈-concatMap⁻ Sᴬ Sᴮ
+
+------------------------------------------------------------------------
 -- cartesianProductWith
 
 module _ (f : A → B → C) where

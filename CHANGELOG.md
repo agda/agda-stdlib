@@ -131,6 +131,8 @@ Additions to existing modules
   ∈-map∘filter⁺ : f Preserves _≈₁_ ⟶ _≈₂_ →
                   ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
                   y ∈₂ map f (filter P? xs)
+  ∈-concatMap⁺  : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁻  : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
   ```
 
 * In `Data.List.Membership.Propositional.Properties`:
@@ -138,6 +140,8 @@ Additions to existing modules
   ∈-AllPairs₂   : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
   ∈-map∘filter⁻ : y ∈ map f (filter P? xs) → (∃[ x ] x ∈ xs × y ≡ f x × P x)
   ∈-map∘filter⁺ : (∃[ x ] x ∈ xs × y ≡ f x × P x) → y ∈ map f (filter P? xs)
+  ∈-concatMap⁺  : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁻  : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
   ```
 
 * In `Data.List.Membership.Propositional.Properties.WithK`:
@@ -147,13 +151,20 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
-  product≢0 : All NonZero ns → NonZero (product ns)
-  ∈⇒≤product : All NonZero ns → n ∈ ns → n ≤ product ns
+  product≢0    : All NonZero ns → NonZero (product ns)
+  ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
+  concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
   ```
 
 * In `Data.List.Relation.Unary.All`:
   ```agda
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
+  ```
+
+* In `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
+  concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
   ```
 
 * In `Data.List.Relation.Binary.Equality.Setoid`:
@@ -170,7 +181,7 @@ Additions to existing modules
 
 * In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```agda
-  concatMap⁺ : ∀ (f : A → List B) → xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
+  concatMap⁺ : xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
   ```
 
 * In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:

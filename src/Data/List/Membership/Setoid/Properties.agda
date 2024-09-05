@@ -240,6 +240,21 @@ module _ (S : Setoid c ℓ) where
     let xs , xs∈xss , v∈xs = find (∈-concat⁻ xss v∈c[xss]) in xs , v∈xs , xs∈xss
 
 ------------------------------------------------------------------------
+-- concatMap
+
+module _
+  (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂)
+  {f : Carrier S₁ → List (Carrier S₂)} {xs y} where
+
+  open Membership S₂ using (_∈_)
+
+  ∈-concatMap⁺ : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁺ = Any.concatMap⁺ f
+
+  ∈-concatMap⁻ : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ∈-concatMap⁻ = Any.concatMap⁻ f
+
+------------------------------------------------------------------------
 -- reverse
 
 module _ (S : Setoid c ℓ) where

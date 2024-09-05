@@ -462,6 +462,17 @@ module _ {P : A → Set p} where
   concat↔ {xss} = mk↔ₛ′ concat⁺ (concat⁻ xss) (concat⁺∘concat⁻ xss) concat⁻∘concat⁺
 
 ------------------------------------------------------------------------
+-- concatMap
+
+module _ (f : A → List B) {p} {P : Pred B p} where
+
+  concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
+  concatMap⁺ = concat⁺ ∘ map⁺
+
+  concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
+  concatMap⁻ = map⁻ ∘ concat⁻ _
+
+------------------------------------------------------------------------
 -- cartesianProductWith
 
 module _ (f : A → B → C) where
