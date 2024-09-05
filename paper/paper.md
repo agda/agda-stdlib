@@ -107,7 +107,7 @@ While Agda supports a very general form of instance search, the ability to use q
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
 Non-constructive methods, such as classical reasoning, can be achieved by passing the relevant axioms as module parameters.
-This enables users to write provably 'safe' non-constructive code, i.e. without having to *postulate* non-constructive axioms.
+This enables users to write provably 'safe' non-constructive code, i.e. without having to *postulate* such axioms.
 
 # Testing
 
