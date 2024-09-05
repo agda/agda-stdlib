@@ -151,7 +151,7 @@ Additions to existing modules
   does-≡  : (a? b? : Dec A) → does a? ≡ does b?
   ```
 
-* In `Relation.Nullary.Properties`:
+* In `Relation.Unary.Properties`:
   ```agda
   map    : P ≐ Q → Decidable P → Decidable Q
   does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
