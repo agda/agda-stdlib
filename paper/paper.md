@@ -103,7 +103,7 @@ Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda 
 
 Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
 Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, `agda-stdlib` has so far found little need to exploit such an approach.
-While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce their necessity compared to the languages mentioned above. 
+While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce the need for it compared to the languages mentioned above. 
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
 Non-constructive methods, such as classical reasoning, can be achieved by passing the relevant axioms as module parameters.
@@ -122,7 +122,7 @@ This part of the test suite is sparser, as this has not yet been a major priorit
 
 # Notable achievements in version 2.0
 
-We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0], where we believe we have successfully addressed some of the significant design challenges present in versions 1.0-1.7. Key improvements include:
+We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] (with HTML-annotated sources at: \url{https://agda.github.io/agda-stdlib/v2.0/}), where we believe we have successfully addressed some of the significant design challenges present in versions 1.0-1.7. Key improvements include:
 
 - Minimized Dependency Graphs: We have reduced the depth of dependency graphs within the library, ensuring that the most commonly used modules rely on fewer parts of the library. This change has resulted in significantly faster load times for users during interactive development.
 
@@ -143,6 +143,6 @@ Jesper Cockx and
 Andrea Vezzosi,
 without whom Agda itself would not exist.
 
-The authors of this paper are listed approximately in order of contribution to the library.
+The authors of this paper are listed approximately in order of contribution to the library. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
 
 # References
