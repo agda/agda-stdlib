@@ -33,7 +33,7 @@ open import Effect.Monad using (RawMonad)
 open import Function.Base using (_∘_; _∘′_; _$_; id; flip; _⟨_⟩_)
 open import Function.Definitions using (Injective)
 import Function.Related.Propositional as Related
-open import Function.Bundles using (_↔_; _↣_; Injection)
+open import Function.Bundles using (_↔_; _↣_; Injection; _⇔_; mk⇔)
 open import Function.Related.TypeIsomorphisms using (×-comm; ∃∃↔∃∃)
 open import Function.Construct.Identity using (↔-id)
 open import Level using (Level)
@@ -122,6 +122,9 @@ module _ {v : A} where
 
   ∈-++⁻ : ∀ xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Membership.∈-++⁻ (≡.setoid A)
+
+  ∈-++ : ∀ {xs ys} → v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
+  ∈-++ = mk⇔ (∈-++⁻ _) Sum.[ ∈-++⁺ˡ , ∈-++⁺ʳ _ ]
 
   ∈-insert : ∀ xs {ys} → v ∈ xs ++ [ v ] ++ ys
   ∈-insert xs = Membership.∈-insert (≡.setoid A) xs refl

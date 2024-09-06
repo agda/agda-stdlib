@@ -98,6 +98,11 @@ New modules
   Data.List.Relation.Unary.All.Properties.Core
   ```
 
+* `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
+  Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
+
+* `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
+
 Additions to existing modules
 -----------------------------
 
@@ -142,6 +147,7 @@ Additions to existing modules
   ∈-map∘filter⁺ : (∃[ x ] x ∈ xs × y ≡ f x × P x) → y ∈ map f (filter P? xs)
   ∈-concatMap⁺  : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
   ∈-concatMap⁻  : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ∈-++          : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
   ```
 
 * In `Data.List.Membership.Propositional.Properties.WithK`:
@@ -192,6 +198,24 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
   []⊆-universal : Universal ([] ⊆_)
+  ```
+
+* In `Data.List.Relation.Binary.Disjoint.Setoid.Properties`:
+  ```agda
+  deduplicate⁺ : Disjoint S xs ys → Disjoint S (deduplicate _≟_ xs) (deduplicate _≟_ ys)
+  ∈-dedup      : x ∈ xs ⇔ x ∈ deduplicate _≟_ xs
+  ```
+
+* In `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
+  ```agda
+  deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
+  ∈-dedup      : x ∈ xs ⇔ x ∈ deduplicate _≟_ xs
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:
+  ```agda
+  dedup-++-↭ : Disjoint xs ys →
+               deduplicate _≟_ (xs ++ ys) ↭ deduplicate _≟_ xs ++ deduplicate _≟_ ys
   ```
 
 * In `Data.Maybe.Properties`:
