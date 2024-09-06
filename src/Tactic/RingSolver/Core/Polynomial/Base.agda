@@ -130,8 +130,9 @@ Normalised : ∀ {i} → Coeff i + → Set
 infixl 6 _⊐_
 record Poly n where
   inductive
+  no-eta-equality
+  pattern  -- To allow matching on constructor
   constructor _⊐_
-  eta-equality  -- To allow matching on constructor
   field
     {i}  : ℕ
     flat : FlatPoly i
@@ -285,8 +286,8 @@ mutual
         → FlatPoly i
         → Coeff k +
         → Coeff k *
-  ⊞-inj i≤k xs (y ⊐ j≤k ≠0 Δ zero  & ys) = ⊞-match (inj-compare j≤k i≤k) y xs Δ zero ∷↓ ys
   ⊞-inj i≤k xs (y          Δ suc j & ys) = xs ⊐ i≤k Δ zero ∷↓ ∹ y Δ j & ys
+  ⊞-inj i≤k xs (y ⊐ j≤k ≠0 Δ zero  & ys) = ⊞-match (inj-compare j≤k i≤k) y xs Δ zero ∷↓ ys
 
   ⊞-coeffs : ∀ {n} → Coeff n * → Coeff n * → Coeff n *
   ⊞-coeffs (∹ x Δ i & xs) ys = ⊞-zip-r x i xs ys
