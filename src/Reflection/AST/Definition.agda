@@ -21,7 +21,7 @@ import Reflection.AST.Name              as Name
 import Reflection.AST.Term              as Term
 
 ------------------------------------------------------------------------
--- Re-exporting type publically
+-- Re-exporting type publicly
 
 open import Agda.Builtin.Reflection public
   using    ( Definition
