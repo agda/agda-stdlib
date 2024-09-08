@@ -93,6 +93,11 @@ New modules
 
   NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
 
+* Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Data.List.Relation.Unary.All.Properties.Core
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -112,6 +117,12 @@ Additions to existing modules
   Env : ℕ → Set _
   Env = Vec Carrier
  ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
+  ```
 
 * In `Data.List.Properties`:
   ```agda
