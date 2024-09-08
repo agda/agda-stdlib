@@ -30,6 +30,13 @@ Deprecated names
   ∣-factors-≈  ↦  xy≈z⇒x|z∧y|z
   ```
 
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣-respˡ   ↦  ∣-respˡ-≈
+  ∣-respʳ   ↦  ∣-respʳ-≈
+  ∣-resp    ↦  ∣-resp-≈
+ ```
+
 * In `Algebra.Solver.CommutativeMonoid`:
   ```agda
   normalise-correct  ↦  Algebra.Solver.CommutativeMonoid.Normal.correct
@@ -88,6 +95,17 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* Properties of non-divisibility in `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∤-respˡ-≈ : _∤_ Respectsˡ _≈_
+  ∤-respʳ-≈ : _∤_ Respectsʳ _≈_
+  ∤-resp-≈  : _∤_ Respects₂ _≈_
+  ∤∤-sym    : Symmetric _∤∤_
+  ∤∤-respˡ-≈ : _∤∤_ Respectsˡ _≈_
+  ∤∤-respʳ-≈ : _∤∤_ Respectsʳ _≈_
+  ∤∤-resp-≈  : _∤∤_ Respects₂ _≈_
+  ```
 
 * In `Algebra.Solver.Ring`
   ```agda
