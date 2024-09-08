@@ -62,6 +62,11 @@ private
     xs ys : List A
 
 ------------------------------------------------------------------------
+-- Re-export Core Properties
+
+open import Data.List.Relation.Unary.All.Properties.Core public
+
+------------------------------------------------------------------------
 -- Properties regarding Null
 
 Null⇒null : Null xs → T (null xs)
@@ -84,66 +89,6 @@ null⇒Null {xs = _ ∷ _} ()
 []=-injective (there x↦px) (there x↦qx) = []=-injective x↦px x↦qx
 
 -- See also Data.List.Relation.Unary.All.Properties.WithK.[]=-irrelevant.
-
-------------------------------------------------------------------------
--- Lemmas relating Any, All and negation.
-
-¬Any⇒All¬ : ∀ xs → ¬ Any P xs → All (¬_ ∘ P) xs
-¬Any⇒All¬ []       ¬p = []
-¬Any⇒All¬ (x ∷ xs) ¬p = ¬p ∘ here ∷ ¬Any⇒All¬ xs (¬p ∘ there)
-
-All¬⇒¬Any : ∀ {xs} → All (¬_ ∘ P) xs → ¬ Any P xs
-All¬⇒¬Any (¬p ∷ _)  (here  p) = ¬p p
-All¬⇒¬Any (_  ∷ ¬p) (there p) = All¬⇒¬Any ¬p p
-
-¬All⇒Any¬ : Decidable P → ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
-¬All⇒Any¬ dec []       ¬∀ = contradiction [] ¬∀
-¬All⇒Any¬ dec (x ∷ xs) ¬∀ with dec x
-... |  true because  [p] = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ (invert [p])))
-... | false because [¬p] = here (invert [¬p])
-
-Any¬⇒¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
-Any¬⇒¬All (here  ¬p) = ¬p           ∘ All.head
-Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
-
-¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
-¬Any↠All¬ = mk↠ₛ {to = ¬Any⇒All¬ _} (λ y → All¬⇒¬Any y , to∘from y)
-  where
-  to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any⇒All¬ xs (All¬⇒¬Any ¬p) ≡ ¬p
-  to∘from []         = refl
-  to∘from (¬p ∷ ¬ps) = cong₂ _∷_ refl (to∘from ¬ps)
-
-  -- If equality of functions were extensional, then the surjection
-  -- could be strengthened to a bijection.
-
-  from∘to : Extensionality _ _ →
-            ∀ xs → (¬p : ¬ Any P xs) → All¬⇒¬Any (¬Any⇒All¬ xs ¬p) ≡ ¬p
-  from∘to ext []       ¬p = ext λ ()
-  from∘to ext (x ∷ xs) ¬p = ext λ
-    { (here p)  → refl
-    ; (there p) → cong (λ f → f p) $ from∘to ext xs (¬p ∘ there)
-    }
-
-Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-Any¬⇔¬All dec = mk⇔ Any¬⇒¬All (¬All⇒Any¬ dec _)
-
-private
-  -- If equality of functions were extensional, then the logical
-  -- equivalence could be strengthened to a surjection.
-  to∘from : Extensionality _ _ → (dec : Decidable P) →
-            (¬∀ : ¬ All P xs) → Any¬⇒¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
-  to∘from ext P ¬∀ = ext λ ∀P → contradiction ∀P ¬∀
-
-module _ {_~_ : REL A B ℓ} where
-
-  All-swap : ∀ {xs ys} →
-             All (λ x → All (x ~_) ys) xs →
-             All (λ y → All (_~ y) xs) ys
-  All-swap {ys = []}     _   = []
-  All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
-  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxs) =
-    (x~y ∷ (All.map All.head pxs)) ∷
-    All-swap (x~ys ∷ (All.map All.tail pxs))
 
 ------------------------------------------------------------------------
 -- Defining properties of lookup and _[_]=_
