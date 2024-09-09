@@ -198,12 +198,6 @@ Additions to existing modules
   search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
   ```
 
-* In `Data.List.Relation.Unary.All.Properties`:
-  ```agda
-  product≢0 : All NonZero ns → NonZero (product ns)
-  ∈⇒≤product : All NonZero ns → n ∈ ns → n ≤ product ns
-  ```
-
 * In `Data.Maybe.Properties`:
   ```agda
   maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
