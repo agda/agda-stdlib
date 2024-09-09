@@ -8,9 +8,12 @@
 
 module Data.List.Relation.Unary.Unique.Propositional.Properties where
 
-open import Data.List.Base using (map; _++_; concat; cartesianProductWith;
-  cartesianProduct; drop; take; applyUpTo; upTo; applyDownFrom; downFrom;
-  tabulate; allFin; filter)
+open import Data.List.Base
+  using ( List; _∷_; map; _++_; concat; cartesianProductWith
+        ; cartesianProduct; drop; take; applyUpTo; upTo; applyDownFrom; downFrom
+        ; tabulate; allFin; filter
+        )
+open import Data.List.Membership.Propositional using (_∉_)
 open import Data.List.Relation.Binary.Disjoint.Propositional
   using (Disjoint)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -35,6 +38,9 @@ open import Relation.Nullary.Negation using (¬_)
 private
   variable
     a b c p : Level
+    A : Set a
+    x y : A
+    xs : List A
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
@@ -154,3 +160,12 @@ module _ {A : Set a} {P : Pred _ p} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → Unique xs → Unique (filter P? xs)
   filter⁺ = Setoid.filter⁺ (setoid A) P?
+
+------------------------------------------------------------------------
+-- ∷
+
+Unique-dropSnd : Unique (x ∷ y ∷ xs) → Unique (x ∷ xs)
+Unique-dropSnd = Setoid.Unique-dropSnd (setoid _)
+
+Unique∷⇒head∉tail : Unique (x ∷ xs) → x ∉ xs
+Unique∷⇒head∉tail = Setoid.Unique∷⇒head∉tail (setoid _)

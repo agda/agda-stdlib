@@ -9,12 +9,14 @@
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
 open import Data.List.Base
+import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
 open import Data.List.Relation.Binary.Disjoint.Setoid
 open import Data.List.Relation.Binary.Disjoint.Setoid.Properties
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties using (All¬⇒¬Any)
-open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
+open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; _∷_)
 open import Data.List.Relation.Unary.Unique.Setoid
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
@@ -156,3 +158,21 @@ module _ (S : Setoid a ℓ) {P : Pred _ p} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → Unique S xs → Unique S (filter P? xs)
   filter⁺ = AllPairs.filter⁺ P?
+
+------------------------------------------------------------------------
+-- ∷
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S renaming (Carrier to A)
+  open Membership S using (_∈_; _∉_)
+
+  private variable x y : A; xs : List A
+
+  Unique-dropSnd : Unique S (x ∷ y ∷ xs) → Unique S (x ∷ xs)
+  Unique-dropSnd ((_ ∷ x∉) ∷ uniq) = x∉ AllPairs.∷ drop⁺ S 1 uniq
+
+  Unique∷⇒head∉tail : Unique S (x ∷ xs) → x ∉ xs
+  Unique∷⇒head∉tail uniq@((x∉ ∷ _) ∷ _) = λ where
+    (here x≈)  → x∉ x≈
+    (there x∈) → Unique∷⇒head∉tail (Unique-dropSnd uniq) x∈

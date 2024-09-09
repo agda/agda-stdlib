@@ -179,6 +179,18 @@ Additions to existing modules
   concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
   ```
 
+* In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
+  ```agda
+  Unique-dropSnd    : Unique S (x ∷ y ∷ xs) → Unique S (x ∷ xs)
+  Unique∷⇒head∉tail : Unique S (x ∷ xs) → x ∉ xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
+  ```agda
+  Unique-dropSnd    : Unique (x ∷ y ∷ xs) → Unique (x ∷ xs)
+  Unique∷⇒head∉tail : Unique (x ∷ xs) → x ∉ xs
+  ```
+
 * In `Data.List.Relation.Binary.Equality.Setoid`:
   ```agda
   ++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
