@@ -9,6 +9,7 @@
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
+open import Data.Empty using (⊥-elim)
 open import Data.List.Base hiding (_∷ʳ_; find)
 import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -22,7 +23,7 @@ import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutationₚ
 open import Data.Product.Base using (_,_)
-open import Function.Base using (_∘_; _∘₂_; _$_)
+open import Function.Base using (_∘_; _∘₂_; _$_; case_of_)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
@@ -40,6 +41,18 @@ open Setoid using (Carrier)
 private
   variable
     a b p q r ℓ : Level
+
+------------------------------------------------------------------------
+-- Basics
+------------------------------------------------------------------------
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S using (refl)
+  open Subset S
+
+  ⊈[] : ∀ {x xs} → x ∷ xs ⊈ []
+  ⊈[] p = Membershipₚ.∉[] S $ p (here refl)
 
 ------------------------------------------------------------------------
 -- Relational properties with _≋_ (pointwise equality)
@@ -162,11 +175,13 @@ module _ (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- Properties of list functions
 ------------------------------------------------------------------------
+
+------------------------------------------------------------------------
 -- ∷
 
 module _ (S : Setoid a ℓ) where
 
-  open Setoid S
+  open Setoid S renaming (Carrier to A)
   open Subset S
   open Membership S
   open Membershipₚ
@@ -174,13 +189,27 @@ module _ (S : Setoid a ℓ) where
   xs⊆x∷xs : ∀ xs x → xs ⊆ x ∷ xs
   xs⊆x∷xs xs x = there
 
-  ∷⁺ʳ : ∀ {xs ys} x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+  private variable
+    x y : A
+    xs ys : List A
+
+  ∷⁺ʳ : ∀ x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
   ∷⁺ʳ x xs⊆ys (here  p) = here p
   ∷⁺ʳ x xs⊆ys (there p) = there (xs⊆ys p)
 
-  ∈-∷⁺ʳ : ∀ {xs ys x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
+  ∈-∷⁺ʳ : x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
   ∈-∷⁺ʳ x∈ys _  (here  v≈x)  = ∈-resp-≈ S (sym v≈x) x∈ys
   ∈-∷⁺ʳ _ xs⊆ys (there x∈xs) = xs⊆ys x∈xs
+
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+  ⊆∷∧∉⇒⊆ xs⊆ y∉ x∈ = case xs⊆ x∈ of λ where
+    (here x≈) → ⊥-elim $ y∉ (∈-resp-≈ S x≈ x∈)
+    (there p) → p
+
+  ∈∷∧⊆⇒∈ : x ∈ y ∷ xs → xs ⊆ ys → x ∈ y ∷ ys
+  ∈∷∧⊆⇒∈ = λ where
+    (here x≡y) _   → here x≡y
+    (there x∈) xs⊆ → there $ xs⊆ x∈
 
 ------------------------------------------------------------------------
 -- ++

@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties related to setoid list membership
@@ -41,6 +41,16 @@ open Setoid using (Carrier)
 private
   variable
     c c₁ c₂ c₃ p ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+
+------------------------------------------------------------------------
+-- Basics
+
+module _ (S : Setoid c ℓ) where
+
+  open Membership S
+
+  ∉[] : ∀ {x} → x ∉ []
+  ∉[] ()
 
 ------------------------------------------------------------------------
 -- Equality properties

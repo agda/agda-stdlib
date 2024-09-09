@@ -138,6 +138,7 @@ Additions to existing modules
                   y ∈₂ map f (filter P? xs)
   ∈-concatMap⁺  : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
   ∈-concatMap⁻  : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ∉[]           : x ∉ []
   ```
 
 * In `Data.List.Membership.Propositional.Properties`:
@@ -152,6 +153,7 @@ Additions to existing modules
   map∷-decomp∈  : (x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
   map∷-decomp   : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
   ∈-map∷⁻       : xs ∈ map (x ∷_) xss → x ∈ xs
+  ∉[]           : x ∉ []
   ```
 
 * In `Data.List.Membership.Propositional.Properties.WithK`:
@@ -214,6 +216,20 @@ Additions to existing modules
   ```agda
   deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
   ∈-dedup      : x ∈ xs ⇔ x ∈ deduplicate _≟_ xs
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ⊈[]    : x ∷ xs ⊈ []
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+  ∈∷∧⊆⇒∈ : x ∈ y ∷ xs → xs ⊆ ys → x ∈ y ∷ ys
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  ⊈[]    : x ∷ xs ⊈ []
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+  ∈∷∧⊆⇒∈ : x ∈ y ∷ xs → xs ⊆ ys → x ∈ y ∷ ys
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:
