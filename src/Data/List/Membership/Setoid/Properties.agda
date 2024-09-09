@@ -65,6 +65,14 @@ module _ (S : Setoid c ℓ) where
   ∉-resp-≋ : ∀ {x} → (x ∉_) Respects _≋_
   ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
 
+  -- x ∉_ is equivalent to All (x ≉_)
+
+  ∉⇒All[≉] : ∀ {x xs} → x ∉ xs → All (x ≉_) xs
+  ∉⇒All[≉] = All.¬Any⇒All¬ _
+
+  All[≉]⇒∉ : ∀ {x xs} → All (x ≉_) xs → x ∉ xs
+  All[≉]⇒∉ = All.All¬⇒¬Any
+
   -- index is injective in its first argument.
 
   index-injective : ∀ {x₁ x₂ xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
@@ -83,7 +91,7 @@ module _ (S : Setoid c ℓ) where
 
   private
     ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
-    ∉×∈⇒≉ = All.lookupWith λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
+    ∉×∈⇒≉ ≉s x∈xs x≈y = All[≉]⇒∉ S ≉s (∈-resp-≈ S x≈y x∈xs)
 
   unique⇒irrelevant : Binary.Irrelevant _≈_ → ∀ {xs} → Unique xs → Unary.Irrelevant (_∈ xs)
   unique⇒irrelevant ≈-irr _        (here p)  (here q)  =

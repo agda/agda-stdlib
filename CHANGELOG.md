@@ -120,8 +120,10 @@ Additions to existing modules
 
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
-  Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys
-  All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
+  Any-∈-swap : Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap : All (_∉ ys) xs → All (_∉ xs) ys
+  ∉⇒All[≉]   : x ∉ xs → All (x ≉_) xs
+  All[≉]⇒∉   : All (x ≉_) xs → x ∉ xs
   ```
 
 * In `Data.List.Properties`:
