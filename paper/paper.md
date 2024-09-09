@@ -8,23 +8,23 @@ tags:
 authors:
   - name: Daggitt, Matthew L.
     orcid: 0000-0000-0000-0000
-        corresponding: true
+    corresponding: true
     affiliation: 1
   - name: Allais, Guillaume
-        orcid: 0000-0000-0000-0000
+    orcid: 0000-0000-0000-0000
     affiliation: 2
   - name: Carette, Jacques
-        orcid: 0000-0001-8993-9804
+    orcid: 0000-0001-8993-9804
     affiliation: 3
   - name: McKinna, James
-        orcid: 0000-0001-6745-2560
+    orcid: 0000-0001-6745-2560
     affiliation: 4
   - name: van Doorn, Nathan
-        orcid: 0000-0000-0000-0000
+    orcid: 0000-0000-0000-0000
     affiliation: 5
   - name: Others to come
-        orcid: 0000-0000-0000-0000
-        affiliation: 6
+    orcid: 0000-0000-0000-0000
+    affiliation: 6
 affiliations:
  - name: University of Western Australia, Australia
    index: 1
