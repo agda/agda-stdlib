@@ -148,6 +148,10 @@ Additions to existing modules
   ∈-concatMap⁺  : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
   ∈-concatMap⁻  : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
   ∈-++          : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
+  []∉map∷       : [] ∉ map (x ∷_) xss
+  map∷-decomp∈  : (x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
+  map∷-decomp   : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
+  ∈-map∷⁻       : xs ∈ map (x ∷_) xss → x ∈ xs
   ```
 
 * In `Data.List.Membership.Propositional.Properties.WithK`:

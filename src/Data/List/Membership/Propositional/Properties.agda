@@ -10,6 +10,7 @@ module Data.List.Membership.Propositional.Properties where
 
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions using (Selective)
+open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List
 open import Data.List.Effectful using (monad)
@@ -24,13 +25,13 @@ open import Data.List.Relation.Unary.Any.Properties
 open import Data.Nat.Base using (ℕ; suc; s≤s; _≤_; _<_; _≰_)
 open import Data.Nat.Properties
   using (suc-injective; m≤n⇒m≤1+n; _≤?_; <⇒≢; ≰⇒>)
-open import Data.Product.Base using (∃; ∃₂; _×_; _,_; ∃-syntax)
+open import Data.Product.Base using (∃; ∃₂; _×_; _,_; ∃-syntax; -,_; map₂)
 open import Data.Product.Properties using (×-≡,≡↔≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Effect.Monad using (RawMonad)
-open import Function.Base using (_∘_; _∘′_; _$_; id; flip; _⟨_⟩_)
+open import Function.Base using (_∘_; _∘′_; _$_; id; flip; _⟨_⟩_; _∋_)
 open import Function.Definitions using (Injective)
 import Function.Related.Propositional as Related
 open import Function.Bundles using (_↔_; _↣_; Injection; _⇔_; mk⇔)
@@ -40,7 +41,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; resp; _≗_)
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; resp; _≗_; subst)
 open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Nullary.Decidable.Core
@@ -55,6 +56,9 @@ private
   variable
     ℓ : Level
     A B C : Set ℓ
+    x y v : A
+    xs ys : List A
+    xss : List (List A)
 
 ------------------------------------------------------------------------
 -- Publicly re-export properties from Core
@@ -64,10 +68,10 @@ open import Data.List.Membership.Propositional.Properties.Core public
 ------------------------------------------------------------------------
 -- Equality
 
-∈-resp-≋ : ∀ {x : A} → (x ∈_) Respects _≋_
+∈-resp-≋ : (x ∈_) Respects _≋_
 ∈-resp-≋ = Membership.∈-resp-≋ (≡.setoid _)
 
-∉-resp-≋ : ∀ {x : A} → (x ∉_) Respects _≋_
+∉-resp-≋ : (x ∉_) Respects _≋_
 ∉-resp-≋ = Membership.∉-resp-≋ (≡.setoid _)
 
 ------------------------------------------------------------------------
@@ -96,14 +100,14 @@ map-mapWith∈ = Membership.map-mapWith∈ (≡.setoid _)
 
 module _ (f : A → B) where
 
-  ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ map f xs
+  ∈-map⁺ : x ∈ xs → f x ∈ map f xs
   ∈-map⁺ = Membership.∈-map⁺ (≡.setoid A) (≡.setoid B) (cong f)
 
-  ∈-map⁻ : ∀ {y xs} → y ∈ map f xs → ∃ λ x → x ∈ xs × y ≡ f x
+  ∈-map⁻ : y ∈ map f xs → ∃ λ x → x ∈ xs × y ≡ f x
   ∈-map⁻ = Membership.∈-map⁻ (≡.setoid A) (≡.setoid B)
 
-  map-∈↔ : ∀ {y xs} → (∃ λ x → x ∈ xs × y ≡ f x) ↔ y ∈ map f xs
-  map-∈↔ {y} {xs} =
+  map-∈↔ : (∃ λ x → x ∈ xs × y ≡ f x) ↔ y ∈ map f xs
+  map-∈↔ {xs}{y} =
     (∃ λ x → x ∈ xs × y ≡ f x)   ↔⟨ Any↔ ⟩
     Any (λ x → y ≡ f x) xs       ↔⟨ map↔ ⟩
     y ∈ List.map f xs            ∎
@@ -114,7 +118,7 @@ module _ (f : A → B) where
 
 module _ {v : A} where
 
-  ∈-++⁺ˡ : ∀ {xs ys} → v ∈ xs → v ∈ xs ++ ys
+  ∈-++⁺ˡ : v ∈ xs → v ∈ xs ++ ys
   ∈-++⁺ˡ = Membership.∈-++⁺ˡ (≡.setoid A)
 
   ∈-++⁺ʳ : ∀ xs {ys} → v ∈ ys → v ∈ xs ++ ys
@@ -123,13 +127,13 @@ module _ {v : A} where
   ∈-++⁻ : ∀ xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Membership.∈-++⁻ (≡.setoid A)
 
-  ∈-++ : ∀ {xs ys} → v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
+  ∈-++ : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
   ∈-++ = mk⇔ (∈-++⁻ _) Sum.[ ∈-++⁺ˡ , ∈-++⁺ʳ _ ]
 
   ∈-insert : ∀ xs {ys} → v ∈ xs ++ [ v ] ++ ys
   ∈-insert xs = Membership.∈-insert (≡.setoid A) xs refl
 
-  ∈-∃++ : ∀ {xs} → v ∈ xs → ∃₂ λ ys zs → xs ≡ ys ++ [ v ] ++ zs
+  ∈-∃++ : v ∈ xs → ∃₂ λ ys zs → xs ≡ ys ++ [ v ] ++ zs
   ∈-∃++ v∈xs
     with ys , zs , _ , refl , eq ← Membership.∈-∃++ (≡.setoid A) v∈xs
     = ys , zs , ≋⇒≡ eq
@@ -139,7 +143,7 @@ module _ {v : A} where
 
 module _ {v : A} where
 
-  ∈-concat⁺ : ∀ {xss} → Any (v ∈_) xss → v ∈ concat xss
+  ∈-concat⁺ : Any (v ∈_) xss → v ∈ concat xss
   ∈-concat⁺ = Membership.∈-concat⁺ (≡.setoid A)
 
   ∈-concat⁻ : ∀ xss → v ∈ concat xss → Any (v ∈_) xss
@@ -154,8 +158,7 @@ module _ {v : A} where
     let xs , v∈xs , xs∈xss = Membership.∈-concat⁻′ (≡.setoid A) xss v∈c
     in xs , v∈xs , Any.map ≋⇒≡ xs∈xss
 
-  concat-∈↔ : ∀ {xss : List (List A)} →
-              (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
+  concat-∈↔ : (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
   concat-∈↔ {xss} =
     (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong (↔-id _) $ ×-comm _ _ ⟩
     (∃ λ xs → xs ∈ xss × v ∈ xs)  ↔⟨ Any↔ ⟩
@@ -262,10 +265,10 @@ module _ {n} {f : Fin n → A} where
 
 module _ {p} {P : A → Set p} (P? : Decidable P) where
 
-  ∈-filter⁺ : ∀ {x xs} → x ∈ xs → P x → x ∈ filter P? xs
+  ∈-filter⁺ : x ∈ xs → P x → x ∈ filter P? xs
   ∈-filter⁺ = Membership.∈-filter⁺ (≡.setoid A) P? (≡.resp P)
 
-  ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
+  ∈-filter⁻ : v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ = Membership.∈-filter⁻ (≡.setoid A) P? (≡.resp P)
 
 ------------------------------------------------------------------------
@@ -339,13 +342,13 @@ module _ (_≈?_ : DecidableEquality A) where
 ------------------------------------------------------------------------
 -- length
 
-∈-length : ∀ {x : A} {xs} → x ∈ xs → 0 < length xs
+∈-length : x ∈ xs → 0 < length xs
 ∈-length = Membership.∈-length (≡.setoid _)
 
 ------------------------------------------------------------------------
 -- lookup
 
-∈-lookup : ∀ {xs : List A} i → lookup xs i ∈ xs
+∈-lookup : ∀ i → lookup xs i ∈ xs
 ∈-lookup {xs = xs} i = Membership.∈-lookup (≡.setoid _) xs i
 
 ------------------------------------------------------------------------
@@ -366,7 +369,7 @@ module _ {_•_ : Op₂ A} where
 ------------------------------------------------------------------------
 -- inits
 
-[]∈inits : ∀ {a} {A : Set a} (as : List A) → [] ∈ inits as
+[]∈inits : (as : List A) → [] ∈ inits as
 []∈inits _ = here refl
 
 ------------------------------------------------------------------------
@@ -443,3 +446,26 @@ module _ {R : A → A → Set ℓ} where
   ∈-AllPairs₂ (p ∷ _)  (here refl) (there y∈)  = inj₂ $ inj₁ $ All.lookup p y∈
   ∈-AllPairs₂ (p ∷ _)  (there x∈)  (here refl) = inj₂ $ inj₂ $ All.lookup p x∈
   ∈-AllPairs₂ (_ ∷ ps) (there x∈)  (there y∈)  = ∈-AllPairs₂ ps x∈ y∈
+
+------------------------------------------------------------------------
+-- nested lists
+
+[]∉map∷ : (List A ∋ []) ∉ map (x ∷_) xss
+[]∉map∷ {xss = _ ∷ _} (there p) = []∉map∷ p
+
+map∷-decomp∈ : (List A ∋ x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
+map∷-decomp∈ {xss = _ ∷ _} = λ where
+  (here refl) → refl , here refl
+  (there p)   → map₂ there $ map∷-decomp∈ p
+
+map∷-decomp : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
+map∷-decomp               {xss = _  ∷ _} (here refl) = -, here refl , refl
+map∷-decomp {xs = []}     {xss = _  ∷ _} (there xs∈) = ⊥-elim ([]∉map∷ xs∈)
+map∷-decomp {xs = x ∷ xs} {xss = _  ∷ _} (there xs∈) =
+  let eq , p = map∷-decomp∈ xs∈
+  in -, there p , subst (λ ◆ → ◆ ∷ _ ≡ _) eq refl
+
+∈-map∷⁻ : xs ∈ map (x ∷_) xss → x ∈ xs
+∈-map∷⁻ {xss = _ ∷ _} = λ where
+  (here refl) → here refl
+  (there p)   → ∈-map∷⁻ p
