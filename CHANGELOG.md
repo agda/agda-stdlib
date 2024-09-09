@@ -1,7 +1,7 @@
 Version 2.2-dev
 ===============
 
-The library has been tested using Agda 2.6.4.3.
+The library has been tested using Agda 2.7.0.
 
 Highlights
 ----------
@@ -29,6 +29,13 @@ Deprecated names
   ∣-factors    ↦  x|xy∧y|xy
   ∣-factors-≈  ↦  xy≈z⇒x|z∧y|z
   ```
+
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣-respˡ   ↦  ∣-respˡ-≈
+  ∣-respʳ   ↦  ∣-respʳ-≈
+  ∣-resp    ↦  ∣-resp-≈
+ ```
 
 * In `Algebra.Solver.CommutativeMonoid`:
   ```agda
@@ -93,14 +100,42 @@ New modules
 
   NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
 
+* Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Data.List.Relation.Unary.All.Properties.Core
+  ```
+
 Additions to existing modules
 -----------------------------
+
+* Properties of non-divisibility in `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∤-respˡ-≈ : _∤_ Respectsˡ _≈_
+  ∤-respʳ-≈ : _∤_ Respectsʳ _≈_
+  ∤-resp-≈  : _∤_ Respects₂ _≈_
+  ∤∤-sym    : Symmetric _∤∤_
+  ∤∤-respˡ-≈ : _∤∤_ Respectsˡ _≈_
+  ∤∤-respʳ-≈ : _∤∤_ Respectsʳ _≈_
+  ∤∤-resp-≈  : _∤∤_ Respects₂ _≈_
+  ```
 
 * In `Algebra.Solver.Ring`
   ```agda
   Env : ℕ → Set _
   Env = Vec Carrier
  ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  product≢0 : All NonZero ns → NonZero (product ns)
+  ∈⇒≤product : All NonZero ns → n ∈ ns → n ≤ product ns
+  ```
 
 * In `Data.List.Relation.Binary.Equality.Setoid`:
   ```agda
