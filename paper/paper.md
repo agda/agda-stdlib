@@ -8,23 +8,23 @@ tags:
 authors:
   - name: Daggitt, Matthew L.
     orcid: 0000-0000-0000-0000
-	corresponding: true
+        corresponding: true
     affiliation: 1
   - name: Allais, Guillaume
-	orcid: 0000-0000-0000-0000
+        orcid: 0000-0000-0000-0000
     affiliation: 2
   - name: Carette, Jacques
-	orcid: 0000-0001-8993-9804
+        orcid: 0000-0001-8993-9804
     affiliation: 3
   - name: McKinna, James
-	orcid: 0000-0001-6745-2560
+        orcid: 0000-0001-6745-2560
     affiliation: 4
   - name: van Doorn, Nathan
-	orcid: 0000-0000-0000-0000
+        orcid: 0000-0000-0000-0000
     affiliation: 5
   - name: Others to come
-	orcid: 0000-0000-0000-0000
-	affiliation: 6
+        orcid: 0000-0000-0000-0000
+        affiliation: 6
 affiliations:
  - name: University of Western Australia, Australia
    index: 1
@@ -102,7 +102,7 @@ While this provides powerful tools for users, learning how to design such a larg
 Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
 Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
-Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, `agda-stdlib` has so far found little need to exploit such an approach.
+Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, the developers of `agda-stdlib` has so far found little need to exploit such an approach.
 While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce the need for it compared to the languages mentioned above. 
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
@@ -111,7 +111,7 @@ This enables users to write provably 'safe' non-constructive code, i.e. without 
 
 # Testing
 
-One of the advantages of ITPs is that correctness proofs are regarded as an integral part of creating a collection of structures and operations.
+One of the advantages of ITPs is that correctness proofs are regarded as an integral part of creating a collection of operations.
 Thus there is no need for test suites to verify functional correctness.
 However the library’s test suite does address two critical areas.
 First is the foreign function interface with the underlying operating system (e.g., reading from the command line, file access, timers).
