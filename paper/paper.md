@@ -93,7 +93,7 @@ Additionally, there is a persistent temptation to introduce new representations 
 Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts, at the cost of lack of interoperability between variabous packages.
 On the other hand, like `agda-stdlib`, MathLib [@van2020maintaining] for Lean aims to provide a repository of canonical definitions. 
 
-A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default (so that, e.g. a `reverse` function can be *statically checked* to be length-preserving).
+A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default.
 With the exception of Idris, a more recent entrant to the field [@brady2013idris], other major theorem provers either do not support dependent types or encourage spare usage.
 In contrast, nearly everything in `agda-stdlib` makes use of dependent types, with correctness-related invariants being closely integrated with definitions.
 For example, we can specify that `reverse` defined on length-indexed vectors is length-preserving *by virtue of its type*.
