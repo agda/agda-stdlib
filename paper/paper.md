@@ -98,7 +98,7 @@ With the exception of Idris, a more recent entrant to the field [@brady2013idris
 In contrast, nearly everything in `agda-stdlib` makes use of dependent types, with correctness-related invariants being closely integrated with definitions.
 For example, we can specify that `reverse` defined on length-indexed vectors is length-preserving *by virtue of its type*.
 Furthermore most proofs consist of evidence-bearing terms for the relevant types, rather than being "irrelevant".
-As a result, the library provides relatively sophisticated features like polymorphic n-ary functions [@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers [citation?].
+As a result, the library provides relatively sophisticated features like polymorphic n-ary functions [@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers.
 While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. The Agda standard library is the first such to tackle this challenge.
 Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
