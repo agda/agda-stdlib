@@ -76,11 +76,20 @@ A diverse selection of such projects, not intended as endorsements over any othe
 - Verification of routing protocols [@daggitt2023routing]
 
 The development of `agda-stdlib` has had a synergistic relationship with that of Agda itself, prompting the implementation of several new language features.
-For example, `agda-stdlib` is designed to be compatible with several different compiler options, including `--cubical` and `--safe`.
-To enable this, in 2019 Agda categorised all language options into two categories of ''infective'' and ''coinfective'', allowing any library to precisely partition code that can be used under certain flag combinations.
+We develop two examples below.
+
+First, Agda is a research compiler supporting a wide range of not necessarily inter-compatible language extensions via command line options.
+Examples include `--cubical` (changing the underlying type theory for one inspired by homotopy [@DBLP:journals/jfp/VezzosiMA21]),
+`--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], a powerful reasoning principle incompatible with the `--cubical`-enabled type theory),
+or `--safe` (an ITP-oriented option enforcing that nothing is postulated but consequently disabling the FFI mechanism).
+In order for `agda-stdlib` to be compatible with as many different compiler options as possible, we designed the library to be broken into units
+requesting the minimal expressive power needed, an approach not unlike that of reverse mathematics.
+To enable this, in 2019 Agda categorised all language options into two categories.
+Once used in a module, an ''infective'' option will impact all the import*ing* modules; these are typically for theory-changing options like `--cubical` or `--with-K`.
+On the contrary, ''coinfective'' options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
 This categorisation enables libraries to integrate safe Agda code with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
 
-Additionally, the development needs of `agda-stdlib` have directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings. This lets end-users more easily evolve their code along with the evolution of `agda-stdlib`.
+Second, the development needs of `agda-stdlib` have directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings. This lets end-users more easily evolve their code along with the evolution of `agda-stdlib`.
 
 # Design
 
