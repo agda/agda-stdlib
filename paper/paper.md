@@ -57,7 +57,7 @@ This approach reduces compiler complexity and enhances its reliability, and also
 itself as it can indeed push these concepts out to the library.
 For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as arrays, length-indexed vectors or maps. Thus the crucial need for a standard library.
 
-Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct." 
+Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct."
 Therefore, the standard library needs to provide all the necessary building blocks: not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a string-reversing function and proving that it preserves the length of the string would require hundreds of lines of code.
 
 # Impact
@@ -91,7 +91,7 @@ While the focus on discrete mathematics and algebra reflects the bias in its use
 There is constant tension between being as general as possible (e.g., defining operations over general algebraic structures) and providing clear, straightforward, and intuitive definitions (e.g., defining operations concretely over integers).
 Additionally, there is a persistent temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular application, which comes at the cost of duplicating the theory for the new representation.
 Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts, at the cost of lack of interoperability between variabous packages.
-On the other hand, like `agda-stdlib`, MathLib [@van2020maintaining] for Lean aims to provide a repository of canonical definitions. 
+On the other hand, like `agda-stdlib`, MathLib [@van2020maintaining] for Lean aims to provide a repository of canonical definitions.
 
 A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default.
 With the exception of Idris, a more recent entrant to the field [@brady2013idris], other major theorem provers either do not support dependent types or encourage spare usage.
@@ -104,7 +104,7 @@ Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda 
 
 Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
 Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, the developers of `agda-stdlib` has so far found little need to exploit such an approach.
-While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce the need for it compared to the languages mentioned above. 
+While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce the need for it compared to the languages mentioned above.
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
 Non-constructive methods, such as classical reasoning, can be achieved by passing the relevant axioms as module parameters.
