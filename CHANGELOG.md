@@ -174,6 +174,17 @@ Additions to existing modules
   _≡?_ : DecidableEquality (Vec A n)
   ```
 
+* In `Relation.Binary.Construct.Interior.Symmetric`:
+  ```agda
+  decidable         : Decidable R → Decidable (SymInterior R)
+  ```
+  and for `Reflexive` and `Transitive` relations `R`:
+  ```agda
+  isDecEquivalence  : Decidable R → IsDecEquivalence (SymInterior R)
+  isDecPartialOrder : Decidable R → IsDecPartialOrder (SymInterior R) R
+  decPoset          : Decidable R → DecPoset _ _ _
+  ```
+
 * In `Relation.Nullary.Decidable`:
   ```agda
   does-⇔  : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
