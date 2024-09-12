@@ -83,7 +83,7 @@ Examples include `--cubical` (changing the underlying type theory for one inspir
 `--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], a powerful reasoning principle incompatible with the `--cubical`-enabled type theory),
 or `--safe` (an ITP-oriented option enforcing that nothing is postulated but consequently disabling the FFI mechanism).
 In order for `agda-stdlib` to be compatible with as many different compiler options as possible, we designed the library to be broken into units
-requesting the minimal expressive power needed, an approach not unlike that of reverse mathematics.
+requesting the minimal expressive power needed.
 To enable this, in 2019 Agda categorised all language options into two categories.
 Once used in a module, an ''infective'' option will impact all the import*ing* modules; these are typically for theory-changing options like `--cubical` or `--with-K`.
 On the contrary, ''coinfective'' options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
