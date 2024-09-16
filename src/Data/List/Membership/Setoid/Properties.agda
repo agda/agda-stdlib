@@ -393,7 +393,7 @@ module _ (S : Setoid c ℓ) {P : Pred (Carrier S) p}
 
 module _
   (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂)
-  {P : Pred (S₁ .Carrier) p} (P? : Decidable P) (resp : P Respects (S₁ .Setoid._≈_))
+  {P : Pred _ p} (P? : Decidable P) (resp : P Respects _)
   {f xs y} where
 
   open Setoid     S₁ renaming (_≈_ to _≈₁_)
@@ -513,4 +513,3 @@ module _ (S : Setoid c ℓ) where
 
   All-∉-swap :  ∀ {xs ys} → All (_∉ ys) xs → All (_∉ xs) ys
   All-∉-swap p = All.¬Any⇒All¬ _ ((All.All¬⇒¬Any p) ∘ Any-∈-swap)
-

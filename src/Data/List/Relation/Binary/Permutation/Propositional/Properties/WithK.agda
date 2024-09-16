@@ -33,7 +33,7 @@ open import Relation.Binary.Definitions using (DecidableEquality)
 ------------------------------------------------------------------------
 -- deduplicate
 
-module _ {a}{A : Set a} (_≟_ : DecidableEquality A) where
+module _ {a} {A : Set a} (_≟_ : DecidableEquality A) where
 
   private
     dedup≡   = deduplicate _≟_

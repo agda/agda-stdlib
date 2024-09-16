@@ -9,7 +9,6 @@
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Empty using (⊥-elim)
 open import Data.List.Base hiding (_∷ʳ_; find)
 import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -23,6 +22,7 @@ import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutationₚ
 open import Data.Product.Base using (_,_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _∘₂_; _$_; case_of_)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
@@ -35,6 +35,7 @@ open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 open Setoid using (Carrier)
 
@@ -51,8 +52,12 @@ module _ (S : Setoid a ℓ) where
   open Setoid S using (refl)
   open Subset S
 
-  ⊈[] : ∀ {x xs} → x ∷ xs ⊈ []
-  ⊈[] p = Membershipₚ.∉[] S $ p (here refl)
+  ∷⊈[] : ∀ {x xs} → x ∷ xs ⊈ []
+  ∷⊈[] p = Membershipₚ.∉[] S $ p (here refl)
+
+  ⊆[]⇒≡[] : (_⊆ []) ⋐ (_≡ [])
+  ⊆[]⇒≡[] {x = []}    _ = ≡.refl
+  ⊆[]⇒≡[] {x = _ ∷ _} p with () ← ∷⊈[] p
 
 ------------------------------------------------------------------------
 -- Relational properties with _≋_ (pointwise equality)
@@ -201,15 +206,18 @@ module _ (S : Setoid a ℓ) where
   ∈-∷⁺ʳ x∈ys _  (here  v≈x)  = ∈-resp-≈ S (sym v≈x) x∈ys
   ∈-∷⁺ʳ _ xs⊆ys (there x∈xs) = xs⊆ys x∈xs
 
-  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
-  ⊆∷∧∉⇒⊆ xs⊆ y∉ x∈ = case xs⊆ x∈ of λ where
-    (here x≈) → ⊥-elim $ y∉ (∈-resp-≈ S x≈ x∈)
-    (there p) → p
+  ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+  ⊆∷⇒∈∨⊆ {xs = []}       []⊆y∷ys = inj₂ λ ()
+  ⊆∷⇒∈∨⊆ {xs = _ ∷ _} x∷xs⊆y∷ys with ⊆∷⇒∈∨⊆ $ x∷xs⊆y∷ys ∘ there
+  ... | inj₁ y∈xs  = inj₁ $ there y∈xs
+  ... | inj₂ xs⊆ys with x∷xs⊆y∷ys (here refl)
+  ...   | here x≈y = inj₁ $ here (sym x≈y)
+  ...   | there x∈ys = inj₂ (∈-∷⁺ʳ x∈ys xs⊆ys)
 
-  ∈∷∧⊆⇒∈ : x ∈ y ∷ xs → xs ⊆ ys → x ∈ y ∷ ys
-  ∈∷∧⊆⇒∈ = λ where
-    (here x≡y) _   → here x≡y
-    (there x∈) xs⊆ → there $ xs⊆ x∈
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+  ⊆∷∧∉⇒⊆ xs⊆y∷ys y∉xs with ⊆∷⇒∈∨⊆ xs⊆y∷ys
+  ... | inj₁ y∈xs  = contradiction y∈xs y∉xs
+  ... | inj₂ xs⊆ys = xs⊆ys
 
 ------------------------------------------------------------------------
 -- ++

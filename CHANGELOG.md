@@ -123,11 +123,6 @@ Additions to existing modules
   Env = Vec Carrier
  ```
 
-* In `Data.List.Base`:
-  ```agda
-  lookupMaybe : List A → ℕ → Maybe A
-  ```
-
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
   Any-∈-swap    :  Any (_∈ ys) xs → Any (_∈ xs) ys
@@ -181,14 +176,12 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
   ```agda
-  Unique-dropSnd    : Unique S (x ∷ y ∷ xs) → Unique S (x ∷ xs)
-  Unique∷⇒head∉tail : Unique S (x ∷ xs) → x ∉ xs
+  Unique[x∷xs]⇒x∉xs : Unique S (x ∷ xs) → x ∉ xs
   ```
 
 * In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
   ```agda
-  Unique-dropSnd    : Unique (x ∷ y ∷ xs) → Unique (x ∷ xs)
-  Unique∷⇒head∉tail : Unique (x ∷ xs) → x ∉ xs
+  Unique[x∷xs]⇒x∉xs : Unique (x ∷ xs) → x ∉ xs
   ```
 
 * In `Data.List.Relation.Binary.Equality.Setoid`:
@@ -201,6 +194,20 @@ Additions to existing modules
   ```agda
   ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  ∷⊈[]   : x ∷ xs ⊈ []
+  ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  ∷⊈[]   : x ∷ xs ⊈ []
+  ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
   ```
 
 * In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
@@ -228,20 +235,6 @@ Additions to existing modules
   ```agda
   deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
   ∈-dedup      : x ∈ xs ⇔ x ∈ deduplicate _≟_ xs
-  ```
-
-* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
-  ```agda
-  ⊈[]    : x ∷ xs ⊈ []
-  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
-  ∈∷∧⊆⇒∈ : x ∈ y ∷ xs → xs ⊆ ys → x ∈ y ∷ ys
-  ```
-
-* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
-  ```agda
-  ⊈[]    : x ∷ xs ⊈ []
-  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
-  ∈∷∧⊆⇒∈ : x ∈ y ∷ xs → xs ⊆ ys → x ∈ y ∷ ys
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:

@@ -28,7 +28,7 @@ open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat.Base using (ℕ; _≤_)
 import Data.Product.Base as Product
-import Data.Sum.Base as Sum
+open import Data.Sum.Base as Sum using (_⊎_)
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)
 open import Function.Bundles using (_↔_; Inverse; Equivalence)
@@ -59,8 +59,11 @@ private
 -- Basics
 ------------------------------------------------------------------------
 
-⊈[] : x ∷ xs ⊈ []
-⊈[] = Subset.⊈[] (setoid _)
+∷⊈[] : x ∷ xs ⊈ []
+∷⊈[] = Subset.∷⊈[] (setoid _)
+
+⊆[]⇒≡[] : ∀ {A : Set a} → (_⊆ []) ⋐ (_≡ [])
+⊆[]⇒≡[] {A = A} = Subset.⊆[]⇒≡[] (setoid A)
 
 ------------------------------------------------------------------------
 -- Relational properties with _≋_ (pointwise equality)
@@ -158,11 +161,11 @@ xs⊆x∷xs = Subset.xs⊆x∷xs (setoid _)
 ∈-∷⁺ʳ : ∀ {x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
 ∈-∷⁺ʳ = Subset.∈-∷⁺ʳ (setoid _)
 
+⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+⊆∷⇒∈∨⊆ = Subset.⊆∷⇒∈∨⊆ (setoid _)
+
 ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
 ⊆∷∧∉⇒⊆ = Subset.⊆∷∧∉⇒⊆ (setoid _)
-
-∈∷∧⊆⇒∈ : x ∈ y ∷ xs → xs ⊆ ys → x ∈ y ∷ ys
-∈∷∧⊆⇒∈ = Subset.∈∷∧⊆⇒∈ (setoid _)
 
 ------------------------------------------------------------------------
 -- _++_

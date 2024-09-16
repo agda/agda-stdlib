@@ -10,7 +10,6 @@ module Data.List.Membership.Propositional.Properties where
 
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions using (Selective)
-open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List
 open import Data.List.Effectful using (monad)
@@ -41,7 +40,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; resp; _≗_; subst)
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; resp; _≗_)
 open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Nullary.Decidable.Core
@@ -107,7 +106,7 @@ module _ (f : A → B) where
   ∈-map⁻ = Membership.∈-map⁻ (≡.setoid A) (≡.setoid B)
 
   map-∈↔ : (∃ λ x → x ∈ xs × y ≡ f x) ↔ y ∈ map f xs
-  map-∈↔ {xs}{y} =
+  map-∈↔ {xs} {y} =
     (∃ λ x → x ∈ xs × y ≡ f x)   ↔⟨ Any↔ ⟩
     Any (λ x → y ≡ f x) xs       ↔⟨ map↔ ⟩
     y ∈ List.map f xs            ∎
@@ -460,10 +459,10 @@ map∷-decomp∈ {xss = _ ∷ _} = λ where
 
 map∷-decomp : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
 map∷-decomp               {xss = _  ∷ _} (here refl) = -, here refl , refl
-map∷-decomp {xs = []}     {xss = _  ∷ _} (there xs∈) = ⊥-elim ([]∉map∷ xs∈)
+map∷-decomp {xs = []}     {xss = _  ∷ _} (there xs∈) = contradiction xs∈ []∉map∷
 map∷-decomp {xs = x ∷ xs} {xss = _  ∷ _} (there xs∈) =
   let eq , p = map∷-decomp∈ xs∈
-  in -, there p , subst (λ ◆ → ◆ ∷ _ ≡ _) eq refl
+  in -, there p , cong (_∷ _) (sym eq)
 
 ∈-map∷⁻ : xs ∈ map (x ∷_) xss → x ∈ xs
 ∈-map∷⁻ {xss = _ ∷ _} = λ where

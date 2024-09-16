@@ -26,7 +26,7 @@ open import Relation.Nullary.Negation using (¬_)
 
 module _ {c ℓ} (S : Setoid c ℓ) where
 
-  open Setoid S using (_≈_; reflexive) renaming (Carrier to A)
+  open Setoid S using (_≉_; reflexive) renaming (Carrier to A)
 
   ------------------------------------------------------------------------
   -- Relational properties
@@ -40,7 +40,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ------------------------------------------------------------------------
 
   Disjoint⇒AllAll : ∀ {xs ys} → Disjoint S xs ys →
-                    All (λ x → All (λ y → ¬ x ≈ y) ys) xs
+                    All (λ x → All (x ≉_) ys) xs
   Disjoint⇒AllAll xs#ys = All.map (¬Any⇒All¬ _)
     (All.tabulate (λ v∈xs v∈ys → xs#ys (Any.map reflexive v∈xs , v∈ys)))
 

@@ -164,8 +164,5 @@ module _ {A : Set a} {P : Pred _ p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- ∷
 
-Unique-dropSnd : Unique (x ∷ y ∷ xs) → Unique (x ∷ xs)
-Unique-dropSnd = Setoid.Unique-dropSnd (setoid _)
-
-Unique∷⇒head∉tail : Unique (x ∷ xs) → x ∉ xs
-Unique∷⇒head∉tail = Setoid.Unique∷⇒head∉tail (setoid _)
+Unique[x∷xs]⇒x∉xs : Unique (x ∷ xs) → x ∉ xs
+Unique[x∷xs]⇒x∉xs = Setoid.Unique[x∷xs]⇒x∉xs (setoid _)
