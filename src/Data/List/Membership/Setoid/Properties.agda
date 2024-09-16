@@ -25,7 +25,7 @@ open import Data.Product.Base as Product using (∃; _×_; _,_ ; ∃₂; ∃-syn
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_$_; flip; _∘_; _∘′_; id)
-open import Function.Bundles using (_↔_; mk↔)
+open import Function.Bundles using (_↔_; mk↔; _⇔_; mk⇔)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_; _Preserves_⟶_)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
@@ -426,15 +426,19 @@ module _ (S : Setoid c ℓ) {R : Rel (Carrier S) ℓ₂} (R? : Binary.Decidable 
   ∈-derun⁺ : _≈_ Respectsʳ R → ∀ {xs z} → z ∈ xs → z ∈ derun R? xs
   ∈-derun⁺ ≈-resp-R z∈xs = Any.derun⁺ R? ≈-resp-R z∈xs
 
+  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
+  ∈-derun⁻ xs z∈derun[R,xs] = Any.derun⁻ R? z∈derun[R,xs]
+
   ∈-deduplicate⁺ : _≈_ Respectsʳ (flip R) → ∀ {xs z} →
                    z ∈ xs → z ∈ deduplicate R? xs
   ∈-deduplicate⁺ ≈-resp-R z∈xs = Any.deduplicate⁺ R? ≈-resp-R z∈xs
 
-  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
-  ∈-derun⁻ xs z∈derun[R,xs] = Any.derun⁻ R? z∈derun[R,xs]
-
   ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
   ∈-deduplicate⁻ xs z∈dedup[R,xs] = Any.deduplicate⁻ R? z∈dedup[R,xs]
+
+  deduplicate-∈⇔ : _≈_ Respectsʳ (flip R) → ∀ {xs z} →
+                   z ∈ xs ⇔ z ∈ deduplicate R? xs
+  deduplicate-∈⇔ p = mk⇔ (∈-deduplicate⁺ p) (∈-deduplicate⁻ _)
 
 ------------------------------------------------------------------------
 -- length

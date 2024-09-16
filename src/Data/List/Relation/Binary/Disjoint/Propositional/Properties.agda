@@ -61,10 +61,5 @@ module _ {a} {A : Set a} where
 
   -- deduplicate
   module _ (_≟_ : DecidableEquality A) where
-    private dedup≡ = deduplicate _≟_
-
-    deduplicate⁺ : Disjoint xs ys → Disjoint (dedup≡ xs) (dedup≡ ys)
+    deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
     deduplicate⁺ = S.deduplicate⁺ Sᴬ _≟_
-
-    ∈-dedup : x ∈ xs ⇔ x ∈ dedup≡ xs
-    ∈-dedup = S.∈-dedup Sᴬ _≟_

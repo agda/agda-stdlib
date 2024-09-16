@@ -58,15 +58,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   -- deduplicate
   module _ (_≟_ : DecidableEquality A) where
 
-    open import Data.List.Membership.Setoid S using (_∈_)
-
-    private
-      dedup≡   = deduplicate _≟_
-      ∈-dedup⁺ = Mem.∈-deduplicate⁺ S _≟_
-      ∈-dedup⁻ = Mem.∈-deduplicate⁻ S _≟_
-
-    deduplicate⁺ : ∀ {xs ys} → Disjoint S xs ys → Disjoint S (dedup≡ xs) (dedup≡ ys)
-    deduplicate⁺ = _∘ Product.map (∈-dedup⁻ _) (∈-dedup⁻ _)
-
-    ∈-dedup : ∀ {x xs} → x ∈ xs ⇔ x ∈ dedup≡ xs
-    ∈-dedup = mk⇔ (∈-dedup⁺ λ where _≡_.refl x≈ → x≈) (∈-dedup⁻ _)
+    deduplicate⁺ : ∀ {xs ys} → Disjoint S xs ys →
+                   Disjoint S (deduplicate _≟_ xs) (deduplicate _≟_ ys)
+    deduplicate⁺ = let ∈-dedup⁻ = Mem.∈-deduplicate⁻ S _≟_ in
+      _∘ Product.map (∈-dedup⁻ _) (∈-dedup⁻ _)

@@ -126,8 +126,8 @@ module _ {v : A} where
   ∈-++⁻ : ∀ xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Membership.∈-++⁻ (≡.setoid A)
 
-  ∈-++ : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
-  ∈-++ = mk⇔ (∈-++⁻ _) Sum.[ ∈-++⁺ˡ , ∈-++⁺ʳ _ ]
+  ++-∈⇔ : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
+  ++-∈⇔ = mk⇔ (∈-++⁻ _) Sum.[ ∈-++⁺ˡ , ∈-++⁺ʳ _ ]
 
   ∈-insert : ∀ xs {ys} → v ∈ xs ++ [ v ] ++ ys
   ∈-insert xs = Membership.∈-insert (≡.setoid A) xs refl
@@ -299,8 +299,13 @@ module _ (_≈?_ : DecidableEquality A) where
   ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
   ∈-derun⁺ z∈xs = Membership.∈-derun⁺ (≡.setoid A) _≈?_ (flip trans) z∈xs
 
+  private resp≈ = λ {c b a : A} (c≡b : c ≡ b) (a≡b : a ≡ b) → trans a≡b (sym c≡b)
+
   ∈-deduplicate⁺ : ∀ {xs z} → z ∈ xs → z ∈ deduplicate _≈?_ xs
-  ∈-deduplicate⁺ z∈xs = Membership.∈-deduplicate⁺ (≡.setoid A) _≈?_ (λ c≡b a≡b → trans a≡b (sym c≡b)) z∈xs
+  ∈-deduplicate⁺ z∈xs = Membership.∈-deduplicate⁺ (≡.setoid A) _≈?_ resp≈ z∈xs
+
+  deduplicate-∈⇔ : ∀ {xs z} → z ∈ xs ⇔ z ∈ deduplicate _≈?_ xs
+  deduplicate-∈⇔ = Membership.deduplicate-∈⇔ (≡.setoid A) _≈?_ resp≈
 
 ------------------------------------------------------------------------
 -- _>>=_

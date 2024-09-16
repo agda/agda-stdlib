@@ -125,30 +125,32 @@ Additions to existing modules
 
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
-  Any-∈-swap    :  Any (_∈ ys) xs → Any (_∈ xs) ys
-  All-∉-swap    :  All (_∉ ys) xs → All (_∉ xs) ys
-  ∈-map∘filter⁻ : y ∈₂ map f (filter P? xs) → ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
-  ∈-map∘filter⁺ : f Preserves _≈₁_ ⟶ _≈₂_ →
-                  ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
-                  y ∈₂ map f (filter P? xs)
-  ∈-concatMap⁺  : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
-  ∈-concatMap⁻  : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
-  ∉[]           : x ∉ []
+  Any-∈-swap     : Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap     : All (_∉ ys) xs → All (_∉ xs) ys
+  ∈-map∘filter⁻  : y ∈₂ map f (filter P? xs) → ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
+  ∈-map∘filter⁺  : f Preserves _≈₁_ ⟶ _≈₂_ →
+                   ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
+                   y ∈₂ map f (filter P? xs)
+  ∈-concatMap⁺   : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ∉[]            : x ∉ []
+  deduplicate-∈⇔ : _≈_ Respectsʳ (flip R) → z ∈ xs ⇔ z ∈ deduplicate R? xs
   ```
 
 * In `Data.List.Membership.Propositional.Properties`:
   ```agda
-  ∈-AllPairs₂   : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
-  ∈-map∘filter⁻ : y ∈ map f (filter P? xs) → (∃[ x ] x ∈ xs × y ≡ f x × P x)
-  ∈-map∘filter⁺ : (∃[ x ] x ∈ xs × y ≡ f x × P x) → y ∈ map f (filter P? xs)
-  ∈-concatMap⁺  : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
-  ∈-concatMap⁻  : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
-  ∈-++          : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
-  []∉map∷       : [] ∉ map (x ∷_) xss
-  map∷-decomp∈  : (x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
-  map∷-decomp   : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
-  ∈-map∷⁻       : xs ∈ map (x ∷_) xss → x ∈ xs
-  ∉[]           : x ∉ []
+  ∈-AllPairs₂    : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
+  ∈-map∘filter⁻  : y ∈ map f (filter P? xs) → (∃[ x ] x ∈ xs × y ≡ f x × P x)
+  ∈-map∘filter⁺  : (∃[ x ] x ∈ xs × y ≡ f x × P x) → y ∈ map f (filter P? xs)
+  ∈-concatMap⁺   : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ++-∈⇔          : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
+  []∉map∷        : [] ∉ map (x ∷_) xss
+  map∷-decomp∈   : (x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
+  map∷-decomp    : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
+  ∈-map∷⁻        : xs ∈ map (x ∷_) xss → x ∈ xs
+  ∉[]            : x ∉ []
+  deduplicate-∈⇔ : z ∈ xs ⇔ z ∈ deduplicate _≈?_ xs
   ```
 
 * In `Data.List.Membership.Propositional.Properties.WithK`:
@@ -228,13 +230,11 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Disjoint.Setoid.Properties`:
   ```agda
   deduplicate⁺ : Disjoint S xs ys → Disjoint S (deduplicate _≟_ xs) (deduplicate _≟_ ys)
-  ∈-dedup      : x ∈ xs ⇔ x ∈ deduplicate _≟_ xs
   ```
 
 * In `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   ```agda
   deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
-  ∈-dedup      : x ∈ xs ⇔ x ∈ deduplicate _≟_ xs
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:
