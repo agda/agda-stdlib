@@ -58,7 +58,7 @@ itself as it can indeed push these concepts out to the library.
 For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as arrays, length-indexed vectors or maps. Thus the crucial need for a standard library.
 
 Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct."
-Therefore, the standard library needs to provide all the necessary building blocks: not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a string-reversing function and proving that it preserves the length of the string would require hundreds of lines of code.
+Therefore, the standard library needs to provide all the necessary building blocks: not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a function to sort a list and proving that it preserves the length of the string would require hundreds of lines of code.
 
 # Impact
 
