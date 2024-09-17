@@ -74,7 +74,7 @@ itself as it can indeed push these concepts out to the library.
 For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as arrays, length-indexed vectors or maps. Thus the crucial need for a standard library.
 
 Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct."
-Therefore, the standard library needs to provide all the necessary building blocks: not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a function to sort a list and proving that it preserves the length of its input would require hundreds of lines of code.
+Therefore, the standard library needs to provide all the necessary building blocks, i.e. not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a function to sort a list and proving that it preserves the length of its input would require hundreds of lines of code.
 
 # Impact
 
@@ -122,7 +122,7 @@ A second challenge is that Agda was the first major ITP to fully embrace depende
 With the exception of Idris, a more recent entrant to the field [@brady2013idris], other major theorem provers either do not support dependent types or encourage their use only sparingly.
 In contrast, nearly everything in `agda-stdlib` makes use of dependent types, with correctness-related invariants being closely integrated with definitions.
 For example, we can specify that `reverse` defined on length-indexed vectors is length-preserving *by virtue of its type*.
-Furthermore most proofs consist of evidence-bearing terms for the relevant types, rather than being "irrelevant".
+Furthermore, most proofs consist of evidence-bearing terms for the relevant types, rather than being "irrelevant".
 As a result, the library provides relatively sophisticated features like polymorphic n-ary functions [@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers.
 While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. The Agda standard library is the first such to tackle this challenge.
 Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
