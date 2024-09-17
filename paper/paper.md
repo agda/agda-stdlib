@@ -7,7 +7,7 @@ tags:
   - Functional programming
 authors:
   - name: Daggitt, Matthew L.
-    orcid: 0000-0000-0000-0000
+    orcid: 0000-0002-2552-3671
     corresponding: true
     affiliation: 1
   - name: Allais, Guillaume
@@ -22,9 +22,12 @@ authors:
   - name: van Doorn, Nathan
     orcid: 0000-0000-0000-0000
     affiliation: 5
+  - name: Hu, Jason Z. S.
+	orcid: 0000-0001-6710-6262
+	affiliation: 6 
   - name: Others to come
     orcid: 0000-0000-0000-0000
-    affiliation: 6
+    affiliation: 100
 affiliations:
  - name: University of Western Australia, Australia
    index: 1
@@ -36,6 +39,10 @@ affiliations:
    index: 4
  - name: Independent Software Developer
    index: 5
+ - name: McGill University, Canada
+   index: 6
+ - name: UNKNOWN
+   index: 100
 date: 03 September 2024
 bibliography: paper.bib
 ---
@@ -53,7 +60,7 @@ these types and programs can be seen respectively as theorem
 statements and proofs.
 
 This paper introduces the Agda standard library (hereafter: `agda-stdlib` [@agda-stdlib]), which offers many of the fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
-Unlike the standard libraries of traditional programming languages, `agda-stdlib` not only provides standard utilities and data structures, but also a substantial portion of the basic discrete mathematics essential for proving the correctness of programs.
+Unlike the standard libraries of traditional programming languages, `agda-stdlib` provides not only standard utilities and data structures, but also a substantial portion of the basic discrete mathematics essential for proving the correctness of programs.
 
 # Statement of need
 
@@ -88,9 +95,9 @@ The development of `agda-stdlib` has had a synergistic relationship with that of
 We develop two examples below.
 
 First, Agda is a research compiler supporting a wide range of not necessarily inter-compatible language extensions via command line options.
-Examples include `--cubical` (changing the underlying type theory for one inspired by homotopy [@DBLP:journals/jfp/VezzosiMA21]),
+Examples include `--cubical` (changing the underlying type theory to cubical type theory [@DBLP:journals/jfp/VezzosiMA21]),
 `--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], a powerful reasoning principle incompatible with the `--cubical`-enabled type theory),
-or `--safe` (an ITP-oriented option enforcing that nothing is postulated but consequently disabling the FFI mechanism).
+or `--safe` (an ITP-oriented option enforcing that nothing is postulated and consequently disabling the FFI mechanism).
 In order for `agda-stdlib` to be compatible with as many different compiler options as possible, we designed the library to be broken into units
 requesting the minimal expressive power needed.
 To enable this, in 2019 Agda categorised all language options into two categories.
