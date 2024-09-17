@@ -28,6 +28,9 @@ authors:
   - name: Mullanix, Reed
 	orcid: 0000-0002-7970-4961
 	affiliation: 3
+  - name: Kokke, Wen
+	orcid: 0000-0002-1662-0381
+	affiliation: 7
   - name: Others to come
     orcid: 0000-0000-0000-0000
     affiliation: 100
@@ -44,6 +47,8 @@ affiliations:
    index: 5
  - name: McGill University, Canada
    index: 6
+ - name: University of Edinburgh, United Kingdom
+   index: 7
  - name: UNKNOWN
    index: 100
 date: 03 September 2024
