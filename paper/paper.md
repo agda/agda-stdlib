@@ -25,6 +25,9 @@ authors:
   - name: Hu, Jason Z. S.
 	orcid: 0000-0001-6710-6262
 	affiliation: 6 
+  - name: Mullanix, Reed
+	orcid: 0000-0002-7970-4961
+	affiliation: 3
   - name: Others to come
     orcid: 0000-0000-0000-0000
     affiliation: 100
@@ -127,9 +130,9 @@ As a result, the library provides relatively sophisticated features like polymor
 While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. The Agda standard library is the first such to tackle this challenge.
 Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
-Agda’s unique support for dependently-parameterized modules [@ivardeBruin2023] has also significantly influenced the library’s design.
+Agda’s unique support for dependently-parameterised modules [@ivardeBruin2023] has also significantly influenced the library’s design.
 Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, the developers of `agda-stdlib` has so far found little need to exploit such an approach.
-While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce the need for it compared to the languages mentioned above.
+While Agda supports a very general form of instance search, the ability to use qualified, parameterised modules as first-class objects appears to reduce the need for it compared to the languages mentioned above.
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
 Non-constructive methods, such as classical reasoning, can be achieved by passing the relevant axioms as module parameters.
@@ -150,7 +153,7 @@ This part of the test suite is sparser, as this has not yet been a major priorit
 
 We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] (with HTML-annotated sources at: \url{https://agda.github.io/agda-stdlib/v2.0/}), where we believe we have successfully addressed some of the significant design challenges present in versions 1.0-1.7. Key improvements include:
 
-- Minimized Dependency Graphs: We have reduced the depth of dependency graphs within the library, ensuring that the most commonly used modules rely on fewer parts of the library. This change has resulted in significantly faster load times for users during interactive development.
+- Minimised Dependency Graphs: We have reduced the depth of dependency graphs within the library, ensuring that the most commonly used modules rely on fewer parts of the library. This change has resulted in significantly faster load times for users during interactive development.
 
 - Standardisation: We have standardised the construction of mathematical objects such as groups, rings, orders, equivalences, etc., from their sub-objects, enhancing consistency and usability. We have also worked on standardizing morphisms of such objects.
 
