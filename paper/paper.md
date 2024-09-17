@@ -34,7 +34,7 @@ affiliations:
    index: 3
  - name: Heriot-Watt University, UK
    index: 4
- - name: TODO
+ - name: Independent Software Developer
    index: 5
 date: 03 September 2024
 bibliography: paper.bib
