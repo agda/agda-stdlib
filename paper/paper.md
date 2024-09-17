@@ -13,6 +13,9 @@ authors:
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
     affiliation: 2
+  - name: Kidney, Donnacha Oisín
+	orcid: 0000-0003-4952-7359
+    affiliation: 9
   - name: Carette, Jacques
     orcid: 0000-0001-8993-9804
     affiliation: 3
@@ -43,7 +46,7 @@ affiliations:
    index: 2
  - name: McMaster University, Canada
    index: 3
- - name: Heriot-Watt University, UK
+ - name: Heriot-Watt University, United Kingdom
    index: 4
  - name: Independent Software Developer
    index: 5
@@ -53,6 +56,8 @@ affiliations:
    index: 7
  - name: INRIA, France
    index: 8
+ - name: Imperial College London, United Kingdom
+   index: 9
  - name: UNKNOWN
    index: 100
 date: 03 September 2024
@@ -113,8 +118,8 @@ or `--safe` (an ITP-oriented option enforcing that nothing is postulated and con
 In order for `agda-stdlib` to be compatible with as many different compiler options as possible, we designed the library to be broken into units
 requesting the minimal expressive power needed.
 To enable this, in 2019 Agda categorised all language options into two categories.
-Once used in a module, an ''infective'' option will impact all the import*ing* modules; these are typically for theory-changing options like `--cubical` or `--with-K`.
-On the contrary, ''coinfective'' options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
+Once used in a module, an "infective" option will impact all the import*ing* modules; these are typically for theory-changing options like `--cubical` or `--with-K`.
+On the contrary, "coinfective" options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
 This categorisation enables libraries to integrate safe Agda code with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
 
 Second, the development needs of `agda-stdlib` have directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings. This lets end-users more easily evolve their code along with the evolution of `agda-stdlib`.
@@ -145,7 +150,7 @@ While Agda supports a very general form of instance search, the ability to use q
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
 Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
 Non-constructive methods, such as classical reasoning, can be achieved by passing the relevant axioms as module parameters.
-This enables users to write provably 'safe' non-constructive code, i.e. without having to *postulate* such axioms.
+This enables users to write provably "safe" non-constructive code, i.e. without having to *postulate* such axioms.
 
 # Testing
 
