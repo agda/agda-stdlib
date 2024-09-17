@@ -11,7 +11,7 @@ authors:
     corresponding: true
     affiliation: 1
   - name: Allais, Guillaume
-    orcid: 0000-0000-0000-0000
+    orcid: 0000-0002-4091-657X
     affiliation: 2
   - name: Carette, Jacques
     orcid: 0000-0001-8993-9804
@@ -28,7 +28,7 @@ authors:
 affiliations:
  - name: University of Western Australia, Australia
    index: 1
- - name: University of Strathclyde, UK
+ - name: University of Strathclyde, United Kingdom
    index: 2
  - name: McMaster University, Canada
    index: 3
