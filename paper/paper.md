@@ -120,7 +120,7 @@ As a result, the library provides relatively sophisticated features like polymor
 While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. The Agda standard library is the first such to tackle this challenge.
 Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
 
-Agda’s unique support for dependently-parameterized modules has also significantly influenced the library’s design.
+Agda’s unique support for dependently-parameterized modules [@ivardeBruin2023] has also significantly influenced the library’s design.
 Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, the developers of `agda-stdlib` has so far found little need to exploit such an approach.
 While Agda supports a very general form of instance search, the ability to use qualified, parameterized modules as first-class objects appears to reduce the need for it compared to the languages mentioned above.
 Additionally, module parameters enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
