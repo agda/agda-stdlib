@@ -25,6 +25,9 @@ authors:
   - name: Hu, Jason Z. S.
 	orcid: 0000-0001-6710-6262
 	affiliation: 6 
+  - name: Xia, Li-yiao
+	orcid: 0000-0003-2673-4400
+	affiliation: 8
   - name: Mullanix, Reed
 	orcid: 0000-0002-7970-4961
 	affiliation: 3
@@ -32,7 +35,6 @@ authors:
 	orcid: 0000-0002-1662-0381
 	affiliation: 7
   - name: Others to come
-    orcid: 0000-0000-0000-0000
     affiliation: 100
 affiliations:
  - name: University of Western Australia, Australia
@@ -49,6 +51,8 @@ affiliations:
    index: 6
  - name: University of Edinburgh, United Kingdom
    index: 7
+ - name: INRIA, France
+   index: 8
  - name: UNKNOWN
    index: 100
 date: 03 September 2024
