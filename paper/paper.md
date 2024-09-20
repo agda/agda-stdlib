@@ -36,7 +36,7 @@ authors:
 	affiliation: 7
   - name: Hu, Jason Z. S.
 	orcid: 0000-0001-6710-6262
-	affiliation: 6 
+	affiliation: 6
   - name: Xia, Li-yiao
 	orcid: 0000-0003-2673-4400
 	affiliation: 8
@@ -110,6 +110,8 @@ Therefore, the standard library needs to provide all the necessary building bloc
 
 A wide range of projects, too numerous to list exhaustively, make use of `agda-stdlib`.
 A diverse selection of such projects, not intended as endorsements over any others, includes:
+
+- Programming Language Foundations in Agda [@plfa22.08]
 
 - Formalisation of category theory [@hu2021categories]
 
