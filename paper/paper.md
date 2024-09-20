@@ -96,7 +96,7 @@ itself as it can indeed push these concepts out to the library.
 For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as arrays, length-indexed vectors or maps. Thus the crucial need for a standard library.
 
 Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct."
-Therefore, the standard library needs to provide all the necessary building blocks, i.e. not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or string concatenation is associative). Starting from just the language, something as simple as defining a function to sort a list and proving that it preserves the length of its input would require hundreds of lines of code.
+Therefore, the standard library needs to provide all the necessary building blocks, i.e. not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or list concatenation is associative). Starting from just the language, something as simple as defining a function to sort a list and proving that it preserves the length of its input would require hundreds of lines of code.
 
 # Impact
 
@@ -105,7 +105,7 @@ A diverse selection of such projects, not intended as endorsements over any othe
 
 - Formalisation of category theory [@hu2021categories]
 
-- Intrinsically typed interpreters for imperative languages [@bach2017intrinsically]
+- Intrinsically typed interpreters for imperative languages [@bach2017intrinsically] and formalisation of type-level computation and subtyping in Scala [@stucki2021theory].
 
 - Formally verified calculus for the reactive programming language Esterel [@florence2019esterel]
 
