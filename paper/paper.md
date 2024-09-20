@@ -19,6 +19,9 @@ authors:
   - name: van Doorn, Nathan
     orcid: 0000-0000-0000-0000
     affiliation: 5
+  - name: Norell, Ulf
+    orcid: 0000-0003-2999-0637
+    affiliation: 11
   - name: Kidney, Donnacha Oisín
 	orcid: 0000-0003-4952-7359
     affiliation: 9
@@ -66,6 +69,8 @@ affiliations:
    index: 9
  - name: Russian Academy of Sciences, Russia
    index: 10
+ - name: University of Gothenburg, Sweden
+   index: 11
  - name: UNKNOWN
    index: 100
 date: 03 September 2024
