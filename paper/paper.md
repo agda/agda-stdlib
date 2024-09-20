@@ -16,6 +16,9 @@ authors:
   - name: McKinna, James
     orcid: 0000-0001-6745-2560
     affiliation: 4
+  - name: van Doorn, Nathan
+    orcid: 0000-0000-0000-0000
+    affiliation: 5
   - name: Kidney, Donnacha Oisín
 	orcid: 0000-0003-4952-7359
     affiliation: 9
@@ -25,9 +28,9 @@ authors:
   - name: Carette, Jacques
     orcid: 0000-0001-8993-9804
     affiliation: 3
-  - name: van Doorn, Nathan
-    orcid: 0000-0000-0000-0000
-    affiliation: 5
+  - name: Rice, Alex
+	orcid: 0000-0002-2698-5122
+	affiliation: 7
   - name: Hu, Jason Z. S.
 	orcid: 0000-0001-6710-6262
 	affiliation: 6 
