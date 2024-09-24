@@ -40,6 +40,8 @@ authors:
   - name: Xia, Li-yiao
 	orcid: 0000-0003-2673-4400
 	affiliation: 8
+  - name: You, Shu-Hung
+    	affliation: 12
   - name: Mullanix, Reed
 	orcid: 0000-0002-7970-4961
 	affiliation: 3
@@ -71,6 +73,8 @@ affiliations:
    index: 10
  - name: University of Gothenburg, Sweden
    index: 11
+ - name : Northwestern University, USA
+   index: 12
  - name: UNKNOWN
    index: 100
 date: 03 September 2024
@@ -117,7 +121,7 @@ A diverse selection of such projects, not intended as endorsements over any othe
 
 - Intrinsically typed interpreters for imperative languages [@bach2017intrinsically] and formalisation of type-level computation and subtyping in Scala [@stucki2021theory].
 
-- Formally verified calculus for the reactive programming language Esterel [@florence2019esterel]
+- Formally verified calculus for the synchronous, reactive programming language Esterel [@florence2019esterel]
 
 - Verification of hardware circuit design [@pizani2018pi]
 
@@ -147,7 +151,7 @@ Firstly, as discussed, `agda-stdlib` contains much of the foundational mathemati
 While the focus on discrete mathematics and algebra reflects the bias in its user base towards programming language theory, organising this material into a coherent and logical structure is extremely challenging [@carette2020leveraging].
 There is constant tension between being as general as possible (e.g., defining operations over general algebraic structures) and providing clear, straightforward, and intuitive definitions (e.g., defining operations concretely over integers).
 Additionally, there is a persistent temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular application, which comes at the cost of duplicating the theory for the new representation.
-Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts, at the cost of lack of interoperability between variabous packages.
+Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts, at the cost of lack of interoperability between various packages.
 On the other hand, like `agda-stdlib`, MathLib [@van2020maintaining] for Lean aims to provide a repository of canonical definitions.
 
 A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default.
@@ -186,7 +190,7 @@ We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] (with HTML
 
 - Standardisation: We have standardised the construction of mathematical objects such as groups, rings, orders, equivalences, etc., from their sub-objects, enhancing consistency and usability. We have also worked on standardizing morphisms of such objects.
 
-- Introduction of a Tactics Library: We’ve introduced a small but growing tactics library. Experiments have shown that these tactics are currently slower than those in comparable systems, indicating a potential area for future improvements in Agda itself.
+- Introduction of a Tactics Library: We have introduced a small but growing tactics library. Experiments have shown that these tactics are currently slower than those in comparable systems, indicating a potential area for future improvements in Agda itself.
 
 - Introduction of a Testing Framework: We have also introduced a testing framework that allows users to write their own test suites, providing a structured way to check the performance and correctness of their non-native Agda code.
 
