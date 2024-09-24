@@ -16,6 +16,9 @@ authors:
   - name: McKinna, James
     orcid: 0000-0001-6745-2560
     affiliation: 4
+  - name: Abel, Andreas
+    orcid: 0000-0003-0420-4492
+    affiliation: 11
   - name: van Doorn, Nathan
     orcid: 0009-0009-0598-3663
     affiliation: 5
@@ -179,9 +182,9 @@ This enables users to write provably "safe" non-constructive code, i.e. without 
 # Testing
 
 One of the advantages of ITPs is that correctness proofs are regarded as an integral part of creating a collection of operations.
-Thus there is no need for test suites to verify functional correctness.
-However the library’s test suite does address two critical areas.
-First is the foreign function interface with the underlying operating system (e.g., reading from the command line, file access, timers).
+Thus there is far less need for test suites that verify functional correctness.
+However the library’s tests do cover two critical areas.
+First is the foreign function interface with the underlying operating system (e.g., reading from the command line, file access, timers) or with Agda itself (e.g. tactics).
 Correctness of bindings to an external library or the underlying OS' primitives cannot be reasoned about in Agda itself, these operations are tested externally, i.e. in a test suite.
 The second area is performance.
 Performance also cannot be analysed internally, making it necessary to include performance tests.
@@ -202,8 +205,6 @@ We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] (with HTML
 # Acknowledgements
 
 We would like to thank the core Agda development team who are not authors on this paper, but nonetheless whose work on Agda makes the standard library possible. This includes, but is not limited to,
-Andreas Abel,
-Ulf Norell,
 Nils Anders Danielsson,
 Andrés Sicard-Ramírez,
 Jesper Cockx and
