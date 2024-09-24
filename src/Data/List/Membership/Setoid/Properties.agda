@@ -17,6 +17,7 @@ import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 open import Data.List.Relation.Unary.All as All using (All)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+import Data.List.Relation.Unary.All.Properties.Core as All
 import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat.Base using (suc; z<s; _<_)
@@ -446,3 +447,18 @@ module _ (S : Setoid c ℓ) where
   ∈-∷=⁻ (here x≈z)   y≉v (there y∈) = there y∈
   ∈-∷=⁻ (there x∈xs) y≉v (here y≈z) = here y≈z
   ∈-∷=⁻ (there x∈xs) y≉v (there y∈) = there (∈-∷=⁻ x∈xs y≉v y∈)
+
+------------------------------------------------------------------------
+-- Any/All symmetry wrt _∈_/_∉_
+
+module _ (S : Setoid c ℓ) where
+
+  open Setoid S using (sym)
+  open Membership S
+
+  Any-∈-swap :  ∀ {xs ys} → Any (_∈ ys) xs → Any (_∈ xs) ys
+  Any-∈-swap = Any.swap ∘ Any.map (Any.map sym)
+
+  All-∉-swap :  ∀ {xs ys} → All (_∉ ys) xs → All (_∉ xs) ys
+  All-∉-swap p = All.¬Any⇒All¬ _ ((All.All¬⇒¬Any p) ∘ Any-∈-swap)
+

@@ -1,7 +1,7 @@
 Version 2.2-dev
 ===============
 
-The library has been tested using Agda 2.6.4.3.
+The library has been tested using Agda 2.7.0.
 
 Highlights
 ----------
@@ -24,6 +24,41 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.CommutativeMagma.Divisibility`:
+  ```agda
+  ∣-factors    ↦  x|xy∧y|xy
+  ∣-factors-≈  ↦  xy≈z⇒x|z∧y|z
+  ```
+
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣-respˡ   ↦  ∣-respˡ-≈
+  ∣-respʳ   ↦  ∣-respʳ-≈
+  ∣-resp    ↦  ∣-resp-≈
+ ```
+
+* In `Algebra.Solver.CommutativeMonoid`:
+  ```agda
+  normalise-correct  ↦  Algebra.Solver.CommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.CommutativeMonoid.Normal.singleton-correct
+  ```
+
+* In `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  flip12             ↦  Algebra.Properties.CommutativeSemigroup.xy∙z≈y∙xz
+  distr              ↦  Algebra.Properties.IdempotentCommutativeMonoid.∙-distrˡ-∙
+  normalise-correct  ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct
+  sg                 ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton
+  sg-correct         ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.singleton-correct
+  ```
+
+* In `Algebra.Solver.Monoid`:
+  ```agda
+  homomorphic        ↦  Algebra.Solver.Monoid.Normal.comp-correct
+  normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
@@ -45,12 +80,48 @@ New modules
   Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
+* Refactoring of the `Algebra.Solver.*Monoid` implementations, via
+  a single `Solver` module API based on the existing `Expr`, and
+  a common `Normal`-form API:
+  ```agda
+  Algebra.Solver.CommutativeMonoid.Normal
+  Algebra.Solver.IdempotentCommutativeMonoid.Normal
+  Algebra.Solver.Monoid.Expression
+  Algebra.Solver.Monoid.Normal
+  Algebra.Solver.Monoid.Solver
+  ```
+
+  NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
+
+* Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Data.List.Relation.Unary.All.Properties.Core
+  ```
+
 Additions to existing modules
 -----------------------------
 
-* In `Data.Product.Function.Dependent.Propositional`:
+* Properties of non-divisibility in `Algebra.Properties.Magma.Divisibility`:
   ```agda
-  cong′ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
+  ∤-respˡ-≈ : _∤_ Respectsˡ _≈_
+  ∤-respʳ-≈ : _∤_ Respectsʳ _≈_
+  ∤-resp-≈  : _∤_ Respects₂ _≈_
+  ∤∤-sym    : Symmetric _∤∤_
+  ∤∤-respˡ-≈ : _∤∤_ Respectsˡ _≈_
+  ∤∤-respʳ-≈ : _∤∤_ Respectsʳ _≈_
+  ∤∤-resp-≈  : _∤∤_ Respects₂ _≈_
+  ```
+
+* In `Algebra.Solver.Ring`
+  ```agda
+  Env : ℕ → Set _
+  Env = Vec Carrier
+ ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
   ```
 
 * In `Data.List.Properties`:
@@ -76,6 +147,11 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
+* In `Data.Maybe.Properties`:
+  ```agda
+  maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
+  ```
+
 * New lemmas in `Data.Nat.Properties`:
   ```agda
   m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
@@ -86,6 +162,11 @@ Additions to existing modules
   ```agda
   suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+  ```
+
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  cong′ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
   ```
 
 * New lemma in `Data.Vec.Properties`:
@@ -113,7 +194,7 @@ Additions to existing modules
   does-≡  : (a? b? : Dec A) → does a? ≡ does b?
   ```
 
-* In `Relation.Nullary.Properties`:
+* In `Relation.Unary.Properties`:
   ```agda
   map    : P ≐ Q → Decidable P → Decidable Q
   does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
