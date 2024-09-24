@@ -17,8 +17,11 @@ authors:
     orcid: 0000-0001-6745-2560
     affiliation: 4
   - name: van Doorn, Nathan
-    orcid: 0000-0000-0000-0000
+    orcid: 0009-0009-0598-3663
     affiliation: 5
+  - name: Wood, James
+    orcid: 0000-0002-8080-3350
+    affiliation: 13
   - name: Norell, Ulf
     orcid: 0000-0003-2999-0637
     affiliation: 11
@@ -75,9 +78,11 @@ affiliations:
    index: 11
  - name : Northwestern University, USA
    index: 12
+ - name : Huawei Technologies Research & Development, United Kingdom
+   index: 13
  - name: UNKNOWN
    index: 100
-date: 03 September 2024
+date: 24 September 2024
 bibliography: paper.bib
 ---
 
