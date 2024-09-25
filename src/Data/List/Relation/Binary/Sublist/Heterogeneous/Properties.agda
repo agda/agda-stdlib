@@ -331,9 +331,13 @@ module _ {R : REL A B r} where
   ∷ʳ⁻¹ ¬r = mk⇔ (_ ∷ʳ_) (∷ʳ⁻ ¬r)
 
 ------------------------------------------------------------------------
--- Irrelevant special case
+-- Empty special case
 
 module _ {R : REL A B r} where
+
+  Sublist-[]-universal : U.Universal (Sublist R [])
+  Sublist-[]-universal []      = []
+  Sublist-[]-universal (_ ∷ _) = _ ∷ʳ Sublist-[]-universal _
 
   Sublist-[]-irrelevant : U.Irrelevant (Sublist R [])
   Sublist-[]-irrelevant []       []        = ≡.refl
