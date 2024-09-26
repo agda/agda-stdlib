@@ -465,19 +465,3 @@ map∷-decomp∈ p with _ , xs∈xss , refl ← map∷⁻ p = refl , xs∈xss
 
 ∈-map∷⁻ : xs ∈ map (x ∷_) xss → x ∈ xs
 ∈-map∷⁻ p with _ , _ , refl ← map∷⁻ p = here refl
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.2
-
-map∷-decomp : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
-map∷-decomp p = let ys , ys∈xss , eq = map∷⁻ p in ys , ys∈xss , sym eq
-{-# WARNING_ON_USAGE map∷-decomp
-"Warning: map∷-decomp was deprecated in v2.2.
-Please use map∷⁻ instead."
-#-}

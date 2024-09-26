@@ -59,11 +59,6 @@ Deprecated names
   normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
-* In `Data.List.Membership.Propositional.Properties`:
-  ```agda
-  map∷-decomp  ↦  map∷⁻
-  ```
-
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
