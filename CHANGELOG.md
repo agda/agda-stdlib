@@ -59,6 +59,11 @@ Deprecated names
   normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
+* In `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  map∷-decomp  ↦  map∷⁻
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
@@ -146,8 +151,8 @@ Additions to existing modules
   ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
   ++-∈⇔          : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
   []∉map∷        : [] ∉ map (x ∷_) xss
+  map∷⁻          : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × xs ≡ y ∷ ys
   map∷-decomp∈   : (x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
-  map∷-decomp    : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
   ∈-map∷⁻        : xs ∈ map (x ∷_) xss → x ∈ xs
   ∉[]            : x ∉ []
   deduplicate-∈⇔ : z ∈ xs ⇔ z ∈ deduplicate _≈?_ xs
