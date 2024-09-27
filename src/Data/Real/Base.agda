@@ -20,6 +20,7 @@ open import Data.Rational.Solver
 open import Data.Rational.Unnormalised using (*<*)
 open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong₂)
+open import Relation.Nullary
 
 open import Function.Metric.Rational.CauchySequence d-metric public renaming (CauchySequence to ℝ)
 
@@ -71,3 +72,39 @@ isCauchy (x + y) ε = proj₁ [x] ℕ.+ proj₁ [y] , λ {m} {n} m≥N n≥N →
     lemma = solve 4 (λ a b c d → ((a :+ b) :- (c :+ d)) , ((a :- c) :+ (b :- d))) refl
       where open +-*-Solver
 
+_*ₗ_ : ℚ → ℝ → ℝ
+sequence (p *ₗ x) = map (p *_) (sequence x)
+isCauchy (p *ₗ x) ε with p ≟ 0ℚ
+... | yes p≡0 = 0 , λ {m} {n} _ _ → begin-strict
+  ∣ lookup (map (p *_) (sequence x)) m - lookup (map (p *_) (sequence x)) n ∣ ≡⟨ cong₂ (λ a b → ∣ a - b ∣) (lookup-map m (p *_) (sequence x)) (lookup-map n (p *_) (sequence x)) ⟩
+  ∣ p * lookup (sequence x) m - p * lookup (sequence x) n ∣                   ≡⟨ cong (λ # → ∣ p * lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (lookup (sequence x) n)) ⟩
+  ∣ p * lookup (sequence x) m ℚ.+ p * - lookup (sequence x) n ∣               ≡˘⟨ cong ∣_∣ (*-distribˡ-+ p (lookup (sequence x) m) (- lookup (sequence x) n)) ⟩
+  ∣ p * (lookup (sequence x) m - lookup (sequence x) n) ∣                     ≡⟨ cong (λ # → ∣ # * (lookup (sequence x) m - lookup (sequence x) n) ∣) p≡0 ⟩
+  ∣ 0ℚ * (lookup (sequence x) m - lookup (sequence x) n) ∣                    ≡⟨ cong ∣_∣ (*-zeroˡ (lookup (sequence x) m - lookup (sequence x) n)) ⟩
+  ∣ 0ℚ ∣                                                                      ≡⟨⟩
+  0ℚ                                                                          <⟨ positive⁻¹ ε ⟩
+  ε                                                                           ∎
+  where open ≤-Reasoning
+... | no  p≢0 = proj₁ (isCauchy x (1/ ∣ p ∣ * ε)) , λ {m} {n} m≥N n≥N → begin-strict
+  ∣ lookup (map (p *_) (sequence x)) m - lookup (map (p *_) (sequence x)) n ∣ ≡⟨ cong₂ (λ a b → ∣ a - b ∣) (lookup-map m (p *_) (sequence x)) (lookup-map n (p *_) (sequence x)) ⟩
+  ∣ p * lookup (sequence x) m - p * lookup (sequence x) n ∣                   ≡⟨ cong (λ # → ∣ p * lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (lookup (sequence x) n)) ⟩
+  ∣ p * lookup (sequence x) m ℚ.+ p * - lookup (sequence x) n ∣               ≡˘⟨ cong ∣_∣ (*-distribˡ-+ p (lookup (sequence x) m) (- lookup (sequence x) n)) ⟩
+  ∣ p * (lookup (sequence x) m - lookup (sequence x) n) ∣                     ≡⟨ ∣p*q∣≡∣p∣*∣q∣ p (lookup (sequence x) m - lookup (sequence x) n) ⟩
+  ∣ p ∣ * ∣ lookup (sequence x) m - lookup (sequence x) n ∣                   <⟨ *-monoʳ-<-pos ∣ p ∣ (proj₂ (isCauchy x (1/ ∣ p ∣ * ε)) m≥N n≥N) ⟩
+  ∣ p ∣ * (1/ ∣ p ∣ * ε)                                                      ≡˘⟨ *-assoc ∣ p ∣ (1/ ∣ p ∣) ε ⟩
+  (∣ p ∣ * 1/ ∣ p ∣) * ε                                                      ≡⟨ cong (_* ε) (*-inverseʳ ∣ p ∣) ⟩
+  1ℚ * ε                                                                      ≡⟨ *-identityˡ ε ⟩
+  ε                                                                           ∎
+  where
+    open ≤-Reasoning
+    instance _ : NonZero ∣ p ∣
+    _ = ≢-nonZero {∣ p ∣} λ ∣p∣≡0 → p≢0 (∣p∣≡0⇒p≡0 p ∣p∣≡0)
+    instance _ : Positive ∣ p ∣
+    _ = nonNeg∧nonZero⇒pos ∣ p ∣ {{∣-∣-nonNeg p}}
+    instance _ : Positive (1/ ∣ p ∣)
+    _ = 1/pos⇒pos ∣ p ∣
+    instance _ : Positive (1/ ∣ p ∣ * ε)
+    _ = positive $ begin-strict
+      0ℚ            ≡˘⟨ *-zeroʳ (1/ ∣ p ∣) ⟩
+      1/ ∣ p ∣ * 0ℚ <⟨ *-monoʳ-<-pos (1/ ∣ p ∣) (positive⁻¹ ε) ⟩
+      1/ ∣ p ∣ * ε  ∎
