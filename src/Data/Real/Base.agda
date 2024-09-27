@@ -4,7 +4,7 @@
 -- Real numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Data.Real.Base where
 
