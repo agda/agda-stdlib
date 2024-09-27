@@ -132,6 +132,26 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open Preorder preorder public
     hiding (Carrier; _≈_; _≲_; isPreorder)
 
+
+record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  field
+    Carrier         : Set c
+    _≈_             : Rel Carrier ℓ₁  -- The underlying equality.
+    _≲_             : Rel Carrier ℓ₂  -- The relation.
+    isDecPreorder   : IsDecPreorder _≈_ _≲_
+
+  open IsDecPreorder isDecPreorder public
+    using (_≲?_; isPreorder)
+
+  preorder : Preorder c ℓ₁ ℓ₂
+  preorder = record
+    { isPreorder = isPreorder
+    }
+
+  open Preorder preorder public
+    hiding (Carrier; _≈_; _≲_; isPreorder)
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------

@@ -270,6 +270,15 @@ Additions to existing modules
   _≡?_ : DecidableEquality (Vec A n)
   ```
 
+* In `Relation.Binary.Structures`:
+  ```agda
+  record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+    field
+      isPreorder : IsPreorder _≲_
+      _≟_        : Decidable _≈_
+      _≲?_       : Decidable _≲_
+  ```
+
 * In `Relation.Nullary.Decidable`:
   ```agda
   does-⇔  : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?

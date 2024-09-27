@@ -119,6 +119,26 @@ record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   open IsPreorder isPreorder public
 
 
+record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isPreorder : IsPreorder _≲_
+    _≟_        : Decidable _≈_
+    _≲?_       : Decidable _≲_
+
+  open IsPreorder isPreorder public
+    hiding (module Eq)
+
+  module Eq where
+
+    isDecEquivalence : IsDecEquivalence
+    isDecEquivalence = record
+      { isEquivalence = isEquivalence
+      ; _≟_           = _≟_
+      }
+
+    open IsDecEquivalence isDecEquivalence public
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------
