@@ -1832,11 +1832,9 @@ d-indiscernable {p} {q} ∣p-q∣≡0 = begin
 
 d-sym : Metric.Symmetric d
 d-sym p q = begin
-  ∣ p - q ∣       ≡˘⟨ cong (λ # → ∣ # - q ∣) (⁻¹-involutive p) ⟩
-  ∣ - - p - q ∣   ≡˘⟨ cong ∣_∣ (neg-distrib-+ (- p) q) ⟩
-  ∣ - (- p + q) ∣ ≡⟨ cong (λ # → ∣ - # ∣) (+-comm (- p) q) ⟩
-  ∣ - (q - p) ∣   ≡⟨ ∣-p∣≡∣p∣ (q - p) ⟩
-  ∣ q - p ∣       ∎
+  ∣ p - q ∣     ≡˘⟨ ∣-p∣≡∣p∣ (p - q) ⟩
+  ∣ - (p - q) ∣ ≡⟨ cong ∣_∣ (⁻¹-anti-homo-// p q) ⟩
+  ∣ q - p ∣     ∎
   where
     open ≡-Reasoning
     open GroupProperties +-0-group
