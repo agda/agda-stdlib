@@ -61,10 +61,7 @@ isCauchy (x + y) ε = proj₁ [x] ℕ.+ proj₁ [y] , λ {m} {n} m≥N n≥N →
   where
     open ≤-Reasoning
     instance _ : Positive (½ * ε)
-    _ = positive {½ * ε} $ begin-strict
-      0ℚ     ≡˘⟨ *-zeroˡ ε ⟩
-      0ℚ * ε <⟨ *-monoˡ-<-pos ε {0ℚ} {½} (*<* (+<+ (s≤s z≤n))) ⟩
-      ½ * ε  ∎
+    _ = pos*pos⇒pos ½ ε
     [x] = isCauchy x (½ * ε)
     [y] = isCauchy y (½ * ε)
 
@@ -118,10 +115,7 @@ isCauchy (p *ₗ x) ε with p ≟ 0ℚ
     instance _ : Positive (1/ ∣ p ∣)
     _ = 1/pos⇒pos ∣ p ∣
     instance _ : Positive (1/ ∣ p ∣ * ε)
-    _ = positive $ begin-strict
-      0ℚ            ≡˘⟨ *-zeroʳ (1/ ∣ p ∣) ⟩
-      1/ ∣ p ∣ * 0ℚ <⟨ *-monoʳ-<-pos (1/ ∣ p ∣) (positive⁻¹ ε) ⟩
-      1/ ∣ p ∣ * ε  ∎
+    _ = pos*pos⇒pos (1/ ∣ p ∣) ε
 
 square : ℝ → ℝ
 sequence (square x) = map (λ p → p * p) (sequence x)
@@ -181,11 +175,7 @@ isCauchy (square x) ε = B ℕ.⊔ proj₁ (isCauchy x (1/ (b ℚ.+ b) * ε)) , 
     _ = pos⇒nonZero (b ℚ.+ b)
 
     instance _ : Positive (1/ (b ℚ.+ b) * ε)
-    _ = positive $ begin-strict
-      0ℚ               ≡⟨⟩
-      0ℚ * 0ℚ          ≡˘⟨ *-zeroˡ ε ⟩
-      0ℚ * ε           <⟨ *-monoˡ-<-pos ε (positive⁻¹ (1/ (b ℚ.+ b)) {{1/pos⇒pos (b ℚ.+ b)}}) ⟩
-      1/ (b ℚ.+ b) * ε ∎
+    _ = pos*pos⇒pos (1/ (b ℚ.+ b)) ε {{1/pos⇒pos (b ℚ.+ b)}}
 
     b-prop : ∀ {n} → n ℕ.≥ B → ∣ lookup (sequence x) n ∣ < b
     b-prop {n} n≥B = begin-strict

@@ -1388,6 +1388,13 @@ module _ where
 *-cancelʳ-<-nonPos : ∀ r .{{_ : NonPositive r}} → p * r < q * r → p > q
 *-cancelʳ-<-nonPos {p} {q} r rewrite *-comm p r | *-comm q r = *-cancelˡ-<-nonPos r
 
+pos*pos⇒pos : ∀ p q .{{_ : Positive p}} .{{_ : Positive q}} → Positive (p * q)
+pos*pos⇒pos p q = positive $ begin-strict
+  0ℚ     ≡˘⟨ *-zeroʳ p ⟩
+  p * 0ℚ <⟨ *-monoʳ-<-pos p (positive⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _⊓_
 ------------------------------------------------------------------------

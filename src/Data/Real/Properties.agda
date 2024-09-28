@@ -44,10 +44,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong
   where
     open ℚ.≤-Reasoning
     instance _ : ℚ.Positive (ℚ.½ ℚ.* ε)
-    _ = ℚ.positive $ begin-strict
-      ℚ.0ℚ       ≡˘⟨ ℚ.*-zeroˡ ε ⟩
-      ℚ.0ℚ ℚ.* ε <⟨ ℚ.*-monoˡ-<-pos ε {ℚ.0ℚ} {ℚ.½} (ℚ.*<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))) ⟩
-      ℚ.½ ℚ.* ε  ∎
+    _ = ℚ.pos*pos⇒pos ℚ.½ ε
 
     lemma : ∀ a b c d → (a ℚ.+ b) ℚ.- (c ℚ.+ d) ≡ (a ℚ.- c) ℚ.+ (b ℚ.- d)
     lemma = solve 4 (λ a b c d → ((a :+ b) :- (c :+ d)) , ((a :- c) :+ (b :- d))) refl
