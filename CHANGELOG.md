@@ -274,6 +274,7 @@ Additions to existing modules
   ```agda
   record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂))
   ```
+  plus associated sub-bundles.
 
 * In `Relation.Binary.Construct.Interior.Symmetric`:
   ```agda
@@ -294,6 +295,7 @@ Additions to existing modules
       _≟_        : Decidable _≈_
       _≲?_       : Decidable _≲_
   ```
+  plus associated `isDecPreorder` fields in each higher `IsDec*Order` structure.
 
 * In `Relation.Nullary.Decidable`:
   ```agda

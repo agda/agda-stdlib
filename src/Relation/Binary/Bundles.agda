@@ -193,7 +193,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DPO = IsDecPartialOrder isDecPartialOrder
 
   open DPO public
-    using (_≟_; _≤?_; isPartialOrder)
+    using (_≟_; _≤?_; isPartialOrder; isDecPreorder)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
