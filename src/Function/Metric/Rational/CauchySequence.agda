@@ -28,12 +28,12 @@ open import Relation.Binary.PropositionalEquality using (cong₂)
 record CauchySequence : Set a where
   field
     sequence : Stream Carrier
-    isCauchy : ∀ ε → {{Positive ε}} → Σ[ N ∈ ℕ ] ∀ {m n} → m ℕ.≥ N → n ℕ.≥ N → d (lookup sequence m) (lookup sequence n) < ε
+    isCauchy : ∀ ε → .{{Positive ε}} → Σ[ N ∈ ℕ ] ∀ {m n} → m ℕ.≥ N → n ℕ.≥ N → d (lookup sequence m) (lookup sequence n) < ε
 
 open CauchySequence public
 
 _≈_ : Rel CauchySequence zero
-x ≈ y = ∀ ε → .{{_ : Positive ε}} → Σ[ N ∈ ℕ ] (∀ {n} → n ℕ.≥ N → d (lookup (sequence x) n) (lookup (sequence y) n) < ε)
+x ≈ y = ∀ ε → .{{Positive ε}} → Σ[ N ∈ ℕ ] (∀ {n} → n ℕ.≥ N → d (lookup (sequence x) n) (lookup (sequence y) n) < ε)
 
 ≈-refl : Reflexive _≈_
 ≈-refl {x} ε = 0 , λ {n} _ → begin-strict
