@@ -1341,6 +1341,34 @@ module _ where
 *-cancelˡ-≤-neg : ∀ r .{{_ : Negative r}} → r * p ≤ r * q → p ≥ q
 *-cancelˡ-≤-neg {p} {q} r rewrite *-comm r p | *-comm r q = *-cancelʳ-≤-neg r
 
+nonNeg*nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p * q)
+nonNeg*nonNeg⇒nonNeg p q = nonNegative $ begin
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ ≤⟨ *-monoˡ-≤-nonNeg p (nonNegative⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
+nonNeg*nonPos⇒nonPos : ∀ p .{{_ : NonNegative p}} q .{{_ : NonPositive q}} → NonPositive (p * q)
+nonNeg*nonPos⇒nonPos p q = nonPositive $ begin
+  p * q  ≤⟨ *-monoˡ-≤-nonNeg p (nonPositive⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+nonPos*nonNeg⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonNegative q}} → NonPositive (p * q)
+nonPos*nonNeg⇒nonPos p q = nonPositive $ begin
+  p * q  ≤⟨ *-monoˡ-≤-nonPos p (nonNegative⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+nonPos*nonPos⇒nonNeg : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+nonPos*nonPos⇒nonNeg p q = nonNegative $ begin
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ ≤⟨ *-monoˡ-≤-nonPos p (nonPositive⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
 
