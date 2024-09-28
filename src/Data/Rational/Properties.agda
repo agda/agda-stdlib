@@ -1390,7 +1390,7 @@ module _ where
 
 pos*pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p * q)
 pos*pos⇒pos p q = positive $ begin-strict
-  0ℚ     ≡˘⟨ *-zeroʳ p ⟩
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
   p * 0ℚ <⟨ *-monoʳ-<-pos p (positive⁻¹ q) ⟩
   p * q  ∎
   where open ≤-Reasoning
@@ -1411,7 +1411,7 @@ neg*pos⇒neg p q = negative $ begin-strict
 
 neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
 neg*neg⇒pos p q = positive $ begin-strict
-  0ℚ     ≡˘⟨ *-zeroʳ p ⟩
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
   p * 0ℚ <⟨ *-monoʳ-<-neg p (negative⁻¹ q) ⟩
   p * q  ∎
   where open ≤-Reasoning
@@ -1767,10 +1767,10 @@ d-definite {p} refl = cong ∣_∣ (+-inverseʳ p)
 
 d-indiscernable : Indiscernable _≡_ d
 d-indiscernable {p} {q} ∣p-q∣≡0 = begin
-  p               ≡˘⟨ +-identityʳ p ⟩
-  p - 0ℚ          ≡˘⟨ cong (_-_ p) (∣p∣≡0⇒p≡0 (p - q) ∣p-q∣≡0) ⟩
+  p               ≡⟨ +-identityʳ p ⟨
+  p - 0ℚ          ≡⟨ cong (_-_ p) (∣p∣≡0⇒p≡0 (p - q) ∣p-q∣≡0) ⟨
   p - (p - q)     ≡⟨ cong (_+_ p) (neg-distrib-+ p (- q)) ⟩
-  p + (- p - - q) ≡˘⟨ +-assoc p (- p) (- - q) ⟩
+  p + (- p - - q) ≡⟨ +-assoc p (- p) (- - q) ⟨
   (p - p) - - q   ≡⟨ cong₂ _+_ (+-inverseʳ p) (⁻¹-involutive q) ⟩
   0ℚ + q          ≡⟨ +-identityˡ q ⟩
   q               ∎
@@ -1789,9 +1789,9 @@ d-sym p q = begin
 
 d-triangle : TriangleInequality d
 d-triangle p q r = begin
-  ∣ p - r ∣             ≡˘⟨ cong (λ # → ∣ # - r ∣) (+-identityʳ p) ⟩
-  ∣ p + 0ℚ - r ∣        ≡˘⟨ cong (λ # → ∣ p + # - r ∣) (+-inverseˡ q) ⟩
-  ∣ p + (- q + q) - r ∣ ≡˘⟨ cong (λ # → ∣ # - r ∣) (+-assoc p (- q) q) ⟩
+  ∣ p - r ∣             ≡⟨ cong (λ # → ∣ # - r ∣) (+-identityʳ p) ⟨
+  ∣ p + 0ℚ - r ∣        ≡⟨ cong (λ # → ∣ p + # - r ∣) (+-inverseˡ q) ⟨
+  ∣ p + (- q + q) - r ∣ ≡⟨ cong (λ # → ∣ # - r ∣) (+-assoc p (- q) q) ⟨
   ∣ ((p - q) + q) - r ∣ ≡⟨ cong ∣_∣ (+-assoc (p - q) q (- r)) ⟩
   ∣ (p - q) + (q - r) ∣ ≤⟨ ∣p+q∣≤∣p∣+∣q∣ (p - q) (q - r) ⟩
   ∣ p - q ∣ + ∣ q - r ∣ ∎
