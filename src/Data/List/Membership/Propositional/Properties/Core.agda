@@ -12,7 +12,7 @@
 
 module Data.List.Membership.Propositional.Properties.Core where
 
-open import Data.List.Base using (List)
+open import Data.List.Base using (List; [])
 open import Data.List.Membership.Propositional
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Product.Base as Product using (_,_; ∃; _×_)
@@ -29,6 +29,12 @@ private
     A : Set a
     x : A
     xs : List A
+
+------------------------------------------------------------------------
+-- Basics
+
+∉[] : x ∉ []
+∉[] ()
 
 ------------------------------------------------------------------------
 -- find satisfies a simple equality when the predicate is a
