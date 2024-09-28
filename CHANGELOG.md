@@ -125,6 +125,8 @@ Additions to existing modules
 
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
+  ∉⇒All[≉]       : x ∉ xs → All (x ≉_) xs
+  All[≉]⇒∉       : All (x ≉_) xs → x ∉ xs
   Any-∈-swap     : Any (_∈ ys) xs → Any (_∈ xs) ys
   All-∉-swap     : All (_∉ ys) xs → All (_∉ xs) ys
   ∈-map∘filter⁻  : y ∈₂ map f (filter P? xs) → ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
