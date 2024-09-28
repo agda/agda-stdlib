@@ -715,6 +715,14 @@ map-concatMap f g xs = begin
   concatMap (map f ∘′ g) xs
     ∎
 
+concatMap-++ : ∀ (f : A → List B) xs ys →
+               concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
+concatMap-++ f xs ys = begin
+  concatMap f (xs ++ ys)           ≡⟨⟩
+  concat (map f (xs ++ ys))        ≡⟨ cong concat $ map-++ f xs ys ⟩
+  concat (map f xs ++ map f ys)    ≡˘⟨ concat-++ (map f xs) (map f ys) ⟩
+  concatMap f xs ++ concatMap f ys ∎ where open ≡-Reasoning
+
 ------------------------------------------------------------------------
 -- catMaybes
 
