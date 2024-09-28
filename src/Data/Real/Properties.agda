@@ -13,6 +13,7 @@ open import Data.Real.Base
 open import Algebra.Definitions _≈_
 open import Codata.Guarded.Stream
 open import Codata.Guarded.Stream.Properties
+import Codata.Guarded.Stream.Relation.Binary.Pointwise as PW
 open import Data.Product.Base
 import Data.Integer.Base as ℤ
 import Data.Nat.Base as ℕ
@@ -53,19 +54,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong
 +-assoc : Associative _+_
 +-assoc x y z ε = 0 , λ {n} _ → begin-strict
   ℚ.∣ lookup (zipWith ℚ._+_ (zipWith ℚ._+_ (sequence x) (sequence y)) (sequence z)) n ℚ.- lookup (zipWith ℚ._+_ (sequence x) (zipWith ℚ._+_ (sequence y) (sequence z))) n ∣
-    ≡⟨ cong₂ (λ a b → ℚ.∣ a ℚ.- b ∣)
-      (lookup-zipWith n ℚ._+_ (zipWith ℚ._+_ (sequence x) (sequence y)) (sequence z))
-      (lookup-zipWith n ℚ._+_ (sequence x) (zipWith ℚ._+_ (sequence y) (sequence z))) ⟩
-  ℚ.∣ (lookup (zipWith ℚ._+_ (sequence x) (sequence y)) n ℚ.+ lookup (sequence z) n) ℚ.- (lookup (sequence x) n ℚ.+ lookup (zipWith ℚ._+_ (sequence y) (sequence z)) n) ∣
-    ≡⟨ cong₂ (λ a b → ℚ.∣ (a ℚ.+ lookup (sequence z) n) ℚ.- (lookup (sequence x) n ℚ.+ b) ∣)
-      (lookup-zipWith n ℚ._+_ (sequence x) (sequence y))
-      (lookup-zipWith n ℚ._+_ (sequence y) (sequence z)) ⟩
-  ℚ.∣ ((lookup (sequence x) n ℚ.+ lookup (sequence y) n) ℚ.+ lookup (sequence z) n) ℚ.- (lookup (sequence x) n ℚ.+ (lookup (sequence y) n ℚ.+ lookup (sequence z) n)) ∣
-    ≡⟨ cong (λ a → ℚ.∣ a ℚ.- (lookup (sequence x) n ℚ.+ (lookup (sequence y) n ℚ.+ lookup (sequence z) n)) ∣) (ℚ.+-assoc (lookup (sequence x) n) (lookup (sequence y) n) (lookup (sequence z) n)) ⟩
-  ℚ.∣ (lookup (sequence x) n ℚ.+ (lookup (sequence y) n ℚ.+ lookup (sequence z) n)) ℚ.- (lookup (sequence x) n ℚ.+ (lookup (sequence y) n ℚ.+ lookup (sequence z) n)) ∣
-    ≡⟨ cong ℚ.∣_∣ (ℚ.+-inverseʳ (lookup (sequence x) n ℚ.+ (lookup (sequence y) n ℚ.+ lookup (sequence z) n))) ⟩
-  ℚ.∣ ℚ.0ℚ ∣
-    ≡⟨⟩
+    ≡⟨ ℚ.d-definite (cong-lookup (PW.assoc ℚ.+-assoc (sequence x) (sequence y) (sequence z)) n) ⟩
   ℚ.0ℚ
     <⟨ ℚ.positive⁻¹ ε ⟩
   ε ∎
@@ -74,15 +63,16 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong
 +-comm : Commutative _+_
 +-comm x y ε = 0 , λ {n} _ → begin-strict
   ℚ.∣ lookup (zipWith ℚ._+_ (sequence x) (sequence y)) n ℚ.- lookup (zipWith ℚ._+_ (sequence y) (sequence x)) n ∣
-    ≡⟨ cong₂ (λ a b → ℚ.∣ a ℚ.- b ∣)
-      (lookup-zipWith n ℚ._+_ (sequence x) (sequence y))
-      (lookup-zipWith n ℚ._+_ (sequence y) (sequence x)) ⟩
-  ℚ.∣ (lookup (sequence x) n ℚ.+ lookup (sequence y) n) ℚ.- (lookup (sequence y) n ℚ.+ lookup (sequence x) n) ∣
-    ≡⟨ cong (λ a → ℚ.∣ a ℚ.- (lookup (sequence y) n ℚ.+ lookup (sequence x) n) ∣) (ℚ.+-comm (lookup (sequence x) n) (lookup (sequence y) n)) ⟩
-  ℚ.∣ (lookup (sequence y) n ℚ.+ lookup (sequence x) n) ℚ.- (lookup (sequence y) n ℚ.+ lookup (sequence x) n) ∣
-    ≡⟨ cong ℚ.∣_∣ (ℚ.+-inverseʳ (lookup (sequence y) n ℚ.+ lookup (sequence x) n)) ⟩
-  ℚ.∣ ℚ.0ℚ ∣
-    ≡⟨⟩
+    ≡⟨ ℚ.d-definite (cong-lookup (PW.comm ℚ.+-comm (sequence x) (sequence y)) n) ⟩
+  ℚ.0ℚ
+    <⟨ ℚ.positive⁻¹ ε ⟩
+  ε ∎
+  where open ℚ.≤-Reasoning
+
++-identityˡ : LeftIdentity 0ℝ _+_
++-identityˡ x ε = 0 , λ {n} _ → begin-strict
+  ℚ.∣ lookup (zipWith ℚ._+_ (repeat ℚ.0ℚ) (sequence x)) n ℚ.- lookup (sequence x) n ∣
+    ≡⟨ ℚ.d-definite (cong-lookup (PW.identityˡ ℚ.+-identityˡ (sequence x)) n) ⟩
   ℚ.0ℚ
     <⟨ ℚ.positive⁻¹ ε ⟩
   ε ∎

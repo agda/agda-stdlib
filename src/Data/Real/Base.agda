@@ -27,6 +27,9 @@ open import Function.Metric.Rational.CauchySequence d-metric public renaming (Ca
 fromℚ : ℚ → ℝ
 fromℚ = embed
 
+0ℝ : ℝ
+0ℝ = fromℚ 0ℚ
+
 _+_ : ℝ → ℝ → ℝ
 sequence (x + y) = zipWith ℚ._+_ (sequence x) (sequence y)
 isCauchy (x + y) ε = proj₁ [x] ℕ.+ proj₁ [y] , λ {m} {n} m≥N n≥N → begin-strict
