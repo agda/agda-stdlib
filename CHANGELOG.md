@@ -59,6 +59,13 @@ Deprecated names
   normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  split  ↦  ↭-split
+  ```
+  with a more informative type (see below).
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
@@ -167,11 +174,6 @@ Additions to existing modules
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
   ```
 
-* In `Data.List.Relation.Unary.All`:
-  ```agda
-  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
-  ```
-
 * In `Data.List.Relation.Unary.Any.Properties`:
   ```agda
   concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
@@ -194,11 +196,59 @@ Additions to existing modules
   ++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`:
+  ```agda
+  steps : Permutation R xs ys → ℕ
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional`:
+  constructor aliases
+  ```agda
+  ↭-refl  : Reflexive _↭_
+  ↭-prep  : ∀ x → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap  : ∀ x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  ```
+  and properties
+  ```agda
+  ↭-reflexive-≋ : _≋_ ⇒ _↭_
+  ↭⇒↭ₛ          : _↭_  ⇒ _↭ₛ_
+  ↭ₛ⇒↭          : _↭ₛ_ ⇒ _↭_
+  ```
+  where `_↭ₛ_` is the `Setoid (setoid _)` instance of `Permutation`
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  Any-resp-[σ∘σ⁻¹] : (σ : xs ↭ ys) (iy : Any P ys) →
+                     Any-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  ∈-resp-[σ∘σ⁻¹]   : (σ : xs ↭ ys) (iy : y ∈ ys) →
+                     ∈-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  product-↭        : product Preserves _↭_ ⟶ _≡_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-reflexive-≋ : _≋_  ⇒ _↭_
+  ↭-transˡ-≋    : LeftTrans _≋_ _↭_
+  ↭-transʳ-≋    : RightTrans _↭_ _≋_
+  ↭-trans′      : Transitive _↭_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ↭-split : xs ↭ (as ++ [ v ] ++ bs) →
+            ∃₂ λ ps qs → xs ≋ (ps ++ [ v ] ++ qs) × (ps ++ qs) ↭ (as ++ bs)
+  drop-∷  : x ∷ xs ↭ x ∷ ys → xs ↭ ys
+  ```
+
 * In `Data.List.Relation.Binary.Pointwise`:
   ```agda
   ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
+
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
 
 * In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
