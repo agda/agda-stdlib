@@ -113,7 +113,8 @@ isCauchy (p *ₗ x) ε with p ≟ 0ℚ
 ... | no  p≢0 = proj₁ (isCauchy x (1/ ∣ p ∣ * ε)) , λ {m} {n} m≥N n≥N → begin-strict
   ∣ lookup (map (p *_) (sequence x)) m - lookup (map (p *_) (sequence x)) n ∣
     ≡⟨ cong₂ (λ a b → ∣ a - b ∣) (lookup-map m (p *_) (sequence x)) (lookup-map n (p *_) (sequence x)) ⟩
-  ∣ p * lookup (sequence x) m - p * lookup (sequence x) n ∣                   ≡⟨ cong (λ # → ∣ p * lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (lookup (sequence x) n)) ⟩
+  ∣ p * lookup (sequence x) m - p * lookup (sequence x) n ∣
+    ≡⟨ cong (λ # → ∣ p * lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (lookup (sequence x) n)) ⟩
   ∣ p * lookup (sequence x) m ℚ.+ p * ℚ.- lookup (sequence x) n ∣
     ≡⟨ cong ∣_∣ (*-distribˡ-+ p (lookup (sequence x) m) (ℚ.- lookup (sequence x) n)) ⟨
   ∣ p * (lookup (sequence x) m - lookup (sequence x) n) ∣
