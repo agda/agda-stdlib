@@ -67,10 +67,7 @@ x ≈ y = ∀ ε → .{{Positive ε}} → Σ[ N ∈ ℕ ] (∀ {n} → n ℕ.≥
   where
     open ≤-Reasoning
     instance _ : Positive (½ * ε)
-    _ = positive {½ * ε} $ begin-strict
-      0ℚ     ≡˘⟨ *-zeroˡ ε ⟩
-      0ℚ * ε <⟨ *-monoˡ-<-pos ε {0ℚ} {½} (*<* (+<+ (s≤s z≤n))) ⟩
-      ½ * ε  ∎
+    _ = pos*pos⇒pos ½ ε
 
 embed : Carrier → CauchySequence
 embed x = record
