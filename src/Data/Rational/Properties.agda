@@ -1395,6 +1395,27 @@ pos*pos⇒pos p q = positive $ begin-strict
   p * q  ∎
   where open ≤-Reasoning
 
+pos*neg⇒neg : ∀ p .{{_ : Positive p}} q .{{_ : Negative q}} → Negative (p * q)
+pos*neg⇒neg p q = negative $ begin-strict
+  p * q  <⟨ *-monoʳ-<-pos p (negative⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+neg*pos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Positive q}} → Negative (p * q)
+neg*pos⇒neg p q = negative $ begin-strict
+  p * q  <⟨ *-monoʳ-<-neg p (positive⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
+neg*neg⇒pos p q = positive $ begin-strict
+  0ℚ     ≡˘⟨ *-zeroʳ p ⟩
+  p * 0ℚ <⟨ *-monoʳ-<-neg p (negative⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _⊓_
 ------------------------------------------------------------------------
