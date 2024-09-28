@@ -175,7 +175,7 @@ isCauchy (square x) ε = B ℕ.⊔ proj₁ (isCauchy x (1/ (b ℚ.+ b) * ε)) , 
     _ = pos⇒nonZero (b ℚ.+ b)
 
     instance _ : Positive (1/ (b ℚ.+ b) * ε)
-    _ = pos*pos⇒pos (1/ (b ℚ.+ b)) ε {{1/pos⇒pos (b ℚ.+ b)}}
+    _ = pos*pos⇒pos (1/ (b ℚ.+ b)) {{1/pos⇒pos (b ℚ.+ b)}} ε
 
     b-prop : ∀ {n} → n ℕ.≥ B → ∣ lookup (sequence x) n ∣ < b
     b-prop {n} n≥B = begin-strict
