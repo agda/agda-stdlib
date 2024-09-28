@@ -182,21 +182,13 @@ isCauchy (square x) ε = B ℕ.⊔ proj₁ (isCauchy x (1/ (b ℚ.+ b) * ε)) , 
     b = 1ℚ ℚ.+ ∣ lookup (sequence x) B ∣
 
     instance _ : Positive b
-    _ = positive $ begin-strict
-      0ℚ                               ≤⟨ 0≤∣p∣ (lookup (sequence x) B) ⟩
-      ∣ lookup (sequence x) B ∣        ≡⟨ +-identityˡ ∣ lookup (sequence x) B ∣ ⟨
-      0ℚ ℚ.+ ∣ lookup (sequence x) B ∣ <⟨ +-monoˡ-< ∣ lookup (sequence x) B ∣ {0ℚ} {1ℚ} (*<* (+<+ (s≤s z≤n))) ⟩
-      1ℚ ℚ.+ ∣ lookup (sequence x) B ∣ ≡⟨⟩
-      b                                ∎
+    _ = pos+nonNeg⇒pos 1ℚ ∣ lookup (sequence x) B ∣ {{∣-∣-nonNeg (lookup (sequence x) B)}}
 
     instance _ : NonZero b
     _ = pos⇒nonZero b
 
     instance _ : Positive (b ℚ.+ b)
-    _ = positive $ begin-strict
-      0ℚ        ≡⟨⟩
-      0ℚ ℚ.+ 0ℚ <⟨ +-mono-< (positive⁻¹ b) (positive⁻¹ b) ⟩
-      b ℚ.+ b   ∎
+    _ = pos+pos⇒pos b b
 
     instance _ : NonZero (b ℚ.+ b)
     _ = pos⇒nonZero (b ℚ.+ b)
