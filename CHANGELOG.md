@@ -59,6 +59,13 @@ Deprecated names
   normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  split  ↦  ↭-split
+  ```
+  with a more informative type (see below).
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
@@ -98,6 +105,11 @@ New modules
   Data.List.Relation.Unary.All.Properties.Core
   ```
 
+* `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
+  Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
+
+* `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
+
 Additions to existing modules
 -----------------------------
 
@@ -120,19 +132,62 @@ Additions to existing modules
 
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
-  Any-∈-swap :  Any (_∈ ys) xs → Any (_∈ xs) ys
-  All-∉-swap :  All (_∉ ys) xs → All (_∉ xs) ys
+  ∉⇒All[≉]       : x ∉ xs → All (x ≉_) xs
+  All[≉]⇒∉       : All (x ≉_) xs → x ∉ xs
+  Any-∈-swap     : Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap     : All (_∉ ys) xs → All (_∉ xs) ys
+  ∈-map∘filter⁻  : y ∈₂ map f (filter P? xs) → ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
+  ∈-map∘filter⁺  : f Preserves _≈₁_ ⟶ _≈₂_ →
+                   ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
+                   y ∈₂ map f (filter P? xs)
+  ∈-concatMap⁺   : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ∉[]            : x ∉ []
+  deduplicate-∈⇔ : _≈_ Respectsʳ (flip R) → z ∈ xs ⇔ z ∈ deduplicate R? xs
+  ```
+
+* In `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-AllPairs₂    : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
+  ∈-map∘filter⁻  : y ∈ map f (filter P? xs) → (∃[ x ] x ∈ xs × y ≡ f x × P x)
+  ∈-map∘filter⁺  : (∃[ x ] x ∈ xs × y ≡ f x × P x) → y ∈ map f (filter P? xs)
+  ∈-concatMap⁺   : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ++-∈⇔          : v ∈ xs ++ ys ⇔ (v ∈ xs ⊎ v ∈ ys)
+  []∉map∷        : [] ∉ map (x ∷_) xss
+  map∷-decomp∈   : (x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
+  map∷-decomp    : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
+  ∈-map∷⁻        : xs ∈ map (x ∷_) xss → x ∈ xs
+  ∉[]            : x ∉ []
+  deduplicate-∈⇔ : z ∈ xs ⇔ z ∈ deduplicate _≈?_ xs
+  ```
+
+* In `Data.List.Membership.Propositional.Properties.WithK`:
+  ```agda
+  unique∧set⇒bag : Unique xs → Unique ys → xs ∼[ set ] ys → xs ∼[ bag ] ys
   ```
 
 * In `Data.List.Properties`:
   ```agda
-  product≢0 : All NonZero ns → NonZero (product ns)
-  ∈⇒≤product : All NonZero ns → n ∈ ns → n ≤ product ns
+  product≢0    : All NonZero ns → NonZero (product ns)
+  ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
+  concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
   ```
 
-* In `Data.List.Relation.Unary.All`:
+* In `Data.List.Relation.Unary.Any.Properties`:
   ```agda
-  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
+  concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
+  concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
+  ```agda
+  Unique[x∷xs]⇒x∉xs : Unique S (x ∷ xs) → x ∉ xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
+  ```agda
+  Unique[x∷xs]⇒x∉xs : Unique (x ∷ xs) → x ∉ xs
   ```
 
 * In `Data.List.Relation.Binary.Equality.Setoid`:
@@ -141,10 +196,103 @@ Additions to existing modules
   ++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`:
+  ```agda
+  steps : Permutation R xs ys → ℕ
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional`:
+  constructor aliases
+  ```agda
+  ↭-refl  : Reflexive _↭_
+  ↭-prep  : ∀ x → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap  : ∀ x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  ```
+  and properties
+  ```agda
+  ↭-reflexive-≋ : _≋_ ⇒ _↭_
+  ↭⇒↭ₛ          : _↭_  ⇒ _↭ₛ_
+  ↭ₛ⇒↭          : _↭ₛ_ ⇒ _↭_
+  ```
+  where `_↭ₛ_` is the `Setoid (setoid _)` instance of `Permutation`
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  Any-resp-[σ∘σ⁻¹] : (σ : xs ↭ ys) (iy : Any P ys) →
+                     Any-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  ∈-resp-[σ∘σ⁻¹]   : (σ : xs ↭ ys) (iy : y ∈ ys) →
+                     ∈-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  product-↭        : product Preserves _↭_ ⟶ _≡_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-reflexive-≋ : _≋_  ⇒ _↭_
+  ↭-transˡ-≋    : LeftTrans _≋_ _↭_
+  ↭-transʳ-≋    : RightTrans _↭_ _≋_
+  ↭-trans′      : Transitive _↭_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ↭-split : xs ↭ (as ++ [ v ] ++ bs) →
+            ∃₂ λ ps qs → xs ≋ (ps ++ [ v ] ++ qs) × (ps ++ qs) ↭ (as ++ bs)
+  drop-∷  : x ∷ xs ↭ x ∷ ys → xs ↭ ys
+  ```
+
 * In `Data.List.Relation.Binary.Pointwise`:
   ```agda
   ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ```
+
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  ∷⊈[]   : x ∷ xs ⊈ []
+  ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  ∷⊈[]   : x ∷ xs ⊈ []
+  ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  concatMap⁺ : xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
+  ```agda
+  Sublist-[]-universal : Universal (Sublist R [])
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  []⊆-universal : Universal ([] ⊆_)
+  ```
+
+* In `Data.List.Relation.Binary.Disjoint.Setoid.Properties`:
+  ```agda
+  deduplicate⁺ : Disjoint S xs ys → Disjoint S (deduplicate _≟_ xs) (deduplicate _≟_ ys)
+  ```
+
+* In `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
+  ```agda
+  deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:
+  ```agda
+  dedup-++-↭ : Disjoint xs ys →
+               deduplicate _≟_ (xs ++ ys) ↭ deduplicate _≟_ xs ++ deduplicate _≟_ ys
   ```
 
 * In `Data.Maybe.Properties`:
@@ -187,6 +335,17 @@ Additions to existing modules
   ×-distribʳ-⊎′ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
   ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
  ```
+
+* In `Relation.Binary.Construct.Interior.Symmetric`:
+  ```agda
+  decidable         : Decidable R → Decidable (SymInterior R)
+  ```
+  and for `Reflexive` and `Transitive` relations `R`:
+  ```agda
+  isDecEquivalence  : Decidable R → IsDecEquivalence (SymInterior R)
+  isDecPartialOrder : Decidable R → IsDecPartialOrder (SymInterior R) R
+  decPoset          : Decidable R → DecPoset _ _ _
+  ```
 
 * In `Relation.Nullary.Decidable`:
   ```agda
