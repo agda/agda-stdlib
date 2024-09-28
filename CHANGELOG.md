@@ -270,6 +270,22 @@ Additions to existing modules
   _≡?_ : DecidableEquality (Vec A n)
   ```
 
+* In `Relation.Binary.Bundles`:
+  ```agda
+  record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* In `Relation.Binary.Construct.Interior.Symmetric`:
+  ```agda
+  decidable         : Decidable R → Decidable (SymInterior R)
+  ```
+  and for `Reflexive` and `Transitive` relations `R`:
+  ```agda
+  isDecEquivalence  : Decidable R → IsDecEquivalence (SymInterior R)
+  isDecPartialOrder : Decidable R → IsDecPartialOrder (SymInterior R) R
+  decPoset          : Decidable R → DecPoset _ _ _
+  ```
+
 * In `Relation.Binary.Structures`:
   ```agda
   record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
