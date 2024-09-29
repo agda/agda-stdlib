@@ -15,6 +15,11 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The implementation of `≤-total` in `Data.Nat.Properties` has been altered
+  to use operations backed by primitives, rather than recursion, making it
+  significantly faster. However, its reduction behaviour on open terms may have
+  changed.
+
 Minor improvements
 ------------------
 
