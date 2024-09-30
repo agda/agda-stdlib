@@ -312,6 +312,11 @@ Additions to existing modules
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
   ```
 
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  congˡ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
+  ```
+
 * New lemma in `Data.Vec.Properties`:
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
@@ -321,6 +326,15 @@ Additions to existing modules
   ```agda
   _≡?_ : DecidableEquality (Vec A n)
   ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  Σ-distribˡ-⊎ : {P : A → Set a} {Q : A → Set b} → (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
+  Σ-distribʳ-⊎ : {P : Set a} {Q : Set b} {R : P ⊎ Q → Set c} → (Σ (P ⊎ Q) R) ↔ (Σ P (R ∘ inj₁) ⊎ Σ Q (R ∘ inj₂))
+  ×-distribˡ-⊎′ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+  ×-distribʳ-⊎′ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+  ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+ ```
 
 * In `Relation.Binary.Construct.Interior.Symmetric`:
   ```agda
