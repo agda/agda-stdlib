@@ -314,7 +314,7 @@ Additions to existing modules
 
 * In `Data.Product.Function.Dependent.Propositional`:
   ```agda
-  cong′ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
+  congˡ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
   ```
 
 * New lemma in `Data.Vec.Properties`:
