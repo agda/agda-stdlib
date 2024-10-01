@@ -140,8 +140,10 @@ record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     _≲_             : Rel Carrier ℓ₂  -- The relation.
     isDecPreorder   : IsDecPreorder _≈_ _≲_
 
-  open IsDecPreorder isDecPreorder public
-    using (_≲?_; isPreorder)
+  private module DPO = IsDecPreorder isDecPreorder
+
+  open DPO public
+    using (_≟_; _≲?_; isPreorder)
 
   preorder : Preorder c ℓ₁ ℓ₂
   preorder = record
@@ -149,7 +151,15 @@ record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Preorder preorder public
-    hiding (Carrier; _≈_; _≲_; isPreorder)
+    hiding (Carrier; _≈_; _≲_; isPreorder; module Eq)
+
+  module Eq where
+    decSetoid : DecSetoid c ℓ₁
+    decSetoid = record
+      { isDecEquivalence = DPO.Eq.isDecEquivalence
+      }
+
+    open DecSetoid decSetoid public
 
 
 ------------------------------------------------------------------------
@@ -203,13 +213,11 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open Poset poset public
     hiding (Carrier; _≈_; _≤_; isPartialOrder; module Eq)
 
-  module Eq where
-    decSetoid : DecSetoid c ℓ₁
-    decSetoid = record
-      { isDecEquivalence = DPO.Eq.isDecEquivalence
-      }
+  decPreorder : DecPreorder c ℓ₁ ℓ₂
+  decPreorder = record { isDecPreorder = isDecPreorder }
 
-    open DecSetoid decSetoid public
+  open DecPreorder decPreorder public
+    using (module Eq)
 
 
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
