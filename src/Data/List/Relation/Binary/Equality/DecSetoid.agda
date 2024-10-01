@@ -13,6 +13,7 @@ module Data.List.Relation.Binary.Equality.DecSetoid
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 open import Data.List.Relation.Binary.Pointwise using (decSetoid)
+open DecSetoid DS using (setoid)
 
 ------------------------------------------------------------------------
 -- Additional properties
@@ -21,7 +22,7 @@ open import Data.List.Relation.Binary.Pointwise using (decSetoid)
 ≋-decSetoid = decSetoid DS
 
 open DecSetoid ≋-decSetoid public
-  using (setoid)
+  using ()
   renaming (isDecEquivalence to ≋-isDecEquivalence; _≟_ to _≋?_)
 
 ------------------------------------------------------------------------
