@@ -14,6 +14,7 @@ open import Function.Base using (flip)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles.Raw
 open import Relation.Binary.Structures -- most of it
 
 ------------------------------------------------------------------------
@@ -29,9 +30,11 @@ record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
 
   open IsPartialEquivalence isPartialEquivalence public
 
-  infix 4 _≉_
-  _≉_ : Rel Carrier _
-  x ≉ y = ¬ (x ≈ y)
+  rawSetoid : RawSetoid _ _
+  rawSetoid = record { _≈_ = _≈_ }
+
+  open RawSetoid rawSetoid public
+    hiding (Carrier; _≈_ )
 
 
 record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -94,15 +97,11 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
     open Setoid setoid public
 
-  infix 4 _⋦_
-  _⋦_ : Rel Carrier _
-  x ⋦ y = ¬ (x ≲ y)
+  rawPreorder : RawPreorder _ _ _
+  rawPreorder = record { _≈_ = _≈_ ; _≲_ = _≲_ }
 
-  infix 4 _≳_
-  _≳_ = flip _≲_
-
-  infix 4 _⋧_
-  _⋧_ = flip _⋦_
+  open RawPreorder rawPreorder public
+    hiding (Carrier; _≈_ ; _≲_)
 
   -- Deprecated.
   infix 4 _∼_
@@ -153,13 +152,16 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Preorder preorder public
-    hiding (Carrier; _≈_; _≲_; isPreorder)
+    hiding (Carrier; _≈_; _≲_; isPreorder; _⋦_; _≳_; _⋧_)
     renaming
-    ( _⋦_ to _≰_; _≳_ to _≥_; _⋧_ to _≱_
-    ; ≲-respˡ-≈ to ≤-respˡ-≈
+    ( ≲-respˡ-≈ to ≤-respˡ-≈
     ; ≲-respʳ-≈ to ≤-respʳ-≈
     ; ≲-resp-≈  to ≤-resp-≈
     )
+
+  open RawPreorder rawPreorder public
+    renaming ( _⋦_ to _≰_; _≳_ to _≥_; _⋧_ to _≱_)
+    hiding (Carrier; _≈_ ; _≲_; _≉_; rawSetoid)
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -211,15 +213,11 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
 
     open Setoid setoid public
 
-  infix 4 _≮_
-  _≮_ : Rel Carrier _
-  x ≮ y = ¬ (x < y)
+  rawStrictPartialOrder : RawStrictPartialOrder _ _ _
+  rawStrictPartialOrder = record { _≈_ = _≈_ ; _<_ = _<_ }
 
-  infix 4 _>_
-  _>_ = flip _<_
-
-  infix 4 _≯_
-  _≯_ = flip _≮_
+  open RawStrictPartialOrder rawStrictPartialOrder public
+    hiding (Carrier; _≈_ ; _<_)
 
 
 record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -390,3 +388,11 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsApartnessRelation isApartnessRelation public
+    hiding (_¬#_)
+
+  rawApartnessRelation : RawApartnessRelation _ _ _
+  rawApartnessRelation = record { _≈_ = _≈_ ; _#_ = _#_ }
+
+  open RawApartnessRelation rawApartnessRelation public
+    hiding (Carrier; _≈_ ; _#_)
+  
