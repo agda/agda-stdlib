@@ -395,4 +395,4 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
 
   open RawApartnessRelation rawApartnessRelation public
     hiding (Carrier; _≈_ ; _#_)
-  
+
