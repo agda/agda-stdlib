@@ -11,7 +11,6 @@ module Data.Refinement.Properties where
 open import Level
 open import Data.Refinement
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Nullary.Recomputable
 
 private
   variable
