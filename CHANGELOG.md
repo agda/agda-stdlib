@@ -110,6 +110,11 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
 
+* Raw bundles for the `Relation.Binary.Bundles` hierarchy:
+  ```agda
+  Relation.Binary.Bundles.Raw
+  ```
+
 Additions to existing modules
 -----------------------------
 
