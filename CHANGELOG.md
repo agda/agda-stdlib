@@ -114,6 +114,7 @@ New modules
   ```agda
   Relation.Binary.Bundles.Raw
   ```
+  plus adding `rawX` fields to each of `Relation.Binary.Bundles.X`.
 
 Additions to existing modules
 -----------------------------
