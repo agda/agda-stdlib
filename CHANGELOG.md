@@ -110,6 +110,11 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
 
+* Properties of `Data.Refinement` types:
+  ```agda
+  Data.Refinement.Properties
+  ```
+
 Additions to existing modules
 -----------------------------
 
