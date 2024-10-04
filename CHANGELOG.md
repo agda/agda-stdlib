@@ -283,7 +283,9 @@ Additions to existing modules
   and for `Reflexive` and `Transitive` relations `R`:
   ```agda
   isDecEquivalence  : Decidable R → IsDecEquivalence (SymInterior R)
+  isDecPreorder     : Decidable R → IsDecPreorder (SymInterior R) R
   isDecPartialOrder : Decidable R → IsDecPartialOrder (SymInterior R) R
+  decPreorder       : Decidable R → DecPreorder _ _ _
   decPoset          : Decidable R → DecPoset _ _ _
   ```
 
