@@ -234,22 +234,22 @@ module ≅-Reasoning where
 
   infix 4 _IsRelatedTo_
 
-  data _IsRelatedTo_ {A : Set ℓ} {B : Set ℓ} (x : A) (y : B) : Set ℓ where
+  data _IsRelatedTo_ {A : Set a} {B : Set b} (x : A) (y : B) : Set a where
     relTo : (x≅y : x ≅ y) → x IsRelatedTo y
 
   start : ∀ {x : A} {y : B} → x IsRelatedTo y → x ≅ y
   start (relTo x≅y) = x≅y
 
-  ≡-go : ∀ {A : Set ℓ} {B : Set ℓ} → Trans {A = A} {C = B} _≡_ _IsRelatedTo_ _IsRelatedTo_
+  ≡-go : ∀ {A : Set a} {B : Set b} → Trans {A = A} {C = B} _≡_ _IsRelatedTo_ _IsRelatedTo_
   ≡-go x≡y (relTo y≅z) = relTo (trans (reflexive x≡y) y≅z)
 
   -- Combinators with one heterogeneous relation
-  module _ {A : Set ℓ} {B : Set ℓ} where
+  module _ {A : Set a} {B : Set b} where
     open begin-syntax (_IsRelatedTo_ {A = A} {B}) start public
     open ≡-syntax (_IsRelatedTo_ {A = A} {B}) ≡-go public
 
   -- Combinators with homogeneous relations
-  module _ {A : Set ℓ} where
+  module _ {A : Set a} where
     open end-syntax (_IsRelatedTo_ {A = A}) (relTo refl) public
 
   -- Can't create syntax in the standard `Syntax` module for
