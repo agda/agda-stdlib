@@ -18,6 +18,8 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* Relax the types for `≡-syntax` in `Relation.Binary.HeterogeneousEquality`.
+
 Deprecated modules
 ------------------
 
