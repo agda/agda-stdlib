@@ -11,14 +11,16 @@ Bug-fixes
 
 * Removed unnecessary parameter `#-trans : Transitive _#_` from
   `Relation.Binary.Reasoning.Base.Apartness`.
+* Relax the types for `≡-syntax` in `Relation.Binary.HeterogeneousEquality`.
+  These operators are used for equational reasoning of heterogeneous equality
+  `x ≅ y`, but previously the three operators in `≡-syntax` unnecessarily require
+  `x` and `y` to have the same type, making them unusable in most situations.
 
 Non-backwards compatible changes
 --------------------------------
 
 Minor improvements
 ------------------
-
-* Relax the types for `≡-syntax` in `Relation.Binary.HeterogeneousEquality`.
 
 Deprecated modules
 ------------------
