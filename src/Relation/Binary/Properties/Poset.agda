@@ -25,7 +25,7 @@ open Poset P renaming (Carrier to A)
 
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
-open Eq using (_≉_)
+
 
 ------------------------------------------------------------------------
 -- The _≥_ relation is also a poset.
