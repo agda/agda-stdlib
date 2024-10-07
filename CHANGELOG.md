@@ -86,6 +86,11 @@ Deprecated names
 New modules
 -----------
 
+* `Number` literals derivable from any `RawSuccessorSet`:
+  ```agda
+  Algebra.Literals
+  ```
+
 * Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
   ```agda
   Algebra.Properties.IdempotentCommutativeMonoid
