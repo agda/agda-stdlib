@@ -16,8 +16,12 @@ private
   variable
     a p : Level
     A : Set a
+    P : A → Set p
+    v w : Refinement A P
 
-module _ {P : A → Set p} where
 
-  value-injective : {v w : Refinement A P} → value v ≡ value w → v ≡ w
-  value-injective refl = refl
+------------------------------------------------------------------------
+-- Basic properties
+
+value-injective : value v ≡ value w → v ≡ w
+value-injective refl = refl
