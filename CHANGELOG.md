@@ -28,6 +28,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Morphism.Structures`:
+  ```agda
+  homo  ↦  ∙-homo
+  ```
+
 * In `Algebra.Properties.CommutativeMagma.Divisibility`:
   ```agda
   ∣-factors    ↦  x|xy∧y|xy
