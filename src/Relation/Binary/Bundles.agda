@@ -132,6 +132,36 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open Preorder preorder public
     hiding (Carrier; _≈_; _≲_; isPreorder)
 
+
+record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  field
+    Carrier         : Set c
+    _≈_             : Rel Carrier ℓ₁  -- The underlying equality.
+    _≲_             : Rel Carrier ℓ₂  -- The relation.
+    isDecPreorder   : IsDecPreorder _≈_ _≲_
+
+  private module DPO = IsDecPreorder isDecPreorder
+
+  open DPO public
+    using (_≟_; _≲?_; isPreorder)
+
+  preorder : Preorder c ℓ₁ ℓ₂
+  preorder = record
+    { isPreorder = isPreorder
+    }
+
+  open Preorder preorder public
+    hiding (Carrier; _≈_; _≲_; isPreorder; module Eq)
+
+  module Eq where
+    decSetoid : DecSetoid c ℓ₁
+    decSetoid = record
+      { isDecEquivalence = DPO.Eq.isDecEquivalence
+      }
+
+    open DecSetoid decSetoid public
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------
@@ -173,7 +203,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DPO = IsDecPartialOrder isDecPartialOrder
 
   open DPO public
-    using (_≟_; _≤?_; isPartialOrder)
+    using (_≟_; _≤?_; isPartialOrder; isDecPreorder)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
@@ -183,13 +213,11 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open Poset poset public
     hiding (Carrier; _≈_; _≤_; isPartialOrder; module Eq)
 
-  module Eq where
-    decSetoid : DecSetoid c ℓ₁
-    decSetoid = record
-      { isDecEquivalence = DPO.Eq.isDecEquivalence
-      }
+  decPreorder : DecPreorder c ℓ₁ ℓ₂
+  decPreorder = record { isDecPreorder = isDecPreorder }
 
-    open DecSetoid decSetoid public
+  open DecPreorder decPreorder public
+    using (module Eq)
 
 
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
