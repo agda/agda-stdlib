@@ -97,15 +97,13 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
     open Setoid setoid public
 
-  rawPreorder : RawPreorder _ _ _
-  rawPreorder = record { _≈_ = _≈_ ; _≲_ = _≲_ }
+  rawRelation : RawRelation _ _ _
+  rawRelation = record { _≈_ = _≈_ ; _∼_ = _≲_ }
 
-  open RawPreorder rawPreorder public
-    hiding (Carrier; _≈_ ; _≲_)
-
+  open RawRelation rawRelation public
+    renaming (_≁_ to _⋦_; _∼ᵒ_ to _≳_; _≁ᵒ_ to _⋧_)
+    hiding (Carrier; _≈_)
   -- Deprecated.
-  infix 4 _∼_
-  _∼_ = _≲_
   {-# WARNING_ON_USAGE _∼_
   "Warning: _∼_ was deprecated in v2.0.
   Please use _≲_ instead. "
@@ -159,9 +157,9 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     ; ≲-resp-≈  to ≤-resp-≈
     )
 
-  open RawPreorder rawPreorder public
-    renaming ( _⋦_ to _≰_; _≳_ to _≥_; _⋧_ to _≱_)
-    hiding (Carrier; _≈_ ; _≲_; _≉_; rawSetoid)
+  open RawRelation rawRelation public
+    renaming (_≁_ to _≰_; _∼ᵒ_ to _≥_; _≁ᵒ_ to _≱_)
+    hiding (Carrier; _≈_ ; _∼_; _≉_; rawSetoid)
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -213,11 +211,12 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
 
     open Setoid setoid public
 
-  rawStrictPartialOrder : RawStrictPartialOrder _ _ _
-  rawStrictPartialOrder = record { _≈_ = _≈_ ; _<_ = _<_ }
+  rawRelation : RawRelation _ _ _
+  rawRelation = record { _≈_ = _≈_ ; _∼_ = _<_ }
 
-  open RawStrictPartialOrder rawStrictPartialOrder public
-    hiding (Carrier; _≈_ ; _<_)
+  open RawRelation rawRelation public
+    renaming (_≁_ to _≮_; _∼ᵒ_ to _>_; _≁ᵒ_ to _≯_)
+    hiding (Carrier; _≈_ ; _∼_)
 
 
 record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -390,9 +389,10 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
   open IsApartnessRelation isApartnessRelation public
     hiding (_¬#_)
 
-  rawApartnessRelation : RawApartnessRelation _ _ _
-  rawApartnessRelation = record { _≈_ = _≈_ ; _#_ = _#_ }
+  rawRelation : RawRelation _ _ _
+  rawRelation = record { _≈_ = _≈_ ; _∼_ = _#_ }
 
-  open RawApartnessRelation rawApartnessRelation public
-    hiding (Carrier; _≈_ ; _#_)
+  open RawRelation rawRelation public
+    renaming (_≁_ to _¬#_; _∼ᵒ_ to _#ᵒ_; _≁ᵒ_ to _¬#ᵒ_)
+    hiding (Carrier; _≈_ ; _∼_)
 

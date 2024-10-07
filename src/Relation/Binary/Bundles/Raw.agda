@@ -32,15 +32,15 @@ record RawSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- RawPreorder
+-- RawRelation: basis for Relation.Binary.Bundles.*Order
 ------------------------------------------------------------------------
 
-record RawPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _≲_
+record RawRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈_ _∼_
   field
     Carrier    : Set c
     _≈_        : Rel Carrier ℓ₁  -- The underlying equality.
-    _≲_        : Rel Carrier ℓ₂  -- The relation.
+    _∼_        : Rel Carrier ℓ₂  -- The underlying relation.
 
   rawSetoid : RawSetoid c ℓ₁
   rawSetoid = record { _≈_ = _≈_ }
@@ -48,71 +48,13 @@ record RawPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open RawSetoid rawSetoid public
     using (_≉_)
 
-  infix 4 _⋦_
-  _⋦_ : Rel Carrier _
-  x ⋦ y = ¬ (x ≲ y)
+  infix 4 _≁_
+  _≁_ : Rel Carrier _
+  x ≁ y = ¬ (x ∼ y)
 
-  infix 4 _≳_
-  _≳_ = flip _≲_
+  infix 4 _∼ᵒ_
+  _∼ᵒ_ = flip _∼_
 
-  infix 4 _⋧_
-  _⋧_ = flip _⋦_
+  infix 4 _≁ᵒ_
+  _≁ᵒ_ = flip _≁_
 
-
-------------------------------------------------------------------------
--- RawPartialOrders
-------------------------------------------------------------------------
-
-record RawPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _≤_
-  field
-    Carrier        : Set c
-    _≈_            : Rel Carrier ℓ₁
-    _≤_            : Rel Carrier ℓ₂
-
-  rawPreorder : RawPreorder c ℓ₁ ℓ₂
-  rawPreorder = record { _≈_ = _≈_ ; _≲_ = _≤_ }
-
-  open RawPreorder rawPreorder public
-    hiding (Carrier; _≈_; _≲_)
-    renaming (_⋦_ to _≰_; _≳_ to _≥_; _⋧_ to _≱_)
-
-
-record RawStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _<_
-  field
-    Carrier              : Set c
-    _≈_                  : Rel Carrier ℓ₁
-    _<_                  : Rel Carrier ℓ₂
-
-  rawSetoid : RawSetoid c ℓ₁
-  rawSetoid = record { _≈_ = _≈_ }
-
-  open RawSetoid rawSetoid public
-    using (_≉_)
-
-  infix 4 _≮_
-  _≮_ : Rel Carrier _
-  x ≮ y = ¬ (x < y)
-
-  infix 4 _>_
-  _>_ = flip _<_
-
-  infix 4 _≯_
-  _≯_ = flip _≮_
-
-
-------------------------------------------------------------------------
--- RawApartnessRelation
-------------------------------------------------------------------------
-
-record RawApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _#_
-  field
-    Carrier             : Set c
-    _≈_                 : Rel Carrier ℓ₁
-    _#_                 : Rel Carrier ℓ₂
-
-  infix 4 _¬#_
-  _¬#_ : Rel Carrier _
-  x ¬# y = ¬ (x # y)
