@@ -110,6 +110,12 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
 
+* `Data.List.Effectful.Foldable`: `List` is `Foldable`
+
+* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
+
+* `Effect.Foldable`: implementation of haskell-like `Foldable`
+
 Additions to existing modules
 -----------------------------
 
