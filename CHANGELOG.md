@@ -110,8 +110,9 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
 
-* Properties of `Data.Refinement` types:
+* Refactored `Data.Refinement` into:
   ```agda
+  Data.Refinement.Base
   Data.Refinement.Properties
   ```
 
@@ -315,6 +316,12 @@ Additions to existing modules
   ```agda
   suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+  ```
+
+* New properties re-exported from `Data.Refinement`:
+  ```agda
+  value-injective : value v ≡ value w → v ≡ w
+  _≟_             : DecidableEquality A → DecidableEquality [ x ∈ A ∣ P x ]
   ```
 
 * New lemma in `Data.Vec.Properties`:
