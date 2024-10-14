@@ -1012,6 +1012,12 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
 +-monoʳ-≤ : ∀ r → (_+_ r) Preserves _≤_ ⟶ _≤_
 +-monoʳ-≤ r p≤q = +-mono-≤ (≤-refl {r}) p≤q
 
+nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p + q)
+nonNeg+nonNeg⇒nonNeg p q = nonNegative $ +-mono-≤ (nonNegative⁻¹ p) (nonNegative⁻¹ q)
+
+nonPos+nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p + q)
+nonPos+nonPos⇒nonPos p q = nonPositive $ +-mono-≤ (nonPositive⁻¹ p) (nonPositive⁻¹ q)
+
 ------------------------------------------------------------------------
 -- Properties of _+_ and _<_
 
@@ -1034,6 +1040,24 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
 
 +-monoʳ-< : ∀ r → (_+_ r) Preserves _<_ ⟶ _<_
 +-monoʳ-< r p<q = +-mono-≤-< (≤-refl {r}) p<q
+
+pos+nonNeg⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : NonNegative q}} → Positive (p + q)
+pos+nonNeg⇒pos p q = positive $ +-mono-<-≤ (positive⁻¹ p) (nonNegative⁻¹ q)
+
+nonNeg+pos⇒pos : ∀ p .{{_ : NonNegative p}} q .{{_ : Positive q}} → Positive (p + q)
+nonNeg+pos⇒pos p q = positive $ +-mono-≤-< (nonNegative⁻¹ p) (positive⁻¹ q)
+
+pos+pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p + q)
+pos+pos⇒pos p q = positive $ +-mono-< (positive⁻¹ p) (positive⁻¹ q)
+
+neg+nonPos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : NonPositive q}} → Negative (p + q)
+neg+nonPos⇒neg p q = negative $ +-mono-<-≤ (negative⁻¹ p) (nonPositive⁻¹ q)
+
+nonPos+neg⇒neg : ∀ p .{{_ : NonPositive p}} q .{{_ : Negative q}} → Negative (p + q)
+nonPos+neg⇒neg p q = negative $ +-mono-≤-< (nonPositive⁻¹ p) (negative⁻¹ q)
+
+neg+neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p + q)
+neg+neg⇒neg p q = negative $ +-mono-< (negative⁻¹ p) (negative⁻¹ q)
 
 ------------------------------------------------------------------------
 -- Properties of _*_
