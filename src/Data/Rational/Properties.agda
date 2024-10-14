@@ -1463,7 +1463,7 @@ pos*neg⇒neg p q = negative $ begin-strict
 neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
 neg*neg⇒pos p q = positive $ begin-strict
   0ℚ     ≡⟨ *-zeroʳ p ⟨
-  p * 0ℚ <⟨ {!*-monoʳ-<-neg p (negative⁻¹ q)!} ⟩
+  p * 0ℚ <⟨ *-monoʳ-<-neg p (negative⁻¹ q) ⟩
   p * q  ∎
   where open ≤-Reasoning
 
