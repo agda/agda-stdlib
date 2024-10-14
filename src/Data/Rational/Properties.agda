@@ -1364,6 +1364,34 @@ module _ where
 *-cancelˡ-≤-neg : ∀ r .{{_ : Negative r}} → r * p ≤ r * q → p ≥ q
 *-cancelˡ-≤-neg {p} {q} r rewrite *-comm r p | *-comm r q = *-cancelʳ-≤-neg r
 
+nonNeg*nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p * q)
+nonNeg*nonNeg⇒nonNeg p q = nonNegative $ begin
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ ≤⟨ *-monoˡ-≤-nonNeg p (nonNegative⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
+nonPos*nonNeg⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonNegative q}} → NonPositive (p * q)
+nonPos*nonNeg⇒nonPos p q = nonPositive $ begin
+  p * q  ≤⟨ *-monoˡ-≤-nonPos p (nonNegative⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+nonNeg*nonPos⇒nonPos : ∀ p .{{_ : NonNegative p}} q .{{_ : NonPositive q}} → NonPositive (p * q)
+nonNeg*nonPos⇒nonPos p q = nonPositive $ begin
+  p * q  ≤⟨ *-monoˡ-≤-nonNeg p (nonPositive⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+nonPos*nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+nonPos*nonPos⇒nonPos p q = nonNegative $ begin
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ ≤⟨ *-monoˡ-≤-nonPos p (nonPositive⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
 
@@ -1410,6 +1438,34 @@ module _ where
 
 *-cancelʳ-<-nonPos : ∀ r .{{_ : NonPositive r}} → p * r < q * r → p > q
 *-cancelʳ-<-nonPos {p} {q} r rewrite *-comm p r | *-comm q r = *-cancelˡ-<-nonPos r
+
+pos*pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p * q)
+pos*pos⇒pos p q = positive $ begin-strict
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ <⟨ *-monoʳ-<-pos p (positive⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
+neg*pos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Positive q}} → Negative (p * q)
+neg*pos⇒neg p q = negative $ begin-strict
+  p * q  <⟨ *-monoʳ-<-neg p (positive⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+pos*neg⇒neg : ∀ p .{{_ : Positive p}} q .{{_ : Negative q}} → Negative (p * q)
+pos*neg⇒neg p q = negative $ begin-strict
+  p * q  <⟨ *-monoʳ-<-pos p (negative⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
+neg*neg⇒pos p q = positive $ begin-strict
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ <⟨ {!*-monoʳ-<-neg p (negative⁻¹ q)!} ⟩
+  p * q  ∎
+  where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_
