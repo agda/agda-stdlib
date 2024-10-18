@@ -29,7 +29,7 @@ open import Relation.Unary using (Pred; _∩_)
 
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (_≉_; sym; trans)
+open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
 
 open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
