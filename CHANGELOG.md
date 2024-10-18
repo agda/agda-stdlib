@@ -316,6 +316,26 @@ Additions to existing modules
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
   ```
 
+* New lemmas in `Data.Rational.Properties`:
+  ```agda
+  nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p + q)
+  nonPos+nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p + q)
+  pos+nonNeg⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : NonNegative q}} → Positive (p + q)
+  nonNeg+pos⇒pos : ∀ p .{{_ : NonNegative p}} q .{{_ : Positive q}} → Positive (p + q)
+  pos+pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p + q)
+  neg+nonPos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : NonPositive q}} → Negative (p + q)
+  nonPos+neg⇒neg : ∀ p .{{_ : NonPositive p}} q .{{_ : Negative q}} → Negative (p + q)
+  neg+neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p + q)
+  nonNeg*nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p * q)
+  nonPos*nonNeg⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonNegative q}} → NonPositive (p * q)
+  nonNeg*nonPos⇒nonPos : ∀ p .{{_ : NonNegative p}} q .{{_ : NonPositive q}} → NonPositive (p * q)
+  nonPos*nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+  pos*pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p * q)
+  neg*pos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Positive q}} → Negative (p * q)
+  pos*neg⇒neg : ∀ p .{{_ : Positive p}} q .{{_ : Negative q}} → Negative (p * q)
+  neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
+  ```
+
 * New lemma in `Data.Vec.Properties`:
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
