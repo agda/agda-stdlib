@@ -89,7 +89,16 @@ New modules
 * Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
   ```agda
   Algebra.Properties.IdempotentCommutativeMonoid
-  ```
+ ```
+
+* Isomorphism between `Fin` and an 'obvious' definition `ℕ<` of
+  'bounded natural number' type, in:
+  ```agda
+  Data.Nat.Bounded
+  Data.Nat.Bounded.Base
+  Data.Nat.Bounded.Literals
+  Data.Nat.Bounded.Properties
+ ```
 
 * Refactoring of the `Algebra.Solver.*Monoid` implementations, via
   a single `Solver` module API based on the existing `Expr`, and
