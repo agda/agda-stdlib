@@ -114,6 +114,12 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
 
+* Refactored `Data.Refinement` into:
+  ```agda
+  Data.Refinement.Base
+  Data.Refinement.Properties
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -335,6 +341,12 @@ Additions to existing modules
   pos*neg⇒neg : ∀ p .{{_ : Positive p}} q .{{_ : Negative q}} → Negative (p * q)
   neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
   ```
+
+* New properties re-exported from `Data.Refinement`:
+  ```agda
+  value-injective : value v ≡ value w → v ≡ w
+  _≟_             : DecidableEquality A → DecidableEquality [ x ∈ A ∣ P x ]
+ ```
 
 * New lemma in `Data.Vec.Properties`:
   ```agda
