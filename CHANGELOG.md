@@ -381,6 +381,11 @@ Additions to existing modules
   does-≡  : (a? b? : Dec A) → does a? ≡ does b?
   ```
 
+* In `Relation.Nullary.Recomputable`:
+  ```agda
+  irrelevant-recompute : Recomputable (Irrelevant A)
+  ```
+
 * In `Relation.Unary.Properties`:
   ```agda
   map    : P ≐ Q → Decidable P → Decidable Q
