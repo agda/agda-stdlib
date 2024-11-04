@@ -29,7 +29,7 @@ authors:
     orcid: 0000-0003-2999-0637
     affiliation: 11
   - name: Kidney, Donnacha Oisín
-	orcid: 0000-0003-4952-7359
+    orcid: 0000-0003-4952-7359
     affiliation: 9
   - name: Meshveliani, Sergei
     orcid: 0000-0002-4224-6178
@@ -38,22 +38,22 @@ authors:
     orcid: 0000-0001-8993-9804
     affiliation: 3
   - name: Rice, Alex
-	orcid: 0000-0002-2698-5122
-	affiliation: 7
+    orcid: 0000-0002-2698-5122
+    affiliation: 7
   - name: Hu, Jason Z. S.
-	orcid: 0000-0001-6710-6262
-	affiliation: 6
+    orcid: 0000-0001-6710-6262
+    affiliation: 6
   - name: Xia, Li-yiao
-	orcid: 0000-0003-2673-4400
-	affiliation: 8
+    orcid: 0000-0003-2673-4400
+    affiliation: 8
   - name: You, Shu-Hung
-	affliation: 12
+    affliation: 12
   - name: Mullanix, Reed
-	orcid: 0000-0002-7970-4961
-	affiliation: 3
+    orcid: 0000-0002-7970-4961
+    affiliation: 3
   - name: Kokke, Wen
-	orcid: 0000-0002-1662-0381
-	affiliation: 7
+    orcid: 0000-0002-1662-0381
+    affiliation: 7
   - name: Others to come
     affiliation: 100
 affiliations:
