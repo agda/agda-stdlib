@@ -91,7 +91,7 @@ bibliography: paper.bib
 
 # Summary
 
-Agda [@norell2009dependently] is a dependently-typed functional
+Agda [@agda2024manual] is a dependently-typed functional
 language that serves both as a traditional programming language
 and as an interactive theorem prover (ITP).
 In other words, its type system is expressive enough to formulate
@@ -101,27 +101,29 @@ Through the Curry-Howard lens [@DBLP:journals/cacm/Wadler15],
 these types and programs can be seen respectively as theorem
 statements and proofs.
 
-This paper introduces the Agda standard library (hereafter: `agda-stdlib` [@agda-stdlib]), which offers many of the fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
+This paper presents the Agda standard library (hereafter: `agda-stdlib` [@agda-stdlib]), which offers many of the fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
 Unlike the standard libraries of traditional programming languages, `agda-stdlib` provides not only standard utilities and data structures, but also a substantial portion of the basic discrete mathematics essential for proving the correctness of programs.
 
 # Statement of need
 
 Most programming languages include a "standard" library offering a basic set of algorithms, data structures, and operating system procedures.
-However, there are two reasons why a standard library is particularly important in Agda compared to traditional programming languages.
+However, there are two reasons why a standard library is more important for Agda compared to traditional programming languages.
 
-First, like other theorem provers, the Agda language provides only a minimal core set of primitives from which programs can be constructed.
+First, like other theorem provers, the Agda language provides only a small set of primitives from which programs can be constructed.
 As a result, many concepts traditionally considered part of a language must be defined within the program itself.
 This approach reduces compiler complexity and enhances its reliability, and also shows the strength of the core language
 itself as it can indeed push these concepts out to the library.
-For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as arrays, length-indexed vectors or maps. Thus the crucial need for a standard library.
+For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as vectors or maps. 
+This increases the need for a standard library when compared to more main stream languages.
 
 Second, Agda users often seek to prove that programs constructed using data types from the standard library are "correct."
-Therefore, the standard library needs to provide all the necessary building blocks, i.e. not just operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or list concatenation is associative). Starting from just the language, something as simple as defining a function to sort a list and proving that it preserves the length of its input would require hundreds of lines of code.
+Therefore, the standard library provides not only operations for these data types but also proofs of their basic properties (e.g., that integer addition is commutative or list concatenation is associative). 
+Starting from just the Agda language, something as simple as defining a function to sort a list and proving that it preserves the length of its input would require hundreds of lines of code.
 
 # Impact
 
-A wide range of projects, too numerous to list exhaustively, make use of `agda-stdlib`.
-A diverse selection of such projects, not intended as endorsements over any others, includes:
+A wide range of projects make use of `agda-stdlib`.
+A diverse selection, not intended as endorsements over any others, includes:
 
 - Programming Language Foundations in Agda [@plfa22.08]
 
@@ -135,21 +137,21 @@ A diverse selection of such projects, not intended as endorsements over any othe
 
 - Verification of routing protocols [@daggitt2023routing]
 
-The development of `agda-stdlib` has had a synergistic relationship with that of Agda itself, prompting the implementation of several new language features.
-We develop two examples below.
+The development of `agda-stdlib` has also had a synergistic relationship with that of Agda itself, prompting the implementation of several new language features.
+We discuss two examples below.
 
 First, Agda is a research compiler supporting a wide range of not necessarily inter-compatible language extensions via command line options.
 Examples include `--cubical` (changing the underlying type theory to cubical type theory [@DBLP:journals/jfp/VezzosiMA21]),
-`--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], a powerful reasoning principle incompatible with the `--cubical`-enabled type theory),
+`--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], a reasoning principle incompatible with the `--cubical`-enabled type theory),
 or `--safe` (an ITP-oriented option enforcing that nothing is postulated and consequently disabling the FFI mechanism).
 In order for `agda-stdlib` to be compatible with as many different compiler options as possible, we designed the library to be broken into units
 requesting the minimal expressive power needed.
-To enable this, in 2019 Agda categorised all language options into two categories.
+To enable this, in 2019 Agda allowed language options to be categorised into "infective", "coinfective" and "neither".
 Once used in a module, an "infective" option will impact all the import*ing* modules; these are typically for theory-changing options like `--cubical` or `--with-K`.
 On the contrary, "coinfective" options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
 This categorisation enables libraries to integrate safe Agda code with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
 
-Second, the development needs of `agda-stdlib` have directly influenced the language by requesting the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used, enabling the implementation of deprecation warnings. This lets end-users more easily evolve their code along with the evolution of `agda-stdlib`.
+Second, the development of `agda-stdlib` motivated adding the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used. This enabled the implementation of deprecation warnings amongst other features, and lets end-users more easily evolve their code alongside new versions of `agda-stdlib`.
 
 # Design
 
@@ -181,18 +183,18 @@ This enables users to write provably "safe" non-constructive code, i.e. without 
 
 # Testing
 
-One of the advantages of ITPs is that correctness proofs are regarded as an integral part of creating a collection of operations.
-Thus there is far less need for test suites that verify functional correctness.
+In ITPs correctness proofs are regarded as an integral part of creating a collection of operations.
+One of the advantages of this is that there is far less need for test suites that verify functional correctness.
 However the library’s tests do cover two critical areas.
 First is the foreign function interface with the underlying operating system (e.g., reading from the command line, file access, timers) or with Agda itself (e.g. tactics).
-Correctness of bindings to an external library or the underlying OS' primitives cannot be reasoned about in Agda itself, these operations are tested externally, i.e. in a test suite.
+Correctness of bindings to an external library or the underlying OS primitives cannot be reasoned about in Agda itself, these operations are tested externally, i.e. in a test suite.
 The second area is performance.
-Performance also cannot be analysed internally, making it necessary to include performance tests.
+Performance of type-checking and compiled code cannot be analysed inside Agda itself, making it necessary for the library include performance tests.
 This part of the test suite is sparser, as this has not yet been a major priority for the community.
 
 # Notable achievements in version 2.0
 
-We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] (with HTML-annotated sources at: \url{https://agda.github.io/agda-stdlib/v2.0/}), where we believe we have successfully addressed some of the significant design challenges present in versions 1.0-1.7. Key improvements include:
+We outline the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] (with HTML-annotated sources at: \url{https://agda.github.io/agda-stdlib/v2.0/}), in which we believe we have successfully addressed some of the design flaws and missing functionality present in versions 1.0-1.7. Key improvements include:
 
 - Minimised Dependency Graphs: We have reduced the depth of dependency graphs within the library, ensuring that the most commonly used modules rely on fewer parts of the library. This change has resulted in significantly faster load times for users during interactive development.
 
