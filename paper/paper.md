@@ -158,7 +158,7 @@ Second, the development of `agda-stdlib` motivated adding the ability to attach 
 Designing a standard library for an ITP such as Agda presents several challenges.
 
 Firstly, as discussed, `agda-stdlib` contains much of the foundational mathematics used to prove program correctness.
-While the focus on discrete mathematics and algebra reflects the bias in its user base towards programming language theory, organising this material into a coherent and logical structure is extremely challenging [@carette2020leveraging].
+While the focus on discrete mathematics and algebra reflects the bias in its user base towards programming language theory, organising this material into a coherent and logical structure is difficult, though some recent efforts exist in this direction [@carette2020leveraging,@cohen2020hierarchy].
 There is constant tension between being as general as possible (e.g., defining operations over general algebraic structures) and providing clear, straightforward, and intuitive definitions (e.g., defining operations concretely over integers).
 Additionally, there is a persistent temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular application, which comes at the cost of duplicating the theory for the new representation.
 Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts, at the cost of lack of interoperability between various packages.
