@@ -101,7 +101,7 @@ Through the Curry-Howard lens [@DBLP:journals/cacm/Wadler15],
 these types and programs can be seen respectively as theorem
 statements and proofs.
 
-This paper presents the Agda standard library (hereafter: `agda-stdlib` [@agda-stdlib]), which offers many of the fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
+This paper presents the Agda standard library (hereafter: `agda-stdlib` [@agda-stdlib-v2.0]), which offers fundamental definitions and results necessary for users to quickly begin developing Agda programs and proofs.
 Unlike the standard libraries of traditional programming languages, `agda-stdlib` provides not only standard utilities and data structures, but also a substantial portion of the basic discrete mathematics essential for proving the correctness of programs.
 
 # Statement of need
@@ -152,34 +152,36 @@ On the contrary, "coinfective" options affect the import*ed* modules; these are 
 This categorisation enables libraries to integrate safe Agda code with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
 
 Second, the development of `agda-stdlib` motivated adding the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used. This enabled the implementation of deprecation warnings amongst other features, and lets end-users more easily evolve their code alongside new versions of `agda-stdlib`.
+Thirdly, `agda-stdlib` has been used as a test bed for the design of co-inductive data types, as evidenced by the three different otions of co-inductive data present in the library.
 
 # Design
 
 Designing a standard library for an ITP such as Agda presents several challenges.
 
-Firstly, as discussed, `agda-stdlib` contains much of the foundational mathematics used to prove program correctness.
+Firstly, as discussed, `agda-stdlib` contains much of the basic mathematics useful for proving program correctness.
 While the focus on discrete mathematics and algebra reflects the bias in its user base towards programming language theory, organising this material into a coherent and logical structure is difficult, though some recent efforts exist in this direction [@carette2020leveraging,@cohen2020hierarchy].
 There is constant tension between being as general as possible (e.g., defining operations over general algebraic structures) and providing clear, straightforward, and intuitive definitions (e.g., defining operations concretely over integers).
 Additionally, there is a persistent temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular application, which comes at the cost of duplicating the theory for the new representation.
-Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] approach these problems by having very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts, at the cost of lack of interoperability between various packages.
-On the other hand, like `agda-stdlib`, MathLib [@van2020maintaining] for Lean aims to provide a repository of canonical definitions.
+Theorem provers like Isabelle [@paulson1994isabelle] and Coq [@coq2024manual] have very minimal standard libraries and encouraging the use of external libraries developed by the community, which reduces the emphasis on ensuring the existence of canonical definitions for certain concepts, at the cost of lack of interoperability between various packages.
+On the other hand, like `agda-stdlib`, MathLib [@van2020maintaining] for Lean provides a repository of canonical definitions.
+Philisophically, `agda-stdlib` is more closely aligned with the approach of the MathLib community, and aims to provide canonical definitions for mathematical objects and introduce new representations only sparingly.
 
 A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default.
-With the exception of Idris, a more recent entrant to the field [@brady2013idris], other major theorem provers either do not support dependent types or encourage their use only sparingly.
+With the exception of Idris, a more recent entrant to the field [@brady2013idris], either other major theorem provers do not support dependent types or their communities and libraries encourage their use only sparingly.
 In contrast, nearly everything in `agda-stdlib` makes use of dependent types, with correctness-related invariants being closely integrated with definitions.
 For example, we can specify that `reverse` defined on length-indexed vectors is length-preserving *by virtue of its type*.
-Furthermore, most proofs consist of evidence-bearing terms for the relevant types, rather than being "irrelevant".
-As a result, the library provides relatively sophisticated features like polymorphic n-ary functions [@allais2019generic], regular expressions which provide proof of membership when compiled and applied, and proof-carrying `All` and `Any` predicates for containers.
-While this provides powerful tools for users, learning how to design such a large-scale, dependently-typed library is an ongoing journey. The Agda standard library is the first such to tackle this challenge.
-Relatedly, `agda-stdlib` has been used as a test bed for the design of the Agda language itself, as evidenced by the library's inclusion of three different notions of co-inductive data types.
+Furthermore, most proofs consist of evidence-bearing terms for the relevant types and therefore can themselves be computed on.
+By using dependent types, the library provides sophisticated features like polymorphic n-ary functions [@allais2019generic] and regular expressions which provide proof of membership when compiled and applied.
+While widespread use of dependent types provides powerful tools for users, learning how to design a large, dependently-typed library is an ongoing journey, and we believe the Agda standard library has been one of the first such standard libraries to tackle the challenge.
 
-Agda’s unique support for dependently-parameterised modules [@ivardeBruin2023] has also significantly influenced the library’s design.
-Although type classes are a common mechanism for creating interfaces and overloading syntax in other functional languages such as Haskell [@haskell2010], and other ITPs like Coq and Lean's MathLib use them extensively as a core feature of their design, the developers of `agda-stdlib` has so far found little need to exploit such an approach.
-While Agda supports a very general form of instance search, the ability to use qualified, parameterised modules appears to reduce the need for it compared to the languages mentioned above.
-Additionally, parameterised modules enable the safe and scalable embedding of non-constructive mathematics into a constructive system.
-Since Agda is entirely constructive, the vast majority of `agda-stdlib` is also constructive.
-Non-constructive methods, such as classical reasoning, can be achieved by passing the relevant axioms as module parameters.
-This enables users to write provably "safe" non-constructive code, i.e. without having to *postulate* such axioms.
+Unlike other ITPs, Agda’s module system [@ivardeBruin2023] supports module parameters whose type is dependent on earlier module parameters and this has also significantly influenced the design of `agda-stdlib`.
+Many functional languages, such as Haskell [@haskell2010], and ITP libraries, like Lean's MathLib, use type classes as the primary mechanism for creating interfaces and overloading syntax. 
+While Agda supports a more general form of type-classes via instances [@devriese2011bright], we have found that the use of qualified, dependently-parameterised modules can reproduce most of the abstraction capabilities of type-classes.
+The main benefits are that it allows users to explicitly describe which objects are being used to instantiate the abstract code and reduces the risk of time-consuming searches at type-checking time. 
+The main drawback is that users needs to use qualified imports when instantiating the abstract code twice in the same scope.
+Another benefit of parameterised modules is we have found that they facilitate the safe and scalable embedding of non-constructive mathematics into a largely constructive standard library.
+In particular, non-constructive operations, such as classical reasoning, can be made available by passing them as module parameters, allowing code access to them throughout the module.
+This enables users to write non-constructive code, without either having to postulate the axioms (which would incompatible with the `--safe` flag), or explicitly pass them through as arguments to every function in the module.
 
 # Testing
 
@@ -214,5 +216,9 @@ Andrea Vezzosi,
 without whom Agda itself would not exist.
 
 The authors of this paper are listed approximately in order of contribution to the library. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
+
+# Funding and conflicts of interest
+
+The authors of this paper have received no funding to work on the library, and have no conflicts of interest.
 
 # References
