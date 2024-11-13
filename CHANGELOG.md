@@ -111,6 +111,9 @@ New modules
 
 * `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
+  ```agda
+  sum-↭ : sum Preserves _↭_ ⟶ _≡_
+  ```
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
 
