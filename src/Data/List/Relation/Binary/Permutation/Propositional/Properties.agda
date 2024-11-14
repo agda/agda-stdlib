@@ -373,6 +373,15 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     where open PermutationReasoning
 
 ------------------------------------------------------------------------
+-- sum
+
+sum-↭ : sum Preserves _↭_ ⟶ _≡_
+sum-↭ p = foldr-commMonoid ℕ-+-0.isCommutativeMonoid (↭⇒↭ₛ p)
+  where
+  module ℕ-+-0 = CommutativeMonoid ℕ.+-0-commutativeMonoid
+  open Permutation ℕ-+-0.setoid
+
+------------------------------------------------------------------------
 -- product
 
 product-↭ : product Preserves _↭_ ⟶ _≡_
