@@ -1241,8 +1241,8 @@ module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) whe
   filter-≐ : P ≐ Q → filter P? ≗ filter Q?
   filter-≐ P≐Q [] = refl
   filter-≐ P≐Q (x ∷ xs) with P? x
-  ... | yes P[x] rewrite dec-true (Q? x) (proj₁ P≐Q P[x]) = cong (x ∷_) (filter-≐ P≐Q xs)
-  ... | no ¬P[x] rewrite dec-false (Q? x) (¬P[x] ∘ proj₂ P≐Q) = filter-≐ P≐Q xs
+  ... | yes P[x] = trans (cong (x ∷_) (filter-≐ P≐Q xs)) (sym (filter-accept Q? (proj₁ P≐Q P[x])))
+  ... | no ¬P[x] = trans (filter-≐ P≐Q xs) (sym (filter-reject Q? (¬P[x] ∘ proj₂ P≐Q)))
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
