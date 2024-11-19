@@ -185,6 +185,7 @@ Additions to existing modules
   product≢0    : All NonZero ns → NonZero (product ns)
   ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
+  filter-≐     : P ≐ Q → filter P? ≗ filter Q?
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
