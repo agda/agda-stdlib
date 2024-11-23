@@ -11,6 +11,10 @@ Bug-fixes
 
 * Removed unnecessary parameter `#-trans : Transitive _#_` from
   `Relation.Binary.Reasoning.Base.Apartness`.
+* Relax the types for `≡-syntax` in `Relation.Binary.HeterogeneousEquality`.
+  These operators are used for equational reasoning of heterogeneous equality
+  `x ≅ y`, but previously the three operators in `≡-syntax` unnecessarily require
+  `x` and `y` to have the same type, making them unusable in most situations.
 
 Non-backwards compatible changes
 --------------------------------
@@ -107,8 +111,17 @@ New modules
 
 * `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
+  ```agda
+  sum-↭ : sum Preserves _↭_ ⟶ _≡_
+  ```
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
+
+* Refactored `Data.Refinement` into:
+  ```agda
+  Data.Refinement.Base
+  Data.Refinement.Properties
+  ```
 
 * Raw bundles for the `Relation.Binary.Bundles` hierarchy:
   ```agda
@@ -178,6 +191,7 @@ Additions to existing modules
   product≢0    : All NonZero ns → NonZero (product ns)
   ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
+  filter-≐     : P ≐ Q → filter P? ≗ filter Q?
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
@@ -318,6 +332,32 @@ Additions to existing modules
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
   ```
 
+* New lemmas in `Data.Rational.Properties`:
+  ```agda
+  nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p + q)
+  nonPos+nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p + q)
+  pos+nonNeg⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : NonNegative q}} → Positive (p + q)
+  nonNeg+pos⇒pos : ∀ p .{{_ : NonNegative p}} q .{{_ : Positive q}} → Positive (p + q)
+  pos+pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p + q)
+  neg+nonPos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : NonPositive q}} → Negative (p + q)
+  nonPos+neg⇒neg : ∀ p .{{_ : NonPositive p}} q .{{_ : Negative q}} → Negative (p + q)
+  neg+neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p + q)
+  nonNeg*nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p * q)
+  nonPos*nonNeg⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonNegative q}} → NonPositive (p * q)
+  nonNeg*nonPos⇒nonPos : ∀ p .{{_ : NonNegative p}} q .{{_ : NonPositive q}} → NonPositive (p * q)
+  nonPos*nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+  pos*pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p * q)
+  neg*pos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Positive q}} → Negative (p * q)
+  pos*neg⇒neg : ∀ p .{{_ : Positive p}} q .{{_ : Negative q}} → Negative (p * q)
+  neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
+  ```
+
+* New properties re-exported from `Data.Refinement`:
+  ```agda
+  value-injective : value v ≡ value w → v ≡ w
+  _≟_             : DecidableEquality A → DecidableEquality [ x ∈ A ∣ P x ]
+ ```
+
 * New lemma in `Data.Vec.Properties`:
   ```agda
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
@@ -328,6 +368,12 @@ Additions to existing modules
   _≡?_ : DecidableEquality (Vec A n)
   ```
 
+* In `Relation.Binary.Bundles`:
+  ```agda
+  record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+  plus associated sub-bundles.
+
 * In `Relation.Binary.Construct.Interior.Symmetric`:
   ```agda
   decidable         : Decidable R → Decidable (SymInterior R)
@@ -335,14 +381,31 @@ Additions to existing modules
   and for `Reflexive` and `Transitive` relations `R`:
   ```agda
   isDecEquivalence  : Decidable R → IsDecEquivalence (SymInterior R)
+  isDecPreorder     : Decidable R → IsDecPreorder (SymInterior R) R
   isDecPartialOrder : Decidable R → IsDecPartialOrder (SymInterior R) R
+  decPreorder       : Decidable R → DecPreorder _ _ _
   decPoset          : Decidable R → DecPoset _ _ _
   ```
+
+* In `Relation.Binary.Structures`:
+  ```agda
+  record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+    field
+      isPreorder : IsPreorder _≲_
+      _≟_        : Decidable _≈_
+      _≲?_       : Decidable _≲_
+  ```
+  plus associated `isDecPreorder` fields in each higher `IsDec*Order` structure.
 
 * In `Relation.Nullary.Decidable`:
   ```agda
   does-⇔  : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
   does-≡  : (a? b? : Dec A) → does a? ≡ does b?
+  ```
+
+* In `Relation.Nullary.Recomputable`:
+  ```agda
+  irrelevant-recompute : Recomputable (Irrelevant A)
   ```
 
 * In `Relation.Unary.Properties`:

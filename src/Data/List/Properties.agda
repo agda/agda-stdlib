@@ -45,8 +45,8 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
-open import Relation.Unary using (Pred; Decidable; ∁)
+open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
+open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
 open import Relation.Unary.Properties using (∁?)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -54,7 +54,7 @@ open ≡-Reasoning
 
 private
   variable
-    a b c d e p ℓ : Level
+    a b c d e p q ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -1235,6 +1235,14 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-++ (x ∷ xs) ys with ih ← filter-++ xs ys | does (P? x)
   ... | true  = cong (x ∷_) ih
   ... | false = ih
+
+module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
+
+  filter-≐ : P ≐ Q → filter P? ≗ filter Q?
+  filter-≐ P≐Q [] = refl
+  filter-≐ P≐Q (x ∷ xs) with P? x
+  ... | yes P[x] = trans (cong (x ∷_) (filter-≐ P≐Q xs)) (sym (filter-accept Q? (proj₁ P≐Q P[x])))
+  ... | no ¬P[x] = trans (filter-≐ P≐Q xs) (sym (filter-reject Q? (¬P[x] ∘ proj₂ P≐Q)))
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
