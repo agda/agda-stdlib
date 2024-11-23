@@ -2244,10 +2244,10 @@ _>‴?_ = flip _<‴?_
 ≤‴-irrelevant ≤‴-refl = lemma refl
   where
   lemma : ∀ {m n} → (e : m ≡ n) → (q : m ≤‴ n) → subst (m ≤‴_) e ≤‴-refl ≡ q
-  lemma {m} e    ≤‴-refl       = cong (λ e → subst (m ≤‴_) e ≤‴-refl) (≡-irrelevant e refl)
-  lemma     refl (≤‴-step m<m) = contradiction m<m (<‴-irrefl refl)
-≤‴-irrelevant (≤‴-step x<x) ≤‴-refl     = contradiction x<x (<‴-irrefl refl)
-≤‴-irrelevant (≤‴-step p)   (≤‴-step q) = cong ≤‴-step (≤‴-irrelevant p q)
+  lemma {m} e    ≤‴-refl       = cong (λ e → subst (m ≤‴_) e ≤‴-refl) $ ≡-irrelevant e refl
+  lemma     refl (≤‴-step m<m) with () ← <‴-irrefl refl m<m
+≤‴-irrelevant (≤‴-step m<m) ≤‴-refl     with () ← <‴-irrefl refl m<m
+≤‴-irrelevant (≤‴-step p)   (≤‴-step q) = cong ≤‴-step $ ≤‴-irrelevant p q
 
 <‴-irrelevant : Irrelevant {A = ℕ} _<‴_
 <‴-irrelevant = ≤‴-irrelevant
