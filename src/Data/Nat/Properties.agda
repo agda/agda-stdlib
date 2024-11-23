@@ -2237,6 +2237,24 @@ _>‴?_ = flip _<‴?_
 ≤‴⇒≤ : _≤‴_ ⇒ _≤_
 ≤‴⇒≤ = ≤″⇒≤ ∘ ≤‴⇒≤″
 
+≤‴-irrelevant : Irrelevant {A = ℕ} _≤‴_
+≤‴-irrelevant ≤‴-refl q = lemma q refl
+  where
+  lemma : ∀ {m n} → (p : m ≤‴ n) → (e : m ≡ n) → subst (m ≤‴_) e ≤‴-refl ≡ p
+  lemma ≤‴-refl       e rewrite ≡-irrelevant e refl = refl
+  lemma (≤‴-step m<m) refl = contradiction (≤‴⇒≤ m<m) (<-irrefl refl)
+≤‴-irrelevant (≤‴-step x<x) ≤‴-refl = contradiction (≤‴⇒≤ x<x) (<-irrefl refl)
+≤‴-irrelevant (≤‴-step p)   (≤‴-step q) rewrite ≤‴-irrelevant p q = refl
+
+<‴-irrelevant : Irrelevant {A = ℕ} _<‴_
+<‴-irrelevant = ≤‴-irrelevant
+
+>‴-irrelevant : Irrelevant {A = ℕ} _>‴_
+>‴-irrelevant = ≤‴-irrelevant
+
+≥‴-irrelevant : Irrelevant {A = ℕ} _≥‴_
+≥‴-irrelevant = ≤‴-irrelevant
+
 ------------------------------------------------------------------------
 -- Other properties
 ------------------------------------------------------------------------
