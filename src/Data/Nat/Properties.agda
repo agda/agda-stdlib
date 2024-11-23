@@ -2237,14 +2237,17 @@ _>‴?_ = flip _<‴?_
 ≤‴⇒≤ : _≤‴_ ⇒ _≤_
 ≤‴⇒≤ = ≤″⇒≤ ∘ ≤‴⇒≤″
 
+<‴-irrefl : Irreflexive _≡_ _<‴_
+<‴-irrefl eq = <-irrefl eq ∘ ≤‴⇒≤
+
 ≤‴-irrelevant : Irrelevant {A = ℕ} _≤‴_
-≤‴-irrelevant ≤‴-refl q = lemma q refl
+≤‴-irrelevant ≤‴-refl = lemma refl
   where
-  lemma : ∀ {m n} → (p : m ≤‴ n) → (e : m ≡ n) → subst (m ≤‴_) e ≤‴-refl ≡ p
-  lemma ≤‴-refl       e rewrite ≡-irrelevant e refl = refl
-  lemma (≤‴-step m<m) refl = contradiction (≤‴⇒≤ m<m) (<-irrefl refl)
-≤‴-irrelevant (≤‴-step x<x) ≤‴-refl = contradiction (≤‴⇒≤ x<x) (<-irrefl refl)
-≤‴-irrelevant (≤‴-step p)   (≤‴-step q) rewrite ≤‴-irrelevant p q = refl
+  lemma : ∀ {m n} → (e : m ≡ n) → (q : m ≤‴ n) → subst (m ≤‴_) e ≤‴-refl ≡ q
+  lemma {m} e    ≤‴-refl       = cong (λ e → subst (m ≤‴_) e ≤‴-refl) (≡-irrelevant e refl)
+  lemma     refl (≤‴-step m<m) = contradiction m<m (<‴-irrefl refl)
+≤‴-irrelevant (≤‴-step x<x) ≤‴-refl     = contradiction x<x (<‴-irrefl refl)
+≤‴-irrelevant (≤‴-step p)   (≤‴-step q) = cong ≤‴-step (≤‴-irrelevant p q)
 
 <‴-irrelevant : Irrelevant {A = ℕ} _<‴_
 <‴-irrelevant = ≤‴-irrelevant
