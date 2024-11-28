@@ -186,6 +186,10 @@ Additions to existing modules
   ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
   filter-≐     : P ≐ Q → filter P? ≗ filter Q?
+
+  partition-is-foldr : partition P? ≗ foldr (λ x → if does (P? x) then Product.map₁ (x ∷_)
+                                                                  else Product.map₂ (x ∷_))
+                                            ([] , [])
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
