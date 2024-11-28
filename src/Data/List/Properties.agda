@@ -1294,9 +1294,9 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ...  | true  = Product.map s≤s m≤n⇒m≤1+n ih
   ...  | false = Product.map m≤n⇒m≤1+n s≤s ih
 
-  partition-is-foldr : partition P? ≗ foldr (λ x → if does (P? x) then Product.map₁ (x ∷_)
-                                                                  else Product.map₂ (x ∷_))
-                                            ([] , [])
+  partition-is-foldr : partition P? ≗ foldr
+    (λ x → if does (P? x) then Product.map₁ (x ∷_) else Product.map₂ (x ∷_))
+    ([] , [])
   partition-is-foldr [] = refl
   partition-is-foldr (x ∷ xs) with ih ← partition-is-foldr xs | does (P? x)
   ... | true =  cong (Product.map₁ (x ∷_)) ih
