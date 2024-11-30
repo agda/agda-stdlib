@@ -415,6 +415,6 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.First.Properties`:
   ```agda
-  ¬First⇒All : ∁ Q ⊆ P → ∀ xs → ∁ (First P Q) xs → All P xs
+  ¬First⇒All : ∁ Q ⊆ P → ∁ (First P Q) ⊆ All P
   ```
 
