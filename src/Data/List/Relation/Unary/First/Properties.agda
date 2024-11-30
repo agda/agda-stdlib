@@ -59,6 +59,12 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
   First⇒¬All q⇒¬p [ qx ]     (px ∷ pxs) = q⇒¬p qx px
   First⇒¬All q⇒¬p (_ ∷ pqxs) (_ ∷ pxs)  = First⇒¬All q⇒¬p pqxs pxs
 
+  ¬First⇒All : ∁ Q ⊆ P → ∀ xs → ∁ (First P Q) xs → All P xs
+  ¬First⇒All ¬q⇒p []       _      = []
+  ¬First⇒All ¬q⇒p (x ∷ xs) ¬pqxxs =
+    let px = ¬q⇒p (¬pqxxs ∘ [_]) in
+    px ∷ ¬First⇒All ¬q⇒p xs (¬pqxxs ∘ (px ∷_))
+
 ------------------------------------------------------------------------
 -- Irrelevance
 
