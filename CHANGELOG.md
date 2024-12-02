@@ -313,6 +313,12 @@ Additions to existing modules
                deduplicate _≟_ (xs ++ ys) ↭ deduplicate _≟_ xs ++ deduplicate _≟_ ys
   ```
 
+* In `Data.List.Relation.Unary.First.Properties`:
+  ```agda
+  ¬First⇒All : ∁ Q ⊆ P → ∁ (First P Q) ⊆ All P
+  ¬All⇒First : Decidable P → ∁ P ⊆ Q → ∁ (All P) ⊆ First P Q
+  ```
+
 * In `Data.Maybe.Properties`:
   ```agda
   maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
@@ -417,9 +423,3 @@ Additions to existing modules
   does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
   does-≡ : (P? P?′ : Decidable P) → does ∘ P? ≗ does ∘ P?′
   ```
-
-* In `Data.List.Relation.Unary.First.Properties`:
-  ```agda
-  ¬First⇒All : ∁ Q ⊆ P → ∁ (First P Q) ⊆ All P
-  ```
-
