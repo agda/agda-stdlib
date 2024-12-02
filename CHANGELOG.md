@@ -417,3 +417,9 @@ Additions to existing modules
   does-≐ : P ≐ Q → (P? : Decidable P) → (Q? : Decidable Q) → does ∘ P? ≗ does ∘ Q?
   does-≡ : (P? P?′ : Decidable P) → does ∘ P? ≗ does ∘ P?′
   ```
+
+* In `Data.List.Relation.Unary.First.Properties`:
+  ```agda
+  ¬First⇒All : ∁ Q ⊆ P → ∁ (First P Q) ⊆ All P
+  ```
+
