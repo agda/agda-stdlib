@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Unary.First.Properties where
 
+open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -16,8 +17,9 @@ open import Data.List.Relation.Unary.First
 import Data.Sum.Base as Sum
 open import Function.Base using (_∘′_; _∘_; id)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; _≗_)
-import Relation.Nullary.Decidable.Core as Dec
+open import Relation.Nullary.Decidable.Core as Dec
 open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary using (Pred; _⊆_; ∁; Irrelevant; Decidable)
 
 ------------------------------------------------------------------------
@@ -64,6 +66,13 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
   ¬First⇒All ¬q⇒p {x ∷ xs} ¬pqxxs =
     let px = ¬q⇒p (¬pqxxs ∘ [_]) in
     px ∷ ¬First⇒All ¬q⇒p (¬pqxxs ∘ (px ∷_))
+
+  ¬All⇒First : Decidable P → ∁ P ⊆ Q → ∁ (All P) ⊆ First P Q
+  ¬All⇒First P? ¬p⇒q {x = []} ¬⊤ = contradiction [] ¬⊤
+  ¬All⇒First P? ¬p⇒q {x = x ∷ xs} ¬∀ with P? x
+  ... |  true because  [px] = let px = invert [px] in
+                              px ∷ ¬All⇒First P? ¬p⇒q (¬∀ ∘ (px ∷_))
+  ... | false because [¬px] = [ ¬p⇒q (invert [¬px]) ]
 
 ------------------------------------------------------------------------
 -- Irrelevance
