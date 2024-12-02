@@ -322,6 +322,11 @@ Additions to existing modules
   ```agda
   m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
   m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+  <‴-irrefl : Irreflexive _≡_ _<‴_
+  ≤‴-irrelevant : Irrelevant {A = ℕ} _≤‴_
+  <‴-irrelevant : Irrelevant {A = ℕ} _<‴_
+  >‴-irrelevant : Irrelevant {A = ℕ} _>‴_
+  ≥‴-irrelevant : Irrelevant {A = ℕ} _≥‴_
   ```
 
   adjunction between `suc` and `pred`
