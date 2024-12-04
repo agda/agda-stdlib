@@ -67,7 +67,7 @@ affiliations:
    index: 4
  - name: Independent Software Developer
    index: 5
- - name: McGill University, Canada
+ - name: Amazon, USA
    index: 6
  - name: University of Edinburgh, United Kingdom
    index: 7
@@ -218,6 +218,8 @@ The authors of this paper are listed approximately in order of contribution to t
 
 # Funding and conflicts of interest
 
-The authors of this paper have received no funding to work on the library, and have no conflicts of interest.
+The authors of this paper have received no funding to work on the library, and have no
+conflicts of interest. Jason Z. S. Hu made his contributions during his Master's and
+PhD study.
 
 # References
