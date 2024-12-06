@@ -15,6 +15,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold. 
+
 Minor improvements
 ------------------
 
@@ -329,10 +331,10 @@ Additions to existing modules
 
 * In `Function.Related.TypeIsomorphisms`:
   ```agda
-  Σ-distribˡ-⊎ : {P : A → Set a} {Q : A → Set b} → (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
-  Σ-distribʳ-⊎ : {P : Set a} {Q : Set b} {R : P ⊎ Q → Set c} → (Σ (P ⊎ Q) R) ↔ (Σ P (R ∘ inj₁) ⊎ Σ Q (R ∘ inj₂))
-  ×-distribˡ-⊎′ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
-  ×-distribʳ-⊎′ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+  Σ-distribˡ-⊎ : (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
+  Σ-distribʳ-⊎ : (Σ (A ⊎ B) P) ↔ (Σ A (P ∘ inj₁) ⊎ Σ B (P ∘ inj₂))
+  ×-distribˡ-⊎ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+  ×-distribʳ-⊎ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
   ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
  ```
 
