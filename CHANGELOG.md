@@ -126,6 +126,19 @@ New modules
   Algebra.Module.Construct.Idealization
   ```
 
+* Consequences of module monomorphisms
+  ```agda
+  Algebra.Module.Morphism.BimoduleMonomorphism
+  Algebra.Module.Morphism.BisemimoduleMonomorphism
+  Algebra.Module.Morphism.LeftModuleMonomorphism
+  Algebra.Module.Morphism.LeftSemimoduleMonomorphism
+  Algebra.Module.Morphism.ModuleMonomorphism
+  Algebra.Module.Morphism.RightModuleMonomorphism
+  Algebra.Module.Morphism.RightSemimoduleMonomorphism
+  Algebra.Module.Morphism.SemimoduleMonomorphism
+  ```
+
+
 * The unique morphism from the initial, resp. terminal, algebra:
   ```agda
   Algebra.Morphism.Construct.Initial
