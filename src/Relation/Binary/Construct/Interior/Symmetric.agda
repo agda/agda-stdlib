@@ -100,12 +100,6 @@ module _ {R : Rel A ℓ} (refl : Reflexive R) (trans : Transitive R) where
 
   module _ (R? : Decidable R) where
 
-    isDecEquivalence : IsDecEquivalence (SymInterior R)
-    isDecEquivalence = record
-      { isEquivalence = isEquivalence
-      ; _≟_ = decidable R?
-      }
-
     isDecPartialOrder : IsDecPartialOrder (SymInterior R) R
     isDecPartialOrder = record
       { isPartialOrder = isPartialOrder
@@ -115,3 +109,10 @@ module _ {R : Rel A ℓ} (refl : Reflexive R) (trans : Transitive R) where
 
     decPoset : DecPoset _ ℓ ℓ
     decPoset = record { isDecPartialOrder = isDecPartialOrder }
+
+    open DecPoset public
+      using (isDecPreorder; decPreorder)
+
+    isDecEquivalence : IsDecEquivalence (SymInterior R)
+    isDecEquivalence = DecPoset.Eq.isDecEquivalence decPoset
+

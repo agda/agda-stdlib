@@ -454,22 +454,14 @@ module _ {R : A → A → Set ℓ} where
 ------------------------------------------------------------------------
 -- nested lists
 
+map∷⁻ : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × xs ≡ y ∷ ys
+map∷⁻ = ∈-map⁻ (_ ∷_)
+
 []∉map∷ : (List A ∋ []) ∉ map (x ∷_) xss
-[]∉map∷ {xss = _ ∷ _} (there p) = []∉map∷ p
+[]∉map∷ p with () ← map∷⁻ p
 
 map∷-decomp∈ : (List A ∋ x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
-map∷-decomp∈ {xss = _ ∷ _} = λ where
-  (here refl) → refl , here refl
-  (there p)   → map₂ there $ map∷-decomp∈ p
-
-map∷-decomp : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × y ∷ ys ≡ xs
-map∷-decomp               {xss = _  ∷ _} (here refl) = -, here refl , refl
-map∷-decomp {xs = []}     {xss = _  ∷ _} (there xs∈) = contradiction xs∈ []∉map∷
-map∷-decomp {xs = x ∷ xs} {xss = _  ∷ _} (there xs∈) =
-  let eq , p = map∷-decomp∈ xs∈
-  in -, there p , cong (_∷ _) (sym eq)
+map∷-decomp∈ p with _ , xs∈xss , refl ← map∷⁻ p = refl , xs∈xss
 
 ∈-map∷⁻ : xs ∈ map (x ∷_) xss → x ∈ xs
-∈-map∷⁻ {xss = _ ∷ _} = λ where
-  (here refl) → here refl
-  (there p)   → ∈-map∷⁻ p
+∈-map∷⁻ p with _ , _ , refl ← map∷⁻ p = here refl
