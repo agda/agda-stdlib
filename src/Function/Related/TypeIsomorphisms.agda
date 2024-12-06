@@ -248,7 +248,7 @@ private
 ×-⊎-isCommutativeSemiring k ℓ = isCommutativeSemiringˡ record
   { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
-  ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ-⊎ ℓ A B C)
+  ; distribʳ              = λ _ _ _ → ↔⇒ ×-distribʳ-⊎
   ; zeroˡ                 = ↔⇒ ∘ ×-zeroˡ ℓ
   }
 
