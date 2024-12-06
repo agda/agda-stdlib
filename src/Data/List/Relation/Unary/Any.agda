@@ -13,9 +13,8 @@ open import Data.List.Base as List using (List; []; [_]; _∷_; removeAt)
 open import Data.Product.Base as Product using (∃; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (¬_; yes; no; _⊎-dec_)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core as Dec using (no; _⊎-dec_)
+open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; _⊆_; Decidable; Satisfiable)
 
 private

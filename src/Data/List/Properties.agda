@@ -45,8 +45,8 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
-open import Relation.Unary using (Pred; Decidable; ∁)
+open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
+open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
 open import Relation.Unary.Properties using (∁?)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -54,7 +54,7 @@ open ≡-Reasoning
 
 private
   variable
-    a b c d e p ℓ : Level
+    a b c d e p q ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -715,6 +715,14 @@ map-concatMap f g xs = begin
   concatMap (map f ∘′ g) xs
     ∎
 
+concatMap-++ : ∀ (f : A → List B) xs ys →
+               concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
+concatMap-++ f xs ys = begin
+  concatMap f (xs ++ ys)           ≡⟨⟩
+  concat (map f (xs ++ ys))        ≡⟨ cong concat $ map-++ f xs ys ⟩
+  concat (map f xs ++ map f ys)    ≡˘⟨ concat-++ (map f xs) (map f ys) ⟩
+  concatMap f xs ++ concatMap f ys ∎ where open ≡-Reasoning
+
 ------------------------------------------------------------------------
 -- catMaybes
 
@@ -841,6 +849,17 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
 ∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
+
+product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
+product≢0 [] = _
+product≢0 {n ∷ ns} (n≢0 ∷ ns≢0) = m*n≢0 n (product ns) {{n≢0}} {{product≢0 ns≢0}}
+
+∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
+∈⇒≤product {ns = n ∷ ns} (_ ∷ ns≢0) (here refl) =
+  m≤m*n n (product ns) {{product≢0 ns≢0}}
+∈⇒≤product {ns = n ∷ _} (n≢0 ∷ ns≢0) (there n∈ns) =
+  m≤n⇒m≤o*n n {{n≢0}} (∈⇒≤product ns≢0 n∈ns)
+
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -1163,13 +1182,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
   filter-all {[]}     []         = refl
   filter-all {x ∷ xs} (px ∷ pxs) with P? x
-  ... | false because [¬px] = contradiction px (invert [¬px])
-  ... | true  because _     = cong (x ∷_) (filter-all pxs)
+  ... | no          ¬px = contradiction px ¬px
+  ... | true  because _ = cong (x ∷_) (filter-all pxs)
 
   filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
   filter-notAll (x ∷ xs) (here ¬px) with P? x
-  ... | false because _    = s≤s (length-filter xs)
-  ... | true  because [px] = contradiction (invert [px]) ¬px
+  ... | false because _ = s≤s (length-filter xs)
+  ... | yes          px = contradiction px ¬px
   filter-notAll (x ∷ xs) (there any) with ih ← filter-notAll xs any | does (P? x)
   ... | false = m≤n⇒m≤1+n ih
   ... | true  = s≤s ih
@@ -1185,8 +1204,8 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
   filter-none {[]}     []           = refl
   filter-none {x ∷ xs} (¬px ∷ ¬pxs) with P? x
-  ... | false because _    = filter-none ¬pxs
-  ... | true  because [px] = contradiction (invert [px]) ¬px
+  ... | false because _ = filter-none ¬pxs
+  ... | yes          px = contradiction px ¬px
 
   filter-complete : ∀ {xs} → length (filter P? xs) ≡ length xs →
                     filter P? xs ≡ xs
@@ -1197,13 +1216,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-accept : ∀ {x xs} → P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
   filter-accept {x} Px with P? x
-  ... | true  because _     = refl
-  ... | false because [¬Px] = contradiction Px (invert [¬Px])
+  ... | true because _ = refl
+  ... | no         ¬Px = contradiction Px ¬Px
 
   filter-reject : ∀ {x xs} → ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
   filter-reject {x} ¬Px with P? x
-  ... | true  because [Px] = contradiction (invert [Px]) ¬Px
-  ... | false because _    = refl
+  ... | yes          Px = contradiction Px ¬Px
+  ... | false because _ = refl
 
   filter-idem : filter P? ∘ filter P? ≗ filter P?
   filter-idem []       = refl
@@ -1216,6 +1235,14 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-++ (x ∷ xs) ys with ih ← filter-++ xs ys | does (P? x)
   ... | true  = cong (x ∷_) ih
   ... | false = ih
+
+module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
+
+  filter-≐ : P ≐ Q → filter P? ≗ filter Q?
+  filter-≐ P≐Q [] = refl
+  filter-≐ P≐Q (x ∷ xs) with P? x
+  ... | yes P[x] = trans (cong (x ∷_) (filter-≐ P≐Q xs)) (sym (filter-accept Q? (proj₁ P≐Q P[x])))
+  ... | no ¬P[x] = trans (filter-≐ P≐Q xs) (sym (filter-reject Q? (¬P[x] ∘ proj₂ P≐Q)))
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
@@ -1241,13 +1268,13 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
 
   derun-reject : ∀ {x y} xs → R x y → derun R? (x ∷ y ∷ xs) ≡ derun R? (y ∷ xs)
   derun-reject {x} {y} xs Rxy with R? x y
-  ... | true  because _      = refl
-  ... | false because [¬Rxy] = contradiction Rxy (invert [¬Rxy])
+  ... | yes _    = refl
+  ... | no  ¬Rxy = contradiction Rxy ¬Rxy
 
   derun-accept : ∀ {x y} xs → ¬ R x y → derun R? (x ∷ y ∷ xs) ≡ x ∷ derun R? (y ∷ xs)
   derun-accept {x} {y} xs ¬Rxy with R? x y
-  ... | true  because [Rxy] = contradiction (invert [Rxy]) ¬Rxy
-  ... | false because  _    = refl
+  ... | yes Rxy = contradiction Rxy ¬Rxy
+  ... | no  _   = refl
 
 ------------------------------------------------------------------------
 -- partition
@@ -1260,12 +1287,20 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ...  | true  = cong (Product.map (x ∷_) id) ih
   ...  | false = cong (Product.map id (x ∷_)) ih
 
-  length-partition : ∀ xs → (let ys , zs = partition P? xs) →
+  length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
   length-partition (x ∷ xs) with ih ← length-partition xs | does (P? x)
   ...  | true  = Product.map s≤s m≤n⇒m≤1+n ih
   ...  | false = Product.map m≤n⇒m≤1+n s≤s ih
+
+  partition-is-foldr : partition P? ≗ foldr
+    (λ x → if does (P? x) then Product.map₁ (x ∷_) else Product.map₂ (x ∷_))
+    ([] , [])
+  partition-is-foldr [] = refl
+  partition-is-foldr (x ∷ xs) with ih ← partition-is-foldr xs | does (P? x)
+  ... | true =  cong (Product.map₁ (x ∷_)) ih
+  ... | false = cong (Product.map₂ (x ∷_)) ih
 
 ------------------------------------------------------------------------
 -- _ʳ++_
