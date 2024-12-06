@@ -106,9 +106,9 @@ private
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
 
 ------------------------------------------------------------------------
--- Properties of ∃ and ⊎
+-- Properties of Σ and ⊎
 
--- ∃ distributes over ⊎
+-- Σ distributes over ⊎
 
 Σ-distribˡ-⊎ : {P : A → Set a} {Q : A → Set b} →
   (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
@@ -118,8 +118,8 @@ private
   [ (λ _ → refl) , (λ _ → refl) ]
   (uncurry λ _ → [ (λ _ → refl) , (λ _ → refl) ])
 
-Σ-distribʳ-⊎ : {P : Set a} {Q : Set b} {R : P ⊎ Q → Set c} →
-  (Σ (P ⊎ Q) R) ↔ (Σ P (R ∘ inj₁) ⊎ Σ Q (R ∘ inj₂))
+Σ-distribʳ-⊎ : {P : A ⊎ B → Set c} →
+  (Σ (A ⊎ B) P) ↔ (Σ A (P ∘ inj₁) ⊎ Σ B (P ∘ inj₂))
 Σ-distribʳ-⊎ = mk↔ₛ′
   (uncurry [ curry inj₁ , curry inj₂ ])
   [ Product.dmap inj₁ id , Product.dmap inj₂ id ]
@@ -130,22 +130,22 @@ private
 -- Properties of × and ⊎
 
 -- × distributes over ⊎
--- primed variants are more level polymorphic
+-- primed variants are less level polymorphic
 
-×-distribˡ-⊎′ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
-×-distribˡ-⊎′ = Σ-distribˡ-⊎
+×-distribˡ-⊎ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+×-distribˡ-⊎ = Σ-distribˡ-⊎
 
-×-distribˡ-⊎ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribˡ-⊎ ℓ _ _ _ = ×-distribˡ-⊎′
+×-distribˡ-⊎′ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribˡ-⊎′ ℓ _ _ _ = ×-distribˡ-⊎
 
-×-distribʳ-⊎′ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
-×-distribʳ-⊎′ = Σ-distribʳ-⊎
+×-distribʳ-⊎ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+×-distribʳ-⊎ = Σ-distribʳ-⊎
 
-×-distribʳ-⊎ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribʳ-⊎ ℓ _ _ _ = ×-distribʳ-⊎′
+×-distribʳ-⊎′ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribʳ-⊎′ ℓ _ _ _ = ×-distribʳ-⊎
 
-×-distrib-⊎ : ∀ ℓ → _DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distrib-⊎ ℓ = ×-distribˡ-⊎ ℓ , ×-distribʳ-⊎ ℓ
+×-distrib-⊎′ : ∀ ℓ → _DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distrib-⊎′ ℓ = ×-distribˡ-⊎′ ℓ , ×-distribʳ-⊎′ ℓ
 
 ------------------------------------------------------------------------
 -- ⊥, ⊤, _×_ and _⊎_ form a commutative semiring
