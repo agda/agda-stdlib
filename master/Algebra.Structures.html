@@ -11,7 +11,7 @@
 <a id="384" class="Symbol">{-#</a> <a id="388" class="Keyword">OPTIONS</a> <a id="396" class="Pragma">--cubical-compatible</a> <a id="417" class="Pragma">--safe</a> <a id="424" class="Symbol">#-}</a>
 
 <a id="429" class="Keyword">open</a> <a id="434" class="Keyword">import</a> <a id="441" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="462" class="Keyword">using</a> <a id="468" class="Symbol">(</a><a id="469" href="Relation.Binary.Core.html#896" class="Function">Rel</a><a id="472" class="Symbol">)</a>
-<a id="474" class="Keyword">open</a> <a id="479" class="Keyword">import</a> <a id="486" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="510" class="Keyword">using</a> <a id="516" class="Symbol">(</a><a id="517" href="Relation.Binary.Bundles.html#1095" class="Record">Setoid</a><a id="523" class="Symbol">)</a>
+<a id="474" class="Keyword">open</a> <a id="479" class="Keyword">import</a> <a id="486" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="510" class="Keyword">using</a> <a id="516" class="Symbol">(</a><a id="517" href="Relation.Binary.Bundles.html#1204" class="Record">Setoid</a><a id="523" class="Symbol">)</a>
 <a id="525" class="Keyword">open</a> <a id="530" class="Keyword">import</a> <a id="537" href="Relation.Binary.Structures.html" class="Module">Relation.Binary.Structures</a> <a id="564" class="Keyword">using</a> <a id="570" class="Symbol">(</a><a id="571" href="Relation.Binary.Structures.html#1550" class="Record">IsEquivalence</a><a id="584" class="Symbol">)</a>
 
 <a id="587" class="Keyword">module</a> <a id="594" href="Algebra.Structures.html" class="Module">Algebra.Structures</a>
@@ -39,8 +39,8 @@
 
   <a id="1400" class="Keyword">open</a> <a id="1405" href="Relation.Binary.Structures.html#1550" class="Module">IsEquivalence</a> <a id="1419" href="Algebra.Structures.html#1327" class="Field">isEquivalence</a> <a id="1433" class="Keyword">public</a>
 
-  <a id="IsSuccessorSet.setoid"></a><a id="1443" href="Algebra.Structures.html#1443" class="Function">setoid</a> <a id="1450" class="Symbol">:</a> <a id="1452" href="Relation.Binary.Bundles.html#1095" class="Record">Setoid</a> <a id="1459" href="Algebra.Structures.html#616" class="Bound">a</a> <a id="1461" href="Algebra.Structures.html#618" class="Bound">ℓ</a>
-  <a id="1465" href="Algebra.Structures.html#1443" class="Function">setoid</a> <a id="1472" class="Symbol">=</a> <a id="1474" class="Keyword">record</a> <a id="1481" class="Symbol">{</a> <a id="1483" href="Relation.Binary.Bundles.html#1218" class="Field">isEquivalence</a> <a id="1497" class="Symbol">=</a> <a id="1499" href="Algebra.Structures.html#1327" class="Field">isEquivalence</a> <a id="1513" class="Symbol">}</a>
+  <a id="IsSuccessorSet.setoid"></a><a id="1443" href="Algebra.Structures.html#1443" class="Function">setoid</a> <a id="1450" class="Symbol">:</a> <a id="1452" href="Relation.Binary.Bundles.html#1204" class="Record">Setoid</a> <a id="1459" href="Algebra.Structures.html#616" class="Bound">a</a> <a id="1461" href="Algebra.Structures.html#618" class="Bound">ℓ</a>
+  <a id="1465" href="Algebra.Structures.html#1443" class="Function">setoid</a> <a id="1472" class="Symbol">=</a> <a id="1474" class="Keyword">record</a> <a id="1481" class="Symbol">{</a> <a id="1483" href="Relation.Binary.Bundles.html#1327" class="Field">isEquivalence</a> <a id="1497" class="Symbol">=</a> <a id="1499" href="Algebra.Structures.html#1327" class="Field">isEquivalence</a> <a id="1513" class="Symbol">}</a>
 
 <a id="1516" class="Comment">------------------------------------------------------------------------</a>
 <a id="1589" class="Comment">-- Structures with 1 binary operation</a>
@@ -53,8 +53,8 @@
 
   <a id="1830" class="Keyword">open</a> <a id="1835" href="Relation.Binary.Structures.html#1550" class="Module">IsEquivalence</a> <a id="1849" href="Algebra.Structures.html#1760" class="Field">isEquivalence</a> <a id="1863" class="Keyword">public</a>
 
-  <a id="IsMagma.setoid"></a><a id="1873" href="Algebra.Structures.html#1873" class="Function">setoid</a> <a id="1880" class="Symbol">:</a> <a id="1882" href="Relation.Binary.Bundles.html#1095" class="Record">Setoid</a> <a id="1889" href="Algebra.Structures.html#616" class="Bound">a</a> <a id="1891" href="Algebra.Structures.html#618" class="Bound">ℓ</a>
-  <a id="1895" href="Algebra.Structures.html#1873" class="Function">setoid</a> <a id="1902" class="Symbol">=</a> <a id="1904" class="Keyword">record</a> <a id="1911" class="Symbol">{</a> <a id="1913" href="Relation.Binary.Bundles.html#1218" class="Field">isEquivalence</a> <a id="1927" class="Symbol">=</a> <a id="1929" href="Algebra.Structures.html#1760" class="Field">isEquivalence</a> <a id="1943" class="Symbol">}</a>
+  <a id="IsMagma.setoid"></a><a id="1873" href="Algebra.Structures.html#1873" class="Function">setoid</a> <a id="1880" class="Symbol">:</a> <a id="1882" href="Relation.Binary.Bundles.html#1204" class="Record">Setoid</a> <a id="1889" href="Algebra.Structures.html#616" class="Bound">a</a> <a id="1891" href="Algebra.Structures.html#618" class="Bound">ℓ</a>
+  <a id="1895" href="Algebra.Structures.html#1873" class="Function">setoid</a> <a id="1902" class="Symbol">=</a> <a id="1904" class="Keyword">record</a> <a id="1911" class="Symbol">{</a> <a id="1913" href="Relation.Binary.Bundles.html#1327" class="Field">isEquivalence</a> <a id="1927" class="Symbol">=</a> <a id="1929" href="Algebra.Structures.html#1760" class="Field">isEquivalence</a> <a id="1943" class="Symbol">}</a>
 
   <a id="IsMagma.∙-congˡ"></a><a id="1948" href="Algebra.Structures.html#1948" class="Function">∙-congˡ</a> <a id="1956" class="Symbol">:</a> <a id="1958" href="Algebra.Definitions.html#1374" class="Function">LeftCongruent</a> <a id="1972" href="Algebra.Structures.html#1717" class="Bound">∙</a>
   <a id="1976" href="Algebra.Structures.html#1948" class="Function">∙-congˡ</a> <a id="1984" href="Algebra.Structures.html#1984" class="Bound">y≈z</a> <a id="1988" class="Symbol">=</a> <a id="1990" href="Algebra.Structures.html#1798" class="Field">∙-cong</a> <a id="1997" href="Relation.Binary.Structures.html#1596" class="Function">refl</a> <a id="2002" href="Algebra.Structures.html#1984" class="Bound">y≈z</a>
@@ -424,11 +424,11 @@
     <a id="10939" class="Symbol">;</a> <a id="10941" href="Algebra.Structures.html#5396" class="Function">isCommutativeSemigroup</a> <a id="10964" class="Symbol">to</a> <a id="10967" class="Function">+-isCommutativeSemigroup</a>
     <a id="10996" class="Symbol">)</a>
 
-  <a id="11001" class="Keyword">open</a> <a id="11006" href="Relation.Binary.Bundles.html#1095" class="Module">Setoid</a> <a id="11013" href="Algebra.Structures.html#1873" class="Function">setoid</a> <a id="11020" class="Keyword">public</a>
+  <a id="11001" class="Keyword">open</a> <a id="11006" href="Relation.Binary.Bundles.html#1204" class="Module">Setoid</a> <a id="11013" href="Algebra.Structures.html#1873" class="Function">setoid</a> <a id="11020" class="Keyword">public</a>
 
   <a id="IsSemiringWithoutOne.*-isMagma"></a><a id="11030" href="Algebra.Structures.html#11030" class="Function">*-isMagma</a> <a id="11040" class="Symbol">:</a> <a id="11042" href="Algebra.Structures.html#1708" class="Record">IsMagma</a> <a id="11050" href="Algebra.Structures.html#10441" class="Bound">*</a>
   <a id="11054" href="Algebra.Structures.html#11030" class="Function">*-isMagma</a> <a id="11064" class="Symbol">=</a> <a id="11066" class="Keyword">record</a>
-    <a id="11077" class="Symbol">{</a> <a id="11079" href="Algebra.Structures.html#1760" class="Field">isEquivalence</a> <a id="11093" class="Symbol">=</a> <a id="11095" href="Relation.Binary.Bundles.html#1218" class="Function">isEquivalence</a>
+    <a id="11077" class="Symbol">{</a> <a id="11079" href="Algebra.Structures.html#1760" class="Field">isEquivalence</a> <a id="11093" class="Symbol">=</a> <a id="11095" href="Relation.Binary.Bundles.html#1327" class="Function">isEquivalence</a>
     <a id="11113" class="Symbol">;</a> <a id="11115" href="Algebra.Structures.html#1798" class="Field">∙-cong</a>        <a id="11129" class="Symbol">=</a> <a id="11131" href="Algebra.Structures.html#10546" class="Field">*-cong</a>
     <a id="11142" class="Symbol">}</a>
 
