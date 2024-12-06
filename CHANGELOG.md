@@ -19,6 +19,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+
 Minor improvements
 ------------------
 
@@ -353,6 +355,11 @@ Additions to existing modules
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
   ```
 
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  congˡ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
+  ```
+
 * New lemmas in `Data.Rational.Properties`:
   ```agda
   nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p + q)
@@ -388,6 +395,15 @@ Additions to existing modules
   ```agda
   _≡?_ : DecidableEquality (Vec A n)
   ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  Σ-distribˡ-⊎ : (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
+  Σ-distribʳ-⊎ : (Σ (A ⊎ B) P) ↔ (Σ A (P ∘ inj₁) ⊎ Σ B (P ∘ inj₂))
+  ×-distribˡ-⊎ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+  ×-distribʳ-⊎ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+  ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+ ```
 
 * In `Relation.Binary.Bundles`:
   ```agda
