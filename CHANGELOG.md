@@ -91,6 +91,18 @@ New modules
   Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
+* Consequences of module monomorphisms
+  ```agda
+  Algebra.Module.Morphism.BimoduleMonomorphism
+  Algebra.Module.Morphism.BisemimoduleMonomorphism
+  Algebra.Module.Morphism.LeftModuleMonomorphism
+  Algebra.Module.Morphism.LeftSemimoduleMonomorphism
+  Algebra.Module.Morphism.ModuleMonomorphism
+  Algebra.Module.Morphism.RightModuleMonomorphism
+  Algebra.Module.Morphism.RightSemimoduleMonomorphism
+  Algebra.Module.Morphism.SemimoduleMonomorphism
+  ```
+
 * Refactoring of the `Algebra.Solver.*Monoid` implementations, via
   a single `Solver` module API based on the existing `Expr`, and
   a common `Normal`-form API:
