@@ -19,7 +19,7 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold. 
+In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
 
 Minor improvements
 ------------------
