@@ -10,6 +10,7 @@ module Data.List.Relation.Binary.Sublist.Propositional.Properties
   {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_;  map)
+open import Data.List.Properties using (map-id)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -17,16 +18,21 @@ open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Sublist.Propositional
   hiding (map)
+import Data.List.Relation.Binary.Sublist.Setoid
+  as Setoid
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
 open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base using (id; _∘_; _∘′_)
 open import Level using (Level)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong; _≗_; trans)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid; subst-injective; trans-reflʳ; trans-assoc)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Unary using (Pred)
 
 private
@@ -42,6 +48,20 @@ open SetoidProperties (setoid A) public
 
 map⁺ : ∀ {as bs} (f : A → B) → as ⊆ bs → map f as ⊆ map f bs
 map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
+
+module _ {≈ : Rel A ℓ} (isEquivalence : IsEquivalence ≈) where
+
+  private
+    setoid≈ : Setoid _ _
+    setoid≈ = record { isEquivalence = isEquivalence }
+
+  open IsEquivalence isEquivalence using (reflexive)
+
+  ⊆⇒⊆~ : ∀ {as bs} → as ⊆ bs → Setoid._⊆_ setoid≈ as bs
+  ⊆⇒⊆~ {as} {bs} as⊆bs
+    with p ← SetoidProperties.map⁺ (setoid A) setoid≈ reflexive as⊆bs
+    rewrite map-id as | map-id bs
+    = p
 
 ------------------------------------------------------------------------
 -- Category laws for _⊆_
