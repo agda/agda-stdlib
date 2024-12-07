@@ -19,7 +19,7 @@ open import Data.List.Base as List using (List; [_]; _++_)
 open import Effect.Functor as Fun using (RawFunctor)
 
 open import Function.Base using (id; flip)
-open import Function.Endomorphism.Propositional using (∘-id-monoid)
+open import Function.Endo.Propositional using (∘-id-monoid)
 open import Level using (Level; Setω)
 open import Relation.Binary.Bundles using (Setoid)
 
