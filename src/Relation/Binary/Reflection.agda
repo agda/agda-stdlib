@@ -10,11 +10,10 @@
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Base as Vec using (Vec; allFin)
-open import Function.Base using (id; _⟨_⟩_)
+open import Function.Base using (id)
 open import Function.Bundles using (module Equivalence)
 open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid)
-import Relation.Binary.PropositionalEquality.Core as ≡
 
 -- Think of the parameters as follows:
 --
@@ -33,18 +32,17 @@ import Relation.Binary.PropositionalEquality.Core as ≡
 module Relation.Binary.Reflection
          {e a s}
          {Expr : ℕ → Set e} {A : Set a}
-         (Sem : Setoid a s)
+         (Sem : Setoid a s) (open Setoid Sem using (Carrier; _≈_))
          (var : ∀ {n} → Fin n → Expr n)
-         (⟦_⟧ ⟦_⇓⟧ : ∀ {n} → Expr n → Vec A n → Setoid.Carrier Sem)
-         (correct : ∀ {n} (e : Expr n) ρ →
-                    ⟦ e ⇓⟧ ρ ⟨ Setoid._≈_ Sem ⟩ ⟦ e ⟧ ρ)
+         (⟦_⟧ ⟦_⇓⟧ : ∀ {n} → Expr n → Vec A n → Carrier)
+         (correct : ∀ {n} (e : Expr n) ρ → ⟦ e ⇓⟧ ρ ≈ ⟦ e ⟧ ρ)
          where
 
 open import Data.Vec.N-ary
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+import Relation.Binary.PropositionalEquality.Core as ≡
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
-open Setoid Sem
 open ≈-Reasoning Sem
 
 -- If two normalised expressions are semantically equal, then their
@@ -54,7 +52,7 @@ prove : ∀ {n} (ρ : Vec A n) e₁ e₂ →
         ⟦ e₁ ⇓⟧ ρ ≈ ⟦ e₂ ⇓⟧ ρ →
         ⟦ e₁  ⟧ ρ ≈ ⟦ e₂  ⟧ ρ
 prove ρ e₁ e₂ hyp = begin
-  ⟦ e₁  ⟧ ρ ≈⟨ sym (correct e₁ ρ) ⟩
+  ⟦ e₁  ⟧ ρ ≈⟨ correct e₁ ρ ⟨
   ⟦ e₁ ⇓⟧ ρ ≈⟨ hyp ⟩
   ⟦ e₂ ⇓⟧ ρ ≈⟨ correct e₂ ρ ⟩
   ⟦ e₂  ⟧ ρ ∎

@@ -174,21 +174,23 @@ record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
     -_      : Op₁ Carrier
     0#      : Carrier
 
+  rawNearSemiring : RawNearSemiring c ℓ
+  rawNearSemiring = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
+    }
+
+  open RawNearSemiring rawNearSemiring public
+    using (_≉_; *-rawMagma; +-rawMagma; +-rawMonoid)
+
   +-rawGroup : RawGroup c ℓ
   +-rawGroup = record
     { _≈_ = _≈_
     ; _∙_ = _+_
     ; ε   = 0#
     ; _⁻¹ = -_
-    }
-
-  open RawGroup +-rawGroup public
-    using (_≉_) renaming (rawMagma to +-rawMagma; rawMonoid to +-rawMonoid)
-
-  *-rawMagma : RawMagma c ℓ
-  *-rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _*_
     }
 
 ------------------------------------------------------------------------

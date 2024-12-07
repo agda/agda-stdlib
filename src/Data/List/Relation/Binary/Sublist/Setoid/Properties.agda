@@ -24,7 +24,7 @@ open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
-open import Relation.Unary using (Pred; Decidable; Irrelevant)
+open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable using (¬?; yes; no)
 
@@ -293,7 +293,10 @@ module _ where
   to-≋ = HeteroProperties.toPointwise
 
 ------------------------------------------------------------------------
--- Irrelevant special case
+-- Empty special case
+
+  []⊆-universal : Universal ([] ⊆_)
+  []⊆-universal = HeteroProperties.Sublist-[]-universal
 
   []⊆-irrelevant : Irrelevant ([] ⊆_)
   []⊆-irrelevant = HeteroProperties.Sublist-[]-irrelevant
