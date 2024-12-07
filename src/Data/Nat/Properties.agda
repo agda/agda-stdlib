@@ -272,8 +272,14 @@ _≥?_ = flip _≤?_
 s≤s-injective : {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
+suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
+suc[m]≤n⇒m≤pred[n] {n = suc _} = s≤s⁻¹
+
+m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+m≤pred[n]⇒suc[m]≤n {n = suc _} = s≤s
+
 ≤-pred : suc m ≤ suc n → m ≤ n
-≤-pred = s≤s⁻¹
+≤-pred = suc[m]≤n⇒m≤pred[n]
 
 m≤n⇒m≤1+n : m ≤ n → m ≤ 1 + n
 m≤n⇒m≤1+n z≤n       = z≤n
@@ -994,6 +1000,12 @@ m≤n*m m n@(suc _) = begin
   m * n ≡⟨ *-comm m n ⟩
   n * m ∎
 
+m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+m≤n⇒m≤o*n o m≤n = ≤-trans m≤n (m≤n*m _ o)
+
+m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
+m≤n⇒m≤n*o o m≤n = ≤-trans m≤n (m≤m*n _ o)
+
 m<m*n : ∀ m n .{{_ : NonZero m}} → 1 < n → m < m * n
 m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m           <⟨ s≤s (s≤s (m≤n+m m-1 n-2)) ⟩
@@ -1002,13 +1014,10 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m * n       ∎
 
 m<n⇒m<n*o : ∀ o .{{_ : NonZero o}} → m < n → m < n * o
-m<n⇒m<n*o {n = n} o m<n = <-≤-trans m<n (m≤m*n n o)
+m<n⇒m<n*o = m≤n⇒m≤n*o
 
 m<n⇒m<o*n : ∀ {m n} o .{{_ : NonZero o}} → m < n → m < o * n
-m<n⇒m<o*n {m} {n} o m<n = begin-strict
-  m     <⟨ m<n⇒m<n*o o m<n ⟩
-  n * o ≡⟨ *-comm n o ⟩
-  o * n ∎
+m<n⇒m<o*n = m≤n⇒m≤o*n
 
 *-cancelʳ-< : RightCancellative _<_ _*_
 *-cancelʳ-< zero    zero    (suc o) _     = 0<1+n
@@ -2227,6 +2236,27 @@ _>‴?_ = flip _<‴?_
 
 ≤‴⇒≤ : _≤‴_ ⇒ _≤_
 ≤‴⇒≤ = ≤″⇒≤ ∘ ≤‴⇒≤″
+
+<‴-irrefl : Irreflexive _≡_ _<‴_
+<‴-irrefl eq = <-irrefl eq ∘ ≤‴⇒≤
+
+≤‴-irrelevant : Irrelevant {A = ℕ} _≤‴_
+≤‴-irrelevant ≤‴-refl = lemma refl
+  where
+  lemma : ∀ {m n} → (e : m ≡ n) → (q : m ≤‴ n) → subst (m ≤‴_) e ≤‴-refl ≡ q
+  lemma {m} e    ≤‴-refl       = cong (λ e → subst (m ≤‴_) e ≤‴-refl) $ ≡-irrelevant e refl
+  lemma     refl (≤‴-step m<m) with () ← <‴-irrefl refl m<m
+≤‴-irrelevant (≤‴-step m<m) ≤‴-refl     with () ← <‴-irrefl refl m<m
+≤‴-irrelevant (≤‴-step p)   (≤‴-step q) = cong ≤‴-step $ ≤‴-irrelevant p q
+
+<‴-irrelevant : Irrelevant {A = ℕ} _<‴_
+<‴-irrelevant = ≤‴-irrelevant
+
+>‴-irrelevant : Irrelevant {A = ℕ} _>‴_
+>‴-irrelevant = ≤‴-irrelevant
+
+≥‴-irrelevant : Irrelevant {A = ℕ} _≥‴_
+≥‴-irrelevant = ≤‴-irrelevant
 
 ------------------------------------------------------------------------
 -- Other properties

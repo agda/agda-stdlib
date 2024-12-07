@@ -9,9 +9,11 @@
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
 open import Data.List.Base
+import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
 open import Data.List.Relation.Binary.Disjoint.Setoid
 open import Data.List.Relation.Binary.Disjoint.Setoid.Properties
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties using (All¬⇒¬Any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
@@ -156,3 +158,21 @@ module _ (S : Setoid a ℓ) {P : Pred _ p} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → Unique S xs → Unique S (filter P? xs)
   filter⁺ = AllPairs.filter⁺ P?
+
+------------------------------------------------------------------------
+-- ∷
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S renaming (Carrier to A)
+  open Membership S using (_∉_)
+
+  private
+    variable
+      x y : A
+      xs : List A
+
+  Unique[x∷xs]⇒x∉xs : Unique S (x ∷ xs) → x ∉ xs
+  Unique[x∷xs]⇒x∉xs ((x≉ ∷ x∉) ∷ _ ∷ uniq) = λ where
+    (here x≈)  → x≉ x≈
+    (there x∈) → Unique[x∷xs]⇒x∉xs (x∉ AllPairs.∷ uniq) x∈

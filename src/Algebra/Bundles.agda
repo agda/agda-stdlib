@@ -872,6 +872,16 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring; semiring
     )
 
+  rawKleeneAlgebra : RawKleeneAlgebra _ _
+  rawKleeneAlgebra = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; _⋆  = _⋆
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
 record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
@@ -930,20 +940,33 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsRingWithoutOne isRingWithoutOne public
 
+  nearSemiring : NearSemiring _ _
+  nearSemiring = record { isNearSemiring = isNearSemiring }
+
+  open NearSemiring nearSemiring public
+    using (*-semigroup; *-magma)
+
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
 
-  *-semigroup : Semigroup _ _
-  *-semigroup = record { isSemigroup = *-isSemigroup }
-
   open AbelianGroup +-abelianGroup public
-    using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
+    using ()
+    renaming (group to +-group;
+      invertibleMagma to +-invertibleMagma;
+      invertibleUnitalMagma to +-invertibleUnitalMagma)
 
-  open Semigroup *-semigroup public
-    using () renaming
-    ( rawMagma to *-rawMagma
-    ; magma    to *-magma
-    )
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  rawRingWithoutOne = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; -_  = -_
+    ; 0#  = 0#
+    }
+
+  open RawRingWithoutOne rawRingWithoutOne public
+    using (+-rawGroup; *-rawMagma; rawNearSemiring)
+
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
