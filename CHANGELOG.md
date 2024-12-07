@@ -148,6 +148,12 @@ New modules
   ```
   plus adding `rawX` fields to each of `Relation.Binary.Bundles.X`.
 
+* `Data.List.Effectful.Foldable`: `List` is `Foldable`
+
+* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
+
+* `Effect.Foldable`: implementation of haskell-like `Foldable`
+
 Additions to existing modules
 -----------------------------
 
