@@ -30,7 +30,7 @@ open import Relation.Nullary using (Reflects; ¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key) hiding (trans)
-open Eq using (_≉_; refl; sym; trans)
+open Eq using (refl; sym; trans)
 open import Data.Tree.AVL strictTotalOrder using (tree)
 open import Data.Tree.AVL.Indexed strictTotalOrder using (key)
 import Data.Tree.AVL.Indexed.Relation.Unary.Any strictTotalOrder as IAny
