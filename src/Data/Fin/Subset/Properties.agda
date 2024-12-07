@@ -11,8 +11,10 @@ module Data.Fin.Subset.Properties where
 import Algebra.Definitions as AlgebraicDefinitions
 import Algebra.Structures as AlgebraicStructures
 import Algebra.Lattice.Structures as AlgebraicLatticeStructures
-open import Algebra.Bundles
-open import Algebra.Lattice.Bundles
+open import Algebra.Bundles using (Magma; Semigroup; Monoid; Band;
+  CommutativeMonoid; IdempotentCommutativeMonoid)
+open import Algebra.Lattice.Bundles using (Semilattice; Lattice;
+  DistributiveLattice; BooleanAlgebra)
 import Algebra.Lattice.Properties.Lattice as L
 import Algebra.Lattice.Properties.DistributiveLattice as DL
 import Algebra.Lattice.Properties.BooleanAlgebra as BA
@@ -25,7 +27,7 @@ open import Data.Nat.Base hiding (∣_-_∣)
 import Data.Nat.Properties as ℕ
 open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Vec.Base
+open import Data.Vec.Base using (Vec; []; _∷_; here; there)
 open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Bundles using (_⇔_; mk⇔)
@@ -35,8 +37,11 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsStrictPartialOrder; IsDecStrictPartialOrder)
 open import Relation.Binary.Bundles
   using (Preorder; Poset; StrictPartialOrder; DecStrictPartialOrder)
-open import Relation.Binary.Definitions as B hiding (Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Definitions as B hiding (Decidable; Empty)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; subst; _≢_; sym)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning; isEquivalence)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable; Satisfiable)

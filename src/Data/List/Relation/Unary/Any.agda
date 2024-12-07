@@ -8,16 +8,14 @@
 
 module Data.List.Relation.Unary.Any where
 
-open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; [_]; _∷_; removeAt)
 open import Data.Product.Base as Product using (∃; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (¬_; yes; no; _⊎-dec_)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Unary hiding (_∈_)
+open import Relation.Nullary.Decidable.Core as Dec using (no; _⊎-dec_)
+open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Unary using (Pred; _⊆_; Decidable; Satisfiable)
 
 private
   variable
@@ -46,7 +44,7 @@ head ¬pxs (here px)   = px
 head ¬pxs (there pxs) = contradiction pxs ¬pxs
 
 tail : ¬ P x → Any P (x ∷ xs) → Any P xs
-tail ¬px (here  px)  = ⊥-elim (¬px px)
+tail ¬px (here  px)  = contradiction px ¬px
 tail ¬px (there pxs) = pxs
 
 map : P ⊆ Q → Any P ⊆ Any Q

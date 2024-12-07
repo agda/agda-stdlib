@@ -11,40 +11,40 @@ module Data.List.Relation.Unary.All.Properties where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
-open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup; updateAt)
-open import Data.List.Properties as Listₚ using (partition-defn)
-open import Data.List.Membership.Propositional
+open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
+  using (there-injective-≢∈; ∈-filter⁻)
 import Data.List.Membership.Setoid as SetoidMembership
+import Data.List.Properties as List
+import Data.List.Relation.Binary.Equality.Setoid as ≋
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
   ; _[_]=_; here; there
   ; Null
   )
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
-open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
-open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing; fromAny)
 open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
-open import Function.Base
-open import Function.Bundles
+open import Function.Base using (_∘_; _$_; id; case_of_; flip)
+open import Function.Bundles using (_↠_; mk↠ₛ; _⇔_; mk⇔; _↔_; mk↔ₛ′; Equivalence)
 open import Level using (Level)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; _≗_)
-open import Relation.Nullary
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬?; decidable-stable)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Decidable
+  using (Dec; does; yes; no; _because_; ¬?; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
@@ -60,6 +60,11 @@ private
     R : Pred C r
     x y : A
     xs ys : List A
+
+------------------------------------------------------------------------
+-- Re-export Core Properties
+
+open import Data.List.Relation.Unary.All.Properties.Core public
 
 ------------------------------------------------------------------------
 -- Properties regarding Null
@@ -84,66 +89,6 @@ null⇒Null {xs = _ ∷ _} ()
 []=-injective (there x↦px) (there x↦qx) = []=-injective x↦px x↦qx
 
 -- See also Data.List.Relation.Unary.All.Properties.WithK.[]=-irrelevant.
-
-------------------------------------------------------------------------
--- Lemmas relating Any, All and negation.
-
-¬Any⇒All¬ : ∀ xs → ¬ Any P xs → All (¬_ ∘ P) xs
-¬Any⇒All¬ []       ¬p = []
-¬Any⇒All¬ (x ∷ xs) ¬p = ¬p ∘ here ∷ ¬Any⇒All¬ xs (¬p ∘ there)
-
-All¬⇒¬Any : ∀ {xs} → All (¬_ ∘ P) xs → ¬ Any P xs
-All¬⇒¬Any (¬p ∷ _)  (here  p) = ¬p p
-All¬⇒¬Any (_  ∷ ¬p) (there p) = All¬⇒¬Any ¬p p
-
-¬All⇒Any¬ : Decidable P → ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
-¬All⇒Any¬ dec []       ¬∀ = ⊥-elim (¬∀ [])
-¬All⇒Any¬ dec (x ∷ xs) ¬∀ with dec x
-... |  true because  [p] = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ (invert [p])))
-... | false because [¬p] = here (invert [¬p])
-
-Any¬⇒¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
-Any¬⇒¬All (here  ¬p) = ¬p           ∘ All.head
-Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
-
-¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
-¬Any↠All¬ = mk↠ₛ {to = ¬Any⇒All¬ _} (λ y → All¬⇒¬Any y , to∘from y)
-  where
-  to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any⇒All¬ xs (All¬⇒¬Any ¬p) ≡ ¬p
-  to∘from []         = refl
-  to∘from (¬p ∷ ¬ps) = cong₂ _∷_ refl (to∘from ¬ps)
-
-  -- If equality of functions were extensional, then the surjection
-  -- could be strengthened to a bijection.
-
-  from∘to : Extensionality _ _ →
-            ∀ xs → (¬p : ¬ Any P xs) → All¬⇒¬Any (¬Any⇒All¬ xs ¬p) ≡ ¬p
-  from∘to ext []       ¬p = ext λ ()
-  from∘to ext (x ∷ xs) ¬p = ext λ
-    { (here p)  → refl
-    ; (there p) → cong (λ f → f p) $ from∘to ext xs (¬p ∘ there)
-    }
-
-Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-Any¬⇔¬All dec = mk⇔ Any¬⇒¬All (¬All⇒Any¬ dec _)
-
-private
-  -- If equality of functions were extensional, then the logical
-  -- equivalence could be strengthened to a surjection.
-  to∘from : Extensionality _ _ → (dec : Decidable P) →
-            (¬∀ : ¬ All P xs) → Any¬⇒¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
-  to∘from ext P ¬∀ = ext (⊥-elim ∘ ¬∀)
-
-module _ {_~_ : REL A B ℓ} where
-
-  All-swap : ∀ {xs ys} →
-             All (λ x → All (x ~_) ys) xs →
-             All (λ y → All (_~ y) xs) ys
-  All-swap {ys = []}     _   = []
-  All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
-  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxs) =
-    (x~y ∷ (All.map All.head pxs)) ∷
-    All-swap (x~ys ∷ (All.map All.tail pxs))
 
 ------------------------------------------------------------------------
 -- Defining properties of lookup and _[_]=_
@@ -176,19 +121,19 @@ lookup⇒[]= pxs i refl = []=lookup pxs i
 ------------------------------------------------------------------------
 -- map
 
-map-id : ∀ (pxs : All P xs) → All.map id pxs ≡ pxs
-map-id []         = refl
-map-id (px ∷ pxs) = cong (px ∷_)  (map-id pxs)
-
 map-cong : ∀ {f : P ⋐ Q} {g : P ⋐ Q} (pxs : All P xs) →
            (∀ {x} → f {x} ≗ g) → All.map f pxs ≡ All.map g pxs
 map-cong []         _   = refl
 map-cong (px ∷ pxs) feq = cong₂ _∷_ (feq px) (map-cong pxs feq)
 
-map-compose : ∀ {f : P ⋐ Q} {g : Q ⋐ R} (pxs : All P xs) →
-              All.map g (All.map f pxs) ≡ All.map (g ∘ f) pxs
-map-compose []         = refl
-map-compose (px ∷ pxs) = cong (_ ∷_) (map-compose pxs)
+map-id : ∀ (pxs : All P xs) → All.map id pxs ≡ pxs
+map-id []         = refl
+map-id (px ∷ pxs) = cong (px ∷_)  (map-id pxs)
+
+map-∘ : ∀ {f : P ⋐ Q} {g : Q ⋐ R} (pxs : All P xs) →
+        All.map g (All.map f pxs) ≡ All.map (g ∘ f) pxs
+map-∘ []         = refl
+map-∘ (px ∷ pxs) = cong (_ ∷_) (map-∘ pxs)
 
 lookup-map : ∀ {f : P ⋐ Q} (pxs : All P xs) (i : x ∈ xs) →
              lookup (All.map f pxs) i ≡ f (lookup pxs i)
@@ -217,7 +162,7 @@ updateAt-minimal : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                    pxs              [ i ]= px →
                    updateAt j f pxs [ i ]= px
 updateAt-minimal (here .refl) (here refl) (px ∷ pxs) i≢j here        =
-  ⊥-elim (i≢j refl refl)
+  contradiction refl (i≢j refl)
 updateAt-minimal (here .refl) (there j)   (px ∷ pxs) i≢j here        = here
 updateAt-minimal (there i)    (here refl) (px ∷ pxs) i≢j (there val) = there val
 updateAt-minimal (there i)    (there j)   (px ∷ pxs) i≢j (there val) =
@@ -310,7 +255,7 @@ updateAt-commutes : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                     i ≢∈ j →
                     updateAt {P = P} i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
 updateAt-commutes (here refl) (here refl) i≢j (px ∷ pxs) =
-  ⊥-elim (i≢j refl refl)
+  contradiction refl (i≢j refl)
 updateAt-commutes (here refl) (there j)   i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (here refl) i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (there j)   i≢j (px ∷ pxs) =
@@ -386,8 +331,7 @@ mapMaybe⁺ : ∀ {f : A → Maybe B} →
 mapMaybe⁺ {xs = []}     {f = f} []         = []
 mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ... | nothing = mapMaybe⁺ pxs
-... | just v with px
-...   | just pv = pv ∷ mapMaybe⁺ pxs
+... | just v with just pv ← px = pv ∷ mapMaybe⁺ pxs
 
 ------------------------------------------------------------------------
 -- catMaybes
@@ -523,7 +467,7 @@ takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
 takeWhile⁻ {xs = []}     P? eq = []
 takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
-... | yes px = px ∷ takeWhile⁻ P? (Listₚ.∷-injectiveʳ eq)
+... | yes px = px ∷ takeWhile⁻ P? (List.∷-injectiveʳ eq)
 ... | no ¬px = case eq of λ ()
 
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
@@ -595,7 +539,7 @@ module _ (P? : Decidable P) where
   all-filter : ∀ xs → All P (filter P? xs)
   all-filter []       = []
   all-filter (x ∷ xs) with P? x
-  ... |  true because [Px] = invert [Px] ∷ all-filter xs
+  ... | true  because [Px] = invert [Px] ∷ all-filter xs
   ... | false because  _   = all-filter xs
 
   filter⁺ : All Q xs → All Q (filter P? xs)
@@ -605,12 +549,12 @@ module _ (P? : Decidable P) where
   ... | true  = Qx ∷ filter⁺ Qxs
 
   filter⁻ : All Q (filter P? xs) → All Q (filter (¬? ∘ P?) xs) → All Q xs
-  filter⁻ {xs = []}           []          []                           = []
-  filter⁻ {xs = x ∷ xs}       all⁺        all⁻ with P? x  | ¬? (P? x)
-  filter⁻ {xs = x ∷ xs}       all⁺        all⁻  | yes  Px | yes  ¬Px = contradiction Px ¬Px
-  filter⁻ {xs = x ∷ xs} (qx ∷ all⁺)       all⁻  | yes  Px | no  ¬¬Px = qx ∷ filter⁻ all⁺ all⁻
-  filter⁻ {xs = x ∷ xs}       all⁺  (qx ∷ all⁻) | no    _ | yes  ¬Px = qx ∷ filter⁻ all⁺ all⁻
-  filter⁻ {xs = x ∷ xs}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
+  filter⁻ {xs = []}          []          []                         = []
+  filter⁻ {xs = x ∷ _}       all⁺        all⁻ with P? x  | ¬? (P? x)
+  filter⁻ {xs = x ∷ _}       all⁺        all⁻  | yes  Px | yes  ¬Px = contradiction Px ¬Px
+  filter⁻ {xs = x ∷ _} (qx ∷ all⁺)       all⁻  | yes  Px | no  ¬¬Px = qx ∷ filter⁻ all⁺ all⁻
+  filter⁻ {xs = x ∷ _}       all⁺  (qx ∷ all⁻) | no    _ | yes  ¬Px = qx ∷ filter⁻ all⁺ all⁻
+  filter⁻ {xs = x ∷ _}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
 
 ------------------------------------------------------------------------
 -- partition
@@ -619,7 +563,7 @@ module _ {P : A → Set p} (P? : Decidable P) where
 
   partition-All : ∀ xs → (let ys , zs = partition P? xs) →
                   All P ys × All (∁ P) zs
-  partition-All xs rewrite partition-defn P? xs =
+  partition-All xs rewrite List.partition-defn P? xs =
     all-filter P? xs , all-filter (∁? P?) xs
 
 ------------------------------------------------------------------------
@@ -635,7 +579,7 @@ module _ {R : A → A → Set q} (R? : B.Decidable R) where
   ... | true  = derun⁺ all[P,y∷xs]
 
   deduplicate⁺ : All P xs → All P (deduplicate R? xs)
-  deduplicate⁺ []               = []
+  deduplicate⁺ []         = []
   deduplicate⁺ (px ∷ pxs) = px ∷ filter⁺ (¬? ∘ R? _) (deduplicate⁺ pxs)
 
   derun⁻ : P B.Respects (flip R) → ∀ xs → All P (derun R? xs) → All P xs
@@ -645,8 +589,8 @@ module _ {R : A → A → Set q} (R? : B.Decidable R) where
     aux : ∀ x xs → All P (derun R? (x ∷ xs)) → All P (x ∷ xs)
     aux x []       (px ∷ []) = px ∷ []
     aux x (y ∷ xs) all[P,x∷y∷xs] with R? x y
-    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy with aux y xs all[P,y∷xs]
-    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy | r@(py ∷ _) = P-resp-R Rxy py ∷ r
+    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy
+      with r@(py ∷ _) ← aux y xs all[P,y∷xs] = P-resp-R Rxy py ∷ r
     aux x (y ∷ xs) (px ∷ all[P,y∷xs]) | no _ = px ∷ aux y xs all[P,y∷xs]
 
   deduplicate⁻ : P B.Respects R → ∀ xs → All P (deduplicate R? xs) → All P xs
@@ -719,9 +663,10 @@ tails⁻ (x ∷ xs) (pxxs ∷ _) = pxxs
 module _ (p : A → Bool) where
 
   all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
-  all⁺ []       _     = []
-  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) px∷xs
-  ... | (px , pxs) = px ∷ all⁺ xs pxs
+  all⁺ []       _      = []
+  all⁺ (x ∷ xs) px∷pxs =
+    let px , pxs = Equivalence.to (T-∧ {p x}) px∷pxs
+    in px ∷ all⁺ xs pxs
 
   all⁻ : All (T ∘ p) xs → T (all p xs)
   all⁻ []         = _
@@ -743,7 +688,7 @@ all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
 module _ (S : Setoid c ℓ) where
 
   open Setoid S
-  open ListEq S
+  open ≋ S
 
   respects : P B.Respects _≈_ → (All P) B.Respects _≋_
   respects p≈ []            []         = []
@@ -793,4 +738,12 @@ gmap = gmap⁺
 {-# WARNING_ON_USAGE gmap
 "Warning: gmap was deprecated in v2.0.
 Please use gmap⁺ instead."
+#-}
+
+-- Version 2.1
+
+map-compose = map-∘
+{-# WARNING_ON_USAGE map-compose
+"Warning: map-compose was deprecated in v2.1.
+Please use map-∘ instead."
 #-}

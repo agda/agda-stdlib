@@ -24,13 +24,13 @@ open import Level using (Level)
 open import Relation.Binary.Definitions using (Transitive; Symmetric; _Respectsˡ_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Intersection using (_∩_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong) renaming (refl to ≡-refl; sym to ≡-sym; trans to ≡-trans)
 open import Relation.Nullary using (Reflects; ¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key) hiding (trans)
-open Eq using (_≉_; refl; sym; trans)
+open Eq using (refl; sym; trans)
 open import Data.Tree.AVL strictTotalOrder using (tree)
 open import Data.Tree.AVL.Indexed strictTotalOrder using (key)
 import Data.Tree.AVL.Indexed.Relation.Unary.Any strictTotalOrder as IAny

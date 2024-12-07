@@ -12,7 +12,7 @@ open import Data.Unit.Polymorphic.Base
 open import Agda.Builtin.String
 import Data.Unit.Base as Unit0
 open import IO.Base
-import IO.Primitive as Prim
+import IO.Primitive.Core as Prim
 import IO.Primitive.Finite as Prim
 open import Level
 

@@ -17,12 +17,12 @@ open import Relation.Binary.Core using (Rel; REL; _=[_]⇒_)
 open import Relation.Binary.Structures
   using (IsPreorder; IsStrictPartialOrder; IsPartialOrder; IsDecStrictPartialOrder; IsDecPartialOrder; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Reflexive; Asymmetric; Antisymmetric; Trichotomous; Total; Decidable; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects_; _Respects₂_)
+  using (Symmetric; Transitive; Reflexive; Asymmetric; Antisymmetric; Trichotomous; Total; Decidable; DecidableEquality; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects_; _Respects₂_)
 open import Relation.Binary.Construct.Closure.Reflexive
-open import Relation.Binary.PropositionalEquality.Core as PropEq using (_≡_; refl)
-import Relation.Binary.PropositionalEquality.Properties as PropEq
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as ≡
+open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Decidable as Dec using (yes; no)
 open import Relation.Unary using (Pred)
 
 private
@@ -78,8 +78,8 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri≈ _ refl _ = inj₁ refl
   ... | tri> _ _    c = inj₂ [ c ]
 
-  dec : Decidable {A = A} _≡_ → Decidable _~_ → Decidable _~ᵒ_
-  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b ⊎-dec ~-dec a b)
+  dec : DecidableEquality A → Decidable _~_ → Decidable _~ᵒ_
+  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b Dec.⊎-dec ~-dec a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable _~ᵒ_
   decidable ~-tri a b with ~-tri a b
@@ -115,7 +115,7 @@ module _ {_~_ : Rel A ℓ} where
 
   isPreorder : Transitive _~_ → IsPreorder _≡_ _~ᵒ_
   isPreorder ~-trans = record
-    { isEquivalence = PropEq.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = λ { refl → refl }
     ; trans         = trans ~-trans
     }

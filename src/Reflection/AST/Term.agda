@@ -141,8 +141,8 @@ _≟-Clause_   : DecidableEquality Clause
 _≟-Clauses_  : DecidableEquality Clauses
 _≟_          : DecidableEquality Term
 _≟-Sort_     : DecidableEquality Sort
-_≟-Patterns_ : Decidable (_≡_ {A = Args Pattern})
-_≟-Pattern_  : Decidable (_≡_ {A = Pattern})
+_≟-Patterns_ : DecidableEquality (Args Pattern)
+_≟-Pattern_  : DecidableEquality Pattern
 
 -- Decidable equality 'transformers'
 -- We need to inline these because the terms are not sized so

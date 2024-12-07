@@ -8,10 +8,12 @@
 
 module Relation.Binary.PropositionalEquality.Algebra where
 
-open import Algebra
-open import Level
-open import Relation.Binary.PropositionalEquality.Core
-open import Relation.Binary.PropositionalEquality.Properties
+open import Algebra.Bundles using (Magma)
+open import Algebra.Core using (Op₂)
+open import Algebra.Structures using (IsMagma)
+open import Level using (Level)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong₂)
+open import Relation.Binary.PropositionalEquality.Properties using (isEquivalence)
 
 private
   variable

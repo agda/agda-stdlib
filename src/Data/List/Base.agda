@@ -49,15 +49,6 @@ map : (A → B) → List A → List B
 map f []       = []
 map f (x ∷ xs) = f x ∷ map f xs
 
-mapMaybe : (A → Maybe B) → List A → List B
-mapMaybe p []       = []
-mapMaybe p (x ∷ xs) with p x
-... | just y  = y ∷ mapMaybe p xs
-... | nothing = mapMaybe p xs
-
-catMaybes : List (Maybe A) → List A
-catMaybes = mapMaybe id
-
 infixr 5 _++_
 
 _++_ : List A → List A → List A
@@ -123,11 +114,11 @@ partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
 
 merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
-merge R? []       ys       = ys
-merge R? xs       []       = xs
-merge R? (x ∷ xs) (y ∷ ys) = if does (R? x y)
-  then x ∷ merge R? xs (y ∷ ys)
-  else y ∷ merge R? (x ∷ xs) ys
+merge R? []           ys           = ys
+merge R? xs           []           = xs
+merge R? x∷xs@(x ∷ xs) y∷ys@(y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? xs   y∷ys
+  else y ∷ merge R? x∷xs ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -148,6 +139,12 @@ concatMap f = concat ∘ map f
 
 ap : List (A → B) → List A → List B
 ap fs as = concatMap (flip map as) fs
+
+catMaybes : List (Maybe A) → List A
+catMaybes = foldr (maybe′ _∷_ id) []
+
+mapMaybe : (A → Maybe B) → List A → List B
+mapMaybe p = catMaybes ∘ map p
 
 null : List A → Bool
 null []       = true
@@ -193,12 +190,18 @@ iterate f e zero    = []
 iterate f e (suc n) = e ∷ iterate f (f e) n
 
 inits : List A → List (List A)
-inits []       = [] ∷ []
-inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
+inits {A = A} = λ xs → [] ∷ tail xs
+  module Inits where
+    tail : List A → List (List A)
+    tail []       = []
+    tail (x ∷ xs) = [ x ] ∷ map (x ∷_) (tail xs)
 
 tails : List A → List (List A)
-tails []       = [] ∷ []
-tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
+tails {A = A} = λ xs → xs ∷ tail xs
+  module Tails where
+    tail : List A → List (List A)
+    tail []       = []
+    tail (_ ∷ xs) = xs ∷ tail xs
 
 insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
 insertAt xs       zero    v = v ∷ xs
@@ -207,18 +210,6 @@ insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
 updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
 updateAt (x ∷ xs) zero    f = f x ∷ xs
 updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
-
--- Scans
-
-scanr : (A → B → B) → B → List A → List B
-scanr f e []       = e ∷ []
-scanr f e (x ∷ xs) with scanr f e xs
-... | []     = []                -- dead branch
-... | y ∷ ys = f x y ∷ y ∷ ys
-
-scanl : (A → B → A) → A → List B → List A
-scanl f e []       = e ∷ []
-scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 
 -- Tabulation
 
@@ -253,9 +244,7 @@ unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List A
 unfold P f {n = zero}  s = []
-unfold P f {n = suc n} s with f s
-... | nothing       = []
-... | just (x , s′) = x ∷ unfold P f s′
+unfold P f {n = suc n} s = maybe′ (λ (x , s′) → x ∷ unfold P f s′) [] (f s)
 
 ------------------------------------------------------------------------
 -- Operations for reversing lists
@@ -428,9 +417,10 @@ linesBy {A = A} P? = go nothing where
 
   go : Maybe (List A) → List A → List (List A)
   go acc []       = maybe′ ([_] ∘′ reverse) [] acc
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
-  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+  go acc (c ∷ cs) = if does (P? c)
+    then reverse acc′ ∷ go nothing cs
+    else go (just (c ∷ acc′)) cs
+    where acc′ = Maybe.fromMaybe [] acc
 
 linesByᵇ : (A → Bool) → List A → List (List A)
 linesByᵇ p = linesBy (T? ∘ p)
@@ -448,9 +438,9 @@ wordsBy {A = A} P? = go [] where
 
   go : List A → List A → List (List A)
   go acc []       = cons acc []
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = cons acc (go [] cs)
-  ... | false = go (c ∷ acc) cs
+  go acc (c ∷ cs) = if does (P? c)
+    then cons acc (go [] cs)
+    else go (c ∷ acc) cs
 
 wordsByᵇ : (A → Bool) → List A → List (List A)
 wordsByᵇ p = wordsBy (T? ∘ p)
@@ -569,4 +559,24 @@ _─_ = removeAt
 {-# WARNING_ON_USAGE _─_
 "Warning: _─_ was deprecated in v2.0.
 Please use removeAt instead."
+#-}
+
+-- Version 2.1
+
+scanr : (A → B → B) → B → List A → List B
+scanr f e []       = e ∷ []
+scanr f e (x ∷ xs) with scanr f e xs
+... | []         = []                -- dead branch
+... | ys@(y ∷ _) = f x y ∷ ys
+{-# WARNING_ON_USAGE scanr
+"Warning: scanr was deprecated in v2.1.
+Please use Data.List.Scans.Base.scanr instead."
+#-}
+
+scanl : (A → B → A) → A → List B → List A
+scanl f e []       = e ∷ []
+scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
+{-# WARNING_ON_USAGE scanl
+"Warning: scanl was deprecated in v2.1.
+Please use Data.List.Scans.Base.scanl instead."
 #-}

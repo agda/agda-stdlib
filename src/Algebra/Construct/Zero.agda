@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Instances of algebraic structures where the carrier is ⊤.
--- In mathematics, this is usually called 0 (1 in the case of Group).
+-- Instances of algebraic structures where the carrier is ⊤. In
+-- mathematics, this is usually called 0 (1 in the case of Monoid, Group).
 --
 -- From monoids up, these are are zero-objects – i.e, both the initial
 -- and the terminal object in the relevant category.

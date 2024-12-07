@@ -23,7 +23,7 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsDecPartialOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable)
+  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality.Properties as PropEq
@@ -89,7 +89,7 @@ x ≈? y = Pointwise.decidable Char._≟_ (toList x) (toList y)
 
 infix 4 _≟_
 
-_≟_ : Decidable _≡_
+_≟_ : DecidableEquality String
 x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
 
 ≡-setoid : Setoid _ _

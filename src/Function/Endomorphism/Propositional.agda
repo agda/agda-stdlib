@@ -1,15 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Endomorphisms on a Set
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
--- Disabled to prevent warnings from deprecated names
-{-# OPTIONS --warn=noUserWarning #-}
-
 module Function.Endomorphism.Propositional {a} (A : Set a) where
+
+{-# WARNING_ON_IMPORT
+"Function.Endomorphism.Propositional was deprecated in v2.1.
+Use Function.Endo.Propositional instead."
+#-}
 
 open import Algebra
 open import Algebra.Morphism; open Definitions
@@ -21,10 +23,10 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘′_; _∋_)
 open import Function.Equality using (_⟨$⟩_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
-import Function.Endomorphism.Setoid (P.setoid A) as Setoid
+import Function.Endomorphism.Setoid (≡.setoid A) as Setoid
 
 Endo : Set a
 Endo = A → A
@@ -38,7 +40,7 @@ fromSetoidEndo = _⟨$⟩_
 toSetoidEndo : Endo → Setoid.Endo
 toSetoidEndo f = record
   { _⟨$⟩_ = f
-  ; cong  = P.cong f
+  ; cong  = cong f
   }
 
 ------------------------------------------------------------------------
@@ -52,15 +54,15 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ^-homo : ∀ f → Homomorphic₂ ℕ Endo _≡_ (f ^_) _+_ _∘′_
 ^-homo f zero    n = refl
-^-homo f (suc m) n = P.cong (f ∘′_) (^-homo f m n)
+^-homo f (suc m) n = cong (f ∘′_) (^-homo f m n)
 
 ------------------------------------------------------------------------
 -- Structures
 
 ∘-isMagma : IsMagma _≡_ (Op₂ Endo ∋ _∘′_)
 ∘-isMagma = record
-  { isEquivalence = P.isEquivalence
-  ; ∙-cong        = P.cong₂ _∘′_
+  { isEquivalence = ≡.isEquivalence
+  ; ∙-cong        = cong₂ _∘′_
   }
 
 ∘-magma : Magma _ _
@@ -89,7 +91,7 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ^-isSemigroupMorphism : ∀ f → IsSemigroupMorphism +-semigroup ∘-semigroup (f ^_)
 ^-isSemigroupMorphism f = record
-  { ⟦⟧-cong = P.cong (f ^_)
+  { ⟦⟧-cong = cong (f ^_)
   ; ∙-homo  = ^-homo f
   }
 

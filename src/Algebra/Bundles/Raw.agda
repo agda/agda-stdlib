@@ -14,6 +14,20 @@ open import Level using (suc; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
+-- Raw bundles with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+-- A raw SuccessorSet is a SuccessorSet without any laws.
+
+record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    suc#    : Op₁ Carrier
+    zero#   : Carrier
+
+------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation
 ------------------------------------------------------------------------
 
@@ -160,21 +174,23 @@ record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
     -_      : Op₁ Carrier
     0#      : Carrier
 
+  rawNearSemiring : RawNearSemiring c ℓ
+  rawNearSemiring = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
+    }
+
+  open RawNearSemiring rawNearSemiring public
+    using (_≉_; *-rawMagma; +-rawMagma; +-rawMonoid)
+
   +-rawGroup : RawGroup c ℓ
   +-rawGroup = record
     { _≈_ = _≈_
     ; _∙_ = _+_
     ; ε   = 0#
     ; _⁻¹ = -_
-    }
-
-  open RawGroup +-rawGroup public
-    using (_≉_) renaming (rawMagma to +-rawMagma; rawMonoid to +-rawMonoid)
-
-  *-rawMagma : RawMagma c ℓ
-  *-rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _*_
     }
 
 ------------------------------------------------------------------------

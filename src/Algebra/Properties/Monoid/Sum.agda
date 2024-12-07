@@ -7,15 +7,16 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
-open import Data.Vec.Functional as Vector
-open import Data.Fin.Base using (zero; suc)
-open import Data.Unit using (tt)
-open import Function.Base using (_∘_)
-open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
 
 module Algebra.Properties.Monoid.Sum {a ℓ} (M : Monoid a ℓ) where
+
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
+open import Data.Vec.Functional as Vector using (Vector; replicate; init;
+  last; head; tail)
+open import Data.Fin.Base using (zero; suc)
+open import Function.Base using (_∘_)
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≗_; _≡_)
 
 open Monoid M
   renaming
@@ -61,8 +62,8 @@ sum-cong-≋ {zero}  xs≋ys = refl
 sum-cong-≋ {suc n} xs≋ys = +-cong (xs≋ys zero) (sum-cong-≋ (xs≋ys ∘ suc))
 
 sum-cong-≗ : ∀ {n} → sum {n} Preserves _≗_ ⟶ _≡_
-sum-cong-≗ {zero}  xs≗ys = P.refl
-sum-cong-≗ {suc n} xs≗ys = P.cong₂ _+_ (xs≗ys zero) (sum-cong-≗ (xs≗ys ∘ suc))
+sum-cong-≗ {zero}  xs≗ys = ≡.refl
+sum-cong-≗ {suc n} xs≗ys = ≡.cong₂ _+_ (xs≗ys zero) (sum-cong-≗ (xs≗ys ∘ suc))
 
 sum-replicate : ∀ n {x} → sum (replicate n x) ≈ n × x
 sum-replicate zero    = refl

@@ -20,7 +20,6 @@ open import Level using (Level)
 open import Function
 open import Function.Properties.Injection
 open import Function.Properties.Inverse as Inverse
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 private
   variable

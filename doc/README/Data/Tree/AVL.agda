@@ -20,13 +20,28 @@ import Data.Tree.AVL
 -- natural numbers as keys and vectors of strings as values.
 
 open import Data.Nat.Properties using (<-strictTotalOrder)
-open import Data.Product.Base as Prod using (_,_; _,′_)
+open import Data.Product.Base as Product using (_,_; _,′_)
 open import Data.String.Base using (String)
 open import Data.Vec.Base using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality
 
 open Data.Tree.AVL <-strictTotalOrder renaming (Tree to Tree′)
 Tree = Tree′ (MkValue (Vec String) (subst (Vec String)))
+
+-- The first argument to `MkValue` should be a function from a key
+-- (a `ℕ` in this case) to a value type (a `String` vector type).
+-- Since `(Vec String)` is missing `Vec`'s second parameter, a `ℕ`,
+-- it's equivalent to `λ n → Vec String n`.
+
+-- The second argument to `MkValue` is a function that can accept
+-- a proof that two keys are equal, and then substitute a unique key
+-- for an equivalent key that is passed in.  Applying `subst` to the
+-- key-to-value-type function passed as `MkValue`'s first argument is
+-- a normal way to create such a function.
+
+-- Note that there is no need to define the type of keys separately:
+-- passing a key-to-value-type function to `MkValue` and providing
+-- the result of `MkValue` to `Data.Tree.AVL.Tree` is enough.
 
 ------------------------------------------------------------------------
 -- Construction of trees
@@ -111,14 +126,14 @@ open import Function.Base using (id)
 v₆ : headTail t₀ ≡ nothing
 v₆ = refl
 
-v₇ : Maybe.map (Prod.map₂ toList) (headTail t₂) ≡
+v₇ : Maybe.map (Product.map₂ toList) (headTail t₂) ≡
      just ((1 , v₁) , ((2 , v₂) ∷ []))
 v₇ = refl
 
 v₈ : initLast t₀ ≡ nothing
 v₈ = refl
 
-v₉ : Maybe.map (Prod.map₁ toList) (initLast t₄) ≡
+v₉ : Maybe.map (Product.map₁ toList) (initLast t₄) ≡
      just (((1 , v₁) ∷ []) ,′ (2 , v₂))
 v₉ = refl
 
@@ -126,6 +141,10 @@ v₉ = refl
 -- Further reading
 
 -- Variations of the AVL tree module are available:
+
+-- • Finite maps in which types of values don't depend on keys.
+
+import Data.Tree.AVL.Map
 
 -- • Finite maps with indexed keys and values.
 

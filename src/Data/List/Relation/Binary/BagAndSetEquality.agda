@@ -8,33 +8,39 @@
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
-open import Algebra using (Idempotent; CommutativeMonoid)
+open import Algebra.Bundles using (CommutativeMonoid)
+open import Algebra.Definitions using (Idempotent)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Effect.Monad using (RawMonad)
-open import Data.Empty
-open import Data.Fin.Base
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base
+  using (List; []; _∷_; map; _++_; concat; [_]; lookup; length)
 open import Data.List.Effectful using (monad; module Applicative; module MonadProperties)
 import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)
+open import Data.List.Relation.Unary.Any.Properties
+  using (∷↔; map↔; Any-cong; ++↔; concat↔; >>=↔; ++↔++; ⊎↔; ⊥↔Any[])
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Membership.Propositional.Properties
+  using (∈-∃++)
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭-refl; ↭-sym; ↭-prep; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-open import Data.Product.Base as Prod hiding (map)
+  using (∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ∈-resp-[σ∘σ⁻¹]; shift; ++-comm)
+open import Data.Product.Base as Product using (∃; _,_; proj₁; proj₂; _×_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum.Base as Sum hiding (map)
-open import Data.Sum.Properties hiding (map-cong)
+open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
+open import Data.Sum.Properties using (inj₂-injective; inj₁-injective)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Unit.Polymorphic.Base
-open import Function.Base
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Function.Base using (_∘_; _$_; id; _⟨_⟩_; case_of_)
 open import Function.Bundles using (_↔_; Inverse; Equivalence; mk↔ₛ′; mk⇔)
 open import Function.Related.Propositional as Related
   using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; K-refl; SK-sym)
-open import Function.Related.TypeIsomorphisms
+open import Function.Related.TypeIsomorphisms using (×-identityʳ; ∃∃↔∃∃)
 open import Function.Properties.Inverse using (↔-sym; ↔-trans; to-from)
 open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)
@@ -42,10 +48,12 @@ open import Relation.Binary.Definitions using (Trans)
 open import Relation.Binary.Bundles using (Preorder; Setoid)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; _≗_; refl; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≢_; _≗_; refl)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
+  using (module ≡-Reasoning)
 open import Relation.Binary.Reasoning.Syntax
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -245,16 +253,15 @@ commutativeMonoid {a} k A = record
 
 empty-unique : ∀ {k} → xs ∼[ ⌊ k ⌋→ ] [] → xs ≡ []
 empty-unique {xs = []}    _    = refl
-empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
-... | ()
+empty-unique {xs = _ ∷ _} ∷∼[] with () ← ⇒→ ∷∼[] (here refl)
 
 -- _++_ is idempotent (under set equality).
 
 ++-idempotent : Idempotent {A = List A} _∼[ set ]_ _++_
 ++-idempotent xs {x} =
-  x ∈ xs ++ xs  ∼⟨ mk⇔ ([ id , id ]′ ∘ (Inverse.from $ ++↔))
-                                  (Inverse.to ++↔ ∘ inj₁) ⟩
-  x ∈ xs        ∎
+  x ∈ xs ++ xs
+    ∼⟨ mk⇔ ([ id , id ]′ ∘ (Inverse.from $ ++↔)) (Inverse.to ++↔ ∘ inj₁) ⟩
+  x ∈ xs ∎
   where open Related.EquationalReasoning
 
 -- The list monad's bind distributes from the left over _++_.
@@ -389,13 +396,13 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (to xs≈ys (proj₂
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    index-of (proj₂ (Prod.map id (to xs≈ys)
-      (from (Fin-length xs) (to (Fin-length xs) (z , p)))))  ≡⟨⟩
+    index-of (proj₂ (Product.map₂ (to xs≈ys)
+      (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    to (Fin-length ys) (Prod.map id (to xs≈ys)
-      (from (Fin-length xs) (index-of p)))                          ≡⟨⟩
+    to (Fin-length ys) (Product.map₂ (to xs≈ys)
+      (from (Fin-length xs) (index-of p)))                    ≡⟨⟩
 
-    to (Fin-length-cong xs≈ys) (index-of p)                        ∎
+    to (Fin-length-cong xs≈ys) (index-of p)                   ∎
     where
     open ≡-Reasoning
     open Inverse
@@ -422,10 +429,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (Inverse.to xs≈ys p) ≡
     index-of (Inverse.to xs≈ys q)
   index-equality-preserved {p = p} {q} xs≈ys eq =
-    index-of (Inverse.to xs≈ys p)                  ≡⟨ index-of-commutes xs≈ys p ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of p)  ≡⟨ ≡.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of q)  ≡⟨ ≡.sym $ index-of-commutes xs≈ys q ⟩
-    index-of (Inverse.to xs≈ys q)                  ∎
+    index-of (Inverse.to xs≈ys p)                   ≡⟨ index-of-commutes xs≈ys p ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of p) ≡⟨ ≡.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of q) ≡⟨ ≡.sym $ index-of-commutes xs≈ys q ⟩
+    index-of (Inverse.to xs≈ys q)                   ∎
     where
     open ≡-Reasoning
 
@@ -513,13 +520,13 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₁ a″ , eq₄ = ⊥-elim $ from-hyp eq₃ eq₄
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₂ b′ , eq₄ = inj₂-injective (
         let lemma =
-              inj₁ a′             ≡⟨ ≡.sym eq₃ ⟩
+              inj₁ a′            ≡⟨ ≡.sym eq₃ ⟩
               from f (inj₂ c)    ≡⟨ to-from f eq₂ ⟩
               inj₁ a             ∎
         in
         inj₂ b′             ≡⟨ ≡.sym eq₄ ⟩
         from f (inj₁ a′)    ≡⟨ ≡.cong (from f ∘ inj₁) $ inj₁-injective lemma ⟩
-        from f (inj₁ a)    ≡⟨ to-from f eq₁ ⟩
+        from f (inj₁ a)     ≡⟨ to-from f eq₁ ⟩
         inj₂ b              ∎)
 
   -- Some final lemmas.
@@ -538,62 +545,49 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
   lemma : ∀ {xs ys} (inv : x ∷ xs ∼[ bag ] x ∷ ys) {z} →
           Well-behaved (Inverse.to (∼→⊎↔⊎ inv {z}))
-  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ with
-    zero                                                                  ≡⟨⟩
-    index-of {xs = x ∷ xs} (here p)                                       ≡⟨⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                         ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ ≡.sym $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))  ≡⟨ ≡.cong index-of $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)                   ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                   ≡⟨ ≡.cong index-of $ ≡.sym $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))  ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)                      ≡⟨⟩
-    index-of {xs = x ∷ xs} (there z∈xs)                                   ≡⟨⟩
-    suc (index-of {xs = xs} z∈xs)                                         ∎
+  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ = case contra of λ ()
     where
     open Inverse
     open ≡-Reasoning
-  ... | ()
+    contra : zero ≡ suc (index-of {xs = xs} z∈xs)
+    contra = begin
+      zero
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (here p)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)
+        ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (there z∈xs)
+        ≡⟨⟩
+      suc (index-of {xs = xs} z∈xs)
+        ∎
+
 
 ------------------------------------------------------------------------
--- Relationships to other relations
+-- Relationships to propositional permutation
 
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
-↭⇒∼bag {A = A} xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
-  where
-  to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
-  to xs↭ys = Any-resp-↭ {A = A} xs↭ys
-
-  from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
-  from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
-
-  from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-  from∘to refl          v∈xs                 = refl
-  from∘to (prep _ _)    (here refl)          = refl
-  from∘to (prep _ p)    (there v∈xs)         = ≡.cong there (from∘to p v∈xs)
-  from∘to (swap x y p)  (here refl)          = refl
-  from∘to (swap x y p)  (there (here refl))  = refl
-  from∘to (swap x y p)  (there (there v∈xs)) = ≡.cong (there ∘ there) (from∘to p v∈xs)
-  from∘to (trans p₁ p₂) v∈xs
-    rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
-          | from∘to p₁ v∈xs                  = refl
-
-  to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-  to∘from p with from∘to (↭-sym p)
-  ... | res rewrite ↭-sym-involutive p = res
+↭⇒∼bag xs↭ys {v} =
+  mk↔ₛ′ (∈-resp-↭ xs↭ys) (∈-resp-↭ (↭-sym xs↭ys)) (∈-resp-[σ∘σ⁻¹] xs↭ys) (∈-resp-[σ⁻¹∘σ] xs↭ys)
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
-∼bag⇒↭ {A = A} {[]} eq with empty-unique (↔-sym eq)
-... | refl = refl
-∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl))
-... | zs₁ , zs₂ , p rewrite p = begin
-  x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
-  x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
-  zs₁ ++ x ∷ zs₂   ∎
-  where
-  open CommutativeMonoid (commutativeMonoid bag A)
-  open PermutationReasoning
+∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq) = ↭-refl
+∼bag⇒↭ {A = A} {x ∷ xs} eq
+  with zs₁ , zs₂ , refl ← ∈-∃++ (Inverse.to (eq {x}) (here refl)) = begin
+    x ∷ xs           ↭⟨ ↭-prep x (∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂))))) ⟩
+    x ∷ (zs₂ ++ zs₁) ↭⟨ ↭-prep x (++-comm zs₂ zs₁) ⟩
+    x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
+    zs₁ ++ x ∷ zs₂   ∎
+    where
+    open CommutativeMonoid (commutativeMonoid bag A)
+    open PermutationReasoning

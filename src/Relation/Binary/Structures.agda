@@ -18,7 +18,7 @@ module Relation.Binary.Structures
 open import Data.Product.Base using (proj₁; proj₂; _,_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Definitions
 
@@ -51,7 +51,7 @@ record IsEquivalence : Set (a ⊔ ℓ) where
     trans : Transitive _≈_
 
   reflexive : _≡_ ⇒ _≈_
-  reflexive P.refl = refl
+  reflexive ≡.refl = refl
 
   isPartialEquivalence : IsPartialEquivalence
   isPartialEquivalence = record
@@ -119,6 +119,26 @@ record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   open IsPreorder isPreorder public
 
 
+record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isPreorder : IsPreorder _≲_
+    _≟_        : Decidable _≈_
+    _≲?_       : Decidable _≲_
+
+  open IsPreorder isPreorder public
+    hiding (module Eq)
+
+  module Eq where
+
+    isDecEquivalence : IsDecEquivalence
+    isDecEquivalence = record
+      { isEquivalence = isEquivalence
+      ; _≟_           = _≟_
+      }
+
+    open IsDecEquivalence isDecEquivalence public
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------
@@ -146,15 +166,15 @@ record IsDecPartialOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) whe
   open IsPartialOrder isPartialOrder public
     hiding (module Eq)
 
-  module Eq where
+  isDecPreorder : IsDecPreorder _≤_
+  isDecPreorder = record
+    { isPreorder = isPreorder
+    ; _≟_ = _≟_
+    ; _≲?_ = _≤?_
+    }
 
-    isDecEquivalence : IsDecEquivalence
-    isDecEquivalence = record
-      { isEquivalence = isEquivalence
-      ; _≟_           = _≟_
-      }
-
-    open IsDecEquivalence isDecEquivalence public
+  open IsDecPreorder isDecPreorder public
+    using (module Eq)
 
 
 record IsStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
@@ -234,16 +254,8 @@ record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
     ; _≤?_           = _≤?_
     }
 
-  module Eq where
-
-    isDecEquivalence : IsDecEquivalence
-    isDecEquivalence = record
-      { isEquivalence = isEquivalence
-      ; _≟_           = _≟_
-      }
-
-    open IsDecEquivalence isDecEquivalence public
-
+  open IsDecPartialOrder isDecPartialOrder public
+    using (isDecPreorder; module Eq)
 
 -- Note that these orders are decidable. The current implementation
 -- of `Trichotomous` subsumes irreflexivity and asymmetry. See
