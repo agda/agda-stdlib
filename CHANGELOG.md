@@ -315,6 +315,11 @@ Additions to existing modules
                                             ([] , [])
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  ⊆⇒⊆~ : IsEquivalence ≈  → ∀ {as bs} → as ⊆ bs → Setoid._⊆_ setoid≈ as bs
+  ```
+
 * In `Data.List.Relation.Unary.Any.Properties`:
   ```agda
   concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
