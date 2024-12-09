@@ -18,21 +18,16 @@ open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Sublist.Propositional
   hiding (map)
-import Data.List.Relation.Binary.Sublist.Setoid
-  as Setoid
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
 open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base using (id; _∘_; _∘′_)
 open import Level using (Level)
-open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong; _≗_; trans)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid; subst-injective; trans-reflʳ; trans-assoc)
-open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Unary using (Pred)
 
 private
