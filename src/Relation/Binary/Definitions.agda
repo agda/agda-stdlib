@@ -243,6 +243,11 @@ DecidableEquality A = Decidable {A = A} _≡_
 Universal : REL A B ℓ → Set _
 Universal _∼_ = ∀ x y → x ∼ y
 
+-- Empty - no elements are related
+
+Empty : REL A B ℓ → Set _
+Empty _∼_ = ∀ {x y} → ¬ (x ∼ y)
+
 -- Non-emptiness - at least one pair of elements are related.
 
 record NonEmpty {A : Set a} {B : Set b}

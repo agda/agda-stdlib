@@ -9,7 +9,7 @@
 module Data.Vec.Bounded where
 
 open import Level using (Level)
-open import Data.Nat.Base
+open import Data.Nat.Base using (_≤_)
 open import Data.Vec.Base using (Vec)
 import Data.Vec as Vec using (filter; takeWhile; dropWhile)
 open import Function.Base using (id)

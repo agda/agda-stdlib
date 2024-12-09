@@ -8,16 +8,16 @@
 
 module Relation.Binary.Consequences where
 
-open import Data.Maybe.Base using (just; nothing; decToMaybe)
-open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
+open import Data.Empty using (⊥-elim)
 open import Data.Product.Base using (_,_)
-open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘_; _∘₂_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
-open import Relation.Nullary using (yes; no; recompute; ¬_)
-open import Relation.Nullary.Decidable.Core using (map′)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core
+  using (yes; no; recompute; map′; dec⇒maybe)
 open import Relation.Unary using (∁; Pred)
 
 private
@@ -193,7 +193,7 @@ module _  {_R_ : Rel A ℓ₁} {Q : Rel A ℓ₂} where
 module _ {R : REL A B p} where
 
   dec⇒weaklyDec : Decidable R → WeaklyDecidable R
-  dec⇒weaklyDec dec x y = decToMaybe (dec x y)
+  dec⇒weaklyDec dec x y = dec⇒maybe (dec x y)
 
   dec⇒recomputable : Decidable R → Recomputable R
   dec⇒recomputable dec {a} {b} = recompute $ dec a b

@@ -26,6 +26,8 @@ open import Algebra.Properties.Semigroup.Divisibility semigroup public
 ------------------------------------------------------------------------
 -- Additional properties
 
+infix 4 ε∣_
+
 ε∣_ : ∀ x → ε ∣ x
 ε∣ x = x , identityʳ x
 

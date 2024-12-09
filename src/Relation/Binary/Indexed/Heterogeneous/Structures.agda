@@ -18,7 +18,7 @@ module Relation.Binary.Indexed.Heterogeneous.Structures
 open import Function.Base
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (_⇒_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Indexed.Heterogeneous.Definitions
 
 ------------------------------------------------------------------------
@@ -31,7 +31,7 @@ record IsIndexedEquivalence : Set (i ⊔ a ⊔ ℓ) where
     trans : Transitive A _≈_
 
   reflexive : ∀ {i} → _≡_ ⟨ _⇒_ ⟩ _≈_ {i}
-  reflexive P.refl = refl
+  reflexive ≡.refl = refl
 
 
 record IsIndexedPreorder {ℓ₂} (_≲_ : IRel A ℓ₂) : Set (i ⊔ a ⊔ ℓ ⊔ ℓ₂) where

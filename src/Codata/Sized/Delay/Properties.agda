@@ -10,14 +10,14 @@ module Codata.Sized.Delay.Properties where
 
 open import Size
 import Data.Sum.Base as Sum
-import Data.Nat as ℕ
+import Data.Nat.Base as ℕ
 open import Codata.Sized.Thunk using (Thunk; force)
 open import Codata.Sized.Conat
 open import Codata.Sized.Conat.Bisimilarity as Coℕ using (zero ; suc)
 open import Codata.Sized.Delay
 open import Codata.Sized.Delay.Bisimilarity
 open import Function.Base using (id; _∘′_)
-open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module _ {a} {A : Set a} where
 
@@ -40,19 +40,19 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
    suc λ where .force →  length-zipWith f (da .force) (db .force)
 
  map-id : ∀ da {i} → i ⊢ map (id {A = A}) da ≈ da
- map-id (now a)    = now Eq.refl
+ map-id (now a)    = now ≡.refl
  map-id (later da) = later λ where .force → map-id (da .force)
 
  map-∘ : ∀ (f : A → B) (g : B → C) da {i}  →
    i ⊢ map g (map f da) ≈ map (g ∘′ f) da
- map-∘ f g (now a)    = now Eq.refl
+ map-∘ f g (now a)    = now ≡.refl
  map-∘ f g (later da) = later λ where .force → map-∘ f g (da .force)
 
  map-unfold : ∀ (f : B → C) n (s : A) {i} →
    i ⊢ map f (unfold n s) ≈ unfold (Sum.map id f ∘′ n) s
  map-unfold f n s with n s
  ... | Sum.inj₁ s′ = later λ where .force → map-unfold f n s′
- ... | Sum.inj₂ b = now Eq.refl
+ ... | Sum.inj₂ b = now ≡.refl
 
 
 ------------------------------------------------------------------------
@@ -62,9 +62,9 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
            {d : Delay A ∞} →
            (d⇓₁ : d ⇓) → (d⇓₂ : d ⇓) →
            d⇓₁ ≡ d⇓₂
-⇓-unique {d = now s} (now s) (now s) = Eq.refl
+⇓-unique {d = now s} (now s) (now s) = ≡.refl
 ⇓-unique {d = later d'} (later l) (later r) =
-  Eq.cong later (⇓-unique {d = force d'} l r)
+  ≡.cong later (⇓-unique {d = force d'} l r)
 
 module _ {a} {A B : Set a} where
 
@@ -85,7 +85,7 @@ module _ {a} {A B : Set a} where
   extract-bind-⇓ : {d : Delay A Size.∞} → {f : A → Delay B Size.∞} →
                    (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
                    extract (bind-⇓ d⇓ {f} f⇓) ≡ extract f⇓
-  extract-bind-⇓ (now a) f⇓ = Eq.refl
+  extract-bind-⇓ (now a) f⇓ = ≡.refl
   extract-bind-⇓ (later t) f⇓ = extract-bind-⇓ t f⇓
 
   -- If the right element of a bind returns a certain value so does the
@@ -94,7 +94,7 @@ module _ {a} {A B : Set a} where
     (d : Delay A ∞) {f : A → Delay B ∞} →
     (bind⇓ : bind d f ⇓) →
     extract (bind̅₂ d bind⇓) ≡ extract bind⇓
-  extract-bind̅₂-bind⇓ (now s) bind⇓ = Eq.refl
+  extract-bind̅₂-bind⇓ (now s) bind⇓ = ≡.refl
   extract-bind̅₂-bind⇓ (later s) (later bind⇓) =
     extract-bind̅₂-bind⇓ (force s) bind⇓
 
@@ -106,9 +106,9 @@ module _ {a} {A B : Set a} where
       (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
       toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
   bind⇓-length {f = f} bind⇓ d⇓@(now s') f⇓ =
-    Eq.cong (toℕ ∘′ length-⇓) (⇓-unique bind⇓ f⇓)
+    ≡.cong (toℕ ∘′ length-⇓) (⇓-unique bind⇓ f⇓)
   bind⇓-length {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
-    Eq.cong ℕ.suc (bind⇓-length bind'⇓ r f⇓)
+    ≡.cong ℕ.suc (bind⇓-length bind'⇓ r f⇓)
 
 ------------------------------------------------------------------------
 -- DEPRECATED

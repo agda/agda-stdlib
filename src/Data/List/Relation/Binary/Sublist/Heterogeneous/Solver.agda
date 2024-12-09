@@ -21,22 +21,23 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe.Base as Maybe
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
-open import Data.List.Base hiding (lookup)
-open import Data.List.Properties
+open import Data.List.Base using (List; []; _∷_; [_]; _++_)
+open import Data.List.Properties using (++-assoc; ++-identityʳ)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
-  hiding (lookup)
+  using (Sublist; minimum; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
-open import Function
+open import Function.Base using (_$_; case_of_)
 
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
-open import Relation.Nullary
+open import Relation.Binary.PropositionalEquality.Properties as ≡
 
-open P.≡-Reasoning
+open ≡.≡-Reasoning
 
 infix 4  _⊆I_ _⊆R_ _⊆T_
 
@@ -87,7 +88,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
 -- Flattening in a semantics-respecting manner
 
 ⟦++⟧R : ∀ {n} xs ys (ρ : Vec (List A) n) → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
-⟦++⟧R []       ys ρ = P.refl
+⟦++⟧R []       ys ρ = ≡.refl
 ⟦++⟧R (x ∷ xs) ys ρ = begin
   ⟦ x ⟧I ρ ++ ⟦ xs ++ ys ⟧R ρ
     ≡⟨ cong (⟦ x ⟧I ρ ++_) (⟦++⟧R xs ys ρ) ⟩
@@ -97,7 +98,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
     ∎
 
 flatten : ∀ {n} (t : TList n) → Σ[ r ∈ RList n ] ⟦ r ⟧R ≗ ⟦ t ⟧T
-flatten []       = [] , λ _ → P.refl
+flatten []       = [] , λ _ → ≡.refl
 flatten (It it)  = it ∷ [] , λ ρ → ++-identityʳ (⟦ It it ⟧T ρ)
 flatten (t <> u) =
   let (rt , eqt) = flatten t
@@ -124,8 +125,8 @@ private
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
-solveI (var k) (var l) = Maybe.map var $ decToMaybe (k Fin.≟ l)
-solveI (val a) (val b) = Maybe.map val $ decToMaybe (R? a b)
+solveI (var k) (var l) = Maybe.map var $ dec⇒weaklyDec Fin._≟_ k  l
+solveI (val a) (val b) = Maybe.map val $ dec⇒weaklyDec R? a b
 solveI _ _ = nothing
 
 -- Solver for linearised expressions

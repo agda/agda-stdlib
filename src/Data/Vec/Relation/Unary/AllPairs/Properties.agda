@@ -8,7 +8,7 @@
 
 module Data.Vec.Relation.Unary.AllPairs.Properties where
 
-open import Data.Vec
+open import Data.Vec.Base using (_∷_; map; _++_; concat; take; drop; tabulate)
 import Data.Vec.Properties as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 import Data.Vec.Relation.Unary.All.Properties as All

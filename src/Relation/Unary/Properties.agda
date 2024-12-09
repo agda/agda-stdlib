@@ -13,10 +13,11 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Level using (Level)
 open import Relation.Binary.Core as Binary
-open import Relation.Binary.Definitions hiding (Decidable; Universal; Irrelevant)
-open import Relation.Binary.PropositionalEquality.Core using (refl)
+open import Relation.Binary.Definitions
+  hiding (Decidable; Universal; Irrelevant; Empty)
+open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Unary
-open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_; ¬?)
+open import Relation.Nullary.Decidable as Dec using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
 open import Function.Base using (id; _$_; _∘_)
 
 private
@@ -199,6 +200,10 @@ U-Universal = λ _ → _
 ------------------------------------------------------------------------
 -- Decidability properties
 
+map : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
+      P ≐ Q → Decidable P → Decidable Q
+map (P⊆Q , Q⊆P) P? x = map′ P⊆Q Q⊆P (P? x)
+
 ∁? : {P : Pred A ℓ} → Decidable P → Decidable (∁ P)
 ∁? P? x = ¬? (P? x)
 
@@ -231,6 +236,15 @@ _⊎?_ P? Q? (inj₂ b) = Q? b
 
 _~? : {P : Pred (A × B) ℓ} → Decidable P → Decidable (P ~)
 _~? P? = P? ∘ swap
+
+does-≡ : {P : Pred A ℓ} → (P? P?′ : Decidable P) →
+         does ∘ P? ≗ does ∘ P?′
+does-≡ P? P?′ x = Dec.does-≡ (P? x) (P?′ x)
+
+does-≐ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} → P ≐ Q →
+         (P? : Decidable P) → (Q? : Decidable Q) →
+         does ∘ P? ≗ does ∘ Q?
+does-≐ P≐Q P? = does-≡ (map P≐Q P?)
 
 ------------------------------------------------------------------------
 -- Irrelevant properties

@@ -5,7 +5,6 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Equality where
 
@@ -21,8 +20,8 @@ open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid; _=[_]⇒_)
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
-import Relation.Binary.PropositionalEquality.Core as P
-import Relation.Binary.PropositionalEquality.Properties as P
+import Relation.Binary.PropositionalEquality.Core as ≡
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 ------------------------------------------------------------------------
 -- Functions which preserve equality
@@ -147,8 +146,8 @@ flip {B = B} f = record
   }
 
 →-to-⟶ : ∀ {a b ℓ} {A : Set a} {B : Setoid b ℓ} →
-         (A → Setoid.Carrier B) → P.setoid A ⟶ B
+         (A → Setoid.Carrier B) → ≡.setoid A ⟶ B
 →-to-⟶ {B = B} to = record
   { _⟨$⟩_ = to
-  ; cong = λ { P.refl → Setoid.refl B }
+  ; cong = λ { ≡.refl → Setoid.refl B }
   }

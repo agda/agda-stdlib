@@ -14,7 +14,7 @@ open import Data.Fin.Permutation as Perm using (Permutation; _⟨$⟩ˡ_; _⟨$�
 open import Data.Fin.Patterns using (0F)
 open import Data.Vec.Functional
 open import Function.Base using (_∘_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Negation using (contradiction)
 
 module Algebra.Properties.CommutativeMonoid.Sum
@@ -90,9 +90,9 @@ sum-permute {zero}  {suc n} f π = contradiction π (Perm.refute λ())
 sum-permute {suc m} {zero}  f π = contradiction π (Perm.refute λ())
 sum-permute {suc m} {suc n} f π = begin
   sum f                                    ≡⟨⟩
-  f 0F  + sum f/0                          ≡⟨ P.cong (_+ sum f/0) (P.cong f (Perm.inverseʳ π)) ⟨
+  f 0F  + sum f/0                          ≡⟨ ≡.cong (_+ sum f/0) (≡.cong f (Perm.inverseʳ π)) ⟨
   πf π₀ + sum f/0                          ≈⟨ +-congˡ (sum-permute f/0 (Perm.remove π₀ π)) ⟩
-  πf π₀ + sum (rearrange (π/0 ⟨$⟩ʳ_) f/0)  ≡⟨ P.cong (πf π₀ +_) (sum-cong-≗ (P.cong f ∘ Perm.punchIn-permute′ π 0F)) ⟨
+  πf π₀ + sum (rearrange (π/0 ⟨$⟩ʳ_) f/0)  ≡⟨ ≡.cong (πf π₀ +_) (sum-cong-≗ (≡.cong f ∘ Perm.punchIn-permute′ π 0F)) ⟨
   πf π₀ + sum (removeAt πf π₀)             ≈⟨ sym (sum-remove πf) ⟩
   sum πf                                   ∎
   where

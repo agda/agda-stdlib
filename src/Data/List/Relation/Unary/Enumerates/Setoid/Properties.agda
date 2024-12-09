@@ -23,7 +23,7 @@ open import Function.Definitions using (Surjective)
 open import Function.Consequences using (strictlySurjective⇒surjective)
 open import Level
 open import Relation.Binary.Bundles using (Setoid; DecSetoid)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 
 module Data.List.Relation.Unary.Enumerates.Setoid.Properties where
@@ -40,8 +40,8 @@ module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (surj : Surjection S T) whe
   open Surjection surj
 
   map⁺ : ∀ {xs} → IsEnumeration S xs → IsEnumeration T (map to xs)
-  map⁺ _∈xs y with strictlySurjective y
-  ... | (x , fx≈y) = ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
+  map⁺ _∈xs y with (x , fx≈y) ← strictlySurjective y =
+      ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
 
 ------------------------------------------------------------------------
 -- _++_
@@ -89,4 +89,4 @@ module _ (S : Setoid a ℓ₁) where
   lookup-surjective : ∀ {xs} → IsEnumeration S xs →
                       Surjective _≡_ _≈_ (lookup xs)
   lookup-surjective _∈xs = strictlySurjective⇒surjective
-    trans (λ { P.refl → refl}) (λ y → index (y ∈xs) , sym (lookup-index (y ∈xs)))
+    trans (λ { ≡.refl → refl}) (λ y → index (y ∈xs) , sym (lookup-index (y ∈xs)))

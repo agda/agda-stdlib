@@ -8,11 +8,12 @@
 
 module Data.Float.Base where
 
-open import Relation.Binary.Core using (Rel)
-import Data.Word.Base as Word
+open import Data.Bool.Base using (T)
+import Data.Word64.Base as Word64
 import Data.Maybe.Base as Maybe
 open import Function.Base using (_on_; _∘_)
 open import Agda.Builtin.Equality
+open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------
 -- Re-export built-ins publically
@@ -29,7 +30,7 @@ open import Agda.Builtin.Float public
   ; primFloatIsNegativeZero    to isNegativeZero
   ; primFloatIsSafeInteger     to isSafeInteger
   -- Conversions
-  ; primFloatToWord64          to toWord
+  ; primFloatToWord64          to toWord64
   ; primNatToFloat             to fromℕ
   ; primIntToFloat             to fromℤ
   ; primFloatRound             to round
@@ -68,4 +69,19 @@ open import Agda.Builtin.Float public
 infix 4 _≈_
 
 _≈_ : Rel Float _
-_≈_ = _≡_ on Maybe.map Word.toℕ ∘ toWord
+_≈_ = _≡_ on Maybe.map Word64.toℕ ∘ toWord64
+
+
+infix 4 _≤_
+_≤_ : Rel Float _
+x ≤ y = T (x ≤ᵇ y)
+
+
+------------------------------------------------------------------------
+-- DEPRECATIONS
+
+toWord = toWord64
+{-# WARNING_ON_USAGE toWord
+"Warning: toWord was deprecated in v2.1.
+Please use toWord64 instead."
+#-}

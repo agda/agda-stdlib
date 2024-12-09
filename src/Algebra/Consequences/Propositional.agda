@@ -14,7 +14,10 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Symmetric; Total)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; cong₂; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid)
 open import Relation.Unary using (Pred)
 
 open import Algebra.Core

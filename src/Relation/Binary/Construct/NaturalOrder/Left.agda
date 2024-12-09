@@ -9,7 +9,7 @@
 
 open import Algebra.Core
 open import Data.Product.Base using (_,_; _×_)
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂; map)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
@@ -58,9 +58,7 @@ antisym isEq comm {x} {y} x≤y y≤x = begin
   where open IsEquivalence isEq; open ≈-Reasoning (record { isEquivalence = isEq })
 
 total : Symmetric _≈_ → Transitive _≈_ → Selective _∙_ → Commutative _∙_ → Total _≤_
-total sym trans sel comm x y with sel x y
-... | inj₁ x∙y≈x = inj₁ (sym x∙y≈x)
-... | inj₂ x∙y≈y = inj₂ (sym (trans (comm y x) x∙y≈y))
+total sym trans sel comm x y = map sym (λ x∙y≈y → trans (sym x∙y≈y) (comm x y)) (sel x y)
 
 trans : IsSemigroup _∙_ → Transitive _≤_
 trans semi {x} {y} {z} x≤y y≤z = begin
