@@ -17,7 +17,7 @@ open import Function.Related.Propositional
          implication; reverseImplication; equivalence; injection;
          reverseInjection; leftInverse; surjection; bijection)
 open import Function.Base using (_$_; _∘_; _∘′_)
-open import Function.Properties.Inverse using (↔⇒↠; ↔⇒⟶; ↔⇒⟵; ↔-sym; ↔⇒↩)
+open import Function.Properties.Inverse using (↔⇒↠; ↔⇒⟶; ↔⇒⟵; ↔-sym; ↔⇒↩; refl)
 open import Function.Properties.RightInverse using (↩⇒↪; ↪⇒↩)
 open import Function.Properties.Inverse.HalfAdjointEquivalence
   using (↔⇒≃; _≃_; ≃⇒↔)
@@ -316,3 +316,6 @@ cong {B = B} {k = reverseInjection}   I↔J A↢B = Σ-↣ (↔-sym I↔J) (swap
 cong {B = B} {k = leftInverse}        I↔J A↩B = ↩⇒↪ (Σ-↩ (↔⇒↩ (↔-sym I↔J)) (↪⇒↩ (swap-coercions {k = leftInverse} B I↔J A↩B)))
 cong {k = surjection}                 I↔J A↠B = Σ-↠ (↔⇒↠ I↔J) A↠B
 cong {k = bijection}                  I↔J A↔B = Σ-↔ I↔J A↔B
+
+congˡ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
+congˡ = cong (refl _)

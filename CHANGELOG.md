@@ -19,6 +19,7 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
 * The names exposed by the `IsSemiringWithoutOne` record have been altered to
   better correspond to other algebraic structures. In particular:
   * `Carrier` is no longer exposed.
@@ -93,9 +94,26 @@ Deprecated names
 New modules
 -----------
 
+* Bundled morphisms between (raw) algebraic structures:
+  ```
+  Algebra.Morphism.Bundles
+  ```
+
 * Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
   ```agda
   Algebra.Properties.IdempotentCommutativeMonoid
+  ```
+
+* Consequences of module monomorphisms
+  ```agda
+  Algebra.Module.Morphism.BimoduleMonomorphism
+  Algebra.Module.Morphism.BisemimoduleMonomorphism
+  Algebra.Module.Morphism.LeftModuleMonomorphism
+  Algebra.Module.Morphism.LeftSemimoduleMonomorphism
+  Algebra.Module.Morphism.ModuleMonomorphism
+  Algebra.Module.Morphism.RightModuleMonomorphism
+  Algebra.Module.Morphism.RightSemimoduleMonomorphism
+  Algebra.Module.Morphism.SemimoduleMonomorphism
   ```
 
 * Refactoring of the `Algebra.Solver.*Monoid` implementations, via
@@ -118,6 +136,9 @@ New modules
 
 * `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
+  ```agda
+  sum-↭ : sum Preserves _↭_ ⟶ _≡_
+  ```
 
 * `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
 
@@ -127,8 +148,107 @@ New modules
   Data.Refinement.Properties
   ```
 
+* Raw bundles for the `Relation.Binary.Bundles` hierarchy:
+  ```agda
+  Relation.Binary.Bundles.Raw
+  ```
+  plus adding `rawX` fields to each of `Relation.Binary.Bundles.X`.
+
+* `Data.List.Effectful.Foldable`: `List` is `Foldable`
+
+* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
+
+* `Effect.Foldable`: implementation of haskell-like `Foldable`
+
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Bundles.KleeneAlgebra`:
+  ```agda
+  rawKleeneAlgebra : RawKleeneAlgebra _ _
+  ```
+
+* In `Algebra.Bundles.Raw.RawRingWithoutOne`
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  ```
+
+* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
+  ```agda
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  +-rawGroup        : RawGroup _ _
+  ```
+
+* Exporting `RawRingWithoutOne` and `(Raw)NearSemiring` subbundles from
+  `Algebra.Bundles.RingWithoutOne`:
+  ```agda
+  nearSemiring      : NearSemiring _ _
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  ```
+
+* In `Algebra.Morphism.Construct.Composition`:
+  ```agda
+  magmaHomomorphism          : MagmaHomomorphism M₁.rawMagma M₂.rawMagma →
+                               MagmaHomomorphism M₂.rawMagma M₃.rawMagma →
+                               MagmaHomomorphism M₁.rawMagma M₃.rawMagma
+  monoidHomomorphism         : MonoidHomomorphism M₁.rawMonoid M₂.rawMonoid →
+                               MonoidHomomorphism M₂.rawMonoid M₃.rawMonoid →
+                               MonoidHomomorphism M₁.rawMonoid M₃.rawMonoid
+  groupHomomorphism          : GroupHomomorphism M₁.rawGroup M₂.rawGroup →
+                               GroupHomomorphism M₂.rawGroup M₃.rawGroup →
+                               GroupHomomorphism M₁.rawGroup M₃.rawGroup
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M₁.rawNearSemiring M₂.rawNearSemiring →
+                               NearSemiringHomomorphism M₂.rawNearSemiring M₃.rawNearSemiring →
+                               NearSemiringHomomorphism M₁.rawNearSemiring M₃.rawNearSemiring
+  semiringHomomorphism       : SemiringHomomorphism M₁.rawSemiring M₂.rawSemiring →
+                               SemiringHomomorphism M₂.rawSemiring M₃.rawSemiring →
+                               SemiringHomomorphism M₁.rawSemiring M₃.rawSemiring
+  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M₁.rawKleeneAlgebra M₂.rawKleeneAlgebra →
+                               KleeneAlgebraHomomorphism M₂.rawKleeneAlgebra M₃.rawKleeneAlgebra →
+                               KleeneAlgebraHomomorphism M₁.rawKleeneAlgebra M₃.rawKleeneAlgebra
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M₁.rawNearSemiring M₂.rawNearSemiring →
+                               NearSemiringHomomorphism M₂.rawNearSemiring M₃.rawNearSemiring →
+                               NearSemiringHomomorphism M₁.rawNearSemiring M₃.rawNearSemiring
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M₁.rawRingWithoutOne M₂.rawRingWithoutOne →
+                               RingWithoutOneHomomorphism M₂.rawRingWithoutOne M₃.rawRingWithoutOne →
+                               RingWithoutOneHomomorphism M₁.rawRingWithoutOne M₃.rawRingWithoutOne
+  ringHomomorphism           : RingHomomorphism M₁.rawRing M₂.rawRing →
+                               RingHomomorphism M₂.rawRing M₃.rawRing →
+                               RingHomomorphism M₁.rawRing M₃.rawRing
+  quasigroupHomomorphism     : QuasigroupHomomorphism M₁.rawQuasigroup M₂.rawQuasigroup →
+                               QuasigroupHomomorphism M₂.rawQuasigroup M₃.rawQuasigroup →
+                               QuasigroupHomomorphism M₁.rawQuasigroup M₃.rawQuasigroup
+  loopHomomorphism           : LoopHomomorphism M₁.rawLoop M₂.rawLoop →
+                               LoopHomomorphism M₂.rawLoop M₃.rawLoop →
+                               LoopHomomorphism M₁.rawLoop M₃.rawLoop
+  ```
+
+* In `Algebra.Morphism.Construct.Identity`:
+  ```agda
+  magmaHomomorphism          : MagmaHomomorphism M.rawMagma M.rawMagma
+  monoidHomomorphism         : MonoidHomomorphism M.rawMonoid M.rawMonoid
+  groupHomomorphism          : GroupHomomorphism M.rawGroup M.rawGroup
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M.raw M.raw
+  semiringHomomorphism       : SemiringHomomorphism M.rawNearSemiring M.rawNearSemiring
+  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M.rawKleeneAlgebra M.rawKleeneAlgebra
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M.rawNearSemiring M.rawNearSemiring
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M.rawRingWithoutOne M.rawRingWithoutOne
+  ringHomomorphism           : RingHomomorphism M.rawRing M.rawRing
+  quasigroupHomomorphism     : QuasigroupHomomorphism M.rawQuasigroup M.rawQuasigroup
+  loopHomomorphism           : LoopHomomorphism M.rawLoop M.rawLoop
+  ```
+
+* In `Algebra.Morphism.Structures.RingMorphisms`
+  ```agda
+  isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism ⟦_⟧
+  ```
+
+* In `Algebra.Morphism.Structures.RingWithoutOneMorphisms`
+  ```agda
+  isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
+  ```
 
 * Properties of non-divisibility in `Algebra.Properties.Magma.Divisibility`:
   ```agda
@@ -145,6 +265,11 @@ Additions to existing modules
   ```agda
   Env : ℕ → Set _
   Env = Vec Carrier
+ ```
+
+* In `Algebra.Structures.RingWithoutOne`:
+  ```agda
+  isNearSemiring      : IsNearSemiring _ _
  ```
 
 * In `Data.List.Membership.Setoid.Properties`:
@@ -189,6 +314,16 @@ Additions to existing modules
   product≢0    : All NonZero ns → NonZero (product ns)
   ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
+  filter-≐     : P ≐ Q → filter P? ≗ filter Q?
+
+  partition-is-foldr : partition P? ≗ foldr (λ x → if does (P? x) then Product.map₁ (x ∷_)
+                                                                  else Product.map₂ (x ∷_))
+                                            ([] , [])
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
@@ -312,6 +447,12 @@ Additions to existing modules
                deduplicate _≟_ (xs ++ ys) ↭ deduplicate _≟_ xs ++ deduplicate _≟_ ys
   ```
 
+* In `Data.List.Relation.Unary.First.Properties`:
+  ```agda
+  ¬First⇒All : ∁ Q ⊆ P → ∁ (First P Q) ⊆ All P
+  ¬All⇒First : Decidable P → ∁ P ⊆ Q → ∁ (All P) ⊆ First P Q
+  ```
+
 * In `Data.Maybe.Properties`:
   ```agda
   maybe′-∘ : ∀ f g → f ∘ (maybe′ g b) ≗ maybe′ (f ∘ g) (f b)
@@ -321,12 +462,22 @@ Additions to existing modules
   ```agda
   m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
   m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+  <‴-irrefl : Irreflexive _≡_ _<‴_
+  ≤‴-irrelevant : Irrelevant {A = ℕ} _≤‴_
+  <‴-irrelevant : Irrelevant {A = ℕ} _<‴_
+  >‴-irrelevant : Irrelevant {A = ℕ} _>‴_
+  ≥‴-irrelevant : Irrelevant {A = ℕ} _≥‴_
   ```
 
   adjunction between `suc` and `pred`
   ```agda
   suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+  ```
+
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  congˡ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
   ```
 
 * New lemmas in `Data.Rational.Properties`:
@@ -364,6 +515,15 @@ Additions to existing modules
   ```agda
   _≡?_ : DecidableEquality (Vec A n)
   ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  Σ-distribˡ-⊎ : (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
+  Σ-distribʳ-⊎ : (Σ (A ⊎ B) P) ↔ (Σ A (P ∘ inj₁) ⊎ Σ B (P ∘ inj₂))
+  ×-distribˡ-⊎ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+  ×-distribʳ-⊎ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+  ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+ ```
 
 * In `Relation.Binary.Bundles`:
   ```agda
