@@ -20,6 +20,9 @@ Non-backwards compatible changes
 --------------------------------
 
 * In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties` the implicit module parameters `a` and `A` have been replaced with `variable`s. This should be a backwards compatible change for the overwhelming majority of uses, and would only be non-backwards compatible if you were explicitly supplying these implicit parameters for some reason when importing the module. Explicitly supplying the implicit parameters for functions exported from the module should not be affected.
+
 * The names exposed by the `IsSemiringWithoutOne` record have been altered to
   better correspond to other algebraic structures. In particular:
   * `Carrier` is no longer exposed.
