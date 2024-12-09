@@ -33,7 +33,7 @@ open import Algebra.Definitions.RawMagma rawMagma public
 ∣-respˡ-≈ x≈z (q , qx≈y) = q , trans (∙-congˡ (sym x≈z)) qx≈y
 
 ∣-resp-≈ : _∣_ Respects₂ _≈_
-∣-resp-≈ = ∣-respʳ-≈ , ∣-respˡ-≈
+∣-resp-≈ = ∣-respˡ-≈ , ∣-respʳ-≈
 
 x∣yx : ∀ x y → x ∣ y ∙ x
 x∣yx x y = y , refl
@@ -51,7 +51,7 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ-≈ xy≈z (x∣yx y x)
 ∤-respʳ-≈ x≈y z∤x z∣y = contradiction (∣-respʳ-≈ (sym x≈y) z∣y) z∤x
 
 ∤-resp-≈ : _∤_ Respects₂ _≈_
-∤-resp-≈ = ∤-respʳ-≈ , ∤-respˡ-≈
+∤-resp-≈ = ∤-respˡ-≈ , ∤-respʳ-≈
 
 ------------------------------------------------------------------------
 -- Properties of mutual divisibility _∣∣_
@@ -66,7 +66,7 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ-≈ xy≈z (x∣yx y x)
 ∣∣-respʳ-≈ y≈z (x∣y , y∣x) = ∣-respʳ-≈ y≈z x∣y , ∣-respˡ-≈ y≈z y∣x
 
 ∣∣-resp-≈ : _∣∣_ Respects₂ _≈_
-∣∣-resp-≈ = ∣∣-respʳ-≈ , ∣∣-respˡ-≈
+∣∣-resp-≈ = ∣∣-respˡ-≈ , ∣∣-respʳ-≈
 
 ------------------------------------------------------------------------
 -- Properties of mutual non-divisibility _∤∤_
@@ -81,7 +81,7 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ-≈ xy≈z (x∣yx y x)
 ∤∤-respʳ-≈ x≈y z∤∤x z∣∣y = contradiction (∣∣-respʳ-≈ (sym x≈y) z∣∣y) z∤∤x
 
 ∤∤-resp-≈ : _∤∤_ Respects₂ _≈_
-∤∤-resp-≈ = ∤∤-respʳ-≈ , ∤∤-respˡ-≈
+∤∤-resp-≈ = ∤∤-respˡ-≈ , ∤∤-respʳ-≈
 
 
 ------------------------------------------------------------------------
