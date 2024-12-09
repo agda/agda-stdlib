@@ -212,7 +212,9 @@ The authors of this paper are listed approximately in order of contribution to t
 # Funding and conflicts of interest
 
 The authors of this paper have received no funding to work on the library, and have no
-conflicts of interest. Jason Z. S. Hu made his contributions during his Master's and
+conflicts of interest.
+Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affliation.
+Jason Z. S. Hu made his contributions during his Master's and
 PhD study.
 
 # References
