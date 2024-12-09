@@ -118,7 +118,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
 
   ⊎-<-respects₂ : ∼₁ Respects₂ ≈₁ → ∼₂ Respects₂ ≈₂ →
                   (∼₁ ⊎-< ∼₂) Respects₂ (Pointwise ≈₁ ≈₂)
-  ⊎-<-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-<-respectsʳ r₁ r₂ , ⊎-<-respectsˡ l₁ l₂
+  ⊎-<-respects₂ (l₁ , r₁) (l₂ , r₂) = ⊎-<-respectsˡ l₁ l₂ , ⊎-<-respectsʳ r₁ r₂
 
   ⊎-<-trichotomous : Trichotomous ≈₁ ∼₁ → Trichotomous ≈₂ ∼₂ →
                      Trichotomous (Pointwise ≈₁ ≈₂) (∼₁ ⊎-< ∼₂)

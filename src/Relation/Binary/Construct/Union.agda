@@ -72,7 +72,7 @@ module _ {≈ : Rel B ℓ₁} (L : REL A B ℓ₂) (R : REL A B ℓ₃) where
 module _ {≈ : Rel A ℓ₁} {L : Rel A ℓ₂} {R : Rel A ℓ₃} where
 
   resp₂ : L Respects₂ ≈ → R Respects₂ ≈ → (L ∪ R) Respects₂ ≈
-  resp₂ (Lʳ , Lˡ) (Rʳ , Rˡ) = respʳ L R Lʳ Rʳ , respˡ L R Lˡ Rˡ
+  resp₂ (Lˡ , Lʳ) (Rˡ , Rʳ) = respˡ L R Lˡ Rˡ , respʳ L R Lʳ Rʳ
 
 module _ (≈ : REL A B ℓ₁) (L : REL A B ℓ₂) (R : REL A B ℓ₃) where
 

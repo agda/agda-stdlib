@@ -62,7 +62,7 @@ respʳ : _≲₂_ Respectsʳ _≈₂_ → _≲₁_ Respectsʳ _≈₁_
 respʳ resp x≈y y∼z = cancel (resp (cong x≈y) (mono y∼z))
 
 resp : _≲₂_ Respects₂ _≈₂_ → _≲₁_ Respects₂ _≈₁_
-resp = map respʳ respˡ
+resp = map respˡ respʳ
 
 ------------------------------------------------------------------------
 -- Structures

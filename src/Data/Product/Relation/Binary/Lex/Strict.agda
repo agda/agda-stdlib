@@ -62,16 +62,16 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
 
   ×-transitive : IsEquivalence _≈₁_ → _<₁_ Respects₂ _≈₁_ → Transitive _<₁_ →
                  Transitive _<₂_ → Transitive _<ₗₑₓ_
-  ×-transitive eq₁ resp₁ trans₁ trans₂ = trans
+  ×-transitive eq₁ resp₁@(respˡ , respʳ) trans₁ trans₂ = trans
     where
     module Eq₁ = IsEquivalence eq₁
 
     trans : Transitive _<ₗₑₓ_
     trans (inj₁ x₁<y₁) (inj₁ y₁<z₁) = inj₁ (trans₁ x₁<y₁ y₁<z₁)
     trans (inj₁ x₁<y₁) (inj₂ y≈≤z)  =
-      inj₁ (proj₁ resp₁ (proj₁ y≈≤z) x₁<y₁)
+      inj₁ (respʳ (proj₁ y≈≤z) x₁<y₁)
     trans (inj₂ x≈≤y)  (inj₁ y₁<z₁) =
-      inj₁ (proj₂ resp₁ (Eq₁.sym $ proj₁ x≈≤y) y₁<z₁)
+      inj₁ (respˡ (Eq₁.sym $ proj₁ x≈≤y) y₁<z₁)
     trans (inj₂ x≈≤y)  (inj₂ y≈≤z)  =
       inj₂ ( Eq₁.trans (proj₁ x≈≤y) (proj₁ y≈≤z)
            , trans₂    (proj₂ x≈≤y) (proj₂ y≈≤z))
@@ -157,8 +157,8 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
   ×-respects₂ : IsEquivalence _≈₁_ →
                 _<₁_ Respects₂ _≈₁_ → _<₂_ Respects₂ _≈₂_ →
                 _<ₗₑₓ_ Respects₂ _≋_
-  ×-respects₂ eq₁ resp₁ resp₂ = ×-respectsʳ trans (proj₁ resp₁) (proj₁ resp₂)
-                              , ×-respectsˡ sym trans (proj₂ resp₁) (proj₂ resp₂)
+  ×-respects₂ eq₁ resp₁ resp₂ = ×-respectsˡ sym trans (proj₁ resp₁) (proj₁ resp₂)
+                              , ×-respectsʳ trans (proj₂ resp₁) (proj₂ resp₂)
     where open IsEquivalence eq₁
 
   ×-compare : Symmetric _≈₁_ →
