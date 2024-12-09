@@ -317,7 +317,7 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ (concat xss)) xss
+  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
