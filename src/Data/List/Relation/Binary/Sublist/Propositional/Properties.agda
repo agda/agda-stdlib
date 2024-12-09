@@ -6,8 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.List.Relation.Binary.Sublist.Propositional.Properties
-  {a} {A : Set a} where
+module Data.List.Relation.Binary.Sublist.Propositional.Properties where
 
 open import Data.List.Base using (List; []; _∷_;  map)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -31,28 +30,29 @@ open import Relation.Unary using (Pred)
 
 private
   variable
-    b ℓ : Level
-    B : Set b
+    a ℓ : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- Re-exporting setoid properties
 
-open SetoidProperties (setoid A) public
-  hiding (map⁺; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
+module _ {A : Set a} where
+  open SetoidProperties  (setoid A) public
+    hiding (map⁺; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
 
 map⁺ : ∀ {as bs} (f : A → B) → as ⊆ bs → map f as ⊆ map f bs
-map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
+map⁺ {B = B} f = SetoidProperties.map⁺ (setoid _) (setoid _) (cong f)
 
 ------------------------------------------------------------------------
 -- Category laws for _⊆_
 
 ⊆-trans-idˡ : ∀ {xs ys : List A} {τ : xs ⊆ ys} →
               ⊆-trans ⊆-refl τ ≡ τ
-⊆-trans-idˡ {τ = τ} = SetoidProperties.⊆-trans-idˡ (setoid A) (λ _ → refl) τ
+⊆-trans-idˡ {τ = τ} = SetoidProperties.⊆-trans-idˡ (setoid _) (λ _ → refl) τ
 
 ⊆-trans-idʳ : ∀ {xs ys : List A} {τ : xs ⊆ ys} →
               ⊆-trans τ ⊆-refl ≡ τ
-⊆-trans-idʳ {τ = τ} = SetoidProperties.⊆-trans-idʳ (setoid A) trans-reflʳ τ
+⊆-trans-idʳ {τ = τ} = SetoidProperties.⊆-trans-idʳ (setoid _) trans-reflʳ τ
 
 -- Note: The associativity law is oriented such that rewriting with it
 -- may trigger reductions of ⊆-trans, which matches first on its
@@ -62,7 +62,7 @@ map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
                 {τ₁ : ws ⊆ xs} {τ₂ : xs ⊆ ys} {τ₃ : ys ⊆ zs} →
                 ⊆-trans τ₁ (⊆-trans τ₂ τ₃) ≡ ⊆-trans (⊆-trans τ₁ τ₂) τ₃
 ⊆-trans-assoc {τ₁ = τ₁} {τ₂ = τ₂} {τ₃ = τ₃} =
-  SetoidProperties.⊆-trans-assoc (setoid A) (λ p _ _ → ≡.sym (trans-assoc p)) τ₁ τ₂ τ₃
+  SetoidProperties.⊆-trans-assoc (setoid _) (λ p _ _ → ≡.sym (trans-assoc p)) τ₁ τ₂ τ₃
 
 ------------------------------------------------------------------------
 -- Laws concerning ⊆-trans and ∷ˡ⁻
@@ -180,7 +180,7 @@ from∈∘lookup (refl ∷ τ) (here refl) = cong (refl ∷_) ([]⊆-irrelevant 
 -- A raw pushout is a weak pushout if the pushout square commutes.
 
 IsWeakPushout : ∀{xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
-                RawPushout τ σ → Set a
+                RawPushout τ σ → Set _
 IsWeakPushout {τ = τ} {σ = σ} rpo =
   ⊆-trans τ (RawPushout.leg₁ rpo) ≡
   ⊆-trans σ (RawPushout.leg₂ rpo)
