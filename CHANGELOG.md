@@ -317,6 +317,11 @@ Additions to existing modules
                                             ([] , [])
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
+  ```
+
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
   ⊆ₚ⇒⊆ : as PropositionalSublist.⊆ bs → as ⊆ bs
