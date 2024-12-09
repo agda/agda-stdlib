@@ -19,6 +19,13 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The names exposed by the `IsSemiringWithoutOne` record have been altered to
+  better correspond to other algebraic structures. In particular:
+  * `Carrier` is no longer exposed.
+  * Several laws have been re-exposed from `IsCommutativeMonoid +` renaming
+    them to name the operation `+`.
+  * `distribˡ` and `distribʳ` are defined in the record.
+
 Minor improvements
 ------------------
 
