@@ -23,18 +23,20 @@ open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable using (¬?; yes; no)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
+import Data.List.Relation.Binary.Sublist.Propositional as PropositionalSublist
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
 
-open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
+open Setoid S using (_≈_; trans; reflexive) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl)
 open SetoidSublist S hiding (map)
 open SetoidMembership S using (_∈_)
@@ -65,6 +67,13 @@ module _ where
 
   ∷ʳ-injective : ∀ {pxs qxs : xs ⊆ ys} → y ∷ʳ pxs ≡ y ∷ʳ qxs → pxs ≡ qxs
   ∷ʳ-injective refl = refl
+
+------------------------------------------------------------------------
+-- Relationship between Propositional._⊆_ and _⊆_
+------------------------------------------------------------------------
+
+⊆ₚ⇒⊆ : ∀ {as bs} → as PropositionalSublist.⊆ bs → as ⊆ bs
+⊆ₚ⇒⊆ = SetoidSublist.map (setoid _) reflexive
 
 ------------------------------------------------------------------------
 -- Categorical properties

@@ -49,20 +49,6 @@ open SetoidProperties (setoid A) public
 map⁺ : ∀ {as bs} (f : A → B) → as ⊆ bs → map f as ⊆ map f bs
 map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
 
-module _ {≈ : Rel A ℓ} (isEquivalence : IsEquivalence ≈) where
-
-  private
-    setoid≈ : Setoid _ _
-    setoid≈ = record { isEquivalence = isEquivalence }
-
-  open IsEquivalence isEquivalence using (reflexive)
-
-  ⊆⇒⊆~ : ∀ {as bs} → as ⊆ bs → Setoid._⊆_ setoid≈ as bs
-  ⊆⇒⊆~ {as} {bs} as⊆bs
-    with p ← SetoidProperties.map⁺ (setoid A) setoid≈ reflexive as⊆bs
-    rewrite map-id as | map-id bs
-    = p
-
 ------------------------------------------------------------------------
 -- Category laws for _⊆_
 

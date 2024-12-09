@@ -192,9 +192,9 @@ Additions to existing modules
                                             ([] , [])
   ```
 
-* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
-  ⊆⇒⊆~ : IsEquivalence ≈  → ∀ {as bs} → as ⊆ bs → Setoid._⊆_ setoid≈ as bs
+  ⊆ₚ⇒⊆ : as PropositionalSublist.⊆ bs → as ⊆ bs
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
