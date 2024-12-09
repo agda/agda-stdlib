@@ -72,7 +72,7 @@ module _ where
 -- Relationship between Propositional._⊆_ and _⊆_
 ------------------------------------------------------------------------
 
-⊆ₚ⇒⊆ : ∀ {as bs} → as PropositionalSublist.⊆ bs → as ⊆ bs
+⊆ₚ⇒⊆ : as PropositionalSublist.⊆ bs → as ⊆ bs
 ⊆ₚ⇒⊆ = SetoidSublist.map (setoid _) reflexive
 
 ------------------------------------------------------------------------
