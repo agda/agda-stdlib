@@ -11,77 +11,77 @@ authors:
     corresponding: true
     affiliation: 1
   - name: Danielsson, Nils Anders
-    affliation: 11
+    affliation: 2
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
-    affiliation: 2
+    affiliation: 3
   - name: McKinna, James
     orcid: 0000-0001-6745-2560
     affiliation: 4
   - name: Abel, Andreas
     orcid: 0000-0003-0420-4492
-    affiliation: 11
+    affiliation: 2
   - name: van Doorn, Nathan
     orcid: 0009-0009-0598-3663
     affiliation: 5
   - name: Wood, James
     orcid: 0000-0002-8080-3350
-    affiliation: 13
+    affiliation: 6
   - name: Norell, Ulf
     orcid: 0000-0003-2999-0637
-    affiliation: 11
+    affiliation: 2
   - name: Kidney, Donnacha Oisín
     orcid: 0000-0003-4952-7359
-    affiliation: 9
+    affiliation: 7
   - name: Meshveliani, Sergei
     orcid: 0000-0002-4224-6178
-    affiliation: 10
+    affiliation: 8
   - name: Carette, Jacques
     orcid: 0000-0001-8993-9804
-    affiliation: 3
+    affiliation: 9
   - name: Rice, Alex
     orcid: 0000-0002-2698-5122
-    affiliation: 7
+    affiliation: 10
   - name: Hu, Jason Z. S.
     orcid: 0000-0001-6710-6262
-    affiliation: 6
+    affiliation: 11
   - name: Xia, Li-yiao
     orcid: 0000-0003-2673-4400
-    affiliation: 8
+    affiliation: 12
   - name: You, Shu-Hung
-    affliation: 12
+    affliation: 13
   - name: Mullanix, Reed
     orcid: 0000-0002-7970-4961
-    affiliation: 3
+    affiliation: 9
   - name: Kokke, Wen
     orcid: 0000-0002-1662-0381
-    affiliation: 7
+    affiliation: 10
 affiliations:
  - name: University of Western Australia, Australia
    index: 1
- - name: University of Strathclyde, United Kingdom
+ - name: University of Gothenburg and Chalmers University of Technology, Sweden
    index: 2
- - name: McMaster University, Canada
+ - name: University of Strathclyde, United Kingdom
    index: 3
  - name: Heriot-Watt University, United Kingdom
    index: 4
  - name: Independent Software Developer
    index: 5
- - name: Amazon, USA
+ - name: Huawei Technologies Research & Development, United Kingdom
    index: 6
- - name: University of Edinburgh, United Kingdom
-   index: 7
- - name: INRIA, France
-   index: 8
  - name: Imperial College London, United Kingdom
-   index: 9
+   index: 7
  - name: Russian Academy of Sciences, Russia
+   index: 8
+ - name: McMaster University, Canada
+   index: 9
+ - name: University of Edinburgh, United Kingdom
    index: 10
- - name: University of Gothenburg and Chalmers University of Technology, Sweden
+ - name: Amazon, USA
    index: 11
- - name : Northwestern University, USA
+ - name: INRIA, France
    index: 12
- - name : Huawei Technologies Research & Development, United Kingdom
+ - name : Northwestern University, USA
    index: 13
 date: 24 September 2024
 bibliography: paper.bib
@@ -93,10 +93,9 @@ Agda [@agda2024manual] is a dependently-typed functional
 language that serves both as a traditional programming language
 and as an interactive theorem prover (ITP).
 In other words, its type system is expressive enough to formulate
-complex formal requirements, and its compiler lets users interactively
-build programs guaranteed to meet these specifications.
+complex formal requirements as types, and its compiler allows users to interactively build terms and check that they satisfy these requirements.
 Through the Curry-Howard lens [@DBLP:journals/cacm/Wadler15],
-these types and programs can be seen respectively as theorem
+these types and terms can be seen respectively as theorem
 statements and proofs.
 
 This paper presents the Agda standard library [@agda-stdlib-v2.0], hereafter referred to as `agda-stdlib`, which provides definitions intended to be helpful for users to develop Agda programs and proofs.
@@ -115,7 +114,7 @@ This lack of basic data types increases the need for a standard library when com
 
 Second, Agda users often seek to prove that programs constructed using data types in the standard library are "correct."
 Constructing the proof that a function obeys a specification (e.g. that a sorting function outputs a permutation of the original list in non-decreasing order) typically requires far more effort, both in terms of lines of code and in developer time, than writing the original operation.
-By frequently providing proofs of correctness for the operations it defines, the standard library saves users significant time during proof development.
+By providing proofs of correctness for the operations it defines, the standard library saves users significant time during proof development.
 
 # Impact
 
@@ -137,7 +136,7 @@ In the list below we present a selection of such projects:
 The library has also been used as a test bed for the design of co-inductive data types in Agda itself, as evidenced by the three different notions of co-inductive data present in the library.
 
 On occasion, the development of `agda-stdlib` has also had a synergistic relationship with that of Agda itself, prompting the implementation of several new language features, which we now discuss.
-Firstly, Agda is a research compiler supporting a wide range of not necessarily inter-compatible language extensions via command line options.
+Firstly, Agda is a research compiler supporting a wide range of possibly incompatible language extensions via command line options.
 Examples include `--cubical` (changing the underlying type theory to cubical type theory [@DBLP:journals/jfp/VezzosiMA21]),
 `--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], a reasoning principle incompatible with the `--cubical`-enabled type theory),
 or `--safe` (an ITP-oriented option enforcing that nothing is postulated and disabling parts of the FFI mechanism).
@@ -147,7 +146,7 @@ To enable this, in 2019 Agda's language options were categorised as "infective",
 Once used in a module, an "infective" option will impact all the import*ing* modules; these are typically for theory-changing options like `--cubical` or `--with-K`.
 On the contrary, "coinfective" options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
 This categorisation enables libraries to integrate safe Agda code with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
-Secondly, the development of `agda-stdlib` motivated adding the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used.
+Another feature motivated by the development of `agda-stdlib` is the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used.
 This enabled the implementation of deprecation warnings, which makes it easier for end-users to evolve their code alongside new versions of `agda-stdlib`.
 
 # Design
