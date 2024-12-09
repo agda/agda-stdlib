@@ -11,7 +11,7 @@ authors:
     corresponding: true
     affiliation: 1
   - name: Danielsson, Nils Anders
-    affiliation: 1
+    affiliation: 2
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
     affiliation: 3
