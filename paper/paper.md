@@ -11,6 +11,7 @@ authors:
     corresponding: true
     affiliation: 1
   - name: Danielsson, Nils Anders
+    orcid: unknown
     affliation: 2
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
@@ -49,6 +50,7 @@ authors:
     orcid: 0000-0003-2673-4400
     affiliation: 12
   - name: You, Shu-Hung
+    orcid: unknown
     affliation: 13
   - name: Mullanix, Reed
     orcid: 0000-0002-7970-4961
