@@ -19,7 +19,9 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties` the implicit module parameters `a` and `A` have been replaced with `variable`s. This should be a backwards compatible change for the overwhelming majority of uses, and would only be non-backwards compatible if you were explicitly supplying these implicit parameters for some reason when importing the module. Explicitly supplying the implicit parameters for functions exported from the module should not be affected.
 
 Minor improvements
 ------------------
@@ -152,6 +154,12 @@ New modules
   Relation.Binary.Bundles.Raw
   ```
   plus adding `rawX` fields to each of `Relation.Binary.Bundles.X`.
+
+* `Data.List.Effectful.Foldable`: `List` is `Foldable`
+
+* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
+
+* `Effect.Foldable`: implementation of haskell-like `Foldable`
 
 Additions to existing modules
 -----------------------------
@@ -312,6 +320,11 @@ Additions to existing modules
   partition-is-foldr : partition P? ≗ foldr (λ x → if does (P? x) then Product.map₁ (x ∷_)
                                                                   else Product.map₂ (x ∷_))
                                             ([] , [])
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
