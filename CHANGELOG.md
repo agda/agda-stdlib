@@ -315,6 +315,11 @@ Additions to existing modules
                                             ([] , [])
   ```
 
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
+  ```
+
 * In `Data.List.Relation.Unary.Any.Properties`:
   ```agda
   concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
