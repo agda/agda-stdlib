@@ -97,7 +97,7 @@ module _ {r} {_≤_ : Rel A r} where
 <⁺-respʳ-≡ = subst (_ <⁺_)
 
 <⁺-resp-≡ : _<⁺_ Respects₂ _≡_
-<⁺-resp-≡ = <⁺-respʳ-≡ , <⁺-respˡ-≡
+<⁺-resp-≡ = <⁺-respˡ-≡ , <⁺-respʳ-≡
 
 ------------------------------------------------------------------------
 -- Relational properties + setoid equality
@@ -128,7 +128,7 @@ module _ {e} {_≈_ : Rel A e} where
   <⁺-respʳ-≈⁺ <-respʳ-≈ ⊤⁺≈⊤⁺ q     = q
 
   <⁺-resp-≈⁺ : _<_ Respects₂ _≈_ → _<⁺_ Respects₂ _≈⁺_
-  <⁺-resp-≈⁺ = map <⁺-respʳ-≈⁺ <⁺-respˡ-≈⁺
+  <⁺-resp-≈⁺ = map <⁺-respˡ-≈⁺ <⁺-respʳ-≈⁺
 
 ------------------------------------------------------------------------
 -- Structures + propositional equality

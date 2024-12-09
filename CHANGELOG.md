@@ -19,7 +19,9 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+
+* In `Relation.Binary.Definitions`, the left/right order of the components of `_Respects₂_` have been swapped [issue #2471](https://github.com/agda/agda-stdlib/issues/2471).
 
 Minor improvements
 ------------------

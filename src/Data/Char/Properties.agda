@@ -117,8 +117,8 @@ _<?_ = On.decidable toℕ ℕ._<_ ℕ._<?_
   { isEquivalence = ≡.isEquivalence
   ; irrefl        = <-irrefl
   ; trans         = λ {a} {b} {c} → <-trans {a} {b} {c}
-  ; <-resp-≈      = (λ {c} → ≡.subst (c <_))
-                  , (λ {c} → ≡.subst (_< c))
+  ; <-resp-≈      = (λ {c} → ≡.subst (_< c))
+                  , (λ {c} → ≡.subst (c <_))
   }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_

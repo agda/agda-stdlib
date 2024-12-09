@@ -99,8 +99,8 @@ x < y = x ≤ y × x ≉ y
   (respʳ y≈z x≤y) , λ x≈z → x≉y (trans x≈z (sym y≈z))
 
 <-resp-≈ : IsEquivalence _≈_ → _≤_ Respects₂ _≈_ → _<_ Respects₂ _≈_
-<-resp-≈ eq (respʳ , respˡ) =
-  <-respʳ-≈ sym trans respʳ , <-respˡ-≈ trans respˡ
+<-resp-≈ eq (respˡ , respʳ) =
+  <-respˡ-≈ trans respˡ , <-respʳ-≈ sym trans respʳ
   where open IsEquivalence eq
 
 <-trichotomous : Symmetric _≈_ → Decidable _≈_ →

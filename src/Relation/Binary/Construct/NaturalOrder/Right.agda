@@ -86,7 +86,7 @@ respˡ magma {x} {y} {z} y≈z y≤x = begin
   where open module M = IsMagma magma; open ≈-Reasoning M.setoid
 
 resp₂ : IsMagma _∙_ →  _≤_ Respects₂ _≈_
-resp₂ magma = respʳ magma , respˡ magma
+resp₂ magma = respˡ magma , respʳ magma
 
 dec : Decidable _≈_ → Decidable _≤_
 dec _≟_ x y = x ≟ (y ∙ x)
