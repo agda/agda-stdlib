@@ -16,11 +16,14 @@ open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Sublist.Propositional
   hiding (map)
+import Data.List.Relation.Binary.Sublist.Setoid
+  as SetoidSublist
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
 open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base using (id; _∘_; _∘′_)
 open import Level using (Level)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong; _≗_; trans)
@@ -39,8 +42,23 @@ private
 -- Re-exporting setoid properties
 
 module _ {A : Set a} where
-  open SetoidProperties  (setoid A) public
+  open SetoidProperties (setoid A) public
     hiding (map⁺; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
+
+------------------------------------------------------------------------
+-- Relationship between _⊆_ and Setoid._⊆_
+------------------------------------------------------------------------
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S using (reflexive)
+  open SetoidSublist S using () renaming (_⊆_ to _⊆ₛ_)
+
+  ⊆⇒⊆ₛ : ∀ {as bs} → as ⊆ bs → as ⊆ₛ bs
+  ⊆⇒⊆ₛ = SetoidSublist.map (setoid _) reflexive
+
+------------------------------------------------------------------------
+-- Functoriality of map
 
 map⁺ : (f : A → B) → xs ⊆ ys → map f xs ⊆ map f ys
 map⁺ f = SetoidProperties.map⁺ (setoid _) (setoid _) (cong f)
