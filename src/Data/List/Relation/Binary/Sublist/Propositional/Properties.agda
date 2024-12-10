@@ -51,7 +51,7 @@ module _ {A : Set a} where
 
 module _ (S : Setoid a ℓ) where
 
-  open Setoid S using (Carrier; _≈_; reflexive)
+  open Setoid S using (Carrier; reflexive)
   open SetoidSublist S using () renaming (_⊆_ to _⊆ₛ_)
 
   ⊆⇒⊆ₛ : ∀ {as bs} → as ⊆ bs → as ⊆ₛ bs
