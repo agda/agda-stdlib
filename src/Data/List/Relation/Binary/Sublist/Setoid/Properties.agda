@@ -23,7 +23,6 @@ open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
-open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
@@ -35,7 +34,7 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
 
-open Setoid S using (_≈_; trans; reflexive) renaming (Carrier to A; refl to ≈-refl)
+open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl)
 open SetoidSublist S hiding (map)
 open SetoidMembership S using (_∈_)
