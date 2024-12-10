@@ -51,11 +51,11 @@ module _ {A : Set a} where
 
 module _ (S : Setoid a ℓ) where
 
-  open Setoid S using (Carrier; reflexive)
+  open Setoid S using (reflexive)
   open SetoidSublist S using () renaming (_⊆_ to _⊆ₛ_)
 
   ⊆⇒⊆ₛ : ∀ {as bs} → as ⊆ bs → as ⊆ₛ bs
-  ⊆⇒⊆ₛ = SetoidSublist.map (setoid Carrier) reflexive
+  ⊆⇒⊆ₛ = SetoidSublist.map (setoid _) reflexive
 
 ------------------------------------------------------------------------
 -- Functoriality of map
