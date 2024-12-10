@@ -58,13 +58,13 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
     ∧-isMagmaHomomorphism : ∧.IsMagmaHomomorphism ⟦_⟧
     ∧-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
-      ; homo = ∧-homo
+      ; ∙-homo = ∧-homo
       }
 
     ∨-isMagmaHomomorphism : ∨.IsMagmaHomomorphism ⟦_⟧
     ∨-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
-      ; homo = ∨-homo
+      ; ∙-homo = ∨-homo
       }
 
   record IsLatticeMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where

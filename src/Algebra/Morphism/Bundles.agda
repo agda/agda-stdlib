@@ -13,8 +13,6 @@ module Algebra.Morphism.Bundles where
 open import Algebra.Bundles.Raw
 open import Algebra.Morphism.Structures
 open import Level using (Level; suc; _⊔_)
---open import Relation.Binary.Morphism using (IsRelHomomorphism)
---open import Relation.Binary.Morphism.Bundles using (SetoidHomomorphism)
 
 private
   variable
@@ -160,7 +158,9 @@ record KleeneAlgebraHomomorphism
   semiringHomomorphism = record { isSemiringHomomorphism = isSemiringHomomorphism }
 
   open SemiringHomomorphism semiringHomomorphism public
-    hiding (*-isMagmaHomomorphism; *-isMonoidHomomorphism)
+    using ( nearSemiringHomomorphism
+          ; *-monoidHomomorphism; *-magmaHomomorphism
+          ; +-monoidHomomorphism; +-magmaHomomorphism)
 
 ------------------------------------------------------------------------
 -- Morphisms between RingWithoutOnes
