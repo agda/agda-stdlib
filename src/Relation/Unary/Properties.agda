@@ -96,7 +96,7 @@ U-Universal = λ _ → _
 ⊂-respˡ-≐ (_ , R⊆Q) P⊂Q = ⊆-⊂-trans R⊆Q P⊂Q
 
 ⊂-resp-≐ : _Respects₂_ {A = Pred A ℓ} _⊂_ _≐_
-⊂-resp-≐ = ⊂-respʳ-≐ , ⊂-respˡ-≐
+⊂-resp-≐ = ⊂-respˡ-≐ , ⊂-respʳ-≐
 
 ⊂-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _⊂_
 ⊂-irrefl (_ , Q⊆P) (_ , Q⊈P) = Q⊈P Q⊆P
@@ -150,7 +150,7 @@ U-Universal = λ _ → _
 ⊂′-respˡ-≐′ (_ , R⊆Q) P⊂Q = ⊆′-⊂′-trans R⊆Q P⊂Q
 
 ⊂′-resp-≐′ : _Respects₂_ {A = Pred A ℓ₁} _⊂′_ _≐′_
-⊂′-resp-≐′ = ⊂′-respʳ-≐′ , ⊂′-respˡ-≐′
+⊂′-resp-≐′ = ⊂′-respˡ-≐′ , ⊂′-respʳ-≐′
 
 ⊂′-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _⊂′_
 ⊂′-irrefl (_ , Q⊆P) (_ , Q⊈P) = Q⊈P Q⊆P
