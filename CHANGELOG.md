@@ -97,6 +97,11 @@ Deprecated names
 New modules
 -----------
 
+* `Number` literals derivable from any `RawSuccessorSet`:
+  ```agda
+  Algebra.Literals
+  ```
+
 * Bundled morphisms between (raw) algebraic structures:
   ```
   Algebra.Morphism.Bundles
