@@ -335,7 +335,7 @@ suc n ! = suc n * n !
 -- _≤′_: this definition is more suitable for well-founded induction
 -- (see Data.Nat.Induction)
 
-infix 4 _<′_ _≤′_ _≥′_ _>′_
+infix 4 _≤′_ _<′_ _≥′_ _>′_
 
 data _≤′_ (m : ℕ) : ℕ → Set where
   ≤′-refl :                         m ≤′ m
