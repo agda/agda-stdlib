@@ -2196,25 +2196,25 @@ _>″?_ = flip _<″?_
 -- Properties of _≤‴_
 ------------------------------------------------------------------------
 
-≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
-≤‴⇒≤″ {m = m} ≤‴-refl       = 0 , +-identityʳ m
-≤‴⇒≤″ {m = m} (≤‴-step m≤n) = _ , trans (+-suc m _) (≤″-proof (≤‴⇒≤″ m≤n))
+≤‴⇒≤″ : m ≤‴ n → m ≤″ n
+≤‴⇒≤″ ≤‴-refl       = _ , +-identityʳ _
+≤‴⇒≤″ (≤‴-step m≤n) = _ , trans (+-suc _ _) (≤″-proof (≤‴⇒≤″ m≤n))
 
-m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
-m≤‴m+k {m} {k = zero}  refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
-m≤‴m+k {m} {k = suc k} prf  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) prf))
+m≤‴m+k : m + k ≡ n → m ≤‴ n
+m≤‴m+k {k = zero}  = ≤‴-reflexive ∘ trans (sym (+-identityʳ _))
+m≤‴m+k {k = suc _} = ≤‴-step ∘ m≤‴m+k ∘ trans (sym (+-suc _ _))
 
-≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
-≤″⇒≤‴ m≤n = m≤‴m+k (≤″-proof m≤n)
+≤″⇒≤‴ : m ≤″ n → m ≤‴ n
+≤″⇒≤‴ = m≤‴m+k ∘ ≤″-proof
 
 0≤‴n : 0 ≤‴ n
 0≤‴n = m≤‴m+k refl
 
 <ᵇ⇒<‴ : T (m <ᵇ n) → m <‴ n
-<ᵇ⇒<‴ leq = ≤″⇒≤‴ (<ᵇ⇒<″ leq)
+<ᵇ⇒<‴ = ≤″⇒≤‴ ∘ <ᵇ⇒<″
 
-<‴⇒<ᵇ : ∀ {m n} → m <‴ n → T (m <ᵇ n)
-<‴⇒<ᵇ leq = <″⇒<ᵇ (≤‴⇒≤″ leq)
+<‴⇒<ᵇ : m <‴ n → T (m <ᵇ n)
+<‴⇒<ᵇ = <″⇒<ᵇ ∘ ≤‴⇒≤″
 
 infix 4 _<‴?_ _≤‴?_ _≥‴?_ _>‴?_
 
@@ -2240,14 +2240,11 @@ _>‴?_ = flip _<‴?_
 <‴-irrefl : Irreflexive _≡_ _<‴_
 <‴-irrefl eq = <-irrefl eq ∘ ≤‴⇒≤
 
-≤‴-irrelevant : Irrelevant {A = ℕ} _≤‴_
-≤‴-irrelevant ≤‴-refl = lemma refl
-  where
-  lemma : ∀ {m n} → (e : m ≡ n) → (q : m ≤‴ n) → subst (m ≤‴_) e ≤‴-refl ≡ q
-  lemma {m} e    ≤‴-refl       = cong (λ e → subst (m ≤‴_) e ≤‴-refl) $ ≡-irrelevant e refl
-  lemma     refl (≤‴-step m<m) with () ← <‴-irrefl refl m<m
-≤‴-irrelevant (≤‴-step m<m) ≤‴-refl     with () ← <‴-irrefl refl m<m
-≤‴-irrelevant (≤‴-step p)   (≤‴-step q) = cong ≤‴-step $ ≤‴-irrelevant p q
+≤‴-irrelevant : Irrelevant _≤‴_
+≤‴-irrelevant (≤‴-reflexive eq₁) (≤‴-reflexive eq₂) = cong ≤‴-reflexive (≡-irrelevant eq₁ eq₂)
+≤‴-irrelevant (≤‴-reflexive eq₁) (≤‴-step q)        with () ← <‴-irrefl eq₁ q
+≤‴-irrelevant (≤‴-step p)        (≤‴-reflexive eq₂) with () ← <‴-irrefl eq₂ p
+≤‴-irrelevant (≤‴-step p)        (≤‴-step q)        = cong ≤‴-step (≤‴-irrelevant p q)
 
 <‴-irrelevant : Irrelevant {A = ℕ} _<‴_
 <‴-irrelevant = ≤‴-irrelevant

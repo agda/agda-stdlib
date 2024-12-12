@@ -335,7 +335,7 @@ suc n ! = suc n * n !
 -- _≤′_: this definition is more suitable for well-founded induction
 -- (see Data.Nat.Induction)
 
-infix 4 _≤′_ _<′_ _≥′_ _>′_
+infix 4 _<′_ _≤′_ _≥′_ _>′_
 
 data _≤′_ (m : ℕ) : ℕ → Set where
   ≤′-refl :                         m ≤′ m
@@ -379,14 +379,18 @@ s<″s⁻¹ (k , eq) = k , cong pred eq
 
 -- _≤‴_: this definition is useful for induction with an upper bound.
 
-data _≤‴_ : ℕ → ℕ → Set where
-  ≤‴-refl : ∀{m} → m ≤‴ m
-  ≤‴-step : ∀{m n} → suc m ≤‴ n → m ≤‴ n
-
 infix 4 _≤‴_ _<‴_ _≥‴_ _>‴_
+
+data _≤‴_ (m n : ℕ) : Set
 
 _<‴_ : Rel ℕ 0ℓ
 m <‴ n = suc m ≤‴ n
+
+data _≤‴_ m n where
+  ≤‴-reflexive : m ≡ n → m ≤‴ n
+  ≤‴-step      : m <‴ n → m ≤‴ n
+
+pattern ≤‴-refl = ≤‴-reflexive refl
 
 _≥‴_ : Rel ℕ 0ℓ
 m ≥‴ n = n ≤‴ m

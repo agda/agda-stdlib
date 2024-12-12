@@ -30,6 +30,8 @@ Non-backwards compatible changes
     them to name the operation `+`.
   * `distribˡ` and `distribʳ` are defined in the record.
 
+* [issue #2504]() In `Data.Nat.Base` the definition of `_≤‴_` has been modified to make the witness to equality explicit in a new `≤‴-reflexive` constructor; a pattern synonym ≤‴-refl` has been added for backwards compatibility but NB. the chnage in parametrisation means that this pattern is *not* well-formed if the old implicit arguments `m`,`n` are supplied explicitly.
+
 Minor improvements
 ------------------
 
