@@ -472,17 +472,14 @@ takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 ... | true  = px ∷ takeWhile⁺ Q? pxs
 ... | false = []
 
-takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
-takeWhile⁻ {xs = []}     P? eq = []
-takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
-... | yes px = px ∷ takeWhile⁻ P? (List.∷-injectiveʳ eq)
-... | no ¬px = case eq of λ ()
-
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
 all-takeWhile P? []       = []
 all-takeWhile P? (x ∷ xs) with P? x
 ... | yes px = px ∷ all-takeWhile P? xs
-... | no ¬px = []
+... | no  _ = []
+
+takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ ys → All P ys
+takeWhile⁻ {xs = xs} P? refl = all-takeWhile P? xs
 
 ------------------------------------------------------------------------
 -- applyUpTo
