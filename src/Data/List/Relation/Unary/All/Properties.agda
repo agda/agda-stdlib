@@ -43,7 +43,7 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
@@ -478,9 +478,6 @@ all-takeWhile P? (x ∷ xs) with P? x
 ... | yes px = px ∷ all-takeWhile P? xs
 ... | no  _ = []
 
-takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ ys → All P ys
-takeWhile⁻ {xs = xs} P? refl = all-takeWhile P? xs
-
 ------------------------------------------------------------------------
 -- applyUpTo
 
@@ -752,3 +749,13 @@ map-compose = map-∘
 "Warning: map-compose was deprecated in v2.1.
 Please use map-∘ instead."
 #-}
+
+-- Version 2.2
+
+takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+takeWhile⁻ {xs = xs} P? eq rewrite sym eq = all-takeWhile P? xs
+{-# WARNING_ON_USAGE takeWhile⁻
+"Warning: takeWhile⁻ was deprecated in v2.2.
+Please use all-takeWhile instead."
+#-}
+

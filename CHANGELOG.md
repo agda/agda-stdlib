@@ -33,11 +33,6 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
-* In `Data.List.Relation.Unary.All.Properties` the type of `takeWhile⁻` has been generalised, and its proof now delegates to that of `all-takeWhile`:
-  ```agda
-  takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ ys → All P ys
-  ```
-
 Deprecated modules
 ------------------
 
@@ -84,6 +79,11 @@ Deprecated names
   split  ↦  ↭-split
   ```
   with a more informative type (see below).
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  takeWhile⁻  ↦  all-takeWhile
   ```
 
 * In `Data.Vec.Properties`:
