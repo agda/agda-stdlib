@@ -49,7 +49,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; _because_; ¬?; decidable-stable)
 open import Relation.Unary
-  using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
 
 private
@@ -466,17 +466,20 @@ take⁺ zero    pxs        = []
 take⁺ (suc n) []         = []
 take⁺ (suc n) (px ∷ pxs) = px ∷ take⁺ n pxs
 
+takeWhileP⇒Q⇒R⁺ : (∀ {x} → P x → Q x → R x) → (Q? : Decidable Q) →
+                  All P xs → All R (takeWhile Q? xs)
+takeWhileP⇒Q⇒R⁺ {P = P} {Q = Q} {R = R} P⇒Q⇒R Q? = go where
+  go : All P xs → All R (takeWhile Q? xs)
+  go [] = []
+  go {xs = x ∷ xs} (px ∷ pxs) with Q? x
+  ... | yes qx = P⇒Q⇒R px qx ∷ go pxs
+  ... | no _ = []
+
 takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
-takeWhile⁺               Q? []         = []
-takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
-... | true  = px ∷ takeWhile⁺ Q? pxs
-... | false = []
+takeWhile⁺ = takeWhileP⇒Q⇒R⁺ λ p _ → p
 
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
-all-takeWhile P? []       = []
-all-takeWhile P? (x ∷ xs) with P? x
-... | yes px = px ∷ all-takeWhile P? xs
-... | no  _ = []
+all-takeWhile P? = takeWhileP⇒Q⇒R⁺ (λ _ q → q) P? ∘ All.universal-U
 
 ------------------------------------------------------------------------
 -- applyUpTo
