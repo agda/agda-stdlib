@@ -338,8 +338,10 @@ suc n ! = suc n * n !
 infix 4 _≤′_ _<′_ _≥′_ _>′_
 
 data _≤′_ (m : ℕ) : ℕ → Set where
-  ≤′-refl :                         m ≤′ m
-  ≤′-step : ∀ {n} (m≤′n : m ≤′ n) → m ≤′ suc n
+  ≤′-reflexive : ∀ {n} → m ≡ n → m ≤′ n
+  ≤′-step : ∀ {n} → m ≤′ n → m ≤′ suc n
+
+pattern ≤′-refl = ≤′-reflexive refl
 
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n

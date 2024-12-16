@@ -30,6 +30,8 @@ Non-backwards compatible changes
     them to name the operation `+`.
   * `distribˡ` and `distribʳ` are defined in the record.
 
+* [issue #2519](https://github.com/agda/agda-stdlib/issues/2510) In `Data.Nat.Base` the definition of `_≤′_` has been modified to make the witness to equality explicit in a new `≤′-reflexive` constructor; a pattern synonym ≤′-refl` has been added for backwards compatibility.
+
 Minor improvements
 ------------------
 
