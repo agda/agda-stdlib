@@ -43,7 +43,7 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; trans; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
@@ -444,15 +444,21 @@ drop⁺ (suc n) (px ∷ pxs) = drop⁺ n pxs
 
 dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
 dropWhile⁺               Q? []         = []
-dropWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
+dropWhile⁺ {xs = x ∷ xs} Q? px∷pxs@(_ ∷ pxs) with does (Q? x)
 ... | true  = dropWhile⁺ Q? pxs
-... | false = px ∷ pxs
+... | false = px∷pxs
 
-dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
-dropWhile⁻ {xs = []}     P? eq = []
-dropWhile⁻ {xs = x ∷ xs} P? eq with P? x
-... | yes px = px ∷ (dropWhile⁻ P? eq)
-... | no ¬px = case eq of λ ()
+module _ (P? : Decidable P) where
+
+  dropWhile++⁻ : ∀ xs {ys} → dropWhile P? (xs ++ ys) ≡ ys → All P xs
+  dropWhile++⁻ []       eq = []
+  dropWhile++⁻ (x ∷ xs) eq with P? x
+  ... | yes px = px ∷ dropWhile++⁻ xs eq
+  ... | no  _  = case List.++-cancelʳ _ _ [] eq of λ ()
+
+  dropWhile⁻ : dropWhile P? xs ≡ [] → All P xs
+  dropWhile⁻ {xs = xs}
+    with prf ← dropWhile++⁻ xs {ys = []} rewrite List.++-identityʳ xs = prf
 
 all-head-dropWhile : (P? : Decidable P) →
                      ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
