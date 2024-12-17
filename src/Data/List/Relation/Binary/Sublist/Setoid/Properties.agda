@@ -15,6 +15,7 @@ module Data.List.Relation.Binary.Sublist.Setoid.Properties
 open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Properties using (++-identityʳ)
 open import Data.List.Relation.Unary.Any using (Any)
+open import Data.List.Relation.Unary.All using (All; tabulateₛ)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (ℕ; _≤_; _≥_)
 import Data.Nat.Properties as ℕ
@@ -40,7 +41,7 @@ import Data.List.Membership.Setoid as SetoidMembership
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl; ≋-setoid)
 open SetoidSublist S hiding (map)
---
+
 
 private
   variable
@@ -198,6 +199,9 @@ module _ where
     with prf ← concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss))
     rewrite ++-identityʳ xs
     = prf
+
+  all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
+  all⊆concat _ = tabulateₛ ≋-setoid xs∈xss⇒xs⊆concat[xss]
 
 ------------------------------------------------------------------------
 -- take
