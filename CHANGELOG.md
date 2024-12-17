@@ -327,13 +327,12 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
   ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
-  xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
-  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
   ```
 
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
-  concat⁺ : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
+  concat⁺    : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
+  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

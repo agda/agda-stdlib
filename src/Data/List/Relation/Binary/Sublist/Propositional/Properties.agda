@@ -8,10 +8,10 @@
 
 module Data.List.Relation.Binary.Sublist.Propositional.Properties where
 
-open import Data.List.Base using (List; []; _∷_;  map; concat)
+open import Data.List.Base using (List; []; _∷_;  map)
 open import Data.List.Membership.Propositional using (_∈_)
 import Data.List.Properties as List
-open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
+open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
@@ -64,18 +64,6 @@ module _ (S : Setoid a ℓ) where
 
 map⁺ : (f : A → B) → xs ⊆ ys → map f xs ⊆ map f ys
 map⁺ f = SetoidProperties.map⁺ (setoid _) (setoid _) (cong f)
-
-------------------------------------------------------------------------
--- concat
-
-xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
-xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
-  with prf ← concat⁺ (Propositional.map ⊆-reflexive (from∈ xs∈xss))
-  rewrite List.++-identityʳ xs
-  = prf
-
-all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
-all⊆concat _ = All.tabulate xs∈xss⇒xs⊆concat[xss]
 
 ------------------------------------------------------------------------
 -- Category laws for _⊆_
