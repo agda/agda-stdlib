@@ -185,7 +185,6 @@ module _ where
             concat ass ⊆ concat bss
   concat⁺ = HeteroProperties.concat⁺
 
-
 ------------------------------------------------------------------------
 -- take
 

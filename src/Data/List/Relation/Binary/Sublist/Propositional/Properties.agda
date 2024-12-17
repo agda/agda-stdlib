@@ -75,9 +75,7 @@ xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
   = prf
 
 all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
-all⊆concat [] = []
-all⊆concat (xs ∷ xss) =
-  ++⁺ʳ (concat xss) ⊆-refl ∷ All.map (++⁺ˡ xs) (all⊆concat xss)
+all⊆concat _ = All.tabulate xs∈xss⇒xs⊆concat[xss]
 
 ------------------------------------------------------------------------
 -- Category laws for _⊆_
