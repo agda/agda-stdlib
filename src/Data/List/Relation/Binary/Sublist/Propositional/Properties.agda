@@ -10,12 +10,11 @@ module Data.List.Relation.Binary.Sublist.Propositional.Properties where
 
 open import Data.List.Base using (List; []; _∷_;  map)
 open import Data.List.Membership.Propositional using (_∈_)
-import Data.List.Properties as List
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
-open import Data.List.Relation.Binary.Sublist.Propositional as Propositional
+open import Data.List.Relation.Binary.Sublist.Propositional
   hiding (map)
 import Data.List.Relation.Binary.Sublist.Setoid
   as SetoidSublist
