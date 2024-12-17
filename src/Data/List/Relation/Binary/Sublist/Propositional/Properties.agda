@@ -37,7 +37,6 @@ private
     A B : Set a
     x y : A
     ws xs ys zs : List A
-    xss : List A
 
 ------------------------------------------------------------------------
 -- Re-exporting setoid properties
