@@ -47,7 +47,7 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
-  using (Dec; does; yes; no; _because_; ¬?; decidable-stable)
+  using (Dec; does; yes; no; _because_; ¬?; decidable-stable; dec-true)
 open import Relation.Unary
   using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
@@ -461,6 +461,11 @@ all-head-dropWhile P? (x ∷ xs) with P? x
 ... | yes px = all-head-dropWhile P? xs
 ... | no ¬px = just ¬px
 
+all⇒dropWhile≡[] : (P? : Decidable P) → All P xs → dropWhile P? xs ≡ []
+all⇒dropWhile≡[] P? [] = refl
+all⇒dropWhile≡[] P? (px ∷ pxs) rewrite dec-true (P? _) px
+  = all⇒dropWhile≡[] P? pxs
+
 take⁺ : ∀ n → All P xs → All P (take n xs)
 take⁺ zero    pxs        = []
 take⁺ (suc n) []         = []
@@ -483,6 +488,11 @@ all-takeWhile P? []       = []
 all-takeWhile P? (x ∷ xs) with P? x
 ... | yes px = px ∷ all-takeWhile P? xs
 ... | no ¬px = []
+
+all⇒takeWhile≗id : (P? : Decidable P) → All P xs → takeWhile P? xs ≡ xs
+all⇒takeWhile≗id P? [] = refl
+all⇒takeWhile≗id P? (px ∷ pxs) rewrite dec-true (P? _) px
+  = cong (_ ∷_) (all⇒takeWhile≗id P? pxs)
 
 ------------------------------------------------------------------------
 -- applyUpTo

@@ -332,6 +332,8 @@ Additions to existing modules
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
+  all⇒dropWhile≡[] : (P? : Decidable P) → All P xs → dropWhile P? xs ≡ []
+  all⇒takeWhile≗id : (P? : Decidable P) → All P xs → takeWhile P? xs ≡ xs
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
