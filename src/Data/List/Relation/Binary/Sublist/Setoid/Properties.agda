@@ -13,6 +13,7 @@ module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
 open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Properties using (++-identityʳ)
 open import Data.List.Relation.Unary.Any using (Any)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (ℕ; _≤_; _≥_)
@@ -37,16 +38,16 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 import Data.List.Membership.Setoid as SetoidMembership
 
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
-open SetoidEquality S using (_≋_; ≋-refl)
+open SetoidEquality S using (_≋_; ≋-refl; ≋-setoid)
 open SetoidSublist S hiding (map)
-open SetoidMembership S using (_∈_)
+--
 
 private
   variable
     p q r s t : Level
     a b x y : A
     as bs cs ds xs ys : List A
-    ass bss xss yss : List (List A)
+    xss yss : List (List A)
     P : Pred A p
     Q : Pred A q
     m n : ℕ
@@ -181,9 +182,22 @@ module _ where
 ------------------------------------------------------------------------
 -- concat
 
-  concat⁺ : Hetero.Sublist _⊆_ ass bss →
-            concat ass ⊆ concat bss
+module _ where
+
+  concat⁺ : Hetero.Sublist _⊆_ xss yss →
+            concat xss ⊆ concat yss
   concat⁺ = HeteroProperties.concat⁺
+
+  open SetoidMembership ≋-setoid using (_∈_)
+  open SetoidSublist ≋-setoid
+    using ()
+    renaming (map to map-≋; from∈ to from∈-≋)
+
+  xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
+  xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
+    with prf ← concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss))
+    rewrite ++-identityʳ xs
+    = prf
 
 ------------------------------------------------------------------------
 -- take
@@ -315,6 +329,8 @@ module _ where
 -- (to/from)∈ is a bijection
 
 module _ where
+
+  open SetoidMembership S using (_∈_)
 
   to∈-injective : ∀ {p q : [ x ] ⊆ xs} → to∈ p ≡ to∈ q → p ≡ q
   to∈-injective = HeteroProperties.toAny-injective
