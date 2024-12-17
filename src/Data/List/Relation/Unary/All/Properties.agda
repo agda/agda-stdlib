@@ -384,12 +384,7 @@ concat⁺ (pxs ∷ pxss) = ++⁺ pxs (concat⁺ pxss)
 concat⁻ : ∀ {xss} → All P (concat xss) → All (All P) xss
 concat⁻ {xss = []}       []  = []
 concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
-{-
-all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
-all⊆concat [] = []
-all⊆concat (xs ∷ xss) =
-  Sublist.++⁺ʳ (concat xss) Sublist.⊆-refl ∷ All.map (Sublist.++⁺ˡ xs) (all⊆concat xss)
--}
+
 ------------------------------------------------------------------------
 -- snoc
 
