@@ -30,6 +30,8 @@ open import Relation.Nullary.Decidable using (¬?; yes; no)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
+import Data.List.Relation.Binary.Sublist.Heterogeneous
+  as Hetero
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
@@ -44,6 +46,7 @@ private
     p q r s t : Level
     a b x y : A
     as bs cs ds xs ys : List A
+    ass bss xss yss : List (List A)
     P : Pred A p
     Q : Pred A q
     m n : ℕ
@@ -174,6 +177,14 @@ module _ where
 
   ++⁻ : length as ≡ length bs → as ++ cs ⊆ bs ++ ds → cs ⊆ ds
   ++⁻ = HeteroProperties.++⁻
+
+------------------------------------------------------------------------
+-- concat
+
+  concat⁺ : Hetero.Sublist _⊆_ ass bss →
+            concat ass ⊆ concat bss
+  concat⁺ = HeteroProperties.concat⁺
+
 
 ------------------------------------------------------------------------
 -- take

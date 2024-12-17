@@ -10,11 +10,12 @@ module Data.List.Relation.Binary.Sublist.Propositional.Properties where
 
 open import Data.List.Base using (List; []; _∷_;  map; concat)
 open import Data.List.Membership.Propositional using (_∈_)
+import Data.List.Properties as List
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
-open import Data.List.Relation.Binary.Sublist.Propositional
+open import Data.List.Relation.Binary.Sublist.Propositional as Propositional
   hiding (map)
 import Data.List.Relation.Binary.Sublist.Setoid
   as SetoidSublist
@@ -37,6 +38,7 @@ private
     A B : Set a
     x y : A
     ws xs ys zs : List A
+    xss : List A
 
 ------------------------------------------------------------------------
 -- Re-exporting setoid properties
@@ -65,6 +67,12 @@ map⁺ f = SetoidProperties.map⁺ (setoid _) (setoid _) (cong f)
 
 ------------------------------------------------------------------------
 -- concat
+
+xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
+xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
+  with prf ← concat⁺ (Propositional.map ⊆-reflexive (from∈ xs∈xss))
+  rewrite List.++-identityʳ xs
+  = prf
 
 all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
 all⊆concat [] = []
