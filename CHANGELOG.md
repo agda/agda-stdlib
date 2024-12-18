@@ -32,7 +32,6 @@ Non-backwards compatible changes
 
 * [issue #2504](https://github.com/agda/agda-stdlib/issues/2504) and [issue #2519](https://github.com/agda/agda-stdlib/issues/2510) In `Data.Nat.Base` the definitions of `_≤′_` and `_≤‴_` have been modified to make the witness to equality explicit in new constructors `≤′-reflexive` and `≤‴-reflexive`; pattern synonyms `≤′-refl` and `≤‴-refl` have been added for backwards compatibility but NB. the change in parametrisation means that these patterns are *not* necessarily well-formed if the old implicit arguments `m`,`n` are supplied explicitly.
 
-
 Minor improvements
 ------------------
 
@@ -335,6 +334,8 @@ Additions to existing modules
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
+  all⇒dropWhile≡[] : (P? : Decidable P) → All P xs → dropWhile P? xs ≡ []
+  all⇒takeWhile≗id : (P? : Decidable P) → All P xs → takeWhile P? xs ≡ xs
   ```
 
 * In `Data.List.Relation.Unary.Any.Properties`:
