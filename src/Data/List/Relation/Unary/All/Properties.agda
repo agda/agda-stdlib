@@ -43,7 +43,7 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; trans; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
@@ -448,17 +448,11 @@ dropWhile⁺ {xs = x ∷ xs} Q? px∷pxs@(_ ∷ pxs) with does (Q? x)
 ... | true  = dropWhile⁺ Q? pxs
 ... | false = px∷pxs
 
-module _ (P? : Decidable P) where
-
-  dropWhile++⁻ : ∀ xs {ys} → dropWhile P? (xs ++ ys) ≡ ys → All P xs
-  dropWhile++⁻ []       eq = []
-  dropWhile++⁻ (x ∷ xs) eq with P? x
-  ... | yes px = px ∷ dropWhile++⁻ xs eq
-  ... | no  _  = case List.++-cancelʳ _ _ [] eq of λ ()
-
-  dropWhile⁻ : dropWhile P? xs ≡ [] → All P xs
-  dropWhile⁻ {xs = xs}
-    with prf ← dropWhile++⁻ xs {ys = []} rewrite List.++-identityʳ xs = prf
+dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
+dropWhile⁻ {xs = []}     P? eq = []
+dropWhile⁻ {xs = x ∷ xs} P? eq with P? x
+... | yes px = px ∷ (dropWhile⁻ P? eq)
+... | no ¬px = case eq of λ ()
 
 all-head-dropWhile : (P? : Decidable P) →
                      ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
@@ -472,20 +466,17 @@ take⁺ zero    pxs        = []
 take⁺ (suc n) []         = []
 take⁺ (suc n) (px ∷ pxs) = px ∷ take⁺ n pxs
 
-takeWhileP⇒Q⇒R⁺ : (∀ {x} → P x → Q x → R x) → (Q? : Decidable Q) →
-                  All P xs → All R (takeWhile Q? xs)
-takeWhileP⇒Q⇒R⁺ {P = P} {Q = Q} {R = R} P⇒Q⇒R Q? = go where
-  go : All P xs → All R (takeWhile Q? xs)
-  go [] = []
-  go {xs = x ∷ xs} (px ∷ pxs) with Q? x
-  ... | yes qx = P⇒Q⇒R px qx ∷ go pxs
-  ... | no _ = []
-
 takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
-takeWhile⁺ = takeWhileP⇒Q⇒R⁺ λ p _ → p
+takeWhile⁺               Q? []         = []
+takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
+... | true  = px ∷ takeWhile⁺ Q? pxs
+... | false = []
 
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
-all-takeWhile P? = takeWhileP⇒Q⇒R⁺ (λ _ q → q) P? ∘ All.universal-U
+all-takeWhile P? []       = []
+all-takeWhile P? (x ∷ xs) with P? x
+... | yes px = px ∷ all-takeWhile P? xs
+... | no ¬px = []
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -767,4 +758,3 @@ takeWhile⁻ {xs = xs} P? eq rewrite sym eq = all-takeWhile P? xs
 "Warning: takeWhile⁻ was deprecated in v2.2.
 Please use all-takeWhile instead."
 #-}
-
