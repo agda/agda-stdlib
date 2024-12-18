@@ -2039,11 +2039,11 @@ z≤′n {zero}  = ≤′-refl
 z≤′n {suc n} = ≤′-step z≤′n
 
 s≤′s : m ≤′ n → suc m ≤′ suc n
-s≤′s ≤′-refl        = ≤′-refl
+s≤′s (≤′-reflexive m≡n) = ≤′-reflexive (cong suc m≡n)
 s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 
 ≤′⇒≤ : _≤′_ ⇒ _≤_
-≤′⇒≤ ≤′-refl        = ≤-refl
+≤′⇒≤ (≤′-reflexive m≡n) = ≤-reflexive m≡n
 ≤′⇒≤ (≤′-step m≤′n) = m≤n⇒m≤1+n (≤′⇒≤ m≤′n)
 
 ≤⇒≤′ : _≤_ ⇒ _≤′_
