@@ -331,6 +331,11 @@ Additions to existing modules
   ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  module ⊆-Reasoning
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
