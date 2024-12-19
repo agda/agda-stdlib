@@ -83,6 +83,11 @@ Deprecated names
   with a more informative type (see below).
   ```
 
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  takeWhile⁻  ↦  all-takeWhile
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   ++-assoc _      ↦  ++-assoc-eqFree
