@@ -475,6 +475,8 @@ Additions to existing modules
   ```agda
   m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
   m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+  m≤n⇒1+[n∸m]≡[1+n]∸m : m ≤ n → suc (n ∸ m) ≡ suc n ∸ m
+  m≤n⇒n∸[n∸m]≡m : m ≤ n → n ∸ (n ∸ m) ≡ m
   <‴-irrefl : Irreflexive _≡_ _<‴_
   ≤‴-irrelevant : Irrelevant {A = ℕ} _≤‴_
   <‴-irrelevant : Irrelevant {A = ℕ} _<‴_
