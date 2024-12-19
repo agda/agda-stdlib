@@ -197,11 +197,7 @@ module _ where
 
   xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
   xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
-{-
-    with prf ← concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss))
-    rewrite ++-identityʳ xs
--}
-    = ⊆-trans (⊆-reflexive (≋-reflexive {!sym (++-identityʳ xs)!}))
+    = ⊆-trans (⊆-reflexive (≋-reflexive (sym (++-identityʳ xs))))
               (concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss)))
 
   all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
