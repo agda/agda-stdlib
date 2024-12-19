@@ -24,7 +24,8 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; refl; sym; cong; cong₂)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
@@ -39,7 +40,7 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 import Data.List.Membership.Setoid as SetoidMembership
 
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
-open SetoidEquality S using (_≋_; ≋-refl; ≋-setoid)
+open SetoidEquality S using (_≋_; ≋-refl; ≋-reflexive; ≋-setoid)
 open SetoidSublist S hiding (map)
 
 
@@ -196,9 +197,12 @@ module _ where
 
   xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
   xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
+{-
     with prf ← concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss))
     rewrite ++-identityʳ xs
-    = prf
+-}
+    = ⊆-trans (⊆-reflexive (≋-reflexive {!sym (++-identityʳ xs)!}))
+              (concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss)))
 
   all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
   all⊆concat _ = tabulateₛ ≋-setoid xs∈xss⇒xs⊆concat[xss]
