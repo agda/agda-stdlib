@@ -11,6 +11,7 @@ authors:
     corresponding: true
     affiliation: 1
   - name: Danielsson, Nils Anders
+    orcid: 0000-0001-8688-0333
     affiliation: 2
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
@@ -109,7 +110,7 @@ However, there are two reasons why a standard library is particularly significan
 First, like other theorem provers, the Agda language provides only a small set of primitives from which programs can be constructed.
 As a result, many concepts traditionally considered part of a language must be defined within the program itself.
 This approach reduces compiler complexity and enhances its reliability, and also demonstrates the strength of the core Agda language as it can push these concepts out to the library.
-For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as vectors or maps. 
+For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as vectors or maps.
 This lack of basic data types increases the need for a standard library when compared to more mainstream languages.
 
 Second, Agda users often seek to prove that programs constructed using data types in the standard library are "correct."
@@ -143,17 +144,17 @@ or `--safe` (an ITP-oriented option enforcing that nothing is postulated and dis
 In order for `agda-stdlib` to be compatible with as many different compiler options as possible, we designed the library to be broken into units
 requesting the minimal expressive power needed.
 To enable this, in 2019 Agda's language options were categorised as "infective", "coinfective" or "neither".
-Once used in a module, an "infective" option will impact all the import*ing* modules; these are typically for theory-changing options like `--cubical` or `--with-K`.
+Once used in a module, an "infective" option will impact all the import*ing* modules; these are typically for theory-changing options such as `--with-K`.
 On the contrary, "coinfective" options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
-This categorisation enables libraries to integrate safe Agda code with code that uses unsafe operating system calls, while maintaining the safety guarantees of the former.
+This categorisation enables libraries to integrate safe Agda code with code that uses "unsafe" operating system calls, while maintaining the safety guarantees of the former.
 Another feature motivated by the development of `agda-stdlib` is the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used.
-This enabled the implementation of deprecation warnings, which makes it easier for end-users to evolve their code alongside new versions of `agda-stdlib`.
+This allowed for the implementation of deprecation warnings, making it easier for users to evolve their code alongside new versions of `agda-stdlib`.
 
 # Design
 
 Designing a standard library for an ITP such as Agda presents several challenges.
 
-Firstly, as discussed, `agda-stdlib` contains the basic discrete mathematics and algebra useful for proving program correctness (the lack of continuous mathematics reflects the bias in its user base towards programming language theory).
+Firstly, `agda-stdlib` contains basic discrete mathematics and algebra useful for proving program correctness (the lack of continuous mathematics reflects the bias in its user base towards programming language theory).
 Organising this material into a coherent and logical structure is difficult, although some recent efforts have looked at generating such structure mechanistically [@carette2020leveraging] [@cohen2020hierarchy].
 The main tension in organising the material is between being as general as possible (e.g., defining subtraction using addition and inverse over some abstract algebraic structure) and providing clear, straightforward, and intuitive definitions (e.g., defining subtraction directly over integers).
 Additionally, there is the temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular application, which comes at the cost of duplicating the theory for the new representation.
@@ -164,12 +165,12 @@ Philisophically, `agda-stdlib` is more closely aligned with the approach of the 
 A second challenge is that Agda was the first major ITP to fully embrace dependently-typed programming as the default.
 Many definitions in `agda-stdlib` makes use of instrinsic dependent types, with correctness-related invariants being defined as part of, rather than after, the main definition.
 Furthermore, the proofs of the invariants are evidence-bearing terms for the relevant types and therefore can themselves be computed on.
-For example, the final definition of a rational number is a record that alongside the numerator and denominator, contains a third term that proves that the numerator and denominator have no common factors.
-Using this approach, `agda-stdlib` implements features such as polymorphic n-ary functions [@allais2019generic] and regular expressions which provide proof of membership when compiled and applied.
+For example, the final definition of a rational number is a record that alongside the numerator and denominator, contains a proof showing that the numerator and denominator have no common factors.
+Using this approach, `agda-stdlib` implements features such as polymorphic n-ary functions [@allais2019generic] and regular expressions which provide a proof of membership when a string is matched.
 While the widespread use of dependent types provides powerful tools for enforcing code invariants, learning how to design a large, dependently-typed library is an ongoing journey, and we believe the Agda standard library has been one of the first such standard libraries to tackle the challenge.
 
 Another significant influence on the design of the standard library is Agda’s module system [@ivardeBruin2023] which support lists of parameters whose types are dependent on the value of parameters earlier in the list.
-Many functional languages, such as Haskell [@haskell2010], and ITP libraries, like Lean's MathLib, use type classes as the primary mechanism for ad-hoc polymorphism and overloading syntax. 
+Many functional languages, such as Haskell [@haskell2010], and ITP libraries, like Lean's MathLib, use type classes as the primary mechanism for ad-hoc polymorphism and overloaded syntax.
 While Agda supports an alternative to type-classes known as instance arguments [@devriese2011bright], we have found that the use of qualified, parameterised modules can reproduce most of the capabilities of instances/type-classes to abstract operations over unknown types.
 The main benefits of using parameterised modules instead of type-classes is that it allows users to explicitly specify which objects are being used to instantiate the abstract code and removes the overhead of instance search at type-checking time.
 The main drawback is that users may sometimes need to use qualified imports or other similar mechanisms when instantiating the abstract code twice in the same scope.
@@ -188,7 +189,7 @@ This part of the library's test suite is sparser, as this has not yet been a maj
 
 # Notable achievements in version 2.0
 
-Finally, we will briefly discuss the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] for which HTML-annotated sources are available at \url{https://agda.github.io/agda-stdlib/v2.0/}. 
+Finally, we will briefly discuss the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] for which HTML-annotated sources are available at \url{https://agda.github.io/agda-stdlib/v2.0/}.
 We believe we have successfully addressed some of the design flaws and missing functionality present in versions 1.0-1.7, including:
 
 - Minimised Dependency Graphs: We have reduced the depth of dependency graphs within the library, ensuring that the most commonly used modules rely on fewer parts of the library. This change has resulted in significantly faster load times for users during interactive development.
