@@ -1589,6 +1589,19 @@ m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 m≤n⇒n∸m≤n z≤n       = ≤-refl
 m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 
+m≤n⇒1+[n∸m]≡[1+n]∸m : m ≤ n → suc (n ∸ m) ≡ suc n ∸ m
+m≤n⇒1+[n∸m]≡[1+n]∸m {zero} {zero} m≤n         = refl
+m≤n⇒1+[n∸m]≡[1+n]∸m {zero} {suc n} m≤n        = refl
+m≤n⇒1+[n∸m]≡[1+n]∸m {suc m} {suc n} (s≤s m≤n) = m≤n⇒1+[n∸m]≡[1+n]∸m m≤n
+
+m≤n⇒n∸[n∸m]≡m : m ≤ n → n ∸ (n ∸ m) ≡ m
+m≤n⇒n∸[n∸m]≡m {zero} {n} m≤n            = n∸n≡0 n
+m≤n⇒n∸[n∸m]≡m {suc m} {suc n} (s≤s m≤n) = begin-equality
+  suc n ∸ (suc n ∸ suc m) ≡⟨⟩
+  suc n ∸ (n ∸ m)         ≡⟨ sym $ m≤n⇒1+[n∸m]≡[1+n]∸m (m≤n⇒n∸m≤n m≤n) ⟩
+  suc (n ∸ (n ∸ m))       ≡⟨ cong suc (m≤n⇒n∸[n∸m]≡m m≤n) ⟩
+  suc m                   ∎
+
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _+_
 
