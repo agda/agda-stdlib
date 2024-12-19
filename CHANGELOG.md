@@ -326,6 +326,11 @@ Additions to existing modules
                                             ([] , [])
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
+  ```agda
+  module ⊆-Reasoning (≲ : Preorder a e r)
+  ```
+
 * In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
   ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
