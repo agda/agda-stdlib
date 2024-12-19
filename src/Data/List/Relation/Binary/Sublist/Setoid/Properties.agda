@@ -23,6 +23,8 @@ open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Binary.Reasoning.Syntax
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
@@ -95,6 +97,19 @@ module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) �
   ⊆-trans-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-trans-assoc ps qs rs)
   ⊆-trans-assoc [] [] [] = refl
 
+
+------------------------------------------------------------------------
+-- Reasoning over sublists
+------------------------------------------------------------------------
+
+module ⊆-Reasoning where
+
+  open ≲-Reasoning ⊆-preorder public
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-≲; step-∼)
+    renaming (≲-go to ⊆-go; ≈-go to ≋-go)
+
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ ≋-go public
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
