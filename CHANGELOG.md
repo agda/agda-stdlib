@@ -318,6 +318,7 @@ Additions to existing modules
   ```agda
   product≢0    : All NonZero ns → NonZero (product ns)
   ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
+  concat-[_]   : concat ∘ [_] ≗ id
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
   filter-≐     : P ≐ Q → filter P? ≗ filter Q?
 

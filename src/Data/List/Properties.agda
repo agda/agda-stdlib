@@ -681,6 +681,9 @@ concat-[-] : concat {A = A} ∘ map [_] ≗ id
 concat-[-] [] = refl
 concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
 
+concat-[_] : concat {A = A} ∘ [_] ≗ id
+concat-[ xs ] = ++-identityʳ xs
+
 ------------------------------------------------------------------------
 -- concatMap
 
