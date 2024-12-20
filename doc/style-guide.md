@@ -314,6 +314,41 @@ line of code, indented by two spaces.
     where open ≤-Reasoning
   ```
 
+#### Layout of deprecation blocks
+
+* There is standard boilerplate text which should go at the end of a
+  file, separated by two blank lines from the main module body:
+  ```agda
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+  ```
+
+* For each (new) version with deprecations, there should be a single
+  line comment, separated by one blank line from the preceding
+  deprecation block:
+  ```agda
+-- Version X.Y
+  ```
+
+* There is standard boilerplate text for deprecating `old-name` in
+  favour of a deifnitin interms of `new-name`: the actual definition
+  (which need not have a type signature if this is a simple matter of
+  aliasing, or simple function composition), followed by:
+  ```agda
+{-# WARNING_ON_USAGE <old-name>
+"Warning: <old-name> was deprecated in vX.Y.
+Please use <newname> instead."
+#-}
+  ```
+  where the advice on what to use instead may also contain additional
+  information regarding eg. location, or usage patterns.
+
+* Each entry in the block should be correlated with a suitable
+  `CHANGELOG` entry for the associated release version.
+
 #### Mutual and private blocks
 
 * Non-trivial proofs in `private` blocks are generally discouraged. If it is
