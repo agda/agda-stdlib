@@ -15,6 +15,8 @@ Bug-fixes
   These operators are used for equational reasoning of heterogeneous equality
   `x ≅ y`, but previously the three operators in `≡-syntax` unnecessarily require
   `x` and `y` to have the same type, making them unusable in most situations.
+* Removed unnecessary parameter `zero : Zero 0# *` from 
+  `Algebra.Structures.IsNonAssociativeRing`.
 
 Non-backwards compatible changes
 --------------------------------
