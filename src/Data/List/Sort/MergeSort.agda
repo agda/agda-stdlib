@@ -17,7 +17,7 @@ module Data.List.Sort.MergeSort
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base
   using (List; []; _∷_; merge; length; map; [_]; concat; _++_)
-open import Data.List.Properties using (length-partition; ++-assoc; concat-[-])
+open import Data.List.Properties using (length-partition; ++-assoc; concat-map-[_])
 open import Data.List.Relation.Unary.Linked using ([]; [-])
 import Data.List.Relation.Unary.Sorted.TotalOrder.Properties as Sorted
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -86,7 +86,7 @@ mergeAll-↭ (xs ∷ ys ∷ xss) (acc rec) = begin
 sort-↭ : ∀ xs → sort xs ↭ xs
 sort-↭ xs = begin
   mergeAll (map [_] xs) _ ↭⟨ mergeAll-↭ (map [_] xs) _ ⟩
-  concat (map [_] xs)     ≡⟨ concat-[-] xs ⟩
+  concat (map [_] xs)     ≡⟨ concat-map-[ xs ] ⟩
   xs                      ∎
 
 ------------------------------------------------------------------------

@@ -677,9 +677,12 @@ concat-concat (xss ∷ xsss) = begin
   concat xss ++ concat (concat xsss) ≡⟨ concat-++ xss (concat xsss) ⟩
   concat (concat (xss ∷ xsss))       ∎
 
-concat-[-] : concat {A = A} ∘ map [_] ≗ id
-concat-[-] [] = refl
-concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
+concat-map-[_] : concat {A = A} ∘ map [_] ≗ id
+concat-map-[ [] ]     = refl
+concat-map-[ x ∷ xs ] = cong (x ∷_) (concat-map-[ xs ])
+
+concat-[_] : concat {A = A} ∘ [_] ≗ id
+concat-[ xs ] = ++-identityʳ xs
 
 ------------------------------------------------------------------------
 -- concatMap
@@ -688,7 +691,7 @@ concatMap-cong : ∀ {f g : A → List B} → f ≗ g → concatMap f ≗ concat
 concatMap-cong eq = cong concat ∘ map-cong eq
 
 concatMap-pure : concatMap {A = A} [_] ≗ id
-concatMap-pure = concat-[-]
+concatMap-pure = concat-map-[_]
 
 concatMap-map : (g : B → List C) → (f : A → B) →
                 concatMap g ∘′ (map f) ≗ concatMap (g ∘′ f)
@@ -1646,4 +1649,12 @@ scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
 {-# WARNING_ON_USAGE scanl-defn
 "Warning: scanl-defn was deprecated in v2.1.
 Please use Data.List.Scans.Properties.scanl-defn instead."
+#-}
+
+-- Version 2.2
+
+concat-[-] = concat-map-[_]
+{-# WARNING_ON_USAGE concat-[-]
+"Warning: concat-[-] was deprecated in v2.2.
+Please use concat-map-[_] instead."
 #-}
