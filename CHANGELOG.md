@@ -331,9 +331,14 @@ Additions to existing modules
   ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  concat⁺    : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
+  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
   all⇒dropWhile≡[] : (P? : Decidable P) → All P xs → dropWhile P? xs ≡ []
   all⇒takeWhile≗id : (P? : Decidable P) → All P xs → takeWhile P? xs ≡ xs
   ```
