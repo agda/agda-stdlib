@@ -78,7 +78,7 @@ Deprecated names
 
 * In `Data.List.Properties`:
   ```agda
-  concat-[_]   ↦  concat-map-[_]
+  concat-[-]   ↦  concat-map-[_]
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
