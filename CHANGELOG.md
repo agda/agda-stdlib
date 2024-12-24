@@ -76,6 +76,11 @@ Deprecated names
   normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
+* In `Data.Vec.Properties`:
+  ```agda
+  concat-[_]   ↦  concat-map-[_]
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   split  ↦  ↭-split
