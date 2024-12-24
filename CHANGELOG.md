@@ -76,7 +76,7 @@ Deprecated names
   normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
-* In `Data.Vec.Properties`:
+* In `Data.List.Properties`:
   ```agda
   concat-[_]   ↦  concat-map-[_]
   ```
