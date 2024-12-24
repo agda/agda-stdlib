@@ -131,7 +131,7 @@ automate most of this.
   open SetoidEquality S
   ```
 
-* If importing a parametrised module, qualified or otherwise, with its
+* If importing a parameterised module, qualified or otherwise, with its
   parameters instantiated, then such 'instantiated imports' should be placed
   *after* the main block of `import`s, and *before* any `variable` declarations.
 
@@ -334,7 +334,7 @@ line of code, indented by two spaces.
   ```
 
 * There is standard boilerplate text for deprecating `old-name` in
-  favour of a deifnitin interms of `new-name`: the actual definition
+  favour of a definition in terms of `new-name`: the actual definition
   (which need not have a type signature if this is a simple matter of
   aliasing, or simple function composition), followed by:
   ```agda
@@ -434,7 +434,7 @@ Please use <newname> instead."
   syntax in preference to the Unicode `⦃_⦄` syntax (written using `\{{`/`\}}`),
   which moreover requires additional whitespace to parse correctly.
   NB. Even for irrelevant instances, such as typically for `NonZero` arguments,
-  neverthelesss it is necessary to supply an underscore binding `{{_ : NonZero n}}`
+  nevertheless it is necessary to supply an underscore binding `{{_ : NonZero n}}`
   if subsequent terms occurring in the type rely on that argument to be well-formed:
   eg in `Data.Nat.DivMod`, in the use of `_/ n` and `_% n`
   ```agda
@@ -646,7 +646,7 @@ Type formers:
 
 * sum-like `infixr 1 _⊎_`
 
-*  binary properties `infix 4 _Absorbs_`
+* binary properties `infix 4 _Absorbs_`
 
 #### Functions and relations over specific datatypes
 
