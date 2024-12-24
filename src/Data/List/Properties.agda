@@ -685,18 +685,14 @@ concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
 -- concatMap
 
 concatMap-cong : ∀ {f g : A → List B} → f ≗ g → concatMap f ≗ concatMap g
-concatMap-cong eq xs = cong concat (map-cong eq xs)
+concatMap-cong eq = cong concat ∘ map-cong eq
 
 concatMap-pure : concatMap {A = A} [_] ≗ id
 concatMap-pure = concat-[-]
 
-concatMap-map : (g : B → List C) → (f : A → B) → (xs : List A) →
-                concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
-concatMap-map g f xs
-  = cong concat
-      {x = map g (map f xs)}
-      {y = map (g ∘′ f) xs}
-      (sym $ map-∘ xs)
+concatMap-map : (g : B → List C) → (f : A → B) →
+                concatMap g ∘′ (map f) ≗ concatMap (g ∘′ f)
+concatMap-map g f = cong concat ∘ sym ∘ map-∘
 
 map-concatMap : (f : B → C) (g : A → List B) →
                 map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
@@ -706,10 +702,7 @@ map-concatMap f g xs = begin
   map f (concat (map g xs))
     ≡⟨ concat-map (map g xs) ⟨
   concat (map (map f) (map g xs))
-    ≡⟨ cong concat
-         {x = map (map f) (map g xs)}
-         {y = map (map f ∘′ g) xs}
-         (sym $ map-∘ xs) ⟩
+    ≡⟨ concatMap-map (map f) g xs ⟩
   concat (map (map f ∘′ g) xs)
     ≡⟨⟩
   concatMap (map f ∘′ g) xs
@@ -720,7 +713,7 @@ concatMap-++ : ∀ (f : A → List B) xs ys →
 concatMap-++ f xs ys = begin
   concatMap f (xs ++ ys)           ≡⟨⟩
   concat (map f (xs ++ ys))        ≡⟨ cong concat $ map-++ f xs ys ⟩
-  concat (map f xs ++ map f ys)    ≡˘⟨ concat-++ (map f xs) (map f ys) ⟩
+  concat (map f xs ++ map f ys)    ≡⟨ concat-++ (map f xs) (map f ys) ⟨
   concatMap f xs ++ concatMap f ys ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
