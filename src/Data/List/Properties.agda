@@ -702,7 +702,7 @@ map-concatMap f g xs = begin
   map f (concat (map g xs))
     ≡⟨ concat-map (map g xs) ⟨
   concat (map (map f) (map g xs))
-    ≡⟨ concatMap-map (map f) g xs  ⟩
+    ≡⟨ concatMap-map (map f) g xs ⟩
   concat (map (map f ∘′ g) xs)
     ≡⟨⟩
   concatMap (map f ∘′ g) xs
