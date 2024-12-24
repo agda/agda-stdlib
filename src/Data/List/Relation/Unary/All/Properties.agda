@@ -46,7 +46,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; _because_; ¬?; decidable-stable; dec-true)
 open import Relation.Unary
-  using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
 
 private
