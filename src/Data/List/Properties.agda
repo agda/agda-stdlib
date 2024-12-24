@@ -690,9 +690,9 @@ concatMap-cong eq = cong concat ∘ map-cong eq
 concatMap-pure : concatMap {A = A} [_] ≗ id
 concatMap-pure = concat-[-]
 
-concatMap-map : (g : B → List C) → (f : A → B) → (xs : List A) →
-                concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
-concatMap-map g f = cong concat ∘ sym ∘ map-∘ {g = g} {f = f}
+concatMap-map : (g : B → List C) → (f : A → B) →
+                concatMap g ∘′ (map f) ≗ concatMap (g ∘′ f)
+concatMap-map g f = cong concat ∘ sym ∘ map-∘
 
 map-concatMap : (f : B → C) (g : A → List B) →
                 map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
