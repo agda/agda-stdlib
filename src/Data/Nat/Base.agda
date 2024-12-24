@@ -341,7 +341,7 @@ data _≤′_ (m : ℕ) : ℕ → Set where
   ≤′-reflexive : ∀ {n} → m ≡ n → m ≤′ n
   ≤′-step : ∀ {n} → m ≤′ n → m ≤′ suc n
 
-pattern ≤′-refl = ≤′-reflexive refl
+pattern ≤′-refl {m} = ≤′-reflexive {n = m} refl
 
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
