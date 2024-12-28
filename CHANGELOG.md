@@ -356,8 +356,8 @@ Additions to existing modules
 
 * In `Data.List.Relation.Binary.Equality.Setoid`:
   ```agda
-  ++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
-  ++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
+  ++⁺ˡ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
+  ++⁺ʳ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Homogeneous`:
@@ -406,8 +406,8 @@ Additions to existing modules
 
 * In `Data.List.Relation.Binary.Pointwise`:
   ```agda
-  ++⁺ʳ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
-  ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ˡ : Reflexive R → ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ʳ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
 * In `Data.List.Relation.Unary.All`:
