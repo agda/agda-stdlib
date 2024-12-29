@@ -20,9 +20,6 @@ import Data.List.Membership.Setoid as SetoidMembership
 import Data.List.Properties as List
 import Data.List.Relation.Binary.Equality.Setoid as ≋
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
-import Data.List.Relation.Binary.Sublist.Propositional as Sublist
-import Data.List.Relation.Binary.Sublist.Propositional.Properties
-  as Sublist
 import Data.List.Relation.Binary.Subset.Propositional as Subset
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
@@ -49,7 +46,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; _because_; ¬?; decidable-stable; dec-true)
 open import Relation.Unary
-  using (Decidable; Pred; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
 
 private
@@ -387,11 +384,6 @@ concat⁺ (pxs ∷ pxss) = ++⁺ pxs (concat⁺ pxss)
 concat⁻ : ∀ {xss} → All P (concat xss) → All (All P) xss
 concat⁻ {xss = []}       []  = []
 concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
-
-all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
-all⊆concat [] = []
-all⊆concat (xs ∷ xss) =
-  Sublist.++⁺ʳ (concat xss) Sublist.⊆-refl ∷ All.map (Sublist.++⁺ˡ xs) (all⊆concat xss)
 
 ------------------------------------------------------------------------
 -- snoc
