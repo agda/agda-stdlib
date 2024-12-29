@@ -30,6 +30,8 @@ Non-backwards compatible changes
     them to name the operation `+`.
   * `distribˡ` and `distribʳ` are defined in the record.
 
+* [issue #2504](https://github.com/agda/agda-stdlib/issues/2504) and [issue #2519](https://github.com/agda/agda-stdlib/issues/2510) In `Data.Nat.Base` the definitions of `_≤′_` and `_≤‴_` have been modified to make the witness to equality explicit in new constructors `≤′-reflexive` and `≤‴-reflexive`; pattern synonyms `≤′-refl` and `≤‴-refl` have been added for backwards compatibility but NB. the change in parametrisation means that these patterns are *not* necessarily well-formed if the old implicit arguments `m`,`n` are supplied explicitly.
+
 Minor improvements
 ------------------
 
@@ -74,11 +76,21 @@ Deprecated names
   normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
   ```
 
+* In `Data.List.Properties`:
+  ```agda
+  concat-[-]   ↦  concat-map-[_]
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   split  ↦  ↭-split
   ```
   with a more informative type (see below).
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  takeWhile⁻  ↦  all-takeWhile
   ```
 
 * In `Data.Vec.Properties`:
@@ -316,6 +328,7 @@ Additions to existing modules
   ```agda
   product≢0    : All NonZero ns → NonZero (product ns)
   ∈⇒≤product   : All NonZero ns → n ∈ ns → n ≤ product ns
+  concat-[_]   : concat ∘ [_] ≗ id
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
   filter-≐     : P ≐ Q → filter P? ≗ filter Q?
 

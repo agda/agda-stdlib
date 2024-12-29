@@ -40,7 +40,7 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
@@ -436,9 +436,9 @@ drop⁺ (suc n) (px ∷ pxs) = drop⁺ n pxs
 
 dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
 dropWhile⁺               Q? []         = []
-dropWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
+dropWhile⁺ {xs = x ∷ xs} Q? px∷pxs@(_ ∷ pxs) with does (Q? x)
 ... | true  = dropWhile⁺ Q? pxs
-... | false = px ∷ pxs
+... | false = px∷pxs
 
 dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
 dropWhile⁻ {xs = []}     P? eq = []
@@ -468,12 +468,6 @@ takeWhile⁺               Q? []         = []
 takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 ... | true  = px ∷ takeWhile⁺ Q? pxs
 ... | false = []
-
-takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
-takeWhile⁻ {xs = []}     P? eq = []
-takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
-... | yes px = px ∷ takeWhile⁻ P? (List.∷-injectiveʳ eq)
-... | no ¬px = case eq of λ ()
 
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
 all-takeWhile P? []       = []
@@ -756,4 +750,13 @@ map-compose = map-∘
 {-# WARNING_ON_USAGE map-compose
 "Warning: map-compose was deprecated in v2.1.
 Please use map-∘ instead."
+#-}
+
+-- Version 2.2
+
+takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+takeWhile⁻ {xs = xs} P? eq rewrite sym eq = all-takeWhile P? xs
+{-# WARNING_ON_USAGE takeWhile⁻
+"Warning: takeWhile⁻ was deprecated in v2.2.
+Please use all-takeWhile instead."
 #-}
