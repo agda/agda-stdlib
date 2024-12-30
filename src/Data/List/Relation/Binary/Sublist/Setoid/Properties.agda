@@ -13,7 +13,9 @@ module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
 open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Properties using (++-identityʳ)
 open import Data.List.Relation.Unary.Any using (Any)
+open import Data.List.Relation.Unary.All using (All; tabulateₛ)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (ℕ; _≤_; _≥_)
 import Data.Nat.Properties as ℕ
@@ -32,20 +34,23 @@ open import Relation.Nullary.Decidable using (¬?; yes; no)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
+import Data.List.Relation.Binary.Sublist.Heterogeneous
+  as Hetero
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
 
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
-open SetoidEquality S using (_≋_; ≋-refl)
+open SetoidEquality S using (_≋_; ≋-refl; ≋-reflexive; ≋-setoid)
 open SetoidSublist S hiding (map)
-open SetoidMembership S using (_∈_)
+
 
 private
   variable
     p q r s t : Level
     a b x y : A
     as bs cs ds xs ys : List A
+    xss yss : List (List A)
     P : Pred A p
     Q : Pred A q
     m n : ℕ
@@ -191,6 +196,28 @@ module _ where
   ++⁻ = HeteroProperties.++⁻
 
 ------------------------------------------------------------------------
+-- concat
+
+module _ where
+
+  concat⁺ : Hetero.Sublist _⊆_ xss yss →
+            concat xss ⊆ concat yss
+  concat⁺ = HeteroProperties.concat⁺
+
+  open SetoidMembership ≋-setoid using (_∈_)
+  open SetoidSublist ≋-setoid
+    using ()
+    renaming (map to map-≋; from∈ to from∈-≋)
+
+  xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
+  xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
+    = ⊆-trans (⊆-reflexive (≋-reflexive (sym (++-identityʳ xs))))
+              (concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss)))
+
+  all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
+  all⊆concat _ = tabulateₛ ≋-setoid xs∈xss⇒xs⊆concat[xss]
+
+------------------------------------------------------------------------
 -- take
 
 module _ where
@@ -320,6 +347,8 @@ module _ where
 -- (to/from)∈ is a bijection
 
 module _ where
+
+  open SetoidMembership S using (_∈_)
 
   to∈-injective : ∀ {p q : [ x ] ⊆ xs} → to∈ p ≡ to∈ q → p ≡ q
   to∈-injective = HeteroProperties.toAny-injective
