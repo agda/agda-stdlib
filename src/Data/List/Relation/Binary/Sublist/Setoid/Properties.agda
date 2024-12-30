@@ -24,7 +24,8 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; refl; sym; cong; cong₂)
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 open import Relation.Binary.Structures using (IsDecTotalOrder)
