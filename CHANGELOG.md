@@ -339,8 +339,9 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
   module ⊆-Reasoning
-  concat⁺    : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
-  all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
+  concat⁺               : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
+  xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
+  all⊆concat            : (xss : List (List A)) → All (_⊆ concat xss) xss
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
