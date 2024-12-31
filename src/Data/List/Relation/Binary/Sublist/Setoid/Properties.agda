@@ -110,12 +110,7 @@ module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) �
 
 module ⊆-Reasoning where
 
-  open ≲-Reasoning ⊆-preorder public
-    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-≲; step-∼)
-    renaming (≲-go to ⊆-go; ≈-go to ≋-go)
-
-  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
-  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ ≋-go public
+  open HeteroProperties.⊆-Reasoning ⊆-preorder public
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
