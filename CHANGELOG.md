@@ -183,6 +183,11 @@ Additions to existing modules
   rawKleeneAlgebra : RawKleeneAlgebra _ _
   ```
 
+* In `Algebra.Bundles.Raw.*`
+  ```agda
+  rawSetoid : RawSetoid c ℓ
+  ```
+
 * In `Algebra.Bundles.Raw.RawRingWithoutOne`
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
