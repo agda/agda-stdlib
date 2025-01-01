@@ -337,37 +337,14 @@ Additions to existing modules
                                             ([] , [])
   ```
 
-* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+* In `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   ```agda
-  ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
+  deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
   ```
 
-* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+* In `Data.List.Relation.Binary.Disjoint.Setoid.Properties`:
   ```agda
-  concat⁺    : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
-  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
-  ```
-
-* In `Data.List.Relation.Unary.All.Properties`:
-  ```agda
-  all⇒dropWhile≡[] : (P? : Decidable P) → All P xs → dropWhile P? xs ≡ []
-  all⇒takeWhile≗id : (P? : Decidable P) → All P xs → takeWhile P? xs ≡ xs
-  ```
-
-* In `Data.List.Relation.Unary.Any.Properties`:
-  ```agda
-  concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
-  concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
-  ```
-
-* In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
-  ```agda
-  Unique[x∷xs]⇒x∉xs : Unique S (x ∷ xs) → x ∉ xs
-  ```
-
-* In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
-  ```agda
-  Unique[x∷xs]⇒x∉xs : Unique (x ∷ xs) → x ∉ xs
+  deduplicate⁺ : Disjoint S xs ys → Disjoint S (deduplicate _≟_ xs) (deduplicate _≟_ ys)
   ```
 
 * In `Data.List.Relation.Binary.Equality.Setoid`:
@@ -405,6 +382,12 @@ Additions to existing modules
   product-↭        : product Preserves _↭_ ⟶ _≡_
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:
+  ```agda
+  dedup-++-↭ : Disjoint xs ys →
+               deduplicate _≟_ (xs ++ ys) ↭ deduplicate _≟_ xs ++ deduplicate _≟_ ys
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Setoid`:
   ```agda
   ↭-reflexive-≋ : _≋_  ⇒ _↭_
@@ -426,10 +409,23 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
-* In `Data.List.Relation.Unary.All`:
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
-  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
- ```
+  ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
+  ```agda
+  Sublist-[]-universal : Universal (Sublist R [])
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  []⊆-universal : Universal ([] ⊆_)
+
+  concat⁺    : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
+  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
+  ```
 
 * In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
@@ -443,43 +439,41 @@ Additions to existing modules
   ∷⊈[]   : x ∷ xs ⊈ []
   ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
   ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
-  ```
 
-* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
-  ```agda
   concatMap⁺ : xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
-  ```
-
-* In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
-  ```agda
-  Sublist-[]-universal : Universal (Sublist R [])
-  ```
-
-* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
-  ```agda
-  []⊆-universal : Universal ([] ⊆_)
-  ```
-
-* In `Data.List.Relation.Binary.Disjoint.Setoid.Properties`:
-  ```agda
-  deduplicate⁺ : Disjoint S xs ys → Disjoint S (deduplicate _≟_ xs) (deduplicate _≟_ ys)
-  ```
-
-* In `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
-  ```agda
-  deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
-  ```
-
-* In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:
-  ```agda
-  dedup-++-↭ : Disjoint xs ys →
-               deduplicate _≟_ (xs ++ ys) ↭ deduplicate _≟_ xs ++ deduplicate _≟_ ys
   ```
 
 * In `Data.List.Relation.Unary.First.Properties`:
   ```agda
   ¬First⇒All : ∁ Q ⊆ P → ∁ (First P Q) ⊆ All P
   ¬All⇒First : Decidable P → ∁ P ⊆ Q → ∁ (All P) ⊆ First P Q
+  ```
+
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  all⇒dropWhile≡[] : (P? : Decidable P) → All P xs → dropWhile P? xs ≡ []
+  all⇒takeWhile≗id : (P? : Decidable P) → All P xs → takeWhile P? xs ≡ xs
+  ```
+
+* In `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
+  concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
+  ```agda
+  Unique[x∷xs]⇒x∉xs : Unique (x ∷ xs) → x ∉ xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
+  ```agda
+  Unique[x∷xs]⇒x∉xs : Unique S (x ∷ xs) → x ∉ xs
   ```
 
 * In `Data.Maybe.Properties`:
