@@ -479,11 +479,10 @@ decPoset ER-poset = record
 module ⊆-Reasoning (≲ : Preorder a e r) where
 
   open ≲-Reasoning (preorder ≲) public
-    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-≲; step-∼)
     renaming (≲-go to ⊆-go; ≈-go to ≋-go)
 
   open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
-  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ ≋-go public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ ≋-go (Pw.symmetric (Preorder.Eq.sym ≲)) public
 
 ------------------------------------------------------------------------
 -- Properties of disjoint sublists

@@ -112,7 +112,6 @@ module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) �
 
 module ⊆-Reasoning = HeteroProperties.⊆-Reasoning ≈-preorder
 
-
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
 ------------------------------------------------------------------------
@@ -208,7 +207,7 @@ module _ where
 
   xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
   xs∈xss⇒xs⊆concat[xss] {xs = xs} {xss = xss} xs∈xss = begin
-    xs ⊆⟨ ⊆-reflexive (≋-reflexive (sym (++-identityʳ xs))) ⟩
+    xs ≈⟨ ≋-reflexive (++-identityʳ xs) ⟨
     xs ++ [] ⊆⟨ concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss)) ⟩
     concat xss ∎
     where open ⊆-Reasoning
