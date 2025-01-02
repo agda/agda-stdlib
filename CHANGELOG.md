@@ -9,17 +9,16 @@ Highlights
 Bug-fixes
 ---------
 
-* Removed unnecessary parameter `#-trans : Transitive _#_` from
-  `Relation.Binary.Reasoning.Base.Apartness`.
 * Relax the types for `≡-syntax` in `Relation.Binary.HeterogeneousEquality`.
   These operators are used for equational reasoning of heterogeneous equality
   `x ≅ y`, but previously the three operators in `≡-syntax` unnecessarily require
   `x` and `y` to have the same type, making them unusable in most situations.
 
+* Removed unnecessary parameter `#-trans : Transitive _#_` from
+  `Relation.Binary.Reasoning.Base.Apartness`.
+
 Non-backwards compatible changes
 --------------------------------
-
-* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
 
 * In `Data.List.Relation.Binary.Sublist.Propositional.Properties` the implicit module parameters `a` and `A` have been replaced with `variable`s. This should be a backwards compatible change for the overwhelming majority of uses, and would only be non-backwards compatible if you were explicitly supplying these implicit parameters for some reason when importing the module. Explicitly supplying the implicit parameters for functions exported from the module should not be affected.
 
@@ -31,6 +30,8 @@ Non-backwards compatible changes
   * `distribˡ` and `distribʳ` are defined in the record.
 
 * [issue #2504](https://github.com/agda/agda-stdlib/issues/2504) and [issue #2519](https://github.com/agda/agda-stdlib/issues/2510) In `Data.Nat.Base` the definitions of `_≤′_` and `_≤‴_` have been modified to make the witness to equality explicit in new constructors `≤′-reflexive` and `≤‴-reflexive`; pattern synonyms `≤′-refl` and `≤‴-refl` have been added for backwards compatibility but NB. the change in parametrisation means that these patterns are *not* necessarily well-formed if the old implicit arguments `m`,`n` are supplied explicitly.
+
+* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
 
 Minor improvements
 ------------------
@@ -109,16 +110,6 @@ Deprecated names
 New modules
 -----------
 
-* Bundled morphisms between (raw) algebraic structures:
-  ```
-  Algebra.Morphism.Bundles
-  ```
-
-* Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
-  ```agda
-  Algebra.Properties.IdempotentCommutativeMonoid
-  ```
-
 * Consequences of module monomorphisms
   ```agda
   Algebra.Module.Morphism.BimoduleMonomorphism
@@ -129,6 +120,16 @@ New modules
   Algebra.Module.Morphism.RightModuleMonomorphism
   Algebra.Module.Morphism.RightSemimoduleMonomorphism
   Algebra.Module.Morphism.SemimoduleMonomorphism
+  ```
+
+* Bundled morphisms between (raw) algebraic structures:
+  ```
+  Algebra.Morphism.Bundles
+  ```
+
+* Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
 * Refactoring of the `Algebra.Solver.*Monoid` implementations, via
@@ -144,10 +145,7 @@ New modules
 
   NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
 
-* Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
-  ```agda
-  Data.List.Relation.Unary.All.Properties.Core
-  ```
+* `Data.List.Effectful.Foldable`: `List` is `Foldable`
 
 * `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
@@ -155,7 +153,12 @@ New modules
   sum-↭ : sum Preserves _↭_ ⟶ _≡_
   ```
 
-* `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
+* Added `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
+
+* Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  Data.List.Relation.Unary.All.Properties.Core
+  ```
 
 * Refactored `Data.Refinement` into:
   ```agda
@@ -163,17 +166,15 @@ New modules
   Data.Refinement.Properties
   ```
 
+* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
+
+* `Effect.Foldable`: implementation of haskell-like `Foldable`
+
 * Raw bundles for the `Relation.Binary.Bundles` hierarchy:
   ```agda
   Relation.Binary.Bundles.Raw
   ```
   plus adding `rawX` fields to each of `Relation.Binary.Bundles.X`.
-
-* `Data.List.Effectful.Foldable`: `List` is `Foldable`
-
-* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
-
-* `Effect.Foldable`: implementation of haskell-like `Foldable`
 
 Additions to existing modules
 -----------------------------
@@ -287,22 +288,6 @@ Additions to existing modules
   isNearSemiring      : IsNearSemiring _ _
  ```
 
-* In `Data.List.Membership.Setoid.Properties`:
-  ```agda
-  ∉⇒All[≉]       : x ∉ xs → All (x ≉_) xs
-  All[≉]⇒∉       : All (x ≉_) xs → x ∉ xs
-  Any-∈-swap     : Any (_∈ ys) xs → Any (_∈ xs) ys
-  All-∉-swap     : All (_∉ ys) xs → All (_∉ xs) ys
-  ∈-map∘filter⁻  : y ∈₂ map f (filter P? xs) → ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
-  ∈-map∘filter⁺  : f Preserves _≈₁_ ⟶ _≈₂_ →
-                   ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
-                   y ∈₂ map f (filter P? xs)
-  ∈-concatMap⁺   : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
-  ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
-  ∉[]            : x ∉ []
-  deduplicate-∈⇔ : _≈_ Respectsʳ (flip R) → z ∈ xs ⇔ z ∈ deduplicate R? xs
-  ```
-
 * In `Data.List.Membership.Propositional.Properties`:
   ```agda
   ∈-AllPairs₂    : AllPairs R xs → x ∈ xs → y ∈ xs → x ≡ y ⊎ R x y ⊎ R y x
@@ -322,6 +307,22 @@ Additions to existing modules
 * In `Data.List.Membership.Propositional.Properties.WithK`:
   ```agda
   unique∧set⇒bag : Unique xs → Unique ys → xs ∼[ set ] ys → xs ∼[ bag ] ys
+  ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  ∉⇒All[≉]       : x ∉ xs → All (x ≉_) xs
+  All[≉]⇒∉       : All (x ≉_) xs → x ∉ xs
+  Any-∈-swap     : Any (_∈ ys) xs → Any (_∈ xs) ys
+  All-∉-swap     : All (_∉ ys) xs → All (_∉ xs) ys
+  ∈-map∘filter⁻  : y ∈₂ map f (filter P? xs) → ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x
+  ∈-map∘filter⁺  : f Preserves _≈₁_ ⟶ _≈₂_ →
+                   ∃[ x ] x ∈₁ xs × y ≈₂ f x × P x →
+                   y ∈₂ map f (filter P? xs)
+  ∈-concatMap⁺   : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
+  ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
+  ∉[]            : x ∉ []
+  deduplicate-∈⇔ : _≈_ Respectsʳ (flip R) → z ∈ xs ⇔ z ∈ deduplicate R? xs
   ```
 
 * In `Data.List.Properties`:
@@ -409,14 +410,14 @@ Additions to existing modules
   ++⁺ˡ : Reflexive R → ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
   ```
 
-* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
-  ```agda
-  ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
-  ```
-
 * In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   Sublist-[]-universal : Universal (Sublist R [])
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  ⊆⇒⊆ₛ : (S : Setoid a ℓ) → as ⊆ bs → as (SetoidSublist.⊆ S) bs
   ```
 
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
@@ -427,13 +428,6 @@ Additions to existing modules
   all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
   ```
 
-* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
-  ```agda
-  ∷⊈[]   : x ∷ xs ⊈ []
-  ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
-  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
-  ```
-
 * In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```agda
   ∷⊈[]   : x ∷ xs ⊈ []
@@ -441,6 +435,13 @@ Additions to existing modules
   ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
 
   concatMap⁺ : xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  ∷⊈[]   : x ∷ xs ⊈ []
+  ⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+  ⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
   ```
 
 * In `Data.List.Relation.Unary.First.Properties`:
@@ -492,7 +493,7 @@ Additions to existing modules
   ≥‴-irrelevant : Irrelevant {A = ℕ} _≥‴_
   ```
 
-  adjunction between `suc` and `pred`
+  Added adjunction between `suc` and `pred`
   ```agda
   suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
   m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
