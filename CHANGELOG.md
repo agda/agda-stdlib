@@ -418,7 +418,7 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   Sublist-[]-universal : Universal (Sublist R [])
- 
+
   module ⊆-Reasoning (≲ : Preorder a e r)
   ```
 
