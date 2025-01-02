@@ -13,7 +13,7 @@
 module Data.Vec.Relation.Binary.Equality.Cast where
 
 open import Level using (Level)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Vec.Base

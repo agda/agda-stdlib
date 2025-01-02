@@ -373,7 +373,9 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 -- cast
 
 open VecCast public
-  using (cast-is-id; cast-trans; ≈-cong′)
+  using (cast-is-id; cast-trans)
+
+open VecCast using (≈-cong′)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
