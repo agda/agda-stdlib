@@ -24,7 +24,7 @@ open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Equality.Cast as VecCast
-  using (_≈[_]_; ≈-sym; module CastReasoning)
+  using (_≈[_]_; ≈-sym; ≈-cong′; module CastReasoning)
 open import Function.Base using (_∘_; id; _$_; const; _ˢ_; flip)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
@@ -374,8 +374,6 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 
 open VecCast public
   using (cast-is-id; cast-trans)
-
-open VecCast using (≈-cong′)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
