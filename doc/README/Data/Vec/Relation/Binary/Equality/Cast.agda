@@ -166,19 +166,9 @@ example2b eq xs a ys = begin
 
 -- Oftentimes index-changing identities apply to only part of the proof
 -- term. When reasoning about `_≡_`, `cong` shifts the focus to the
--- subterm of interest. In this library, `≈-cong` does a similar job.
--- Suppose `f : A → B`, `xs : B`, `ys zs : A`, `ys≈zs : ys ≈[ _ ] zs`
--- and `xs≈f⟨c·ys⟩ : xs ≈[ _ ] f (cast _ ys)`, we have
---     xs ≈⟨ ≈-cong f xs≈f⟨c·ys⟩ ys≈zs ⟩
---     f zs
--- The reason for having the extra argument `xs≈f⟨c·ys⟩` is to expose
--- `cast` in the subterm in order to apply the step `ys≈zs`. When using
--- ordinary `cong` the proof has to explicitly push `cast` inside:
---     xs            ≈⟨ xs≈f⟨c·ys⟩ ⟩
---     f (cast _ ys) ≂⟨ cong f ys≈zs ⟩
---     f zs
--- Note. Technically, `A` and `B` should be vectors of different length
--- and that `ys`, `zs` are vectors of non-definitionally equal index.
+-- subterm of interest. In this library, `≈-cong′` does a similar job.
+-- For the typechecker to infer the congruence function `f`, it must be
+-- polymorphic in the length of the given vector,
 example3a-fromList-++-++ : {xs ys zs : List A} →
                            .(eq : List.length (xs List.++ ys List.++ zs) ≡
                                   List.length xs + (List.length ys + List.length zs)) →
@@ -211,15 +201,17 @@ example3b-fromList-++-++′ {xs = xs} {ys} {zs} eq = begin
     ∎
   where open CastReasoning
 
--- `≈-cong` can be chained together much like how `cong` can be nested.
+-- `≈-cong′` can be chained together much like how `cong` can be nested.
 -- In this example, `unfold-∷ʳ` is applied to the term `xs ++ [ a ]`
 -- in `(_++ ys)` inside of `reverse`. Thus the proof employs two
--- `≈-cong`.
+-- `≈-cong′` usages, which is equivalent to using one `≈-cong′` with
+-- a single composed function.
 example4-cong² : ∀ .(eq : (m + 1) + n ≡ n + suc m) a (xs : Vec A m) ys →
           cast eq (reverse ((xs ++ [ a ]) ++ ys)) ≡ ys ʳ++ reverse (xs ∷ʳ a)
 example4-cong² {m = m} {n} eq a xs ys = begin
   reverse ((xs ++ [ a ]) ++ ys)
-    ≈⟨ ≈-cong′ (reverse ∘ (_++ ys)) (unfold-∷ʳ-eqFree a xs) ⟨
+    ≈⟨ ≈-cong′ reverse (≈-cong′ (_++ ys) (unfold-∷ʳ-eqFree a xs)) ⟨
+    -- the same as ≈-cong′ (reverse ∘ (_++ ys)) ...
   reverse ((xs ∷ʳ a) ++ ys)
     ≈⟨ reverse-++-eqFree (xs ∷ʳ a) ys ⟩
   reverse ys ++ reverse (xs ∷ʳ a)
