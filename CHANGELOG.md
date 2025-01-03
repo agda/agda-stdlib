@@ -545,6 +545,13 @@ Additions to existing modules
   map-concat : map f (concat xss) ≡ concat (map (map f) xss)
   ```
 
+* New lemma in `Data.Vec.Relation.Binary.Equality.Cast`:
+  ```agda
+  ≈-cong′ : ∀ {f-len : ℕ → ℕ} (f : ∀ {n} → Vec A n → Vec B (f-len n))
+    {m n} {xs : Vec A m} {ys : Vec A n} .{eq} →
+    xs ≈[ eq ] ys → f xs ≈[ _ ] f ys
+  ```
+
 * In `Data.Vec.Relation.Binary.Equality.DecPropositional`:
   ```agda
   _≡?_ : DecidableEquality (Vec A n)
