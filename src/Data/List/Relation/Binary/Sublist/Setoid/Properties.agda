@@ -24,8 +24,11 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
+import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; cong; cong₂)
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Binary.Reasoning.Syntax
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
@@ -42,6 +45,7 @@ import Data.List.Membership.Setoid as SetoidMembership
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl; ≋-reflexive; ≋-setoid)
 open SetoidSublist S hiding (map)
+open SetoidProperties S using (≈-preorder)
 
 
 private
@@ -101,6 +105,12 @@ module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) �
   ⊆-trans-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-trans-assoc ps qs rs)
   ⊆-trans-assoc [] [] [] = refl
 
+
+------------------------------------------------------------------------
+-- Reasoning over sublists
+------------------------------------------------------------------------
+
+module ⊆-Reasoning = HeteroProperties.⊆-Reasoning ≈-preorder
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
@@ -196,9 +206,11 @@ module _ where
     renaming (map to map-≋; from∈ to from∈-≋)
 
   xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
-  xs∈xss⇒xs⊆concat[xss] {xs = xs} xs∈xss
-    = ⊆-trans (⊆-reflexive (≋-reflexive (sym (++-identityʳ xs))))
-              (concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss)))
+  xs∈xss⇒xs⊆concat[xss] {xs = xs} {xss = xss} xs∈xss = begin
+    xs ≈⟨ ≋-reflexive (++-identityʳ xs) ⟨
+    xs ++ [] ⊆⟨ concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss)) ⟩
+    concat xss ∎
+    where open ⊆-Reasoning
 
   all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
   all⊆concat _ = tabulateₛ ≋-setoid xs∈xss⇒xs⊆concat[xss]

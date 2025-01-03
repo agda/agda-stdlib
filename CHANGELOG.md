@@ -418,6 +418,8 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   Sublist-[]-universal : Universal (Sublist R [])
+
+  module ⊆-Reasoning (≲ : Preorder a e r)
   ```
 
 * In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
@@ -429,8 +431,11 @@ Additions to existing modules
   ```agda
   []⊆-universal : Universal ([] ⊆_)
 
-  concat⁺    : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
-  all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
+  module ⊆-Reasoning
+
+  concat⁺               : Sublist _⊆_ ass bss → concat ass ⊆ concat bss
+  xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
+  all⊆concat            : (xss : List (List A)) → All (_⊆ concat xss) xss
   ```
 
 * In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
