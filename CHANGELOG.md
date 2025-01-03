@@ -147,7 +147,7 @@ New modules
 * `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
 
-* Properties of list permutations that require the `--with-k` flag:
+* Properties of list permutations that require the `--with-K` flag:
   ```
   Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK
   ```
