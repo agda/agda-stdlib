@@ -21,6 +21,8 @@ Non-backwards compatible changes
 --------------------------------
 
 * In `Data.List.Relation.Binary.Sublist.Propositional.Properties` the implicit module parameters `a` and `A` have been replaced with `variable`s. This should be a backwards compatible change for the overwhelming majority of uses, and would only be non-backwards compatible if you were explicitly supplying these implicit parameters for some reason when importing the module. Explicitly supplying the implicit parameters for functions exported from the module should not be affected.
+* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+* In `Relation.Binary.Definitions`, the left/right order of the components of `_Respects₂_` have been swapped [issue #2471](https://github.com/agda/agda-stdlib/issues/2471).
 
 * The names exposed by the `IsSemiringWithoutOne` record have been altered to
   better correspond to other algebraic structures. In particular:

@@ -62,7 +62,7 @@ respˡ resp []            []            = []
 respˡ resp (x≈y ∷ xs≈ys) (x∼z ∷ xs∼zs) = resp x≈y x∼z ∷ respˡ resp xs≈ys xs∼zs
 
 respects₂ : R Respects₂ S → (Pointwise R) Respects₂ (Pointwise S)
-respects₂ (rʳ , rˡ) = respʳ rʳ , respˡ rˡ
+respects₂ (rˡ , rʳ) = respˡ rˡ , respʳ rʳ
 
 decidable : Decidable R → Decidable (Pointwise R)
 decidable _  []       []       = yes []

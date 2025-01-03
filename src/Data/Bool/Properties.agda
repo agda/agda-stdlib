@@ -186,7 +186,7 @@ false <? true  = yes f<t
 true  <? _     = no  (λ())
 
 <-resp₂-≡ : _<_ Respects₂ _≡_
-<-resp₂-≡ = subst (_ <_) , subst (_< _)
+<-resp₂-≡ = subst (_< _) , subst (_ <_)
 
 <-irrelevant : Irrelevant _<_
 <-irrelevant f<t f<t = refl
