@@ -1,40 +1,40 @@
-Version 2.2-dev
-===============
+Version 2.2
+===========
 
-The library has been tested using Agda 2.7.0.
+The library has been tested using Agda 2.7.0 and 2.7.0.1.
 
 Highlights
 ----------
 
+* Added missing morphisms between the more advanced algebraic structures.
+
+* Added many missing lemmas about positive and negative rational numbers.
+
 Bug-fixes
 ---------
 
-* Relax the types for `≡-syntax` in `Relation.Binary.HeterogeneousEquality`.
+* Made the types for `≡-syntax` in `Relation.Binary.HeterogeneousEquality` more general.
   These operators are used for equational reasoning of heterogeneous equality
-  `x ≅ y`, but previously the three operators in `≡-syntax` unnecessarily require
-  `x` and `y` to have the same type, making them unusable in most situations.
+  `x ≅ y`, but previously the three operators in `≡-syntax` unnecessarily required
+  `x` and `y` to have the same type, making them unusable in many situations.
 
 * Removed unnecessary parameter `#-trans : Transitive _#_` from
   `Relation.Binary.Reasoning.Base.Apartness`.
 
+* The `IsSemiringWithoutOne` record no longer incorrectly exposes the `Carrier` field
+  inherited from `Setoid` when opening the record publicly.
+
 Non-backwards compatible changes
 --------------------------------
 
-* In `Data.List.Relation.Binary.Sublist.Propositional.Properties` the implicit module parameters `a` and `A` have been replaced with `variable`s. This should be a backwards compatible change for the overwhelming majority of uses, and would only be non-backwards compatible if you were explicitly supplying these implicit parameters for some reason when importing the module. Explicitly supplying the implicit parameters for functions exported from the module should not be affected.
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties` the implicit module parameters `a` and `A` have been replaced with `variable`s. This should be a backwards compatible change for the majority of uses, and would only be non-backwards compatible if for some reason you were explicitly supplying these implicit parameters when importing the module. Explicitly supplying the implicit parameters for functions exported from the module should not be affected.
 
-* The names exposed by the `IsSemiringWithoutOne` record have been altered to
-  better correspond to other algebraic structures. In particular:
-  * `Carrier` is no longer exposed.
-  * Several laws have been re-exposed from `IsCommutativeMonoid +` renaming
-    them to name the operation `+`.
-  * `distribˡ` and `distribʳ` are defined in the record.
-
-* [issue #2504](https://github.com/agda/agda-stdlib/issues/2504) and [issue #2519](https://github.com/agda/agda-stdlib/issues/2510) In `Data.Nat.Base` the definitions of `_≤′_` and `_≤‴_` have been modified to make the witness to equality explicit in new constructors `≤′-reflexive` and `≤‴-reflexive`; pattern synonyms `≤′-refl` and `≤‴-refl` have been added for backwards compatibility but NB. the change in parametrisation means that these patterns are *not* necessarily well-formed if the old implicit arguments `m`,`n` are supplied explicitly.
-
-* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
+* [issue #2504](https://github.com/agda/agda-stdlib/issues/2504) and [issue #2519](https://github.com/agda/agda-stdlib/issues/2510) In `Data.Nat.Base` the definitions of `_≤′_` and `_≤‴_` have been modified to make the witness to equality explicit in new constructors `≤′-reflexive` and `≤‴-reflexive`; pattern synonyms `≤′-refl` and `≤‴-refl` have been added for backwards compatibility. This should be a backwards compatible change for the majority of uses, but the change in parametrisation means that these patterns are *not* necessarily well-formed if the old implicit arguments `m`,`n` are supplied explicitly.
 
 Minor improvements
 ------------------
+
+* In `Function.Related.TypeIsomorphisms`, the unprimed versions are more level polymorphic; and the primed versions retain `Level` homogeneous types for the `Semiring` axioms to hold.
 
 Deprecated modules
 ------------------
@@ -111,7 +111,7 @@ New modules
 -----------
 
 * Consequences of module monomorphisms
-  ```agda
+  ```
   Algebra.Module.Morphism.BimoduleMonomorphism
   Algebra.Module.Morphism.BisemimoduleMonomorphism
   Algebra.Module.Morphism.LeftModuleMonomorphism
@@ -128,36 +128,28 @@ New modules
   ```
 
 * Properties of `IdempotentCommutativeMonoid`s refactored out from `Algebra.Solver.IdempotentCommutativeMonoid`:
-  ```agda
+  ```
   Algebra.Properties.IdempotentCommutativeMonoid
   ```
 
 * Refactoring of the `Algebra.Solver.*Monoid` implementations, via
   a single `Solver` module API based on the existing `Expr`, and
   a common `Normal`-form API:
-  ```agda
+  ```
   Algebra.Solver.CommutativeMonoid.Normal
   Algebra.Solver.IdempotentCommutativeMonoid.Normal
   Algebra.Solver.Monoid.Expression
   Algebra.Solver.Monoid.Normal
   Algebra.Solver.Monoid.Solver
   ```
-
   NB Imports of the existing proof procedures `solve` and `prove` etc. should still be via the top-level interfaces in `Algebra.Solver.*Monoid`.
-
-* `Data.List.Effectful.Foldable`: `List` is `Foldable`
 
 * `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
   Propositional counterpart to `Data.List.Relation.Binary.Disjoint.Setoid.Properties`
-  ```agda
-  sum-↭ : sum Preserves _↭_ ⟶ _≡_
+
+* Properties of list permutations that require the `--with-k` flag:
   ```
-
-* Added `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`
-
-* Refactored out from `Data.List.Relation.Unary.All.Properties` in order to break a dependency cycle with `Data.List.Membership.Setoid.Properties`:
-  ```agda
-  Data.List.Relation.Unary.All.Properties.Core
+  Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK
   ```
 
 * Refactored `Data.Refinement` into:
@@ -166,15 +158,17 @@ New modules
   Data.Refinement.Properties
   ```
 
-* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
-
-* `Effect.Foldable`: implementation of haskell-like `Foldable`
+* Added implementation of Haskell-like `Foldable`:
+  ```agda
+  Effect.Foldable
+  Data.List.Effectful.Foldable
+  Data.Vec.Effectful.Foldable
+  ```
 
 * Raw bundles for the `Relation.Binary.Bundles` hierarchy:
   ```agda
   Relation.Binary.Bundles.Raw
   ```
-  plus adding `rawX` fields to each of `Relation.Binary.Bundles.X`.
 
 Additions to existing modules
 -----------------------------
@@ -271,6 +265,19 @@ Additions to existing modules
   isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
   ```
 
+* In `Algebra.Structures.IsSemiringWithoutOne`:
+  ```agda
+  distribˡ : * DistributesOverˡ +
+  distribʳ : * DistributesOverʳ +
+  +-cong : Congruent +
+  +-congˡ : LeftCongruent +
+  +-congʳ : RightCongruent +
+  +-assoc : Associative +
+  +-identity : Identity 0# +
+  +-identityˡ : LeftIdentity 0# +
+  +-identityʳ : RightIdentity 0# +
+  ```
+
 * Properties of non-divisibility in `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∤-respˡ-≈ : _∤_ Respectsˡ _≈_
@@ -338,9 +345,7 @@ Additions to existing modules
   concatMap-++ : concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
   filter-≐     : P ≐ Q → filter P? ≗ filter Q?
 
-  partition-is-foldr : partition P? ≗ foldr (λ x → if does (P? x) then Product.map₁ (x ∷_)
-                                                                  else Product.map₂ (x ∷_))
-                                            ([] , [])
+  partition-is-foldr : partition P? ≗ foldr (λ x → if does (P? x) then map₁ (x ∷_) else map₂ (x ∷_)) ([] , [])
   ```
 
 * In `Data.List.Relation.Binary.Disjoint.Propositional.Properties`:
@@ -386,6 +391,7 @@ Additions to existing modules
   ∈-resp-[σ∘σ⁻¹]   : (σ : xs ↭ ys) (iy : y ∈ ys) →
                      ∈-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
   product-↭        : product Preserves _↭_ ⟶ _≡_
+  sum-↭ : sum Preserves _↭_ ⟶ _≡_
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties.WithK`:
@@ -587,6 +593,8 @@ Additions to existing modules
       _≲?_       : Decidable _≲_
   ```
   plus associated `isDecPreorder` fields in each higher `IsDec*Order` structure.
+
+* In `Relation.Binary.Bundles` added `rawX` (e.g. `RawSetoid`) fields to each bundle.
 
 * In `Relation.Nullary.Decidable`:
   ```agda
