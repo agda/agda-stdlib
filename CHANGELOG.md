@@ -53,7 +53,7 @@ Deprecated names
   ∣-respˡ   ↦  ∣-respˡ-≈
   ∣-respʳ   ↦  ∣-respʳ-≈
   ∣-resp    ↦  ∣-resp-≈
- ```
+  ```
 
 * In `Algebra.Solver.CommutativeMonoid`:
   ```agda
@@ -293,12 +293,12 @@ Additions to existing modules
   ```agda
   Env : ℕ → Set _
   Env = Vec Carrier
- ```
+  ```
 
 * In `Algebra.Structures.RingWithoutOne`:
   ```agda
   isNearSemiring      : IsNearSemiring _ _
- ```
+  ```
 
 * In `Data.List.Membership.Propositional.Properties`:
   ```agda
@@ -544,7 +544,7 @@ Additions to existing modules
   ```agda
   value-injective : value v ≡ value w → v ≡ w
   _≟_             : DecidableEquality A → DecidableEquality [ x ∈ A ∣ P x ]
- ```
+  ```
 
 * New lemma in `Data.Vec.Properties`:
   ```agda
@@ -570,7 +570,7 @@ Additions to existing modules
   ×-distribˡ-⊎ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
   ×-distribʳ-⊎ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
   ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
- ```
+  ```
 
 * In `Relation.Binary.Bundles`:
   ```agda
