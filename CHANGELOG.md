@@ -312,7 +312,7 @@ Additions to existing modules
   map∷⁻          : xs ∈ map (y ∷_) xss → ∃[ ys ] ys ∈ xss × xs ≡ y ∷ ys
   map∷-decomp∈   : (x ∷ xs) ∈ map (y ∷_) xss → x ≡ y × xs ∈ xss
   ∈-map∷⁻        : xs ∈ map (x ∷_) xss → x ∈ xs
-  ∉[]            : x ∉ []
+  _∉[]           : ∀ x → x ∉ []
   deduplicate-∈⇔ : z ∈ xs ⇔ z ∈ deduplicate _≈?_ xs
   ```
 
@@ -333,7 +333,7 @@ Additions to existing modules
                    y ∈₂ map f (filter P? xs)
   ∈-concatMap⁺   : Any ((y ∈_) ∘ f) xs → y ∈ concatMap f xs
   ∈-concatMap⁻   : y ∈ concatMap f xs → Any ((y ∈_) ∘ f) xs
-  ∉[]            : x ∉ []
+  _∉[]           : ∀ x → x ∉ []
   deduplicate-∈⇔ : _≈_ Respectsʳ (flip R) → z ∈ xs ⇔ z ∈ deduplicate R? xs
   ```
 
