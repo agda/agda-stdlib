@@ -53,7 +53,7 @@ module _ (S : Setoid a ℓ) where
   open Subset S
 
   ∷⊈[] : ∀ {x xs} → x ∷ xs ⊈ []
-  ∷⊈[] p = Membershipₚ.∉[] S $ p (here refl)
+  ∷⊈[] p = (S Membershipₚ.∉[]) _ $ p (here refl)
 
   ⊆[]⇒≡[] : (_⊆ []) ⋐ (_≡ [])
   ⊆[]⇒≡[] {x = []}    _ = ≡.refl
