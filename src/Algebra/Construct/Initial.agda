@@ -78,7 +78,7 @@ isEquivalence : IsEquivalence _≈_
 isEquivalence = record { refl = refl; sym = sym; trans = λ {k = k} → trans {k = k} }
 
 isMagma : IsMagma _≈_ _∙_
-isMagma = record { isEquivalence = isEquivalence ; ∙-cong = λ {y = y} {v = v} → ∙-cong {y = y} {v = v} }
+isMagma = record { isEquivalence = isEquivalence ; ∙-cong = λ {y = y} {u = u} {v = v} → ∙-cong {y = y} {v = v} }
 
 isSemigroup : IsSemigroup _≈_ _∙_
 isSemigroup = record { isMagma = isMagma ; assoc = λ () }
