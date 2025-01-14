@@ -20,7 +20,7 @@ open import Function.Base using (flip; id; _∘_)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; resp)
+  using (_≡_; refl; trans; cong; resp)
 open import Relation.Unary using (Pred; _⊆_)
 
 private
@@ -42,7 +42,8 @@ private
 
 find-∈ : (x∈xs : x ∈ xs) → find x∈xs ≡ (x , x∈xs , refl)
 find-∈ (here refl)  = refl
-find-∈ (there x∈xs) rewrite find-∈ x∈xs = refl
+find-∈ (there x∈xs)
+  = cong (λ where (x , x∈xs , eq) → x , there x∈xs , eq) (find-∈ x∈xs)
 
 ------------------------------------------------------------------------
 -- Lemmas relating map and find.
@@ -59,7 +60,8 @@ module _ {P : Pred A p} where
              let x , x∈xs , px = find p in
              find (Any.map f p) ≡ (x , x∈xs , f px)
   find∘map (here  p) f = refl
-  find∘map (there p) f rewrite find∘map p f = refl
+  find∘map (there p) f
+    = cong (λ where (x , x∈xs , eq) → x , there x∈xs , eq) (find∘map p f)
 
 ------------------------------------------------------------------------
 -- Any can be expressed using _∈_
@@ -67,14 +69,15 @@ module _ {P : Pred A p} where
 module _ {P : Pred A p} where
 
   ∃∈-Any : (∃ λ x → x ∈ xs × P x) → Any P xs
-  ∃∈-Any (x , x∈xs , px) = lose {P = P} x∈xs px
+  ∃∈-Any (x , x∈xs , px) = lose x∈xs px
 
   ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
   ∃∈-Any∘find p = map∘find p refl
 
   find∘∃∈-Any : (p : ∃ λ x → x ∈ xs × P x) → find (∃∈-Any p) ≡ p
   find∘∃∈-Any p@(x , x∈xs , px)
-    rewrite find∘map x∈xs (flip (resp P) px) | find-∈ x∈xs = refl
+    = trans (find∘map x∈xs (flip (resp P) px))
+            (cong (λ (x , x∈xs , eq) → x , x∈xs , resp P eq px) (find-∈ x∈xs))
 
   Any↔ : (∃ λ x → x ∈ xs × P x) ↔ Any P xs
   Any↔ = mk↔ₛ′ ∃∈-Any find ∃∈-Any∘find find∘∃∈-Any
