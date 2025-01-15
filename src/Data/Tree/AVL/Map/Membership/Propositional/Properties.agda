@@ -51,7 +51,7 @@ private
     kx : Key × V
 
 ≈ₖᵥ-trans : Transitive (_≈ₖᵥ_ {V = V})
-≈ₖᵥ-trans {i = i} {k = k} = ×-transitive Eq.trans ≡-trans {i = i} {k = k}
+≈ₖᵥ-trans {x = x} {z = z} = ×-transitive Eq.trans ≡-trans {x = x} {z = z}
 
 ≈ₖᵥ-sym : Symmetric (_≈ₖᵥ_ {V = V})
 ≈ₖᵥ-sym {x = x} {y = y} = ×-symmetric sym ≡-sym {x} {y}
