@@ -3,7 +3,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 2.1.1
+-- The Agda standard library, version 2.2
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -19,7 +19,8 @@ module README where
 -- and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.7.0
+-- This version of the library has been tested using Agda 2.7.0 and
+-- 2.7.0.1
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.

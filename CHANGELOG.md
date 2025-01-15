@@ -86,8 +86,6 @@ Deprecated names
   ```agda
   split  ↦  ↭-split
   ```
-  with a more informative type (see below).
-  ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
