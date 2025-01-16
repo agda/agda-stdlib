@@ -162,12 +162,6 @@ any p = or ∘ map p
 all : (A → Bool) → List A → Bool
 all p = and ∘ map p
 
-sum : List ℕ → ℕ
-sum = foldr _+_ 0
-
-product : List ℕ → ℕ
-product = foldr _*_ 1
-
 length : List A → ℕ
 length = foldr (const suc) 0
 
@@ -580,3 +574,20 @@ scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 "Warning: scanl was deprecated in v2.1.
 Please use Data.List.Scans.Base.scanl instead."
 #-}
+
+-- Version 2.3
+
+sum : List ℕ → ℕ
+sum = foldr _+_ 0
+{-# WARNING_ON_USAGE sum
+"Warning: sum was deprecated in v2.3.
+Please use Data.Nat.SumAndProduct.sum instead."
+#-}
+
+product : List ℕ → ℕ
+product = foldr _*_ 1
+{-# WARNING_ON_USAGE product
+"Warning: product was deprecated in v2.3.
+Please use Data.Nat.SumAndProduct.product instead."
+#-}
+
