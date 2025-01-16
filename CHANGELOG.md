@@ -35,6 +35,12 @@ Deprecated names
   ∈⇒≤product   ↦  Data.Nat.SumAndProduct.∈⇒≤product
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  sum-↭       ↦  Data.Nat.SumAndProduct.sum-↭
+  product-↭   ↦  Data.Nat.SumAndProduct.product-↭
+  ```
+
 New modules
 -----------
 

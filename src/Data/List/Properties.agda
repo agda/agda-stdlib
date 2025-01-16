@@ -1504,7 +1504,7 @@ module _ (f : A → B) where
 
 
 ------------------------------------------------------------------------
--- DEPRECATED
+-- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
