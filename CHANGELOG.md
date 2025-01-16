@@ -27,6 +27,14 @@ Deprecated names
   product   ↦  Data.Nat.SumAndProduct.product
   ```
 
+* In `Data.List.Properties`:
+  ```agda
+  sum-++       ↦  Data.Nat.SumAndProduct.sum-++
+  ∈⇒∣product   ↦  Data.Nat.SumAndProduct.∈⇒∣product
+  product≢0    ↦  Data.Nat.SumAndProduct.product≢0
+  ∈⇒≤product   ↦  Data.Nat.SumAndProduct.∈⇒≤product
+  ```
+
 New modules
 -----------
 
