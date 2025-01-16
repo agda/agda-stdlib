@@ -55,8 +55,7 @@ module _ {_∼_ : Rel A ℓ} where
   -- N.B. the implicit arguments to Cotransitive are permuted w.r.t.
   -- those of Transitive
   cotrans⇒¬-trans : Cotransitive _∼_ → Transitive (¬_ ∘₂ _∼_)
-  cotrans⇒¬-trans cotrans {y = z} x≁z z≁y x∼y =
-    [ x≁z , z≁y ]′ (cotrans x∼y z)
+  cotrans⇒¬-trans cotrans x≁z z≁y x∼y = [ x≁z , z≁y ]′ (cotrans x∼y _)
 
 ------------------------------------------------------------------------
 -- Proofs for Irreflexive relations
