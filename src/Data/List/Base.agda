@@ -16,7 +16,7 @@ open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -578,14 +578,14 @@ Please use Data.List.Scans.Base.scanl instead."
 -- Version 2.3
 
 sum : List ℕ → ℕ
-sum = foldr _+_ 0
+sum = foldr ℕ._+_ 0
 {-# WARNING_ON_USAGE sum
 "Warning: sum was deprecated in v2.3.
 Please use Data.Nat.SumAndProduct.sum instead."
 #-}
 
 product : List ℕ → ℕ
-product = foldr _*_ 1
+product = foldr ℕ._*_ 1
 {-# WARNING_ON_USAGE product
 "Warning: product was deprecated in v2.3.
 Please use Data.Nat.SumAndProduct.product instead."
