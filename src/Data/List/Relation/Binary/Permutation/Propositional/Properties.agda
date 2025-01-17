@@ -400,13 +400,14 @@ mapMaybe-↭ f = catMaybes-↭ ∘ map⁺ f
 
 -- Version 2.3
 
-open import Data.Nat.SumAndProduct public
-  using (sum-↭; product-↭)
+import Data.Nat.SumAndProduct as ℕ
 
+sum-↭ = ℕ.sum-↭
 {-# WARNING_ON_USAGE sum-↭
 "Warning: sum-↭ was deprecated in v2.3.
 Please use Data.Nat.SumAndProduct.sum-↭ instead."
 #-}
+product-↭ = ℕ.product-↭
 {-# WARNING_ON_USAGE product-↭
 "Warning: product-↭ was deprecated in v2.3.
 Please use Data.Nat.SumAndProduct.product-↭ instead."
