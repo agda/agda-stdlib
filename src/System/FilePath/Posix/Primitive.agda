@@ -14,7 +14,7 @@ open import Agda.Builtin.List using (List)
 open import Agda.Builtin.Maybe using (Maybe)
 open import Agda.Builtin.String using (String)
 open import Foreign.Haskell as FFI using (Pair; Either)
-open import IO.Primitive using (IO)
+open import IO.Primitive.Core using (IO)
 
 -- A filepath has a nature: it can be either relative or absolute.
 -- We postulate this nature rather than defining it as an inductive

@@ -1,15 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Machine words
+-- This module is DEPRECATED. Please use Data.Word64 instead
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Word where
 
-------------------------------------------------------------------------
--- Re-export base definitions and decidability of equality
+open import Data.Word64 public
 
-open import Data.Word.Base public
-open import Data.Word.Properties using (_≈?_; _<?_; _≟_; _==_) public
+{-# WARNING_ON_IMPORT
+"Data.Word was deprecated in v2.1. Use Data.Word64 instead."
+#-}

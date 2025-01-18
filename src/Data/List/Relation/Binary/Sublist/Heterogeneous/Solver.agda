@@ -21,20 +21,21 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe.Base as Maybe
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
-open import Data.List.Base hiding (lookup)
-open import Data.List.Properties
+open import Data.List.Base using (List; []; _∷_; [_]; _++_)
+open import Data.List.Properties using (++-assoc; ++-identityʳ)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
-  hiding (lookup)
+  using (Sublist; minimum; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
-open import Function
+open import Function.Base using (_$_; case_of_)
 
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
-open import Relation.Nullary
+open import Relation.Binary.PropositionalEquality.Properties as ≡
 
 open ≡.≡-Reasoning
 
@@ -124,8 +125,8 @@ private
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
-solveI (var k) (var l) = Maybe.map var $ decToMaybe (k Fin.≟ l)
-solveI (val a) (val b) = Maybe.map val $ decToMaybe (R? a b)
+solveI (var k) (var l) = Maybe.map var $ dec⇒weaklyDec Fin._≟_ k  l
+solveI (val a) (val b) = Maybe.map val $ dec⇒weaklyDec R? a b
 solveI _ _ = nothing
 
 -- Solver for linearised expressions

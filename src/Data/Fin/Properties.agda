@@ -6,7 +6,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ and _≻toℕ_ (issue #1726)
 
 module Data.Fin.Properties where
 
@@ -21,8 +21,7 @@ open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ
   using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; s<s⁻¹; _∸_; _^_)
 import Data.Nat.Properties as ℕ
-open import Data.Nat.Solver
-open import Data.Unit using (⊤; tt)
+open import Data.Unit.Base using (⊤; tt)
 open import Data.Product.Base as Product
   using (∃; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
@@ -41,8 +40,10 @@ open import Relation.Binary.Bundles
   using (Preorder; Setoid; DecSetoid; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Structures
   using (IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
@@ -246,9 +247,9 @@ fromℕ<-injective (suc _) (suc _) {o = suc _} m<n n<o r
 
 fromℕ<≡fromℕ<″ : ∀ (m<n : m ℕ.< n) (m<″n : m ℕ.<″ n) →
                  fromℕ< m<n ≡ fromℕ<″ m m<″n
-fromℕ<≡fromℕ<″ {m = zero}  m<n (ℕ.<″-offset _) = refl
-fromℕ<≡fromℕ<″ {m = suc m} m<n (ℕ.<″-offset _)
-  = cong suc (fromℕ<≡fromℕ<″ (ℕ.s<s⁻¹ m<n) (ℕ.<″-offset _))
+fromℕ<≡fromℕ<″ {m = zero}  {n = suc _} _ _ = refl
+fromℕ<≡fromℕ<″ {m = suc m} {n = suc _} m<n m<″n
+  = cong suc (fromℕ<≡fromℕ<″ (ℕ.s<s⁻¹ m<n) (ℕ.s<″s⁻¹ m<″n))
 
 toℕ-fromℕ<″ : ∀ (m<n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<n) ≡ m
 toℕ-fromℕ<″ {m} {n} m<n = begin
@@ -669,12 +670,14 @@ toℕ-combine {suc m} {n} i@0F j = begin
   n ℕ.* toℕ i ℕ.+ toℕ j      ∎
   where open ≡-Reasoning
 toℕ-combine {suc m} {n} (suc i) j = begin
-  toℕ (combine (suc i) j)        ≡⟨⟩
-  toℕ (n ↑ʳ combine i j)         ≡⟨ toℕ-↑ʳ n (combine i j) ⟩
-  n ℕ.+ toℕ (combine i j)        ≡⟨ cong (n ℕ.+_) (toℕ-combine i j) ⟩
-  n ℕ.+ (n ℕ.* toℕ i ℕ.+ toℕ j)  ≡⟨ solve 3 (λ n i j → n :+ (n :* i :+ j) := n :* (con 1 :+ i) :+ j) refl n (toℕ i) (toℕ j) ⟩
-  n ℕ.* toℕ (suc i) ℕ.+ toℕ j    ∎
-  where open ≡-Reasoning; open +-*-Solver
+  toℕ (combine (suc i) j)            ≡⟨⟩
+  toℕ (n ↑ʳ combine i j)             ≡⟨ toℕ-↑ʳ n (combine i j) ⟩
+  n ℕ.+ toℕ (combine i j)            ≡⟨ cong (n ℕ.+_) (toℕ-combine i j) ⟩
+  n ℕ.+ (n ℕ.* toℕ i ℕ.+ toℕ j)     ≡⟨ ℕ.+-assoc n _ (toℕ j) ⟨
+  n ℕ.+ n ℕ.* toℕ i ℕ.+ toℕ j       ≡⟨ cong (λ z → z ℕ.+ n ℕ.* toℕ i ℕ.+ toℕ j) (ℕ.*-identityʳ n) ⟨
+  n ℕ.* 1 ℕ.+ n ℕ.* toℕ i ℕ.+ toℕ j ≡⟨ cong (ℕ._+ toℕ j) (ℕ.*-distribˡ-+ n 1 (toℕ i) ) ⟨
+  n ℕ.* toℕ (suc i) ℕ.+ toℕ j       ∎
+  where open ≡-Reasoning
 
 combine-monoˡ-< : ∀ {i j : Fin m} (k l : Fin n) →
                   i < j → combine i k < combine j l
@@ -688,7 +691,7 @@ combine-monoˡ-< {m} {n} {i} {j} k l i<j = begin-strict
   n ℕ.* toℕ j            ≤⟨ ℕ.m≤m+n (n ℕ.* toℕ j) (toℕ l) ⟩
   n ℕ.* toℕ j ℕ.+ toℕ l  ≡⟨ toℕ-combine j l ⟨
   toℕ (combine j l)      ∎
-  where open ℕ.≤-Reasoning; open +-*-Solver
+  where open ℕ.≤-Reasoning
 
 combine-injectiveˡ : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
                      combine i j ≡ combine k l → i ≡ k

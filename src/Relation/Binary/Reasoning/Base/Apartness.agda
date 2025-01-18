@@ -8,7 +8,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (Level; _⊔_)
-open import Function using (case_of_)
+open import Function.Base using (case_of_)
 open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
@@ -20,7 +20,7 @@ open import Relation.Binary.Reasoning.Syntax
 module Relation.Binary.Reasoning.Base.Apartness {a ℓ₁ ℓ₂} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_#_ : Rel A ℓ₂}
   (≈-equiv : IsEquivalence _≈_)
-  (#-trans : Transitive _#_) (#-sym   : Symmetric _#_)
+  (#-sym   : Symmetric _#_)
   (#-≈-trans : Trans _#_ _≈_ _#_) (≈-#-trans : Trans _≈_ _#_ _#_)
   where
 

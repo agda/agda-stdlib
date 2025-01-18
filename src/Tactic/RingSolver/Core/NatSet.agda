@@ -36,12 +36,14 @@
 
 module Tactic.RingSolver.Core.NatSet where
 
-open import Data.Nat        as ℕ     using (ℕ; suc; zero)
+open import Data.Nat.Base   as ℕ     using (ℕ; suc; zero)
 open import Data.List.Base  as List  using (List; _∷_; [])
+open import Data.List.Scans.Base as Scans using (scanl)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
-open import Data.Bool       as Bool  using (Bool)
+open import Data.Bool.Base  as Bool  using (Bool)
 open import Function.Base            using (const; _∘_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- Helper methods
@@ -97,7 +99,7 @@ fromList : List ℕ → NatSet
 fromList = List.foldr insert []
 
 toList : NatSet → List ℕ
-toList = List.drop 1 ∘ List.map ℕ.pred ∘ List.scanl (λ x y → suc (y ℕ.+ x)) 0
+toList = List.drop 1 ∘ List.map ℕ.pred ∘ Scans.scanl (λ x y → suc (y ℕ.+ x)) 0
 
 ------------------------------------------------------------------------
 -- Tests

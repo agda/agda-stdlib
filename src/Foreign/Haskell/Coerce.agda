@@ -35,7 +35,7 @@ open import Level using (Level; _⊔_)
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int
 
-import IO.Primitive            as STD
+import IO.Primitive.Core       as STD
 import Data.List.Base          as STD
 import Data.List.NonEmpty.Base as STD
 import Data.Maybe.Base         as STD

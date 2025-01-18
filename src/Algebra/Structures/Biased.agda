@@ -262,5 +262,17 @@ Please use the standard `IsRing` instead."
 #-}
 {-# WARNING_ON_USAGE isRingWithoutAnnihilatingZero
 "Warning: isRingWithoutAnnihilatingZero was deprecated in v2.0.
+Please use the standard `isRing` instead."
+#-}
+
+-- Version 2.1
+
+-- issue #2253
+{-# WARNING_ON_USAGE IsRing*
+"Warning: IsRing* was deprecated in v2.1.
 Please use the standard `IsRing` instead."
+#-}
+{-# WARNING_ON_USAGE isRing*
+"Warning: isRing* was deprecated in v2.1.
+Please use the standard `isRing` instead."
 #-}

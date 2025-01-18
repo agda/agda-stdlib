@@ -11,11 +11,15 @@
 
 module Data.Nat.Properties where
 
-open import Axiom.UniquenessOfIdentityProofs
-open import Algebra.Bundles
+open import Axiom.UniquenessOfIdentityProofs using (module Decidable⇒UIP)
+open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
+  CommutativeMonoid; Monoid; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
+open import Algebra.Definitions.RawMagma using (_,_)
 open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
+  using (comm+cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ)
 open import Algebra.Construct.NaturalChoice.Base
+  using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
@@ -23,11 +27,13 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base
 open import Data.Product.Base using (∃; _×_; _,_)
-open import Data.Sum.Base as Sum
-open import Data.Unit using (tt)
-open import Function.Base
+open import Data.Sum.Base as Sum using (inj₁; inj₂; _⊎_; [_,_]′)
+open import Data.Unit.Base using (tt)
+open import Function.Base using (_∘_; flip; _$_; id; _∘′_; _$′_)
 open import Function.Bundles using (_↣_)
-open import Function.Metric.Nat
+open import Function.Metric.Nat using (TriangleInequality; IsProtoMetric; IsPreMetric;
+  IsQuasiSemiMetric; IsSemiMetric; IsMetric; PreMetric; QuasiSemiMetric;
+  SemiMetric; Metric)
 open import Level using (0ℓ)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core
@@ -36,7 +42,7 @@ open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Decidable using (True; via-injection; map′)
+open import Relation.Nullary.Decidable using (True; via-injection; map′; recompute)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 
@@ -266,8 +272,14 @@ _≥?_ = flip _≤?_
 s≤s-injective : {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
+suc[m]≤n⇒m≤pred[n] : suc m ≤ n → m ≤ pred n
+suc[m]≤n⇒m≤pred[n] {n = suc _} = s≤s⁻¹
+
+m≤pred[n]⇒suc[m]≤n : .{{NonZero n}} → m ≤ pred n → suc m ≤ n
+m≤pred[n]⇒suc[m]≤n {n = suc _} = s≤s
+
 ≤-pred : suc m ≤ suc n → m ≤ n
-≤-pred = s≤s⁻¹
+≤-pred = suc[m]≤n⇒m≤pred[n]
 
 m≤n⇒m≤1+n : m ≤ n → m ≤ 1 + n
 m≤n⇒m≤1+n z≤n       = z≤n
@@ -988,6 +1000,12 @@ m≤n*m m n@(suc _) = begin
   m * n ≡⟨ *-comm m n ⟩
   n * m ∎
 
+m≤n⇒m≤o*n : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ o * n
+m≤n⇒m≤o*n o m≤n = ≤-trans m≤n (m≤n*m _ o)
+
+m≤n⇒m≤n*o : ∀ o .{{_ : NonZero o}} → m ≤ n → m ≤ n * o
+m≤n⇒m≤n*o o m≤n = ≤-trans m≤n (m≤m*n _ o)
+
 m<m*n : ∀ m n .{{_ : NonZero m}} → 1 < n → m < m * n
 m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m           <⟨ s≤s (s≤s (m≤n+m m-1 n-2)) ⟩
@@ -996,13 +1014,10 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m * n       ∎
 
 m<n⇒m<n*o : ∀ o .{{_ : NonZero o}} → m < n → m < n * o
-m<n⇒m<n*o {n = n} o m<n = <-≤-trans m<n (m≤m*n n o)
+m<n⇒m<n*o = m≤n⇒m≤n*o
 
 m<n⇒m<o*n : ∀ {m n} o .{{_ : NonZero o}} → m < n → m < o * n
-m<n⇒m<o*n {m} {n} o m<n = begin-strict
-  m     <⟨ m<n⇒m<n*o o m<n ⟩
-  n * o ≡⟨ *-comm n o ⟩
-  o * n ∎
+m<n⇒m<o*n = m≤n⇒m≤o*n
 
 *-cancelʳ-< : RightCancellative _<_ _*_
 *-cancelʳ-< zero    zero    (suc o) _     = 0<1+n
@@ -2024,11 +2039,11 @@ z≤′n {zero}  = ≤′-refl
 z≤′n {suc n} = ≤′-step z≤′n
 
 s≤′s : m ≤′ n → suc m ≤′ suc n
-s≤′s ≤′-refl        = ≤′-refl
+s≤′s (≤′-reflexive m≡n) = ≤′-reflexive (cong suc m≡n)
 s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 
 ≤′⇒≤ : _≤′_ ⇒ _≤_
-≤′⇒≤ ≤′-refl        = ≤-refl
+≤′⇒≤ (≤′-reflexive m≡n) = ≤-reflexive m≡n
 ≤′⇒≤ (≤′-step m≤′n) = m≤n⇒m≤1+n (≤′⇒≤ m≤′n)
 
 ≤⇒≤′ : _≤_ ⇒ _≤′_
@@ -2101,6 +2116,35 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 -- Properties of _≤″_ and _<″_
 ------------------------------------------------------------------------
 
+-- equivalence of  _≤″_ to _≤_
+
+≤⇒≤″ : _≤_ ⇒ _≤″_
+≤⇒≤″ = (_ ,_) ∘ m+[n∸m]≡n
+
+<⇒<″ : _<_ ⇒ _<″_
+<⇒<″ = ≤⇒≤″
+
+≤″⇒≤ : _≤″_ ⇒ _≤_
+≤″⇒≤ (k , refl) = m≤m+n _ k
+
+-- equivalence to the old definition of _≤″_
+
+≤″-proof : (le : m ≤″ n) → let k , _ = le in m + k ≡ n
+≤″-proof (_ , prf) = prf
+
+-- yielding analogous proof for _≤_
+
+m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
+m≤n⇒∃[o]m+o≡n m≤n = _ , m+[n∸m]≡n (recompute (_ ≤? _) m≤n)
+
+-- whose witness is equal to monus
+
+guarded-∸≗∸ : ∀ {m n} → .(m≤n : m ≤ n) →
+              let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k ≡ n ∸ m
+guarded-∸≗∸ m≤n = refl
+
+-- equivalence of _<″_ to _<ᵇ_
+
 m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
 m<ᵇn⇒1+m+[n-1+m]≡n m n lt = m+[n∸m]≡n (<ᵇ⇒< m n lt)
 
@@ -2108,24 +2152,10 @@ m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
 m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 
 <ᵇ⇒<″ : T (m <ᵇ n) → m <″ n
-<ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+[n∸m]≡n (<ᵇ⇒< m n leq))
+<ᵇ⇒<″ {m} {n} = <⇒<″ ∘ (<ᵇ⇒< m n)
 
 <″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
-<″⇒<ᵇ {m} (<″-offset k) = <⇒<ᵇ (m≤m+n (suc m) k)
-
--- equivalence to the old definition of _≤″_
-
-≤″-proof : ∀ {m n} (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
-≤″-proof (less-than-or-equal prf) = prf
-
--- equivalence to _≤_
-
-≤″⇒≤ : _≤″_ ⇒ _≤_
-≤″⇒≤ {zero}  (≤″-offset k) = z≤n {k}
-≤″⇒≤ {suc m} (≤″-offset k) = s≤s (≤″⇒≤ (≤″-offset k))
-
-≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ = less-than-or-equal ∘ m+[n∸m]≡n
+<″⇒<ᵇ {m} (k , refl) = <⇒<ᵇ (m≤m+n (suc m) k)
 
 -- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
 -- that the function quickly decides whether to return `yes` or `no`.
@@ -2139,7 +2169,7 @@ _<″?_ : Decidable _<″_
 m <″? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
 
 _≤″?_ : Decidable _≤″_
-zero  ≤″? n = yes (≤″-offset n)
+zero  ≤″? n = yes (n , refl)
 suc m ≤″? n = m <″? n
 
 _≥″?_ : Decidable _≥″_
@@ -2149,10 +2179,9 @@ _>″?_ : Decidable _>″_
 _>″?_ = flip _<″?_
 
 ≤″-irrelevant : Irrelevant _≤″_
-≤″-irrelevant {m} (less-than-or-equal eq₁)
-                  (less-than-or-equal eq₂)
+≤″-irrelevant {m} (_ , eq₁) (_ , eq₂)
   with refl ← +-cancelˡ-≡ m _ _ (trans eq₁ (sym eq₂))
-  = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
+  = cong (_ ,_) (≡-irrelevant eq₁ eq₂)
 
 <″-irrelevant : Irrelevant _<″_
 <″-irrelevant = ≤″-irrelevant
@@ -2167,25 +2196,25 @@ _>″?_ = flip _<″?_
 -- Properties of _≤‴_
 ------------------------------------------------------------------------
 
-≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
-≤‴⇒≤″ {m = m} ≤‴-refl       = less-than-or-equal {k = 0} (+-identityʳ m)
-≤‴⇒≤″ {m = m} (≤‴-step m≤n) = less-than-or-equal (trans (+-suc m _) (≤″-proof (≤‴⇒≤″ m≤n)))
+≤‴⇒≤″ : m ≤‴ n → m ≤″ n
+≤‴⇒≤″ ≤‴-refl       = _ , +-identityʳ _
+≤‴⇒≤″ (≤‴-step m≤n) = _ , trans (+-suc _ _) (≤″-proof (≤‴⇒≤″ m≤n))
 
-m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
-m≤‴m+k {m} {k = zero}  refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
-m≤‴m+k {m} {k = suc k} prf  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) prf))
+m≤‴m+k : m + k ≡ n → m ≤‴ n
+m≤‴m+k {k = zero}  = ≤‴-reflexive ∘ trans (sym (+-identityʳ _))
+m≤‴m+k {k = suc _} = ≤‴-step ∘ m≤‴m+k ∘ trans (sym (+-suc _ _))
 
-≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
-≤″⇒≤‴ m≤n = m≤‴m+k (≤″-proof m≤n)
+≤″⇒≤‴ : m ≤″ n → m ≤‴ n
+≤″⇒≤‴ = m≤‴m+k ∘ ≤″-proof
 
 0≤‴n : 0 ≤‴ n
 0≤‴n = m≤‴m+k refl
 
 <ᵇ⇒<‴ : T (m <ᵇ n) → m <‴ n
-<ᵇ⇒<‴ leq = ≤″⇒≤‴ (<ᵇ⇒<″ leq)
+<ᵇ⇒<‴ = ≤″⇒≤‴ ∘ <ᵇ⇒<″
 
-<‴⇒<ᵇ : ∀ {m n} → m <‴ n → T (m <ᵇ n)
-<‴⇒<ᵇ leq = <″⇒<ᵇ (≤‴⇒≤″ leq)
+<‴⇒<ᵇ : m <‴ n → T (m <ᵇ n)
+<‴⇒<ᵇ = <″⇒<ᵇ ∘ ≤‴⇒≤″
 
 infix 4 _<‴?_ _≤‴?_ _≥‴?_ _>‴?_
 
@@ -2207,6 +2236,24 @@ _>‴?_ = flip _<‴?_
 
 ≤‴⇒≤ : _≤‴_ ⇒ _≤_
 ≤‴⇒≤ = ≤″⇒≤ ∘ ≤‴⇒≤″
+
+<‴-irrefl : Irreflexive _≡_ _<‴_
+<‴-irrefl eq = <-irrefl eq ∘ ≤‴⇒≤
+
+≤‴-irrelevant : Irrelevant _≤‴_
+≤‴-irrelevant (≤‴-reflexive eq₁) (≤‴-reflexive eq₂) = cong ≤‴-reflexive (≡-irrelevant eq₁ eq₂)
+≤‴-irrelevant (≤‴-reflexive eq₁) (≤‴-step q)        with () ← <‴-irrefl eq₁ q
+≤‴-irrelevant (≤‴-step p)        (≤‴-reflexive eq₂) with () ← <‴-irrefl eq₂ p
+≤‴-irrelevant (≤‴-step p)        (≤‴-step q)        = cong ≤‴-step (≤‴-irrelevant p q)
+
+<‴-irrelevant : Irrelevant {A = ℕ} _<‴_
+<‴-irrelevant = ≤‴-irrelevant
+
+>‴-irrelevant : Irrelevant {A = ℕ} _>‴_
+>‴-irrelevant = ≤‴-irrelevant
+
+≥‴-irrelevant : Irrelevant {A = ℕ} _≥‴_
+≥‴-irrelevant = ≤‴-irrelevant
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -2392,4 +2439,3 @@ open Data.Nat.Base public
 {-# WARNING_ON_USAGE <-transˡ
 "Warning: <-transˡ was deprecated in v2.0. Please use <-≤-trans instead. "
 #-}
-

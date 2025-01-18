@@ -16,6 +16,7 @@ dataTests = mkTestPool "Data structures"
   ∷ "rational"
   ∷ "rational-unnormalised"
   ∷ "trie"
+  ∷ "bytestring"
   ∷ []
 
 systemTests : TestPool
@@ -23,6 +24,8 @@ systemTests = mkTestPool "System modules"
   $ "ansi"
   ∷ "directory"
   ∷ "environment"
+  ∷ "io"
+  ∷ "random"
   ∷ []
 
 showTests : TestPool

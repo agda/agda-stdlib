@@ -13,15 +13,16 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
-open import Data.Vec.Base as Vec
+open import Data.Vec.Base as Vec using (Vec; []; _∷_; map; _++_; concat;
+  tabulate; drop; take; toList; fromList)
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
 open import Function.Base using (_∘_; id)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.Core using (REL)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; →-to-⟶)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂)
 
 private
   variable
