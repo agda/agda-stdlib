@@ -168,11 +168,11 @@ tabulate⁻ {n = suc n} (x∼y ∷ xs∼ys) (fsuc i) = tabulate⁻ xs∼ys i
 
 module _ (rfl : Reflexive R) where
 
-  ++⁺ʳ : ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
-  ++⁺ʳ xs = ++⁺ (refl rfl)
+  ++⁺ˡ : ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ˡ xs = ++⁺ (refl rfl)
 
-  ++⁺ˡ : ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
-  ++⁺ˡ zs rs = ++⁺ rs (refl rfl)
+  ++⁺ʳ : ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ʳ zs rs = ++⁺ rs (refl rfl)
 
 
 ------------------------------------------------------------------------

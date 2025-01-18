@@ -415,15 +415,22 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     zero                  : Zero 0# *
 
   open IsCommutativeMonoid +-isCommutativeMonoid public
-    using (setoid)
+    using (setoid; isEquivalence)
     renaming
-    ( comm                   to +-comm
+    ( ∙-cong                 to +-cong
+    ; ∙-congˡ                to +-congˡ
+    ; ∙-congʳ                to +-congʳ
+    ; assoc                  to +-assoc
+    ; identity               to +-identity
+    ; identityˡ              to +-identityˡ
+    ; identityʳ              to +-identityʳ
+    ; comm                   to +-comm
     ; isMonoid               to +-isMonoid
     ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
 
-  open Setoid setoid public
+  open IsEquivalence isEquivalence public
 
   *-isMagma : IsMagma *
   *-isMagma = record
@@ -443,6 +450,12 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ( ∙-congˡ to *-congˡ
     ; ∙-congʳ to *-congʳ
     )
+
+  distribˡ : * DistributesOverˡ +
+  distribˡ = proj₁ distrib
+
+  distribʳ : * DistributesOverʳ +
+  distribʳ = proj₂ distrib
 
   zeroˡ : LeftZero 0# *
   zeroˡ = proj₁ zero

@@ -10,8 +10,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Vec.Relation.Binary.Equality.Cast {a} {A : Set a} where
+module Data.Vec.Relation.Binary.Equality.Cast where
 
+open import Level using (Level)
+open import Function.Base using (_∘_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Vec.Base
@@ -24,6 +26,8 @@ open import Relation.Binary.PropositionalEquality.Properties
 
 private
   variable
+    a b : Level
+    A B : Set a
     l m n o : ℕ
     xs ys zs : Vec A n
 
@@ -41,16 +45,16 @@ cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (x ∷ xs) =
 
 infix 3 _≈[_]_
 
-_≈[_]_ : ∀ {n m} → Vec A n → .(eq : n ≡ m) → Vec A m → Set a
+_≈[_]_ : ∀ {n m} → Vec A n → .(eq : n ≡ m) → Vec A m → Set _
 xs ≈[ eq ] ys = cast eq xs ≡ ys
 
 ------------------------------------------------------------------------
 -- _≈[_]_ is ‘reflexive’, ‘symmetric’ and ‘transitive’
 
-≈-reflexive : ∀ {n} → _≡_ ⇒ (λ xs ys → _≈[_]_ {n} xs refl ys)
+≈-reflexive : ∀ {n} → _≡_ ⇒ (λ xs ys → _≈[_]_ {A = A} {n} xs refl ys)
 ≈-reflexive {x = x} eq = trans (cast-is-id refl x) eq
 
-≈-sym : .{m≡n : m ≡ n} → Sym _≈[ m≡n ]_ _≈[ sym m≡n ]_
+≈-sym : .{m≡n : m ≡ n} → Sym {A = Vec A m} _≈[ m≡n ]_ _≈[ sym m≡n ]_
 ≈-sym {m≡n = m≡n} {xs} {ys} xs≈ys = begin
   cast (sym m≡n) ys             ≡⟨ cong (cast (sym m≡n)) xs≈ys ⟨
   cast (sym m≡n) (cast m≡n xs)  ≡⟨ cast-trans m≡n (sym m≡n) xs ⟩
@@ -58,13 +62,20 @@ xs ≈[ eq ] ys = cast eq xs ≡ ys
   xs                            ∎
   where open ≡-Reasoning
 
-≈-trans : ∀ .{m≡n : m ≡ n} .{n≡o : n ≡ o} → Trans _≈[ m≡n ]_ _≈[ n≡o ]_ _≈[ trans m≡n n≡o ]_
+≈-trans : ∀ .{m≡n : m ≡ n} .{n≡o : n ≡ o} →
+          Trans {A = Vec A m} _≈[ m≡n ]_ _≈[ n≡o ]_ _≈[ trans m≡n n≡o ]_
 ≈-trans {m≡n = m≡n} {n≡o} {xs} {ys} {zs} xs≈ys ys≈zs = begin
   cast (trans m≡n n≡o) xs ≡⟨ cast-trans m≡n n≡o xs ⟨
   cast n≡o (cast m≡n xs)  ≡⟨ cong (cast n≡o) xs≈ys ⟩
   cast n≡o ys             ≡⟨ ys≈zs ⟩
   zs                      ∎
   where open ≡-Reasoning
+
+≈-cong′ : ∀ {f-len : ℕ → ℕ} (f : ∀ {n} → Vec A n → Vec B (f-len n))
+          {m n} {xs : Vec A m} {ys : Vec A n} .{eq} → xs ≈[ eq ] ys →
+          f xs ≈[ cong f-len eq ] f ys
+≈-cong′ f {m = zero}  {n = zero}  {xs = []}     {ys = []}     refl = cast-is-id refl (f [])
+≈-cong′ f {m = suc m} {n = suc n} {xs = x ∷ xs} {ys = y ∷ ys} refl = ≈-cong′ (f ∘ (x ∷_)) refl
 
 ------------------------------------------------------------------------
 -- Reasoning combinators

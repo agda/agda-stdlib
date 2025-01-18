@@ -677,26 +677,25 @@ concat-concat (xss ∷ xsss) = begin
   concat xss ++ concat (concat xsss) ≡⟨ concat-++ xss (concat xsss) ⟩
   concat (concat (xss ∷ xsss))       ∎
 
-concat-[-] : concat {A = A} ∘ map [_] ≗ id
-concat-[-] [] = refl
-concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
+concat-map-[_] : concat {A = A} ∘ map [_] ≗ id
+concat-map-[ [] ]     = refl
+concat-map-[ x ∷ xs ] = cong (x ∷_) (concat-map-[ xs ])
+
+concat-[_] : concat {A = A} ∘ [_] ≗ id
+concat-[ xs ] = ++-identityʳ xs
 
 ------------------------------------------------------------------------
 -- concatMap
 
 concatMap-cong : ∀ {f g : A → List B} → f ≗ g → concatMap f ≗ concatMap g
-concatMap-cong eq xs = cong concat (map-cong eq xs)
+concatMap-cong eq = cong concat ∘ map-cong eq
 
 concatMap-pure : concatMap {A = A} [_] ≗ id
-concatMap-pure = concat-[-]
+concatMap-pure = concat-map-[_]
 
-concatMap-map : (g : B → List C) → (f : A → B) → (xs : List A) →
-                concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
-concatMap-map g f xs
-  = cong concat
-      {x = map g (map f xs)}
-      {y = map (g ∘′ f) xs}
-      (sym $ map-∘ xs)
+concatMap-map : (g : B → List C) → (f : A → B) →
+                concatMap g ∘′ (map f) ≗ concatMap (g ∘′ f)
+concatMap-map g f = cong concat ∘ sym ∘ map-∘
 
 map-concatMap : (f : B → C) (g : A → List B) →
                 map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
@@ -706,10 +705,7 @@ map-concatMap f g xs = begin
   map f (concat (map g xs))
     ≡⟨ concat-map (map g xs) ⟨
   concat (map (map f) (map g xs))
-    ≡⟨ cong concat
-         {x = map (map f) (map g xs)}
-         {y = map (map f ∘′ g) xs}
-         (sym $ map-∘ xs) ⟩
+    ≡⟨ concatMap-map (map f) g xs ⟩
   concat (map (map f ∘′ g) xs)
     ≡⟨⟩
   concatMap (map f ∘′ g) xs
@@ -720,7 +716,7 @@ concatMap-++ : ∀ (f : A → List B) xs ys →
 concatMap-++ f xs ys = begin
   concatMap f (xs ++ ys)           ≡⟨⟩
   concat (map f (xs ++ ys))        ≡⟨ cong concat $ map-++ f xs ys ⟩
-  concat (map f xs ++ map f ys)    ≡˘⟨ concat-++ (map f xs) (map f ys) ⟩
+  concat (map f xs ++ map f ys)    ≡⟨ concat-++ (map f xs) (map f ys) ⟨
   concatMap f xs ++ concatMap f ys ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -1653,4 +1649,12 @@ scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
 {-# WARNING_ON_USAGE scanl-defn
 "Warning: scanl-defn was deprecated in v2.1.
 Please use Data.List.Scans.Properties.scanl-defn instead."
+#-}
+
+-- Version 2.2
+
+concat-[-] = concat-map-[_]
+{-# WARNING_ON_USAGE concat-[-]
+"Warning: concat-[-] was deprecated in v2.2.
+Please use concat-map-[_] instead."
 #-}
