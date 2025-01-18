@@ -39,6 +39,8 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Binary.Reasoning.Syntax
 
 private
   variable
@@ -469,6 +471,20 @@ decPoset : DecPoset a e r → DecPoset _ _ _
 decPoset ER-poset = record
   { isDecPartialOrder = isDecPartialOrder ER.isDecPartialOrder
   } where module ER = DecPoset ER-poset
+
+------------------------------------------------------------------------
+-- Reasoning over sublists
+------------------------------------------------------------------------
+
+module ⊆-Reasoning (≲ : Preorder a e r) where
+
+  open Preorder ≲ using (module Eq)
+
+  open ≲-Reasoning (preorder ≲) public
+    renaming (≲-go to ⊆-go; ≈-go to ≋-go)
+
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ ≋-go (Pw.symmetric Eq.sym) public
 
 ------------------------------------------------------------------------
 -- Properties of disjoint sublists

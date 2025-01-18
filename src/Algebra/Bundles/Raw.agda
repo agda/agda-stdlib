@@ -10,6 +10,7 @@ module Algebra.Bundles.Raw where
 
 open import Algebra.Core
 open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles.Raw using (RawSetoid)
 open import Level using (suc; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 
@@ -27,6 +28,11 @@ record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
     suc#    : Op₁ Carrier
     zero#   : Carrier
 
+  rawSetoid : RawSetoid c ℓ
+  rawSetoid = record { _≈_ = _≈_ }
+
+  open RawSetoid rawSetoid public using (_≉_)
+
 ------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation
 ------------------------------------------------------------------------
@@ -39,9 +45,11 @@ record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _≈_     : Rel Carrier ℓ
     _∙_     : Op₂ Carrier
 
-  infix 4 _≉_
-  _≉_ : Rel Carrier _
-  x ≉ y = ¬ (x ≈ y)
+  rawSetoid : RawSetoid c ℓ
+  rawSetoid = record { _≈_ = _≈_ }
+
+  open RawSetoid rawSetoid public using (_≉_)
+
 
 ------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation & 1 element
