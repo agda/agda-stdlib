@@ -21,6 +21,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Morphism.Structures`:
+  ```agda
+  homo  ↦  ∙-homo
+  ```
+
 New modules
 -----------
 
