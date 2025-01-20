@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some theory for CancellativeCommutativeSemiring.
+-- Properties of Coprimality and Irreducibility for Semiring.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -15,8 +15,11 @@ module Algebra.Properties.Semiring.Primality
   {a ℓ} (R : Semiring a ℓ)
   where
 
-open Semiring R renaming (Carrier to A)
+open Semiring R
+  using (_≉_; sym; trans; 0#; 1#; zeroˡ; rawSemiring)
+  renaming (Carrier to A)
 open import Algebra.Properties.Semiring.Divisibility R
+  using (_∣_; ∣-trans; 0∤1)
 
 ------------------------------------------------------------------------
 -- Re-export primality definitions
