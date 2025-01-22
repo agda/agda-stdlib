@@ -13,7 +13,7 @@ open import Data.Tree.Binary as BT using (Tree; node; leaf)
 open import Data.List.Base as List using (List; []; _∷_; _++_; [_])
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; suc; _+_)
-open import Data.Nat.SumAndProduct using (sum)
+open import Data.Nat.ListAction using (sum)
 open import Function.Base using (_$_; _∘_)
 
 private

@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Nat.SumAndProduct where
+module Data.Nat.ListAction where
 
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.List.Base using (List; []; _∷_; _++_; foldr)

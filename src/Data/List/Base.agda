@@ -581,13 +581,13 @@ sum : List ℕ → ℕ
 sum = foldr ℕ._+_ 0
 {-# WARNING_ON_USAGE sum
 "Warning: sum was deprecated in v2.3.
-Please use Data.Nat.SumAndProduct.sum instead."
+Please use Data.Nat.ListAction.sum instead."
 #-}
 
 product : List ℕ → ℕ
 product = foldr ℕ._*_ 1
 {-# WARNING_ON_USAGE product
 "Warning: product was deprecated in v2.3.
-Please use Data.Nat.SumAndProduct.product instead."
+Please use Data.Nat.ListAction.product instead."
 #-}
 

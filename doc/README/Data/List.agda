@@ -7,7 +7,7 @@
 module README.Data.List where
 
 open import Data.Nat.Base using (ℕ; _+_)
-open import Data.Nat.SumAndProduct using (sum)
+open import Data.Nat.ListAction using (sum)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 ------------------------------------------------------------------------

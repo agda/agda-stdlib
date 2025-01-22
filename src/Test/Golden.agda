@@ -88,7 +88,7 @@ open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties using (infi
 open import Data.List.Relation.Unary.Any using (any?)
 open import Data.Maybe.Base using (Maybe; just; nothing; fromMaybe)
 open import Data.Nat.Base using (ℕ; _≡ᵇ_; _<ᵇ_; _+_; _∸_)
-open import Data.Nat.SumAndProduct using (sum)
+open import Data.Nat.ListAction using (sum)
 import Data.Nat.Show as ℕ using (show)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.String.Base as String using (String; lines; unlines; unwords; concat)

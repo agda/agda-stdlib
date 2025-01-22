@@ -14,7 +14,7 @@ open import Data.Char.Base using (Char)
 open import Data.List.Base as List hiding (sum)
 open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base
-open import Data.Nat.SumAndProduct using (sum)
+open import Data.Nat.ListAction using (sum)
 open import Data.Product.Base using (_,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
