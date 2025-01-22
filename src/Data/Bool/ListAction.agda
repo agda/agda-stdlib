@@ -1,10 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Natural numbers: sum and product of lists
+-- Booleans: conjunction and disjunction of lists
 --
 -- Issue #2553: this is a compatibility stub module,
--- ahead of a more thorough breaking set of changes.
+-- ahead of a more thorough refactoring in terms of
+-- `Data.List.Effectful.Foldable.foldmap`.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
