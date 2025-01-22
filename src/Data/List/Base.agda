@@ -150,6 +150,12 @@ null : List A → Bool
 null []       = true
 null (x ∷ xs) = false
 
+sum : List ℕ → ℕ
+sum = foldr _+_ 0
+
+product : List ℕ → ℕ
+product = foldr _*_ 1
+
 length : List A → ℕ
 length = foldr (const suc) 0
 
