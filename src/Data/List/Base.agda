@@ -590,4 +590,3 @@ product = foldr ℕ._*_ 1
 "Warning: product was deprecated in v2.3.
 Please use Data.Nat.ListAction.product instead."
 #-}
-

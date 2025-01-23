@@ -400,7 +400,7 @@ mapMaybe-↭ f = catMaybes-↭ ∘ map⁺ f
 
 -- Version 2.3
 
-import Data.Nat.ListAction as ℕ
+import Data.Nat.ListAction.Properties as ℕ
 
 sum-↭ = ℕ.sum-↭
 {-# WARNING_ON_USAGE sum-↭

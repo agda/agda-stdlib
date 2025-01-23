@@ -1633,12 +1633,12 @@ sum-++ (x ∷ xs) ys = begin
   (x + sum xs) + sum ys  ∎
 {-# WARNING_ON_USAGE sum-++
 "Warning: sum-++ was deprecated in v2.3.
-Please use Data.Nat.SumAndProperties.sum-++ instead."
+Please use Data.Nat.ListAction.Properties.sum-++ instead."
 #-}
 sum-++-commute = sum-++
 {-# WARNING_ON_USAGE sum-++-commute
 "Warning: sum-++-commute was deprecated in v2.0.
-Please use Data.Nat.SumAndProperties.sum-++ instead."
+Please use Data.Nat.ListAction.Properties.sum-++ instead."
 #-}
 
 open import Data.List.Membership.Propositional using (_∈_)
@@ -1649,7 +1649,7 @@ open import Data.Nat.Divisibility using (_∣_; m∣m*n; ∣n⇒∣m*n)
 ∈⇒∣product {ns = m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 {-# WARNING_ON_USAGE ∈⇒∣product
 "Warning: ∈⇒∣product was deprecated in v2.3.
-Please use Data.Nat.SumAndProperties.∈⇒∣product instead."
+Please use Data.Nat.ListAction.Properties.∈⇒∣product instead."
 #-}
 
 product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
@@ -1657,7 +1657,7 @@ product≢0 [] = _
 product≢0 {n ∷ ns} (n≢0 ∷ ns≢0) = m*n≢0 n (product ns) {{n≢0}} {{product≢0 ns≢0}}
 {-# WARNING_ON_USAGE product≢0
 "Warning: product≢0 was deprecated in v2.3.
-Please use Data.Nat.SumAndProperties.product≢0 instead."
+Please use Data.Nat.ListAction.Properties.product≢0 instead."
 #-}
 
 ∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
@@ -1667,5 +1667,5 @@ Please use Data.Nat.SumAndProperties.product≢0 instead."
   m≤n⇒m≤o*n n {{n≢0}} (∈⇒≤product ns≢0 n∈ns)
 {-# WARNING_ON_USAGE ∈⇒≤product
 "Warning: ∈⇒≤product was deprecated in v2.3.
-Please use Data.Nat.SumAndProperties.∈⇒≤product instead."
+Please use Data.Nat.ListAction.Properties.∈⇒≤product instead."
 #-}
