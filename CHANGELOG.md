@@ -32,7 +32,7 @@ Deprecated names
 New modules
 -----------
 
-* `Data.List.Base.{and|or|any|all}` and their properties have been lifted out into `Data.Bool.ListAction`.
+* `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 Additions to existing modules
 -----------------------------
