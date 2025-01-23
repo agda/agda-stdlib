@@ -21,6 +21,36 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Definitions.RawMagma`:
+  ```agda
+  _∣∣_   ↦  _∥_
+  _∤∤_    ↦  _∦_
+  ```
+
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣∣-sym       ↦  ∥-sym
+  ∣∣-respˡ-≈   ↦  ∥-respˡ-≈
+  ∣∣-respʳ-≈   ↦  ∥-respʳ-≈
+  ∣∣-resp-≈    ↦  ∥-resp-≈
+  ∤∤-sym  -≈    ↦  ∦-sym
+  ∤∤-respˡ-≈    ↦  ∦-respˡ-≈
+  ∤∤-respʳ-≈    ↦  ∦-respʳ-≈
+  ∤∤-resp-≈     ↦  ∦-resp-≈
+  ```
+
+* In `Algebra.Properties.Monoid.Divisibility`:
+  ```agda
+  ∣∣-refl            ↦  ∥-refl
+  ∣∣-reflexive       ↦  ∥-reflexive
+  ∣∣-isEquivalence   ↦  ∥-isEquivalence
+  ```
+
+* In `Algebra.Properties.Semigroup.Divisibility`:
+  ```agda
+  ∣∣-trans   ↦  ∥-trans
+  ```
+
 New modules
 -----------
 
