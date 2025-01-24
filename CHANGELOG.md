@@ -12,6 +12,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* [issue #2471](https://github.com/agda/agda-stdlib/issues/2471) In `Relation.Binary.Definitions`, the left/right order of the components of `_Respects₂_` have been swapped.
+
 Minor improvements
 ------------------
 
