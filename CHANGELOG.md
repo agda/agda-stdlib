@@ -69,13 +69,16 @@ Additions to existing modules
 
 * In `Algebra.Bundles`:
   ```agda
-  IntegralRing     : (c ℓ : Level) → Set _
-  IntegralSemiring : (c ℓ : Level) → Set _
+  IntegralCommutativeRing     : (c ℓ : Level) → Set _
+  IntegralCommutativeSemiring : (c ℓ : Level) → Set _
+  IntegralDomain              : (c ℓ : Level) → Set _
+  IntegralRing                : (c ℓ : Level) → Set _
+  IntegralSemiring            : (c ℓ : Level) → Set _
   ```
 
 * In `Algebra.Consequences.Base`:
   ```agda
-  integral⇒noZeroDivisors     : Integral _≈_ 1# 0# _∙_ → ¬ (1# ≈ 0#) →
+  integral⇒noZeroDivisors     : Integral _≈_ 1# 0# _∙_ → 1# ≉ 0# →
                                 NoZeroDivisors _≈_ 0# _∙_
   noZeroDivisors⇒x≉0∧y≉0⇒xẏ≉0 : NoZeroDivisors _≈_ 0# _∙_ →
                                 x ≉ 0# → y ≉ 0# → (x ∙ y) ≉ 0#
@@ -125,6 +128,9 @@ Additions to existing modules
 
 * In `Algebra.Structures`:
   ```agda
-  IsIntegralSemiring : (+ * : Op₂ A) (0# 1# : A) → Set _
-  IsIntegralRing     : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
+  IsIntegralCommutativeSemiring : (+ * : Op₂ A) (0# 1# : A) → Set _
+  IsIntegralCommutativeRing     : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
+  IsIntegralDomain              : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
+  IsIntegralSemiring            : (+ * : Op₂ A) (0# 1# : A) → Set _
+  IsIntegralRing                : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
   ```
