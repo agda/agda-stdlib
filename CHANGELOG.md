@@ -57,6 +57,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Base`:
+  ```agda
+  integral⇒noZeroDivisors : Integral _≈_ 1# 0# _•_ → ¬ (1# ≈ 0#) →
+                            NoZeroDivisors _≈_ 0# _•_
+  ```
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
