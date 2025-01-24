@@ -21,7 +21,7 @@ open Magma M
 -- Re-export divisibility relations publicly
 
 open import Algebra.Definitions.RawMagma rawMagma public
-  using (_∣_; _∤_; _∣∣_; _∤∤_; _∣ˡ_; _∤ˡ_; _∣ʳ_; _∤ʳ_; _,_)
+  using (_∣_; _∤_; _∥_; _∦_; _∣ˡ_; _∤ˡ_; _∣ʳ_; _∤ʳ_; _,_)
 
 ------------------------------------------------------------------------
 -- Properties of divisibility
@@ -54,34 +54,34 @@ xy≈z⇒y∣z x y xy≈z = ∣-respʳ-≈ xy≈z (x∣yx y x)
 ∤-resp-≈ = ∤-respʳ-≈ , ∤-respˡ-≈
 
 ------------------------------------------------------------------------
--- Properties of mutual divisibility _∣∣_
+-- Properties of mutual divisibility _∥_
 
-∣∣-sym : Symmetric _∣∣_
-∣∣-sym = swap
+∥-sym : Symmetric _∥_
+∥-sym = swap
 
-∣∣-respˡ-≈ : _∣∣_ Respectsˡ _≈_
-∣∣-respˡ-≈ x≈z (x∣y , y∣x) = ∣-respˡ-≈ x≈z x∣y , ∣-respʳ-≈ x≈z y∣x
+∥-respˡ-≈ : _∥_ Respectsˡ _≈_
+∥-respˡ-≈ x≈z (x∣y , y∣x) = ∣-respˡ-≈ x≈z x∣y , ∣-respʳ-≈ x≈z y∣x
 
-∣∣-respʳ-≈ : _∣∣_ Respectsʳ _≈_
-∣∣-respʳ-≈ y≈z (x∣y , y∣x) = ∣-respʳ-≈ y≈z x∣y , ∣-respˡ-≈ y≈z y∣x
+∥-respʳ-≈ : _∥_ Respectsʳ _≈_
+∥-respʳ-≈ y≈z (x∣y , y∣x) = ∣-respʳ-≈ y≈z x∣y , ∣-respˡ-≈ y≈z y∣x
 
-∣∣-resp-≈ : _∣∣_ Respects₂ _≈_
-∣∣-resp-≈ = ∣∣-respʳ-≈ , ∣∣-respˡ-≈
+∥-resp-≈ : _∥_ Respects₂ _≈_
+∥-resp-≈ = ∥-respʳ-≈ , ∥-respˡ-≈
 
 ------------------------------------------------------------------------
 -- Properties of mutual non-divisibility _∤∤_
 
-∤∤-sym : Symmetric _∤∤_
-∤∤-sym x∤∤y y∣∣x = contradiction (∣∣-sym y∣∣x) x∤∤y
+∦-sym : Symmetric _∦_
+∦-sym x∦y y∥x = contradiction (∥-sym y∥x) x∦y
 
-∤∤-respˡ-≈ : _∤∤_ Respectsˡ _≈_
-∤∤-respˡ-≈ x≈y x∤∤z y∣∣z = contradiction (∣∣-respˡ-≈ (sym x≈y) y∣∣z) x∤∤z
+∦-respˡ-≈ : _∦_ Respectsˡ _≈_
+∦-respˡ-≈ x≈y x∦z y∥z = contradiction (∥-respˡ-≈ (sym x≈y) y∥z) x∦z
 
-∤∤-respʳ-≈ : _∤∤_ Respectsʳ _≈_
-∤∤-respʳ-≈ x≈y z∤∤x z∣∣y = contradiction (∣∣-respʳ-≈ (sym x≈y) z∣∣y) z∤∤x
+∦-respʳ-≈ : _∦_ Respectsʳ _≈_
+∦-respʳ-≈ x≈y z∦x z∥y = contradiction (∥-respʳ-≈ (sym x≈y) z∥y) z∦x
 
-∤∤-resp-≈ : _∤∤_ Respects₂ _≈_
-∤∤-resp-≈ = ∤∤-respʳ-≈ , ∤∤-respˡ-≈
+∦-resp-≈ : _∦_ Respects₂ _≈_
+∦-resp-≈ = ∦-respʳ-≈ , ∦-respˡ-≈
 
 
 ------------------------------------------------------------------------
@@ -106,4 +106,47 @@ Please use ∣-respʳ-≈ instead. "
 {-# WARNING_ON_USAGE ∣-resp
 "Warning: ∣-resp was deprecated in v2.2.
 Please use ∣-resp-≈ instead. "
+#-}
+
+-- Version 2.3
+
+∣∣-sym = ∥-sym
+{-# WARNING_ON_USAGE ∣∣-sym
+"Warning: ∣∣-sym was deprecated in v2.3.
+Please use ∥-sym instead. "
+#-}
+∣∣-respˡ-≈ = ∥-respˡ-≈
+{-# WARNING_ON_USAGE ∣∣-respˡ-≈
+"Warning: ∣∣-respˡ-≈ was deprecated in v2.3.
+Please use ∥-respˡ-≈ instead. "
+#-}
+∣∣-respʳ-≈ = ∥-respʳ-≈
+{-# WARNING_ON_USAGE ∣∣-respʳ-≈
+"Warning: ∣∣-respʳ-≈ was deprecated in v2.3.
+Please use ∥-respʳ-≈ instead. "
+#-}
+∣∣-resp-≈ = ∥-resp-≈
+{-# WARNING_ON_USAGE ∣∣-resp-≈
+"Warning: ∣∣-resp-≈ was deprecated in v2.3.
+Please use ∥-resp-≈ instead. "
+#-}
+∤∤-sym = ∦-sym
+{-# WARNING_ON_USAGE ∤∤-sym
+"Warning: ∤∤-sym was deprecated in v2.3.
+Please use ∦-sym instead. "
+#-}
+∤∤-respˡ-≈ = ∦-respˡ-≈
+{-# WARNING_ON_USAGE ∤∤-respˡ-≈
+"Warning: ∤∤-respˡ-≈ was deprecated in v2.3.
+Please use ∦-respˡ-≈ instead. "
+#-}
+∤∤-respʳ-≈ = ∦-respʳ-≈
+{-# WARNING_ON_USAGE ∤∤-respʳ-≈
+"Warning: ∤∤-respʳ-≈ was deprecated in v2.3.
+Please use ∦-respʳ-≈ instead. "
+#-}
+∤∤-resp-≈ = ∦-resp-≈
+{-# WARNING_ON_USAGE ∤∤-resp-≈
+"Warning: ∤∤-resp-≈ was deprecated in v2.3.
+Please use ∦-resp-≈ instead. "
 #-}
