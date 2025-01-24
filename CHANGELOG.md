@@ -57,6 +57,11 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Bundles`:
+  ```agda
+  IntegralSemiring        : (c ℓ : Level) → Set _
+  ```
+
 * In `Algebra.Consequences.Base`:
   ```agda
   integral⇒noZeroDivisors : Integral _≈_ 1# 0# _•_ → ¬ (1# ≈ 0#) →
@@ -98,3 +103,8 @@ Additions to existing modules
   Integral       : A → A → Op₂ A → Set _
   ```
   (see [discussion on issue #2554](https://github.com/agda/agda-stdlib/issues/2554))
+
+* In `Algebra.Structures`:
+  ```agda
+  IsIntegralSemiring        : (+ * : Op₂ A) (0# 1# : A) → Set _
+  ```

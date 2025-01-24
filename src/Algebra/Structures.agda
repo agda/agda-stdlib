@@ -582,6 +582,14 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     )
 
 
+record IsIntegralSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring : IsSemiring + * 0# 1#
+    integral   : Integral 1# 0# *
+
+  open IsSemiring isSemiring public
+
+
 record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isSemiring : IsSemiring + * 0# 1#

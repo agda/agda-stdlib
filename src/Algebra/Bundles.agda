@@ -841,6 +841,36 @@ record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
              ; idempotentMonoid to +-idempotentMonoid
              )
 
+record IntegralSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ
+    _+_                : Op₂ Carrier
+    _*_                : Op₂ Carrier
+    0#                 : Carrier
+    1#                 : Carrier
+    isIntegralSemiring : IsIntegralSemiring _≈_ _+_ _*_ 0# 1#
+
+  open IsIntegralSemiring isIntegralSemiring public
+
+  semiring : Semiring _ _
+  semiring = record { isSemiring = isSemiring }
+
+  open Semiring semiring public
+    using
+    ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+    ; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero
+    ; rawSemiring
+    )
+
 record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⋆
   infixl 7 _*_
