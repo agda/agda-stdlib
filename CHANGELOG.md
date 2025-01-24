@@ -64,7 +64,8 @@ Additions to existing modules
 
 * In `Algebra.Bundles`:
   ```agda
-  IntegralSemiring        : (c ℓ : Level) → Set _
+  IntegralRing     : (c ℓ : Level) → Set _
+  IntegralSemiring : (c ℓ : Level) → Set _
   ```
 
 * In `Algebra.Consequences.Base`:
@@ -117,5 +118,6 @@ Additions to existing modules
 
 * In `Algebra.Structures`:
   ```agda
-  IsIntegralSemiring        : (+ * : Op₂ A) (0# 1# : A) → Set _
+  IsIntegralSemiring : (+ * : Op₂ A) (0# 1# : A) → Set _
+  IsIntegralRing     : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
   ```

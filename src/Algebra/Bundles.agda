@@ -1154,6 +1154,46 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; commutativeSemiringWithoutOne
     )
 
+
+record IntegralRing c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier        : Set c
+    _≈_            : Rel Carrier ℓ
+    _+_            : Op₂ Carrier
+    _*_            : Op₂ Carrier
+    -_             : Op₁ Carrier
+    0#             : Carrier
+    1#             : Carrier
+    isIntegralRing : IsIntegralRing _≈_ _+_ _*_ -_ 0# 1#
+
+  open IsIntegralRing isIntegralRing public
+
+  ring : Ring _ _
+  ring = record { isRing = isRing }
+
+  open Ring ring public
+    using (_≉_; rawRing; +-invertibleMagma; +-invertibleUnitalMagma; +-group; +-abelianGroup)
+
+  integralSemiring : IntegralSemiring _ _
+  integralSemiring =
+    record { isIntegralSemiring = isIntegralSemiring }
+
+  open IntegralSemiring integralSemiring public
+    using
+    ( +-rawMagma; +-magma; +-unitalMagma
+    ; +-semigroup
+    ; *-rawMagma; *-magma; *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero; semiring
+    )
+
+
 ------------------------------------------------------------------------
 -- Bundles with 3 binary operations
 ------------------------------------------------------------------------

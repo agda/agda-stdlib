@@ -582,14 +582,6 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     )
 
 
-record IsIntegralSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
-  field
-    isSemiring : IsSemiring + * 0# 1#
-    integral   : Integral 1# 0# *
-
-  open IsSemiring isSemiring public
-
-
 record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isSemiring : IsSemiring + * 0# 1#
@@ -647,6 +639,14 @@ record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
              ; isBand to +-isBand
              ; isIdempotentMonoid to +-isIdempotentMonoid
              )
+
+
+record IsIntegralSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring : IsSemiring + * 0# 1#
+    integral   : Integral 1# 0# *
+
+  open IsSemiring isSemiring public
 
 
 record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
@@ -966,6 +966,21 @@ record IsCommutativeRing
     ; *-isCommutativeSemigroup
     ; *-isCommutativeMonoid
     )
+
+record IsIntegralRing
+         (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isRing   : IsRing + * - 0# 1#
+    integral : Integral 1# 0# *
+
+  open IsRing isRing public
+
+  isIntegralSemiring : IsIntegralSemiring + * 0# 1#
+  isIntegralSemiring = record
+    { isSemiring = isSemiring
+    ; integral = integral
+    }
+
 
 ------------------------------------------------------------------------
 -- Structures with 3 binary operations
