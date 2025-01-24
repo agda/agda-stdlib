@@ -54,6 +54,11 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Properties.IntegralSemiring`, with:
+  ```agda
+  x≉0∧y≉0⇒xẏ≉0 :  x ≉ 0# → y ≉ 0# → x * y ≉ 0#
+  ```
+
 * `Algebra.Properties.Semiring.Triviality`, with:
   ```agda
   trivial⇒x≈0 : Trivial → ∀ x → x ≈ 0#
@@ -70,8 +75,10 @@ Additions to existing modules
 
 * In `Algebra.Consequences.Base`:
   ```agda
-  integral⇒noZeroDivisors : Integral _≈_ 1# 0# _•_ → ¬ (1# ≈ 0#) →
-                            NoZeroDivisors _≈_ 0# _•_
+  integral⇒noZeroDivisors     : Integral _≈_ 1# 0# _∙_ → ¬ (1# ≈ 0#) →
+                                NoZeroDivisors _≈_ 0# _∙_
+  noZeroDivisors⇒x≉0∧y≉0⇒xẏ≉0 : NoZeroDivisors _≈_ 0# _∙_ →
+                                x ≉ 0# → y ≉ 0# → (x ∙ y) ≉ 0#
   ```
 
 * In `Algebra.Construct.Pointwise`:
