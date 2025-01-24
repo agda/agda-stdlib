@@ -15,6 +15,7 @@ open import Algebra.Definitions
 open import Data.Sum.Base
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions using (Reflexive)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 module _ {ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) where
 
@@ -27,6 +28,14 @@ module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
                                      SelfInverse _≈_ f →
                                      Involutive _≈_ f
   reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+
+module _ {ℓ} {_•_ : Op₂ A} {0# 1# : A} (_≈_ : Rel A ℓ) where
+
+  integral⇒noZeroDivisors : Integral _≈_ 1# 0# _•_ → ¬ (1# ≈ 0#) →
+                            NoZeroDivisors _≈_ 0# _•_
+  integral⇒noZeroDivisors (inj₁ 1#≈0#)          = contradiction 1#≈0#
+  integral⇒noZeroDivisors (inj₂ noZeroDivisors) = λ _ → noZeroDivisors
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

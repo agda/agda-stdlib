@@ -85,3 +85,10 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Algebra.Definitions`:
+  ```agda
+  NoZeroDivisors : A → Op₂ A → Set _
+  Integral       : A → A → Op₂ A → Set _
+  ```
+  (see [discussion on issue #2554](https://github.com/agda/agda-stdlib/issues/2554))
