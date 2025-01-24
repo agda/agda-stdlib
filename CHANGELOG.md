@@ -54,6 +54,11 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Properties.Semiring.Triviality`, with:
+  ```agda
+  trivial⇒x≈0 : Trivial → ∀ x → x ≈ 0#
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -101,6 +106,12 @@ Additions to existing modules
   ```agda
   NoZeroDivisors : A → Op₂ A → Set _
   Integral       : A → A → Op₂ A → Set _
+  ```
+  (see [discussion on issue #2554](https://github.com/agda/agda-stdlib/issues/2554))
+
+* In `Algebra.Definitions.RawSemiring`:
+  ```agda
+  Trivial : Set _
   ```
   (see [discussion on issue #2554](https://github.com/agda/agda-stdlib/issues/2554))
 

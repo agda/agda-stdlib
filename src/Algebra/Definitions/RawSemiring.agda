@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (RawSemiring)
+open import Algebra.Bundles.Raw using (RawSemiring)
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Level using (_⊔_)
@@ -83,3 +83,9 @@ record Prime (p : A) : Set (a ⊔ ℓ) where
     p≉0     : p ≉ 0#
     p∤1     : p ∤ 1#
     split-∣ : ∀ {x y} → p ∣ x * y → p ∣ x ⊎ p ∣ y
+
+------------------------------------------------------------------------
+-- Triviality
+
+Trivial : Set _
+Trivial = 1# ≈ 0#
