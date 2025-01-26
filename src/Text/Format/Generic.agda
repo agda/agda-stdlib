@@ -11,9 +11,10 @@ module Text.Format.Generic where
 open import Level using (0ℓ)
 open import Effect.Applicative
 open import Data.Char.Base using (Char)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding (sum)
 open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base
+open import Data.Nat.ListAction using (sum)
 open import Data.Product.Base using (_,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
@@ -63,7 +64,7 @@ module Format (spec : FormatSpec) where
   -- Semantics
 
   size : Format → ℕ
-  size = List.sum ∘′ List.map λ { (Raw _) → 0; _ → 1 }
+  size = sum ∘′ List.map λ { (Raw _) → 0; _ → 1 }
 
   -- Meaning of a format as a list of value types
 

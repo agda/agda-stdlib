@@ -7,6 +7,7 @@
 module README.Data.List where
 
 open import Data.Nat.Base using (ℕ; _+_)
+open import Data.Nat.ListAction using (sum)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 ------------------------------------------------------------------------
@@ -18,7 +19,7 @@ open import Data.List
   using
   (List
   ; []; _∷_
-  ; sum; map; take; reverse; _++_; drop
+  ; map; take; reverse; _++_; drop
   )
 
 -- Lists are built using the "[]" and "_∷_" constructors.
