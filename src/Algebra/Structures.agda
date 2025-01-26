@@ -26,6 +26,7 @@ open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Structures with 1 unary operation & 1 element
@@ -641,6 +642,28 @@ record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
              )
 
 
+record IsIntegralSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring : IsSemiring + * 0# 1#
+    integral   : Integral 1# 0# *
+
+  open IsSemiring isSemiring public
+
+
+record IsIntegralCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
+    integral              : Integral 1# 0# *
+
+  open IsCommutativeSemiring isCommutativeSemiring public
+
+  isIntegralSemiring : IsIntegralSemiring + * 0# 1#
+  isIntegralSemiring = record
+    { isSemiring = isSemiring
+    ; integral = integral
+    }
+
+
 record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isIdempotentSemiring  : IsIdempotentSemiring + * 0# 1#
@@ -958,6 +981,50 @@ record IsCommutativeRing
     ; *-isCommutativeSemigroup
     ; *-isCommutativeMonoid
     )
+
+record IsIntegralRing
+         (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isRing   : IsRing + * - 0# 1#
+    integral : Integral 1# 0# *
+
+  open IsRing isRing public
+
+  isIntegralSemiring : IsIntegralSemiring + * 0# 1#
+  isIntegralSemiring = record
+    { isSemiring = isSemiring
+    ; integral = integral
+    }
+
+
+record IsIntegralCommutativeRing
+         (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeRing   : IsCommutativeRing + * - 0# 1#
+    integral            : Integral 1# 0# *
+
+  open IsCommutativeRing isCommutativeRing public
+
+  isIntegralCommutativeSemiring : IsIntegralCommutativeSemiring + * 0# 1#
+  isIntegralCommutativeSemiring = record
+    { isCommutativeSemiring = isCommutativeSemiring
+    ; integral = integral
+    }
+
+
+record IsIntegralDomain
+         (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isIntegralCommutativeRing   : IsIntegralCommutativeRing + * - 0# 1#
+
+  open IsIntegralCommutativeRing isIntegralCommutativeRing public
+
+  field
+    nonTrivial                  : ¬ (1# ≈ 0#)
+
+  noZeroDivisors : NoZeroDivisors 0# *
+  noZeroDivisors = Consequences.integral⇒noZeroDivisors _≈_ integral nonTrivial
+
 
 ------------------------------------------------------------------------
 -- Structures with 3 binary operations

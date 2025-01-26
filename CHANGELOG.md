@@ -54,8 +54,35 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Properties.IntegralSemiring`, with:
+  ```agda
+  x≉0∧y≉0⇒xẏ≉0 :  x ≉ 0# → y ≉ 0# → x * y ≉ 0#
+  ```
+
+* `Algebra.Properties.Semiring.Triviality`, with:
+  ```agda
+  trivial⇒x≈0 : Trivial → ∀ x → x ≈ 0#
+  ```
+
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Bundles`:
+  ```agda
+  IntegralCommutativeRing     : (c ℓ : Level) → Set _
+  IntegralCommutativeSemiring : (c ℓ : Level) → Set _
+  IntegralDomain              : (c ℓ : Level) → Set _
+  IntegralRing                : (c ℓ : Level) → Set _
+  IntegralSemiring            : (c ℓ : Level) → Set _
+  ```
+
+* In `Algebra.Consequences.Base`:
+  ```agda
+  integral⇒noZeroDivisors     : Integral _≈_ 1# 0# _∙_ → 1# ≉ 0# →
+                                NoZeroDivisors _≈_ 0# _∙_
+  noZeroDivisors⇒x≉0∧y≉0⇒xẏ≉0 : NoZeroDivisors _≈_ 0# _∙_ →
+                                x ≉ 0# → y ≉ 0# → (x ∙ y) ≉ 0#
+  ```
 
 * In `Algebra.Construct.Pointwise`:
   ```agda
@@ -84,4 +111,26 @@ Additions to existing modules
   kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ```
+
+* In `Algebra.Definitions`:
+  ```agda
+  NoZeroDivisors : A → Op₂ A → Set _
+  Integral       : A → A → Op₂ A → Set _
+  ```
+  (see [discussion on issue #2554](https://github.com/agda/agda-stdlib/issues/2554))
+
+* In `Algebra.Definitions.RawSemiring`:
+  ```agda
+  Trivial : Set _
+  ```
+  (see [discussion on issue #2554](https://github.com/agda/agda-stdlib/issues/2554))
+
+* In `Algebra.Structures`:
+  ```agda
+  IsIntegralCommutativeSemiring : (+ * : Op₂ A) (0# 1# : A) → Set _
+  IsIntegralCommutativeRing     : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
+  IsIntegralDomain              : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
+  IsIntegralSemiring            : (+ * : Op₂ A) (0# 1# : A) → Set _
+  IsIntegralRing                : (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) → Set _
   ```

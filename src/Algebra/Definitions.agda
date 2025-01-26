@@ -66,6 +66,12 @@ RightZero z _∙_ = ∀ x → (x ∙ z) ≈ z
 Zero : A → Op₂ A → Set _
 Zero z ∙ = (LeftZero z ∙) × (RightZero z ∙)
 
+NoZeroDivisors : A → Op₂ A → Set _
+NoZeroDivisors z _∙_ = ∀ {x y} → (x ∙ y) ≈ z → x ≈ z ⊎ y ≈ z
+
+Integral : A → A → Op₂ A → Set _
+Integral 1# 0# _∙_ = 1# ≈ 0# ⊎ NoZeroDivisors 0# _∙_
+
 LeftInverse : A → Op₁ A → Op₂ A → Set _
 LeftInverse e _⁻¹ _∙_ = ∀ x → ((x ⁻¹) ∙ x) ≈ e
 

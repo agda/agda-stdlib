@@ -841,6 +841,36 @@ record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
              ; idempotentMonoid to +-idempotentMonoid
              )
 
+record IntegralSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ
+    _+_                : Op₂ Carrier
+    _*_                : Op₂ Carrier
+    0#                 : Carrier
+    1#                 : Carrier
+    isIntegralSemiring : IsIntegralSemiring _≈_ _+_ _*_ 0# 1#
+
+  open IsIntegralSemiring isIntegralSemiring public
+
+  semiring : Semiring _ _
+  semiring = record { isSemiring = isSemiring }
+
+  open Semiring semiring public
+    using
+    ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+    ; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero
+    ; rawSemiring
+    )
+
 record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⋆
   infixl 7 _*_
@@ -1123,6 +1153,86 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero; semiring
     ; commutativeSemiringWithoutOne
     )
+
+
+record IntegralRing c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier        : Set c
+    _≈_            : Rel Carrier ℓ
+    _+_            : Op₂ Carrier
+    _*_            : Op₂ Carrier
+    -_             : Op₁ Carrier
+    0#             : Carrier
+    1#             : Carrier
+    isIntegralRing : IsIntegralRing _≈_ _+_ _*_ -_ 0# 1#
+
+  open IsIntegralRing isIntegralRing public
+
+  ring : Ring _ _
+  ring = record { isRing = isRing }
+
+  open Ring ring public
+    using (_≉_; rawRing; +-invertibleMagma; +-invertibleUnitalMagma; +-group; +-abelianGroup)
+
+  integralSemiring : IntegralSemiring _ _
+  integralSemiring =
+    record { isIntegralSemiring = isIntegralSemiring }
+
+  open IntegralSemiring integralSemiring public
+    using
+    ( +-rawMagma; +-magma; +-unitalMagma
+    ; +-semigroup
+    ; *-rawMagma; *-magma; *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero; semiring
+    )
+
+
+record IntegralCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier                   : Set c
+    _≈_                       : Rel Carrier ℓ
+    _+_                       : Op₂ Carrier
+    _*_                       : Op₂ Carrier
+    -_                        : Op₁ Carrier
+    0#                        : Carrier
+    1#                        : Carrier
+    isIntegralCommutativeRing : IsIntegralCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
+
+  open IsIntegralCommutativeRing isIntegralCommutativeRing public
+
+
+record IntegralDomain c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier          : Set c
+    _≈_              : Rel Carrier ℓ
+    _+_              : Op₂ Carrier
+    _*_              : Op₂ Carrier
+    -_               : Op₁ Carrier
+    0#               : Carrier
+    1#               : Carrier
+    isIntegralDomain : IsIntegralDomain _≈_ _+_ _*_ -_ 0# 1#
+
+  open IsIntegralDomain isIntegralDomain public
+
+  integralCommutativeRing : IntegralCommutativeRing _ _
+  integralCommutativeRing = record
+    { isIntegralCommutativeRing = isIntegralCommutativeRing }
+
 
 ------------------------------------------------------------------------
 -- Bundles with 3 binary operations
