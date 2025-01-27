@@ -10,8 +10,9 @@ module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
 open import Data.Bool.Base using (Bool; true; false; T)
+open import Data.Bool.ListAction using (any)
 open import Data.List.Base
-  using (List; []; map; _∷_; _++_; concat; concatMap; applyUpTo; any; filter)
+  using (List; []; map; _∷_; _++_; concat; concatMap; applyUpTo; filter)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
