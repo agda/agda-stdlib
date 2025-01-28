@@ -71,15 +71,14 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
 
   private
     module IB = IsBijection isBij
-    f⁻¹       = proj₁ ∘ IB.surjective
 
   -- We can only flip a bijection if the witness produced by the
   -- surjection proof respects the equality on the codomain.
-  isBijection : Congruent ≈₂ ≈₁ f⁻¹ → IsBijection ≈₂ ≈₁ f⁻¹
-  isBijection f⁻¹-cong = record
+  isBijection : Congruent ≈₂ ≈₁ IB.section → IsBijection ≈₂ ≈₁ IB.section
+  isBijection section-cong = record
     { isInjection = record
       { isCongruent = record
-        { cong           = f⁻¹-cong
+        { cong           = section-cong
         ; isEquivalence₁ = IB.Eq₂.isEquivalence
         ; isEquivalence₂ = IB.Eq₁.isEquivalence
         }
@@ -93,7 +92,7 @@ module _ {≈₁ : Rel A ℓ₁} {f : A → B} (isBij : IsBijection ≈₁ _≡_
   -- We can always flip a bijection if using the equality over the
   -- codomain is propositional equality.
   isBijection-≡ : IsBijection _≡_ ≈₁ _
-  isBijection-≡ = isBijection isBij (IB.Eq₁.reflexive ∘ cong _)
+  isBijection-≡ = isBijection isBij (IB.Eq₁.reflexive ∘ cong IB.section)
     where module IB = IsBijection isBij
 
 module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ : B → A} where
@@ -132,13 +131,12 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
 
   private
     module IB = Bijection bij
-    from      = proj₁ ∘ IB.surjective
 
   -- We can only flip a bijection if the witness produced by the
   -- surjection proof respects the equality on the codomain.
-  bijection : Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ from → Bijection S R
+  bijection : Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ IB.section → Bijection S R
   bijection cong = record
-    { to        = from
+    { to        = IB.section
     ; cong      = cong
     ; bijective = bijective IB.bijective IB.Eq₁.refl IB.Eq₂.sym IB.Eq₂.trans IB.cong
     }
@@ -191,7 +189,7 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 -- Propositional bundles
 
 ⤖-sym : A ⤖ B → B ⤖ A
-⤖-sym b = bijection b (cong _)
+⤖-sym b = bijection b (cong section) where open Bijection b using (section)
 
 ⇔-sym : A ⇔ B → B ⇔ A
 ⇔-sym = equivalence

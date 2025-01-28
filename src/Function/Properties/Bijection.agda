@@ -60,13 +60,13 @@ trans = Composition.bijection
 Bijection⇒Inverse : Bijection S T → Inverse S T
 Bijection⇒Inverse bij = record
   { to        = to
-  ; from      = to⁻
+  ; from      = section
   ; to-cong   = cong
   ; from-cong = injective⇒to⁻-cong surjection injective
   ; inverse   = (λ y≈to⁻[x] → Eq₂.trans (cong y≈to⁻[x]) (to∘to⁻ _)) ,
                 (λ y≈to[x] → injective (Eq₂.trans (to∘to⁻ _) y≈to[x]))
   }
-  where open Bijection bij; to∘to⁻ = proj₂ ∘ strictlySurjective
+  where open Bijection bij
 
 Bijection⇒Equivalence : Bijection T S → Equivalence T S
 Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse

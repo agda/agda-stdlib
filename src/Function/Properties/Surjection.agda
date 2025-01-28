@@ -45,11 +45,11 @@ mkSurjection f surjective = record
 ↠⇒⟶ = Surjection.function
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → proj₂ (strictlySurjective _)}
+↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → to∘to⁻ _ }
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
-↠⇒⇔ s = mk⇔ to (proj₁ ∘ surjective)
+↠⇒⇔ s = mk⇔ to section
   where open Surjection s
 
 ------------------------------------------------------------------------
@@ -69,12 +69,12 @@ trans = Compose.surjection
 injective⇒to⁻-cong : (surj : Surjection S T) →
                       (open Surjection surj) →
                       Injective Eq₁._≈_ Eq₂._≈_ to →
-                      Congruent Eq₂._≈_ Eq₁._≈_ to⁻
+                      Congruent Eq₂._≈_ Eq₁._≈_ section
 injective⇒to⁻-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
-  to (to⁻ x) ≈⟨ to∘to⁻ x ⟩
-  x          ≈⟨ x≈y ⟩
-  y          ≈⟨ to∘to⁻ y ⟨
-  to (to⁻ y) ∎
+  to (section x) ≈⟨ to∘to⁻ x ⟩
+  x              ≈⟨ x≈y ⟩
+  y              ≈⟨ to∘to⁻ y ⟨
+  to (section y) ∎
   where
   open ≈-Reasoning T
   open Surjection surj

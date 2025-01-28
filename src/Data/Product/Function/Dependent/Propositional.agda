@@ -57,7 +57,7 @@ module _ where
          Σ I A ⇔ Σ J B
   Σ-⇔ {B = B} I↠J A⇔B = mk⇔
     (map (to  I↠J) (Equivalence.to A⇔B))
-    (map (to⁻ I↠J) (Equivalence.from A⇔B ∘ ≡.subst B (≡.sym (proj₂ (surjective I↠J _) ≡.refl))))
+    (map (section I↠J) (Equivalence.from A⇔B ∘ ≡.subst B (≡.sym (proj₂ (surjective I↠J _) ≡.refl))))
 
   -- See also Data.Product.Relation.Binary.Pointwise.Dependent.WithK.↣.
 
@@ -193,16 +193,16 @@ module _ where
     to′ : Σ I A → Σ J B
     to′ = map (to I↠J) (to A↠B)
 
-    backcast : ∀ {i} → B i → B (to I↠J (to⁻ I↠J i))
+    backcast : ∀ {i} → B i → B (to I↠J (section I↠J i))
     backcast = ≡.subst B (≡.sym (to∘to⁻ I↠J _))
 
     to⁻′ : Σ J B → Σ I A
-    to⁻′ = map (to⁻ I↠J) (Surjection.to⁻ A↠B ∘ backcast)
+    to⁻′ = map (section I↠J) (Surjection.section A↠B ∘ backcast)
 
     strictlySurjective′ : StrictlySurjective _≡_ to′
     strictlySurjective′ (x , y) = to⁻′ (x , y) , Σ-≡,≡→≡
       ( to∘to⁻ I↠J x
-      , (≡.subst B (to∘to⁻ I↠J x) (to A↠B (to⁻ A↠B (backcast y))) ≡⟨ ≡.cong (≡.subst B _) (to∘to⁻ A↠B _) ⟩
+      , (≡.subst B (to∘to⁻ I↠J x) (to A↠B (section A↠B (backcast y))) ≡⟨ ≡.cong (≡.subst B _) (to∘to⁻ A↠B _) ⟩
          ≡.subst B (to∘to⁻ I↠J x) (backcast y)                      ≡⟨ ≡.subst-subst-sym (to∘to⁻ I↠J x) ⟩
          y                                                          ∎)
       ) where open ≡.≡-Reasoning
@@ -249,7 +249,7 @@ module _ where
       Σ I A ↔ Σ J B
   Σ-↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ₛ′
     (Surjection.to surjection′)
-    (Surjection.to⁻ surjection′)
+    (Surjection.section surjection′)
     (Surjection.to∘to⁻ surjection′)
     left-inverse-of
     where
@@ -260,7 +260,7 @@ module _ where
     surjection′ : Σ I A ↠ Σ J B
     surjection′ = Σ-↠ (↔⇒↠ (≃⇒↔ I≃J)) (↔⇒↠ A↔B)
 
-    left-inverse-of : ∀ p → Surjection.to⁻ surjection′ (Surjection.to surjection′ p) ≡ p
+    left-inverse-of : ∀ p → Surjection.section surjection′ (Surjection.to surjection′ p) ≡ p
     left-inverse-of (x , y) = to Σ-≡,≡↔≡
       ( _≃_.left-inverse-of I≃J x
       , (≡.subst A (_≃_.left-inverse-of I≃J x)

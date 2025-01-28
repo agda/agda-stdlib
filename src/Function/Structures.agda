@@ -17,7 +17,7 @@ module Function.Structures {a b ℓ₁ ℓ₂}
   {B : Set b} (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
-open import Data.Product.Base as Product using (∃; _×_; _,_)
+open import Data.Product.Base as Product using (∃; _×_; _,_; proj₁; proj₂)
 open import Function.Base
 open import Function.Definitions
 open import Level using (_⊔_)
@@ -69,6 +69,12 @@ record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   strictlySurjective : StrictlySurjective _≈₂_ f
   strictlySurjective x = Product.map₂ (λ v → v Eq₁.refl) (surjective x)
 
+  section : B → A
+  section = proj₁ ∘ surjective
+
+  section-inverseˡ : Inverseˡ _≈₁_ _≈₂_ f section
+  section-inverseˡ = λ y≈fx → (proj₂ ∘ surjective) _ y≈fx
+
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
@@ -87,7 +93,7 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     }
 
   open IsSurjection isSurjection public
-    using (strictlySurjective)
+    using (strictlySurjective; section)
 
 
 ------------------------------------------------------------------------

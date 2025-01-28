@@ -113,12 +113,17 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsSurjection isSurjection public
       using
       ( strictlySurjective
+      ; section
       )
 
     to⁻ : B → A
     to⁻ = proj₁ ∘ surjective
+    {-# WARNING_ON_USAGE to⁻
+    "Warning: to⁻ was deprecated in v2.3.
+    Please use Function.Structures.IsSurjection.section instead. "
+    #-}
 
-    to∘to⁻ : ∀ x → to (to⁻ x) ≈₂ x
+    to∘to⁻ : ∀ x → to (section x) ≈₂ x
     to∘to⁻ = proj₂ ∘ strictlySurjective
 
 
@@ -146,8 +151,10 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective = surjective
       }
 
-    open Injection  injection  public using (isInjection)
-    open Surjection surjection public using (isSurjection; to⁻;  strictlySurjective)
+    open Injection  injection  public
+      using (isInjection)
+    open Surjection surjection public
+      using (isSurjection; section; to∘to⁻; strictlySurjective)
 
     isBijection : IsBijection to
     isBijection = record
