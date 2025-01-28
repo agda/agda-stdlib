@@ -85,3 +85,8 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Relation.Binary.Core`:
+  ```agda
+  _Reflects_⟶_ : (A → B) → Rel B ℓ₁ → Rel A ℓ₂ → Set _
+  ```
