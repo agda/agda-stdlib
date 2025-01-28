@@ -10,9 +10,10 @@
 
 module Function.Definitions where
 
-open import Data.Product.Base using (∃; _×_)
+open import Data.Product.Base using (∃; _×_; proj₁)
+open import Function.Base using (_∘_)
 open import Level using (Level)
-open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Core using (Rel; _Reflects_⟶_)
 
 private
   variable
@@ -31,7 +32,7 @@ module _
   Congruent f = ∀ {x y} → x ≈₁ y → f x ≈₂ f y
 
   Injective : (A → B) → Set _
-  Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y
+  Injective = _Reflects _≈₂_ ⟶ _≈₁_
 
   Surjective : (A → B) → Set _
   Surjective f = ∀ y → ∃ λ x → ∀ {z} → z ≈₁ x → f z ≈₂ y
