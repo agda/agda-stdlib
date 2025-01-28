@@ -60,6 +60,9 @@ P =[ f ]⇒ Q = P ⇒ (Q on f)
 _Preserves_⟶_ : (A → B) → Rel A ℓ₁ → Rel B ℓ₂ → Set _
 f Preserves P ⟶ Q = P =[ f ]⇒ Q
 
+_Reflects_⟶_ : (A → B) → Rel B ℓ₁ → Rel A ℓ₂ → Set _
+f Reflects Q ⟶ P = (Q on f) ⇒ P
+
 -- A binary variant of _Preserves_⟶_.
 
 _Preserves₂_⟶_⟶_ : (A → B → C) → Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → Set _
