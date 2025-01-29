@@ -17,8 +17,9 @@ open import Relation.Binary.Definitions using (Reflexive; Trans)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
-open import Function.Properties.Surjection using (injective⇒to⁻-cong)
-open import Function.Properties.Inverse using (Inverse⇒Equivalence)
+open import Function.Properties.Surjection using (injective⇒section-cong)
+open import Function.Properties.Inverse
+  using (Inverse⇒Bijection; Inverse⇒Equivalence)
 
 import Function.Construct.Identity as Identity
 import Function.Construct.Symmetry as Symmetry
@@ -31,15 +32,32 @@ private
     T S : Setoid a ℓ
 
 ------------------------------------------------------------------------
+-- Conversion functions
+
+Bijection⇒Inverse : Bijection S T → Inverse S T
+Bijection⇒Inverse bij = record
+  { to        = to
+  ; from      = section
+  ; to-cong   = cong
+  ; from-cong = injective⇒section-cong surjection injective
+  ; inverse   = section-inverseˡ
+              , λ y≈to[x] → injective (Eq₂.trans (section-strictInverseˡ _) y≈to[x])
+  }
+  where open Bijection bij
+
+Bijection⇒Equivalence : Bijection T S → Equivalence T S
+Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
+
+------------------------------------------------------------------------
 -- Setoid properties
 
 refl : Reflexive (Bijection {a} {ℓ})
 refl = Identity.bijection _
 
--- Can't prove full symmetry as we have no proof that the witness
--- produced by the surjection proof preserves equality
-sym-≡ : Bijection S (setoid B) → Bijection (setoid B) S
-sym-≡ = Symmetry.bijection-≡
+-- Now we *can* prove full symmetry as we now have a proof that
+-- the witness produced by the surjection proof preserves equality
+sym : Bijection S T → Bijection T S
+sym = Inverse⇒Bijection ∘ Symmetry.inverse ∘ Bijection⇒Inverse
 
 trans : Trans (Bijection {a} {ℓ₁} {b} {ℓ₂}) (Bijection {b} {ℓ₂} {c} {ℓ₃}) Bijection
 trans = Composition.bijection
@@ -50,29 +68,28 @@ trans = Composition.bijection
 ⤖-isEquivalence : IsEquivalence {ℓ = ℓ} _⤖_
 ⤖-isEquivalence = record
   { refl  = refl
-  ; sym   = sym-≡
+  ; sym   = sym
   ; trans = trans
   }
-
-------------------------------------------------------------------------
--- Conversion functions
-
-Bijection⇒Inverse : Bijection S T → Inverse S T
-Bijection⇒Inverse bij = record
-  { to        = to
-  ; from      = section
-  ; to-cong   = cong
-  ; from-cong = injective⇒to⁻-cong surjection injective
-  ; inverse   = (λ y≈to⁻[x] → Eq₂.trans (cong y≈to⁻[x]) (to∘to⁻ _)) ,
-                (λ y≈to[x] → injective (Eq₂.trans (to∘to⁻ _) y≈to[x]))
-  }
-  where open Bijection bij
-
-Bijection⇒Equivalence : Bijection T S → Equivalence T S
-Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
 
 ⤖⇒↔ : A ⤖ B → A ↔ B
 ⤖⇒↔ = Bijection⇒Inverse
 
 ⤖⇒⇔ : A ⤖ B → A ⇔ B
 ⤖⇒⇔ = Bijection⇒Equivalence
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+sym-≡ : Bijection S (setoid B) → Bijection (setoid B) S
+sym-≡ = Symmetry.bijection-≡
+{-# WARNING_ON_USAGE sym-≡
+"Warning: sym-≡ was deprecated in v2.3.
+Please use sym instead. "
+#-}
