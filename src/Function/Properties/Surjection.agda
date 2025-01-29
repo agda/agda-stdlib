@@ -45,7 +45,7 @@ mkSurjection f surjective = record
 ↠⇒⟶ = Surjection.function
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → to∘to⁻ _ }
+↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → section-strictInverseˡ _ }
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
