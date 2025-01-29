@@ -66,16 +66,31 @@ trans = Compose.surjection
 ------------------------------------------------------------------------
 -- Other
 
-injective⇒to⁻-cong : (surj : Surjection S T) →
+injective⇒section-cong : (surj : Surjection S T) →
                       (open Surjection surj) →
                       Injective Eq₁._≈_ Eq₂._≈_ to →
                       Congruent Eq₂._≈_ Eq₁._≈_ section
-injective⇒to⁻-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
-  to (section x) ≈⟨ to∘to⁻ x ⟩
+injective⇒section-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
+  to (section x) ≈⟨ section-strictInverseˡ x ⟩
   x              ≈⟨ x≈y ⟩
-  y              ≈⟨ to∘to⁻ y ⟨
+  y              ≈⟨ section-strictInverseˡ y ⟨
   to (section y) ∎
   where
   open ≈-Reasoning T
   open Surjection surj
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+injective⇒to⁻-cong = injective⇒section-cong
+{-# WARNING_ON_USAGE injective⇒to⁻-cong
+"Warning: injective⇒to⁻-cong was deprecated in v2.3.
+Please use injective⇒section-cong instead. "
+#-}
 
