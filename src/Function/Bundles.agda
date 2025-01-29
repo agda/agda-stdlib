@@ -113,6 +113,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       using
       ( strictlySurjective
       ; section
+      ; section-inverseˡ
       ; section-strictInverseˡ
       )
 
@@ -158,7 +159,12 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open Injection  injection  public
       using (isInjection)
     open Surjection surjection public
-      using (isSurjection; section; to∘to⁻; strictlySurjective)
+      using (isSurjection
+            ; strictlySurjective
+            ; section
+            ; section-inverseˡ
+            ; section-strictInverseˡ
+            )
 
     isBijection : IsBijection to
     isBijection = record
