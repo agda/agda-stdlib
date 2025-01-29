@@ -93,4 +93,3 @@ injective⇒to⁻-cong = injective⇒section-cong
 "Warning: injective⇒to⁻-cong was deprecated in v2.3.
 Please use injective⇒section-cong instead. "
 #-}
-
