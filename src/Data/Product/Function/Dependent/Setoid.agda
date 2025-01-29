@@ -97,7 +97,7 @@ module _ where
   module _ (I↪J : I ↪ J) where
 
     private module ItoJ = RightInverse I↪J
-    
+
     equivalence-↪ : (∀ {i} → Equivalence (A atₛ (ItoJ.from i)) (B atₛ i)) →
                     Equivalence (I ×ₛ A) (J ×ₛ B)
     equivalence-↪ {A = A} {B = B} A⇔B =
@@ -112,7 +112,7 @@ module _ where
   module _ (I↠J : I ↠ J) where
 
     private module ItoJ = Surjection I↠J
-    
+
     equivalence-↠ : (∀ {x} → Equivalence (A atₛ x) (B atₛ (ItoJ.to x))) →
                     Equivalence (I ×ₛ A) (J ×ₛ B)
     equivalence-↠ {A = A} {B = B} A⇔B = equivalence (↠⇒⇔ I↠J) B-to B-from
