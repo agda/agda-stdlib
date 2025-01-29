@@ -19,6 +19,7 @@ module Function.Structures {a b ℓ₁ ℓ₂}
 
 open import Data.Product.Base as Product using (∃; _×_; _,_; proj₁; proj₂)
 open import Function.Base
+open import Function.Consequences
 open import Function.Definitions
 open import Level using (_⊔_)
 
@@ -67,13 +68,16 @@ record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   open IsCongruent isCongruent public
 
   strictlySurjective : StrictlySurjective _≈₂_ f
-  strictlySurjective x = Product.map₂ (λ v → v Eq₁.refl) (surjective x)
+  strictlySurjective = surjective⇒strictlySurjective _≈₂_ Eq₁.refl surjective
 
   section : B → A
   section = proj₁ ∘ surjective
 
   section-inverseˡ : Inverseˡ _≈₁_ _≈₂_ f section
-  section-inverseˡ = λ y≈fx → (proj₂ ∘ surjective) _ y≈fx
+  section-inverseˡ {x = x} = proj₂ (surjective x)
+
+  section-strictInverseˡ : StrictlyInverseˡ _≈₂_ f section
+  section-strictInverseˡ _ = section-inverseˡ Eq₁.refl
 
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -110,12 +114,12 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
     renaming (cong to to-cong)
 
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
-  strictlyInverseˡ x = inverseˡ Eq₁.refl
+  strictlyInverseˡ = inverseˡ⇒strictlyInverseˡ _≈₁_ _≈₂_ Eq₁.refl inverseˡ
 
   isSurjection : IsSurjection to
   isSurjection = record
     { isCongruent = isCongruent
-    ; surjective = λ y → from y , inverseˡ
+    ; surjective = inverseˡ⇒surjective _≈₂_ inverseˡ
     }
 
 
@@ -129,7 +133,7 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
     renaming (cong to to-cong)
 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
-  strictlyInverseʳ x = inverseʳ Eq₂.refl
+  strictlyInverseʳ = inverseʳ⇒strictlyInverseʳ _≈₁_ _≈₂_ Eq₂.refl inverseʳ
 
 
 record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
