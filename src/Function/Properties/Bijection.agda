@@ -87,8 +87,9 @@ trans = Composition.bijection
 
 -- Version 2.3
 
-sym-≡ : Bijection S (setoid B) → Bijection (setoid B) S
-sym-≡ = Symmetry.bijection-≡
+open Symmetry public
+  using ()
+  renaming (bijection-≡ to sym-≡)
 {-# WARNING_ON_USAGE sym-≡
 "Warning: sym-≡ was deprecated in v2.3.
 Please use sym instead. "
