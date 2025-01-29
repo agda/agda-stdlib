@@ -135,6 +135,15 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
   strictlyInverseʳ = inverseʳ⇒strictlyInverseʳ _≈₁_ _≈₂_ Eq₂.refl inverseʳ
 
+  injective : Injective _≈₁_ _≈₂_ to
+  injective = inverseʳ⇒injective {f⁻¹ = from} _≈₂_ to Eq₂.refl Eq₁.sym Eq₁.trans inverseʳ
+
+  isInjection : IsInjection to
+  isInjection = record
+    { isCongruent = isCongruent
+    ; injective   = injective
+    }
+
 
 record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
