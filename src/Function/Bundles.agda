@@ -273,12 +273,21 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
     open IsRightInverse isRightInverse public
-      using (module Eq₁; module Eq₂; strictlyInverseʳ)
+      using (module Eq₁; module Eq₂; strictlyInverseʳ; isInjection)
+
+    open IsInjection isInjection public using (injective)
 
     equivalence : Equivalence
     equivalence = record
       { to-cong   = to-cong
       ; from-cong = from-cong
+      }
+
+    injection : Injection From To
+    injection = record
+      { to = to
+      ; cong = to-cong
+      ; injective = injective
       }
 
 
