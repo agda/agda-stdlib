@@ -571,8 +571,9 @@ word within a compound word is capitalized except for the first word.
 
 * Likewise, standard infix symbols for eg, divisibility on numeric
   datatypes/algebraic structure, should be written `\|`, NOT the
-  unmarked `|` character. An exception to this is the *strict*
-  ordering relation, written using `<`, NOT `\<` as might be expected.
+  unmarked `|` character. Ditto. mutual divisibility `\||` etc. An
+  exception to this is the *strict* ordering relation, written using
+  `<`, NOT `\<` as might be expected.
 
 * Since v2.0, the `Algebra` hierarchy systematically introduces
   consistent symbolic notation for the negated versions of the usual
