@@ -125,6 +125,10 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     to∘to⁻ : StrictlyInverseˡ _≈₂_ to section
     to∘to⁻ = section-strictInverseˡ
+    {-# WARNING_ON_USAGE to∘to⁻
+    "Warning: to∘to⁻ was deprecated in v2.3.
+    Please use Function.Structures.IsSurjection.section-strictInverseˡ instead. "
+    #-}
 
 
   record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
