@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>IO.Handle</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- IO handles: simple bindings to Haskell types and functions</a>
+<a id="168" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="242" class="Symbol">{-#</a> <a id="246" class="Keyword">OPTIONS</a> <a id="254" class="Pragma">--cubical-compatible</a> <a id="275" class="Pragma">--guardedness</a> <a id="289" class="Symbol">#-}</a>
+
+<a id="294" class="Keyword">module</a> <a id="301" href="IO.Handle.html" class="Module">IO.Handle</a> <a id="311" class="Keyword">where</a>
+
+<a id="318" class="Keyword">open</a> <a id="323" class="Keyword">import</a> <a id="330" href="Level.html" class="Module">Level</a> <a id="336" class="Keyword">using</a> <a id="342" class="Symbol">(</a><a id="343" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="348" class="Symbol">)</a>
+<a id="350" class="Keyword">open</a> <a id="355" class="Keyword">import</a> <a id="362" href="Data.Unit.Polymorphic.Base.html" class="Module">Data.Unit.Polymorphic.Base</a> <a id="389" class="Keyword">using</a> <a id="395" class="Symbol">(</a><a id="396" href="Data.Unit.Polymorphic.Base.html#489" class="Function">⊤</a><a id="397" class="Symbol">)</a>
+<a id="399" class="Keyword">open</a> <a id="404" class="Keyword">import</a> <a id="411" href="IO.Base.html" class="Module">IO.Base</a> <a id="419" class="Keyword">using</a> <a id="425" class="Symbol">(</a><a id="426" href="IO.Base.html#1201" class="Datatype">IO</a><a id="428" class="Symbol">;</a> <a id="430" href="IO.Base.html#1238" class="InductiveConstructor">lift</a><a id="434" class="Symbol">;</a> <a id="436" href="IO.Base.html#3173" class="Function">lift′</a><a id="441" class="Symbol">)</a>
+
+<a id="444" class="Keyword">private</a> <a id="452" class="Keyword">variable</a> <a id="461" href="IO.Handle.html#461" class="Generalizable">a</a> <a id="463" class="Symbol">:</a> <a id="465" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+
+<a id="472" class="Comment">------------------------------------------------------------------------</a>
+<a id="545" class="Comment">-- Re-exporting types and constructors</a>
+
+<a id="585" class="Keyword">open</a> <a id="590" class="Keyword">import</a> <a id="597" href="IO.Primitive.Handle.html" class="Module">IO.Primitive.Handle</a> <a id="617" class="Symbol">as</a> <a id="620" class="Module">Prim</a> <a id="625" class="Keyword">public</a>
+  <a id="634" class="Keyword">using</a> <a id="640" class="Symbol">(</a> <a id="642" href="IO.Primitive.Handle.html#475" class="Datatype">BufferMode</a>
+        <a id="661" class="Symbol">;</a> <a id="663" href="IO.Primitive.Handle.html#500" class="InductiveConstructor">noBuffering</a>
+        <a id="683" class="Symbol">;</a> <a id="685" href="IO.Primitive.Handle.html#512" class="InductiveConstructor">lineBuffering</a>
+        <a id="707" class="Symbol">;</a> <a id="709" href="IO.Primitive.Handle.html#541" class="InductiveConstructor">blockBuffering</a>
+        <a id="732" class="Symbol">;</a> <a id="734" href="IO.Primitive.Handle.html#1544" class="Postulate">Handle</a>
+        <a id="749" class="Symbol">;</a> <a id="751" href="IO.Primitive.Handle.html#1559" class="Postulate">stdin</a>
+        <a id="765" class="Symbol">;</a> <a id="767" href="IO.Primitive.Handle.html#1565" class="Postulate">stdout</a>
+        <a id="782" class="Symbol">;</a> <a id="784" href="IO.Primitive.Handle.html#1572" class="Postulate">stderr</a>
+        <a id="799" class="Symbol">)</a>
+
+<a id="802" class="Comment">------------------------------------------------------------------------</a>
+<a id="875" class="Comment">-- Wrapping functions</a>
+
+<a id="hSetBuffering"></a><a id="898" href="IO.Handle.html#898" class="Function">hSetBuffering</a> <a id="912" class="Symbol">:</a> <a id="914" href="IO.Primitive.Handle.html#1544" class="Postulate">Handle</a> <a id="921" class="Symbol">→</a> <a id="923" href="IO.Primitive.Handle.html#475" class="Datatype">BufferMode</a> <a id="934" class="Symbol">→</a> <a id="936" href="IO.Base.html#1201" class="Datatype">IO</a> <a id="939" class="Symbol">{</a><a id="940" href="IO.Handle.html#461" class="Generalizable">a</a><a id="941" class="Symbol">}</a> <a id="943" href="Data.Unit.Polymorphic.Base.html#489" class="Function">⊤</a>
+<a id="945" href="IO.Handle.html#898" class="Function">hSetBuffering</a> <a id="959" href="IO.Handle.html#959" class="Bound">hdl</a> <a id="963" href="IO.Handle.html#963" class="Bound">bm</a> <a id="966" class="Symbol">=</a> <a id="968" href="IO.Base.html#3173" class="Function">lift′</a> <a id="974" class="Symbol">(</a><a id="975" href="IO.Primitive.Handle.html#1590" class="Postulate">Prim.hSetBuffering</a> <a id="994" href="IO.Handle.html#959" class="Bound">hdl</a> <a id="998" href="IO.Handle.html#963" class="Bound">bm</a><a id="1000" class="Symbol">)</a>
+
+<a id="hGetBuffering"></a><a id="1003" href="IO.Handle.html#1003" class="Function">hGetBuffering</a> <a id="1017" class="Symbol">:</a> <a id="1019" href="IO.Primitive.Handle.html#1544" class="Postulate">Handle</a> <a id="1026" class="Symbol">→</a> <a id="1028" href="IO.Base.html#1201" class="Datatype">IO</a> <a id="1031" href="IO.Primitive.Handle.html#475" class="Datatype">BufferMode</a>
+<a id="1042" href="IO.Handle.html#1003" class="Function">hGetBuffering</a> <a id="1056" href="IO.Handle.html#1056" class="Bound">hdl</a> <a id="1060" class="Symbol">=</a> <a id="1062" href="IO.Base.html#1238" class="InductiveConstructor">lift</a> <a id="1067" class="Symbol">(</a><a id="1068" href="IO.Primitive.Handle.html#1635" class="Postulate">Prim.hGetBuffering</a> <a id="1087" href="IO.Handle.html#1056" class="Bound">hdl</a><a id="1090" class="Symbol">)</a>
+
+<a id="hFlush"></a><a id="1093" href="IO.Handle.html#1093" class="Function">hFlush</a> <a id="1100" class="Symbol">:</a> <a id="1102" href="IO.Primitive.Handle.html#1544" class="Postulate">Handle</a> <a id="1109" class="Symbol">→</a> <a id="1111" href="IO.Base.html#1201" class="Datatype">IO</a> <a id="1114" class="Symbol">{</a><a id="1115" href="IO.Handle.html#461" class="Generalizable">a</a><a id="1116" class="Symbol">}</a> <a id="1118" href="Data.Unit.Polymorphic.Base.html#489" class="Function">⊤</a>
+<a id="1120" href="IO.Handle.html#1093" class="Function">hFlush</a> <a id="1127" href="IO.Handle.html#1127" class="Bound">hdl</a> <a id="1131" class="Symbol">=</a> <a id="1133" href="IO.Base.html#3173" class="Function">lift′</a> <a id="1139" class="Symbol">(</a><a id="1140" href="IO.Primitive.Handle.html#1676" class="Postulate">Prim.hFlush</a> <a id="1152" href="IO.Handle.html#1127" class="Bound">hdl</a><a id="1155" class="Symbol">)</a>
+</pre></body></html>

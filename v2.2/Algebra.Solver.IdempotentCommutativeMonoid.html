@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Solver.IdempotentCommutativeMonoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Solver for equations in idempotent commutative monoids</a>
+<a id="164" class="Comment">--</a>
+<a id="167" class="Comment">-- Adapted from Algebra.Solver.CommutativeMonoid</a>
+<a id="216" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="290" class="Symbol">{-#</a> <a id="294" class="Keyword">OPTIONS</a> <a id="302" class="Pragma">--cubical-compatible</a> <a id="323" class="Pragma">--safe</a> <a id="330" class="Symbol">#-}</a>
+
+<a id="335" class="Keyword">open</a> <a id="340" class="Keyword">import</a> <a id="347" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="363" class="Keyword">using</a> <a id="369" class="Symbol">(</a><a id="370" href="Algebra.Bundles.html#9176" class="Record">IdempotentCommutativeMonoid</a><a id="397" class="Symbol">)</a>
+
+<a id="400" class="Keyword">module</a> <a id="407" href="Algebra.Solver.IdempotentCommutativeMonoid.html" class="Module">Algebra.Solver.IdempotentCommutativeMonoid</a>
+  <a id="452" class="Symbol">{</a><a id="453" href="Algebra.Solver.IdempotentCommutativeMonoid.html#453" class="Bound">c</a> <a id="455" href="Algebra.Solver.IdempotentCommutativeMonoid.html#455" class="Bound">ℓ</a><a id="456" class="Symbol">}</a> <a id="458" class="Symbol">(</a><a id="459" href="Algebra.Solver.IdempotentCommutativeMonoid.html#459" class="Bound">M</a> <a id="461" class="Symbol">:</a> <a id="463" href="Algebra.Bundles.html#9176" class="Record">IdempotentCommutativeMonoid</a> <a id="491" href="Algebra.Solver.IdempotentCommutativeMonoid.html#453" class="Bound">c</a> <a id="493" href="Algebra.Solver.IdempotentCommutativeMonoid.html#455" class="Bound">ℓ</a><a id="494" class="Symbol">)</a> <a id="496" class="Keyword">where</a>
+
+<a id="503" class="Keyword">import</a> <a id="510" href="Algebra.Solver.IdempotentCommutativeMonoid.Normal.html" class="Module">Algebra.Solver.IdempotentCommutativeMonoid.Normal</a> <a id="560" class="Symbol">as</a> <a id="563" class="Module">Normal</a>
+<a id="570" class="Keyword">import</a> <a id="577" href="Algebra.Solver.Monoid.Solver.html" class="Module">Algebra.Solver.Monoid.Solver</a> <a id="606" class="Symbol">as</a> <a id="609" class="Module">Solver</a>
+
+<a id="617" class="Keyword">open</a> <a id="622" href="Algebra.Bundles.html#9176" class="Module">IdempotentCommutativeMonoid</a> <a id="650" href="Algebra.Solver.IdempotentCommutativeMonoid.html#459" class="Bound">M</a> <a id="652" class="Keyword">using</a> <a id="658" class="Symbol">(</a><a id="659" href="Algebra.Bundles.html#8230" class="Function">monoid</a><a id="665" class="Symbol">)</a>
+
+<a id="668" class="Keyword">private</a>
+  <a id="678" class="Keyword">module</a> <a id="N"></a><a id="685" href="Algebra.Solver.IdempotentCommutativeMonoid.html#685" class="Module">N</a> <a id="687" class="Symbol">=</a> <a id="689" href="Algebra.Solver.IdempotentCommutativeMonoid.Normal.html" class="Module">Normal</a> <a id="696" href="Algebra.Solver.IdempotentCommutativeMonoid.html#459" class="Bound">M</a>
+
+
+<a id="700" class="Comment">------------------------------------------------------------------------</a>
+<a id="773" class="Comment">-- Normal forms</a>
+
+<a id="790" class="Keyword">open</a> <a id="795" href="Algebra.Solver.IdempotentCommutativeMonoid.html#685" class="Module">N</a> <a id="797" class="Keyword">public</a>
+  <a id="806" class="Keyword">renaming</a> <a id="815" class="Symbol">(</a><a id="816" href="Algebra.Solver.IdempotentCommutativeMonoid.Normal.html#3971" class="Function">correct</a> <a id="824" class="Symbol">to</a> <a id="827" class="Function">normalise-correct</a><a id="844" class="Symbol">)</a>
+
+<a id="847" class="Comment">------------------------------------------------------------------------</a>
+<a id="920" class="Comment">-- Proof procedures</a>
+
+<a id="941" class="Keyword">open</a> <a id="946" href="Algebra.Solver.Monoid.Solver.html" class="Module">Solver</a> <a id="953" href="Algebra.Bundles.html#8230" class="Function">monoid</a> <a id="960" class="Symbol">(</a><a id="961" class="Keyword">record</a> <a id="968" class="Symbol">{</a> <a id="970" href="Algebra.Solver.IdempotentCommutativeMonoid.html#685" class="Module">N</a> <a id="972" class="Symbol">})</a> <a id="975" class="Keyword">public</a>
+
+
+<a id="984" class="Comment">------------------------------------------------------------------------</a>
+<a id="1057" class="Comment">-- DEPRECATED NAMES</a>
+<a id="1077" class="Comment">------------------------------------------------------------------------</a>
+<a id="1150" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="1221" class="Comment">-- not guaranteed.</a>
+
+<a id="1241" class="Comment">-- Version 2.2</a>
+
+<a id="1257" class="Symbol">{-#</a> <a id="1261" class="Keyword">WARNING_ON_USAGE</a> <a id="1278" class="Pragma">normalise-correct</a>
+<a id="1296" class="String">&quot;Warning: normalise-correct was deprecated in v2.2.
+Please use Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct instead.&quot;</a>
+<a id="1427" class="Symbol">#-}</a>
+</pre></body></html>
