@@ -10,6 +10,8 @@ module Function.Construct.Symmetry where
 
 open import Data.Product.Base using (_,_; swap; proj₁; proj₂)
 open import Function.Base using (_∘_)
+open import Function.Consequences
+  using (module IsSurjective)
 open import Function.Definitions
   using (Bijective; Injective; Surjective; Inverseˡ; Inverseʳ; Inverseᵇ; Congruent)
 open import Function.Structures
@@ -35,21 +37,26 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
          ((inj , surj) : Bijective ≈₁ ≈₂ f)
          where
 
-  private
-    f⁻¹      = proj₁ ∘ surj
-    f∘f⁻¹≡id = proj₂ ∘ surj
+  open IsSurjective {≈₂ = ≈₂} surj
+    using (section; section-strictInverseˡ)
 
-  injective : Reflexive ≈₁ → Symmetric ≈₂ → Transitive ≈₂ →
-              Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ f⁻¹
-  injective refl sym trans cong gx≈gy =
-    trans (trans (sym (f∘f⁻¹≡id _ refl)) (cong gx≈gy)) (f∘f⁻¹≡id _ refl)
+  module _ (refl : Reflexive ≈₁) where
 
-  surjective : Reflexive ≈₁ → Transitive ≈₂ → Surjective ≈₂ ≈₁ f⁻¹
-  surjective refl trans x = f x , inj ∘ trans (f∘f⁻¹≡id _ refl)
+    private
 
-  bijective : Reflexive ≈₁ → Symmetric ≈₂ → Transitive ≈₂ →
-              Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
-  bijective refl sym trans cong = injective refl sym trans cong , surjective refl trans
+      f∘section≡id = section-strictInverseˡ refl
+
+    injective : Symmetric ≈₂ → Transitive ≈₂ →
+                Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ section
+    injective sym trans cong gx≈gy =
+      trans (trans (sym (f∘section≡id _)) (cong gx≈gy)) (f∘section≡id _)
+
+    surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
+    surjective trans x = f x , inj ∘ trans (f∘section≡id _)
+
+    bijective : Symmetric ≈₂ → Transitive ≈₂ →
+                Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ section
+    bijective sym trans cong = injective sym trans cong , surjective trans
 
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f : A → B} {f⁻¹ : B → A} where
 
