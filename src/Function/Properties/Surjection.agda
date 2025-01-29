@@ -67,9 +67,9 @@ trans = Compose.surjection
 -- Other
 
 injective⇒section-cong : (surj : Surjection S T) →
-                      (open Surjection surj) →
-                      Injective Eq₁._≈_ Eq₂._≈_ to →
-                      Congruent Eq₂._≈_ Eq₁._≈_ section
+                         (open Surjection surj) →
+                         Injective Eq₁._≈_ Eq₂._≈_ to →
+                         Congruent Eq₂._≈_ Eq₁._≈_ section
 injective⇒section-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
   to (section x) ≈⟨ section-strictInverseˡ x ⟩
   x              ≈⟨ x≈y ⟩
