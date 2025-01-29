@@ -11,6 +11,7 @@
 module Function.Consequences where
 
 open import Data.Product.Base as Product
+open import Function.Base using (_∘_)
 open import Function.Definitions
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
@@ -80,6 +81,23 @@ strictlySurjective⇒surjective : Transitive ≈₂ →
                                  Surjective ≈₁ ≈₂ f
 strictlySurjective⇒surjective trans cong surj x =
   Product.map₂ (λ fy≈x z≈y → trans (cong z≈y) fy≈x) (surj x)
+
+module IsSurjective {f : A → B} (surjective :  Surjective ≈₁ ≈₂ f) where
+
+  section : B → A
+  section = proj₁ ∘ surjective
+
+  section-inverseˡ : Inverseˡ ≈₁ ≈₂ f section
+  section-inverseˡ {x = x} = proj₂ (surjective x)
+
+  module _ (refl : Reflexive ≈₁) where
+
+    strictlySurjective : StrictlySurjective ≈₂ f
+    strictlySurjective = surjective⇒strictlySurjective ≈₂ refl surjective
+
+    section-strictInverseˡ : StrictlyInverseˡ ≈₂ f section
+    section-strictInverseˡ _ = section-inverseˡ refl
+
 
 ------------------------------------------------------------------------
 -- StrictlyInverseˡ
