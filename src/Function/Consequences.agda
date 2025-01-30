@@ -82,23 +82,6 @@ strictlySurjective⇒surjective : Transitive ≈₂ →
 strictlySurjective⇒surjective trans cong surj x =
   Product.map₂ (λ fy≈x z≈y → trans (cong z≈y) fy≈x) (surj x)
 
-module IsSurjective {f : A → B} (surjective :  Surjective ≈₁ ≈₂ f) where
-
-  section : B → A
-  section = proj₁ ∘ surjective
-
-  section-inverseˡ : Inverseˡ ≈₁ ≈₂ f section
-  section-inverseˡ {x = x} = proj₂ (surjective x)
-
-  module _ (refl : Reflexive ≈₁) where
-
-    strictlySurjective : StrictlySurjective ≈₂ f
-    strictlySurjective = surjective⇒strictlySurjective ≈₂ refl surjective
-
-    section-strictInverseˡ : StrictlyInverseˡ ≈₂ f section
-    section-strictInverseˡ _ = section-inverseˡ refl
-
-
 ------------------------------------------------------------------------
 -- StrictlyInverseˡ
 
@@ -130,3 +113,38 @@ strictlyInverseʳ⇒inverseʳ : Transitive ≈₁ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹
 strictlyInverseʳ⇒inverseʳ trans cong sinv {x} y≈f⁻¹x =
   trans (cong y≈f⁻¹x) (sinv x)
+
+------------------------------------------------------------------------
+-- Theory of the section of a Surjective function
+
+module Section (≈₂ : Rel B ℓ₂) (surj :  Surjective {A = A} ≈₁ ≈₂ f) where
+
+  section : B → A
+  section = proj₁ ∘ surj
+
+  inverseˡ : Inverseˡ ≈₁ ≈₂ f section
+  inverseˡ {x = x} = proj₂ (surj x)
+
+  module _ (refl : Reflexive ≈₁) where
+
+    strictlySurjective : StrictlySurjective ≈₂ f
+    strictlySurjective = surjective⇒strictlySurjective ≈₂ refl surj
+
+    strictInverseˡ : StrictlyInverseˡ ≈₂ f section
+    strictInverseˡ _ = inverseˡ refl
+
+  module _ (inj : Injective ≈₁ ≈₂ f) (refl : Reflexive ≈₁) where
+
+    private f∘section≡id = strictInverseˡ refl
+
+    cong : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₂ ≈₁ section
+    cong sym trans = inj ∘ trans (f∘section≡id _) ∘ sym ∘ trans (f∘section≡id _) ∘ sym
+
+    surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
+    surjective trans x = f x , inj ∘ trans (f∘section≡id _)
+
+    injective : Symmetric ≈₂ → Transitive ≈₂ → Injective ≈₂ ≈₁ section
+    injective sym trans = trans (sym (f∘section≡id _)) ∘ inverseˡ
+
+    bijective : Symmetric ≈₂ → Transitive ≈₂ → Bijective ≈₂ ≈₁ section
+    bijective sym trans = injective sym trans , surjective trans
