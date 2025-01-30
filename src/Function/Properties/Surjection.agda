@@ -12,8 +12,8 @@ open import Function.Base using (_∘_; _$_)
 open import Function.Definitions using (Surjective; Injective; Congruent)
 open import Function.Bundles
   using (Func; Surjection; _↠_; _⟶_; _↪_; mk↪; _⇔_; mk⇔)
+open import Function.Consequences using (module Section)
 import Function.Construct.Identity as Identity
-import Function.Construct.Symmetry as Symmetry
 import Function.Construct.Composition as Compose
 open import Level using (Level)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
@@ -46,7 +46,7 @@ mkSurjection f surjective = record
 ↠⇒⟶ = Surjection.function
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → section-strictInverseˡ _ }
+↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → strictlyInverseˡ _ }
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
@@ -80,7 +80,7 @@ module _ (surjection : Surjection S T) where
   injective⇒to⁻-cong : Injective Eq₁._≈_ Eq₂._≈_ to →
                        Congruent Eq₂._≈_ Eq₁._≈_ section
   injective⇒to⁻-cong injective =
-    Symmetry.section-cong (injective , surjective) Eq₁.refl Eq₂.sym Eq₂.trans
+    Section.cong Eq₂._≈_ surjective injective Eq₁.refl Eq₂.sym Eq₂.trans
 {-# WARNING_ON_USAGE injective⇒to⁻-cong
 "Warning: injective⇒to⁻-cong was deprecated in v2.3.
 Please use Symmetry.section-cong instead. "
