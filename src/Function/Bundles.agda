@@ -113,8 +113,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       using
       ( strictlySurjective
       ; section
-      ; section-inverseˡ
-      ; section-strictInverseˡ
+      ; inverseˡ
+      ; strictlyInverseˡ
       )
 
     to⁻ : B → A
@@ -125,10 +125,10 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     #-}
 
     to∘to⁻ : StrictlyInverseˡ _≈₂_ to section
-    to∘to⁻ = section-strictInverseˡ
+    to∘to⁻ = strictlyInverseˡ
     {-# WARNING_ON_USAGE to∘to⁻
     "Warning: to∘to⁻ was deprecated in v2.3.
-    Please use Function.Structures.IsSurjection.section-strictInverseˡ instead. "
+    Please use Function.Structures.IsSurjection.strictlyInverseˡ instead. "
     #-}
 
 
@@ -162,8 +162,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       using (isSurjection
             ; strictlySurjective
             ; section
-            ; section-inverseˡ
-            ; section-strictInverseˡ
+            ; inverseˡ
+            ; strictlyInverseˡ
             )
 
     isBijection : IsBijection to
