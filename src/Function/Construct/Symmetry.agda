@@ -34,29 +34,29 @@ private
 -- Properties
 
 module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
-         ((inj , surj) : Bijective ≈₁ ≈₂ f)
+         ((inj , surj) : Bijective ≈₁ ≈₂ f) (refl : Reflexive ≈₁)
          where
 
   open IsSurjective {≈₂ = ≈₂} surj
     using (section; section-strictInverseˡ)
 
-  module _ (refl : Reflexive ≈₁) where
+  private f∘section≡id = section-strictInverseˡ refl
 
-    private
+  section-cong : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₂ ≈₁ section
+  section-cong sym trans =
+    inj ∘ trans (f∘section≡id _) ∘ sym ∘ trans (f∘section≡id _) ∘ sym
 
-      f∘section≡id = section-strictInverseˡ refl
+  injective : Symmetric ≈₂ → Transitive ≈₂ →
+              Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ section
+  injective sym trans cong gx≈gy =
+    trans (trans (sym (f∘section≡id _)) (cong gx≈gy)) (f∘section≡id _)
 
-    injective : Symmetric ≈₂ → Transitive ≈₂ →
-                Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ section
-    injective sym trans cong gx≈gy =
-      trans (trans (sym (f∘section≡id _)) (cong gx≈gy)) (f∘section≡id _)
+  surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
+  surjective trans x = f x , inj ∘ trans (f∘section≡id _)
 
-    surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
-    surjective trans x = f x , inj ∘ trans (f∘section≡id _)
-
-    bijective : Symmetric ≈₂ → Transitive ≈₂ →
+  bijective : Symmetric ≈₂ → Transitive ≈₂ →
                 Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ section
-    bijective sym trans cong = injective sym trans cong , surjective trans
+  bijective sym trans cong = injective sym trans cong , surjective trans
 
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f : A → B} {f⁻¹ : B → A} where
 
