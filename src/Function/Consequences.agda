@@ -146,7 +146,7 @@ module Section (≈₂ : Rel B ℓ₂) (surj :  Surjective {A = A} ≈₁ ≈₂
     inverseʳ : Transitive ≈₂ → Inverseʳ ≈₁ ≈₂ f section
     inverseʳ trans = inj ∘ trans (f∘section≡id _)
 
-    strictlyInverseʳ : Transitive ≈₂ → {!StrictlyInverseʳ ≈₂ section f!}
+    strictlyInverseʳ : Transitive ≈₂ → StrictlyInverseʳ ≈₂ section f
     strictlyInverseʳ trans = inverseʳ⇒strictlyInverseʳ ≈₂ ≈₁ refl inverseˡ
 
     surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
