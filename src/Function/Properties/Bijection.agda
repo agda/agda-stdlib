@@ -31,23 +31,6 @@ private
     T S : Setoid a ℓ
 
 ------------------------------------------------------------------------
--- Conversion functions
-
-Bijection⇒Inverse : Bijection S T → Inverse S T
-Bijection⇒Inverse bij = record
-  { to        = to
-  ; from      = section
-  ; to-cong   = cong
-  ; from-cong = Symmetry.section-cong bijective Eq₁.refl Eq₂.sym Eq₂.trans
-  ; inverse   = section-inverseˡ
-              , λ y≈to[x] → injective (Eq₂.trans (section-strictInverseˡ _) y≈to[x])
-  }
-  where open Bijection bij
-
-Bijection⇒Equivalence : Bijection T S → Equivalence T S
-Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
-
-------------------------------------------------------------------------
 -- Setoid properties
 
 refl : Reflexive (Bijection {a} {ℓ})
@@ -56,10 +39,27 @@ refl = Identity.bijection _
 -- Now we *can* prove full symmetry as we now have a proof that
 -- the witness produced by the surjection proof preserves equality
 sym : Bijection S T → Bijection T S
-sym = Inverse⇒Bijection ∘ Symmetry.inverse ∘ Bijection⇒Inverse
+sym = Symmetry.bijectionWithoutCongruence
 
 trans : Trans (Bijection {a} {ℓ₁} {b} {ℓ₂}) (Bijection {b} {ℓ₂} {c} {ℓ₃}) Bijection
 trans = Composition.bijection
+
+------------------------------------------------------------------------
+-- Conversion functions
+
+Bijection⇒Inverse : Bijection S T → Inverse S T
+Bijection⇒Inverse bij = record
+  { to        = to
+  ; from      = Bijection.to (sym bij)
+  ; to-cong   = cong
+  ; from-cong = Bijection.cong (sym bij)
+  ; inverse   = inverseˡ , inverseʳ
+
+  }
+  where open Bijection bij
+
+Bijection⇒Equivalence : Bijection T S → Equivalence T S
+Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
 
 ------------------------------------------------------------------------
 -- Propositional properties
