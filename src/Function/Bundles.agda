@@ -172,7 +172,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective  = surjective
       }
 
-    open IsBijection isBijection public using (module Eq₁; module Eq₂)
+    open IsBijection isBijection public
+      using (module Eq₁; module Eq₂; inverseʳ; strictlyInverseʳ)
 
 
 ------------------------------------------------------------------------
