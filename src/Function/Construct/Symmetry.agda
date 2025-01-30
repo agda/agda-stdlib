@@ -11,7 +11,7 @@ module Function.Construct.Symmetry where
 open import Data.Product.Base using (_,_; swap; proj₁; proj₂)
 open import Function.Base using (_∘_)
 open import Function.Consequences
-  using (module IsSurjective)
+  using (module Section)
 open import Function.Definitions
   using (Bijective; Injective; Surjective; Inverseˡ; Inverseʳ; Inverseᵇ; Congruent)
 open import Function.Structures
@@ -33,31 +33,6 @@ private
 ------------------------------------------------------------------------
 -- Properties
 
-module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
-         ((inj , surj) : Bijective ≈₁ ≈₂ f) (refl : Reflexive ≈₁)
-         where
-
-  open IsSurjective {≈₂ = ≈₂} surj
-    using (section; section-strictInverseˡ)
-
-  private f∘section≡id = section-strictInverseˡ refl
-
-  section-cong : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₂ ≈₁ section
-  section-cong sym trans =
-    inj ∘ trans (f∘section≡id _) ∘ sym ∘ trans (f∘section≡id _) ∘ sym
-
-  injective : Symmetric ≈₂ → Transitive ≈₂ →
-              Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ section
-  injective sym trans cong gx≈gy =
-    trans (trans (sym (f∘section≡id _)) (cong gx≈gy)) (f∘section≡id _)
-
-  surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
-  surjective trans x = f x , inj ∘ trans (f∘section≡id _)
-
-  bijective : Symmetric ≈₂ → Transitive ≈₂ →
-                Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ section
-  bijective sym trans cong = injective sym trans cong , surjective trans
-
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f : A → B} {f⁻¹ : B → A} where
 
   inverseʳ : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₂ ≈₁ f⁻¹ f
@@ -76,31 +51,22 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
          {f : A → B} (isBij : IsBijection ≈₁ ≈₂ f)
          where
 
-  private
-    module IB = IsBijection isBij
+  private module B = IsBijection isBij
 
-  -- We can only flip a bijection if the witness produced by the
-  -- surjection proof respects the equality on the codomain.
-  isBijection : Congruent ≈₂ ≈₁ IB.section → IsBijection ≈₂ ≈₁ IB.section
-  isBijection section-cong = record
+  -- We can ALWAYS flip a bijection, WITHOUT knowing the witness produced
+  -- by the surjection proof respects the equality on the codomain.
+  isBijectionWithoutCongruence : IsBijection ≈₂ ≈₁ B.section
+  isBijectionWithoutCongruence = record
     { isInjection = record
       { isCongruent = record
-        { cong           = section-cong
-        ; isEquivalence₁ = IB.Eq₂.isEquivalence
-        ; isEquivalence₂ = IB.Eq₁.isEquivalence
+        { cong           = S.cong B.injective B.Eq₁.refl B.Eq₂.sym B.Eq₂.trans
+        ; isEquivalence₁ = B.Eq₂.isEquivalence
+        ; isEquivalence₂ = B.Eq₁.isEquivalence
         }
-      ; injective = injective IB.bijective IB.Eq₁.refl IB.Eq₂.sym IB.Eq₂.trans IB.cong
+      ; injective = S.injective B.Eq₁.refl B.Eq₂.sym B.Eq₂.trans
       }
-    ; surjective = surjective IB.bijective IB.Eq₁.refl IB.Eq₂.trans
-    }
-
-module _ {≈₁ : Rel A ℓ₁} {f : A → B} (isBij : IsBijection ≈₁ _≡_ f) where
-
-  -- We can always flip a bijection if using the equality over the
-  -- codomain is propositional equality.
-  isBijection-≡ : IsBijection _≡_ ≈₁ _
-  isBijection-≡ = isBijection isBij (IB.Eq₁.reflexive ∘ cong IB.section)
-    where module IB = IsBijection isBij
+    ; surjective = S.surjective B.injective B.Eq₁.refl B.Eq₂.trans
+    } where module S = Section ≈₂ B.surjective
 
 module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ : B → A} where
 
@@ -136,24 +102,14 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ :
 
 module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
 
-  private
-    module IB = Bijection bij
-
-  -- We can only flip a bijection if the witness produced by the
-  -- surjection proof respects the equality on the codomain.
-  bijection : Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ IB.section → Bijection S R
-  bijection cong = record
-    { to        = IB.section
-    ; cong      = cong
-    ; bijective = bijective IB.bijective IB.Eq₁.refl IB.Eq₂.sym IB.Eq₂.trans IB.cong
-    }
-
--- We can always flip a bijection if using the equality over the
--- codomain is propositional equality.
-bijection-≡ : {R : Setoid a ℓ₁} {B : Set b} →
-              Bijection R (setoid B) → Bijection (setoid B) R
-bijection-≡ bij = bijection bij (B.Eq₁.reflexive ∘ cong _)
- where module B = Bijection bij
+  -- We can always flip a bijection WITHOUT knowing if the witness produced
+  -- by the surjection proof respects the equality on the codomain.
+  bijectionWithoutCongruence : Bijection S R
+  bijectionWithoutCongruence = record
+    { to        = B.section
+    ; cong      = S.cong B.injective B.Eq₁.refl B.Eq₂.sym B.Eq₂.trans
+    ; bijective = S.bijective B.injective B.Eq₁.refl B.Eq₂.sym B.Eq₂.trans
+    } where module B = Bijection bij ; module S = Section (Setoid._≈_ S) B.surjective
 
 module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 
@@ -196,7 +152,7 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 -- Propositional bundles
 
 ⤖-sym : A ⤖ B → B ⤖ A
-⤖-sym b = bijection b (cong section) where open Bijection b using (section)
+⤖-sym = bijectionWithoutCongruence
 
 ⇔-sym : A ⇔ B → B ⇔ A
 ⇔-sym = equivalence
@@ -217,7 +173,7 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version v2.0
+-- Version 2.0
 
 sym-⤖ = ⤖-sym
 {-# WARNING_ON_USAGE sym-⤖
@@ -248,3 +204,68 @@ sym-↔ = ↔-sym
 "Warning: sym-↔ was deprecated in v2.0.
 Please use ↔-sym instead."
 #-}
+
+-- Version 2.3
+
+module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
+         ((inj , surj) : Bijective ≈₁ ≈₂ f) (refl : Reflexive ≈₁)
+         where
+
+  private
+    module S = Section ≈₂ surj
+
+  injective : Symmetric ≈₂ → Transitive ≈₂ →
+              Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ S.section
+  injective sym trans _ = S.injective refl sym trans
+
+  surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ S.section
+  surjective = S.surjective inj refl
+
+  bijective : Symmetric ≈₂ → Transitive ≈₂ →
+              Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ S.section
+  bijective sym trans _ = S.injective refl sym trans , surjective trans
+{-# WARNING_ON_USAGE injective
+"Warning: injective was deprecated in v2.0.
+Please use Function.Consequences.Section.injective instead, with a sharper type."
+#-}
+{-# WARNING_ON_USAGE surjective
+"Warning: surjective was deprecated in v2.0.
+Please use Function.Consequences.Section.surjective instead."
+#-}
+{-# WARNING_ON_USAGE bijective
+"Warning: bijective was deprecated in v2.0.
+Please use Function.Consequences.Section.bijective instead, with a sharper type."
+#-}
+
+module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
+         {f : A → B} (isBij : IsBijection ≈₁ ≈₂ f)
+         where
+  private module B = IsBijection isBij
+  isBijection : Congruent ≈₂ ≈₁ B.section → IsBijection ≈₂ ≈₁ B.section
+  isBijection _ = isBijectionWithoutCongruence isBij
+{-# WARNING_ON_USAGE isBijection
+"Warning: isBijection was deprecated in v2.3.
+Please use isBijectionWithoutCongruence instead, with a sharper type."
+#-}
+
+module _ {≈₁ : Rel A ℓ₁} {f : A → B} (isBij : IsBijection ≈₁ _≡_ f) where
+  isBijection-≡ : IsBijection _≡_ ≈₁ _
+  isBijection-≡ = isBijectionWithoutCongruence isBij
+{-# WARNING_ON_USAGE isBijection-≡
+"Warning: isBijection-≡ was deprecated in v2.3.
+Please use isBijectionWithoutCongruence instead, with a sharper type."
+#-}
+
+module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
+  private module B = Bijection bij
+  bijection : Congruent B.Eq₂._≈_ B.Eq₁._≈_ B.section → Bijection S R
+  bijection _ = bijectionWithoutCongruence bij
+
+bijection-≡ : {R : Setoid a ℓ₁} {B : Set b} →
+              Bijection R (setoid B) → Bijection (setoid B) R
+bijection-≡ = bijectionWithoutCongruence
+{-# WARNING_ON_USAGE bijection-≡
+"Warning: bijection-≡ was deprecated in v2.3.
+Please use bijectionWithoutCongruence instead, with a sharper type."
+#-}
+
