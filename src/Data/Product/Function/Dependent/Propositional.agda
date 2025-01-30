@@ -194,19 +194,19 @@ module _ where
     to′ = map (to I↠J) (to A↠B)
 
     backcast : ∀ {i} → B i → B (to I↠J (section I↠J i))
-    backcast = ≡.subst B (≡.sym (section-strictInverseˡ I↠J _))
+    backcast = ≡.subst B (≡.sym (strictlyInverseˡ I↠J _))
 
     section′ : Σ J B → Σ I A
     section′ = map (section I↠J) (section A↠B ∘ backcast)
 
     strictlySurjective′ : StrictlySurjective _≡_ to′
     strictlySurjective′ (x , y) = section′ (x , y) , Σ-≡,≡→≡
-      ( section-strictInverseˡ I↠J x
+      ( strictlyInverseˡ I↠J x
       , (begin
-           ≡.subst B (section-strictInverseˡ I↠J x) (to A↠B (section A↠B (backcast y)))
-             ≡⟨ ≡.cong (≡.subst B _) (section-strictInverseˡ A↠B _) ⟩
-           ≡.subst B (section-strictInverseˡ I↠J x) (backcast y)
-             ≡⟨ ≡.subst-subst-sym (section-strictInverseˡ I↠J x) ⟩
+           ≡.subst B (strictlyInverseˡ I↠J x) (to A↠B (section A↠B (backcast y)))
+             ≡⟨ ≡.cong (≡.subst B _) (strictlyInverseˡ A↠B _) ⟩
+           ≡.subst B (strictlyInverseˡ I↠J x) (backcast y)
+             ≡⟨ ≡.subst-subst-sym (strictlyInverseˡ I↠J x) ⟩
            y
              ∎)
       ) where open ≡.≡-Reasoning
@@ -254,7 +254,7 @@ module _ where
   Σ-↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ₛ′
     (Surjection.to surjection′)
     (Surjection.section surjection′)
-    (Surjection.section-strictInverseˡ surjection′)
+    (Surjection.strictlyInverseˡ surjection′)
     left-inverse-of
     where
     open ≡.≡-Reasoning

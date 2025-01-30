@@ -122,8 +122,8 @@ module _ where
 
       B-from : ∀ {y} → Func (B atₛ y) (A atₛ (ItoJ.section y))
       B-from = record
-        { to   = from      A⇔B ∘ cast      B (ItoJ.section-strictInverseˡ _)
-        ; cong = from-cong A⇔B ∘ cast-cong B (ItoJ.section-strictInverseˡ _)
+        { to   = from      A⇔B ∘ cast      B (ItoJ.strictlyInverseˡ _)
+        ; cong = from-cong A⇔B ∘ cast-cong B (ItoJ.strictlyInverseˡ _)
         }
 
 ------------------------------------------------------------------------
@@ -172,11 +172,11 @@ module _ where
     func = function (Surjection.function I↠J) (Surjection.function A↠B)
 
     section′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
-    section′ (j , y) = section I↠J j , section A↠B (cast B (section-strictInverseˡ I↠J _) y)
+    section′ (j , y) = section I↠J j , section A↠B (cast B (strictlyInverseˡ I↠J _) y)
 
     strictlySurj : StrictlySurjective (Func.Eq₂._≈_ func) (Func.to func)
     strictlySurj (j , y) = section′ (j , y) ,
-      section-strictInverseˡ I↠J j , IndexedSetoid.trans B (section-strictInverseˡ A↠B _) (cast-eq B (section-strictInverseˡ I↠J j))
+      strictlyInverseˡ I↠J j , IndexedSetoid.trans B (strictlyInverseˡ A↠B _) (cast-eq B (strictlyInverseˡ I↠J j))
 
     surj : Surjective (Func.Eq₁._≈_ func) (Func.Eq₂._≈_ func) (Func.to func)
     surj = strictlySurjective⇒surjective (I ×ₛ A) (J ×ₛ B) (Func.cong func) strictlySurj
