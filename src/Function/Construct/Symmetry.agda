@@ -225,15 +225,15 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
               Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ S.section
   bijective sym trans _ = S.injective refl sym trans , surjective trans
 {-# WARNING_ON_USAGE injective
-"Warning: injective was deprecated in v2.0.
+"Warning: injective was deprecated in v2.3.
 Please use Function.Consequences.Section.injective instead, with a sharper type."
 #-}
 {-# WARNING_ON_USAGE surjective
-"Warning: surjective was deprecated in v2.0.
+"Warning: surjective was deprecated in v2.3.
 Please use Function.Consequences.Section.surjective instead."
 #-}
 {-# WARNING_ON_USAGE bijective
-"Warning: bijective was deprecated in v2.0.
+"Warning: bijective was deprecated in v2.3.
 Please use Function.Consequences.Section.bijective instead, with a sharper type."
 #-}
 
