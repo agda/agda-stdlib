@@ -143,8 +143,11 @@ module Section (≈₂ : Rel B ℓ₂) (surj :  Surjective {A = A} ≈₁ ≈₂
     cong : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₂ ≈₁ section
     cong sym trans = inj ∘ trans (f∘section≡id _) ∘ sym ∘ trans (f∘section≡id _) ∘ sym
 
+    inverseʳ : Transitive ≈₂ → Inverseʳ ≈₁ ≈₂ f section
+    inverseʳ trans = inj ∘ trans (f∘section≡id _)
+
     surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
-    surjective trans x = f x , inj ∘ trans (f∘section≡id _)
+    surjective trans x = f x , inverseʳ trans
 
     bijective : Symmetric ≈₂ → Transitive ≈₂ → Bijective ≈₂ ≈₁ section
     bijective sym trans = injective refl sym trans , surjective trans
