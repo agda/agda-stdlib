@@ -11,9 +11,9 @@ module Function.Properties.Surjection where
 open import Function.Base using (_∘_; _$_)
 open import Function.Definitions using (Surjective; Injective; Congruent)
 open import Function.Bundles
-  using (Func; Surjection; _↠_; _⟶_; _↪_; mk↪; _⇔_; mk⇔)
-open import Function.Consequences using (module Section)
+  using (Func; Surjection; Bijection; _↠_; _⟶_; _↪_; mk↪; _⇔_; mk⇔)
 import Function.Construct.Identity as Identity
+import Function.Construct.Symmetry as Symmetry
 import Function.Construct.Composition as Compose
 open import Level using (Level)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
@@ -79,9 +79,13 @@ module _ (surjection : Surjection S T) where
 
   injective⇒to⁻-cong : Injective Eq₁._≈_ Eq₂._≈_ to →
                        Congruent Eq₂._≈_ Eq₁._≈_ section
-  injective⇒to⁻-cong injective =
-    Section.cong Eq₂._≈_ surjective injective Eq₁.refl Eq₂.sym Eq₂.trans
+  injective⇒to⁻-cong injective = section-cong
+    where
+    SB : Bijection S T
+    SB = record { cong = cong ; bijective = injective , surjective }
+    open Bijection (Symmetry.bijectionWithoutCongruence SB)
+      using () renaming (cong to section-cong)
 {-# WARNING_ON_USAGE injective⇒to⁻-cong
 "Warning: injective⇒to⁻-cong was deprecated in v2.3.
-Please use Symmetry.section-cong instead. "
+Please use Function.Construct.Symmetry.bijectionWithoutCongruence instead. "
 #-}
