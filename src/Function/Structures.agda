@@ -67,16 +67,15 @@ record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
 
   open IsCongruent isCongruent public
 
-  private module IS = IsSurjective {≈₂ = _≈₂_} surjective
+  private module S = Section _≈₂_ surjective
 
-  open IS public
-    using (section; section-inverseˡ)
+  open S public using (section; inverseˡ)
 
   strictlySurjective : StrictlySurjective _≈₂_ f
-  strictlySurjective = IS.strictlySurjective Eq₁.refl
+  strictlySurjective = S.strictlySurjective Eq₁.refl
 
-  section-strictInverseˡ : StrictlyInverseˡ _≈₂_ f section
-  section-strictInverseˡ _ = IS.section-inverseˡ Eq₁.refl
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ f section
+  strictlyInverseˡ _ = S.inverseˡ Eq₁.refl
 
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -96,7 +95,7 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     }
 
   open IsSurjection isSurjection public
-    using (strictlySurjective; section; section-strictInverseˡ)
+    using (strictlySurjective; section; inverseˡ; strictlyInverseˡ)
 
 
 ------------------------------------------------------------------------
