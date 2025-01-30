@@ -17,7 +17,6 @@ open import Relation.Binary.Definitions using (Reflexive; Trans)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
-open import Function.Properties.Surjection using (injective⇒section-cong)
 open import Function.Properties.Inverse
   using (Inverse⇒Bijection; Inverse⇒Equivalence)
 
@@ -39,7 +38,7 @@ Bijection⇒Inverse bij = record
   { to        = to
   ; from      = section
   ; to-cong   = cong
-  ; from-cong = injective⇒section-cong surjection injective
+  ; from-cong = Symmetry.section-cong bijective Eq₁.refl Eq₂.sym Eq₂.trans
   ; inverse   = section-inverseˡ
               , λ y≈to[x] → injective (Eq₂.trans (section-strictInverseˡ _) y≈to[x])
   }
