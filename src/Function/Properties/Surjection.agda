@@ -10,12 +10,13 @@ module Function.Properties.Surjection where
 
 open import Function.Base using (_∘_; _$_)
 open import Function.Definitions using (Surjective; Injective; Congruent)
-open import Function.Bundles using (Func; Surjection; _↠_; _⟶_; _↪_; mk↪;
-  _⇔_; mk⇔)
+open import Function.Bundles
+  using (Func; Surjection; _↠_; _⟶_; _↪_; mk↪; _⇔_; mk⇔)
 import Function.Construct.Identity as Identity
+import Function.Construct.Symmetry as Symmetry
 import Function.Construct.Composition as Compose
 open import Level using (Level)
-open import Data.Product.Base using (proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.Definitions using (Reflexive; Trans)
 open import Relation.Binary.Bundles using (Setoid)
@@ -31,8 +32,8 @@ private
 -- Constructors
 
 mkSurjection : (f : Func S T) (open Func f) →
-              Surjective Eq₁._≈_ Eq₂._≈_ to  →
-              Surjection S T
+               Surjective Eq₁._≈_ Eq₂._≈_ to  →
+               Surjection S T
 mkSurjection f surjective = record
   { Func f
   ; surjective = surjective
@@ -63,22 +64,6 @@ trans : Trans (Surjection {a} {ℓ₁} {b} {ℓ₂})
               (Surjection {a} {ℓ₁} {c} {ℓ₃})
 trans = Compose.surjection
 
-------------------------------------------------------------------------
--- Other
-
-injective⇒section-cong : (surj : Surjection S T) →
-                         (open Surjection surj) →
-                         Injective Eq₁._≈_ Eq₂._≈_ to →
-                         Congruent Eq₂._≈_ Eq₁._≈_ section
-injective⇒section-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
-  to (section x) ≈⟨ section-strictInverseˡ x ⟩
-  x              ≈⟨ x≈y ⟩
-  y              ≈⟨ section-strictInverseˡ y ⟨
-  to (section y) ∎
-  where
-  open ≈-Reasoning T
-  open Surjection surj
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -88,8 +73,15 @@ injective⇒section-cong {T = T} surj injective {x} {y} x≈y = injective $ begi
 
 -- Version 2.3
 
-injective⇒to⁻-cong = injective⇒section-cong
+module _ (surjection : Surjection S T) where
+
+  open Surjection surjection
+                     
+  injective⇒to⁻-cong : Injective Eq₁._≈_ Eq₂._≈_ to →
+                       Congruent Eq₂._≈_ Eq₁._≈_ section
+  injective⇒to⁻-cong injective =
+    Symmetry.section-cong (injective , surjective) Eq₁.refl Eq₂.sym Eq₂.trans
 {-# WARNING_ON_USAGE injective⇒to⁻-cong
 "Warning: injective⇒to⁻-cong was deprecated in v2.3.
-Please use injective⇒section-cong instead. "
+Please use Symmetry.section-cong instead. "
 #-}
