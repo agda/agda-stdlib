@@ -76,7 +76,7 @@ trans = Compose.surjection
 module _ (surjection : Surjection S T) where
 
   open Surjection surjection
-                     
+
   injective⇒to⁻-cong : Injective Eq₁._≈_ Eq₂._≈_ to →
                        Congruent Eq₂._≈_ Eq₁._≈_ section
   injective⇒to⁻-cong injective =
