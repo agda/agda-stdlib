@@ -205,8 +205,8 @@ _≥?_ = flip _≤?_
 
 ≤-total : Total _≤_
 ≤-total m n with m ≤? n
-... | yes m≤n = inj₁ m≤n
-... | no  m≰n = inj₂ (≰⇒≥ m≰n)
+... | true because m≤n = inj₁ (invert m≤n)
+... | false because m≰n = inj₂ (≰⇒≥ (invert m≰n))
 
 ------------------------------------------------------------------------
 -- Structures
