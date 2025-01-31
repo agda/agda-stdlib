@@ -22,7 +22,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 private
@@ -47,8 +47,8 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f : A → B} {f⁻¹ :
 ------------------------------------------------------------------------
 -- Structures
 
-module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
-         {f : A → B} (isBij : IsBijection ≈₁ ≈₂ f)
+module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
+         (isBij : IsBijection ≈₁ ≈₂ f)
          where
 
   private module B = IsBijection isBij
@@ -105,11 +105,9 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
   -- We can always flip a bijection WITHOUT knowing if the witness produced
   -- by the surjection proof respects the equality on the codomain.
   bijectionWithoutCongruence : Bijection S R
-  bijectionWithoutCongruence = record
-    { to        = B.section
-    ; cong      = S.cong B.injective B.Eq₁.refl B.Eq₂.sym B.Eq₂.trans
-    ; bijective = S.bijective B.injective B.Eq₁.refl B.Eq₂.sym B.Eq₂.trans
-    } where module B = Bijection bij ; module S = Section (Setoid._≈_ S) B.surjective
+  bijectionWithoutCongruence = record {
+      IsBijection (isBijectionWithoutCongruence B.isBijection)
+    } where module B = Bijection bij
 
 module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 
@@ -223,7 +221,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
 
   bijective : Symmetric ≈₂ → Transitive ≈₂ →
               Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ S.section
-  bijective sym trans _ = S.injective refl sym trans , surjective trans
+  bijective sym trans cong = injective sym trans cong , surjective trans
 {-# WARNING_ON_USAGE injective
 "Warning: injective was deprecated in v2.3.
 Please use Function.Consequences.Section.injective instead, with a sharper type."
@@ -237,8 +235,8 @@ Please use Function.Consequences.Section.surjective instead."
 Please use Function.Consequences.Section.bijective instead, with a sharper type."
 #-}
 
-module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
-         {f : A → B} (isBij : IsBijection ≈₁ ≈₂ f)
+module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
+         (isBij : IsBijection ≈₁ ≈₂ f)
          where
   private module B = IsBijection isBij
   isBijection : Congruent ≈₂ ≈₁ B.section → IsBijection ≈₂ ≈₁ B.section
