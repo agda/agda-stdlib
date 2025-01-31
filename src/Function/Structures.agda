@@ -60,7 +60,7 @@ record IsInjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   open IsCongruent isCongruent public
 
 
-record IsSurjection (f : A → B ) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isCongruent : IsCongruent f
     surjective  : Surjective _≈₁_ _≈₂_ f
@@ -75,7 +75,7 @@ record IsSurjection (f : A → B ) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   strictlySurjective = S.strictlySurjective Eq₁.refl
 
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ f section
-  strictlyInverseˡ _ = S.inverseˡ Eq₁.refl
+  strictlyInverseˡ _ = inverseˡ Eq₁.refl
 
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -120,7 +120,7 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
     renaming (cong to to-cong)
 
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
-  strictlyInverseˡ = inverseˡ⇒strictlyInverseˡ _≈₁_ _≈₂_ Eq₁.refl inverseˡ
+  strictlyInverseˡ _ = inverseˡ Eq₁.refl
 
   isSurjection : IsSurjection to
   isSurjection = record
@@ -139,10 +139,10 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
     renaming (cong to to-cong)
 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
-  strictlyInverseʳ = inverseʳ⇒strictlyInverseʳ _≈₁_ _≈₂_ Eq₂.refl inverseʳ
+  strictlyInverseʳ _ = inverseʳ Eq₂.refl
 
   injective : Injective _≈₁_ _≈₂_ to
-  injective = inverseʳ⇒injective {f⁻¹ = from} _≈₂_ to Eq₂.refl Eq₁.sym Eq₁.trans inverseʳ
+  injective = inverseʳ⇒injective _≈₂_ to Eq₂.refl Eq₁.sym Eq₁.trans inverseʳ
 
   isInjection : IsInjection to
   isInjection = record

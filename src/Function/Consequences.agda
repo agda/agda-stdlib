@@ -50,8 +50,7 @@ inverseʳ⇒injective : ∀ (≈₂ : Rel B ℓ₂) f →
                      Transitive ≈₁ →
                      Inverseʳ ≈₁ ≈₂ f f⁻¹ →
                      Injective ≈₁ ≈₂ f
-inverseʳ⇒injective ≈₂ f refl sym trans invʳ {x} {y} fx≈fy =
-  trans (sym (invʳ refl)) (invʳ fx≈fy)
+inverseʳ⇒injective ≈₂ f refl sym trans invʳ = trans (sym (invʳ refl)) ∘ invʳ
 
 ------------------------------------------------------------------------
 -- Inverseᵇ
@@ -69,16 +68,15 @@ inverseᵇ⇒bijective {f = f} ≈₂ refl sym trans (invˡ , invʳ) =
 -- StrictlySurjective
 
 surjective⇒strictlySurjective : ∀ (≈₂ : Rel B ℓ₂) →
-                                 Reflexive ≈₁ →
-                                 Surjective ≈₁ ≈₂ f →
-                                 StrictlySurjective ≈₂ f
-surjective⇒strictlySurjective _ refl surj x =
-  Product.map₂ (λ v → v refl) (surj x)
+                                Reflexive ≈₁ →
+                                Surjective ≈₁ ≈₂ f →
+                                StrictlySurjective ≈₂ f
+surjective⇒strictlySurjective _ refl surj = Product.map₂ (λ v → v refl) ∘ surj
 
 strictlySurjective⇒surjective : Transitive ≈₂ →
-                                 Congruent ≈₁ ≈₂ f →
-                                 StrictlySurjective ≈₂ f →
-                                 Surjective ≈₁ ≈₂ f
+                                Congruent ≈₁ ≈₂ f →
+                                StrictlySurjective ≈₂ f →
+                                Surjective ≈₁ ≈₂ f
 strictlySurjective⇒surjective trans cong surj x =
   Product.map₂ (λ fy≈x z≈y → trans (cong z≈y) fy≈x) (surj x)
 
@@ -134,7 +132,7 @@ module Section (≈₂ : Rel B ℓ₂) (surj :  Surjective {A = A} ≈₁ ≈₂
     strictlyInverseˡ _ = inverseˡ refl
 
     strictlyInverseʳ : StrictlyInverseʳ ≈₂ section f
-    strictlyInverseʳ _ = inverseˡ refl
+    strictlyInverseʳ = strictlyInverseˡ
 
     injective : Symmetric ≈₂ → Transitive ≈₂ → Injective ≈₂ ≈₁ section
     injective sym trans = trans (sym (strictlyInverseˡ _)) ∘ inverseˡ
