@@ -102,8 +102,8 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   inverseʳ : Inverseʳ _≈₁_ _≈₂_ f section
   inverseʳ = S.inverseʳ injective Eq₁.refl Eq₂.trans
 
-  strictlyInverseʳ : StrictlyInverseʳ _≈₂_ section f
-  strictlyInverseʳ = S.strictlyInverseʳ Eq₁.refl
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ f section
+  strictlyInverseʳ _ = inverseʳ Eq₂.refl
 
 
 ------------------------------------------------------------------------

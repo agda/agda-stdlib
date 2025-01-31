@@ -123,7 +123,7 @@ Additions to existing modules
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to section
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to section
   inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to section
-  strictlyInverseʳ : StrictlyInverseʳ _≈₂_ section to
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to section
   ```
 
 * In `Function.Bundles.LeftInverse`:
@@ -162,7 +162,7 @@ Additions to existing modules
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ f section
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ f section
   inverseʳ         : Inverseʳ _≈₁_ _≈₂_ f section
-  strictlyInverseʳ : StrictlyInverseʳ _≈₂_ section f
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ f section
   ```
 
 * In `Function.Structures.IsSurjection`:
