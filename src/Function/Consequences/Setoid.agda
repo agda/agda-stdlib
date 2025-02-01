@@ -90,3 +90,38 @@ strictlyInverseʳ⇒inverseʳ : Congruent ≈₂ ≈₁ f⁻¹ →
                             StrictlyInverseʳ ≈₁ f f⁻¹ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹
 strictlyInverseʳ⇒inverseʳ = C.strictlyInverseʳ⇒inverseʳ S.trans
+
+------------------------------------------------------------------------
+-- Section
+
+module Section (surj :  Surjective ≈₁ ≈₂ f) where
+
+  private module Sf = C.Section ≈₂ surj
+
+  open Sf public using (section; inverseˡ)
+
+  strictlySurjective : StrictlySurjective ≈₂ f
+  strictlySurjective = Sf.strictlySurjective S.refl
+
+  strictlyInverseˡ : StrictlyInverseˡ ≈₂ f section
+  strictlyInverseˡ = Sf.strictlyInverseˡ S.refl
+
+  injective : Injective ≈₂ ≈₁ section
+  injective = Sf.injective S.refl T.sym T.trans
+
+  module _ (inj : Injective ≈₁ ≈₂ f) where
+
+    cong : Congruent ≈₂ ≈₁ section
+    cong = Sf.cong inj S.refl T.sym T.trans
+
+    inverseʳ : Inverseʳ ≈₁ ≈₂ f section
+    inverseʳ = Sf.inverseʳ inj S.refl T.trans
+
+    strictlyInverseʳ : StrictlyInverseʳ ≈₁ f section
+    strictlyInverseʳ = Sf.strictlyInverseʳ inj S.refl T.refl T.trans
+
+    surjective : Surjective ≈₂ ≈₁ section
+    surjective = Sf.surjective inj S.refl T.trans
+
+    bijective : Bijective ≈₂ ≈₁ section
+    bijective = Sf.bijective inj S.refl T.sym T.trans
