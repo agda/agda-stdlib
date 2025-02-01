@@ -20,6 +20,7 @@
 module Function.Bundles where
 
 open import Function.Base using (_∘_)
+open import Function.Consequences.Propositional
 open import Function.Definitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
@@ -28,7 +29,6 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Function.Consequences.Propositional
 open Setoid using (isEquivalence)
 
 private
