@@ -19,7 +19,7 @@ module Function.Structures {a b ℓ₁ ℓ₂}
 
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base
-open import Function.Consequences
+open import Function.Consequences.Setoid
 open import Function.Definitions
 open import Level using (_⊔_)
 
@@ -67,15 +67,8 @@ record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
 
   open IsCongruent isCongruent public
 
-  private module S = Section _≈₂_ surjective
-
-  open S public using (section; inverseˡ)
-
-  strictlySurjective : StrictlySurjective _≈₂_ f
-  strictlySurjective = S.strictlySurjective Eq₁.refl
-
-  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ f section
-  strictlyInverseˡ _ = inverseˡ Eq₁.refl
+  open Section Eq₁.setoid Eq₂.setoid surjective public
+    using (section; inverseˡ; strictlyInverseˡ; strictlySurjective)
 
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -94,16 +87,16 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     ; surjective  = surjective
     }
 
-  open IsSurjection isSurjection public
+  private module S = Section Eq₁.setoid Eq₂.setoid surjective
+
+  open S public
     using (strictlySurjective; section; inverseˡ; strictlyInverseˡ)
 
-  private module S = Section _≈₂_ surjective
-
   inverseʳ : Inverseʳ _≈₁_ _≈₂_ f section
-  inverseʳ = S.inverseʳ injective Eq₁.refl Eq₂.trans
+  inverseʳ = S.inverseʳ injective
 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ f section
-  strictlyInverseʳ _ = inverseʳ Eq₂.refl
+  strictlyInverseʳ = S.strictlyInverseʳ injective
 
 
 ------------------------------------------------------------------------
@@ -125,7 +118,7 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
   isSurjection : IsSurjection to
   isSurjection = record
     { isCongruent = isCongruent
-    ; surjective = inverseˡ⇒surjective _≈₂_ inverseˡ
+    ; surjective = inverseˡ⇒surjective Eq₁.setoid Eq₂.setoid inverseˡ
     }
 
 
@@ -142,7 +135,7 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
   strictlyInverseʳ _ = inverseʳ Eq₂.refl
 
   injective : Injective _≈₁_ _≈₂_ to
-  injective = inverseʳ⇒injective _≈₂_ to Eq₂.refl Eq₁.sym Eq₁.trans inverseʳ
+  injective = inverseʳ⇒injective Eq₁.setoid Eq₂.setoid to inverseʳ
 
   isInjection : IsInjection to
   isInjection = record
