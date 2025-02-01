@@ -146,7 +146,8 @@ Additions to existing modules
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to section
   ```
 
-* In `Function.Consequences`: the theory of the left inverse of a surjective function
+* In `Function.Consequences` and `Function.Consequences.Setoid`:
+  the theory of the left inverse of a surjective function
   ```agda
   module Section (surj :  Surjective ≈₁ ≈₂ f)
   ```
