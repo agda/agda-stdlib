@@ -155,7 +155,7 @@ Additions to existing modules
 * In `Function.Construct.Symmetry`:
   ```agda
   isBijectionWithoutCongruence : (IsBijection ≈₁ ≈₂ f) → IsBijection ≈₂ ≈₁ section
-  bijectionWithoutCongruence   : (Bijection R S) → IsBijection S R
+  bijectionWithoutCongruence   : (Bijection R S) → Bijection S R
   ```
 
 * In `Function.Properties.Bijection`:
