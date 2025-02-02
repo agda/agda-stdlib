@@ -152,6 +152,12 @@ Additions to existing modules
   module Section (surj :  Surjective ≈₁ ≈₂ f)
   ```
 
+* In `Function.Construct.Symmetry`:
+  ```agda
+  isBijectionWithoutCongruence : (IsBijection ≈₁ ≈₂ f) → IsBijection ≈₂ ≈₁ section
+  bijectionWithoutCongruence   : (Bijection R S) → IsBijection S R
+  ```
+
 * In `Function.Properties.Bijection`:
   ```agda
   sym : Bijection S T → Bijection T S
