@@ -115,10 +115,12 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   strictlyInverseˡ _ = inverseˡ Eq₁.refl
 
+  surjective = inverseˡ⇒surjective Eq₁.setoid Eq₂.setoid inverseˡ
+
   isSurjection : IsSurjection to
   isSurjection = record
     { isCongruent = isCongruent
-    ; surjective = inverseˡ⇒surjective Eq₁.setoid Eq₂.setoid inverseˡ
+    ; surjective = surjective
     }
 
 

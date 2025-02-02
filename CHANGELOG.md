@@ -172,6 +172,17 @@ Additions to existing modules
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ f section
   ```
 
+* In `Function.Structures.IsLeftInverse`:
+  ```agda
+  surjective : Surjective _≈₁_ _≈₂_ to
+  ```
+
+* In `Function.Structures.IsRightInverse`:
+  ```agda
+  injective   : Injective _≈₁_ _≈₂_ to
+  isInjection : IsInjection to
+  ```
+
 * In `Function.Structures.IsSurjection`:
   ```agda
   section          : B → A
