@@ -31,7 +31,7 @@ private
 
 contraInjective : ∀ (≈₂ : Rel B ℓ₂) → Injective ≈₁ ≈₂ f →
                   ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
-contraInjective _ inj p = contraposition inj p
+contraInjective _ inj = contraposition inj
 
 ------------------------------------------------------------------------
 -- Inverseˡ
@@ -39,7 +39,7 @@ contraInjective _ inj p = contraposition inj p
 inverseˡ⇒surjective : ∀ (≈₂ : Rel B ℓ₂) →
                       Inverseˡ ≈₁ ≈₂ f f⁻¹ →
                       Surjective ≈₁ ≈₂ f
-inverseˡ⇒surjective ≈₂ invˡ y = (_ , invˡ)
+inverseˡ⇒surjective ≈₂ invˡ _ = (_ , invˡ)
 
 ------------------------------------------------------------------------
 -- Inverseʳ
@@ -103,14 +103,15 @@ inverseʳ⇒strictlyInverseʳ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ�
                             Reflexive ≈₂ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹ →
                             StrictlyInverseʳ ≈₁ f f⁻¹
-inverseʳ⇒strictlyInverseʳ _ _ refl sinv x = sinv refl
+inverseʳ⇒strictlyInverseʳ  {f = f} {f⁻¹ = f⁻¹} ≈₁ ≈₂ =
+  inverseˡ⇒strictlyInverseˡ {f = f⁻¹} {f⁻¹ = f} ≈₂ ≈₁
 
 strictlyInverseʳ⇒inverseʳ : Transitive ≈₁ →
                             Congruent ≈₂ ≈₁ f⁻¹ →
                             StrictlyInverseʳ ≈₁ f f⁻¹ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹
-strictlyInverseʳ⇒inverseʳ trans cong sinv {x} y≈f⁻¹x =
-  trans (cong y≈f⁻¹x) (sinv x)
+strictlyInverseʳ⇒inverseʳ {≈₁ = ≈₁} {≈₂ = ≈₂} {f⁻¹ = f⁻¹} {f = f} =
+  strictlyInverseˡ⇒inverseˡ {≈₂ = ≈₁} {≈₁ = ≈₂} {f = f⁻¹} {f⁻¹ = f}
 
 ------------------------------------------------------------------------
 -- Theory of the section of a Surjective function
