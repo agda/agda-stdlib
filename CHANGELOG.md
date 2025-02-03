@@ -51,6 +51,12 @@ Deprecated names
   ∣∣-trans   ↦  ∥-trans
   ```
 
+* In `Algebra.Structures`:
+  ```agda
+  uniqueˡ-⁻¹   ↦  Algebra.Properties.Group.inverseˡ-unique
+  uniqueʳ-⁻¹   ↦  Algebra.Properties.Group.inverseʳ-unique
+  ```
+
 New modules
 -----------
 
