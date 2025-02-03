@@ -32,11 +32,9 @@ import Algebra.Module.Bundles.Raw as Raw
 open import Algebra.Module.Core
 open import Algebra.Module.Structures
 open import Algebra.Module.Definitions
-open import Algebra.Properties.Group
 open import Function.Base
 open import Level
 open import Relation.Binary.Core using (Rel)
-open import Relation.Nullary    using (¬_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
