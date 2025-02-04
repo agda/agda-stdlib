@@ -213,7 +213,7 @@ module _ (ring : Ring r ℓr)
       ; inverseʳ   to -ᴹ‿inverseʳ
       )
 
-    open AbelianGroupProperties (record { isAbelianGroup = +ᴹ-isAbelianGroup }) public
+    open AbelianGroupProperties record { isAbelianGroup = +ᴹ-isAbelianGroup } public
       using () renaming (inverseˡ-unique to uniqueˡ‿-ᴹ; inverseʳ-unique to uniqueʳ‿-ᴹ)
 
 
@@ -243,7 +243,7 @@ module _ (ring : Ring r ℓr)
       ; inverseʳ   to -ᴹ‿inverseʳ
       )
 
-    open AbelianGroupProperties (record { isAbelianGroup = +ᴹ-isAbelianGroup }) public
+    open AbelianGroupProperties record { isAbelianGroup = +ᴹ-isAbelianGroup } public
       using () renaming (inverseˡ-unique to uniqueˡ‿-ᴹ; inverseʳ-unique to uniqueʳ‿-ᴹ)
 
 
