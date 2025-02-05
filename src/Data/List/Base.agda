@@ -591,6 +591,7 @@ Please use Data.Bool.ListAction.or instead."
 {-# WARNING_ON_USAGE any
 "Warning: any was deprecated in v2.3.
 Please use Data.Bool.ListAction.any instead."
+#-}
 
 sum : List ℕ → ℕ
 sum = foldr ℕ._+_ 0
