@@ -60,28 +60,28 @@ record IsInjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   open IsCongruent isCongruent public
 
 
-record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsSurjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isCongruent : IsCongruent f
-    surjective  : Surjective _≈₁_ _≈₂_ f
+    isCongruent : IsCongruent to
+    surjective  : Surjective _≈₁_ _≈₂_ to
 
   open IsCongruent isCongruent public
 
   open Section Eq₁.setoid Eq₂.setoid surjective public
-    using (section; inverseˡ; strictlyInverseˡ; strictlySurjective)
+    using (from; inverseˡ; strictlyInverseˡ; strictlySurjective)
 
 
-record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsBijection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isInjection : IsInjection f
-    surjective  : Surjective _≈₁_ _≈₂_ f
+    isInjection : IsInjection to
+    surjective  : Surjective _≈₁_ _≈₂_ to
 
   open IsInjection isInjection public
 
-  bijective : Bijective _≈₁_ _≈₂_ f
+  bijective : Bijective _≈₁_ _≈₂_ to
   bijective = injective , surjective
 
-  isSurjection : IsSurjection f
+  isSurjection : IsSurjection to
   isSurjection = record
     { isCongruent = isCongruent
     ; surjective  = surjective
@@ -90,12 +90,12 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   private module S = Section Eq₁.setoid Eq₂.setoid surjective
 
   open S public
-    using (strictlySurjective; section; inverseˡ; strictlyInverseˡ)
+    using (strictlySurjective; from; inverseˡ; strictlyInverseˡ)
 
-  inverseʳ : Inverseʳ _≈₁_ _≈₂_ f section
+  inverseʳ : Inverseʳ _≈₁_ _≈₂_ to from
   inverseʳ = S.inverseʳ injective
 
-  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ f section
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
   strictlyInverseʳ = S.strictlyInverseʳ injective
 
 

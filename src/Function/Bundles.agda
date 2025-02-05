@@ -112,19 +112,19 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsSurjection isSurjection public
       using
       ( strictlySurjective
-      ; section
+      ; from
       ; inverseˡ
       ; strictlyInverseˡ
       )
 
     to⁻ : B → A
-    to⁻ = section
+    to⁻ = from
     {-# WARNING_ON_USAGE to⁻
     "Warning: to⁻ was deprecated in v2.3.
-    Please use Function.Structures.IsSurjection.section instead. "
+    Please use Function.Structures.IsSurjection.from instead. "
     #-}
 
-    to∘to⁻ : StrictlyInverseˡ _≈₂_ to section
+    to∘to⁻ : StrictlyInverseˡ _≈₂_ to from
     to∘to⁻ = strictlyInverseˡ
     {-# WARNING_ON_USAGE to∘to⁻
     "Warning: to∘to⁻ was deprecated in v2.3.
@@ -161,7 +161,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open Surjection surjection public
       using (isSurjection
             ; strictlySurjective
-            ; section
+            ; from
             ; inverseˡ
             ; strictlyInverseˡ
             )

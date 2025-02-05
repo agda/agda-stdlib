@@ -57,7 +57,7 @@ module _ where
          Σ I A ⇔ Σ J B
   Σ-⇔ {B = B} I↠J A⇔B = mk⇔
     (map (to  I↠J) (Equivalence.to A⇔B))
-    (map (section I↠J) (Equivalence.from A⇔B ∘ ≡.subst B (≡.sym (proj₂ (surjective I↠J _) ≡.refl))))
+    (map (from I↠J) (Equivalence.from A⇔B ∘ ≡.subst B (≡.sym (proj₂ (surjective I↠J _) ≡.refl))))
 
   -- See also Data.Product.Relation.Binary.Pointwise.Dependent.WithK.↣.
 
@@ -193,17 +193,17 @@ module _ where
     to′ : Σ I A → Σ J B
     to′ = map (to I↠J) (to A↠B)
 
-    backcast : ∀ {i} → B i → B (to I↠J (section I↠J i))
+    backcast : ∀ {i} → B i → B (to I↠J (from I↠J i))
     backcast = ≡.subst B (≡.sym (strictlyInverseˡ I↠J _))
 
     section′ : Σ J B → Σ I A
-    section′ = map (section I↠J) (section A↠B ∘ backcast)
+    section′ = map (from I↠J) (from A↠B ∘ backcast)
 
     strictlySurjective′ : StrictlySurjective _≡_ to′
     strictlySurjective′ (x , y) = section′ (x , y) , Σ-≡,≡→≡
       ( strictlyInverseˡ I↠J x
       , (begin
-           ≡.subst B (strictlyInverseˡ I↠J x) (to A↠B (section A↠B (backcast y)))
+           ≡.subst B (strictlyInverseˡ I↠J x) (to A↠B (from A↠B (backcast y)))
              ≡⟨ ≡.cong (≡.subst B _) (strictlyInverseˡ A↠B _) ⟩
            ≡.subst B (strictlyInverseˡ I↠J x) (backcast y)
              ≡⟨ ≡.subst-subst-sym (strictlyInverseˡ I↠J x) ⟩
@@ -253,7 +253,7 @@ module _ where
       Σ I A ↔ Σ J B
   Σ-↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ₛ′
     (Surjection.to surjection′)
-    (Surjection.section surjection′)
+    (Surjection.from surjection′)
     (Surjection.strictlyInverseˡ surjection′)
     left-inverse-of
     where
@@ -264,7 +264,7 @@ module _ where
     surjection′ : Σ I A ↠ Σ J B
     surjection′ = Σ-↠ (↔⇒↠ (≃⇒↔ I≃J)) (↔⇒↠ A↔B)
 
-    left-inverse-of : ∀ p → Surjection.section surjection′ (Surjection.to surjection′ p) ≡ p
+    left-inverse-of : ∀ p → Surjection.from surjection′ (Surjection.to surjection′ p) ≡ p
     left-inverse-of (x , y) = to Σ-≡,≡↔≡
       ( _≃_.left-inverse-of I≃J x
       , (≡.subst A (_≃_.left-inverse-of I≃J x)

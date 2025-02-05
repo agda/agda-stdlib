@@ -120,7 +120,7 @@ module _ where
       B-to : ∀ {x} → Func (A atₛ x) (B atₛ (ItoJ.to x))
       B-to = toFunction A⇔B
 
-      B-from : ∀ {y} → Func (B atₛ y) (A atₛ (ItoJ.section y))
+      B-from : ∀ {y} → Func (B atₛ y) (A atₛ (ItoJ.from y))
       B-from = record
         { to   = from      A⇔B ∘ cast      B (ItoJ.strictlyInverseˡ _)
         ; cong = from-cong A⇔B ∘ cast-cong B (ItoJ.strictlyInverseˡ _)
@@ -172,7 +172,7 @@ module _ where
     func = function (Surjection.function I↠J) (Surjection.function A↠B)
 
     section′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
-    section′ (j , y) = section I↠J j , section A↠B (cast B (strictlyInverseˡ I↠J _) y)
+    section′ (j , y) = from I↠J j , from A↠B (cast B (strictlyInverseˡ I↠J _) y)
 
     strictlySurj : StrictlySurjective (Func.Eq₂._≈_ func) (Func.to func)
     strictlySurj (j , y) = section′ (j , y) ,

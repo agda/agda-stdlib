@@ -24,7 +24,7 @@ private
     a b ℓ₁ ℓ₂ : Level
     A B : Set a
     ≈₁ ≈₂ : Rel A ℓ₁
-    f f⁻¹ : A → B
+    to f f⁻¹ : A → B
 
 ------------------------------------------------------------------------
 -- Injective
@@ -116,40 +116,40 @@ strictlyInverseʳ⇒inverseʳ {≈₁ = ≈₁} {≈₂ = ≈₂} {f⁻¹ = f⁻
 ------------------------------------------------------------------------
 -- Theory of the section of a Surjective function
 
-module Section (≈₂ : Rel B ℓ₂) (surj :  Surjective {A = A} ≈₁ ≈₂ f) where
+module Section (≈₂ : Rel B ℓ₂) (surj :  Surjective {A = A} ≈₁ ≈₂ to) where
 
-  section : B → A
-  section = proj₁ ∘ surj
+  from : B → A
+  from = proj₁ ∘ surj
 
-  inverseˡ : Inverseˡ ≈₁ ≈₂ f section
+  inverseˡ : Inverseˡ ≈₁ ≈₂ to from
   inverseˡ {x = x} = proj₂ (surj x)
 
   module _ (refl : Reflexive ≈₁) where
 
-    strictlySurjective : StrictlySurjective ≈₂ f
+    strictlySurjective : StrictlySurjective ≈₂ to
     strictlySurjective = surjective⇒strictlySurjective ≈₂ refl surj
 
-    strictlyInverseˡ : StrictlyInverseˡ ≈₂ f section
+    strictlyInverseˡ : StrictlyInverseˡ ≈₂ to from
     strictlyInverseˡ _ = inverseˡ refl
 
-    injective : Symmetric ≈₂ → Transitive ≈₂ → Injective ≈₂ ≈₁ section
+    injective : Symmetric ≈₂ → Transitive ≈₂ → Injective ≈₂ ≈₁ from
     injective sym trans = trans (sym (strictlyInverseˡ _)) ∘ inverseˡ
 
-  module _ (inj : Injective ≈₁ ≈₂ f) (refl : Reflexive ≈₁) where
+  module _ (inj : Injective ≈₁ ≈₂ to) (refl : Reflexive ≈₁) where
 
-    private f∘section≡id = strictlyInverseˡ refl
+    private to∘from≡id = strictlyInverseˡ refl
 
-    cong : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₂ ≈₁ section
-    cong sym trans = inj ∘ trans (f∘section≡id _) ∘ sym ∘ trans (f∘section≡id _) ∘ sym
+    cong : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₂ ≈₁ from
+    cong sym trans = inj ∘ trans (to∘from≡id _) ∘ sym ∘ trans (to∘from≡id _) ∘ sym
 
-    inverseʳ : Transitive ≈₂ → Inverseʳ ≈₁ ≈₂ f section
-    inverseʳ trans = inj ∘ trans (f∘section≡id _)
+    inverseʳ : Transitive ≈₂ → Inverseʳ ≈₁ ≈₂ to from
+    inverseʳ trans = inj ∘ trans (to∘from≡id _)
 
-    strictlyInverseʳ : Reflexive ≈₂ → Transitive ≈₂ → StrictlyInverseʳ ≈₁ f section
+    strictlyInverseʳ : Reflexive ≈₂ → Transitive ≈₂ → StrictlyInverseʳ ≈₁ to from
     strictlyInverseʳ refl trans _ = inverseʳ trans refl
 
-    surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ section
-    surjective trans x = f x , inverseʳ trans
+    surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ from
+    surjective trans x = to x , inverseʳ trans
 
-    bijective : Symmetric ≈₂ → Transitive ≈₂ → Bijective ≈₂ ≈₁ section
+    bijective : Symmetric ≈₂ → Transitive ≈₂ → Bijective ≈₂ ≈₁ from
     bijective sym trans = injective refl sym trans , surjective trans

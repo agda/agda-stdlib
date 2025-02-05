@@ -50,7 +50,7 @@ mkSurjection f surjective = record
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
-↠⇒⇔ s = mk⇔ to section
+↠⇒⇔ s = mk⇔ to from
   where open Surjection s
 
 ------------------------------------------------------------------------
@@ -78,13 +78,13 @@ module _ (surjection : Surjection S T) where
   open Surjection surjection
 
   injective⇒to⁻-cong : Injective Eq₁._≈_ Eq₂._≈_ to →
-                       Congruent Eq₂._≈_ Eq₁._≈_ section
-  injective⇒to⁻-cong injective = section-cong
+                       Congruent Eq₂._≈_ Eq₁._≈_ from
+  injective⇒to⁻-cong injective = from-cong
     where
     SB : Bijection S T
     SB = record { cong = cong ; bijective = injective , surjective }
     open Bijection (Symmetry.bijectionWithoutCongruence SB)
-      using () renaming (cong to section-cong)
+      using () renaming (cong to from-cong)
 {-# WARNING_ON_USAGE injective⇒to⁻-cong
 "Warning: injective⇒to⁻-cong was deprecated in v2.3.
 Please use Function.Construct.Symmetry.bijectionWithoutCongruence instead. "

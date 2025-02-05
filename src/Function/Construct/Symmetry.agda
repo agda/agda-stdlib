@@ -55,7 +55,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
 
   -- We can ALWAYS flip a bijection, WITHOUT knowing the witness produced
   -- by the surjection proof respects the equality on the codomain.
-  isBijectionWithoutCongruence : IsBijection ≈₂ ≈₁ B.section
+  isBijectionWithoutCongruence : IsBijection ≈₂ ≈₁ B.from
   isBijectionWithoutCongruence = record
     { isInjection = record
       { isCongruent = record
@@ -213,14 +213,14 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
     module S = Section ≈₂ surj
 
   injective : Symmetric ≈₂ → Transitive ≈₂ →
-              Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ S.section
+              Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ S.from
   injective sym trans _ = S.injective refl sym trans
 
-  surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ S.section
+  surjective : Transitive ≈₂ → Surjective ≈₂ ≈₁ S.from
   surjective = S.surjective inj refl
 
   bijective : Symmetric ≈₂ → Transitive ≈₂ →
-              Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ S.section
+              Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ S.from
   bijective sym trans cong = injective sym trans cong , surjective trans
 {-# WARNING_ON_USAGE injective
 "Warning: injective was deprecated in v2.3.
@@ -239,7 +239,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
          (isBij : IsBijection ≈₁ ≈₂ f)
          where
   private module B = IsBijection isBij
-  isBijection : Congruent ≈₂ ≈₁ B.section → IsBijection ≈₂ ≈₁ B.section
+  isBijection : Congruent ≈₂ ≈₁ B.from → IsBijection ≈₂ ≈₁ B.from
   isBijection _ = isBijectionWithoutCongruence isBij
 {-# WARNING_ON_USAGE isBijection
 "Warning: isBijection was deprecated in v2.3.
@@ -256,7 +256,7 @@ Please use isBijectionWithoutCongruence instead, with a sharper type."
 
 module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
   private module B = Bijection bij
-  bijection : Congruent B.Eq₂._≈_ B.Eq₁._≈_ B.section → Bijection S R
+  bijection : Congruent B.Eq₂._≈_ B.Eq₁._≈_ B.from → Bijection S R
   bijection _ = bijectionWithoutCongruence bij
 
 bijection-≡ : {R : Setoid a ℓ₁} {B : Set b} →
