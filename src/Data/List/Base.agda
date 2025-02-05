@@ -150,18 +150,6 @@ null : List A → Bool
 null []       = true
 null (x ∷ xs) = false
 
-and : List Bool → Bool
-and = foldr _∧_ true
-
-or : List Bool → Bool
-or = foldr _∨_ false
-
-any : (A → Bool) → List A → Bool
-any p = or ∘ map p
-
-all : (A → Bool) → List A → Bool
-all p = and ∘ map p
-
 length : List A → ℕ
 length = foldr (const suc) 0
 
@@ -576,6 +564,33 @@ Please use Data.List.Scans.Base.scanl instead."
 #-}
 
 -- Version 2.3
+
+and : List Bool → Bool
+and = foldr _∧_ true
+
+all : (A → Bool) → List A → Bool
+all p = and ∘ map p
+{-# WARNING_ON_USAGE and
+"Warning: and was deprecated in v2.3.
+Please use Data.Bool.ListAction.and instead."
+#-}
+{-# WARNING_ON_USAGE all
+"Warning: all was deprecated in v2.3.
+Please use Data.Nat.ListAction.all instead."
+#-}
+
+or : List Bool → Bool
+or = foldr _∨_ false
+
+any : (A → Bool) → List A → Bool
+any p = or ∘ map p
+{-# WARNING_ON_USAGE or
+"Warning: or was deprecated in v2.3.
+Please use Data.Bool.ListAction.or instead."
+#-}
+{-# WARNING_ON_USAGE any
+"Warning: any was deprecated in v2.3.
+Please use Data.Bool.ListAction.any instead."
 
 sum : List ℕ → ℕ
 sum = foldr ℕ._+_ 0
