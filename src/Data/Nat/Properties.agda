@@ -17,7 +17,7 @@ open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
 open import Algebra.Definitions.RawMagma using (_,_)
 open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
-  using (comm+cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ)
+  using (comm∧cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ)
 open import Algebra.Construct.NaturalChoice.Base
   using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
@@ -561,7 +561,7 @@ open ≤-Reasoning
 +-cancelˡ-≡ (suc m) _ _ eq = +-cancelˡ-≡ m _ _ (cong pred eq)
 
 +-cancelʳ-≡ : RightCancellative _≡_ _+_
-+-cancelʳ-≡ = comm+cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
++-cancelʳ-≡ = comm∧cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
 
 +-cancel-≡ : Cancellative _≡_ _+_
 +-cancel-≡ = +-cancelˡ-≡ , +-cancelʳ-≡
@@ -2039,11 +2039,11 @@ z≤′n {zero}  = ≤′-refl
 z≤′n {suc n} = ≤′-step z≤′n
 
 s≤′s : m ≤′ n → suc m ≤′ suc n
-s≤′s ≤′-refl        = ≤′-refl
+s≤′s (≤′-reflexive m≡n) = ≤′-reflexive (cong suc m≡n)
 s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 
 ≤′⇒≤ : _≤′_ ⇒ _≤_
-≤′⇒≤ ≤′-refl        = ≤-refl
+≤′⇒≤ (≤′-reflexive m≡n) = ≤-reflexive m≡n
 ≤′⇒≤ (≤′-step m≤′n) = m≤n⇒m≤1+n (≤′⇒≤ m≤′n)
 
 ≤⇒≤′ : _≤_ ⇒ _≤′_

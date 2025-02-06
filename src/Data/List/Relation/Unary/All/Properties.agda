@@ -10,9 +10,10 @@ module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
+open import Data.Bool.ListAction using (all)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (lookup; updateAt)
+open import Data.List.Base as List hiding (lookup; updateAt; and; or; all; any)
 open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
   using (there-injective-≢∈; ∈-filter⁻)
@@ -20,9 +21,6 @@ import Data.List.Membership.Setoid as SetoidMembership
 import Data.List.Properties as List
 import Data.List.Relation.Binary.Equality.Setoid as ≋
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
-import Data.List.Relation.Binary.Sublist.Propositional as Sublist
-import Data.List.Relation.Binary.Sublist.Propositional.Properties
-  as Sublist
 import Data.List.Relation.Binary.Subset.Propositional as Subset
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
@@ -43,13 +41,13 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; _because_; ¬?; decidable-stable; dec-true)
 open import Relation.Unary
-  using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
 
 private
@@ -388,11 +386,6 @@ concat⁻ : ∀ {xss} → All P (concat xss) → All (All P) xss
 concat⁻ {xss = []}       []  = []
 concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
 
-all⊆concat : (xss : List (List A)) → All (Sublist._⊆ concat xss) xss
-all⊆concat [] = []
-all⊆concat (xs ∷ xss) =
-  Sublist.++⁺ʳ (concat xss) Sublist.⊆-refl ∷ All.map (Sublist.++⁺ˡ xs) (all⊆concat xss)
-
 ------------------------------------------------------------------------
 -- snoc
 
@@ -444,9 +437,9 @@ drop⁺ (suc n) (px ∷ pxs) = drop⁺ n pxs
 
 dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
 dropWhile⁺               Q? []         = []
-dropWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
+dropWhile⁺ {xs = x ∷ xs} Q? px∷pxs@(_ ∷ pxs) with does (Q? x)
 ... | true  = dropWhile⁺ Q? pxs
-... | false = px ∷ pxs
+... | false = px∷pxs
 
 dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
 dropWhile⁻ {xs = []}     P? eq = []
@@ -476,12 +469,6 @@ takeWhile⁺               Q? []         = []
 takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 ... | true  = px ∷ takeWhile⁺ Q? pxs
 ... | false = []
-
-takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
-takeWhile⁻ {xs = []}     P? eq = []
-takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
-... | yes px = px ∷ takeWhile⁻ P? (List.∷-injectiveʳ eq)
-... | no ¬px = case eq of λ ()
 
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
 all-takeWhile P? []       = []
@@ -764,4 +751,13 @@ map-compose = map-∘
 {-# WARNING_ON_USAGE map-compose
 "Warning: map-compose was deprecated in v2.1.
 Please use map-∘ instead."
+#-}
+
+-- Version 2.2
+
+takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+takeWhile⁻ {xs = xs} P? eq rewrite sym eq = all-takeWhile P? xs
+{-# WARNING_ON_USAGE takeWhile⁻
+"Warning: takeWhile⁻ was deprecated in v2.2.
+Please use all-takeWhile instead."
 #-}
