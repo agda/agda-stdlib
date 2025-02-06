@@ -170,7 +170,7 @@ P -AlmostRightCancellative _•_ = ∀ x → P x ⊎ RightCancellativeAt x _•_
 Except P -RightCancellative _•_ = ∀ {x} → ¬ (P x) → RightCancellativeAt x _•_
 
 AlmostRightCancellative : A → Op₂ A → Set _
-AlmostRightCancellative e = (_≈ e) -AlmostLeftCancellative_
+AlmostRightCancellative e = (_≈ e) -AlmostRightCancellative_
 
 AlmostCancellative : A → Op₂ A → Set _
 AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
