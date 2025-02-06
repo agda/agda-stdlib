@@ -16,8 +16,6 @@ open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
   CommutativeMonoid; Monoid; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
 open import Algebra.Definitions.RawMagma using (_,_)
 open import Algebra.Morphism
-open import Algebra.Consequences.Propositional
-  using (comm+cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ)
 open import Algebra.Construct.NaturalChoice.Base
   using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
@@ -46,6 +44,10 @@ open import Relation.Nullary.Decidable using (True; via-injection; map′; recom
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 
+open import Algebra.Consequences.Propositional {A = ℕ}
+  using ( comm∧cancelˡ⇒cancelʳ
+        ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ
+        ; almost⇒exceptʳ)
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.Definitions
@@ -561,7 +563,7 @@ open ≤-Reasoning
 +-cancelˡ-≡ (suc m) _ _ eq = +-cancelˡ-≡ m _ _ (cong pred eq)
 
 +-cancelʳ-≡ : RightCancellative _≡_ _+_
-+-cancelʳ-≡ = comm+cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
++-cancelʳ-≡ = comm∧cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
 
 +-cancel-≡ : Cancellative _≡_ _+_
 +-cancel-≡ = +-cancelˡ-≡ , +-cancelʳ-≡
@@ -908,10 +910,16 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
+*-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
+*-almostCancelʳ-≡ zero    = inj₁ refl
+*-almostCancelʳ-≡ o@(suc _) = inj₂ lemma
+  module *-AlmostRightCancellative where
+  lemma : RightCancellativeAt o _*_
+  lemma zero    zero    _  = refl
+  lemma (suc m) (suc n) eq = cong suc (lemma m n (+-cancelˡ-≡ o (m * o) (n * o) eq))
+
 *-cancelʳ-≡ : ∀ m n o .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
-*-cancelʳ-≡ zero    zero    (suc o) eq = refl
-*-cancelʳ-≡ (suc m) (suc n) (suc o) eq =
-  cong suc (*-cancelʳ-≡ m n (suc o) (+-cancelˡ-≡ (suc o) (m * suc o) (n * suc o) eq))
+*-cancelʳ-≡ m n o = almost⇒exceptʳ _ _ *-almostCancelʳ-≡ (≢-nonZero⁻¹ _) m n
 
 *-cancelˡ-≡ : ∀ m n o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
 *-cancelˡ-≡ m n o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n o
