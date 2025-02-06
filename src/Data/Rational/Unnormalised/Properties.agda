@@ -1144,7 +1144,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-zeroˡ p@record{} = *≡* refl
 
 *-zeroʳ : RightZero _≃_ 0ℚᵘ _*_
-*-zeroʳ = Consequences.comm+zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
+*-zeroʳ = Consequences.comm∧zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
 
 *-zero : Zero _≃_ 0ℚᵘ _*_
 *-zero = *-zeroˡ , *-zeroʳ
@@ -1171,7 +1171,7 @@ invertible⇒≄ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≄1 (begin
   in *≡* eq where open ℤ-solver
 
 *-distribʳ-+ : _DistributesOverʳ_ _≃_ _*_ _+_
-*-distribʳ-+ = Consequences.comm+distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
+*-distribʳ-+ = Consequences.comm∧distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
 
 *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
