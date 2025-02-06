@@ -399,7 +399,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   -- function for elements `x₁` and `x₂` are equal if `x₁ ≈ x₂` .
   --
   -- The difference is the `from-cong` law --- generally, the section
-  -- (called `Surjection.to⁻` or `SplitSurjection.from`) of a surjection
+  -- (called `Surjection.from` or `SplitSurjection.from`) of a surjection
   -- need not respect equality, whereas it must in a split surjection.
   --
   -- The two notions coincide when the equivalence relation on `B` is
