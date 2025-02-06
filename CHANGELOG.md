@@ -57,8 +57,18 @@ Deprecated names
   uniqueʳ-⁻¹   ↦  Algebra.Properties.Group.inverseʳ-unique
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  and       ↦  Data.Bool.ListAction.and
+  or        ↦  Data.Bool.ListAction.or
+  any       ↦  Data.Bool.ListAction.any
+  all       ↦  Data.Bool.ListAction.all
+  ```
+
 New modules
 -----------
+
+* `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 Additions to existing modules
 -----------------------------
