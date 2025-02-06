@@ -201,9 +201,9 @@ record IsBiInverse
 
 -- See the comment on `SplitSurjection` in `Function.Bundles` for an
 -- explanation of (split) surjections.
-record IsSplitSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsSplitSurjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     from : B → A
-    isLeftInverse : IsLeftInverse f from
+    isLeftInverse : IsLeftInverse to from
 
   open IsLeftInverse isLeftInverse public
