@@ -1,3 +1,4 @@
+
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
@@ -7,26 +8,34 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Algebra.Consequences.Base
-  {a} {A : Set a} where
+open import Relation.Binary.Core using (Rel)
 
-open import Algebra.Core
-open import Algebra.Definitions
-open import Data.Sum.Base
-open import Relation.Binary.Core
+module Algebra.Consequences.Base
+  {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
+
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Definitions _≈_
+open import Data.Sum.Base using (reduce)
 open import Relation.Binary.Definitions using (Reflexive)
 
-module _ {ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) where
+private
+  variable
+    f : Op₁ A
+    _∙_ : Op₂ A
 
-  sel⇒idem : Selective _≈_ _•_ → Idempotent _≈_ _•_
-  sel⇒idem sel x = reduce (sel x x)
+------------------------------------------------------------------------
+-- Selective
 
-module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
+sel⇒idem : Selective _∙_ → Idempotent _∙_
+sel⇒idem sel x = reduce (sel x x)
 
-  reflexive∧selfInverse⇒involutive : Reflexive _≈_ →
-                                     SelfInverse _≈_ f →
-                                     Involutive _≈_ f
-  reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+------------------------------------------------------------------------
+-- SelfInverse
+
+reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse f →
+                                   Involutive f
+reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
