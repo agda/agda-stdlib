@@ -15,6 +15,12 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* [Issue #2502](https://github.com/agda/agda-stdlib/issues/2502) The top-level
+  module `Algebra.Consequences.Base` now takes the underlying equality relation
+  as an additional parameter, with slightly improved ergonomics wrt subsequent
+  imports; additionally, its internal implicit module parameters capturing the
+  signature of various algebraic operations, have now been lifted out as `variable`s.
+
 Deprecated modules
 ------------------
 
