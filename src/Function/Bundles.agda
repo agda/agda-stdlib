@@ -21,6 +21,7 @@ module Function.Bundles where
 
 open import Function.Base using (_∘_)
 open import Function.Consequences.Propositional
+  using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
 open import Function.Definitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
