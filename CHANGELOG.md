@@ -15,6 +15,10 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
+  to `#-sym` in order to avoid overloaded projection.
+
+
 Deprecated modules
 ------------------
 
