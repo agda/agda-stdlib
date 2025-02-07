@@ -8,8 +8,8 @@
 
 module Function.Construct.Symmetry where
 
-open import Data.Product.Base using (_,_; swap; proj₁; proj₂)
-open import Function.Base using (_∘_)
+open import Data.Product.Base using (_,_; swap)
+open import Function.Base using (_∘_; id)
 open import Function.Consequences
   using (module Section)
 open import Function.Definitions
@@ -36,19 +36,19 @@ private
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f : A → B} {f⁻¹ : B → A} where
 
   inverseʳ : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₂ ≈₁ f⁻¹ f
-  inverseʳ inv = inv
+  inverseʳ = id
 
   inverseˡ : Inverseʳ ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₂ ≈₁ f⁻¹ f
-  inverseˡ inv = inv
+  inverseˡ = id
 
   inverseᵇ : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₂ ≈₁ f⁻¹ f
-  inverseᵇ (invˡ , invʳ) = (invʳ , invˡ)
+  inverseᵇ = swap
 
 ------------------------------------------------------------------------
 -- Structures
 
-module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
-         (isBij : IsBijection ≈₁ ≈₂ f)
+module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {to : A → B}
+         (isBij : IsBijection ≈₁ ≈₂ to)
          where
 
   private module B = IsBijection isBij
@@ -81,7 +81,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ :
   isLeftInverse inv = record
     { isCongruent = isCongruent F.isCongruent F.from-cong
     ; from-cong   = F.to-cong
-    ; inverseˡ    = inverseˡ ≈₁ ≈₂ F.inverseʳ
+    ; inverseˡ    = F.inverseʳ
     } where module F = IsRightInverse inv
 
   isRightInverse : IsLeftInverse ≈₁ ≈₂ f f⁻¹ → IsRightInverse ≈₂ ≈₁ f⁻¹ f
@@ -94,7 +94,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ :
   isInverse : IsInverse ≈₁ ≈₂ f f⁻¹ → IsInverse ≈₂ ≈₁ f⁻¹ f
   isInverse f-inv = record
     { isLeftInverse = isLeftInverse F.isRightInverse
-    ; inverseʳ      = inverseʳ ≈₁ ≈₂ F.inverseˡ
+    ; inverseʳ      = F.inverseˡ
     } where module F = IsInverse f-inv
 
 ------------------------------------------------------------------------
