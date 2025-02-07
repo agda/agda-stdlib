@@ -33,7 +33,8 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsCommutativeRing isCommutativeRing public
-  open IsApartnessRelation isApartnessRelation public
+  open IsApartnessRelation isApartnessRelation public 
+    renaming (sym to #-sym)
 
   field
     #⇒invertible : ∀ {x y} → x # y → Invertible 1# _*_ (x - y)
