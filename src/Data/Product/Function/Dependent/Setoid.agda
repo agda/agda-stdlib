@@ -171,11 +171,11 @@ module _ where
     func : Func (I ×ₛ A) (J ×ₛ B)
     func = function (Surjection.function I↠J) (Surjection.function A↠B)
 
-    section′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
-    section′ (j , y) = from I↠J j , from A↠B (cast B (strictlyInverseˡ I↠J _) y)
+    from′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
+    from′ (j , y) = from I↠J j , from A↠B (cast B (strictlyInverseˡ I↠J _) y)
 
     strictlySurj : StrictlySurjective (Func.Eq₂._≈_ func) (Func.to func)
-    strictlySurj (j , y) = section′ (j , y) ,
+    strictlySurj (j , y) = from′ (j , y) ,
       strictlyInverseˡ I↠J j , IndexedSetoid.trans B (strictlyInverseˡ A↠B _) (cast-eq B (strictlyInverseˡ I↠J j))
 
     surj : Surjective (Func.Eq₁._≈_ func) (Func.Eq₂._≈_ func) (Func.to func)

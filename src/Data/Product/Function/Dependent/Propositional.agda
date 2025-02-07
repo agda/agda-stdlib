@@ -196,11 +196,11 @@ module _ where
     backcast : ∀ {i} → B i → B (to I↠J (from I↠J i))
     backcast = ≡.subst B (≡.sym (strictlyInverseˡ I↠J _))
 
-    section′ : Σ J B → Σ I A
-    section′ = map (from I↠J) (from A↠B ∘ backcast)
+    from′ : Σ J B → Σ I A
+    from′ = map (from I↠J) (from A↠B ∘ backcast)
 
     strictlySurjective′ : StrictlySurjective _≡_ to′
-    strictlySurjective′ (x , y) = section′ (x , y) , Σ-≡,≡→≡
+    strictlySurjective′ (x , y) = from′ (x , y) , Σ-≡,≡→≡
       ( strictlyInverseˡ I↠J x
       , (begin
            ≡.subst B (strictlyInverseˡ I↠J x) (to A↠B (from A↠B (backcast y)))
