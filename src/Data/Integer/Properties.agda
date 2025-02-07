@@ -679,19 +679,15 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 +∣i∣≡i⊎+∣i∣≡-i (-[1+ n ]) = inj₂ refl
 
 ∣m⊝n∣≤m⊔n : ∀ m n → ∣ m ⊖ n ∣ ℕ.≤ m ℕ.⊔ n
-∣m⊝n∣≤m⊔n m n with m ℕ.<ᵇ n
-... | true = begin
-  ∣ - + (n ℕ.∸ m) ∣                ≡⟨ ∣-i∣≡∣i∣ (+ (n ℕ.∸ m)) ⟩
-  ∣ + (n ℕ.∸ m) ∣                  ≡⟨⟩
-  n ℕ.∸ m                          ≤⟨ ℕ.m∸n≤m n m ⟩
-  n                                ≤⟨ ℕ.m≤n⊔m m n ⟩
-  m ℕ.⊔ n                          ∎
-  where open ℕ.≤-Reasoning
-... | false = begin
-  ∣ + (m ℕ.∸ n) ∣                  ≡⟨⟩
-  m ℕ.∸ n                          ≤⟨ ℕ.m∸n≤m m n ⟩
-  m                                ≤⟨ ℕ.m≤m⊔n m n ⟩
-  m ℕ.⊔ n                          ∎
+∣m⊝n∣≤m⊔n = wlog ℕ.≤-total
+  (λ {m n} → subst₂ ℕ._≤_ (∣m⊖n∣≡∣n⊖m∣ m n) (ℕ.⊔-comm m n))
+  $′ λ m n m≤n → begin
+  ∣ m ⊖ n ∣          ≡⟨ cong ∣_∣ (⊖-≤ m≤n) ⟩
+  ∣ - + (n ℕ.∸ m) ∣  ≡⟨ ∣-i∣≡∣i∣ (+ (n ℕ.∸ m)) ⟩
+  ∣ + (n ℕ.∸ m) ∣    ≡⟨⟩
+  n ℕ.∸ m            ≤⟨ ℕ.m∸n≤m n m ⟩
+  n                  ≤⟨ ℕ.m≤n⊔m m n ⟩
+  m ℕ.⊔ n            ∎
   where open ℕ.≤-Reasoning
 
 ∣i+j∣≤∣i∣+∣j∣ : ∀ i j → ∣ i + j ∣ ℕ.≤ ∣ i ∣ ℕ.+ ∣ j ∣
