@@ -10,14 +10,14 @@
 <a id="274" class="Keyword">module</a> <a id="281" href="Axiom.ExcludedMiddle.html" class="Module">Axiom.ExcludedMiddle</a> <a id="302" class="Keyword">where</a>
 
 <a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Level.html" class="Module">Level</a>
-<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Relation.Nullary.Decidable.Core.html" class="Module">Relation.Nullary.Decidable.Core</a> <a id="371" class="Keyword">using</a> <a id="377" class="Symbol">(</a><a id="378" href="Relation.Nullary.Decidable.Core.html#1861" class="Record">Dec</a><a id="381" class="Symbol">)</a>
 
-<a id="357" class="Comment">------------------------------------------------------------------------</a>
-<a id="430" class="Comment">-- Definition</a>
+<a id="384" class="Comment">------------------------------------------------------------------------</a>
+<a id="457" class="Comment">-- Definition</a>
 
-<a id="445" class="Comment">-- The classical statement of excluded middle says that every</a>
-<a id="507" class="Comment">-- statement/set is decidable (i.e. it either holds or it doesn&#39;t hold).</a>
+<a id="472" class="Comment">-- The classical statement of excluded middle says that every</a>
+<a id="534" class="Comment">-- statement/set is decidable (i.e. it either holds or it doesn&#39;t hold).</a>
 
-<a id="ExcludedMiddle"></a><a id="581" href="Axiom.ExcludedMiddle.html#581" class="Function">ExcludedMiddle</a> <a id="596" class="Symbol">:</a> <a id="598" class="Symbol">(</a><a id="599" href="Axiom.ExcludedMiddle.html#599" class="Bound">ℓ</a> <a id="601" class="Symbol">:</a> <a id="603" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="608" class="Symbol">)</a> <a id="610" class="Symbol">→</a> <a id="612" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="616" class="Symbol">(</a><a id="617" href="Agda.Primitive.html#931" class="Primitive">suc</a> <a id="621" href="Axiom.ExcludedMiddle.html#599" class="Bound">ℓ</a><a id="622" class="Symbol">)</a>
-<a id="624" href="Axiom.ExcludedMiddle.html#581" class="Function">ExcludedMiddle</a> <a id="639" href="Axiom.ExcludedMiddle.html#639" class="Bound">ℓ</a> <a id="641" class="Symbol">=</a> <a id="643" class="Symbol">{</a><a id="644" href="Axiom.ExcludedMiddle.html#644" class="Bound">P</a> <a id="646" class="Symbol">:</a> <a id="648" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="652" href="Axiom.ExcludedMiddle.html#639" class="Bound">ℓ</a><a id="653" class="Symbol">}</a> <a id="655" class="Symbol">→</a> <a id="657" href="Relation.Nullary.Decidable.Core.html#1861" class="Record">Dec</a> <a id="661" href="Axiom.ExcludedMiddle.html#644" class="Bound">P</a>
+<a id="ExcludedMiddle"></a><a id="608" href="Axiom.ExcludedMiddle.html#608" class="Function">ExcludedMiddle</a> <a id="623" class="Symbol">:</a> <a id="625" class="Symbol">∀</a> <a id="627" href="Axiom.ExcludedMiddle.html#627" class="Bound">ℓ</a> <a id="629" class="Symbol">→</a> <a id="631" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="635" class="Symbol">(</a><a id="636" href="Agda.Primitive.html#931" class="Primitive">suc</a> <a id="640" href="Axiom.ExcludedMiddle.html#627" class="Bound">ℓ</a><a id="641" class="Symbol">)</a>
+<a id="643" href="Axiom.ExcludedMiddle.html#608" class="Function">ExcludedMiddle</a> <a id="658" href="Axiom.ExcludedMiddle.html#658" class="Bound">ℓ</a> <a id="660" class="Symbol">=</a> <a id="662" class="Symbol">{</a><a id="663" href="Axiom.ExcludedMiddle.html#663" class="Bound">P</a> <a id="665" class="Symbol">:</a> <a id="667" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="671" href="Axiom.ExcludedMiddle.html#658" class="Bound">ℓ</a><a id="672" class="Symbol">}</a> <a id="674" class="Symbol">→</a> <a id="676" href="Relation.Nullary.Decidable.Core.html#1861" class="Record">Dec</a> <a id="680" href="Axiom.ExcludedMiddle.html#663" class="Bound">P</a>
 </pre></body></html>
