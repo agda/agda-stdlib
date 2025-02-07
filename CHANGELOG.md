@@ -157,15 +157,15 @@ Additions to existing modules
   ```
 
 * In `Function.Consequences` and `Function.Consequences.Setoid`:
-  the theory of the left inverse of a surjective function
+  the theory of the left inverse of a surjective function `to`
   ```agda
   module Section (surj :  Surjective ≈₁ ≈₂ to)
   ```
 
 * In `Function.Construct.Symmetry`:
   ```agda
-  isBijectionWithoutCongruence : (IsBijection ≈₁ ≈₂ to) → IsBijection ≈₂ ≈₁ from
-  bijectionWithoutCongruence   : (Bijection R S) → Bijection S R
+  isBijectionWithoutCongruence : IsBijection ≈₁ ≈₂ to → IsBijection ≈₂ ≈₁ from
+  bijectionWithoutCongruence   : Bijection R S → Bijection S R
   ```
 
 * In `Function.Properties.Bijection`:
