@@ -7,9 +7,9 @@ Highlights
 ----------
 
 * A major overhaul of the `Function` hierarchy sees the systematic development
-  and use of theory of the left inverse to a given `Surjective` function `f`, in
-  `Function.Consequences.Section`, up to and including full symmetry of `Bijection`, in
-  `Function.Properties.Bijection`.
+  and use of theory of the left inverse `from` to a given `Surjective` function
+  `to`, in `Function.Consequences.Section`, up to and including full symmetry of
+  `Bijection`, in `Function.Properties.Bijection`.
 
 Bug-fixes
 ---------
@@ -66,7 +66,7 @@ Deprecated names
 
 * In `Function.Bundles.IsSurjection`:
   ```agda
-  to⁻      ↦  Function.Structures.IsSurjection.section
+  to⁻      ↦  Function.Structures.IsSurjection.from
   to∘to⁻   ↦  Function.Structures.IsSurjection.strictlyInverseˡ
   ```
 
@@ -129,11 +129,11 @@ Additions to existing modules
 
 * In `Function.Bundles.Bijection`:
   ```agda
-  section          : B → A
-  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to section
-  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to section
-  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to section
-  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to section
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
   ```
 
 * In `Function.Bundles.LeftInverse`:
@@ -151,20 +151,20 @@ Additions to existing modules
 
 * In `Function.Bundles.Surjection`:
   ```agda
-  section          : B → A
-  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to section
-  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to section
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   ```
 
 * In `Function.Consequences` and `Function.Consequences.Setoid`:
   the theory of the left inverse of a surjective function
   ```agda
-  module Section (surj :  Surjective ≈₁ ≈₂ f)
+  module Section (surj :  Surjective ≈₁ ≈₂ to)
   ```
 
 * In `Function.Construct.Symmetry`:
   ```agda
-  isBijectionWithoutCongruence : (IsBijection ≈₁ ≈₂ f) → IsBijection ≈₂ ≈₁ section
+  isBijectionWithoutCongruence : (IsBijection ≈₁ ≈₂ to) → IsBijection ≈₂ ≈₁ from
   bijectionWithoutCongruence   : (Bijection R S) → Bijection S R
   ```
 
@@ -175,11 +175,11 @@ Additions to existing modules
 
 * In `Function.Structures.IsBijection`:
   ```agda
-  section          : B → A
-  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ f section
-  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ f section
-  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ f section
-  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ f section
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
   ```
 
 * In `Function.Structures.IsLeftInverse`:
@@ -195,8 +195,8 @@ Additions to existing modules
 
 * In `Function.Structures.IsSurjection`:
   ```agda
-  section          : B → A
-  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ f section
-  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ f section
+  from          : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   ```
 
