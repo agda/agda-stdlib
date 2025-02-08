@@ -49,7 +49,7 @@ strictlySurjective⇒surjective =
 
 strictlyInverseˡ⇒inverseˡ : ∀ f → StrictlyInverseˡ _≡_ f f⁻¹ →
                             Inverseˡ _≡_ _≡_ f f⁻¹
-strictlyInverseˡ⇒inverseˡ f strict refl = strict _ 
+strictlyInverseˡ⇒inverseˡ f strict refl = strict _
 {-
 strictlyInverseˡ⇒inverseˡ =
   Setoid.strictlyInverseˡ⇒inverseˡ (cong _)
@@ -63,4 +63,4 @@ strictlyInverseʳ⇒inverseʳ f strict refl = strict _
 strictlyInverseʳ⇒inverseʳ = strict _
   Setoid.strictlyInverseʳ⇒inverseʳ (cong _)
 -}
-  
+
