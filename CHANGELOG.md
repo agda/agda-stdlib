@@ -27,6 +27,14 @@ Deprecated names
   _∤∤_    ↦  _∦_
   ```
 
+* In `Algebra.Module.Consequences
+  ```agda
+  *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  ```
+
 * In `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∣∣-sym       ↦  ∥-sym
