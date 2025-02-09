@@ -30,15 +30,11 @@ module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) (P : Pred A p) where
 
   almost⇒exceptˡ : _-AlmostLeftCancellative_ _≈_ P _•_ →
                    Except_-LeftCancellative_ _≈_ P _•_
-  almost⇒exceptˡ cancelˡ {x} with cancelˡ x
-  ... | inj₁ px     = contradiction px
-  ... | inj₂ cancel = const cancel
+  almost⇒exceptˡ cancel = [ contradiction , const ]′ (cancel _)
 
   almost⇒exceptʳ : _-AlmostRightCancellative_ _≈_ P _•_ →
                    Except_-RightCancellative_ _≈_ P _•_
-  almost⇒exceptʳ cancelʳ {x} with cancelʳ x
-  ... | inj₁ px     = contradiction px
-  ... | inj₂ cancel = const cancel
+  almost⇒exceptʳ cancel = [ contradiction , const ]′ (cancel _)
 
 module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ)
          {P : Pred A p} (dec : Decidable P) where
