@@ -67,6 +67,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  comm∧cancelAtˡ⇒cancelAtʳ : LeftCancellativeAt x _∙_ → RightCancellativeAt x _∙_
+  comm∧cancelAtʳ⇒cancelAtˡ : RightCancellativeAt x _∙_ → LeftCancellativeAt x _∙_
+  ```
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
