@@ -97,32 +97,32 @@ strictlyInverseʳ⇒inverseʳ = C.strictlyInverseʳ⇒inverseʳ S.trans
 
 module Section (surj :  Surjective ≈₁ ≈₂ to) where
 
-  private module Sf = C.Section ≈₂ surj
+  private module From = C.Section ≈₂ surj
 
-  open Sf public using (from; inverseˡ)
+  open From public using (from; inverseˡ)
 
   strictlySurjective : StrictlySurjective ≈₂ to
-  strictlySurjective = Sf.strictlySurjective S.refl
+  strictlySurjective = From.strictlySurjective S.refl
 
   strictlyInverseˡ : StrictlyInverseˡ ≈₂ to from
-  strictlyInverseˡ = Sf.strictlyInverseˡ S.refl
+  strictlyInverseˡ = From.strictlyInverseˡ S.refl
 
   injective : Injective ≈₂ ≈₁ from
-  injective = Sf.injective S.refl T.sym T.trans
+  injective = From.injective S.refl T.sym T.trans
 
   module _ (inj : Injective ≈₁ ≈₂ to) where
 
     cong : Congruent ≈₂ ≈₁ from
-    cong = Sf.cong inj S.refl T.sym T.trans
+    cong = From.cong inj S.refl T.sym T.trans
 
     inverseʳ : Inverseʳ ≈₁ ≈₂ to from
-    inverseʳ = Sf.inverseʳ inj S.refl T.trans
+    inverseʳ = From.inverseʳ inj S.refl T.trans
 
     strictlyInverseʳ : StrictlyInverseʳ ≈₁ to from
-    strictlyInverseʳ = Sf.strictlyInverseʳ inj S.refl T.refl T.trans
+    strictlyInverseʳ = From.strictlyInverseʳ inj S.refl T.refl T.trans
 
     surjective : Surjective ≈₂ ≈₁ from
-    surjective = Sf.surjective inj S.refl T.trans
+    surjective = From.surjective inj S.refl T.trans
 
     bijective : Bijective ≈₂ ≈₁ from
-    bijective = Sf.bijective inj S.refl T.sym T.trans
+    bijective = From.bijective inj S.refl T.sym T.trans
