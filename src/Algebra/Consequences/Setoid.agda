@@ -17,7 +17,7 @@ module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 open Setoid S renaming (Carrier to A)
 open import Algebra.Core
 open import Algebra.Definitions _≈_
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂; [_,_])
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id; _∘_)
 open import Function.Definitions
@@ -100,19 +100,27 @@ module _ {f : Op₁ A} (self : SelfInverse f) where
 
 module _ {_∙_ : Op₂ A} (comm : Commutative _∙_) where
 
-  comm∧cancelˡ⇒cancelʳ : LeftCancellative _∙_ → RightCancellative _∙_
-  comm∧cancelˡ⇒cancelʳ cancelˡ x y z eq = cancelˡ x y z $ begin
+  comm∧cancelAtˡ⇒cancelAtʳ : ∀ {x} → LeftCancellativeAt x _∙_ →
+                             RightCancellativeAt x _∙_
+  comm∧cancelAtˡ⇒cancelAtʳ {x = x} cancel y z eq = cancel y z $ begin
     x ∙ y ≈⟨ comm x y ⟩
     y ∙ x ≈⟨ eq ⟩
     z ∙ x ≈⟨ comm z x ⟩
     x ∙ z ∎
 
-  comm∧cancelʳ⇒cancelˡ : RightCancellative _∙_ → LeftCancellative _∙_
-  comm∧cancelʳ⇒cancelˡ cancelʳ x y z eq = cancelʳ x y z $ begin
+  comm∧cancelˡ⇒cancelʳ : LeftCancellative _∙_ → RightCancellative _∙_
+  comm∧cancelˡ⇒cancelʳ cancel = comm∧cancelAtˡ⇒cancelAtʳ ∘ cancel
+
+  comm∧cancelAtʳ⇒cancelAtˡ : ∀ {x} → RightCancellativeAt x _∙_ →
+                             LeftCancellativeAt x _∙_
+  comm∧cancelAtʳ⇒cancelAtˡ {x = x} cancel y z eq = cancel y z $ begin
     y ∙ x ≈⟨ comm y x ⟩
     x ∙ y ≈⟨ eq ⟩
     x ∙ z ≈⟨ comm x z ⟩
     z ∙ x ∎
+
+  comm∧cancelʳ⇒cancelˡ : RightCancellative _∙_ → LeftCancellative _∙_
+  comm∧cancelʳ⇒cancelˡ cancel = comm∧cancelAtʳ⇒cancelAtˡ ∘ cancel
 
 ------------------------------------------------------------------------
 -- Monoid-like structures
@@ -157,23 +165,13 @@ module _ {_∙_ : Op₂ A} (comm : Commutative _∙_) {e : A} where
 
   comm∧almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _∙_ →
                                      AlmostRightCancellative e _∙_
-  comm∧almostCancelˡ⇒almostCancelʳ almostCancelˡ x with almostCancelˡ x
-  ... | inj₁ x≈e     = inj₁ x≈e
-  ... | inj₂ cancelˡ = inj₂ λ y z yx≈zx → cancelˡ y z $ begin
-      x ∙ y ≈⟨ comm x y ⟩
-      y ∙ x ≈⟨ yx≈zx ⟩
-      z ∙ x ≈⟨ comm z x ⟩
-      x ∙ z ∎
+  comm∧almostCancelˡ⇒almostCancelʳ almostCancel =
+    [ inj₁ , inj₂ ∘ comm∧cancelAtˡ⇒cancelAtʳ comm ] ∘ almostCancel
 
   comm∧almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _∙_ →
                                      AlmostLeftCancellative e _∙_
-  comm∧almostCancelʳ⇒almostCancelˡ almostCancelʳ x with almostCancelʳ x
-  ... | inj₁ x≈e     = inj₁ x≈e
-  ... | inj₂ cancelʳ = inj₂ λ y z xy≈xz → cancelʳ y z $ begin
-      y ∙ x ≈⟨ comm y x ⟩
-      x ∙ y ≈⟨ xy≈xz ⟩
-      x ∙ z ≈⟨ comm x z ⟩
-      z ∙ x ∎
+  comm∧almostCancelʳ⇒almostCancelˡ almostCancel  =
+    [ inj₁ , inj₂ ∘ comm∧cancelAtʳ⇒cancelAtˡ comm ] ∘ almostCancel
 
 ------------------------------------------------------------------------
 -- Group-like structures
