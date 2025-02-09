@@ -22,7 +22,7 @@ open import Algebra.Consequences.Setoid setoid
 open import Relation.Binary.Reasoning.Setoid setoid
 
 *-almostCancelʳ : AlmostRightCancellative _≈_ 0# _*_
-*-almostCancelʳ = comm+almostCancelˡ⇒almostCancelʳ *-comm *-cancelˡ-nonZero
+*-almostCancelʳ = comm∧almostCancelˡ⇒almostCancelʳ *-comm *-cancelˡ-nonZero
 
 xy≈0⇒x≈0∨y≈0 : Decidable _≈_ → ∀ {x y} → x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
 xy≈0⇒x≈0∨y≈0 _≟_ {x} {y} xy≈0 with x ≟ 0# | y ≟ 0#
