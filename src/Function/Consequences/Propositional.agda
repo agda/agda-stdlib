@@ -40,27 +40,13 @@ open Setoid public
 
 strictlySurjective⇒surjective : StrictlySurjective _≡_ f →
                                  Surjective _≡_ _≡_ f
-strictlySurjective⇒surjective strict y =
-  let (x , fx≡y) = strict y in x , λ where refl → fx≡y
-{-
-strictlySurjective⇒surjective =
- Setoid.strictlySurjective⇒surjective (cong _)
--}
+strictlySurjective⇒surjective surj y =
+  let x , fx≡y = surj y in x , λ where refl → fx≡y
 
 strictlyInverseˡ⇒inverseˡ : ∀ f → StrictlyInverseˡ _≡_ f f⁻¹ →
                             Inverseˡ _≡_ _≡_ f f⁻¹
-strictlyInverseˡ⇒inverseˡ f strict refl = strict _
-{-
-strictlyInverseˡ⇒inverseˡ =
-  Setoid.strictlyInverseˡ⇒inverseˡ (cong _)
--}
-
+strictlyInverseˡ⇒inverseˡ _ inv refl = inv _
 
 strictlyInverseʳ⇒inverseʳ : ∀ f → StrictlyInverseʳ _≡_ f f⁻¹ →
                             Inverseʳ _≡_ _≡_ f f⁻¹
-strictlyInverseʳ⇒inverseʳ f strict refl = strict _
-{-
-strictlyInverseʳ⇒inverseʳ = strict _
-  Setoid.strictlyInverseʳ⇒inverseʳ (cong _)
--}
-
+strictlyInverseʳ⇒inverseʳ _ inv refl = inv _
