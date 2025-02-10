@@ -11,7 +11,7 @@ open import Data.Sum.Base using (reduce)
 open import Function.Base using (flip)
 open import Relation.Binary.Definitions using (Symmetric)
 
-module Algebra.Properties.Semiring.PrimalityMASTER
+module Algebra.Properties.Semiring.Primality
   {a ℓ} (R : Semiring a ℓ)
   where
 
