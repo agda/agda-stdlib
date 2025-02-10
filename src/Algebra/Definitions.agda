@@ -160,7 +160,7 @@ _-AlmostLeftCancellative_ Provided_-LeftCancellative_
   Except_-LeftCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 
 P -AlmostLeftCancellative _•_    = ∀ x → P x ⊎ LeftCancellativeAt x _•_
-Provided P -LeftCancellative _•_ = ∀ x → .{{P x}} → LeftCancellativeAt x _•_
+Provided P -LeftCancellative _•_ = ∀ x y z → .{{P x}} → (x • y) ≈ (x • z) → y ≈ z
 Except_-LeftCancellative_ P      = Provided (∁ P) -LeftCancellative_
 
 AlmostLeftCancellative : A → Op₂ A → Set _
@@ -170,7 +170,7 @@ _-AlmostRightCancellative_ Provided_-RightCancellative_
   Except_-RightCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 
 P -AlmostRightCancellative _•_    = ∀ x → P x ⊎ RightCancellativeAt x _•_
-Provided P -RightCancellative _•_ = ∀ x → .{{P x}} → RightCancellativeAt x _•_
+Provided P -RightCancellative _•_ = ∀ x y z → .{{P x}} → (y • x) ≈ (z • x) → y ≈ z
 Except_-RightCancellative_ P      = Provided (∁ P) -RightCancellative_
 
 AlmostRightCancellative : A → Op₂ A → Set _

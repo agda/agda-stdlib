@@ -32,13 +32,13 @@ module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ)
 
   almost⇒exceptˡ : _-AlmostLeftCancellative_ _≈_ P _•_ →
                    Except_-LeftCancellative_ _≈_ P _•_
-  almost⇒exceptˡ cancel x {{¬px}} =
-    [ flip contradiction (¬-recompute ¬px) , id ]′ (cancel x)
+  almost⇒exceptˡ cancel x y z {{¬px}} =
+    [ flip contradiction (¬-recompute ¬px) , (λ cancel → cancel y z) ]′ (cancel x)
 
   almost⇒exceptʳ : _-AlmostRightCancellative_ _≈_ P _•_ →
                    Except_-RightCancellative_ _≈_ P _•_
-  almost⇒exceptʳ cancel x {{¬px}} =
-    [ flip contradiction (¬-recompute ¬px) , id ]′ (cancel x)
+  almost⇒exceptʳ cancel x y z {{¬px}} =
+    [ flip contradiction (¬-recompute ¬px) , (λ cancel → cancel y z) ]′ (cancel x)
 
 module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ)
          {P : Pred A p} (dec : Decidable P) where
@@ -47,13 +47,13 @@ module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ)
                    _-AlmostLeftCancellative_ _≈_ P _•_
   except⇒almostˡ cancel x with dec x
   ... | yes px = inj₁ px
-  ... | no ¬px = inj₂ (cancel x {{¬px}})
+  ... | no ¬px = inj₂ (λ y z → cancel x y z {{¬px}})
 
   except⇒almostʳ : Except_-RightCancellative_ _≈_ P _•_ →
                    _-AlmostRightCancellative_ _≈_ P _•_
   except⇒almostʳ cancel x with dec x
   ... | yes px = inj₁ px
-  ... | no ¬px = inj₂ (cancel x {{¬px}})
+  ... | no ¬px = inj₂ (λ y z → cancel x y z {{¬px}})
 
 module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
 
