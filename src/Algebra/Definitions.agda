@@ -26,7 +26,7 @@ open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Unary using (Pred)
+open import Relation.Unary using (Pred; ∁)
 
 ------------------------------------------------------------------------
 -- Properties of operations
@@ -156,18 +156,22 @@ RightCancellative _•_ = ∀ x → RightCancellativeAt x _•_
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
-_-AlmostLeftCancellative_ Except_-LeftCancellative_ : ∀ {p} (P : Pred A p) →
-                                                      Op₂ A → Set _
-P -AlmostLeftCancellative _•_ = ∀ x → P x ⊎ LeftCancellativeAt x _•_
-Except P -LeftCancellative _•_ = ∀ {x} → ¬ (P x) → LeftCancellativeAt x _•_
+_-AlmostLeftCancellative_ Provided_-LeftCancellative_
+  Except_-LeftCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+
+P -AlmostLeftCancellative _•_    = ∀ x → P x ⊎ LeftCancellativeAt x _•_
+Provided P -LeftCancellative _•_ = ∀ x → .{{P x}} → LeftCancellativeAt x _•_
+Except_-LeftCancellative_ P      = Provided (∁ P) -LeftCancellative_
 
 AlmostLeftCancellative : A → Op₂ A → Set _
 AlmostLeftCancellative e = (_≈ e) -AlmostLeftCancellative_
 
-_-AlmostRightCancellative_ Except_-RightCancellative_ : ∀ {p} (P : Pred A p) →
-                                                         Op₂ A → Set _
-P -AlmostRightCancellative _•_ = ∀ x → P x ⊎ RightCancellativeAt x _•_
-Except P -RightCancellative _•_ = ∀ {x} → ¬ (P x) → RightCancellativeAt x _•_
+_-AlmostRightCancellative_ Provided_-RightCancellative_
+  Except_-RightCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+
+P -AlmostRightCancellative _•_    = ∀ x → P x ⊎ RightCancellativeAt x _•_
+Provided P -RightCancellative _•_ = ∀ x → .{{P x}} → RightCancellativeAt x _•_
+Except_-RightCancellative_ P      = Provided (∁ P) -RightCancellative_
 
 AlmostRightCancellative : A → Op₂ A → Set _
 AlmostRightCancellative e = (_≈ e) -AlmostRightCancellative_
