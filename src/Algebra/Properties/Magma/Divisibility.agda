@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Magma)
+open import Algebra.Bundles using (Magma)
 
 module Algebra.Properties.Magma.Divisibility {a ℓ} (M : Magma a ℓ) where
 

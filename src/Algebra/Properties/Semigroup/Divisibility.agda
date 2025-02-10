@@ -6,12 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Semigroup)
-open import Data.Product.Base using (_,_)
-open import Relation.Binary.Definitions using (Transitive)
+open import Algebra.Bundles using (Semigroup)
 
 module Algebra.Properties.Semigroup.Divisibility
   {a ℓ} (S : Semigroup a ℓ) where
+
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.Definitions using (Transitive)
 
 open Semigroup S
 
@@ -25,7 +26,7 @@ open import Algebra.Properties.Magma.Divisibility magma public
 
 ∣-trans : Transitive _∣_
 ∣-trans (p , px≈y) (q , qy≈z) =
-  q ∙ p , trans (assoc q p _) (trans (∙-congˡ px≈y) qy≈z)
+  (q ∙ p) , trans (assoc q p _) (trans (∙-congˡ px≈y) qy≈z)
 
 ------------------------------------------------------------------------
 -- Properties of _∥_
