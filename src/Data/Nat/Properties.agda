@@ -164,6 +164,11 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
+≰⇒≥ : _≰_ ⇒ _≥_
+≰⇒≥ {m} {zero} m≰n = z≤n
+≰⇒≥ {zero} {suc n} m≰n = contradiction z≤n m≰n
+≰⇒≥ {suc m} {suc n} m≰n = s≤s (≰⇒≥ (m≰n ∘ s≤s))
+
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
 
@@ -182,11 +187,6 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤-trans z≤n       _         = z≤n
 ≤-trans (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
-≤-total : Total _≤_
-≤-total zero    _       = inj₁ z≤n
-≤-total _       zero    = inj₂ z≤n
-≤-total (suc m) (suc n) = Sum.map s≤s s≤s (≤-total m n)
-
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant z≤n        z≤n        = refl
 ≤-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevant m≤n₁ m≤n₂)
@@ -204,6 +204,11 @@ m ≤? n = map′ (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ (T? (m ≤ᵇ n))
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
+
+≤-total : Total _≤_
+≤-total m n with m ≤? n
+... | true because m≤n = inj₁ (invert m≤n)
+... | false because m≰n = inj₂ (≰⇒≥ (invert m≰n))
 
 ------------------------------------------------------------------------
 -- Structures
@@ -332,9 +337,6 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ≰⇒> {zero}          z≰n = contradiction z≤n z≰n
 ≰⇒> {suc m} {zero}  _   = z<s
 ≰⇒> {suc m} {suc n} m≰n = s<s (≰⇒> (m≰n ∘ s≤s))
-
-≰⇒≥ : _≰_ ⇒ _≥_
-≰⇒≥ = <⇒≤ ∘ ≰⇒>
 
 ≮⇒≥ : _≮_ ⇒ _≥_
 ≮⇒≥ {_}     {zero}  _       = z≤n

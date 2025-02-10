@@ -12,6 +12,11 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The implementation of `≤-total` in `Data.Nat.Properties` has been altered
+  to use operations backed by primitives, rather than recursion, making it
+  significantly faster. However, its reduction behaviour on open terms may have
+  changed.
+
 Minor improvements
 ------------------
 
@@ -25,6 +30,14 @@ Deprecated names
   ```agda
   _∣∣_   ↦  _∥_
   _∤∤_    ↦  _∦_
+  ```
+
+* In `Algebra.Module.Consequences
+  ```agda
+  *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
