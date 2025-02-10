@@ -26,7 +26,7 @@ open import Algebra.Properties.Magma.Divisibility magma public
 
 ∣-trans : Transitive _∣_
 ∣-trans (p , px≈y) (q , qy≈z) =
-  (q ∙ p) , trans (assoc q p _) (trans (∙-congˡ px≈y) qy≈z)
+  q ∙ p , trans (assoc q p _) (trans (∙-congˡ px≈y) qy≈z)
 
 ------------------------------------------------------------------------
 -- Properties of _∥_
