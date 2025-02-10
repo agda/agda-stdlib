@@ -114,3 +114,8 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
+  ```
