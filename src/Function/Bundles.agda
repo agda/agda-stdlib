@@ -21,6 +21,7 @@ module Function.Bundles where
 
 open import Function.Base using (_∘_)
 open import Function.Definitions
+open import Function.Definitions.Strict
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
 open import Data.Product.Base using (_,_; proj₁; proj₂)

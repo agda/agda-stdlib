@@ -21,6 +21,7 @@ module Function.Structures.Biased {a b ℓ₁ ℓ₂}
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base
 open import Function.Definitions
+open import Function.Definitions.Strict
 open import Function.Structures _≈₁_ _≈₂_
 open import Function.Consequences.Setoid
 open import Level using (_⊔_)
