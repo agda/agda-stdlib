@@ -12,12 +12,10 @@ module Algebra.Properties.CancellativeCommutativeSemiring
   {a ℓ} (R : CancellativeCommutativeSemiring a ℓ)
   where
 
-open import Algebra.Definitions using (AlmostRightCancellative)
 open import Data.Sum.Base using (_⊎_; [_,_]′; map₂)
 open import Relation.Binary.Definitions using (Decidable)
 
 open CancellativeCommutativeSemiring R renaming (Carrier to A)
-open import Algebra.Consequences.Setoid setoid
 
 private
   variable
