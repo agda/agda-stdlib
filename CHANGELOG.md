@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Removed unnecessary parameter `zero : Zero 0# *` from
+  `Algebra.Structures.IsNonAssociativeRing`.
+
 Non-backwards compatible changes
 --------------------------------
 
