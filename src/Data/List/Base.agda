@@ -16,7 +16,7 @@ open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -149,24 +149,6 @@ mapMaybe p = catMaybes ∘ map p
 null : List A → Bool
 null []       = true
 null (x ∷ xs) = false
-
-and : List Bool → Bool
-and = foldr _∧_ true
-
-or : List Bool → Bool
-or = foldr _∨_ false
-
-any : (A → Bool) → List A → Bool
-any p = or ∘ map p
-
-all : (A → Bool) → List A → Bool
-all p = and ∘ map p
-
-sum : List ℕ → ℕ
-sum = foldr _+_ 0
-
-product : List ℕ → ℕ
-product = foldr _*_ 1
 
 length : List A → ℕ
 length = foldr (const suc) 0
@@ -579,4 +561,48 @@ scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 {-# WARNING_ON_USAGE scanl
 "Warning: scanl was deprecated in v2.1.
 Please use Data.List.Scans.Base.scanl instead."
+#-}
+
+-- Version 2.3
+
+and : List Bool → Bool
+and = foldr _∧_ true
+
+all : (A → Bool) → List A → Bool
+all p = and ∘ map p
+{-# WARNING_ON_USAGE and
+"Warning: and was deprecated in v2.3.
+Please use Data.Bool.ListAction.and instead."
+#-}
+{-# WARNING_ON_USAGE all
+"Warning: all was deprecated in v2.3.
+Please use Data.Nat.ListAction.all instead."
+#-}
+
+or : List Bool → Bool
+or = foldr _∨_ false
+
+any : (A → Bool) → List A → Bool
+any p = or ∘ map p
+{-# WARNING_ON_USAGE or
+"Warning: or was deprecated in v2.3.
+Please use Data.Bool.ListAction.or instead."
+#-}
+{-# WARNING_ON_USAGE any
+"Warning: any was deprecated in v2.3.
+Please use Data.Bool.ListAction.any instead."
+#-}
+
+sum : List ℕ → ℕ
+sum = foldr ℕ._+_ 0
+{-# WARNING_ON_USAGE sum
+"Warning: sum was deprecated in v2.3.
+Please use Data.Nat.ListAction.sum instead."
+#-}
+
+product : List ℕ → ℕ
+product = foldr ℕ._*_ 1
+{-# WARNING_ON_USAGE product
+"Warning: product was deprecated in v2.3.
+Please use Data.Nat.ListAction.product instead."
 #-}

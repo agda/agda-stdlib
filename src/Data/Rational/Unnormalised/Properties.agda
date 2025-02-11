@@ -746,7 +746,7 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-identityˡ p = ≃-reflexive (+-identityˡ-≡ p)
 
 +-identityʳ-≡ : RightIdentity _≡_ 0ℚᵘ _+_
-+-identityʳ-≡ = comm+idˡ⇒idʳ +-comm-≡ {e = 0ℚᵘ} +-identityˡ-≡
++-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ {e = 0ℚᵘ} +-identityˡ-≡
 
 +-identityʳ : RightIdentity _≃_ 0ℚᵘ _+_
 +-identityʳ p = ≃-reflexive (+-identityʳ-≡ p)
@@ -1104,7 +1104,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-identityˡ-≡ p@record{} = ↥↧≡⇒≡ (ℤ.*-identityˡ (↥ p)) (ℕ.+-identityʳ (↧ₙ p))
 
 *-identityʳ-≡ : RightIdentity _≡_ 1ℚᵘ _*_
-*-identityʳ-≡ = comm+idˡ⇒idʳ *-comm-≡ {e = 1ℚᵘ} *-identityˡ-≡
+*-identityʳ-≡ = comm∧idˡ⇒idʳ *-comm-≡ {e = 1ℚᵘ} *-identityˡ-≡
 
 *-identity-≡ : Identity _≡_ 1ℚᵘ _*_
 *-identity-≡ = *-identityˡ-≡ , *-identityʳ-≡
@@ -1144,7 +1144,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-zeroˡ p@record{} = *≡* refl
 
 *-zeroʳ : RightZero _≃_ 0ℚᵘ _*_
-*-zeroʳ = Consequences.comm+zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
+*-zeroʳ = Consequences.comm∧zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
 
 *-zero : Zero _≃_ 0ℚᵘ _*_
 *-zero = *-zeroˡ , *-zeroʳ
@@ -1171,7 +1171,7 @@ invertible⇒≄ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≄1 (begin
   in *≡* eq where open ℤ-solver
 
 *-distribʳ-+ : _DistributesOverʳ_ _≃_ _*_ _+_
-*-distribʳ-+ = Consequences.comm+distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
+*-distribʳ-+ = Consequences.comm∧distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
 
 *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
