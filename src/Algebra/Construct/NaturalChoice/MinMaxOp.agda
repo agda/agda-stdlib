@@ -59,7 +59,7 @@ open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
   (x ⊓ y) ⊔ (x ⊓ z) ∎
 
 ⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
-⊓-distribʳ-⊔ = comm+distrˡ⇒distrʳ ⊔-cong ⊓-comm ⊓-distribˡ-⊔
+⊓-distribʳ-⊔ = comm∧distrˡ⇒distrʳ ⊔-cong ⊓-comm ⊓-distribˡ-⊔
 
 ⊓-distrib-⊔ : _⊓_ DistributesOver _⊔_
 ⊓-distrib-⊔ = ⊓-distribˡ-⊔ , ⊓-distribʳ-⊔
@@ -76,7 +76,7 @@ open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
   (x ⊔ y) ⊓ (x ⊔ z) ∎
 
 ⊔-distribʳ-⊓ : _⊔_ DistributesOverʳ _⊓_
-⊔-distribʳ-⊓ = comm+distrˡ⇒distrʳ ⊓-cong ⊔-comm ⊔-distribˡ-⊓
+⊔-distribʳ-⊓ = comm∧distrˡ⇒distrʳ ⊓-cong ⊔-comm ⊔-distribˡ-⊓
 
 ⊔-distrib-⊓ : _⊔_ DistributesOver _⊓_
 ⊔-distrib-⊓ = ⊔-distribˡ-⊓ , ⊔-distribʳ-⊓
