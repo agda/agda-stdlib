@@ -17,7 +17,7 @@ module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 open Setoid S renaming (Carrier to A)
 open import Algebra.Core
 open import Algebra.Definitions _≈_
-open import Data.Sum.Base using (inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (map₂)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id; _∘_)
 open import Function.Definitions
@@ -165,13 +165,13 @@ module _ {_∙_ : Op₂ A} (comm : Commutative _∙_) {e : A} where
 
   comm∧almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _∙_ →
                                      AlmostRightCancellative e _∙_
-  comm∧almostCancelˡ⇒almostCancelʳ almostCancel =
-    [ inj₁ , inj₂ ∘ comm∧cancelAtˡ⇒cancelAtʳ comm ] ∘ almostCancel
+  comm∧almostCancelˡ⇒almostCancelʳ cancel =
+    map₂ (comm∧cancelAtˡ⇒cancelAtʳ comm) ∘ cancel
 
   comm∧almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _∙_ →
                                      AlmostLeftCancellative e _∙_
-  comm∧almostCancelʳ⇒almostCancelˡ almostCancel  =
-    [ inj₁ , inj₂ ∘ comm∧cancelAtʳ⇒cancelAtˡ comm ] ∘ almostCancel
+  comm∧almostCancelʳ⇒almostCancelˡ cancel  =
+    map₂ (comm∧cancelAtʳ⇒cancelAtˡ comm) ∘ cancel
 
 ------------------------------------------------------------------------
 -- Group-like structures
