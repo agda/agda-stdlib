@@ -16,9 +16,7 @@ open import Data.Sum.Base using (reduce)
 open import Function.Base using (flip)
 open import Relation.Binary.Definitions using (Symmetric)
 
-open Semiring R
-  using (_≉_; sym; trans; 0#; 1#; zeroˡ; rawSemiring)
-  renaming (Carrier to A)
+open Semiring R renaming (Carrier to A)
 open import Algebra.Properties.Semiring.Divisibility R
   using (_∣_; ∣-trans; 0∤1)
 
