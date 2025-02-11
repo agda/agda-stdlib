@@ -40,6 +40,11 @@ Deprecated names
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   ```
 
+* In `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
+  ```
+
 * In `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∣∣-sym       ↦  ∥-sym
