@@ -12,6 +12,11 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The implementation of `≤-total` in `Data.Nat.Properties` has been altered
+  to use operations backed by primitives, rather than recursion, making it
+  significantly faster. However, its reduction behaviour on open terms may have
+  changed.
+
 * [issue #2471](https://github.com/agda/agda-stdlib/issues/2471) In `Relation.Binary.Definitions`, the left/right order of the components of `_Respects₂_` have been swapped.
 
 Minor improvements
@@ -27,6 +32,14 @@ Deprecated names
   ```agda
   _∣∣_   ↦  _∥_
   _∤∤_    ↦  _∦_
+  ```
+
+* In `Algebra.Module.Consequences
+  ```agda
+  *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
@@ -53,8 +66,36 @@ Deprecated names
   ∣∣-trans   ↦  ∥-trans
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  and       ↦  Data.Bool.ListAction.and
+  or        ↦  Data.Bool.ListAction.or
+  any       ↦  Data.Bool.ListAction.any
+  all       ↦  Data.Bool.ListAction.all
+  sum       ↦  Data.Nat.ListAction.sum
+  product   ↦  Data.Nat.ListAction.product
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  sum-++       ↦  Data.Nat.ListAction.Properties.sum-++
+  ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
+  product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
+  ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  sum-↭       ↦  Data.Nat.ListAction.Properties.sum-↭
+  product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
+  ```
+
 New modules
 -----------
+
+* `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
+
+* `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
 Additions to existing modules
 -----------------------------
