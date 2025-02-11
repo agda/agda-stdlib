@@ -25,7 +25,6 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
-open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary using (Pred; ∁)
 
 ------------------------------------------------------------------------
