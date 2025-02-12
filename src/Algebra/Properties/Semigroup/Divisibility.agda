@@ -6,12 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Semigroup)
-open import Data.Product.Base using (_,_)
-open import Relation.Binary.Definitions using (Transitive)
+open import Algebra.Bundles using (Semigroup)
 
 module Algebra.Properties.Semigroup.Divisibility
   {a ℓ} (S : Semigroup a ℓ) where
+
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.Definitions using (Transitive)
 
 open Semigroup S
 
