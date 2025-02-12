@@ -25,8 +25,9 @@ private
   open module T = Setoid T using () renaming (Carrier to B; _≈_ to ≈₂)
 
   variable
-    f : A → B
+    to f : A → B
     f⁻¹ : B → A
+
 
 ------------------------------------------------------------------------
 -- Injective
@@ -90,3 +91,38 @@ strictlyInverseʳ⇒inverseʳ : Congruent ≈₂ ≈₁ f⁻¹ →
                             StrictlyInverseʳ ≈₁ f f⁻¹ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹
 strictlyInverseʳ⇒inverseʳ = C.strictlyInverseʳ⇒inverseʳ S.trans
+
+------------------------------------------------------------------------
+-- Section
+
+module Section (surj :  Surjective ≈₁ ≈₂ to) where
+
+  private module From = C.Section ≈₂ surj
+
+  open From public using (from; inverseˡ)
+
+  strictlySurjective : StrictlySurjective ≈₂ to
+  strictlySurjective = From.strictlySurjective S.refl
+
+  strictlyInverseˡ : StrictlyInverseˡ ≈₂ to from
+  strictlyInverseˡ = From.strictlyInverseˡ S.refl
+
+  injective : Injective ≈₂ ≈₁ from
+  injective = From.injective S.refl T.sym T.trans
+
+  module _ (inj : Injective ≈₁ ≈₂ to) where
+
+    cong : Congruent ≈₂ ≈₁ from
+    cong = From.cong inj S.refl T.sym T.trans
+
+    inverseʳ : Inverseʳ ≈₁ ≈₂ to from
+    inverseʳ = From.inverseʳ inj S.refl T.trans
+
+    strictlyInverseʳ : StrictlyInverseʳ ≈₁ to from
+    strictlyInverseʳ = From.strictlyInverseʳ inj S.refl T.refl T.trans
+
+    surjective : Surjective ≈₂ ≈₁ from
+    surjective = From.surjective inj S.refl T.trans
+
+    bijective : Bijective ≈₂ ≈₁ from
+    bijective = From.bijective inj S.refl T.sym T.trans
