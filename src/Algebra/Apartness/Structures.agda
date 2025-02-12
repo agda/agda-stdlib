@@ -34,10 +34,10 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
 
   open IsCommutativeRing isCommutativeRing public
   open IsApartnessRelation isApartnessRelation public
-    renaming 
+    renaming
       ( irrefl  to #-irrefl
       ; sym     to #-sym
-      ; cotrans to #-cotrans 
+      ; cotrans to #-cotrans
       )
 
   field
