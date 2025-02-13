@@ -108,3 +108,19 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Relation.Binary.Consequences`:
+  ```agda
+  mono₂⇒monoˡ : Reflexive ≤₁ → Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
+  mono₂⇒monoˡ : Reflexive ≤₂ → Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
+  monoˡ∧monoʳ⇒mono₂ : Transitive ≤₃ →
+                      LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
+                      Monotonic₂ ≤₁ ≤₂ ≤₃ f
+  ```
+
+* In `Relation.Binary.Definitions`:
+  ```agda
+  LeftMonotonic  : Rel B ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
+  RightMonotonic : Rel A ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
+  ```
+
