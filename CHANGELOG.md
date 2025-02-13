@@ -9,6 +9,10 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
+  to `#-sym` in order to avoid overloaded projection.
+  `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
+
 Non-backwards compatible changes
 --------------------------------
 
