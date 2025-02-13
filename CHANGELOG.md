@@ -9,6 +9,14 @@ Highlights
 Bug-fixes
 ---------
 
+* A major overhaul of the `Function` hierarchy sees the systematic development
+  and use of the theory of the left inverse `from` to a given `Surjective` function
+  `to`, as a consequence of which we can achieve full symmetry of `Bijection`, in
+  `Function.Properties.Bijection`/`Function.Construct.Symmetry`, rather than the
+  restricted versions considered to date. NB. this is non-backwards compatible
+  because the types of various properties are now sharper, and some previous lemmas
+  are no longer present, due to the complexity their deprecation would entail.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -88,6 +96,17 @@ Deprecated names
   product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
   ```
 
+* In `Function.Bundles.IsSurjection`:
+  ```agda
+  to⁻      ↦  Function.Structures.IsSurjection.from
+  to∘to⁻   ↦  Function.Structures.IsSurjection.strictlyInverseˡ
+  ```
+
+* In `Function.Properties.Surjection`:
+  ```agda
+  injective⇒to⁻-cong   ↦  Function.Bundles.Bijection.from-cong
+  ```
+
 New modules
 -----------
 
@@ -126,3 +145,77 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Function.Bundles.Bijection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  ```
+
+* In `Function.Bundles.LeftInverse`:
+  ```agda
+  surjective       : Surjective _≈₁_ _≈₂_ to
+  surjection       : Surjection From To
+  ```
+
+* In `Function.Bundles.RightInverse`:
+  ```agda
+  isInjection      : IsInjection to
+  injective        : Injective _≈₁_ _≈₂_ to
+  injection        : Injection From To
+  ```
+
+* In `Function.Bundles.Surjection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  ```
+
+* In `Function.Consequences` and `Function.Consequences.Setoid`:
+  the theory of the left inverse of a surjective function `to`
+  ```agda
+  module Section (surj :  Surjective ≈₁ ≈₂ to)
+  ```
+
+* In `Function.Construct.Symmetry`:
+  ```agda
+  isBijectionWithoutCongruence : IsBijection ≈₁ ≈₂ to → IsBijection ≈₂ ≈₁ from
+  bijectionWithoutCongruence   : Bijection R S → Bijection S R
+  ```
+
+* In `Function.Properties.Bijection`:
+  ```agda
+  sym : Bijection S T → Bijection T S
+  ```
+
+* In `Function.Structures.IsBijection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  ```
+
+* In `Function.Structures.IsLeftInverse`:
+  ```agda
+  surjective : Surjective _≈₁_ _≈₂_ to
+  ```
+
+* In `Function.Structures.IsRightInverse`:
+  ```agda
+  injective   : Injective _≈₁_ _≈₂_ to
+  isInjection : IsInjection to
+  ```
+
+* In `Function.Structures.IsSurjection`:
+  ```agda
+  from          : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  ```
+
