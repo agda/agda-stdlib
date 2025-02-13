@@ -17,7 +17,6 @@ open import Relation.Binary.Definitions using (Reflexive; Trans)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
-open import Function.Properties.Surjection using (injective⇒to⁻-cong)
 open import Function.Properties.Inverse using (Inverse⇒Equivalence)
 
 import Function.Construct.Identity as Identity
@@ -36,10 +35,8 @@ private
 refl : Reflexive (Bijection {a} {ℓ})
 refl = Identity.bijection _
 
--- Can't prove full symmetry as we have no proof that the witness
--- produced by the surjection proof preserves equality
-sym-≡ : Bijection S (setoid B) → Bijection (setoid B) S
-sym-≡ = Symmetry.bijection-≡
+sym : Bijection S T → Bijection T S
+sym = Symmetry.bijection
 
 trans : Trans (Bijection {a} {ℓ₁} {b} {ℓ₂}) (Bijection {b} {ℓ₂} {c} {ℓ₃}) Bijection
 trans = Composition.bijection
@@ -50,7 +47,7 @@ trans = Composition.bijection
 ⤖-isEquivalence : IsEquivalence {ℓ = ℓ} _⤖_
 ⤖-isEquivalence = record
   { refl  = refl
-  ; sym   = sym-≡
+  ; sym   = sym
   ; trans = trans
   }
 
@@ -59,14 +56,13 @@ trans = Composition.bijection
 
 Bijection⇒Inverse : Bijection S T → Inverse S T
 Bijection⇒Inverse bij = record
-  { to        = to
-  ; from      = to⁻
-  ; to-cong   = cong
-  ; from-cong = injective⇒to⁻-cong surjection injective
-  ; inverse   = (λ y≈to⁻[x] → Eq₂.trans (cong y≈to⁻[x]) (to∘to⁻ _)) ,
-                (λ y≈to[x] → injective (Eq₂.trans (to∘to⁻ _) y≈to[x]))
+  { to        = B.to
+  ; from      = B.from
+  ; to-cong   = B.cong
+  ; from-cong = B.from-cong
+  ; inverse   = B.inverseˡ , B.inverseʳ
   }
-  where open Bijection bij; to∘to⁻ = proj₂ ∘ strictlySurjective
+  where module B = Bijection bij
 
 Bijection⇒Equivalence : Bijection T S → Equivalence T S
 Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
