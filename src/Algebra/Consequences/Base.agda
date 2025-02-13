@@ -13,9 +13,9 @@ module Algebra.Consequences.Base
 open import Algebra.Core
 open import Algebra.Definitions
 open import Data.Sum.Base
-open import Relation.Binary.Core
 open import Relation.Binary.Consequences
   using (mono₂⇒monoˡ; mono₂⇒monoʳ)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive)
 
 module _ {ℓ} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ) where

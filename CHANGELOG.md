@@ -80,6 +80,16 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Base`:
+  ```agda
+  module Congruence (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  module Congruence (cong : Congruent₂ _≈_ _∙_)
+  ```
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
