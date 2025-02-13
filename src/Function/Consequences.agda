@@ -11,6 +11,7 @@
 module Function.Consequences where
 
 open import Data.Product.Base as Product
+open import Function.Base using (_∘_)
 open import Function.Definitions
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
@@ -23,14 +24,15 @@ private
     a b ℓ₁ ℓ₂ : Level
     A B : Set a
     ≈₁ ≈₂ : Rel A ℓ₁
-    f f⁻¹ : A → B
+    f : A → B
+    f⁻¹ : B → A
 
 ------------------------------------------------------------------------
 -- Injective
 
 contraInjective : ∀ (≈₂ : Rel B ℓ₂) → Injective ≈₁ ≈₂ f →
                   ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
-contraInjective _ inj p = contraposition inj p
+contraInjective _ inj = contraposition inj
 
 ------------------------------------------------------------------------
 -- Inverseˡ
@@ -38,7 +40,7 @@ contraInjective _ inj p = contraposition inj p
 inverseˡ⇒surjective : ∀ (≈₂ : Rel B ℓ₂) →
                       Inverseˡ ≈₁ ≈₂ f f⁻¹ →
                       Surjective ≈₁ ≈₂ f
-inverseˡ⇒surjective ≈₂ invˡ y = (_ , invˡ)
+inverseˡ⇒surjective ≈₂ invˡ _ = (_ , invˡ)
 
 ------------------------------------------------------------------------
 -- Inverseʳ
@@ -49,8 +51,7 @@ inverseʳ⇒injective : ∀ (≈₂ : Rel B ℓ₂) f →
                      Transitive ≈₁ →
                      Inverseʳ ≈₁ ≈₂ f f⁻¹ →
                      Injective ≈₁ ≈₂ f
-inverseʳ⇒injective ≈₂ f refl sym trans invʳ {x} {y} fx≈fy =
-  trans (sym (invʳ refl)) (invʳ fx≈fy)
+inverseʳ⇒injective ≈₂ f refl sym trans invʳ = trans (sym (invʳ refl)) ∘ invʳ
 
 ------------------------------------------------------------------------
 -- Inverseᵇ
@@ -71,8 +72,7 @@ surjective⇒strictlySurjective : ∀ (≈₂ : Rel B ℓ₂) →
                                  Reflexive ≈₁ →
                                  Surjective ≈₁ ≈₂ f →
                                  StrictlySurjective ≈₂ f
-surjective⇒strictlySurjective _ refl surj x =
-  Product.map₂ (λ v → v refl) (surj x)
+surjective⇒strictlySurjective _ refl surj = Product.map₂ (λ v → v refl) ∘ surj
 
 strictlySurjective⇒surjective : Transitive ≈₂ →
                                  Congruent ≈₁ ≈₂ f →
@@ -104,11 +104,13 @@ inverseʳ⇒strictlyInverseʳ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ�
                             Reflexive ≈₂ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹ →
                             StrictlyInverseʳ ≈₁ f f⁻¹
-inverseʳ⇒strictlyInverseʳ _ _ refl sinv x = sinv refl
+inverseʳ⇒strictlyInverseʳ  {f = f} {f⁻¹ = f⁻¹} ≈₁ ≈₂ =
+  inverseˡ⇒strictlyInverseˡ {f = f⁻¹} {f⁻¹ = f} ≈₂ ≈₁
 
 strictlyInverseʳ⇒inverseʳ : Transitive ≈₁ →
                             Congruent ≈₂ ≈₁ f⁻¹ →
                             StrictlyInverseʳ ≈₁ f f⁻¹ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹
-strictlyInverseʳ⇒inverseʳ trans cong sinv {x} y≈f⁻¹x =
-  trans (cong y≈f⁻¹x) (sinv x)
+strictlyInverseʳ⇒inverseʳ {≈₁ = ≈₁} {≈₂ = ≈₂} {f⁻¹ = f⁻¹} {f = f} =
+  strictlyInverseˡ⇒inverseˡ {≈₂ = ≈₁} {≈₁ = ≈₂} {f = f⁻¹} {f⁻¹ = f}
+

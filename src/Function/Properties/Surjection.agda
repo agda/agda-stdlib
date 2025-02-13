@@ -10,12 +10,12 @@ module Function.Properties.Surjection where
 
 open import Function.Base using (_∘_; _$_)
 open import Function.Definitions using (Surjective; Injective; Congruent)
-open import Function.Bundles using (Func; Surjection; _↠_; _⟶_; _↪_; mk↪;
-  _⇔_; mk⇔)
+open import Function.Bundles
+  using (Func; Surjection; Bijection; _↠_; _⟶_; _↪_; mk↪; _⇔_; mk⇔)
 import Function.Construct.Identity as Identity
 import Function.Construct.Composition as Compose
 open import Level using (Level)
-open import Data.Product.Base using (proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.Definitions using (Reflexive; Trans)
 open import Relation.Binary.Bundles using (Setoid)
@@ -31,8 +31,8 @@ private
 -- Constructors
 
 mkSurjection : (f : Func S T) (open Func f) →
-              Surjective Eq₁._≈_ Eq₂._≈_ to  →
-              Surjection S T
+               Surjective Eq₁._≈_ Eq₂._≈_ to  →
+               Surjection S T
 mkSurjection f surjective = record
   { Func f
   ; surjective = surjective
@@ -45,11 +45,11 @@ mkSurjection f surjective = record
 ↠⇒⟶ = Surjection.function
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → proj₂ (strictlySurjective _)}
+↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → strictlyInverseˡ _ }
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
-↠⇒⇔ s = mk⇔ to (proj₁ ∘ surjective)
+↠⇒⇔ s = mk⇔ to from
   where open Surjection s
 
 ------------------------------------------------------------------------
@@ -63,19 +63,26 @@ trans : Trans (Surjection {a} {ℓ₁} {b} {ℓ₂})
               (Surjection {a} {ℓ₁} {c} {ℓ₃})
 trans = Compose.surjection
 
+
 ------------------------------------------------------------------------
--- Other
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-injective⇒to⁻-cong : (surj : Surjection S T) →
-                      (open Surjection surj) →
-                      Injective Eq₁._≈_ Eq₂._≈_ to →
-                      Congruent Eq₂._≈_ Eq₁._≈_ to⁻
-injective⇒to⁻-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
-  to (to⁻ x) ≈⟨ to∘to⁻ x ⟩
-  x          ≈⟨ x≈y ⟩
-  y          ≈⟨ to∘to⁻ y ⟨
-  to (to⁻ y) ∎
-  where
-  open ≈-Reasoning T
-  open Surjection surj
+-- Version 2.3
 
+module _ (surjection : Surjection S T) where
+
+  open Surjection surjection
+
+  injective⇒to⁻-cong : Injective Eq₁._≈_ Eq₂._≈_ to →
+                       Congruent Eq₂._≈_ Eq₁._≈_ from
+  injective⇒to⁻-cong injective = Bijection.from-cong S⤖T
+    where
+    S⤖T : Bijection S T
+    S⤖T = record { cong = cong ; bijective = injective , surjective }
+{-# WARNING_ON_USAGE injective⇒to⁻-cong
+"Warning: injective⇒to⁻-cong was deprecated in v2.3.
+Please use Function.Bundles.Bijection.from-cong instead. "
+#-}
