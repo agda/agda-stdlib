@@ -175,16 +175,10 @@ Additions to existing modules
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   ```
 
-* In `Function.Consequences` and `Function.Consequences.Setoid`:
-  the theory of the left inverse of a surjective function `to`
-  ```agda
-  module Section (surj :  Surjective ≈₁ ≈₂ to)
-  ```
-
 * In `Function.Construct.Symmetry`:
   ```agda
-  isBijectionWithoutCongruence : IsBijection ≈₁ ≈₂ to → IsBijection ≈₂ ≈₁ from
-  bijectionWithoutCongruence   : Bijection R S → Bijection S R
+  isBijection : IsBijection ≈₁ ≈₂ to → IsBijection ≈₂ ≈₁ from
+  bijection   : Bijection R S → Bijection S R
   ```
 
 * In `Function.Properties.Bijection`:
@@ -199,6 +193,10 @@ Additions to existing modules
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  from-cong        : Congruent _≈₂_ _≈₁_ from
+  from-injective   : Injective _≈₂_ _≈₁_ from
+  from-surjective  : Surjective _≈₂_ _≈₁_ from
+  from-bijective   : Bijective _≈₂_ _≈₁_ from
   ```
 
 * In `Function.Structures.IsLeftInverse`:
@@ -214,8 +212,9 @@ Additions to existing modules
 
 * In `Function.Structures.IsSurjection`:
   ```agda
-  from          : B → A
+  from             : B → A
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  from-injective   : Injective _≈₂_ _≈₁_ from
   ```
 
