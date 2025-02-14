@@ -25,11 +25,11 @@ module _ {ℓ} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ) where
 
   module Congruence (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_) where
 
-    congˡ : LeftCongruent _≈_ _∙_
-    congˡ = mono₂⇒monoˡ {≤₁ = _≈_} {≤₂ = _≈_} {≤₃ = _≈_} refl cong
+    ∙-congˡ : LeftCongruent _≈_ _∙_
+    ∙-congˡ = mono₂⇒monoˡ {≤₁ = _≈_} {≤₂ = _≈_} {≤₃ = _≈_} refl cong _
 
-    congʳ : RightCongruent _≈_ _∙_
-    congʳ = mono₂⇒monoʳ {≤₁ = _≈_} {≤₂ = _≈_} {≤₃ = _≈_} refl cong
+    ∙-congʳ : RightCongruent _≈_ _∙_
+    ∙-congʳ = mono₂⇒monoʳ {≤₁ = _≈_} {≤₂ = _≈_} {≤₃ = _≈_} refl cong _
 
 module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
 

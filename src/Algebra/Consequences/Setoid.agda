@@ -40,7 +40,6 @@ open Base public
 module Congruence {_∙_ : Op₂ A} (cong : Congruent₂ _∙_) where
 
   open Base.Congruence _≈_ cong refl public
-    renaming (congˡ to ∙-congˡ; congʳ to ∙-congʳ)
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
