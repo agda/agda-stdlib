@@ -40,6 +40,11 @@ Deprecated names
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   ```
 
+* In `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
+  ```
+
 * In `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∣∣-sym       ↦  ∥-sym
@@ -98,6 +103,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  comm∧cancelAtˡ⇒cancelAtʳ : LeftCancellativeAt x _∙_ → RightCancellativeAt x _∙_
+  comm∧cancelAtʳ⇒cancelAtˡ : RightCancellativeAt x _∙_ → LeftCancellativeAt x _∙_
+  ```
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
@@ -125,4 +136,9 @@ Additions to existing modules
   kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
