@@ -108,11 +108,11 @@ module _ {≤₁ : Rel A ℓ₁} {≤₂ : Rel B ℓ₂} {≤₃ : Rel C ℓ₂}
 
   mono₂⇒monoˡ : ∀ {f} → Reflexive ≤₁ →
                 Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
-  mono₂⇒monoˡ refl mono _ = mono refl
+  mono₂⇒monoˡ refl mono x = mono (refl {x = x})
 
   mono₂⇒monoʳ : ∀ {f} → Reflexive ≤₂ →
                 Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
-  mono₂⇒monoʳ refl mono _ = flip mono refl
+  mono₂⇒monoʳ refl mono y = flip mono (refl {x = y})
 
   monoˡ∧monoʳ⇒mono₂ : ∀ {f} → Transitive ≤₃ →
                       LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
