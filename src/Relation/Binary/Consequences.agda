@@ -106,18 +106,19 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃}
 
 module _ {≤₁ : Rel A ℓ₁} {≤₂ : Rel B ℓ₂} {≤₃ : Rel C ℓ₂} where
 
-  mono₂⇒monoˡ : Reflexive ≤₁ →
-                ∀ {f} → Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
-  mono₂⇒monoˡ refl mono = mono refl
+  mono₂⇒monoˡ : ∀ {f} → Reflexive ≤₁ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
+  mono₂⇒monoˡ refl mono _ = mono refl
 
-  mono₂⇒monoʳ : Reflexive ≤₂ →
-                ∀ {f} → Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
-  mono₂⇒monoʳ refl mono = flip mono refl
+  mono₂⇒monoʳ : ∀ {f} → Reflexive ≤₂ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
+  mono₂⇒monoʳ refl mono _ = flip mono refl
 
-  monoˡ∧monoʳ⇒mono₂ : Transitive ≤₃ →
-                      ∀ {f} → LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
+  monoˡ∧monoʳ⇒mono₂ : ∀ {f} → Transitive ≤₃ →
+                      LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
                       Monotonic₂ ≤₁ ≤₂ ≤₃ f
-  monoˡ∧monoʳ⇒mono₂ trans monoˡ monoʳ x≤₁y u≤₂v = trans (monoˡ u≤₂v) (monoʳ x≤₁y)
+  monoˡ∧monoʳ⇒mono₂ trans monoˡ monoʳ x≤₁y u≤₂v =
+    trans (monoˡ _ u≤₂v) (monoʳ _ x≤₁y)
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders
