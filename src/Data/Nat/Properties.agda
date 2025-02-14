@@ -38,9 +38,13 @@ open import Level using (0ℓ)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core
   using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary
-open import Relation.Binary.Consequences using (flip-Connex)
+open import Relation.Binary.Bundles
+open import Relation.Binary.Definitions
+open import Relation.Binary.Consequences
+  using (mono₂⇒monoˡ; mono₂⇒monoʳ; flip-Connex)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Structures
+open import Relation.Binary.Structures.Biased
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′; recompute)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
@@ -702,15 +706,15 @@ m+n≤o⇒n≤o : ∀ m {n o} → m + n ≤ o → n ≤ o
 m+n≤o⇒n≤o zero    n≤o   = n≤o
 m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 
-+-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
++-mono-≤ : Monotonic₂ _≤_ _≤_ _≤_ _+_
 +-mono-≤ {_} {m} z≤n       o≤p = ≤-trans o≤p (m≤n+m _ m)
 +-mono-≤ {_} {_} (s≤s m≤n) o≤p = s≤s (+-mono-≤ m≤n o≤p)
 
-+-monoˡ-≤ : ∀ n → (_+ n) Preserves _≤_ ⟶ _≤_
-+-monoˡ-≤ n m≤o = +-mono-≤ m≤o (≤-refl {n})
++-monoˡ-≤ : RightMonotonic _≤_ _≤_ _+_
++-monoˡ-≤ = mono₂⇒monoʳ {≤₃ = _≤_} ≤-refl +-mono-≤
 
-+-monoʳ-≤ : ∀ n → (n +_) Preserves _≤_ ⟶ _≤_
-+-monoʳ-≤ n m≤o = +-mono-≤ (≤-refl {n}) m≤o
++-monoʳ-≤ : LeftMonotonic _≤_ _≤_ _+_
++-monoʳ-≤ = mono₂⇒monoˡ {≤₃ = _≤_} ≤-refl +-mono-≤
 
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
 +-mono-<-≤ {_} {suc n} z<s               o≤p = s≤s (m≤n⇒m≤o+n n o≤p)
