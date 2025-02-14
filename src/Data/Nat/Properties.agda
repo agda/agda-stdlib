@@ -977,10 +977,10 @@ n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 *-mono-≤ (s≤s m≤n) u≤v = +-mono-≤ u≤v (*-mono-≤ m≤n u≤v)
 
 *-monoˡ-≤ : RightMonotonic _≤_ _≤_ _*_
-*-monoˡ-≤ = mono₂⇒monoʳ {≤₃ = _≤_} ≤-refl *-mono-≤
+*-monoˡ-≤ = mono₂⇒monoʳ {≤₁ = _≤_} {≤₂ = _≤_} {≤₃ = _≤_} ≤-refl *-mono-≤
 
 *-monoʳ-≤ : LeftMonotonic _≤_ _≤_ _*_
-*-monoʳ-≤ m {x} {y} x≤y = mono₂⇒monoˡ {≤₂ = _≤_} {≤₃ = _≤_} {f = _*_} ≤-refl *-mono-≤ m x≤y --  {≤₃ = _≤_} ≤-refl *-mono-≤ m
+*-monoʳ-≤ = mono₂⇒monoˡ {≤₁ = _≤_} {≤₂ = _≤_} {≤₃ = _≤_} ≤-refl *-mono-≤
 
 *-mono-< : Monotonic₂ _<_ _<_ _<_ _*_
 *-mono-< z<s               u<v@(s≤s _) = 0<1+n
