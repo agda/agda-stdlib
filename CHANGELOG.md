@@ -9,6 +9,11 @@ Highlights
 Bug-fixes
 ---------
 
+* Neither of the `record` constructors `_,_` in `Algebra.Definitions.RawMagma`
+  nor `Relation.Binary.Construct.Interior.Symmetric`, introduced to mimic that
+  of `Data.Product.Base`, were introduced with the appropriate fixity, namely
+  `infixr 4 _,_`.
+
 Non-backwards compatible changes
 --------------------------------
 
