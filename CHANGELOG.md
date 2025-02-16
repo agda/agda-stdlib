@@ -95,6 +95,13 @@ New modules
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
+* Integer arithmetic modulo `n`, based on `Data.Nat.Bounded.*`:
+  ```agda
+  Data.Integer.Modulo.Base
+  Data.Integer.Modulo.Literals
+  Data.Integer.Modulo.Properties
+  ```
+
 Additions to existing modules
 -----------------------------
 
