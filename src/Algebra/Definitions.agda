@@ -37,10 +37,10 @@ Congruent₂ : Op₂ A → Set _
 Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
 
 LeftCongruent : Op₂ A → Set _
-LeftCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+LeftCongruent _∙_ = ∀ {x} → Congruent₁ (x ∙_)
 
 RightCongruent : Op₂ A → Set _
-RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+RightCongruent _∙_ = ∀ {x} → Congruent₁ (_∙ x)
 
 Associative : Op₂ A → Set _
 Associative _∙_ = ∀ x y z → ((x ∙ y) ∙ z) ≈ (x ∙ (y ∙ z))
