@@ -37,7 +37,7 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>; Monotonic₁; Monotonic₂)
+  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>; Monotonic₁; Monotonic₂; LeftMonotonic; RightMonotonic)
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
@@ -858,7 +858,7 @@ p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
 ------------------------------------------------------------------------
 -- Properties of _+_ and _<_
 
-+-monoʳ-< : ∀ r → Monotonic₁ _<_ _<_ (r +_)
++-monoʳ-< : LeftMonotonic _<_ _<_ _+_
 +-monoʳ-< r@record{} {p@record{}} {q@record{}} (*<* x<y) = *<* $ begin-strict
   ↥ (r + p) ℤ.* (↧ (r + q))                          ≡⟨ lemma r p q ⟩
   ↥r↧r ℤ.* (↧ p ℤ.* ↧ q) ℤ.+ ↧r↧r ℤ.* (↥ p ℤ.* ↧ q)  <⟨ leq ⟩
@@ -870,7 +870,7 @@ p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
     (ℤ.≤-reflexive $ cong (↥r↧r ℤ.*_) (ℤ.*-comm (↧ p) (↧ q)))
     (ℤ.*-monoˡ-<-pos ↧r↧r x<y)
 
-+-monoˡ-< : ∀ r → Monotonic₁ _<_ _<_ (_+ r)
++-monoˡ-< : RightMonotonic _<_ _<_ _+_
 +-monoˡ-< r {p} {q} rewrite +-comm-≡ p r | +-comm-≡ q r = +-monoʳ-< r
 
 +-mono-< : Monotonic₂ _<_ _<_ _<_ _+_
