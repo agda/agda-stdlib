@@ -53,7 +53,7 @@ setoid C X = record
   ; isEquivalence = record
     { refl  = refl , refl , λ { r .r refl → X.refl }
     ; sym   = sym
-    ; trans = λ { {_} {i = xs} {ys} {zs} → trans {_} {i = xs} {ys} {zs}  }
+    ; trans = λ { {_} {x = xs} {ys} {zs} → trans {_} {x = xs} {ys} {zs}  }
     }
   }
   where

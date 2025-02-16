@@ -58,7 +58,7 @@ module ℤero where
   sym {x = ()}
 
   trans : Transitive _≈_
-  trans {i = ()}
+  trans {x = ()}
 
   ∙-cong : Congruent₂ _≈_ _∙_
   ∙-cong {x = ()}
