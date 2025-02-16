@@ -20,7 +20,7 @@ open import Algebra.Bundles.Raw
 open import Algebra.Morphism.Structures
 
 open import Data.Product.Base using (_,_)
-open import Function.Definitions using (StrictlySurjective)
+open import Function.Definitions.Strict using (StrictlySurjective)
 import Relation.Binary.Morphism.Definitions as Rel
 open import Relation.Binary.Morphism.Structures
 
