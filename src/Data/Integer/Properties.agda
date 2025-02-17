@@ -774,7 +774,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   o ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n o n ⟨
   suc o ⊖ suc n ∎ where open ≤-Reasoning
 
-⊖-monoʳ->-< : ∀ p → (p ⊖_) Preserves ℕ._>_ ⟶ _<_
+⊖-monoʳ->-< : LeftMonotonic ℕ._>_ _<_ _⊖_
 ⊖-monoʳ->-< zero    {_}     z<s       = -<+
 ⊖-monoʳ->-< zero    {_}     (s<s m<n@(s≤s _)) = -<- m<n
 ⊖-monoʳ->-< (suc p) {suc m} z<s       = begin-strict
@@ -787,7 +787,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   p ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n p n ⟨
   suc p ⊖ suc n ∎ where open ≤-Reasoning
 
-⊖-monoˡ-< : ∀ n → (_⊖ n) Preserves ℕ._<_ ⟶ _<_
+⊖-monoˡ-< : RightMonotonic ℕ._<_ _<_ _⊖_
 ⊖-monoˡ-< zero    m<o             = +<+ m<o
 ⊖-monoˡ-< (suc n) {_} {suc o} z<s = begin-strict
   -[1+ n ]      <⟨  -1+m<n⊖m n _ ⟩
