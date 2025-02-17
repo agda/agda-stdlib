@@ -92,6 +92,10 @@ nonZeroIndex {n = suc _} _ = _
 suc-injective : Fin.suc i ≡ suc j → i ≡ j
 suc-injective refl = refl
 
+suc-≢-injective : Fin.suc i ≢ suc j → i ≢ j
+suc-≢-injective {i = zero} {j = zero} p = contradiction refl p
+suc-≢-injective {_}        {_}        p = λ q → contradiction (cong suc q) p
+
 infix 4 _≟_
 
 _≟_ : DecidableEquality (Fin n)
