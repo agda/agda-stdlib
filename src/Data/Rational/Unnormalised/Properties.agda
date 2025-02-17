@@ -828,7 +828,7 @@ private
                       refl (↥ r) (↧ r) (↧ p) (↥ p) (↧ q)
     where open ℤ-solver
 
-+-monoʳ-≤ : ∀ r → Monotonic₁ _≤_ _≤_ (r +_)
++-monoʳ-≤ : LeftMonotonic _≤_ _≤_ _+_
 +-monoʳ-≤ r@record{} {p@record{}} {q@record{}} (*≤* x≤y) = *≤* $ begin
   ↥ (r + p) ℤ.* ↧ (r + q)                                  ≡⟨ lemma r p q ⟩
   r₂ ℤ.* (↧ p ℤ.* ↧ q) ℤ.+ (↧ r ℤ.* ↧ r) ℤ.* (↥ p ℤ.* ↧ q) ≤⟨ leq ⟩
@@ -840,11 +840,12 @@ private
     (ℤ.≤-reflexive $ cong (r₂ ℤ.*_) (ℤ.*-comm (↧ p) (↧ q)))
     (ℤ.*-monoˡ-≤-nonNeg (↧ r ℤ.* ↧ r) x≤y)
 
-+-monoˡ-≤ : ∀ r → Monotonic₁ _≤_ _≤_ (_+ r)
++-monoˡ-≤ : RightMonotonic _≤_ _≤_ _+_
 +-monoˡ-≤ r {p} {q} rewrite +-comm-≡ p r | +-comm-≡ q r = +-monoʳ-≤ r
 
 +-mono-≤ : Monotonic₂ _≤_ _≤_ _≤_ _+_
-+-mono-≤ {p} {q} {u} {v} p≤q u≤v = ≤-trans (+-monoˡ-≤ u p≤q) (+-monoʳ-≤ q u≤v)
++-mono-≤ =
+  BC.monoˡ∧monoʳ⇒mono₂ {≤₁ = _≤_} {≤₂ = _≤_} {≤₃ = _≤_} ≤-trans +-monoʳ-≤ +-monoˡ-≤
 
 p≤q⇒p≤r+q : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
 p≤q⇒p≤r+q {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
