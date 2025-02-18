@@ -32,7 +32,7 @@ Deprecated names
   _∤∤_    ↦  _∦_
   ```
 
-* In `Algebra.Module.Consequences
+* In `Algebra.Module.Consequences`
   ```agda
   *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
@@ -125,4 +125,8 @@ Additions to existing modules
   kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ```
+* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
+  ```
+  filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
