@@ -17,8 +17,8 @@ Non-backwards compatible changes
   significantly faster. However, its reduction behaviour on open terms may have
   changed.
 
-* The definitions of `Algebra.Structures.IsHeytingCommutativeRing` and
-  `Algebra.Structures.IsHeytingCommutativeRing` have been refactored, together
+* The definitions of `Algebra.Structures.IsHeyting*` and
+  `Algebra.Structures.IsHeyting*` have been refactored, together
   with that of `Relation.Binary.Definitions.Tight` on which they depend.
 
 Minor improvements
@@ -95,12 +95,25 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Apartness.Properties.HeytingField`, refactoring the existing
+  `Algebra.Apartness.Properties.HeytingCommutativeRing`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Apartness.Bundles`:
+  ```agda
+  TightApartnessRelation c ℓ₁ ℓ₂ : Set _
+  ```
+
+* In `Algebra.Apartness.Structures`:
+  ```agda
+  IsTightApartnessRelation _≈_ _#_ : Set _
+  ```
 
 * In `Algebra.Construct.Pointwise`:
   ```agda
@@ -130,3 +143,10 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Relation.Binary.Properties.DecSetoid`:
+  ```agda
+  ≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
+  ≉-tightApartnessRelation   : TightApartnessRelation _ _ _
+  ```
+

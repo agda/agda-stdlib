@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Bundles using (DecSetoid; ApartnessRelation)
+open import Relation.Binary.Bundles
+  using (DecSetoid; ApartnessRelation; TightApartnessRelation)
 
 module Relation.Binary.Properties.DecSetoid {c ℓ} (S : DecSetoid c ℓ) where
 
@@ -16,7 +17,7 @@ open import Relation.Binary.Definitions
   using (Cotransitive; Tight)
 import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.Structures
-  using (IsApartnessRelation; IsDecEquivalence)
+  using (IsApartnessRelation; IsTightApartnessRelation; IsDecEquivalence)
 open import Relation.Nullary.Decidable.Core
   using (yes; no; decidable-stable)
 
@@ -36,8 +37,19 @@ open SetoidProperties setoid
   ; cotrans = ≉-cotrans
   }
 
+≉-tight : Tight _≈_ _≉_
+≉-tight x y = decidable-stable (x ≟ y)
+
+≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _≉_
+≉-isTightApartnessRelation = record
+  { isApartnessRelation = ≉-isApartnessRelation
+  ; tight = ≉-tight
+  }
+
 ≉-apartnessRelation : ApartnessRelation c ℓ ℓ
 ≉-apartnessRelation = record { isApartnessRelation = ≉-isApartnessRelation }
 
-≉-tight : Tight _≈_ _≉_
-≉-tight x y = decidable-stable (x ≟ y)
+≉-tightApartnessRelation : TightApartnessRelation c ℓ ℓ
+≉-tightApartnessRelation = record
+  { isTightApartnessRelation = ≉-isTightApartnessRelation }
+
