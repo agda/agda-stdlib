@@ -75,12 +75,30 @@ Deprecated names
   or        ↦  Data.Bool.ListAction.or
   any       ↦  Data.Bool.ListAction.any
   all       ↦  Data.Bool.ListAction.all
+  sum       ↦  Data.Nat.ListAction.sum
+  product   ↦  Data.Nat.ListAction.product
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  sum-++       ↦  Data.Nat.ListAction.Properties.sum-++
+  ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
+  product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
+  ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  sum-↭       ↦  Data.Nat.ListAction.Properties.sum-↭
+  product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
   ```
 
 New modules
 -----------
 
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
+
+* `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
 Additions to existing modules
 -----------------------------

@@ -15,7 +15,7 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (ℕ; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (-,_)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding (sum; product)
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -373,24 +373,6 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     where open PermutationReasoning
 
 ------------------------------------------------------------------------
--- sum
-
-sum-↭ : sum Preserves _↭_ ⟶ _≡_
-sum-↭ p = foldr-commMonoid ℕ-+-0.isCommutativeMonoid (↭⇒↭ₛ p)
-  where
-  module ℕ-+-0 = CommutativeMonoid ℕ.+-0-commutativeMonoid
-  open Permutation ℕ-+-0.setoid
-
-------------------------------------------------------------------------
--- product
-
-product-↭ : product Preserves _↭_ ⟶ _≡_
-product-↭ p = foldr-commMonoid ℕ-*-1.isCommutativeMonoid (↭⇒↭ₛ p)
-  where
-  module ℕ-*-1 = CommutativeMonoid ℕ.*-1-commutativeMonoid
-  open Permutation ℕ-*-1.setoid
-
-------------------------------------------------------------------------
 -- catMaybes
 
 catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
@@ -408,3 +390,25 @@ catMaybes-↭ (swap (just x) (just y) xs↭) = swap x y $ catMaybes-↭ xs↭
 
 mapMaybe-↭ : (f : A → Maybe B) → xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
 mapMaybe-↭ f = catMaybes-↭ ∘ map⁺ f
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+import Data.Nat.ListAction.Properties as ℕ
+
+sum-↭ = ℕ.sum-↭
+{-# WARNING_ON_USAGE sum-↭
+"Warning: sum-↭ was deprecated in v2.3.
+Please use Data.Nat.ListAction.sum-↭ instead."
+#-}
+product-↭ = ℕ.product-↭
+{-# WARNING_ON_USAGE product-↭
+"Warning: product-↭ was deprecated in v2.3.
+Please use Data.Nat.ListAction.product-↭ instead."
+#-}

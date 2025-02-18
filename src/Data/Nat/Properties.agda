@@ -37,7 +37,7 @@ open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core
   using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary
-open import Relation.Binary.Consequences using (flip-Connex)
+open import Relation.Binary.Consequences using (flip-Connex; wlog)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′; recompute)
@@ -47,6 +47,7 @@ open import Relation.Nullary.Reflects using (fromEquivalence)
 open import Algebra.Consequences.Propositional {A = ℕ}
   using ( comm∧cancelˡ⇒cancelʳ
         ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ
+        ; comm⇒sym[distribˡ]
         ; almost⇒exceptʳ)
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
@@ -1855,23 +1856,13 @@ m∸n≤∣m-n∣ m n with ≤-total m n
   ∣ n - m ∣ ≡⟨ m≤n⇒∣n-m∣≡n∸m m≤n ⟩
   n ∸ m     ∎
 
-private
-
-  *-distribˡ-∣-∣-aux : ∀ a m n → m ≤ n → a * ∣ n - m ∣ ≡ ∣ a * n - a * m ∣
-  *-distribˡ-∣-∣-aux a m n m≤n = begin-equality
-    a * ∣ n - m ∣     ≡⟨ cong (a *_) (m≤n⇒∣n-m∣≡n∸m m≤n) ⟩
-    a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
-    a * n ∸ a * m     ≡⟨ sym $′ m≤n⇒∣n-m∣≡n∸m (*-monoʳ-≤ a m≤n) ⟩
-    ∣ a * n - a * m ∣ ∎
-
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
-*-distribˡ-∣-∣ a m n with ≤-total m n
-... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
-... | inj₁ m≤n = begin-equality
-  a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
-  a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
-  ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
-  ∣ a * m - a * n ∣ ∎
+*-distribˡ-∣-∣ a = wlog ≤-total (comm⇒sym[distribˡ] {_◦_ = _*_} ∣-∣-comm a)
+  $′ λ m n m≤n → begin-equality
+    a * ∣ m - n ∣     ≡⟨ cong (a *_) (m≤n⇒∣m-n∣≡n∸m m≤n) ⟩
+    a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
+    a * n ∸ a * m     ≡⟨ m≤n⇒∣m-n∣≡n∸m (*-monoʳ-≤ a m≤n) ⟨
+    ∣ a * m - a * n ∣ ∎
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
 *-distribʳ-∣-∣ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
