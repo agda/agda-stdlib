@@ -9,8 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
+open import Algebra.Bundles using ( RawRing )
+open import Algebra.Morphism.Structures using (IsRingMonomorphism)
 import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphism
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Relation.Binary.Core
@@ -26,7 +26,7 @@ open RawRing R₂ renaming
   ( Carrier to B; _≈_ to _≈₂_; _+_ to _⊕_
   ; _*_ to _⊛_; 1# to 1#₂; 0# to 0#₂; -_ to ⊝_)
 
-open import Algebra.Definitions
+open import Algebra.Definitions 
 open import Algebra.Structures
 open import Data.Product.Base using (proj₁; proj₂; _,_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning

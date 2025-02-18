@@ -7,20 +7,23 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
-import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties
-open import Relation.Binary.Bundles using (Poset)
-import Relation.Binary.Lattice as R
-open import Function.Base
-open import Data.Product.Base using (_,_; swap)
 
 module Algebra.Lattice.Properties.Lattice
   {l₁ l₂} (L : Lattice l₁ l₂) where
 
 open Lattice L
+
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
 open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
+open import Data.Product.Base using (_,_; swap)
+
+import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties
+open import Relation.Binary.Bundles using (Poset)
+import Relation.Binary.Lattice as R
+open import Function.Base
+
 
 ------------------------------------------------------------------------
 -- _∧_ is a semilattice

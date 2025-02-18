@@ -15,9 +15,8 @@
 
 module Algebra.Lattice.Bundles where
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Structures
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Bundles 
 import Algebra.Lattice.Bundles.Raw as Raw
 open import Algebra.Lattice.Structures
 open import Level using (suc; _⊔_)

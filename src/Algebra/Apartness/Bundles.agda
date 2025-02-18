@@ -8,12 +8,13 @@
 
 module Algebra.Apartness.Bundles where
 
-open import Level using (_⊔_; suc)
-open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (ApartnessRelation)
-open import Algebra.Core using (Op₁; Op₂)
-open import Algebra.Bundles using (CommutativeRing)
 open import Algebra.Apartness.Structures
+open import Algebra.Bundles using (CommutativeRing)
+open import Algebra.Core using (Op₁; Op₂)
+open import Level using (_⊔_; suc)
+open import Relation.Binary.Bundles using (ApartnessRelation)
+open import Relation.Binary.Core using (Rel)
+
 
 record HeytingCommutativeRing c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  8 -_

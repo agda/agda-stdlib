@@ -9,10 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
-open import Relation.Binary.Core
-
+open import Algebra.Bundles using (RawGroup)
+open import Algebra.Morphism.Structures using (IsGroupMonomorphism)
 module Algebra.Morphism.GroupMonomorphism
   {a b ℓ₁ ℓ₂} {G₁ : RawGroup a ℓ₁} {G₂ : RawGroup b ℓ₂} {⟦_⟧}
   (isGroupMonomorphism : IsGroupMonomorphism G₁ G₂ ⟦_⟧)
@@ -24,8 +22,10 @@ open RawGroup G₁ renaming
 open RawGroup G₂ renaming
   (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; _⁻¹ to _⁻¹₂; ε to ε₂)
 
-open import Algebra.Definitions
-open import Algebra.Structures
+open import Algebra.Definitions 
+  using (Congruent₁; LeftInverse; RightInverse; Inverse )
+open import Algebra.Structures  
+  using (IsMagma; IsGroup; IsAbelianGroup)
 open import Data.Product.Base using (_,_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 

@@ -41,3 +41,4 @@ reflexive+selfInverse⇒involutive = reflexive∧selfInverse⇒involutive
 "Warning: reflexive+selfInverse⇒involutive was deprecated in v2.0.
 Please use reflexive∧selfInverse⇒involutive instead."
 #-}
+ 

@@ -11,7 +11,7 @@
 
 module Algebra.Module.Construct.TensorUnit where
 
-open import Algebra.Bundles
+open import Algebra.Bundles 
 open import Algebra.Module.Bundles
 open import Level
 

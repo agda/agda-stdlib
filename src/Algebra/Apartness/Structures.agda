@@ -16,12 +16,12 @@ module Algebra.Apartness.Structures
   (_+_ _*_ : Op₂ Carrier) (-_ : Op₁ Carrier) (0# 1# : Carrier)
   where
 
-open import Level using (_⊔_; suc)
-open import Data.Product.Base using (∃-syntax; _×_; _,_; proj₂)
 open import Algebra.Definitions _≈_ using (Invertible)
 open import Algebra.Structures _≈_ using (IsCommutativeRing)
-open import Relation.Binary.Structures using (IsEquivalence; IsApartnessRelation)
+open import Data.Product.Base using (∃-syntax; _×_; _,_; proj₂)
+open import Level using (_⊔_; suc)
 open import Relation.Binary.Definitions using (Tight)
+open import Relation.Binary.Structures using (IsEquivalence; IsApartnessRelation)
 open import Relation.Nullary.Negation using (¬_)
 import Relation.Binary.Properties.ApartnessRelation as AR
 

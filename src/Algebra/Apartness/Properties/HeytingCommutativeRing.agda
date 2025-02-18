@@ -11,17 +11,17 @@ open import Algebra.Apartness.Bundles using (HeytingCommutativeRing)
 module Algebra.Apartness.Properties.HeytingCommutativeRing
   {c ℓ₁ ℓ₂} (HCR : HeytingCommutativeRing c ℓ₁ ℓ₂) where
 
-open import Function.Base using (_∘_)
-open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Algebra using (CommutativeRing; RightIdentity; Invertible; LeftInvertible; RightInvertible)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
+open import Function.Base using (_∘_)
+open import Relation.Binary.Definitions using (Symmetric)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open HeytingCommutativeRing HCR
 open CommutativeRing commutativeRing using (ring; *-commutativeMonoid)
 
 open import Algebra.Properties.Ring ring
   using (-0#≈0#; -‿distribˡ-*; -‿distribʳ-*; -‿anti-homo-+; -‿involutive)
-open import Relation.Binary.Definitions using (Symmetric)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Algebra.Properties.CommutativeMonoid *-commutativeMonoid
 
 private variable
@@ -106,3 +106,4 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
 
 #-congˡ : y ≈ z → x # y → x # z
 #-congˡ y≈z x#y = #-sym (#-congʳ y≈z (#-sym x#y))
+ 

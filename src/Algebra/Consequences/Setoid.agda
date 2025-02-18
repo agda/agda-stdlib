@@ -15,6 +15,7 @@ open import Relation.Binary.Definitions
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S renaming (Carrier to A)
+
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)

@@ -14,10 +14,9 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
-open import Algebra.Lattice
+open import Algebra.Lattice using (Semilattice)
 import Algebra.Construct.DirectProduct as DirectProduct
 open import Data.Product.Base using (_,_; _<*>_)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level using (Level; _⊔_)
 
 module Algebra.Lattice.Construct.DirectProduct where

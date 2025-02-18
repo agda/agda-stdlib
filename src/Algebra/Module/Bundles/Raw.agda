@@ -9,10 +9,9 @@
 module Algebra.Module.Bundles.Raw where
 
 open import Algebra.Bundles.Raw
-open import Algebra.Core
+open import Algebra.Core 
 open import Algebra.Module.Core
-open import Level
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (Rel)
 
 private

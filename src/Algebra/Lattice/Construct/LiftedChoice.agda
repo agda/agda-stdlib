@@ -7,8 +7,8 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
-open import Algebra.Lattice
-open import Algebra.Construct.LiftedChoice
+open import Algebra.Lattice using (IsSemilattice)
+open import Algebra.Construct.LiftedChoice 
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Level using (Level)

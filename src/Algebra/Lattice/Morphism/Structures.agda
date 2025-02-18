@@ -7,8 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Morphism
+open import Algebra.Morphism 
 open import Algebra.Lattice.Bundles
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)

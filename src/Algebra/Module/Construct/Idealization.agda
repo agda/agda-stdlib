@@ -37,7 +37,7 @@ open import Algebra.Module.Bundles using (Bimodule)
 module Algebra.Module.Construct.Idealization
   {r ℓr m ℓm} (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
-open import Algebra.Core
+open import Algebra.Core 
 import Algebra.Consequences.Setoid as Consequences
 import Algebra.Definitions as Definitions
 import Algebra.Module.Construct.DirectProduct as DirectProduct

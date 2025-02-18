@@ -8,7 +8,7 @@
 
 module Algebra.Lattice.Morphism.Construct.Identity where
 
-open import Algebra.Lattice.Bundles
+open import Algebra.Lattice.Bundles using (RawLattice)
 open import Algebra.Lattice.Morphism.Structures
   using ( module LatticeMorphisms )
 open import Data.Product.Base using (_,_)

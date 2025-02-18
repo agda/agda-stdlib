@@ -9,10 +9,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
-open import Relation.Binary.Core
+
+open import Algebra.Bundles 
+  using (RawMagma; Magma; Semigroup; Band; SelectiveMagma )
+open import Algebra.Morphism.Structures using (IsMagmaMonomorphism )
 
 module Algebra.Morphism.MagmaMonomorphism
   {a b ℓ₁ ℓ₂} {M₁ : RawMagma a ℓ₁} {M₂ : RawMagma b ℓ₂} {⟦_⟧}
@@ -23,7 +23,7 @@ open IsMagmaMonomorphism isMagmaMonomorphism
 open RawMagma M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_)
 open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
 
-open import Algebra.Structures
+open import Algebra.Structures using  (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma)
 open import Algebra.Definitions
 open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
@@ -121,3 +121,4 @@ isSelectiveMagma isSelMagma = record
   { isMagma = isMagma S.isMagma
   ; sel     = sel     S.isMagma S.sel
   } where module S = IsSelectiveMagma isSelMagma
+ 
