@@ -40,9 +40,10 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) (≈₃ : Rel C ℓ₃)
 
   surjective : Surjective ≈₁ ≈₂ f → Surjective ≈₂ ≈₃ g →
                Surjective ≈₁ ≈₃ (g ∘ f)
-  surjective f-sur g-sur x with g-sur x
-  ... | y , gproof with f-sur y
-  ...   | z , fproof = z , gproof ∘ fproof
+  surjective f-sur g-sur x =
+    let y , gproof = g-sur x in
+    let z , fproof = f-sur y in
+        z , gproof ∘ fproof
 
   bijective : Bijective ≈₁ ≈₂ f → Bijective ≈₂ ≈₃ g →
               Bijective ≈₁ ≈₃ (g ∘ f)
