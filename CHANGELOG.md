@@ -17,6 +17,10 @@ Non-backwards compatible changes
   significantly faster. However, its reduction behaviour on open terms may have
   changed.
 
+* The definitions of `Algebra.Structures.IsHeytingCommutativeRing` and
+  `Algebra.Structures.IsHeytingCommutativeRing` have been refactored, together
+  with that of `Relation.Binary.Definitions.Tight` on which they depend.
+
 Minor improvements
 ------------------
 

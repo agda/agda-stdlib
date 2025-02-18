@@ -35,7 +35,7 @@ open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_�
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
+  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTightApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
 import Relation.Binary.Consequences as BC
@@ -139,8 +139,13 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   }
 
 ≄-tight : Tight _≃_ _≄_
-proj₁ (≄-tight p q) ¬p≄q = Dec.decidable-stable (p ≃? q) ¬p≄q
-proj₂ (≄-tight p q) p≃q p≄q = p≄q p≃q
+≄-tight p q = Dec.decidable-stable (p ≃? q)
+
+≄-isTightApartnessRelation : IsTightApartnessRelation _≃_ _≄_
+≄-isTightApartnessRelation = record
+  { isApartnessRelation = ≄-isApartnessRelation
+  ; tight = ≄-tight
+  }
 
 ≃-setoid : Setoid 0ℓ 0ℓ
 ≃-setoid = record
@@ -1399,15 +1404,14 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isHeytingCommutativeRing = record
   { isCommutativeRing   = +-*-isCommutativeRing
-  ; isApartnessRelation = ≄-isApartnessRelation
-  ; #⇒invertible        = ≄⇒invertible
-  ; invertible⇒#        = invertible⇒≄
+  ; isTightApartnessRelation = ≄-isTightApartnessRelation
   }
 
 +-*-isHeytingField : IsHeytingField _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isHeytingField = record
   { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
-  ; tight                    = ≄-tight
+  ; #⇒invertible        = ≄⇒invertible
+  ; invertible⇒#        = invertible⇒≄
   }
 
 ------------------------------------------------------------------------

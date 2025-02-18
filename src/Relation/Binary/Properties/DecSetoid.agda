@@ -40,4 +40,4 @@ open SetoidProperties setoid
 ≉-apartnessRelation = record { isApartnessRelation = ≉-isApartnessRelation }
 
 ≉-tight : Tight _≈_ _≉_
-≉-tight x y = decidable-stable (x ≟ y) , ≉-irrefl
+≉-tight x y = decidable-stable (x ≟ y)

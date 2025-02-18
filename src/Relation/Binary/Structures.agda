@@ -328,3 +328,10 @@ record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) whe
 
   _¬#_ : A → A → Set _
   x ¬# y = ¬ (x # y)
+
+record IsTightApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isApartnessRelation : IsApartnessRelation _#_
+    tight               : Tight _≈_ _#_
+
+  open IsApartnessRelation isApartnessRelation public
