@@ -25,18 +25,19 @@ open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sign.Base as Sign using (Sign)
 import Data.Sign.Properties as Sign
-open import Function.Base using (_∘_; _$_; id)
+open import Function.Base using (_∘_; _$_; _$′_; id)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Definitions using (Monotonic₁; Monotonic₂; LeftMonotonic; RightMonotonic)
 open import Relation.Binary.Bundles using
   (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Consequences using (wlog)
 open import Relation.Binary.Structures
   using (IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
   using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong₂; sym; _≢_; subst; resp₂; trans)
+  using (_≡_; refl; cong; cong₂; sym; _≢_; subst; subst₂; resp₂; trans)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
 open import Relation.Nullary.Decidable.Core using (yes; no)
@@ -46,6 +47,7 @@ import Relation.Nullary.Decidable as Dec
 
 open import Algebra.Definitions {A = ℤ} _≡_
 open import Algebra.Consequences.Propositional
+  using (comm∧idˡ⇒idʳ; comm∧invˡ⇒invʳ; comm∧zeˡ⇒zeʳ; comm∧distrʳ⇒distrˡ)
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
 module ℕtoℤ = Morphism.Definitions ℕ ℤ _≡_
@@ -447,7 +449,7 @@ neg-cancel-< { -[1+ m ]} { +0}       (+<+ ())
 neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ m<n) = -<- (s<s⁻¹ m<n)
 
 ------------------------------------------------------------------------
--- Properties of ∣_∣
+-- Basic properties of ∣_∣
 ------------------------------------------------------------------------
 
 ∣i∣≡0⇒i≡0 : ∣ i ∣ ≡ 0 → i ≡ + 0
@@ -457,142 +459,6 @@ neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ m<n) = -<- (s<s⁻¹ m<n)
 ∣-i∣≡∣i∣ -[1+ n ] = refl
 ∣-i∣≡∣i∣ +0       = refl
 ∣-i∣≡∣i∣ +[1+ n ] = refl
-
-0≤i⇒+∣i∣≡i : 0ℤ ≤ i → + ∣ i ∣ ≡ i
-0≤i⇒+∣i∣≡i (+≤+ _) = refl
-
-+∣i∣≡i⇒0≤i : + ∣ i ∣ ≡ i → 0ℤ ≤ i
-+∣i∣≡i⇒0≤i {+ n} _ = +≤+ z≤n
-
-+∣i∣≡i⊎+∣i∣≡-i : ∀ i → + ∣ i ∣ ≡ i ⊎ + ∣ i ∣ ≡ - i
-+∣i∣≡i⊎+∣i∣≡-i (+ n)      = inj₁ refl
-+∣i∣≡i⊎+∣i∣≡-i (-[1+ n ]) = inj₂ refl
-
-∣m⊝n∣≤m⊔n : ∀ m n → ∣ m ⊖ n ∣ ℕ.≤ m ℕ.⊔ n
-∣m⊝n∣≤m⊔n m n with m ℕ.<ᵇ n
-... | true = begin
-  ∣ - + (n ℕ.∸ m) ∣                ≡⟨ ∣-i∣≡∣i∣ (+ (n ℕ.∸ m)) ⟩
-  ∣ + (n ℕ.∸ m) ∣                  ≡⟨⟩
-  n ℕ.∸ m                          ≤⟨ ℕ.m∸n≤m n m ⟩
-  n                                ≤⟨ ℕ.m≤n⊔m m n ⟩
-  m ℕ.⊔ n                          ∎
-  where open ℕ.≤-Reasoning
-... | false = begin
-  ∣ + (m ℕ.∸ n) ∣                  ≡⟨⟩
-  m ℕ.∸ n                          ≤⟨ ℕ.m∸n≤m m n ⟩
-  m                                ≤⟨ ℕ.m≤m⊔n m n ⟩
-  m ℕ.⊔ n                          ∎
-  where open ℕ.≤-Reasoning
-
-∣i+j∣≤∣i∣+∣j∣ : ∀ i j → ∣ i + j ∣ ℕ.≤ ∣ i ∣ ℕ.+ ∣ j ∣
-∣i+j∣≤∣i∣+∣j∣ +[1+ m ] (+ n)    = ℕ.≤-refl
-∣i+j∣≤∣i∣+∣j∣ +0       (+ n)    = ℕ.≤-refl
-∣i+j∣≤∣i∣+∣j∣ +0       -[1+ n ] = ℕ.≤-refl
-∣i+j∣≤∣i∣+∣j∣ -[1+ m ] -[1+ n ] rewrite ℕ.+-suc (suc m) n = ℕ.≤-refl
-∣i+j∣≤∣i∣+∣j∣ +[1+ m ] -[1+ n ] = begin
-  ∣ suc m ⊖ suc n ∣  ≤⟨ ∣m⊝n∣≤m⊔n (suc m) (suc n) ⟩
-  suc m ℕ.⊔ suc n    ≤⟨ ℕ.m⊔n≤m+n (suc m) (suc n) ⟩
-  suc m ℕ.+ suc n    ∎
-  where open ℕ.≤-Reasoning
-∣i+j∣≤∣i∣+∣j∣ -[1+ m ] (+ n)    = begin
-  ∣ n ⊖ suc m ∣  ≤⟨ ∣m⊝n∣≤m⊔n  n (suc m) ⟩
-  n ℕ.⊔ suc m    ≤⟨ ℕ.m⊔n≤m+n n (suc m) ⟩
-  n ℕ.+ suc m    ≡⟨ ℕ.+-comm  n (suc m) ⟩
-  suc m ℕ.+ n    ∎
-  where open ℕ.≤-Reasoning
-
-∣i-j∣≤∣i∣+∣j∣ : ∀ i j → ∣ i - j ∣ ℕ.≤ ∣ i ∣ ℕ.+ ∣ j ∣
-∣i-j∣≤∣i∣+∣j∣ i j = begin
-  ∣ i   -       j ∣        ≤⟨ ∣i+j∣≤∣i∣+∣j∣ i (- j) ⟩
-  ∣ i ∣ ℕ.+ ∣ - j ∣        ≡⟨ cong (∣ i ∣ ℕ.+_) (∣-i∣≡∣i∣ j) ⟩
-  ∣ i ∣ ℕ.+ ∣   j ∣        ∎
-  where open ℕ.≤-Reasoning
-
-------------------------------------------------------------------------
--- Properties of sign and _◃_
-
-◃-nonZero : ∀ s n .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
-◃-nonZero Sign.- (ℕ.suc _) = _
-◃-nonZero Sign.+ (ℕ.suc _) = _
-
-◃-inverse : ∀ i → sign i ◃ ∣ i ∣ ≡ i
-◃-inverse -[1+ n ] = refl
-◃-inverse +0       = refl
-◃-inverse +[1+ n ] = refl
-
-◃-cong : sign i ≡ sign j → ∣ i ∣ ≡ ∣ j ∣ → i ≡ j
-◃-cong {+ m}       {+ n }      ≡-sign refl = refl
-◃-cong { -[1+ m ]} { -[1+ n ]} ≡-sign refl = refl
-
-+◃n≡+n : ∀ n → Sign.+ ◃ n ≡ + n
-+◃n≡+n zero    = refl
-+◃n≡+n (suc _) = refl
-
--◃n≡-n : ∀ n → Sign.- ◃ n ≡ - + n
--◃n≡-n zero    = refl
--◃n≡-n (suc _) = refl
-
-sign-◃ : ∀ s n .{{_ : ℕ.NonZero n}} → sign (s ◃ n) ≡ s
-sign-◃ Sign.- (suc _) = refl
-sign-◃ Sign.+ (suc _) = refl
-
-abs-◃ : ∀ s n → ∣ s ◃ n ∣ ≡ n
-abs-◃ _      zero    = refl
-abs-◃ Sign.- (suc n) = refl
-abs-◃ Sign.+ (suc n) = refl
-
-signᵢ◃∣i∣≡i : ∀ i → sign i ◃ ∣ i ∣ ≡ i
-signᵢ◃∣i∣≡i (+ n)    = +◃n≡+n n
-signᵢ◃∣i∣≡i -[1+ n ] = refl
-
-sign-cong : .{{_ : ℕ.NonZero m}} .{{_ : ℕ.NonZero n}} →
-            s ◃ m ≡ t ◃ n → s ≡ t
-sign-cong {n@(suc _)} {m@(suc _)} {s} {t} eq = begin
-  s             ≡⟨ sign-◃ s n ⟨
-  sign (s ◃ n)  ≡⟨  cong sign eq ⟩
-  sign (t ◃ m)  ≡⟨  sign-◃ t m ⟩
-  t             ∎ where open ≡-Reasoning
-
-sign-cong′ : s ◃ m ≡ t ◃ n → s ≡ t ⊎ (m ≡ 0 × n ≡ 0)
-sign-cong′ {s}       {zero}  {t}       {zero}  eq = inj₂ (refl , refl)
-sign-cong′ {s}       {zero}  {Sign.- } {suc n} ()
-sign-cong′ {s}       {zero}  {Sign.+ } {suc n} ()
-sign-cong′ {Sign.- } {suc m} {t}       {zero}  ()
-sign-cong′ {Sign.+ } {suc m} {t}       {zero}  ()
-sign-cong′ {s}       {suc m} {t}       {suc n} eq = inj₁ (sign-cong eq)
-
-abs-cong : s ◃ m ≡ t ◃ n → m ≡ n
-abs-cong {s} {m} {t} {n} eq = begin
-  m          ≡⟨ abs-◃ s m ⟨
-  ∣ s ◃ m ∣  ≡⟨  cong ∣_∣ eq ⟩
-  ∣ t ◃ n ∣  ≡⟨  abs-◃ t n ⟩
-  n          ∎ where open ≡-Reasoning
-
-∣s◃m∣*∣t◃n∣≡m*n : ∀ s t m n → ∣ s ◃ m ∣ ℕ.* ∣ t ◃ n ∣ ≡ m ℕ.* n
-∣s◃m∣*∣t◃n∣≡m*n s t m n = cong₂ ℕ._*_ (abs-◃ s m) (abs-◃ t n)
-
-+◃-mono-< : m ℕ.< n → Sign.+ ◃ m < Sign.+ ◃ n
-+◃-mono-< {zero}  {suc n} m<n = +<+ m<n
-+◃-mono-< {suc m} {suc n} m<n = +<+ m<n
-
-+◃-cancel-< : Sign.+ ◃ m < Sign.+ ◃ n → m ℕ.< n
-+◃-cancel-< {zero}  {zero}  (+<+ ())
-+◃-cancel-< {suc m} {zero}  (+<+ ())
-+◃-cancel-< {zero}  {suc n} (+<+ m<n) = m<n
-+◃-cancel-< {suc m} {suc n} (+<+ m<n) = m<n
-
-neg◃-cancel-< : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
-neg◃-cancel-< {zero}  {zero}  (+<+ ())
-neg◃-cancel-< {suc m} {zero}  -<+       = z<s
-neg◃-cancel-< {suc m} {suc n} (-<- n<m) = s<s n<m
-
--◃<+◃ : ∀ m n .{{_ : ℕ.NonZero m}} → Sign.- ◃ m < Sign.+ ◃ n
--◃<+◃ (suc _) zero    = -<+
--◃<+◃ (suc _) (suc _) = -<+
-
-+◃≮-◃ : Sign.+ ◃ m ≮ Sign.- ◃ n
-+◃≮-◃ {zero}  {zero} (+<+ ())
-+◃≮-◃ {suc m} {zero} (+<+ ())
 
 ------------------------------------------------------------------------
 -- Properties of _⊖_
@@ -798,6 +664,142 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   m ⊖ n               <⟨  ⊖-monoˡ-< n m<o ⟩
   suc o ⊖ n           ≡⟨ [1+m]⊖[1+n]≡m⊖n (suc o) n ⟨
   suc (suc o) ⊖ suc n ∎ where open ≤-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of ∣_∣
+------------------------------------------------------------------------
+
+0≤i⇒+∣i∣≡i : 0ℤ ≤ i → + ∣ i ∣ ≡ i
+0≤i⇒+∣i∣≡i (+≤+ _) = refl
+
++∣i∣≡i⇒0≤i : + ∣ i ∣ ≡ i → 0ℤ ≤ i
++∣i∣≡i⇒0≤i {+ n} _ = +≤+ z≤n
+
++∣i∣≡i⊎+∣i∣≡-i : ∀ i → + ∣ i ∣ ≡ i ⊎ + ∣ i ∣ ≡ - i
++∣i∣≡i⊎+∣i∣≡-i (+ n)      = inj₁ refl
++∣i∣≡i⊎+∣i∣≡-i (-[1+ n ]) = inj₂ refl
+
+∣m⊝n∣≤m⊔n : ∀ m n → ∣ m ⊖ n ∣ ℕ.≤ m ℕ.⊔ n
+∣m⊝n∣≤m⊔n = wlog ℕ.≤-total
+  (λ {m n} → subst₂ ℕ._≤_ (∣m⊖n∣≡∣n⊖m∣ m n) (ℕ.⊔-comm m n))
+  $′ λ m n m≤n → begin
+  ∣ m ⊖ n ∣          ≡⟨ cong ∣_∣ (⊖-≤ m≤n) ⟩
+  ∣ - + (n ℕ.∸ m) ∣  ≡⟨ ∣-i∣≡∣i∣ (+ (n ℕ.∸ m)) ⟩
+  ∣ + (n ℕ.∸ m) ∣    ≡⟨⟩
+  n ℕ.∸ m            ≤⟨ ℕ.m∸n≤m n m ⟩
+  n                  ≤⟨ ℕ.m≤n⊔m m n ⟩
+  m ℕ.⊔ n            ∎
+  where open ℕ.≤-Reasoning
+
+∣i+j∣≤∣i∣+∣j∣ : ∀ i j → ∣ i + j ∣ ℕ.≤ ∣ i ∣ ℕ.+ ∣ j ∣
+∣i+j∣≤∣i∣+∣j∣ +[1+ m ] (+ n)    = ℕ.≤-refl
+∣i+j∣≤∣i∣+∣j∣ +0       (+ n)    = ℕ.≤-refl
+∣i+j∣≤∣i∣+∣j∣ +0       -[1+ n ] = ℕ.≤-refl
+∣i+j∣≤∣i∣+∣j∣ -[1+ m ] -[1+ n ] rewrite ℕ.+-suc (suc m) n = ℕ.≤-refl
+∣i+j∣≤∣i∣+∣j∣ +[1+ m ] -[1+ n ] = begin
+  ∣ suc m ⊖ suc n ∣  ≤⟨ ∣m⊝n∣≤m⊔n (suc m) (suc n) ⟩
+  suc m ℕ.⊔ suc n    ≤⟨ ℕ.m⊔n≤m+n (suc m) (suc n) ⟩
+  suc m ℕ.+ suc n    ∎
+  where open ℕ.≤-Reasoning
+∣i+j∣≤∣i∣+∣j∣ -[1+ m ] (+ n)    = begin
+  ∣ n ⊖ suc m ∣  ≤⟨ ∣m⊝n∣≤m⊔n  n (suc m) ⟩
+  n ℕ.⊔ suc m    ≤⟨ ℕ.m⊔n≤m+n n (suc m) ⟩
+  n ℕ.+ suc m    ≡⟨ ℕ.+-comm  n (suc m) ⟩
+  suc m ℕ.+ n    ∎
+  where open ℕ.≤-Reasoning
+
+∣i-j∣≤∣i∣+∣j∣ : ∀ i j → ∣ i - j ∣ ℕ.≤ ∣ i ∣ ℕ.+ ∣ j ∣
+∣i-j∣≤∣i∣+∣j∣ i j = begin
+  ∣ i   -       j ∣        ≤⟨ ∣i+j∣≤∣i∣+∣j∣ i (- j) ⟩
+  ∣ i ∣ ℕ.+ ∣ - j ∣        ≡⟨ cong (∣ i ∣ ℕ.+_) (∣-i∣≡∣i∣ j) ⟩
+  ∣ i ∣ ℕ.+ ∣   j ∣        ∎
+  where open ℕ.≤-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of sign and _◃_
+
+◃-nonZero : ∀ s n .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
+◃-nonZero Sign.- (ℕ.suc _) = _
+◃-nonZero Sign.+ (ℕ.suc _) = _
+
+◃-inverse : ∀ i → sign i ◃ ∣ i ∣ ≡ i
+◃-inverse -[1+ n ] = refl
+◃-inverse +0       = refl
+◃-inverse +[1+ n ] = refl
+
+◃-cong : sign i ≡ sign j → ∣ i ∣ ≡ ∣ j ∣ → i ≡ j
+◃-cong {+ m}       {+ n }      ≡-sign refl = refl
+◃-cong { -[1+ m ]} { -[1+ n ]} ≡-sign refl = refl
+
++◃n≡+n : ∀ n → Sign.+ ◃ n ≡ + n
++◃n≡+n zero    = refl
++◃n≡+n (suc _) = refl
+
+-◃n≡-n : ∀ n → Sign.- ◃ n ≡ - + n
+-◃n≡-n zero    = refl
+-◃n≡-n (suc _) = refl
+
+sign-◃ : ∀ s n .{{_ : ℕ.NonZero n}} → sign (s ◃ n) ≡ s
+sign-◃ Sign.- (suc _) = refl
+sign-◃ Sign.+ (suc _) = refl
+
+abs-◃ : ∀ s n → ∣ s ◃ n ∣ ≡ n
+abs-◃ _      zero    = refl
+abs-◃ Sign.- (suc n) = refl
+abs-◃ Sign.+ (suc n) = refl
+
+signᵢ◃∣i∣≡i : ∀ i → sign i ◃ ∣ i ∣ ≡ i
+signᵢ◃∣i∣≡i (+ n)    = +◃n≡+n n
+signᵢ◃∣i∣≡i -[1+ n ] = refl
+
+sign-cong : .{{_ : ℕ.NonZero m}} .{{_ : ℕ.NonZero n}} →
+            s ◃ m ≡ t ◃ n → s ≡ t
+sign-cong {n@(suc _)} {m@(suc _)} {s} {t} eq = begin
+  s             ≡⟨ sign-◃ s n ⟨
+  sign (s ◃ n)  ≡⟨  cong sign eq ⟩
+  sign (t ◃ m)  ≡⟨  sign-◃ t m ⟩
+  t             ∎ where open ≡-Reasoning
+
+sign-cong′ : s ◃ m ≡ t ◃ n → s ≡ t ⊎ (m ≡ 0 × n ≡ 0)
+sign-cong′ {s}       {zero}  {t}       {zero}  eq = inj₂ (refl , refl)
+sign-cong′ {s}       {zero}  {Sign.- } {suc n} ()
+sign-cong′ {s}       {zero}  {Sign.+ } {suc n} ()
+sign-cong′ {Sign.- } {suc m} {t}       {zero}  ()
+sign-cong′ {Sign.+ } {suc m} {t}       {zero}  ()
+sign-cong′ {s}       {suc m} {t}       {suc n} eq = inj₁ (sign-cong eq)
+
+abs-cong : s ◃ m ≡ t ◃ n → m ≡ n
+abs-cong {s} {m} {t} {n} eq = begin
+  m          ≡⟨ abs-◃ s m ⟨
+  ∣ s ◃ m ∣  ≡⟨  cong ∣_∣ eq ⟩
+  ∣ t ◃ n ∣  ≡⟨  abs-◃ t n ⟩
+  n          ∎ where open ≡-Reasoning
+
+∣s◃m∣*∣t◃n∣≡m*n : ∀ s t m n → ∣ s ◃ m ∣ ℕ.* ∣ t ◃ n ∣ ≡ m ℕ.* n
+∣s◃m∣*∣t◃n∣≡m*n s t m n = cong₂ ℕ._*_ (abs-◃ s m) (abs-◃ t n)
+
++◃-mono-< : m ℕ.< n → Sign.+ ◃ m < Sign.+ ◃ n
++◃-mono-< {zero}  {suc n} m<n = +<+ m<n
++◃-mono-< {suc m} {suc n} m<n = +<+ m<n
+
++◃-cancel-< : Sign.+ ◃ m < Sign.+ ◃ n → m ℕ.< n
++◃-cancel-< {zero}  {zero}  (+<+ ())
++◃-cancel-< {suc m} {zero}  (+<+ ())
++◃-cancel-< {zero}  {suc n} (+<+ m<n) = m<n
++◃-cancel-< {suc m} {suc n} (+<+ m<n) = m<n
+
+neg◃-cancel-< : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
+neg◃-cancel-< {zero}  {zero}  (+<+ ())
+neg◃-cancel-< {suc m} {zero}  -<+       = z<s
+neg◃-cancel-< {suc m} {suc n} (-<- n<m) = s<s n<m
+
+-◃<+◃ : ∀ m n .{{_ : ℕ.NonZero m}} → Sign.- ◃ m < Sign.+ ◃ n
+-◃<+◃ (suc _) zero    = -<+
+-◃<+◃ (suc _) (suc _) = -<+
+
++◃≮-◃ : Sign.+ ◃ m ≮ Sign.- ◃ n
++◃≮-◃ {zero}  {zero} (+<+ ())
++◃≮-◃ {suc m} {zero} (+<+ ())
 
 ------------------------------------------------------------------------
 -- Properties of _+_
