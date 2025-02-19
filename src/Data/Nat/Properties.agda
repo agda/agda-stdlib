@@ -1848,7 +1848,7 @@ m∸n≤∣m-n∣ m n with ≤-total m n
   n ∸ m     ∎
 
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
-*-distribˡ-∣-∣ a = wlog ≤-total (comm⇒sym[distribˡ] {_◦_ = _*_} ∣-∣-comm a)
+*-distribˡ-∣-∣ a = wlog ≤-total (comm⇒sym[distribˡ] ∣-∣-comm {_◦_ = _*_} a)
   $′ λ m n m≤n → begin-equality
     a * ∣ m - n ∣     ≡⟨ cong (a *_) (m≤n⇒∣m-n∣≡n∸m m≤n) ⟩
     a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
