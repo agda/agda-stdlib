@@ -11,11 +11,13 @@
 module Function.Consequences where
 
 open import Data.Product.Base as Product
+open import Function.Base using (_∘_; id)
 open import Function.Definitions
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; HalfLeftAdjoint; HalfRightAdjoint; Adjoint)
 open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 
 private
@@ -40,6 +42,14 @@ inverseˡ⇒surjective : ∀ (≈₂ : Rel B ℓ₂) →
                       Surjective ≈₁ ≈₂ f
 inverseˡ⇒surjective ≈₂ invˡ y = (_ , invˡ)
 
+inverseˡ⇒halfLeftAdjoint : Inverseˡ ≈₁ ≈₂ f f⁻¹ →
+                           HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+inverseˡ⇒halfLeftAdjoint inv = inv
+
+halfLeftAdjoint⇒inverseˡ : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ →
+                           Inverseˡ ≈₁ ≈₂ f f⁻¹
+halfLeftAdjoint⇒inverseˡ adj = adj
+
 ------------------------------------------------------------------------
 -- Inverseʳ
 
@@ -52,6 +62,16 @@ inverseʳ⇒injective : ∀ (≈₂ : Rel B ℓ₂) f →
 inverseʳ⇒injective ≈₂ f refl sym trans invʳ {x} {y} fx≈fy =
   trans (sym (invʳ refl)) (invʳ fx≈fy)
 
+inverseʳ⇒halfRightAdjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+                            Inverseʳ ≈₁ ≈₂ f f⁻¹ →
+                            HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+inverseʳ⇒halfRightAdjoint sym₁ sym₂ inv = sym₁ ∘ inv ∘ sym₂
+
+halfRightAdjoint⇒inverseʳ : Symmetric ≈₁ → Symmetric ≈₂ →
+                            HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ →
+                            Inverseʳ ≈₁ ≈₂ f f⁻¹
+halfRightAdjoint⇒inverseʳ sym₁ sym₂ adj = sym₁ ∘ adj ∘ sym₂
+
 ------------------------------------------------------------------------
 -- Inverseᵇ
 
@@ -63,6 +83,14 @@ inverseᵇ⇒bijective : ∀ (≈₂ : Rel B ℓ₂) →
                      Bijective ≈₁ ≈₂ f
 inverseᵇ⇒bijective {f = f} ≈₂ refl sym trans (invˡ , invʳ) =
   (inverseʳ⇒injective ≈₂ f refl sym trans invʳ , inverseˡ⇒surjective ≈₂ invˡ)
+
+inverseᵇ⇒adjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+                   Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+inverseᵇ⇒adjoint sym₁ sym₂ (invˡ , invʳ) = invˡ , sym₁ ∘ invʳ ∘ sym₂
+
+adjoint⇒inverseᵇ : Symmetric ≈₁ → Symmetric ≈₂ →
+                   Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+adjoint⇒inverseᵇ sym₁ sym₂ (adjˡ , adjʳ) = adjˡ , sym₁ ∘ adjʳ ∘ sym₂
 
 ------------------------------------------------------------------------
 -- StrictlySurjective
