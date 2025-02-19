@@ -6,14 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
 open import Algebra.Morphism 
-open import Algebra.Lattice.Bundles
+open import Algebra.Lattice.Bundles using (RawLattice)
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
-open import Function.Definitions
-open import Relation.Binary.Morphism.Structures
-open import Relation.Binary.Core
+open import Function.Definitions using (Surjective; Injective)
+open import Relation.Binary.Morphism.Structures 
+  using (IsRelHomomorphism; IsRelMonomorphism; IsRelIsomorphism)
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Lattice.Morphism.Structures where
 

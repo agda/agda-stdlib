@@ -16,13 +16,13 @@ module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S renaming (Carrier to A)
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id; _∘_)
 open import Function.Definitions
-import Relation.Binary.Consequences as Bin
+import Relation.Binary.Consequences as Bin 
 open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
 

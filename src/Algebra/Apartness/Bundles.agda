@@ -8,7 +8,7 @@
 
 module Algebra.Apartness.Bundles where
 
-open import Algebra.Apartness.Structures
+open import Algebra.Apartness.Structures using (IsHeytingCommutativeRing; IsHeytingField )
 open import Algebra.Bundles using (CommutativeRing)
 open import Algebra.Core using (Op₁; Op₂)
 open import Level using (_⊔_; suc)

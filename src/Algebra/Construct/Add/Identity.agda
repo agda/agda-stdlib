@@ -9,17 +9,16 @@
 
 module Algebra.Construct.Add.Identity where
 
-open import Algebra.Bundles
+open import Algebra.Bundles using (Semigroup; Monoid)
 open import Algebra.Core using (Op₂)
-open import Algebra.Definitions
-open import Algebra.Structures
+open import Algebra.Definitions 
+open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Relation.Binary.Construct.Add.Point.Equality renaming (_≈∙_ to lift≈)
 open import Data.Product.Base using (_,_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary.Core
-open import Relation.Binary.Definitions
-open import Relation.Binary.Structures
-open import Relation.Nullary.Construct.Add.Point
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Reflexive)
+open import Relation.Nullary.Construct.Add.Point 
 
 private
   variable
@@ -101,3 +100,4 @@ monoid : Semigroup a (a ⊔ ℓ) → Monoid a (a ⊔ ℓ)
 monoid S = record
   { isMonoid = isMonoid S.isSemigroup
   } where module S = Semigroup S
+ 

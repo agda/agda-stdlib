@@ -7,7 +7,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Construct.NaturalChoice.Base
+open import Algebra.Construct.NaturalChoice.Base using (MaxOperator; MaxOp⇒MinOp)
 open import Relation.Binary.Bundles using (TotalPreorder)
 
 module Algebra.Lattice.Construct.NaturalChoice.MaxOp
