@@ -42,6 +42,12 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Apartness.Properties.HeytingCommutativeRing`:
+  ```agda
+  x-0≈x  ↦   Algebra.Properties.Ring.x-0#≈x
+  #-sym  ↦   Algebra.Apartness.Structures.IsHeytingCommutativeRing.#-sym
+  ```
+
 * In `Algebra.Definitions.RawMagma`:
   ```agda
   _∣∣_   ↦  _∥_

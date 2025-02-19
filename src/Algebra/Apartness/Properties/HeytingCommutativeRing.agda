@@ -13,7 +13,7 @@ module Algebra.Apartness.Properties.HeytingCommutativeRing
 
 open import Algebra.Bundles using (CommutativeRing)
 
-open HeytingCommutativeRing HCR
+open HeytingCommutativeRing HCR using (commutativeRing)
 open CommutativeRing commutativeRing using (ring)
 open import Algebra.Properties.Ring ring using (x-0#≈x)
 
@@ -30,4 +30,10 @@ x-0≈x = x-0#≈x
 {-# WARNING_ON_USAGE x-0≈x
 "Warning: x-0≈x was deprecated in v2.3.
 Please use Algebra.Properties.Ring.x-0#≈x instead."
+#-}
+
+open HeytingCommutativeRing HCR public using (#-sym)
+{-# WARNING_ON_USAGE #-sym
+"Warning: #-sym was deprecated in v2.3.
+Please use Algebra.Apartness.Structures.IsHeytingCommutativeRing.#-sym instead."
 #-}
