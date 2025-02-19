@@ -443,4 +443,3 @@ subst+comm⇒sym = subst∧comm⇒sym
 "Warning: subst+comm⇒sym was deprecated in v2.0.
 Please use subst∧comm⇒sym instead."
 #-}
- 
