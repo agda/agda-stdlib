@@ -10,7 +10,7 @@ Bug-fixes
 ---------
 
 * In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
-  to `#-sym` in order to avoid overloaded projection.
+  to `#-sym` in order to avoid overloaded projection. The field names
   `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
 
 Non-backwards compatible changes
@@ -25,9 +25,11 @@ Non-backwards compatible changes
   `Algebra.Structures.IsHeyting*` have been refactored, together
   with that of `Relation.Binary.Definitions.Tight` on which they depend.
   Specifically:
-  - `Tight _≈_ _#_` has been redefined to drop the redundant
-    second conjunct, because it is equivalent to `Irreflexive _≈_ _#_`.
-  - new definitions: `(Is)TightApartnessRelation` structure/bundle
+  - `Tight _≈_ _#_` has been redefined as `∀ x y → ¬ x # y → x ≈ y`,
+    dropping the redundant second conjunct, because it is equivalent to
+    `Irreflexive _≈_ _#_`.
+  - new definitions: `(Is)TightApartnessRelation` structure/bundle, exploiting
+    the above redefinition.
   - the definition of `HeytingCommutativeRing` now drops the properties of
     invertibility, in favour of moving them to `HeytingField`.
   - both `Heyting*` algebraic structure/bundles have been redefined to base
