@@ -15,9 +15,8 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
-* [Issue #2502](https://github.com/agda/agda-stdlib/issues/2502) The top-level
-  module `Algebra.Consequences.Base` now has its internal implicit module parameters
-  lifted out as `variable`s.
+* The top-level module `Algebra.Consequences.Base` now has the implicit
+  parameters of its internal modules lifted out as `variable`s.
 
 Deprecated modules
 ------------------
