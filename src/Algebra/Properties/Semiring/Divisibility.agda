@@ -6,10 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Semiring)
-import Algebra.Properties.Monoid.Divisibility as MonoidDivisibility
-open import Data.Product.Base using (_,_)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Algebra.Bundles using (Semiring)
 
 module Algebra.Properties.Semiring.Divisibility
   {a ℓ} (R : Semiring a ℓ) where
@@ -19,7 +16,7 @@ open Semiring R
 ------------------------------------------------------------------------
 -- Re-exporting divisibility over monoids
 
-open MonoidDivisibility *-monoid public
+open import Algebra.Properties.Monoid.Divisibility *-monoid public
   renaming (ε∣_ to 1∣_)
 
 ------------------------------------------------------------------------
@@ -37,4 +34,4 @@ x∣y∧y≉0⇒x≉0 : ∀ {x y} → x ∣ y → y ≉ 0# → x ≉ 0#
 x∣y∧y≉0⇒x≉0 x∣y y≉0 x≈0 = y≉0 (0∣x⇒x≈0 (∣-respˡ x≈0 x∣y))
 
 0∤1 : 0# ≉ 1# → 0# ∤ 1#
-0∤1 0≉1 (q , q*0≈1) = 0≉1 (trans (sym (zeroʳ q)) q*0≈1)
+0∤1 0≉1 0∣1 = 0≉1 (sym (0∣x⇒x≈0 0∣1))
