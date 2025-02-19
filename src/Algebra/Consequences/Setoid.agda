@@ -36,7 +36,7 @@ private
 
 -- Export base lemmas that don't require the setoid
 
-open import Algebra.Consequences.Base _≈_ public
+open import Algebra.Consequences.Base public
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
@@ -77,7 +77,7 @@ module _ (cong : Congruent₂ _∙_) where
 module _ (self : SelfInverse f) where
 
   selfInverse⇒involutive : Involutive f
-  selfInverse⇒involutive = reflexive∧selfInverse⇒involutive refl self
+  selfInverse⇒involutive = reflexive∧selfInverse⇒involutive _≈_ refl self
 
   selfInverse⇒congruent : Congruent₁ f
   selfInverse⇒congruent {x} {y} x≈y = sym (self (begin
