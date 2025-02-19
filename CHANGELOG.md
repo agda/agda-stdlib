@@ -9,6 +9,10 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
+  to `#-sym` in order to avoid overloaded projection.
+  `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -44,7 +48,7 @@ Deprecated names
   _∤∤_    ↦  _∦_
   ```
 
-* In `Algebra.Module.Consequences
+* In `Algebra.Module.Consequences`
   ```agda
   *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
@@ -160,6 +164,19 @@ Additions to existing modules
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda
   x-0#≈x : RightIdentity 0# _-_
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
+  map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
+  map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
+  map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
+  ```agda
+  filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
 * In `Relation.Binary.Properties.DecSetoid`:

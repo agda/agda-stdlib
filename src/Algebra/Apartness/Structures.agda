@@ -32,6 +32,12 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
 
   open IsCommutativeRing isCommutativeRing public
   open IsTightApartnessRelation isTightApartnessRelation public
+  open IsApartnessRelation isApartnessRelation public
+    renaming
+      ( irrefl  to #-irrefl
+      ; sym     to #-sym
+      ; cotrans to #-cotrans
+      )
 
   ¬#-isEquivalence : IsEquivalence _¬#_
   ¬#-isEquivalence = AR.¬#-isEquivalence refl isApartnessRelation
