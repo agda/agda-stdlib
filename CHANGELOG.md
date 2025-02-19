@@ -185,6 +185,13 @@ Additions to existing modules
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  ≄-apartnessRelation        : ApartnessRelation _ _ _
+  ≄-isTightApartnessRelation : IsTightApartnessRelation _≃_ _≄_
+  ≄-tightApartnessRelation   : TightApartnessRelation _ _ _
+  ```
+
 * In `Relation.Binary.Properties.DecSetoid`:
   ```agda
   ≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
