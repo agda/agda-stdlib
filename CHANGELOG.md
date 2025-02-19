@@ -143,3 +143,8 @@ Additions to existing modules
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
+
+* In `Relation.Unary`:
+  ```agda
+  _#_ _#′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  ```
