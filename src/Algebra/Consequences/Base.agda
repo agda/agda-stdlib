@@ -11,7 +11,8 @@ module Algebra.Consequences.Base
   {a} {A : Set a} where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Algebra.Definitions using (Selective; Idempotent; SelfInverse; Involutive)
+open import Algebra.Definitions 
+  using (Selective; Idempotent; SelfInverse; Involutive)
 open import Data.Sum.Base using (_⊎_; reduce)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive)
