@@ -11,18 +11,17 @@ open import Relation.Binary.Bundles
 
 module Relation.Binary.Properties.DecSetoid {c ℓ} (S : DecSetoid c ℓ) where
 
-open import Data.Product using (_,_)
 open import Data.Sum using (inj₁; inj₂)
 open import Relation.Binary.Definitions
   using (Cotransitive; Tight)
 import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.Structures
-  using (IsApartnessRelation; IsTightApartnessRelation; IsDecEquivalence)
+  using (IsApartnessRelation; IsTightApartnessRelation)
 open import Relation.Nullary.Decidable.Core
   using (yes; no; decidable-stable)
 
 open DecSetoid S using (_≈_; _≉_; _≟_; setoid; trans)
-open SetoidProperties setoid
+open SetoidProperties setoid using (≉-sym; ≉-irrefl)
 
 ≉-cotrans : Cotransitive _≉_
 ≉-cotrans {x} {y} x≉y z with x ≟ z | z ≟ y

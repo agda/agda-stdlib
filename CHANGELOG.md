@@ -20,6 +20,14 @@ Non-backwards compatible changes
 * The definitions of `Algebra.Structures.IsHeyting*` and
   `Algebra.Structures.IsHeyting*` have been refactored, together
   with that of `Relation.Binary.Definitions.Tight` on which they depend.
+  Specifically:
+  - `Tight _≈_ _#_` has been redefined to drop the redundant
+    second conjunct, because it is equivalent to `Irreflexive _≈_ _#_`.
+  - new definitions: `(Is)TightApartnessRelation` structure/bundle
+  - the definition of `HeytingCommutativeRing` now drops the properties of
+    invertibility, in favour of moving them to `HeytingField`.
+  - both `Heyting*` algebraic structure/bundles have been redefined to base
+    off an underlying `TightApartnessRelation`.
 
 Minor improvements
 ------------------
@@ -144,9 +152,23 @@ Additions to existing modules
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
 
+* In `Algebra.Properties.AbelianGroup`:
+  ```agda
+  x-ε≈x : RightIdentity ε _-_
+  ```
+
+* In `Algebra.Properties.RingWithoutOne`:
+  ```agda
+  x-0#≈x : RightIdentity 0# _-_
+  ```
+
 * In `Relation.Binary.Properties.DecSetoid`:
   ```agda
   ≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
   ≉-tightApartnessRelation   : TightApartnessRelation _ _ _
   ```
-
+  Additionally,
+  ```agda
+  ≉-tight : Tight _≈_ _≉_
+  ```
+  has been redefined to reflect the change in the definition of `Tight`.

@@ -27,8 +27,9 @@ open import Algebra.Properties.Ring ring
 open import Relation.Binary.Definitions using (Symmetric)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
-private variable
-  x y z : Carrier
+private
+  variable
+    x y z : Carrier
 
 
 invertibleˡ⇒# : LeftInvertible 1# _*_ (x - y) → x # y
@@ -85,7 +86,7 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
     (- x-y⁻¹) * (y - x)   ≈⟨ -‿distribˡ-* x-y⁻¹ (y - x) ⟨
     - (x-y⁻¹ * (y - x))   ≈⟨ -‿cong (*-congˡ y-x≈-[x-y]) ⟩
     - (x-y⁻¹ * - (x - y)) ≈⟨ -‿cong (-‿distribʳ-* x-y⁻¹ (x - y)) ⟨
-    - - (x-y⁻¹ * (x - y)) ≈⟨ -‿involutive (x-y⁻¹ * ((x - y))) ⟩
+    - - (x-y⁻¹ * (x - y)) ≈⟨ -‿involutive (x-y⁻¹ * (x - y)) ⟩
     x-y⁻¹ * (x - y)       ≈⟨ InvX-Y .proj₂ .proj₁ ⟩
     1#                    ∎
 

@@ -17,6 +17,7 @@ open HeytingCommutativeRing HCR
 open CommutativeRing commutativeRing using (ring)
 open import Algebra.Properties.Ring ring using (x-0#≈x)
 
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
