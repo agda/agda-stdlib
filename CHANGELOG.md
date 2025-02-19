@@ -123,12 +123,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
-* In `Algebra.Apartness.Bundles`:
+* In `Algebra.Apartness.Bundles.HeytingCommutativeRing`:
   ```agda
   TightApartnessRelation c ℓ₁ ℓ₂ : Set _
   ```
 
-* In `Algebra.Apartness.Structures`:
+* In `Algebra.Apartness.Structures.IsHeytingCommutativeRing`:
   ```agda
   IsTightApartnessRelation _≈_ _#_ : Set _
   ```

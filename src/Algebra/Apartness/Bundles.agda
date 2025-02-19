@@ -39,6 +39,9 @@ record HeytingCommutativeRing c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
   tightApartnessRelation : TightApartnessRelation c ℓ₁ ℓ₂
   tightApartnessRelation = record { isTightApartnessRelation = isTightApartnessRelation }
 
+  open TightApartnessRelation tightApartnessRelation public
+    using (apartnessRelation)
+
 
 record HeytingField c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  8 -_
