@@ -146,5 +146,5 @@ Additions to existing modules
 
 * In `Relation.Unary`:
   ```agda
-  _#_ _#′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  _⊥_ _⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   ```

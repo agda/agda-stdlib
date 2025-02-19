@@ -255,11 +255,11 @@ P ≬ Q = ∃ λ x → x ∈ P × x ∈ Q
 
 -- Disjoint
 
-_#_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
-P # Q = P ∩ Q ⊆ ∅
+_⊥_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥ Q = P ∩ Q ⊆ ∅
 
-_#′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
-P #′ Q = P ∩ Q ⊆′ ∅
+_⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥′ Q = P ∩ Q ⊆′ ∅
 
 -- Update.
 
