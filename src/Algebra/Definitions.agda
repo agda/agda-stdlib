@@ -15,8 +15,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -26,15 +25,18 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
+open import Relation.Binary.Definitions using (Monotonic₁; Monotonic₂)
+open import Relation.Nullary.Negation.Core using (¬_)
+
 
 ------------------------------------------------------------------------
 -- Properties of operations
 
 Congruent₁ : Op₁ A → Set _
-Congruent₁ f = f Preserves _≈_ ⟶ _≈_
+Congruent₁ = Monotonic₁ _≈_ _≈_
 
 Congruent₂ : Op₂ A → Set _
-Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+Congruent₂ = Monotonic₂ _≈_ _≈_ _≈_
 
 LeftCongruent : Op₂ A → Set _
 LeftCongruent _∙_ = ∀ {x} → Congruent₁ (x ∙_)
