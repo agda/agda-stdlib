@@ -135,6 +135,7 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
 * In `Data.List.Properties`:
   ```agda
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
@@ -142,6 +143,11 @@ Additions to existing modules
   map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
   map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
   ```
+
+* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
+  ```agda
+  filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+ ```
 
 * In `Function.Consequences`:
   ```agda
@@ -175,3 +181,4 @@ Additions to existing modules
   HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
   HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y)
   ```
+  

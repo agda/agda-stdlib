@@ -26,7 +26,7 @@ open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Base using (_∘_; _⟨_⟩_; _$_)
 open import Level using (Level)
-open import Relation.Unary using (Pred)
+open import Relation.Unary as Pred using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Definitions using (_Respects_; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
@@ -371,6 +371,21 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- filter
+
+filter-↭ : ∀ {p} {P : Pred A p} (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+filter-↭ P? refl = refl
+filter-↭ P? (prep x xs↭ys) with P? x
+... | yes _ = prep x (filter-↭ P? xs↭ys)
+... | no _  = filter-↭ P? xs↭ys
+filter-↭ P? (swap x y xs↭ys) with P? x in eqˣ | P? y in eqʸ
+... | yes _ | yes _ rewrite eqˣ rewrite eqʸ = swap x y (filter-↭ P? xs↭ys)
+... | yes _ | no  _ rewrite eqˣ rewrite eqʸ = prep x (filter-↭ P? xs↭ys)
+... | no _  | yes _ rewrite eqˣ rewrite eqʸ = prep y (filter-↭ P? xs↭ys)
+... | no _  | no _  rewrite eqˣ rewrite eqʸ = filter-↭ P? xs↭ys
+filter-↭ P? (trans xs↭ys ys↭zs) = ↭-trans (filter-↭ P? xs↭ys) (filter-↭ P? ys↭zs)
 
 ------------------------------------------------------------------------
 -- catMaybes
