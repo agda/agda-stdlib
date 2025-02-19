@@ -10,10 +10,10 @@
 open import Relation.Binary.Core using (Rel)
 
 module Algebra.Consequences.Base
-  {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
+  {a ℓ} {A : Set a} where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Algebra.Definitions _≈_
+open import Algebra.Definitions
 open import Data.Sum.Base using (reduce)
 open import Relation.Binary.Definitions using (Reflexive)
 
@@ -22,18 +22,23 @@ private
     f : Op₁ A
     _∙_ : Op₂ A
 
+
 ------------------------------------------------------------------------
 -- Selective
 
-sel⇒idem : Selective _∙_ → Idempotent _∙_
-sel⇒idem sel x = reduce (sel x x)
+module _  (_≈_ : Rel A ℓ) where
+
+  sel⇒idem : Selective _∙_ → Idempotent _∙_
+  sel⇒idem sel x = reduce (sel x x)
 
 ------------------------------------------------------------------------
 -- SelfInverse
 
-reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse f →
-                                   Involutive f
-reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+module _  (_≈_ : Rel A ℓ) where
+
+  reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse f →
+                                     Involutive f
+  reflexive∧selfInverse⇒involutive refl inv _ = inv refl
 
 
 ------------------------------------------------------------------------
