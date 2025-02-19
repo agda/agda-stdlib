@@ -32,6 +32,7 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
 
   open IsCommutativeRing isCommutativeRing public
   open IsTightApartnessRelation isTightApartnessRelation public
+    using (isApartnessRelation; tight)
   open IsApartnessRelation isApartnessRelation public
     renaming
       ( irrefl  to #-irrefl
