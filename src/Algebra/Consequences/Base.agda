@@ -28,7 +28,7 @@ private
 
 module _  (_≈_ : Rel A ℓ) where
 
-  sel⇒idem : Selective _∙_ → Idempotent _∙_
+  sel⇒idem : Selective _≈_ _∙_ → Idempotent _≈_ _∙_
   sel⇒idem sel x = reduce (sel x x)
 
 ------------------------------------------------------------------------
@@ -36,8 +36,8 @@ module _  (_≈_ : Rel A ℓ) where
 
 module _  (_≈_ : Rel A ℓ) where
 
-  reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse f →
-                                     Involutive f
+  reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse _≈_ f →
+                                     Involutive _≈_ f
   reflexive∧selfInverse⇒involutive refl inv _ = inv refl
 
 
