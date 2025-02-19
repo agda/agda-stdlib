@@ -11,15 +11,15 @@
 
 open import Algebra.Bundles using ( RawRing )
 open import Algebra.Morphism.Structures using (IsRingMonomorphism)
-import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphism
-import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
-open import Relation.Binary.Core
+
 
 module Algebra.Morphism.RingMonomorphism
   {a b ℓ₁ ℓ₂} {R₁ : RawRing a ℓ₁} {R₂ : RawRing b ℓ₂} {⟦_⟧}
   (isRingMonomorphism : IsRingMonomorphism R₁ R₂ ⟦_⟧)
   where
-
+import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphism
+import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
+open import Relation.Binary.Core using (Rel)
 open IsRingMonomorphism isRingMonomorphism
 open RawRing R₁ renaming (Carrier to A; _≈_ to _≈₁_)
 open RawRing R₂ renaming

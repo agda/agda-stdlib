@@ -10,8 +10,8 @@
 -- Algebra.Operations.CommutativeMonoid
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Algebra
-import Algebra.Operations.CommutativeMonoid as MonoidOperations
+open import Algebra using (Semiring)
+import Algebra.Operations.CommutativeMonoid as MonoidOperations 
 
 module Algebra.Operations.Semiring {s₁ s₂} (S : Semiring s₁ s₂) where
 
@@ -29,3 +29,4 @@ open MonoidOperations +-commutativeMonoid public
 open import Algebra.Properties.Semiring.Exp S public
 open import Algebra.Properties.Semiring.Mult S public
   using (×1-homo-*)
+ 

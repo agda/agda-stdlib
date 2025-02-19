@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra using (RawRing)
 
 module Algebra.Operations.Ring
   {ℓ₁ ℓ₂} (ring : RawRing ℓ₁ ℓ₂)
