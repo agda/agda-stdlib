@@ -207,7 +207,7 @@ infixr 8 _⇒_
 infixr 7 _∩_
 infixr 6 _∪_
 infixr 6 _∖_
-infix 4 _≬_ _#_ _#′_
+infix 4 _≬_ _⊥_ _⊥′_
 
 -- Complement.
 
