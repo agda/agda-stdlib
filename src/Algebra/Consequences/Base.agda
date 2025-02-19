@@ -10,15 +10,17 @@
 open import Relation.Binary.Core using (Rel)
 
 module Algebra.Consequences.Base
-  {a ℓ} {A : Set a} where
+  {a} {A : Set a} where
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions
 open import Data.Sum.Base using (reduce)
+open import Level using (Level)
 open import Relation.Binary.Definitions using (Reflexive)
 
 private
   variable
+    ℓ : Level
     f : Op₁ A
     _∙_ : Op₂ A
 
