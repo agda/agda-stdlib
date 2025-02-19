@@ -10,17 +10,17 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Product.Base as Product
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel; _⇔_)
 
 module Algebra.Construct.Subst.Equality
   {a ℓ₁ ℓ₂} {A : Set a} {≈₁ : Rel A ℓ₁} {≈₂ : Rel A ℓ₂}
   (equiv@(to , from) : ≈₁ ⇔ ≈₂)
   where
 
-open import Algebra.Definitions
+open import Algebra.Definitions 
 open import Algebra.Structures
 import Data.Sum.Base as Sum
-open import Function.Base
+open import Function.Base using (id; _∘_)
 open import Relation.Binary.Construct.Subst.Equality equiv
 
 ------------------------------------------------------------------------
