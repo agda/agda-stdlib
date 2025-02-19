@@ -746,7 +746,7 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-identityˡ p = ≃-reflexive (+-identityˡ-≡ p)
 
 +-identityʳ-≡ : RightIdentity _≡_ 0ℚᵘ _+_
-+-identityʳ-≡ = comm+idˡ⇒idʳ +-comm-≡ {e = 0ℚᵘ} +-identityˡ-≡
++-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ {e = 0ℚᵘ} +-identityˡ-≡
 
 +-identityʳ : RightIdentity _≃_ 0ℚᵘ _+_
 +-identityʳ p = ≃-reflexive (+-identityʳ-≡ p)
@@ -1104,7 +1104,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-identityˡ-≡ p@record{} = ↥↧≡⇒≡ (ℤ.*-identityˡ (↥ p)) (ℕ.+-identityʳ (↧ₙ p))
 
 *-identityʳ-≡ : RightIdentity _≡_ 1ℚᵘ _*_
-*-identityʳ-≡ = comm+idˡ⇒idʳ *-comm-≡ {e = 1ℚᵘ} *-identityˡ-≡
+*-identityʳ-≡ = comm∧idˡ⇒idʳ *-comm-≡ {e = 1ℚᵘ} *-identityˡ-≡
 
 *-identity-≡ : Identity _≡_ 1ℚᵘ _*_
 *-identity-≡ = *-identityˡ-≡ , *-identityʳ-≡

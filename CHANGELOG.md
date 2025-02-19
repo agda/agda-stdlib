@@ -9,8 +9,17 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
+  to `#-sym` in order to avoid overloaded projection.
+  `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
+
 Non-backwards compatible changes
 --------------------------------
+
+* The implementation of `≤-total` in `Data.Nat.Properties` has been altered
+  to use operations backed by primitives, rather than recursion, making it
+  significantly faster. However, its reduction behaviour on open terms may have
+  changed.
 
 Minor improvements
 ------------------
@@ -28,6 +37,14 @@ Deprecated names
   ```agda
   _∣∣_   ↦  _∥_
   _∤∤_    ↦  _∦_
+  ```
+
+* In `Algebra.Module.Consequences`
+  ```agda
+  *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
+  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
@@ -60,12 +77,30 @@ Deprecated names
   or        ↦  Data.Bool.ListAction.or
   any       ↦  Data.Bool.ListAction.any
   all       ↦  Data.Bool.ListAction.all
+  sum       ↦  Data.Nat.ListAction.sum
+  product   ↦  Data.Nat.ListAction.product
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  sum-++       ↦  Data.Nat.ListAction.Properties.sum-++
+  ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
+  product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
+  ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  sum-↭       ↦  Data.Nat.ListAction.Properties.sum-↭
+  product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
   ```
 
 New modules
 -----------
 
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
+
+* `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
 Additions to existing modules
 -----------------------------
@@ -97,4 +132,17 @@ Additions to existing modules
   kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
+  map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
+  map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
+  map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
+  ```agda
+  filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```

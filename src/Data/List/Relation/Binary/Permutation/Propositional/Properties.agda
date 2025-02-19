@@ -15,7 +15,7 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (ℕ; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (-,_)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding (sum; product)
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -26,7 +26,7 @@ open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Base using (_∘_; _⟨_⟩_; _$_)
 open import Level using (Level)
-open import Relation.Unary using (Pred)
+open import Relation.Unary as Pred using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Definitions using (_Respects_; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
@@ -373,22 +373,19 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     where open PermutationReasoning
 
 ------------------------------------------------------------------------
--- sum
+-- filter
 
-sum-↭ : sum Preserves _↭_ ⟶ _≡_
-sum-↭ p = foldr-commMonoid ℕ-+-0.isCommutativeMonoid (↭⇒↭ₛ p)
-  where
-  module ℕ-+-0 = CommutativeMonoid ℕ.+-0-commutativeMonoid
-  open Permutation ℕ-+-0.setoid
-
-------------------------------------------------------------------------
--- product
-
-product-↭ : product Preserves _↭_ ⟶ _≡_
-product-↭ p = foldr-commMonoid ℕ-*-1.isCommutativeMonoid (↭⇒↭ₛ p)
-  where
-  module ℕ-*-1 = CommutativeMonoid ℕ.*-1-commutativeMonoid
-  open Permutation ℕ-*-1.setoid
+filter-↭ : ∀ {p} {P : Pred A p} (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+filter-↭ P? refl = refl
+filter-↭ P? (prep x xs↭ys) with P? x
+... | yes _ = prep x (filter-↭ P? xs↭ys)
+... | no _  = filter-↭ P? xs↭ys
+filter-↭ P? (swap x y xs↭ys) with P? x in eqˣ | P? y in eqʸ
+... | yes _ | yes _ rewrite eqˣ rewrite eqʸ = swap x y (filter-↭ P? xs↭ys)
+... | yes _ | no  _ rewrite eqˣ rewrite eqʸ = prep x (filter-↭ P? xs↭ys)
+... | no _  | yes _ rewrite eqˣ rewrite eqʸ = prep y (filter-↭ P? xs↭ys)
+... | no _  | no _  rewrite eqˣ rewrite eqʸ = filter-↭ P? xs↭ys
+filter-↭ P? (trans xs↭ys ys↭zs) = ↭-trans (filter-↭ P? xs↭ys) (filter-↭ P? ys↭zs)
 
 ------------------------------------------------------------------------
 -- catMaybes
@@ -408,3 +405,25 @@ catMaybes-↭ (swap (just x) (just y) xs↭) = swap x y $ catMaybes-↭ xs↭
 
 mapMaybe-↭ : (f : A → Maybe B) → xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
 mapMaybe-↭ f = catMaybes-↭ ∘ map⁺ f
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+import Data.Nat.ListAction.Properties as ℕ
+
+sum-↭ = ℕ.sum-↭
+{-# WARNING_ON_USAGE sum-↭
+"Warning: sum-↭ was deprecated in v2.3.
+Please use Data.Nat.ListAction.sum-↭ instead."
+#-}
+product-↭ = ℕ.product-↭
+{-# WARNING_ON_USAGE product-↭
+"Warning: product-↭ was deprecated in v2.3.
+Please use Data.Nat.ListAction.product-↭ instead."
+#-}
