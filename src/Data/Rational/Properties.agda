@@ -1279,7 +1279,7 @@ module _ where
     using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
 
   open GroupProperties +-group
-  open DecSetoidProperties ≡-decSetoid
+  open DecSetoidProperties ≡-decSetoid using (≉-isTightApartnessRelation)
 
   #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
   #⇒invertible {p} {q} p≢q = let r = p - q in 1/ r , *-inverseˡ r , *-inverseʳ r
