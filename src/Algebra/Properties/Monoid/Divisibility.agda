@@ -6,15 +6,16 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Monoid)
+open import Algebra.Bundles using (Monoid)
+
+module Algebra.Properties.Monoid.Divisibility
+  {a ℓ} (M : Monoid a ℓ) where
+
 open import Data.Product.Base using (_,_)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.Structures using (IsPreorder; IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive)
-
-module Algebra.Properties.Monoid.Divisibility
-  {a ℓ} (M : Monoid a ℓ) where
 
 open Monoid M
 
@@ -60,9 +61,9 @@ infix 4 ε∣_
 
 ∥-isEquivalence : IsEquivalence _∥_
 ∥-isEquivalence = record
-  { refl  = λ {x} → ∥-refl {x}
-  ; sym   = λ {x} {y} → ∥-sym {x} {y}
-  ; trans = λ {x} {y} {z} → ∥-trans {x} {y} {z}
+  { refl  = ∥-refl
+  ; sym   = ∥-sym
+  ; trans = ∥-trans
   }
 
 
