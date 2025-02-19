@@ -65,4 +65,4 @@ record HeytingField c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   heytingCommutativeRing = record { isHeytingCommutativeRing = isHeytingCommutativeRing }
 
   open HeytingCommutativeRing heytingCommutativeRing public
-    using (commutativeRing; tightApartnessRelation)
+    using (commutativeRing; tightApartnessRelation; apartnessRelation)
