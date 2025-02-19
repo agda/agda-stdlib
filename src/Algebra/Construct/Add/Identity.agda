@@ -11,7 +11,8 @@ module Algebra.Construct.Add.Identity where
 
 open import Algebra.Bundles using (Semigroup; Monoid)
 open import Algebra.Core using (Op₂)
-open import Algebra.Definitions using (Congruent₂; Associative; LeftIdentity; RightIdentity; Identity)
+open import Algebra.Definitions 
+  using (Congruent₂; Associative; LeftIdentity; RightIdentity; Identity)
 open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Relation.Binary.Construct.Add.Point.Equality renaming (_≈∙_ to lift≈)
 open import Data.Product.Base using (_,_)
