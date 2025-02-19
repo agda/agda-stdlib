@@ -11,14 +11,22 @@ open import Algebra.Apartness.Bundles using (HeytingCommutativeRing)
 module Algebra.Apartness.Properties.HeytingCommutativeRing
   {c ℓ₁ ℓ₂} (HCR : HeytingCommutativeRing c ℓ₁ ℓ₂) where
 
-open import Algebra using (CommutativeRing; RightIdentity)
+open import Algebra.Bundles using (CommutativeRing)
 
 open HeytingCommutativeRing HCR
 open CommutativeRing commutativeRing using (ring)
-open import Algebra.Properties.Ring ring using (-0#≈0#)
+open import Algebra.Properties.Ring ring using (x-0#≈x)
 
-private variable
-  x : Carrier
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-x-0≈x : RightIdentity _≈_ 0# _-_
-x-0≈x x = trans (+-congˡ -0#≈0#) (+-identityʳ x)
+-- Version 2.3
+
+x-0≈x = x-0#≈x
+{-# WARNING_ON_USAGE x-0≈x
+"Warning: x-0≈x was deprecated in v2.3.
+Please use Algebra.Properties.Ring.x-0#≈x instead."
+#-}
