@@ -68,6 +68,12 @@ Deprecated names
   ∣∣-trans   ↦  ∥-trans
   ```
 
+* In `Algebra.Structures`:
+  ```agda
+  uniqueˡ-⁻¹   ↦  Algebra.Properties.Group.inverseˡ-unique
+  uniqueʳ-⁻¹   ↦  Algebra.Properties.Group.inverseʳ-unique
+  ```
+
 * In `Data.List.Base`:
   ```agda
   and       ↦  Data.Bool.ListAction.and
