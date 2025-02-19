@@ -100,7 +100,8 @@ Additions to existing modules
 
 * In `Algebra.Consequences.Base`:
   ```agda
-  module Congruence (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_) where
+  module Congruence (_≈_ : Rel A ℓ) (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
+  where
     ∙-congˡ : LeftCongruent _≈_ _∙_
     ∙-congʳ : RightCongruent _≈_ _∙_
   ```
