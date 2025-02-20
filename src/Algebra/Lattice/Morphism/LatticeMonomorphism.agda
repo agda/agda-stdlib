@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice 
+open import Algebra.Lattice
   using (RawLattice; IsLattice; IsDistributiveLattice; isDistributiveLatticeʳʲᵐ)
 open import Algebra.Lattice.Morphism.Structures using (IsLatticeMonomorphism)
 

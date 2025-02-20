@@ -20,18 +20,18 @@ module Algebra.Lattice.Structures.Biased
   where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Algebra.Consequences.Setoid 
-  using (comm∧distrʳ⇒distr; distrib∧absorbs⇒distribˡ; comm∧distrˡ⇒distr; 
+open import Algebra.Consequences.Setoid
+  using (comm∧distrʳ⇒distr; distrib∧absorbs⇒distribˡ; comm∧distrˡ⇒distr;
   comm∧invʳ⇒inv)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Algebra.Definitions _≈_ 
-  using (Associative; Commutative; Congruent₁; RightInverse; 
+open import Algebra.Definitions _≈_
+  using (Associative; Commutative; Congruent₁; RightInverse;
   _DistributesOverʳ_; Absorptive)
-open import Algebra.Lattice.Structures _≈_ 
-  using (IsJoinSemilattice; IsMeetSemilattice; IsLattice; 
+open import Algebra.Lattice.Structures _≈_
+  using (IsJoinSemilattice; IsMeetSemilattice; IsLattice;
   IsDistributiveLattice; IsBooleanAlgebra)
 
 private
