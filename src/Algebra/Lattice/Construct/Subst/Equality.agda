@@ -18,7 +18,7 @@ module Algebra.Lattice.Construct.Subst.Equality
   where
 
 open import Algebra.Core using (Op₂)
-open import Algebra.Lattice.Structures 
+open import Algebra.Lattice.Structures
   using ( IsSemilattice ; IsLattice ; IsDistributiveLattice ; IsBooleanAlgebra )
 open import Function.Base using (id)
 open import Algebra.Construct.Subst.Equality equiv
