@@ -14,7 +14,7 @@ module Algebra.Construct.NaturalChoice.MinOp
   {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (minOp : MinOperator O) where
 
 open import Algebra.Core using (Op₂)
-open import Algebra.Bundles 
+open import Algebra.Bundles
   using (RawMagma; Magma; Semigroup; Band; CommutativeSemigroup; SelectiveMagma; Monoid)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
 open import Data.Product.Base using (_,_)
