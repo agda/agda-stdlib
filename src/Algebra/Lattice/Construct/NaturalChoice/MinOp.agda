@@ -20,7 +20,6 @@ open import Algebra.Construct.NaturalChoice.MinOp minOp
 open import Algebra.Lattice.Bundles using (Semilattice)
 open import Algebra.Lattice.Structures _≈_
 
-
 ------------------------------------------------------------------------
 -- Structures
 
