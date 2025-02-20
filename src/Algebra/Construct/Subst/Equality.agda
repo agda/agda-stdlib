@@ -17,7 +17,7 @@ module Algebra.Construct.Subst.Equality
   (equiv@(to , from) : ≈₁ ⇔ ≈₂)
   where
 
-open import Algebra.Definitions 
+open import Algebra.Definitions
 open import Algebra.Structures
 import Data.Sum.Base as Sum
 open import Function.Base using (id; _∘_)
