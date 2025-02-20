@@ -162,7 +162,9 @@ Additions to existing modules
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
-  ∣ˡ-trans : Transitive _∣ˡ_
+  ∣ˡ-trans     : Transitive _∣ˡ_
+  x∣ʳy⇒xz∣ʳyz  : x ∣ʳ y → x ∙ z ∣ʳ y ∙ z
+  x∣ˡy⇒zx∣ˡzy  : x ∣ˡ y → z ∙ x ∣ˡ z ∙ y
   ```
 
 
@@ -177,4 +179,16 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.List.Relation.Binary.Prefix.Homogeneous.Properties`:
+  ```agda
+  Prefix-as-∣ˡ : Prefix _≡_ ⇒ _∣ˡ_
+  ∣ˡ-as-Prefix : _∣ˡ_ ⇒ Prefix _≡_
+  ```
+
+* In `Data.List.Relation.Binary.Suffix.Homogeneous.Properties`:
+  ```agda
+  Suffix-as-∣ʳ : Suffix _≡_ ⇒ _∣ʳ_
+  ∣ʳ-as-Suffix : _∣ʳ_ ⇒ Suffix _≡_
   ```
