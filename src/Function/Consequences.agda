@@ -42,13 +42,15 @@ inverseˡ⇒surjective : ∀ (≈₂ : Rel B ℓ₂) →
                       Surjective ≈₁ ≈₂ f
 inverseˡ⇒surjective ≈₂ invˡ y = (_ , invˡ)
 
-inverseˡ⇒halfLeftAdjoint : Inverseˡ ≈₁ ≈₂ f f⁻¹ →
+inverseˡ⇒halfLeftAdjoint : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                           Inverseˡ ≈₁ ≈₂ f f⁻¹ →
                            HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
-inverseˡ⇒halfLeftAdjoint inv = inv
+inverseˡ⇒halfLeftAdjoint _ _ inv = inv
 
-halfLeftAdjoint⇒inverseˡ : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ →
+halfLeftAdjoint⇒inverseˡ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                           HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ →
                            Inverseˡ ≈₁ ≈₂ f f⁻¹
-halfLeftAdjoint⇒inverseˡ adj = adj
+halfLeftAdjoint⇒inverseˡ _ _ adj = adj
 
 ------------------------------------------------------------------------
 -- Inverseʳ
@@ -62,15 +64,17 @@ inverseʳ⇒injective : ∀ (≈₂ : Rel B ℓ₂) f →
 inverseʳ⇒injective ≈₂ f refl sym trans invʳ {x} {y} fx≈fy =
   trans (sym (invʳ refl)) (invʳ fx≈fy)
 
-inverseʳ⇒halfRightAdjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+inverseʳ⇒halfRightAdjoint : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                            Symmetric ≈₁ → Symmetric ≈₂ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹ →
                             HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
-inverseʳ⇒halfRightAdjoint sym₁ sym₂ inv = sym₁ ∘ inv ∘ sym₂
+inverseʳ⇒halfRightAdjoint _ _ sym₁ sym₂ inv = sym₁ ∘ inv ∘ sym₂
 
-halfRightAdjoint⇒inverseʳ : Symmetric ≈₁ → Symmetric ≈₂ →
+halfRightAdjoint⇒inverseʳ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                            Symmetric ≈₁ → Symmetric ≈₂ →
                             HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ →
                             Inverseʳ ≈₁ ≈₂ f f⁻¹
-halfRightAdjoint⇒inverseʳ sym₁ sym₂ adj = sym₁ ∘ adj ∘ sym₂
+halfRightAdjoint⇒inverseʳ _ _ sym₁ sym₂ adj = sym₁ ∘ adj ∘ sym₂
 
 ------------------------------------------------------------------------
 -- Inverseᵇ
@@ -84,13 +88,15 @@ inverseᵇ⇒bijective : ∀ (≈₂ : Rel B ℓ₂) →
 inverseᵇ⇒bijective {f = f} ≈₂ refl sym trans (invˡ , invʳ) =
   (inverseʳ⇒injective ≈₂ f refl sym trans invʳ , inverseˡ⇒surjective ≈₂ invˡ)
 
-inverseᵇ⇒adjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+inverseᵇ⇒adjoint : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                   Symmetric ≈₁ → Symmetric ≈₂ →
                    Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
-inverseᵇ⇒adjoint sym₁ sym₂ (invˡ , invʳ) = invˡ , sym₁ ∘ invʳ ∘ sym₂
+inverseᵇ⇒adjoint _ _ sym₁ sym₂ (invˡ , invʳ) = invˡ , sym₁ ∘ invʳ ∘ sym₂
 
-adjoint⇒inverseᵇ : Symmetric ≈₁ → Symmetric ≈₂ →
+adjoint⇒inverseᵇ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                   Symmetric ≈₁ → Symmetric ≈₂ →
                    Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
-adjoint⇒inverseᵇ sym₁ sym₂ (adjˡ , adjʳ) = adjˡ , sym₁ ∘ adjʳ ∘ sym₂
+adjoint⇒inverseᵇ _ _ sym₁ sym₂ (adjˡ , adjʳ) = adjˡ , sym₁ ∘ adjʳ ∘ sym₂
 
 ------------------------------------------------------------------------
 -- StrictlySurjective

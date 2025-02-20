@@ -44,10 +44,10 @@ inverseˡ⇒surjective : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Surjective ≈₁ 
 inverseˡ⇒surjective = C.inverseˡ⇒surjective ≈₂
 
 inverseˡ⇒halfLeftAdjoint : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
-inverseˡ⇒halfLeftAdjoint = C.inverseˡ⇒halfLeftAdjoint
+inverseˡ⇒halfLeftAdjoint = C.inverseˡ⇒halfLeftAdjoint ≈₁ ≈₂
 
 halfLeftAdjoint⇒inverseˡ : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
-halfLeftAdjoint⇒inverseˡ = C.halfLeftAdjoint⇒inverseˡ
+halfLeftAdjoint⇒inverseˡ = C.halfLeftAdjoint⇒inverseˡ ≈₁ ≈₂
 
 ------------------------------------------------------------------------
 -- Inverseʳ
@@ -56,10 +56,10 @@ inverseʳ⇒injective : ∀ f → Inverseʳ ≈₁ ≈₂ f f⁻¹ → Injective
 inverseʳ⇒injective f = C.inverseʳ⇒injective ≈₂ f T.refl S.sym S.trans
 
 inverseʳ⇒halfRightAdjoint : Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
-inverseʳ⇒halfRightAdjoint = C.inverseʳ⇒halfRightAdjoint sym₁ sym₂
+inverseʳ⇒halfRightAdjoint = C.inverseʳ⇒halfRightAdjoint ≈₁ ≈₂ sym₁ sym₂
 
 halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
-halfRightAdjoint⇒inverseʳ = C.halfRightAdjoint⇒inverseʳ sym₁ sym₂
+halfRightAdjoint⇒inverseʳ = C.halfRightAdjoint⇒inverseʳ ≈₁ ≈₂ sym₁ sym₂
 
 ------------------------------------------------------------------------
 -- Inverseᵇ
@@ -68,10 +68,10 @@ inverseᵇ⇒bijective : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Bijective ≈₁ 
 inverseᵇ⇒bijective = C.inverseᵇ⇒bijective ≈₂ T.refl S.sym S.trans
 
 inverseᵇ⇒adjoint : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
-inverseᵇ⇒adjoint = C.inverseᵇ⇒adjoint sym₁ sym₂
+inverseᵇ⇒adjoint = C.inverseᵇ⇒adjoint ≈₁ ≈₂ sym₁ sym₂
 
 adjoint⇒inverseᵇ : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
-adjoint⇒inverseᵇ = C.adjoint⇒inverseᵇ sym₁ sym₂
+adjoint⇒inverseᵇ = C.adjoint⇒inverseᵇ ≈₁ ≈₂ sym₁ sym₂
 
 ------------------------------------------------------------------------
 -- StrictlySurjective
