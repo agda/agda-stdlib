@@ -22,17 +22,24 @@ open Semigroup S
 open import Algebra.Properties.Magma.Divisibility magma public
 
 ------------------------------------------------------------------------
--- Properties of _∣_
+-- Properties of _∣ʳ_
 
-∣-trans : Transitive _∣_
-∣-trans (p , px≈y) (q , qy≈z) =
+∣ʳ-trans : Transitive _∣ʳ_
+∣ʳ-trans (p , px≈y) (q , qy≈z) =
   q ∙ p , trans (assoc q p _) (trans (∙-congˡ px≈y) qy≈z)
+
+------------------------------------------------------------------------
+-- Properties of _∣ˡ__
+
+∣ˡ-trans : Transitive _∣ˡ_
+∣ˡ-trans (p , xp≈y) (q , yq≈z) =
+  p ∙ q , trans (sym (assoc _ p q)) (trans (∙-congʳ xp≈y) yq≈z)
 
 ------------------------------------------------------------------------
 -- Properties of _∥_
 
 ∥-trans : Transitive _∥_
-∥-trans (x∣y , y∣x) (y∣z , z∣y) = ∣-trans x∣y y∣z , ∣-trans z∣y y∣x
+∥-trans (x∣y , y∣x) (y∣z , z∣y) = ∣ʳ-trans x∣y y∣z , ∣ʳ-trans z∣y y∣x
 
 
 ------------------------------------------------------------------------
@@ -47,4 +54,10 @@ open import Algebra.Properties.Magma.Divisibility magma public
 {-# WARNING_ON_USAGE ∣∣-trans
 "Warning: ∣∣-trans was deprecated in v2.3.
 Please use ∥-trans instead. "
+#-}
+
+∣-trans = ∣ʳ-trans
+{-# WARNING_ON_USAGE ∣-trans
+"Warning: ∣-trans was deprecated in v2.3.
+Please use ∣ʳ-trans instead. "
 #-}

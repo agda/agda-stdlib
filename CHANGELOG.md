@@ -54,6 +54,11 @@ Deprecated names
   ∤∤-respˡ-≈    ↦  ∦-respˡ-≈
   ∤∤-respʳ-≈    ↦  ∦-respʳ-≈
   ∤∤-resp-≈     ↦  ∦-resp-≈
+  ∣-respʳ-≈    ↦ ∣ʳ-respʳ-≈
+  ∣-respˡ-≈    ↦ ∣ʳ-respˡ-≈
+  ∣-resp-≈     ↦ ∣ʳ-resp-≈
+  x∣yx         ↦ x∣ʳyx
+  xy≈z⇒y∣z     ↦ xy≈z⇒y∣ʳz
   ```
 
 * In `Algebra.Properties.Monoid.Divisibility`:
@@ -61,11 +66,17 @@ Deprecated names
   ∣∣-refl            ↦  ∥-refl
   ∣∣-reflexive       ↦  ∥-reflexive
   ∣∣-isEquivalence   ↦  ∥-isEquivalence
+  ε∣_                ↦ ε∣ʳ_
+  ∣-refl             ↦ ∣ʳ-refl
+  ∣-reflexive        ↦ ∣ʳ-reflexive
+  ∣-isPreorder       ↦ ∣ʳ-isPreorder
+  ∣-preorder         ↦ ∣ʳ-preorder
   ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
   ∣∣-trans   ↦  ∥-trans
+  ∣-trans    ↦  ∣ʳ-trans
   ```
 
 * In `Data.List.Base`:
@@ -130,6 +141,30 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣ˡ-respʳ-≈  : _∣ˡ_ Respectsʳ _≈_
+  ∣ˡ-respˡ-≈  : _∣ˡ_ Respectsˡ _≈_
+  ∣ˡ-resp-≈   : _∣ˡ_ Respects₂ _≈_
+  x∣ˡxy       : ∀ x y → x ∣ˡ x ∙ y
+  xy≈z⇒x∣ˡz   : ∀ x y {z} → x ∙ y ≈ z → x ∣ˡ z
+  ```
+
+* In `Algebra.Properties.Monoid.Divisibility`:
+  ```agda
+  ε∣ˡ_ : ∀ x → ε ∣ˡ x
+  ∣ˡ-refl : Reflexive _∣ˡ_
+  ∣ˡ-reflexive : _≈_ ⇒ _∣ˡ_
+  ∣ˡ-isPreorder : IsPreorder _≈_ _∣ˡ_
+  ∣ˡ-preorder : Preorder a ℓ _
+  ```
+
+* In `Algebra.Properties.Semigroup.Divisibility`:
+  ```agda
+  ∣ˡ-trans : Transitive _∣ˡ_
+  ```
+
 
 * In `Data.List.Properties`:
   ```agda
