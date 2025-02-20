@@ -8,13 +8,14 @@
 
 module Algebra.Morphism.Structures where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Bundles
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
-open import Function.Definitions
-open import Relation.Binary.Core
-open import Relation.Binary.Morphism.Structures
+open import Function.Definitions using (Injective; Surjective)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Morphism.Structures using
+  (IsRelHomomorphism; IsRelMonomorphism; IsRelIsomorphism)
 
 private
   variable
