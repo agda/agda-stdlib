@@ -29,7 +29,7 @@ private
     m ℓm r ℓr s ℓs : Level
     M : Set m
 
-module _ (commutativeSemiring :   CommutativeSemiring r ℓr) where
+module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
   open CommutativeSemiring commutativeSemiring renaming (Carrier to R)
 
   -- A left semimodule over a commutative semiring is already a semimodule.
