@@ -7,13 +7,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Construct.NaturalChoice.Base
-import Algebra.Lattice.Construct.NaturalChoice.MinOp as MinOp
+open import Algebra.Construct.NaturalChoice.Base using (MaxOperator; MaxOp⇒MinOp)
 open import Relation.Binary.Bundles using (TotalPreorder)
 
 module Algebra.Lattice.Construct.NaturalChoice.MaxOp
   {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (maxOp : MaxOperator O)
   where
+
+import Algebra.Lattice.Construct.NaturalChoice.MinOp as MinOp
 
 private
   module Min = MinOp (MaxOp⇒MinOp maxOp)
