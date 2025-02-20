@@ -26,7 +26,7 @@ open import Algebra.Module.Structures using (IsSemimodule)
 open import Algebra.Structures using (IsCommutativeSemiring; IsMagma)
 open import Function.Base using (flip; _$_)
 open import Relation.Binary.Core using (Rel)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning 
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------
 -- Re-exports
