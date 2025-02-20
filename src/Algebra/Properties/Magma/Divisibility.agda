@@ -110,19 +110,19 @@ xy≈z⇒x∣ˡz x y xy≈z = ∣ˡ-respʳ-≈ xy≈z (x∣ˡxy x y)
 
 -- Version 2.2
 
-∣ʳ-respˡ = ∣ʳ-respˡ-≈
-{-# WARNING_ON_USAGE ∣ʳ-respˡ
-"Warning: ∣ʳ-respˡ was deprecated in v2.2.
+∣-respˡ = ∣ʳ-respˡ-≈
+{-# WARNING_ON_USAGE ∣-respˡ
+"Warning: ∣-respˡ was deprecated in v2.2.
 Please use ∣ʳ-respˡ-≈ instead. "
 #-}
-∣ʳ-respʳ = ∣ʳ-respʳ-≈
-{-# WARNING_ON_USAGE ∣ʳ-respʳ
-"Warning: ∣ʳ-respʳ was deprecated in v2.2.
+∣-respʳ = ∣ʳ-respʳ-≈
+{-# WARNING_ON_USAGE ∣-respʳ
+"Warning: ∣-respʳ was deprecated in v2.2.
 Please use ∣ʳ-respʳ-≈ instead. "
 #-}
-∣ʳ-resp = ∣ʳ-resp-≈
-{-# WARNING_ON_USAGE ∣ʳ-resp
-"Warning: ∣ʳ-resp was deprecated in v2.2.
+∣-resp = ∣ʳ-resp-≈
+{-# WARNING_ON_USAGE ∣-resp
+"Warning: ∣-resp was deprecated in v2.2.
 Please use ∣ʳ-resp-≈ instead. "
 #-}
 

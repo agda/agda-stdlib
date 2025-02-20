@@ -153,11 +153,11 @@ Additions to existing modules
 
 * In `Algebra.Properties.Monoid.Divisibility`:
   ```agda
-  ε∣ˡ_ : ∀ x → ε ∣ˡ x
-  ∣ˡ-refl : Reflexive _∣ˡ_
-  ∣ˡ-reflexive : _≈_ ⇒ _∣ˡ_
+  ε∣ˡ_          : ∀ x → ε ∣ˡ x
+  ∣ˡ-refl       : Reflexive _∣ˡ_
+  ∣ˡ-reflexive  : _≈_ ⇒ _∣ˡ_
   ∣ˡ-isPreorder : IsPreorder _≈_ _∣ˡ_
-  ∣ˡ-preorder : Preorder a ℓ _
+  ∣ˡ-preorder   : Preorder a ℓ _
   ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
