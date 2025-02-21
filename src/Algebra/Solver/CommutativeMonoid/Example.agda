@@ -23,4 +23,3 @@ test a b c = let _∨_ = _⊕_ in
   x = var zero
   y = var (suc zero)
   z = var (suc (suc zero))
-
