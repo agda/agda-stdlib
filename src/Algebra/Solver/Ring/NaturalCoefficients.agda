@@ -7,14 +7,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra using (RawRing; CommutativeSemiring )
 import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
-open import Algebra.Solver.Ring.AlmostCommutativeRing
-open import Data.Nat.Base as ℕ
-open import Data.Product.Base using (module Σ)
-open import Function.Base using (id)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 module Algebra.Solver.Ring.NaturalCoefficients
   {r₁ r₂} (R : CommutativeSemiring r₁ r₂)
@@ -22,8 +17,13 @@ module Algebra.Solver.Ring.NaturalCoefficients
   (open SemiringMultiplication semiring using () renaming (_×_ to _×ᵤ_))
   (dec : ∀ m n → Maybe (m ×ᵤ 1# ≈ n ×ᵤ 1#)) where
 
-open import Algebra.Properties.Semiring.Mult.TCOptimised semiring
+open import Algebra.Solver.Ring.AlmostCommutativeRing
+open import Data.Nat.Base as ℕ using (ℕ; _+_; _*_)
+open import Data.Product.Base using (module Σ)
+open import Function.Base using (id)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
+open import Algebra.Properties.Semiring.Mult.TCOptimised semiring
 open import Relation.Binary.Reasoning.Setoid setoid
 
 private
