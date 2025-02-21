@@ -9,7 +9,7 @@
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Algebra.Lattice.Bundles
+open import Algebra.Lattice.Bundles using (BooleanAlgebra; DistributiveLattice)
 
 module Algebra.Properties.BooleanAlgebra
   {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
@@ -26,8 +26,7 @@ open BooleanAlgebra B
 
 import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
 
-open import Algebra.Structures _≈_
-open import Relation.Binary
+open import Relation.Binary using (Rel)
 open import Function.Bundles using (module Equivalence; _⇔_)
 open import Data.Product.Base using (_,_)
 
