@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (Semiring)
+open import Algebra.Bundles using (Semiring; setoid,)
 
 module Algebra.Properties.Semiring.Binomial
   {a ℓ} (S : Semiring a ℓ)
