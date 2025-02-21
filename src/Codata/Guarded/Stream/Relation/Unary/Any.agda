@@ -12,7 +12,7 @@ open import Codata.Guarded.Stream as Stream using (Stream)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base hiding (_⊔_)
 open import Level hiding (zero; suc)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary using (Pred; _⊆_)
 
 private
@@ -44,3 +44,4 @@ index (there pxs) = suc (index pxs)
 
 lookup : {P : Pred A p} → Any P xs → A
 lookup {xs = xs} p = Stream.lookup xs (index p)
+ 

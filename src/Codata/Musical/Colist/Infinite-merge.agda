@@ -14,7 +14,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; _≤_; _≥′_; _<′_; _≤�
 open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties using (s≤′s)
 open import Data.Product.Base as Product using (_×_; _,_; ∃; ∃₂; proj₁; proj₂)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Properties using (inj₁-injective; inj₂-injective)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function.Base using (_∘_; _∋_; id; _∘′_; _$_; _on_)
@@ -211,3 +211,4 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
   (∃ λ { (x , xs) → (x , xs) ∈ xss × (y ≡ x ⊎ y ∈ xs) })  ↔⟨ Σ-assoc ⟩
   (∃₂ λ x xs → (x , xs) ∈ xss × (y ≡ x ⊎ y ∈ xs))         ∎
   where open Related.EquationalReasoning
+ 
