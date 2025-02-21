@@ -9,6 +9,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Semiring)
+
+module Algebra.Properties.Semiring.Binomial
+  {a ℓ} (S : Semiring a ℓ)
+  (open Semiring S)
+  (x y : Carrier)
+  where
+
 open import Data.Bool.Base using (true)
 open import Data.Nat.Base as ℕ hiding (_+_; _*_; _^_)
 open import Data.Nat.Combinatorics
@@ -25,12 +32,6 @@ open import Data.Fin.Relation.Unary.Top
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; cong)
-
-module Algebra.Properties.Semiring.Binomial
-  {a ℓ} (S : Semiring a ℓ)
-  (open Semiring S)
-  (x y : Carrier)
-  where
 
 open import Algebra.Definitions _≈_
 open import Algebra.Properties.Semiring.Sum S
