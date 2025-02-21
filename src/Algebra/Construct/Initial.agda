@@ -21,7 +21,7 @@ open import Algebra.Bundles.Raw
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions using (Congruent₂)
 open import Algebra.Structures using (IsMagma; IsSemigroup; IsBand)
-open import Data.Empty.Polymorphic
+open import Data.Empty.Polymorphic using (⊥)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
