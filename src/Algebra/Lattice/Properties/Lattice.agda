@@ -6,21 +6,21 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice.Bundles
-import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties
-open import Relation.Binary.Bundles using (Poset)
-import Relation.Binary.Lattice as R
-open import Function.Base
-open import Data.Product.Base using (_,_; swap)
+open import Algebra.Lattice.Bundles using (Lattice; Semilattice)
 
 module Algebra.Lattice.Properties.Lattice
   {l₁ l₂} (L : Lattice l₁ l₂) where
 
+import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties
+open import Data.Product.Base using (_,_; swap)
 open Lattice L
-open import Algebra.Definitions _≈_
-open import Algebra.Structures _≈_
-open import Algebra.Lattice.Structures _≈_
+open import Algebra.Definitions _≈_ using (Idempotent; Congruent₂)
+open import Algebra.Structures _≈_ using (IsMagma; IsSemigroup; IsBand)
+open import Algebra.Lattice.Structures _≈_ using (IsLattice; IsSemilattice)
+open import Function.Base
 open import Relation.Binary.Reasoning.Setoid setoid
+open import Relation.Binary.Bundles using (Poset)
+import Relation.Binary.Lattice as R
 
 ------------------------------------------------------------------------
 -- _∧_ is a semilattice
