@@ -4,6 +4,8 @@
 -- Properties of the propositional suffix relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --cubical-compatible --safe #-}
+
 module Data.List.Relation.Binary.Suffix.Propositional.Properties {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_)
