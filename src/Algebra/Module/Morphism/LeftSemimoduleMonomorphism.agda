@@ -6,8 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Module.Bundles.Raw
-open import Algebra.Module.Morphism.Structures
+open import Algebra.Module.Bundles.Raw using (RawLeftSemimodule)
+open import Algebra.Module.Morphism.Structures using (IsLeftSemimoduleMonomorphism)
 
 module Algebra.Module.Morphism.LeftSemimoduleMonomorphism
   {r a b ℓ₁ ℓ₂} {R : Set r} {M₁ : RawLeftSemimodule R a ℓ₁} {M₂ : RawLeftSemimodule R b ℓ₂} {⟦_⟧}
@@ -19,14 +19,14 @@ private
   module M = RawLeftSemimodule M₁
   module N = RawLeftSemimodule M₂
 
-open import Algebra.Bundles
-open import Algebra.Core
+open import Algebra.Bundles using (Semiring)
+open import Algebra.Core using (Op₂)
 import Algebra.Module.Definitions.Left as LeftDefs
-open import Algebra.Module.Structures
-open import Algebra.Structures
-open import Function.Base
-open import Level
-open import Relation.Binary.Core
+open import Algebra.Module.Structures using (IsLeftSemimodule)
+open import Algebra.Structures using (IsSemiring; IsMagma)
+open import Function.Base using (flip; _$_)
+open import Level using (Level)
+open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private

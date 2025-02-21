@@ -6,8 +6,8 @@
 
 {-# OPTIONS --safe --cubical-compatible #-}
 
-open import Algebra.Module.Bundles.Raw
-open import Algebra.Module.Morphism.Structures
+open import Algebra.Module.Bundles.Raw using (RawBimodule)
+open import Algebra.Module.Morphism.Structures using (IsBimoduleMonomorphism)
 
 module Algebra.Module.Morphism.BimoduleMonomorphism
   {r s a b ℓ₁ ℓ₂} {R : Set r} {S : Set s} {M : RawBimodule R S a ℓ₁} {N : RawBimodule R S b ℓ₂} {⟦_⟧}
@@ -19,11 +19,10 @@ private
   module M = RawBimodule M
   module N = RawBimodule N
 
-open import Algebra.Bundles
-open import Algebra.Core
-open import Algebra.Module.Structures
-open import Algebra.Structures
-open import Relation.Binary.Core
+open import Algebra.Bundles using (Ring)
+open import Algebra.Module.Structures using (IsBimodule)
+open import Algebra.Structures using (IsRing)
+open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------
 -- Re-exports

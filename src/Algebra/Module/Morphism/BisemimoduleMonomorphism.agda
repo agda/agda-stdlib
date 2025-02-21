@@ -6,8 +6,8 @@
 
 {-# OPTIONS --safe --cubical-compatible #-}
 
-open import Algebra.Module.Bundles.Raw
-open import Algebra.Module.Morphism.Structures
+open import Algebra.Module.Bundles.Raw using (RawBisemimodule)
+open import Algebra.Module.Morphism.Structures using (IsBisemimoduleMonomorphism)
 
 module Algebra.Module.Morphism.BisemimoduleMonomorphism
   {r s a b ℓ₁ ℓ₂} {R : Set r} {S : Set s} {M : RawBisemimodule R S a ℓ₁} {N : RawBisemimodule R S b ℓ₂} {⟦_⟧}
@@ -19,15 +19,15 @@ private
   module M = RawBisemimodule M
   module N = RawBisemimodule N
 
-open import Algebra.Bundles
-open import Algebra.Core
-import Algebra.Module.Definitions.Bi as BiDefs
-import Algebra.Module.Definitions.Left as LeftDefs
-import Algebra.Module.Definitions.Right as RightDefs
-open import Algebra.Module.Structures
-open import Algebra.Structures
-open import Function.Base
-open import Relation.Binary.Core
+open import Algebra.Bundles using (Semiring)
+open import Algebra.Core using (Op₂)
+import Algebra.Module.Definitions.Bi as BiDefs using (Associative)
+import Algebra.Module.Definitions.Left as LeftDefs using (LeftCongruent)
+import Algebra.Module.Definitions.Right as RightDefs using (RightCongruent)
+open import Algebra.Module.Structures using (IsBisemimodule)
+open import Algebra.Structures using (IsMagma; IsSemiring)
+open import Function.Base using (flip; _$_)
+open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------
