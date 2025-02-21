@@ -9,7 +9,7 @@
 module Codata.Musical.Stream where
 
 open import Level using (Level)
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Codata.Musical.Colist using (Colist; []; _∷_)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
