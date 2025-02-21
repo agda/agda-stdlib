@@ -44,4 +44,4 @@ index (there pxs) = suc (index pxs)
 
 lookup : {P : Pred A p} → Any P xs → A
 lookup {xs = xs} p = Stream.lookup xs (index p)
- 
+
