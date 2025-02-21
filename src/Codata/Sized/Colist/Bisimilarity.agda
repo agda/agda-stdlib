@@ -32,7 +32,7 @@ private
     i : Size
 
 data Bisim {A : Set a} {B : Set b} (R : REL A B r) (i : Size) :
-           REL (Colist A   ∞) (Colist B ∞) (r ⊔ a ⊔ b) where
+           REL (Colist A ∞) (Colist B ∞) (r ⊔ a ⊔ b) where
   []  : Bisim R i [] []
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys →
         Bisim R i (x ∷ xs) (y ∷ ys)
