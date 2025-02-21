@@ -57,7 +57,7 @@ module _ {≈ : Rel C ℓ} (L : REL A B ℓ₁) (R : REL B C ℓ₂) where
 module _ {≈ : Rel A ℓ} (L : REL A B ℓ₁) (R : REL B A ℓ₂) where
 
   respects₂ :  L Respectsˡ ≈ → R Respectsʳ ≈ → (L ; R) Respects₂ ≈
-  respects₂ Lˡ Rʳ = respectsʳ L R Rʳ , respectsˡ L R Lˡ
+  respects₂ Lˡ Rʳ = respectsˡ L R Lˡ , respectsʳ L R Rʳ
 
 module _ {≈ : REL A B ℓ} (L : REL A B ℓ₁) (R : Rel B ℓ₂) where
 

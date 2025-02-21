@@ -92,7 +92,7 @@ record IsPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   ≲-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
 
   ≲-resp-≈ : _≲_ Respects₂ _≈_
-  ≲-resp-≈ = ≲-respʳ-≈ , ≲-respˡ-≈
+  ≲-resp-≈ = ≲-respˡ-≈ , ≲-respʳ-≈
 
   ∼-respˡ-≈ = ≲-respˡ-≈
   {-# WARNING_ON_USAGE ∼-respˡ-≈
@@ -189,11 +189,11 @@ record IsStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wh
   asym : Asymmetric _<_
   asym {x} {y} = trans∧irr⇒asym Eq.refl trans irrefl {x = x} {y}
 
-  <-respʳ-≈ : _<_ Respectsʳ _≈_
-  <-respʳ-≈ = proj₁ <-resp-≈
-
   <-respˡ-≈ : _<_ Respectsˡ _≈_
-  <-respˡ-≈ = proj₂ <-resp-≈
+  <-respˡ-≈ = proj₁ <-resp-≈
+
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respʳ-≈ = proj₂ <-resp-≈
 
 
 record IsDecStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
