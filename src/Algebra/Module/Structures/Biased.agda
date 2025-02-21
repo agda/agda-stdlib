@@ -14,10 +14,13 @@ open import Relation.Binary.Structures using (IsEquivalence)
 module Algebra.Module.Structures.Biased where
 
 open import Algebra.Bundles
-open import Algebra.Core
-open import Algebra.Module.Core
+  using (Semiring; Ring; CommutativeSemiring; CommutativeRing)
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Module.Consequences
 open import Algebra.Module.Structures
+  using (IsLeftSemimodule; IsRightSemimodule; IsBisemimodule;
+  IsSemimodule; IsLeftModule; IsRightModule; IsModule)
 open import Function.Base using (flip)
 open import Level using (Level; _⊔_)
 
@@ -26,7 +29,7 @@ private
     m ℓm r ℓr s ℓs : Level
     M : Set m
 
-module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
+module _ (commutativeSemiring :   CommutativeSemiring r ℓr) where
   open CommutativeSemiring commutativeSemiring renaming (Carrier to R)
 
   -- A left semimodule over a commutative semiring is already a semimodule.
