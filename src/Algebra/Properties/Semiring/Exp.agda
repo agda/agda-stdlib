@@ -8,7 +8,6 @@
 
 open import Algebra using (Semiring)
 
-
 module Algebra.Properties.Semiring.Exp
   {a ℓ} (S : Semiring a ℓ) where
 
