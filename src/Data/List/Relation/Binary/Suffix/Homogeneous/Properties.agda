@@ -57,8 +57,7 @@ module _ {A : Set a} where
 
   Suffix-as-∣ʳ : Suffix _≡_ ⇒ _∣ʳ_
   Suffix-as-∣ʳ (here equal) = ∣ʳ-reflexive (Pointwise.Pointwise-≡⇒≡ equal)
-  Suffix-as-∣ʳ (there suff) with Suffix-as-∣ʳ suff
-  ... | pref , pref++xs≈ys = (_ ∷ pref) , cong (_ ∷_) pref++xs≈ys
+  Suffix-as-∣ʳ (there suff) = x∣ʳy⇒x∣ʳzy (_ ∷ []) (Suffix-as-∣ʳ suff)
 
   ∣ʳ-as-Suffix : _∣ʳ_ ⇒ Suffix _≡_
   ∣ʳ-as-Suffix (rest , refl) = fromView (rest ++ Pointwise.refl refl)

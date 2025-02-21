@@ -24,6 +24,9 @@ open import Algebra.Properties.Magma.Divisibility magma public
 ------------------------------------------------------------------------
 -- Properties of _∣ʳ_
 
+x∣ʳy⇒x∣ʳzy : ∀ {x y} z → x ∣ʳ y → x ∣ʳ z ∙ y
+x∣ʳy⇒x∣ʳzy z (p , px≈y) = z ∙ p , trans (assoc z p _) (∙-congˡ px≈y)
+
 x∣ʳy⇒xz∣ʳyz : ∀ {x y} z → x ∣ʳ y → x ∙ z ∣ʳ y ∙ z
 x∣ʳy⇒xz∣ʳyz z (p , px≈y) = p , trans (sym (assoc p _ z)) (∙-congʳ px≈y)
 
@@ -33,6 +36,9 @@ x∣ʳy⇒xz∣ʳyz z (p , px≈y) = p , trans (sym (assoc p _ z)) (∙-congʳ p
 
 ------------------------------------------------------------------------
 -- Properties of _∣ˡ__
+
+x∣ˡy⇒x∣ˡyz : ∀ {x y} z → x ∣ˡ y → x ∣ˡ y ∙ z
+x∣ˡy⇒x∣ˡyz z (p , xp≈y) = p ∙ z , trans (sym (assoc _ p z)) (∙-congʳ xp≈y)
 
 x∣ˡy⇒zx∣ˡzy : ∀ {x y} z → x ∣ˡ y → z ∙ x ∣ˡ z ∙ y
 x∣ˡy⇒zx∣ˡzy z (p , xp≈y) = p , trans (assoc z _ p) (∙-congˡ xp≈y)

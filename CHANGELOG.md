@@ -163,10 +163,16 @@ Additions to existing modules
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
   ∣ˡ-trans     : Transitive _∣ˡ_
+  x∣ʳy⇒x∣ʳzy   : x ∣ʳ y → x ∣ʳ z ∙ y
   x∣ʳy⇒xz∣ʳyz  : x ∣ʳ y → x ∙ z ∣ʳ y ∙ z
   x∣ˡy⇒zx∣ˡzy  : x ∣ˡ y → z ∙ x ∣ˡ z ∙ y
+  x∣ˡy⇒x∣ˡyz   : x ∣ˡ y → x ∣ˡ y ∙ z
   ```
 
+* In `Algebra.Properties.CommutativeSemigroup.Divisibility`:
+  ```agda
+  ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
+  ```
 
 * In `Data.List.Properties`:
   ```agda
