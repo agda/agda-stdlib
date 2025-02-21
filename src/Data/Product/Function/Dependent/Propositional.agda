@@ -23,7 +23,8 @@ open import Function.Properties.Inverse.HalfAdjointEquivalence
   using (↔⇒≃; _≃_; ≃⇒↔)
 open import Function.Consequences.Propositional
   using (inverseʳ⇒injective; strictlySurjective⇒surjective)
-open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective; StrictlySurjective)
+open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective)
+open import Function.Definitions.Strict using (StrictlySurjective)
 open import Function.Bundles
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties as ≡

@@ -16,6 +16,7 @@ module Function.Consequences.Setoid
   where
 
 open import Function.Definitions
+open import Function.Definitions.Strict
 open import Relation.Nullary.Negation.Core
 
 import Function.Consequences as C

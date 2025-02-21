@@ -20,6 +20,7 @@ module Function.Structures {a b ℓ₁ ℓ₂}
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base
 open import Function.Definitions
+open import Function.Definitions.Strict
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
