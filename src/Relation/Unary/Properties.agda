@@ -18,7 +18,8 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Unary
 open import Relation.Nullary.Decidable as Dec using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
-open import Function.Base using (id; _$_; _∘_)
+open import Relation.Nullary.Negation using (¬_)
+open import Function.Base using (id; _$_; _∘_; _∘₂_)
 
 private
   variable
@@ -196,6 +197,21 @@ U-Universal = λ _ → _
 
 ≐′⇒≐ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _≐_
 ≐′⇒≐ = Product.map ⊆′⇒⊆ ⊆′⇒⊆
+
+------------------------------------------------------------------------
+-- Between/Disjoint properties
+
+≬-sym : Symmetric {A = Pred A ℓ₁} _≬_
+≬-sym = Product.map₂ swap
+
+⊥-sym : Symmetric {A = Pred A ℓ₁} _⊥_
+⊥-sym = _∘ swap
+
+≬⇒¬⊥ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≬_ (¬_ ∘₂ _⊥_)
+≬⇒¬⊥ P≬Q ¬P⊥Q = ¬P⊥Q (Product.proj₂ P≬Q)
+
+⊥⇒¬≬ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊥_ (¬_ ∘₂ _≬_)
+⊥⇒¬≬ P⊥Q = P⊥Q ∘ Product.proj₂
 
 ------------------------------------------------------------------------
 -- Decidability properties
