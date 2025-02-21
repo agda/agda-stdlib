@@ -9,11 +9,11 @@
 module Codata.Guarded.Stream.Relation.Unary.Any where
 
 open import Codata.Guarded.Stream as Stream using (Stream)
-open import Data.Empty
+open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base hiding (_⊔_)
 open import Level hiding (zero; suc)
-open import Relation.Nullary
-open import Relation.Unary
+open import Relation.Nullary using (¬_)
+open import Relation.Unary using (Pred; _⊆_)
 
 private
   variable
