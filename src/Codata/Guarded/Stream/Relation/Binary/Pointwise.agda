@@ -12,7 +12,7 @@ open import Codata.Guarded.Stream as Stream using (Stream; head; tail)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘_; _on_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions
   using (Reflexive; Sym; Trans; Antisym; Symmetric; Transitive)
@@ -103,6 +103,43 @@ tail (map⁻ f g faRgb) = map⁻ f g (tail faRgb)
 drop⁺ : ∀ n → Pointwise R ⇒ (Pointwise R on Stream.drop n)
 drop⁺ zero    as≈bs = as≈bs
 drop⁺ (suc n) as≈bs = drop⁺ n (as≈bs .tail)
+
+------------------------------------------------------------------------
+-- Algebraic properties
+
+module _ {A : Set a} {_≈_ : Rel A ℓ} where
+
+  open import Algebra.Definitions
+
+  private
+    variable
+      _∙_ : A → A → A
+      _⁻¹ : A → A
+      ε : A
+
+  assoc : Associative _≈_ _∙_ → Associative (Pointwise _≈_) (Stream.zipWith _∙_)
+  head (assoc assoc₁ xs ys zs) = assoc₁ (head xs) (head ys) (head zs)
+  tail (assoc assoc₁ xs ys zs) = assoc assoc₁ (tail xs) (tail ys) (tail zs)
+
+  comm : Commutative _≈_ _∙_ → Commutative (Pointwise _≈_) (Stream.zipWith _∙_)
+  head (comm comm₁ xs ys) = comm₁ (head xs) (head ys)
+  tail (comm comm₁ xs ys) = comm comm₁ (tail xs) (tail ys)
+
+  identityˡ : LeftIdentity _≈_ ε _∙_ → LeftIdentity (Pointwise _≈_) (Stream.repeat ε) (Stream.zipWith _∙_)
+  head (identityˡ identityˡ₁ xs) = identityˡ₁ (head xs)
+  tail (identityˡ identityˡ₁ xs) = identityˡ identityˡ₁ (tail xs)
+
+  identityʳ : RightIdentity _≈_ ε _∙_ → RightIdentity (Pointwise _≈_) (Stream.repeat ε) (Stream.zipWith _∙_)
+  head (identityʳ identityʳ₁ xs) = identityʳ₁ (head xs)
+  tail (identityʳ identityʳ₁ xs) = identityʳ identityʳ₁ (tail xs)
+
+  inverseˡ : LeftInverse _≈_ ε _⁻¹ _∙_ → LeftInverse (Pointwise _≈_) (Stream.repeat ε) (Stream.map _⁻¹) (Stream.zipWith _∙_)
+  head (inverseˡ inverseˡ₁ xs) = inverseˡ₁ (head xs)
+  tail (inverseˡ inverseˡ₁ xs) = inverseˡ inverseˡ₁ (tail xs)
+
+  inverseʳ : RightInverse _≈_ ε _⁻¹ _∙_ → RightInverse (Pointwise _≈_) (Stream.repeat ε) (Stream.map _⁻¹) (Stream.zipWith _∙_)
+  head (inverseʳ inverseʳ₁ xs) = inverseʳ₁ (head xs)
+  tail (inverseʳ inverseʳ₁ xs) = inverseʳ inverseʳ₁ (tail xs)
 
 ------------------------------------------------------------------------
 -- Pointwise Equality as a Bisimilarity
