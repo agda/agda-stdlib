@@ -46,20 +46,3 @@ isDecPartialOrder dpo = record
   ; _≟_            = Pointwise.decidable DPO._≟_
   ; _≤?_           = prefix? DPO._≤?_
   } where module DPO = IsDecPartialOrder dpo
-
-
-
-module _ {A : Set a} where
-
-  open import Data.List.Base using (List; []; _∷_)
-  open import Data.List.Properties using (++-monoid)
-  open import Algebra.Properties.Monoid.Divisibility (++-monoid A)
-  open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-  open import Relation.Binary using (_⇒_)
-
-  Prefix-as-∣ˡ : Prefix _≡_ ⇒ _∣ˡ_
-  Prefix-as-∣ˡ []          = ε∣ˡ _
-  Prefix-as-∣ˡ (refl ∷ tl) = x∣ˡy⇒zx∣ˡzy (_ ∷ []) (Prefix-as-∣ˡ tl)
-
-  ∣ˡ-as-Prefix : _∣ˡ_ ⇒ Prefix _≡_
-  ∣ˡ-as-Prefix (rest , refl) = fromView (Pointwise.refl refl ++ rest)

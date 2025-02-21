@@ -110,6 +110,11 @@ New modules
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
+* `Data.List.Relation.Binary.Prefix.Propositional.Properties` showing the equivalence to left divisibility induced by the list monoid.
+
+* `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
+
+
 Additions to existing modules
 -----------------------------
 
@@ -185,16 +190,4 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
-  ```
-
-* In `Data.List.Relation.Binary.Prefix.Homogeneous.Properties`:
-  ```agda
-  Prefix-as-∣ˡ : Prefix _≡_ ⇒ _∣ˡ_
-  ∣ˡ-as-Prefix : _∣ˡ_ ⇒ Prefix _≡_
-  ```
-
-* In `Data.List.Relation.Binary.Suffix.Homogeneous.Properties`:
-  ```agda
-  Suffix-as-∣ʳ : Suffix _≡_ ⇒ _∣ʳ_
-  ∣ʳ-as-Suffix : _∣ʳ_ ⇒ Suffix _≡_
   ```
