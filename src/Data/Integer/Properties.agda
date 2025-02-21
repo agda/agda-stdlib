@@ -1647,7 +1647,7 @@ i*j≢0 i j rewrite abs-* i j = ℕ.m*n≢0 ∣ i ∣ ∣ j ∣
 ^-isMagmaHomomorphism : ∀ i → Morphism.IsMagmaHomomorphism ℕ.+-rawMagma *-rawMagma (i ^_)
 ^-isMagmaHomomorphism i = record
   { isRelHomomorphism = record { cong = cong (i ^_) }
-  ; homo              = ^-distribˡ-+-* i
+  ; ∙-homo            = ^-distribˡ-+-* i
   }
 
 ^-isMonoidHomomorphism : ∀ i → Morphism.IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
