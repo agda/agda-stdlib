@@ -15,11 +15,11 @@ module Algebra.Lattice.Properties.BooleanAlgebra
 open BooleanAlgebra B
 
 import Algebra.Lattice.Properties.DistributiveLattice as DistribLatticeProperties
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures _≈_
 open import Algebra.Definitions _≈_
 open import Algebra.Consequences.Setoid setoid
-open import Algebra.Bundles
+open import Algebra.Bundles using (CommutativeSemiring; CommutativeRing)
 open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Function.Base using (id; _$_; _⟨_⟩_)
