@@ -13,7 +13,6 @@ module Algebra.Properties.CommutativeSemigroup
   where
 
 open CommutativeSemigroup CS
-
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product.Base using (_,_)

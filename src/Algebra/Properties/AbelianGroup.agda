@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra using (AbelianGroup)
 
 module Algebra.Properties.AbelianGroup
   {a ℓ} (G : AbelianGroup a ℓ) where

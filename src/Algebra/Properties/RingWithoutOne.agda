@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra using (RingWithoutOne)
 
 module Algebra.Properties.RingWithoutOne {r₁ r₂} (R : RingWithoutOne r₁ r₂) where
 
