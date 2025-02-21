@@ -8,7 +8,7 @@
 
 module Algebra.Bundles.Raw where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles.Raw using (RawSetoid)
 open import Level using (suc; _⊔_)
