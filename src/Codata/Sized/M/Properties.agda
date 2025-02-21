@@ -18,8 +18,8 @@ import Data.Container.Morphism as Mp using (id; _∘_)
 open import Data.Product.Base as Product using (_,_)
 open import Data.Product.Properties hiding (map-cong)
 open import Function.Base using (_$′_; _∘′_)
-import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; setoid_)
-
+import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; subst)
+import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 open import Data.Container.Relation.Binary.Pointwise using (_,_)
 import Data.Container.Relation.Binary.Equality.Setoid as EqSetoid
 
