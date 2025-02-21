@@ -13,6 +13,10 @@ Bug-fixes
   to `#-sym` in order to avoid overloaded projection.
   `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
 
+* In `Algebra.Definitions.RawMagma` and `Relation.Binary.Construct.Interior.Symmetric`,
+  the record constructors `_,_` incorrectly had no declared fixity. They have been given
+  the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
+
 Non-backwards compatible changes
 --------------------------------
 
