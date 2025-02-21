@@ -9,10 +9,8 @@
 module Algebra.Solver.CommutativeMonoid.Example where
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
-
 open import Data.Bool.Base using (_∨_)
 open import Data.Bool.Properties using (∨-commutativeMonoid)
-
 open import Data.Fin.Base using (zero; suc)
 open import Data.Vec.Base using ([]; _∷_)
 
@@ -25,3 +23,4 @@ test a b c = let _∨_ = _⊕_ in
   x = var zero
   y = var (suc zero)
   z = var (suc (suc zero))
+
