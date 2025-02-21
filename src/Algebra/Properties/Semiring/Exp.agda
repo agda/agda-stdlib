@@ -6,14 +6,16 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-import Data.Nat.Properties as ℕ
+open import Algebra using (Semiring)
+
 
 module Algebra.Properties.Semiring.Exp
   {a ℓ} (S : Semiring a ℓ) where
+
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Data.Nat.Properties as ℕ using (*-comm)
 
 open Semiring S
 open import Relation.Binary.Reasoning.Setoid setoid
