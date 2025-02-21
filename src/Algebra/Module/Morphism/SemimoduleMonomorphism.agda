@@ -36,7 +36,7 @@ open import Algebra.Module.Morphism.BisemimoduleMonomorphism isBisemimoduleMonom
 ------------------------------------------------------------------------
 -- Properties
 
-module _ (+ᴹ-isMagma :  IsMagma N._≈ᴹ_ N._+ᴹ_) where
+module _ (+ᴹ-isMagma : IsMagma N._≈ᴹ_ N._+ᴹ_) where
   open IsMagma +ᴹ-isMagma
     using (setoid)
     renaming (∙-cong to +ᴹ-cong)
