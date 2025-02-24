@@ -6,8 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Module.Bundles.Raw
-open import Algebra.Module.Morphism.Structures
+open import Algebra.Module.Bundles.Raw using (RawRightModule)
+open import Algebra.Module.Morphism.Structures using (IsRightModuleMonomorphism)
 
 module Algebra.Module.Morphism.RightModuleMonomorphism
   {r a b ℓ₁ ℓ₂} {R : Set r} {M : RawRightModule R a ℓ₁} {N : RawRightModule R b ℓ₂} {⟦_⟧}
@@ -18,11 +18,11 @@ open IsRightModuleMonomorphism isRightModuleMonomorphism
 module M = RawRightModule M
 module N = RawRightModule N
 
-open import Algebra.Bundles
-open import Algebra.Core
-open import Algebra.Module.Structures
-open import Algebra.Structures
-open import Relation.Binary.Core
+open import Algebra.Bundles using (Ring)
+open import Algebra.Core using (Op₂)
+open import Algebra.Module.Structures using (IsRightModule)
+open import Algebra.Structures using (IsRing)
+open import Relation.Binary.Core  using (Rel)
 
 ------------------------------------------------------------------------
 -- Re-exports

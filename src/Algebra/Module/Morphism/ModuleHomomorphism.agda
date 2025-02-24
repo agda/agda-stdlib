@@ -9,9 +9,9 @@
 import Algebra.Module.Properties            as ModuleProperties
 import Algebra.Module.Morphism.Structures   as MorphismStructures
 
-open import Algebra                   using (CommutativeRing)
-open import Algebra.Module            using (Module)
-open import Level                     using (Level)
+open import Algebra using (CommutativeRing)
+open import Algebra.Module using (Module)
+open import Level using (Level)
 
 module Algebra.Module.Morphism.ModuleHomomorphism
   {r ℓr m ℓm : Level}
@@ -24,7 +24,7 @@ module Algebra.Module.Morphism.ModuleHomomorphism
   (isModuleHomomorphism : IsModuleHomomorphism f)
   where
 
-open import Axiom.DoubleNegationElimination
+open import Axiom.DoubleNegationElimination using (DoubleNegationElimination)
 open import Data.Product.Base using (∃₂; _×_; _,_)
 open import Relation.Binary.Reasoning.MultiSetoid
 open import Relation.Nullary          using (¬_)
