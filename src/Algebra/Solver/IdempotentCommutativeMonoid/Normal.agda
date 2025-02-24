@@ -19,10 +19,11 @@ open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
-import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
+import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise using
+  (Pointwise; _∷_; []; Pointwise-≡↔≡; decidable)
 open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable       as Dec
+import Relation.Nullary.Decidable as Dec using (map)
 
 open IdempotentCommutativeMonoid M
 open CSProperties commutativeSemigroup using (x∙yz≈xy∙z; x∙yz≈y∙xz)

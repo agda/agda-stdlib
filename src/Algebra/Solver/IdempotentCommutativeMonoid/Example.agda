@@ -13,10 +13,8 @@ import Algebra.Solver.IdempotentCommutativeMonoid as ICM-Solver
 
 open import Data.Bool.Base using (_∨_)
 open import Data.Bool.Properties using (∨-idempotentCommutativeMonoid)
-
 open import Data.Fin.Base using (zero; suc)
 open import Data.Vec.Base using ([]; _∷_)
-
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 open ICM-Solver ∨-idempotentCommutativeMonoid

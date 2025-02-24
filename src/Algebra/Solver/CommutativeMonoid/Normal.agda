@@ -12,15 +12,18 @@ open import Algebra.Bundles using (CommutativeMonoid)
 
 module Algebra.Solver.CommutativeMonoid.Normal {c ℓ} (M : CommutativeMonoid c ℓ) where
 
-import Algebra.Properties.CommutativeSemigroup as CSProperties
-import Algebra.Properties.Monoid.Mult as MultProperties
+import Algebra.Properties.CommutativeSemigroup as CSProperties using
+  (interchange)
+import Algebra.Properties.Monoid.Mult as MultProperties using
+  (_×_; ×-homo-1; ×-homo-+)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
-import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
+import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise using
+  (Pointwise; _∷_; []; Pointwise-≡↔≡; decidable)
 open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (map)
 
 open CommutativeMonoid M
 open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)

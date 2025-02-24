@@ -19,7 +19,7 @@ open import Data.Vec.Base using (lookup)
 open import Function.Base using (_∘_; _$_)
 open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable as Dec
+import Relation.Nullary.Decidable as Dec using (map; map′)
 
 open Monoid M
 open ≈-Reasoning setoid
