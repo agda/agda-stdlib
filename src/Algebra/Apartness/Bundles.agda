@@ -10,7 +10,7 @@ module Algebra.Apartness.Bundles where
 
 open import Level using (_⊔_; suc)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (ApartnessRelation)
+open import Relation.Binary.Bundles using (TightApartnessRelation)
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Bundles using (CommutativeRing)
 open import Algebra.Apartness.Structures
@@ -36,8 +36,11 @@ record HeytingCommutativeRing c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
   commutativeRing : CommutativeRing c ℓ₁
   commutativeRing = record { isCommutativeRing = isCommutativeRing }
 
-  apartnessRelation : ApartnessRelation c ℓ₁ ℓ₂
-  apartnessRelation = record { isApartnessRelation = isApartnessRelation }
+  tightApartnessRelation : TightApartnessRelation c ℓ₁ ℓ₂
+  tightApartnessRelation = record { isTightApartnessRelation = isTightApartnessRelation }
+
+  open TightApartnessRelation tightApartnessRelation public
+    using (apartnessRelation)
 
 
 record HeytingField c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -61,5 +64,5 @@ record HeytingField c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   heytingCommutativeRing : HeytingCommutativeRing c ℓ₁ ℓ₂
   heytingCommutativeRing = record { isHeytingCommutativeRing = isHeytingCommutativeRing }
 
-  apartnessRelation : ApartnessRelation c ℓ₁ ℓ₂
-  apartnessRelation = record { isApartnessRelation = isApartnessRelation }
+  open HeytingCommutativeRing heytingCommutativeRing public
+    using (commutativeRing; tightApartnessRelation; apartnessRelation)
