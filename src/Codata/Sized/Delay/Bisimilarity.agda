@@ -8,10 +8,10 @@
 
 module Codata.Sized.Delay.Bisimilarity where
 
-open import Size
-open import Codata.Sized.Thunk
-open import Codata.Sized.Delay
-open import Level
+open import Size using (Size; ∞)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Codata.Sized.Delay using (Delay; now; later)
+open import Level using (_⊔_)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
