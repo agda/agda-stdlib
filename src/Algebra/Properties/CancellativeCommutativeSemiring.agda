@@ -7,15 +7,16 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (CancellativeCommutativeSemiring)
+
+module Algebra.Properties.CancellativeCommutativeSemiring
+  {a ℓ} (R : CancellativeCommutativeSemiring a ℓ)
+  where
+
 open import Algebra.Definitions using (AlmostRightCancellative)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-
-module Algebra.Properties.CancellativeCommutativeSemiring
-  {a ℓ} (R : CancellativeCommutativeSemiring a ℓ)
-  where
 
 open CancellativeCommutativeSemiring R
 open import Algebra.Consequences.Setoid setoid

@@ -7,7 +7,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice
+open import Algebra.Lattice using (Semilattice)
 
 module Algebra.Properties.Semilattice {c ℓ} (L : Semilattice c ℓ) where
 
