@@ -8,10 +8,8 @@
 
 module Data.Bytestring.Builder.Primitive where
 
-open import Agda.Builtin.Nat
-open import Agda.Builtin.String
-
-open import Data.Word8.Primitive
+open import Agda.Builtin.String using (String)
+open import Data.Word8.Primitive using (Word8)
 open import Data.Bytestring.Primitive using (Bytestring)
 
 infixr 6 _<>_

@@ -10,9 +10,8 @@ module Data.Bytestring.IO.Primitive where
 
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Unit using (⊤)
+open import Data.Bytestring.Primitive using (Bytestring)
 open import IO.Primitive.Core using (IO)
-
-open import Data.Bytestring.Primitive
 
 postulate
   readFile : String → IO Bytestring
