@@ -13,12 +13,12 @@ open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; NonZero; _%_; ∣_∣;
   +<+)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
-import Data.Nat.Properties as ℕ
-import Data.Nat.DivMod as ℕ
+import Data.Nat.Properties as ℕ using ( m∸n≤m)
+import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; sym; subst)
-open ≤-Reasoning
+open ≤-Reasoning using (begin; _≤⟨_⟩_; _≤⟨⟩_; _∎; open; _≤
 
 ------------------------------------------------------------------------
 -- Definition
@@ -158,3 +158,4 @@ _mod_ = _%_
 "Warning: _mod_ was deprecated in v2.0.
 Please use _%_ instead."
 #-}
+
