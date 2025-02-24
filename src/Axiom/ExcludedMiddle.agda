@@ -8,7 +8,7 @@
 
 module Axiom.ExcludedMiddle where
 
-open import Level
+open import Level using (Level; suc)
 open import Relation.Nullary.Decidable.Core using (Dec)
 
 ------------------------------------------------------------------------
