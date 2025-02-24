@@ -8,27 +8,27 @@
 
 module Codata.Musical.Colist.Infinite-merge where
 
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭; ♯_; ∞)
 open import Codata.Musical.Colist as Colist hiding (_⋎_)
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; zero; suc; _≤_; _≥′_; _<′_; _≤′_)
 open import Data.Nat.Induction using (<′-wellFounded)
-open import Data.Nat.Properties
+open import Data.Nat.Properties using (s≤′s)
 open import Data.Product.Base as Product using (_×_; _,_; ∃; ∃₂; proj₁; proj₂)
-open import Data.Sum.Base
-open import Data.Sum.Properties
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Properties using (inj₁-injective; inj₂-injective)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Function.Base
-open import Function.Bundles
+open import Function.Base using (_∘_; _∋_; id; _∘′_; _$_; _on_)
+open import Function.Bundles using (Inverse; Injection; _↔_; mk↔ₛ′)
 open import Function.Properties.Inverse using (↔-refl; ↔-sym; ↔⇒↣)
 import Function.Related.Propositional as Related
-open import Function.Related.TypeIsomorphisms
-open import Level
+open import Function.Related.TypeIsomorphisms using (Σ-assoc)
+open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred)
 import Induction.WellFounded as WF
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
-import Relation.Binary.Construct.On as On
+import Relation.Binary.Construct.On as On using (wellFounded)
 
 private
   variable
@@ -211,3 +211,4 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
   (∃ λ { (x , xs) → (x , xs) ∈ xss × (y ≡ x ⊎ y ∈ xs) })  ↔⟨ Σ-assoc ⟩
   (∃₂ λ x xs → (x , xs) ∈ xss × (y ≡ x ⊎ y ∈ xs))         ∎
   where open Related.EquationalReasoning
+
