@@ -10,8 +10,8 @@
 
 module Data.Bool.Solver where
 
-import Algebra.Solver.Ring.Simple as Solver
-import Algebra.Solver.Ring.AlmostCommutativeRing as ACR
+import Algebra.Solver.Ring.Simple as Solver using ( module ∨-∧-Solver)
+import Algebra.Solver.Ring.AlmostCommutativeRing as ACR using (AlmostCommutativeRing)
 open import Data.Bool.Properties
 
 ------------------------------------------------------------------------
