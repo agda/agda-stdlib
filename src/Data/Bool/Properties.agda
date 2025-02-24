@@ -8,11 +8,15 @@
 
 module Data.Bool.Properties where
 
-open import Algebra.Bundles
-open import Algebra.Lattice.Bundles
+open import Algebra.Bundles using
+  (Magma; Semigroup; Band; CommutativeMonoid; IdempotentCommutativeMonoid;
+  CommutativeSemiring; CommutativeRing)
+open import Algebra.Lattice.Bundles using
+  (Lattice; DistributiveLattice; BooleanAlgebra; Semilattice)
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
-open import Data.Bool.Base
-open import Data.Empty
+open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_; _xor_
+  ; if_then_else_; T; _≤_; _<_; b≤b; f≤t; f<t)
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
@@ -21,14 +25,21 @@ open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Structures
-  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder
+  ; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+  using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder;
+  StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (Decidable; DecidableEquality; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
-open import Relation.Binary.PropositionalEquality.Core
-open import Relation.Binary.PropositionalEquality.Properties
-open import Relation.Nullary.Decidable.Core using (True; yes; no; fromWitness)
+  using (Decidable; DecidableEquality; Reflexive; Transitive; Antisymmetric;
+  Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans;
+  Trichotomous; tri≈; tri<; tri>; _Respects₂_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym
+  ; cong; cong₂; subst; trans; _≢_)
+open import Relation.Binary.PropositionalEquality.Properties using
+  (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
+open import Relation.Nullary.Decidable.Core using (True; yes; no; fromWitness
+  ; toWitness)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
