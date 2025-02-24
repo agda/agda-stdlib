@@ -26,7 +26,7 @@ open BooleanAlgebra B
 
 import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
 
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Function.Bundles using (module Equivalence; _⇔_)
 open import Data.Product.Base using (_,_)
 

@@ -11,7 +11,7 @@
 
 open import Algebra.Lattice.Bundles using (DistributiveLattice; Lattice)
 open import Algebra.Lattice.Structures.Biased using (isDistributiveLatticeʳʲᵐ)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Function.Bundles using (module Equivalence; _⇔_)
 
 module Algebra.Properties.DistributiveLattice
