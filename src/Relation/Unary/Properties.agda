@@ -18,7 +18,7 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Unary
 open import Relation.Nullary.Decidable as Dec using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Function.Base using (id; _$_; _∘_; _∘₂_)
 
 private
