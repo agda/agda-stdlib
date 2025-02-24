@@ -9,12 +9,11 @@
 module Data.Container.Relation.Binary.Pointwise where
 
 open import Data.Product.Base using (_,_; Σ-syntax; -,_; proj₁; proj₂)
+open import Data.Container.Core using (Container; ⟦_⟧)
 open import Function.Base using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; subst)
-
-open import Data.Container.Core using (Container; ⟦_⟧)
 
 -- Equality, parametrised on an underlying relation.
 

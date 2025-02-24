@@ -9,8 +9,10 @@
 module Data.Fin.Subset.Properties where
 
 import Algebra.Definitions as AlgebraicDefinitions
-import Algebra.Structures as AlgebraicStructures
-import Algebra.Lattice.Structures as AlgebraicLatticeStructures
+import Algebra.Structures as AlgebraicStructures using (IsMagma; IsSemigroup; IsMonoid; IsBand;
+  IsCommutativeMonoid; IsIdempotentCommutativeMonoid)
+import Algebra.Lattice.Structures as AlgebraicLatticeStructures using
+  (IsSemilattice; IsLattice; IsDistributiveLattice; IsBooleanAlgebra)
 open import Algebra.Bundles using (Magma; Semigroup; Monoid; Band;
   CommutativeMonoid; IdempotentCommutativeMonoid)
 open import Algebra.Lattice.Bundles using (Semilattice; Lattice;
