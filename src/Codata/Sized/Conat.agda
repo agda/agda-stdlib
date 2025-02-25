@@ -11,7 +11,7 @@ module Codata.Sized.Conat where
 open import Size using (Size ; ∞; Size<_)
 open import Codata.Sized.Thunk using (Thunk ; force)
 open import Data.Nat.Base using (ℕ ; zero ; suc)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Definition and first values
