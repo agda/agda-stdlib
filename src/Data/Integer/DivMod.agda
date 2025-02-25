@@ -18,7 +18,7 @@ import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; sym; subst)
-open ≤-Reasoning using (begin; _≤⟨_⟩_; _≤⟨⟩_; _∎; open; _≤
+open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Definition
