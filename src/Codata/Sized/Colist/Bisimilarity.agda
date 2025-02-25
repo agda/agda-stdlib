@@ -9,9 +9,9 @@
 module Codata.Sized.Colist.Bisimilarity where
 
 open import Level using (Level; _⊔_)
-open import Size
-open import Codata.Sized.Thunk
-open import Codata.Sized.Colist
+open import Size using (Size; ∞)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Codata.Sized.Colist using (Colist; fromList; _∷_; _++_; _⁺++_; [])
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.NonEmpty as List⁺  using (List⁺; _∷_)
