@@ -22,7 +22,7 @@
 --   * Use `$1` as the variable standing for the Agda executable to be tested
 --   * Clean up after itself (e.g. by running `rm -rf build/`)
 --
--- + `expected` a file containting the expected output of `run`
+-- + `expected` a file containing the expected output of `run`
 --
 -- During testing, the test harness will generate an `output` file.
 -- It will be compared to the `expected` golden file provided by the user.
@@ -88,6 +88,7 @@ open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties using (infi
 open import Data.List.Relation.Unary.Any using (any?)
 open import Data.Maybe.Base using (Maybe; just; nothing; fromMaybe)
 open import Data.Nat.Base using (ℕ; _≡ᵇ_; _<ᵇ_; _+_; _∸_)
+open import Data.Nat.ListAction using (sum)
 import Data.Nat.Show as ℕ using (show)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.String.Base as String using (String; lines; unlines; unwords; concat)
@@ -306,7 +307,7 @@ runTest opts testPath = do
     printTiming false _    msg = putStrLn $ concat (testPath ∷ ": " ∷ msg ∷ [])
     printTiming true  time msg =
       let time  = ℕ.show (time .seconds) String.++ "s"
-          spent = 9 + List.sum (List.map String.length (testPath ∷ time ∷ []))
+          spent = 9 + sum (List.map String.length (testPath ∷ time ∷ []))
                -- ^ hack: both "success" and "FAILURE" have the same length
                --   can't use `String.length msg` because the msg contains escape codes
           pad   = String.replicate (72 ∸ spent) ' '

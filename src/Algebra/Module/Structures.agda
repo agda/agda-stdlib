@@ -13,12 +13,15 @@ open import Relation.Binary.Structures using (IsEquivalence)
 module Algebra.Module.Structures where
 
 open import Algebra.Bundles
-open import Algebra.Core
-open import Algebra.Module.Core
+  using (Semiring; Ring; CommutativeSemiring; CommutativeRing)
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Module.Core  using (Opₗ; Opᵣ)
 import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
+  using (module LeftDefs; module RightDefs; module BiDefs;
+  module SimultaneousBiDefs)
 import Algebra.Properties.AbelianGroup as AbelianGroupProperties
-open import Algebra.Structures
+open import Algebra.Structures using (IsCommutativeMonoid; IsAbelianGroup)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (Level; _⊔_)
 

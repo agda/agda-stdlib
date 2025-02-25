@@ -17,7 +17,7 @@ open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
 open import Algebra.Definitions.RawMagma using (_,_)
 open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
-  using (comm∧cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ)
+  using (comm∧cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ; comm⇒sym[distribˡ])
 open import Algebra.Construct.NaturalChoice.Base
   using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
@@ -39,7 +39,7 @@ open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core
   using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary
-open import Relation.Binary.Consequences using (flip-Connex)
+open import Relation.Binary.Consequences using (flip-Connex; wlog)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′; recompute)
@@ -162,6 +162,11 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
+≰⇒≥ : _≰_ ⇒ _≥_
+≰⇒≥ {m} {zero} m≰n = z≤n
+≰⇒≥ {zero} {suc n} m≰n = contradiction z≤n m≰n
+≰⇒≥ {suc m} {suc n} m≰n = s≤s (≰⇒≥ (m≰n ∘ s≤s))
+
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
 
@@ -180,11 +185,6 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤-trans z≤n       _         = z≤n
 ≤-trans (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
-≤-total : Total _≤_
-≤-total zero    _       = inj₁ z≤n
-≤-total _       zero    = inj₂ z≤n
-≤-total (suc m) (suc n) = Sum.map s≤s s≤s (≤-total m n)
-
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant z≤n        z≤n        = refl
 ≤-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevant m≤n₁ m≤n₂)
@@ -202,6 +202,11 @@ m ≤? n = map′ (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ (T? (m ≤ᵇ n))
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
+
+≤-total : Total _≤_
+≤-total m n with m ≤? n
+... | true because m≤n = inj₁ (invert m≤n)
+... | false because m≰n = inj₂ (≰⇒≥ (invert m≰n))
 
 ------------------------------------------------------------------------
 -- Structures
@@ -330,9 +335,6 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ≰⇒> {zero}          z≰n = contradiction z≤n z≰n
 ≰⇒> {suc m} {zero}  _   = z<s
 ≰⇒> {suc m} {suc n} m≰n = s<s (≰⇒> (m≰n ∘ s≤s))
-
-≰⇒≥ : _≰_ ⇒ _≥_
-≰⇒≥ = <⇒≤ ∘ ≰⇒>
 
 ≮⇒≥ : _≮_ ⇒ _≥_
 ≮⇒≥ {_}     {zero}  _       = z≤n
@@ -1845,23 +1847,13 @@ m∸n≤∣m-n∣ m n with ≤-total m n
   ∣ n - m ∣ ≡⟨ m≤n⇒∣n-m∣≡n∸m m≤n ⟩
   n ∸ m     ∎
 
-private
-
-  *-distribˡ-∣-∣-aux : ∀ a m n → m ≤ n → a * ∣ n - m ∣ ≡ ∣ a * n - a * m ∣
-  *-distribˡ-∣-∣-aux a m n m≤n = begin-equality
-    a * ∣ n - m ∣     ≡⟨ cong (a *_) (m≤n⇒∣n-m∣≡n∸m m≤n) ⟩
-    a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
-    a * n ∸ a * m     ≡⟨ sym $′ m≤n⇒∣n-m∣≡n∸m (*-monoʳ-≤ a m≤n) ⟩
-    ∣ a * n - a * m ∣ ∎
-
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
-*-distribˡ-∣-∣ a m n with ≤-total m n
-... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
-... | inj₁ m≤n = begin-equality
-  a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
-  a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
-  ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
-  ∣ a * m - a * n ∣ ∎
+*-distribˡ-∣-∣ a = wlog ≤-total (comm⇒sym[distribˡ] {_◦_ = _*_} ∣-∣-comm a)
+  $′ λ m n m≤n → begin-equality
+    a * ∣ m - n ∣     ≡⟨ cong (a *_) (m≤n⇒∣m-n∣≡n∸m m≤n) ⟩
+    a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
+    a * n ∸ a * m     ≡⟨ m≤n⇒∣m-n∣≡n∸m (*-monoʳ-≤ a m≤n) ⟨
+    ∣ a * m - a * n ∣ ∎
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
 *-distribʳ-∣-∣ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣

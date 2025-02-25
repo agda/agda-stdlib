@@ -8,12 +8,13 @@
 
 module Data.Nat.Primality where
 
-open import Data.List.Base using ([]; _∷_; product)
-open import Data.List.Properties using (product≢0)
+open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
+open import Data.Nat.ListAction using (product)
+open import Data.Nat.ListAction.Properties using (product≢0)
 open import Data.Nat.Properties
 open import Data.Product.Base using (∃-syntax; _×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)

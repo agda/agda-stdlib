@@ -21,13 +21,11 @@ import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ)
 open import Data.List.Base as List
-open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (just) renaming (Any to MAny)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
 open import Data.Product.Base as Product
   using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
@@ -830,34 +828,6 @@ mapMaybeIsInj₂∘mapInj₁ : (xs : List A) → mapMaybe (isInj₂ {B = B}) (ma
 mapMaybeIsInj₂∘mapInj₁ = mapMaybe-map-none λ _ → refl
 
 ------------------------------------------------------------------------
--- sum
-
-sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
-sum-++ []       ys = refl
-sum-++ (x ∷ xs) ys = begin
-  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++ xs ys) ⟩
-  x + (sum xs + sum ys)  ≡⟨ sym (+-assoc x _ _) ⟩
-  (x + sum xs) + sum ys  ∎
-
-------------------------------------------------------------------------
--- product
-
-∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
-∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
-∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
-
-product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
-product≢0 [] = _
-product≢0 {n ∷ ns} (n≢0 ∷ ns≢0) = m*n≢0 n (product ns) {{n≢0}} {{product≢0 ns≢0}}
-
-∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
-∈⇒≤product {ns = n ∷ ns} (_ ∷ ns≢0) (here refl) =
-  m≤m*n n (product ns) {{product≢0 ns≢0}}
-∈⇒≤product {ns = n ∷ _} (n≢0 ∷ ns≢0) (there n∈ns) =
-  m≤n⇒m≤o*n n {{n≢0}} (∈⇒≤product ns≢0 n∈ns)
-
-
-------------------------------------------------------------------------
 -- applyUpTo
 
 length-applyUpTo : ∀ (f : ℕ → A) n → length (applyUpTo f n) ≡ n
@@ -871,6 +841,10 @@ lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
 applyUpTo-∷ʳ : ∀ (f : ℕ → A) n → applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
 applyUpTo-∷ʳ f zero = refl
 applyUpTo-∷ʳ f (suc n) = cong (f 0 ∷_) (applyUpTo-∷ʳ (f ∘ suc) n)
+
+map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
+map-applyUpTo f g zero = refl
+map-applyUpTo f g (suc n) = cong (g (f 0) ∷_) (map-applyUpTo (f ∘ suc) g n)
 
 ------------------------------------------------------------------------
 -- applyDownFrom
@@ -889,6 +863,10 @@ module _ (f : ℕ → A) where
   applyDownFrom-∷ʳ zero = refl
   applyDownFrom-∷ʳ (suc n) = cong (f (suc n) ∷_) (applyDownFrom-∷ʳ n)
 
+  map-applyDownFrom : ∀ (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
+  map-applyDownFrom g zero = refl
+  map-applyDownFrom g (suc n) = cong (g (f n) ∷_) (map-applyDownFrom g n)
+
 ------------------------------------------------------------------------
 -- upTo
 
@@ -901,6 +879,9 @@ lookup-upTo = lookup-applyUpTo id
 upTo-∷ʳ : ∀ n → upTo n ∷ʳ n ≡ upTo (suc n)
 upTo-∷ʳ = applyUpTo-∷ʳ id
 
+map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
+map-upTo = map-applyUpTo id
+
 ------------------------------------------------------------------------
 -- downFrom
 
@@ -912,6 +893,9 @@ lookup-downFrom = lookup-applyDownFrom id
 
 downFrom-∷ʳ : ∀ n → applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
 downFrom-∷ʳ = applyDownFrom-∷ʳ id
+
+map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+map-downFrom = map-applyDownFrom id
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -1534,7 +1518,7 @@ module _ (f : A → B) where
 
 
 ------------------------------------------------------------------------
--- DEPRECATED
+-- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
@@ -1561,12 +1545,6 @@ Please use map-∘ instead."
 
 map-++-commute = map-++
 {-# WARNING_ON_USAGE map-++-commute
-"Warning: map-++-commute was deprecated in v2.0.
-Please use map-++ instead."
-#-}
-
-sum-++-commute = sum-++
-{-# WARNING_ON_USAGE sum-++-commute
 "Warning: map-++-commute was deprecated in v2.0.
 Please use map-++ instead."
 #-}
@@ -1657,4 +1635,51 @@ concat-[-] = concat-map-[_]
 {-# WARNING_ON_USAGE concat-[-]
 "Warning: concat-[-] was deprecated in v2.2.
 Please use concat-map-[_] instead."
+#-}
+
+-- Version 2.3
+
+sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
+sum-++ []       ys = refl
+sum-++ (x ∷ xs) ys = begin
+  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++ xs ys) ⟩
+  x + (sum xs + sum ys)  ≡⟨ +-assoc x _ _ ⟨
+  (x + sum xs) + sum ys  ∎
+{-# WARNING_ON_USAGE sum-++
+"Warning: sum-++ was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.sum-++ instead."
+#-}
+sum-++-commute = sum-++
+{-# WARNING_ON_USAGE sum-++-commute
+"Warning: sum-++-commute was deprecated in v2.0.
+Please use Data.Nat.ListAction.Properties.sum-++ instead."
+#-}
+
+open import Data.List.Membership.Propositional using (_∈_)
+open import Data.Nat.Divisibility using (_∣_; m∣m*n; ∣n⇒∣m*n)
+
+∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
+∈⇒∣product {ns = n ∷ ns} (here  refl) = m∣m*n (product ns)
+∈⇒∣product {ns = m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
+{-# WARNING_ON_USAGE ∈⇒∣product
+"Warning: ∈⇒∣product was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.∈⇒∣product instead."
+#-}
+
+product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
+product≢0 [] = _
+product≢0 {n ∷ ns} (n≢0 ∷ ns≢0) = m*n≢0 n (product ns) {{n≢0}} {{product≢0 ns≢0}}
+{-# WARNING_ON_USAGE product≢0
+"Warning: product≢0 was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.product≢0 instead."
+#-}
+
+∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
+∈⇒≤product {ns = n ∷ ns} (_ ∷ ns≢0) (here refl) =
+  m≤m*n n (product ns) {{product≢0 ns≢0}}
+∈⇒≤product {ns = n ∷ _} (n≢0 ∷ ns≢0) (there n∈ns) =
+  m≤n⇒m≤o*n n {{n≢0}} (∈⇒≤product ns≢0 n∈ns)
+{-# WARNING_ON_USAGE ∈⇒≤product
+"Warning: ∈⇒≤product was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.∈⇒≤product instead."
 #-}
