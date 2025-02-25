@@ -7,17 +7,16 @@
 {-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Conat.Properties where
-
-open import Size using (Size)
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
 open import Codata.Sized.Conat
 open import Codata.Sized.Conat.Bisimilarity using (_⊢_≈_; refl; zero; suc)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Decidable.Core using (yes; no)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Binary.Definitions using (Decidable)
+open import Size using (Size)
 
 private
   variable
