@@ -14,7 +14,8 @@ open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
 open import Codata.Sized.Conat
 open import Codata.Sized.Conat.Bisimilarity using (_⊢_≈_; refl; zero; suc)
 open import Function.Base using (_∋_)
-open import Relation.Nullary.Decidable using (yes; no; map′)
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.Definitions using (Decidable)
 

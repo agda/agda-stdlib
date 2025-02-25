@@ -8,8 +8,8 @@
 
 module Codata.Sized.Cofin.Literals where
 
-open import Data.Nat.Base using (ℕ; suc)
 open import Agda.Builtin.FromNat using (Number)
+open import Data.Nat.Base using (ℕ; suc)
 open import Codata.Sized.Conat using (Conat)
 open import Codata.Sized.Conat.Properties using (_ℕ≤?_)
 open import Codata.Sized.Cofin using (Cofin; fromℕ<)
