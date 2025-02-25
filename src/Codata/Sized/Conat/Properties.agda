@@ -7,6 +7,7 @@
 {-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Conat.Properties where
+
 open import Codata.Sized.Conat
 open import Codata.Sized.Conat.Bisimilarity using (_⊢_≈_; refl; zero; suc)
 open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
