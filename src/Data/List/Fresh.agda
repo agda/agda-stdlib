@@ -26,7 +26,7 @@ open import Relation.Nullary using (does)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
-open import Relation.Nary
+open import Relation.Nary using (∀[_]; _⇒_)
 
 private
   variable
