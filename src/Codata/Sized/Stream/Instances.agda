@@ -8,7 +8,7 @@
 
 module Codata.Sized.Stream.Instances where
 
-open import Codata.Sized.Stream.Effectful
+open import Codata.Sized.Stream.Effectful using (functor; applicative; comonad)
 
 instance
   streamFunctor = functor

@@ -8,26 +8,24 @@
 
 module Codata.Sized.Colist where
 
-open import Level using (Level)
-open import Size
-open import Data.Unit.Base
-open import Data.Nat.Base
-open import Data.Product.Base using (_×_ ; _,_)
-open import Data.These.Base using (These; this; that; these)
-open import Data.Maybe.Base using (Maybe; nothing; just)
-open import Data.List.Base using (List; []; _∷_)
-open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
-open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Data.Vec.Bounded.Base as Vec≤ using (Vec≤)
-open import Function.Base using (_$′_; _∘′_; id; _∘_)
-
-open import Codata.Sized.Thunk using (Thunk; force)
 open import Codata.Sized.Conat as Conat using (Conat ; zero ; suc)
 open import Codata.Sized.Cowriter as CW using (Cowriter; _∷_)
 open import Codata.Sized.Delay as Delay using (Delay ; now ; later)
 open import Codata.Sized.Stream using (Stream ; _∷_)
-
+open import Codata.Sized.Thunk using (Thunk; force)
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
+open import Data.Maybe.Base using (Maybe; nothing; just)
+open import Data.Nat.Base using (ℕ; suc; zero)
+open import Data.Product.Base using (_×_ ; _,_)
+open import Data.These.Base using (These; this; that; these)
+open import Data.Unit.Base using (⊤)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
+open import Data.Vec.Bounded.Base as Vec≤ using (Vec≤)
+open import Function.Base using (_$′_; _∘′_; id; _∘_)
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Size using (Size; ∞)
 
 private
   variable

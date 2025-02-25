@@ -8,8 +8,8 @@
 
 module Codata.Sized.M where
 
-open import Size
-open import Level
+open import Size using (Size; ∞)
+open import Level using (Level; _⊔_)
 open import Codata.Sized.Thunk using (Thunk; force)
 open import Data.Product.Base hiding (map)
 open import Data.Container.Core as C hiding (map)

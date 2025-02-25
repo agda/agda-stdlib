@@ -8,25 +8,23 @@
 
 module Codata.Sized.Stream.Properties where
 
-open import Level using (Level)
-open import Size
-open import Codata.Sized.Thunk as Thunk using (Thunk; force)
-open import Codata.Sized.Stream
+open import Codata.Sized.Stream using (Stream; _∷_; _++_; map; repeat; ap;
+  lookup; splitAt; cycle; iterate; take; _⁺++_)
 open import Codata.Sized.Stream.Bisimilarity
-
-open import Data.Nat.Base
-open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
-
+open import Codata.Sized.Thunk as Thunk using (Thunk; force)
 open import Data.List.Base as List using ([]; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
-import Data.List.Relation.Binary.Equality.Propositional as ≋
+open import Data.List.Relation.Binary.Equality.Propositional as ≋
+open import Data.Nat.Base using (ℕ; zero; suc; pred; _+_)
+open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
 open import Data.Product.Base as Product using (_,_)
 open import Data.Vec.Base as Vec using (_∷_)
-
 open import Function.Base using (id; _$_; _∘′_; const)
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; _≢_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
+open import Size using (Size;  ∞)
 
 private
   variable
