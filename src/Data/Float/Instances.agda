@@ -8,7 +8,7 @@
 
 module Data.Float.Instances where
 
-open import Data.Float.Properties
+open import Data.Float.Properties using (_≟_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 
