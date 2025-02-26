@@ -13,8 +13,6 @@ module Data.List.Membership.DecPropositional
 
 open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
-open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
-
 ------------------------------------------------------------------------
 -- Re-export contents of propositional membership
 

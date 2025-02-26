@@ -16,20 +16,20 @@ open import Data.Nat.Base using (zero; suc; _≤_)
 import Data.Nat.Properties as ℕ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (case_of_; _$′_)
-
 open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎-dec_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions using (Decidable; Trans; Antisym)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_; refl; cong)
-open import Data.List.Relation.Binary.Pointwise.Base as Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
+  using (Pointwise)
 open import Data.List.Relation.Binary.Infix.Heterogeneous
-open import Data.List.Relation.Binary.Prefix.Heterogeneous
-  as Prefix using (Prefix; []; _∷_)
+open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
+  using (Prefix; []; _∷_)
 import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties as Prefix
-open import Data.List.Relation.Binary.Suffix.Heterogeneous
-  as Suffix using (Suffix; here; there)
+open import Data.List.Relation.Binary.Suffix.Heterogeneous as Suffix
+  using (Suffix; here; there)
 
 private
   variable
