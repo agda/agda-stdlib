@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Digit
+open import Data.Digit using (digitChars; Digit; showDigit; toDigits)
 import Data.Char.Properties as Char
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
