@@ -10,8 +10,8 @@ module Codata.Sized.Covec where
 
 open import Size using (Size ; ∞)
 open import Codata.Sized.Thunk using (Thunk; force)
-open import Codata.Sized.Conat as Conat using
-  (Conat ; zero ; suc; _+_; infinity; fromℕ; _ℕ+_)
+open import Codata.Sized.Conat as Conat
+  using (Conat ; zero ; suc; _+_; infinity; fromℕ; _ℕ+_)
 open import Codata.Sized.Conat.Bisimilarity using (_⊢_≈_; zero; suc)
 open import Codata.Sized.Conat.Properties using (0ℕ+-identity)
 open import Codata.Sized.Cofin as Cofin using (Cofin; zero; suc)
