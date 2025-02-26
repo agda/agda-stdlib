@@ -8,14 +8,14 @@
 
 module Codata.Sized.Delay.Effectful where
 
-open import Codata.Sized.Delay using
-  (Delay; now; never; later; map; bind; zipWith; alignWith)
+open import Codata.Sized.Delay
+  using (Delay; now; never; later; map; bind; zipWith; alignWith)
 open import Function.Base using (id)
 open import Effect.Choice using (RawChoice)
 open import Effect.Empty using (RawEmpty)
 open import Effect.Functor using (RawFunctor)
-open import Effect.Applicative using
-  (RawApplicative; RawApplicativeZero; RawAlternative)
+open import Effect.Applicative
+  using (RawApplicative; RawApplicativeZero; RawAlternative)
 open import Effect.Monad using (RawMonad; RawMonadZero)
 open import Data.These using (leftMost)
 
