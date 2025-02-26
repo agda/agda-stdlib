@@ -48,6 +48,7 @@ open Base public
   ; comm⇒sym[distribˡ]
   ; subst∧comm⇒sym
   ; wlog
+  ; sel⇒idem
 -- plus all the deprecated versions of the above
   ; comm+assoc⇒middleFour
   ; identity+middleFour⇒assoc
@@ -102,6 +103,14 @@ module _ (∙-comm : Commutative _∙_) where
 
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y ∙ z)) ≡ ((x ◦ y) ∙ (x ◦ z)))
   comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _) ∙-comm
+
+------------------------------------------------------------------------
+-- Selectivity
+
+module _ {_∙_ : Op₂ A} where
+
+  sel⇒idem : Selective _∙_ → Idempotent _∙_
+  sel⇒idem = Base.sel⇒idem _≡_
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
