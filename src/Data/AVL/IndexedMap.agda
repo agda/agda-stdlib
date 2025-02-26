@@ -10,7 +10,7 @@ open import Data.Product.Base using (∃)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
-import Data.Tree.AVL.Value
+import Data.Tree.AVL.Value using (Value)
 
 module Data.AVL.IndexedMap
   {i k v ℓ}
