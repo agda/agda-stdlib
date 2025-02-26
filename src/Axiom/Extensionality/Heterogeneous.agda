@@ -12,8 +12,8 @@ import Axiom.Extensionality.Propositional as P
   using (Extensionality; lower-extensionality)
 open import Function.Base using (_$_; _∘_)
 open import Level using (Level; suc)
-open import Relation.Binary.HeterogeneousEquality.Core using
-  (_≅_; ≅-to-≡; ≡-to-≅)
+open import Relation.Binary.HeterogeneousEquality.Core
+  using (_≅_; ≅-to-≡; ≡-to-≅)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
