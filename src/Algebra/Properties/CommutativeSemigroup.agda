@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (CommutativeSemigroup)
+open import Algebra.Bundles using (CommutativeSemigroup)
 
 module Algebra.Properties.CommutativeSemigroup
   {a ℓ} (CS : CommutativeSemigroup a ℓ)

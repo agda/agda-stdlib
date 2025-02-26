@@ -20,15 +20,17 @@ module Algebra.Properties.BooleanAlgebra
 Use Algebra.Lattice.Properties.BooleanAlgebra instead."
 #-}
 
-open import Algebra.Lattice.Properties.BooleanAlgebra B public
-
-open BooleanAlgebra B
-
-import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
-
 open import Relation.Binary.Core using (Rel)
 open import Function.Bundles using (module Equivalence; _⇔_)
 open import Data.Product.Base using (_,_)
+open import Algebra.Lattice.Properties.BooleanAlgebra B public
+
+import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
+
+open BooleanAlgebra B
+
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

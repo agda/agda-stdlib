@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (CancellativeCommutativeSemiring)
+open import Algebra.Bundles using (CancellativeCommutativeSemiring)
 
 module Algebra.Properties.CancellativeCommutativeSemiring
   {a ℓ} (R : CancellativeCommutativeSemiring a ℓ)
