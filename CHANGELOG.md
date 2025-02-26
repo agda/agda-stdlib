@@ -149,7 +149,7 @@ Additions to existing modules
   _⊥_ _⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   ```
 
-* In `Relation.Unary.Definitions`:
+* In `Relation.Unary.Properties`:
   ```agda
   ≬-sym : Symmetric {A = Pred A ℓ₁} _≬_
   ⊥-sym : Symmetric {A = Pred A ℓ₁} _⊥_
