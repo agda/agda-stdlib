@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Semiring)
+open import Algebra.Bundles using (Semiring)
 
 module Algebra.Properties.Semiring.Exp
   {a ℓ} (S : Semiring a ℓ) where
@@ -16,7 +16,9 @@ open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Data.Nat.Properties as ℕ using (*-comm)
 
+-- Need to see almost everything, including setoid
 open Semiring S
+
 open import Relation.Binary.Reasoning.Setoid setoid
 import Algebra.Properties.Monoid.Mult *-monoid as Mult
 

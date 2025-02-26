@@ -12,6 +12,7 @@ module Algebra.Properties.Semiring.Sum {c} {ℓ} (R : Semiring c ℓ) where
 
 open import Data.Nat.Base using (zero; suc)
 open import Data.Vec.Functional using (Vector; head; tail; map)
+
 open Semiring R
 
 ------------------------------------------------------------------------

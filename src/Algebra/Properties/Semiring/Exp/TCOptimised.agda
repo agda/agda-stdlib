@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Semiring)
+open import Algebra.Bundles using (Semiring)
 
 module Algebra.Properties.Semiring.Exp.TCOptimised
   {a ℓ} (S : Semiring a ℓ) where

@@ -6,16 +6,16 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Semiring)
+open import Algebra.Bundles using (Semiring)
 
 module Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
   {a ℓ} (S : Semiring a ℓ) where
 
 open import Data.Nat.Base as ℕ using (zero; suc)
 open import Data.Nat.Properties as ℕ using (+-suc)
-open Semiring S renaming (zero to *-zero)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 
+open Semiring S renaming (zero to *-zero)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Algebra.Properties.Semiring.Exp S as U
   using () renaming (_^_ to _^ᵘ_)
