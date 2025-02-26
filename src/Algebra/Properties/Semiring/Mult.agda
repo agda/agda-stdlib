@@ -12,6 +12,7 @@ module Algebra.Properties.Semiring.Mult
   {a ℓ} (S : Semiring a ℓ) where
 
 open import Data.Nat.Base as ℕ using (zero; suc)
+
 open Semiring S renaming (zero to *-zero)
 
 open import Relation.Binary.Reasoning.Setoid setoid
