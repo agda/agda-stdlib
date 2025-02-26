@@ -23,7 +23,7 @@ import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise using
   (Pointwise; _∷_; []; Pointwise-≡↔≡; decidable)
 open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Relation.Nullary.Decidable as Dec using (map)
+import Relation.Nullary.Decidable as Dec using (map)
 
 open CommutativeMonoid M
 open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
