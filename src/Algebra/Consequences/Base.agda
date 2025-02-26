@@ -14,6 +14,7 @@ module Algebra.Consequences.Base
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions
+  using (Selective; Idempotent; SelfInverse; Involutive)
 open import Data.Sum.Base using (reduce)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (Reflexive)
