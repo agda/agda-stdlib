@@ -9,14 +9,16 @@
 module Data.Fin.Subset.Properties where
 
 import Algebra.Definitions as AlgebraicDefinitions
-import Algebra.Structures as AlgebraicStructures using (IsMagma; IsSemigroup; IsMonoid; IsBand;
-  IsCommutativeMonoid; IsIdempotentCommutativeMonoid)
-import Algebra.Lattice.Structures as AlgebraicLatticeStructures using
-  (IsSemilattice; IsLattice; IsDistributiveLattice; IsBooleanAlgebra)
-open import Algebra.Bundles using (Magma; Semigroup; Monoid; Band;
-  CommutativeMonoid; IdempotentCommutativeMonoid)
-open import Algebra.Lattice.Bundles using (Semilattice; Lattice;
-  DistributiveLattice; BooleanAlgebra)
+import Algebra.Structures as AlgebraicStructures
+  using (IsMagma; IsSemigroup; IsMonoid; IsBand; IsCommutativeMonoid
+        ; IsIdempotentCommutativeMonoid)
+import Algebra.Lattice.Structures as AlgebraicLatticeStructures
+  using (IsSemilattice; IsLattice; IsDistributiveLattice; IsBooleanAlgebra)
+open import Algebra.Bundles
+  using (Magma; Semigroup; Monoid; Band; CommutativeMonoid
+        ; IdempotentCommutativeMonoid)
+open import Algebra.Lattice.Bundles
+  using (Semilattice; Lattice; DistributiveLattice; BooleanAlgebra)
 import Algebra.Lattice.Properties.Lattice as L
 import Algebra.Lattice.Properties.DistributiveLattice as DL
 import Algebra.Lattice.Properties.BooleanAlgebra as BA
