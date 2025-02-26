@@ -18,7 +18,7 @@ open import Data.Product.Base hiding (map ; zip)
 open import Data.Sum.Base hiding (map)
 open import Data.These.Base using (These; this; that; these)
 open import Function.Base using (id)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Definition
