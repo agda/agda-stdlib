@@ -19,7 +19,7 @@ module Algebra.Lattice.Construct.Subst.Equality
 
 open import Algebra.Core using (Op₂)
 open import Algebra.Lattice.Structures
-  using ( IsSemilattice ; IsLattice ; IsDistributiveLattice ; IsBooleanAlgebra )
+  using (IsSemilattice ;IsLattice ;IsDistributiveLattice ;IsBooleanAlgebra )
 open import Function.Base using (id)
 open import Algebra.Construct.Subst.Equality equiv
 open import Relation.Binary.Construct.Subst.Equality equiv

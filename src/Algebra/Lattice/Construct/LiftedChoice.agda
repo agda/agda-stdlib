@@ -10,7 +10,7 @@ module Algebra.Lattice.Construct.LiftedChoice where
 
 open import Algebra
   using (Op₂; IsSelectiveMagma; Associative; Commutative)
-open import Algebra.Lattice using (IsSemilattice)
+open import Algebra.Lattice.Structures using (IsSemilattice)
 open import Algebra.Construct.LiftedChoice using (Lift; isBand; comm)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Relation.Binary.Structures using (IsEquivalence)
