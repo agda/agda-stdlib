@@ -8,7 +8,7 @@
 
 module Data.List.NonEmpty.Relation.Unary.All where
 
-import Data.List.Relation.Unary.All as List using ([]; _∷_)
+import Data.List.Relation.Unary.All as List
 open import Data.List.Relation.Unary.All using ([]; _∷_)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.NonEmpty.Base using (List⁺; _∷_; toList)
