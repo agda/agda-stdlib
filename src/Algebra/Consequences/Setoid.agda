@@ -7,7 +7,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions
   using (Substitutive; Symmetric; Total)
@@ -22,6 +21,7 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id; _∘_)
 open import Function.Definitions
 import Relation.Binary.Consequences as Bin
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
 

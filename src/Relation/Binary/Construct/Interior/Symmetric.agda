@@ -24,6 +24,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
+infixr 4 _,_
+
 record SymInterior (R : Rel A ℓ) (x y : A) : Set ℓ where
   constructor _,_
   field
