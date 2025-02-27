@@ -16,7 +16,6 @@ module Data.List.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 
 open import Data.List.Base
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
-    using ([]; _≋_; ≋-refl; _∷_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 
