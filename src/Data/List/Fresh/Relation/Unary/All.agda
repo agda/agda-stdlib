@@ -54,7 +54,7 @@ module _ {R : Rel A r} where
 
 module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
 
-  map : ∀ {xs : List# A R} →  ∀[ P ⇒ Q ] → All P xs → All Q xs
+  map : ∀ {xs : List# A R} → ∀[ P ⇒ Q ] → All P xs → All Q xs
   map p⇒q []       = []
   map p⇒q (p ∷ ps) = p⇒q p ∷ map p⇒q ps
 

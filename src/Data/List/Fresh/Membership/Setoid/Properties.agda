@@ -16,8 +16,8 @@ open import Data.List.Fresh
 open import Data.List.Fresh.Properties using (fresh-respectsˡ)
 open import Data.List.Fresh.Membership.Setoid S using (_∈_; _∉_)
 open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; _─_)
-import Data.List.Fresh.Relation.Unary.Any.Properties as List# using
-  (length-remove)
+import Data.List.Fresh.Relation.Unary.Any.Properties as List#
+  using (length-remove)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat.Base using (ℕ; suc; zero; _≤_; _<_; z≤n; s≤s; z<s; s<s)
 open import Data.Nat.Properties using (module ≤-Reasoning)
@@ -26,11 +26,11 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
 open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Nullary.Irrelevant using (Irrelevant)
+open import Relation.Nullary using (Irrelevant)
 open import Relation.Unary as Unary using (Pred)
 import Relation.Binary.Definitions as Binary using (_Respectsˡ_; Irrelevant)
-import Relation.Binary.PropositionalEquality.Core as ≡ using
-  (_≡_; cong; sym; subst)
+import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; cong; sym; subst)
 open import Relation.Nary using (∀[_]; _⇒_)
 
 open Setoid S renaming (Carrier to A)

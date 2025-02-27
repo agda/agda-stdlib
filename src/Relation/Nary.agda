@@ -25,10 +25,10 @@ open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_$_; _∘′_)
 open import Function.Nary.NonDependent
 open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable as Dec using
-  (Dec; yes; no; _because_; _×-dec_)
-import Relation.Unary as Unary using
-  (Pred; Satisfiable; Universal; IUniversal)
+open import Relation.Nullary.Decidable as Dec
+  using (Dec; yes; no; _because_; _×-dec_)
+import Relation.Unary as Unary
+  using (Pred; Satisfiable; Universal; IUniversal)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 
 private

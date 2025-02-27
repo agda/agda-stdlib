@@ -15,10 +15,10 @@ open import Algebra.Construct.LiftedChoice using
   (Lift; sel-≡; preservesᵒ; preservesᵇ ; forcesᵇ)
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions using (Selective)
-import Algebra.Construct.NaturalChoice.Min as Min using
-  (_⊓_; x⊓y≈y⇒y≤x; x⊓y≈x⇒x≤y; ⊓-sel; ⊓-isSelectiveMagma)
-import Algebra.Construct.NaturalChoice.Max as Max using
-  (_⊔_; x⊔y≈y⇒x≤y; x⊔y≈x⇒y≤x; ⊔-sel; ⊔-isSelectiveMagma)
+import Algebra.Construct.NaturalChoice.Min as Min
+  using (_⊓_; x⊓y≈y⇒y≤x; x⊓y≈x⇒x≤y; ⊓-sel; ⊓-isSelectiveMagma)
+import Algebra.Construct.NaturalChoice.Max as Max
+  using (_⊔_; x⊔y≈y⇒x≤y; x⊔y≈x⇒y≤x; ⊔-sel; ⊔-isSelectiveMagma)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
