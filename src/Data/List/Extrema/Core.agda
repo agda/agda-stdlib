@@ -11,8 +11,8 @@ open import Relation.Binary.Bundles using (TotalOrder; Setoid)
 module Data.List.Extrema.Core
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where
 
-open import Algebra.Construct.LiftedChoice using
-  (Lift; sel-≡; preservesᵒ; preservesᵇ ; forcesᵇ)
+open import Algebra.Construct.LiftedChoice
+  using (Lift; sel-≡; preservesᵒ; preservesᵇ ; forcesᵇ)
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions using (Selective)
 import Algebra.Construct.NaturalChoice.Min as Min

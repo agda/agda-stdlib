@@ -15,8 +15,8 @@ open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘_; _$_)
 open import Level using (Level; _⊔_; Lift)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_)
-open import Relation.Unary as U using
-  (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
+open import Relation.Unary as U
+  using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
 open import Relation.Binary.Core using (Rel)
 
 

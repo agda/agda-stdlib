@@ -13,8 +13,8 @@ module Data.List.Fresh.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 open import Level using (Level; _⊔_)
 open import Data.List.Fresh using (List#)
 open import Data.List.Fresh.Relation.Unary.Any as Any using (Any)
-open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.Core using (Rel)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 open Setoid S renaming (Carrier to A)
 

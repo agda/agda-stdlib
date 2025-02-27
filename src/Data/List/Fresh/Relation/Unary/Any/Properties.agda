@@ -58,7 +58,7 @@ module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} (P? : Decidable P) where
   ¬All⇒Any : {xs : List# A R} → ¬ (All P xs) → Any (∁ P) xs
   ¬All⇒Any {xs = []}      ¬ps = ⊥-elim (¬ps [])
   ¬All⇒Any {xs = x ∷# xs} ¬ps with P? x
-  ... | true because  [p] = there (¬All⇒Any (¬ps ∘′ (invert [p] ∷_)))
+  ... |  true because  [p] = there (¬All⇒Any (¬ps ∘′ (invert [p] ∷_)))
   ... | false because [¬p] = here (invert [¬p])
 
   ¬Any⇒All : {xs : List# A R} → ¬ (Any P xs) → All (∁ P) xs
