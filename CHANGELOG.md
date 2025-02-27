@@ -28,6 +28,9 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The top-level module `Algebra.Consequences.Base` now has the implicit
+  parameters of its internal modules lifted out as `variable`s.
+
 Deprecated modules
 ------------------
 
