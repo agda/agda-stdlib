@@ -15,7 +15,7 @@ open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties
 open import Function.Base using (_∘′_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL)
-open import Relation.Binary.Structures 
+open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
 
 private
