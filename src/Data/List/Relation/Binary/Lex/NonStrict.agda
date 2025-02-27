@@ -22,14 +22,12 @@ open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary using (yes; no)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
-  using (Poset; StrictPartialOrder; DecTotalOrder; StrictTotalOrder;
-  Preorder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsTotalOrder;
-  IsStrictTotalOrder; IsPreorder; IsDecTotalOrder)
+  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsTotalOrder
+  ; IsStrictTotalOrder; IsPreorder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric;
-  Transitive; Decidable; Total; Trichotomous)
+  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric
+  ; Transitive; Decidable; Total; Trichotomous)
 import Relation.Binary.Construct.NonStrictToStrict as Conv
 
 import Data.List.Relation.Binary.Lex as Core
