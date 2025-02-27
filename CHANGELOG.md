@@ -147,3 +147,16 @@ Additions to existing modules
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
+
+* In `Relation.Unary`:
+  ```agda
+  _⊥_ _⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  ```
+
+* In `Relation.Unary.Properties`:
+  ```agda
+  ≬-sym : Symmetric {A = Pred A ℓ₁} _≬_
+  ⊥-sym : Symmetric {A = Pred A ℓ₁} _⊥_
+  ≬⇒¬⊥ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≬_ (¬_ ∘₂ _⊥_)
+  ⊥⇒¬≬ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊥_ (¬_ ∘₂ _≬_)
+  ```
