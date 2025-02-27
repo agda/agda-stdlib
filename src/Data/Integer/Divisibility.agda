@@ -14,8 +14,8 @@ open import Function.Base using (_on_; _$_)
 open import Data.Integer.Base using (ℤ; _*_; ∣_∣; NonZero)
 open import Data.Integer.Properties using (abs-*; *-comm)
 import Data.Nat.Base as ℕ using (ℕ; _*_; NonZero)
-import Data.Nat.Divisibility as ℕ using
-  (module ∣-Reasoning; _∣_; divides; *-monoʳ-∣; *-cancelˡ-∣)
+import Data.Nat.Divisibility as ℕ
+  using (module ∣-Reasoning; _∣_; divides; *-monoʳ-∣; *-cancelˡ-∣)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 

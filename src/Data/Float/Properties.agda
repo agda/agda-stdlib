@@ -105,4 +105,3 @@ toWord-injective = toWord64-injective
 "Warning: toWord-injective was deprecated in v2.1.
 Please use toWord64-injective instead."
 #-}
-
