@@ -12,7 +12,9 @@ module Algebra.Consequences.Base
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions
-  using (Selective; Idempotent; SelfInverse; Involutive)
+  using (Selective; Idempotent; SelfInverse; Involutive
+        ; _-AlmostLeftCancellative_; Except_-LeftCancellative_
+        ; _-AlmostRightCancellative_; Except_-RightCancellative_)
 open import Data.Sum.Base using (inj₁; inj₂; reduce; [_,_]′)
 open import Function.Base using (id; const; flip)
 open import Relation.Binary.Core using (Rel)
