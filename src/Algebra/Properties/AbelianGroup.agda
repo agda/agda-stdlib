@@ -6,12 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra.Bundles using (AbelianGroup)
 
 module Algebra.Properties.AbelianGroup
   {a ℓ} (G : AbelianGroup a ℓ) where
 
 open AbelianGroup G
+open import Algebra.Definitions _≈_ using (RightIdentity)
 open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
 
@@ -39,3 +40,6 @@ xyx⁻¹≈y x y = begin
   x ⁻¹ ∙ y ⁻¹ ≈⟨ ⁻¹-anti-homo-∙ y x ⟨
   (y ∙ x) ⁻¹  ≈⟨ ⁻¹-cong $ comm y x ⟩
   (x ∙ y) ⁻¹  ∎
+
+x-ε≈x : RightIdentity ε _-_
+x-ε≈x x = trans (∙-congˡ ε⁻¹≈ε) (identityʳ x)
