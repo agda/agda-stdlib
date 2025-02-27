@@ -9,14 +9,15 @@
 
 module Data.List.Membership.Propositional.Properties.WithK where
 
-open import Level using (Level)
-open import Function.Bundles using (Equivalence)
-open import Data.List.Base
-open import Data.List.Relation.Unary.Unique.Propositional
-open import Data.List.Membership.Propositional
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Relation.Unary.Unique.Propositional using (Unique)
+open import Data.List.Membership.Propositional using (_∈_; _∉_)
 import Data.List.Membership.Setoid.Properties as Membership
+  using (unique⇒irrelevant)
 open import Data.List.Relation.Binary.BagAndSetEquality using (_∼[_]_; set; bag)
 open import Data.Product using (_,_)
+open import Function.Bundles using (Equivalence)
+open import Level using (Level)
 open import Relation.Unary using (Irrelevant)
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.PropositionalEquality.WithK using (≡-irrelevant)

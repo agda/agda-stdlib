@@ -9,13 +9,13 @@
 module Data.List.NonEmpty.Effectful.Transformer where
 
 open import Data.List.NonEmpty.Base as List⁺ using (List⁺; _∷_)
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import Function.Base
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; RawMonadT)
+open import Function.Base using (_∘′_; _∘_; _$_)
 open import Level using (Level)
 
-import Data.List.NonEmpty.Effectful as List⁺
+import Data.List.NonEmpty.Effectful as List⁺ using (module TraversableM)
 
 private
   variable

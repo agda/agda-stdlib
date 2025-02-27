@@ -8,9 +8,10 @@
 
 module Data.List.NonEmpty.Instances where
 
-open import Data.List.NonEmpty.Effectful
-import Data.List.NonEmpty.Effectful.Transformer as Trans
-
+open import Data.List.NonEmpty.Effectful using
+  (functor; applicative; monad; comonad)
+import Data.List.NonEmpty.Effectful.Transformer as Trans using
+  (functor; applicative; monad; monadT)
 instance
   -- List⁺ instances
   nonEmptyListFunctor = functor

@@ -8,13 +8,14 @@
 
 module Data.List.Relation.Binary.Disjoint.Propositional.Properties where
 
+open import Agda.Builtin.List using (List; []; _∷_)
 open import Level using (Level)
 open import Function.Base using (_∘_)
 open import Function.Bundles using (_⇔_)
-open import Data.List.Base
-open import Data.List.Relation.Binary.Disjoint.Propositional
-import Data.List.Relation.Unary.Any as Any
-open import Data.List.Relation.Unary.All as All
+open import Data.List.Base using (concat; deduplicate)
+open import Data.List.Relation.Binary.Disjoint.Propositional using (Disjoint)
+import Data.List.Relation.Unary.Any as Any using (Any)
+open import Data.List.Relation.Unary.All as All using (All)
 open import Data.List.Relation.Unary.All.Properties using (¬Any⇒All¬)
 open import Data.List.Relation.Unary.Any.Properties using (++⁻)
 open import Data.List.Membership.Propositional using (_∈_)
