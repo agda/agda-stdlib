@@ -6,14 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (CommutativeSemigroup)
+open import Algebra.Bundles using (CommutativeSemigroup)
 
 module Algebra.Properties.CommutativeSemigroup
   {a ℓ} (CS : CommutativeSemigroup a ℓ)
   where
 
 open CommutativeSemigroup CS
-
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product.Base using (_,_)
