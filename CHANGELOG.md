@@ -103,6 +103,8 @@ New modules
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
+* `Data.Sign.Show` to show a sign
+
 Additions to existing modules
 -----------------------------
 
