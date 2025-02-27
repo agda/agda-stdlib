@@ -18,7 +18,7 @@ open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; [])
 import Data.List.Relation.Binary.Lex.Strict as Strict
 open import Level using (Level; _⊔_)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary using (yes; no)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
