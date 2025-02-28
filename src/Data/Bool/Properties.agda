@@ -7,7 +7,6 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bool.Properties where
-
 open import Algebra.Bundles
   using (Magma; Semigroup; Band; CommutativeMonoid
         ; IdempotentCommutativeMonoid; CommutativeSemiring; CommutativeRing)
@@ -21,9 +20,11 @@ open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
-open import Function.Bundles hiding (LeftInverse; RightInverse; Inverse)
-open import Induction.WellFounded using (WellFounded; Acc; acc)
-open import Level using (Level; 0ℓ)
+open import Function.Bundles hiding (Inverse; LeftInverse; RightInverse)
+open import Induction.WellFounded using (Acc; WellFounded; acc)
+open import Level using (0ℓ; Level)
+open import Relation.Binary.Bundles using (DecSetoid; DecTotalOrder; Poset;
+  Preorder; Setoid; StrictPartialOrder; StrictTotalOrder; TotalOrder)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder

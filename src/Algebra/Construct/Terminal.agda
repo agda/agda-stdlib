@@ -15,7 +15,7 @@ open import Level using (Level)
 module Algebra.Construct.Terminal {c ℓ : Level} where
 
 open import Algebra.Bundles
-open import Data.Unit.Polymorphic
+open import Data.Unit.Polymorphic using (⊤)
 open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------

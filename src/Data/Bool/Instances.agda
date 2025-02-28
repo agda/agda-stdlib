@@ -8,7 +8,7 @@
 
 module Data.Bool.Instances where
 
-open import Data.Bool.Properties using (≤-isDecTotalOrder; _≟_)
+open import Data.Bool.Properties using (_≟_; ≤-isDecTotalOrder)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 

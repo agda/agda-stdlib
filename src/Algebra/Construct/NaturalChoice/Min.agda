@@ -6,19 +6,18 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Construct.NaturalChoice.Base
-open import Data.Sum.Base using (inj₁; inj₂; [_,_])
-open import Data.Product.Base using (_,_)
-open import Function.Base using (id)
 open import Relation.Binary.Bundles using (TotalOrder)
-import Algebra.Construct.NaturalChoice.MinOp as MinOp
 
 module Algebra.Construct.NaturalChoice.Min
   {a ℓ₁ ℓ₂} (O : TotalOrder a ℓ₁ ℓ₂)
   where
 
+open import Algebra.Core using (Op₂)
+open import Algebra.Construct.NaturalChoice.Base
+import Algebra.Construct.NaturalChoice.MinOp as MinOp
+open import Data.Sum.Base using (inj₁; inj₂; [_,_])
+open import Data.Product.Base using (_,_)
+open import Function.Base using (id)
 open TotalOrder O renaming (Carrier to A)
 
 ------------------------------------------------------------------------
