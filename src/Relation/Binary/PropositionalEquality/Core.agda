@@ -96,6 +96,17 @@ resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
 resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
 
 ------------------------------------------------------------------------
+-- Proofs for Reflexive relations
+
+module _ {_≈_ : Rel A ℓ} where
+
+  refl⇒reflexive : Reflexive _≈_ → Refl _≡_ _≈_
+  refl⇒reflexive r refl = r
+
+  reflexive⇒refl : Refl _≡_ _≈_ → Reflexive _≈_
+  reflexive⇒refl r = r refl
+
+------------------------------------------------------------------------
 -- Properties of _≢_
 
 ≢-sym : Symmetric {A = A} _≢_

@@ -35,7 +35,7 @@ open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset; DecPoset)
 open import Relation.Binary.Definitions
-  using (Reflexive; Trans; Antisym; Decidable; Irrelevant; Irreflexive)
+  using (Refl; Reflexive; Trans; Antisym; Decidable; Irrelevant; Irreflexive)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -374,11 +374,11 @@ module Reflexivity
     {R : Rel A r}
     (R-refl : Reflexive R) where
 
-  reflexive : _≡_ ⇒ Sublist R
-  reflexive ≡.refl = fromPointwise (Pw.refl R-refl)
+  reflexive : Refl _≡_ (Sublist R)
+  reflexive = ≡.refl⇒reflexive {_≈_ = Sublist R} (fromPointwise (Pw.refl R-refl))
 
   refl : Reflexive (Sublist R)
-  refl = reflexive ≡.refl
+  refl = ≡.reflexive⇒refl reflexive
 
 open Reflexivity public
 

@@ -7,10 +7,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Core using (REL; Rel)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
-open import Relation.Binary.Definitions using (_Respects_; Transitive)
+open import Relation.Binary.Definitions using (_Respects_; Refl; Transitive)
 open Setoid using (Carrier)
 
 module Relation.Binary.Construct.FromRel
@@ -32,7 +32,7 @@ Resp x y = ∀ {a} → a R x → a R y
 ------------------------------------------------------------------------
 -- Properties
 
-reflexive : (∀ {a} → (a R_) Respects _≈_) → _≈_ ⇒ Resp
+reflexive : (∀ {a} → (a R_) Respects _≈_) → Refl _≈_ Resp
 reflexive resp x≈y = resp x≈y
 
 trans : Transitive Resp

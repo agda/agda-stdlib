@@ -14,7 +14,7 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsPartialOrder; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
+  using (Refl; Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
 
 module Relation.Binary.Construct.StrictToNonStrict
   {a ℓ₁ ℓ₂} {A : Set a}
@@ -44,7 +44,7 @@ x ≤ y = (x < y) ⊎ (x ≈ y)
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ = inj₁
 
-reflexive : _≈_ ⇒ _≤_
+reflexive : Refl _≈_ _≤_
 reflexive = inj₂
 
 antisym : IsEquivalence _≈_ → Transitive _<_ → Irreflexive _≈_ _<_ →

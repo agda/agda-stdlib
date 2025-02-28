@@ -12,10 +12,11 @@ open import Level
 open import Data.Product.Base using (∃; _×_; -,_; _,_)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
+open import Function.Base using (_∘_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid)
-open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
+open import Relation.Binary.Definitions using (Refl; Reflexive; Sym; Trans; Decidable)
 open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary
@@ -57,8 +58,8 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   refl R-refl {just _}  = just R-refl
   refl R-refl {nothing} = nothing
 
-  reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
-  reflexive reflexive ≡.refl = refl (reflexive ≡.refl)
+  reflexive : Refl _≡_ R → Refl _≡_ (Pointwise R)
+  reflexive = ≡.refl⇒reflexive ∘ refl ∘ ≡.reflexive⇒refl
 
 module _ {a b r₁ r₂} {A : Set a} {B : Set b}
          {R : REL A B r₁} {S : REL B A r₂} where

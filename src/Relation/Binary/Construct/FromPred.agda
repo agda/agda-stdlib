@@ -7,10 +7,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
-open import Relation.Binary.Definitions using (_Respects_; Reflexive; Transitive)
+open import Relation.Binary.Definitions using (_Respects_; Refl; Reflexive; Transitive)
 open import Relation.Unary using (Pred)
 
 module Relation.Binary.Construct.FromPred
@@ -18,7 +18,7 @@ module Relation.Binary.Construct.FromPred
   {p} (P : Pred (Setoid.Carrier S) p) -- The predicate
   where
 
-open import Function.Base
+open import Function.Base using (_∘_)
 
 open module Eq = Setoid S using (_≈_) renaming (Carrier to A)
 
@@ -31,7 +31,7 @@ Resp x y = P x → P y
 ------------------------------------------------------------------------
 -- Properties
 
-reflexive : P Respects _≈_ → _≈_ ⇒ Resp
+reflexive : P Respects _≈_ → Refl _≈_ Resp
 reflexive resp = resp
 
 refl : P Respects _≈_ → Reflexive Resp
@@ -44,7 +44,7 @@ isPreorder : P Respects _≈_ → IsPreorder _≈_ Resp
 isPreorder resp = record
   { isEquivalence = Eq.isEquivalence
   ; reflexive     = reflexive resp
-  ; trans         = flip _∘′_
+  ; trans         = trans
   }
 
 preorder : P Respects _≈_ → Preorder _ _ _

@@ -10,9 +10,10 @@ module Data.Maybe.Relation.Binary.Connected where
 
 open import Level
 open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Function.Base using (_∘_)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Relation.Binary.Core using (REL; _⇒_)
-open import Relation.Binary.Definitions using (Reflexive; Sym; Decidable)
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Definitions using (Refl; Reflexive; Sym; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
@@ -51,8 +52,8 @@ refl : Reflexive R → Reflexive (Connected R)
 refl R-refl {just _}  = just R-refl
 refl R-refl {nothing} = nothing
 
-reflexive : _≡_ ⇒ R → _≡_ ⇒ Connected R
-reflexive reflexive ≡.refl = refl (reflexive ≡.refl)
+reflexive : Refl _≡_ R → Refl _≡_ (Connected R)
+reflexive = ≡.refl⇒reflexive ∘ refl ∘ ≡.reflexive⇒refl
 
 sym : Sym R S → Sym (Connected R) (Connected S)
 sym R-sym (just p)     = just (R-sym p)

@@ -39,7 +39,7 @@ x∣yx : ∀ x y → x ∣ y ∙ x
 x∣yx x y = y , refl
 
 xy≈z⇒y∣z : ∀ x y {z} → x ∙ y ≈ z → y ∣ z
-xy≈z⇒y∣z x y xy≈z = ∣-respʳ-≈ xy≈z (x∣yx y x)
+xy≈z⇒y∣z x y xy≈z = {!∣-respʳ-≈ xy≈z (x∣yx y x)!}
 
 ------------------------------------------------------------------------
 -- Properties of non-divisibility

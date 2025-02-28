@@ -149,3 +149,8 @@ Additions to existing modules
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
+
+* In `Relation.Binary.Definitions`:
+  ```agda
+  Refl : Rel A ℓ → Rel A ℓ → Set _
+  ```

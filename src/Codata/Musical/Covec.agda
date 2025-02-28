@@ -20,7 +20,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_; _=[_]⇒_)
 open import Relation.Binary.Bundles using (Setoid; Poset)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Antisymmetric)
+  using (Refl; Reflexive; Symmetric; Transitive; Antisymmetric)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
@@ -153,7 +153,7 @@ poset A n = record
     }
   }
   where
-  reflexive : ∀ {n} → _≈_ {n = n} ⇒ _⊑_
+  reflexive : ∀ {n} → Refl (_≈_ {n = n}) _⊑_
   reflexive []        = []
   reflexive (x ∷ xs≈) = x ∷ ♯ reflexive (♭ xs≈)
 

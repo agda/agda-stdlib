@@ -41,6 +41,9 @@ private
 Reflexive : Rel A ℓ → Set _
 Reflexive _∼_ = ∀ {x} → x ∼ x
 
+Refl : Rel A ℓ₁ → Rel A ℓ₂ → Set _
+Refl = _⇒_
+
 -- Generalised symmetry.
 
 Sym : REL A B ℓ₁ → REL B A ℓ₂ → Set _

@@ -50,8 +50,8 @@ record IsEquivalence : Set (a ⊔ ℓ) where
     sym   : Symmetric _≈_
     trans : Transitive _≈_
 
-  reflexive : _≡_ ⇒ _≈_
-  reflexive ≡.refl = refl
+  reflexive : Refl _≡_ _≈_
+  reflexive = ≡.refl⇒reflexive {_≈_ = _≈_} refl
 
   isPartialEquivalence : IsPartialEquivalence
   isPartialEquivalence = record
@@ -77,7 +77,7 @@ record IsPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
     isEquivalence : IsEquivalence
     -- Reflexivity is expressed in terms of the underlying equality:
-    reflexive     : _≈_ ⇒ _≲_
+    reflexive     : Refl _≈_ _≲_
     trans         : Transitive _≲_
 
   module Eq = IsEquivalence isEquivalence

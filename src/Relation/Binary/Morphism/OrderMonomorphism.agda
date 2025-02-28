@@ -16,7 +16,7 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (Irreflexive; Antisymmetric; Trichotomous; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+  using (Refl; Irreflexive; Antisymmetric; Trichotomous; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.RelMonomorphism as RawRelation
 
@@ -40,8 +40,8 @@ open RawRelation isRelMonomorphism public
 ------------------------------------------------------------------------
 -- Properties
 
-reflexive : _≈₂_ ⇒ _≲₂_ → _≈₁_ ⇒ _≲₁_
-reflexive refl x≈y = cancel (refl (cong x≈y))
+reflexive : Refl _≈₂_ _≲₂_ → Refl _≈₁_ _≲₁_
+reflexive refl = cancel ∘ refl ∘ cong
 
 irrefl : Irreflexive _≈₂_ _≲₂_ → Irreflexive _≈₁_ _≲₁_
 irrefl irrefl x≈y x∼y = irrefl (cong x≈y) (mono x∼y)

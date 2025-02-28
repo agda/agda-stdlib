@@ -15,7 +15,8 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Product.Base using (_×_; _,_)
 open import Function.Base using (const; _$_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
+open import Relation.Binary.Definitions using (Refl)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Structures using (IsEquivalence)
@@ -63,7 +64,7 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
     ... | inj₂ fx∙fy≈fy = fx∙fy≈fy
 
   module _ (f : A → B) {_≈′_ : Rel A ℓ}
-           (≈-reflexive : _≡_ ⇒ _≈′_) where
+           (≈-reflexive : Refl _≡_ _≈′_) where
 
     private
       _◦_ = Lift _≈_ _∙_ M.sel f

@@ -29,7 +29,7 @@ open import Function.Bundles
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Poset; Setoid; Preorder)
-open import Relation.Binary.Definitions using (Transitive; Antisymmetric)
+open import Relation.Binary.Definitions using (Refl; Transitive; Antisymmetric)
 import Relation.Binary.Construct.FromRel as Ind
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
@@ -148,7 +148,7 @@ Any-∈ {P = P} = mk↔ₛ′
     }
   }
   where
-  reflexive : _≈_ ⇒ _⊑_
+  reflexive : Refl _≈_ _⊑_
   reflexive []        = []
   reflexive (x ∷ xs≈) = x ∷ ♯ reflexive (♭ xs≈)
 
