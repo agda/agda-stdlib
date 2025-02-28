@@ -210,7 +210,7 @@ module _ {A : Set a} where
 
 module _ (A : Set a) where
 
-  ++-semigroup :  Semigroup a a
+  ++-semigroup : Semigroup a a
   ++-semigroup = record
     { Carrier     = List A
     ; isSemigroup = ++-isSemigroup
