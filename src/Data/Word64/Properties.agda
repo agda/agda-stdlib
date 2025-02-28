@@ -14,7 +14,7 @@ open import Data.Word64.Base using (_≈_; toℕ; Word64; _<_)
 import Data.Nat.Properties as ℕ
 open import Relation.Nullary.Decidable.Core using (map′; ⌊_⌋)
 open import Relation.Binary
-  using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
+  using ( _⇒_; Refl; Reflexive; Symmetric; Transitive; Substitutive
         ; Decidable; DecidableEquality; IsEquivalence; IsDecEquivalence
         ; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
@@ -33,10 +33,10 @@ open import Agda.Builtin.Word.Properties
 ------------------------------------------------------------------------
 -- Properties of _≈_
 
-≈⇒≡ : _≈_ ⇒ _≡_
+≈⇒≡ : Refl _≈_ _≡_
 ≈⇒≡ = toℕ-injective _ _
 
-≈-reflexive : _≡_ ⇒ _≈_
+≈-reflexive : Refl _≡_ _≈_
 ≈-reflexive = cong toℕ
 
 ≈-refl : Reflexive _≈_

@@ -37,7 +37,7 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
+  using (Refl; Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
@@ -81,7 +81,7 @@ drop-*≡* (*≡* eq) = eq
 ≃-refl : Reflexive _≃_
 ≃-refl = *≡* refl
 
-≃-reflexive : _≡_ ⇒ _≃_
+≃-reflexive : Refl _≡_ _≃_
 ≃-reflexive refl = *≡* refl
 
 ≃-sym : Symmetric _≃_

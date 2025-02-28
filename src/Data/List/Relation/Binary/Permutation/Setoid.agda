@@ -16,9 +16,9 @@ import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
 import Data.List.Relation.Binary.Equality.Setoid as ≋
 open import Function.Base using (_∘′_)
 open import Level using (_⊔_)
-open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; LeftTrans; RightTrans)
+  using (Refl; Reflexive; Symmetric; Transitive; LeftTrans; RightTrans)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
@@ -45,7 +45,7 @@ steps = Homogeneous.steps {R = _≈_}
 
 -- Constructor alias
 
-↭-reflexive-≋ : _≋_ ⇒ _↭_
+↭-reflexive-≋ : Refl _≋_ _↭_
 ↭-reflexive-≋ = refl
 
 ↭-trans : Transitive _↭_
@@ -63,7 +63,7 @@ steps = Homogeneous.steps {R = _≈_}
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
-↭-reflexive : _≡_ ⇒ _↭_
+↭-reflexive : Refl _≡_ _↭_
 ↭-reflexive refl = ↭-reflexive-≋ ≋-refl
 
 ↭-refl : Reflexive _↭_

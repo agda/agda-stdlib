@@ -19,13 +19,13 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.List.Base using (List; []; _∷_)
 open import Level using (_⊔_)
 open import Relation.Nullary using (yes; no; ¬_)
-open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles
   using (StrictPartialOrder; StrictTotalOrder; Preorder; Poset; DecPoset; DecTotalOrder)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Irreflexive; Symmetric; _Respects₂_; Total; Asymmetric; Antisymmetric; Transitive; Trichotomous; Decidable; tri≈; tri<; tri>)
+  using (Refl; Irreflexive; Symmetric; _Respects₂_; Total; Asymmetric; Antisymmetric; Transitive; Trichotomous; Decidable; tri≈; tri<; tri>)
 open import Relation.Binary.Consequences
 open import Data.List.Relation.Binary.Pointwise as Pointwise
    using (Pointwise; []; _∷_; head; tail)
@@ -145,7 +145,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
   -- Properties
 
   ≤-reflexive : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
-                Pointwise _≈_ ⇒ Lex-≤ _≈_ _≺_
+                Refl (Pointwise _≈_) (Lex-≤ _≈_ _≺_)
   ≤-reflexive _≈_ _≺_ []            = base tt
   ≤-reflexive _≈_ _≺_ (x≈y ∷ xs≈ys) =
     next x≈y (≤-reflexive _≈_ _≺_ xs≈ys)

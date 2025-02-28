@@ -7,6 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bool.Properties where
+
 open import Algebra.Bundles
 open import Algebra.Lattice.Bundles using
   (BooleanAlgebra; DistributiveLattice; Lattice; Semilattice)
@@ -22,10 +23,9 @@ open import Induction.WellFounded using (Acc; WellFounded; acc)
 open import Level using (0ℓ; Level)
 open import Relation.Binary.Bundles using (DecSetoid; DecTotalOrder; Poset;
   Preorder; Setoid; StrictPartialOrder; StrictTotalOrder; TotalOrder)
-open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Definitions using (Antisymmetric; Asymmetric;
   Decidable; DecidableEquality; Irreflexive; Irrelevant; Maximum; Minimum;
-  Reflexive; Total; Trans; Transitive; Trichotomous; _Respects₂_;
+  Refl; Reflexive; Total; Trans; Transitive; Trichotomous; _Respects₂_;
   tri<; tri>; tri≈)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_;
   cong; cong₂; refl; subst; sym; trans)
@@ -71,7 +71,7 @@ false ≟ true  = no λ()
 
 -- Relational properties
 
-≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive : Refl _≡_ _≤_
 ≤-reflexive refl = b≤b
 
 ≤-refl : Reflexive _≤_

@@ -11,10 +11,10 @@ module Data.List.Relation.Binary.Permutation.Propositional
 
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Binary.Equality.Propositional using (_≋_; ≋⇒≡)
-open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.Definitions using (Reflexive; Transitive)
+open import Relation.Binary.Definitions using (Refl; Reflexive; Transitive)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 open import Relation.Binary.Reasoning.Syntax
@@ -57,10 +57,10 @@ data _↭_ : Rel (List A) a where
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
-↭-reflexive : _≡_ ⇒ _↭_
+↭-reflexive : Refl _≡_ _↭_
 ↭-reflexive refl = ↭-refl
 
-↭-reflexive-≋ : _≋_ ⇒ _↭_
+↭-reflexive-≋ : Refl _≋_ _↭_
 ↭-reflexive-≋ xs≋ys = ↭-reflexive (≋⇒≡ xs≋ys)
 
 ↭-sym : xs ↭ ys → ys ↭ xs
@@ -102,7 +102,7 @@ private
 ↭⇒↭ₛ (trans p q)  = ↭ₛ.↭-trans′ (↭⇒↭ₛ p) (↭⇒↭ₛ q)
 
 
-↭ₛ⇒↭ : _↭ₛ_ ⇒ _↭_
+↭ₛ⇒↭ : xs ↭ₛ ys → xs ↭ ys
 ↭ₛ⇒↭ (↭ₛ.refl xs≋ys)       = ↭-reflexive-≋ xs≋ys
 ↭ₛ⇒↭ (↭ₛ.prep refl p)      = ↭-prep _ (↭ₛ⇒↭ p)
 ↭ₛ⇒↭ (↭ₛ.swap refl refl p) = ↭-swap _ _ (↭ₛ⇒↭ p)

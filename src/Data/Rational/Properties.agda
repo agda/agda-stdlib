@@ -499,7 +499,7 @@ toℚᵘ-isOrderMonomorphism-≤ = record
 private
   module ≤-Monomorphism = OrderMonomorphisms toℚᵘ-isOrderMonomorphism-≤
 
-≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive : Refl _≡_ _≤_
 ≤-reflexive refl = *≤* ℤ.≤-refl
 
 ≤-refl : Reflexive _≤_

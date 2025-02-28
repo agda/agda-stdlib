@@ -17,12 +17,11 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
 open import Relation.Nullary.Decidable as Dec using (yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
-open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Transitive; Antisymmetric; Decidable)
+  using (Refl; Reflexive; Transitive; Antisymmetric; Decidable)
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; cong; subst)
@@ -102,7 +101,7 @@ m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
 -- these could/should inherit from Algebra.Properties.Monoid.Divisibility
 
-∣-reflexive : _≡_ ⇒ _∣_
+∣-reflexive : Refl _≡_ _∣_
 ∣-reflexive {n} refl = divides 1 (sym (*-identityˡ n))
 
 ∣-refl : Reflexive _∣_

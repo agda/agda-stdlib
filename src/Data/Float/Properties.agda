@@ -17,12 +17,11 @@ import Data.Word64.Base as Word64
 import Data.Word64.Properties as Word64
 open import Function.Base using (_∘_)
 open import Relation.Nullary.Decidable as RN using (map′)
-open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable; DecidableEquality)
+  using (Refl; Reflexive; Symmetric; Transitive; Substitutive; Decidable; DecidableEquality)
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; sym; trans; subst)
@@ -39,10 +38,10 @@ open import Agda.Builtin.Float.Properties
 ------------------------------------------------------------------------
 -- Properties of _≈_
 
-≈⇒≡ : _≈_ ⇒ _≡_
+≈⇒≡ : Refl _≈_ _≡_
 ≈⇒≡ eq = toWord64-injective _ _ (Maybe.map-injective Word64.≈⇒≡ eq)
 
-≈-reflexive : _≡_ ⇒ _≈_
+≈-reflexive : Refl _≡_ _≈_
 ≈-reflexive eq = cong (Maybe.map Word64.toℕ ∘ toWord64) eq
 
 ≈-refl : Reflexive _≈_

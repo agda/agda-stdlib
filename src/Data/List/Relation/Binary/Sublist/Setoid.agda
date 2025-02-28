@@ -26,7 +26,7 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeterogeneousProperties
 open import Data.Product.Base using (∃; ∃₂; _×_; _,_; proj₂)
 
-open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions using (Refl)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -86,7 +86,7 @@ open DisjointUnion public
 ------------------------------------------------------------------------
 -- Relational properties holding for Setoid case
 
-⊆-reflexive : _≋_ ⇒ _⊆_
+⊆-reflexive : Refl _≋_ _⊆_
 ⊆-reflexive = HeterogeneousProperties.fromPointwise
 
 open HeterogeneousProperties.Reflexivity {R = _≈_} refl public using ()

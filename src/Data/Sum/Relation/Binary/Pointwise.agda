@@ -200,11 +200,11 @@ _⊎ₛ_ = ⊎-setoid
 -- The propositional equality setoid over products can be
 -- decomposed using Pointwise
 
-Pointwise-≡⇒≡ : (Pointwise _≡_ _≡_) ⇒ _≡_ {A = A ⊎ B}
+Pointwise-≡⇒≡ : Refl (Pointwise _≡_ _≡_) (_≡_ {A = A ⊎ B})
 Pointwise-≡⇒≡ (inj₁ x) = ≡.cong inj₁ x
 Pointwise-≡⇒≡ (inj₂ x) = ≡.cong inj₂ x
 
-≡⇒Pointwise-≡ : _≡_ {A = A ⊎ B} ⇒ (Pointwise _≡_ _≡_)
+≡⇒Pointwise-≡ : Refl (_≡_ {A = A ⊎ B}) (Pointwise _≡_ _≡_)
 ≡⇒Pointwise-≡ ≡.refl = ⊎-refl ≡.refl ≡.refl
 
 Pointwise-≡↔≡ : (A : Set a) (B : Set b) →

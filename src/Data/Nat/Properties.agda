@@ -170,7 +170,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
 
-≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive : Refl _≡_ _≤_
 ≤-reflexive {zero}  refl = z≤n
 ≤-reflexive {suc m} refl = s≤s (≤-reflexive refl)
 

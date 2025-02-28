@@ -525,8 +525,8 @@ toℕ-isMonomorphism-≤ = record
 ≤-refl : Reflexive _≤_
 ≤-refl =  inj₂ refl
 
-≤-reflexive : _≡_ ⇒ _≤_
-≤-reflexive {x} {_} refl =  ≤-refl {x}
+≤-reflexive : Refl _≡_ _≤_
+≤-reflexive {x} {_} refl = ≤-refl {x}
 
 ≤-trans : Transitive _≤_
 ≤-trans = StrictToNonStrict.trans isEquivalence (resp₂ _<_) <-trans

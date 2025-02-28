@@ -34,7 +34,7 @@ open import Relation.Binary.Consequences using (wlog)
 open import Relation.Binary.Structures
   using (IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
+  using (DecidableEquality; Refl; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; sym; _≢_; subst; subst₂; resp₂; trans)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -96,7 +96,7 @@ drop‿-≤- (-≤- n≤m) = n≤m
 ------------------------------------------------------------------------
 -- Relational properties
 
-≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive : Refl _≡_ _≤_
 ≤-reflexive { -[1+ n ]} refl = -≤- ℕ.≤-refl
 ≤-reflexive {+ n}       refl = +≤+ ℕ.≤-refl
 

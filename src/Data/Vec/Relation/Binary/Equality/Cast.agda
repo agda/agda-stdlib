@@ -17,8 +17,8 @@ open import Function.Base using (_∘_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Vec.Base
-open import Relation.Binary.Core using (REL; _⇒_)
-open import Relation.Binary.Definitions using (Sym; Trans)
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Definitions using (Refl; Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; trans; sym; cong)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -51,7 +51,7 @@ xs ≈[ eq ] ys = cast eq xs ≡ ys
 ------------------------------------------------------------------------
 -- _≈[_]_ is ‘reflexive’, ‘symmetric’ and ‘transitive’
 
-≈-reflexive : ∀ {n} → _≡_ ⇒ (λ xs ys → _≈[_]_ {A = A} {n} xs refl ys)
+≈-reflexive : ∀ {n} → Refl _≡_ (λ xs ys → _≈[_]_ {A = A} {n} xs refl ys)
 ≈-reflexive {x = x} eq = trans (cast-is-id refl x) eq
 
 ≈-sym : .{m≡n : m ≡ n} → Sym {A = Vec A m} _≈[ m≡n ]_ _≈[ sym m≡n ]_

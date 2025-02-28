@@ -14,10 +14,9 @@ open import Data.List.Base using (List)
 open import Data.List.Relation.Binary.Equality.Propositional using (≋⇒≡)
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
 open import Data.List.Relation.Unary.Any using (Any)
-open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Binary.Definitions using (Antisymmetric)
+open import Relation.Binary.Definitions using (Refl; Antisymmetric)
 open import Relation.Binary.PropositionalEquality.Core
   using (subst; _≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -45,7 +44,7 @@ module _ {p} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- Relational properties
 
-⊆-reflexive : _≡_ ⇒ _⊆_
+⊆-reflexive : Refl _≡_ _⊆_
 ⊆-reflexive refl = ⊆-refl
 
 ⊆-antisym : Antisymmetric _≡_ _⊆_

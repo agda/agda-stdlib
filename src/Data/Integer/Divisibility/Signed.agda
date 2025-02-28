@@ -19,11 +19,11 @@ import Data.Nat.Coprimality as ℕ
 import Data.Nat.Properties as ℕ
 import Data.Sign.Base as Sign
 import Data.Sign.Properties as Sign
-open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
+open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Transitive; Decidable)
+  using (Refl; Reflexive; Transitive; Decidable)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; trans; sym; cong; refl)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -92,7 +92,7 @@ open _∣_ using (quotient) public
 ∣-refl : Reflexive _∣_
 ∣-refl = ∣ᵤ⇒∣ ℕ.∣-refl
 
-∣-reflexive : _≡_ ⇒ _∣_
+∣-reflexive : Refl _≡_ _∣_
 ∣-reflexive refl = ∣-refl
 
 ∣-trans : Transitive _∣_

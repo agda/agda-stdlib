@@ -284,7 +284,7 @@ cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
 ------------------------------------------------------------------------
 -- Relational properties
 
-≤-reflexive : _≡_ ⇒ (_≤_ {n})
+≤-reflexive : Refl _≡_ (_≤_ {n})
 ≤-reflexive refl = ℕ.≤-refl
 
 ≤-refl : Reflexive (_≤_ {n})

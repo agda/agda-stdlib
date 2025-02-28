@@ -37,7 +37,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
 
-×-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
+×-reflexive : Refl ≈₁ R → Refl ≈₂ S → Refl (Pointwise ≈₁ ≈₂) (Pointwise R S)
 ×-reflexive refl₁ refl₂ = Product.map refl₁ refl₂
 
 ×-refl : Reflexive R → Reflexive S → Reflexive (Pointwise R S)
@@ -190,10 +190,10 @@ _×ₛ_ = ×-setoid
 -- The propositional equality setoid over products can be
 -- decomposed using ×-Rel
 
-≡×≡⇒≡ : Pointwise _≡_ _≡_ ⇒ _≡_ {A = A × B}
+≡×≡⇒≡ : Refl (Pointwise _≡_ _≡_) (_≡_ {A = A × B})
 ≡×≡⇒≡ (≡.refl , ≡.refl) = ≡.refl
 
-≡⇒≡×≡ : _≡_ {A = A × B} ⇒ Pointwise _≡_ _≡_
+≡⇒≡×≡ : Refl (_≡_ {A = A × B}) (Pointwise _≡_ _≡_)
 ≡⇒≡×≡ ≡.refl = (≡.refl , ≡.refl)
 
 Pointwise-≡↔≡ : Inverse (≡.setoid A ×ₛ ≡.setoid B) (≡.setoid (A × B))
