@@ -8,23 +8,23 @@
 
 module Data.List.Fresh.Relation.Unary.Any.Properties where
 
-open import Level using (Level; _⊔_; Lift)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.List.Fresh using (List#; _∷#_; _#_; NonEmpty; cons; length; [])
+open import Data.List.Fresh.Relation.Unary.All using (All; _∷_; append; [])
+open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; _─_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘′_)
+open import Level using (Level; _⊔_; Lift)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core
 open import Relation.Unary  as U using (Pred)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Nary
+open import Relation.Nary using (∀[_]; _⇒_; ∁; Decidable)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-
-open import Data.List.Fresh
-open import Data.List.Fresh.Relation.Unary.All
-open import Data.List.Fresh.Relation.Unary.Any
 
 private
   variable
