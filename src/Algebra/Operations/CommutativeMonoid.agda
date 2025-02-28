@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (CommutativeMonoid)
+open import Algebra
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.Fin.Base using (Fin; zero)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
