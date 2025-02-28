@@ -12,7 +12,7 @@
 module Data.Nat.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs using (module Decidable⇒UIP)
-open import Algebra.Bundles 
+open import Algebra.Bundles
   using (Magma; Semigroup; CommutativeSemigroup; CommutativeMonoid; Monoid
         ; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
 open import Algebra.Definitions.RawMagma using (_,_)
@@ -33,7 +33,7 @@ open import Data.Sum.Base as Sum using (inj₁; inj₂; _⊎_; [_,_]′)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘_; flip; _$_; id; _∘′_; _$′_)
 open import Function.Bundles using (_↣_)
-open import Function.Metric.Nat 
+open import Function.Metric.Nat
   using (TriangleInequality; IsProtoMetric; IsPreMetric; IsQuasiSemiMetric
         ; IsSemiMetric; IsMetric; PreMetric; QuasiSemiMetric
         ; SemiMetric; Metric)
