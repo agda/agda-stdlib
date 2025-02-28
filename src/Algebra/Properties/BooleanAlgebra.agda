@@ -9,7 +9,7 @@
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Algebra.Lattice.Bundles using (BooleanAlgebra; DistributiveLattice)
+open import Algebra.Lattice.Bundles
 
 module Algebra.Properties.BooleanAlgebra
   {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
@@ -20,17 +20,16 @@ module Algebra.Properties.BooleanAlgebra
 Use Algebra.Lattice.Properties.BooleanAlgebra instead."
 #-}
 
-open import Relation.Binary.Core using (Rel)
-open import Function.Bundles using (module Equivalence; _⇔_)
-open import Data.Product.Base using (_,_)
 open import Algebra.Lattice.Properties.BooleanAlgebra B public
-
-import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
 
 open BooleanAlgebra B
 
+import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
 
-
+open import Algebra.Structures _≈_
+open import Relation.Binary
+open import Function.Bundles using (module Equivalence; _⇔_)
+open import Data.Product.Base using (_,_)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
