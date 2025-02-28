@@ -20,6 +20,7 @@ import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
   using (module LeftDefs; module RightDefs; module BiDefs;
   module SimultaneousBiDefs)
+import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Algebra.Structures using (IsCommutativeMonoid; IsAbelianGroup)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (Level; _⊔_)
@@ -213,9 +214,11 @@ module _ (ring : Ring r ℓr)
       ( isGroup    to +ᴹ-isGroup
       ; inverseˡ   to -ᴹ‿inverseˡ
       ; inverseʳ   to -ᴹ‿inverseʳ
-      ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
-      ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
       )
+
+    open AbelianGroupProperties record { isAbelianGroup = +ᴹ-isAbelianGroup } public
+      using () renaming (inverseˡ-unique to uniqueˡ‿-ᴹ; inverseʳ-unique to uniqueʳ‿-ᴹ)
+
 
   record IsRightModule (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     open Defs ≈ᴹ
@@ -241,9 +244,11 @@ module _ (ring : Ring r ℓr)
       ( isGroup    to +ᴹ-isGroup
       ; inverseˡ   to -ᴹ‿inverseˡ
       ; inverseʳ   to -ᴹ‿inverseʳ
-      ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
-      ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
       )
+
+    open AbelianGroupProperties record { isAbelianGroup = +ᴹ-isAbelianGroup } public
+      using () renaming (inverseˡ-unique to uniqueˡ‿-ᴹ; inverseʳ-unique to uniqueʳ‿-ᴹ)
+
 
 module _ (R-ring : Ring r ℓr) (S-ring : Ring s ℓs)
          (≈ᴹ : Rel {m} M ℓm) (+ᴹ : Op₂ M) (0ᴹ : M) (-ᴹ : Op₁ M)
