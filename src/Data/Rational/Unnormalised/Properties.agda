@@ -35,11 +35,13 @@ open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_�
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
+  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTightApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
+import Relation.Binary.Properties.Setoid as SetoidProperties
+import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
 import Relation.Binary.Properties.Poset as PosetProperties
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
@@ -106,18 +108,6 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 0≄1 : 0ℚᵘ ≄ 1ℚᵘ
 0≄1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
 
-≃-≄-irreflexive : Irreflexive _≃_ _≄_
-≃-≄-irreflexive x≃y x≄y = x≄y x≃y
-
-≄-symmetric : Symmetric _≄_
-≄-symmetric x≄y y≃x = x≄y (≃-sym y≃x)
-
-≄-cotransitive : Cotransitive _≄_
-≄-cotransitive {x} {y} x≄y z with x ≃? z | z ≃? y
-... | no  x≄z | _       = inj₁ x≄z
-... | yes _   | no z≄y  = inj₂ z≄y
-... | yes x≃z | yes z≃y = contradiction (≃-trans x≃z z≃y) x≄y
-
 ≃-isEquivalence : IsEquivalence _≃_
 ≃-isEquivalence = record
   { refl  = ≃-refl
@@ -131,17 +121,6 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   ; _≟_           = _≃?_
   }
 
-≄-isApartnessRelation : IsApartnessRelation _≃_ _≄_
-≄-isApartnessRelation = record
-  { irrefl  = ≃-≄-irreflexive
-  ; sym     = ≄-symmetric
-  ; cotrans = ≄-cotransitive
-  }
-
-≄-tight : Tight _≃_ _≄_
-proj₁ (≄-tight p q) ¬p≄q = Dec.decidable-stable (p ≃? q) ¬p≄q
-proj₂ (≄-tight p q) p≃q p≄q = p≄q p≃q
-
 ≃-setoid : Setoid 0ℓ 0ℓ
 ≃-setoid = record
   { isEquivalence = ≃-isEquivalence
@@ -151,6 +130,22 @@ proj₂ (≄-tight p q) p≃q p≄q = p≄q p≃q
 ≃-decSetoid = record
   { isDecEquivalence = ≃-isDecEquivalence
   }
+
+open SetoidProperties ≃-setoid public
+  renaming
+  ( ≉-sym to ≄-symmetric
+  ; ≉-irrefl to ≃-≄-irreflexive
+  )
+
+open DecSetoidProperties ≃-decSetoid public
+  renaming
+  ( ≉-cotrans to ≄-cotransitive
+  ; ≉-tight to ≄-tight
+  ; ≉-isApartnessRelation to ≄-isApartnessRelation
+  ; ≉-apartnessRelation to ≄-ApartnessRelation
+  ; ≉-isTightApartnessRelation to ≄-isTightApartnessRelation
+  ; ≉-tightApartnessRelation to ≄-tightApartnessRelation
+  )
 
 module ≃-Reasoning = ≈-Reasoning ≃-setoid
 
@@ -1399,15 +1394,14 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isHeytingCommutativeRing = record
   { isCommutativeRing   = +-*-isCommutativeRing
-  ; isApartnessRelation = ≄-isApartnessRelation
-  ; #⇒invertible        = ≄⇒invertible
-  ; invertible⇒#        = invertible⇒≄
+  ; isTightApartnessRelation = ≄-isTightApartnessRelation
   }
 
 +-*-isHeytingField : IsHeytingField _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isHeytingField = record
   { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
-  ; tight                    = ≄-tight
+  ; #⇒invertible        = ≄⇒invertible
+  ; invertible⇒#        = invertible⇒≄
   }
 
 ------------------------------------------------------------------------

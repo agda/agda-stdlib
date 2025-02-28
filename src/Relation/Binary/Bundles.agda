@@ -424,3 +424,18 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
     renaming (_≁_ to _¬#_; _∼ᵒ_ to _#ᵒ_; _≁ᵒ_ to _¬#ᵒ_)
     hiding (Carrier; _≈_ ; _∼_)
 
+record TightApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈_ _#_
+  field
+    Carrier                  : Set c
+    _≈_                      : Rel Carrier ℓ₁
+    _#_                      : Rel Carrier ℓ₂
+    isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
+
+  open IsTightApartnessRelation isTightApartnessRelation public
+    using (isApartnessRelation; tight)
+
+  apartnessRelation : ApartnessRelation _ _ _
+  apartnessRelation = record { isApartnessRelation = isApartnessRelation }
+
+  open ApartnessRelation apartnessRelation public
