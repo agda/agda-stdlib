@@ -14,8 +14,8 @@ open import Data.Digit using (showDigit; toDigits; toNatDigits)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Effectful using (module TraversableA)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; _<∣>_; when)
-import Data.Maybe.Effectful as Maybe
-open import Data.Nat
+import Data.Maybe.Effectful as Maybe using (applicative)
+open import Data.Nat using (ℕ; _≤?_; _<ᵇ_; _≤ᵇ_; _∸_; _*_; _+_)
 open import Data.Product.Base using (proj₁)
 open import Data.String.Base using (toList; fromList; String)
 open import Function.Base using (_∘′_; _∘_)
