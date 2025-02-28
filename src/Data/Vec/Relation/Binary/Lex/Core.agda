@@ -94,7 +94,7 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   ∷<∷-⇔ = mk⇔ [ flip this refl , uncurry next ] toSum
 
   module _ (≈-equiv : IsPartialEquivalence _≈_)
-           ((≺-respʳ-≈ , ≺-respˡ-≈) : _≺_ Respects₂ _≈_)
+           ((≺-respˡ-≈ , ≺-respʳ-≈) : _≺_ Respects₂ _≈_)
            (≺-trans : Transitive _≺_)
            (open IsPartialEquivalence ≈-equiv)
            where
@@ -131,7 +131,7 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     respectsʳ resp (x≈y ∷ xs≋ys) (next x≈z xs<zs) = next (trans x≈z x≈y) (respectsʳ resp xs≋ys xs<zs)
 
     respects₂ : _≺_ Respects₂ _≈_ → ∀ {n} → (_<ₗₑₓ_ {n} {n}) Respects₂ _≋_
-    respects₂ (≺-resp-≈ʳ , ≺-resp-≈ˡ) = respectsʳ ≺-resp-≈ʳ , respectsˡ ≺-resp-≈ˡ
+    respects₂ (≺-resp-≈ˡ , ≺-resp-≈ʳ) = respectsˡ ≺-resp-≈ˡ , respectsʳ ≺-resp-≈ʳ
 
   module _ (P? : Dec P) (_≈?_ : Decidable _≈_) (_≺?_ : Decidable _≺_) where
 

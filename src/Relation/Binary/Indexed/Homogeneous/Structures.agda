@@ -115,7 +115,7 @@ record IsIndexedPreorder {ℓ₂} (_∼ᵢ_ : IRel A ℓ₂)
   ∼-respʳ-≈ x≈y z∼x i = ∼ᵢ-respʳ-≈ᵢ (x≈y i) (z∼x i)
 
   ∼-resp-≈ : (Lift A _∼ᵢ_) B.Respects₂ (Lift A _≈ᵢ_)
-  ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
+  ∼-resp-≈ = ∼-respˡ-≈ , ∼-respʳ-≈
 
   isPreorder : B.IsPreorder (Lift A _≈ᵢ_) (Lift A _∼ᵢ_)
   isPreorder = record

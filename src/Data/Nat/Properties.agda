@@ -406,7 +406,7 @@ _>?_ = flip _<?_
 <-irrelevant = ≤-irrelevant
 
 <-resp₂-≡ : _<_ Respects₂ _≡_
-<-resp₂-≡ = subst (_ <_) , subst (_< _)
+<-resp₂-≡ = subst (_< _) , subst (_ <_)
 
 ------------------------------------------------------------------------
 -- Bundles

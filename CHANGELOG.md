@@ -25,6 +25,13 @@ Non-backwards compatible changes
   significantly faster. However, its reduction behaviour on open terms may have
   changed.
 
+* [issue #2471](https://github.com/agda/agda-stdlib/issues/2471) In
+  `Relation.Binary.Definitions`, the left/right order of the components of
+  `_Respects₂_` have been swapped. Previously the position of the `_Respectsˡ_`
+  (respects left) component was placed on the *right* hand side of the pair and
+  `_Respectsʳ_` (respects right) was placed on the *left* hand side of the pair.
+  By switching them the names are now consistent with their location.
+
 Minor improvements
 ------------------
 

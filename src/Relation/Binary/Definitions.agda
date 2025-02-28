@@ -185,17 +185,17 @@ P Respects _∼_ = P ⟶ P Respects _∼_
 -- Right respecting - relatedness is preserved on the right by equality.
 
 _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
-_∼_ Respectsʳ _≈_ = ∀ {x} → (x ∼_) Respects _≈_
+R Respectsʳ _≈_ = ∀ {x} → (R x) Respects _≈_
 
 -- Left respecting - relatedness is preserved on the left by equality.
 
 _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
-P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+R Respectsˡ _∼_ = ∀ {y} → (flip R y) Respects _∼_
 
 -- Respecting - relatedness is preserved on both sides by equality
 
 _Respects₂_ : Rel A ℓ₁ → Rel A ℓ₂ → Set _
-P Respects₂ _∼_ = (P Respectsʳ _∼_) × (P Respectsˡ _∼_)
+R Respects₂ _∼_ = (R Respectsˡ _∼_) × (R Respectsʳ _∼_)
 
 -- Substitutivity - any two related elements satisfy exactly the same
 -- set of unary relations. Note that only the various derivatives

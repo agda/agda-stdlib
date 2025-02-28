@@ -93,7 +93,7 @@ respʳ : ∀ (∼ : Rel A ℓ) → ∼ Respectsʳ _≡_
 respʳ _∼_ refl x∼y = x∼y
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
-resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
+resp₂ _∼_ = respˡ _∼_ , respʳ _∼_
 
 ------------------------------------------------------------------------
 -- Properties of _≢_

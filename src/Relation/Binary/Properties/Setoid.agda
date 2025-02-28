@@ -78,7 +78,7 @@ preorder = record
 ≉-respʳ y≈y′ x≉y x≈y′ = x≉y $ trans x≈y′ (sym y≈y′)
 
 ≉-resp₂ : _≉_ Respects₂ _≈_
-≉-resp₂ = ≉-respʳ , ≉-respˡ
+≉-resp₂ = ≉-respˡ , ≉-respʳ
 
 ≉-irrefl : Irreflexive _≈_ _≉_
 ≉-irrefl x≈y x≉y = contradiction x≈y x≉y

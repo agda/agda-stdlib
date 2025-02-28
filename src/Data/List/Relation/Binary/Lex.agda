@@ -68,7 +68,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
 
   transitive : IsEquivalence _≈_ → _≺_ Respects₂ _≈_ → Transitive _≺_ →
                Transitive _<_
-  transitive eq resp tr = trans
+  transitive eq resp@(respˡ , respʳ) tr = trans
     where
     trans : Transitive (Lex P _≈_ _≺_)
     trans (base p)         (base _)         = base p
@@ -76,28 +76,28 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     trans halt             (this y≺z)       = halt
     trans halt             (next y≈z ys<zs) = halt
     trans (this x≺y)       (this y≺z)       = this (tr x≺y y≺z)
-    trans (this x≺y)       (next y≈z ys<zs) = this (proj₁ resp y≈z x≺y)
+    trans (this x≺y)       (next y≈z ys<zs) = this (respʳ y≈z x≺y)
     trans (next x≈y xs<ys) (this y≺z)       =
-      this (proj₂ resp (IsEquivalence.sym eq x≈y) y≺z)
+      this (respˡ (IsEquivalence.sym eq x≈y) y≺z)
     trans (next x≈y xs<ys) (next y≈z ys<zs) =
       next (IsEquivalence.trans eq x≈y y≈z) (trans xs<ys ys<zs)
 
   respects₂ : IsEquivalence _≈_ → _≺_ Respects₂ _≈_ → _<_ Respects₂ _≋_
-  respects₂ eq (resp₁ , resp₂) = resp¹ , resp²
+  respects₂ eq (respˡ , respʳ) = respₗ , respᵣ
     where
     open IsEquivalence eq using (sym; trans)
-    resp¹ : ∀ {xs} → Lex P _≈_ _≺_ xs Respects _≋_
-    resp¹ []            xs<[]            = xs<[]
-    resp¹ (_   ∷ _)     halt             = halt
-    resp¹ (x≈y ∷ _)     (this z≺x)       = this (resp₁ x≈y z≺x)
-    resp¹ (x≈y ∷ xs≋ys) (next z≈x zs<xs) =
-      next (trans z≈x x≈y) (resp¹ xs≋ys zs<xs)
+    respᵣ : ∀ {xs} → Lex P _≈_ _≺_ xs Respects _≋_
+    respᵣ []            xs<[]            = xs<[]
+    respᵣ (_   ∷ _)     halt             = halt
+    respᵣ (x≈y ∷ _)     (this z≺x)       = this (respʳ x≈y z≺x)
+    respᵣ (x≈y ∷ xs≋ys) (next z≈x zs<xs) =
+      next (trans z≈x x≈y) (respᵣ xs≋ys zs<xs)
 
-    resp² : ∀ {ys} → flip (Lex P _≈_ _≺_) ys Respects _≋_
-    resp² []            []<ys            = []<ys
-    resp² (x≈z ∷ _)     (this x≺y)       = this (resp₂ x≈z x≺y)
-    resp² (x≈z ∷ xs≋zs) (next x≈y xs<ys) =
-      next (trans (sym x≈z) x≈y) (resp² xs≋zs xs<ys)
+    respₗ : ∀ {ys} → flip (Lex P _≈_ _≺_) ys Respects _≋_
+    respₗ []            []<ys            = []<ys
+    respₗ (x≈z ∷ _)     (this x≺y)       = this (respˡ x≈z x≺y)
+    respₗ (x≈z ∷ xs≋zs) (next x≈y xs<ys) =
+      next (trans (sym x≈z) x≈y) (respₗ xs≋zs xs<ys)
 
 
   []<[]-⇔ : P ⇔ [] < []

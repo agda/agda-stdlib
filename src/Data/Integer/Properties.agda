@@ -330,7 +330,7 @@ _<?_ : Decidable _<_
   { isEquivalence = isEquivalence
   ; irrefl        = <-irrefl
   ; trans         = <-trans
-  ; <-resp-≈      = subst (_ <_) , subst (_< _)
+  ; <-resp-≈      = subst (_< _) , subst (_ <_)
   }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_

@@ -84,11 +84,11 @@ Any-resp-↭ resp (trans p₁ p₂) pxs                = Any-resp-↭ resp p₂ 
 
 AllPairs-resp-↭ : Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respects _↭_
 AllPairs-resp-↭ sym resp (refl xs≋ys)     pxs             = AllPairs-resp-≋ resp xs≋ys pxs
-AllPairs-resp-↭ sym resp (prep x≈y p)     (∼ ∷ pxs)       =
-  All-resp-↭ (proj₁ resp) p (All.map (proj₂ resp x≈y) ∼) ∷
+AllPairs-resp-↭ sym resp@(rˡ , rʳ) (prep x≈y p)     (∼ ∷ pxs)       =
+  All-resp-↭ rʳ p (All.map (rˡ x≈y) ∼) ∷
   AllPairs-resp-↭ sym resp p pxs
-AllPairs-resp-↭ sym resp@(rʳ , rˡ) (swap eq₁ eq₂ p) ((∼₁ ∷ ∼₂) ∷ ∼₃ ∷ pxs) =
-  (sym (rʳ eq₂ (rˡ eq₁ ∼₁)) ∷ All-resp-↭ rʳ p (All.map (rˡ eq₂) ∼₃)) ∷
+AllPairs-resp-↭ sym resp@(rˡ , rʳ) (swap eq₁ eq₂ p) ((∼₁ ∷ ∼₂) ∷ ∼₃ ∷ pxs) =
+  (sym (rˡ eq₁ (rʳ eq₂ ∼₁)) ∷ All-resp-↭ rʳ p (All.map (rˡ eq₂) ∼₃)) ∷
   All-resp-↭ rʳ p (All.map (rˡ eq₁) ∼₂) ∷
   AllPairs-resp-↭ sym resp p pxs
 AllPairs-resp-↭ sym resp (trans p₁ p₂)    pxs             =
