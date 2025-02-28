@@ -11,8 +11,8 @@ module Data.Integer.Coprimality where
 open import Data.Integer.Base using (ℤ; _*_; ∣_∣)
 open import Data.Integer.Divisibility using (_∣_)
 open import Data.Integer.Properties using (abs-*)
-import Data.Nat.Coprimality as ℕ using
-  (Coprime; sym; coprime?; coprime-divisor)
+import Data.Nat.Coprimality as ℕ
+  using (Coprime; sym; coprime?; coprime-divisor)
 import Data.Nat.Divisibility as ℕ using (_∣_)
 open import Function.Base using (_on_)
 open import Level using (0ℓ)
