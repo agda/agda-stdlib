@@ -17,7 +17,7 @@ open import Data.Nat.DivMod
 open import Data.Nat.Properties using (*-comm; *-assoc; *-zeroʳ)
 open import Data.Nat.GCD
   using (GCD; gcd; gcd-GCD; gcd-greatest; gcd[m,n]≢0; gcd[m,n]∣n; gcd[m,n]∣m
-  ; c*gcd[m,n]≡gcd[cm,cn])
+        ; c*gcd[m,n]≡gcd[cm,cn])
 open import Data.Product.Base using (_×_; _,_; uncurry′; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality.Core
