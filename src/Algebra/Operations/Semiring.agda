@@ -10,7 +10,7 @@
 -- Algebra.Operations.CommutativeMonoid
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Algebra using (Semiring)
+open import Algebra
 
 module Algebra.Operations.Semiring {s₁ s₂} (S : Semiring s₁ s₂) where
 
