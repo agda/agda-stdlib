@@ -33,8 +33,8 @@ open import Algebra.Definitions using (Involutive)
 import Algebra.Module.Bundles.Raw as Raw
 open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Module.Structures
-  using (IsLeftSemimodule; IsRightSemimodule; IsBisemimodule;
-        IsSemimodule; IsLeftModule; IsRightModule; IsModule; IsBimodule)
+  using (IsLeftSemimodule; IsRightSemimodule; IsBisemimodule
+        ; IsSemimodule; IsLeftModule; IsRightModule; IsModule; IsBimodule)
 open import Algebra.Module.Definitions
 open import Function.Base using (flip)
 open import Level using (Level; _⊔_; suc)

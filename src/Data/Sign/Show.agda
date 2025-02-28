@@ -1,14 +1,16 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Instances for characters
+-- Showing signs
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Char.Instances where
+module Data.Sign.Show where
 
-open import Data.Char.Properties using (isDecEquivalence)
+open import Data.Sign.Base using (Sign; +; -)
+open import Data.String.Base using (String)
 
-instance
-  Char-≡-isDecEquivalence = isDecEquivalence
+show : Sign → String
+show + = "+"
+show - = "-"
