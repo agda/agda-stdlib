@@ -8,9 +8,9 @@
 
 module Data.Container.Indexed.Core where
 
-open import Level
+open import Level using (Level; _⊔_; suc)
 open import Data.Product.Base using (Σ; Σ-syntax; _,_; ∃)
-open import Relation.Unary
+open import Relation.Unary using (Pred)
 
 private variable
   i o c r ℓ ℓ′ : Level
