@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (CommutativeSemiring)
+open import Algebra.Bundles using (CommutativeSemiring)
 
 
 module Algebra.Properties.CommutativeSemiring.Exp.TCOptimised
