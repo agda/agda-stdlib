@@ -332,4 +332,3 @@ private
                     node 4 [] ∷
                     []
   test-toForest = refl
-
