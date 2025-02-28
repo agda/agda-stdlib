@@ -28,7 +28,7 @@ x∣xy : ∀ x y → x ∣ x ∙ y
 x∣xy x y = y , comm y x
 
 xy≈z⇒x∣z : ∀ x y {z} → x ∙ y ≈ z → x ∣ z
-xy≈z⇒x∣z x y xy≈z = {!∣-respʳ-≈ xy≈z (x∣xy x y)!}
+xy≈z⇒x∣z x y xy≈z = ∣-respʳ-≈ xy≈z (x∣xy x y)
 
 x|xy∧y|xy : ∀ x y → (x ∣ x ∙ y) × (y ∣ x ∙ y)
 x|xy∧y|xy x y = x∣xy x y , x∣yx y x
