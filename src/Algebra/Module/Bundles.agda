@@ -26,15 +26,15 @@
 module Algebra.Module.Bundles where
 
 open import Algebra.Bundles
-  using (Semiring; Ring; CommutativeSemiring; CommutativeRing;
-  CommutativeMonoid; AbelianGroup)
+  using (Semiring; Ring; CommutativeSemiring; CommutativeRing
+        ; CommutativeMonoid; AbelianGroup)
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions using (Involutive)
 import Algebra.Module.Bundles.Raw as Raw
 open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Module.Structures
   using (IsLeftSemimodule; IsRightSemimodule; IsBisemimodule;
-  IsSemimodule; IsLeftModule; IsRightModule; IsModule; IsBimodule)
+        IsSemimodule; IsLeftModule; IsRightModule; IsModule; IsBimodule)
 open import Algebra.Module.Definitions
 open import Function.Base using (flip)
 open import Level using (Level; _⊔_; suc)

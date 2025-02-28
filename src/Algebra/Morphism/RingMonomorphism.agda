@@ -26,9 +26,9 @@ open RawRing R₂ renaming
 import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphism
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Relation.Binary.Core using (Rel)
-open import Algebra.Definitions using
-  (_DistributesOverˡ_; _DistributesOverʳ_
-  ; _DistributesOver_; LeftZero; RightZero; Zero)
+open import Algebra.Definitions
+  using (_DistributesOverˡ_; _DistributesOverʳ_ ; _DistributesOver_; LeftZero
+        ; RightZero; Zero)
 open import Algebra.Structures
   using (IsRing; IsCommutativeRing; IsGroup; IsMagma)
 open import Data.Product.Base using (proj₁; proj₂; _,_)

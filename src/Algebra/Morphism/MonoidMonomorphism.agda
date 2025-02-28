@@ -21,10 +21,10 @@ open IsMonoidMonomorphism isMonoidMonomorphism
 open RawMonoid M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_; ε to ε₁)
 open RawMonoid M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; ε to ε₂)
 
-open import Algebra.Definitions using
-  (Identity; Zero; LeftIdentity; RightIdentity; LeftZero; RightZero)
-open import Algebra.Structures using
-  (IsMagma; IsMonoid; IsCommutativeMonoid)
+open import Algebra.Definitions
+  using (Identity; Zero; LeftIdentity; RightIdentity; LeftZero; RightZero)
+open import Algebra.Structures
+  using (IsMagma; IsMonoid; IsCommutativeMonoid)
 open import Data.Product.Base using (map)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning

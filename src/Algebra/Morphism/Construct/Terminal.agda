@@ -17,9 +17,10 @@ module Algebra.Morphism.Construct.Terminal {c ℓ : Level} where
 
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring; RawRing)
-open import Algebra.Morphism.Structures using
-  ( IsMagmaHomomorphism; IsMonoidHomomorphism; IsGroupHomomorphism
-  ; IsNearSemiringHomomorphism; IsSemiringHomomorphism; IsRingHomomorphism)
+open import Algebra.Morphism.Structures
+  using(IsMagmaHomomorphism; IsMonoidHomomorphism; IsGroupHomomorphism
+        ; IsNearSemiringHomomorphism; IsSemiringHomomorphism
+        ; IsRingHomomorphism)
 open import Data.Product.Base using (_,_)
 open import Function.Definitions using (StrictlySurjective)
 import Relation.Binary.Morphism.Definitions as Rel

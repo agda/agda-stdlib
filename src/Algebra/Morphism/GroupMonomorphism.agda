@@ -28,10 +28,10 @@ open RawGroup G₁ renaming
 open RawGroup G₂ renaming
   (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; _⁻¹ to _⁻¹₂; ε to ε₂)
 
-open import Algebra.Definitions using
-  (Inverse; LeftInverse; RightInverse; Congruent₁)
-open import Algebra.Structures using
-  (IsMagma; IsGroup; IsAbelianGroup)
+open import Algebra.Definitions
+  using (Inverse; LeftInverse; RightInverse; Congruent₁)
+open import Algebra.Structures
+  using (IsMagma; IsGroup; IsAbelianGroup)
 open import Data.Product.Base using (_,_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 

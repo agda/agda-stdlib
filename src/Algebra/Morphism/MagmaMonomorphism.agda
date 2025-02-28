@@ -21,11 +21,11 @@ open IsMagmaMonomorphism isMagmaMonomorphism
 open RawMagma M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_)
 open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
 
-open import Algebra.Structures using
-  (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma)
-open import Algebra.Definitions using
-  (Congruent₂; Associative; Commutative; Idempotent
-  ; Selective; LeftCancellative; RightCancellative; Cancellative)
+open import Algebra.Structures
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma)
+open import Algebra.Definitions
+  using (Congruent₂; Associative; Commutative; Idempotent ; Selective
+        ; LeftCancellative; RightCancellative; Cancellative)
 open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
