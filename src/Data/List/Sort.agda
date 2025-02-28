@@ -9,12 +9,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List.Base using (List)
 open import Relation.Binary.Bundles using (DecTotalOrder)
 
 module Data.List.Sort
   {a ℓ₁ ℓ₂} (O : DecTotalOrder a ℓ₁ ℓ₂)
   where
+
+open import Data.List.Base using (List)
 
 open DecTotalOrder O renaming (Carrier to A)
 

@@ -9,10 +9,11 @@
 module Data.Maybe.Properties where
 
 open import Algebra.Bundles using (Semigroup; Monoid)
-import Algebra.Structures as Structures
+import Algebra.Structures as Structures using (IsMagma; IsSemigroup; IsMonoid)
 import Algebra.Definitions as Definitions
-open import Data.Maybe.Base using (Maybe; just; nothing; map; _<∣>_;
-  maybe; maybe′)
+  using (Associative; LeftIdentity; RightIdentity; Identity; Idempotent)
+open import Data.Maybe.Base
+  using (Maybe; just; nothing; map; _<∣>_; maybe; maybe′)
 open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_; id; _∘_; _∘′_)
@@ -23,8 +24,7 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (isEquivalence)
 open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Decidable using (yes; no; map′)
 
 private
   variable
