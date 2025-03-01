@@ -6,13 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra.Bundles using (AbelianGroup)
 
 module Algebra.Properties.AbelianGroup
   {a ℓ} (G : AbelianGroup a ℓ) where
 
-open AbelianGroup G
 open import Function.Base using (_$_)
+
+open AbelianGroup G
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
