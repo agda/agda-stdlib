@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Disjoint.Propositional.Properties where
 
 
-open import Data.List.Base using (concat; deduplicate; List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_; concat; deduplicate)
 open import Data.List.Relation.Binary.Disjoint.Propositional using (Disjoint)
 import Data.List.Relation.Unary.Any as Any using (Any)
 open import Data.List.Relation.Unary.All as All using (All)
