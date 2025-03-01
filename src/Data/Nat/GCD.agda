@@ -26,8 +26,8 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; subst; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
-open import Relation.Nullary.Decidable using (Dec)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (Dec)
+open import Relation.Nullary.Negation.Core using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
 open import Algebra.Definitions {A = ℕ} _≡_ as Algebra

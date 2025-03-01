@@ -8,8 +8,9 @@
 
 module Data.Nat.Logarithm.Core where
 
-open import Data.Nat.Base using (ℕ; _<_; zero; suc; _+_; ⌊_/2⌋; ⌈_/2⌉;
-  _≤_; z≤n; s≤s; _∸_; NonZero; _*_; _^_)
+open import Data.Nat.Base
+  using (ℕ; _<_; zero; suc; _+_; ⌊_/2⌋; ⌈_/2⌉
+        ; _≤_; z≤n; s≤s; _∸_; NonZero; _*_; _^_)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-wellFounded)
 open import Induction.WellFounded using (Acc; acc)

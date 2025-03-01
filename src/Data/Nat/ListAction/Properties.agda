@@ -14,17 +14,18 @@ module Data.Nat.ListAction.Properties where
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.List.Base using (List; []; _∷_; _++_)
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.List.Relation.Binary.Permutation.Propositional using (_↭_; ↭⇒↭ₛ)
+open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭⇒↭ₛ)
 open import Data.List.Relation.Binary.Permutation.Setoid.Properties
   using (foldr-commMonoid)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Nat.Base using (ℕ; _+_; _*_; NonZero; _≤_)
 open import Data.Nat.Divisibility using (_∣_; m∣m*n; ∣n⇒∣m*n)
-open import Data.Nat.ListAction
+open import Data.Nat.ListAction using (sum; product)
 open import Data.Nat.Properties
-  using (+-assoc; *-assoc; *-identityˡ; m*n≢0; m≤m*n; m≤n⇒m≤o*n;
-         +-0-commutativeMonoid; *-1-commutativeMonoid)
+  using (+-assoc; *-assoc; *-identityˡ; m*n≢0; m≤m*n; m≤n⇒m≤o*n
+        ; +-0-commutativeMonoid; *-1-commutativeMonoid)
 open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym; cong)

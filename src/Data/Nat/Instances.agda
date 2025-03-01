@@ -8,7 +8,7 @@
 
 module Data.Nat.Instances where
 
-open import Data.Nat.Properties
+open import Data.Nat.Properties using (≤-isDecTotalOrder; _≟_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 
