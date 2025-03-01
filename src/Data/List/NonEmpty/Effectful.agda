@@ -8,7 +8,7 @@
 
 module Data.List.NonEmpty.Effectful where
 
-open import Agda.Builtin.List using (List; _∷_; [])
+open import Data.List.Base using (List; []; _∷_)
 import Data.List.Effectful as List
 open import Data.List.NonEmpty.Base
 open import Data.Product.Base using (uncurry)
