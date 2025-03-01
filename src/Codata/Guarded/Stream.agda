@@ -9,13 +9,13 @@
 module Codata.Guarded.Stream where
 
 open import Level hiding (suc)
-open import Data.Nat.Base
-open import Function.Base
+open import Data.Nat.Base using (ℕ; zero; suc)
+open import Function.Base using (_∘′_; const; id; _∘₂_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Product.Base hiding (map)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.List.NonEmpty.Base as List⁺ using (List⁺; _∷_)
-open import Algebra.Core
+open import Algebra.Core using (Op₂)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
