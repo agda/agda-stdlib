@@ -113,7 +113,7 @@ import README.IO
 -- • Tactic
 --     Tactics for automatic proof generation
 
--- ∙ Text
+-- • Text
 --     Format-based printing, Pretty-printing, and regular expressions
 
 
