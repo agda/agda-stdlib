@@ -10,7 +10,10 @@
 module Data.Rational.Properties where
 
 open import Algebra.Apartness
+  using (IsHeytingCommutativeRing; IsHeytingField; HeytingCommutativeRing
+        ; HeytingField)
 open import Algebra.Construct.NaturalChoice.Base
+  using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Algebra.Consequences.Propositional
@@ -42,8 +45,7 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   renaming
   ( ↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; ↧ₙ_ to ↧ₙᵘ_
   ; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_; _<_ to _<ᵘ_
-  ; _+_ to _+ᵘ_
-  )
+  ; _+_ to _+ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
 import Data.Sign.Base as Sign
@@ -52,6 +54,8 @@ open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
+  using (IsRelMonomorphism; IsRelHomomorphism; IsOrderHomomorphism
+        ; IsOrderMonomorphism)
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
 import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
 open import Relation.Binary.PropositionalEquality.Core
