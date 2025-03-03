@@ -15,9 +15,9 @@ module Relation.Nary where
 ------------------------------------------------------------------------
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.Unit.Base
+open import Data.Unit.Base using (⊤)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat.Base using (zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
@@ -25,8 +25,10 @@ open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_$_; _∘′_)
 open import Function.Nary.NonDependent
 open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _because_; _×-dec_)
+open import Relation.Nullary.Decidable.Core as Dec
+  using (Dec; yes; no; _because_; _×-dec_)
 import Relation.Unary as Unary
+  using (Pred; Satisfiable; Universal; IUniversal)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 
 private

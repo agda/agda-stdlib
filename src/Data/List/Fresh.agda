@@ -28,6 +28,7 @@ open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B using (Reflexive)
 open import Relation.Nary using (_⇒_; ∀[_])
 
+
 private
   variable
     a b p r s : Level
