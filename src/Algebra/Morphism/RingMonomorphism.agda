@@ -9,11 +9,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
-import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphism
-import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
-open import Relation.Binary.Core
+open import Algebra.Bundles using (RawRing)
+open import Algebra.Morphism.Structures using (IsRingMonomorphism)
+
 
 module Algebra.Morphism.RingMonomorphism
   {a b ℓ₁ ℓ₂} {R₁ : RawRing a ℓ₁} {R₂ : RawRing b ℓ₂} {⟦_⟧}
@@ -25,9 +23,14 @@ open RawRing R₁ renaming (Carrier to A; _≈_ to _≈₁_)
 open RawRing R₂ renaming
   ( Carrier to B; _≈_ to _≈₂_; _+_ to _⊕_
   ; _*_ to _⊛_; 1# to 1#₂; 0# to 0#₂; -_ to ⊝_)
-
+import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphism
+import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
+open import Relation.Binary.Core using (Rel)
 open import Algebra.Definitions
+  using (_DistributesOverˡ_; _DistributesOverʳ_ ; _DistributesOver_
+        ; LeftZero; RightZero; Zero)
 open import Algebra.Structures
+  using (IsRing; IsCommutativeRing; IsGroup; IsMagma)
 open import Data.Product.Base using (proj₁; proj₂; _,_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
