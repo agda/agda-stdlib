@@ -15,7 +15,8 @@ module Algebra.Properties.CommutativeSemigroup.Divisibility
   where
 
 open CommutativeSemigroup CS
-open import Algebra.Properties.CommutativeSemigroup CS using (x∙yz≈xz∙y; x∙yz≈y∙xz)
+open import Algebra.Properties.CommutativeSemigroup CS
+  using (interchange; x∙yz≈xz∙y; x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 ------------------------------------------------------------------------
@@ -38,6 +39,12 @@ x∣y∧z∣x/y⇒xz∣y {x} {y} {z} (x/y , x/y∙x≈y) (p , pz≈x/y) = p , (b
   (p ∙ z) ∙ x  ≈⟨ ∙-congʳ pz≈x/y ⟩
   x/y ∙ x      ≈⟨ x/y∙x≈y ⟩
   y            ∎)
+
+∙-cong-∣ : ∀ {x y a b} → x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
+∙-cong-∣ {x} {y} {a} {b} (p , px≈y) (q , qa≈b) = p ∙ q , (begin
+  (p ∙ q) ∙ (x ∙ a) ≈⟨ interchange p q x a ⟩
+  (p ∙ x) ∙ (q ∙ a) ≈⟨ ∙-cong px≈y qa≈b ⟩
+  y ∙ b ∎)
 
 x∣y⇒zx∣zy : ∀ {x y} z → x ∣ y → z ∙ x ∣ z ∙ y
 x∣y⇒zx∣zy {x} {y} z (q , qx≈y) = q , (begin
