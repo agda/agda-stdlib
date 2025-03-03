@@ -89,4 +89,3 @@ bimodule = record { ℤero }
 
 ⟨module⟩ : {R : CommutativeRing r ℓr} → Module R c ℓ
 ⟨module⟩ = record { ℤero }
-

@@ -40,8 +40,8 @@ module Algebra.Module.Construct.Idealization
 open import Algebra.Core using (Op₂)
 import Algebra.Consequences.Setoid as Consequences using (comm∧assoc⇒middleFour)
 import Algebra.Definitions as Definitions
-  using (Congruent₂; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_;
-  LeftIdentity; RightIdentity; Identity; Associative)
+  using (Congruent₂; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_
+        ; LeftIdentity; RightIdentity; Identity; Associative)
 import Algebra.Module.Construct.DirectProduct as DirectProduct using (bimodule)
 import Algebra.Module.Construct.TensorUnit as TensorUnit using (bimodule)
 open import Algebra.Structures using (IsAbelianGroup; IsRing)

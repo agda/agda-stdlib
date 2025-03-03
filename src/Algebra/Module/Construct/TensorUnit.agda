@@ -12,13 +12,13 @@
 module Algebra.Module.Construct.TensorUnit where
 
 open import Algebra.Bundles
-  using (RawSemiring; RawRing; Semiring; Ring; CommutativeSemiring;
-  CommutativeRing)
+  using (RawSemiring; RawRing; Semiring; Ring; CommutativeSemiring
+        ; CommutativeRing)
 open import Algebra.Module.Bundles
-  using (RawSemimodule; RawLeftSemimodule; RawRightSemimodule; RawBisemimodule;
-  RawLeftModule; RawRightModule; RawBimodule; RawModule; LeftSemimodule;
-  RightSemimodule; Bisemimodule; Semimodule; LeftModule; RightModule; Bimodule;
-  Module)
+  using (RawSemimodule; RawLeftSemimodule; RawRightSemimodule; RawBisemimodule
+        ; RawLeftModule; RawRightModule; RawBimodule; RawModule; LeftSemimodule
+        ; RightSemimodule; Bisemimodule; Semimodule; LeftModule; RightModule; Bimodule
+        ; Module)
 open import Level  using (Level; _⊔_)
 
 private
