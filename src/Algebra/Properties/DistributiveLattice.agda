@@ -9,7 +9,11 @@
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Algebra.Lattice.Bundles using (DistributiveLattice; Lattice)
+open import Algebra.Lattice.Bundles
+open import Algebra.Lattice.Structures.Biased
+open import Relation.Binary
+open import Function.Bundles using (module Equivalence; _⇔_)
+import Algebra.Construct.Subst.Equality as SubstEq
 
 module Algebra.Properties.DistributiveLattice
   {ℓ₁ ℓ₂} (DL : DistributiveLattice ℓ₁ ℓ₂)
@@ -20,15 +24,9 @@ module Algebra.Properties.DistributiveLattice
 Use Algebra.Lattice.Properties.DistributiveLattice instead."
 #-}
 
-open import Algebra.Lattice.Structures.Biased using (isDistributiveLatticeʳʲᵐ)
-open import Relation.Binary.Core using (Rel)
-open import Function.Bundles using (module Equivalence; _⇔_)
-
-import Algebra.Properties.Lattice as LatticeProperties
-
 open DistributiveLattice DL
 open import Algebra.Lattice.Properties.DistributiveLattice DL public
-
+import Algebra.Properties.Lattice as LatticeProperties
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
