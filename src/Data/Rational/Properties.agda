@@ -1279,7 +1279,7 @@ module _ where
     using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
 
   open GroupProperties +-group
-  open DecSetoidProperties ≡-decSetoid
+  open DecSetoidProperties ≡-decSetoid using (≉-isTightApartnessRelation)
 
   #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
   #⇒invertible {p} {q} p≢q = let r = p - q in 1/ r , *-inverseˡ r , *-inverseʳ r
@@ -1299,15 +1299,14 @@ module _ where
   isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
   isHeytingCommutativeRing = record
     { isCommutativeRing = isCommutativeRing
-    ; isApartnessRelation = ≉-isApartnessRelation
-    ; #⇒invertible = #⇒invertible
-    ; invertible⇒# = invertible⇒#
+    ; isTightApartnessRelation = ≉-isTightApartnessRelation
     }
 
   isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
   isHeytingField = record
     { isHeytingCommutativeRing = isHeytingCommutativeRing
-    ; tight = ≉-tight
+    ; #⇒invertible = #⇒invertible
+    ; invertible⇒# = invertible⇒#
     }
 
   heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ

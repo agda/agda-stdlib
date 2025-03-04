@@ -10,7 +10,7 @@ Bug-fixes
 ---------
 
 * In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
-  to `#-sym` in order to avoid overloaded projection.
+  to `#-sym` in order to avoid overloaded projection. The field names
   `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
 
 * In `Algebra.Definitions.RawMagma` and `Relation.Binary.Construct.Interior.Symmetric`,
@@ -25,6 +25,20 @@ Non-backwards compatible changes
   significantly faster. However, its reduction behaviour on open terms may have
   changed.
 
+* The definitions of `Algebra.Structures.IsHeyting*` and
+  `Algebra.Structures.IsHeyting*` have been refactored, together
+  with that of `Relation.Binary.Definitions.Tight` on which they depend.
+  Specifically:
+  - `Tight _≈_ _#_` has been redefined as `∀ x y → ¬ x # y → x ≈ y`,
+    dropping the redundant second conjunct, because it is equivalent to
+    `Irreflexive _≈_ _#_`.
+  - new definitions: `(Is)TightApartnessRelation` structure/bundle, exploiting
+    the above redefinition.
+  - the definition of `HeytingCommutativeRing` now drops the properties of
+    invertibility, in favour of moving them to `HeytingField`.
+  - both `Heyting*` algebraic structure/bundles have been redefined to base
+    off an underlying `TightApartnessRelation`.
+
 Minor improvements
 ------------------
 
@@ -33,6 +47,12 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Apartness.Properties.HeytingCommutativeRing`:
+  ```agda
+  x-0≈x  ↦   Algebra.Properties.Ring.x-0#≈x
+  #-sym  ↦   Algebra.Apartness.Structures.IsHeytingCommutativeRing.#-sym
+  ```
 
 * In `Algebra.Definitions.RawMagma`:
   ```agda
@@ -99,6 +119,9 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Apartness.Properties.HeytingField`, refactoring the existing
+  `Algebra.Apartness.Properties.HeytingCommutativeRing`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
@@ -107,6 +130,16 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Apartness.Bundles.HeytingCommutativeRing`:
+  ```agda
+  TightApartnessRelation c ℓ₁ ℓ₂ : Set _
+  ```
+
+* In `Algebra.Apartness.Structures.IsHeytingCommutativeRing`:
+  ```agda
+  IsTightApartnessRelation _≈_ _#_ : Set _
+  ```
 
 * In `Algebra.Construct.Pointwise`:
   ```agda
@@ -137,6 +170,16 @@ Additions to existing modules
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
 
+* In `Algebra.Properties.AbelianGroup`:
+  ```agda
+  x-ε≈x : RightIdentity ε _-_
+  ```
+
+* In `Algebra.Properties.RingWithoutOne`:
+  ```agda
+  x-0#≈x : RightIdentity 0# _-_
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
@@ -149,3 +192,21 @@ Additions to existing modules
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  ≄-apartnessRelation        : ApartnessRelation _ _ _
+  ≄-isTightApartnessRelation : IsTightApartnessRelation _≃_ _≄_
+  ≄-tightApartnessRelation   : TightApartnessRelation _ _ _
+  ```
+
+* In `Relation.Binary.Properties.DecSetoid`:
+  ```agda
+  ≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
+  ≉-tightApartnessRelation   : TightApartnessRelation _ _ _
+  ```
+  Additionally,
+  ```agda
+  ≉-tight : Tight _≈_ _≉_
+  ```
+  has been redefined to reflect the change in the definition of `Tight`.
