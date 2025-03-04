@@ -8,9 +8,9 @@
 
 module Data.Unit.Polymorphic.Instances where
 
-open import Data.Unit.Polymorphic.Base
-open import Data.Unit.Polymorphic.Properties
-open import Level
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Data.Unit.Polymorphic.Properties using (_≟_; ≡-isDecTotalOrder)
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
