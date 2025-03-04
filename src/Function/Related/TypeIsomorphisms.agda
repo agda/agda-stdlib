@@ -9,7 +9,7 @@
 
 module Function.Related.TypeIsomorphisms where
 
-open import Algebra.Definitions 
+open import Algebra.Definitions
   using (Identity; LeftIdentity; RightIdentity; Zero; LeftZero; RightZero
         ; Associative; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_)
 open import Algebra.Structures public
@@ -367,4 +367,4 @@ True↔ (false because ofⁿ ¬p) _ =
 ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
 ∃-≡ P {x} = mk↔ₛ′ (λ Px → x , refl , Px) (λ where (_ , refl , Py) → Py)
   (λ where (_ , refl , _) → refl) (λ where _ → refl)
- 
+
