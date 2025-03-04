@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO.Instances where
- 
+
 open import Effect.Functor using (RawFunctor)
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad)
