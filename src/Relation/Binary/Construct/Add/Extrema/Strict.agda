@@ -16,17 +16,16 @@ module Relation.Binary.Construct.Add.Extrema.Strict
 
 open import Level
 open import Function.Base using (_∘′_)
-
-import Relation.Nullary.Construct.Add.Infimum as I
-open import Relation.Nullary.Construct.Add.Extrema
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl)
+import Relation.Nullary.Construct.Add.Infimum as I using (⊥₋; [_])
+open import Relation.Nullary.Construct.Add.Extrema using (⊥±; ⊤±; [_])
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Construct.Add.Infimum.Strict as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.Strict as AddSupremum
 import Relation.Binary.Construct.Add.Extrema.Equality as Equality
 import Relation.Binary.Construct.Add.Extrema.NonStrict as NonStrict
 open import Relation.Binary.Definitions
-  using (Asymmetric; Transitive; Decidable; Irrelevant; Trichotomous; Irreflexive; Trans; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Trichotomous
+        ; Irreflexive; Trans; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Binary.Structures
   using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
 
