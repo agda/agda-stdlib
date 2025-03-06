@@ -8,18 +8,19 @@
 
 module Data.String.Unsafe where
 
-import Data.List.Base as List
-import Data.List.Properties as Listₚ
+import Data.List.Base as List using (List; _∷_; _++_; length; replicate; tail)
+import Data.List.Properties as Listₚ using (length-replicate; length-++)
 open import Data.Maybe.Base using (maybe′)
 open import Data.Nat.Base using (zero; suc; _+_)
 open import Data.Product.Base using (proj₂)
 open import Data.String.Base
+  using (String; toList; fromList; length; tail; _++_; replicate)
 open import Function.Base using (_∘′_)
-
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Binary.PropositionalEquality.TrustMe using (trustMe)
+
 open ≡-Reasoning
 
 ------------------------------------------------------------------------

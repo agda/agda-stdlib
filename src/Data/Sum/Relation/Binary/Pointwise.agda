@@ -10,12 +10,11 @@ module Data.Sum.Relation.Binary.Pointwise where
 
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Sum.Properties
 open import Level using (Level; _⊔_)
 open import Function.Base using (const; _∘_; id)
 open import Function.Bundles using (Inverse; mk↔)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core as Dec using (yes; no; map′)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡

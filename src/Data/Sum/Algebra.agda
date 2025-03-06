@@ -11,6 +11,7 @@ module Data.Sum.Algebra where
 open import Algebra.Bundles
   using (Magma; Semigroup; Monoid; CommutativeMonoid)
 open import Algebra.Definitions
+  using (Associative; LeftIdentity; RightIdentity; Identity)
 open import Algebra.Structures
   using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid)
 open import Data.Empty.Polymorphic using (⊥)

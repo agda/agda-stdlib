@@ -10,6 +10,8 @@ module Data.Sum.Function.Propositional where
 
 open import Data.Sum.Base using (_⊎_)
 open import Data.Sum.Function.Setoid
+  using (_⊎-function_; _⊎-equivalence_; _⊎-injection_; _⊎-surjection_
+        ; _⊎-leftInverse_; _⊎-rightInverse_; _⊎-bijection_; _⊎-inverse_)
 open import Data.Sum.Relation.Binary.Pointwise using (Pointwise-≡↔≡; _⊎ₛ_)
 open import Function.Construct.Composition as Compose
 open import Function.Related.Propositional
@@ -19,6 +21,8 @@ open import Function.Base using (id)
 open import Function.Bundles
   using (Inverse; _⟶_; _⇔_; _↣_; _↠_; _↩_; _↪_; _⤖_; _↔_)
 open import Function.Properties.Inverse as Inv
+  using (Inverse⇒Equivalence; Inverse⇒Bijection; Inverse⇒Injection
+        ; Inverse⇒Surjection)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
