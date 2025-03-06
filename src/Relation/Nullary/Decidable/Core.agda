@@ -13,9 +13,8 @@ module Relation.Nullary.Decidable.Core where
 
 -- decToMaybe was deprecated in v2.1 #2330/#2336
 -- this can go through `Data.Maybe.Base` once that deprecation is fully done.
-open import Agda.Builtin.Maybe using (Maybe; just; nothing)
-
 open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
@@ -23,8 +22,10 @@ open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Recomputable as Recomputable hiding (recompute-constant)
-open import Relation.Nullary.Reflects as Reflects hiding (recompute; recompute-constant)
+open import Relation.Nullary.Recomputable as Recomputable
+  hiding (recompute-constant)
+open import Relation.Nullary.Reflects as Reflects
+  hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
   using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
 

@@ -9,9 +9,9 @@
 
 module Relation.Binary.PropositionalEquality.WithK where
 
-open import Axiom.UniquenessOfIdentityProofs.WithK
+open import Axiom.UniquenessOfIdentityProofs.WithK using (uip)
 open import Relation.Binary.Definitions using (Irrelevant)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- Re-exporting safe erasure function

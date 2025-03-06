@@ -10,17 +10,11 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product.Base using (proj₁; proj₂)
-open import Level using (_⊔_)
-open import Function.Base using (case_of_)
-open import Relation.Nullary.Decidable.Core
-  using (Dec; yes; no)
+
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
   using (Transitive; _Respects₂_; Reflexive; Trans; Irreflexive; Asymmetric)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Binary.Reasoning.Syntax
 
 module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} {_<_ : Rel A ℓ₃}
@@ -29,6 +23,14 @@ module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a
   (<⇒≤ : _<_ ⇒ _≤_)
   (<-≤-trans : Trans _<_ _≤_ _<_) (≤-<-trans : Trans _≤_ _<_ _<_)
   where
+
+open import Data.Product.Base using (proj₁; proj₂)
+open import Level using (_⊔_)
+open import Function.Base using (case_of_)
+open import Relation.Nullary.Decidable.Core
+  using (Dec; yes; no)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.Reasoning.Syntax
 
 open IsPreorder isPreorder
 

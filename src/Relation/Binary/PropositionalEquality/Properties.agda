@@ -14,16 +14,17 @@ module Relation.Binary.PropositionalEquality.Properties where
 
 open import Function.Base using (id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder; Poset)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder)
-open import Relation.Binary.Definitions
-  using (DecidableEquality)
+open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Properties.Setoid as Setoid
+  using (≈-isPreorder; ≈-isPartialOrder; ≈-preorder; ≈-poset)
 open import Relation.Binary.PropositionalEquality.Core
-open import Relation.Unary using (Pred)
+  using (_≡_; cong; refl; subst; trans; sym; subst₂; cong₂)
 open import Relation.Binary.Reasoning.Syntax
+open import Relation.Unary using (Pred)
+
 
 
 private

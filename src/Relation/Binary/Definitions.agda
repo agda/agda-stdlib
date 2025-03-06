@@ -11,11 +11,10 @@
 module Relation.Binary.Definitions where
 
 open import Agda.Builtin.Equality using (_≡_)
-
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
-open import Level
+open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core
 open import Relation.Nullary as Nullary using (¬_; Dec)
 
