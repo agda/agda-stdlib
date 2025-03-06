@@ -18,7 +18,8 @@ open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.Equality using (_≡_)
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
-open import Data.Unit.Polymorphic.Base using (⊤)
+open import Data.Unit.Polymorphic.Base using (⊤; tt)
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; const; _$_; flip)
@@ -95,9 +96,17 @@ T? x = x because T-reflects x
 does  (¬? a?) = not (does a?)
 proof (¬? a?) = ¬-reflects (proof a?)
 
+⊤-dec : Dec {a} ⊤
+does  ⊤-dec = true
+proof ⊤-dec = ofʸ tt
+
 _×-dec_ : Dec A → Dec B → Dec (A × B)
 does  (a? ×-dec b?) = does a? ∧ does b?
 proof (a? ×-dec b?) = proof a? ×-reflects proof b?
+
+⊥-dec : Dec {a} ⊥
+does  ⊥-dec  = false
+proof ⊥-dec  = ofⁿ λ ()
 
 _⊎-dec_ : Dec A → Dec B → Dec (A ⊎ B)
 does  (a? ⊎-dec b?) = does a? ∨ does b?
