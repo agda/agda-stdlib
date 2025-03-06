@@ -9,9 +9,9 @@
 module Function.Construct.Constant where
 
 open import Function.Base using (const)
-open import Function.Bundles
-import Function.Definitions as Definitions
-import Function.Structures as Structures
+open import Function.Bundles using (Func)
+import Function.Definitions as Definitions using (Congruent)
+import Function.Structures as Structures using (IsCongruent)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)

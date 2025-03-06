@@ -12,7 +12,11 @@ open import Data.Product.Base as Product using (_,_)
 open import Function.Base using (_∘_; flip)
 open import Function.Bundles
 open import Function.Definitions
+  using (Congruent; Injective; Surjective; Bijective; Inverseˡ; Inverseʳ
+        ; Inverseᵇ)
 open import Function.Structures
+  using (IsCongruent; IsInjection; IsSurjection ; IsBijection; IsLeftInverse
+        ; IsRightInverse; IsInverse)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)

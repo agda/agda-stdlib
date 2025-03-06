@@ -8,7 +8,7 @@
 
 module Foreign.Haskell where
 
-open import Level
+open import Level using (Level; _⊔_)
 
 ------------------------------------------------------------------------
 -- Pairs

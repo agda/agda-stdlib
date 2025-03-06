@@ -11,7 +11,6 @@ open import Relation.Binary.Bundles using (Setoid)
 module Function.Endo.Setoid {c e} (S : Setoid c e) where
 
 open import Agda.Builtin.Equality using (_≡_)
-
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
 import Algebra.Definitions.RawMonoid as RawMonoidDefinitions
 import Algebra.Properties.Monoid.Mult as MonoidMultProperties
