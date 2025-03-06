@@ -6,23 +6,24 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Lattice
+open import Relation.Binary.Lattice using (Lattice; IsLattice)
 
 module Relation.Binary.Lattice.Properties.Lattice
   {c ℓ₁ ℓ₂} (L : Lattice c ℓ₁ ℓ₂) where
 
-open Lattice L
-
-import Algebra.Lattice as Alg
-import Algebra.Structures as Alg
-open import Algebra.Definitions _≈_
+import Algebra.Lattice as Alg using (IsLattice; Lattice)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (flip)
-open import Relation.Binary.Properties.Poset poset
-import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice as J
-import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice as M
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
+
+open Lattice L
+
+open import Algebra.Definitions _≈_
+open import Relation.Binary.Properties.Poset poset using (≥-isPartialOrder)
+import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice as J
+import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice as M
+
 
 ∨-absorbs-∧ : _∨_ Absorbs _∧_
 ∨-absorbs-∧ x y =
