@@ -9,16 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Morphism.Definitions
-open import Function.Base
-open import Data.Product.Base using (_,_; map)
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Structures
-  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.Definitions
-  using (Irreflexive; Antisymmetric; Trichotomous; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
-open import Relation.Binary.Morphism
-import Relation.Binary.Morphism.RelMonomorphism as RawRelation
+open import Relation.Binary.Morphism using (IsOrderMonomorphism)
 
 module Relation.Binary.Morphism.OrderMonomorphism
   {a b ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Set a} {B : Set b}
@@ -27,6 +19,17 @@ module Relation.Binary.Morphism.OrderMonomorphism
   {⟦_⟧ : A → B}
   (isOrderMonomorphism : IsOrderMonomorphism _≈₁_ _≈₂_ _≲₁_ _≲₂_ ⟦_⟧)
   where
+
+open import Function.Base using (flip; _∘_)
+open import Data.Product.Base using (_,_; map)
+open import Relation.Binary.Definitions
+  using (Irreflexive; Antisymmetric; Trichotomous; tri<; tri≈; tri>
+        ; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+import Relation.Binary.Morphism.RelMonomorphism as RawRelation
+  using (isEquivalence; trans; total; dec)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder
+        ; IsStrictPartialOrder; IsStrictTotalOrder)
 
 open IsOrderMonomorphism isOrderMonomorphism
 

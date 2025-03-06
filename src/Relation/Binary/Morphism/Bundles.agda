@@ -6,13 +6,15 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level
-open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.Bundles
-open import Relation.Binary.Morphism.Structures
-open import Relation.Binary.Consequences using (mono⇒cong)
-
 module Relation.Binary.Morphism.Bundles where
+
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
+open import Relation.Binary.Morphism.Structures
+  using (IsRelHomomorphism; IsRelMonomorphism; IsRelIsomorphism
+        ; IsOrderHomomorphism; IsOrderMonomorphism; IsOrderIsomorphism)
+open import Relation.Binary.Consequences using (mono⇒cong)
 
 private
   variable
