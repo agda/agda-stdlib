@@ -17,7 +17,7 @@ open import Algebra.Module.Bundles
 open import Data.Product.Base using (map; zip; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (Pointwise)
-open import Level using (_⊔_; Level)
+open import Level using (Level; _⊔_)
 
 private
   variable
