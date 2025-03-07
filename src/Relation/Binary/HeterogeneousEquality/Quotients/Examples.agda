@@ -8,16 +8,19 @@
 
 module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
-open import Relation.Binary.HeterogeneousEquality.Quotients
+open import Data.Nat.Base using (ℕ; zero; suc;_+_)
+open import Data.Nat.Properties
+  using (+-assoc; +-comm; +-identityʳ; +-cancelˡ-≡)
+open import Data.Product.Base using (_×_; _,_)
+open import Function.Base
 open import Level using (0ℓ)
+open import Relation.Binary.HeterogeneousEquality.Quotients
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
 import Relation.Binary.PropositionalEquality.Core as ≡
-open import Data.Nat.Base
-open import Data.Nat.Properties
-open import Data.Product.Base using (_×_; _,_)
-open import Function.Base
+  using (_≡_; refl; sym; cong)
+
 
 open ≅-Reasoning
 
