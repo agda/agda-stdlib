@@ -8,21 +8,20 @@
 
 module Reflection.AST.AlphaEquality where
 
-open import Data.Bool.Base                   using (Bool; true; false; _∧_)
-open import Data.List.Base                   using ([]; _∷_)
-open import Data.Nat.Base as ℕ               using (ℕ; zero; suc; _≡ᵇ_)
-open import Data.Product.Base                using (_,_)
-open import Relation.Nullary.Decidable.Core  using (⌊_⌋)
-open import Relation.Binary.Definitions      using (DecidableEquality)
-
-open import Reflection.AST.Abstraction
-open import Reflection.AST.Argument
-open import Reflection.AST.Argument.Information as ArgInfo
-open import Reflection.AST.Argument.Modality    as Modality
-open import Reflection.AST.Argument.Visibility  as Visibility
-open import Reflection.AST.Meta                 as Meta
-open import Reflection.AST.Name                 as Name
-open import Reflection.AST.Literal              as Literal
+open import Data.Bool.Base using (Bool; true; false; _∧_)
+open import Data.List.Base using ([]; _∷_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _≡ᵇ_)
+open import Data.Product.Base using (_,_)
+open import Relation.Nullary.Decidable.Core using (⌊_⌋)
+open import Relation.Binary.Definitions using (DecidableEquality)
+open import Reflection.AST.Abstraction using (Abs; abs)
+open import Reflection.AST.Argument using (Arg; arg; Args)
+open import Reflection.AST.Argument.Information as ArgInfo using (ArgInfo)
+open import Reflection.AST.Argument.Modality as Modality using (Modality)
+open import Reflection.AST.Argument.Visibility as Visibility using (Visibility)
+open import Reflection.AST.Meta as Meta using (Meta)
+open import Reflection.AST.Name as Name using (Name)
+open import Reflection.AST.Literal as Literal using (Literal)
 open import Reflection.AST.Term
 open import Level using (Level)
 
