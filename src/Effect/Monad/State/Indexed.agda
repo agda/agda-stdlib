@@ -12,8 +12,8 @@ open import Effect.Applicative.Indexed
   using (IFun; RawIApplicative; RawIApplicativeZero; RawIAlternative)
 open import Effect.Monad using (RawMonad; RawMonadZero; RawMonadPlus)
 open import Function.Identity.Effectful as Id using (Identity)
-open import Effect.Monad.Indexed using (RawIMonad; RawIMonadZero;
-  RawIMonadPlus)
+open import Effect.Monad.Indexed
+  using (RawIMonad; RawIMonadZero; RawIMonadPlus)
 open import Data.Product.Base using (_×_; _,_; uncurry)
 open import Data.Unit.Polymorphic using (⊤)
 open import Function.Base using (const; _∘_)
