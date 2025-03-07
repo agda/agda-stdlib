@@ -8,9 +8,9 @@
 
 module Data.Vec.Relation.Binary.Lex.Core {a} {A : Set a} where
 
-open import Data.Empty
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat.Base using (ℕ; suc)
-import Data.Nat.Properties as ℕ
+import Data.Nat.Properties as ℕ using (_≟_; ≡-irrelevant)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
@@ -20,7 +20,8 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Definitions
-  using (Transitive; Symmetric; Asymmetric; Antisymmetric; Irreflexive; Trans; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Decidable; Irrelevant)
+  using (Transitive; Symmetric; Asymmetric; Antisymmetric; Irreflexive; Trans
+        ; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Decidable; Irrelevant)
 open import Relation.Binary.Structures using (IsPartialEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong)

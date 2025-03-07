@@ -8,7 +8,7 @@
 
 module Data.Unit.Polymorphic.Base where
 
-open import Level
+open import Level using (Level; Lift; lift)
 import Data.Unit.Base as ⊤
 
 ------------------------------------------------------------------------
