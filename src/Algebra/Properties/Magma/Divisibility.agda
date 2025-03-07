@@ -39,7 +39,7 @@ x∣ʳyx : ∀ x y → x ∣ʳ y ∙ x
 x∣ʳyx x y = y , refl
 
 xy≈z⇒y∣ʳz : ∀ x y {z} → x ∙ y ≈ z → y ∣ʳ z
-xy≈z⇒y∣ʳz x y xy≈z = ∣ʳ-respʳ-≈ xy≈z (x∣ʳyx y x)
+xy≈z⇒y∣ʳz x y xy≈z = x , xy≈z
 
 ------------------------------------------------------------------------
 -- Properties of left divisibility
@@ -57,7 +57,7 @@ x∣ˡxy : ∀ x y → x ∣ˡ x ∙ y
 x∣ˡxy x y = y , refl
 
 xy≈z⇒x∣ˡz : ∀ x y {z} → x ∙ y ≈ z → x ∣ˡ z
-xy≈z⇒x∣ˡz x y xy≈z = ∣ˡ-respʳ-≈ xy≈z (x∣ˡxy x y)
+xy≈z⇒x∣ˡz x y xy≈z = y , xy≈z
 
 ------------------------------------------------------------------------
 -- Properties of non-divisibility
