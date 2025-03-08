@@ -11,8 +11,8 @@ module Induction.WellFounded where
 open import Data.Product.Base using (Σ; _,_; proj₁; proj₂)
 open import Function.Base using (_∘_; flip; _on_)
 open import Induction
-  using (RecStruct; RecursorBuilder; Recursor; build; SubsetRecursorBuilder
-        ; SubsetRecursor; subsetBuild)
+  using (RecStruct; RecursorBuilder; Recursor; build
+        ; SubsetRecursorBuilder; SubsetRecursor; subsetBuild)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions
