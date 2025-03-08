@@ -8,7 +8,7 @@
 
 module Data.Rational.Instances where
 
-open import Data.Rational.Properties
+open import Data.Rational.Properties using (_≟_; ≤-isDecTotalOrder)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 

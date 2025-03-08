@@ -8,15 +8,17 @@
 
 module Data.Sign.Properties where
 
-open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
-  Monoid; CommutativeMonoid; Group; AbelianGroup)
+open import Algebra.Bundles
+  using (Magma; Semigroup; CommutativeSemigroup; Monoid; CommutativeMonoid
+        ; Group; AbelianGroup)
 open import Data.Sign.Base using (Sign; opposite; _*_; +; -)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
-open import Relation.Binary
-  using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
+open import Relation.Binary.Definitions using (Decidable; DecidableEquality)
+open import Relation.Binary.Structures using (IsDecEquivalence)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; _≢_; sym; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties

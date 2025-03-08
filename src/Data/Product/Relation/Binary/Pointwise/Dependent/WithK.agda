@@ -11,7 +11,7 @@ module Data.Product.Relation.Binary.Pointwise.Dependent.WithK where
 
 open import Data.Product.Base using (Σ; uncurry; _,_)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
-open import Function.Base
+open import Function.Base using (id)
 open import Function.Bundles using (Inverse)
 open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)

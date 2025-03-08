@@ -15,19 +15,21 @@ open import Data.Product.Base
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
-open import Data.Empty
-open import Function.Base
-open import Induction.WellFounded
-open import Level
-open import Relation.Nullary.Decidable
+open import Data.Empty using (⊥-elim)
+open import Function.Base using (flip; _on_; _$_; _∘_)
+open import Induction.WellFounded using (Acc; acc; WfRec; WellFounded; Acc-resp-flip-≈)
+open import Level using (Level)
+open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Preorder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri>; tri≈)
-open import Relation.Binary.Consequences
+  using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable
+        ; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_
+        ; tri<; tri>; tri≈)
+open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
