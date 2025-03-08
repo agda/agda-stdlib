@@ -8,11 +8,10 @@
 
 module Function.Properties.Injection where
 
-open import Function.Base
-open import Function.Definitions
-open import Function.Bundles
-import Function.Construct.Identity as Identity
-import Function.Construct.Composition as Compose
+open import Function.Definitions using (Injective)
+open import Function.Bundles using (Injection; Func; _⟶_; _↣_)
+import Function.Construct.Identity as Identity using (injection)
+import Function.Construct.Composition as Compose using (injection)
 open import Level using (Level)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Relation.Binary.Definitions
