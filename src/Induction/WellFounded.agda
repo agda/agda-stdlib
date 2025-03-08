@@ -16,8 +16,8 @@ open import Induction
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions
-  using (Symmetric; Asymmetric; Irreflexive; _Respects₂_; _Respectsʳ_
-        ; _Respects_)
+  using (Symmetric; Asymmetric; Irreflexive
+        ; _Respects₂_; _Respectsʳ_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Unary
