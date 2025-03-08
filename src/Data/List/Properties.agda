@@ -12,7 +12,7 @@
 
 module Data.List.Properties where
 
-open import Algebra.Bundles
+open import Algebra.Bundles using (Semigroup; Monoid)
 open import Algebra.Consequences.Propositional
  using (selfInverse⇒involutive; selfInverse⇒injective)
 open import Algebra.Definitions as AlgebraicDefinitions using (SelfInverse; Involutive)
@@ -42,8 +42,10 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _because_; does)
+open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
+open import Relation.Nullary.Decidable as Decidable
+  using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
 open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
 open import Relation.Unary.Properties using (∁?)
 import Data.Nat.GeneralisedArithmetic as ℕ

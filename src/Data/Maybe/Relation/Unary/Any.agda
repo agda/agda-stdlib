@@ -12,11 +12,12 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Product.Base as Product using (∃; _,_; -,_)
 open import Function.Base using (id)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 open import Relation.Unary
+  using (Pred; _⊆_; _∩_; Decidable; Irrelevant; Satisfiable)
 open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+import Relation.Nullary.Decidable as Dec using (Dec; yes; no; map)
 
 ------------------------------------------------------------------------
 -- Definition
