@@ -8,7 +8,7 @@
 
 module Codata.Musical.Colist.Bisimilarity where
 
-open import Codata.Musical.Colist.Base using (Colist; _∷_; []; map)
+open import Codata.Musical.Colist.Base using (Colist; []; _∷_; map)
 open import Codata.Musical.Notation using (♭; ♯_; ∞)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _=[_]⇒_)
