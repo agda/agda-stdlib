@@ -9,8 +9,8 @@
 module Data.Maybe.Instances where
 
 open import Data.Maybe.Effectful
-  using (functor; applicative; applicativeZero; alternative; monad
-        ; monadZero; monadPlus)
+  using (functor; applicative; applicativeZero; alternative
+        ; monad; monadZero; monadPlus)
 import Data.Maybe.Effectful.Transformer as Trans
   using (functor; applicative; monad; monadT)
 
