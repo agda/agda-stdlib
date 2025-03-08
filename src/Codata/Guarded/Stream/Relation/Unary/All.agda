@@ -10,8 +10,8 @@ module Codata.Guarded.Stream.Relation.Unary.All where
 
 open import Codata.Guarded.Stream using (Stream; head; tail)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
-open import Level
-open import Relation.Unary
+open import Level using (Level)
+open import Relation.Unary using (Pred; _∩_; _⊆_)
 
 private
   variable
