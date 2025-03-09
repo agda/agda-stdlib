@@ -17,8 +17,8 @@ open import Relation.Binary.Bundles using (Setoid)
 open DistributiveLattice L hiding (refl)
 
 open import Algebra.Definitions _≈_
-  using (Zero; RightZero; LeftZero; _DistributesOverʳ_; _DistributesOverˡ_
-        ; _DistributesOver_)
+  using (Zero; RightZero; LeftZero
+        ; _DistributesOverʳ_; _DistributesOverˡ_; _DistributesOver_)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary.Lattice.Properties.Lattice lattice
   using (∧-absorbs-∨; ∨-absorbs-∧ )
