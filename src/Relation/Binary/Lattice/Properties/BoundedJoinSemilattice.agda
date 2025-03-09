@@ -19,7 +19,7 @@ open BoundedJoinSemilattice J
 open import Algebra.Definitions _≈_
   using (LeftIdentity; RightIdentity; Identity)
 open import Relation.Binary.Properties.Poset poset
-  using ( ≥-isPartialOrder)
+  using (≥-isPartialOrder)
 open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
   using (∨-comm)
 
