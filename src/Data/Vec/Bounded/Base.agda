@@ -8,10 +8,10 @@
 
 module Data.Vec.Bounded.Base where
 
-open import Data.Nat.Base
+open import Data.Nat.Base as ℕ
+  using (ℕ; suc; zero; _+_; _∸_; _⊓_; _⊔_; _≤_; ⌊_/2⌋; ⌈_/2⌉; z≤n; s≤s; s≤s⁻¹)
 import Data.Nat.Properties as ℕ
 open import Data.List.Base as List using (List)
-open import Data.List.Extrema ℕ.≤-totalOrder
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Membership.Propositional using (mapWith∈)
@@ -24,6 +24,8 @@ open import Relation.Nullary.Decidable.Core using (recompute)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
+
+open import Data.List.Extrema ℕ.≤-totalOrder
 
 private
   variable
