@@ -14,8 +14,8 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
-  using (_Respects_; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Reflexive
-        ; Transitive)
+  using (_Respects_; _Respectsʳ_; _Respectsˡ_; _Respects₂_
+        ; Reflexive; Transitive)
 
 private
   variable

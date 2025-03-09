@@ -8,8 +8,8 @@
 
 module Relation.Binary.Construct.Union where
 
-open import Data.Product.Base
-open import Data.Sum.Base as Sum
+open import Data.Product.Base using (_,_; _×_; map; zip; <_,_>)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
