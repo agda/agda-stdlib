@@ -11,21 +11,25 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Lattice.Properties.HeytingAlgebra
   {c ℓ₁ ℓ₂} (L : HeytingAlgebra c ℓ₁ ℓ₂) where
 
-open HeytingAlgebra L
-
-open import Algebra.Core
-open import Algebra.Definitions _≈_
+open import Algebra.Core using (Op₁)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; flip; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
-open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
-open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
-import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
-open import Relation.Binary.Lattice.Properties.Lattice lattice
-open import Relation.Binary.Lattice.Properties.BoundedLattice boundedLattice
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+
+open HeytingAlgebra L
+
+open import Algebra.Definitions _≈_ using (_DistributesOverˡ_; _DistributesOverʳ_)
+open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
+  using (∧-comm; ∧-idempotent; ∧-assoc;  ∧-monotonic; ∧-cong)
+open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
+  using (∨-idempotent; ∨-monotonic)
+import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
+  using (identityˡ)
+open import Relation.Binary.Lattice.Properties.BoundedLattice boundedLattice
+  using ( ∧-zeroˡ; ∧-zeroʳ; ∨-zeroˡ; ∨-zeroʳ )
 
 ------------------------------------------------------------------------
 -- Useful lemmas
