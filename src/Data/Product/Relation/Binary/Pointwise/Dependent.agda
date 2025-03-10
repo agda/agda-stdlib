@@ -8,13 +8,14 @@
 
 module Data.Product.Relation.Binary.Pointwise.Dependent where
 
-open import Data.Product.Base as Product
-open import Level
-open import Function.Base
+open import Data.Product.Base as Product using (_×_; _,_; Σ; proj₁; proj₂)
+open import Level using (Level; _⊔_)
+open import Function.Base using (id)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions as B
+  using (Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Indexed.Heterogeneous as I
   using (IREL; IRel; IndexedSetoid; IsIndexedEquivalence)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
