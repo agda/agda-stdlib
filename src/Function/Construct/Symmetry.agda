@@ -16,8 +16,8 @@ open import Function.Definitions
 open import Function.Structures
   using (IsBijection; IsCongruent; IsRightInverse; IsLeftInverse; IsInverse)
 open import Function.Bundles
-  using (Bijection; Equivalence; LeftInverse; RightInverse; Inverse; _⤖_; _⇔_
-        ; _↩_; _↪_; _↔_)
+  using (Bijection; Equivalence; LeftInverse; RightInverse; Inverse
+        ; _⤖_; _⇔_; _↩_; _↪_; _↔_)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
