@@ -54,8 +54,8 @@ open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
-  using (IsRelMonomorphism; IsRelHomomorphism; IsOrderHomomorphism
-        ; IsOrderMonomorphism)
+  using (IsRelHomomorphism; IsRelMonomorphism
+        ; IsOrderHomomorphism; IsOrderMonomorphism)
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
 import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
 open import Relation.Binary.PropositionalEquality.Core
