@@ -10,8 +10,8 @@
 module Data.Rational.Properties where
 
 open import Algebra.Apartness
-  using (IsHeytingCommutativeRing; IsHeytingField; HeytingCommutativeRing
-        ; HeytingField)
+  using (IsHeytingCommutativeRing; IsHeytingField
+        ; HeytingCommutativeRing; HeytingField)
 open import Algebra.Construct.NaturalChoice.Base
   using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
