@@ -17,7 +17,8 @@ open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Unary
-open import Relation.Nullary.Decidable as Dec using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
+open import Relation.Nullary.Decidable as Dec
+       using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
 open import Function.Base using (id; _$_; _∘_)
 
 private

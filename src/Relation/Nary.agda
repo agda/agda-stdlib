@@ -14,7 +14,6 @@ module Relation.Nary where
 -- behind the design decisions.
 ------------------------------------------------------------------------
 
-open import Level using (Level; _⊔_; Lift)
 open import Data.Unit.Base using (⊤)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥; ⊥-elim)
@@ -24,12 +23,13 @@ open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_$_; _∘′_)
 open import Function.Nary.NonDependent
-open import Relation.Nullary.Negation using (¬_)
+open import Level using (Level; _⊔_; Lift)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary.Decidable.Core as Dec
   using (Dec; yes; no; _because_; _×-dec_)
 import Relation.Unary as Unary
   using (Pred; Satisfiable; Universal; IUniversal)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 
 private
   variable

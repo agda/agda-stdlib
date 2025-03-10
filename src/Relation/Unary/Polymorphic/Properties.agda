@@ -9,12 +9,12 @@
 
 module Relation.Unary.Polymorphic.Properties where
 
+open import Data.Unit.Polymorphic.Base using (tt)
 open import Level using (Level)
 open import Relation.Binary.Definitions hiding (Decidable; Universal; Empty)
-open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 open import Relation.Unary hiding (∅; U)
-open import Relation.Unary.Polymorphic
-open import Data.Unit.Polymorphic.Base using (tt)
+open import Relation.Unary.Polymorphic using (∅; U)
 
 private
   variable

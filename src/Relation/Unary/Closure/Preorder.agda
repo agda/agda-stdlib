@@ -10,8 +10,9 @@ open import Relation.Binary.Bundles using (Preorder)
 
 module Relation.Unary.Closure.Preorder {a r e} (P : Preorder a e r) where
 
-open Preorder P
 open import Relation.Unary using (Pred)
+
+open Preorder P
 
 -- Specialising the results proven generically in `Base`.
 import Relation.Unary.Closure.Base _∼_ as Base
