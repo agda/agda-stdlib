@@ -8,7 +8,7 @@
 
 module Relation.Unary.Consequences where
 
-open import Relation.Unary
+open import Relation.Unary using (Pred; Recomputable; Decidable)
 open import Relation.Nullary using (recompute)
 
 dec⇒recomputable : {a ℓ : _} {A : Set a} {P : Pred A ℓ} → Decidable P → Recomputable P
