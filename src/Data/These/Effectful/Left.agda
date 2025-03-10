@@ -21,7 +21,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (Level; _⊔_)
-open import Algebra using (Semigroup)
+open import Algebra.Bundles using (Semigroup)
 
 module Data.These.Effectful.Left {c ℓ} (W : Semigroup c ℓ) (b : Level) where
 
