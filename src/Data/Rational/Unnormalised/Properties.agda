@@ -19,8 +19,8 @@ open import Algebra.Apartness
   using (IsHeytingCommutativeRing; IsHeytingField; HeytingCommutativeRing
         ; HeytingField)
 open import Algebra.Lattice
-  using (IsLattice; IsDistributiveLattice; IsSemilattice; Semilattice
-        ; Lattice; DistributiveLattice; RawLattice)
+  using (IsLattice; IsDistributiveLattice; IsSemilattice
+        ; Semilattice; Lattice; DistributiveLattice; RawLattice)
 import Algebra.Consequences.Setoid as Consequences
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
