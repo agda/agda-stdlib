@@ -16,8 +16,8 @@ open import Algebra.Structures
         ; IsCommutativeRing)
 open import Algebra.Bundles
 open import Algebra.Apartness
-  using (IsHeytingCommutativeRing; IsHeytingField; HeytingCommutativeRing
-        ; HeytingField)
+  using (IsHeytingCommutativeRing; IsHeytingField
+        ; HeytingCommutativeRing; HeytingField)
 open import Algebra.Lattice
   using (IsLattice; IsDistributiveLattice; IsSemilattice
         ; Semilattice; Lattice; DistributiveLattice; RawLattice)
