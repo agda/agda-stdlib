@@ -30,8 +30,8 @@ import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
-  using (+-comm; ≤-refl; +-identityʳ; *-identityʳ; *-comm; *-assoc; *-suc
-        ; +-assoc)
+  using (≤-refl; +-comm; +-identityʳ; +-assoc
+        ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
