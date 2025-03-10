@@ -54,7 +54,7 @@ Symmetric _∼_ = Sym _∼_ _∼_
 -- Generalised transitivity.
 
 Trans : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
-Trans P Q R = ∀ {i j k} → P i j → Q j k → R i k
+Trans P Q R = ∀ {x y z} → P x y → Q y z → R x z
 
 RightTrans : REL A B ℓ₁ → REL B B ℓ₂ → Set _
 RightTrans R S = Trans R S R
@@ -65,7 +65,7 @@ LeftTrans S R = Trans S R R
 -- A flipped variant of generalised transitivity.
 
 TransFlip : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
-TransFlip P Q R = ∀ {i j k} → Q j k → P i j → R i k
+TransFlip P Q R = ∀ {x y z} → Q y z → P x y → R x z
 
 -- Transitivity.
 
@@ -75,7 +75,7 @@ Transitive _∼_ = Trans _∼_ _∼_ _∼_
 -- Generalised antisymmetry
 
 Antisym : REL A B ℓ₁ → REL B A ℓ₂ → REL A B ℓ₃ → Set _
-Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+Antisym R S E = ∀ {x y} → R x y → S y x → E x y
 
 -- Antisymmetry.
 
