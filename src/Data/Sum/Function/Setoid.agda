@@ -15,6 +15,7 @@ open import Relation.Binary
 open import Function.Base
 open import Function.Bundles
 open import Function.Definitions
+open import Function.Definitions.Strict
 open import Level
 
 private

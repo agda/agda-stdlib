@@ -14,7 +14,8 @@ module Function.Consequences.Propositional
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
-open import Function.Definitions
+import Function.Definitions as Definitions
+open import Function.Definitions.Strict as Strict
 open import Relation.Nullary.Negation.Core using (contraposition)
 
 import Function.Consequences.Setoid (setoid A) (setoid B) as Setoid
@@ -37,17 +38,19 @@ private
     f : A → B
     f⁻¹ : B → A
 
+open Definitions (_≡_ {A = A}) (_≡_ {A = B})
+
 strictlySurjective⇒surjective : StrictlySurjective _≡_ f →
-                                 Surjective _≡_ _≡_ f
+                                 Surjective f
 strictlySurjective⇒surjective =
  Setoid.strictlySurjective⇒surjective (cong _)
 
 strictlyInverseˡ⇒inverseˡ : ∀ f → StrictlyInverseˡ _≡_ f f⁻¹ →
-                            Inverseˡ _≡_ _≡_ f f⁻¹
+                            Inverseˡ f f⁻¹
 strictlyInverseˡ⇒inverseˡ f =
   Setoid.strictlyInverseˡ⇒inverseˡ (cong _)
 
 strictlyInverseʳ⇒inverseʳ : ∀ f → StrictlyInverseʳ _≡_ f f⁻¹ →
-                            Inverseʳ _≡_ _≡_ f f⁻¹
+                            Inverseʳ f f⁻¹
 strictlyInverseʳ⇒inverseʳ f =
   Setoid.strictlyInverseʳ⇒inverseʳ (cong _)
