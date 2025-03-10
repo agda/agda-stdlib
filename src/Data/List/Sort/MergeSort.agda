@@ -14,6 +14,7 @@ open import Relation.Binary.Bundles using (DecTotalOrder)
 
 module Data.List.Sort.MergeSort
   {a ℓ₁ ℓ₂} (O : DecTotalOrder a ℓ₁ ℓ₂) where
+
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base
   using (List; []; _∷_; merge; length; map; [_]; concat; _++_)
