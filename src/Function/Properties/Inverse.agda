@@ -17,7 +17,7 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning using (begin_; _∎)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Function.Consequences.Setoid as Consequences
   using (inverseʳ⇒injective; inverseˡ⇒surjective; inverseᵇ⇒bijective)
 
