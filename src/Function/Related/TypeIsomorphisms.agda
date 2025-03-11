@@ -9,14 +9,14 @@
 
 module Function.Related.TypeIsomorphisms where
 
+open import Algebra.Bundles public
+  using (Magma; Semigroup; Monoid; CommutativeMonoid; CommutativeSemiring)
 open import Algebra.Definitions
   using (Identity; LeftIdentity; RightIdentity; Zero; LeftZero; RightZero
         ; Associative; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_)
 open import Algebra.Structures public
   using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid
         ; IsCommutativeSemiring)
-open import Algebra.Bundles public
-  using (Magma; Semigroup; Monoid; CommutativeMonoid; CommutativeSemiring)
 open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
