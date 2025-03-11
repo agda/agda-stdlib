@@ -9,9 +9,9 @@
 module Relation.Unary.Algebra where
 
 open import Algebra.Bundles
-  using (Magma; Semigroup; Band; Monoid; CommutativeMonoid
-        ; IdempotentCommutativeMonoid; SemiringWithoutAnnihilatingZero
-        ; Semiring; CommutativeSemiring)
+  using (Magma; Semigroup; Band
+        ; Monoid; CommutativeMonoid; IdempotentCommutativeMonoid
+        ; SemiringWithoutAnnihilatingZero; Semiring; CommutativeSemiring)
 import Algebra.Definitions as AlgebraicDefinitions
 open import Algebra.Lattice.Bundles
   using (Semilattice; Lattice; DistributiveLattice)
