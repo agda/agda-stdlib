@@ -8,7 +8,7 @@
 
 module Relation.Binary.Indexed.Homogeneous.Construct.At where
 
-open import Level using (Level; _⊔_)
+open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
 open import Relation.Binary.Indexed.Homogeneous
   using (IRel; IsIndexedEquivalence; IsIndexedDecEquivalence; IsIndexedPreorder
