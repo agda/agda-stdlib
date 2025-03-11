@@ -8,16 +8,14 @@
 
 module Data.Maybe.Effectful where
 
-open import Level
-open import Data.Maybe.Base
-
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
-open import Effect.Applicative
+open import Data.Maybe.Base using (Maybe; just; nothing; map; _>>=_; _<∣>_; maybe)
+open import Effect.Applicative using (RawApplicative; RawApplicativeZero; RawAlternative)
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
+open import Effect.Functor using (RawFunctor)
 open import Effect.Monad
-
-open import Function.Base
+open import Function.Base using (flip; const; _∘_)
+open import Level using (Level; _⊔_)
 
 private
   variable

@@ -12,22 +12,20 @@ open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
-open import Data.Empty
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base using (Fin; zero; suc; punchOut)
-open import Data.Fin.Properties
-  using (suc-injective; punchOut-injective)
-open import Function.Base
-open import Function.Bundles
-  using (Injection; module Injection)
+open import Data.Fin.Properties using (suc-injective; punchOut-injective)
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base hiding (lookup)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (∃; _,_; _×_)
-open import Data.Sum.Base
-open import Data.Sum.Properties
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Properties using (inj₁-injective; inj₂-injective)
+open import Function.Base using (const; _$_; _∘_)
+open import Function.Bundles using (Injection; module Injection)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _because_)
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; cong)
