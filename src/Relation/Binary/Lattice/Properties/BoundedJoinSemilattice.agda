@@ -20,8 +20,7 @@ open import Algebra.Definitions _≈_
   using (LeftIdentity; RightIdentity; Identity)
 open import Relation.Binary.Properties.Poset poset
   using (≥-isPartialOrder)
-open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
-  using (∨-comm)
+
 
 -- Bottom is an identity of the meet operation.
 
