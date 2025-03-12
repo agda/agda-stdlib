@@ -12,7 +12,7 @@ open import Data.Sum.Base as Sum  hiding (map)
 open import Data.Sum.Relation.Binary.Pointwise using (_⊎ₛ_; inj₁; inj₂)
 open import Data.Product.Base as Product hiding (map)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad)
 open import Function.Base using (_∘_; id)
@@ -123,7 +123,7 @@ private
           ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P
 ¬¬-pull = sequence rawApplicative
                    (λ f → f lower)
-                   (λ f g → g (λ x → contradiction (λ y → g (λ _ → y)) (f x )))
+                   (λ f g → g (λ x → contradiction (λ y → g (λ _ → y)) (f x)))
 
 ¬¬-remove : ∀ {p} (F : PropF p) {P} →
             ¬ ¬ ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P
