@@ -29,6 +29,7 @@ open import Relation.Binary.Definitions
   using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable
         ; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
 open import Relation.Nullary.Decidable using (_⊎-dec_; yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 
 ------------------------------------------------------------------------
 -- Conversion
@@ -59,7 +60,7 @@ antisym eq trans irrefl = as
   as (inj₂ x≈y) _          = x≈y
   as (inj₁ _)   (inj₂ y≈x) = Eq.sym y≈x
   as (inj₁ x<y) (inj₁ y<x) =
-    ⊥-elim (trans∧irr⇒asym {_≈_ = _≈_} Eq.refl trans irrefl x<y y<x)
+    contradiction y<x (trans∧irr⇒asym {_≈_ = _≈_} Eq.refl trans irrefl x<y) 
 
 trans : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → Transitive _<_ →
         Transitive _≤_
