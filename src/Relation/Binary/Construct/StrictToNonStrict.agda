@@ -60,7 +60,7 @@ antisym eq trans irrefl = as
   as (inj₂ x≈y) _          = x≈y
   as (inj₁ _)   (inj₂ y≈x) = Eq.sym y≈x
   as (inj₁ x<y) (inj₁ y<x) =
-    contradiction y<x (trans∧irr⇒asym {_≈_ = _≈_} Eq.refl trans irrefl x<y) 
+    contradiction y<x (trans∧irr⇒asym {_≈_ = _≈_} Eq.refl trans irrefl x<y)
 
 trans : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → Transitive _<_ →
         Transitive _≤_
