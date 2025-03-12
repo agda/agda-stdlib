@@ -15,7 +15,7 @@ open import Function.Base using (_∘_; _∘₂_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable.Core
   using (yes; no; recompute; map′; dec⇒maybe)
 open import Relation.Unary using (∁; Pred)
@@ -121,8 +121,8 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
     irrefl (antisym x<y y<x) x<y
 
   asym⇒antisym : Asymmetric _<_ → Antisymmetric _≈_ _<_
-  asym⇒antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
-
+  asym⇒antisym asym x<y y<x = contradiction y<x (asym x<y) 
+ 
   asym⇒irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
              Asymmetric _<_ → Irreflexive _≈_ _<_
   asym⇒irr (respʳ , respˡ) sym asym {x} {y} x≈y x<y =
