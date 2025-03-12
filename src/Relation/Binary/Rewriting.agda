@@ -23,7 +23,7 @@ open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.Construct.Closure.Symmetric using (fwd; bwd)
 open import Relation.Binary.Construct.Closure.Transitive
   using (Plus; [_]; _∼⁺⟨_⟩_)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 -- The following definitions are taken from Klop [5]
 module _ {a ℓ} {A : Set a} (_⟶_ : Rel A ℓ) where
@@ -86,10 +86,10 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
 
   conf⇒unf : Confluent _⟶_ → UniqueNormalForm _⟶_
   conf⇒unf _ _     _     ε           = refl
-  conf⇒unf _ aIsNF _     (fwd x ◅ _) = ⊥-elim (aIsNF (_ , x))
+  conf⇒unf _ aIsNF _     (fwd x ◅ _) = contradiction (_ , x) aIsNF
   conf⇒unf c aIsNF bIsNF (bwd y ◅ r) with c (y ◅ ε) (conf⇒nf c bIsNF r)
-  ... | _ , ε     , x ◅ _ = ⊥-elim (bIsNF (_ , x))
-  ... | _ , x ◅ _ , _     = ⊥-elim (aIsNF (_ , x))
+  ... | _ , ε     , x ◅ _ = contradiction (_ , x) bIsNF
+  ... | _ , x ◅ _ , _     = contradiction (_ , x) aIsNF
   ... | _ , ε     , ε     = refl
 
   un&wn⇒cr : UniqueNormalForm _⟶_ → WeaklyNormalizing _⟶_ → Confluent _⟶_
