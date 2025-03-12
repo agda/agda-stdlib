@@ -32,7 +32,7 @@ open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Decidable using (does; _because_; yes; no)
-open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as Unary using (Decidable; Pred)
 
