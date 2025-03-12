@@ -12,6 +12,9 @@
 module Data.Product.Relation.Binary.Lex.NonStrict where
 
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
+  using (Pointwise)
+import Data.Product.Relation.Binary.Lex.Strict as Strict
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _⇒_)
@@ -24,9 +27,7 @@ open import Relation.Binary.Definitions
         ; Irreflexive; Asymmetric; _Respects₂_; tri<; tri>; tri≈)
 open import Relation.Binary.Consequences
 import Relation.Binary.Construct.NonStrictToStrict as Conv
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
-  using (Pointwise)
-import Data.Product.Relation.Binary.Lex.Strict as Strict
+
 
 private
   variable
