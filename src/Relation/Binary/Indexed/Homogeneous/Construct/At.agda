@@ -10,9 +10,11 @@ module Relation.Binary.Indexed.Homogeneous.Construct.At where
 
 open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
+open import Relation.Binary.Indexed.Homogeneous
+  using (IRel; IsIndexedEquivalence; IsIndexedDecEquivalence; IsIndexedPreorder
+        ; IndexedSetoid; IndexedDecSetoid; IndexedPreorder)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence; IsPreorder)
-open import Relation.Binary.Indexed.Homogeneous using (IRel; IsIndexedEquivalence; IsIndexedDecEquivalence; IsIndexedPreorder; IndexedSetoid; IndexedDecSetoid; IndexedPreorder)
 
 private
   variable
