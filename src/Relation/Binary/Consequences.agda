@@ -158,7 +158,7 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
   trans∧tri⇒respʳ sym ≈-tr <-tr tri {x} {y} {z} y≈z x<y with tri x z
   ... | tri< x<z _ _ = x<z
   ... | tri≈ _ x≈z _ = contradiction x<y (tri⇒irr tri (≈-tr x≈z (sym y≈z)))
-  ... | tri> _ _ z<x = contradiction (<-tr z<x x<y) (tri⇒irr tri (sym y≈z)) 
+  ... | tri> _ _ z<x = contradiction (<-tr z<x x<y) (tri⇒irr tri (sym y≈z))
 
   trans∧tri⇒respˡ : Transitive _≈_ →
                     Transitive _<_ → Trichotomous _≈_ _<_ →
