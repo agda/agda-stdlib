@@ -13,7 +13,7 @@ module Relation.Binary.Indexed.Homogeneous.Bundles where
 
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles as B using (Setoid; Poset)
+open import Relation.Binary.Bundles as B using (Setoid; Preorder; Poset)
 open import Relation.Binary.Indexed.Homogeneous.Core using (IRel; Lift)
 open import Relation.Binary.Indexed.Homogeneous.Structures
   using (IsIndexedEquivalence; IsIndexedDecEquivalence; IsIndexedPreorder

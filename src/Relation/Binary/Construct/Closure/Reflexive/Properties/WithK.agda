@@ -11,8 +11,9 @@ module Relation.Binary.Construct.Closure.Reflexive.Properties.WithK where
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Irrelevant; Irreflexive)
 open import Relation.Binary.Construct.Closure.Reflexive
+  using (ReflClosure; [_]; refl)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open import Relation.Binary.Construct.Closure.Reflexive.Properties public
 

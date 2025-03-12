@@ -9,12 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Function.Base
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
-open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Total; Asymmetric; Decidable)
-open import Relation.Binary.Morphism
+open import Relation.Binary.Morphism using (IsRelMonomorphism)
 
 module Relation.Binary.Morphism.RelMonomorphism
   {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
@@ -22,9 +18,12 @@ module Relation.Binary.Morphism.RelMonomorphism
   {⟦_⟧ : A → B} (isMonomorphism : IsRelMonomorphism _∼₁_ _∼₂_ ⟦_⟧)
   where
 
-open import Data.Sum.Base as Sum
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable
+open import Data.Sum.Base as Sum using (map)
+open import Function.Base using (flip; _∘_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Total; Asymmetric; Decidable)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 
 open IsRelMonomorphism isMonomorphism
 

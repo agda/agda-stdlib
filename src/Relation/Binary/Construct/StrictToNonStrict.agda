@@ -11,21 +11,23 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsPartialOrder; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
 
 module Relation.Binary.Construct.StrictToNonStrict
   {a ℓ₁ ℓ₂} {A : Set a}
   (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
   where
 
-open import Data.Product.Base
-open import Data.Sum.Base
-open import Data.Empty
-open import Function.Base
-open import Relation.Binary.Consequences
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (inj₁; inj₂; _⊎_; [_,_]; [_,_]′)
+open import Data.Empty using (⊥; ⊥-elim)
+open import Function.Base using (_∘_; flip; _$_)
+open import Relation.Binary.Consequences using (trans∧irr⇒asym)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsPartialOrder
+        ; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable
+        ; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
 open import Relation.Nullary.Decidable using (_⊎-dec_; yes; no)
 
 ------------------------------------------------------------------------

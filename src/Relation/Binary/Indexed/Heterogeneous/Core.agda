@@ -11,8 +11,8 @@
 
 module Relation.Binary.Indexed.Heterogeneous.Core where
 
-open import Level
-import Relation.Binary.Core as B
+open import Level using (Level)
+import Relation.Binary.Core as B using (Rel; REL; _⇒_)
 
 ------------------------------------------------------------------------
 -- Indexed binary relations
