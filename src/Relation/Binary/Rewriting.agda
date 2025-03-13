@@ -11,7 +11,6 @@ module Relation.Binary.Rewriting where
 
 open import Agda.Builtin.Equality using (_≡_ ; refl)
 open import Data.Product.Base using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
-open import Data.Empty using (⊥-elim)
 open import Function.Base using (flip)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Relation.Binary.Core using (REL; Rel)
@@ -81,7 +80,7 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
   conf⇒nf c aIsNF ε = ε
   conf⇒nf c aIsNF (fwd x ◅ rest) = x ◅ conf⇒nf c aIsNF rest
   conf⇒nf c aIsNF (bwd y ◅ rest) with c (y ◅ ε) (conf⇒nf c aIsNF rest)
-  ... | _ , _    , x ◅ _ = ⊥-elim (aIsNF (_ , x))
+  ... | _ , _    , x ◅ _ = contradiction (_ , x) aIsNF
   ... | _ , left , ε     = left
 
   conf⇒unf : Confluent _⟶_ → UniqueNormalForm _⟶_
