@@ -29,7 +29,7 @@ open import Relation.Binary.Definitions
         ; tri<; tri>; tri≈)
 open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (yes; no; _⊎-dec_; _×-dec_)
 open import Relation.Nullary.Negation using (contradiction)
 
 private
