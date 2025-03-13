@@ -8,7 +8,6 @@
 
 module Relation.Binary.Consequences where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘_; _∘₂_; _$_; flip)
@@ -121,7 +120,7 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
     irrefl (antisym x<y y<x) x<y
 
   asym⇒antisym : Asymmetric _<_ → Antisymmetric _≈_ _<_
-  asym⇒antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
+  asym⇒antisym asym x<y y<x = contradiction y<x (asym x<y)
 
   asym⇒irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
              Asymmetric _<_ → Irreflexive _≈_ _<_
