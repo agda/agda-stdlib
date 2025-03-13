@@ -18,7 +18,7 @@ open import Data.List.Fresh.Membership.Setoid S using (_∈_; _∉_)
 open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; _─_)
 import Data.List.Fresh.Relation.Unary.Any.Properties as List#
   using (length-remove)
-open import Data.Empty using (⊥)
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat.Base using (ℕ; suc; zero; _≤_; _<_; z≤n; s≤s; z<s; s<s)
 open import Data.Nat.Properties using (module ≤-Reasoning)
 open import Data.Product.Base using (∃; _×_; _,_)
@@ -32,7 +32,6 @@ import Relation.Binary.Definitions as Binary using (_Respectsˡ_; Irrelevant)
 import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; cong; sym; subst)
 open import Relation.Nary using (∀[_]; _⇒_)
-open import Relation.Nullary.Negation using (contradiction)
 
 open Setoid S renaming (Carrier to A)
 
@@ -133,7 +132,7 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
     open ≤-Reasoning
 
     step : ∀ {y} → y ∈ xs → y ∈ (ys ─ x∈ys)
-    step {y} y∈xs = fromInj₂ (λ x≈y → contradiction (≈-subst-∈ (sym x≈y) y∈xs) x∉xs )
+    step {y} y∈xs = fromInj₂ (λ x≈y → ⊥-elim (x∉xs (≈-subst-∈ (sym x≈y) y∈xs)))
                   $ remove-inv x∈ys (inj y∈xs)
 
 
@@ -148,6 +147,6 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≈-irrelevant : Binary.I
   ∈-irrelevant (there x∈xs₁) (there x∈xs₂) = ≡.cong there (∈-irrelevant x∈xs₁ x∈xs₂)
   -- absurd cases
   ∈-irrelevant {xs = cons x xs pr} (here x≈y)    (there x∈xs₂) =
-    contradiction x≈y (distinct x∈xs₂ (fresh⇒∉ R⇒≉ pr))
+    ⊥-elim (distinct x∈xs₂ (fresh⇒∉ R⇒≉ pr) x≈y)
   ∈-irrelevant {xs = cons x xs pr} (there x∈xs₁) (here x≈y)    =
-    contradiction x≈y (distinct x∈xs₁ (fresh⇒∉ R⇒≉ pr))
+    ⊥-elim (distinct x∈xs₁ (fresh⇒∉ R⇒≉ pr) x≈y)
