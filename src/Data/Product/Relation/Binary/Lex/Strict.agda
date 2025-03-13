@@ -30,7 +30,7 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Decidable.Core using (yes; no; _⊎-dec_; _×-dec_)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
   variable
