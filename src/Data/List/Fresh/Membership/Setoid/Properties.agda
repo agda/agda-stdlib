@@ -18,7 +18,7 @@ open import Data.List.Fresh.Membership.Setoid S using (_∈_; _∉_)
 open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; _─_)
 import Data.List.Fresh.Relation.Unary.Any.Properties as List#
   using (length-remove)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Data.Nat.Base using (ℕ; suc; zero; _≤_; _<_; z≤n; s≤s; z<s; s<s)
 open import Data.Nat.Properties using (module ≤-Reasoning)
 open import Data.Product.Base using (∃; _×_; _,_)
