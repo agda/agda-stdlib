@@ -28,7 +28,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable
         ; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
-open import Relation.Nullary.Decidable using (_⊎-dec_; yes; no)
+open import Relation.Nullary.Decidable.Core using (_⊎-dec_; yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 
 ------------------------------------------------------------------------
