@@ -105,4 +105,3 @@ module _ {q} {Q : Pred A q} where
   toAny : ∀ {p} {P : Pred A p} → First P Q ⊆ Any Q
   toAny [ qx ]     = here qx
   toAny (_ ∷ pqxs) = there (toAny pqxs)
-
