@@ -29,7 +29,7 @@ open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; cong₂)
 open import Relation.Nullary.Decidable.Core as Dec
   using (_×-dec_; yes; no; _because_)
-open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 
 private
