@@ -44,11 +44,11 @@ open import Relation.Binary.Core
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex; wlog)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable
-  using (True; via-injection; map′; recompute)
+  using (True; via-injection; map′; recompute; no; yes; Dec; _because_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (fromEquivalence)
+open import Relation.Nullary.Reflects
+  using (fromEquivalence; Reflects; invert)
 
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)

@@ -30,10 +30,9 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans
         ; Trichotomous; tri≈; tri<; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
-open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum
   using (⊥₋; [_]; _₋; ≡-dec; []-injective)
-import Relation.Nullary.Decidable.Core as Dec using (map′)
+open import Relation.Nullary.Decidable.Core as Dec using (yes; no; map′)
 
 ------------------------------------------------------------------------
 -- Definition
