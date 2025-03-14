@@ -78,3 +78,11 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong
   ε ∎
   where open ℚ.≤-Reasoning
 
++-identityʳ : RightIdentity 0ℝ _+_
++-identityʳ x ε = 0 , λ {n} _ → begin-strict
+  ℚ.∣ lookup (zipWith ℚ._+_ (sequence x) (repeat ℚ.0ℚ)) n ℚ.- x ‼ n ∣
+    ≡⟨ ℚ.d-definite (cong-lookup (PW.identityʳ ℚ.+-identityʳ (sequence x)) n) ⟩
+  ℚ.0ℚ
+    <⟨ ℚ.positive⁻¹ ε ⟩
+  ε ∎
+  where open ℚ.≤-Reasoning
