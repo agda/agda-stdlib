@@ -38,14 +38,14 @@ isCauchy (x + y) ε = proj₁ [x] ℕ.+ proj₁ [y] , λ {m} {n} m≥N n≥N →
       (lookup-zipWith m ℚ._+_ (sequence x) (sequence y))
       (lookup-zipWith n ℚ._+_ (sequence x) (sequence y))
     ⟩
-  ∣ (lookup (sequence x) m ℚ.+ lookup (sequence y) m) - (lookup (sequence x) n ℚ.+ lookup (sequence y) n) ∣
-    ≡⟨ cong ∣_∣ (lemma (lookup (sequence x) m) (lookup (sequence y) m) (lookup (sequence x) n) (lookup (sequence y) n)) ⟩
-  ∣ (lookup (sequence x) m - lookup (sequence x) n) ℚ.+ (lookup (sequence y) m - lookup (sequence y) n) ∣
+  ∣ (lookup (sequence x) m ℚ.+ lookup (sequence y) m) - (x ‼ n ℚ.+ y ‼ n) ∣
+    ≡⟨ cong ∣_∣ (lemma (lookup (sequence x) m) (lookup (sequence y) m) (x ‼ n) (y ‼ n)) ⟩
+  ∣ (lookup (sequence x) m - x ‼ n) ℚ.+ (lookup (sequence y) m - y ‼ n) ∣
     ≤⟨ ∣p+q∣≤∣p∣+∣q∣
-      (lookup (sequence x) m - lookup (sequence x) n)
-      (lookup (sequence y) m - lookup (sequence y) n)
+      (lookup (sequence x) m - x ‼ n)
+      (lookup (sequence y) m - y ‼ n)
     ⟩
-  ∣ lookup (sequence x) m - lookup (sequence x) n ∣ ℚ.+ ∣ lookup (sequence y) m - lookup (sequence y) n ∣
+  ∣ lookup (sequence x) m - x ‼ n ∣ ℚ.+ ∣ lookup (sequence y) m - y ‼ n ∣
     <⟨ +-mono-<
       (proj₂ [x]
         (ℕ.≤-trans (ℕ.m≤m+n (proj₁ [x]) (proj₁ [y])) m≥N)
@@ -77,11 +77,11 @@ sequence (- x) = map ℚ.-_ (sequence x)
 isCauchy (- x) ε = proj₁ (isCauchy x ε) , λ {m} {n} m≥N n≥N → begin-strict
   ∣ lookup (map ℚ.-_ (sequence x)) m - lookup (map ℚ.-_ (sequence x)) n ∣
     ≡⟨ cong₂ (λ a b → ∣ a - b ∣) (lookup-map m ℚ.-_ (sequence x)) (lookup-map n ℚ.-_ (sequence x)) ⟩
-  ∣ ℚ.- lookup (sequence x) m - ℚ.- lookup (sequence x) n ∣
-    ≡⟨ cong ∣_∣ (lemma (lookup (sequence x) m) (lookup (sequence x) n)) ⟩
-  ∣ ℚ.- (lookup (sequence x) m - lookup (sequence x) n) ∣
-    ≡⟨ ∣-p∣≡∣p∣ (lookup (sequence x) m - lookup (sequence x) n) ⟩
-  ∣ lookup (sequence x) m - lookup (sequence x) n ∣
+  ∣ ℚ.- lookup (sequence x) m - ℚ.- x ‼ n ∣
+    ≡⟨ cong ∣_∣ (lemma (lookup (sequence x) m) (x ‼ n)) ⟩
+  ∣ ℚ.- (lookup (sequence x) m - x ‼ n) ∣
+    ≡⟨ ∣-p∣≡∣p∣ (lookup (sequence x) m - x ‼ n) ⟩
+  ∣ lookup (sequence x) m - x ‼ n ∣
     <⟨ proj₂ (isCauchy x ε) m≥N n≥N ⟩
   ε ∎
   where
@@ -96,14 +96,14 @@ isCauchy (p *ₗ x) ε with p ≟ 0ℚ
 ... | yes p≡0 = 0 , λ {m} {n} _ _ → begin-strict
   ∣ lookup (map (p ℚ.*_) (sequence x)) m - lookup (map (p ℚ.*_) (sequence x)) n ∣
     ≡⟨ cong₂ (λ a b → ∣ a - b ∣) (lookup-map m (p ℚ.*_) (sequence x)) (lookup-map n (p ℚ.*_) (sequence x)) ⟩
-  ∣ p ℚ.* lookup (sequence x) m - p ℚ.* lookup (sequence x) n ∣
-    ≡⟨ cong (λ # → ∣ p ℚ.* lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (lookup (sequence x) n)) ⟩
-  ∣ p ℚ.* lookup (sequence x) m ℚ.+ p ℚ.* ℚ.- lookup (sequence x) n ∣
-    ≡⟨ cong ∣_∣ (*-distribˡ-+ p (lookup (sequence x) m) (ℚ.- lookup (sequence x) n)) ⟨
-  ∣ p ℚ.* (lookup (sequence x) m - lookup (sequence x) n) ∣
-    ≡⟨ cong (λ # → ∣ # ℚ.* (lookup (sequence x) m - lookup (sequence x) n) ∣) p≡0 ⟩
-  ∣ 0ℚ ℚ.* (lookup (sequence x) m - lookup (sequence x) n) ∣
-    ≡⟨ cong ∣_∣ (*-zeroˡ (lookup (sequence x) m - lookup (sequence x) n)) ⟩
+  ∣ p ℚ.* lookup (sequence x) m - p ℚ.* x ‼ n ∣
+    ≡⟨ cong (λ # → ∣ p ℚ.* lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (x ‼ n)) ⟩
+  ∣ p ℚ.* lookup (sequence x) m ℚ.+ p ℚ.* ℚ.- x ‼ n ∣
+    ≡⟨ cong ∣_∣ (*-distribˡ-+ p (lookup (sequence x) m) (ℚ.- x ‼ n)) ⟨
+  ∣ p ℚ.* (lookup (sequence x) m - x ‼ n) ∣
+    ≡⟨ cong (λ # → ∣ # ℚ.* (lookup (sequence x) m - x ‼ n) ∣) p≡0 ⟩
+  ∣ 0ℚ ℚ.* (lookup (sequence x) m - x ‼ n) ∣
+    ≡⟨ cong ∣_∣ (*-zeroˡ (lookup (sequence x) m - x ‼ n)) ⟩
   ∣ 0ℚ ∣
     ≡⟨⟩
   0ℚ
@@ -113,13 +113,13 @@ isCauchy (p *ₗ x) ε with p ≟ 0ℚ
 ... | no  p≢0 = proj₁ (isCauchy x (1/ ∣ p ∣ ℚ.* ε)) , λ {m} {n} m≥N n≥N → begin-strict
   ∣ lookup (map (p ℚ.*_) (sequence x)) m - lookup (map (p ℚ.*_) (sequence x)) n ∣
     ≡⟨ cong₂ (λ a b → ∣ a - b ∣) (lookup-map m (p ℚ.*_) (sequence x)) (lookup-map n (p ℚ.*_) (sequence x)) ⟩
-  ∣ p ℚ.* lookup (sequence x) m - p ℚ.* lookup (sequence x) n ∣
-    ≡⟨ cong (λ # → ∣ p ℚ.* lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (lookup (sequence x) n)) ⟩
-  ∣ p ℚ.* lookup (sequence x) m ℚ.+ p ℚ.* ℚ.- lookup (sequence x) n ∣
-    ≡⟨ cong ∣_∣ (*-distribˡ-+ p (lookup (sequence x) m) (ℚ.- lookup (sequence x) n)) ⟨
-  ∣ p ℚ.* (lookup (sequence x) m - lookup (sequence x) n) ∣
-    ≡⟨ ∣p*q∣≡∣p∣*∣q∣ p (lookup (sequence x) m - lookup (sequence x) n) ⟩
-  ∣ p ∣ ℚ.* ∣ lookup (sequence x) m - lookup (sequence x) n ∣
+  ∣ p ℚ.* lookup (sequence x) m - p ℚ.* x ‼ n ∣
+    ≡⟨ cong (λ # → ∣ p ℚ.* lookup (sequence x) m ℚ.+ # ∣) (neg-distribʳ-* p (x ‼ n)) ⟩
+  ∣ p ℚ.* lookup (sequence x) m ℚ.+ p ℚ.* ℚ.- x ‼ n ∣
+    ≡⟨ cong ∣_∣ (*-distribˡ-+ p (lookup (sequence x) m) (ℚ.- x ‼ n)) ⟨
+  ∣ p ℚ.* (lookup (sequence x) m - x ‼ n) ∣
+    ≡⟨ ∣p*q∣≡∣p∣*∣q∣ p (lookup (sequence x) m - x ‼ n) ⟩
+  ∣ p ∣ ℚ.* ∣ lookup (sequence x) m - x ‼ n ∣
     <⟨ *-monoʳ-<-pos ∣ p ∣ (proj₂ (isCauchy x (1/ ∣ p ∣ ℚ.* ε)) m≥N n≥N) ⟩
   ∣ p ∣ ℚ.* (1/ ∣ p ∣ ℚ.* ε)
     ≡⟨ *-assoc ∣ p ∣ (1/ ∣ p ∣) ε ⟨
@@ -144,24 +144,24 @@ sequence (square x) = map (λ p → p ℚ.* p) (sequence x)
 isCauchy (square x) ε = B ℕ.⊔ proj₁ (isCauchy x (1/ (b ℚ.+ b) ℚ.* ε)) , λ {m} {n} m≥N n≥N → begin-strict
   ∣ lookup (map (λ p → p ℚ.* p) (sequence x)) m - lookup (map (λ p → p ℚ.* p) (sequence x)) n ∣
     ≡⟨ cong₂ (λ a b → ∣ a - b ∣) (lookup-map m _ (sequence x)) (lookup-map n _ (sequence x)) ⟩
-  ∣ lookup (sequence x) m ℚ.* lookup (sequence x) m - lookup (sequence x) n ℚ.* lookup (sequence x) n ∣
-    ≡⟨ cong ∣_∣ (lemma (lookup (sequence x) m) (lookup (sequence x) n)) ⟩
-  ∣ (lookup (sequence x) m ℚ.+ lookup (sequence x) n) ℚ.* (lookup (sequence x) m - lookup (sequence x) n) ∣
-    ≡⟨ ∣p*q∣≡∣p∣*∣q∣ (lookup (sequence x) m ℚ.+ lookup (sequence x) n) (lookup (sequence x) m - lookup (sequence x) n) ⟩
-  ∣ lookup (sequence x) m ℚ.+ lookup (sequence x) n ∣ ℚ.* ∣ lookup (sequence x) m - lookup (sequence x) n ∣
-    ≤⟨ *-monoʳ-≤-nonNeg ∣ lookup (sequence x) m - lookup (sequence x) n ∣
-      {{∣-∣-nonNeg (lookup (sequence x) m - lookup (sequence x) n)}}
-      (∣p+q∣≤∣p∣+∣q∣ (lookup (sequence x) m) (lookup (sequence x) n))
+  ∣ lookup (sequence x) m ℚ.* lookup (sequence x) m - x ‼ n ℚ.* x ‼ n ∣
+    ≡⟨ cong ∣_∣ (lemma (lookup (sequence x) m) (x ‼ n)) ⟩
+  ∣ (lookup (sequence x) m ℚ.+ x ‼ n) ℚ.* (lookup (sequence x) m - x ‼ n) ∣
+    ≡⟨ ∣p*q∣≡∣p∣*∣q∣ (lookup (sequence x) m ℚ.+ x ‼ n) (lookup (sequence x) m - x ‼ n) ⟩
+  ∣ lookup (sequence x) m ℚ.+ x ‼ n ∣ ℚ.* ∣ lookup (sequence x) m - x ‼ n ∣
+    ≤⟨ *-monoʳ-≤-nonNeg ∣ lookup (sequence x) m - x ‼ n ∣
+      {{∣-∣-nonNeg (lookup (sequence x) m - x ‼ n)}}
+      (∣p+q∣≤∣p∣+∣q∣ (lookup (sequence x) m) (x ‼ n))
     ⟩
-  (∣ lookup (sequence x) m ∣ ℚ.+ ∣ lookup (sequence x) n ∣) ℚ.* ∣ lookup (sequence x) m - lookup (sequence x) n ∣
-    ≤⟨ *-monoʳ-≤-nonNeg ∣ lookup (sequence x) m - lookup (sequence x) n ∣
-      {{∣-∣-nonNeg (lookup (sequence x) m - lookup (sequence x) n)}}
+  (∣ lookup (sequence x) m ∣ ℚ.+ ∣ x ‼ n ∣) ℚ.* ∣ lookup (sequence x) m - x ‼ n ∣
+    ≤⟨ *-monoʳ-≤-nonNeg ∣ lookup (sequence x) m - x ‼ n ∣
+      {{∣-∣-nonNeg (lookup (sequence x) m - x ‼ n)}}
       (<⇒≤ (+-mono-<
         (b-prop (ℕ.≤-trans (ℕ.m≤m⊔n B (proj₁ (isCauchy x (1/ (b ℚ.+ b) ℚ.* ε)))) m≥N))
         (b-prop (ℕ.≤-trans (ℕ.m≤m⊔n B (proj₁ (isCauchy x (1/ (b ℚ.+ b) ℚ.* ε)))) n≥N))
       ))
     ⟩
-  (b ℚ.+ b) ℚ.* ∣ lookup (sequence x) m - lookup (sequence x) n ∣
+  (b ℚ.+ b) ℚ.* ∣ lookup (sequence x) m - x ‼ n ∣
     <⟨ *-monoʳ-<-pos (b ℚ.+ b) (proj₂ (isCauchy x (1/ (b ℚ.+ b) ℚ.* ε))
       (ℕ.≤-trans (ℕ.m≤n⊔m B (proj₁ (isCauchy x (1/ (b ℚ.+ b) ℚ.* ε)))) m≥N)
       (ℕ.≤-trans (ℕ.m≤n⊔m B (proj₁ (isCauchy x (1/ (b ℚ.+ b) ℚ.* ε)))) n≥N)
@@ -197,17 +197,17 @@ isCauchy (square x) ε = B ℕ.⊔ proj₁ (isCauchy x (1/ (b ℚ.+ b) ℚ.* ε)
     instance _ : Positive (1/ (b ℚ.+ b) ℚ.* ε)
     _ = pos*pos⇒pos (1/ (b ℚ.+ b)) {{1/pos⇒pos (b ℚ.+ b)}} ε
 
-    b-prop : ∀ {n} → n ℕ.≥ B → ∣ lookup (sequence x) n ∣ < b
+    b-prop : ∀ {n} → n ℕ.≥ B → ∣ x ‼ n ∣ < b
     b-prop {n} n≥B = begin-strict
-     ∣ lookup (sequence x) n ∣
-       ≡⟨ cong ∣_∣ (+-identityʳ (lookup (sequence x) n)) ⟨
-     ∣ lookup (sequence x) n ℚ.+ 0ℚ ∣
-       ≡⟨ cong (λ # → ∣ lookup (sequence x) n ℚ.+ # ∣) (+-inverseˡ (lookup (sequence x) B)) ⟨
-     ∣ lookup (sequence x) n ℚ.+ (ℚ.- lookup (sequence x) B ℚ.+ lookup (sequence x) B) ∣
-       ≡⟨ cong ∣_∣ (+-assoc (lookup (sequence x) n) (ℚ.- lookup (sequence x) B) (lookup (sequence x) B)) ⟨
-     ∣ (lookup (sequence x) n - lookup (sequence x) B) ℚ.+ lookup (sequence x) B ∣
-       ≤⟨ ∣p+q∣≤∣p∣+∣q∣ (lookup (sequence x) n - lookup (sequence x) B) (lookup (sequence x) B) ⟩
-     ∣ lookup (sequence x) n - lookup (sequence x) B ∣ ℚ.+ ∣ lookup (sequence x) B ∣
+     ∣ x ‼ n ∣
+       ≡⟨ cong ∣_∣ (+-identityʳ (x ‼ n)) ⟨
+     ∣ x ‼ n ℚ.+ 0ℚ ∣
+       ≡⟨ cong (λ # → ∣ x ‼ n ℚ.+ # ∣) (+-inverseˡ (lookup (sequence x) B)) ⟨
+     ∣ x ‼ n ℚ.+ (ℚ.- lookup (sequence x) B ℚ.+ lookup (sequence x) B) ∣
+       ≡⟨ cong ∣_∣ (+-assoc (x ‼ n) (ℚ.- lookup (sequence x) B) (lookup (sequence x) B)) ⟨
+     ∣ (x ‼ n - lookup (sequence x) B) ℚ.+ lookup (sequence x) B ∣
+       ≤⟨ ∣p+q∣≤∣p∣+∣q∣ (x ‼ n - lookup (sequence x) B) (lookup (sequence x) B) ⟩
+     ∣ x ‼ n - lookup (sequence x) B ∣ ℚ.+ ∣ lookup (sequence x) B ∣
        <⟨ +-monoˡ-< ∣ lookup (sequence x) B ∣ (proj₂ (isCauchy x 1ℚ) n≥B ℕ.≤-refl) ⟩
      1ℚ ℚ.+ ∣ lookup (sequence x) B ∣ ≡⟨⟩
      b ∎

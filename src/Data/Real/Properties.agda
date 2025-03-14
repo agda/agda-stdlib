@@ -28,11 +28,11 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong
 +-cong {x} {y} {u} {v} x≈y u≈v ε = proj₁ (x≈y (ℚ.½ ℚ.* ε)) ℕ.⊔ proj₁ (u≈v (ℚ.½ ℚ.* ε)) , λ {n} n≥N → begin-strict
   ℚ.∣ lookup (zipWith ℚ._+_ (sequence x) (sequence u)) n ℚ.- lookup (zipWith ℚ._+_ (sequence y) (sequence v)) n ∣
     ≡⟨ cong₂ (λ a b → ℚ.∣ a ℚ.- b ∣) (lookup-zipWith n ℚ._+_ (sequence x) (sequence u)) (lookup-zipWith n ℚ._+_ (sequence y) (sequence v)) ⟩
-  ℚ.∣ (lookup (sequence x) n ℚ.+ lookup (sequence u) n) ℚ.- (lookup (sequence y) n ℚ.+ lookup (sequence v) n) ∣
-    ≡⟨ cong ℚ.∣_∣ (lemma (lookup (sequence x) n) (lookup (sequence u) n) (lookup (sequence y) n) (lookup (sequence v) n)) ⟩
-  ℚ.∣ (lookup (sequence x) n ℚ.- lookup (sequence y) n) ℚ.+ (lookup (sequence u) n ℚ.- lookup (sequence v) n) ∣
-    ≤⟨ ℚ.∣p+q∣≤∣p∣+∣q∣ (lookup (sequence x) n ℚ.- lookup (sequence y) n) (lookup (sequence u) n ℚ.- lookup (sequence v) n) ⟩
-  ℚ.∣ lookup (sequence x) n ℚ.- lookup (sequence y) n ∣ ℚ.+ ℚ.∣ lookup (sequence u) n ℚ.- lookup (sequence v) n ∣
+  ℚ.∣ (x ‼ n ℚ.+ lookup (sequence u) n) ℚ.- (y ‼ n ℚ.+ lookup (sequence v) n) ∣
+    ≡⟨ cong ℚ.∣_∣ (lemma (x ‼ n) (lookup (sequence u) n) (y ‼ n) (lookup (sequence v) n)) ⟩
+  ℚ.∣ (x ‼ n ℚ.- y ‼ n) ℚ.+ (lookup (sequence u) n ℚ.- lookup (sequence v) n) ∣
+    ≤⟨ ℚ.∣p+q∣≤∣p∣+∣q∣ (x ‼ n ℚ.- y ‼ n) (lookup (sequence u) n ℚ.- lookup (sequence v) n) ⟩
+  ℚ.∣ x ‼ n ℚ.- y ‼ n ∣ ℚ.+ ℚ.∣ lookup (sequence u) n ℚ.- lookup (sequence v) n ∣
     <⟨ ℚ.+-mono-<
       (proj₂ (x≈y (ℚ.½ ℚ.* ε)) (ℕ.≤-trans (ℕ.m≤m⊔n (proj₁ (x≈y (ℚ.½ ℚ.* ε))) (proj₁ (u≈v (ℚ.½ ℚ.* ε)))) n≥N))
       (proj₂ (u≈v (ℚ.½ ℚ.* ε)) (ℕ.≤-trans (ℕ.m≤n⊔m (proj₁ (x≈y (ℚ.½ ℚ.* ε))) (proj₁ (u≈v (ℚ.½ ℚ.* ε)))) n≥N))
@@ -71,7 +71,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong
 
 +-identityˡ : LeftIdentity 0ℝ _+_
 +-identityˡ x ε = 0 , λ {n} _ → begin-strict
-  ℚ.∣ lookup (zipWith ℚ._+_ (repeat ℚ.0ℚ) (sequence x)) n ℚ.- lookup (sequence x) n ∣
+  ℚ.∣ lookup (zipWith ℚ._+_ (repeat ℚ.0ℚ) (sequence x)) n ℚ.- x ‼ n ∣
     ≡⟨ ℚ.d-definite (cong-lookup (PW.identityˡ ℚ.+-identityˡ (sequence x)) n) ⟩
   ℚ.0ℚ
     <⟨ ℚ.positive⁻¹ ε ⟩
