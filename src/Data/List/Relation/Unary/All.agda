@@ -248,4 +248,3 @@ all = all?
 "Warning: all was deprecated in v1.4.
 Please use all? instead."
 #-}
-
