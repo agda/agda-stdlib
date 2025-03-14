@@ -14,7 +14,7 @@ open import Algebra.Definitions _≈_
 open import Codata.Guarded.Stream
 open import Codata.Guarded.Stream.Properties
 import Codata.Guarded.Stream.Relation.Binary.Pointwise as PW
-open import Data.Product.Base
+open import Data.Product.Base hiding (map)
 import Data.Integer.Base as ℤ
 import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
@@ -82,6 +82,45 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong
 +-identityʳ x ε = 0 , λ {n} _ → begin-strict
   ℚ.∣ lookup (zipWith ℚ._+_ (sequence x) (repeat ℚ.0ℚ)) n ℚ.- x ‼ n ∣
     ≡⟨ ℚ.d-definite (cong-lookup (PW.identityʳ ℚ.+-identityʳ (sequence x)) n) ⟩
+  ℚ.0ℚ
+    <⟨ ℚ.positive⁻¹ ε ⟩
+  ε ∎
+  where open ℚ.≤-Reasoning
+
+-‿cong : Congruent₁ -_
+-‿cong {x} {y} x≈y ε = proj₁ (x≈y ε) , λ {n} n≥N → begin-strict
+  ℚ.∣ lookup (map ℚ.-_ (sequence x)) n ℚ.- lookup (map ℚ.-_ (sequence y)) n ∣
+    ≡⟨ cong₂ (λ a b → ℚ.∣ a ℚ.- b ∣) (lookup-map n ℚ.-_ (sequence x)) (lookup-map n ℚ.-_ (sequence y)) ⟩
+  ℚ.∣ (ℚ.- x ‼ n) ℚ.- (ℚ.- y ‼ n) ∣
+    ≡⟨ cong ℚ.∣_∣ (ℚ.neg-distrib-+ (x ‼ n) (ℚ.- y ‼ n)) ⟨
+  ℚ.∣ ℚ.- (x ‼ n ℚ.- y ‼ n) ∣
+    ≡⟨ ℚ.∣-p∣≡∣p∣ (x ‼ n ℚ.- y ‼ n) ⟩
+  ℚ.∣ x ‼ n ℚ.- y ‼ n ∣
+    <⟨ proj₂ (x≈y ε) n≥N ⟩
+  ε ∎
+  where open ℚ.≤-Reasoning
+
+-‿inverseˡ : LeftInverse 0ℝ -_ _+_
+-‿inverseˡ x ε = 0 , λ {n} _ → begin-strict
+  ℚ.∣ lookup (zipWith ℚ._+_ (map ℚ.-_ (sequence x)) (sequence x)) n ℚ.- lookup (repeat ℚ.0ℚ) n ∣
+    ≡⟨ cong₂ (λ a b → ℚ.∣ a ℚ.- b ∣) (lookup-zipWith n ℚ._+_ (map ℚ.-_ (sequence x)) (sequence x)) (lookup-repeat n ℚ.0ℚ) ⟩
+  ℚ.∣ (lookup (map ℚ.-_ (sequence x)) n ℚ.+ x ‼ n) ℚ.+ ℚ.0ℚ ∣
+    ≡⟨ cong (λ a → ℚ.∣ (a ℚ.+ x ‼ n) ℚ.+ ℚ.0ℚ ∣) (lookup-map n ℚ.-_ (sequence x)) ⟩
+  ℚ.∣ (ℚ.- x ‼ n ℚ.+ x ‼ n) ℚ.+ ℚ.0ℚ ∣
+    ≡⟨ cong (λ a → ℚ.∣ a ℚ.+ ℚ.0ℚ ∣) (ℚ.+-inverseˡ (x ‼ n)) ⟩
+  ℚ.∣ ℚ.0ℚ ∣
+    <⟨ ℚ.positive⁻¹ ε ⟩
+  ε ∎
+  where open ℚ.≤-Reasoning
+
+-‿inverseʳ : RightInverse 0ℝ -_ _+_
+-‿inverseʳ x ε = 0 , λ {n} _ → begin-strict
+  ℚ.∣ (x + (- x)) ‼ n ℚ.- 0ℝ ‼ n ∣
+    ≡⟨ cong₂ (λ a b → ℚ.∣ a ℚ.- b ∣) (lookup-zipWith n ℚ._+_ (sequence x) (sequence (- x))) (lookup-repeat n ℚ.0ℚ) ⟩
+  ℚ.∣ (x ‼ n ℚ.+ (- x) ‼ n) ℚ.+ ℚ.0ℚ ∣
+    ≡⟨ cong (λ a → ℚ.∣ (x ‼ n ℚ.+ a) ℚ.+ ℚ.0ℚ ∣) (lookup-map n ℚ.-_ (sequence x)) ⟩
+  ℚ.∣ (x ‼ n ℚ.- x ‼ n) ℚ.+ ℚ.0ℚ ∣
+    ≡⟨ cong (λ a → ℚ.∣ a ℚ.+ ℚ.0ℚ ∣) (ℚ.+-inverseʳ (x ‼ n)) ⟩
   ℚ.0ℚ
     <⟨ ℚ.positive⁻¹ ε ⟩
   ε ∎
