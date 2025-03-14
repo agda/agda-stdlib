@@ -52,15 +52,42 @@ infix 4 ε∣_
 ------------------------------------------------------------------------
 -- Properties of mutual divisibiity
 
-∣∣-refl : Reflexive _∣∣_
-∣∣-refl = ∣-refl , ∣-refl
+∥-refl : Reflexive _∥_
+∥-refl = ∣-refl , ∣-refl
 
-∣∣-reflexive : _≈_ ⇒ _∣∣_
-∣∣-reflexive x≈y = ∣-reflexive x≈y , ∣-reflexive (sym x≈y)
+∥-reflexive : _≈_ ⇒ _∥_
+∥-reflexive x≈y = ∣-reflexive x≈y , ∣-reflexive (sym x≈y)
 
-∣∣-isEquivalence : IsEquivalence _∣∣_
-∣∣-isEquivalence = record
-  { refl  = λ {x} → ∣∣-refl {x}
-  ; sym   = λ {x} {y} → ∣∣-sym {x} {y}
-  ; trans = λ {x} {y} {z} → ∣∣-trans {x} {y} {z}
+∥-isEquivalence : IsEquivalence _∥_
+∥-isEquivalence = record
+  { refl  = λ {x} → ∥-refl {x}
+  ; sym   = λ {x} {y} → ∥-sym {x} {y}
+  ; trans = λ {x} {y} {z} → ∥-trans {x} {y} {z}
   }
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+∣∣-refl = ∥-refl
+{-# WARNING_ON_USAGE ∣∣-refl
+"Warning: ∣∣-refl was deprecated in v2.3.
+Please use ∥-refl instead. "
+#-}
+
+∣∣-reflexive = ∥-reflexive
+{-# WARNING_ON_USAGE ∣∣-reflexive
+"Warning: ∣∣-reflexive was deprecated in v2.3.
+Please use ∥-reflexive instead. "
+#-}
+
+∣∣-isEquivalence = ∥-isEquivalence
+{-# WARNING_ON_USAGE ∣∣-isEquivalence
+"Warning: ∣∣-isEquivalence was deprecated in v2.3.
+Please use ∥-isEquivalence instead. "
+#-}

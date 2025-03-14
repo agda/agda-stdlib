@@ -10,9 +10,10 @@ module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
+open import Data.Bool.ListAction using (all)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (lookup; updateAt)
+open import Data.List.Base as List hiding (lookup; updateAt; and; or; all; any)
 open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
   using (there-injective-≢∈; ∈-filter⁻)
