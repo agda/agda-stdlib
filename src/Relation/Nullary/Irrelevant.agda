@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Operations on nullary relations (like negation and decidability)
+-- A type `A` is irrelevant if all of its elements are equal.
+-- This is also refered to as "A is an h-proposition".
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
