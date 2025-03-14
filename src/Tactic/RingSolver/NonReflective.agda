@@ -21,7 +21,6 @@ open import Algebra.Morphism
 open import Function.Base using (id; _⟨_⟩_)
 open import Data.Bool.Base using (Bool; true; false; T; if_then_else_)
 open import Data.Maybe.Base
-open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_×_; proj₁; proj₂; _,_)
 open import Data.Vec.Base using (Vec)
