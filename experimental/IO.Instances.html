@@ -9,14 +9,14 @@
 
 <a id="262" class="Keyword">module</a> <a id="269" href="IO.Instances.html" class="Module">IO.Instances</a> <a id="282" class="Keyword">where</a>
 
-<a id="289" class="Keyword">open</a> <a id="294" class="Keyword">import</a> <a id="301" href="IO.Base.html" class="Module">IO.Base</a>
-<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Effect.Functor.html" class="Module">Effect.Functor</a>
-<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
-<a id="367" class="Keyword">open</a> <a id="372" class="Keyword">import</a> <a id="379" href="Effect.Monad.html" class="Module">Effect.Monad</a>
-<a id="392" class="Keyword">open</a> <a id="397" class="Keyword">import</a> <a id="404" href="IO.Effectful.html" class="Module">IO.Effectful</a>
+<a id="289" class="Keyword">open</a> <a id="294" class="Keyword">import</a> <a id="301" href="Effect.Functor.html" class="Module">Effect.Functor</a> <a id="316" class="Keyword">using</a> <a id="322" class="Symbol">(</a><a id="323" href="Effect.Functor.html#602" class="Record">RawFunctor</a><a id="333" class="Symbol">)</a>
+<a id="335" class="Keyword">open</a> <a id="340" class="Keyword">import</a> <a id="347" href="Effect.Applicative.html" class="Module">Effect.Applicative</a> <a id="366" class="Keyword">using</a> <a id="372" class="Symbol">(</a><a id="373" href="Effect.Applicative.html#977" class="Record">RawApplicative</a><a id="387" class="Symbol">)</a>
+<a id="389" class="Keyword">open</a> <a id="394" class="Keyword">import</a> <a id="401" href="Effect.Monad.html" class="Module">Effect.Monad</a> <a id="414" class="Keyword">using</a> <a id="420" class="Symbol">(</a><a id="421" href="Effect.Monad.html#899" class="Record">RawMonad</a><a id="429" class="Symbol">)</a>
+<a id="431" class="Keyword">open</a> <a id="436" class="Keyword">import</a> <a id="443" href="IO.Base.html" class="Module">IO.Base</a> <a id="451" class="Keyword">using</a> <a id="457" class="Symbol">(</a><a id="458" href="IO.Base.html#1305" class="Datatype">IO</a><a id="460" class="Symbol">)</a>
+<a id="462" class="Keyword">open</a> <a id="467" class="Keyword">import</a> <a id="474" href="IO.Effectful.html" class="Module">IO.Effectful</a> <a id="487" class="Keyword">using</a> <a id="493" class="Symbol">(</a><a id="494" href="IO.Effectful.html#608" class="Function">functor</a><a id="501" class="Symbol">;</a> <a id="503" href="IO.Effectful.html#672" class="Function">applicative</a><a id="514" class="Symbol">;</a> <a id="516" href="IO.Effectful.html#793" class="Function">monad</a><a id="521" class="Symbol">)</a>
 
-<a id="418" class="Keyword">instance</a>
-  <a id="ioFunctor"></a><a id="429" href="IO.Instances.html#429" class="Function">ioFunctor</a> <a id="439" class="Symbol">=</a> <a id="441" href="IO.Effectful.html#530" class="Function">functor</a>
-  <a id="ioApplicative"></a><a id="451" href="IO.Instances.html#451" class="Function">ioApplicative</a> <a id="465" class="Symbol">=</a> <a id="467" href="IO.Effectful.html#594" class="Function">applicative</a>
-  <a id="ioMonad"></a><a id="481" href="IO.Instances.html#481" class="Function">ioMonad</a> <a id="489" class="Symbol">=</a> <a id="491" href="IO.Effectful.html#715" class="Function">monad</a>
+<a id="524" class="Keyword">instance</a>
+  <a id="ioFunctor"></a><a id="535" href="IO.Instances.html#535" class="Function">ioFunctor</a> <a id="545" class="Symbol">=</a> <a id="547" href="IO.Effectful.html#608" class="Function">functor</a>
+  <a id="ioApplicative"></a><a id="557" href="IO.Instances.html#557" class="Function">ioApplicative</a> <a id="571" class="Symbol">=</a> <a id="573" href="IO.Effectful.html#672" class="Function">applicative</a>
+  <a id="ioMonad"></a><a id="587" href="IO.Instances.html#587" class="Function">ioMonad</a> <a id="595" class="Symbol">=</a> <a id="597" href="IO.Effectful.html#793" class="Function">monad</a>
 </pre></body></html>

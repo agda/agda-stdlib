@@ -32,7 +32,7 @@
 <a id="1141" class="Comment">-- The types for which `P` or `¬P` holds is called `Dec P` in the</a>
 <a id="1207" class="Comment">-- standard library (short for `Decidable`).</a>
 
-<a id="1253" class="Keyword">open</a> <a id="1258" class="Keyword">import</a> <a id="1265" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="1292" class="Keyword">using</a> <a id="1298" class="Symbol">(</a><a id="1299" href="Relation.Nullary.Decidable.Core.html#1861" class="Record">Dec</a><a id="1302" class="Symbol">)</a>
+<a id="1253" class="Keyword">open</a> <a id="1258" class="Keyword">import</a> <a id="1265" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="1292" class="Keyword">using</a> <a id="1298" class="Symbol">(</a><a id="1299" href="Relation.Nullary.Decidable.Core.html#1913" class="Record">Dec</a><a id="1302" class="Symbol">)</a>
 
 <a id="1305" class="Comment">-- The type of the proof of saying that excluded middle holds for</a>
 <a id="1371" class="Comment">-- all types at universe level ℓ is therefore:</a>
@@ -46,7 +46,7 @@
 <a id="1574" class="Comment">-- There are two different ways that the axiom can be introduced into</a>
 <a id="1644" class="Comment">-- your Agda development. The first option is to postulate it:</a>
 
-<a id="1708" class="Keyword">postulate</a> <a id="excludedMiddle"></a><a id="1718" href="README.Axiom.html#1718" class="Postulate">excludedMiddle</a> <a id="1733" class="Symbol">:</a> <a id="1735" href="Axiom.ExcludedMiddle.html#581" class="Function">ExcludedMiddle</a> <a id="1750" href="README.Axiom.html#302" class="Generalizable">ℓ</a>
+<a id="1708" class="Keyword">postulate</a> <a id="excludedMiddle"></a><a id="1718" href="README.Axiom.html#1718" class="Postulate">excludedMiddle</a> <a id="1733" class="Symbol">:</a> <a id="1735" href="Axiom.ExcludedMiddle.html#627" class="Function">ExcludedMiddle</a> <a id="1750" href="README.Axiom.html#302" class="Generalizable">ℓ</a>
 
 <a id="1753" class="Comment">-- This has the advantage that it only needs to be postulated once</a>
 <a id="1820" class="Comment">-- and it can then be imported into many different modules as with any</a>
@@ -55,7 +55,7 @@
 
 <a id="2005" class="Comment">-- The second approach is to pass it as a module parameter:</a>
 
-<a id="2066" class="Keyword">module</a> <a id="Proof"></a><a id="2073" href="README.Axiom.html#2073" class="Module">Proof</a> <a id="2079" class="Symbol">(</a><a id="2080" href="README.Axiom.html#2080" class="Bound">excludedMiddle</a> <a id="2095" class="Symbol">:</a> <a id="2097" href="Axiom.ExcludedMiddle.html#581" class="Function">ExcludedMiddle</a> <a id="2112" href="README.Axiom.html#302" class="Generalizable">ℓ</a><a id="2113" class="Symbol">)</a> <a id="2115" class="Keyword">where</a>
+<a id="2066" class="Keyword">module</a> <a id="Proof"></a><a id="2073" href="README.Axiom.html#2073" class="Module">Proof</a> <a id="2079" class="Symbol">(</a><a id="2080" href="README.Axiom.html#2080" class="Bound">excludedMiddle</a> <a id="2095" class="Symbol">:</a> <a id="2097" href="Axiom.ExcludedMiddle.html#627" class="Function">ExcludedMiddle</a> <a id="2112" href="README.Axiom.html#302" class="Generalizable">ℓ</a><a id="2113" class="Symbol">)</a> <a id="2115" class="Keyword">where</a>
 
 <a id="2122" class="Comment">-- The advantage of this approach is that the resulting Agda</a>
 <a id="2183" class="Comment">-- development can still be type checked under the --safe flag.</a>

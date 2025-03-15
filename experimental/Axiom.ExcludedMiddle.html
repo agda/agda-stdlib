@@ -9,15 +9,15 @@
 
 <a id="274" class="Keyword">module</a> <a id="281" href="Axiom.ExcludedMiddle.html" class="Module">Axiom.ExcludedMiddle</a> <a id="302" class="Keyword">where</a>
 
-<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Level.html" class="Module">Level</a>
-<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Level.html" class="Module">Level</a> <a id="327" class="Keyword">using</a> <a id="333" class="Symbol">(</a><a id="334" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="339" class="Symbol">;</a> <a id="341" href="Agda.Primitive.html#931" class="Primitive">suc</a><a id="344" class="Symbol">)</a>
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Relation.Nullary.Decidable.Core.html" class="Module">Relation.Nullary.Decidable.Core</a> <a id="390" class="Keyword">using</a> <a id="396" class="Symbol">(</a><a id="397" href="Relation.Nullary.Decidable.Core.html#1913" class="Record">Dec</a><a id="400" class="Symbol">)</a>
 
-<a id="357" class="Comment">------------------------------------------------------------------------</a>
-<a id="430" class="Comment">-- Definition</a>
+<a id="403" class="Comment">------------------------------------------------------------------------</a>
+<a id="476" class="Comment">-- Definition</a>
 
-<a id="445" class="Comment">-- The classical statement of excluded middle says that every</a>
-<a id="507" class="Comment">-- statement/set is decidable (i.e. it either holds or it doesn&#39;t hold).</a>
+<a id="491" class="Comment">-- The classical statement of excluded middle says that every</a>
+<a id="553" class="Comment">-- statement/set is decidable (i.e. it either holds or it doesn&#39;t hold).</a>
 
-<a id="ExcludedMiddle"></a><a id="581" href="Axiom.ExcludedMiddle.html#581" class="Function">ExcludedMiddle</a> <a id="596" class="Symbol">:</a> <a id="598" class="Symbol">(</a><a id="599" href="Axiom.ExcludedMiddle.html#599" class="Bound">ℓ</a> <a id="601" class="Symbol">:</a> <a id="603" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="608" class="Symbol">)</a> <a id="610" class="Symbol">→</a> <a id="612" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="616" class="Symbol">(</a><a id="617" href="Agda.Primitive.html#931" class="Primitive">suc</a> <a id="621" href="Axiom.ExcludedMiddle.html#599" class="Bound">ℓ</a><a id="622" class="Symbol">)</a>
-<a id="624" href="Axiom.ExcludedMiddle.html#581" class="Function">ExcludedMiddle</a> <a id="639" href="Axiom.ExcludedMiddle.html#639" class="Bound">ℓ</a> <a id="641" class="Symbol">=</a> <a id="643" class="Symbol">{</a><a id="644" href="Axiom.ExcludedMiddle.html#644" class="Bound">P</a> <a id="646" class="Symbol">:</a> <a id="648" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="652" href="Axiom.ExcludedMiddle.html#639" class="Bound">ℓ</a><a id="653" class="Symbol">}</a> <a id="655" class="Symbol">→</a> <a id="657" href="Relation.Nullary.Decidable.Core.html#1861" class="Record">Dec</a> <a id="661" href="Axiom.ExcludedMiddle.html#644" class="Bound">P</a>
+<a id="ExcludedMiddle"></a><a id="627" href="Axiom.ExcludedMiddle.html#627" class="Function">ExcludedMiddle</a> <a id="642" class="Symbol">:</a> <a id="644" class="Symbol">∀</a> <a id="646" href="Axiom.ExcludedMiddle.html#646" class="Bound">ℓ</a> <a id="648" class="Symbol">→</a> <a id="650" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="654" class="Symbol">(</a><a id="655" href="Agda.Primitive.html#931" class="Primitive">suc</a> <a id="659" href="Axiom.ExcludedMiddle.html#646" class="Bound">ℓ</a><a id="660" class="Symbol">)</a>
+<a id="662" href="Axiom.ExcludedMiddle.html#627" class="Function">ExcludedMiddle</a> <a id="677" href="Axiom.ExcludedMiddle.html#677" class="Bound">ℓ</a> <a id="679" class="Symbol">=</a> <a id="681" class="Symbol">{</a><a id="682" href="Axiom.ExcludedMiddle.html#682" class="Bound">P</a> <a id="684" class="Symbol">:</a> <a id="686" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="690" href="Axiom.ExcludedMiddle.html#677" class="Bound">ℓ</a><a id="691" class="Symbol">}</a> <a id="693" class="Symbol">→</a> <a id="695" href="Relation.Nullary.Decidable.Core.html#1913" class="Record">Dec</a> <a id="699" href="Axiom.ExcludedMiddle.html#682" class="Bound">P</a>
 </pre></body></html>
