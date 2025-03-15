@@ -120,6 +120,8 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
+* `Relation.Nullary.Irrelevant` defining the concept of irrelevance (h-proposition), where all elements of a type are equal.
+
 Additions to existing modules
 -----------------------------
 

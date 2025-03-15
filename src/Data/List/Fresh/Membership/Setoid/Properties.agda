@@ -26,7 +26,7 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
 open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Nullary using (Irrelevant)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Unary as Unary using (Pred)
 import Relation.Binary.Definitions as Binary using (_Respectsˡ_; Irrelevant)
 import Relation.Binary.PropositionalEquality.Core as ≡

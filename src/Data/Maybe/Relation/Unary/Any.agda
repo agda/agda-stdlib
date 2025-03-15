@@ -16,8 +16,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 open import Relation.Unary
   using (Pred; _⊆_; _∩_; Decidable; Irrelevant; Satisfiable)
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec using (Dec; yes; no; map)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
 
 ------------------------------------------------------------------------
 -- Definition

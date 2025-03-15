@@ -19,8 +19,8 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; const)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core as Dec
+  using (_×-dec_; yes; no; map′)
 open import Relation.Unary hiding (_∈_)
 import Relation.Unary.Properties as Unary
 open import Relation.Binary.Bundles using (Setoid)
