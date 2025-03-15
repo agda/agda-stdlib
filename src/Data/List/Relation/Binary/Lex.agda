@@ -117,4 +117,3 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     decidable (x ∷ xs) []       = no λ()
     decidable (x ∷ xs) (y ∷ ys) =
       Dec.map ∷<∷-⇔ (dec-≺ x y ⊎-dec (dec-≈ x y ×-dec decidable xs ys))
-
