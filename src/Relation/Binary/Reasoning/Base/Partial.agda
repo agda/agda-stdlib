@@ -31,9 +31,12 @@ data _IsRelatedTo_ : A → A → Set (a ⊔ ℓ) where
   singleStep : ∀ x → x IsRelatedTo x
   multiStep  : ∀ {x y} (x∼y : x ∼ y) → x IsRelatedTo y
 
+∼-go-build : Trans _∼_ _IsRelatedTo_ _∼_
+∼-go-build x∼y (singleStep y) = x∼y
+∼-go-build x∼y (multiStep y∼z) = trans x∼y y∼z
+
 ∼-go : Trans _∼_ _IsRelatedTo_ _IsRelatedTo_
-∼-go x∼y (singleStep y) = multiStep x∼y
-∼-go x∼y (multiStep y∼z) = multiStep (trans x∼y y∼z)
+∼-go x∼y y<z = multiStep (∼-go-build x∼y y<z)
 
 stop : Reflexive _IsRelatedTo_
 stop = singleStep _
