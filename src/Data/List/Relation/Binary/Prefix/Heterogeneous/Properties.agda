@@ -8,27 +8,29 @@
 
 module Data.List.Relation.Binary.Prefix.Heterogeneous.Properties where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Base as List hiding (map; uncons)
 open import Data.List.Membership.Propositional.Properties using ([]∈inits)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
-open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix hiding (PrefixView; _++_)
+open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
+  hiding (PrefixView; _++_)
 open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
-open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂; uncurry)
-open import Function.Base
-
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no; _because_)
-open import Relation.Unary as U using (Pred)
+open import Data.Product.Base as Product
+  using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Function.Base using (flip; _∘_; _$_)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Definitions
   using (Trans; Antisym; Irrelevant; Decidable)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong₂)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl; cong₂)
+open import Relation.Nullary.Decidable.Core as Dec
+  using (_×-dec_; yes; no; _because_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Unary as U using (Pred)
 
 private
   variable
@@ -113,8 +115,8 @@ module _ {p q} {P : Pred A p} {Q : Pred B q} (P? : U.Decidable P) (Q? : U.Decida
   filter⁺ [] = []
   filter⁺ {a ∷ as} {b ∷ bs} (r ∷ rs) with P? a | Q? b
   ... |  true because _ |  true because _ = r ∷ filter⁺ rs
-  ... | yes pa          | no ¬qb          = ⊥-elim (¬qb (P⇒Q r pa))
-  ... | no ¬pa          | yes qb          = ⊥-elim (¬pa (Q⇒P r qb))
+  ... | yes pa          | no ¬qb          = contradiction (P⇒Q r pa) ¬qb
+  ... | no ¬pa          | yes qb          = contradiction (Q⇒P r qb) ¬pa
   ... | false because _ | false because _ = filter⁺ rs
 
 ------------------------------------------------------------------------
@@ -158,7 +160,7 @@ replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
 
 replicate⁻ : ∀ {m n a b} → m ≢ 0 →
              Prefix R (replicate m a) (replicate n b) → R a b
-replicate⁻ {m = zero}  {n}     m≢0 r  = ⊥-elim (m≢0 refl)
+replicate⁻ {m = zero}  {n}     m≢0 r  = contradiction refl m≢0
 replicate⁻ {m = suc m} {suc n} m≢0 rs = Prefix.head rs
 
 ------------------------------------------------------------------------
