@@ -9,9 +9,9 @@
 
 module Function.Properties.Equivalence where
 
-open import Function.Bundles
-open import Level
-open import Relation.Binary.Definitions
+open import Function.Bundles using (Func; Equivalence; _⇔_; _⟶_)
+open import Level using (Level; suc; _⊔_)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive; Sym; Trans)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 import Relation.Binary.PropositionalEquality.Properties as ≡

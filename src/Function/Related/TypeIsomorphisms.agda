@@ -9,7 +9,14 @@
 
 module Function.Related.TypeIsomorphisms where
 
-open import Algebra
+open import Algebra.Bundles public
+  using (Magma; Semigroup; Monoid; CommutativeMonoid; CommutativeSemiring)
+open import Algebra.Definitions
+  using (Identity; LeftIdentity; RightIdentity; Zero; LeftZero; RightZero
+        ; Associative; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_)
+open import Algebra.Structures public
+  using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid
+        ; IsCommutativeSemiring)
 open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
@@ -360,3 +367,4 @@ True↔ (false because ofⁿ ¬p) _ =
 ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
 ∃-≡ P {x} = mk↔ₛ′ (λ Px → x , refl , Px) (λ where (_ , refl , Py) → Py)
   (λ where (_ , refl , _) → refl) (λ where _ → refl)
+
