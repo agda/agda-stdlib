@@ -19,7 +19,7 @@ open import Function.Base using (_∘_; id)
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Level using (Level; _⊔_; suc; Lift; lift; lower)
 open import Relation.Nullary.Negation
-  using  (¬_; ¬¬-Monad; ¬¬-map; negated-stable; contradiction)
+  using  (¬_; contradiction; ¬¬-Monad; ¬¬-map; negated-stable)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Construct.Always as Always using (setoid)
