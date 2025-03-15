@@ -17,7 +17,7 @@ open import Function.Base using (_∘_; id)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
 open import Relation.Nullary.Negation.Core using (contradiction)
 
