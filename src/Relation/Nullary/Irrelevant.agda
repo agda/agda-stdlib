@@ -15,7 +15,6 @@ open import Level using (Level)
 private
   variable
     p : Level
-    P : Set p
 
 Irrelevant : Set p → Set p
 Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
