@@ -28,6 +28,9 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* Moved the concept of irrelevance (h-proposition) from `Relation.Nullary` to
+  its own dedicated module `Relation.Nullary.Irrelevant`.
+
 Deprecated modules
 ------------------
 
@@ -119,8 +122,6 @@ New modules
 * `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
 
 * `Data.Sign.Show` to show a sign
-
-* `Relation.Nullary.Irrelevant` defining the concept of irrelevance (h-proposition), where all elements of a type are equal.
 
 Additions to existing modules
 -----------------------------
