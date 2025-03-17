@@ -120,6 +120,8 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
+* `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
+
 Additions to existing modules
 -----------------------------
 
