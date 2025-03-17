@@ -8,7 +8,6 @@
 
 module Data.Vec.Relation.Binary.Lex.Core {a} {A : Set a} where
 
-open import Data.Empty using (⊥)
 open import Data.Nat.Base using (ℕ; suc)
 import Data.Nat.Properties as ℕ using (_≟_; ≡-irrelevant)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)

@@ -11,7 +11,7 @@
 
 module Data.Vec.Relation.Binary.Lex.Strict where
 
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Unit.Properties using (⊤-irrelevant)
 open import Data.Nat.Base using (ℕ; suc)
