@@ -28,8 +28,8 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
-* Moved the concept of irrelevance (h-proposition) from `Relation.Nullary` to
-  its own dedicated module `Relation.Nullary.Irrelevant`.
+* Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
+  to its own dedicated module `Relation.Nullary.Irrelevant`.
 
 Deprecated modules
 ------------------
