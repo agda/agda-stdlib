@@ -8,7 +8,7 @@
 
 module Data.Vec.Relation.Binary.Lex.Core {a} {A : Set a} where
 
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Data.Nat.Base using (ℕ; suc)
 import Data.Nat.Properties as ℕ using (_≟_; ≡-irrelevant)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)
@@ -27,7 +27,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong)
 import Relation.Nullary as Nullary
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_; _⊎-dec_)
-open import Relation.Nullary.Negation
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
   variable
@@ -114,9 +114,9 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
     antisym : ∀ {n} → Antisymmetric (_≋_ {n}) (_<ₗₑₓ_)
     antisym (base _)         (base _)         = []
-    antisym (this x≺y m≡n)   (this y≺x n≡m)   = ⊥-elim (≺-asym x≺y y≺x)
-    antisym (this x≺y m≡n)   (next y≈x ys<xs) = ⊥-elim (≺-irrefl (≈-sym y≈x) x≺y)
-    antisym (next x≈y xs<ys) (this y≺x m≡n)   = ⊥-elim (≺-irrefl (≈-sym x≈y) y≺x)
+    antisym (this x≺y m≡n)   (this y≺x n≡m)   = contradiction y≺x (≺-asym x≺y)
+    antisym (this x≺y m≡n)   (next y≈x ys<xs) = contradiction x≺y (≺-irrefl (≈-sym y≈x))
+    antisym (next x≈y xs<ys) (this y≺x m≡n)   = contradiction y≺x (≺-irrefl (≈-sym x≈y))
     antisym (next x≈y xs<ys) (next y≈x ys<xs) = x≈y ∷ (antisym xs<ys ys<xs)
 
   module _ (≈-equiv : IsPartialEquivalence _≈_) (open IsPartialEquivalence ≈-equiv) where
