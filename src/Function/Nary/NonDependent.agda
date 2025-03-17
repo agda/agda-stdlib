@@ -22,8 +22,7 @@ open import Data.Product.Nary.NonDependent
   using (Product; uncurryₙ; Equalₙ; curryₙ; fromEqualₙ; toEqualₙ)
 open import Function.Base using (_∘′_; _$′_; const; flip)
 open import Relation.Unary using (IUniversal)
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 
 private
   variable
