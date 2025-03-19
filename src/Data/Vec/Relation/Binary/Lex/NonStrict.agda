@@ -33,7 +33,7 @@ open import Relation.Binary.Definitions
   using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Trans
         ; Decidable; Total; Trichotomous)
 import Relation.Binary.Construct.NonStrictToStrict as Conv
-open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 
 private
   variable

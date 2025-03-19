@@ -27,12 +27,7 @@ open import Relation.Nullary.Recomputable public using (Recomputable)
 open import Relation.Nullary.Negation.Core public
 open import Relation.Nullary.Reflects public hiding (recompute; recompute-constant)
 open import Relation.Nullary.Decidable.Core public
-
-------------------------------------------------------------------------
--- Irrelevant types
-
-Irrelevant : Set p → Set p
-Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
+open import Relation.Nullary.Irrelevant public
 
 ------------------------------------------------------------------------
 -- Weak decidability

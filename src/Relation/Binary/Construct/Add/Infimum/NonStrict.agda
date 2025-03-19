@@ -28,8 +28,8 @@ open import Relation.Binary.Structures
         ; IsDecTotalOrder)
 open import Relation.Binary.Definitions
   using (Minimum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
-open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum using (⊥₋; [_]; _₋; ≡-dec)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 import Relation.Nullary.Decidable.Core as Dec using (map′)
 
 ------------------------------------------------------------------------
