@@ -8,7 +8,7 @@
 
 <a id="268" class="Symbol">{-#</a> <a id="272" class="Keyword">OPTIONS</a> <a id="280" class="Pragma">--cubical-compatible</a> <a id="301" class="Pragma">--safe</a> <a id="308" class="Symbol">#-}</a>
 
-<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Algebra.html" class="Module">Algebra</a> <a id="333" class="Keyword">using</a> <a id="339" class="Symbol">(</a><a id="340" href="Algebra.Bundles.Raw.html#5302" class="Record">RawRing</a><a id="347" class="Symbol">;</a> <a id="349" href="Algebra.Bundles.html#19580" class="Record">CommutativeSemiring</a> <a id="369" class="Symbol">)</a>
+<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Algebra.html" class="Module">Algebra</a> <a id="333" class="Keyword">using</a> <a id="339" class="Symbol">(</a><a id="340" href="Algebra.Bundles.Raw.html#5248" class="Record">RawRing</a><a id="347" class="Symbol">;</a> <a id="349" href="Algebra.Bundles.html#19580" class="Record">CommutativeSemiring</a> <a id="369" class="Symbol">)</a>
 <a id="371" class="Keyword">import</a> <a id="378" href="Algebra.Properties.Semiring.Mult.html" class="Module">Algebra.Properties.Semiring.Mult</a> <a id="411" class="Symbol">as</a> <a id="414" class="Module">SemiringMultiplication</a>
 <a id="437" class="Keyword">open</a> <a id="442" class="Keyword">import</a> <a id="449" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="465" class="Keyword">using</a> <a id="471" class="Symbol">(</a><a id="472" href="Agda.Builtin.Maybe.html#135" class="Datatype">Maybe</a><a id="477" class="Symbol">;</a> <a id="479" href="Agda.Builtin.Maybe.html#173" class="InductiveConstructor">just</a><a id="483" class="Symbol">;</a> <a id="485" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a><a id="492" class="Symbol">;</a> <a id="494" href="Data.Maybe.Base.html#1934" class="Function">map</a><a id="497" class="Symbol">)</a>
 
@@ -31,15 +31,15 @@
 
   <a id="1131" class="Comment">-- The coefficient &quot;ring&quot;.</a>
 
-  <a id="ℕ-ring"></a><a id="1161" href="Algebra.Solver.Ring.NaturalCoefficients.html#1161" class="Function">ℕ-ring</a> <a id="1168" class="Symbol">:</a> <a id="1170" href="Algebra.Bundles.Raw.html#5302" class="Record">RawRing</a> <a id="1178" class="Symbol">_</a> <a id="1180" class="Symbol">_</a>
+  <a id="ℕ-ring"></a><a id="1161" href="Algebra.Solver.Ring.NaturalCoefficients.html#1161" class="Function">ℕ-ring</a> <a id="1168" class="Symbol">:</a> <a id="1170" href="Algebra.Bundles.Raw.html#5248" class="Record">RawRing</a> <a id="1178" class="Symbol">_</a> <a id="1180" class="Symbol">_</a>
   <a id="1184" href="Algebra.Solver.Ring.NaturalCoefficients.html#1161" class="Function">ℕ-ring</a> <a id="1191" class="Symbol">=</a> <a id="1193" class="Keyword">record</a>
-    <a id="1204" class="Symbol">{</a> <a id="1206" href="Algebra.Bundles.Raw.html#5411" class="Field">Carrier</a> <a id="1214" class="Symbol">=</a> <a id="1216" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
-    <a id="1222" class="Symbol">;</a> <a id="1224" href="Algebra.Bundles.Raw.html#5431" class="Field Operator">_≈_</a>     <a id="1232" class="Symbol">=</a> <a id="1234" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a>
-    <a id="1242" class="Symbol">;</a> <a id="1244" href="Algebra.Bundles.Raw.html#5459" class="Field Operator">_+_</a>     <a id="1252" class="Symbol">=</a> <a id="1254" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">ℕ._+_</a>
-    <a id="1264" class="Symbol">;</a> <a id="1266" href="Algebra.Bundles.Raw.html#5485" class="Field Operator">_*_</a>     <a id="1274" class="Symbol">=</a> <a id="1276" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">ℕ._*_</a>
-    <a id="1286" class="Symbol">;</a> <a id="1288" href="Algebra.Bundles.Raw.html#5511" class="Field Operator">-_</a>      <a id="1296" class="Symbol">=</a> <a id="1298" href="Function.Base.html#704" class="Function">id</a>
-    <a id="1305" class="Symbol">;</a> <a id="1307" href="Algebra.Bundles.Raw.html#5537" class="Field">0#</a>      <a id="1315" class="Symbol">=</a> <a id="1317" class="Number">0</a>
-    <a id="1323" class="Symbol">;</a> <a id="1325" href="Algebra.Bundles.Raw.html#5559" class="Field">1#</a>      <a id="1333" class="Symbol">=</a> <a id="1335" class="Number">1</a>
+    <a id="1204" class="Symbol">{</a> <a id="1206" href="Algebra.Bundles.Raw.html#5357" class="Field">Carrier</a> <a id="1214" class="Symbol">=</a> <a id="1216" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+    <a id="1222" class="Symbol">;</a> <a id="1224" href="Algebra.Bundles.Raw.html#5377" class="Field Operator">_≈_</a>     <a id="1232" class="Symbol">=</a> <a id="1234" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a>
+    <a id="1242" class="Symbol">;</a> <a id="1244" href="Algebra.Bundles.Raw.html#5405" class="Field Operator">_+_</a>     <a id="1252" class="Symbol">=</a> <a id="1254" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">ℕ._+_</a>
+    <a id="1264" class="Symbol">;</a> <a id="1266" href="Algebra.Bundles.Raw.html#5431" class="Field Operator">_*_</a>     <a id="1274" class="Symbol">=</a> <a id="1276" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">ℕ._*_</a>
+    <a id="1286" class="Symbol">;</a> <a id="1288" href="Algebra.Bundles.Raw.html#5457" class="Field Operator">-_</a>      <a id="1296" class="Symbol">=</a> <a id="1298" href="Function.Base.html#704" class="Function">id</a>
+    <a id="1305" class="Symbol">;</a> <a id="1307" href="Algebra.Bundles.Raw.html#5483" class="Field">0#</a>      <a id="1315" class="Symbol">=</a> <a id="1317" class="Number">0</a>
+    <a id="1323" class="Symbol">;</a> <a id="1325" href="Algebra.Bundles.Raw.html#5505" class="Field">1#</a>      <a id="1333" class="Symbol">=</a> <a id="1335" class="Number">1</a>
     <a id="1341" class="Symbol">}</a>
 
   <a id="1346" class="Comment">-- There is a homomorphism from ℕ to R.</a>
