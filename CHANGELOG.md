@@ -197,6 +197,13 @@ Additions to existing modules
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
+* In `Relation.Binary.Construct.Add.Infimum.Strict`:
+  ```agda
+  <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
+  <₋-accessible[_] : ∀ {x} → Acc _<_ x → Acc _<₋_ [ x ]
+  <₋-wellfounded   : WellFounded _<_ → WellFounded _<₋_
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec : Dec {a} ⊤
