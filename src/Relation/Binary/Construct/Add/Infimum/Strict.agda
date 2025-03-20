@@ -74,12 +74,12 @@ module _ {r} {_≤_ : Rel A r} where
   open NonStrict _≤_
 
   <₋-transʳ : Trans _≤_ _<_ _<_ → Trans _≤₋_ _<₋_ _<₋_
-  <₋-transʳ <-transʳ (⊥₋≤ .⊥₋) (⊥₋<[ l ]) = ⊥₋<[ l ]
-  <₋-transʳ <-transʳ (⊥₋≤ l)   [ q ]  = ⊥₋<[ _ ]
-  <₋-transʳ <-transʳ [ p ]     [ q ]  = [ <-transʳ p q ]
+  <₋-transʳ <-transʳ (⊥₋≤ ⊥₋)  q   = q
+  <₋-transʳ <-transʳ (⊥₋≤ _) [ q ] = ⊥₋<[ _ ]
+  <₋-transʳ <-transʳ [ p ]   [ q ] = [ <-transʳ p q ]
 
   <₋-transˡ : Trans _<_ _≤_ _<_ → Trans _<₋_ _≤₋_ _<₋_
-  <₋-transˡ <-transˡ ⊥₋<[ l ] [ q ] = ⊥₋<[ _ ]
+  <₋-transˡ <-transˡ ⊥₋<[ _ ] [ q ] = ⊥₋<[ _ ]
   <₋-transˡ <-transˡ [ p ]    [ q ] = [ <-transˡ p q ]
 
 <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋

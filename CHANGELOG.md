@@ -200,7 +200,7 @@ Additions to existing modules
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:
   ```agda
   <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
-  <₋-accessible[_] : ∀ {x} → Acc _<_ x → Acc _<₋_ [ x ]
+  <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
   <₋-wellfounded   : WellFounded _<_ → WellFounded _<₋_
   ```
 
