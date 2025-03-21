@@ -92,9 +92,9 @@ module _ {r} {_≤_ : Rel A r} where
   wf-acc _       ⊥₋<[ _ ] = <₋-accessible-⊥₋
   wf-acc (acc ih) [ y<x ] = <₋-accessible[ ih y<x ]
 
-<₋-wellfounded : WellFounded _<_ → WellFounded _<₋_
-<₋-wellfounded wf ⊥₋    = <₋-accessible-⊥₋
-<₋-wellfounded wf [ x ] = <₋-accessible[ wf x ]
+<₋-wellFounded : WellFounded _<_ → WellFounded _<₋_
+<₋-wellFounded wf ⊥₋    = <₋-accessible-⊥₋
+<₋-wellFounded wf [ x ] = <₋-accessible[ wf x ]
 
 ------------------------------------------------------------------------
 -- Relational properties + propositional equality
