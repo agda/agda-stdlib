@@ -201,7 +201,7 @@ Additions to existing modules
   ```agda
   <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
   <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
-  <₋-wellfounded   : WellFounded _<_ → WellFounded _<₋_
+  <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
