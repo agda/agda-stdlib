@@ -11,7 +11,6 @@ module Data.Unit.Properties where
 open import Data.Sum.Base using (inj₁)
 open import Data.Unit.Base using (⊤)
 open import Level using (0ℓ)
-open import Relation.Nullary using (Irrelevant; yes)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Poset; DecTotalOrder)
 open import Relation.Binary.Structures
@@ -22,6 +21,9 @@ open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; trans)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid; decSetoid; isEquivalence)
+open import Relation.Nullary.Decidable.Core using (yes)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
+
 
 ------------------------------------------------------------------------
 -- Irrelevancy
