@@ -15,12 +15,12 @@ module Data.Product.Nary.NonDependent where
 ------------------------------------------------------------------------
 
 open import Level using (Level)
-open import Agda.Builtin.Unit
 open import Data.Product.Base as Prod
 import Data.Product.Properties as Prodₚ
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Unit.Base using (⊤)
 open import Function.Base using (const; _∘′_; _∘_)
 open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×-dec_)
 open import Relation.Binary.Core using (Rel)

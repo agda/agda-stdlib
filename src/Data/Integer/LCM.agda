@@ -9,8 +9,8 @@
 module Data.Integer.LCM where
 
 open import Data.Integer.Base
-open import Data.Integer.Divisibility
-open import Data.Integer.GCD
+open import Data.Integer.Divisibility using (_∣_)
+open import Data.Integer.GCD using (gcd)
 import Data.Nat.LCM as ℕ
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 

@@ -22,7 +22,7 @@ open import Function.Base using (flip; _∘_; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Nullary.Decidable as Dec
   using (yes; no; from-yes; from-no; ¬?; _×-dec_; _⊎-dec_; _→-dec_; decidable-stable)
-open import Relation.Nullary.Negation using (¬_; contradiction; contradiction₂)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contradiction₂)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core

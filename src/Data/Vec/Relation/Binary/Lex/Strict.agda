@@ -23,18 +23,24 @@ open import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
   using (Pointwise; []; _∷_; head; tail)
 open import Function.Base using (id; _on_; _∘_)
 open import Induction.WellFounded
-open import Relation.Nullary using (yes; no; ¬_)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles
-  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
+  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder
+        ; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder; IsPreorder; IsTotalOrder; IsPartialEquivalence)
+  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder
+        ; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder
+        ; IsPreorder; IsTotalOrder; IsPartialEquivalence)
 open import Relation.Binary.Definitions
-  using (Irreflexive; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Antisymmetric; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous; Transitive; Irrelevant; tri≈; tri>; tri<)
-open import Relation.Binary.Consequences
+  using (Irreflexive; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Antisymmetric
+        ; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous
+        ; Transitive; Irrelevant; tri≈; tri>; tri<)
+open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Binary.Construct.On as On using (wellFounded)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Level using (Level; _⊔_)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
   variable
@@ -134,7 +140,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     where
 
     <-wellFounded : ∀ {n} → WellFounded (_<_ {n})
-    <-wellFounded {0}     [] = acc λ ys<[] → ⊥-elim (xs≮[] ys<[])
+    <-wellFounded {0}     [] = acc λ ys<[] → contradiction ys<[] xs≮[]
 
     <-wellFounded {suc n} xs = Subrelation.wellFounded <⇒uncons-Lex uncons-Lex-wellFounded xs
       where

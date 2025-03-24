@@ -9,6 +9,8 @@
 module Data.Nat.Binary.Properties where
 
 open import Algebra.Bundles
+  using (Magma; Monoid; CommutativeMonoid; Semigroup; CommutativeSemigroup
+        ; Semiring; CommutativeSemiring)
 open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Algebra.Consequences.Propositional using (comm∧distrˡ⇒distrʳ)
@@ -26,13 +28,13 @@ open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions using (Injective; Surjective;
   Inverseˡ; Inverseʳ; Inverseᵇ)
 open import Function.Consequences.Propositional
- using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ;
-        strictlyInverseʳ⇒inverseʳ)
+ using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ
+        ; strictlyInverseʳ⇒inverseʳ)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (trans∧irr⇒asym; tri⇒dec<)
 open import Relation.Binary.Morphism
- using (IsRelHomomorphism; IsOrderHomomorphism; IsOrderMonomorphism)
+  using (IsRelHomomorphism; IsOrderHomomorphism; IsOrderMonomorphism)
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality.Algebra
   using (magma; isMagma)

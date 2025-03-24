@@ -8,8 +8,8 @@
 
 module Axiom.UniquenessOfIdentityProofs.WithK where
 
-open import Axiom.UniquenessOfIdentityProofs
-open import Relation.Binary.PropositionalEquality.Core
+open import Axiom.UniquenessOfIdentityProofs using (UIP)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 -- Axiom K implies UIP.
 

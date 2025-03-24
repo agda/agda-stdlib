@@ -12,10 +12,8 @@ open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Char using (Char)
 open import Agda.Builtin.Nat using (Nat; _==_)
 open import Agda.Builtin.Unit using (⊤)
-
 open import Data.Fin.Base as Fin using (Fin)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-
 open import Function.Base using (_$_; _|>_)
 
 ------------------------------------------------------------------------------

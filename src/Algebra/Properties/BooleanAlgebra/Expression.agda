@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice
+open import Algebra.Lattice.Bundles using (BooleanAlgebra)
 
 module Algebra.Properties.BooleanAlgebra.Expression
   {b} (B : BooleanAlgebra b b)

@@ -12,13 +12,11 @@ open import Agda.Builtin.String using (String)
 
 open import Data.Bool.Show using (showBit)
 open import Data.Fin.Base as Fin using (Fin)
-import Data.Nat.Show as ℕ
+import Data.Nat.Show as ℕ using (showInBase)
 open import Data.String using (_++_; fromVec; padLeft)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-
-open import Data.Word64.Base
-open import Data.Word64.Unsafe
-
+open import Data.Word64.Base using (Word64; toℕ)
+open import Data.Word64.Unsafe using (toBits)
 open import Function.Base using (_$_)
 
 showBits : Word64 → String

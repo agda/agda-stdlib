@@ -8,14 +8,14 @@
 
 module Data.List.NonEmpty.Effectful where
 
-open import Agda.Builtin.List
+open import Data.List.Base using (List; []; _∷_)
 import Data.List.Effectful as List
 open import Data.List.NonEmpty.Base
 open import Data.Product.Base using (uncurry)
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import Effect.Comonad
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
+open import Effect.Comonad using (RawComonad)
 open import Function.Base using (flip; _∘′_; _∘_)
 
 ------------------------------------------------------------------------

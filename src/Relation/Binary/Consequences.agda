@@ -8,14 +8,13 @@
 
 module Relation.Binary.Consequences where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘_; _∘₂_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable.Core
   using (yes; no; recompute; map′; dec⇒maybe)
 open import Relation.Unary using (∁; Pred)
@@ -120,7 +119,7 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
     irrefl (antisym x<y y<x) x<y
 
   asym⇒antisym : Asymmetric _<_ → Antisymmetric _≈_ _<_
-  asym⇒antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
+  asym⇒antisym asym x<y y<x = contradiction y<x (asym x<y)
 
   asym⇒irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
              Asymmetric _<_ → Irreflexive _≈_ _<_
@@ -156,16 +155,16 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
                     _<_ Respectsʳ _≈_
   trans∧tri⇒respʳ sym ≈-tr <-tr tri {x} {y} {z} y≈z x<y with tri x z
   ... | tri< x<z _ _ = x<z
-  ... | tri≈ _ x≈z _ = ⊥-elim (tri⇒irr tri (≈-tr x≈z (sym y≈z)) x<y)
-  ... | tri> _ _ z<x = ⊥-elim (tri⇒irr tri (sym y≈z) (<-tr z<x x<y))
+  ... | tri≈ _ x≈z _ = contradiction x<y (tri⇒irr tri (≈-tr x≈z (sym y≈z)))
+  ... | tri> _ _ z<x = contradiction (<-tr z<x x<y) (tri⇒irr tri (sym y≈z))
 
   trans∧tri⇒respˡ : Transitive _≈_ →
                     Transitive _<_ → Trichotomous _≈_ _<_ →
                     _<_ Respectsˡ _≈_
   trans∧tri⇒respˡ ≈-tr <-tr tri {z} {_} {y} x≈y x<z with tri y z
   ... | tri< y<z _ _ = y<z
-  ... | tri≈ _ y≈z _ = ⊥-elim (tri⇒irr tri (≈-tr x≈y y≈z) x<z)
-  ... | tri> _ _ z<y = ⊥-elim (tri⇒irr tri x≈y (<-tr x<z z<y))
+  ... | tri≈ _ y≈z _ = contradiction x<z (tri⇒irr tri (≈-tr x≈y y≈z))
+  ... | tri> _ _ z<y = contradiction (<-tr x<z z<y) (tri⇒irr tri x≈y)
 
   trans∧tri⇒resp : Symmetric _≈_ → Transitive _≈_ →
                    Transitive _<_ → Trichotomous _≈_ _<_ →
