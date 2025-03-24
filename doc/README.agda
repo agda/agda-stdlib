@@ -3,7 +3,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 3.0-dev
+-- The Agda standard library, version 2.3-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
