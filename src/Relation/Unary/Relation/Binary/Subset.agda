@@ -10,10 +10,12 @@ module Relation.Unary.Relation.Binary.Subset where
 
 open import Level using (Level)
 import Relation.Binary.Structures as BinaryStructures
-open import Relation.Binary.Bundles
+  using (IsPreorder; IsPartialOrder; IsStrictPartialOrder)
+open import Relation.Binary.Bundles using (Preorder; Poset; StrictPartialOrder)
 open import Relation.Unary
 open import Relation.Unary.Properties
-open import Relation.Unary.Relation.Binary.Equality using (≐-isEquivalence; ≐′-isEquivalence)
+open import Relation.Unary.Relation.Binary.Equality
+  using (≐-isEquivalence; ≐′-isEquivalence)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -102,3 +104,4 @@ module _ {a : Level} (A : Set a) (ℓ : Level) where
   ⊂′-strictPartialOrder = record
     { isStrictPartialOrder = ⊂′-isStrictPartialOrder {A = A} {ℓ}
     }
+

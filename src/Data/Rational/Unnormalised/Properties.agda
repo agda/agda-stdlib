@@ -9,16 +9,28 @@
 
 module Data.Rational.Unnormalised.Properties where
 
-open import Algebra
+open import Algebra.Definitions
+open import Algebra.Structures
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma; IsMonoid
+        ; IsCommutativeMonoid; IsGroup; IsAbelianGroup; IsRing
+        ; IsCommutativeRing)
+open import Algebra.Bundles
 open import Algebra.Apartness
+  using (IsHeytingCommutativeRing; IsHeytingField
+        ; HeytingCommutativeRing; HeytingField)
 open import Algebra.Lattice
+  using (IsLattice; IsDistributiveLattice; IsSemilattice
+        ; Semilattice; Lattice; DistributiveLattice; RawLattice)
 import Algebra.Consequences.Setoid as Consequences
 open import Algebra.Construct.NaturalChoice.Base
+  using (MaxOperator; MinOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
+  using (≤-refl; +-comm; +-identityʳ; +-assoc
+        ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
@@ -32,11 +44,17 @@ open import Relation.Nullary.Decidable.Core as Dec using (yes; no)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
+  using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder
+        ; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
+  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder
+        ; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder
+        ; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
+  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable
+        ; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous
+        ; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_
+        ; tri≈; tri<; tri>)
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties

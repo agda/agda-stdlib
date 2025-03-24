@@ -10,9 +10,9 @@ module Data.Fin.Reflection where
 
 open import Data.Nat.Base as ℕ hiding (module ℕ)
 open import Data.Fin.Base as Fin hiding (module Fin)
-open import Data.List.Base
-open import Reflection.AST.Term
-open import Reflection.AST.Argument
+open import Data.List.Base using (List; _∷_; []; lookup)
+open import Reflection.AST.Term using (Term; con; _⋯⟅∷⟆_)
+open import Reflection.AST.Argument using (Arg; _⟨∷⟩_)
 
 ------------------------------------------------------------------------
 -- Term

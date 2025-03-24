@@ -8,18 +8,17 @@
 
 module Data.List.Fresh.Relation.Unary.All.Properties where
 
-open import Level using (Level; _⊔_; Lift)
-open import Data.Empty
+open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
+open import Data.List.Fresh.Relation.Unary.All using (All; []; _∷_; append)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘′_)
-open import Relation.Nullary
-open import Relation.Unary  as U
+open import Level using (Level; _⊔_; Lift)
+open import Relation.Unary  as U using (Pred)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
-open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
-open import Data.List.Fresh.Relation.Unary.All
+
 
 private
   variable

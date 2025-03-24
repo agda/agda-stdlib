@@ -8,14 +8,16 @@
 
 module Data.Bool.Properties where
 open import Algebra.Bundles
-open import Algebra.Lattice.Bundles using
-  (BooleanAlgebra; DistributiveLattice; Lattice; Semilattice)
+  using (Magma; Semigroup; Band; CommutativeMonoid
+        ; IdempotentCommutativeMonoid; CommutativeSemiring; CommutativeRing)
+open import Algebra.Lattice.Bundles
+  using (Lattice; DistributiveLattice; BooleanAlgebra; Semilattice)
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
-open import Data.Bool.Base using (Bool; T; _<_; _≤_; _∧_; _∨_; _xor_; b≤b; f<t;
-  f≤t; false; if_then_else_; not; true)
-open import Data.Empty using (⊥; ⊥-elim)
-open import Data.Product.Base using (_,_; _×_; proj₁; proj₂)
-open import Data.Sum.Base using ([_,_]; _⊎_; inj₁; inj₂)
+open import Data.Bool.Base
+  using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; T; _≤_; _<_
+        ; b≤b; f≤t; f<t)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
 open import Function.Bundles hiding (Inverse; LeftInverse; RightInverse)
 open import Induction.WellFounded using (Acc; WellFounded; acc)
@@ -23,19 +25,24 @@ open import Level using (0ℓ; Level)
 open import Relation.Binary.Bundles using (DecSetoid; DecTotalOrder; Poset;
   Preorder; Setoid; StrictPartialOrder; StrictTotalOrder; TotalOrder)
 open import Relation.Binary.Core using (_⇒_)
-open import Relation.Binary.Definitions using (Antisymmetric; Asymmetric;
-  Decidable; DecidableEquality; Irreflexive; Irrelevant; Maximum; Minimum;
-  Reflexive; Total; Trans; Transitive; Trichotomous; _Respects₂_;
-  tri<; tri>; tri≈)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_;
-  cong; cong₂; refl; subst; sym; trans)
-open import Relation.Binary.PropositionalEquality.Properties using
-  (decSetoid; isEquivalence; module ≡-Reasoning; setoid)
-open import Relation.Binary.Structures using (IsDecTotalOrder;
-  IsPartialOrder; IsPreorder; IsStrictPartialOrder; IsStrictTotalOrder;
-  IsTotalOrder)
-open import Relation.Nullary.Decidable.Core using (True; fromWitness; no; yes)
-import Relation.Unary as U using (Irrelevant)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder
+        ; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder
+        ; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; DecidableEquality ; Reflexive; Transitive; Antisymmetric
+        ; Minimum; Maximum; Total; Irrelevant ; Irreflexive; Asymmetric; Trans
+        ; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; cong; cong₂; subst; trans; _≢_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
+open import Relation.Nullary.Decidable.Core
+  using (True; yes; no; fromWitness ; toWitness)
+open import Relation.Nullary.Negation.Core using (contradiction)
+import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
@@ -650,10 +657,10 @@ not-¬ {true}  refl ()
 not-¬ {false} refl ()
 
 ¬-not : ∀ {x y} → x ≢ y → x ≡ not y
-¬-not {true}  {true}  x≢y = ⊥-elim (x≢y refl)
+¬-not {true}  {true}  x≢y = contradiction refl x≢y
 ¬-not {true}  {false} _   = refl
 ¬-not {false} {true}  _   = refl
-¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
+¬-not {false} {false} x≢y = contradiction refl x≢y
 
 ------------------------------------------------------------------------
 -- Properties of _xor_

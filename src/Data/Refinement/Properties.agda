@@ -8,8 +8,8 @@
 
 module Data.Refinement.Properties where
 
-open import Level
 open import Data.Refinement.Base
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 import Relation.Nullary.Decidable.Core as Dec

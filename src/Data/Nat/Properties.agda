@@ -12,8 +12,9 @@
 module Data.Nat.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs using (module Decidable⇒UIP)
-open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
-  CommutativeMonoid; Monoid; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
+open import Algebra.Bundles
+  using (Magma; Semigroup; CommutativeSemigroup; CommutativeMonoid; Monoid
+        ; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
 open import Algebra.Definitions.RawMagma using (_,_)
 open import Algebra.Morphism
 open import Algebra.Construct.NaturalChoice.Base
@@ -29,9 +30,10 @@ open import Data.Sum.Base as Sum using (inj₁; inj₂; _⊎_; [_,_]′)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘_; flip; _$_; id; _∘′_; _$′_)
 open import Function.Bundles using (_↣_)
-open import Function.Metric.Nat using (TriangleInequality; IsProtoMetric; IsPreMetric;
-  IsQuasiSemiMetric; IsSemiMetric; IsMetric; PreMetric; QuasiSemiMetric;
-  SemiMetric; Metric)
+open import Function.Metric.Nat
+  using (TriangleInequality; IsProtoMetric; IsPreMetric; IsQuasiSemiMetric
+        ; IsSemiMetric; IsMetric; PreMetric; QuasiSemiMetric
+        ; SemiMetric; Metric)
 open import Level using (0ℓ)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core
@@ -39,10 +41,11 @@ open import Relation.Binary.Core
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex; wlog)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Decidable using (True; via-injection; map′; recompute)
+open import Relation.Nullary.Decidable
+  using (True; via-injection; map′; recompute; no; yes; Dec; _because_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (fromEquivalence)
+open import Relation.Nullary.Reflects
+  using (fromEquivalence; Reflects; invert)
 
 open import Algebra.Consequences.Propositional {A = ℕ}
   using ( comm∧cancelˡ⇒cancelʳ

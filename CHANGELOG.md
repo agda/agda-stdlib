@@ -28,6 +28,9 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
+  to its own dedicated module `Relation.Nullary.Irrelevant`.
+
 Deprecated modules
 ------------------
 
@@ -63,6 +66,11 @@ Deprecated names
   ∤∤-respˡ-≈    ↦  ∦-respˡ-≈
   ∤∤-respʳ-≈    ↦  ∦-respʳ-≈
   ∤∤-resp-≈     ↦  ∦-resp-≈
+  ∣-respʳ-≈    ↦ ∣ʳ-respʳ-≈
+  ∣-respˡ-≈    ↦ ∣ʳ-respˡ-≈
+  ∣-resp-≈     ↦ ∣ʳ-resp-≈
+  x∣yx         ↦ x∣ʳyx
+  xy≈z⇒y∣z     ↦ xy≈z⇒y∣ʳz
   ```
 
 * In `Algebra.Properties.Monoid.Divisibility`:
@@ -70,11 +78,17 @@ Deprecated names
   ∣∣-refl            ↦  ∥-refl
   ∣∣-reflexive       ↦  ∥-reflexive
   ∣∣-isEquivalence   ↦  ∥-isEquivalence
+  ε∣_                ↦ ε∣ʳ_
+  ∣-refl             ↦ ∣ʳ-refl
+  ∣-reflexive        ↦ ∣ʳ-reflexive
+  ∣-isPreorder       ↦ ∣ʳ-isPreorder
+  ∣-preorder         ↦ ∣ʳ-preorder
   ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
   ∣∣-trans   ↦  ∥-trans
+  ∣-trans    ↦  ∣ʳ-trans
   ```
 
 * In `Data.List.Base`:
@@ -107,6 +121,12 @@ New modules
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
+
+* `Data.List.Relation.Binary.Prefix.Propositional.Properties` showing the equivalence to left divisibility induced by the list monoid.
+
+* `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
+
+* `Data.Sign.Show` to show a sign
 
 Additions to existing modules
 -----------------------------
@@ -146,6 +166,38 @@ Additions to existing modules
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
 
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣ˡ-respʳ-≈  : _∣ˡ_ Respectsʳ _≈_
+  ∣ˡ-respˡ-≈  : _∣ˡ_ Respectsˡ _≈_
+  ∣ˡ-resp-≈   : _∣ˡ_ Respects₂ _≈_
+  x∣ˡxy       : ∀ x y → x ∣ˡ x ∙ y
+  xy≈z⇒x∣ˡz   : ∀ x y {z} → x ∙ y ≈ z → x ∣ˡ z
+  ```
+
+* In `Algebra.Properties.Monoid.Divisibility`:
+  ```agda
+  ε∣ˡ_          : ∀ x → ε ∣ˡ x
+  ∣ˡ-refl       : Reflexive _∣ˡ_
+  ∣ˡ-reflexive  : _≈_ ⇒ _∣ˡ_
+  ∣ˡ-isPreorder : IsPreorder _≈_ _∣ˡ_
+  ∣ˡ-preorder   : Preorder a ℓ _
+  ```
+
+* In `Algebra.Properties.Semigroup.Divisibility`:
+  ```agda
+  ∣ˡ-trans     : Transitive _∣ˡ_
+  x∣ʳy⇒x∣ʳzy   : x ∣ʳ y → x ∣ʳ z ∙ y
+  x∣ʳy⇒xz∣ʳyz  : x ∣ʳ y → x ∙ z ∣ʳ y ∙ z
+  x∣ˡy⇒zx∣ˡzy  : x ∣ˡ y → z ∙ x ∣ˡ z ∙ y
+  x∣ˡy⇒x∣ˡyz   : x ∣ˡ y → x ∣ˡ y ∙ z
+  ```
+
+* In `Algebra.Properties.CommutativeSemigroup.Divisibility`:
+  ```agda
+  ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
@@ -162,4 +214,10 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
+  ```
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```agda
+  ⊤-dec : Dec {a} ⊤
+  ⊥-dec : Dec {a} ⊥
   ```

@@ -10,7 +10,7 @@
 
 module Effect.Comonad where
 
-open import Level
+open import Level using (Level; suc)
 open import Function.Base using (id; _∘′_; flip)
 
 private

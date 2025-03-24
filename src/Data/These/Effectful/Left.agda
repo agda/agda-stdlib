@@ -20,17 +20,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level
-open import Algebra
+open import Level using (Level; _⊔_)
+open import Algebra.Bundles using (Semigroup)
 
 module Data.These.Effectful.Left {c ℓ} (W : Semigroup c ℓ) (b : Level) where
 
-open Semigroup W
-open import Data.These.Effectful.Left.Base Carrier b public
+open import Data.These.Base using (These; this; that; these; map₁; map₂; map)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
 
-open import Data.These.Base
-open import Effect.Applicative
-open import Effect.Monad
+open Semigroup W using (Carrier; _∙_)
+open import Data.These.Effectful.Left.Base Carrier b public
 
 module _ {a b} {A : Set a} {B : Set b} where
 

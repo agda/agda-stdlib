@@ -9,13 +9,14 @@
 module Data.Nat.Coprimality where
 
 open import Data.Nat.Base
+  using (ℕ; zero; suc; _+_; _*_; _∸_; _<_; NonZero; NonTrivial; nonTrivial⇒≢1)
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD
-open import Data.Nat.GCD.Lemmas
-open import Data.Nat.Primality
+open import Data.Nat.GCD.Lemmas using (lem₁₀; lem₁₁; lem₈; lem₉)
+open import Data.Nat.Primality using (Prime; prime⇒irreducible)
 open import Data.Nat.Properties
-open import Data.Nat.DivMod
-open import Data.Product.Base as Prod
+open import Data.Nat.DivMod using (_/_; n/1≡n; /-congˡ; /-congʳ; m*n/n≡m)
+open import Data.Product.Base as Prod using (proj₁; proj₂; _,_; ∃; _×_; swap)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
