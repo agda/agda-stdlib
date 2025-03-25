@@ -18,7 +18,7 @@ open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Module.Core  using (Opₗ; Opᵣ)
 import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
-  using (module LeftDefs; module RightDefs; module BiDefs;
+  using (module LeftDefs; module RightDefs; module BiDefs
         ; module SimultaneousBiDefs)
 import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Algebra.Structures using (IsCommutativeMonoid; IsAbelianGroup)
