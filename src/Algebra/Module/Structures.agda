@@ -19,7 +19,7 @@ open import Algebra.Module.Core  using (Opₗ; Opᵣ)
 import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
   using (module LeftDefs; module RightDefs; module BiDefs;
-  module SimultaneousBiDefs)
+        ; module SimultaneousBiDefs)
 import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Algebra.Structures using (IsCommutativeMonoid; IsAbelianGroup)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
