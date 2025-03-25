@@ -34,7 +34,7 @@ private
 --   ∙ Relation.Binary
 --   ∙ Relation.Binary.Indexed
 --
--- A given hierarchy `X` is always split into 4 seperate folders:
+-- A given hierarchy `X` is always split into 4 separate folders:
 --   ∙ X.Core
 --   ∙ X.Definitions
 --   ∙ X.Structures
@@ -66,7 +66,7 @@ private
 
 -- The Core module contains the basic units of the hierarchy.
 
--- For example for binary relations these are homoegeneous and
+-- For example, in binary relations these are homogeneous and
 -- heterogeneous binary relations:
 
 REL : Set a → Set b → (ℓ : Level) → Set (a ⊔ b ⊔ suc ℓ)
@@ -90,8 +90,7 @@ Op₂ A = A → A → A
 -- The Definitions module defines the various properties that the
 -- basic units of the hierarchy may have.
 
--- For example in Relation.Binary this includes reflexivity,
--- transitivity etc.
+-- Examples in Relation.Binary include reflexivity, transitivity, etc.
 
 Reflexive : Rel A ℓ → Set _
 Reflexive _∼_ = ∀ {x} → x ∼ x
@@ -105,7 +104,7 @@ Transitive _∼_ = ∀ {x y z} → x ∼ y → y ∼ z → x ∼ z
 Total : Rel A ℓ → Set _
 Total _∼_ = ∀ x y → x ∼ y ⊎ y ∼ x
 
--- For example in Algebra these are associativity, commutativity.
+-- Examples in Algebra include associativity, commutativity.
 -- Note that all definitions for Algebra are based on some notion of
 -- underlying equality.
 
@@ -124,17 +123,16 @@ RightIdentity _≈_ e _∙_ = ∀ x → (x ∙ e) ≈ x
 -- Note that the types in `Definitions` modules are not meant to express
 -- the full concept on their own. For example the `Associative` type does
 -- not require the underlying relation to be an equivalence relation.
--- Instead they are designed to aid the modular reuse of the core
--- concepts. The complete concepts are captured in various
--- structures/bundles where the definitions are correctly used in
--- context.
+-- Instead they are designed to aid modular reuse of the core concepts.
+-- The complete concepts are captured in various structures/bundles
+-- where the definitions are correctly used in context.
 
 
 ------------------------------------------------------------------------
 -- X.Structures
 
 -- When an abstract hierarchy of some sort (for instance semigroup →
--- monoid → group) is included in the library the basic approach is to
+-- monoid → group) is included in the library, the basic approach is to
 -- specify the properties of every concept in terms of a record
 -- containing just properties, parameterised on the underlying
 -- sets, relations and operations. For example:
@@ -148,8 +146,7 @@ record IsEquivalence {A : Set a}
     sym   : Symmetric _≈_
     trans : Transitive _≈_
 
--- More specific concepts are then specified in terms of the simpler
--- ones:
+-- More specific concepts are then specified in terms of simpler ones:
 
 record IsMagma {A : Set a} (≈ : Rel A ℓ) (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -167,6 +164,7 @@ record IsSemigroup {A : Set a} (≈ : Rel A ℓ) (∙ : Op₂ A) : Set (a ⊔ �
 -- fields of the `isMagma` record can be accessed directly; this
 -- technique enables the user of an `IsSemigroup` record to use underlying
 -- records without having to manually open an entire record hierarchy.
+--
 -- This is not always possible, though. Consider the following definition
 -- of preorders:
 
@@ -236,17 +234,13 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
   magma : Magma a ℓ
   magma = record { isMagma = isMagma }
 
--- Note that the Semigroup record does not include a Magma field.
--- Instead the Semigroup record includes a "repackaging function"
--- semigroup which converts a Magma to a Semigroup.
-
 -- The above setup may seem a bit complicated, but it has been arrived
 -- at after a lot of thought and is designed to both make the hierarchies
 -- easy to work with whilst also providing enough flexibility for the
 -- different applications of their concepts.
 
 -- NOTE: bundles for the function hierarchy are designed a little
--- differently, as a function with an unknown domain an codomain is
+-- differently, as a function with an unknown domain and codomain is
 -- of little use.
 
 -------------------------
@@ -257,7 +251,7 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 -- sub-bundles can get a little tricky.
 
 -- Imagine we have the following general scenario where bundle A is a
--- direct refinement of bundle C (i.e. the record `IsA` has a `IsC` field)
+-- direct refinement of bundle C (i.e. the record `IsA` has an `IsC` field)
 -- but is also morally a refinement of bundles B and D.
 
 --   Structures               Bundles
@@ -284,7 +278,7 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 -- 6. Construct `d : D` via the `isC` obtained in step 1.
 
 -- 7. `open D d public using (P)` where `P` is everything exported
---    by `D` but not exported by `IsA`
+--    by `D` but not exported by `IsA`.
 
 ------------------------------------------------------------------------
 -- Other hierarchy modules
@@ -297,8 +291,8 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 -- laws. These correspond more or less to what the definitions would
 -- be in non-dependently typed languages like Haskell.
 
--- Each bundle thereofre has a corresponding raw bundle that only
--- include the laws but not the operations.
+-- Each bundle therefore has a corresponding raw bundle that only
+-- includes the operations but not the laws.
 
 record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -336,7 +330,7 @@ idˡ+comm⇒idʳ = {!!}
 -- X.Construct
 
 -- The "construct" folder contains various generic ways of constructing
--- new instances of the hierarchy. For example
+-- new instances of the hierarchy. For example,
 
 import Relation.Binary.Construct.Intersection
 
@@ -346,21 +340,21 @@ import Relation.Binary.Construct.Intersection
 
 -- These files are layed out in four parts, mimicking the main modules
 -- of the hierarchy itself. First they define the new relation, then
--- subsequently how the definitions, then structures and finally
+-- subsequently the definitions, then structures and finally
 -- bundles can be translated across to it.
 
 ------------------------------------------------------------------------
 -- X.Morphisms
 
 -- The `Morphisms` folder is a sub-hierarchy containing relationships
--- such homomorphisms, monomorphisms and isomorphisms between the
+-- such as homomorphisms, monomorphisms and isomorphisms between the
 -- structures and bundles in the hierarchy.
 
 ------------------------------------------------------------------------
 -- X.Properties
 
 -- The `Properties` folder contains additional proofs about the theory
--- of each bundle. They are usually designed so as a bundle's
+-- of each bundle. They are usually designed so that a bundle's
 -- `Properties` file re-exports the contents of the `Properties` files
 -- above it in the hierarchy. For example
 -- `Algebra.Properties.AbelianGroup` re-exports the contents of
