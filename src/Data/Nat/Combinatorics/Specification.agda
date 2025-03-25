@@ -18,7 +18,7 @@ open import Data.Nat.DivMod using (_/_; n/n≡1; /-congʳ; m*n/m!≡n/[m∸1]!;
 open import Data.Nat.Divisibility using (m≤n⇒m!∣n!; _∣_; ∣-refl;
   ∣-reflexive; module ∣-Reasoning; ∣m∣n⇒∣m+n; *-monoʳ-∣; m∣n/o⇒o*m∣n)
 open import Data.Nat.Properties
-open import Data.Nat.Combinatorics.Base
+open import Data.Nat.Combinatorics.Base using (_P′_; _P_; _C′_; _C_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)

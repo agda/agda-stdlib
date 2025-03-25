@@ -12,6 +12,7 @@ open import Data.Unit.Base using (tt)
 open import Function.Base using (const)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+    using (Star; ε; _◅_; gmap; map; _◅◅_; _▻▻_; _⋆)
 open import Relation.Binary.Construct.Always using (Always)
 
 -- Natural numbers.

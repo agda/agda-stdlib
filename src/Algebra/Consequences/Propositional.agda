@@ -19,8 +19,8 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
 open import Relation.Unary using (Pred)
+open import Algebra.Core using (Op₁; Op₂)
 
-open import Algebra.Core
 open import Algebra.Definitions {A = A} _≡_
 import Algebra.Consequences.Setoid (setoid A) as Base
 

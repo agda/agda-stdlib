@@ -8,7 +8,7 @@
 
 module Data.Unit.NonEta where
 
-open import Level
+open import Level using (_⊔_; Level)
 
 ------------------------------------------------------------------------
 -- A unit type defined as a data-type

@@ -8,18 +8,19 @@
 
 module Data.List.Relation.Binary.Disjoint.Propositional.Properties where
 
-open import Level using (Level)
-open import Function.Base using (_∘_)
-open import Function.Bundles using (_⇔_)
-open import Data.List.Base
-open import Data.List.Relation.Binary.Disjoint.Propositional
-import Data.List.Relation.Unary.Any as Any
-open import Data.List.Relation.Unary.All as All
+
+open import Data.List.Base using (List; []; _∷_; concat; deduplicate)
+open import Data.List.Relation.Binary.Disjoint.Propositional using (Disjoint)
+import Data.List.Relation.Unary.Any as Any using (Any)
+open import Data.List.Relation.Unary.All as All using (All)
 open import Data.List.Relation.Unary.All.Properties using (¬Any⇒All¬)
 open import Data.List.Relation.Unary.Any.Properties using (++⁻)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product.Base as Product using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
+open import Function.Base using (_∘_)
+open import Function.Bundles using (_⇔_)
+open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Symmetric; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)

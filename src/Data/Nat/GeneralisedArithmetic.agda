@@ -9,8 +9,8 @@
 module Data.Nat.GeneralisedArithmetic where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_; _^_)
-open import Data.Nat.Properties using (+-comm; +-assoc; *-identityˡ;
-  *-assoc)
+open import Data.Nat.Properties
+  using (+-comm; +-assoc; *-identityˡ; *-assoc)
 open import Function.Base using (_∘′_; _∘_; id)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core

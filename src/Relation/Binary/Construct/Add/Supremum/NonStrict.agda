@@ -10,22 +10,23 @@
 -- Relation.Nullary.Construct.Add.Supremum
 
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Structures
-  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Maximum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
 
 module Relation.Binary.Construct.Add.Supremum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
 open import Data.Sum.Base as Sum
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Maximum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
+import Relation.Nullary.Decidable.Core as Dec using (map′)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong)
 import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Relation.Nullary.Construct.Add.Supremum
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Construct.Add.Supremum using (⊤⁺; _⁺; [_]; ≡-dec)
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 
 ------------------------------------------------------------------------

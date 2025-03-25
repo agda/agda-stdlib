@@ -8,17 +8,16 @@
 
 module Reflection.AST.Definition where
 
-import Data.List.Properties as List                    using (≡-dec)
-import Data.Nat.Properties as ℕ                        using (_≟_)
-open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable.Core            using (map′; _×-dec_; yes; no)
-open import Relation.Binary.Definitions                using (DecidableEquality)
+import Data.List.Properties as List using (≡-dec)
+import Data.Nat.Properties as ℕ using (_≟_)
+open import Data.Product.Base using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable.Core using (map′; _×-dec_; yes; no)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
-
-import Reflection.AST.Argument          as Arg
-import Reflection.AST.Argument.Quantity as Quantity
-import Reflection.AST.Name              as Name
-import Reflection.AST.Term              as Term
+import Reflection.AST.Argument as Arg using (Arg; ≡-dec)
+import Reflection.AST.Argument.Quantity as Quantity using (Quantity; _≟_)
+import Reflection.AST.Name as Name using (Name; _≟_)
+import Reflection.AST.Term as Term using (Term; _≟-Clauses_)
 
 ------------------------------------------------------------------------
 -- Re-exporting type publicly

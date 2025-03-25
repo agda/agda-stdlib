@@ -12,10 +12,10 @@ module Relation.Binary.Bundles where
 
 open import Function.Base using (flip)
 open import Level using (Level; suc; _⊔_)
-open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles.Raw
+open import Relation.Binary.Bundles.Raw using (RawRelation; RawSetoid)
 open import Relation.Binary.Structures -- most of it
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Setoids

@@ -10,24 +10,29 @@
 -- Relation.Nullary.Construct.Add.Infimum
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures
-  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.Definitions
-  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans; Trichotomous; tri≈; tri<; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 
 module Relation.Binary.Construct.Add.Infimum.Strict
   {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
 open import Data.Product.Base using (_,_; map)
-open import Function.Base
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
+open import Function.Base using (_∘_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; subst)
 import Relation.Binary.PropositionalEquality.Properties as ≡
+  using (isEquivalence)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
+  using (_≈₋_; ⊥₋≈⊥₋; ≈₋-isEquivalence; ≈₋-isDecEquivalence; ≈₋-refl; ≈₋-dec
+        ; [_]; [≈]-injective)
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
-open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Binary.Structures
+  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans
+        ; Trichotomous; tri≈; tri<; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Construct.Add.Infimum
-import Relation.Nullary.Decidable as Dec
+  using (⊥₋; [_]; _₋; ≡-dec; []-injective)
+open import Relation.Nullary.Decidable.Core as Dec using (yes; no; map′)
 
 ------------------------------------------------------------------------
 -- Definition
