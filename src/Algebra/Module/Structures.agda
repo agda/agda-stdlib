@@ -6,10 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Structures using (IsEquivalence)
-
 module Algebra.Module.Structures where
 
 open import Algebra.Bundles
@@ -20,10 +16,13 @@ import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
   using (module LeftDefs; module RightDefs; module BiDefs
         ; module SimultaneousBiDefs)
-import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Algebra.Structures using (IsCommutativeMonoid; IsAbelianGroup)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+
 
 private
   variable
@@ -214,10 +213,17 @@ module _ (ring : Ring r ℓr)
       ( isGroup    to +ᴹ-isGroup
       ; inverseˡ   to -ᴹ‿inverseˡ
       ; inverseʳ   to -ᴹ‿inverseʳ
+      ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
+      ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
       )
-
-    open AbelianGroupProperties record { isAbelianGroup = +ᴹ-isAbelianGroup } public
-      using () renaming (inverseˡ-unique to uniqueˡ‿-ᴹ; inverseʳ-unique to uniqueʳ‿-ᴹ)
+    {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
+    "Warning: uniqueˡ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.LeftModule.inverseˡ-uniqueᴹ instead."
+    #-}
+    {-# WARNING_ON_USAGE uniqueʳ‿-ᴹ
+    "Warning: uniqueʳ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.LeftModule.inverseʳ-uniqueᴹ instead."
+    #-}
 
 
   record IsRightModule (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
@@ -244,10 +250,17 @@ module _ (ring : Ring r ℓr)
       ( isGroup    to +ᴹ-isGroup
       ; inverseˡ   to -ᴹ‿inverseˡ
       ; inverseʳ   to -ᴹ‿inverseʳ
+      ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
+      ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
       )
-
-    open AbelianGroupProperties record { isAbelianGroup = +ᴹ-isAbelianGroup } public
-      using () renaming (inverseˡ-unique to uniqueˡ‿-ᴹ; inverseʳ-unique to uniqueʳ‿-ᴹ)
+    {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
+    "Warning: uniqueˡ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.RightModule.inverseˡ-uniqueᴹ instead."
+    #-}
+    {-# WARNING_ON_USAGE uniqueʳ‿-ᴹ
+    "Warning: uniqueʳ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.RightModule.inverseʳ-uniqueᴹ instead."
+    #-}
 
 
 module _ (R-ring : Ring r ℓr) (S-ring : Ring s ℓs)
