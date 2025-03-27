@@ -43,6 +43,12 @@ Deprecated names
   _∤∤_    ↦  _∦_
   ```
 
+* In `Algebra.Lattice.Properties.BooleanAlgebra`
+  ```agda
+  ⊥≉⊤   ↦  ¬⊥≈⊤
+  ⊤≉⊥   ↦  ¬⊤≈⊥
+  ```
+
 * In `Algebra.Module.Consequences`
   ```agda
   *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc

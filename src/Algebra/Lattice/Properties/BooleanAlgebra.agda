@@ -192,11 +192,11 @@ private
     ⊤ ∧ y              ≈⟨  ∧-identityˡ _ ⟩
     y                  ∎
 
-⊥≉⊤ : ¬ ⊥ ≈ ⊤
-⊥≉⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
+¬⊥≈⊤ : ¬ ⊥ ≈ ⊤
+¬⊥≈⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
 
-⊤≉⊥ : ¬ ⊤ ≈ ⊥
-⊤≉⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
+¬⊤≈⊥ : ¬ ⊤ ≈ ⊥
+¬⊤≈⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
 
 ¬-involutive : Involutive ¬_
 ¬-involutive x = lemma (¬ x) x (∧-complementˡ _) (∨-complementˡ _)
@@ -308,7 +308,7 @@ module XorRing
   ⊕-identityˡ x = begin
     ⊥ ⊕ x                ≈⟨ ⊕-def _ _ ⟩
     (⊥ ∨ x) ∧ ¬ (⊥ ∧ x)  ≈⟨ helper (∨-identityˡ _) (∧-zeroˡ _) ⟩
-    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ⊥≉⊤ ⟩
+    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ¬⊥≈⊤ ⟩
     x ∧ ⊤                ≈⟨ ∧-identityʳ _ ⟩
     x                    ∎
 
@@ -536,3 +536,23 @@ _⊕_ : Op₂ Carrier
 x ⊕ y = (x ∨ y) ∧ ¬ (x ∧ y)
 
 module DefaultXorRing = XorRing _⊕_ (λ _ _ → refl)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+⊥≉⊤ = ¬⊥≈⊤
+{-# WARNING_ON_USAGE ⊥≉⊤
+"Warning: ⊥≉⊤ was deprecated in v2.3.
+Please use ¬⊥≈⊤ instead."
+#-}
+⊤≉⊥ = ¬⊤≈⊥
+{-# WARNING_ON_USAGE ⊤≉⊥
+"Warning: ⊤≉⊥ was deprecated in v2.3.
+Please use ¬⊤≈⊥ instead."
+#-}
