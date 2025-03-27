@@ -155,25 +155,27 @@ RightCancellative _•_ = ∀ x → RightCancellativeAt x _•_
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
-_-AlmostLeftCancellative_ Provided_-LeftCancellative_
-  Except_-LeftCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+_AlmostLeftCancellative′_    : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Provided_LeftCancellative_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Except_LeftCancellative_    : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 
-P -AlmostLeftCancellative _•_    = ∀ x → P x ⊎ LeftCancellativeAt x _•_
-Provided P -LeftCancellative _•_ = ∀ x y z → .{{P x}} → (x • y) ≈ (x • z) → y ≈ z
-Except_-LeftCancellative_ P      = Provided (∁ P) -LeftCancellative_
+P AlmostLeftCancellative′ _•_   = ∀ x → P x ⊎ LeftCancellativeAt x _•_
+Provided P LeftCancellative _•_ = ∀ x y z → .{{P x}} → (x • y) ≈ (x • z) → y ≈ z
+Except P LeftCancellative _•_   = Provided (∁ P) LeftCancellative _•_
 
 AlmostLeftCancellative : A → Op₂ A → Set _
-AlmostLeftCancellative e = (_≈ e) -AlmostLeftCancellative_
+AlmostLeftCancellative e = (_≈ e) AlmostLeftCancellative′_
 
-_-AlmostRightCancellative_ Provided_-RightCancellative_
-  Except_-RightCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+_AlmostRightCancellative′_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Provided_RightCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Except_RightCancellative_   : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 
-P -AlmostRightCancellative _•_    = ∀ x → P x ⊎ RightCancellativeAt x _•_
-Provided P -RightCancellative _•_ = ∀ x y z → .{{P x}} → (y • x) ≈ (z • x) → y ≈ z
-Except_-RightCancellative_ P      = Provided (∁ P) -RightCancellative_
+P AlmostRightCancellative′ _•_    = ∀ x → P x ⊎ RightCancellativeAt x _•_
+Provided P RightCancellative _•_ = ∀ x y z → .{{P x}} → (y • x) ≈ (z • x) → y ≈ z
+Except_RightCancellative_ P      = Provided (∁ P) RightCancellative_
 
 AlmostRightCancellative : A → Op₂ A → Set _
-AlmostRightCancellative e = (_≈ e) -AlmostRightCancellative_
+AlmostRightCancellative e = (_≈ e) AlmostRightCancellative′_
 
 AlmostCancellative : A → Op₂ A → Set _
 AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
