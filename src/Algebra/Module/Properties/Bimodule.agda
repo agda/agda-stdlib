@@ -12,7 +12,7 @@ open import Level                  using (Level)
 
 module Algebra.Module.Properties.Bimodule
   {r ℓr s ℓs m ℓm : Level}
-  {ringR  : Ring r ℓr} {ringS : Ring s ℓs}
+  {ringR : Ring r ℓr} {ringS : Ring s ℓs}
   (mod   : Bimodule ringR ringS m ℓm)
   where
 
