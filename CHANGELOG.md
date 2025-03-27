@@ -25,6 +25,12 @@ Non-backwards compatible changes
   significantly faster. However, its reduction behaviour on open terms may have
   changed.
 
+* The definitions of `LeftCancellative`/`RightCancellative` in `Algebra.Definitions`
+  have been altered to make the quantification for each argument explicit. The
+  definitions of `AlmostLeftCancellative`/`AlmostRightCancellative` have also been
+  changed to rephrase them in 'positive' logical terms. These definitions have been
+  propagated through the numeric types `X` in `Data.X.Properties`.
+
 Minor improvements
 ------------------
 
@@ -55,6 +61,11 @@ Deprecated names
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  ```
+
+* In `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
@@ -132,6 +143,24 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Base`:
+  ```agda
+  almost⇒exceptˡ : _AlmostLeftCancellative′_ _≈_ P _•_ →
+                   Except_LeftCancellative_ _≈_ P _•_
+  almost⇒exceptʳ : _AlmostRightCancellative′_ _≈_ P _•_ →
+                   Except_RightCancellative_ _≈_ P _•_
+  except⇒almostˡ : Decidable P → Except_LeftCancellative_ _≈_ P _•_ →
+                   _AlmostLeftCancellative′_ _≈_ P _•_
+  except⇒almostʳ : Decidable P → Except_RightCancellative_ _≈_ P _•_ →
+                   _AlmostRightCancellative′_ _≈_ P _•_
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  comm∧cancelAtˡ⇒cancelAtʳ : LeftCancellativeAt x _∙_ → RightCancellativeAt x _∙_
+  comm∧cancelAtʳ⇒cancelAtˡ : RightCancellativeAt x _∙_ → LeftCancellativeAt x _∙_
+  ```
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
@@ -159,6 +188,18 @@ Additions to existing modules
   kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ```
+
+* In `Algebra.Definitions`:
+  ```agda
+  LeftCancellativeAt           : A → Op₂ A → Set _
+  RightCancellativeAt          : A → Op₂ A → Set _
+  _AlmostLeftCancellative′_    : (P : Pred A p) → Op₂ A → Set _
+  Provided_LeftCancellative_   : (P : Pred A p) → Op₂ A → Set _
+  Except_LeftCancellative_     : (P : Pred A p) → Op₂ A → Set _
+  _AlmostRightCancellative′_   : (P : Pred A p) → Op₂ A → Set _
+  Provided_RightCancellative_  : (P : Pred A p) → Op₂ A → Set _
+  Except_RightCancellative_    : (P : Pred A p) → Op₂ A → Set _
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
@@ -204,6 +245,11 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:
