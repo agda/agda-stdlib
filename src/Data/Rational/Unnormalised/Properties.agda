@@ -11,16 +11,16 @@ module Data.Rational.Unnormalised.Properties where
 
 open import Algebra.Definitions
 open import Algebra.Structures
-  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma; IsMonoid
-        ; IsCommutativeMonoid; IsGroup; IsAbelianGroup; IsRing
-        ; IsCommutativeRing)
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma
+        ; IsMonoid; IsCommutativeMonoid; IsGroup; IsAbelianGroup
+        ; IsRing; IsCommutativeRing)
 open import Algebra.Bundles
 open import Algebra.Apartness
   using (IsHeytingCommutativeRing; IsHeytingField
         ; HeytingCommutativeRing; HeytingField)
 open import Algebra.Lattice
-  using (IsLattice; IsDistributiveLattice; IsSemilattice
-        ; Semilattice; Lattice; DistributiveLattice; RawLattice)
+  using (IsSemilattice; IsLattice; IsDistributiveLattice
+        ; RawLattice; Semilattice; Lattice; DistributiveLattice)
 import Algebra.Consequences.Setoid as Consequences
 open import Algebra.Construct.NaturalChoice.Base
   using (MaxOperator; MinOperator)
@@ -764,7 +764,7 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-identityˡ p = ≃-reflexive (+-identityˡ-≡ p)
 
 +-identityʳ-≡ : RightIdentity _≡_ 0ℚᵘ _+_
-+-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ {e = 0ℚᵘ} +-identityˡ-≡
++-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ +-identityˡ-≡
 
 +-identityʳ : RightIdentity _≃_ 0ℚᵘ _+_
 +-identityʳ p = ≃-reflexive (+-identityʳ-≡ p)

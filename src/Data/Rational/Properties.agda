@@ -67,7 +67,6 @@ open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
-open import Algebra.Consequences.Propositional {A = ℚ}
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
 
@@ -352,7 +351,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
     gcd[m,c]*gcd[n,d]≢0 = ℕ.m*n≢0 gcd[m,c] gcd[n,d]
     gcd[n,d]*gcd[m,c]≢0 = ℕ.m*n≢0 gcd[n,d] gcd[m,c]
 
-  div = mkℚ+-injective eq
+  div = {!mkℚ+-injective eq!}
   m/gcd[m,c]≡n/gcd[n,d] = proj₁ div
   c/gcd[m,c]≡d/gcd[n,d] = proj₂ div
 
