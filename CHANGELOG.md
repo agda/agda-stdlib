@@ -49,6 +49,12 @@ Deprecated names
   _∤∤_    ↦  _∦_
   ```
 
+* In `Algebra.Lattice.Properties.BooleanAlgebra`
+  ```agda
+  ⊥≉⊤   ↦  ¬⊥≈⊤
+  ⊤≉⊥   ↦  ¬⊤≈⊥
+  ```
+
 * In `Algebra.Module.Consequences`
   ```agda
   *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
@@ -244,6 +250,13 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
+  ```
+
+* In `Relation.Binary.Construct.Add.Infimum.Strict`:
+  ```agda
+  <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
+  <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
+  <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
