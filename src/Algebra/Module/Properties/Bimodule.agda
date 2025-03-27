@@ -18,4 +18,4 @@ module Algebra.Module.Properties.Bimodule
 
 open Bimodule mod
 open import Algebra.Module.Properties.LeftModule leftModule public
-  using (identityˡ-uniqueᴹ; identityʳ-uniqueᴹ)
+  using (inverseˡ-uniqueᴹ; inverseʳ-uniqueᴹ; -ᴹ-involutive)

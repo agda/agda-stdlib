@@ -21,4 +21,5 @@ open RightModule mod
 open import Algebra.Properties.AbelianGroup +ᴹ-abelianGroup public
   using ()
   renaming (inverseˡ-unique to inverseˡ-uniqueᴹ
-           ; inverseʳ-unique to inverseʳ-uniqueᴹ)
+           ; inverseʳ-unique to inverseʳ-uniqueᴹ
+           ; ⁻¹-involutive to -ᴹ-involutive)

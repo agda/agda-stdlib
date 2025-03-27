@@ -18,8 +18,5 @@ module Algebra.Module.Properties
 
 open Module mod
 open import Algebra.Module.Properties.Semimodule semimodule public
-open import Algebra.Module.Properties.LeftModule leftModule public
-  using (inverseˡ-uniqueᴹ; inverseʳ-uniqueᴹ)
-open import Algebra.Properties.Group +ᴹ-group public
-  using ()
-  renaming (⁻¹-involutive to -ᴹ-involutive)
+open import Algebra.Module.Properties.Bimodule bimodule public
+  using (inverseˡ-uniqueᴹ; inverseʳ-uniqueᴹ; -ᴹ-involutive)
