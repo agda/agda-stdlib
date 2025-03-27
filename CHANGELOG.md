@@ -137,6 +137,18 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Base`:
+  ```agda
+  almost⇒exceptˡ : _AlmostLeftCancellative′_ _≈_ P _•_ →
+                   Except_LeftCancellative_ _≈_ P _•_
+  almost⇒exceptʳ : _AlmostRightCancellative′_ _≈_ P _•_ →
+                   Except_RightCancellative_ _≈_ P _•_
+  except⇒almostˡ : Decidable P → Except_LeftCancellative_ _≈_ P _•_ →
+                   _AlmostLeftCancellative′_ _≈_ P _•_
+  except⇒almostʳ : Decidable P → Except_RightCancellative_ _≈_ P _•_ →
+                   _AlmostRightCancellative′_ _≈_ P _•_
+  ```
+
 * In `Algebra.Consequences.Setoid`:
   ```agda
   comm∧cancelAtˡ⇒cancelAtʳ : LeftCancellativeAt x _∙_ → RightCancellativeAt x _∙_
