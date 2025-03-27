@@ -13,8 +13,8 @@ module Algebra.Consequences.Base
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions
   using (Selective; Idempotent; SelfInverse; Involutive
-        ; _-AlmostLeftCancellative_; Except_-LeftCancellative_
-        ; _-AlmostRightCancellative_; Except_-RightCancellative_)
+        ; _AlmostLeftCancellative′_; Except_LeftCancellative_
+        ; _AlmostRightCancellative′_; Except_RightCancellative_)
 open import Data.Sum.Base using (inj₁; inj₂; reduce; [_,_]′)
 open import Function.Base using (id; const; flip)
 open import Relation.Binary.Core using (Rel)
@@ -33,27 +33,27 @@ module _ {ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) where
 module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ)
          {P : Pred A p} where
 
-  almost⇒exceptˡ : _-AlmostLeftCancellative_ _≈_ P _•_ →
-                   Except_-LeftCancellative_ _≈_ P _•_
+  almost⇒exceptˡ : _AlmostLeftCancellative′_ _≈_ P _•_ →
+                   Except_LeftCancellative_ _≈_ P _•_
   almost⇒exceptˡ cancel x y z {{¬px}} =
     [ flip contradiction (¬-recompute ¬px) , (λ cancel → cancel y z) ]′ (cancel x)
 
-  almost⇒exceptʳ : _-AlmostRightCancellative_ _≈_ P _•_ →
-                   Except_-RightCancellative_ _≈_ P _•_
+  almost⇒exceptʳ : _AlmostRightCancellative′_ _≈_ P _•_ →
+                   Except_RightCancellative_ _≈_ P _•_
   almost⇒exceptʳ cancel x y z {{¬px}} =
     [ flip contradiction (¬-recompute ¬px) , (λ cancel → cancel y z) ]′ (cancel x)
 
 module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ)
          {P : Pred A p} (dec : Decidable P) where
 
-  except⇒almostˡ : Except_-LeftCancellative_ _≈_ P _•_ →
-                   _-AlmostLeftCancellative_ _≈_ P _•_
+  except⇒almostˡ : Except_LeftCancellative_ _≈_ P _•_ →
+                   _AlmostLeftCancellative′_ _≈_ P _•_
   except⇒almostˡ cancel x with dec x
   ... | yes px = inj₁ px
   ... | no ¬px = inj₂ (λ y z → cancel x y z {{¬px}})
 
-  except⇒almostʳ : Except_-RightCancellative_ _≈_ P _•_ →
-                   _-AlmostRightCancellative_ _≈_ P _•_
+  except⇒almostʳ : Except_RightCancellative_ _≈_ P _•_ →
+                   _AlmostRightCancellative′_ _≈_ P _•_
   except⇒almostʳ cancel x with dec x
   ... | yes px = inj₁ px
   ... | no ¬px = inj₂ λ y z → cancel x y z {{¬px}}
