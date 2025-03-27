@@ -12,6 +12,7 @@ module Relation.Binary.Properties.PartialSetoid
   {a ℓ} (S : PartialSetoid a ℓ) where
 
 open import Data.Product.Base using (_,_; _×_)
+open import Relation.Binary.Definitions using (LeftTrans; RightTrans)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 open PartialSetoid S
@@ -23,10 +24,10 @@ private
 ------------------------------------------------------------------------
 -- Proofs for partial equivalence relations
 
-trans-reflˡ : x ≡ y → y ≈ z → x ≈ z
+trans-reflˡ : LeftTrans _≡_ _≈_
 trans-reflˡ ≡.refl p = p
 
-trans-reflʳ : x ≈ y → y ≡ z → x ≈ z
+trans-reflʳ : RightTrans _≈_ _≡_
 trans-reflʳ p ≡.refl = p
 
 p-reflˡ : x ≈ y → x ≈ x
