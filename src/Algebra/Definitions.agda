@@ -155,7 +155,7 @@ RightCancellative _•_ = ∀ x → RightCancellativeAt x _•_
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
-_AlmostLeftCancellative′_    : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+_AlmostLeftCancellative′_   : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 Provided_LeftCancellative_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 Except_LeftCancellative_    : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 
