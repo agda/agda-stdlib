@@ -20,5 +20,5 @@ open Ring        ring
 open RightModule mod
 open import Algebra.Properties.AbelianGroup +ᴹ-abelianGroup public
   using ()
-  renaming (identityˡ-unique to identityˡ-uniqueᴹ
-           ; identityʳ-unique to identityʳ-uniqueᴹ)
+  renaming (inverseˡ-unique to inverseˡ-uniqueᴹ
+           ; inverseʳ-unique to inverseʳ-uniqueᴹ)

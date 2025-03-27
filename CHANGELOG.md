@@ -177,8 +177,8 @@ Additions to existing modules
 
 * In `Algebra.Modules.Properties`:
   ```agda
-  inverseˡ-uniqueᴹ : x +ᴹ y ≈ y → x ≈ 0ᴹ
-  inverseʳ-uniqueᴹ : x +ᴹ y ≈ x → y ≈ 0ᴹ
+  inverseˡ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → x ≈ -ᴹ y
+  inverseʳ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → y ≈ -ᴹ x
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
