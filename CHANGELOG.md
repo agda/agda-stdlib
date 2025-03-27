@@ -175,6 +175,12 @@ Additions to existing modules
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
 
+* In `Algebra.Modules.Properties`:
+  ```agda
+  inverseˡ-uniqueᴹ : x +ᴹ y ≈ y → x ≈ 0ᴹ
+  inverseʳ-uniqueᴹ : x +ᴹ y ≈ x → y ≈ 0ᴹ
+  ```
+
 * In `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∣ˡ-respʳ-≈  : _∣ˡ_ Respectsʳ _≈_
