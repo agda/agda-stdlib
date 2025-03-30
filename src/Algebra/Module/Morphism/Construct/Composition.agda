@@ -9,10 +9,12 @@
 module Algebra.Module.Morphism.Construct.Composition where
 
 open import Algebra.Module.Bundles.Raw
+  using (RawLeftSemimodule; RawLeftModule; RawRightSemimodule; RawRightModule;
+  RawBisemimodule; RawBimodule; RawSemimodule; RawModule)
 open import Algebra.Module.Morphism.Structures
-open import Algebra.Morphism.Construct.Composition
+open import Algebra.Morphism.Construct.Composition using (isMonoidHomomorphism; isGroupHomomorphism)
 open import Function.Base using (_∘_)
-import Function.Construct.Composition as Func
+import Function.Construct.Composition as Func using (surjective)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (Transitive)
 

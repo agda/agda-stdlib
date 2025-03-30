@@ -8,17 +8,17 @@
 
 module Function.Properties.Surjection where
 
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_; _$_)
-open import Function.Definitions using (Surjective; Injective; Congruent)
 open import Function.Bundles
   using (Func; Surjection; Bijection; _↠_; _⟶_; _↪_; mk↪; _⇔_; mk⇔)
-import Function.Construct.Identity as Identity
-import Function.Construct.Composition as Compose
+import Function.Construct.Identity as Identity using (surjection)
+import Function.Construct.Composition as Compose using (surjection)
+open import Function.Definitions using (Surjective; Injective; Congruent)
 open import Level using (Level)
-open import Data.Product.Base using (_,_; proj₁; proj₂)
-import Relation.Binary.PropositionalEquality.Core as ≡
-open import Relation.Binary.Definitions using (Reflexive; Trans)
 open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Reflexive; Trans)
+import Relation.Binary.PropositionalEquality.Core as ≡
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private

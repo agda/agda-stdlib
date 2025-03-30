@@ -11,7 +11,6 @@ module Relation.Binary.Rewriting where
 
 open import Agda.Builtin.Equality using (_≡_ ; refl)
 open import Data.Product.Base using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
-open import Data.Empty using (⊥-elim)
 open import Function.Base using (flip)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Relation.Binary.Core using (REL; Rel)
@@ -23,7 +22,7 @@ open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.Construct.Closure.Symmetric using (fwd; bwd)
 open import Relation.Binary.Construct.Closure.Transitive
   using (Plus; [_]; _∼⁺⟨_⟩_)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 -- The following definitions are taken from Klop [5]
 module _ {a ℓ} {A : Set a} (_⟶_ : Rel A ℓ) where
@@ -81,15 +80,15 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
   conf⇒nf c aIsNF ε = ε
   conf⇒nf c aIsNF (fwd x ◅ rest) = x ◅ conf⇒nf c aIsNF rest
   conf⇒nf c aIsNF (bwd y ◅ rest) with c (y ◅ ε) (conf⇒nf c aIsNF rest)
-  ... | _ , _    , x ◅ _ = ⊥-elim (aIsNF (_ , x))
+  ... | _ , _    , x ◅ _ = contradiction (_ , x) aIsNF
   ... | _ , left , ε     = left
 
   conf⇒unf : Confluent _⟶_ → UniqueNormalForm _⟶_
   conf⇒unf _ _     _     ε           = refl
-  conf⇒unf _ aIsNF _     (fwd x ◅ _) = ⊥-elim (aIsNF (_ , x))
+  conf⇒unf _ aIsNF _     (fwd x ◅ _) = contradiction (_ , x) aIsNF
   conf⇒unf c aIsNF bIsNF (bwd y ◅ r) with c (y ◅ ε) (conf⇒nf c bIsNF r)
-  ... | _ , ε     , x ◅ _ = ⊥-elim (bIsNF (_ , x))
-  ... | _ , x ◅ _ , _     = ⊥-elim (aIsNF (_ , x))
+  ... | _ , ε     , x ◅ _ = contradiction (_ , x) bIsNF
+  ... | _ , x ◅ _ , _     = contradiction (_ , x) aIsNF
   ... | _ , ε     , ε     = refl
 
   un&wn⇒cr : UniqueNormalForm _⟶_ → WeaklyNormalizing _⟶_ → Confluent _⟶_

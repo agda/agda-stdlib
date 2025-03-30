@@ -13,9 +13,12 @@ module Function.Consequences.Propositional
 
 open import Data.Product.Base using (_,_)
 open import Function.Definitions
+  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ
+        ; Surjective; Inverseˡ; Inverseʳ)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
+
 
 ------------------------------------------------------------------------
 -- Re-export setoid properties

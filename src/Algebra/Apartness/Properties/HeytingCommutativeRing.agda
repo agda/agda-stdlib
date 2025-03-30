@@ -64,30 +64,6 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
       y⁻¹ * (y - 0#)               ≈⟨ y⁻¹*y≈1 ⟩
       1# ∎
 
-#-sym : Symmetric _#_
-#-sym {x} {y} x#y = invertibleˡ⇒# (- x-y⁻¹ , x-y⁻¹*y-x≈1)
-  where
-  open ≈-Reasoning setoid
-  InvX-Y : Invertible _≈_ 1# _*_ (x - y)
-  InvX-Y = #⇒invertible x#y
-
-  x-y⁻¹ = InvX-Y .proj₁
-
-  y-x≈-[x-y] : y - x ≈ - (x - y)
-  y-x≈-[x-y] = begin
-    y - x     ≈⟨ +-congʳ (-‿involutive y) ⟨
-    - - y - x ≈⟨ -‿anti-homo-+ x (- y) ⟨
-    - (x - y) ∎
-
-  x-y⁻¹*y-x≈1 : (- x-y⁻¹) * (y - x) ≈ 1#
-  x-y⁻¹*y-x≈1 = begin
-    (- x-y⁻¹) * (y - x)   ≈⟨ -‿distribˡ-* x-y⁻¹ (y - x) ⟨
-    - (x-y⁻¹ * (y - x))    ≈⟨ -‿cong (*-congˡ y-x≈-[x-y]) ⟩
-    - (x-y⁻¹ * - (x - y)) ≈⟨ -‿cong (-‿distribʳ-* x-y⁻¹ (x - y)) ⟨
-    - - (x-y⁻¹ * (x - y))  ≈⟨ -‿involutive (x-y⁻¹ * ((x - y))) ⟩
-    x-y⁻¹ * (x - y)        ≈⟨ InvX-Y .proj₂ .proj₁ ⟩
-    1# ∎
-
 #-congʳ : x ≈ y → x # z → y # z
 #-congʳ {x} {y} {z} x≈y x#z = helper (#⇒invertible x#z)
   where

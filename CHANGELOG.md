@@ -9,6 +9,14 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
+  to `#-sym` in order to avoid overloaded projection.
+  `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
+
+* In `Algebra.Definitions.RawMagma` and `Relation.Binary.Construct.Interior.Symmetric`,
+  the record constructors `_,_` incorrectly had no declared fixity. They have been given
+  the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
+
 * A major overhaul of the `Function` hierarchy sees the systematic development
   and use of the theory of the left inverse `from` to a given `Surjective` function
   `to`, as a consequence of which we can achieve full symmetry of `Bijection`, in
@@ -28,6 +36,9 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
+  to its own dedicated module `Relation.Nullary.Irrelevant`.
+
 Deprecated modules
 ------------------
 
@@ -40,7 +51,13 @@ Deprecated names
   _∤∤_    ↦  _∦_
   ```
 
-* In `Algebra.Module.Consequences
+* In `Algebra.Lattice.Properties.BooleanAlgebra`
+  ```agda
+  ⊥≉⊤   ↦  ¬⊥≈⊤
+  ⊤≉⊥   ↦  ¬⊤≈⊥
+  ```
+
+* In `Algebra.Module.Consequences`
   ```agda
   *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
@@ -58,6 +75,11 @@ Deprecated names
   ∤∤-respˡ-≈    ↦  ∦-respˡ-≈
   ∤∤-respʳ-≈    ↦  ∦-respʳ-≈
   ∤∤-resp-≈     ↦  ∦-resp-≈
+  ∣-respʳ-≈    ↦ ∣ʳ-respʳ-≈
+  ∣-respˡ-≈    ↦ ∣ʳ-respˡ-≈
+  ∣-resp-≈     ↦ ∣ʳ-resp-≈
+  x∣yx         ↦ x∣ʳyx
+  xy≈z⇒y∣z     ↦ xy≈z⇒y∣ʳz
   ```
 
 * In `Algebra.Properties.Monoid.Divisibility`:
@@ -65,11 +87,17 @@ Deprecated names
   ∣∣-refl            ↦  ∥-refl
   ∣∣-reflexive       ↦  ∥-reflexive
   ∣∣-isEquivalence   ↦  ∥-isEquivalence
+  ε∣_                ↦ ε∣ʳ_
+  ∣-refl             ↦ ∣ʳ-refl
+  ∣-reflexive        ↦ ∣ʳ-reflexive
+  ∣-isPreorder       ↦ ∣ʳ-isPreorder
+  ∣-preorder         ↦ ∣ʳ-preorder
   ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
   ∣∣-trans   ↦  ∥-trans
+  ∣-trans    ↦  ∣ʳ-trans
   ```
 
 * In `Data.List.Base`:
@@ -114,6 +142,12 @@ New modules
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
+* `Data.List.Relation.Binary.Prefix.Propositional.Properties` showing the equivalence to left divisibility induced by the list monoid.
+
+* `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
+
+* `Data.Sign.Show` to show a sign
+
 Additions to existing modules
 -----------------------------
 
@@ -144,6 +178,51 @@ Additions to existing modules
   kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ```
+
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣ˡ-respʳ-≈  : _∣ˡ_ Respectsʳ _≈_
+  ∣ˡ-respˡ-≈  : _∣ˡ_ Respectsˡ _≈_
+  ∣ˡ-resp-≈   : _∣ˡ_ Respects₂ _≈_
+  x∣ˡxy       : ∀ x y → x ∣ˡ x ∙ y
+  xy≈z⇒x∣ˡz   : ∀ x y {z} → x ∙ y ≈ z → x ∣ˡ z
+  ```
+
+* In `Algebra.Properties.Monoid.Divisibility`:
+  ```agda
+  ε∣ˡ_          : ∀ x → ε ∣ˡ x
+  ∣ˡ-refl       : Reflexive _∣ˡ_
+  ∣ˡ-reflexive  : _≈_ ⇒ _∣ˡ_
+  ∣ˡ-isPreorder : IsPreorder _≈_ _∣ˡ_
+  ∣ˡ-preorder   : Preorder a ℓ _
+  ```
+
+* In `Algebra.Properties.Semigroup.Divisibility`:
+  ```agda
+  ∣ˡ-trans     : Transitive _∣ˡ_
+  x∣ʳy⇒x∣ʳzy   : x ∣ʳ y → x ∣ʳ z ∙ y
+  x∣ʳy⇒xz∣ʳyz  : x ∣ʳ y → x ∙ z ∣ʳ y ∙ z
+  x∣ˡy⇒zx∣ˡzy  : x ∣ˡ y → z ∙ x ∣ˡ z ∙ y
+  x∣ˡy⇒x∣ˡyz   : x ∣ˡ y → x ∣ˡ y ∙ z
+  ```
+
+* In `Algebra.Properties.CommutativeSemigroup.Divisibility`:
+  ```agda
+  ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
+  map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
+  map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
+  map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
+  ```agda
+  filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
 * In `Function.Bundles.Bijection`:
@@ -218,3 +297,15 @@ Additions to existing modules
   from-injective   : Injective _≈₂_ _≈₁_ from
   ```
 
+* In `Relation.Binary.Construct.Add.Infimum.Strict`:
+  ```agda
+  <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
+  <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
+  <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
+  ```
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```agda
+  ⊤-dec : Dec {a} ⊤
+  ⊥-dec : Dec {a} ⊥
+  ```

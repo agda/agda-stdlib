@@ -12,10 +12,10 @@ module Effect.Monad where
 
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Polymorphic.Base using (⊤)
-
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Applicative
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
+open import Effect.Applicative as App
+  using (RawApplicative; RawApplicativeZero; mkRawApplicative; RawAlternative)
 open import Function.Base using (id; flip; _$′_; _∘′_)
 open import Level using (Level; suc; _⊔_)
 
