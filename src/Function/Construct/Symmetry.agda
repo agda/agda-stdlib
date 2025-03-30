@@ -96,15 +96,11 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ :
 ------------------------------------------------------------------------
 -- Setoid bundles
 
-module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
-
-  -- We can always flip a bijection WITHOUT knowing if the witness produced
-  -- by the surjection proof respects the equality on the codomain.
-  bijection : Bijection S R
-  bijection = record { IsBijection (isBijection B.isBijection) }
-    where module B = Bijection bij
-
 module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
+
+  bijection : Bijection R S → Bijection S R
+  bijection bij = record { IsBijection (isBijection B.isBijection) }
+    where module B = Bijection bij
 
   equivalence : Equivalence R S → Equivalence S R
   equivalence equiv = record
