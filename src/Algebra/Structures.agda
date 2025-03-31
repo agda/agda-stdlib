@@ -323,10 +323,18 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   uniqueˡ-⁻¹ : ∀ x y → (x ∙ y) ≈ ε → x ≈ (y ⁻¹)
   uniqueˡ-⁻¹ = Consequences.assoc∧id∧invʳ⇒invˡ-unique
                 setoid ∙-cong assoc identity inverseʳ
+  {-# WARNING_ON_USAGE uniqueˡ-⁻¹
+  "Warning: uniqueˡ-⁻¹ was deprecated in v2.3.
+  Please use Algebra.Properties.Group.inverseˡ-unique instead. "
+  #-}
 
   uniqueʳ-⁻¹ : ∀ x y → (x ∙ y) ≈ ε → y ≈ (x ⁻¹)
   uniqueʳ-⁻¹ = Consequences.assoc∧id∧invˡ⇒invʳ-unique
                 setoid ∙-cong assoc identity inverseˡ
+  {-# WARNING_ON_USAGE uniqueʳ-⁻¹
+  "Warning: uniqueʳ-⁻¹ was deprecated in v2.3.
+  Please use Algebra.Properties.Group.inverseʳ-unique instead. "
+  #-}
 
   isInvertibleMagma : IsInvertibleMagma _∙_ ε _⁻¹
   isInvertibleMagma = record
