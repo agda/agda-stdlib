@@ -24,6 +24,11 @@ Bug-fixes
   restricted versions considered to date. NB. this is non-backwards compatible
   because the types of various properties are now sharper, and some previous lemmas
   are no longer present, due to the complexity their deprecation would entail.
+  Specifically:
+  - `Function.Construct.Symmetry.isBijection` no longer requires the hypothesis `Congruent ≈₂ ≈₁ f⁻¹` for the function `f⁻¹ = B.from`.
+  - `Function.Construct.Symmetry.isBijection-≡` is now redundant, as an instance of the above lemma, so has been deleted.
+  - Similarly, `Function.Construct.Symmetry.bijection` no longer requires a `Congruent` hypothesis, and `Function.Construct.Symmetry.bijection-≡` is now redundant/deleted.
+  - `Function.Properties.Bijection.sym-≡` is now redundant as an instance of a fully general symmetry property `Function.Properties.Bijection.sym`, and also deleted.
 
 Non-backwards compatible changes
 --------------------------------
@@ -35,6 +40,8 @@ Non-backwards compatible changes
 
 Minor improvements
 ------------------
+
+* The definitions in `Function.Consequences.Propositional` of the from `strictlyX⇒X` have been streamlined via patteern-matching on `refl`, rather than defined by delegation to `Function.Consequences.Setoid` and the use of `cong`.
 
 * Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
   to its own dedicated module `Relation.Nullary.Irrelevant`.
