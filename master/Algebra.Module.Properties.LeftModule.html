@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Module.Properties.LeftModule</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties of left modules.</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--cubical-compatible</a> <a id="244" class="Pragma">--safe</a> <a id="251" class="Symbol">#-}</a>
+
+<a id="256" class="Keyword">open</a> <a id="261" class="Keyword">import</a> <a id="268" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>        <a id="291" class="Keyword">using</a> <a id="297" class="Symbol">(</a><a id="298" href="Algebra.Bundles.html#28896" class="Record">Ring</a><a id="302" class="Symbol">)</a>
+<a id="304" class="Keyword">open</a> <a id="309" class="Keyword">import</a> <a id="316" href="Algebra.Module.Bundles.html" class="Module">Algebra.Module.Bundles</a> <a id="339" class="Keyword">using</a> <a id="345" class="Symbol">(</a><a id="346" href="Algebra.Module.Bundles.html#3356" class="Record">LeftModule</a><a id="356" class="Symbol">)</a>
+<a id="358" class="Keyword">open</a> <a id="363" class="Keyword">import</a> <a id="370" href="Level.html" class="Module">Level</a>                  <a id="393" class="Keyword">using</a> <a id="399" class="Symbol">(</a><a id="400" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="405" class="Symbol">)</a>
+
+<a id="408" class="Keyword">module</a> <a id="415" href="Algebra.Module.Properties.LeftModule.html" class="Module">Algebra.Module.Properties.LeftModule</a>
+  <a id="454" class="Symbol">{</a><a id="455" href="Algebra.Module.Properties.LeftModule.html#455" class="Bound">r</a> <a id="457" href="Algebra.Module.Properties.LeftModule.html#457" class="Bound">ℓr</a> <a id="460" href="Algebra.Module.Properties.LeftModule.html#460" class="Bound">m</a> <a id="462" href="Algebra.Module.Properties.LeftModule.html#462" class="Bound">ℓm</a> <a id="465" class="Symbol">:</a> <a id="467" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="472" class="Symbol">}</a>
+  <a id="476" class="Symbol">{</a><a id="477" href="Algebra.Module.Properties.LeftModule.html#477" class="Bound">ring</a>  <a id="483" class="Symbol">:</a> <a id="485" href="Algebra.Bundles.html#28896" class="Record">Ring</a> <a id="490" href="Algebra.Module.Properties.LeftModule.html#455" class="Bound">r</a> <a id="492" href="Algebra.Module.Properties.LeftModule.html#457" class="Bound">ℓr</a><a id="494" class="Symbol">}</a>
+  <a id="498" class="Symbol">(</a><a id="499" href="Algebra.Module.Properties.LeftModule.html#499" class="Bound">mod</a>   <a id="505" class="Symbol">:</a> <a id="507" href="Algebra.Module.Bundles.html#3356" class="Record">LeftModule</a> <a id="518" href="Algebra.Module.Properties.LeftModule.html#477" class="Bound">ring</a> <a id="523" href="Algebra.Module.Properties.LeftModule.html#460" class="Bound">m</a> <a id="525" href="Algebra.Module.Properties.LeftModule.html#462" class="Bound">ℓm</a><a id="527" class="Symbol">)</a>
+  <a id="531" class="Keyword">where</a>
+
+<a id="538" class="Keyword">open</a> <a id="543" href="Algebra.Bundles.html#28896" class="Module">Ring</a>       <a id="554" href="Algebra.Module.Properties.LeftModule.html#477" class="Bound">ring</a>
+<a id="559" class="Keyword">open</a> <a id="564" href="Algebra.Module.Bundles.html#3356" class="Module">LeftModule</a> <a id="575" href="Algebra.Module.Properties.LeftModule.html#499" class="Bound">mod</a>
+<a id="579" class="Keyword">open</a> <a id="584" class="Keyword">import</a> <a id="591" href="Algebra.Properties.AbelianGroup.html" class="Module">Algebra.Properties.AbelianGroup</a> <a id="623" href="Algebra.Module.Bundles.html#4056" class="Function">+ᴹ-abelianGroup</a> <a id="639" class="Keyword">public</a>
+  <a id="648" class="Keyword">using</a> <a id="654" class="Symbol">()</a>
+  <a id="659" class="Keyword">renaming</a> <a id="668" class="Symbol">(</a><a id="669" href="Algebra.Properties.Group.html#2925" class="Function">inverseˡ-unique</a> <a id="685" class="Symbol">to</a> <a id="688" class="Function">inverseˡ-uniqueᴹ</a>
+           <a id="716" class="Symbol">;</a> <a id="718" href="Algebra.Properties.Group.html#3036" class="Function">inverseʳ-unique</a> <a id="734" class="Symbol">to</a> <a id="737" class="Function">inverseʳ-uniqueᴹ</a>
+           <a id="765" class="Symbol">;</a> <a id="767" href="Algebra.Properties.Group.html#3377" class="Function">⁻¹-involutive</a> <a id="781" class="Symbol">to</a> <a id="784" class="Function">-ᴹ-involutive</a><a id="797" class="Symbol">)</a>
+</pre></body></html>
