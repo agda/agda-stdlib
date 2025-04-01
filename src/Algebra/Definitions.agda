@@ -15,11 +15,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-<<<<<<< HEAD
 open import Relation.Binary.Core using (Rel)
-=======
-open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
->>>>>>> f0e0101df (chore: move imports around in Algebra.Definitions)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -29,13 +25,9 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
-<<<<<<< HEAD
 open import Relation.Binary.Definitions using (Monotonic₁; Monotonic₂)
 open import Relation.Nullary.Negation.Core using (¬_)
 
-=======
-open import Relation.Nullary.Negation.Core using (¬_)
->>>>>>> f0e0101df (chore: move imports around in Algebra.Definitions)
 
 ------------------------------------------------------------------------
 -- Properties of operations
