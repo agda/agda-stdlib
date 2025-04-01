@@ -74,7 +74,6 @@ module Assoc4  {a b c d : Carrier} where
 open Assoc4 public
 
 module Pulls (ab≡c : a ∙ b ≈ c) where
-
     pullʳ : ∀ {x} → (x ∙ a) ∙ b ≈ x ∙ c
     pullʳ {x = x} = begin
         (x ∙ a) ∙ b ≈⟨ assoc x a b ⟩
@@ -132,4 +131,3 @@ center⁻¹ {a = a} {b = b} {c = c} {x = x} {y = y} {z = z} eq eq′ = begin
 
 push-center : a ∙ b ≈ c → x ∙ (c ∙ y) ≈ x ∙ (a ∙ (b ∙ y))
 push-center eq = sym (pull-center eq)
-
