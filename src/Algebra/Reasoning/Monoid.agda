@@ -1,3 +1,10 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Equational reasoning for monoids
+-- (Utilities for identity and cancellation reasoning, extending semigroup reasoning)
+------------------------------------------------------------------------
+
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Monoid)
@@ -6,8 +13,7 @@ module Algebra.Reasoning.Monoid {o ℓ} (M : Monoid o ℓ) where
 
 open Monoid M
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Algebra.Reasoning.SemiGroup semigroup public
-
+open import Algebra.Reasoning.Semigroup semigroup public
 
 module Identity {a : Carrier } where
     id-unique : (∀ b → b ∙ a ≈ b) → a ≈ ε
