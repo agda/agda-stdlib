@@ -131,3 +131,27 @@ center⁻¹ {a = a} {b = b} {c = c} {x = x} {y = y} {z = z} eq eq′ = begin
 
 push-center : a ∙ b ≈ c → x ∙ (c ∙ y) ≈ x ∙ (a ∙ (b ∙ y))
 push-center eq = sym (pull-center eq)
+
+module Extends {a b c d : Carrier} (s : a ∙ b ≈ c ∙ d) where
+  -- rewrite (x ∙ a) ∙ b to (x ∙ c) ∙ d
+  extendˡ : (x ∙ a) ∙ b ≈ (x ∙ c) ∙ d
+  extendˡ {x = x} = begin
+    (x ∙ a) ∙ b ≈⟨ pullʳ s ⟩
+    x ∙ (c ∙ d) ≈⟨ sym (assoc x c d) ⟩
+    (x ∙ c) ∙ d ∎
+
+  -- rewrite a ∙ (b ∙ x) to c ∙ (d ∙ x)
+  extendʳ : a ∙ (b ∙ x) ≈ c ∙ (d ∙ x)
+  extendʳ {x = x} = begin
+    a ∙ (b ∙ x) ≈⟨ pullˡ s ⟩
+    (c ∙ d) ∙ x ≈⟨ assoc c d x ⟩
+    c ∙ (d ∙ x) ∎
+
+  -- rewrite (x ∙ a) ∙ (b ∙ y) to (x ∙ c) ∙ (d ∙ y)
+  extend² : ∀ x y → (x ∙ a) ∙ (b ∙ y) ≈ (x ∙ c) ∙ (d ∙ y)
+  extend² x y = begin
+    (x ∙ a) ∙ (b ∙ y) ≈⟨ pullʳ (extendʳ {x = y}) ⟩
+    x ∙ (c ∙ (d ∙ y)) ≈⟨ sym (assoc x c (d ∙ y)) ⟩
+    (x ∙ c) ∙ (d ∙ y) ∎
+
+open Extends public
