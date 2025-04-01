@@ -183,6 +183,8 @@ New modules
 
 * `Relation.Nullary.Recomputable.Core`
 
+* `Algebra.Reasoning.SemiGroup` adding resaoning combinator for semigroup 
+
 Additions to existing modules
 -----------------------------
 
