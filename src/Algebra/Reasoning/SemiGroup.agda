@@ -9,7 +9,7 @@
 
 open import Algebra using (Semigroup)
 
-module Algebra.Reasoning.SemiGroup {o ℓ} (S : Semigroup o ℓ) where
+module Algebra.Reasoning.Semigroup {o ℓ} (S : Semigroup o ℓ) where
 
 open Semigroup S
     using (Carrier; _∙_; _≈_; setoid; trans ; refl; sym; assoc; ∙-cong)
