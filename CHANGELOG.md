@@ -123,6 +123,8 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
+* `Algebra.Reasoning.SemiGroup` adding resaoning combinator for semigroup 
+
 Additions to existing modules
 -----------------------------
 
