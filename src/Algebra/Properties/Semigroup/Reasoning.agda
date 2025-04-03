@@ -94,16 +94,11 @@ open Pulls public
 
 module Pushes (uv≡w : u ∙ v ≈ w) where
     pushʳ : x ∙ w ≈ (x ∙ u) ∙ v
-    pushʳ {x = x} = begin
-        x ∙ w       ≈⟨ ∙-congˡ uv≡w ⟨
-        x ∙ (u ∙ v) ≈⟨ assoc x u v ⟨
-        (x ∙ u) ∙ v ∎
+    pushʳ = sym (pullʳ uv≡w)
 
     pushˡ : w ∙ x ≈ u ∙ (v ∙ x)
-    pushˡ {x = x} = begin
-        w ∙ x       ≈⟨ ∙-congʳ uv≡w ⟨
-        (u ∙ v) ∙ x ≈⟨ assoc u v x ⟩
-        u ∙ (v ∙ x) ∎
+    pushˡ = sym (pullˡ uv≡w)
+
 open Pushes public
 
 module Center (eq : u ∙ v ≈ w) where
@@ -142,3 +137,4 @@ module Extends {u v w x : Carrier} (s : u ∙ v ≈ w ∙ x) where
 
 open Extends public
 
+ 
