@@ -137,4 +137,3 @@ module Extends {u v w x : Carrier} (s : u ∙ v ≈ w ∙ x) where
 
 open Extends public
 
- 
