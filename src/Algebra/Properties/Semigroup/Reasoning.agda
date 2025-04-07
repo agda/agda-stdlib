@@ -22,7 +22,6 @@ private
  variable
     u v w x y z : Carrier
 
-
 module Assoc4  {u v w x : Carrier} where
   [uv∙w]x≈u[vw∙x] : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
   [uv∙w]x≈u[vw∙x] = trans (∙-congʳ (assoc u v w)) (assoc u (v ∙ w) x)
@@ -69,7 +68,6 @@ module Pulls (uv≡w : u ∙ v ≈ w) where
     uv≡w⇒x[uv∙y]≈x∙wy : ∀ {x y} → x ∙ (u ∙ (v ∙ y)) ≈ x ∙ (w ∙ y)
     uv≡w⇒x[uv∙y]≈x∙wy {x = x} {y = y} = ∙-congˡ (uv≡w⇒u∙vx≈wx)
 
-    -- could be called pull₃ʳ
     uv≡w⇒[x∙yu]v≈x∙yw : ∀ {x y} → (x ∙ (y ∙ u)) ∙ v ≈ x ∙ (y ∙ w)
     uv≡w⇒[x∙yu]v≈x∙yw  {x = x} {y = y} = trans (assoc x (y ∙ u) v) (∙-congˡ (uv≡w⇒xu∙v≈xw {x = y}))
 
