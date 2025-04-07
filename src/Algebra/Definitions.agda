@@ -156,22 +156,25 @@ Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
 _AlmostLeftCancellative′_   : ∀ {p} (P : Pred A p) → Op₂ A → Set _
-Provided_LeftCancellative_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
-Except_LeftCancellative_    : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 
 P AlmostLeftCancellative′ _•_   = ∀ x → P x ⊎ LeftCancellativeAt x _•_
+
+Provided_LeftCancellative_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 Provided P LeftCancellative _•_ = ∀ x y z → .{{P x}} → (x • y) ≈ (x • z) → y ≈ z
+
+Except_LeftCancellative_    : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 Except P LeftCancellative _•_   = Provided (∁ P) LeftCancellative _•_
 
 AlmostLeftCancellative : A → Op₂ A → Set _
 AlmostLeftCancellative e = (_≈ e) AlmostLeftCancellative′_
 
 _AlmostRightCancellative′_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
-Provided_RightCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
-Except_RightCancellative_   : ∀ {p} (P : Pred A p) → Op₂ A → Set _
-
 P AlmostRightCancellative′ _•_    = ∀ x → P x ⊎ RightCancellativeAt x _•_
+
+Provided_RightCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 Provided P RightCancellative _•_ = ∀ x y z → .{{P x}} → (y • x) ≈ (z • x) → y ≈ z
+
+Except_RightCancellative_   : ∀ {p} (P : Pred A p) → Op₂ A → Set _
 Except_RightCancellative_ P      = Provided (∁ P) RightCancellative_
 
 AlmostRightCancellative : A → Op₂ A → Set _
