@@ -63,6 +63,18 @@ Deprecated names
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   ```
 
+* In `Algebra.Module.Structures.IsLeftModule`:
+  ```agda
+  uniqueˡ‿⁻ᴹ   ↦  Algebra.Module.Properties.LeftModule.inverseˡ-uniqueᴹ
+  uniqueʳ‿⁻ᴹ   ↦  Algebra.Module.Properties.LeftModule.inverseʳ-uniqueᴹ
+  ```
+
+* In `Algebra.Module.Structures.IsRightModule`:
+  ```agda
+  uniqueˡ‿⁻ᴹ   ↦  Algebra.Module.Properties.RightModule.inverseˡ-uniqueᴹ
+  uniqueʳ‿⁻ᴹ   ↦  Algebra.Module.Properties.RightModule.inverseʳ-uniqueᴹ
+  ```
+
 * In `Algebra.Properties.CancellativeCommutativeSemiring`:
   ```agda
   *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
@@ -103,6 +115,12 @@ Deprecated names
   ∣-trans    ↦  ∣ʳ-trans
   ```
 
+* In `Algebra.Structures.Group`:
+  ```agda
+  uniqueˡ-⁻¹   ↦  Algebra.Properties.Group.inverseˡ-unique
+  uniqueʳ-⁻¹   ↦  Algebra.Properties.Group.inverseʳ-unique
+  ```
+
 * In `Data.List.Base`:
   ```agda
   and       ↦  Data.Bool.ListAction.and
@@ -129,6 +147,8 @@ Deprecated names
 
 New modules
 -----------
+
+* `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
 
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
@@ -200,6 +220,12 @@ Additions to existing modules
   _AlmostRightCancellative′_   : (P : Pred A p) → Op₂ A → Set _
   Provided_RightCancellative_  : (P : Pred A p) → Op₂ A → Set _
   Except_RightCancellative_    : (P : Pred A p) → Op₂ A → Set _
+  ```
+
+* In `Algebra.Modules.Properties`:
+  ```agda
+  inverseˡ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → x ≈ -ᴹ y
+  inverseʳ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → y ≈ -ᴹ x
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
