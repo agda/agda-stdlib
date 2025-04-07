@@ -76,23 +76,23 @@ module Pulls (uv≡w : u ∙ v ≈ w) where
 open Pulls public
 
 module Pushes (uv≡w : u ∙ v ≈ w) where
-    pushʳ : x ∙ w ≈ (x ∙ u) ∙ v
-    pushʳ = sym (uv≡w⇒xu∙v≈xw uv≡w)
+    uv≡w⇒xw≈xu∙v : x ∙ w ≈ (x ∙ u) ∙ v
+    uv≡w⇒xw≈xu∙v = sym (uv≡w⇒xu∙v≈xw uv≡w)
 
-    pushˡ : w ∙ x ≈ u ∙ (v ∙ x)
-    pushˡ = sym (uv≡w⇒u∙vx≈wx uv≡w)
+    uv≡w⇒wx≈u∙vx : w ∙ x ≈ u ∙ (v ∙ x)
+    uv≡w⇒wx≈u∙vx = sym (uv≡w⇒u∙vx≈wx uv≡w)
 
 open Pushes public
 
 module Center (eq : u ∙ v ≈ w) where
-  center : (x ∙ u) ∙ (v ∙ y) ≈ x ∙ (w ∙ y)
-  center = uv≡w⇒xu∙v≈xw(uv≡w⇒u∙vx≈wx eq)
+  uv≡w⇒xu∙vy≈x∙wy : (x ∙ u) ∙ (v ∙ y) ≈ x ∙ (w ∙ y)
+  uv≡w⇒xu∙vy≈x∙wy = uv≡w⇒xu∙v≈xw(uv≡w⇒u∙vx≈wx eq)
 
-  center⁻¹ : ∀ z → x ∙ y ≈ z → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ z
-  center⁻¹ z xy≈z = trans (∙-congˡ (uv≡w⇒xu∙v≈xw xy≈z)) (uv≡w⇒u∙vx≈wx eq)
+  uv≡w⇒xy≡z⇒u[vx∙y]≈wz : ∀ z → x ∙ y ≈ z → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ z
+  uv≡w⇒xy≡z⇒u[vx∙y]≈wz z xy≈z = trans (∙-congˡ (uv≡w⇒xu∙v≈xw xy≈z)) (uv≡w⇒u∙vx≈wx eq)
 
-  push-center : x ∙ (w ∙ y) ≈ x ∙ (u ∙ (v ∙ y))
-  push-center = sym (uv≡w⇒x[uv∙y]≈x∙wy eq)
+  uv≡w⇒x∙wy≈x∙[u∙vy] : x ∙ (w ∙ y) ≈ x ∙ (u ∙ (v ∙ y))
+  uv≡w⇒x∙wy≈x∙[u∙vy] = sym (uv≡w⇒x[uv∙y]≈x∙wy eq)
 
 open Center public
 
