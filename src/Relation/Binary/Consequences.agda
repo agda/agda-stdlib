@@ -104,7 +104,7 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃}
     (mono (reflexive x≈y) (reflexive u≈v))
     (mono (reflexive (sym x≈y)) (reflexive (sym u≈v)))
 
-module _ {≤₁ : Rel A ℓ₁} {≤₂ : Rel B ℓ₂} {≤₃ : Rel C ℓ₂} where
+module _ (≤₁ : Rel A ℓ₁) (≤₂ : Rel B ℓ₂) (≤₃ : Rel C ℓ₂) where
 
   mono₂⇒monoˡ : ∀ {f} → Reflexive ≤₁ →
                 Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f

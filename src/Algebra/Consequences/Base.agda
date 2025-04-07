@@ -24,10 +24,10 @@ module Congruence {ℓ} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ) (open Definitions 
   where
 
   ∙-congˡ : LeftCongruent _∙_
-  ∙-congˡ {x} = mono₂⇒monoˡ {≤₂ = _≈_} {≤₃ = _≈_} (refl {x = x}) cong x
+  ∙-congˡ {x} = mono₂⇒monoˡ _ _≈_ _≈_ (refl {x = x}) cong x
 
   ∙-congʳ : RightCongruent _∙_
-  ∙-congʳ {x} = mono₂⇒monoʳ {≤₁ = _≈_} {≤₃ = _≈_} (refl {x = x}) cong x
+  ∙-congʳ {x} = mono₂⇒monoʳ _≈_ _ _≈_ (refl {x = x}) cong x
 
 module _ {ℓ} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ) (open Definitions _≈_) where
 
