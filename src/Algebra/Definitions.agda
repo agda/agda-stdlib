@@ -16,7 +16,6 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Nullary.Negation.Core using (¬_)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -26,6 +25,7 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
+open import Relation.Unary using (Pred; ∁)
 
 ------------------------------------------------------------------------
 -- Properties of operations
@@ -37,10 +37,10 @@ Congruent₂ : Op₂ A → Set _
 Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
 
 LeftCongruent : Op₂ A → Set _
-LeftCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+LeftCongruent _∙_ = ∀ {x} → Congruent₁ (x ∙_)
 
 RightCongruent : Op₂ A → Set _
-RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+RightCongruent _∙_ = ∀ {x} → Congruent₁ (_∙ x)
 
 Associative : Op₂ A → Set _
 Associative _∙_ = ∀ x y z → ((x ∙ y) ∙ z) ≈ (x ∙ (y ∙ z))
@@ -140,20 +140,45 @@ SelfInverse f = ∀ {x y} → f x ≈ y → f y ≈ x
 Involutive : Op₁ A → Set _
 Involutive f = ∀ x → f (f x) ≈ x
 
+LeftCancellativeAt : A → Op₂ A → Set _
+LeftCancellativeAt x _•_ = ∀ y z → (x • y) ≈ (x • z) → y ≈ z
+
 LeftCancellative : Op₂ A → Set _
-LeftCancellative _•_ = ∀ x y z → (x • y) ≈ (x • z) → y ≈ z
+LeftCancellative _•_ = ∀ x → LeftCancellativeAt x _•_
+
+RightCancellativeAt : A → Op₂ A → Set _
+RightCancellativeAt x _•_ = ∀ y z → (y • x) ≈ (z • x) → y ≈ z
 
 RightCancellative : Op₂ A → Set _
-RightCancellative _•_ = ∀ x y z → (y • x) ≈ (z • x) → y ≈ z
+RightCancellative _•_ = ∀ x → RightCancellativeAt x _•_
 
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
+_AlmostLeftCancellative′_   : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+
+P AlmostLeftCancellative′ _•_   = ∀ x → P x ⊎ LeftCancellativeAt x _•_
+
+Provided_LeftCancellative_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Provided P LeftCancellative _•_ = ∀ x y z → .{{P x}} → (x • y) ≈ (x • z) → y ≈ z
+
+Except_LeftCancellative_    : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Except P LeftCancellative _•_   = Provided (∁ P) LeftCancellative _•_
+
 AlmostLeftCancellative : A → Op₂ A → Set _
-AlmostLeftCancellative e _•_ = ∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+AlmostLeftCancellative e = (_≈ e) AlmostLeftCancellative′_
+
+_AlmostRightCancellative′_  : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+P AlmostRightCancellative′ _•_    = ∀ x → P x ⊎ RightCancellativeAt x _•_
+
+Provided_RightCancellative_ : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Provided P RightCancellative _•_ = ∀ x y z → .{{P x}} → (y • x) ≈ (z • x) → y ≈ z
+
+Except_RightCancellative_   : ∀ {p} (P : Pred A p) → Op₂ A → Set _
+Except_RightCancellative_ P      = Provided (∁ P) RightCancellative_
 
 AlmostRightCancellative : A → Op₂ A → Set _
-AlmostRightCancellative e _•_ = ∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+AlmostRightCancellative e = (_≈ e) AlmostRightCancellative′_
 
 AlmostCancellative : A → Op₂ A → Set _
 AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
