@@ -10,17 +10,17 @@ module Relation.Binary.PropositionalEquality where
 
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base using (id; _∘_)
-import Function.Dependent.Bundles as Dependent
+import Function.Dependent.Bundles as Dependent using (Func)
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (Irrelevant)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Nullary.Decidable using (yes; no; dec-yes-irr; dec-no)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
-  as Trivial
+  as Trivial using (indexedSetoid)
 
 private
   variable

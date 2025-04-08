@@ -15,20 +15,22 @@ open import Data.Product.Base
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
-open import Data.Empty
-open import Function.Base
-open import Induction.WellFounded
-open import Level
-open import Relation.Nullary.Decidable
+open import Function.Base using (flip; _on_; _$_; _∘_)
+open import Induction.WellFounded using (Acc; acc; WfRec; WellFounded; Acc-resp-flip-≈)
+open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Preorder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri>; tri≈)
-open import Relation.Binary.Consequences
+  using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable
+        ; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_
+        ; tri<; tri>; tri≈)
+open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Nullary.Decidable.Core using (yes; no; _⊎-dec_; _×-dec_)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
   variable
@@ -132,11 +134,11 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
     where
     antisym : Antisymmetric _≋_ _<ₗₑₓ_
     antisym (inj₁ x₁<y₁) (inj₁ y₁<x₁) =
-      ⊥-elim $ asym₁ x₁<y₁ y₁<x₁
+      contradiction y₁<x₁ (asym₁ x₁<y₁)
     antisym (inj₁ x₁<y₁) (inj₂ y≈≤x)  =
-      ⊥-elim $ irrefl₁ (sym₁ $ proj₁ y≈≤x) x₁<y₁
+      contradiction x₁<y₁ (irrefl₁ (sym₁ $ proj₁ y≈≤x))
     antisym (inj₂ x≈≤y)  (inj₁ y₁<x₁) =
-      ⊥-elim $ irrefl₁ (sym₁ $ proj₁ x≈≤y) y₁<x₁
+      contradiction y₁<x₁ (irrefl₁ (sym₁ $ proj₁ x≈≤y))
     antisym (inj₂ x≈≤y)  (inj₂ y≈≤x)  =
       proj₁ x≈≤y , antisym₂ (proj₂ x≈≤y) (proj₂ y≈≤x)
 

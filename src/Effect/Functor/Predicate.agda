@@ -11,8 +11,8 @@
 module Effect.Functor.Predicate where
 
 open import Function.Base using (const)
-open import Level
-open import Relation.Unary
+open import Level using (Level; suc; _⊔_)
+open import Relation.Unary using (_⊆_)
 open import Relation.Unary.PredicateTransformer using (PT)
 
 private

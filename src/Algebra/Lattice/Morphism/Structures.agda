@@ -6,17 +6,16 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Morphism
-open import Algebra.Lattice.Bundles
+module Algebra.Lattice.Morphism.Structures where
+
+open import Algebra.Core using (Op₂)
+open import Algebra.Morphism using (module MagmaMorphisms)
+open import Algebra.Lattice.Bundles using (RawLattice)
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
-open import Function.Definitions
-open import Relation.Binary.Morphism.Structures
-open import Relation.Binary.Core
-
-module Algebra.Lattice.Morphism.Structures where
+open import Function.Definitions using (Injective; Surjective)
+open import Relation.Binary.Morphism.Structures using (IsRelHomomorphism)
+open import Relation.Binary.Core using (Rel)
 
 private
   variable

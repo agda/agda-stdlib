@@ -18,6 +18,7 @@ open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous
 open import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
 
+
 private
   variable
     a b r s : Level

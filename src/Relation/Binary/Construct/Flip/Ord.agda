@@ -8,19 +8,23 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel; REL; _⇒_)
-open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; Preorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Asymmetric; Total; _Respects_; _Respects₂_; Minimum; Maximum; Irreflexive; Antisymmetric; Trichotomous; Decidable)
-
 module Relation.Binary.Construct.Flip.Ord where
 
 open import Data.Product.Base using (_,_)
 open import Function.Base using (flip; _∘_)
 open import Level using (Level)
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset; TotalOrder; DecTotalOrder
+        ; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder
+        ; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder
+        ; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Asymmetric; Total; _Respects_
+        ; _Respects₂_; Minimum; Maximum; Irreflexive; Antisymmetric
+        ; Trichotomous; Decidable)
 
 private
   variable

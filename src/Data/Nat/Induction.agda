@@ -11,8 +11,8 @@ module Data.Nat.Induction where
 open import Data.Nat.Base
 open import Data.Nat.Properties using (<⇒<′)
 open import Data.Product.Base using (_×_; _,_)
-open import Data.Unit.Polymorphic.Base
-open import Induction
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Induction using (RecStruct; RecursorBuilder; Recursor; build)
 open import Induction.WellFounded as WF
 open import Level using (Level)
 

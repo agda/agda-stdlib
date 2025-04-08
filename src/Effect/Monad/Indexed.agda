@@ -11,8 +11,9 @@
 module Effect.Monad.Indexed where
 
 open import Effect.Applicative.Indexed
-open import Function.Base
-open import Level
+  using (IFun; RawIApplicative; RawIApplicativeZero; RawIAlternative)
+open import Function.Base using (id; _∘_)
+open import Level using (Level; _⊔_; suc)
 
 private
   variable

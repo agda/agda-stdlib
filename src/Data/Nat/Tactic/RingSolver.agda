@@ -19,7 +19,7 @@ open import Level using (0ℓ)
 open import Data.Unit.Base using (⊤)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 
-import Tactic.RingSolver as Solver
+import Tactic.RingSolver as Solver using (solve-∀-macro; solve-macro)
 import Tactic.RingSolver.Core.AlmostCommutativeRing as ACR
 
 ------------------------------------------------------------------------

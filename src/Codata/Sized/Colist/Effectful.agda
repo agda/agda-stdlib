@@ -9,11 +9,11 @@
 module Codata.Sized.Colist.Effectful where
 
 open import Codata.Sized.Conat using (infinity)
-open import Codata.Sized.Colist
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
-open import Effect.Applicative
+open import Codata.Sized.Colist using (Colist; _++_; replicate; map; ap; [])
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative; RawApplicativeZero; RawAlternative)
 
 functor : ∀ {ℓ i} → RawFunctor {ℓ} (λ A → Colist A i)
 functor = record { _<$>_ = map }

@@ -8,14 +8,14 @@
 
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsStrictTotalOrder)
-open import Relation.Binary.Bundles using (StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; subst)
 
 module Data.Tree.AVL.NonEmpty.Propositional
   {k r} {Key : Set k} {_<_ : Rel Key r}
   (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_) where
 
-open import Level
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 private
   strictTotalOrder : StrictTotalOrder _ _ _

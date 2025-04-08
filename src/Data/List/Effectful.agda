@@ -12,8 +12,8 @@ open import Data.Bool.Base using (false; true)
 open import Data.List.Base
   using (List; map; [_]; ap; []; _∷_; _++_; concat; concatMap)
 open import Data.List.Properties
-  using (++-identityʳ; ++-assoc; map-cong; concatMap-cong; map-concatMap;
-    concatMap-pure)
+  using (++-identityʳ; ++-assoc; map-cong; concatMap-cong; map-concatMap
+        ; concatMap-pure)
 open import Effect.Choice using (RawChoice)
 open import Effect.Empty using (RawEmpty)
 open import Effect.Functor using (RawFunctor)
