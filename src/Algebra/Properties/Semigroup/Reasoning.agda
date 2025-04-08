@@ -38,7 +38,7 @@ module Pulls (uv≈w : u ∙ v ≈ w) where
 
     uv≈w⇒[xu∙v]y≈x∙wy : ∀ {x y} → ((x ∙ u) ∙ v) ∙ y ≈ x ∙ (w ∙ y)
     uv≈w⇒[xu∙v]y≈x∙wy = trans (∙-congʳ uv≈w⇒xu∙v≈xw ) (assoc _ _ _)
-    
+
     uv≈w⇒[xy∙u]v≈x∙yw : ∀ {x y} → ((x ∙ y) ∙ u) ∙ v ≈ x ∙ (y ∙ w)
     uv≈w⇒[xy∙u]v≈x∙yw {x = x} {y = y} = trans (∙-congʳ (assoc x y u)) uv≈w⇒[x∙yu]v≈x∙yw
 
@@ -86,10 +86,10 @@ module Assoc4  {u v w x : Carrier} where
 
   [u∙vw]x≈u[v∙wx] : (u ∙ (v ∙ w)) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
   [u∙vw]x≈u[v∙wx] = uv≈w⇒[x∙yu]v≈x∙yw refl
-  
+
   uv∙wx≈u[vw∙x] : (u ∙ v) ∙ (w ∙ x) ≈ u ∙ ((v ∙ w) ∙ x)
   uv∙wx≈u[vw∙x] = uv≈w⇒xu∙vy≈x∙wy refl
-  
+
   uv∙wx≈[u∙vw]x : (u ∙ v) ∙ (w ∙ x) ≈ (u ∙ (v ∙ w)) ∙ x
   uv∙wx≈[u∙vw]x = sym [u∙vw]x≈uv∙wx
 
@@ -119,4 +119,3 @@ module Extends {u v w x : Carrier} (s : u ∙ v ≈ w ∙ x) where
 
 open Extends public
 
-  
