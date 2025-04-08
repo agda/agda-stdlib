@@ -27,7 +27,7 @@ Non-backwards compatible changes
 
 * The implementation of `_IsRelatedTo_` in `Relation.Binary.Reasoning.Base.Partial`
   has been modified to support equaltional reasoning at the beginning and the end.
-  The detail of this issue is described in #2677. Since the names of constructors
+  The detail of this issue is described in [#2677](https://github.com/agda/agda-stdlib/pull/2677). Since the names of constructors
   of `_IsRelatedTo_` are changed and the reduction behaviour of reasoning steps
   are changed, this modification is non-backwards compatible.
 
