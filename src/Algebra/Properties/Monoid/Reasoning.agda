@@ -14,17 +14,13 @@ module Algebra.Properties.Monoid.Reasoning {o ℓ} (M : Monoid o ℓ) where
 
 open Monoid M
     using (Carrier; _∙_; _≈_; setoid; isMagma; semigroup; ε; sym; identityˡ; identityʳ
-    ; ∙-cong; refl; assoc)
+    ; ∙-cong; refl; assoc; ∙-congˡ; ∙-congʳ)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Algebra.Properties.Semigroup.Reasoning semigroup public
-open IsMagma isMagma using (∙-congˡ; ∙-congʳ)
 
 module Identity {a : Carrier } where
     id-unique : (∀ b → b ∙ a ≈ b) → a ≈ ε
-    id-unique b∙a≈b = begin
-        a     ≈⟨ sym (identityˡ a) ⟩
-        ε ∙ a ≈⟨ b∙a≈b ε ⟩
-        ε     ∎
+    id-unique b∙a≈b = trans (sym (identityˡ a) ) (b∙a≈b ε)
 
     id-comm : a ∙ ε ≈ ε ∙ a
     id-comm = begin
