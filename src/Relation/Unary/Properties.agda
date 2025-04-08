@@ -201,11 +201,17 @@ U-Universal = λ _ → _
 ------------------------------------------------------------------------
 -- Between/Disjoint properties
 
+≬-symmetric : Sym {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≬_ _≬_
+≬-symmetric = Product.map₂ swap
+
+⊥-symmetric : Sym {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊥_ _⊥_
+⊥-symmetric = _∘ swap
+
 ≬-sym : Symmetric {A = Pred A ℓ₁} _≬_
-≬-sym = Product.map₂ swap
+≬-sym = ≬-symmetric
 
 ⊥-sym : Symmetric {A = Pred A ℓ₁} _⊥_
-⊥-sym = _∘ swap
+⊥-sym = ⊥-symmetric
 
 ≬⇒¬⊥ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≬_ (¬_ ∘₂ _⊥_)
 ≬⇒¬⊥ P≬Q ¬P⊥Q = ¬P⊥Q (Product.proj₂ P≬Q)
