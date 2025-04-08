@@ -151,8 +151,8 @@ Additions to existing modules
 
 * In `Relation.Unary.Properties`:
   ```agda
-  ≬-sym : Symmetric {A = Pred A ℓ₁} _≬_
-  ⊥-sym : Symmetric {A = Pred A ℓ₁} _⊥_
-  ≬⇒¬⊥ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≬_ (¬_ ∘₂ _⊥_)
-  ⊥⇒¬≬ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊥_ (¬_ ∘₂ _≬_)
+  ≬-sym : Symmetric _≬_
+  ⊥-sym : Symmetric _⊥_
+  ≬⇒¬⊥ : _≬_ ⇒  (¬_ ∘₂ _⊥_)
+  ⊥⇒¬≬ : _⊥_ ⇒  (¬_ ∘₂ _≬_)
   ```
