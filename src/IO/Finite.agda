@@ -8,13 +8,14 @@
 
 module IO.Finite where
 
-open import Data.Unit.Polymorphic.Base
-open import Agda.Builtin.String
-import Data.Unit.Base as Unit0
-open import IO.Base
-import IO.Primitive.Core as Prim
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Agda.Builtin.String using (String)
+import Data.Unit.Base as Unit0 using (⊤)
+open import IO.Base as Base using (IO; lift; lift′)
+import IO.Primitive.Core as Prim using (IO; _>>=_; _>>_)
 import IO.Primitive.Finite as Prim
-open import Level
+  using (getLine; readFile; writeFile; appendFile; putStr; putStrLn)
+open import Level using (Level; Lift; 0ℓ; suc)
 
 private
   variable

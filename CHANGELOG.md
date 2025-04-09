@@ -13,6 +13,10 @@ Bug-fixes
   to `#-sym` in order to avoid overloaded projection.
   `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
 
+* In `Algebra.Definitions.RawMagma` and `Relation.Binary.Construct.Interior.Symmetric`,
+  the record constructors `_,_` incorrectly had no declared fixity. They have been given
+  the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -23,6 +27,9 @@ Non-backwards compatible changes
 
 Minor improvements
 ------------------
+
+* Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
+  to its own dedicated module `Relation.Nullary.Irrelevant`.
 
 Deprecated modules
 ------------------
@@ -36,12 +43,30 @@ Deprecated names
   _∤∤_    ↦  _∦_
   ```
 
+* In `Algebra.Lattice.Properties.BooleanAlgebra`
+  ```agda
+  ⊥≉⊤   ↦  ¬⊥≈⊤
+  ⊤≉⊥   ↦  ¬⊤≈⊥
+  ```
+
 * In `Algebra.Module.Consequences`
   ```agda
   *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
   *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
   *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  ```
+
+* In `Algebra.Modules.Structures.IsLeftModule`:
+  ```agda
+  uniqueˡ‿⁻ᴹ   ↦  Algebra.Module.Properties.LeftModule.inverseˡ-uniqueᴹ
+  uniqueʳ‿⁻ᴹ   ↦  Algebra.Module.Properties.LeftModule.inverseʳ-uniqueᴹ
+  ```
+
+* In `Algebra.Modules.Structures.IsRightModule`:
+  ```agda
+  uniqueˡ‿⁻ᴹ   ↦  Algebra.Module.Properties.RightModule.inverseˡ-uniqueᴹ
+  uniqueʳ‿⁻ᴹ   ↦  Algebra.Module.Properties.RightModule.inverseʳ-uniqueᴹ
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
@@ -54,6 +79,11 @@ Deprecated names
   ∤∤-respˡ-≈    ↦  ∦-respˡ-≈
   ∤∤-respʳ-≈    ↦  ∦-respʳ-≈
   ∤∤-resp-≈     ↦  ∦-resp-≈
+  ∣-respʳ-≈    ↦ ∣ʳ-respʳ-≈
+  ∣-respˡ-≈    ↦ ∣ʳ-respˡ-≈
+  ∣-resp-≈     ↦ ∣ʳ-resp-≈
+  x∣yx         ↦ x∣ʳyx
+  xy≈z⇒y∣z     ↦ xy≈z⇒y∣ʳz
   ```
 
 * In `Algebra.Properties.Monoid.Divisibility`:
@@ -61,11 +91,23 @@ Deprecated names
   ∣∣-refl            ↦  ∥-refl
   ∣∣-reflexive       ↦  ∥-reflexive
   ∣∣-isEquivalence   ↦  ∥-isEquivalence
+  ε∣_                ↦ ε∣ʳ_
+  ∣-refl             ↦ ∣ʳ-refl
+  ∣-reflexive        ↦ ∣ʳ-reflexive
+  ∣-isPreorder       ↦ ∣ʳ-isPreorder
+  ∣-preorder         ↦ ∣ʳ-preorder
   ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
   ∣∣-trans   ↦  ∥-trans
+  ∣-trans    ↦  ∣ʳ-trans
+  ```
+
+* In `Algebra.Structures.Group`:
+  ```agda
+  uniqueˡ-⁻¹   ↦  Algebra.Properties.Group.inverseˡ-unique
+  uniqueʳ-⁻¹   ↦  Algebra.Properties.Group.inverseʳ-unique
   ```
 
 * In `Data.List.Base`:
@@ -95,9 +137,17 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
+
+* `Data.List.Relation.Binary.Prefix.Propositional.Properties` showing the equivalence to left divisibility induced by the list monoid.
+
+* `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
+
+* `Data.Sign.Show` to show a sign
 
 Additions to existing modules
 -----------------------------
@@ -146,6 +196,44 @@ Additions to existing modules
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
 
+* In `Algebra.Modules.Properties`:
+  ```agda
+  inverseˡ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → x ≈ -ᴹ y
+  inverseʳ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → y ≈ -ᴹ x
+  ```
+
+* In `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣ˡ-respʳ-≈  : _∣ˡ_ Respectsʳ _≈_
+  ∣ˡ-respˡ-≈  : _∣ˡ_ Respectsˡ _≈_
+  ∣ˡ-resp-≈   : _∣ˡ_ Respects₂ _≈_
+  x∣ˡxy       : ∀ x y → x ∣ˡ x ∙ y
+  xy≈z⇒x∣ˡz   : ∀ x y {z} → x ∙ y ≈ z → x ∣ˡ z
+  ```
+
+* In `Algebra.Properties.Monoid.Divisibility`:
+  ```agda
+  ε∣ˡ_          : ∀ x → ε ∣ˡ x
+  ∣ˡ-refl       : Reflexive _∣ˡ_
+  ∣ˡ-reflexive  : _≈_ ⇒ _∣ˡ_
+  ∣ˡ-isPreorder : IsPreorder _≈_ _∣ˡ_
+  ∣ˡ-preorder   : Preorder a ℓ _
+  ```
+
+* In `Algebra.Properties.Semigroup.Divisibility`:
+  ```agda
+  ∣ˡ-trans     : Transitive _∣ˡ_
+  x∣ʳy⇒x∣ʳzy   : x ∣ʳ y → x ∣ʳ z ∙ y
+  x∣ʳy⇒xz∣ʳyz  : x ∣ʳ y → x ∙ z ∣ʳ y ∙ z
+  x∣ˡy⇒zx∣ˡzy  : x ∣ˡ y → z ∙ x ∣ˡ z ∙ y
+  x∣ˡy⇒x∣ˡyz   : x ∣ˡ y → x ∣ˡ y ∙ z
+  ```
+
+* In `Algebra.Properties.CommutativeSemigroup.Divisibility`:
+  ```agda
+  ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
@@ -168,8 +256,21 @@ Additions to existing modules
                       Monotonic₂ ≤₁ ≤₂ ≤₃ f
   ```
 
+* In `Relation.Binary.Construct.Add.Infimum.Strict`:
+  ```agda
+  <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
+  <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
+  <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
+  ```
+
 * In `Relation.Binary.Definitions`:
   ```agda
   LeftMonotonic  : Rel B ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
   RightMonotonic : Rel A ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
+  ```
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```agda
+  ⊤-dec : Dec {a} ⊤
+  ⊥-dec : Dec {a} ⊥
   ```

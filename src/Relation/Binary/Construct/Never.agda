@@ -8,8 +8,8 @@
 
 module Relation.Binary.Construct.Never where
 
-open import Relation.Binary.Core
-open import Relation.Binary.Construct.Constant
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Construct.Constant using (Const)
 open import Data.Empty.Polymorphic using (⊥)
 
 ------------------------------------------------------------------------

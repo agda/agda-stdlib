@@ -9,6 +9,7 @@
 module Data.Rational.Base where
 
 open import Algebra.Bundles.Raw
+  using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_])

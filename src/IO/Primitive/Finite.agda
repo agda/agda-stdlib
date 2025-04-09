@@ -12,8 +12,8 @@ module IO.Primitive.Finite where
 -- NOTE: the contents of this module should be accessed via `IO` or
 -- `IO.Finite`.
 
-open import Agda.Builtin.IO
-open import Agda.Builtin.String
+open import Agda.Builtin.IO using (IO)
+open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Unit using () renaming (⊤ to Unit)
 
 ------------------------------------------------------------------------

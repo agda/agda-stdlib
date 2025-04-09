@@ -8,7 +8,7 @@
 
 module Data.Word64.Instances where
 
-open import Data.Word64.Properties
+open import Data.Word64.Properties using (_≟_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 

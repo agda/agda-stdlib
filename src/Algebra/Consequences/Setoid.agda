@@ -7,20 +7,20 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions
   using (Substitutive; Symmetric; Total)
 
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
-open import Algebra.Core
 import Algebra.Consequences.Base as Base
+open import Algebra.Core
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id; _∘_)
 open import Function.Definitions
 import Relation.Binary.Consequences as Bin
+open import Relation.Binary.Core using (Rel)
 open import Relation.Unary using (Pred)
 
 open Setoid S renaming (Carrier to A)

@@ -12,26 +12,26 @@ open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
-open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc; punchOut)
-open import Data.Fin.Properties
-  using (suc-injective; punchOut-injective)
-open import Function.Base
-open import Function.Bundles
-  using (Injection; module Injection)
+open import Data.Fin.Properties using (suc-injective; punchOut-injective)
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base hiding (lookup)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (∃; _,_; _×_)
-open import Data.Sum.Base
-open import Data.Sum.Properties
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary
-open import Relation.Nullary.Decidable using (dec-true; dec-false)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Properties using (inj₁-injective; inj₂-injective)
+open import Function.Base using (const; _$_; _∘_)
+open import Function.Bundles using (Injection; module Injection)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; cong)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _because_)
+open import Relation.Nullary.Decidable using (dec-true; dec-false)
+open import Relation.Nullary.Negation.Core using (contradiction)
+
 import Relation.Binary.PropositionalEquality.Properties as ≡
+
 open ≡.≡-Reasoning
 
 private
@@ -75,8 +75,8 @@ private
     helper (there {x = x} x₁∈xs) (there x₂∈xs) with x₁ ≟ x | x₂ ≟ x
     ... | true  because _ | true  because _ = refl
     ... | false because _ | false because _ = cong suc $ helper x₁∈xs x₂∈xs
-    ... | yes x₁≈x | no  x₂≉x = ⊥-elim (x₂≉x (trans (sym x₁≈x₂) x₁≈x))
-    ... | no  x₁≉x | yes x₂≈x = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
+    ... | yes x₁≈x | no  x₂≉x = contradiction (trans (sym x₁≈x₂) x₁≈x) x₂≉x
+    ... | no  x₁≉x | yes x₂≈x = contradiction (trans x₁≈x₂ x₂≈x) x₁≉x
 
   -- first-index is injective in its first argument.
 
@@ -165,7 +165,7 @@ private
             counted ⊕ m → ∀ x → x ∉ counted → ∃ λ n → m ≡ suc n
   lookup‼ {suc m} counted⊕n x x∉counted = (m , refl)
   lookup‼ {zero}  counted⊕n x x∉counted =
-    ⊥-elim (x∉counted $ lookup! counted⊕n x)
+    contradiction (lookup! counted⊕n x) x∉counted
 
 -- Counts a previously uncounted element.
 
@@ -183,7 +183,7 @@ insert {counted} {n} counted⊕1+n x x∉counted =
   kind′ : ∀ y → y ∈ x ∷ counted ⊎ Fin n
   kind′  y with y ≟ x | kind x | kind y | helper x y
   kind′  y | yes y≈x | _              | _              | _   = inj₁ (here y≈x)
-  kind′  y | _       | inj₁ x∈counted | _              | _   = ⊥-elim (x∉counted x∈counted)
+  kind′  y | _       | inj₁ x∈counted | _              | _   = contradiction x∈counted x∉counted
   kind′  y | _       | _              | inj₁ y∈counted | _   = inj₁ (there y∈counted)
   kind′  y | no  y≉x | inj₂ i         | inj₂ j         | hlp =
     inj₂ (punchOut (y≉x ∘ sym ∘ hlp _ refl refl))
@@ -193,7 +193,7 @@ insert {counted} {n} counted⊕1+n x x∉counted =
                          | helper x y | helper x z | helper y z
   inj ()  _   | yes _ | _     | _              | _      | _      | _ | _ | _
   inj _   ()  | _     | yes _ | _              | _      | _      | _ | _ | _
-  inj _   _   | no  _ | no  _ | inj₁ x∈counted | _      | _      | _ | _ | _ = ⊥-elim (x∉counted x∈counted)
+  inj _   _   | no  _ | no  _ | inj₁ x∈counted | _      | _      | _ | _ | _ = contradiction x∈counted x∉counted
   inj ()  _   | no  _ | no  _ | inj₂ _         | inj₁ _ | _      | _ | _ | _
   inj _   ()  | no  _ | no  _ | inj₂ _         | _      | inj₁ _ | _ | _ | _
   inj eq₁ eq₂ | no  _ | no  _ | inj₂ i         | inj₂ _ | inj₂ _ | _ | _ | hlp =

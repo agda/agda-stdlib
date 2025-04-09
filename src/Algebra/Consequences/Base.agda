@@ -12,12 +12,12 @@ module Algebra.Consequences.Base
 
 open import Algebra.Core using (Op₁; Op₂)
 import Algebra.Definitions as Definitions
-open import Data.Sum.Base
+  using (Selective; Idempotent; SelfInverse; Involutive)
+open import Data.Sum.Base using (_⊎_; reduce)
 open import Relation.Binary.Consequences
   using (mono₂⇒monoˡ; mono₂⇒monoʳ)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Definitions
-  using (Reflexive)
+open import Relation.Binary.Definitions using (Reflexive)
 
 module Congruence {ℓ} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ) (open Definitions _≈_)
                   (cong : Congruent₂ _∙_) (refl : Reflexive _≈_)

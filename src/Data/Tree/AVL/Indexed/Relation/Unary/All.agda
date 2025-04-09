@@ -14,14 +14,13 @@ module Data.Tree.AVL.Indexed.Relation.Unary.All
 
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_,_; _×_)
-open import Data.Product.Nary.NonDependent
+open import Data.Product.Nary.NonDependent using (uncurryₙ)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Function.Base
+open import Function.Base using (flip; _∘_; const)
 open import Function.Nary.NonDependent using (congₙ)
 open import Level using (Level; _⊔_)
-
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Nullary.Decidable using (Dec; yes; map′; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; map′; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant; _⊆_; _∪_)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)

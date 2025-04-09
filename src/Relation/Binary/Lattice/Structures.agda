@@ -10,8 +10,6 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures using (IsPartialOrder)
-open import Relation.Binary.Definitions using (Minimum; Maximum)
 
 module Relation.Binary.Lattice.Structures
  {a ℓ₁ ℓ₂} {A : Set a}
@@ -19,12 +17,14 @@ module Relation.Binary.Lattice.Structures
  (_≤_ : Rel A ℓ₂) -- The partial order.
  where
 
-open import Algebra.Core
-open import Algebra.Definitions
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Definitions using (_DistributesOverˡ_)
 open import Data.Product.Base using (_×_; _,_)
 open import Level using (suc; _⊔_)
-
+open import Relation.Binary.Definitions using (Minimum; Maximum)
 open import Relation.Binary.Lattice.Definitions
+  using (Supremum; Infimum; Exponential)
+open import Relation.Binary.Structures using (IsPartialOrder)
 
 ------------------------------------------------------------------------
 -- Join semilattices
