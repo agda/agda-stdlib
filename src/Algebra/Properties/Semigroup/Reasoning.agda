@@ -74,7 +74,7 @@ module Center (uv≈w : u ∙ v ≈ w) where
 
 open Center public
 
-module Assoc4  {u v w x : Carrier} where
+module Assoc4 {u v w x : Carrier} where
   [uv∙w]x≈u[vw∙x] : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
   [uv∙w]x≈u[vw∙x] = uv≈w⇒[xu∙v]y≈x∙wy refl
 
@@ -103,13 +103,13 @@ module Assoc4  {u v w x : Carrier} where
   u[v∙wx]≈[uv∙w]x = sym [uv∙w]x≈u[v∙wx]
 
   u[v∙wx]≈[u∙vw]x : u ∙ (v ∙ (w ∙ x)) ≈ (u ∙ (v ∙ w)) ∙ x
-  u[v∙wx]≈[u∙vw]x  = sym [u∙vw]x≈u[v∙wx]
+  u[v∙wx]≈[u∙vw]x = sym [u∙vw]x≈u[v∙wx]
 
 open Assoc4 public
 
 module Extends {u v w x : Carrier} (s : u ∙ v ≈ w ∙ x) where
-  uv≈wx⇒yu∙v≈yw∙x : (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
-  uv≈wx⇒yu∙v≈yw∙x  {y = y} = trans (uv≈w⇒xu∙v≈xw s) (sym (assoc y w x))
+  uv≈wx⇒yu∙v≈yw∙x : ∀ {y} → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
+  uv≈wx⇒yu∙v≈yw∙x {y = y} = trans (uv≈w⇒xu∙v≈xw s) (sym (assoc y w x))
 
   uv≈wx⇒u∙vy≈w∙xy : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
   uv≈wx⇒u∙vy≈w∙xy y = trans (uv≈w⇒u∙vx≈wx s) (assoc w x y)
