@@ -55,7 +55,7 @@ open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable
         ; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous
         ; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_
-        ; tri≈; tri<; tri>)
+        ; tri≈; tri<; tri>; Monotonic₁; LeftMonotonic; RightMonotonic; Monotonic₂)
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
@@ -863,7 +863,7 @@ private
 
 +-mono-≤ : Monotonic₂ _≤_ _≤_ _≤_ _+_
 +-mono-≤ =
-  BC.monoˡ∧monoʳ⇒mono₂ {≤₁ = _≤_} {≤₂ = _≤_} {≤₃ = _≤_} ≤-trans +-monoʳ-≤ +-monoˡ-≤
+  BC.monoˡ∧monoʳ⇒mono₂ _≤_ _≤_ _≤_ ≤-trans +-monoʳ-≤ +-monoˡ-≤
 
 p≤q⇒p≤r+q : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
 p≤q⇒p≤r+q {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
@@ -881,7 +881,7 @@ p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
 +-monoʳ-< r@record{} {p@record{}} {q@record{}} (*<* x<y) = *<* $ begin-strict
   ↥ (r + p) ℤ.* (↧ (r + q))                          ≡⟨ lemma r p q ⟩
   ↥r↧r ℤ.* (↧ p ℤ.* ↧ q) ℤ.+ ↧r↧r ℤ.* (↥ p ℤ.* ↧ q)  <⟨ leq ⟩
-  ↥r↧r ℤ.* (↧ q ℤ.* ↧ p) ℤ.+ ↧r↧r ℤ.* (↥ q ℤ.* ↧ p)  ≡⟨ sym $ lemma r q p ⟩
+  ↥r↧r ℤ.* (↧ q ℤ.* ↧ p) ℤ.+ ↧r↧r ℤ.* (↥ q ℤ.* ↧ p)  ≡⟨ lemma r q p ⟨
   ↥ (r + q) ℤ.* (↧ (r + p))                          ∎
   where
   open ℤ.≤-Reasoning; ↥r↧r = ↥ r ℤ.* ↧ r; ↧r↧r = ↧ r ℤ.* ↧ r
