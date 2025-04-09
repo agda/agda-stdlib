@@ -12,7 +12,8 @@ module Algebra.Consequences.Base
 
 open import Algebra.Core using (Op₁; Op₂)
 import Algebra.Definitions as Definitions
-  using (Selective; Idempotent; SelfInverse; Involutive)
+  using (Congruent₂; LeftCongruent; RightCongruent
+        ; Selective; Idempotent; SelfInverse; Involutive)
 open import Data.Sum.Base using (_⊎_; reduce)
 open import Relation.Binary.Consequences
   using (mono₂⇒monoˡ; mono₂⇒monoʳ)
