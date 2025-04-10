@@ -21,8 +21,8 @@ private
     u v w x y z : Carrier
 
 module Pulls (uv≈w : u ∙ v ≈ w) where
-    uv≈w⇒xu∙v≈xw : ∀ {x} → (x ∙ u) ∙ v ≈ x ∙ w
-    uv≈w⇒xu∙v≈xw {x = x} =  trans (assoc x u v) (∙-congˡ uv≈w)
+    uv≈w⇒xu∙v≈xw : ∀ x → (x ∙ u) ∙ v ≈ x ∙ w
+    uv≈w⇒xu∙v≈xw x =  trans (assoc x u v) (∙-congˡ uv≈w)
 
     uv≈w⇒u∙vx≈wx : ∀ {x} → u ∙ (v ∙ x) ≈ w ∙ x
     uv≈w⇒u∙vx≈wx {x = x} = trans (sym (assoc u v x)) (∙-congʳ uv≈w)
