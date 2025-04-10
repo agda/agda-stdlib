@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Relation.Nullary.Negation.CoreNEW where
+module Relation.Nullary.Negation.Core where
 
 open import Data.Empty using (⊥; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
