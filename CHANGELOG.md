@@ -17,6 +17,12 @@ Bug-fixes
   the record constructors `_,_` incorrectly had no declared fixity. They have been given
   the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
 
+* The implementation of `_IsRelatedTo_` in `Relation.Binary.Reasoning.Base.Partial`
+  has been modified to correctly support equational reasoning at the beginning and the end.
+  The detail of this issue is described in [#2677](https://github.com/agda/agda-stdlib/pull/2677). Since the names of constructors
+  of `_IsRelatedTo_` are changed and the reduction behaviour of reasoning steps
+  are changed, this modification is non-backwards compatible.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -24,12 +30,6 @@ Non-backwards compatible changes
   to use operations backed by primitives, rather than recursion, making it
   significantly faster. However, its reduction behaviour on open terms may have
   changed.
-
-* The implementation of `_IsRelatedTo_` in `Relation.Binary.Reasoning.Base.Partial`
-  has been modified to support equaltional reasoning at the beginning and the end.
-  The detail of this issue is described in [#2677](https://github.com/agda/agda-stdlib/pull/2677). Since the names of constructors
-  of `_IsRelatedTo_` are changed and the reduction behaviour of reasoning steps
-  are changed, this modification is non-backwards compatible.
 
 Minor improvements
 ------------------
