@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Relation.Nullary.Negation.Core where
+module Relation.Nullary.Negation.CoreNEW where
 
 open import Data.Empty using (⊥; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
@@ -59,6 +59,11 @@ contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 
 contraposition : (A → B) → ¬ B → ¬ A
 contraposition f ¬b a = contradiction (f a) ¬b
+
+-- Self-contradictory propositions are false
+
+self-contradiction : (A → ¬ A) → ¬ A
+self-contradiction self a = self a a
 
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A

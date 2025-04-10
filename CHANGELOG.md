@@ -244,3 +244,8 @@ Additions to existing modules
   ⊤-dec : Dec {a} ⊤
   ⊥-dec : Dec {a} ⊥
   ```
+
+* In `Relation.Nullary.Negation.Core`:
+  ```agda
+  self-contradiction : (A → ¬ A) → ¬ A
+  ```
