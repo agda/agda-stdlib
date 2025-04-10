@@ -8,9 +8,10 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
-open import Algebra.Structures using (IsMagma)
 
 module Algebra.Properties.Monoid.Reasoning {o ℓ} (M : Monoid o ℓ) where
+
+open import Algebra.Structures using (IsMagma)
 
 open Monoid M
     using (Carrier; _∙_; _≈_; setoid; isMagma; semigroup; ε; sym; identityˡ
@@ -50,7 +51,7 @@ open IntroElim public
 
 module Cancellers {a b c : Carrier} (inv : a ∙ c ≈ ε) where
 
-  cancelʳ : (b ∙ a) ∙ c ≈ b
+  cancelʳ : (b ∙ a) ∙ c ≈ b 
   cancelʳ = trans (assoc b a c) (trans (∙-congˡ inv) (identityʳ b))
 
   cancelˡ : a ∙ (c ∙ b) ≈ b
