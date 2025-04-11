@@ -183,8 +183,12 @@ New modules
 
 * `Relation.Nullary.Recomputable.Core`
 
-* `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
+Additions to existing modules
 -----------------------------
+
+* `Algebra.Properties.Monoid` adding consequences for identity for monoids
+
+* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
 
 * In `Algebra.Consequences.Base`:
   ```agda
