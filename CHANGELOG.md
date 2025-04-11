@@ -183,9 +183,7 @@ New modules
 
 * `Relation.Nullary.Recomputable.Core`
 
-* `AlgebraPropreties.Semigroup.Reasoning` adding reasoning combinators for semigroups
-
-Additions to existing modules
+* `Algebra.Properties.Semigroup` adding consequences for associtvity for semigroups
 -----------------------------
 
 * In `Algebra.Consequences.Base`:
