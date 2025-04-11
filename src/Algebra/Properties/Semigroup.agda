@@ -122,3 +122,4 @@ module _ {u v w x : Carrier} (uv≈wx : u ∙ v ≈ w ∙ x) where
 
   uv≈wx⇒yu∙vz≈yw∙xz : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
   uv≈wx⇒yu∙vz≈yw∙xz y z = trans (uv≈w⇒xu∙v≈xw (uv≈wx⇒u∙vy≈w∙xy z) y)(sym (assoc y w (x ∙ z)))
+
