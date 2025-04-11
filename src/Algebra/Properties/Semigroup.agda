@@ -83,43 +83,42 @@ module _ (uv≈w : u ∙ v ≈ w) where
     uv≈w⇒x∙wy≈x∙[u∙vy] = sym (uv≈w⇒x[uv∙y]≈x∙wy uv≈w _ _)
 
 module _ {u v w x : Carrier} where
-  [uv∙w]x≈u[vw∙x] : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
-  [uv∙w]x≈u[vw∙x] = uv≈w⇒[xu∙v]y≈x∙wy refl u x
+    [uv∙w]x≈u[vw∙x] : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
+    [uv∙w]x≈u[vw∙x] = uv≈w⇒[xu∙v]y≈x∙wy refl u x
 
-  [uv∙w]x≈u[v∙wx] : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
-  [uv∙w]x≈u[v∙wx] = uv≈w⇒[xy∙u]v≈x∙yw refl u v
+    [uv∙w]x≈u[v∙wx] : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
+    [uv∙w]x≈u[v∙wx] = uv≈w⇒[xy∙u]v≈x∙yw refl u v
 
-  [u∙vw]x≈uv∙wx : (u ∙ (v ∙ w)) ∙ x ≈ (u ∙ v) ∙ (w ∙ x)
-  [u∙vw]x≈uv∙wx = trans (sym (∙-congʳ (assoc u v w))) (assoc (u ∙ v) w x)
+    [u∙vw]x≈uv∙wx : (u ∙ (v ∙ w)) ∙ x ≈ (u ∙ v) ∙ (w ∙ x)
+    [u∙vw]x≈uv∙wx = trans (sym (∙-congʳ (assoc u v w))) (assoc (u ∙ v) w x)
 
-  [u∙vw]x≈u[v∙wx] : (u ∙ (v ∙ w)) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
-  [u∙vw]x≈u[v∙wx] = uv≈w⇒[x∙yu]v≈x∙yw refl u v
+    [u∙vw]x≈u[v∙wx] : (u ∙ (v ∙ w)) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
+    [u∙vw]x≈u[v∙wx] = uv≈w⇒[x∙yu]v≈x∙yw refl u v
 
-  uv∙wx≈u[vw∙x] : (u ∙ v) ∙ (w ∙ x) ≈ u ∙ ((v ∙ w) ∙ x)
-  uv∙wx≈u[vw∙x] = uv≈w⇒xu∙vy≈x∙wy refl
+    uv∙wx≈u[vw∙x] : (u ∙ v) ∙ (w ∙ x) ≈ u ∙ ((v ∙ w) ∙ x)
+    uv∙wx≈u[vw∙x] = uv≈w⇒xu∙vy≈x∙wy refl
 
-  uv∙wx≈[u∙vw]x : (u ∙ v) ∙ (w ∙ x) ≈ (u ∙ (v ∙ w)) ∙ x
-  uv∙wx≈[u∙vw]x = sym [u∙vw]x≈uv∙wx
+    uv∙wx≈[u∙vw]x : (u ∙ v) ∙ (w ∙ x) ≈ (u ∙ (v ∙ w)) ∙ x
+    uv∙wx≈[u∙vw]x = sym [u∙vw]x≈uv∙wx
 
-  u[vw∙x]≈[uv∙w]x : u ∙ ((v ∙ w) ∙ x) ≈ ((u ∙ v) ∙ w) ∙ x
-  u[vw∙x]≈[uv∙w]x = sym [uv∙w]x≈u[vw∙x]
+    u[vw∙x]≈[uv∙w]x : u ∙ ((v ∙ w) ∙ x) ≈ ((u ∙ v) ∙ w) ∙ x
+    u[vw∙x]≈[uv∙w]x = sym [uv∙w]x≈u[vw∙x]
 
-  u[vw∙x]≈uv∙wx : u ∙ ((v ∙ w) ∙ x) ≈ (u ∙ v) ∙ (w ∙ x)
-  u[vw∙x]≈uv∙wx = sym uv∙wx≈u[vw∙x]
+    u[vw∙x]≈uv∙wx : u ∙ ((v ∙ w) ∙ x) ≈ (u ∙ v) ∙ (w ∙ x)
+    u[vw∙x]≈uv∙wx = sym uv∙wx≈u[vw∙x]
 
-  u[v∙wx]≈[uv∙w]x : u ∙ (v ∙ (w ∙ x)) ≈ ((u ∙ v) ∙ w) ∙ x
-  u[v∙wx]≈[uv∙w]x = sym [uv∙w]x≈u[v∙wx]
+    u[v∙wx]≈[uv∙w]x : u ∙ (v ∙ (w ∙ x)) ≈ ((u ∙ v) ∙ w) ∙ x
+    u[v∙wx]≈[uv∙w]x = sym [uv∙w]x≈u[v∙wx]
 
-  u[v∙wx]≈[u∙vw]x : u ∙ (v ∙ (w ∙ x)) ≈ (u ∙ (v ∙ w)) ∙ x
-  u[v∙wx]≈[u∙vw]x = sym [u∙vw]x≈u[v∙wx]
+    u[v∙wx]≈[u∙vw]x : u ∙ (v ∙ (w ∙ x)) ≈ (u ∙ (v ∙ w)) ∙ x
+    u[v∙wx]≈[u∙vw]x = sym [u∙vw]x≈u[v∙wx]
 
 module _ {u v w x : Carrier} (uv≈wx : u ∙ v ≈ w ∙ x) where
-  uv≈wx⇒yu∙v≈yw∙x : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
-  uv≈wx⇒yu∙v≈yw∙x y = trans (uv≈w⇒xu∙v≈xw uv≈wx y) (sym (assoc y w x))
+    uv≈wx⇒yu∙v≈yw∙x : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
+    uv≈wx⇒yu∙v≈yw∙x y = trans (uv≈w⇒xu∙v≈xw uv≈wx y) (sym (assoc y w x))
 
-  uv≈wx⇒u∙vy≈w∙xy : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
-  uv≈wx⇒u∙vy≈w∙xy y = trans (uv≈w⇒u∙vx≈wx uv≈wx y) (assoc w x y)
+    uv≈wx⇒u∙vy≈w∙xy : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
+    uv≈wx⇒u∙vy≈w∙xy y = trans (uv≈w⇒u∙vx≈wx uv≈wx y) (assoc w x y)
 
-  uv≈wx⇒yu∙vz≈yw∙xz : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
-  uv≈wx⇒yu∙vz≈yw∙xz y z = trans (uv≈w⇒xu∙v≈xw (uv≈wx⇒u∙vy≈w∙xy z) y)(sym (assoc y w (x ∙ z)))
-
+    uv≈wx⇒yu∙vz≈yw∙xz : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
+    uv≈wx⇒yu∙vz≈yw∙xz y z = trans (uv≈w⇒xu∙v≈xw (uv≈wx⇒u∙vy≈w∙xy z) y)(sym (assoc y w (x ∙ z)))
