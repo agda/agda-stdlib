@@ -73,8 +73,8 @@ module _ (uv≈w : u ∙ v ≈ w) where
     uv≈w⇒x∙yw≈[x∙yu]v : ∀ x y  → x ∙ (y ∙ w) ≈ (x ∙ (y ∙ u)) ∙ v
     uv≈w⇒x∙yw≈[x∙yu]v x y  = sym (uv≈w⇒[x∙yu]v≈x∙yw uv≈w x y)
 
-    uv≈w⇒xu∙vy≈x∙wy : (x ∙ u) ∙ (v ∙ y) ≈ x ∙ (w ∙ y)
-    uv≈w⇒xu∙vy≈x∙wy = uv≈w⇒xu∙v≈xw (uv≈w⇒u∙vx≈wx uv≈w _) _
+    uv≈w⇒xu∙vy≈x∙wy : ∀ x y → (x ∙ u) ∙ (v ∙ y) ≈ x ∙ (w ∙ y)
+    uv≈w⇒xu∙vy≈x∙wy x y = uv≈w⇒xu∙v≈xw (uv≈w⇒u∙vx≈wx uv≈w x) y
 
     uv≈w⇒xy≈z⇒u[vx∙y]≈wz : ∀ z → x ∙ y ≈ z → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ z
     uv≈w⇒xy≈z⇒u[vx∙y]≈wz z xy≈z = trans (∙-congˡ (uv≈w⇒xu∙v≈xw xy≈z v)) (uv≈w⇒u∙vx≈wx uv≈w z)
