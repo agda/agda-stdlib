@@ -297,8 +297,8 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 -- laws. These correspond more or less to what the definitions would
 -- be in non-dependently typed languages like Haskell.
 
--- Each bundle thereofre has a corresponding raw bundle that only
--- include the laws but not the operations.
+-- Each bundle therefore has a corresponding raw bundle that only
+-- includes the operations, but not the laws.
 
 record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -328,9 +328,9 @@ record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
 total⇒refl : ∀ {_∼_ : Rel A ℓ} → Total _∼_ → Reflexive _∼_
 total⇒refl = {!!}
 
-idˡ+comm⇒idʳ : ∀ {_≈_ : Rel A ℓ} {e _∙_} → Commutative _≈_ _∙_ →
+idˡ∧comm⇒idʳ : ∀ {_≈_ : Rel A ℓ} {e _∙_} → Commutative _≈_ _∙_ →
                LeftIdentity _≈_ e _∙_ →  RightIdentity _≈_ e _∙_
-idˡ+comm⇒idʳ = {!!}
+idˡ∧comm⇒idʳ = {!!}
 
 ------------------------------------------------------------------------
 -- X.Construct
