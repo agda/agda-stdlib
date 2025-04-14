@@ -63,7 +63,7 @@ module _ {a c : Carrier} (inv : a ∙ c ≈ ε) where
   insertʳ b = sym (cancelʳ b)
 
   cancelInner : ∀ b d → (b ∙ a) ∙ (c ∙ d) ≈ b ∙ d
-  cancelInner b d = trans (sym (assoc (b ∙ a) c d)) (∙-congʳ (cancelʳ b))
+  cancelInner b d = trans (uv≈w⇒xu∙vy≈x∙wy inv b d) (∙-congˡ (identityˡ d))
 
   insertInner : ∀ b d → b ∙ d ≈ (b ∙ a) ∙ (c ∙ d)
   insertInner b d = sym (cancelInner b d)
