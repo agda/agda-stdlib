@@ -7,13 +7,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra using (Monoid)
+open import Algebra.Bundles using (Monoid)
+open import Algebra.Structures using (IsMagma)
 
-module Algebra.Reasoning.Monoid {o ℓ} (M : Monoid o ℓ) where
+module Algebra.Properties.Monoid.Reasoning {o ℓ} (M : Monoid o ℓ) where
 
 open Monoid M
+    using (Carrier; _∙_; _≈_; setoid; isMagma; semigroup; ε; sym; identityˡ; identityʳ
+    ; ∙-cong; refl; assoc)
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Algebra.Reasoning.Semigroup semigroup public
+open import Algebra.Properties.Semigroup.Reasoning semigroup public
+open IsMagma isMagma using (∙-congˡ; ∙-congʳ)
 
 module Identity {a : Carrier } where
     id-unique : (∀ b → b ∙ a ≈ b) → a ≈ ε
@@ -36,13 +40,13 @@ open Identity public
 module IntroElim {a b : Carrier} (a≈ε : a ≈ ε) where
     elimʳ : b ∙ a ≈ b
     elimʳ = begin
-         b ∙ a ≈⟨ ∙-cong refl a≈ε ⟩
+         b ∙ a ≈⟨ ∙-congˡ a≈ε ⟩
          b ∙ ε ≈⟨ identityʳ b ⟩
          b     ∎
 
     elimˡ : a ∙ b ≈ b
     elimˡ = begin
-        a ∙ b ≈⟨ ∙-cong a≈ε refl ⟩
+        a ∙ b ≈⟨ ∙-congʳ a≈ε ⟩
         ε ∙ b ≈⟨ identityˡ b ⟩
         b     ∎
 
@@ -54,8 +58,8 @@ module IntroElim {a b : Carrier} (a≈ε : a ≈ ε) where
 
     introcenter : ∀ c → b ∙ c ≈ b ∙ (a ∙ c)
     introcenter c = begin
-        b ∙ c       ≈⟨ sym (∙-cong refl (identityˡ c)) ⟩
-        b ∙ (ε ∙ c) ≈⟨ sym (∙-cong refl (∙-cong a≈ε refl)) ⟩
+        b ∙ c       ≈⟨ ∙-congˡ  (identityˡ c) ⟨
+        b ∙ (ε ∙ c) ≈⟨ ∙-congˡ (∙-congʳ a≈ε) ⟨
         b ∙ (a ∙ c) ∎
 
 open IntroElim public
@@ -65,15 +69,15 @@ module Cancellers {a b c : Carrier} (inv : a ∙ c ≈ ε) where
   cancelʳ : (b ∙ a) ∙ c ≈ b
   cancelʳ = begin
     (b ∙ a) ∙ c  ≈⟨ assoc b a c ⟩
-    b ∙ (a ∙ c)  ≈⟨ ∙-cong refl inv ⟩
+    b ∙ (a ∙ c)  ≈⟨ ∙-congˡ inv ⟩
     b ∙ ε        ≈⟨ identityʳ b ⟩
     b            ∎
 
 
   cancelˡ : a ∙ (c ∙ b) ≈ b
   cancelˡ = begin
-    a ∙ (c ∙ b)  ≈⟨ sym (assoc a c b) ⟩
-    (a ∙ c) ∙ b  ≈⟨ ∙-cong inv refl ⟩
+    a ∙ (c ∙ b)  ≈⟨ assoc a c b ⟨
+    (a ∙ c) ∙ b  ≈⟨ ∙-congʳ inv ⟩
     ε ∙ b        ≈⟨ identityˡ b ⟩
     b            ∎
 
@@ -85,8 +89,8 @@ module Cancellers {a b c : Carrier} (inv : a ∙ c ≈ ε) where
 
   cancelInner : ∀ {g} → (b ∙ a) ∙ (c ∙ g) ≈ b ∙ g
   cancelInner {g = g} = begin
-    (b ∙ a) ∙ (c ∙ g)  ≈⟨ sym (assoc (b ∙ a) c g) ⟩
-    ((b ∙ a) ∙ c) ∙ g  ≈⟨ ∙-cong cancelʳ refl ⟩
+    (b ∙ a) ∙ (c ∙ g)  ≈⟨ assoc (b ∙ a) c g ⟨
+    ((b ∙ a) ∙ c) ∙ g  ≈⟨ ∙-congʳ cancelʳ ⟩
     b ∙ g              ∎
 
   insertInner : ∀ {g} → b ∙ g ≈ (b ∙ a) ∙ (c ∙ g)
