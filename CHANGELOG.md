@@ -123,7 +123,7 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
-* `Algebra.Properties.Semigroup` adding consequences for associtvity for semigroups
+* `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
 -----------------------------
 
 * In `Algebra.Construct.Pointwise`:
