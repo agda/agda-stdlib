@@ -55,7 +55,7 @@ module _ (uv≈w : u ∙ v ≈ w) where
     uv≈w⇒[xu∙v]y≈x∙wy x y = trans (∙-congʳ (uv≈w⇒xu∙v≈xw x)) (assoc _ _ _)
 
     uv≈w⇒[xy∙u]v≈x∙yw : ∀ x y → ((x ∙ y) ∙ u) ∙ v ≈ x ∙ (y ∙ w)
-    uv≈w⇒[xy∙u]v≈x∙yw x y = trans (∙-congʳ (assoc x y u)) (uv≈w⇒[x∙yu]v≈x∙yw x  y )
+    uv≈w⇒[xy∙u]v≈x∙yw x y = trans (∙-congʳ (assoc x y u)) (uv≈w⇒[x∙yu]v≈x∙yw x y)
 
 module _ (uv≈w : u ∙ v ≈ w) where
     uv≈w⇒xw≈xu∙v : x ∙ w ≈ (x ∙ u) ∙ v
