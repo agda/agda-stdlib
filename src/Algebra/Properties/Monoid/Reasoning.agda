@@ -12,57 +12,59 @@ open import Algebra.Bundles using (Monoid)
 module Algebra.Properties.Monoid.Reasoning {o ℓ} (M : Monoid o ℓ) where
 
 open Monoid M
-    using (Carrier; _∙_; _≈_; setoid; isMagma; semigroup; ε; sym; identityˡ
-    ; identityʳ ; ∙-cong; refl; assoc; ∙-congˡ; ∙-congʳ; trans)
+  using (Carrier; _∙_; _≈_; setoid; isMagma; semigroup; ε; sym; identityˡ
+  ; identityʳ ; ∙-cong; refl; assoc; ∙-congˡ; ∙-congʳ; trans)
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Algebra.Properties.Semigroup.Reasoning semigroup public
 
-module Identity {a : Carrier } where
-    id-unique : (∀ b → b ∙ a ≈ b) → a ≈ ε
-    id-unique b∙a≈b = trans (sym (identityˡ a)) (b∙a≈b ε)
+open import Algebra.Properties.Semigroup semigroup public
 
-    id-comm : a ∙ ε ≈ ε ∙ a
-    id-comm = trans (identityʳ a) (sym (identityˡ a))
+private
+    variable
+        a b c d : Carrier
 
-    id-comm-sym : ε ∙ a ≈ a ∙ ε
-    id-comm-sym = sym id-comm
+module _ where
+    id-unique : ∀ a → (∀ b → b ∙ a ≈ b) → a ≈ ε
+    id-unique a b∙a≈b = trans (sym (identityˡ a)) (b∙a≈b ε)
 
-open Identity public
+    id-comm : ∀ a → a ∙ ε ≈ ε ∙ a
+    id-comm a = trans (identityʳ a) (sym (identityˡ a))
 
-module IntroElim {a b : Carrier} (a≈ε : a ≈ ε) where
-    elimʳ : b ∙ a ≈ b
-    elimʳ = trans (∙-congˡ a≈ε) (identityʳ b)
+    id-comm-sym : ∀ a → ε ∙ a ≈ a ∙ ε
+    id-comm-sym a = sym (id-comm a)
 
-    elimˡ : a ∙ b ≈ b
-    elimˡ = trans (∙-congʳ a≈ε) (identityˡ b)
+module _ {a b : Carrier} (a≈ε : a ≈ ε) where
+    elimʳ : ∀ b → b ∙ a ≈ b
+    elimʳ b = trans (∙-congˡ a≈ε) (identityʳ b)
 
-    introʳ : a ≈ ε → b ≈ b ∙ a
-    introʳ a≈ε = sym elimʳ
+    elimˡ : ∀ b → a ∙ b ≈ b
+    elimˡ b = trans (∙-congʳ a≈ε) (identityˡ b)
 
-    introˡ : a ≈ ε → b ≈ a ∙ b
-    introˡ a≈ε = sym elimˡ
+    introʳ : ∀ b → b ≈ b ∙ a
+    introʳ b = sym (elimʳ b)
+
+    introˡ : ∀ b → b ≈ a ∙ b
+    introˡ b = sym (elimˡ b)
 
     introcenter : ∀ c → b ∙ c ≈ b ∙ (a ∙ c)
     introcenter c = trans (∙-congˡ (sym (identityˡ c))) (∙-congˡ (∙-congʳ (sym a≈ε)))
 
-open IntroElim public
+module _ {a c : Carrier} (inv : a ∙ c ≈ ε) where
 
-module Cancellers {a b c : Carrier} (inv : a ∙ c ≈ ε) where
+  cancelʳ : ∀ b → (b ∙ a) ∙ c ≈ b
+  cancelʳ b = trans (assoc b a c) (trans (∙-congˡ inv) (identityʳ b))
 
-  cancelʳ : (b ∙ a) ∙ c ≈ b
-  cancelʳ = trans (assoc b a c) (trans (∙-congˡ inv) (identityʳ b))
+  cancelˡ : ∀ b → a ∙ (c ∙ b) ≈ b
+  cancelˡ b = trans (sym (assoc a c b)) (trans (∙-congʳ inv) (identityˡ b))
 
-  cancelˡ : a ∙ (c ∙ b) ≈ b
-  cancelˡ = trans (sym (assoc a c b)) (trans (∙-congʳ inv) (identityˡ b))
+  insertˡ : ∀ b → b ≈ a ∙ (c ∙ b)
+  insertˡ b = sym (cancelˡ b)
 
-  insertˡ : b ≈ a ∙ (c ∙ b)
-  insertˡ = sym cancelˡ
+  insertʳ : ∀ b → b ≈ (b ∙ a) ∙ c
+  insertʳ b = sym (cancelʳ b)
 
-  insertʳ : b ≈ (b ∙ a) ∙ c
-  insertʳ = sym cancelʳ
+  cancelInner : ∀ b d → (b ∙ a) ∙ (c ∙ d) ≈ b ∙ d
+  cancelInner b d = trans (sym (assoc (b ∙ a) c d)) (∙-congʳ (cancelʳ b))
 
-  cancelInner : ∀ {g} → (b ∙ a) ∙ (c ∙ g) ≈ b ∙ g
-  cancelInner {g = g} = trans (sym (assoc (b ∙ a) c g)) (∙-congʳ cancelʳ)
+  insertInner : ∀ b d → b ∙ d ≈ (b ∙ a) ∙ (c ∙ d)
+  insertInner b d = sym (cancelInner b d)
 
-  insertInner : ∀ {g} → b ∙ g ≈ (b ∙ a) ∙ (c ∙ g)
-  insertInner = sym cancelInner
