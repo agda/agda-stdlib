@@ -149,7 +149,7 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
-Additions to existing modules
+* `Algebra.Properties.Semigroup` adding consequences for associatvity for semigroups
 -----------------------------
 
 * In `Algebra.Construct.Pointwise`:
