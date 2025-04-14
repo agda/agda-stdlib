@@ -17,6 +17,19 @@ Bug-fixes
   the record constructors `_,_` incorrectly had no declared fixity. They have been given
   the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
 
+* A major overhaul of the `Function` hierarchy sees the systematic development
+  and use of the theory of the left inverse `from` to a given `Surjective` function
+  `to`, as a consequence of which we can achieve full symmetry of `Bijection`, in
+  `Function.Properties.Bijection`/`Function.Construct.Symmetry`, rather than the
+  restricted versions considered to date. NB. this is non-backwards compatible
+  because the types of various properties are now sharper, and some previous lemmas
+  are no longer present, due to the complexity their deprecation would entail.
+  Specifically:
+  - `Function.Construct.Symmetry.isBijection` no longer requires the hypothesis `Congruent ≈₂ ≈₁ f⁻¹` for the function `f⁻¹ = B.from`.
+  - `Function.Construct.Symmetry.isBijection-≡` is now redundant, as an instance of the above lemma, so has been deleted.
+  - Similarly, `Function.Construct.Symmetry.bijection` no longer requires a `Congruent` hypothesis, and `Function.Construct.Symmetry.bijection-≡` is now redundant/deleted.
+  - `Function.Properties.Bijection.sym-≡` is now redundant as an instance of a fully general symmetry property `Function.Properties.Bijection.sym`, hence also deleted.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -27,6 +40,8 @@ Non-backwards compatible changes
 
 Minor improvements
 ------------------
+
+* The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X` have been streamlined via pattern-matching on `refl`, rather than defined by delegation to `Function.Consequences.Setoid` and the use of `cong`.
 
 * Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
   to its own dedicated module `Relation.Nullary.Irrelevant`.
@@ -134,6 +149,17 @@ Deprecated names
   product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
   ```
 
+* In `Function.Bundles.IsSurjection`:
+  ```agda
+  to⁻      ↦  Function.Structures.IsSurjection.from
+  to∘to⁻   ↦  Function.Structures.IsSurjection.strictlyInverseˡ
+  ```
+
+* In `Function.Properties.Surjection`:
+  ```agda
+  injective⇒to⁻-cong   ↦  Function.Bundles.Bijection.from-cong
+  ```
+
 New modules
 -----------
 
@@ -230,6 +256,78 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Function.Bundles.Bijection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  ```
+
+* In `Function.Bundles.LeftInverse`:
+  ```agda
+  surjective       : Surjective _≈₁_ _≈₂_ to
+  surjection       : Surjection From To
+  ```
+
+* In `Function.Bundles.RightInverse`:
+  ```agda
+  isInjection      : IsInjection to
+  injective        : Injective _≈₁_ _≈₂_ to
+  injection        : Injection From To
+  ```
+
+* In `Function.Bundles.Surjection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  ```
+
+* In `Function.Construct.Symmetry`:
+  ```agda
+  isBijection : IsBijection ≈₁ ≈₂ to → IsBijection ≈₂ ≈₁ from
+  bijection   : Bijection R S → Bijection S R
+  ```
+
+* In `Function.Properties.Bijection`:
+  ```agda
+  sym : Bijection S T → Bijection T S
+  ```
+
+* In `Function.Structures.IsBijection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  from-cong        : Congruent _≈₂_ _≈₁_ from
+  from-injective   : Injective _≈₂_ _≈₁_ from
+  from-surjective  : Surjective _≈₂_ _≈₁_ from
+  from-bijective   : Bijective _≈₂_ _≈₁_ from
+  ```
+
+* In `Function.Structures.IsLeftInverse`:
+  ```agda
+  surjective : Surjective _≈₁_ _≈₂_ to
+  ```
+
+* In `Function.Structures.IsRightInverse`:
+  ```agda
+  injective   : Injective _≈₁_ _≈₂_ to
+  isInjection : IsInjection to
+  ```
+
+* In `Function.Structures.IsSurjection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  from-injective   : Injective _≈₂_ _≈₁_ from
   ```
 
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:

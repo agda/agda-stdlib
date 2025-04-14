@@ -17,8 +17,10 @@ module Function.Structures {a b ℓ₁ ℓ₂}
   {B : Set b} (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
-open import Data.Product.Base as Product using (∃; _×_; _,_)
+open import Data.Product.Base as Product using (∃; _×_; _,_; proj₁; proj₂)
 open import Function.Base
+open import Function.Consequences.Setoid
+  using (surjective⇒strictlySurjective; inverseˡ⇒surjective; inverseʳ⇒injective)
 open import Function.Definitions
 open import Level using (_⊔_)
 
@@ -59,35 +61,66 @@ record IsInjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   open IsCongruent isCongruent public
 
 
-record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsSurjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isCongruent : IsCongruent f
-    surjective  : Surjective _≈₁_ _≈₂_ f
+    isCongruent : IsCongruent to
+    surjective  : Surjective _≈₁_ _≈₂_ to
 
   open IsCongruent isCongruent public
 
-  strictlySurjective : StrictlySurjective _≈₂_ f
-  strictlySurjective x = Product.map₂ (λ v → v Eq₁.refl) (surjective x)
+  from : B → A
+  from = proj₁ ∘ surjective
+
+  inverseˡ : Inverseˡ _≈₁_ _≈₂_ to from
+  inverseˡ {x = x} = proj₂ (surjective x)
+
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  strictlyInverseˡ _ = inverseˡ Eq₁.refl
+
+  from-injective : Injective _≈₂_ _≈₁_ from
+  from-injective = Eq₂.trans (Eq₂.sym (strictlyInverseˡ _)) ∘ inverseˡ
+
+  strictlySurjective : StrictlySurjective _≈₂_ to
+  strictlySurjective = surjective⇒strictlySurjective Eq₁.setoid Eq₂.setoid surjective
 
 
-record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsBijection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isInjection : IsInjection f
-    surjective  : Surjective _≈₁_ _≈₂_ f
+    isInjection : IsInjection to
+    surjective  : Surjective _≈₁_ _≈₂_ to
 
   open IsInjection isInjection public
 
-  bijective : Bijective _≈₁_ _≈₂_ f
+  bijective : Bijective _≈₁_ _≈₂_ to
   bijective = injective , surjective
 
-  isSurjection : IsSurjection f
+  isSurjection : IsSurjection to
   isSurjection = record
     { isCongruent = isCongruent
     ; surjective  = surjective
     }
 
   open IsSurjection isSurjection public
-    using (strictlySurjective)
+    using (from; from-injective; strictlySurjective; inverseˡ; strictlyInverseˡ)
+
+  private
+    y≈z⇒to∘from[y]≡z : ∀ {y z} → y ≈₂ z → to (from y) ≈₂ z
+    y≈z⇒to∘from[y]≡z = Eq₂.trans (strictlyInverseˡ _)
+
+  inverseʳ : Inverseʳ _≈₁_ _≈₂_ to from
+  inverseʳ = injective ∘ y≈z⇒to∘from[y]≡z
+
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  strictlyInverseʳ = injective ∘ strictlyInverseˡ ∘ to
+
+  from-cong : Congruent _≈₂_ _≈₁_ from
+  from-cong = inverseʳ ∘ Eq₂.sym ∘ y≈z⇒to∘from[y]≡z ∘ Eq₂.sym
+
+  from-surjective : Surjective _≈₂_ _≈₁_ from
+  from-surjective = inverseˡ⇒surjective Eq₂.setoid Eq₁.setoid inverseʳ
+
+  from-bijective : Bijective _≈₂_ _≈₁_ from
+  from-bijective = from-injective , from-surjective
 
 
 ------------------------------------------------------------------------
@@ -104,12 +137,14 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
     renaming (cong to to-cong)
 
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
-  strictlyInverseˡ x = inverseˡ Eq₁.refl
+  strictlyInverseˡ _ = inverseˡ Eq₁.refl
+
+  surjective = inverseˡ⇒surjective Eq₁.setoid Eq₂.setoid inverseˡ
 
   isSurjection : IsSurjection to
   isSurjection = record
     { isCongruent = isCongruent
-    ; surjective = λ y → from y , inverseˡ
+    ; surjective = surjective
     }
 
 
@@ -123,7 +158,16 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
     renaming (cong to to-cong)
 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
-  strictlyInverseʳ x = inverseʳ Eq₂.refl
+  strictlyInverseʳ _ = inverseʳ Eq₂.refl
+
+  injective : Injective _≈₁_ _≈₂_ to
+  injective = inverseʳ⇒injective Eq₁.setoid Eq₂.setoid to inverseʳ
+
+  isInjection : IsInjection to
+  isInjection = record
+    { isCongruent = isCongruent
+    ; injective   = injective
+    }
 
 
 record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -181,9 +225,9 @@ record IsBiInverse
 
 -- See the comment on `SplitSurjection` in `Function.Bundles` for an
 -- explanation of (split) surjections.
-record IsSplitSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsSplitSurjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     from : B → A
-    isLeftInverse : IsLeftInverse f from
+    isLeftInverse : IsLeftInverse to from
 
   open IsLeftInverse isLeftInverse public
