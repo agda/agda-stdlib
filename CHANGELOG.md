@@ -152,6 +152,21 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Base`:
+  ```agda
+  module Congruence (_≈_ : Rel A ℓ) (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
+  where
+    ∙-congˡ : LeftCongruent _≈_ _∙_
+    ∙-congʳ : RightCongruent _≈_ _∙_
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  module Congruence (cong : Congruent₂ _≈_ _∙_) where
+    ∙-congˡ : LeftCongruent _≈_ _∙_
+    ∙-congʳ : RightCongruent _≈_ _∙_
+  ```
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
@@ -232,11 +247,26 @@ Additions to existing modules
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
+* In `Relation.Binary.Consequences`:
+  ```agda
+  mono₂⇒monoˡ : Reflexive ≤₁ → Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
+  mono₂⇒monoˡ : Reflexive ≤₂ → Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
+  monoˡ∧monoʳ⇒mono₂ : Transitive ≤₃ →
+                      LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
+                      Monotonic₂ ≤₁ ≤₂ ≤₃ f
+  ```
+
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:
   ```agda
   <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
   <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
   <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
+  ```
+
+* In `Relation.Binary.Definitions`:
+  ```agda
+  LeftMonotonic  : Rel B ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
+  RightMonotonic : Rel A ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
