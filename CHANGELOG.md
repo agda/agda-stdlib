@@ -123,8 +123,10 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
-* `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
+Additions to existing modules
 -----------------------------
+
+* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
 
 * In `Algebra.Construct.Pointwise`:
   ```agda
