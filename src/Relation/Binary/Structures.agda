@@ -20,6 +20,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Consequences
+  using (tri⇒dec≈; tri⇒dec<; trans∧irr⇒asym)
 open import Relation.Binary.Definitions
 
 private

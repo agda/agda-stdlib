@@ -10,13 +10,14 @@ open import Level
 
 module Data.Sum.Effectful.Left {a} (A : Set a) (b : Level) where
 
-open import Data.Sum.Base
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
+open import Data.Sum.Base using (map₂ ; inj₁ ; inj₂; _⊎_; [_,_]′)
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
+open import Effect.Functor using (RawFunctor)
 open import Effect.Applicative
-open import Effect.Monad
-open import Function.Base
+  using (RawApplicative; RawApplicativeZero; RawAlternative)
+open import Effect.Monad using (RawMonad; module Join)
+open import Function.Base using (const; flip; _∘_; _∘′_; _$_; _|>′_)
 
 -- To minimize the universe level of the RawFunctor, we require that
 -- elements of B are "lifted" to a copy of B at a higher universe level

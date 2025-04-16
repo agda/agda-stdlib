@@ -8,8 +8,8 @@
 
 module Reflection.AST.Argument.Visibility where
 
-open import Relation.Nullary.Decidable.Core            using (yes; no)
-open import Relation.Binary.Definitions                using (DecidableEquality)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 ------------------------------------------------------------------------

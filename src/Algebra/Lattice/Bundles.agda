@@ -15,11 +15,14 @@
 
 module Algebra.Lattice.Bundles where
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Structures
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Bundles using (Band)
 import Algebra.Lattice.Bundles.Raw as Raw
 open import Algebra.Lattice.Structures
+  using ( IsSemilattice; IsMeetSemilattice; IsJoinSemilattice
+        ; IsBoundedSemilattice; IsBoundedMeetSemilattice
+        ; IsBoundedJoinSemilattice; IsLattice; IsDistributiveLattice
+        ; IsBooleanAlgebra)
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Core using (Rel)

@@ -14,10 +14,11 @@ open import Data.Fin.Base as Fin
   using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as List
-open import Data.Nat.Base using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_;
-  s≤s⁻¹; z≤n)
+open import Data.Nat.Base
+  using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_; s≤s⁻¹; z≤n)
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc; +-identityʳ)
+  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″
+        ; suc-injective; +-comm; +-suc; +-identityʳ)
 open import Data.Product.Base as Product
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -34,7 +35,8 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable.Core using (Dec; does; yes; _×-dec_; map′)
+open import Relation.Nullary.Decidable.Core
+  using (Dec; does; yes; _×-dec_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 

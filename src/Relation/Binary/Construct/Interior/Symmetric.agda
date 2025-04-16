@@ -11,7 +11,13 @@ module Relation.Binary.Construct.Interior.Symmetric where
 open import Data.Bool.Base using (_∧_)
 open import Function.Base using (flip; _∘_)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Trans; Asymmetric; Empty; Decidable)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder
+        ; IsDecEquivalence)
+open import Relation.Binary.Bundles using (Poset; DecPoset)
 open import Relation.Nullary.Decidable.Core
 open import Relation.Nullary.Reflects
 

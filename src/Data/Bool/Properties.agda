@@ -16,7 +16,6 @@ import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
   using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; T; _≤_; _<_
         ; b≤b; f≤t; f<t)
-open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
@@ -42,6 +41,7 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
 open import Relation.Nullary.Decidable.Core
   using (True; yes; no; fromWitness ; toWitness)
+open import Relation.Nullary.Negation.Core using (contradiction)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -657,10 +657,10 @@ not-¬ {true}  refl ()
 not-¬ {false} refl ()
 
 ¬-not : ∀ {x y} → x ≢ y → x ≡ not y
-¬-not {true}  {true}  x≢y = ⊥-elim (x≢y refl)
+¬-not {true}  {true}  x≢y = contradiction refl x≢y
 ¬-not {true}  {false} _   = refl
 ¬-not {false} {true}  _   = refl
-¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
+¬-not {false} {false} x≢y = contradiction refl x≢y
 
 ------------------------------------------------------------------------
 -- Properties of _xor_

@@ -8,7 +8,7 @@
 
 module Data.Vec.Show where
 
-import Data.List.Show as List
+import Data.List.Show as List using (show)
 open import Data.String.Base using (String)
 open import Data.Vec.Base using (Vec; toList)
 open import Function.Base using (_∘_)

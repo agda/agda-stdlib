@@ -8,17 +8,15 @@
 
 module Data.Maybe.Effectful.Transformer where
 
-open import Level
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe)
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; RawMonadT)
+open import Function.Base using (_∘′_; _$_)
+open import Level using (Level; _⊔_)
 
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-
-import Data.Maybe.Effectful as Maybe
-open import Function.Base
 
 private
   variable

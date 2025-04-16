@@ -6,10 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Structures using (IsEquivalence)
-
 module Algebra.Module.Structures where
 
 open import Algebra.Bundles
@@ -23,6 +19,10 @@ open import Algebra.Module.Definitions
 open import Algebra.Structures using (IsCommutativeMonoid; IsAbelianGroup)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+
 
 private
   variable
@@ -216,6 +216,15 @@ module _ (ring : Ring r ℓr)
       ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
       ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
       )
+    {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
+    "Warning: uniqueˡ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.LeftModule.inverseˡ-uniqueᴹ instead."
+    #-}
+    {-# WARNING_ON_USAGE uniqueʳ‿-ᴹ
+    "Warning: uniqueʳ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.LeftModule.inverseʳ-uniqueᴹ instead."
+    #-}
+
 
   record IsRightModule (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     open Defs ≈ᴹ
@@ -244,6 +253,15 @@ module _ (ring : Ring r ℓr)
       ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
       ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
       )
+    {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
+    "Warning: uniqueˡ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.RightModule.inverseˡ-uniqueᴹ instead."
+    #-}
+    {-# WARNING_ON_USAGE uniqueʳ‿-ᴹ
+    "Warning: uniqueʳ‿-ᴹ was deprecated in v2.3.
+    Please use Algebra.Module.Properties.RightModule.inverseʳ-uniqueᴹ instead."
+    #-}
+
 
 module _ (R-ring : Ring r ℓr) (S-ring : Ring s ℓs)
          (≈ᴹ : Rel {m} M ℓm) (+ᴹ : Op₂ M) (0ᴹ : M) (-ᴹ : Op₁ M)

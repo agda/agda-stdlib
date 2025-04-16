@@ -8,9 +8,9 @@
 
 module Data.These.Base where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Sum.Base using (_⊎_; [_,_]′)
-open import Function.Base
+open import Function.Base using (id; flip)
 
 private
   variable
