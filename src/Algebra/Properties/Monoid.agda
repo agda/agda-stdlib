@@ -8,8 +8,9 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
+open import Function using (_∘_)
 
-module Algebra.Properties.Monoid.Reasoning {o ℓ} (M : Monoid o ℓ) where
+module Algebra.Properties.Monoid {o ℓ} (M : Monoid o ℓ) where
 
 open Monoid M
   using (Carrier; _∙_; _≈_; setoid; isMagma; semigroup; ε; sym; identityˡ
@@ -22,33 +23,32 @@ private
     variable
         a b c d : Carrier
 
-module _ where
-    id-unique : ∀ a → (∀ b → b ∙ a ≈ b) → a ≈ ε
-    id-unique a b∙a≈b = trans (sym (identityˡ a)) (b∙a≈b ε)
+id-unique : ∀ a → (∀ b → b ∙ a ≈ b) → a ≈ ε
+id-unique a b∙a≈b = trans (sym (identityˡ a)) (b∙a≈b ε)
 
-    id-comm : ∀ a → a ∙ ε ≈ ε ∙ a
-    id-comm a = trans (identityʳ a) (sym (identityˡ a))
+id-comm : ∀ a → a ∙ ε ≈ ε ∙ a
+id-comm a = trans (identityʳ a) (sym (identityˡ a))
 
-    id-comm-sym : ∀ a → ε ∙ a ≈ a ∙ ε
-    id-comm-sym a = sym (id-comm a)
+id-comm-sym : ∀ a → ε ∙ a ≈ a ∙ ε
+id-comm-sym = sym ∘ id-comm
 
-module _ {a b : Carrier} (a≈ε : a ≈ ε) where
-    elimʳ : ∀ b → b ∙ a ≈ b
-    elimʳ b = trans (∙-congˡ a≈ε) (identityʳ b)
+module _ (a≈ε : a ≈ ε) where
+  elimʳ : ∀ b → b ∙ a ≈ b
+  elimʳ = trans (∙-congˡ a≈ε) ∘ identityʳ
 
-    elimˡ : ∀ b → a ∙ b ≈ b
-    elimˡ b = trans (∙-congʳ a≈ε) (identityˡ b)
+  elimˡ : ∀ b → a ∙ b ≈ b
+  elimˡ = trans (∙-congʳ a≈ε) ∘ identityˡ
 
-    introʳ : ∀ b → b ≈ b ∙ a
-    introʳ b = sym (elimʳ b)
+  introʳ : ∀ b → b ≈ b ∙ a
+  introʳ = sym ∘ elimʳ
 
-    introˡ : ∀ b → b ≈ a ∙ b
-    introˡ b = sym (elimˡ b)
+  introˡ : ∀ b → b ≈ a ∙ b
+  introˡ = sym ∘ elimˡ
 
-    introcenter : ∀ c → b ∙ c ≈ b ∙ (a ∙ c)
-    introcenter c = trans (∙-congˡ (sym (identityˡ c))) (∙-congˡ (∙-congʳ (sym a≈ε)))
+  introcenter : ∀ c → b ∙ c ≈ b ∙ (a ∙ c)
+  introcenter c = trans (∙-congˡ (sym (identityˡ c))) (∙-congˡ (∙-congʳ (sym a≈ε)))
 
-module _ {a c : Carrier} (inv : a ∙ c ≈ ε) where
+module _ (inv : a ∙ c ≈ ε) where
 
   cancelʳ : ∀ b → (b ∙ a) ∙ c ≈ b
   cancelʳ b = trans (assoc b a c) (trans (∙-congˡ inv) (identityʳ b))
@@ -57,14 +57,14 @@ module _ {a c : Carrier} (inv : a ∙ c ≈ ε) where
   cancelˡ b = trans (sym (assoc a c b)) (trans (∙-congʳ inv) (identityˡ b))
 
   insertˡ : ∀ b → b ≈ a ∙ (c ∙ b)
-  insertˡ b = sym (cancelˡ b)
+  insertˡ = sym ∘ cancelˡ
 
   insertʳ : ∀ b → b ≈ (b ∙ a) ∙ c
-  insertʳ b = sym (cancelʳ b)
+  insertʳ = sym ∘ cancelʳ
 
   cancelInner : ∀ b d → (b ∙ a) ∙ (c ∙ d) ≈ b ∙ d
   cancelInner b d = trans (uv≈w⇒xu∙vy≈x∙wy inv b d) (∙-congˡ (identityˡ d))
 
   insertInner : ∀ b d → b ∙ d ≈ (b ∙ a) ∙ (c ∙ d)
-  insertInner b d = sym (cancelInner b d)
+  insertInner = λ b d → sym (cancelInner b d)
 
