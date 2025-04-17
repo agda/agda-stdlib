@@ -60,10 +60,10 @@ contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 contraposition : (A → B) → ¬ B → ¬ A
 contraposition f ¬b a = contradiction (f a) ¬b
 
--- Self-contradictory propositions are false
+-- Self-contradictory propositions are false by 'diagonalisation'
 
-self-contradiction : (A → ¬ A) → ¬ A
-self-contradiction self a = self a a
+contra-diagonal : (A → ¬ A) → ¬ A
+contra-diagonal self a = self a a
 
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A

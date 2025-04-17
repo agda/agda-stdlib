@@ -247,5 +247,5 @@ Additions to existing modules
 
 * In `Relation.Nullary.Negation.Core`:
   ```agda
-  self-contradiction : (A → ¬ A) → ¬ A
+  contra-diagonal : (A → ¬ A) → ¬ A
   ```
