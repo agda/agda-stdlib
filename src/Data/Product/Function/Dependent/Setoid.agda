@@ -185,11 +185,11 @@ module _ where
   open RightInverse
   open Setoid
 
-  left-inverse :
+  right-inverse :
     (I↪J : I ↪ J) →
     (∀ {j} → RightInverse (A atₛ (from I↪J j)) (B atₛ j)) →
     RightInverse (I ×ₛ A) (J ×ₛ B)
-  left-inverse {I = I} {J = J} {A = A} {B = B} I↪J A↪B =
+  right-inverse {I = I} {J = J} {A = A} {B = B} I↪J A↪B =
     mkRightInverse equiv invʳ
     where
     equiv : Equivalence (I ×ₛ A) (J ×ₛ B)
