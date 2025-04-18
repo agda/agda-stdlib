@@ -17,6 +17,11 @@ Bug-fixes
   the record constructors `_,_` incorrectly had no declared fixity. They have been given
   the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
 
+* In `Data.Product.Function.Dependent.Setoid`, `left-inverse` defined a
+  `RightInverse`.
+  This has been deprecated in favor or `rightInverse`, and a corrected (and
+  correctly-named) function `leftInverse` has been added.
+
 Non-backwards compatible changes
 --------------------------------
 
