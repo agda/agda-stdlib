@@ -36,8 +36,6 @@ Minor improvements
 * Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
   to its own dedicated module `Relation.Nullary.Irrelevant`.
 
-* Added `Σ-↪` in `Data.Product.Function.Dependent.Propositional`.
-
 Deprecated modules
 ------------------
 
@@ -242,6 +240,24 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
+  ```
+
+* In `Data.Product.Function.Dependent.Setoid`:
+  ```agda
+  rightInverse :
+     (I↪J : I ↪ J) →
+     (∀ {j} → RightInverse (A atₛ (from I↪J j)) (B atₛ j)) →
+     RightInverse (I ×ₛ A) (J ×ₛ B)
+
+  leftInverse :
+    (I↩J : I ↩ J) →
+    (∀ {i} → LeftInverse (A atₛ i) (B atₛ (to I↩J i))) →
+    LeftInverse (I ×ₛ A) (J ×ₛ B)
   ```
 
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`:

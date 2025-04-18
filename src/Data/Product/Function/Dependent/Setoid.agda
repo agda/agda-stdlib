@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Dependent product combinators for setoid equality preserving
