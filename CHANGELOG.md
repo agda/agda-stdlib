@@ -36,6 +36,8 @@ Minor improvements
 * Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
   to its own dedicated module `Relation.Nullary.Irrelevant`.
 
+* Added `Σ-↪` in `Data.Product.Function.Dependent.Propositional`.
+
 Deprecated modules
 ------------------
 
@@ -137,6 +139,11 @@ Deprecated names
   ```agda
   sum-↭       ↦  Data.Nat.ListAction.Properties.sum-↭
   product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
+  ```
+
+* In `Data.Product.Function.Dependent.Setoid`:
+  ```agda
+  left-inverse ↦ rightInverse
   ```
 
 New modules
