@@ -17,6 +17,11 @@ Bug-fixes
   the record constructors `_,_` incorrectly had no declared fixity. They have been given
   the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
 
+* In `Data.Product.Function.Dependent.Setoid`, `left-inverse` defined a
+  `RightInverse`.
+  This has been deprecated in favor or `rightInverse`, and a corrected (and
+  correctly-named) function `leftInverse` has been added.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -134,6 +139,11 @@ Deprecated names
   product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
   ```
 
+* In `Data.Product.Function.Dependent.Setoid`:
+  ```agda
+  left-inverse ↦ rightInverse
+  ```
+
 New modules
 -----------
 
@@ -230,6 +240,24 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
+  ```
+
+* In `Data.Product.Function.Dependent.Setoid`:
+  ```agda
+  rightInverse :
+     (I↪J : I ↪ J) →
+     (∀ {j} → RightInverse (A atₛ (from I↪J j)) (B atₛ j)) →
+     RightInverse (I ×ₛ A) (J ×ₛ B)
+
+  leftInverse :
+    (I↩J : I ↩ J) →
+    (∀ {i} → LeftInverse (A atₛ i) (B atₛ (to I↩J i))) →
+    LeftInverse (I ×ₛ A) (J ×ₛ B)
   ```
 
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
