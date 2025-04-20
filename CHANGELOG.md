@@ -17,6 +17,11 @@ Bug-fixes
   the record constructors `_,_` incorrectly had no declared fixity. They have been given
   the fixity `infixr 4 _,_`, consistent with that of `Data.Product.Base`.
 
+* In `Data.Product.Function.Dependent.Setoid`, `left-inverse` defined a
+  `RightInverse`.
+  This has been deprecated in favor or `rightInverse`, and a corrected (and
+  correctly-named) function `leftInverse` has been added.
+
 * The implementation of `_IsRelatedTo_` in `Relation.Binary.Reasoning.Base.Partial`
   has been modified to correctly support equational reasoning at the beginning and the end.
   The detail of this issue is described in [#2677](https://github.com/agda/agda-stdlib/pull/2677). Since the names of constructors
@@ -140,6 +145,11 @@ Deprecated names
   product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
   ```
 
+* In `Data.Product.Function.Dependent.Setoid`:
+  ```agda
+  left-inverse ↦ rightInverse
+  ```
+
 New modules
 -----------
 
@@ -236,6 +246,33 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.Product.Function.Dependent.Propositional`:
+  ```agda
+  Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
+  ```
+
+* In `Data.Product.Function.Dependent.Setoid`:
+  ```agda
+  rightInverse :
+     (I↪J : I ↪ J) →
+     (∀ {j} → RightInverse (A atₛ (from I↪J j)) (B atₛ j)) →
+     RightInverse (I ×ₛ A) (J ×ₛ B)
+
+  leftInverse :
+    (I↩J : I ↩ J) →
+    (∀ {i} → LeftInverse (A atₛ i) (B atₛ (to I↩J i))) →
+    LeftInverse (I ×ₛ A) (J ×ₛ B)
+  ```
+
+* In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
+  ```agda
+  zipWith-assoc : Associative _∼_ f → Associative (Pointwise _∼_) (zipWith {n = n} f)
+  zipWith-identityˡ: LeftIdentity _∼_ e f → LeftIdentity (Pointwise _∼_) (replicate n e) (zipWith f)
+  zipWith-identityʳ: RightIdentity _∼_ e f → RightIdentity (Pointwise _∼_) (replicate n e) (zipWith f)
+  zipWith-comm : Commutative _∼_ f → Commutative (Pointwise _∼_) (zipWith {n = n} f)
+  zipWith-cong : Congruent₂ _∼_ f → Pointwise _∼_ ws xs → Pointwise _∼_ ys zs → Pointwise _∼_ (zipWith f ws ys) (zipWith f xs zs)
   ```
 
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:

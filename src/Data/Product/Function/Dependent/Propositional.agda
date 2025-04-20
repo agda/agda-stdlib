@@ -28,6 +28,7 @@ open import Function.Bundles
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
+open import Function.Construct.Symmetry using (↩-sym; ↪-sym)
 
 private
   variable
@@ -237,6 +238,14 @@ module _ where
 
 ------------------------------------------------------------------------
 -- Right inverses
+
+module _ where
+  open RightInverse
+
+  -- the dual to Σ-↩, taking advantage of the proof above by threading
+  -- relevant symmetry proofs through it.
+  Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
+  Σ-↪ I↪J A↪B = ↩-sym (Σ-↩ (↪-sym I↪J) (↪-sym A↪B))
 
 ------------------------------------------------------------------------
 -- Inverses
