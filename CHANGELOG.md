@@ -177,7 +177,6 @@ New modules
 
 * `Data.List.Sort.InsertionSort.{agda|Base|Properties}` defines insertion sort and proves properties of insertion sort such as Sorted and Permutation properties.
 
-<<<<<<< HEAD
 * `Data.List.Sort.MergenSort.{agda|Base|Properties}` is a refactor of the previous `Data.List.Sort.MergenSort`.
 
 * `Data.Sign.Show` to show a sign.
@@ -210,13 +209,6 @@ Additions to existing modules
     ∙-congʳ : RightCongruent _≈_ _∙_
   ```
 
-=======
-Additions to existing modules
------------------------------
-
-* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
-
->>>>>>> bbf664506 (update)
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
