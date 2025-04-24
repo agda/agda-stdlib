@@ -243,7 +243,12 @@ Additions to existing modules
   map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
   ```
 
-* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
+* In `Data.List.Relation.Binary.Permutation.Propositional`:
+  ```agda
+  ↭⇒↭ₛ′ : IsEquivalence _≈_ → _↭_ ⇒ _↭ₛ′_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
