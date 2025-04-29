@@ -82,7 +82,7 @@ module _ (uv≈w : u ∙ v ≈ w) where
     uv≈w⇒x∙wy≈x∙[u∙vy] : x ∙ (w ∙ y) ≈ x ∙ (u ∙ (v ∙ y))
     uv≈w⇒x∙wy≈x∙[u∙vy] = sym (uv≈w⇒x[uv∙y]≈x∙wy uv≈w _ _)
 
-module _ {u v w x : Carrier} where
+module _ u v w x where
     [uv∙w]x≈u[vw∙x] : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
     [uv∙w]x≈u[vw∙x] = uv≈w⇒[xu∙v]y≈x∙wy refl u x
 
@@ -113,7 +113,7 @@ module _ {u v w x : Carrier} where
     u[v∙wx]≈[u∙vw]x : u ∙ (v ∙ (w ∙ x)) ≈ (u ∙ (v ∙ w)) ∙ x
     u[v∙wx]≈[u∙vw]x = sym [u∙vw]x≈u[v∙wx]
 
-module _ {u v w x : Carrier} (uv≈wx : u ∙ v ≈ w ∙ x) where
+module _ (uv≈wx : u ∙ v ≈ w ∙ x) where
     uv≈wx⇒yu∙v≈yw∙x : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
     uv≈wx⇒yu∙v≈yw∙x y = trans (uv≈w⇒xu∙v≈xw uv≈wx y) (sym (assoc y w x))
 
