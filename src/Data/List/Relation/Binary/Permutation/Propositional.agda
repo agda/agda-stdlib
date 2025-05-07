@@ -88,19 +88,32 @@ data _↭_ : Rel (List A) a where
   }
 
 ------------------------------------------------------------------------
--- _↭_ is equivalent to `Setoid`-based permutation
+-- _↭_ is finer than `Setoid`-based permutation for any equivalence on A
+
+module _ {ℓ} {_≈_ : Rel A ℓ} (isEquivalence : IsEquivalence _≈_) where
+
+  private
+    open module ↭ₛ′ = Permutation record { isEquivalence = isEquivalence }
+      using ()
+      renaming (_↭_ to _↭ₛ′_)
+
+  ↭⇒↭ₛ′ : _↭_ ⇒ _↭ₛ′_
+  ↭⇒↭ₛ′ refl         = ↭ₛ′.↭-refl
+  ↭⇒↭ₛ′ (prep x p)   = ↭ₛ′.↭-prep x (↭⇒↭ₛ′ p)
+  ↭⇒↭ₛ′ (swap x y p) = ↭ₛ′.↭-swap x y (↭⇒↭ₛ′ p)
+  ↭⇒↭ₛ′ (trans p q)  = ↭ₛ′.↭-trans′ (↭⇒↭ₛ′ p) (↭⇒↭ₛ′ q)
+
+
+------------------------------------------------------------------------
+-- _↭_ is equivalent to `Setoid`-based permutation on `≡.setoid A`
 
 private
   open module ↭ₛ = Permutation (≡.setoid A)
     using ()
     renaming (_↭_ to _↭ₛ_)
 
-↭⇒↭ₛ : xs ↭ ys → xs ↭ₛ ys
-↭⇒↭ₛ refl         = ↭ₛ.↭-refl
-↭⇒↭ₛ (prep x p)   = ↭ₛ.↭-prep x (↭⇒↭ₛ p)
-↭⇒↭ₛ (swap x y p) = ↭ₛ.↭-swap x y (↭⇒↭ₛ p)
-↭⇒↭ₛ (trans p q)  = ↭ₛ.↭-trans′ (↭⇒↭ₛ p) (↭⇒↭ₛ q)
-
+↭⇒↭ₛ : _↭_ ⇒ _↭ₛ_
+↭⇒↭ₛ = ↭⇒↭ₛ′ ≡.isEquivalence
 
 ↭ₛ⇒↭ : _↭ₛ_ ⇒ _↭_
 ↭ₛ⇒↭ (↭ₛ.refl xs≋ys)       = ↭-reflexive-≋ xs≋ys
