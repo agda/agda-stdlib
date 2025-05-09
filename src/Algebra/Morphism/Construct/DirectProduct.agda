@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The projection morphisms for alegraic structures arising from the
+-- The projection morphisms for algebraic structures arising from the
 -- direct product construction
 ------------------------------------------------------------------------
 
