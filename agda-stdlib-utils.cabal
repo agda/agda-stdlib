@@ -6,10 +6,10 @@ description:     Helper programs for setting up the Agda standard library.
 license:         MIT
 
 tested-with:
-  GHC == 9.12.1
-  GHC == 9.10.1
+  GHC == 9.12.2
+  GHC == 9.10.2
   GHC == 9.8.4
-  GHC == 9.6.6
+  GHC == 9.6.7
   GHC == 9.4.8
   GHC == 9.2.8
   GHC == 9.0.2
