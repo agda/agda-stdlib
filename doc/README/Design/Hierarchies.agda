@@ -66,7 +66,7 @@ private
 
 -- The Core module contains the basic units of the hierarchy.
 
--- For example, in binary relations these are homogeneous and
+-- For example, in the case of binary relations these are homogeneous and
 -- heterogeneous binary relations:
 
 REL : Set a → Set b → (ℓ : Level) → Set (a ⊔ b ⊔ suc ℓ)
