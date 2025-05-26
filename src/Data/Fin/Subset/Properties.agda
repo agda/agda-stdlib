@@ -371,6 +371,18 @@ p∪∁p≡⊤ (inside  ∷ p) = cong (inside ∷_) (p∪∁p≡⊤ p)
   suc  _ ∸ ∣ p ∣  ∎
   where open ≡-Reasoning
 
+p⊆q⇒∁p⊇∁q : p ⊆ q → ∁ p ⊇ ∁ q
+p⊆q⇒∁p⊇∁q p⊆q x∈∁q = x∉p⇒x∈∁p (x∈∁p⇒x∉p x∈∁q ∘ p⊆q)
+
+∁p⊆∁q⇒p⊇q : ∁ p ⊆ ∁ q → p ⊇ q
+∁p⊆∁q⇒p⊇q ∁p⊆∁q x∈q = x∉∁p⇒x∈p (x∈p⇒x∉∁p x∈q ∘ ∁p⊆∁q)
+
+p⊂q⇒∁p⊃∁q : p ⊂ q → ∁ p ⊃ ∁ q
+p⊂q⇒∁p⊃∁q (p⊆q , x , x∈q , x∉p) = p⊆q⇒∁p⊇∁q p⊆q , x , x∉p⇒x∈∁p x∉p , x∈p⇒x∉∁p x∈q
+
+∁p⊂∁q⇒p⊃q : ∁ p ⊂ ∁ q → p ⊃ q
+∁p⊂∁q⇒p⊃q (∁p⊆∁q , x , x∈∁q , x∉∁p) = ∁p⊆∁q⇒p⊇q ∁p⊆∁q , x , x∉∁p⇒x∈p x∉∁p , x∈∁p⇒x∉p x∈∁q
+
 ------------------------------------------------------------------------
 -- _∩_
 

@@ -235,6 +235,29 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Fin.Subset`:
+  ```agda
+  _⊇_ : Subset n → Subset n → Set
+  _⊉_ : Subset n → Subset n → Set
+  _⊃_ : Subset n → Subset n → Set
+  _⊅_ : Subset n → Subset n → Set
+
+  ```
+
+* In `Data.Fin.Subset.Induction`:
+  ```agda
+  ⊃-Rec : RecStruct (Subset n) ℓ ℓ
+  ⊃-wellFounded : WellFounded _⊃_
+  ```
+
+* In `Data.Fin.Subset.Properties`
+  ```agda
+  p⊆q⇒∁p⊇∁q : p ⊆ q → ∁ p ⊇ ∁ q
+  ∁p⊆∁q⇒p⊇q : ∁ p ⊆ ∁ q → p ⊇ q
+  p⊂q⇒∁p⊃∁q : p ⊂ q → ∁ p ⊃ ∁ q
+  ∁p⊂∁q⇒p⊃q : ∁ p ⊂ ∁ q → p ⊃ q
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n

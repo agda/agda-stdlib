@@ -77,6 +77,18 @@ p ⊂ q = p ⊆ q × ∃ (λ x → x ∈ q × x ∉ p)
 _⊄_ : Subset n → Subset n → Set
 p ⊄ q = ¬ (p ⊂ q)
 
+_⊇_ : Subset n → Subset n → Set
+p ⊇ q = ∀ {x} → x ∈ q → x ∈ p
+
+_⊉_ : Subset n → Subset n → Set
+p ⊉ q = ¬ (p ⊇ q)
+
+_⊃_ : Subset n → Subset n → Set
+p ⊃ q = p ⊇ q × ∃ (λ x → x ∈ p × x ∉ q)
+
+_⊅_ : Subset n → Subset n → Set
+p ⊅ q = ¬ (p ⊃ q)
+
 ------------------------------------------------------------------------
 -- Set operations
 
