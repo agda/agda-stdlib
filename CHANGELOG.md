@@ -165,6 +165,8 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
+* `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`
+
 Additions to existing modules
 -----------------------------
 
