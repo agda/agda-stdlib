@@ -66,9 +66,12 @@ module _ (M : RawSetoid a ℓ₁) (N : RawSetoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- package up for export
 
-module _ {M : RawSetoid a ℓ₁} {N : RawSetoid b ℓ₂} {P : RawSetoid c ℓ} where
+module _ {M : RawSetoid a ℓ₁} {N : RawSetoid b ℓ₂} where
 
   proj₁ = Proj₁.isRelHomomorphism M N
   proj₂ = Proj₂.isRelHomomorphism M N
+
+module _ {M : RawSetoid a ℓ₁} {N : RawSetoid b ℓ₂} {P : RawSetoid c ℓ} where
+
   <_,_> = Pair.isRelHomomorphism M N P
 
