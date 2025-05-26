@@ -123,6 +123,10 @@ New modules
 
 * `Data.Sign.Show` to show a sign
 
+* Added a new domain theory section to the library under `Relation.Binary.Domain.*`:
+  - Introduced new modules and bundles for domain theory, including `DCPO`, `Lub`, and `ScottContinuous`.
+  - All files for domain theory are now available in `src/Relation/Binary/Domain/`.
+
 Additions to existing modules
 -----------------------------
 
