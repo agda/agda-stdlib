@@ -40,13 +40,13 @@ module _ (M : RawSetoid a ℓ₁) (N : RawSetoid b ℓ₂) where
   module Proj₁ where
 
     isRelHomomorphism : IsRelHomomorphism P._≈_ M._≈_ Product.proj₁
-    isRelHomomorphism = record { cong = λ z → z .Product.proj₁ }
+    isRelHomomorphism = record { cong = Product.proj₁ }
 
 
   module Proj₂ where
 
     isRelHomomorphism : IsRelHomomorphism P._≈_ N._≈_ Product.proj₂
-    isRelHomomorphism = record { cong = λ z → z .Product.proj₂ }
+    isRelHomomorphism = record { cong = Product.proj₂ }
 
 
   module Pair (X : RawSetoid c ℓ)  where
