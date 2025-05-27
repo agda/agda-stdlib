@@ -116,7 +116,7 @@ This lack of basic data types increases the need for a standard library when com
 Second, Agda users often seek to prove that programs constructed using data types in the standard library are "correct."
 Constructing the proof that a function obeys a specification (e.g. that a sorting function outputs a permutation of the original list in non-decreasing order) typically requires far more effort, both in terms of lines of code and in developer time, than writing the original operation.
 By providing proofs of correctness for the operations it defines, the standard library saves users significant time during proof development.
-
+ 
 # Impact
 
 A wide range of projects make use of `agda-stdlib`.
