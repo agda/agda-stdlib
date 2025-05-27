@@ -13,7 +13,6 @@ import Data.Product.Base as Product using (<_,_>; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Level using (Level)
---open import Relation.Binary.Construct using ()
 open import Relation.Binary.Bundles.Raw using (RawSetoid)
 open import Relation.Binary.Morphism.Structures using (IsRelHomomorphism)
 
@@ -23,7 +22,7 @@ private
 
 
 ------------------------------------------------------------------------
--- product construction on RawSetoid belongs in Relation.Binary.Construct.Product?
+-- definitions
 
 module _ (M : RawSetoid a ℓ₁) (N : RawSetoid b ℓ₂) where
 
