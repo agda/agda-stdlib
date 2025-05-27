@@ -15,6 +15,7 @@ open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (∃; _×_)
 open import Data.Vec.Base hiding (foldr; foldl)
+open import Function.Base using (flip)
 open import Relation.Nullary
 
 private
@@ -78,16 +79,16 @@ _⊄_ : Subset n → Subset n → Set
 p ⊄ q = ¬ (p ⊂ q)
 
 _⊇_ : Subset n → Subset n → Set
-p ⊇ q = ∀ {x} → x ∈ q → x ∈ p
+_⊇_ = flip _⊆_
 
 _⊉_ : Subset n → Subset n → Set
-p ⊉ q = ¬ (p ⊇ q)
+_⊉_ = flip _⊈_
 
 _⊃_ : Subset n → Subset n → Set
-p ⊃ q = p ⊇ q × ∃ (λ x → x ∈ p × x ∉ q)
+_⊃_ = flip _⊂_
 
 _⊅_ : Subset n → Subset n → Set
-p ⊅ q = ¬ (p ⊃ q)
+_⊅_ = flip _⊄_
 
 ------------------------------------------------------------------------
 -- Set operations
