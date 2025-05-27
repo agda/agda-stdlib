@@ -234,6 +234,15 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
   magma : Magma a ℓ
   magma = record { isMagma = isMagma }
 
+-- Note that the `Semigroup` record does not include a (primitive;
+-- definitional) `Magma` field, by contrast with the `IsSemigroup`
+-- structure which *does* include an `isMagma` field as primitive.
+-- Instead, the `Semigroup` record includes an additional declaration
+-- (a 'manifest field' of the `record`) defining a `Magma` bundle, in
+-- terms of that exported `isMagma` field.  In this way, 'inheritance'
+-- is *automatic* for the `IsX` sub*structures* of a given bundle,
+-- while supporting the *optional* export of inherited sub*bundles*.
+
 -- The above setup may seem a bit complicated, but it has been arrived
 -- at after a lot of thought and is designed to both make the hierarchies
 -- easy to work with whilst also providing enough flexibility for the
