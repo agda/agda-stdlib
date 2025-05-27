@@ -30,18 +30,18 @@ trans-reflˡ ≡.refl p = p
 trans-reflʳ : RightTrans _≈_ _≡_
 trans-reflʳ p ≡.refl = p
 
-p-reflˡ : x ≈ y → x ≈ x
-p-reflˡ p = trans p (sym p)
+partial-reflˡ : x ≈ y → x ≈ x
+partial-reflˡ p = trans p (sym p)
 
-p-reflʳ : x ≈ y → y ≈ y
-p-reflʳ p = trans (sym p) p
+partial-reflʳ : x ≈ y → y ≈ y
+partial-reflʳ p = trans (sym p) p
 
-p-refl : x ≈ y → x ≈ x × y ≈ y
-p-refl p = p-reflˡ p , p-reflʳ p
+partial-refl : x ≈ y → x ≈ x × y ≈ y
+partial-refl p = partial-reflˡ p , partial-reflʳ p
 
-p-reflexiveˡ : x ≈ y → x ≡ z → x ≈ z
-p-reflexiveˡ p ≡.refl = p-reflˡ p
+partial-reflexiveˡ : x ≈ y → x ≡ z → x ≈ z
+partial-reflexiveˡ p ≡.refl = partial-reflˡ p
 
-p-reflexiveʳ : x ≈ y → y ≡ z → y ≈ z
-p-reflexiveʳ p ≡.refl = p-reflʳ p
+partial-reflexiveʳ : x ≈ y → y ≡ z → y ≈ z
+partial-reflexiveʳ p ≡.refl = partial-reflʳ p
 
