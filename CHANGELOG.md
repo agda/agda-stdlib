@@ -163,9 +163,9 @@ New modules
 
 * `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
 
-* `Data.Sign.Show` to show a sign
+* `Data.Sign.Show` to show a sign.
 
-* `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`
+* `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`.
 
 Additions to existing modules
 -----------------------------
