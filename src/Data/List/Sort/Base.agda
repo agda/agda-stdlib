@@ -6,13 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List.Base using (List)
-open import Level using (_⊔_)
 open import Relation.Binary.Bundles using (TotalOrder)
 
 module Data.List.Sort.Base
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂)
   where
+
+open import Data.List.Base using (List)
+open import Level using (_⊔_)
 
 open TotalOrder totalOrder renaming (Carrier to A) using (module Eq)
 open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
