@@ -59,11 +59,11 @@ insert-↭ x (y ∷ xs) with does (x ≤? y)
   x ∷ y ∷ xs ∎
   where open PermutationReasoning
 
-insert-cong-↭ : ∀ {x xs x' xs'} → x ≈ x' → xs ↭ xs' → insert x xs ↭ x' ∷ xs'
-insert-cong-↭ {x} {xs} {x'} {xs'} eq1 eq2 = begin
+insert-cong-↭ : ∀ {x xs y ys} → x ≈ y → xs ↭ ys → insert x xs ↭ y ∷ ys
+insert-cong-↭ {x} {xs} {y} {ys} eq₁ eq₂ = begin
   insert x xs ↭⟨ insert-↭ x xs ⟩
-  x ∷ xs      ↭⟨ prep eq1 eq2 ⟩
-  x' ∷ xs' ∎
+  x ∷ xs      ↭⟨ prep eq₁ eq₂ ⟩
+  y ∷ ys ∎
   where open PermutationReasoning
 
 sort-↭ : ∀ (xs : List A) → sort xs ↭ xs
@@ -118,7 +118,7 @@ insert-congˡ {x} {y} (z ∷ xs) eq with x ≤? z | y ≤? z
 ... | no   _  | no   _  = Eq.refl ∷ insert-congˡ xs eq
 
 insert-cong : ∀ {x y xs ys} → x ≈ y → xs ≋ ys → insert x xs ≋ insert y ys
-insert-cong {y = y} {xs} eq1 eq2 = ≋-trans (insert-congˡ xs eq1) (insert-congʳ y eq2)
+insert-cong {y = y} {xs} eq₁ eq₂ = ≋-trans (insert-congˡ xs eq₁) (insert-congʳ y eq₂)
 
 sort-cong : ∀ {xs ys} → xs ≋ ys → sort xs ≋ sort ys
 sort-cong [] = []
@@ -158,8 +158,8 @@ insert-swap x y xs with x ≤? y
 
 insert-swap-cong : ∀ {x y x′ y′ xs ys} → x ≈ x′ → y ≈ y′ → xs ≋ ys →
                    insert x (insert y xs) ≋ insert y′ (insert x′ ys)
-insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq1 eq2 eq3 = begin
-  insert x (insert y xs)   ≈⟨ insert-cong eq1 (insert-cong eq2 eq3) ⟩
+insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq₁ eq₂ eq₃ = begin
+  insert x (insert y xs)   ≈⟨ insert-cong eq₁ (insert-cong eq₂ eq₃) ⟩
   insert x′ (insert y′ ys) ≈⟨ insert-swap x′ y′ ys ⟩
   insert y′ (insert x′ ys) ∎
   where open ≋-Reasoning
