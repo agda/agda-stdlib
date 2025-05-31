@@ -14,7 +14,7 @@ module Data.List.Sort.InsertionSort
   where
 
 open import Data.Bool.Base using (true; false ; if_then_else_)
-open import Data.Empty using (⊥-elim)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Function using (id)
 
 open import Data.List.Base using (List; []; _∷_)
