@@ -59,8 +59,7 @@ insert-↭ x (y ∷ xs) with does (x ≤? y)
   x ∷ y ∷ xs ∎
   where open PermutationReasoning
 
-insert-cong-↭ : ∀ {x xs x' xs'} → x ≈ x' → xs ↭ xs' →
-                insert x xs ↭ x' ∷ xs'
+insert-cong-↭ : ∀ {x xs x' xs'} → x ≈ x' → xs ↭ xs' → insert x xs ↭ x' ∷ xs'
 insert-cong-↭ {x} {xs} {x'} {xs'} eq1 eq2 = begin
   insert x xs ↭⟨ insert-↭ x xs ⟩
   x ∷ xs      ↭⟨ prep eq1 eq2 ⟩
@@ -103,7 +102,7 @@ insertionSort = record
 -- Congruence properties
 
 insert-congʳ : ∀ x {xs ys} → xs ≋ ys → insert x xs ≋ insert x ys
-insert-congʳ x [] = Eq.refl ∷ []
+insert-congʳ x [] = ≋-refl
 insert-congʳ z (_∷_ {x} {y} {xs} {ys} x∼y eq) with z ≤? x | z ≤? y
 ... | yes z≤x | yes z≤y = Eq.refl ∷ x∼y ∷ eq
 ... | no z≤x | yes z≤y = contradiction (≤-respʳ-≈ (Eq.sym x∼y) z≤y) z≤x
@@ -118,8 +117,7 @@ insert-congˡ {x} {y} (z ∷ xs) eq with x ≤? z | y ≤? z
 ... | yes x≤z | no y≤z = contradiction (≤-respˡ-≈ eq x≤z) y≤z
 ... | no x≤z | no y≤z = Eq.refl ∷ insert-congˡ xs eq
 
-insert-cong : ∀ {x y xs ys} → x ≈ y → xs ≋ ys →
-              insert x xs ≋ insert y ys
+insert-cong : ∀ {x y xs ys} → x ≈ y → xs ≋ ys → insert x xs ≋ insert y ys
 insert-cong {x} {y} {xs} {ys} eq1 eq2 =
   ≋-trans (insert-congˡ xs eq1) (insert-congʳ y eq2)
 
@@ -181,10 +179,8 @@ insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq1 eq2 eq3 = begin
 sort-cong-↭ : ∀ {xs ys} → xs ↭ ys → sort xs ≋ sort ys
 sort-cong-↭ (refl x) = sort-cong x
 sort-cong-↭ (prep eq eq₁) = insert-cong eq (sort-cong-↭ eq₁)
-sort-cong-↭ (swap {x = x} {y} {x′} {y′} eq₁ eq₂ eq) =
-  insert-swap-cong eq₁ eq₂ (sort-cong-↭ eq)
-sort-cong-↭ (trans eq eq₁) =
-  ≋-trans (sort-cong-↭ eq) (sort-cong-↭ eq₁)
+sort-cong-↭ (swap eq₁ eq₂ eq) = insert-swap-cong eq₁ eq₂ (sort-cong-↭ eq)
+sort-cong-↭ (trans eq eq₁) = ≋-trans (sort-cong-↭ eq) (sort-cong-↭ eq₁)
 
 ------------------------------------------------------------------------
 -- Decidability property
