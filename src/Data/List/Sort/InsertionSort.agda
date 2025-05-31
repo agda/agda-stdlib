@@ -13,40 +13,25 @@ module Data.List.Sort.InsertionSort
   (O : DecTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Bool.Base using (true; false ; if_then_else_)
-open import Relation.Nullary.Negation.Core using (contradiction)
-open import Function using (id)
-
+open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.List.Base using (List; []; _∷_)
-open import Data.List.Relation.Unary.Linked using ([]; [-] ; _∷_)
-open import Data.List.Relation.Binary.Pointwise
-  using (Pointwise ; [] ; _∷_ ; decidable ; setoid)
-
+open import Data.List.Relation.Unary.Linked using ([]; [-]; _∷_)
+open import Data.List.Relation.Binary.Pointwise using ([]; _∷_; decidable; setoid)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality
-  using (inspect ; [_])
-open import Relation.Binary.Properties.DecTotalOrder O
-  using (≰⇒≥ ; ≥-antisym)
-open import Relation.Nullary.Decidable.Core
-  using (does ; yes ; no ; map′)
+open import Relation.Binary.Properties.DecTotalOrder O using (≰⇒≥)
+open import Relation.Nullary.Decidable.Core using (does; yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
-open DecTotalOrder O
-  renaming (Carrier to A ; refl to reflA ; trans to transA)
-  using (totalOrder; _≤?_; _≤_
-        ; module Eq; _≈_; ≤-respʳ-≈; ≤-respˡ-≈; antisym)
+open DecTotalOrder O renaming (Carrier to A; trans to ≤-trans)
+  using (totalOrder; _≤?_; _≤_; module Eq; _≈_; ≤-respʳ-≈; ≤-respˡ-≈; antisym)
   
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
-  using (_≋_)
+  using (_≋_; ≋-refl; ≋-sym; ≋-trans)
 open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
-open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder
-  using (Sorted)
-open import Data.List.Sort.Base totalOrder
-import Relation.Binary.Reasoning.Setoid (setoid Eq.setoid)
-  as ≋-Reasoning
-
-open Setoid (setoid Eq.setoid)
-  renaming (refl to reflₚₜ ; trans to transₚₜ) using ()
+open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder using (Sorted)
+open import Data.List.Sort.Base totalOrder using (SortingAlgorithm)
+import Relation.Binary.Reasoning.Setoid (setoid Eq.setoid) as ≋-Reasoning
 
 ------------------------------------------------------------------------
 -- Definitions
@@ -121,71 +106,59 @@ insert-congʳ : ∀ x {xs ys} → xs ≋ ys → insert x xs ≋ insert x ys
 insert-congʳ x [] = Eq.refl ∷ []
 insert-congʳ z (_∷_ {x} {y} {xs} {ys} x∼y eq) with z ≤? x | z ≤? y
 ... | yes z≤x | yes z≤y = Eq.refl ∷ x∼y ∷ eq
-... | no z≤x | yes z≤y = ⊥-elim (z≤x (≤-respʳ-≈ (Eq.sym x∼y) z≤y))
-... | yes z≤x | no z≤y = ⊥-elim (z≤y (≤-respʳ-≈ x∼y z≤x))
+... | no z≤x | yes z≤y = contradiction (≤-respʳ-≈ (Eq.sym x∼y) z≤y) z≤x
+... | yes z≤x | no z≤y = contradiction (≤-respʳ-≈ x∼y z≤x) z≤y
 ... | no z≤x | no z≤y = x∼y ∷ insert-congʳ z eq
 
 insert-congˡ : ∀ {x y} xs → x ≈ y → insert x xs ≋ insert y xs
 insert-congˡ {x} {y} [] eq = eq ∷ []
 insert-congˡ {x} {y} (z ∷ xs) eq with x ≤? z | y ≤? z
-... | yes x≤z | yes y≤z = eq ∷ reflₚₜ
-... | no x≤z | yes y≤z = ⊥-elim (x≤z (≤-respˡ-≈ (Eq.sym eq) y≤z))
-... | yes x≤z | no y≤z = ⊥-elim (y≤z (≤-respˡ-≈ eq x≤z))
+... | yes x≤z | yes y≤z = eq ∷ ≋-refl
+... | no x≤z | yes y≤z = contradiction (≤-respˡ-≈ (Eq.sym eq) y≤z) x≤z
+... | yes x≤z | no y≤z = contradiction (≤-respˡ-≈ eq x≤z) y≤z
 ... | no x≤z | no y≤z = Eq.refl ∷ insert-congˡ xs eq
 
 insert-cong : ∀ {x y xs ys} → x ≈ y → xs ≋ ys →
               insert x xs ≋ insert y ys
 insert-cong {x} {y} {xs} {ys} eq1 eq2 =
-  transₚₜ (insert-congˡ xs eq1) (insert-congʳ y eq2)
+  ≋-trans (insert-congˡ xs eq1) (insert-congʳ y eq2)
 
 sort-cong : ∀ {xs ys} → xs ≋ ys → sort xs ≋ sort ys
 sort-cong [] = []
 sort-cong (x∼y ∷ eq) = insert-cong x∼y (sort-cong eq)
 
+insert-swap-≤ : ∀ {x y} xs →
+               x ≤ y → insert x (insert y xs) ≋ insert y (insert x xs)
+insert-swap-≤ {x} {y} [] x≤y with x ≤? y
+... | no xy = contradiction x≤y xy
+... | yes xy with y ≤? x
+... | yes yx = (Eq.sym eq) ∷ (eq ∷ []) where eq = antisym yx xy
+... | no yx = ≋-refl
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y with y ≤? z
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz with x ≤? y
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy with x ≤? z
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz with y ≤? x
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | yes yx =
+  (Eq.sym eq) ∷ (eq ∷ ≋-refl) where eq = antisym yx xy
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx with y ≤? z
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | yes yz' = ≋-refl
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | no yz' = contradiction yz yz'
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | no xz = contradiction (≤-trans xy yz) xz
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | no xy = contradiction x≤y xy
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz with x ≤? z
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | yes xz with y ≤? x
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | yes xz | yes yx = contradiction (≤-trans yx xz) yz
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | yes xz | no yx with y ≤? z
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | yes xz | no yx | yes yz' = contradiction yz' yz
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | yes xz | no yx | no yz' = ≋-refl
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | no xz with y ≤? z
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | no xz | yes yz' = contradiction yz' yz
+insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no yz | no xz | no yz' = Eq.refl ∷ (insert-swap-≤ xs x≤y)
+
 insert-swap : ∀ x y xs → insert x (insert y xs) ≋ insert y (insert x xs)
-insert-swap x y [] with x ≤? y | y ≤? x
-... | yes x≤y | yes y≤x = eq ∷ (Eq.sym eq) ∷ []
-  where eq = antisym x≤y y≤x
-... | no x≤y | yes y≤x = reflₚₜ
-... | yes x≤y | no y≤x = reflₚₜ
-... | no x≤y | no y≤x = (Eq.sym eq) ∷ (eq ∷ [])
-  where eq = ≥-antisym (≰⇒≥ x≤y) (≰⇒≥ y≤x)
-insert-swap x y (z ∷ xs) with x ≤? z in xz | y ≤? z in yz |
-  x ≤? y in xy | y ≤? x in yx
-insert-swap x y (z ∷ xs) | yes x≤z | yes y≤z | yes x≤y | yes y≤x
-  rewrite xy | yx = eq ∷ (Eq.sym eq) ∷ reflₚₜ
-  where eq = antisym x≤y y≤x
-insert-swap x y (z ∷ xs) | yes x≤z | yes y≤z | yes x≤y | no y≤x
-  rewrite xy | yx | yz = reflₚₜ
-insert-swap x y (z ∷ xs) | yes x≤z | yes y≤z | no x≤y | yes y≤x
-  rewrite xy | yx | xz = reflₚₜ
-insert-swap x y (z ∷ xs) | yes x≤z | yes y≤z | no x≤y | no y≤x
-  rewrite xy | yx | yz | xz = Eq.sym eq ∷ eq ∷ (reflₚₜ)
-  where eq = ≥-antisym (≰⇒≥ x≤y) (≰⇒≥ y≤x)  
-insert-swap x y (z ∷ xs) | yes x≤z | no y≤z | yes x≤y | yes y≤x
-  rewrite xy | yx | yz | xz = ⊥-elim (y≤z (transA y≤x x≤z))
-insert-swap x y (z ∷ xs) | yes x≤z | no y≤z | yes x≤y | no y≤x
-  rewrite xy | yx | yz | xz = reflₚₜ
-insert-swap x y (z ∷ xs) | yes x≤z | no y≤z | no x≤y | yes y≤x
-  rewrite xy | yx | yz | xz = ⊥-elim (y≤z (transA y≤x x≤z))
-insert-swap x y (z ∷ xs) | yes x≤z | no y≤z | no x≤y | no y≤x
-  rewrite xy | yx | yz | xz = reflₚₜ
-insert-swap x y (z ∷ xs) | no x≤z | yes y≤z | yes x≤y | yes y≤x
-  rewrite xy | yx | yz | xz = ⊥-elim (x≤z (transA x≤y y≤z))
-insert-swap x y (z ∷ xs) | no x≤z | yes y≤z | yes x≤y | no y≤x
-  rewrite xy | yx | yz | xz = ⊥-elim (x≤z (transA x≤y y≤z))
-insert-swap x y (z ∷ xs) | no x≤z | yes y≤z | no x≤y | yes y≤x
-  rewrite xy | yx | yz | xz = reflₚₜ
-insert-swap x y (z ∷ xs) | no x≤z | yes y≤z | no x≤y | no y≤x
-  rewrite xy | yx | yz | xz = reflₚₜ
-insert-swap x y (z ∷ xs) | no x≤z | no y≤z | yes x≤y | yes y≤x
-  rewrite xy | yx | yz | xz = Eq.refl ∷ (insert-swap x y xs)
-insert-swap x y (z ∷ xs) | no x≤z | no y≤z | yes x≤y | no y≤x
-  rewrite xy | yx | yz | xz = Eq.refl ∷ (insert-swap x y xs)
-insert-swap x y (z ∷ xs) | no x≤z | no y≤z | no x≤y | yes y≤x
-  rewrite xy | yx | yz | xz = Eq.refl ∷ (insert-swap x y xs)
-insert-swap x y (z ∷ xs) | no x≤z | no y≤z | no x≤y | no y≤x
-  rewrite xy | yx | yz | xz = Eq.refl ∷ (insert-swap x y xs)
+insert-swap x y xs with x ≤? y
+... | yes xy = insert-swap-≤ xs xy
+... | no xy = ≋-sym (insert-swap-≤ xs (≰⇒≥ xy))
 
 insert-swap-cong : ∀ {x y x′ y′ xs ys} →
                    x ≈ x′ → y ≈ y′ → xs ≋ ys →
@@ -194,16 +167,16 @@ insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq1 eq2 eq3 = begin
   insert x (insert y xs)   ≈⟨ insert-cong eq1 (insert-cong eq2 eq3) ⟩
   insert x′ (insert y′ ys) ≈⟨ insert-swap x′ y′ ys ⟩
   insert y′ (insert x′ ys) ∎
-  where open SetoidReasoning
+  where open ≋-Reasoning
 
 -- Ideally, we want:
 
 --   property1 : ∀ {xs ys} → xs ↭ ys →
 --               Sorted xs → Sorted ys → xs ≋ ys
 
--- But the induction over xs ↭ ys is hard to do. So instead we have a
--- similar property that depends on the particular sorting algorithm
--- used.
+-- But the induction over xs ↭ ys is hard to do for the "transitive"
+-- constructor. So instead we have a similar property that depends on
+-- the particular sorting algorithm used.
 
 sort-cong-↭ : ∀ {xs ys} → xs ↭ ys → sort xs ≋ sort ys
 sort-cong-↭ (refl x) = sort-cong x
@@ -211,7 +184,7 @@ sort-cong-↭ (prep eq eq₁) = insert-cong eq (sort-cong-↭ eq₁)
 sort-cong-↭ (swap {x = x} {y} {x′} {y′} eq₁ eq₂ eq) =
   insert-swap-cong eq₁ eq₂ (sort-cong-↭ eq)
 sort-cong-↭ (trans eq eq₁) =
-  transₚₜ (sort-cong-↭ eq) (sort-cong-↭ eq₁)
+  ≋-trans (sort-cong-↭ eq) (sort-cong-↭ eq₁)
 
 ------------------------------------------------------------------------
 -- Decidability property
@@ -221,7 +194,7 @@ infix 4 _↭?_
 _↭?_ : Decidable _↭_
 xs ↭? ys with decidable Eq._≟_ (sort xs) (sort ys)
 ... | yes eq = yes (begin
-  xs      ↭⟨ ↭-sym (sort-↭ xs) ⟩
+  xs      ↭⟨ sort-↭ xs ⟨
   sort xs ↭⟨ refl eq ⟩
   sort ys ↭⟨ sort-↭ ys ⟩
   ys ∎)
