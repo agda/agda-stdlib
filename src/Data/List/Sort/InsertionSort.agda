@@ -33,8 +33,8 @@ open import Relation.Nullary.Decidable.Core
 
 open DecTotalOrder O
   renaming (Carrier to A ; refl to reflA ; trans to transA)
-  using (totalOrder ; _≤?_ ; _≤_ ;
-  module Eq ; _≈_ ; ≤-respʳ-≈ ; ≤-respˡ-≈ ; antisym)
+  using (totalOrder; _≤?_; _≤_
+        ; module Eq; _≈_; ≤-respʳ-≈; ≤-respˡ-≈; antisym)
   
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
   using (_≋_)
