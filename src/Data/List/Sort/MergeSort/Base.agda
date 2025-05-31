@@ -24,8 +24,6 @@ open import Data.Nat.Properties using (m<n⇒m<1+n)
 
 open DecTotalOrder O renaming (Carrier to A)
 
-open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
-
 ------------------------------------------------------------------------
 -- Definition
 

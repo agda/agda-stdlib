@@ -16,4 +16,4 @@ module Data.List.Sort.MergeSort
   {a ℓ₁ ℓ₂} (O : DecTotalOrder a ℓ₁ ℓ₂) where
 
 open import Data.List.Sort.MergeSort.Base O public
-open import Data.List.Sort.MergeSort.Properties O public
+open import Data.List.Sort.MergeSort.Properties O using (mergeSort) public
