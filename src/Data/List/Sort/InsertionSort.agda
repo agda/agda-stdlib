@@ -75,10 +75,10 @@ sort-↭ (x ∷ xs) = insert-cong-↭ Eq.refl (sort-↭ xs)
 
 insert-↗ : ∀ x {xs} → Sorted xs → Sorted (insert x xs)
 insert-↗ x [] = [-]
-insert-↗ x ([-] {y}) with (x ≤? y)
+insert-↗ x ([-] {y}) with x ≤? y
 ... | yes x≤y = x≤y ∷ [-]
 ... | no x≤y = ≰⇒≥ x≤y ∷ [-]
-insert-↗ x (_∷_ {y} {z} {ys} y≤z z≤ys) with (x ≤? y)
+insert-↗ x (_∷_ {y} {z} {ys} y≤z z≤ys) with x ≤? y
 ... | yes x≤y = x≤y ∷ y≤z ∷ z≤ys
 ... | no x≤y with sd ← insert-↗ x z≤ys | x ≤? z
 ...   | yes r = ≰⇒≥ x≤y ∷ sd
@@ -101,8 +101,8 @@ insertionSort = record
 ------------------------------------------------------------------------
 -- Congruence properties
 
-insert-congʳ : ∀ x {xs ys} → xs ≋ ys → insert x xs ≋ insert x ys
-insert-congʳ x [] = ≋-refl
+insert-congʳ : ∀ z {xs ys} → xs ≋ ys → insert z xs ≋ insert z ys
+insert-congʳ z [] = ≋-refl
 insert-congʳ z (_∷_ {x} {y} {xs} {ys} x∼y eq) with z ≤? x | z ≤? y
 ... | yes z≤x | yes z≤y = Eq.refl ∷ x∼y ∷ eq
 ... | no z≤x | yes z≤y = contradiction (≤-respʳ-≈ (Eq.sym x∼y) z≤y) z≤x
@@ -129,14 +129,14 @@ insert-swap-≤ : ∀ {x y} xs → x ≤ y → insert x (insert y xs) ≋ insert
 insert-swap-≤ {x} {y} [] x≤y with x ≤? y
 ... | no xy = contradiction x≤y xy
 ... | yes xy with y ≤? x
-... | yes yx = (Eq.sym eq) ∷ (eq ∷ []) where eq = antisym yx xy
+... | yes yx = Eq.sym eq ∷ eq ∷ [] where eq = antisym yx xy
 ... | no yx = ≋-refl
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y with y ≤? z
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz with x ≤? y
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy with x ≤? z
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz with y ≤? x
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | yes yx =
-  (Eq.sym eq) ∷ (eq ∷ ≋-refl) where eq = antisym yx xy
+  Eq.sym eq ∷ eq ∷ ≋-refl where eq = antisym yx xy
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx with y ≤? z
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | yes yz' = ≋-refl
 insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | no yz' = contradiction yz yz'
@@ -167,8 +167,7 @@ insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq1 eq2 eq3 = begin
 
 -- Ideally, we want:
 
---   property1 : ∀ {xs ys} → xs ↭ ys →
---               Sorted xs → Sorted ys → xs ≋ ys
+--   property1 : ∀ {xs ys} → xs ↭ ys → Sorted xs → Sorted ys → xs ≋ ys
 
 -- But the induction over xs ↭ ys is hard to do for the "transitive"
 -- constructor. So instead we have a similar property that depends on
