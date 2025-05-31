@@ -42,8 +42,8 @@ open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
 open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder
   using (Sorted)
 open import Data.List.Sort.Base totalOrder
-open import Relation.Binary.Reasoning.Setoid (setoid Eq.setoid)
-  as SetoidReasoning using ()
+import Relation.Binary.Reasoning.Setoid (setoid Eq.setoid)
+  as ≋-Reasoning
 
 open Setoid (setoid Eq.setoid)
   renaming (refl to reflₚₜ ; trans to transₚₜ) using ()
