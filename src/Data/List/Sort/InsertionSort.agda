@@ -96,10 +96,9 @@ insert-↗ x ([-] {y}) with (x ≤? y)
 ... | no x≤y = ≰⇒≥ x≤y ∷ [-]
 insert-↗ x (_∷_ {y} {z} {ys} y≤z z≤ys) with (x ≤? y)
 ... | yes x≤y = x≤y ∷ y≤z ∷ z≤ys
-... | no x≤y with insert-↗ x z≤ys
-... | sd with (x ≤? z)
-... | yes r = ≰⇒≥ x≤y ∷ sd
-... | no r = y≤z ∷ sd
+... | no x≤y with sd ← insert-↗ x z≤ys | x ≤? z
+...   | yes r = ≰⇒≥ x≤y ∷ sd
+...   | no r = y≤z ∷ sd
 
 sort-↗ : ∀ xs → Sorted (sort xs)
 sort-↗ [] = []
