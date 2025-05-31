@@ -125,8 +125,7 @@ sort-cong : ∀ {xs ys} → xs ≋ ys → sort xs ≋ sort ys
 sort-cong [] = []
 sort-cong (x∼y ∷ eq) = insert-cong x∼y (sort-cong eq)
 
-insert-swap-≤ : ∀ {x y} xs →
-               x ≤ y → insert x (insert y xs) ≋ insert y (insert x xs)
+insert-swap-≤ : ∀ {x y} xs → x ≤ y → insert x (insert y xs) ≋ insert y (insert x xs)
 insert-swap-≤ {x} {y} [] x≤y with x ≤? y
 ... | no xy = contradiction x≤y xy
 ... | yes xy with y ≤? x
@@ -158,8 +157,7 @@ insert-swap x y xs with x ≤? y
 ... | yes xy = insert-swap-≤ xs xy
 ... | no xy = ≋-sym (insert-swap-≤ xs (≰⇒≥ xy))
 
-insert-swap-cong : ∀ {x y x′ y′ xs ys} →
-                   x ≈ x′ → y ≈ y′ → xs ≋ ys →
+insert-swap-cong : ∀ {x y x′ y′ xs ys} → x ≈ x′ → y ≈ y′ → xs ≋ ys →
                    insert x (insert y xs) ≋ insert y′ (insert x′ ys)
 insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq1 eq2 eq3 = begin
   insert x (insert y xs)   ≈⟨ insert-cong eq1 (insert-cong eq2 eq3) ⟩
