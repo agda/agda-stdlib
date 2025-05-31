@@ -90,11 +90,11 @@ sort-↭ (x ∷ xs) = insert-cong-↭ Eq.refl (sort-↭ xs)
 -- Sorted property
 
 insert-↗ : ∀ x {xs} → Sorted xs → Sorted (insert x xs)
-insert-↗ x {xs} [] = [-]
-insert-↗ x {xs} ([-] {y}) with (x ≤? y)
+insert-↗ x [] = [-]
+insert-↗ x ([-] {y}) with (x ≤? y)
 ... | yes x≤y = x≤y ∷ [-]
 ... | no x≤y = ≰⇒≥ x≤y ∷ [-]
-insert-↗ x {xs} (_∷_ {y} {z} {ys} y≤z z≤ys) with (x ≤? y)
+insert-↗ x (_∷_ {y} {z} {ys} y≤z z≤ys) with (x ≤? y)
 ... | yes x≤y = x≤y ∷ y≤z ∷ z≤ys
 ... | no x≤y with insert-↗ x z≤ys
 ... | sd with (x ≤? z)
@@ -140,8 +140,8 @@ insert-cong {x} {y} {xs} {ys} eq1 eq2 =
   transₚₜ (insert-congˡ xs eq1) (insert-congʳ y eq2)
 
 sort-cong : ∀ {xs ys} → xs ≋ ys → sort xs ≋ sort ys
-sort-cong {xs} {ys} [] = []
-sort-cong {xs} {ys} (x∼y ∷ eq) = insert-cong x∼y (sort-cong eq)
+sort-cong [] = []
+sort-cong (x∼y ∷ eq) = insert-cong x∼y (sort-cong eq)
 
 insert-swap : ∀ x y xs → insert x (insert y xs) ≋ insert y (insert x xs)
 insert-swap x y [] with x ≤? y | y ≤? x
@@ -207,11 +207,11 @@ insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq1 eq2 eq3 = begin
 -- used.
 
 sort-cong-↭ : ∀ {xs ys} → xs ↭ ys → sort xs ≋ sort ys
-sort-cong-↭ {xs} {ys} (refl x) = sort-cong x
-sort-cong-↭ {xs} {ys} (prep eq eq₁) = insert-cong eq (sort-cong-↭ eq₁)
-sort-cong-↭ {xs} {ys} (swap {x = x} {y} {x′} {y′} eq₁ eq₂ eq) =
+sort-cong-↭ (refl x) = sort-cong x
+sort-cong-↭ (prep eq eq₁) = insert-cong eq (sort-cong-↭ eq₁)
+sort-cong-↭ (swap {x = x} {y} {x′} {y′} eq₁ eq₂ eq) =
   insert-swap-cong eq₁ eq₂ (sort-cong-↭ eq)
-sort-cong-↭ {xs} {ys} (trans eq eq₁) =
+sort-cong-↭ (trans eq eq₁) =
   transₚₜ (sort-cong-↭ eq) (sort-cong-↭ eq₁)
 
 ------------------------------------------------------------------------
