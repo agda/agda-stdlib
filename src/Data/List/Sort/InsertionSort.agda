@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- An implementation of insertion sort and its properties.
+-- An implementation of insertion sort and its properties
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -15,4 +15,3 @@ module Data.List.Sort.InsertionSort
 
 open import Data.List.Sort.InsertionSort.Base O public
 open import Data.List.Sort.InsertionSort.Properties O using (insertionSort) public
-

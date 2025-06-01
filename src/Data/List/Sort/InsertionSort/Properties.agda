@@ -25,7 +25,7 @@ open import Relation.Nullary.Negation.Core using (contradiction)
 
 open DecTotalOrder O renaming (Carrier to A; trans to ≤-trans)
   using (totalOrder; _≤?_; _≤_; module Eq; _≈_; ≤-respʳ-≈; ≤-respˡ-≈; antisym)
-  
+
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
   using (_≋_; ≋-refl; ≋-sym; ≋-trans)
 open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
