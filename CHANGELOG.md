@@ -31,6 +31,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* [Issue #2548](https://github.com/agda/agda-stdlib/issues/2458) Consistent with other names (such as `∙-cong`, `ε-homo` etc.) in `Algebra.*`, the field name of the basic homomorphism property in `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed from `homo` to `∙-homo`.
+
 * The implementation of `≤-total` in `Data.Nat.Properties` has been altered
   to use operations backed by primitives, rather than recursion, making it
   significantly faster. However, its reduction behaviour on open terms may have
@@ -47,6 +49,11 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Morphism.Structures`:
+  ```agda
+  homo  ↦  ∙-homo
+  ```
 
 * In `Algebra.Definitions.RawMagma`:
   ```agda

@@ -42,56 +42,56 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   cong : Congruent₂ _≈₁_ _∙_
   cong {x} {y} {u} {v} x≈y u≈v = injective (begin
-    ⟦ x ∙ u ⟧      ≈⟨  homo x u ⟩
-    ⟦ x ⟧ ◦ ⟦ u ⟧  ≈⟨  ◦-cong (⟦⟧-cong x≈y) (⟦⟧-cong u≈v) ⟩
-    ⟦ y ⟧ ◦ ⟦ v ⟧  ≈⟨ homo y v ⟨
+    ⟦ x ∙ u ⟧      ≈⟨ ∙-homo x u ⟩
+    ⟦ x ⟧ ◦ ⟦ u ⟧  ≈⟨ ◦-cong (⟦⟧-cong x≈y) (⟦⟧-cong u≈v) ⟩
+    ⟦ y ⟧ ◦ ⟦ v ⟧  ≈⟨ ∙-homo y v ⟨
     ⟦ y ∙ v ⟧      ∎)
 
   assoc : Associative _≈₂_ _◦_ → Associative _≈₁_ _∙_
   assoc assoc x y z = injective (begin
-    ⟦ (x ∙ y) ∙ z ⟧          ≈⟨  homo (x ∙ y) z ⟩
-    ⟦ x ∙ y ⟧ ◦ ⟦ z ⟧        ≈⟨  ◦-cong (homo x y) refl ⟩
-    (⟦ x ⟧ ◦ ⟦ y ⟧) ◦ ⟦ z ⟧  ≈⟨  assoc ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈⟨ ◦-cong refl (homo y z) ⟨
-    ⟦ x ⟧ ◦ ⟦ y ∙ z ⟧        ≈⟨ homo x (y ∙ z) ⟨
+    ⟦ (x ∙ y) ∙ z ⟧          ≈⟨ ∙-homo (x ∙ y) z ⟩
+    ⟦ x ∙ y ⟧ ◦ ⟦ z ⟧        ≈⟨ ◦-cong (∙-homo x y) refl ⟩
+    (⟦ x ⟧ ◦ ⟦ y ⟧) ◦ ⟦ z ⟧  ≈⟨ assoc ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
+    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈⟨ ◦-cong refl (∙-homo y z) ⟨
+    ⟦ x ⟧ ◦ ⟦ y ∙ z ⟧        ≈⟨ ∙-homo x (y ∙ z) ⟨
     ⟦ x ∙ (y ∙ z) ⟧          ∎)
 
   comm : Commutative _≈₂_ _◦_ → Commutative _≈₁_ _∙_
   comm comm x y = injective (begin
-    ⟦ x ∙ y ⟧      ≈⟨  homo x y ⟩
-    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨  comm ⟦ x ⟧ ⟦ y ⟧ ⟩
-    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ homo y x ⟨
+    ⟦ x ∙ y ⟧      ≈⟨ ∙-homo x y ⟩
+    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ comm ⟦ x ⟧ ⟦ y ⟧ ⟩
+    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ ∙-homo y x ⟨
     ⟦ y ∙ x ⟧      ∎)
 
   idem : Idempotent _≈₂_ _◦_ → Idempotent _≈₁_ _∙_
   idem idem x = injective (begin
-    ⟦ x ∙ x ⟧     ≈⟨ homo x x ⟩
+    ⟦ x ∙ x ⟧     ≈⟨ ∙-homo x x ⟩
     ⟦ x ⟧ ◦ ⟦ x ⟧ ≈⟨ idem ⟦ x ⟧ ⟩
     ⟦ x ⟧         ∎)
 
   sel : Selective _≈₂_ _◦_ → Selective _≈₁_ _∙_
   sel sel x y with sel ⟦ x ⟧ ⟦ y ⟧
   ... | inj₁ x◦y≈x = inj₁ (injective (begin
-    ⟦ x ∙ y ⟧      ≈⟨ homo x y ⟩
+    ⟦ x ∙ y ⟧      ≈⟨ ∙-homo x y ⟩
     ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ x◦y≈x ⟩
     ⟦ x ⟧          ∎))
   ... | inj₂ x◦y≈y = inj₂ (injective (begin
-    ⟦ x ∙ y ⟧      ≈⟨ homo x y ⟩
+    ⟦ x ∙ y ⟧      ≈⟨ ∙-homo x y ⟩
     ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ x◦y≈y ⟩
     ⟦ y ⟧          ∎))
 
   cancelˡ : LeftCancellative _≈₂_ _◦_ → LeftCancellative _≈₁_ _∙_
   cancelˡ cancelˡ x y z x∙y≈x∙z = injective (cancelˡ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
-    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ homo x y ⟨
-    ⟦ x ∙ y ⟧      ≈⟨  ⟦⟧-cong x∙y≈x∙z ⟩
-    ⟦ x ∙ z ⟧      ≈⟨  homo x z ⟩
+    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ ∙-homo x y ⟨
+    ⟦ x ∙ y ⟧      ≈⟨ ⟦⟧-cong x∙y≈x∙z ⟩
+    ⟦ x ∙ z ⟧      ≈⟨ ∙-homo x z ⟩
     ⟦ x ⟧ ◦ ⟦ z ⟧  ∎))
 
   cancelʳ : RightCancellative _≈₂_ _◦_ → RightCancellative _≈₁_ _∙_
   cancelʳ cancelʳ x y z y∙x≈z∙x = injective (cancelʳ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
-    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ homo y x ⟨
-    ⟦ y ∙ x ⟧      ≈⟨  ⟦⟧-cong y∙x≈z∙x ⟩
-    ⟦ z ∙ x ⟧      ≈⟨  homo z x ⟩
+    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ ∙-homo y x ⟨
+    ⟦ y ∙ x ⟧      ≈⟨ ⟦⟧-cong y∙x≈z∙x ⟩
+    ⟦ z ∙ x ⟧      ≈⟨ ∙-homo z x ⟩
     ⟦ z ⟧ ◦ ⟦ x ⟧  ∎))
 
   cancel : Cancellative _≈₂_ _◦_ → Cancellative _≈₁_ _∙_
