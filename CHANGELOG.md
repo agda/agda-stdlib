@@ -42,6 +42,8 @@ Minor improvements
 * Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
   to its own dedicated module `Relation.Nullary.Irrelevant`.
 
+* Permutaions in `Data.List.Sort.MergenSort` and `Data.List.Sort.Base` are now setoid based rather than propositional equality based only.
+
 Deprecated modules
 ------------------
 
