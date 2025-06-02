@@ -296,13 +296,15 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   xs↭ys⇒|xs|≡|ys| : xs ↭ ys → length xs ≡ length ys
+  ¬[]↭x∷xs : ¬ ([] ↭ x ∷ xs)
+  ¬x∷xs↭[] : ¬ (x ∷ xs ↭ [])
   toFin-lookup : ∀ i → lookup xs i ≈ lookup ys (Inverse.to (toFin xs↭ys) i)
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
-	```
+        ```
 
 * In `Data.List.Relation.Binary.Pointwise.Properties`:
   ```agda

@@ -43,7 +43,7 @@ open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
 open import Relation.Nullary.Decidable using (yes; no; does)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (¬_; contradiction; contraposition)
 
 
 open Setoid S using (_≈_)
@@ -102,11 +102,20 @@ AllPairs-resp-↭ sym resp (trans p₁ p₂)    pxs             =
 Unique-resp-↭ : Unique Respects _↭_
 Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 
+------------------------------------------------------------------------
+-- Length
+
 xs↭ys⇒|xs|≡|ys| : ∀ {xs ys} → xs ↭ ys → length xs ≡ length ys
 xs↭ys⇒|xs|≡|ys| (refl eq)            = Pointwise.Pointwise-length eq
 xs↭ys⇒|xs|≡|ys| (prep eq xs↭ys)      = ≡.cong suc (xs↭ys⇒|xs|≡|ys| xs↭ys)
 xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong (λ x → suc (suc x)) (xs↭ys⇒|xs|≡|ys| xs↭ys)
 xs↭ys⇒|xs|≡|ys| (trans xs↭ys xs↭ys₁) = ≡.trans (xs↭ys⇒|xs|≡|ys| xs↭ys) (xs↭ys⇒|xs|≡|ys| xs↭ys₁)
+
+¬[]↭x∷xs : ∀ {x xs} → ¬ ([] ↭ x ∷ xs)
+¬[]↭x∷xs = contraposition xs↭ys⇒|xs|≡|ys| λ()
+
+¬x∷xs↭[] : ∀ {x xs} → ¬ (x ∷ xs ↭ [])
+¬x∷xs↭[] = contraposition xs↭ys⇒|xs|≡|ys| λ()
 
 ------------------------------------------------------------------------
 -- Core properties depending on the representation of _↭_
