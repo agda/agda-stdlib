@@ -302,7 +302,7 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
-	```
+        ```
 
 * In `Data.List.Relation.Binary.Pointwise.Properties`:
   ```agda
