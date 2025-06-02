@@ -9,10 +9,10 @@
 module Data.Fin.Permutation where
 
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base using (Fin; suc; opposite; punchIn; punchOut)
-open import Data.Fin.Patterns using (0F)
+open import Data.Fin.Base using (Fin; suc; cast; opposite; punchIn; punchOut)
+open import Data.Fin.Patterns using (0F; 1F)
 open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
-  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0)
+  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0; cast-involutive)
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product.Base using (_,_; proj₂)
@@ -22,7 +22,7 @@ open import Function.Construct.Identity using (↔-id)
 open import Function.Construct.Symmetry using (↔-sym)
 open import Function.Definitions using (StrictlyInverseˡ; StrictlyInverseʳ)
 open import Function.Properties.Inverse using (↔⇒↣)
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; _∘′_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (does; ¬_; yes; no)
@@ -57,11 +57,15 @@ Permutation′ n = Permutation n n
 ------------------------------------------------------------------------
 -- Helper functions
 
-permutation : ∀ (f : Fin m → Fin n) (g : Fin n → Fin m) →
-              StrictlyInverseˡ _≡_ f g → StrictlyInverseʳ _≡_ f g → Permutation m n
+permutation : ∀ (f : Fin m → Fin n)
+              (g : Fin n → Fin m) →
+              StrictlyInverseˡ _≡_ f g →
+              StrictlyInverseʳ _≡_ f g →
+              Permutation m n
 permutation = mk↔ₛ′
 
 infixl 5 _⟨$⟩ʳ_ _⟨$⟩ˡ_
+
 _⟨$⟩ʳ_ : Permutation m n → Fin m → Fin n
 _⟨$⟩ʳ_ = Inverse.to
 
@@ -75,44 +79,61 @@ inverseʳ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ʳ (π ⟨$⟩ˡ i) ≡
 inverseʳ π = Inverse.inverseˡ π refl
 
 ------------------------------------------------------------------------
--- Equality
+-- Equality over permutations
 
 infix 6 _≈_
+
 _≈_ : Rel (Permutation m n) 0ℓ
 π ≈ ρ = ∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i
 
 ------------------------------------------------------------------------
--- Example permutations
+-- Permutation properties
 
--- Identity
-
-id : Permutation′ n
+id : Permutation n n
 id = ↔-id _
-
--- Transpose two indices
-
-transpose : Fin n → Fin n → Permutation′ n
-transpose i j = permutation (PC.transpose i j) (PC.transpose j i) (λ _ → PC.transpose-inverse _ _) (λ _ → PC.transpose-inverse _ _)
-
--- Reverse the order of indices
-
-reverse : Permutation′ n
-reverse = permutation opposite opposite PC.reverse-involutive PC.reverse-involutive
-
-------------------------------------------------------------------------
--- Operations
-
--- Composition
-
-infixr 9 _∘ₚ_
-_∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
-π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
-
--- Flip
 
 flip : Permutation m n → Permutation n m
 flip = ↔-sym
 
+infixr 9 _∘ₚ_
+
+_∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
+π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
+
+------------------------------------------------------------------------
+-- Non-trivial identity
+
+cast-id : .(m ≡ n) → Permutation m n
+cast-id m≡n = permutation
+  (cast m≡n)
+  (cast (sym m≡n))
+  (cast-involutive m≡n (sym m≡n))
+  (cast-involutive (sym m≡n) m≡n)
+
+------------------------------------------------------------------------
+-- Transposition
+
+-- Transposes two elements in the permutation, keeping the remainder
+-- of the permutation the same
+transpose : Fin n → Fin n → Permutation n n
+transpose i j = permutation
+  (PC.transpose i j)
+  (PC.transpose j i)
+  (λ _ → PC.transpose-inverse _ _)
+  (λ _ → PC.transpose-inverse _ _)
+
+------------------------------------------------------------------------
+-- Reverse
+
+-- Reverses a permutation
+reverse : Permutation n n
+reverse = permutation
+  opposite
+  opposite
+  PC.reverse-involutive
+  PC.reverse-involutive
+
+------------------------------------------------------------------------
 -- Element removal
 --
 -- `remove k [0 ↦ i₀, …, k ↦ iₖ, …, n ↦ iₙ]` yields
@@ -159,7 +180,10 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
     punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
     j                                                                 ∎
 
--- lift: takes a permutation m → n and creates a permutation (suc m) → (suc n)
+------------------------------------------------------------------------
+-- Lifting
+
+-- Takes a permutation m → n and creates a permutation (suc m) → (suc n)
 -- by mapping 0 to 0 and applying the input permutation to everything else
 lift₀ : Permutation m n → Permutation (suc m) (suc n)
 lift₀ {m} {n} π = permutation to from inverseˡ′ inverseʳ′
@@ -179,6 +203,9 @@ lift₀ {m} {n} π = permutation to from inverseˡ′ inverseʳ′
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ 0F      = refl
   inverseˡ′ (suc j) = cong suc (inverseʳ π)
+
+------------------------------------------------------------------------
+-- Insertion
 
 -- insert i j π is the permutation that maps i to j and otherwise looks like π
 -- it's roughly an inverse of remove
@@ -220,6 +247,35 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
     punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))                               ≡⟨ cong (punchIn j) (inverseʳ π) ⟩
     punchIn j (punchOut j≢k)                                               ≡⟨ punchIn-punchOut j≢k ⟩
     k                                                                      ∎
+
+------------------------------------------------------------------------
+-- Swapping
+
+-- Takes a permutation m → n and creates a permutation
+-- suc (suc m) → suc (suc n) by mapping 0 to 1 and 1 to 0 and
+-- then applying the input permutation to everything else
+swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
+swap {m} {n} π = permutation to from inverseˡ′ inverseʳ′
+  where
+  to : Fin (suc (suc m)) → Fin (suc (suc n))
+  to 0F      = 1F
+  to 1F      = 0F
+  to (suc (suc i)) = suc (suc (π ⟨$⟩ʳ i))
+
+  from : Fin (suc (suc n)) → Fin (suc (suc m))
+  from 0F            = 1F
+  from 1F            = 0F
+  from (suc (suc i)) = suc (suc (π ⟨$⟩ˡ i))
+
+  inverseʳ′ : StrictlyInverseʳ _≡_ to from
+  inverseʳ′ 0F            = refl
+  inverseʳ′ 1F            = refl
+  inverseʳ′ (suc (suc j)) = cong (suc ∘′ suc) (inverseˡ π)
+
+  inverseˡ′ : StrictlyInverseˡ _≡_ to from
+  inverseˡ′ 0F            = refl
+  inverseˡ′ 1F            = refl
+  inverseˡ′ (suc (suc j)) = cong (suc ∘′ suc) (inverseʳ π)
 
 ------------------------------------------------------------------------
 -- Other properties
