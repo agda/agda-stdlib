@@ -13,7 +13,7 @@ open import Agda.Builtin.Equality
 open import Data.Bool.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
-open import Data.Unit.Polymorphic.Base using (⊤; tt)
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Empty.Polymorphic using (⊥)
 open import Level using (Level)
 open import Function.Base using (_$_; _∘_; const; id)
@@ -73,15 +73,15 @@ recompute-constant = Recomputable.recompute-constant ∘ recompute
 infixr 1 _⊎-reflects_
 infixr 2 _×-reflects_ _→-reflects_
 
-T-reflects : ∀ b → Reflects (T b) b
-T-reflects true  = of _
-T-reflects false = of id
-
 ⊥-reflects : Reflects (⊥ {a}) false
 ⊥-reflects = of λ()
 
 ⊤-reflects : Reflects (⊤ {a}) true
-⊤-reflects = of tt
+⊤-reflects = of _
+
+T-reflects : ∀ b → Reflects (T b) b
+T-reflects true  = of _
+T-reflects false = of id
 
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
 ¬-reflects (ofʸ  a) = of (_$ a)
