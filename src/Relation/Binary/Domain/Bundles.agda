@@ -25,7 +25,7 @@ private
 record DirectedFamily {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {B : Set c} (f : B → Poset.Carrier P) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isDirectedFamily : IsDirectedFamily P f
-  
+
   open IsDirectedFamily isDirectedFamily public
 
 record DirectedCompletePartialOrder (c ℓ₁ ℓ₂ : Level) : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where

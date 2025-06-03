@@ -25,11 +25,11 @@ module _ {c ℓ₁ ℓ₂ : Level} (P : Poset c ℓ₁ ℓ₂) where
   record IsLub {B : Set c} (f : B → Carrier) (lub : Carrier) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isLeastUpperBound : leastupperbound _≤_ B f lub
-      
+
     isUpperBound : ∀ i → f i ≤ lub
     isUpperBound = proj₁ isLeastUpperBound
-    
-    isLeast : ∀ y → (∀ i → f i ≤ y) → lub ≤ y  
+
+    isLeast : ∀ y → (∀ i → f i ≤ y) → lub ≤ y
     isLeast = proj₂ isLeastUpperBound
 
   record IsDirectedFamily {B : Set c} (f : B → Carrier) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where

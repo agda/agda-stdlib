@@ -80,7 +80,7 @@ subst-drop : ∀ {m n p : ℕ} {A : Set} (eq : n ≡ m + p) (xs : Vec A n) →
              drop m (subst (Vec A) eq xs) ≡ subst (Vec A) (cong (_∸ m) eq) (drop m xs)
 subst-drop refl xs = refl
 
--- Helper lemma: dropping from padded vector gives replicate  
+-- Helper lemma: dropping from padded vector gives replicate
 drop-padRight : ∀ {m n p} (m≤n : m ≤ n) (a : A) (xs : Vec A m) →
                 n ≡ m + p → drop m (padRight m≤n a xs) ≡ replicate p a
 drop-padRight {m = zero} z≤n a [] refl = refl
@@ -102,8 +102,4 @@ padRight-updateAt : ∀ (m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin 
 padRight-updateAt (s≤s m≤n) (y ∷ xs) f zero x = refl
 padRight-updateAt (s≤s m≤n) (y ∷ xs) f (suc i) x =
   cong (y ∷_) (padRight-updateAt m≤n xs f i x)
-
-
-
-
 
