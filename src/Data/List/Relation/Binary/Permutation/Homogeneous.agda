@@ -68,8 +68,8 @@ steps (prep _ xs↭ys)      = suc (steps xs↭ys)
 steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
 steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 
-toFin : ∀ {xs ys} → Permutation R xs ys → Fin.Permutation (length xs) (length ys)
-toFin (refl ≋)          = Fin.cast-id (Pointwise.Pointwise-length ≋)
-toFin (prep e xs↭ys)   = Fin.lift₀ (toFin xs↭ys)
-toFin (swap e f xs↭ys) = Fin.swap (toFin xs↭ys)
-toFin (trans ↭₁ ↭₂)   = toFin ↭₁ Fin.∘ₚ toFin ↭₂
+onIndices : ∀ {xs ys} → Permutation R xs ys → Fin.Permutation (length xs) (length ys)
+onIndices (refl ≋)          = Fin.cast-id (Pointwise.Pointwise-length ≋)
+onIndices (prep e xs↭ys)   = Fin.lift₀ (onIndices xs↭ys)
+onIndices (swap e f xs↭ys) = Fin.swap (onIndices xs↭ys)
+onIndices (trans ↭₁ ↭₂)   = onIndices ↭₁ Fin.∘ₚ onIndices ↭₂

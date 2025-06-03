@@ -185,6 +185,9 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
 
 -- Takes a permutation m → n and creates a permutation (suc m) → (suc n)
 -- by mapping 0 to 0 and applying the input permutation to everything else
+--
+-- Note: should be refactored as a special-case when we add the
+-- concatenation of two permutations
 lift₀ : Permutation m n → Permutation (suc m) (suc n)
 lift₀ {m} {n} π = permutation to from inverseˡ′ inverseʳ′
   where
@@ -254,6 +257,9 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 -- Takes a permutation m → n and creates a permutation
 -- suc (suc m) → suc (suc n) by mapping 0 to 1 and 1 to 0 and
 -- then applying the input permutation to everything else
+--
+-- Note: should be refactored as a special-case when we add the
+-- concatenation of two permutations
 swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
 swap {m} {n} π = permutation to from inverseˡ′ inverseʳ′
   where

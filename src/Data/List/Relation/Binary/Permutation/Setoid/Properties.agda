@@ -111,9 +111,6 @@ xs↭ys⇒|xs|≡|ys| (prep eq xs↭ys)      = ≡.cong suc (xs↭ys⇒|xs|≡|y
 xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong (λ x → suc (suc x)) (xs↭ys⇒|xs|≡|ys| xs↭ys)
 xs↭ys⇒|xs|≡|ys| (trans xs↭ys xs↭ys₁) = ≡.trans (xs↭ys⇒|xs|≡|ys| xs↭ys) (xs↭ys⇒|xs|≡|ys| xs↭ys₁)
 
-¬[]↭x∷xs : ∀ {x xs} → ¬ ([] ↭ x ∷ xs)
-¬[]↭x∷xs = contraposition xs↭ys⇒|xs|≡|ys| λ()
-
 ¬x∷xs↭[] : ∀ {x xs} → ¬ (x ∷ xs ↭ [])
 ¬x∷xs↭[] = contraposition xs↭ys⇒|xs|≡|ys| λ()
 

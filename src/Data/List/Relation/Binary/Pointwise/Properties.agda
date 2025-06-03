@@ -87,5 +87,5 @@ lookup-cast : ∀ {xs ys} →
               .(∣xs∣≡∣ys∣ : length xs ≡ length ys) →
               ∀ i →
               R (lookup xs i) (lookup ys (cast ∣xs∣≡∣ys∣ i))
-lookup-cast (Rxy ∷ Rxsys) eq zero = Rxy
-lookup-cast (Rxy ∷ Rxsys) eq (suc i) = lookup-cast Rxsys _ i
+lookup-cast (Rxy ∷ Rxsys) _ zero = Rxy
+lookup-cast (Rxy ∷ Rxsys) _ (suc i) = lookup-cast Rxsys _ i
