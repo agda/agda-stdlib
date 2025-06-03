@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- The projection morphisms for relational structures arising from the
--- product construction
+-- non-dependent product construction
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
