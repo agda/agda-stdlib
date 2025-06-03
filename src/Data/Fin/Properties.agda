@@ -490,6 +490,19 @@ i≤inject₁[j]⇒i≤1+j {i = zero}              _   = z≤n
 i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} i≤j = s≤s (ℕ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) (ℕ.s≤s⁻¹ i≤j)))
 
 ------------------------------------------------------------------------
+-- inject!
+------------------------------------------------------------------------
+
+inject!-injective : ∀ {i : Fin (suc n)} → Injective _≡_ _≡_ (inject! {i = i})
+inject!-injective {n = suc n} {i = suc i} {0F}    {0F}    refl = refl
+inject!-injective {n = suc n} {i = suc i} {suc x} {suc y} eq =
+  cong suc (inject!-injective (suc-injective eq))
+
+inject!-< : ∀ {i : Fin (suc n)} (k : Fin′ i) → inject! k < i
+inject!-< {suc n} {suc i} 0F      = s≤s z≤n
+inject!-< {suc n} {suc i} (suc k) = s≤s (inject!-< k)
+
+------------------------------------------------------------------------
 -- lower₁
 ------------------------------------------------------------------------
 
@@ -536,6 +549,17 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (ℕ.suc n)} →
                   (n≢j : n ≢ toℕ j) → inject₁ i ≡ j → lower₁ j n≢j ≡ i
 inject₁≡⇒lower₁≡ n≢j i≡j = inject₁-injective (trans (inject₁-lower₁ _ n≢j) (sym i≡j))
+
+------------------------------------------------------------------------
+-- lower
+------------------------------------------------------------------------
+
+lower-injective : ∀ {m n} (i j : Fin m)
+                  .{i<n : toℕ i ℕ.< n} .{j<n : toℕ j ℕ.< n}  →
+                  lower i i<n ≡ lower j j<n → i ≡ j
+lower-injective {suc _} {suc n} zero    zero    eq = refl
+lower-injective {suc _} {suc n} (suc i) (suc j) eq =
+  cong suc (lower-injective i j (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- inject≤
@@ -1037,6 +1061,30 @@ cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} →
                             m ≡ n
 cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
   (injective⇒≤ f-inj) (injective⇒≤ g-inj)
+
+injective⇒nonStrictlyContractive : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f →
+                                   ∀ i → ¬ (∀ j → j ≤ i → f j < i)
+injective⇒nonStrictlyContractive f f-injective i j≤i⇒fj<i =
+  ℕ.n≮n (toℕ i) (injective⇒≤ h-injective)
+  where
+  h : Fin′ (suc i) → Fin′ i
+  h k = lower (f (inject! k)) (j≤i⇒fj<i _ (ℕ.s≤s⁻¹ (inject!-< k)))
+
+  h-injective : Injective _≡_ _≡_ h
+  h-injective = inject!-injective ∘ f-injective ∘ lower-injective _ _
+
+injective⇒existsPivot : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f →
+                        ∀ (i : Fin n) → ∃ λ (j : Fin n) → j ≤ i × i ≤ f j
+injective⇒existsPivot {n = suc n} f f-injective i with any? (λ j → j ≤? i ×-dec i ≤? f j)
+... | yes  result = result
+... | no  ¬result = contradiction
+  strictlyContractive
+  (injective⇒nonStrictlyContractive f f-injective i)
+  where
+  strictlyContractive : ∀ j → j ≤ i → f j < i
+  strictlyContractive j j≤i with i ≤? f j
+  ... | yes i≤fj = contradiction (j , j≤i , i≤fj) ¬result
+  ... | no  i≰fj = ℕ.≰⇒> i≰fj
 
 ------------------------------------------------------------------------
 -- Effectful

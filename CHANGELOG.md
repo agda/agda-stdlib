@@ -243,17 +243,23 @@ Additions to existing modules
   ```agda
   _≰_ : Rel (Fin n) 0ℓ
   _≮_ : Rel (Fin n) 0ℓ
+  lower : ∀ (i : Fin m) → .(toℕ i ℕ.< n) → Fin n
   ```
 
 * In `Data.Fin.Permutation`:
   ```agda
   cast-id : .(m ≡ n) → Permutation m n
-  swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
+  inject!-injective : swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
   ```
 
 * In `Data.Fin.Properties`:
   ```agda
-  cast-involutive : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  cast-involutive                  : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  inject!-injective                : Injective _≡_ _≡_ inject!
+  inject!-<                        : (k : Fin′ i) → inject! k < i
+  lower-injective                  : lower i i<n ≡ lower j j<n → i ≡ j
+  injective⇒nonStrictlyContractive : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f → ∀ i → ¬ (∀ j → j ≤ i → f j < i)
+  injective⇒existsPivot            : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f → ∀ (i : Fin n) → ∃ λ (j : Fin n) → j ≤ i × i ≤ f j
   ```
 
 * In `Data.Fin.Subset`:
@@ -392,6 +398,11 @@ Additions to existing modules
   map⁻ : AllPairs R (map f xs) → AllPairs (R on f) xs
   ```
 
+* In `Data.List.Relation.Unary.Linked`:
+  ```agda
+  lookup : Transitive R → Linked R xs → Connected R (just x) (head xs) → ∀ i → R x (List.lookup xs i)
+  ```
+
 * In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
   ```agda
   map⁻ : Congruent _≈₁_ _≈₂_ f → Unique R (map f xs) → Unique S xs
@@ -400,4 +411,15 @@ Additions to existing modules
 * In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
   ```agda
   map⁻ : Unique (map f xs) → Unique xs
+  ```
+
+* In `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
+  ```agda
+  lookup-mono-≤ : Sorted xs → i Fin.≤ j → lookup xs i ≤ lookup xs j
+  ↗↭↗⇒≋         : Sorted xs → Sorted ys → xs ↭ ys → xs ≋ ys
+  ```
+
+* In `Data.List.Sort.Base`:
+  ```agda
+  SortingAlgorithm.sort-↭ₛ : ∀ xs → sort xs Setoid.↭ xs
   ```

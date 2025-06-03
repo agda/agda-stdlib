@@ -121,6 +121,10 @@ lower₁ {zero}  zero    ne = contradiction refl ne
 lower₁ {suc n} zero    _  = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
+lower : ∀ (i : Fin m) → .(toℕ i ℕ.< n) → Fin n
+lower {suc _} {suc n} zero    leq = zero
+lower {suc _} {suc n} (suc i) leq = suc (lower i (ℕ.s≤s⁻¹ leq))
+
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)
 strengthen zero    = zero
