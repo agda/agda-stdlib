@@ -40,17 +40,23 @@ record DirectedCompletePartialOrder (c ℓ₁ ℓ₂ : Level) : Set (suc (c ⊔ 
 -- Scott-continuous functions
 ------------------------------------------------------------------------
 
-record ScottContinuous {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Q : Poset c ℓ₁ ℓ₂} :
-  Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record ScottContinuous
+  {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
+  (P : Poset c₁ ℓ₁₁ ℓ₁₂)
+  (Q : Poset c₂ ℓ₂₁ ℓ₂₂)
+  : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
   field
     f                 : Poset.Carrier P → Poset.Carrier Q
-    isScottContinuous : IsScottContinuous {P = P} {Q = Q} f
+    isScottContinuous : IsScottContinuous P Q f
+
+  open IsScottContinuous isScottContinuous public
 
 ------------------------------------------------------------------------
 -- Lubs
 ------------------------------------------------------------------------
 
-record Lub {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {B : Set c} (f : B → Poset.Carrier P) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
+record Lub {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {B : Set c}
+           (f : B → Poset.Carrier P) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
   open Poset P
   field
     lub   : Carrier
