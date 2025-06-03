@@ -8,7 +8,8 @@
 
 open import Relation.Binary.Bundles using (Setoid)
 
-module Hinze {s ℓ} (S : Setoid s ℓ) where
+module Data.List.Relation.Binary.Permutation.Hinze
+  {s ℓ} (S : Setoid s ℓ) where
 
 open import Data.List.Base
 open import Data.List.Properties using (++-identityʳ)
