@@ -131,13 +131,6 @@ AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
 ------------------------------------------------------------------------
 -- Relationship to functions over lists
 ------------------------------------------------------------------------
--- length
-
-Pointwise-length : Pointwise R xs ys → length xs ≡ length ys
-Pointwise-length []            = ≡.refl
-Pointwise-length (x∼y ∷ xs∼ys) = ≡.cong ℕ.suc (Pointwise-length xs∼ys)
-
-------------------------------------------------------------------------
 -- tabulate
 
 tabulate⁺ : ∀ {n} {f : Fin n → A} {g : Fin n → B} →
