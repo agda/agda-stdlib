@@ -443,15 +443,15 @@ module _{_∙_ : Op₂ A} {ε : A}
     where open ≈-Reasoning CM.setoid
   foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
 
-toFin-lookup : ∀ (xs↭ys : xs ↭ ys) →
-               ∀ i → lookup xs i ≈ lookup ys (Inverse.to (toFin xs↭ys) i)
-toFin-lookup (refl xs≋ys)         i            = Pointwise.lookup-cast xs≋ys _ i
-toFin-lookup (prep eq xs↭ys)     zero          = eq
-toFin-lookup (prep _  xs↭ys)     (suc i)       = toFin-lookup xs↭ys i
-toFin-lookup (swap eq _ xs↭ys)   zero          = eq
-toFin-lookup (swap _ eq xs↭ys)   (suc zero)    = eq
-toFin-lookup (swap _ _  xs↭ys)   (suc (suc i)) = toFin-lookup xs↭ys i
-toFin-lookup (trans xs↭ys ys↭zs) i            = ≈-trans (toFin-lookup xs↭ys i) (toFin-lookup ys↭zs _)
+onIndices-lookup : ∀ (xs↭ys : xs ↭ ys) →
+               ∀ i → lookup xs i ≈ lookup ys (Inverse.to (onIndices xs↭ys) i)
+onIndices-lookup (refl xs≋ys)         i            = Pointwise.lookup-cast xs≋ys _ i
+onIndices-lookup (prep eq xs↭ys)     zero          = eq
+onIndices-lookup (prep _  xs↭ys)     (suc i)       = onIndices-lookup xs↭ys i
+onIndices-lookup (swap eq _ xs↭ys)   zero          = eq
+onIndices-lookup (swap _ eq xs↭ys)   (suc zero)    = eq
+onIndices-lookup (swap _ _  xs↭ys)   (suc (suc i)) = onIndices-lookup xs↭ys i
+onIndices-lookup (trans xs↭ys ys↭zs) i            = ≈-trans (onIndices-lookup xs↭ys i) (onIndices-lookup ys↭zs _)
 
 ------------------------------------------------------------------------
 -- TOWARDS DEPRECATION

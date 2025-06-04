@@ -293,7 +293,7 @@ Additions to existing modules
   ↭⇒↭ₛ′ : IsEquivalence _≈_ → _↭_ ⇒ _↭ₛ′_
   ```
 
-* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   xs↭ys⇒|xs|≡|ys| : xs ↭ ys → length xs ≡ length ys
   ¬x∷xs↭[] : ¬ (x ∷ xs ↭ [])
