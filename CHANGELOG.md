@@ -320,3 +320,9 @@ Additions to existing modules
   ```agda
   contra-diagonal : (A → ¬ A) → ¬ A
   ```
+
+* In `Relation.Nullary.Reflects`:
+  ```agda
+  ⊤-reflects : Reflects (⊤ {a}) true
+  ⊥-reflects : Reflects (⊥ {a}) false
+  ```
