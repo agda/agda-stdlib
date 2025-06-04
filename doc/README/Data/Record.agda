@@ -37,6 +37,6 @@ converse : (P : Record PER) →
            Record (PER With "S" ≔ (λ _ → P · "S")
                        With "R" ≔ (λ _ → flip (P · "R")))
 converse P =
-  rec (rec (_ ,
+  rec (rec (rec (rec (rec _ ,) ,) ,
     lift λ {_} → lower (P · "sym")) ,
     lift λ {_} yRx zRy → lower (P · "trans") zRy yRx)
