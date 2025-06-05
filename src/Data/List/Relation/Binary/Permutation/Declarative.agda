@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A declarative definition of the permutation relation 
+-- A declarative definition of the permutation relation
 -------------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
