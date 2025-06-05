@@ -1,7 +1,8 @@
 -------------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A declarative definition of the permutation relation
+-- A declarative definition of the permutation relation,
+-- as the least congruence making `_++_` commutative
 -------------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -47,7 +48,7 @@ data _∼_ : List A → List A → Set (s ⊔ ℓ) where
   trans  : as ∼ bs → bs ∼ cs → as ∼ cs
   _++ᵒ_  : ∀ as bs → as ++ bs ∼ bs ++ as
 
--- smart constructor for prefx congruence
+-- smart constructor for prefix congruence
 
 _≡∷_  : ∀ c → as ∼ bs → c ∷ as ∼ c ∷ bs
 _≡∷_ c = ≈-refl ∷_
