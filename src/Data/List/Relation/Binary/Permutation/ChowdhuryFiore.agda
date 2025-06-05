@@ -2,13 +2,15 @@
 -- The Agda standard library
 --
 -- A alternative definition for the permutation relation using setoid equality
+-- Based on Choudhury and Fiore, "Free Commutative Monoids in HoTT" (MFPS, 2022)
+-- (`_⋎_` below is rule (3) on p.12, directly after the proof of Theorem 6.3)
 -------------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
-module Data.List.Relation.Binary.Permutation.Hinze
+module Data.List.Relation.Binary.Permutation.ChowdhuryFiore
   {s ℓ} (S : Setoid s ℓ) where
 
 open import Data.List.Base
