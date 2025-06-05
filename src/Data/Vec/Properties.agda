@@ -53,6 +53,19 @@ private
     ws xs ys zs : Vec A n
 
 ------------------------------------------------------------------------
+-- Properties to List 
+
+toList-injective
+  : ∀ {m n}
+  → .(m=n : m ≡ n)
+  → (xs : Vec A m) (ys : Vec A n)
+  → toList xs ≡ toList ys
+  → xs ≈[ m=n ] ys
+toList-injective m=n [] [] xs=ys = refl
+toList-injective m=n (x ∷ xs) (y ∷ ys) xs=ys = 
+  cong₂ _∷_ (List.∷-injectiveˡ xs=ys) (toList-injective (cong pred m=n) xs ys (List.∷-injectiveʳ xs=ys))
+
+------------------------------------------------------------------------
 -- Properties of propositional equality over vectors
 
 ∷-injectiveˡ : x ∷ xs ≡ y ∷ ys → x ≡ y
