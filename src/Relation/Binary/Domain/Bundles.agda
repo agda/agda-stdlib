@@ -19,35 +19,45 @@ private
     Ix A B : Set o
 
 ------------------------------------------------------------------------
--- DCPOs
+-- Directed Complete Partial Orders
 ------------------------------------------------------------------------
 
-record DCPO (c ℓ₁ ℓ₂ : Level) : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record DirectedFamily {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {B : Set c} (f : B → Poset.Carrier P) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    poset   : Poset c ℓ₁ ℓ₂
-    DcpoStr : IsDCPO poset
+    isDirectedFamily : IsDirectedFamily P f
+
+  open IsDirectedFamily isDirectedFamily public
+
+record DirectedCompletePartialOrder (c ℓ₁ ℓ₂ : Level) : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  field
+    poset                             : Poset c ℓ₁ ℓ₂
+    isDirectedCompletePartialOrder    : IsDirectedCompletePartialOrder poset
 
   open Poset poset public
-  open IsDCPO DcpoStr public
+  open IsDirectedCompletePartialOrder isDirectedCompletePartialOrder public
 
 ------------------------------------------------------------------------
 -- Scott-continuous functions
 ------------------------------------------------------------------------
 
-record ScottContinuous {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Q : Poset c ℓ₁ ℓ₂} :
-  Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record ScottContinuous
+  {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
+  (P : Poset c₁ ℓ₁₁ ℓ₁₂)
+  (Q : Poset c₂ ℓ₂₁ ℓ₂₂)
+  : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
   field
-    f             : Poset.Carrier P → Poset.Carrier Q
-    Scottfunction : IsScottContinuous {P = P} {Q = Q} f
+    f                 : Poset.Carrier P → Poset.Carrier Q
+    isScottContinuous : IsScottContinuous P Q f
+
+  open IsScottContinuous isScottContinuous public
 
 ------------------------------------------------------------------------
 -- Lubs
 ------------------------------------------------------------------------
 
-record Lub {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Ix : Set c} (s : Ix → Poset.Carrier P) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
-  private
-    module P = Poset P
+record Lub {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {B : Set c}
+           (f : B → Poset.Carrier P) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
+  open Poset P
   field
-    lub           : P.Carrier
-    is-upperbound : ∀ i → P._≤_ (s i) lub
-    is-least      : ∀ y → (∀ i → P._≤_ (s i) y) → P._≤_ lub y
+    lub   : Carrier
+    isLub : IsLub P f lub

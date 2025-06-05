@@ -8,59 +8,72 @@
 
 module Relation.Binary.Domain.Structures where
 
-open import Data.Product using (_×_; _,_)
-open import Data.Nat.Properties using (≤-trans)
+open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Function using (_∘_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Bundles using (Poset)
 open import Relation.Binary.Domain.Definitions
-open import Relation.Binary.Morphism.Structures using (IsOrderHomomorphism)
 
 private variable
-  o ℓ e o' ℓ' e' ℓ₂ : Level
-  Ix A B : Set o
+  a b c ℓ ℓ₁ ℓ₂ : Level
+  A B : Set a
+
 
 module _ {c ℓ₁ ℓ₂ : Level} (P : Poset c ℓ₁ ℓ₂) where
   open Poset P
 
-  record IsDirectedFamily {Ix : Set c} (s : Ix → Carrier) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsLub {b : Level} {B : Set b} (f : B → Carrier)
+               (lub : Carrier) : Set (b ⊔ c ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isLeastUpperBound : leastupperbound _≤_ B f lub
+
+    isUpperBound : ∀ i → f i ≤ lub
+    isUpperBound = proj₁ isLeastUpperBound
+
+    isLeast : ∀ y → (∀ i → f i ≤ y) → lub ≤ y
+    isLeast = proj₂ isLeastUpperBound
+
+  record IsDirectedFamily {b : Level} {B : Set b} (f : B → Carrier)
+    : Set (b ⊔ c ⊔ ℓ₁ ⊔ ℓ₂) where
     no-eta-equality
     field
-      elt : Ix
-      SemiDirected : IsSemidirectedFamily P s
+      elt           : B
+      isSemidirected : semidirected _≤_ B f
 
-  record IsLub {Ix : Set c} (s : Ix → Carrier) (lub : Carrier) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsDirectedCompletePartialOrder : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     field
-      is-upperbound : ∀ i → s i ≤ lub
-      is-least : ∀ y → (∀ i → s i ≤ y) → lub ≤ y
-
-  record IsDCPO : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-    field
-      ⋁ : ∀ {Ix : Set c}
-        → (s : Ix → Carrier)
-        → IsDirectedFamily s
+      ⋁ : ∀ {B : Set c}
+        → (f : B → Carrier)
+        → IsDirectedFamily f
         → Carrier
-      ⋁-isLub : ∀ {Ix : Set c}
-        → (s : Ix → Carrier)
-        → (dir : IsDirectedFamily s)
-        → IsLub s (⋁ s dir)
+      ⋁-isLub : ∀ {B : Set c}
+        → (f : B → Carrier)
+        → (dir : IsDirectedFamily f)
+        → IsLub f (⋁ f dir)
 
-    module _ {Ix : Set c} {s : Ix → Carrier} {dir : IsDirectedFamily s} where
-      open IsLub (⋁-isLub s dir)
-        renaming (is-upperbound to ⋁-≤; is-least to ⋁-least)
+    module _ {B : Set c} {f : B → Carrier} {dir : IsDirectedFamily f} where
+      open IsLub (⋁-isLub f dir)
+        renaming (isUpperBound to ⋁-≤; isLeast to ⋁-least)
         public
 
-module _ {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Q : Poset c ℓ₁ ℓ₂} where
+------------------------------------------------------------------------
+-- Scott‐continuous maps between two (possibly different‐universe) posets
+------------------------------------------------------------------------
+
+module _ {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
+         (P : Poset c₁ ℓ₁₁ ℓ₁₂)
+         (Q : Poset c₂ ℓ₂₁ ℓ₂₂) where
 
   private
     module P = Poset P
     module Q = Poset Q
 
-  record IsScottContinuous (f : P.Carrier → Q.Carrier) : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  record IsScottContinuous (f : P.Carrier → Q.Carrier)
+    : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
     field
-      PreserveLub : ∀ {Ix : Set c} {s : Ix → P.Carrier}
-        → (dir : IsDirectedFamily P s)
+      preserveLub : ∀ {B : Set c₁} {g : B → P.Carrier}
+        → (dir : IsDirectedFamily P g)
         → (lub : P.Carrier)
-        → IsLub P s lub
-        → IsLub Q (f ∘ s) (f lub)
-      PreserveEquality : ∀ {x y} → x P.≈ y → f x Q.≈ f y
+        → IsLub P g lub
+        → IsLub Q (f ∘ g) (f lub)
+      preserveEquality : ∀ {x y} → x P.≈ y → f x Q.≈ f y
