@@ -212,7 +212,7 @@ The authors of this paper are listed approximately in order of contribution to t
 # Funding and conflicts of interest
 
 The authors of this paper have no conflicts of interest to declare.
-Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such finding follows:
+Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such funding follows:
 
 - Nils Anders Danielsson would like to acknowledge financial support from Stiftelsen Claes Adelskölds medalj och minnesfond, EPSRC (grant code: EP/E04350X/1), the European Research Council
 (European Union's Seventh Framework Programme (FP7/2007-2013) / ERC grant agreement n° 247219."), and Vetenskapsrådet (grant numbers: 621-2013-4879 and 2023-04538).
