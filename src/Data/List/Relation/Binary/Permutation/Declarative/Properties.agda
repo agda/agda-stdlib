@@ -21,7 +21,10 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
 
 open import Data.List.Relation.Binary.Permutation.Algorithmic S
   using ([]; _∷_; _⋎_)
-  renaming (_∼_ to _∼ₐ_; ∼-trans to ∼ₐ-trans; ∼-swap-++ to ∼ₐ-swap-++)
+  renaming (_∼_ to _∼ₐ_; ∼-trans to ∼ₐ-trans)
+open import Data.List.Relation.Binary.Permutation.Algorithmic.Properties S
+  using ()
+  renaming (∼-swap-++ to ∼ₐ-swap-++)
 open import Data.List.Relation.Binary.Permutation.Declarative S
 
 open Setoid S
