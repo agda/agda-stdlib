@@ -116,7 +116,7 @@ This lack of basic data types increases the need for a standard library with a s
 Second, Agda users often seek to prove that programs constructed using data types in the standard library are "correct."
 Constructing the proof that a function obeys a specification (e.g. that a sorting function outputs a permutation of the original list in non-decreasing order) often requires more effort, both in terms of lines of code and in developer time, than writing the original operation.
 By providing proofs of correctness for operations it defines, the standard library saves users significant time during proof development.
- 
+
 # Impact
 
 A wide range of projects make use of `agda-stdlib`.
@@ -211,10 +211,12 @@ The authors of this paper are listed approximately in order of contribution to t
 
 # Funding and conflicts of interest
 
-The authors of this paper have received no funding to work on the library, and have no
-conflicts of interest.
-Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affliation.
-Jason Z. S. Hu made his contributions during his Master's and
-PhD study.
+The authors of this paper have no conflicts of interest to declare.
+Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such finding follows:
+
+- Nils Anders Danielsson would like to acknowledge financial support from Stiftelsen Claes Adelskölds medalj och minnesfond, EPSRC (grant code: EP/E04350X/1), the European Research Council
+(European Union's Seventh Framework Programme (FP7/2007-2013) / ERC grant agreement n° 247219."), and Vetenskapsrådet (grant numbers: 621-2013-4879 and 2023-04538).
+
+- Jason Z. S. Hu made his contributions during his funded Master's and PhD study.
 
 # References
