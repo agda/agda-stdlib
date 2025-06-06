@@ -14,12 +14,13 @@ module Data.List.Relation.Binary.Permutation.Algorithmic.Properties
 open import Data.List.Base using (List; []; _∷_; _++_)
 open import Data.List.Properties using (++-identityʳ)
 import Relation.Binary.PropositionalEquality as ≡
+  using (sym)
 
 open import Data.List.Relation.Binary.Equality.Setoid S as ≋
-  using ([]; ≋-reflexive)
+  using (≋-reflexive)
 open import Data.List.Relation.Binary.Permutation.Algorithmic S
 open import Data.List.Relation.Binary.Permutation.Setoid S as ↭
-  using (_↭_; ↭-refl; ↭-swap; ↭-trans)
+  using (_↭_; ↭-refl; ↭-prep; ↭-swap; ↭-trans)
 
 open Setoid S
   renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
@@ -76,8 +77,8 @@ private
 ↭⇒∼ (↭.trans as∼bs bs∼cs)  = ∼-trans (↭⇒∼ as∼bs) (↭⇒∼ bs∼cs)
 
 ∼⇒↭ : as ∼ bs → as ↭ bs
-∼⇒↭ []                  = ↭.refl []
+∼⇒↭ []                  = ↭.↭-refl
 ∼⇒↭ (a≈b ∷ as∼bs)       = ↭.prep a≈b (∼⇒↭ as∼bs)
-∼⇒↭ (as∼b∷cs ⋎ a∷cs∼bs) = ↭-trans (↭.prep ≈-refl (∼⇒↭ as∼b∷cs))
+∼⇒↭ (as∼b∷cs ⋎ a∷cs∼bs) = ↭-trans (↭-prep _ (∼⇒↭ as∼b∷cs))
                             (↭-trans (↭-swap _ _ ↭-refl)
-                               (↭.prep ≈-refl (∼⇒↭ a∷cs∼bs)))
+                               (↭-prep _ (∼⇒↭ a∷cs∼bs)))
