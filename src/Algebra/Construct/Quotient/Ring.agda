@@ -4,6 +4,8 @@
 -- Quotient rings
 ------------------------------------------------------------------------
 
+{-# OPTIONS --safe --cubical-compatible #-}
+
 open import Algebra.Bundles using (Ring)
 open import Algebra.Ideal using (Ideal)
 
