@@ -288,6 +288,8 @@ Additions to existing modules
                 length (xs ⁺++⁺ ys) ≡ length xs + length ys
   length-⁺++⁺-≤ : (xs ys : List⁺ A) →
                   length xs ≤ length (xs ⁺++⁺ ys)
+  map-⁺++⁺ : ∀ (f : A → B) xs ys →
+             map f (xs ⁺++⁺ ys) ≡ map f xs ⁺++⁺ map f ys
   ⁺++⁺-assoc : Associative _⁺++⁺_
   ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
   ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
