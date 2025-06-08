@@ -18,7 +18,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Effectful using () renaming (monad to listMonad)
 open import Data.List.Properties using (length-++)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
-open import Data.List.NonEmpty
+open import Data.List.NonEmpty as List⁺
   using (List⁺; _∷_; tail; head; toList; _⁺++_; _⁺++⁺_; _++⁺_; length; fromList;
     drop+; map; inits; tails; groupSeqs; ungroupSeqs)
 open import Data.List.NonEmpty.Relation.Unary.All using (All; toList⁺; _∷_)
@@ -70,6 +70,18 @@ toList->>= f (x ∷ xs) = begin
     ≡⟨ cong List.concat $ List.map-∘ {g = toList} (x ∷ xs) ⟩
   List.concat (List.map toList (List.map f (x ∷ xs)))
     ∎
+
+-- turning equalities of lists that are not empty to equalities on non-empty lists ...
+∷→∷⁺ : ∀ {x y : A} {xs ys : List A} →
+      (x List.∷ xs) ≡ (y List.∷ ys) →
+      (x List⁺.∷ xs) ≡ (y List⁺.∷ ys)
+∷→∷⁺ refl = refl
+
+-- ... and vice versa
+∷⁺→∷ : ∀ {x y : A} {xs ys : List A} →
+      (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
+      (x List.∷ xs) ≡ (y List.∷ ys)
+∷⁺→∷ refl = refl
 
 ------------------------------------------------------------------------
 -- _⁺++⁺_
