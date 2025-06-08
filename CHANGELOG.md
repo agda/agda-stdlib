@@ -276,6 +276,11 @@ Additions to existing modules
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  map-id : map id ≗ id {A = List⁺ A}
+  ```
+
 * In `Data.Product.Function.Dependent.Propositional`:
   ```agda
   Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
