@@ -101,6 +101,9 @@ module _ {A : Set a} where
   ⁺++⁺-assoc : Associative _⁺++⁺_
   ⁺++⁺-assoc (x ∷ xs) (y ∷ ys) (z ∷ zs) = cong (x ∷_) (++-assoc xs (y ∷ ys) (z ∷ zs))
 
+  ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
+  ⁺++⁺-cancelˡ (x ∷ xs) (y ∷ ys) (z ∷ zs) eq = ∷→∷⁺ (List.++-cancelˡ (x ∷ xs) (y ∷ ys) (z ∷ zs) (∷⁺→∷ eq))
+
 ------------------------------------------------------------------------
 -- _++⁺_
 
