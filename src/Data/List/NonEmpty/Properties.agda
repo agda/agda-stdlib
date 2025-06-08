@@ -25,6 +25,7 @@ open import Data.List.NonEmpty as List⁺
 open import Data.List.NonEmpty.Relation.Unary.All using (All; toList⁺; _∷_)
 open import Data.List.Relation.Unary.All using ([]; _∷_) renaming (All to ListAll)
 import Data.List.Properties as List
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Unary.All using (inj₁; inj₂)
 import Data.Sum.Relation.Unary.All as Sum using (All; inj₁; inj₂)
@@ -106,6 +107,9 @@ module _ {A : Set a} where
 
   ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
   ⁺++⁺-cancelʳ (x ∷ xs) (y ∷ ys) (z ∷ zs) eq = ∷→∷⁺ (List.++-cancelʳ (x ∷ xs) (y ∷ ys) (z ∷ zs) (∷⁺→∷ eq))
+
+  ⁺++⁺-cancel : Cancellative _⁺++⁺_
+  ⁺++⁺-cancel = ⁺++⁺-cancelˡ , ⁺++⁺-cancelʳ
 
 ------------------------------------------------------------------------
 -- _++⁺_
