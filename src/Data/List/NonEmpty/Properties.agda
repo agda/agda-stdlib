@@ -9,12 +9,14 @@
 module Data.List.NonEmpty.Properties where
 
 open import Effect.Monad using (RawMonad)
-open import Data.Nat.Base using (suc; _+_)
+open import Data.Nat.Base using (suc; _+_; _≤_)
+open import Data.Nat.Properties using (m≤m+n)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Effectful using () renaming (monad to listMonad)
+open import Data.List.Properties using (length-++)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty
   using (List⁺; _∷_; tail; head; toList; _⁺++_; _⁺++⁺_; _++⁺_; length; fromList;
@@ -68,6 +70,17 @@ toList->>= f (x ∷ xs) = begin
     ≡⟨ cong List.concat $ List.map-∘ {g = toList} (x ∷ xs) ⟩
   List.concat (List.map toList (List.map f (x ∷ xs)))
     ∎
+
+------------------------------------------------------------------------
+-- _⁺++⁺_
+
+length-⁺++⁺ : (xs ys : List⁺ A) →
+              length (xs ⁺++⁺ ys) ≡ length xs + length ys
+length-⁺++⁺ (x ∷ xs) (y ∷ ys) = length-++ (x ∷ xs)
+
+length-⁺++⁺-≤ : (xs ys : List⁺ A) →
+                length xs ≤ length (xs ⁺++⁺ ys)
+length-⁺++⁺-≤ xs ys rewrite length-⁺++⁺ xs ys = m≤m+n (length xs) (length ys)
 
 ------------------------------------------------------------------------
 -- _++⁺_
