@@ -26,7 +26,7 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Unary.All using (inj₁; inj₂)
 import Data.Sum.Relation.Unary.All as Sum using (All; inj₁; inj₂)
 open import Level using (Level)
-open import Function.Base using (_∘_; _$_)
+open import Function.Base using (id; _∘_; _$_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -117,6 +117,9 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
+
+map-id : map id ≗ id {A = List⁺ A}
+map-id (x ∷ xs) = cong (x ∷_) (List.map-id xs)
 
 ------------------------------------------------------------------------
 -- inits
