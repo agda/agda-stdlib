@@ -1,4 +1,10 @@
-{-# OPTIONS --safe --without-K #-}
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- The kernel of a ring homomorphism is an ideal
+------------------------------------------------------------------------
+
+{-# OPTIONS --safe --cubical-compatible #-}
 
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures

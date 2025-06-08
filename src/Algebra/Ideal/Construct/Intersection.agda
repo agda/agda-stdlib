@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
--- Intersection of ideals
---
 -- The Agda standard library
+--
+-- Intersection of ideals
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}

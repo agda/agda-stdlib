@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
--- The kernel of a group homomorphism is a normal subgroup
---
 -- The Agda standard library
+--
+-- The kernel of a group homomorphism is a normal subgroup
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
@@ -52,7 +52,7 @@ x ∙ₖ y = record
    { element = G.ε
    ; inKernel = ρ.ε-homo
    }
-     
+
 _⁻¹ₖ : Kernel → Kernel
 x ⁻¹ₖ = record
   { element = X.element G.⁻¹

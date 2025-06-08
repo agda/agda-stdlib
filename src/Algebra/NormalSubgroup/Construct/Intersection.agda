@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
--- Intersection of normal subgroups
---
 -- The Agda standard library
+--
+-- Intersection of normal subgroups
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
@@ -84,5 +84,3 @@ N ∩ M = record
   where
     module N = NormalSubgroup N
     module M = NormalSubgroup M
-
-

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
--- Coprimality of ideals
---
 -- The Agda standard library
+--
+-- Coprimality of ideals
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
