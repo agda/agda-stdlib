@@ -291,6 +291,7 @@ Additions to existing modules
   ⁺++⁺-assoc : Associative _⁺++⁺_
   ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
   ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
+  ⁺++⁺-cancel : Cancellative _⁺++⁺_
   map-id : map id ≗ id {A = List⁺ A}
   ```
 
