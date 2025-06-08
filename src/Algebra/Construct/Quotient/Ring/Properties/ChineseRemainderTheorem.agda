@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
--- The Chinese Remainder Theorem for arbitrary rings
---
 -- The Agda standard library
+--
+-- The Chinese Remainder Theorem for arbitrary rings
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
