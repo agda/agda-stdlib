@@ -289,6 +289,7 @@ Additions to existing modules
   length-⁺++⁺-≤ : (xs ys : List⁺ A) →
                   length xs ≤ length (xs ⁺++⁺ ys)
   ⁺++⁺-assoc : Associative _⁺++⁺_
+  ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
   map-id : map id ≗ id {A = List⁺ A}
   ```
 
