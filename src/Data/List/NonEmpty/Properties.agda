@@ -104,6 +104,9 @@ module _ {A : Set a} where
   ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
   ⁺++⁺-cancelˡ (x ∷ xs) (y ∷ ys) (z ∷ zs) eq = ∷→∷⁺ (List.++-cancelˡ (x ∷ xs) (y ∷ ys) (z ∷ zs) (∷⁺→∷ eq))
 
+  ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
+  ⁺++⁺-cancelʳ (x ∷ xs) (y ∷ ys) (z ∷ zs) eq = ∷→∷⁺ (List.++-cancelʳ (x ∷ xs) (y ∷ ys) (z ∷ zs) (∷⁺→∷ eq))
+
 ------------------------------------------------------------------------
 -- _++⁺_
 
