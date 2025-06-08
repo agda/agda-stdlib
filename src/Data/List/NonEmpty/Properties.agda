@@ -17,7 +17,7 @@ open import Data.Maybe.Properties using (just-injective)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Effectful using () renaming (monad to listMonad)
-open import Data.List.Properties using (length-++; ++-assoc)
+open import Data.List.Properties using (length-++; ++-assoc; map-++)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty as List⁺
   using (List⁺; _∷_; tail; head; toList; _⁺++_; _⁺++⁺_; _++⁺_; length; fromList;
@@ -94,6 +94,10 @@ length-⁺++⁺ (x ∷ xs) (y ∷ ys) = length-++ (x ∷ xs)
 length-⁺++⁺-≤ : (xs ys : List⁺ A) →
                 length xs ≤ length (xs ⁺++⁺ ys)
 length-⁺++⁺-≤ xs ys rewrite length-⁺++⁺ xs ys = m≤m+n (length xs) (length ys)
+
+map-⁺++⁺ : ∀ (f : A → B) xs ys →
+           map f (xs ⁺++⁺ ys) ≡ map f xs ⁺++⁺ map f ys
+map-⁺++⁺ f (x ∷ xs) (y ∷ ys) = ∷→∷⁺ (map-++ f (x ∷ xs) (y ∷ ys))
 
 module _ {A : Set a} where
   open AlgebraicDefinitions {A = List⁺ A} _≡_
