@@ -278,6 +278,10 @@ Additions to existing modules
 
 * In `Data.List.NonEmpty.Properties`:
   ```agda
+  length-⁺++⁺ : (xs ys : List⁺ A) →
+                length (xs ⁺++⁺ ys) ≡ length xs + length ys
+  length-⁺++⁺-≤ : (xs ys : List⁺ A) →
+                  length xs ≤ length (xs ⁺++⁺ ys)
   map-id : map id ≗ id {A = List⁺ A}
   ```
 
