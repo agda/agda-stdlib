@@ -20,27 +20,27 @@ open import Function.Base
 open import Level
 open import Relation.Binary.Reasoning.Setoid setoid
 
+open NS public using (ICarrier; icarrier)
+
 _∩_ : ∀ {c₁ ℓ₁ c₂ ℓ₂} → Ideal c₁ ℓ₁ → Ideal c₂ ℓ₂ → Ideal (ℓ ⊔ c₁ ⊔ c₂) ℓ₁
 I ∩ J = record
   { I = record
     { Carrierᴹ = NSI.N.Carrier
     ; _≈ᴹ_ = NSI.N._≈_
     ; _+ᴹ_ = NSI.N._∙_
-    ; _*ₗ_ = λ r ((i , j) , p) → record
-      { fst = r I.I.*ₗ i , r J.I.*ₗ j
-      ; snd = begin
-        I.ι (r I.I.*ₗ i) ≈⟨ I.ι.*ₗ-homo r i ⟩
-        r * I.ι i        ≈⟨ *-congˡ p ⟩
-        r * J.ι j        ≈⟨ J.ι.*ₗ-homo r j ⟨
-        J.ι (r J.I.*ₗ j) ∎
+    ; _*ₗ_ = λ r p → record
+      { a≈b = begin
+        I.ι (r I.I.*ₗ _) ≈⟨ I.ι.*ₗ-homo r _ ⟩
+        r * I.ι _        ≈⟨ *-congˡ (NS.ICarrier.a≈b p) ⟩
+        r * J.ι _        ≈⟨ J.ι.*ₗ-homo r _ ⟨
+        J.ι (r J.I.*ₗ _) ∎
       }
-    ; _*ᵣ_ = λ ((i , j) , p) r → record
-      { fst = i I.I.*ᵣ r , j J.I.*ᵣ r
-      ; snd = begin
-        I.ι (i I.I.*ᵣ r) ≈⟨ I.ι.*ᵣ-homo r i ⟩
-        I.ι i * r        ≈⟨ *-congʳ p ⟩
-        J.ι j * r        ≈⟨ J.ι.*ᵣ-homo r j ⟨
-        J.ι (j J.I.*ᵣ r) ∎
+    ; _*ᵣ_ = λ p r → record
+      { a≈b = begin
+        I.ι (_ I.I.*ᵣ r) ≈⟨ I.ι.*ᵣ-homo r _ ⟩
+        I.ι _ * r        ≈⟨ *-congʳ (NS.ICarrier.a≈b p) ⟩
+        J.ι _ * r        ≈⟨ J.ι.*ᵣ-homo r _ ⟨
+        J.ι (_ J.I.*ᵣ r) ∎
       }
     ; 0ᴹ = NSI.N.ε
     ; -ᴹ_ = NSI.N._⁻¹
@@ -50,8 +50,8 @@ I ∩ J = record
     { isModuleHomomorphism = record
       { isBimoduleHomomorphism = record
         { +ᴹ-isGroupHomomorphism = NSI.ι.isGroupHomomorphism
-        ; *ₗ-homo = λ r ((i , _) , _) → I.ι.*ₗ-homo r i
-        ; *ᵣ-homo = λ r ((i , _) , _) → I.ι.*ᵣ-homo r i
+        ; *ₗ-homo = λ r p → I.ι.*ₗ-homo r _
+        ; *ᵣ-homo = λ r p → I.ι.*ᵣ-homo r _
         }
       }
     ; injective = λ p → I.ι.injective p

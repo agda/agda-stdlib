@@ -9,7 +9,7 @@
 open import Algebra.Bundles using (Group)
 open import Algebra.NormalSubgroup using (NormalSubgroup)
 
-module Algebra.Construct.Quotient.Group  {c ℓ c′ ℓ′} (G : Group c ℓ) (N : NormalSubgroup G c′ ℓ′) where
+module Algebra.Construct.Quotient.Group  {c ℓ} (G : Group c ℓ) {c′ ℓ′} (N : NormalSubgroup G c′ ℓ′) where
 
 open Group G
 

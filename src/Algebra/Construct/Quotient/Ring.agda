@@ -6,16 +6,15 @@
 
 {-# OPTIONS --safe --cubical-compatible #-}
 
-open import Algebra.Bundles using (Ring)
+open import Algebra.Bundles using (Ring; RawRing)
 open import Algebra.Ideal using (Ideal)
 
-module Algebra.Construct.Quotient.Ring {c ℓ c′ ℓ′} (R : Ring c ℓ) (I : Ideal R c′ ℓ′) where
+module Algebra.Construct.Quotient.Ring {c ℓ} (R : Ring c ℓ) {c′ ℓ′} (I : Ideal R c′ ℓ′) where
 
 open Ring R
 open Ideal I
 
-open import Algebra.Construct.Quotient.Group +-group normalSubgroup
-  public
+open import Algebra.Construct.Quotient.Group +-group normalSubgroup public
   using (_≋_; _by_; ≋-refl; ≋-sym; ≋-trans; ≋-isEquivalence; ≈⇒≋; quotientIsGroup; quotientGroup)
   renaming (≋-∙-cong to ≋-+-cong; ≋-⁻¹-cong to ≋‿-‿cong)
 
@@ -36,6 +35,17 @@ open import Relation.Binary.Reasoning.Setoid setoid
     ι j * u + y * ι k                   ≈⟨ +-cong (ι.*ᵣ-homo u j) (ι.*ₗ-homo y k) ⟨
     ι (j I.*ᵣ u) + ι (y I.*ₗ k)         ≈⟨ ι.+ᴹ-homo (j I.*ᵣ u) (y I.*ₗ k) ⟨
     ι (j I.*ᵣ u I.+ᴹ y I.*ₗ k)          ∎
+
+quotientRawRing : RawRing c (c ⊔ ℓ ⊔ c′)
+quotientRawRing = record
+  { Carrier = Carrier
+  ; _≈_ = _≋_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0#
+  ; 1# = 1#
+  }
 
 quotientIsRing : IsRing _≋_ _+_ _*_ (-_) 0# 1#
 quotientIsRing = record
