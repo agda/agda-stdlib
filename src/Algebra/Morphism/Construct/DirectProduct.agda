@@ -19,8 +19,7 @@ open import Data.Product as Product
   using (_,_)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (Reflexive)
-open import Relation.Binary.Morphism.Construct.Product
-  using (proj₁; proj₂; <_,_>)
+import Relation.Binary.Morphism.Construct.Product as RP
 
 private
   variable
@@ -40,7 +39,7 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
 
     isMagmaHomomorphism : IsMagmaHomomorphism (rawMagma M N) M Product.proj₁
     isMagmaHomomorphism = record
-      { isRelHomomorphism = proj₁
+      { isRelHomomorphism = RP.proj₁
       ; homo              = λ _ _ → refl
       }
 
@@ -48,7 +47,7 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
 
     isMagmaHomomorphism : IsMagmaHomomorphism (rawMagma M N) N Product.proj₂
     isMagmaHomomorphism = record
-      { isRelHomomorphism = proj₂
+      { isRelHomomorphism = RP.proj₂
       ; homo              = λ _ _ → refl
       }
 
@@ -59,12 +58,33 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
                           IsMagmaHomomorphism P N h →
                           IsMagmaHomomorphism P (rawMagma M N) (Product.< f , h >)
     isMagmaHomomorphism F H = record
-      { isRelHomomorphism = < F.isRelHomomorphism , H.isRelHomomorphism >
+      { isRelHomomorphism = RP.< F.isRelHomomorphism , H.isRelHomomorphism >
       ; homo              = λ x y → F.homo x y , H.homo x y
       }
       where
         module F = IsMagmaHomomorphism F
         module H = IsMagmaHomomorphism H
+
+-- Package for export
+module Magma-Export {M : RawMagma a ℓ₁} {N : RawMagma b ℓ₂} where
+  open Magma
+
+  private
+    module M = RawMagma M
+    module N = RawMagma N
+
+  module _ {refl : Reflexive M._≈_} where
+    proj₁ = Proj₁.isMagmaHomomorphism M M refl
+
+  module _ {refl : Reflexive N._≈_} where
+    proj₂ = Proj₂.isMagmaHomomorphism M N refl
+
+  module _ {P : RawMagma c ℓ₃} where
+
+    private
+      module P = RawMagma P
+
+    <_,_> = Pair.isMagmaHomomorphism M N P
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -107,3 +127,24 @@ module Monoid (M : RawMonoid a ℓ₁) (N : RawMonoid b ℓ₂) where
       where
         module F = IsMonoidHomomorphism F
         module H = IsMonoidHomomorphism H
+
+-- Package for export
+module Monoid-Export {M : RawMonoid a ℓ₁} {N : RawMonoid b ℓ₂} where
+  open Monoid
+
+  private
+    module M = RawMonoid M
+    module N = RawMonoid N
+
+  module _ {refl : Reflexive M._≈_} where
+    proj₁ = Proj₁.isMonoidHomomorphism M M refl
+
+  module _ {refl : Reflexive N._≈_} where
+    proj₂ = Proj₂.isMonoidHomomorphism M N refl
+
+  module _ {P : RawMonoid c ℓ₃} where
+
+    private
+      module P = RawMonoid P
+
+    <_,_> = Pair.isMonoidHomomorphism M N P
