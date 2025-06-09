@@ -54,7 +54,7 @@ private
     ws xs ys zs : Vec A n
 
 ------------------------------------------------------------------------
--- Properties to List 
+-- Properties to List
 
 toList-injective
   : ∀ {m n}
@@ -63,7 +63,7 @@ toList-injective
   → toList xs ≡ toList ys
   → xs ≈[ m=n ] ys
 toList-injective m=n [] [] xs=ys = refl
-toList-injective m=n (x ∷ xs) (y ∷ ys) xs=ys = 
+toList-injective m=n (x ∷ xs) (y ∷ ys) xs=ys =
   cong₂ _∷_ (L.∷-injectiveˡ xs=ys) (toList-injective (cong pred m=n) xs ys (L.∷-injectiveʳ xs=ys))
 
 ------------------------------------------------------------------------
@@ -1053,10 +1053,10 @@ toList-reverse (x ∷ xs) = begin
   L.reverse (toList (x ∷ xs))        ∎
   where open ≡-Reasoning
 
-reverse-++-eqFree : ∀ (xs : Vec A m) (ys : Vec A n) 
+reverse-++-eqFree : ∀ (xs : Vec A m) (ys : Vec A n)
                   → reverse (xs ++ ys) ≈[ +-comm m n ] reverse ys ++ reverse xs
-reverse-++-eqFree {m = m} {n = n} xs ys = 
-  toList-injective (+-comm m n) (reverse (xs ++ ys)) (reverse ys ++ reverse xs) $ 
+reverse-++-eqFree {m = m} {n = n} xs ys =
+  toList-injective (+-comm m n) (reverse (xs ++ ys)) (reverse ys ++ reverse xs) $
   begin
     toList (reverse (xs ++ ys))                      ≡⟨ toList-reverse ((xs ++ ys)) ⟩
     L.reverse (toList (xs ++ ys))                    ≡⟨ cong L.reverse (toList-++ xs ys) ⟩
@@ -1109,7 +1109,7 @@ toList-ʳ++ xs {ys} = begin
 
 ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
                 cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
-++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} = toList-injective (m+n+o≡n+[m+o] m n o) ((xs ++ ys) ʳ++ zs) (ys ʳ++ (xs ʳ++ zs)) $ 
+++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} = toList-injective (m+n+o≡n+[m+o] m n o) ((xs ++ ys) ʳ++ zs) (ys ʳ++ (xs ʳ++ zs)) $
   begin
     toList ((xs ++ ys) ʳ++ zs)                      ≡⟨ toList-ʳ++ (xs ++ ys) ⟩
     toList (xs ++ ys) L.ʳ++ toList zs               ≡⟨ cong! (toList-++ xs ys)  ⟩
@@ -1122,7 +1122,7 @@ toList-ʳ++ xs {ys} = begin
 ʳ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
                  cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
 ʳ++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} =
-  toList-injective (m+n+o≡n+[m+o] m n o) ((xs ʳ++ ys) ʳ++ zs) (ys ʳ++ (xs ++ zs)) $ 
+  toList-injective (m+n+o≡n+[m+o] m n o) ((xs ʳ++ ys) ʳ++ zs) (ys ʳ++ (xs ++ zs)) $
   begin
     toList ((xs ʳ++ ys) ʳ++ zs)                 ≡⟨ cong! (toList-ʳ++ (xs ʳ++ ys)) ⟩
     toList (xs ʳ++ ys) L.ʳ++ toList zs          ≡⟨ cong! (toList-ʳ++ xs) ⟩
@@ -1354,7 +1354,7 @@ fromList-++ L.[]       {ys} = cast-is-id refl (fromList ys)
 fromList-++ (x L.∷ xs) {ys} = cong (x ∷_) (fromList-++ xs)
 
 fromList-reverse : (xs : List A) → (fromList (L.reverse xs)) ≈[ L.length-reverse xs ] reverse (fromList xs)
-fromList-reverse xs = toList-injective (L.length-reverse xs) (fromList (L.reverse xs)) (reverse (fromList xs)) $ 
+fromList-reverse xs = toList-injective (L.length-reverse xs) (fromList (L.reverse xs)) (reverse (fromList xs)) $
   begin
     toList (fromList (L.reverse xs)) ≡⟨ toList∘fromList (L.reverse xs) ⟩
     L.reverse xs ≡⟨ cong (λ x → L.reverse x) (toList∘fromList xs) ⟨
