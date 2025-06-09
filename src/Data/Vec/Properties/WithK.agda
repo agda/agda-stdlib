@@ -15,18 +15,6 @@ open import Data.Vec.Base
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.HeterogeneousEquality as ≅ using (_≅_; refl)
 
-module _ {a} {A : Set a} where
-
-  toList-injective
-    : ∀ {m n}
-    → .(m=n : m ≡ n)
-    → (xs : Vec A m) (ys : Vec A n)
-    → toList xs ≡ toList ys
-    → xs ≈[ m=n ] ys
-  toList-injective m=n [] [] xs=ys = refl
-  toList-injective m=n (x ∷ xs) (y ∷ ys) xs=ys = 
-    cong₂ _∷_ (List.∷-injectiveˡ xs=ys) (toList-injective (cong pred m=n) xs ys (List.∷-injectiveʳ xs=ys))
-
 ------------------------------------------------------------------------
 -- _[_]=_
 
