@@ -163,7 +163,7 @@ On the other hand, `batteries` and `mathlib` [@van2020maintaining] for Lean prov
 Philosophically, `agda-stdlib` is more closely aligned with the approach of the MathLib library, and our aim is to provide canonical definitions for mathematical objects and introduce new representations only sparingly.
 
 A second challenge is that Agda was one of the first major ITPs to fully embrace dependently-typed programming as the default.
-Many definitions in `agda-stdlib` makes use of instrinsic dependent types, with correctness-related invariants being defined as part of, rather than after, the main definition.
+Many definitions in `agda-stdlib` make use of instrinsic dependent types, with correctness-related invariants being defined as part of, rather than after, the main definition.
 Furthermore, the proofs of the invariants are evidence-bearing terms for the relevant types and therefore can themselves be computed on.
 For example, the final definition of a rational number is a record that alongside the numerator and denominator, contains a proof showing that the numerator and denominator have no common factors.
 Using this approach, `agda-stdlib` implements features such as polymorphic n-ary functions [@allais2019generic] and regular expressions which provide a proof of membership when a string is matched.
