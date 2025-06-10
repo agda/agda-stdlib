@@ -80,10 +80,6 @@ module Magma-Export {M : RawMagma a ℓ₁} {N : RawMagma b ℓ₂} where
     proj₂ = Proj₂.isMagmaHomomorphism M N refl
 
   module _ {P : RawMagma c ℓ₃} where
-
-    private
-      module P = RawMagma P
-
     <_,_> = Pair.isMagmaHomomorphism M N P
 
 ------------------------------------------------------------------------
@@ -143,8 +139,4 @@ module Monoid-Export {M : RawMonoid a ℓ₁} {N : RawMonoid b ℓ₂} where
     proj₂ = Proj₂.isMonoidHomomorphism M N refl
 
   module _ {P : RawMonoid c ℓ₃} where
-
-    private
-      module P = RawMonoid P
-
     <_,_> = Pair.isMonoidHomomorphism M N P
