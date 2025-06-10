@@ -278,11 +278,9 @@ Additions to existing modules
 
 * In `Data.List.NonEmpty.Properties`:
   ```agda
-  ∷→∷⁺ : ∀ {x y : A} {xs ys : List A} →
-         (x List.∷ xs) ≡ (y List.∷ ys) →
+  ∷→∷⁺ : (x List.∷ xs) ≡ (y List.∷ ys) →
          (x List⁺.∷ xs) ≡ (y List⁺.∷ ys)
-  ∷⁺→∷ : ∀ {x y : A} {xs ys : List A} →
-         (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
+  ∷⁺→∷ : (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
          (x List.∷ xs) ≡ (y List.∷ ys)
   length-⁺++⁺ : (xs ys : List⁺ A) →
                 length (xs ⁺++⁺ ys) ≡ length xs + length ys
