@@ -260,6 +260,7 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
+  length-++-≤ : ∀ (xs : List A) → length xs ≤ length (xs ++ ys)
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
   map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
   map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
