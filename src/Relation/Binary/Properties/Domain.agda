@@ -20,45 +20,44 @@ open import Relation.Binary.Domain.Structures
 open import Relation.Binary.Morphism.Structures using (IsOrderHomomorphism)
 
 private variable
-  c ℓ₁ ℓ₂ o ℓ : Level
-  Ix A B : Set o
+  c ℓ₁ ℓ₂ a ℓ : Level
+  Ix A B : Set a
 
 ------------------------------------------------------------------------
 -- Properties of least upper bounds
 
-module _ {c ℓ₁ ℓ₂} {D : DirectedCompletePartialOrder c ℓ₁ ℓ₂ } where
+module _ {c ℓ₁ ℓ₂} (D : DirectedCompletePartialOrder c ℓ₁ ℓ₂) where
   private
     module D = DirectedCompletePartialOrder D
 
-  uniqueLub : ∀ {Ix} {s : Ix → D.Carrier}
+  uniqueLub : ∀ {s : Ix → D.Carrier}
     → (x y : D.Carrier) → IsLub D.poset s x → IsLub D.poset s y
     →  x D.≈ y
   uniqueLub x y x-lub y-lub = D.antisym
     (IsLub.isLeast x-lub y (IsLub.isUpperBound y-lub))
     (IsLub.isLeast y-lub x (IsLub.isUpperBound x-lub))
 
-  IsLub-cong : ∀ {Ix} {s : Ix → D.Carrier}
+  IsLub-cong : ∀ {s : Ix → D.Carrier}
     → (x y : D.Carrier)
     → x D.≈ y
     → IsLub D.poset s x → IsLub D.poset s y
   IsLub-cong x y x≈y x-lub = record
     { isLeastUpperBound = (λ i → D.trans (IsLub.isUpperBound x-lub i) (D.reflexive x≈y)) ,
-                         (λ z ub → D.trans (D.reflexive (D.Eq.sym x≈y))
-                           (IsLub.isLeast x-lub z (λ i → D.trans (ub i) (D.reflexive D.Eq.refl))))
+                          (λ z ub → D.trans (D.reflexive (D.Eq.sym x≈y))
+                          (IsLub.isLeast x-lub z (λ i → D.trans (ub i) (D.reflexive D.Eq.refl))))
     }
 
 ------------------------------------------------------------------------
 -- Scott continuity and monotonicity
 
-module _ {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Q : Poset c ℓ₁ ℓ₂} where
-
+module _ {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level} {P : Poset c₁ ℓ₁₁ ℓ₁₂} {Q : Poset c₂ ℓ₂₁ ℓ₂₂} where
   private
     module P = Poset P
     module Q = Poset Q
 
   DirectedCompletePartialOrder+scott→monotone : (P-DirectedCompletePartialOrder : IsDirectedCompletePartialOrder P)
     → (f : P.Carrier → Q.Carrier)
-    → (scott : IsScottContinuous f)
+    → (scott : IsScottContinuous P Q f)
     → IsOrderHomomorphism (Poset._≈_ P) (Poset._≈_ Q) (Poset._≤_ P) (Poset._≤_ Q) f
   DirectedCompletePartialOrder+scott→monotone P-DirectedCompletePartialOrder f scott = record
     { cong = λ {x} {y} x≈y → IsScottContinuous.preserveEquality scott x≈y
@@ -68,7 +67,7 @@ module _ {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Q : Poset c ℓ�
       mono-proof : ∀ x y → x P.≤ y → f x Q.≤ f y
       mono-proof x y x≤y = IsLub.isUpperBound fs-lub (lift true)
         where
-          s : Lift c Bool → P.Carrier
+          s : Lift c₁ Bool → P.Carrier
           s (lift b) = if b then x else y
 
           sx≤sfalse : ∀ b → s b P.≤ s (lift false)
@@ -78,7 +77,7 @@ module _ {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Q : Poset c ℓ�
           s-directed : IsDirectedFamily P s
           s-directed = record
             { elt = lift true
-            ; semidirected = λ i j → (lift false , sx≤sfalse i , sx≤sfalse j)
+            ; isSemidirected = λ i j → (lift false , sx≤sfalse i , sx≤sfalse j)
             }
 
           s-lub : IsLub P s y
@@ -97,23 +96,23 @@ module _ {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {Q : Poset c ℓ�
   monotone∘directed f ismonotone dir = record
     { elt = IsDirectedFamily.elt dir
     ; isSemidirected = λ i j →
-        let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.semidirected dir i j
+        let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.isSemidirected dir i j
         in k , IsOrderHomomorphism.mono ismonotone s[i]≤s[k] , IsOrderHomomorphism.mono ismonotone s[j]≤s[k]
     }
 
 ------------------------------------------------------------------------
 -- Scott continuous functions
 
-ScottId : ∀ {c ℓ₁ ℓ₂} {P : Poset c ℓ₁ ℓ₂} → IsScottContinuous {P = P} {Q = P} id
+ScottId : ∀ {c ℓ₁ ℓ₂} {P : Poset c ℓ₁ ℓ₂} → IsScottContinuous P P id
 ScottId = record
   { preserveLub = λ dir lub z → z
   ; preserveEquality = λ z → z }
 
 scott-∘ : ∀ {c ℓ₁ ℓ₂} {P Q R : Poset c ℓ₁ ℓ₂}
   → (f : Poset.Carrier R → Poset.Carrier Q) (g : Poset.Carrier P → Poset.Carrier R)
-  → IsScottContinuous {P = R} {Q = Q} f → IsScottContinuous {P = P} {Q = R} g
+  → IsScottContinuous R Q f → IsScottContinuous P R g
   → IsOrderHomomorphism (Poset._≈_ P) (Poset._≈_ R) (Poset._≤_ P) (Poset._≤_ R) g
-  → IsScottContinuous {P = P} {Q = Q} (f ∘ g)
+  → IsScottContinuous P Q (f ∘ g)
 scott-∘ f g scottf scottg monog = record
   { preserveLub = λ dir lub z → f.preserveLub
       (monotone∘directed g monog dir)
@@ -152,7 +151,7 @@ module Scott
   (let module D = DirectedCompletePartialOrder D)
   (let module E = DirectedCompletePartialOrder E)
   (f : D.Carrier → E.Carrier)
-  (isScott : IsScottContinuous {P = D.poset} {Q = E.poset} f)
+  (isScott : IsScottContinuous D.poset E.poset f)
   (mono : IsOrderHomomorphism (Poset._≈_ D.poset) (Poset._≈_ E.poset)
                              (Poset._≤_ D.poset) (Poset._≤_ E.poset) f)
   where
@@ -188,9 +187,21 @@ module _ {c ℓ₁ ℓ₂} {D E : DirectedCompletePartialOrder c ℓ₁ ℓ₂} 
     (Poset._≤_ D.poset) (Poset._≤_ E.poset) f
     → (∀ {Ix} (s : Ix → D.Carrier) (dir : IsDirectedFamily D.poset s)
     → IsLub E.poset (f ∘ s) (f (D.⋁ s dir)))
-    → IsScottContinuous {P = D.poset} {Q = E.poset} f
+    → IsScottContinuous D.poset E.poset f
   to-scott f mono pres-⋁ = record
-    { preserveLub = λ dir lub x → IsLub-cong {P = E.poset} {D = E} (f (D.⋁ _ dir)) (f lub)
-        (IsOrderHomomorphism.cong mono (uniqueLub {P = E.poset} {D = D} (D.⋁ _ dir) lub (D.⋁-isLub _ dir) x))
-        (pres-⋁ _ dir)
-    ; preserveEquality = IsOrderHomomorphism.cong mono }
+    { preserveLub = λ {_} {s} dir lub x →
+      IsLub-cong E (f (D.⋁ _ dir)) (f lub)
+        (f.cong (uniqueLub D (D.⋁ s dir) lub (D.⋁-isLub s dir) x))
+        (pres-⋁ s dir)
+    ; preserveEquality = f.cong
+    }
+    where module f = IsOrderHomomorphism mono
+
+
+    -- { preserveLub = λ dir lub x → IsLub-cong {!  D !} {!  E !} {!  !} (pres-⋁ {!   !} dir) ;
+    --   preserveEquality = IsOrderHomomorphism.cong mono
+    -- }
+    -- { preserveLub = λ dir lub x → IsLub-cong  ? E (f (D.⋁ _ dir)) (f lub)
+    --     (IsOrderHomomorphism.cong mono (uniqueLub {P = E.poset} {D = D} (D.⋁ _ dir) lub (D.⋁-isLub _ dir) x))
+    --     (pres-⋁ _ dir)
+    -- ; preserveEquality = IsOrderHomomorphism.cong mono }
