@@ -131,6 +131,11 @@ length-++ : ∀ (xs : List A) {ys} →
 length-++ []       = refl
 length-++ (x ∷ xs) = cong suc (length-++ xs)
 
+length-++-≤ : ∀ (xs : List A) {ys} →
+              length xs ≤ length (xs ++ ys)
+length-++-≤ []       = z≤n
+length-++-≤ (x ∷ xs) = s≤s (length-++-≤ xs)
+
 module _ {A : Set a} where
 
   open AlgebraicDefinitions {A = List A} _≡_
