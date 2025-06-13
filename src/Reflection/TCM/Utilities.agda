@@ -11,7 +11,7 @@ module Reflection.TCM.Utilities where
 open import Data.List using (List; []; _∷_; _++_; map)
 open import Data.Unit using (⊤; tt)
 open import Effect.Applicative using (RawApplicative; mkRawApplicative)
-open import Function using (case_of_)
+open import Function.Base using (case_of_)
 open import Reflection.AST.Meta using (Meta)
 open import Reflection.AST.Term using (Term)
 open import Reflection.TCM using (TC; pure; blockTC; blockerAll; blockerMeta)
