@@ -17,6 +17,7 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 
 open import Algebra
 open import Data.Bool.Base using (true; false)
+open import Data.Fin using (zero; suc)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; head; tail)
@@ -34,6 +35,7 @@ open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
+open import Function.Bundles using (Inverse)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -41,7 +43,7 @@ open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
 open import Relation.Nullary.Decidable using (yes; no; does)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (¬_; contradiction; contraposition)
 
 
 open Setoid S using (_≈_)
@@ -99,6 +101,18 @@ AllPairs-resp-↭ sym resp (trans p₁ p₂)    pxs             =
 
 Unique-resp-↭ : Unique Respects _↭_
 Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
+
+------------------------------------------------------------------------
+-- Length
+
+xs↭ys⇒|xs|≡|ys| : ∀ {xs ys} → xs ↭ ys → length xs ≡ length ys
+xs↭ys⇒|xs|≡|ys| (refl eq)            = Pointwise.Pointwise-length eq
+xs↭ys⇒|xs|≡|ys| (prep eq xs↭ys)      = ≡.cong suc (xs↭ys⇒|xs|≡|ys| xs↭ys)
+xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong (λ x → suc (suc x)) (xs↭ys⇒|xs|≡|ys| xs↭ys)
+xs↭ys⇒|xs|≡|ys| (trans xs↭ys xs↭ys₁) = ≡.trans (xs↭ys⇒|xs|≡|ys| xs↭ys) (xs↭ys⇒|xs|≡|ys| xs↭ys₁)
+
+¬x∷xs↭[] : ∀ {x xs} → ¬ (x ∷ xs ↭ [])
+¬x∷xs↭[] = contraposition xs↭ys⇒|xs|≡|ys| λ()
 
 ------------------------------------------------------------------------
 -- Core properties depending on the representation of _↭_
@@ -429,6 +443,15 @@ module _{_∙_ : Op₂ A} {ε : A}
     where open ≈-Reasoning CM.setoid
   foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
 
+onIndices-lookup : ∀ (xs↭ys : xs ↭ ys) →
+               ∀ i → lookup xs i ≈ lookup ys (Inverse.to (onIndices xs↭ys) i)
+onIndices-lookup (refl xs≋ys)         i            = Pointwise.lookup-cast xs≋ys _ i
+onIndices-lookup (prep eq xs↭ys)     zero          = eq
+onIndices-lookup (prep _  xs↭ys)     (suc i)       = onIndices-lookup xs↭ys i
+onIndices-lookup (swap eq _ xs↭ys)   zero          = eq
+onIndices-lookup (swap _ eq xs↭ys)   (suc zero)    = eq
+onIndices-lookup (swap _ _  xs↭ys)   (suc (suc i)) = onIndices-lookup xs↭ys i
+onIndices-lookup (trans xs↭ys ys↭zs) i            = ≈-trans (onIndices-lookup xs↭ys i) (onIndices-lookup ys↭zs _)
 
 ------------------------------------------------------------------------
 -- TOWARDS DEPRECATION
