@@ -126,6 +126,15 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
 ------------------------------------------------------------------------
 -- _++_
 
+length-++-sucˡ : ∀ (x : A) (xs ys : List A) →
+                 length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+length-++-sucˡ _ _ _ = refl
+
+length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) →
+                 length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+length-++-sucʳ []       _ _  = refl
+length-++-sucʳ (_ ∷ xs) y ys = cong suc (length-++-sucʳ xs y ys)
+
 length-++ : ∀ (xs : List A) {ys} →
             length (xs ++ ys) ≡ length xs + length ys
 length-++ []       = refl
