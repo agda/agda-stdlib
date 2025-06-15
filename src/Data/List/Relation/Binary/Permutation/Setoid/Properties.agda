@@ -108,7 +108,7 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 xs↭ys⇒|xs|≡|ys| : ∀ {xs ys} → xs ↭ ys → length xs ≡ length ys
 xs↭ys⇒|xs|≡|ys| (refl eq)            = Pointwise.Pointwise-length eq
 xs↭ys⇒|xs|≡|ys| (prep eq xs↭ys)      = ≡.cong suc (xs↭ys⇒|xs|≡|ys| xs↭ys)
-xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong (λ x → suc (suc x)) (xs↭ys⇒|xs|≡|ys| xs↭ys)
+xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong 2+_ (xs↭ys⇒|xs|≡|ys| xs↭ys)
 xs↭ys⇒|xs|≡|ys| (trans xs↭ys xs↭ys₁) = ≡.trans (xs↭ys⇒|xs|≡|ys| xs↭ys) (xs↭ys⇒|xs|≡|ys| xs↭ys₁)
 
 ¬x∷xs↭[] : ∀ {x xs} → ¬ (x ∷ xs ↭ [])
