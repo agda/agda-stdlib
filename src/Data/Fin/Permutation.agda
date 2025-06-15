@@ -261,27 +261,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 -- Note: should be refactored as a special-case when we add the
 -- concatenation of two permutations
 swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
-swap {m} {n} π = permutation to from inverseˡ′ inverseʳ′
-  where
-  to : Fin (suc (suc m)) → Fin (suc (suc n))
-  to 0F      = 1F
-  to 1F      = 0F
-  to (suc (suc i)) = suc (suc (π ⟨$⟩ʳ i))
-
-  from : Fin (suc (suc n)) → Fin (suc (suc m))
-  from 0F            = 1F
-  from 1F            = 0F
-  from (suc (suc i)) = suc (suc (π ⟨$⟩ˡ i))
-
-  inverseʳ′ : StrictlyInverseʳ _≡_ to from
-  inverseʳ′ 0F            = refl
-  inverseʳ′ 1F            = refl
-  inverseʳ′ (suc (suc j)) = cong (suc ∘′ suc) (inverseˡ π)
-
-  inverseˡ′ : StrictlyInverseˡ _≡_ to from
-  inverseˡ′ 0F            = refl
-  inverseˡ′ 1F            = refl
-  inverseˡ′ (suc (suc j)) = cong (suc ∘′ suc) (inverseʳ π)
+swap π = transpose 0F 1F ∘ₚ lift₀ (lift₀ π)
 
 ------------------------------------------------------------------------
 -- Other properties

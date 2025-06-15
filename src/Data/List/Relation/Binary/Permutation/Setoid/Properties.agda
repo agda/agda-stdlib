@@ -17,7 +17,7 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 
 open import Algebra
 open import Data.Bool.Base using (true; false)
-open import Data.Fin using (zero; suc)
+open import Data.Fin.Base using (zero; suc)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; head; tail)

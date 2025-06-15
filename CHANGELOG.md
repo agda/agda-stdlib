@@ -237,8 +237,8 @@ Additions to existing modules
 
 * In `Data.Fin.Base`:
   ```agda
-  _≰_ : ∀ {n} → Rel (Fin n) 0ℓ
-  _≮_ : ∀ {n} → Rel (Fin n) 0ℓ
+  _≰_ : Rel (Fin n) 0ℓ
+  _≮_ : Rel (Fin n) 0ℓ
   ```
 
 * In `Data.Fin.Permutation`:
