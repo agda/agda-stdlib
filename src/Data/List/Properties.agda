@@ -140,10 +140,10 @@ length-++ : ∀ (xs : List A) {ys} →
 length-++ []       = refl
 length-++ (x ∷ xs) = cong suc (length-++ xs)
 
-length-++-≤ : ∀ (xs : List A) {ys} →
+length-++-≤ˡ : ∀ (xs : List A) {ys} →
               length xs ≤ length (xs ++ ys)
-length-++-≤ []       = z≤n
-length-++-≤ (x ∷ xs) = s≤s (length-++-≤ xs)
+length-++-≤ˡ []       = z≤n
+length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
 
 module _ {A : Set a} where
 

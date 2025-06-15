@@ -262,7 +262,7 @@ Additions to existing modules
   ```agda
   length-++-sucˡ : ∀ (x : A) (xs ys : List A) → length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
   length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) → length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
-  length-++-≤ : ∀ (xs : List A) → length xs ≤ length (xs ++ ys)
+  length-++-≤ˡ : ∀ (xs : List A) → length xs ≤ length (xs ++ ys)
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
   map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
   map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
@@ -286,7 +286,7 @@ Additions to existing modules
   ∷⁺→∷ : (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
          (x List.∷ xs) ≡ (y List.∷ ys)
   length-⁺++⁺ : (xs ys : List⁺ A) → length (xs ⁺++⁺ ys) ≡ length xs + length ys
-  length-⁺++⁺-≤ : (xs ys : List⁺ A) → length xs ≤ length (xs ⁺++⁺ ys)
+  length-⁺++⁺-≤ˡ : (xs ys : List⁺ A) → length xs ≤ length (xs ⁺++⁺ ys)
   map-⁺++⁺ : ∀ (f : A → B) xs ys → map f (xs ⁺++⁺ ys) ≡ map f xs ⁺++⁺ map f ys
   ⁺++⁺-assoc : Associative _⁺++⁺_
   ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
