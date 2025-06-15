@@ -297,7 +297,7 @@ Additions to existing modules
   ```agda
   xs↭ys⇒|xs|≡|ys| : xs ↭ ys → length xs ≡ length ys
   ¬x∷xs↭[] : ¬ (x ∷ xs ↭ [])
-  toFin-lookup : ∀ i → lookup xs i ≈ lookup ys (Inverse.to (toFin xs↭ys) i)
+  onIndices-lookup : ∀ i → lookup xs i ≈ lookup ys (Inverse.to (onIndices xs↭ys) i)
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:

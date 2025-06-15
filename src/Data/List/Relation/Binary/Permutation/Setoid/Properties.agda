@@ -30,7 +30,7 @@ import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties using (∈-∃++; ∈-insert)
 import Data.List.Properties as List
-open import Data.Nat.Base using (ℕ; suc; _<_; z<s; _+_)
+open import Data.Nat.Base using (ℕ; suc; 2+; _<_; z<s; _+_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
@@ -108,7 +108,7 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 xs↭ys⇒|xs|≡|ys| : ∀ {xs ys} → xs ↭ ys → length xs ≡ length ys
 xs↭ys⇒|xs|≡|ys| (refl eq)            = Pointwise.Pointwise-length eq
 xs↭ys⇒|xs|≡|ys| (prep eq xs↭ys)      = ≡.cong suc (xs↭ys⇒|xs|≡|ys| xs↭ys)
-xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong 2+_ (xs↭ys⇒|xs|≡|ys| xs↭ys)
+xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong 2+ (xs↭ys⇒|xs|≡|ys| xs↭ys)
 xs↭ys⇒|xs|≡|ys| (trans xs↭ys xs↭ys₁) = ≡.trans (xs↭ys⇒|xs|≡|ys| xs↭ys) (xs↭ys⇒|xs|≡|ys| xs↭ys₁)
 
 ¬x∷xs↭[] : ∀ {x xs} → ¬ (x ∷ xs ↭ [])
