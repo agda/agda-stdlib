@@ -222,6 +222,10 @@ length-++-≤ˡ : ∀ (xs : List A) {ys} →
 length-++-≤ˡ []       = z≤n
 length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
 
+length-++-≤ʳ : ∀ (ys : List A) {xs} →
+              length ys ≤ length (xs ++ ys)
+length-++-≤ʳ ys {xs} = ≤-trans (length-++-≤ˡ ys) (≤-reflexive (length-++-comm ys xs))
+
 module _ {A : Set a} where
 
   open AlgebraicStructures  {A = List A} _≡_
