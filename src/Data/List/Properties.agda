@@ -126,24 +126,10 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
 ------------------------------------------------------------------------
 -- _++_
 
-length-++-sucˡ : ∀ (x : A) (xs ys : List A) →
-                 length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
-length-++-sucˡ _ _ _ = refl
-
-length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) →
-                 length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
-length-++-sucʳ []       _ _  = refl
-length-++-sucʳ (_ ∷ xs) y ys = cong suc (length-++-sucʳ xs y ys)
-
 length-++ : ∀ (xs : List A) {ys} →
             length (xs ++ ys) ≡ length xs + length ys
 length-++ []       = refl
 length-++ (x ∷ xs) = cong suc (length-++ xs)
-
-length-++-≤ˡ : ∀ (xs : List A) {ys} →
-              length xs ≤ length (xs ++ ys)
-length-++-≤ˡ []       = z≤n
-length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
 
 module _ {A : Set a} where
 
@@ -202,6 +188,20 @@ module _ {A : Set a} where
 
   ++-conical : Conical [] _++_
   ++-conical = ++-conicalˡ , ++-conicalʳ
+
+length-++-sucˡ : ∀ (x : A) (xs ys : List A) →
+                 length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+length-++-sucˡ _ _ _ = refl
+
+length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) →
+                 length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+length-++-sucʳ []       _ _  = refl
+length-++-sucʳ (_ ∷ xs) y ys = cong suc (length-++-sucʳ xs y ys)
+
+length-++-≤ˡ : ∀ (xs : List A) {ys} →
+              length xs ≤ length (xs ++ ys)
+length-++-≤ˡ []       = z≤n
+length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
 
 module _ {A : Set a} where
 
