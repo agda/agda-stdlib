@@ -148,7 +148,6 @@ length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
 module _ {A : Set a} where
 
   open AlgebraicDefinitions {A = List A} _≡_
-  open AlgebraicStructures  {A = List A} _≡_
 
   ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
@@ -203,6 +202,10 @@ module _ {A : Set a} where
 
   ++-conical : Conical [] _++_
   ++-conical = ++-conicalˡ , ++-conicalʳ
+
+module _ {A : Set a} where
+
+  open AlgebraicStructures  {A = List A} _≡_
 
   ++-isMagma : IsMagma _++_
   ++-isMagma = record
