@@ -198,6 +198,25 @@ length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) →
 length-++-sucʳ []       _ _  = refl
 length-++-sucʳ (_ ∷ xs) y ys = cong suc (length-++-sucʳ xs y ys)
 
+length-++-comm : ∀ (xs ys : List A) →
+                 length (xs ++ ys) ≡ length (ys ++ xs)
+length-++-comm xs       []       = cong length (++-identityʳ xs)
+length-++-comm []       (y ∷ ys) = sym (cong length (++-identityʳ (y ∷ ys)))
+length-++-comm (x ∷ xs) (y ∷ ys) =
+  begin
+    length (x ∷ xs ++ y ∷ ys)
+  ≡⟨⟩
+    suc (length (xs ++ y ∷ ys))
+  ≡⟨ cong suc (length-++-sucʳ xs y ys) ⟩
+    suc (suc (length (xs ++ ys)))
+  ≡⟨ cong suc (cong suc (length-++-comm xs ys)) ⟩
+    suc (suc (length (ys ++ xs)))
+  ≡⟨ cong suc (length-++-sucʳ ys x xs) ⟨
+    suc (length (ys ++ x ∷ xs))
+  ≡⟨⟩
+    length (y ∷ ys ++ x ∷ xs)
+  ∎
+
 length-++-≤ˡ : ∀ (xs : List A) {ys} →
               length xs ≤ length (xs ++ ys)
 length-++-≤ˡ []       = z≤n
