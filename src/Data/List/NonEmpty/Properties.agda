@@ -16,7 +16,7 @@ open import Data.Maybe.Properties using (just-injective)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Effectful using () renaming (monad to listMonad)
-open import Data.List.Properties using (length-++; length-++-≤ˡ; length-++-≤ʳ; ++-assoc; map-++)
+open import Data.List.Properties using (length-++; length-++-comm; length-++-≤ˡ; length-++-≤ʳ; ++-assoc; map-++)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty as List⁺
   using (List⁺; _∷_; tail; head; toList; _⁺++_; _⁺++⁺_; _++⁺_; length; fromList;
@@ -90,6 +90,10 @@ toList->>= f (x ∷ xs) = begin
 length-⁺++⁺ : (xs ys : List⁺ A) →
               length (xs ⁺++⁺ ys) ≡ length xs + length ys
 length-⁺++⁺ (x ∷ xs) (y ∷ ys) = length-++ (x ∷ xs)
+
+length-⁺++⁺-comm : ∀ (xs ys : List⁺ A) →
+                   length (xs ⁺++⁺ ys) ≡ length (ys ⁺++⁺ xs)
+length-⁺++⁺-comm (x ∷ xs) (y ∷ ys) = length-++-comm (x ∷ xs) (y ∷ ys)
 
 length-⁺++⁺-≤ˡ : (xs ys : List⁺ A) →
                 length xs ≤ length (xs ⁺++⁺ ys)
