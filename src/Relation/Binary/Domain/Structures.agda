@@ -33,8 +33,8 @@ module _ {c ℓ₁ ℓ₂ : Level} (P : Poset c ℓ₁ ℓ₂) where
     isLeast : ∀ y → (∀ i → f i ≤ y) → lub ≤ y
     isLeast = proj₂ isLeastUpperBound
 
-  record IsDirectedFamily {b : Level} {B : Set b} (f : B → Carrier)
-    : Set (b ⊔ c ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsDirectedFamily {b : Level} {B : Set b} (f : B → Carrier) :
+                          Set (b ⊔ c ⊔ ℓ₁ ⊔ ℓ₂) where
     no-eta-equality
     field
       elt           : B
@@ -68,12 +68,12 @@ module _ {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
     module P = Poset P
     module Q = Poset Q
 
-  record IsScottContinuous (f : P.Carrier → Q.Carrier)
-    : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
+  record IsScottContinuous (f : P.Carrier → Q.Carrier) :
+                           Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
     field
-      preserveLub : ∀ {B : Set c₁} {g : B → P.Carrier}
-        → (dir : IsDirectedFamily P g)
-        → (lub : P.Carrier)
-        → IsLub P g lub
-        → IsLub Q (f ∘ g) (f lub)
+      preserveLub : ∀ {B : Set c₁} {g : B → P.Carrier} →
+                    (dir : IsDirectedFamily P g) →
+                    (lub : P.Carrier) →
+                    IsLub P g lub →
+                    IsLub Q (f ∘ g) (f lub)
       preserveEquality : ∀ {x y} → x P.≈ y → f x Q.≈ f y
