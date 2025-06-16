@@ -8,7 +8,7 @@
 
 module Data.Nat.Show where
 
-open import Data.Bool.Base using (_∧_)
+open import Data.Bool.Base using (_∧_; if_then_else_)
 open import Data.Char.Base as Char using (Char)
 open import Data.Digit using (showDigit; toDigits; toNatDigits)
 open import Data.List.Base as List using (List; []; _∷_)
@@ -83,3 +83,24 @@ showInBase : (base : ℕ)
              ℕ → String
 showInBase base {base≥2} {base≤16} = fromList
                                    ∘ charsInBase base {base≥2} {base≤16}
+
+-- Fast version of `charsInBase` and `showInBase` for bases 2 to 16.
+
+charsInBaseFast : (base : ℕ)
+                  {base≥1 : True (1 ≤? base)}
+                  {base≤16 : True (base ≤? 16)} →
+                  ℕ → List Char
+charsInBaseFast base {base≥1} {base≤16} n = List.map toHexChar (toNatDigits base {base≤16 = base≥1} n)
+  where
+  toHexChar : ℕ → Char
+  toHexChar digit = if digit <ᵇ 10
+    then Char.fromℕ (digit + Char.toℕ '0')
+    else Char.fromℕ (digit ∸ 10 + Char.toℕ 'a')
+
+showInBaseFast : (base : ℕ)
+                 {base≥1 : True (1 ≤? base)}
+                 {base≤16 : True (base ≤? 16)} →
+                 ℕ → String  
+showInBaseFast base {base≥1} {base≤16} = fromList
+                              ∘ List.reverse
+                              ∘ charsInBaseFast base {base≥1} {base≤16}
