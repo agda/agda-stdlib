@@ -56,7 +56,7 @@ private
 ------------------------------------------------------------------------
 -- Properties of toList
 
-toList-injective : .(m≡n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) → 
+toList-injective : .(m≡n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) →
                   toList xs ≡ toList ys → xs ≈[ m≡n ] ys
 toList-injective m≡n [] [] xs=ys = refl
 toList-injective m≡n (x ∷ xs) (y ∷ ys) xs=ys =
