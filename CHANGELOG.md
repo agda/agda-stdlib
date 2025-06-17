@@ -170,6 +170,8 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
