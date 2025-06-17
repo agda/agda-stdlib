@@ -76,4 +76,4 @@ module _ {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
         → (lub : P.Carrier)
         → IsLub P g lub
         → IsLub Q (f ∘ g) (f lub)
-      preserveEquality : ∀ {x y} → x P.≈ y → f x Q.≈ f y
+      cong : ∀ {x y} → x P.≈ y → f x Q.≈ f y
