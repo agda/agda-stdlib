@@ -30,17 +30,17 @@ module _ (D : DirectedCompletePartialOrder c ℓ₁ ℓ₂) where
   private
     module D = DirectedCompletePartialOrder D
 
-  uniqueLub : ∀ {s : Ix → D.Carrier} → (x y : D.Carrier) → 
+  uniqueLub : ∀ {s : Ix → D.Carrier} → (x y : D.Carrier) →
               IsLub D.poset s x → IsLub D.poset s y →  x D.≈ y
   uniqueLub x y x-lub y-lub = D.antisym
     (IsLub.isLeast x-lub y (IsLub.isUpperBound y-lub))
     (IsLub.isLeast y-lub x (IsLub.isUpperBound x-lub))
 
-  IsLub-cong : ∀ {s : Ix → D.Carrier} → {x y : D.Carrier} → x D.≈ y → 
+  IsLub-cong : ∀ {s : Ix → D.Carrier} → {x y : D.Carrier} → x D.≈ y →
               IsLub D.poset s x → IsLub D.poset s y
   IsLub-cong x≈y x-lub = record
-    { isLeastUpperBound = 
-    (λ i → D.trans (IsLub.isUpperBound x-lub i) (D.reflexive x≈y)) 
+    { isLeastUpperBound =
+    (λ i → D.trans (IsLub.isUpperBound x-lub i) (D.reflexive x≈y))
     , (λ z ub → D.trans (D.reflexive (D.Eq.sym x≈y)) (IsLub.isLeast x-lub z (λ i → D.trans (ub i) (D.reflexive D.Eq.refl))))
     }
 
@@ -51,8 +51,8 @@ module _ {P : Poset c₁ ℓ₁₁ ℓ₁₂} {Q : Poset c₂ ℓ₂₁ ℓ₂�
   private
     module P = Poset P
     module Q = Poset Q
-  
-  isMonotone : (P-DirectedCompletePartialOrder : IsDirectedCompletePartialOrder P) → 
+
+  isMonotone : (P-DirectedCompletePartialOrder : IsDirectedCompletePartialOrder P) →
                (f : P.Carrier → Q.Carrier) → (scott : IsScottContinuous P Q f) →
                IsOrderHomomorphism P._≈_ Q._≈_ P._≤_ Q._≤_ f
   isMonotone P-DirectedCompletePartialOrder f scott = record
@@ -82,12 +82,12 @@ module _ {P : Poset c₁ ℓ₁₁ ℓ₁₂} {Q : Poset c₂ ℓ₂₁ ℓ₂�
           fs-lub : IsLub Q (f ∘ s) (f y)
           fs-lub = IsScottContinuous.preserveLub scott s-directed y s-lub
 
-  map-directed : {s : Ix → P.Carrier} → (f : P.Carrier → Q.Carrier)→ 
+  map-directed : {s : Ix → P.Carrier} → (f : P.Carrier → Q.Carrier)→
                       IsOrderHomomorphism P._≈_ Q._≈_ P._≤_ Q._≤_ f →
                       IsDirectedFamily P s → IsDirectedFamily Q (f ∘ s)
   map-directed f ismonotone dir = record
     { elt = IsDirectedFamily.elt dir
-    ; isSemidirected = λ i j → let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.isSemidirected dir i j 
+    ; isSemidirected = λ i j → let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.isSemidirected dir i j
       in k , f.mono  s[i]≤s[k] , f.mono s[j]≤s[k]
     }
     where module f = IsOrderHomomorphism ismonotone
@@ -100,7 +100,7 @@ module _  {P Q R : Poset c ℓ₁ ℓ₂} where
     module P = Poset P
     module Q = Poset Q
     module R = Poset R
-      
+
   ScottId : {P : Poset c ℓ₁ ℓ₂} → IsScottContinuous P P id
   ScottId = record
     { preserveLub = λ _ _ → id
@@ -147,7 +147,7 @@ module Scott
            (mono : IsOrderHomomorphism D._≈_ E._≈_ D._≤_ E._≤_ f)
     where
       private module f = IsOrderHomomorphism mono
-      
+
       pres-lub : (s : Ix → D.Carrier) → (dir : IsDirectedFamily DP s) →
                 f (D.⋁ s dir) E.≈ E.⋁ (f ∘ s) (map-directed f mono dir)
       pres-lub s dir = E.antisym
@@ -161,12 +161,12 @@ module Scott
           (f (D.⋁ s dir))
           (λ i → f.mono (D.⋁-≤ i))
           )
-              
+
       to-scott : (∀ {Ix} (s : Ix → D.Carrier) (dir : IsDirectedFamily DP s) →
                 IsLub E.poset (f ∘ s) (f (D.⋁ s dir))) →
                 IsScottContinuous DP EP f
       to-scott pres-⋁ = record
-        { preserveLub = λ {_} {s} dir lub x → 
+        { preserveLub = λ {_} {s} dir lub x →
           IsLub-cong E (f.cong (uniqueLub D (D.⋁ s dir) lub (D.⋁-isLub s dir) x)) (pres-⋁ s dir)
         ; cong = f.cong
         }
