@@ -296,6 +296,17 @@ Additions to existing modules
     LeftInverse (I ×ₛ A) (J ×ₛ B)
   ```
 
+* In `Data.Vec.Properties`:
+  ```agda
+  toList-injective : ∀ {m n} → .(m=n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) →
+                     toList xs ≡ toList ys → xs ≈[ m=n ] ys
+  fromList-reverse : (xs : List A) → (fromList (L.reverse xs)) ≈[ L.length-reverse xs ] reverse (fromList xs)
+  ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
+                  cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
+  ʳ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
+                   cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
+  ```
+
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
   ```agda
   zipWith-assoc : Associative _∼_ f → Associative (Pointwise _∼_) (zipWith {n = n} f)
