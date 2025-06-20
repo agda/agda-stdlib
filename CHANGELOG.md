@@ -323,6 +323,12 @@ Additions to existing modules
   contra-diagonal : (A → ¬ A) → ¬ A
   ```
 
+* In `Relation.Nullary.Recomputable`:
+  ```agda
+  recompute-irr≗id : (promote : Recomputable A) → Nullary.Irrelevant A →
+                     (a : A) → promote a ≡ a
+  ```
+
 * In `Relation.Nullary.Reflects`:
   ```agda
   ⊤-reflects : Reflects (⊤ {a}) true
