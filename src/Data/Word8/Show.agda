@@ -18,9 +18,9 @@ open import Data.Word8.Base using (Word8; toℕ; toBits)
 open import Function.Base using (_$_; _∘′_)
 open import Data.Digit using (toNatDigits)
 open import Data.List using (List; map)
-open import Data.Char as Char
+open import Data.Char as Char using (Char; toℕ; fromℕ)
 open import Data.Bool.Base using (if_then_else_)
-open import Data.Nat
+open import Data.Nat using (ℕ; _<ᵇ_; _≤ᵇ_; _∸_; _*_; _+_)
 
 
 showBits : Word8 → String
