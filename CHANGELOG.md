@@ -150,6 +150,11 @@ Deprecated names
   left-inverse ↦ rightInverse
   ```
 
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  dec-yes  ↦ dec-yes-recompute
+  ```
+
 New modules
 -----------
 
@@ -310,6 +315,11 @@ Additions to existing modules
   <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
   <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
   <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
+  ```
+
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
