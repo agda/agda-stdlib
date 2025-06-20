@@ -19,7 +19,7 @@ open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; trans; cong′)
+  using (_≡_; refl; sym; trans)
 
 private
   variable
@@ -41,11 +41,13 @@ map A⇔B = map′ to from
 -- If there is an injection from one setoid to another, and the
 -- latter's equivalence relation is decidable, then the former's
 -- equivalence relation is also decidable.
-via-injection : {S : Setoid a ℓ₁} {T : Setoid b ℓ₂}
-                (inj : Injection S T) (open Injection inj) →
-                Decidable Eq₂._≈_ → Decidable Eq₁._≈_
-via-injection inj _≟_ x y = map′ injective cong (to x ≟ to y)
-  where open Injection inj
+
+module _ {S : Setoid a ℓ₁} {T : Setoid b ℓ₂} (injection : Injection S T) where
+
+  open Injection injection
+
+  via-injection : Decidable Eq₂._≈_ → Decidable Eq₁._≈_
+  via-injection _≟_ x y = map′ injective cong (to x ≟ to y)
 
 ------------------------------------------------------------------------
 -- A lemma relating True and Dec
