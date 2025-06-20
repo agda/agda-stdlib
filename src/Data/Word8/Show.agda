@@ -40,7 +40,7 @@ toHexadecimalChars : ℕ → List Char
 toHexadecimalChars = map toHexDigitChar ∘′ toNatDigits 16
 
 showHexa : Word8 → String
-showHexa w = "0x" ++_ 
-  $ padLeft '0' 2 
-  $ fromList 
+showHexa w = "0x" ++_
+  $ padLeft '0' 2
+  $ fromList
   $ toHexadecimalChars (Data.Word8.Base.toℕ w)

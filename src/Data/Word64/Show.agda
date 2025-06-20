@@ -21,7 +21,7 @@ open import Data.Word64.Unsafe using (toBits)
 open import Data.Bool
 open import Data.Nat
 open import Data.List using ( List )
-open import Data.String 
+open import Data.String
 open import Data.Word64
 
 open import Data.Digit using ( toNatDigits )
@@ -45,9 +45,8 @@ toHexadecimalChars : ℕ → List Char
 toHexadecimalChars = Data.List.map toHexDigitChar ∘′ toNatDigits 16
 
 showHexa : Word64 -> String
-showHexa w 
-  = "0x" ++_
+showHexa w = "0x" ++_
   $ padLeft '0' 16
-  $ Data.String.fromList  
+  $ Data.String.fromList
   $ toHexadecimalChars (Data.Word64.toℕ w)
 

@@ -64,43 +64,14 @@ toDecimalChars = List.map toDigitChar ∘′ toNatDigits 10
 show : ℕ → String
 show = fromList ∘′ toDecimalChars
 
--- Arbitrary base betwen 2 & 16.
--- Warning: when compiled the time complexity of `showInBase b n` is
--- O(n) instead of the expected O(log(n)).
 
-charsInBase : (base : ℕ)
-              {base≥2 : True (2 ≤? base)}
-              {base≤16 : True (base ≤? 16)} →
-              ℕ → List Char
-charsInBase base {base≥2} {base≤16} = List.map (showDigit {base≤16 = base≤16})
-                                    ∘ List.reverse
-                                    ∘ proj₁
-                                    ∘ toDigits base {base≥2 = base≥2}
-
-showInBase : (base : ℕ)
-             {base≥2 : True (2 ≤? base)}
-             {base≤16 : True (base ≤? 16)} →
-             ℕ → String
-showInBase base {base≥2} {base≤16} = fromList
-                                   ∘ charsInBase base {base≥2} {base≤16}
-
--- Fast version of `charsInBase` and `showInBase` for bases 2 to 16.
-
-charsInBaseFast : (base : ℕ)
-                  {base≥1 : True (1 ≤? base)}
-                  {base≤16 : True (base ≤? 16)} →
-                  ℕ → List Char
-charsInBaseFast base {base≥1} {base≤16} n = List.map toHexChar (toNatDigits base {base≤16 = base≥1} n)
+charsInBase : (base : ℕ) {base≥1 : True (1 ≤? base)} {base≤16 : True (base ≤? 16)} → ℕ → List Char
+charsInBase base {base≥1} {base≤16} n = List.map toHexChar (toNatDigits base {base≤16 = base≥1} n)
   where
   toHexChar : ℕ → Char
   toHexChar digit = if digit <ᵇ 10
     then Char.fromℕ (digit + Char.toℕ '0')
     else Char.fromℕ (digit ∸ 10 + Char.toℕ 'a')
 
-showInBaseFast : (base : ℕ)
-                 {base≥1 : True (1 ≤? base)}
-                 {base≤16 : True (base ≤? 16)} →
-                 ℕ → String  
-showInBaseFast base {base≥1} {base≤16} = fromList
-                              ∘ List.reverse
-                              ∘ charsInBaseFast base {base≥1} {base≤16}
+showInBase : (base : ℕ) {base≥1 : True (1 ≤? base)} {base≤16 : True (base ≤? 16)} → ℕ → String
+showInBase base {base≥1} {base≤16} = fromList ∘ List.reverse ∘ charsInBase base {base≥1} {base≤16}
