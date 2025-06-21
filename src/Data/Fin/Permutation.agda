@@ -26,7 +26,7 @@ open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (does; ¬_; yes; no)
-open import Relation.Nullary.Decidable using (dec-yes; dec-no)
+open import Relation.Nullary.Decidable using (dec-no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; subst; cong; cong₂)
