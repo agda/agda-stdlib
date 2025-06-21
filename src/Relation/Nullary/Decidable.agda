@@ -18,7 +18,7 @@ open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; trans; cong′)
 
 private
@@ -76,7 +76,8 @@ dec-no : (a? : Dec A) (¬a : ¬ A) → a? ≡ no ¬a
 dec-no a? ¬a with no _ ← a? | refl ← dec-false a? ¬a = refl
 
 dec-yes-irr : (a? : Dec A) → Irrelevant A → (a : A) → a? ≡ yes a
-dec-yes-irr a? irr a rewrite dec-yes-recompute a? a | recompute-irr≗id a? irr a = refl
+dec-yes-irr a? irr a =
+  trans (dec-yes-recompute a? a) (≡.cong yes (recompute-irr≗id a? irr a))
 
 ⌊⌋-map′ : ∀ t f (a? : Dec A) → ⌊ map′ {B = B} t f a? ⌋ ≡ ⌊ a? ⌋
 ⌊⌋-map′ t f a? = trans (isYes≗does (map′ t f a?)) (sym (isYes≗does a?))
@@ -103,4 +104,3 @@ dec-yes a? a = _ , dec-yes-recompute a? a
 "Warning: dec-yes was deprecated in v2.3.
 Please use dec-yes-recompute instead, with a sharper type."
 #-}
-
