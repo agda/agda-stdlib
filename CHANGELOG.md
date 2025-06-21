@@ -237,13 +237,19 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Fin.Properties`:
+  ```agda
+  ≡-irrelevant : Irrelevant {A = Fin n} _≡_
+  ≟-diag       : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
+  ≟-diag-refl  : (i : Fin n) → (i ≟ i) ≡ yes refl
+  ```
+
 * In `Data.Fin.Subset`:
   ```agda
   _⊇_ : Subset n → Subset n → Set
   _⊉_ : Subset n → Subset n → Set
   _⊃_ : Subset n → Subset n → Set
   _⊅_ : Subset n → Subset n → Set
-
   ```
 
 * In `Data.Fin.Subset.Induction`:
@@ -276,6 +282,11 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ≟-diag-refl : ∀ n → (n ≟ n) ≡ yes refl
   ```
 
 * In `Data.Product.Function.Dependent.Propositional`:
