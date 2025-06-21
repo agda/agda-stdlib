@@ -26,6 +26,7 @@ open import Data.Nat.Properties using (<⇒≢)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡⇒≡×≡)
 open import Function.Base using (id; _∘_)
+open import Function.Definitions using (Congruent)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
@@ -52,6 +53,10 @@ module _ {A : Set a} {B : Set b} where
   map⁺ : ∀ {f} → (∀ {x y} → f x ≡ f y → x ≡ y) →
          ∀ {xs} → Unique xs → Unique (map f xs)
   map⁺ = Setoid.map⁺ (setoid A) (setoid B)
+
+  map⁻ : ∀ {f} → Congruent _≡_ _≡_ f →
+         ∀ {xs} → Unique (map f xs) → Unique xs
+  map⁻ = Setoid.map⁻ (setoid A) (setoid B)
 
 ------------------------------------------------------------------------
 -- ++
