@@ -197,7 +197,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ k with i ≟ k
-  ... | yes i≡k rewrite dec-yes-recompute (j ≟ j) refl = i≡k -- rewrite {!dec-yes-recompute (j ≟ j) refl!} = i≡k
+  ... | yes i≡k rewrite dec-yes-recompute (j ≟ j) refl = i≡k
   ... | no  i≢k
     with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
     rewrite dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) j≢punchInⱼπʳpunchOuti≢k
