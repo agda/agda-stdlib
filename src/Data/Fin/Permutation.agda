@@ -12,7 +12,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; suc; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F)
 open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
-  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0)
+  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0; ≟-diag-refl)
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product.Base using (_,_; proj₂)
@@ -26,7 +26,7 @@ open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (does; ¬_; yes; no)
-open import Relation.Nullary.Decidable using (dec-yes; dec-no)
+open import Relation.Nullary.Decidable using (dec-no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; subst; cong; cong₂)
@@ -197,7 +197,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ k with i ≟ k
-  ... | yes i≡k rewrite proj₂ (dec-yes (j ≟ j) refl) = i≡k
+  ... | yes i≡k rewrite ≟-diag-refl j = i≡k
   ... | no  i≢k
     with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
     rewrite dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) j≢punchInⱼπʳpunchOuti≢k
@@ -210,7 +210,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ k with j ≟ k
-  ... | yes j≡k rewrite proj₂ (dec-yes (i ≟ i) refl) = j≡k
+  ... | yes j≡k rewrite ≟-diag-refl i = j≡k
   ... | no  j≢k
     with i≢punchInᵢπˡpunchOutj≢k ← punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym
     rewrite dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) i≢punchInᵢπˡpunchOutj≢k
