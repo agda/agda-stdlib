@@ -11,6 +11,7 @@ module Relation.Nullary.Decidable where
 open import Level using (Level)
 open import Data.Bool.Base using (true; false)
 open import Data.Product.Base using (∃; _,_)
+open import Function.Base using (const; _$_; case_of_)
 open import Function.Bundles
   using (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔ₛ′)
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
@@ -53,11 +54,13 @@ module _ {S : Setoid a ℓ₁} {T : Setoid b ℓ₂} (injection : Injection S T)
 -- A lemma relating True and Dec
 
 True-↔ : (a? : Dec A) → Irrelevant A → True a? ↔ A
-True-↔ a? irr = mk↔ₛ′ to from (λ a → irr (to (from a)) a) (from-to a?)
+True-↔ a? irr = mk↔ₛ′ to from to-from (from-to a?)
   where
   to = toWitness {a? = a?}
   from = fromWitness {a? = a?}
-  from-to : (a? : Dec A) (x : True a?) → fromWitness (toWitness x) ≡ x
+  to-from : ∀ a → to (from a) ≡ a
+  to-from a = irr _ a
+  from-to : ∀ a? (x : True a?) → fromWitness (toWitness x) ≡ x
   from-to (yes _) _ = refl
 
 ------------------------------------------------------------------------
