@@ -14,6 +14,7 @@ open import Data.Irrelevant using (Irrelevant; irrelevant; [_])
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
 open import Relation.Nullary.Negation.Core using (¬_)
+import Relation.Nullary.Irrelevant as Nullary
 
 private
   variable
@@ -34,10 +35,18 @@ Recomputable : (A : Set a) → Set a
 Recomputable A = .A → A
 
 ------------------------------------------------------------------------
--- Fundamental property: 'promotion' is a constant function
+-- Fundamental properties:
+-- 'promotion' is a constant function.
+-- it is moreover the identity, if `A` is propositionally irrelevant.
 
-recompute-constant : (r : Recomputable A) (p q : A) → r p ≡ r q
-recompute-constant r p q = refl
+module _ (promote : Recomputable A) where
+
+  recompute-constant : (p q : A) → promote p ≡ promote q
+  recompute-constant _ _ = refl
+
+  recompute-irr≗id : Nullary.Irrelevant A → (a : A) → promote a ≡ a
+  recompute-irr≗id irr a = irr (promote a) a
+
 
 ------------------------------------------------------------------------
 -- Constructions

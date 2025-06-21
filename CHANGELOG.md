@@ -150,6 +150,11 @@ Deprecated names
   left-inverse ↦ rightInverse
   ```
 
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  dec-yes  ↦ dec-yes-recompute
+  ```
+
 New modules
 -----------
 
@@ -312,15 +317,28 @@ Additions to existing modules
   <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
   ```
 
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec : Dec {a} ⊤
   ⊥-dec : Dec {a} ⊥
+  recompute-irr≗id : (a? : Decidable A) → Nullary.Irrelevant A →
+                     (a : A) → recompute a? a ≡ a
   ```
 
 * In `Relation.Nullary.Negation.Core`:
   ```agda
   contra-diagonal : (A → ¬ A) → ¬ A
+  ```
+
+* In `Relation.Nullary.Recomputable`:
+  ```agda
+  recompute-irr≗id : (promote : Recomputable A) → Nullary.Irrelevant A →
+                     (a : A) → promote a ≡ a
   ```
 
 * In `Relation.Nullary.Reflects`:

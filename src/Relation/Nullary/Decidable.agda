@@ -18,7 +18,7 @@ open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; trans; cong′)
 
 private
@@ -69,14 +69,15 @@ dec-false : (a? : Dec A) → ¬ A → does a? ≡ false
 dec-false (false because  _ ) ¬a = refl
 dec-false (true  because [a]) ¬a = contradiction (invert [a]) ¬a
 
-dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
-dec-yes a? a with yes a′ ← a? | refl ← dec-true a? a = a′ , refl
+dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
+dec-yes-recompute a? a with yes _ ← a? | refl ← dec-true a? (recompute a? a) = refl
 
 dec-no : (a? : Dec A) (¬a : ¬ A) → a? ≡ no ¬a
 dec-no a? ¬a with no _ ← a? | refl ← dec-false a? ¬a = refl
 
 dec-yes-irr : (a? : Dec A) → Irrelevant A → (a : A) → a? ≡ yes a
-dec-yes-irr a? irr a with a′ , eq ← dec-yes a? a rewrite irr a a′ = eq
+dec-yes-irr a? irr a =
+  trans (dec-yes-recompute a? a) (≡.cong yes (recompute-irr≗id a? irr a))
 
 ⌊⌋-map′ : ∀ t f (a? : Dec A) → ⌊ map′ {B = B} t f a? ⌋ ≡ ⌊ a? ⌋
 ⌊⌋-map′ t f a? = trans (isYes≗does (map′ t f a?)) (sym (isYes≗does a?))
@@ -87,3 +88,19 @@ does-≡ a? (no ¬a) = dec-false a? ¬a
 
 does-⇔ : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
 does-⇔ A⇔B a? = does-≡ (map A⇔B a?)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
+dec-yes a? a = _ , dec-yes-recompute a? a
+{-# WARNING_ON_USAGE dec-yes
+"Warning: dec-yes was deprecated in v2.3.
+Please use dec-yes-recompute instead, with a sharper type."
+#-}
