@@ -237,6 +237,14 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Fin.Permutation.Components`:
+  ```agda
+  transpose-iij : (i j : Fin n) → transpose i i j ≡ j
+  transpose-ijj : (i j : Fin n) → transpose i j j ≡ i
+  transpose-iji : (i j : Fin n) → transpose i j i ≡ j
+  transpose-transpose : transpose i j k ≡ l → transpose j i l ≡ k
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
