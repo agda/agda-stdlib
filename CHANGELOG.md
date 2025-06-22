@@ -167,6 +167,13 @@ New modules
 
 * `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
 
+* Integer arithmetic modulo `n`, based on `Data.Nat.Bounded.*`:
+  ```agda
+  Data.Integer.Modulo.Base
+  Data.Integer.Modulo.Literals
+  Data.Integer.Modulo.Properties
+  ```
+
 Additions to existing modules
 -----------------------------
 
