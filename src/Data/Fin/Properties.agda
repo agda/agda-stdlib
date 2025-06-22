@@ -115,7 +115,6 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 ≟-off-diag : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
 ≟-off-diag = ≢-≟-identity _≟_
 
-
 ------------------------------------------------------------------------
 -- Structures
 
