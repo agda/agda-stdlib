@@ -250,7 +250,7 @@ Additions to existing modules
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
   ≟-diag       : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
   ≟-diag-refl  : (i : Fin n) → (i ≟ i) ≡ yes refl
-  ≟-off-diag : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
+  ≟-off-diag   : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
   ```
 
 * In `Data.Fin.Subset`:
@@ -296,6 +296,7 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   ≟-diag-refl : ∀ n → (n ≟ n) ≡ yes refl
+  ≟-off-diag  : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ```
 
 * In `Data.Product.Function.Dependent.Propositional`:
