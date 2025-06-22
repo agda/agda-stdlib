@@ -250,6 +250,7 @@ Additions to existing modules
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
   ≟-diag       : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
   ≟-diag-refl  : (i : Fin n) → (i ≟ i) ≡ yes refl
+  ≟-off-diag : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
   ```
 
 * In `Data.Fin.Subset`:

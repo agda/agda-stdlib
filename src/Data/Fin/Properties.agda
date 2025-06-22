@@ -46,7 +46,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Binary.PropositionalEquality as ≡
-  using (≡-≟-identity)
+  using (≡-≟-identity; ≢-≟-identity)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
@@ -111,6 +111,10 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 
 ≟-diag-refl : (i : Fin n)  → (i ≟ i) ≡ yes refl
 ≟-diag-refl _ = ≟-diag refl
+
+≟-off-diag : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
+≟-off-diag = ≢-≟-identity _≟_
+
 
 ------------------------------------------------------------------------
 -- Structures
