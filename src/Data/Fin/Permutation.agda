@@ -11,11 +11,13 @@ module Data.Fin.Permutation where
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; suc; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F)
-open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
-  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0; ≟-diag-refl)
+open import Data.Fin.Properties
+  using (¬Fin0; _≟_; ≟-diag-refl; ≟-off-diag
+        ; punchInᵢ≢i; punchOut-punchIn; punchIn-punchOut
+        ; punchOut-cong; punchOut-cong′)
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Product.Base using (_,_; proj₂)
+open import Data.Product.Base using (_,_)
 open import Function.Bundles using (_↔_; Injection; Inverse; mk↔ₛ′)
 open import Function.Construct.Composition using (_↔-∘_)
 open import Function.Construct.Identity using (↔-id)
@@ -25,9 +27,8 @@ open import Function.Properties.Inverse using (↔⇒↣)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Nullary using (does; ¬_; yes; no)
-open import Relation.Nullary.Decidable using (dec-no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (does; yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; subst; cong; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -200,7 +201,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
   ... | yes i≡k rewrite ≟-diag-refl j = i≡k
   ... | no  i≢k
     with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
-    rewrite dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) j≢punchInⱼπʳpunchOuti≢k
+    rewrite ≟-off-diag j≢punchInⱼπʳpunchOuti≢k
     = begin
     punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)                    ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-cong j refl) ⟩
     punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
@@ -213,7 +214,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
   ... | yes j≡k rewrite ≟-diag-refl i = j≡k
   ... | no  j≢k
     with i≢punchInᵢπˡpunchOutj≢k ← punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym
-    rewrite dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) i≢punchInᵢπˡpunchOutj≢k
+    rewrite ≟-off-diag i≢punchInᵢπˡpunchOutj≢k
     = begin
     punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
     punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
@@ -296,9 +297,7 @@ insert-remove {m = m} {n = n} i π j with i ≟ j
   π ⟨$⟩ʳ j ∎
 
 remove-insert : ∀ i j (π : Permutation m n) → remove i (insert i j π) ≈ π
-remove-insert i j π k with i ≟ i
-... | no i≢i = contradiction refl i≢i
-... | yes _ = begin
+remove-insert i j π k rewrite ≟-diag-refl i = begin
   punchOut {i = j} _
     ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
   punchOut {i = j} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym)
