@@ -89,11 +89,11 @@ module _ {P : Poset c₁ ℓ₁₁ ℓ₁₂} {Q : Poset c₂ ℓ₂₁ ℓ₂�
     { elt = IsDirectedFamily.elt dir
     ; isSemidirected = semi
     }
-    where 
+    where
       module f = IsOrderHomomorphism ismonotone
 
-      semi = λ i j → let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.isSemidirected dir i j 
-            in k , f.mono  s[i]≤s[k] , f.mono s[j]≤s[k] 
+      semi = λ i j → let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.isSemidirected dir i j
+            in k , f.mono  s[i]≤s[k] , f.mono s[j]≤s[k]
 
 ------------------------------------------------------------------------
 -- Scott continuous functions
