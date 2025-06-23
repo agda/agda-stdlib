@@ -12,7 +12,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Fin.Permutation as Perm using (Permutation; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
 open import Data.Fin.Patterns using (0F)
-open import Data.Vec.Functional
+open import Data.Vec.Functional using (Vector; rearrange; removeAt; tail; head)
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Negation using (contradiction)

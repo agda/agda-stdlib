@@ -8,7 +8,7 @@
 
 module Foreign.Haskell.Pair where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Product.Base using (_×_; _,_)
 
 private

@@ -7,11 +7,11 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (RawMonoid)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Data.Vec.Functional as Vector using (Vector)
 
 module Algebra.Definitions.RawMonoid {a ℓ} (M : RawMonoid a ℓ) where
 
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
+open import Data.Vec.Functional as Vector using (Vector)
 open RawMonoid M renaming ( _∙_ to _+_ ; ε to 0# )
 
 ------------------------------------------------------------------------

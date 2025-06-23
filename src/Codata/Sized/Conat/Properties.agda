@@ -8,15 +8,15 @@
 
 module Codata.Sized.Conat.Properties where
 
-open import Size
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Codata.Sized.Thunk
 open import Codata.Sized.Conat
-open import Codata.Sized.Conat.Bisimilarity
+open import Codata.Sized.Conat.Bisimilarity using (_⊢_≈_; refl; zero; suc)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
-open import Relation.Nullary
-open import Relation.Nullary.Decidable using (map′)
 open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Size using (Size)
 
 private
   variable

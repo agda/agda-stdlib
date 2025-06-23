@@ -12,7 +12,7 @@
 
 module Data.List.Properties where
 
-open import Algebra.Bundles
+open import Algebra.Bundles using (Semigroup; Monoid)
 open import Algebra.Consequences.Propositional
  using (selfInverse⇒involutive; selfInverse⇒injective)
 open import Algebra.Definitions as AlgebraicDefinitions using (SelfInverse; Involutive)
@@ -42,8 +42,10 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _because_; does)
+open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
+open import Relation.Nullary.Decidable as Decidable
+  using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
 open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
 open import Relation.Unary.Properties using (∁?)
 import Data.Nat.GeneralisedArithmetic as ℕ
@@ -842,6 +844,10 @@ applyUpTo-∷ʳ : ∀ (f : ℕ → A) n → applyUpTo f n ∷ʳ f n ≡ applyUpT
 applyUpTo-∷ʳ f zero = refl
 applyUpTo-∷ʳ f (suc n) = cong (f 0 ∷_) (applyUpTo-∷ʳ (f ∘ suc) n)
 
+map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
+map-applyUpTo f g zero = refl
+map-applyUpTo f g (suc n) = cong (g (f 0) ∷_) (map-applyUpTo (f ∘ suc) g n)
+
 ------------------------------------------------------------------------
 -- applyDownFrom
 
@@ -859,6 +865,10 @@ module _ (f : ℕ → A) where
   applyDownFrom-∷ʳ zero = refl
   applyDownFrom-∷ʳ (suc n) = cong (f (suc n) ∷_) (applyDownFrom-∷ʳ n)
 
+  map-applyDownFrom : ∀ (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
+  map-applyDownFrom g zero = refl
+  map-applyDownFrom g (suc n) = cong (g (f n) ∷_) (map-applyDownFrom g n)
+
 ------------------------------------------------------------------------
 -- upTo
 
@@ -871,6 +881,9 @@ lookup-upTo = lookup-applyUpTo id
 upTo-∷ʳ : ∀ n → upTo n ∷ʳ n ≡ upTo (suc n)
 upTo-∷ʳ = applyUpTo-∷ʳ id
 
+map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
+map-upTo = map-applyUpTo id
+
 ------------------------------------------------------------------------
 -- downFrom
 
@@ -882,6 +895,9 @@ lookup-downFrom = lookup-applyDownFrom id
 
 downFrom-∷ʳ : ∀ n → applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
 downFrom-∷ʳ = applyDownFrom-∷ʳ id
+
+map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+map-downFrom = map-applyDownFrom id
 
 ------------------------------------------------------------------------
 -- tabulate

@@ -12,7 +12,7 @@ open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Nat.Show using (charsInBase)
 open import Function.Base using (_∘_)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Nullary.Decidable.Core using (True)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 module Data.Nat.Show.Properties where

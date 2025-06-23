@@ -9,18 +9,16 @@
 module Function.Endo.Propositional {a} (A : Set a) where
 
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
-open import Algebra.Core
-import Algebra.Definitions.RawMonoid as RawMonoidDefinitions
-import Algebra.Properties.Monoid.Mult as MonoidMultProperties
+open import Algebra.Core using (Op₁; Op₂)
+import Algebra.Definitions.RawMonoid as RawMonoidDefinitions using (_×_)
+import Algebra.Properties.Monoid.Mult as MonoidMultProperties using (×-homo-+)
 open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Algebra.Morphism
   using (module Definitions; IsMagmaHomomorphism; IsMonoidHomomorphism)
 open Definitions using (Homomorphic₂)
-
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; +-rawMagma; +-0-rawMonoid)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)
-
 open import Function.Base using (id; _∘′_; _∋_; flip)
 open import Function.Bundles using (Func; _⟶ₛ_; _⟨$⟩_)
 open import Relation.Binary.Core using (_Preserves_⟶_)

@@ -12,7 +12,7 @@ open import Algebra.Bundles using (CommutativeSemiring)
 open import Data.Product.Base using (∃; _×_; ∃₂; _,_; proj₂)
 open import Data.Product.Properties using (Σ-≡,≡→≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
-import Data.Product.Function.Dependent.Propositional as Σ
+import Data.Product.Function.Dependent.Propositional as Σ using (cong)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_; _∘′_; id; flip; _$_)
 open import Function.Bundles using (_↔_; mk↔ₛ′; Inverse)

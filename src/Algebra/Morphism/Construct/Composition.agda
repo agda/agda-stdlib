@@ -14,7 +14,7 @@ open import Algebra.Morphism.Structures
 open import Function.Base using (_∘_)
 import Function.Construct.Composition as Func
 open import Level using (Level)
-open import Relation.Binary.Morphism.Construct.Composition
+open import Relation.Binary.Morphism.Construct.Composition using (isRelHomomorphism)
 open import Relation.Binary.Definitions using (Transitive)
 
 private

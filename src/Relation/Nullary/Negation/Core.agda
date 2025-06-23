@@ -11,7 +11,7 @@ module Relation.Nullary.Negation.Core where
 open import Data.Empty using (⊥; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _∘_; const)
-open import Level
+open import Level using (Level; _⊔_)
 
 private
   variable
@@ -59,6 +59,11 @@ contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 
 contraposition : (A → B) → ¬ B → ¬ A
 contraposition f ¬b a = contradiction (f a) ¬b
+
+-- Self-contradictory propositions are false by 'diagonalisation'
+
+contra-diagonal : (A → ¬ A) → ¬ A
+contra-diagonal self a = self a a
 
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
