@@ -967,8 +967,8 @@ any? {zero}  {P = _} P? = no λ { (() , _) }
 any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 
 all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
-all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
-               (decFinSubset U? (λ {f} _ → P? f))
+all? {n = zero}  P? = yes λ()
+all? {n = suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
 
 private
   -- A nice computational property of `all?`:
