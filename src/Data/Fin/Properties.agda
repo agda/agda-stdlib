@@ -28,7 +28,7 @@ open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
-open import Function.Base using (_∘_; id; _$_; flip)
+open import Function.Base using (_∘_; id; _$_; flip; const; _$-; λ-)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
@@ -951,16 +951,20 @@ module _ {p} {P : Pred (Fin (suc n)) p} where
 decFinSubset : ∀ {p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
 decFinSubset {zero}  {_}     {_} Q? P? = yes λ {}
-decFinSubset {suc n} {P = P} {Q} Q? P?
-  with Q? zero | ∀-cons {P = λ x → Q x → P x}
-... | false because [¬Q0] | cons =
-  map′ (λ f {x} → cons (⊥-elim ∘ invert [¬Q0]) (λ x → f {x}) x)
-       (λ f {x} → f {suc x})
-       (decFinSubset (Q? ∘ suc) P?)
-... | true  because  [Q0] | cons =
-  map′ (uncurry λ P0 rec {x} → cons (λ _ → P0) (λ x → rec {x}) x)
-       < _$ invert [Q0] , (λ f {x} → f {suc x}) >
-       (P? (invert [Q0]) ×-dec decFinSubset (Q? ∘ suc) P?)
+decFinSubset {suc n} {P = P} {Q} Q? P? = dec[Q⊆P]
+  module DecFinSubset where
+  cons : (Q 0F → P 0F) → (Q ∘ suc ⊆ P ∘ suc) → Q ⊆ P
+  cons q₀⊆p₀ f = ∀-cons {P = λ x → Q x → P x} q₀⊆p₀ (λ- f) $-
+  ih : Dec (Q ∘ suc ⊆ P ∘ suc)
+  ih = decFinSubset (Q? ∘ suc) P?
+  Q⊆P⇒Q∘suc⊆P∘suc : Q ⊆ P → Q ∘ suc ⊆ P ∘ suc
+  Q⊆P⇒Q∘suc⊆P∘suc f {x} = f {suc x}
+  dec[Q⊆P] : Dec (Q ⊆ P)
+  dec[Q⊆P] with Q? zero
+  ... | false because [¬Q0] = let ¬q₀ = invert [¬Q0] in
+    map′ (cons (flip contradiction ¬q₀)) Q⊆P⇒Q∘suc⊆P∘suc ih
+  ... | true  because  [Q0] = let q₀ = invert [Q0] in
+    map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q∘suc⊆P∘suc > (P? q₀ ×-dec ih)
 
 any? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
 any? {zero}  {P = _} P? = no λ { (() , _) }
