@@ -11,7 +11,7 @@ module Relation.Binary.Properties.Domain where
 open import Relation.Binary.Bundles using (Poset)
 open import Level using (Level; Lift; lift)
 open import Function using (_∘_; id)
-open import Data.Product using (_,_)
+open import Data.Product using (_,_; ∃)
 open import Data.Bool using (Bool; true; false; if_then_else_)
 open import Relation.Binary.Domain.Definitions
 open import Relation.Binary.Domain.Bundles using (DirectedCompletePartialOrder)
@@ -53,10 +53,10 @@ module _ {P : Poset c₁ ℓ₁₁ ℓ₁₂} {Q : Poset c₂ ℓ₂₁ ℓ₂�
     module Q = Poset Q
 
   isMonotone : (P-DirectedCompletePartialOrder : IsDirectedCompletePartialOrder P) →
-               (f : P.Carrier → Q.Carrier) → (scott : IsScottContinuous P Q f) →
+               (f : P.Carrier → Q.Carrier) → (isCts : IsScottContinuous P Q f) →
                IsOrderHomomorphism P._≈_ Q._≈_ P._≤_ Q._≤_ f
-  isMonotone P-DirectedCompletePartialOrder f scott = record
-    { cong = IsScottContinuous.cong scott
+  isMonotone P-DirectedCompletePartialOrder f isCts = record
+    { cong = IsScottContinuous.cong isCts
     ; mono = mono-proof
     }
     where
@@ -77,20 +77,23 @@ module _ {P : Poset c₁ ℓ₁₁ ℓ₁₂} {Q : Poset c₂ ℓ₂₁ ℓ₂�
             }
 
           s-lub : IsLub P s y
-          s-lub = record { isLeastUpperBound = sx≤sfalse , (λ z proof → proof (lift false))}
+          s-lub = record { isLeastUpperBound = sx≤sfalse , (λ _ proof → proof (lift false))}
 
           fs-lub : IsLub Q (f ∘ s) (f y)
-          fs-lub = IsScottContinuous.preserveLub scott s-directed y s-lub
+          fs-lub = IsScottContinuous.preserveLub isCts s-directed y s-lub
 
   map-directed : {s : Ix → P.Carrier} → (f : P.Carrier → Q.Carrier)→
                       IsOrderHomomorphism P._≈_ Q._≈_ P._≤_ Q._≤_ f →
                       IsDirectedFamily P s → IsDirectedFamily Q (f ∘ s)
   map-directed f ismonotone dir = record
     { elt = IsDirectedFamily.elt dir
-    ; isSemidirected = λ i j → let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.isSemidirected dir i j
-      in k , f.mono  s[i]≤s[k] , f.mono s[j]≤s[k]
+    ; isSemidirected = semi
     }
-    where module f = IsOrderHomomorphism ismonotone
+    where 
+      module f = IsOrderHomomorphism ismonotone
+
+      semi = λ i j → let (k , s[i]≤s[k] , s[j]≤s[k]) = IsDirectedFamily.isSemidirected dir i j 
+            in k , f.mono  s[i]≤s[k] , f.mono s[j]≤s[k] 
 
 ------------------------------------------------------------------------
 -- Scott continuous functions
@@ -106,16 +109,16 @@ module _  {P Q R : Poset c ℓ₁ ℓ₂} where
     { preserveLub = λ _ _ → id
     ; cong = id }
 
-  scott-cong : (f : R.Carrier  → Q.Carrier) (g : P.Carrier → R.Carrier) →
+  cts-cong : (f : R.Carrier  → Q.Carrier) (g : P.Carrier → R.Carrier) →
             IsScottContinuous R Q f → IsScottContinuous P R g →
             IsOrderHomomorphism P._≈_ R._≈_ P._≤_ R._≤_ g → IsScottContinuous P Q (f ∘ g)
-  scott-cong f g scottf scottg monog = record
+  cts-cong f g isCtsf isCtsG monog = record
     { preserveLub = λ dir lub → f.preserveLub (map-directed g monog dir) (g lub) ∘ g.preserveLub dir lub
     ; cong = f.cong ∘ g.cong
     }
     where
-      module f = IsScottContinuous scottf
-      module g = IsScottContinuous scottg
+      module f = IsScottContinuous isCtsf
+      module g = IsScottContinuous isCtsG
 
 ------------------------------------------------------------------------
 -- Suprema and pointwise ordering
@@ -133,7 +136,7 @@ module _ {P : Poset c ℓ₁ ℓ₂} (D : DirectedCompletePartialOrder c ℓ₁ 
 ------------------------------------------------------------------------
 -- Scott continuity module
 
-module Scott
+module ScottContinuity
   (D E : DirectedCompletePartialOrder c ℓ₁ ℓ₂)
   where
   private
@@ -162,10 +165,10 @@ module Scott
           (λ i → f.mono (D.⋁-≤ i))
           )
 
-      to-scott : (∀ {Ix} (s : Ix → D.Carrier) (dir : IsDirectedFamily DP s) →
+      isScottContinuous : (∀ {Ix} (s : Ix → D.Carrier) (dir : IsDirectedFamily DP s) →
                 IsLub E.poset (f ∘ s) (f (D.⋁ s dir))) →
                 IsScottContinuous DP EP f
-      to-scott pres-⋁ = record
+      isScottContinuous pres-⋁ = record
         { preserveLub = λ {_} {s} dir lub x →
           IsLub-cong E (f.cong (uniqueLub D (D.⋁ s dir) lub (D.⋁-isLub s dir) x)) (pres-⋁ s dir)
         ; cong = f.cong
