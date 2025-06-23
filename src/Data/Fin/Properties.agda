@@ -1008,7 +1008,7 @@ private
 -- then we can find the smallest value for which this is the case.
 
 ¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-                 ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+                 ¬ (∀ i → P i) → MinimalCounterexample P
 ¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
 ¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
 ... | false because [¬P₀] = (zero , invert [¬P₀] , λ ())
