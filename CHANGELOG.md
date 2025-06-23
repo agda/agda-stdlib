@@ -126,3 +126,18 @@ Additions to existing modules
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
+
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
+  ```agda
+  map⁻ : ∀ {xs} → AllPairs R (map f xs) → AllPairs (R on f) xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
+  ```agda
+  map⁻ : ∀ {f} → Congruent _≈₁_ _≈₂_ f → ∀ {xs} → Unique R (map f xs) → Unique S xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
+  ```agda
+  map⁻ : ∀ {f} → Congruent _≡_ _≡_ f → ∀ {xs} → Unique (map f xs) → Unique xs
+  ```
