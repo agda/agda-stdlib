@@ -23,7 +23,7 @@ open import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product.Base as Product
-  using (∃; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
+  using (∃; ∃-syntax; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
@@ -973,6 +973,27 @@ any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
 all? {n = zero}  P? = yes λ()
 all? {n = suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
+
+Universal< : ∀ {p} → Pred (Fin n) p → Pred (Fin n) p
+Universal< P i = (j : Fin′ i) → P (inject j)
+
+syntax Universal< (λ j → P) i = ∀[ j < i ] P
+
+MinimalCounterexample : ∀ {p} (P : Pred (Fin n) p) → Set p
+MinimalCounterexample P = ∃[ i ] ¬ P i × ∀[ j < i ] P j
+
+syntax MinimalCounterexample P = μ⟨¬ P ⟩
+
+min? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
+min? {n = zero}  {P = _} P? = inj₁ λ()
+min? {n = suc n} {P = P} P? with P? zero
+... | false because [¬p₀] = inj₂ (_ , invert [¬p₀] , λ())
+... | true  because  [p₀] = Sum.map (∀-cons p₀) μ⁺ (min? (P? ∘ suc))
+  where
+  p₀ : P zero
+  p₀ = invert [p₀]
+  μ⁺ : μ⟨¬ (P ∘ suc) ⟩ → μ⟨¬ P ⟩
+  μ⁺ (i , ¬pᵢ , Π<[P∘suc]) = suc i , ¬pᵢ , ∀-cons p₀ Π<[P∘suc]
 
 private
   -- A nice computational property of `all?`:

@@ -237,6 +237,15 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Fin.Properties`:
+  ```agda
+  Universal< : Pred (Fin n) p → Pred (Fin n) p
+  syntax Universal< (λ j → P) i = ∀[ j < i ] P
+  MinimalCounterexample : (P : Pred (Fin n) p) → Set p
+  syntax MinimalCounterexample P = μ⟨¬ P ⟩
+  min? : Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
+  ```
+
 * In `Data.Fin.Subset`:
   ```agda
   _⊇_ : Subset n → Subset n → Set
