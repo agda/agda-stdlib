@@ -1009,11 +1009,7 @@ private
 
 ¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
                  ¬ (∀ i → P i) → MinimalCounterexample P
-¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
-¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
-... | false because [¬P₀] = (zero , invert [¬P₀] , λ ())
-... | true  because  [P₀] = map suc (map id (∀-cons (invert [P₀])))
-  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons (invert [P₀]))))
+¬∀⟶∃¬-smallest _ _ P? ¬∀[i]P = [ flip contradiction ¬∀[i]P , id ] $ min? P?
 
 -- When P is a decidable predicate over a finite set the following
 -- lemma can be proved.
