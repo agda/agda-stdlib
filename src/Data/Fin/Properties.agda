@@ -949,7 +949,7 @@ module _ {p} {P : Pred (Fin (suc n)) p} where
   ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
 
 decFinSubset : ∀ {p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
-               Decidable Q → (∀ {i} → Q i → Dec (P i)) → Dec (Q ⊆ P)
+               Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
 decFinSubset {zero}  {_}     {_} Q? P? = yes λ {}
 decFinSubset {suc n} {P = P} {Q} Q? P?
   with Q? zero | ∀-cons {P = λ x → Q x → P x}
