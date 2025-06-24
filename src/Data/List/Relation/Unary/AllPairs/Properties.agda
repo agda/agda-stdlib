@@ -42,13 +42,11 @@ private
 
 module _ {R : Rel A ℓ} {f : B → A} where
 
-  map⁺ : ∀ {xs} → AllPairs (λ x y → R (f x) (f y)) xs →
-         AllPairs R (map f xs)
+  map⁺ : ∀ {xs} → AllPairs (R on f) xs → AllPairs R (map f xs)
   map⁺ []           = []
   map⁺ (x∉xs ∷ xs!) = All.map⁺ x∉xs ∷ map⁺ xs!
 
-  map⁻ : ∀ {xs} → AllPairs R (map f xs) →
-         AllPairs (R on f) xs
+  map⁻ : ∀ {xs} → AllPairs R (map f xs) → AllPairs (R on f) xs
   map⁻ {[]}     _              = []
   map⁻ {_ ∷ _} (fx∉fxs ∷ fxs!) = All.map⁻ fx∉fxs ∷ map⁻ fxs!
 
