@@ -13,6 +13,7 @@ open import Data.Fin.Base using (Fin; suc; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F)
 open import Data.Fin.Properties
   using (¬Fin0; _≟_; ≟-diag-refl; ≟-off-diag
+        ; opposite-involutive
         ; punchInᵢ≢i; punchOut-punchIn; punchIn-punchOut
         ; punchOut-cong; punchOut-cong′)
 import Data.Fin.Permutation.Components as PC
@@ -98,7 +99,7 @@ transpose i j = permutation (PC.transpose i j) (PC.transpose j i) (λ _ → PC.t
 -- Reverse the order of indices
 
 reverse : Permutation′ n
-reverse = permutation opposite opposite PC.reverse-involutive PC.reverse-involutive
+reverse = permutation opposite opposite opposite-involutive opposite-involutive
 
 ------------------------------------------------------------------------
 -- Operations
