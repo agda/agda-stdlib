@@ -327,7 +327,7 @@ Additions to existing modules
   ```agda
   ⊤-reflects : Reflects (⊤ {a}) true
   ⊥-reflects : Reflects (⊥ {a}) false
-  
+
 * In `Data.List.Relation.Unary.AllPairs.Properties`:
   ```agda
   map⁻ : ∀ {xs} → AllPairs R (map f xs) → AllPairs (R on f) xs
@@ -340,5 +340,5 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
   ```agda
-  map⁻ : ∀ {f} → Congruent _≡_ _≡_ f → ∀ {xs} → Unique (map f xs) → Unique xs  
+  map⁻ : ∀ {f} → Congruent _≡_ _≡_ f → ∀ {xs} → Unique (map f xs) → Unique xs
   ```
