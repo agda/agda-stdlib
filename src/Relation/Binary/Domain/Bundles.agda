@@ -11,7 +11,8 @@ module Relation.Binary.Domain.Bundles where
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Bundles using (Poset)
 open import Relation.Binary.Domain.Structures
-open import Relation.Binary.Domain.Definitions
+  using (IsDirectedFamily; IsDirectedCompletePartialOrder; IsScottContinuous
+        ; IsLub)
 
 private
   variable
@@ -43,8 +44,7 @@ record DirectedCompletePartialOrder (c ℓ₁ ℓ₂ : Level) : Set (suc (c ⊔ 
 record ScottContinuous
   {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
   (P : Poset c₁ ℓ₁₁ ℓ₁₂)
-  (Q : Poset c₂ ℓ₂₁ ℓ₂₂)
-  : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
+  (Q : Poset c₂ ℓ₂₁ ℓ₂₂) : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
   field
     f                 : Poset.Carrier P → Poset.Carrier Q
     isScottContinuous : IsScottContinuous P Q f

@@ -13,6 +13,7 @@ open import Function using (_∘_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Bundles using (Poset)
 open import Relation.Binary.Domain.Definitions
+  using (semidirected; leastupperbound)
 
 private variable
   a b c ℓ ℓ₁ ℓ₂ : Level
@@ -37,15 +38,15 @@ module _ {c ℓ₁ ℓ₂ : Level} (P : Poset c ℓ₁ ℓ₂) where
                           Set (b ⊔ c ⊔ ℓ₁ ⊔ ℓ₂) where
     no-eta-equality
     field
-      elt           : B
+      elt            : B
       isSemidirected : semidirected _≤_ B f
 
   record IsDirectedCompletePartialOrder : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     field
-      ⋁ : ∀ {B : Set c}
-        → (f : B → Carrier)
-        → IsDirectedFamily f
-        → Carrier
+      ⋁ : ∀ {B : Set c} →
+        (f : B → Carrier) →
+        IsDirectedFamily f →
+        Carrier
       ⋁-isLub : ∀ {B : Set c}
         → (f : B → Carrier)
         → (dir : IsDirectedFamily f)
@@ -68,8 +69,8 @@ module _ {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
     module P = Poset P
     module Q = Poset Q
 
-  record IsScottContinuous (f : P.Carrier → Q.Carrier) :
-                           Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
+  record IsScottContinuous (f : P.Carrier → Q.Carrier) : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂))
+    where
     field
       preserveLub : ∀ {B : Set c₁} {g : B → P.Carrier} →
                     (dir : IsDirectedFamily P g) →
