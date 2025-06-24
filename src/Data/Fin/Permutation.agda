@@ -147,19 +147,27 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ j = begin
-    from (to j)                                                      ≡⟨⟩
-    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
-    punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _  ≡⟨ punchOut-cong i (inverseˡ π) ⟩
-    punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
-    j                                                                ∎
+    from (to j)
+      ≡⟨⟩
+    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _
+      ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
+    punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _
+      ≡⟨ punchOut-cong i (inverseˡ π) ⟩
+    punchOut {i = i} {punchIn i j}                                _
+      ≡⟨ punchOut-punchIn i ⟩
+    j ∎
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin
-    to (from j)                                                       ≡⟨⟩
-    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
-    punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _  ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
-    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
-    j                                                                 ∎
+    to (from j)
+      ≡⟨⟩
+    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _
+      ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
+    punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _
+      ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
+    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _
+      ≡⟨ punchOut-punchIn (πʳ i) ⟩
+    j ∎
 
 -- lift: takes a permutation m → n and creates a permutation (suc m) → (suc n)
 -- by mapping 0 to 0 and applying the input permutation to everything else
@@ -204,11 +212,15 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
     with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
     rewrite ≟-off-diag j≢punchInⱼπʳpunchOuti≢k
     = begin
-    punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)                    ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-cong j refl) ⟩
-    punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
-    punchIn i (π ⟨$⟩ˡ (π ⟨$⟩ʳ punchOut i≢k))                              ≡⟨ cong (punchIn i) (inverseˡ π) ⟩
-    punchIn i (punchOut i≢k)                                              ≡⟨ punchIn-punchOut i≢k ⟩
-    k                                                                     ∎
+    punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)
+      ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-cong j refl) ⟩
+    punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym))
+      ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
+    punchIn i (π ⟨$⟩ˡ (π ⟨$⟩ʳ punchOut i≢k))
+      ≡⟨ cong (punchIn i) (inverseˡ π) ⟩
+    punchIn i (punchOut i≢k)
+      ≡⟨ punchIn-punchOut i≢k ⟩
+    k ∎
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ k with j ≟ k
@@ -217,11 +229,15 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
     with i≢punchInᵢπˡpunchOutj≢k ← punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym
     rewrite ≟-off-diag i≢punchInᵢπˡpunchOutj≢k
     = begin
-    punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
-    punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
-    punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))                               ≡⟨ cong (punchIn j) (inverseʳ π) ⟩
-    punchIn j (punchOut j≢k)                                               ≡⟨ punchIn-punchOut j≢k ⟩
-    k                                                                      ∎
+    punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)
+      ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
+    punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym))
+      ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
+    punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))
+      ≡⟨ cong (punchIn j) (inverseʳ π) ⟩
+    punchIn j (punchOut j≢k)
+      ≡⟨ punchIn-punchOut j≢k ⟩
+    k ∎
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -285,17 +301,23 @@ insert-punchIn : ∀ i j (π : Permutation m n) k → insert i j π ⟨$⟩ʳ pu
 insert-punchIn i j π k with i ≟ punchIn i k
 ... | yes i≡punchInᵢk = contradiction (sym i≡punchInᵢk) (punchInᵢ≢i i k)
 ... | no  i≢punchInᵢk = begin
-  punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk)            ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
-  punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i k ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
-  punchIn j (π ⟨$⟩ʳ k)                               ∎
+  punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk)
+    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
+  punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i k ∘ sym))
+    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
+  punchIn j (π ⟨$⟩ʳ k)
+    ∎
 
 insert-remove : ∀ i (π : Permutation (suc m) (suc n)) → insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
 insert-remove {m = m} {n = n} i π j with i ≟ j
 ... | yes i≡j = cong (π ⟨$⟩ʳ_) i≡j
 ... | no  i≢j = begin
-  punchIn (π ⟨$⟩ʳ i) (punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ Injection.injective (↔⇒↣ π))) ≡⟨ punchIn-punchOut _ ⟩
-  π ⟨$⟩ʳ punchIn i (punchOut i≢j) ≡⟨ cong (π ⟨$⟩ʳ_) (punchIn-punchOut i≢j) ⟩
-  π ⟨$⟩ʳ j ∎
+  punchIn (π ⟨$⟩ʳ i) (punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ Injection.injective (↔⇒↣ π)))
+    ≡⟨ punchIn-punchOut _ ⟩
+  π ⟨$⟩ʳ punchIn i (punchOut i≢j)
+    ≡⟨ cong (π ⟨$⟩ʳ_) (punchIn-punchOut i≢j) ⟩
+  π ⟨$⟩ʳ j
+    ∎
 
 remove-insert : ∀ i j (π : Permutation m n) → remove i (insert i j π) ≈ π
 remove-insert i j π k rewrite ≟-diag-refl i = begin
