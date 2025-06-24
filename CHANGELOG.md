@@ -330,15 +330,15 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.AllPairs.Properties`:
   ```agda
-  map⁻ : ∀ {xs} → AllPairs R (map f xs) → AllPairs (R on f) xs
+  map⁻ : AllPairs R (map f xs) → AllPairs (R on f) xs
   ```
 
 * In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
   ```agda
-  map⁻ : ∀ {f} → Congruent _≈₁_ _≈₂_ f → ∀ {xs} → Unique R (map f xs) → Unique S xs
+  map⁻ : Congruent _≈₁_ _≈₂_ f → Unique R (map f xs) → Unique S xs
   ```
 
 * In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
   ```agda
-  map⁻ : ∀ {f} → Congruent _≡_ _≡_ f → ∀ {xs} → Unique (map f xs) → Unique xs
+  map⁻ : Unique (map f xs) → Unique xs
   ```
