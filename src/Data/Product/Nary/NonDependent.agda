@@ -256,7 +256,7 @@ updateₙ′ n k = updateₙ n k
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.7
+-- Version 2.3
 
 Allₙ = Pointwiseₙ
 {-# WARNING_ON_USAGE Allₙ
