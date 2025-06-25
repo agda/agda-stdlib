@@ -352,8 +352,8 @@ Additions to existing modules
   ```agda
   ⊤-dec : Dec {a} ⊤
   ⊥-dec : Dec {a} ⊥
-  recompute-irr≗id : (a? : Decidable A) → Irrelevant A →
-                     (a : A) → recompute a? a ≡ a
+  recompute-irrelevant-id : (a? : Decidable A) → Irrelevant A →
+                            (a : A) → recompute a? a ≡ a
   ```
 
 * In `Relation.Nullary.Negation.Core`:
