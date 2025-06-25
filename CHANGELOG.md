@@ -239,6 +239,23 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Fin.Base`:
+  ```agda
+  _≰_ : Rel (Fin n) 0ℓ
+  _≮_ : Rel (Fin n) 0ℓ
+  ```
+
+* In `Data.Fin.Permutation`:
+  ```agda
+  cast-id : .(m ≡ n) → Permutation m n
+  swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  cast-involutive : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  ```
+
 * In `Data.Fin.Subset`:
   ```agda
   _⊇_ : Subset n → Subset n → Set
@@ -275,14 +292,31 @@ Additions to existing modules
   map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`:
+  ```agda
+  onIndices : Permutation R xs ys → Fin.Permutation (length xs) (length ys)
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Propositional`:
   ```agda
   ↭⇒↭ₛ′ : IsEquivalence _≈_ → _↭_ ⇒ _↭ₛ′_
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  xs↭ys⇒|xs|≡|ys| : xs ↭ ys → length xs ≡ length ys
+  ¬x∷xs↭[] : ¬ (x ∷ xs ↭ [])
+  onIndices-lookup : ∀ i → lookup xs i ≈ lookup ys (Inverse.to (onIndices xs↭ys) i)
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+        ```
+
+* In `Data.List.Relation.Binary.Pointwise.Properties`:
+  ```agda
+  lookup-cast : Pointwise R xs ys → .(∣xs∣≡∣ys∣ : length xs ≡ length ys) → ∀ i → R (lookup xs i) (lookup ys (cast ∣xs∣≡∣ys∣ i))
   ```
 
 * In `Data.List.NonEmpty.Properties`:

@@ -19,7 +19,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
   variable
@@ -271,7 +271,7 @@ pinch {suc n} (suc i) (suc j) = suc (pinch i j)
 ------------------------------------------------------------------------
 -- Order relations
 
-infix 4 _≤_ _≥_ _<_ _>_
+infix 4 _≤_ _≥_ _<_ _>_ _≰_ _≮_
 
 _≤_ : IRel Fin 0ℓ
 i ≤ j = toℕ i ℕ.≤ toℕ j
@@ -285,6 +285,11 @@ i < j = toℕ i ℕ.< toℕ j
 _>_ : IRel Fin 0ℓ
 i > j = toℕ i ℕ.> toℕ j
 
+_≰_ : ∀ {n} → Rel (Fin n) 0ℓ
+i ≰ j = ¬ (i ≤ j)
+
+_≮_ : ∀ {n} → Rel (Fin n) 0ℓ
+i ≮ j = ¬ (i < j)
 
 ------------------------------------------------------------------------
 -- An ordering view.
