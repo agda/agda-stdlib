@@ -264,6 +264,11 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
+  length-++-sucˡ : ∀ (x : A) (xs ys : List A) → length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+  length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) → length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+  length-++-comm : ∀ (xs ys : List A) → length (xs ++ ys) ≡ length (ys ++ xs)
+  length-++-≤ˡ : ∀ (xs : List A) → length xs ≤ length (xs ++ ys)
+  length-++-≤ʳ : ∀ (ys : List A) → length ys ≤ length (xs ++ ys)
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
   map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
   map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
@@ -278,6 +283,24 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  ∷→∷⁺ : (x List.∷ xs) ≡ (y List.∷ ys) →
+         (x List⁺.∷ xs) ≡ (y List⁺.∷ ys)
+  ∷⁺→∷ : (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
+         (x List.∷ xs) ≡ (y List.∷ ys)
+  length-⁺++⁺ : (xs ys : List⁺ A) → length (xs ⁺++⁺ ys) ≡ length xs + length ys
+  length-⁺++⁺-comm : ∀ (xs ys : List⁺ A) → length (xs ⁺++⁺ ys) ≡ length (ys ⁺++⁺ xs)
+  length-⁺++⁺-≤ˡ : (xs ys : List⁺ A) → length xs ≤ length (xs ⁺++⁺ ys)
+  length-⁺++⁺-≤ʳ : (xs ys : List⁺ A) → length ys ≤ length (xs ⁺++⁺ ys)
+  map-⁺++⁺ : ∀ (f : A → B) xs ys → map f (xs ⁺++⁺ ys) ≡ map f xs ⁺++⁺ map f ys
+  ⁺++⁺-assoc : Associative _⁺++⁺_
+  ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
+  ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
+  ⁺++⁺-cancel : Cancellative _⁺++⁺_
+  map-id : map id ≗ id {A = List⁺ A}
   ```
 
 * In `Data.Product.Function.Dependent.Propositional`:
