@@ -705,14 +705,6 @@ module _ (S : Setoid c ℓ) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.3
-
-Any¬→¬All = Any¬⇒¬All
-{-# WARNING_ON_USAGE Any¬→¬All
-"Warning: Any¬→¬All was deprecated in v1.3.
-Please use Any¬⇒¬All instead."
-#-}
-
 -- Version 2.0
 
 updateAt-id-relative = updateAt-id-local

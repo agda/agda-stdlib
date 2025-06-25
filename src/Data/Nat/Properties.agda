@@ -2298,21 +2298,6 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.3
-
-∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n⇒m≢o]⇒o<n = ∀[m≤n⇒m≢o]⇒n<o
-{-# WARNING_ON_USAGE ∀[m≤n⇒m≢o]⇒o<n
-"Warning: ∀[m≤n⇒m≢o]⇒o<n was deprecated in v1.3.
-Please use ∀[m≤n⇒m≢o]⇒n<o instead."
-#-}
-∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
-∀[m<n⇒m≢o]⇒o≤n = ∀[m<n⇒m≢o]⇒n≤o
-{-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
-"Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
-Please use ∀[m<n⇒m≢o]⇒n≤o instead."
-#-}
-
 -- Version 1.4
 
 *-+-isSemiring = +-*-isSemiring

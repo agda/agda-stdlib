@@ -21,12 +21,6 @@ open import Data.Integer.Properties public
 ------------------------------------------------------------------------
 -- Deprecated
 
--- Version 0.17
-
-open import Data.Integer.Properties public
-  using (◃-cong; drop‿+≤+; drop‿-≤-)
-  renaming (◃-inverse to ◃-left-inverse)
-
 -- Version 1.5
 -- Show
 
