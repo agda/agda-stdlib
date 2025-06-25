@@ -39,13 +39,13 @@ Recomputable A = .A → A
 -- 'promotion' is a constant function.
 -- it is moreover the identity, if `A` is propositionally irrelevant.
 
-module _ (promote : Recomputable A) where
+module _ (recompute : Recomputable A) where
 
-  recompute-constant : (p q : A) → promote p ≡ promote q
+  recompute-constant : (p q : A) → recompute p ≡ recompute q
   recompute-constant _ _ = refl
 
-  recompute-irr≗id : Nullary.Irrelevant A → (a : A) → promote a ≡ a
-  recompute-irr≗id irr a = irr (promote a) a
+  recompute-irr≗id : Nullary.Irrelevant A → (a : A) → recompute a ≡ a
+  recompute-irr≗id irr a = irr (recompute a) a
 
 
 ------------------------------------------------------------------------
