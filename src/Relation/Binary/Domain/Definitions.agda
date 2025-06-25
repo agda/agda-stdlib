@@ -38,4 +38,4 @@ leastupperbound  : {A : Set a} → Rel A ℓ → {B : Set b} → (g : B → A) �
 leastupperbound _≤_ g lub = (∀ i → g i ≤ lub) × (∀ y → (∀ i → g i ≤ y) → lub ≤ y)
 
 preserveLubs : {A : Set a} {B : Set b } (≤₁ : Rel A ℓ₁) (≤₂ : Rel B ℓ₂) (f : A → B) → Set (suc (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂))
-preserveLubs ≤₁ ≤₂ f =  ∀ I → ∀ {g : I → _} → ∀ lub → leastupperbound ≤₁ g lub → leastupperbound ≤₂ (f ∘ g) (f lub)
+preserveLubs ≤₁ ≤₂ f =  ∀ {I} → ∀ {g : I → _} → ∀ lub → leastupperbound ≤₁ g lub → leastupperbound ≤₂ (f ∘ g) (f lub)
