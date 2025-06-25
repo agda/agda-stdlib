@@ -175,6 +175,8 @@ New modules
 
 * `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
 
+* `Relation.Nullary.Recomputable.Core`
+
 Additions to existing modules
 -----------------------------
 
@@ -363,7 +365,7 @@ Additions to existing modules
 
 * In `Relation.Nullary.Recomputable`:
   ```agda
-  recompute-irrelevant-id : (recompute : Recomputable A) → Nullary.Irrelevant A →
+  recompute-irrelevant-id : (recompute : Recomputable A) → Irrelevant A →
                             (a : A) → recompute a ≡ a
   ```
 

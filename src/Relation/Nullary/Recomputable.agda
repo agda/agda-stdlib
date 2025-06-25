@@ -8,13 +8,11 @@
 
 module Relation.Nullary.Recomputable where
 
-open import Agda.Builtin.Equality using (_≡_; refl)
 open import Data.Empty using (⊥)
 open import Data.Irrelevant using (Irrelevant; irrelevant; [_])
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
 open import Relation.Nullary.Negation.Core using (¬_)
-import Relation.Nullary.Irrelevant as Nullary
 
 private
   variable
@@ -23,29 +21,9 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
--- Definition
---
--- The idea of being 'recomputable' is that, given an *irrelevant* proof
--- of a proposition `A` (signalled by being a value of type `.A`, all of
--- whose inhabitants are identified up to definitional equality, and hence
--- do *not* admit pattern-matching), one may 'promote' such a value to a
--- 'genuine' value of `A`, available for subsequent eg. pattern-matching.
+-- Re-export
 
-Recomputable : (A : Set a) → Set a
-Recomputable A = .A → A
-
-------------------------------------------------------------------------
--- Fundamental properties:
--- 'promotion' is a constant function.
--- it is moreover the identity, if `A` is propositionally irrelevant.
-
-module _ (recompute : Recomputable A) where
-
-  recompute-constant : (p q : A) → recompute p ≡ recompute q
-  recompute-constant _ _ = refl
-
-  recompute-irrelevant-id : Nullary.Irrelevant A → (a : A) → recompute a ≡ a
-  recompute-irrelevant-id irr a = irr (recompute a) a
+open import Relation.Nullary.Recomputable.Core public
 
 
 ------------------------------------------------------------------------
