@@ -23,7 +23,7 @@ open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Irrelevant using (Irrelevant)
-open import Relation.Nullary.Recomputable as Recomputable
+open import Relation.Nullary.Recomputable.Core as Recomputable
   using (Recomputable)
 open import Relation.Nullary.Reflects as Reflects
   hiding (recompute; recompute-constant)
@@ -85,8 +85,8 @@ recompute = Reflects.recompute ∘ proof
 recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
 recompute-constant = Recomputable.recompute-constant ∘ recompute
 
-recompute-irr≗id : (a? : Dec A) → Irrelevant A → (a : A) → recompute a? a ≡ a
-recompute-irr≗id = Recomputable.recompute-irrelevant-id ∘ recompute
+recompute-irrelevant-id : (a? : Dec A) → Irrelevant A → (a : A) → recompute a? a ≡ a
+recompute-irrelevant-id = Recomputable.recompute-irrelevant-id ∘ recompute
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
