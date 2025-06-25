@@ -745,6 +745,50 @@ if-float : ∀ (f : A → B) b {x y} →
 if-float _ true  = refl
 if-float _ false = refl
 
+if-eta : ∀ b {x : A} →
+         (if b then x else x) ≡ x
+if-eta false = refl
+if-eta true  = refl
+
+if-swap : ∀ b c {x y : A} →
+          (if b then x else (if c then x else y)) ≡ (if c then x else (if b then x else y))
+if-swap false _     = refl
+if-swap true  false = refl
+if-swap true  true  = refl
+
+if-not : ∀ b {x y : A} →
+         (if not b then x else y) ≡ (if b then y else x)
+if-not false = refl
+if-not true  = refl
+
+if-∧ : ∀ b {c} {x y : A} →
+       (if b ∧ c then x else y) ≡ (if b then (if c then x else y) else y)
+if-∧ false = refl
+if-∧ true  = refl
+
+if-∨ : ∀ b {c} {x y : A} →
+       (if b ∨ c then x else y) ≡ (if b then x else (if c then x else y))
+if-∨ false = refl
+if-∨ true  = refl
+
+if-xor : ∀ b {c} {x y : A} →
+         (if b xor c then x else y) ≡ (if b then (if c then y else x) else (if c then x else y))
+if-xor false = refl
+if-xor true {false} = refl
+if-xor true {true } = refl
+
+if-congˡ : ∀ b {x y z : A} → x ≡ z →
+           (if b then x else y) ≡ (if b then z else y)
+if-congˡ _ refl = refl
+
+if-congʳ : ∀ b {x y z : A} → y ≡ z →
+           (if b then x else y) ≡ (if b then x else z)
+if-congʳ _ refl = refl
+
+if-cong : ∀ b {x y z w : A} → x ≡ z → y ≡ w →
+          (if b then x else y) ≡ (if b then z else w)
+if-cong _ refl refl = refl
+
 ------------------------------------------------------------------------
 -- Properties of T
 
