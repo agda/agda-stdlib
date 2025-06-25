@@ -352,7 +352,7 @@ Additions to existing modules
   ```agda
   ⊤-dec : Dec {a} ⊤
   ⊥-dec : Dec {a} ⊥
-  recompute-irr≗id : (a? : Decidable A) → Nullary.Irrelevant A →
+  recompute-irr≗id : (a? : Decidable A) → Irrelevant A →
                      (a : A) → recompute a? a ≡ a
   ```
 
@@ -363,14 +363,15 @@ Additions to existing modules
 
 * In `Relation.Nullary.Recomputable`:
   ```agda
-  recompute-irr≗id : (promote : Recomputable A) → Nullary.Irrelevant A →
-                     (a : A) → promote a ≡ a
+  recompute-irrelevant-id : (recompute : Recomputable A) → Nullary.Irrelevant A →
+                            (a : A) → recompute a ≡ a
   ```
 
 * In `Relation.Nullary.Reflects`:
   ```agda
   ⊤-reflects : Reflects (⊤ {a}) true
   ⊥-reflects : Reflects (⊥ {a}) false
+  ```
 
 * In `Data.List.Relation.Unary.AllPairs.Properties`:
   ```agda

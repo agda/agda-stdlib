@@ -44,8 +44,8 @@ module _ (recompute : Recomputable A) where
   recompute-constant : (p q : A) → recompute p ≡ recompute q
   recompute-constant _ _ = refl
 
-  recompute-irr≗id : Nullary.Irrelevant A → (a : A) → recompute a ≡ a
-  recompute-irr≗id irr a = irr (recompute a) a
+  recompute-irrelevant-id : Nullary.Irrelevant A → (a : A) → recompute a ≡ a
+  recompute-irrelevant-id irr a = irr (recompute a) a
 
 
 ------------------------------------------------------------------------
