@@ -150,12 +150,6 @@ Deprecated names
   left-inverse ↦ rightInverse
   ```
 
-* In `Relation.Nullary.Decidable`:
-  ```agda
-  dec-yes  ↦ dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
-  ```
-  with a more precise type.
-
 New modules
 -----------
 
@@ -361,12 +355,6 @@ Additions to existing modules
 * In `Relation.Nullary.Negation.Core`:
   ```agda
   contra-diagonal : (A → ¬ A) → ¬ A
-  ```
-
-* In `Relation.Nullary.Recomputable`:
-  ```agda
-  recompute-irrelevant-id : (recompute : Recomputable A) → Irrelevant A →
-                            (a : A) → recompute a ≡ a
   ```
 
 * In `Relation.Nullary.Reflects`:

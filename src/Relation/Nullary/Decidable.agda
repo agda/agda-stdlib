@@ -80,12 +80,15 @@ dec-false (true  because [a]) ¬a = contradiction (invert [a]) ¬a
 dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
 dec-yes-recompute a? a with yes _ ← a? | refl ← dec-true a? (recompute a? a) = refl
 
-dec-no : (a? : Dec A) (¬a : ¬ A) → a? ≡ no ¬a
-dec-no a? ¬a with no _ ← a? | refl ← dec-false a? ¬a = refl
-
 dec-yes-irr : (a? : Dec A) → Irrelevant A → (a : A) → a? ≡ yes a
 dec-yes-irr a? irr a =
   trans (dec-yes-recompute a? a) (≡.cong yes (recompute-irrelevant-id a? irr a))
+
+dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
+dec-yes a? a = _ , dec-yes-recompute a? a
+
+dec-no : (a? : Dec A) (¬a : ¬ A) → a? ≡ no ¬a
+dec-no a? ¬a with no _ ← a? | refl ← dec-false a? ¬a = refl
 
 ⌊⌋-map′ : ∀ t f (a? : Dec A) → ⌊ map′ {B = B} t f a? ⌋ ≡ ⌊ a? ⌋
 ⌊⌋-map′ t f a? = trans (isYes≗does (map′ t f a?)) (sym (isYes≗does a?))
@@ -96,19 +99,3 @@ does-≡ a? (no ¬a) = dec-false a? ¬a
 
 does-⇔ : A ⇔ B → (a? : Dec A) → (b? : Dec B) → does a? ≡ does b?
 does-⇔ A⇔B a? = does-≡ (map A⇔B a?)
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.3
-
-dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
-dec-yes a? a = _ , dec-yes-recompute a? a
-{-# WARNING_ON_USAGE dec-yes
-"Warning: dec-yes was deprecated in v2.3.
-Please use dec-yes-recompute instead, with a sharper type."
-#-}
