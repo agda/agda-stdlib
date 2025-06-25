@@ -13,20 +13,21 @@ open import Function using (_∘_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Bundles using (Poset)
 open import Relation.Binary.Domain.Definitions
-  using (semidirected; leastupperbound)
+  using (semidirected; leastupperbound; preserveLubs)
+open import Relation.Binary.Morphism.Structures using (IsOrderHomomorphism)
 
 private variable
-  a b c ℓ ℓ₁ ℓ₂ : Level
+  a b c c₁ c₂ ℓ ℓ₁ ℓ₂ ℓ₁₁ ℓ₁₂ ℓ₂₁ ℓ₂₂ : Level
   A B : Set a
 
 
-module _ {c ℓ₁ ℓ₂ : Level} (P : Poset c ℓ₁ ℓ₂) where
+module _ (P : Poset c ℓ₁ ℓ₂) where
   open Poset P
 
   record IsLub {b : Level} {B : Set b} (f : B → Carrier)
                (lub : Carrier) : Set (b ⊔ c ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      isLeastUpperBound : leastupperbound _≤_ B f lub
+      isLeastUpperBound : leastupperbound _≤_ f lub
 
     isUpperBound : ∀ i → f i ≤ lub
     isUpperBound = proj₁ isLeastUpperBound
@@ -61,20 +62,15 @@ module _ {c ℓ₁ ℓ₂ : Level} (P : Poset c ℓ₁ ℓ₂) where
 -- Scott‐continuous maps between two (possibly different‐universe) posets
 ------------------------------------------------------------------------
 
-module _ {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
-         (P : Poset c₁ ℓ₁₁ ℓ₁₂)
-         (Q : Poset c₂ ℓ₂₁ ℓ₂₂) where
-
-  private
+module _ (P : Poset c₁ ℓ₁₁ ℓ₁₂) (Q : Poset c₂ ℓ₂₁ ℓ₂₂) 
+  where 
     module P = Poset P
     module Q = Poset Q
 
-  record IsScottContinuous (f : P.Carrier → Q.Carrier) : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂))
-    where
-    field
-      preserveLub : ∀ {B : Set c₁} {g : B → P.Carrier} →
-                    (dir : IsDirectedFamily P g) →
-                    (lub : P.Carrier) →
-                    IsLub P g lub →
-                    IsLub Q (f ∘ g) (f lub)
-      preserveEquality : ∀ {x y} → x P.≈ y → f x Q.≈ f y
+    record IsScottContinuous (f : P.Carrier → Q.Carrier) : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂))
+      where
+      field
+        preservelub : preserveLubs P._≤_ Q._≤_ f
+        isOrderHomomorphism : IsOrderHomomorphism P._≈_ Q._≈_ P._≤_ Q._≤_ f
+
+      open IsOrderHomomorphism isOrderHomomorphism public
