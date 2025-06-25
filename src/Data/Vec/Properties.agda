@@ -1103,7 +1103,15 @@ toList-ʳ++ xs {ys} = begin
   toList xs List.ʳ++ toList ys                ∎
   where open ≡-Reasoning
 
-
+∷-ʳ++-eqFree : ∀ a (xs : Vec A m) {ys : Vec A n} → let eq = sym (+-suc m n) in
+               cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
+∷-ʳ++-eqFree a xs {ys} = begin
+  (a ∷ xs) ʳ++ ys         ≂⟨ unfold-ʳ++ (a ∷ xs) ys ⟩
+  reverse (a ∷ xs) ++ ys  ≂⟨ cong (_++ ys) (reverse-∷ a xs) ⟩
+  (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++-eqFree a (reverse xs) ⟩
+  reverse xs ++ (a ∷ ys)  ≂⟨ unfold-ʳ++ xs (a ∷ ys) ⟨
+  xs ʳ++ (a ∷ ys)         ∎
+  where open CastReasoning
 ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
                 cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
 ++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} =
