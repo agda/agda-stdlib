@@ -18,7 +18,7 @@ open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; trans)
 
 private
