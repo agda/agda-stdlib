@@ -953,12 +953,16 @@ decFinSubset : ∀ {p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
 decFinSubset {zero}  {_}     {_} Q? P? = yes λ {}
 decFinSubset {suc n} {P = P} {Q} Q? P? = dec[Q⊆P]
   module DecFinSubset where
+  
   cons : (Q 0F → P 0F) → (Q ∘ suc ⊆ P ∘ suc) → Q ⊆ P
   cons q₀⊆p₀ f = ∀-cons {P = λ x → Q x → P x} q₀⊆p₀ (λ- f) $-
+  
   ih : Dec (Q ∘ suc ⊆ P ∘ suc)
   ih = decFinSubset (Q? ∘ suc) P?
+  
   Q⊆P⇒Q∘suc⊆P∘suc : Q ⊆ P → Q ∘ suc ⊆ P ∘ suc
   Q⊆P⇒Q∘suc⊆P∘suc f {x} = f {suc x}
+  
   dec[Q⊆P] : Dec (Q ⊆ P)
   dec[Q⊆P] with Q? zero
   ... | false because [¬Q0] = let ¬q₀ = invert [¬Q0] in
