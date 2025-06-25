@@ -152,8 +152,9 @@ Deprecated names
 
 * In `Relation.Nullary.Decidable`:
   ```agda
-  dec-yes  ↦ dec-yes-recompute
+  dec-yes  ↦ dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
   ```
+  with a more precise type.
 
 New modules
 -----------
