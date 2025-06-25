@@ -168,7 +168,9 @@ New modules
 
 * `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
 
-* `Data.Sign.Show` to show a sign
+* `Data.Sign.Show` to show a sign.
+
+* `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`.
 
 * `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
 
@@ -267,6 +269,11 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
+  length-++-sucˡ : ∀ (x : A) (xs ys : List A) → length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+  length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) → length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+  length-++-comm : ∀ (xs ys : List A) → length (xs ++ ys) ≡ length (ys ++ xs)
+  length-++-≤ˡ : ∀ (xs : List A) → length xs ≤ length (xs ++ ys)
+  length-++-≤ʳ : ∀ (ys : List A) → length ys ≤ length (xs ++ ys)
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
   map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
   map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
@@ -281,6 +288,24 @@ Additions to existing modules
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  ∷→∷⁺ : (x List.∷ xs) ≡ (y List.∷ ys) →
+         (x List⁺.∷ xs) ≡ (y List⁺.∷ ys)
+  ∷⁺→∷ : (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
+         (x List.∷ xs) ≡ (y List.∷ ys)
+  length-⁺++⁺ : (xs ys : List⁺ A) → length (xs ⁺++⁺ ys) ≡ length xs + length ys
+  length-⁺++⁺-comm : ∀ (xs ys : List⁺ A) → length (xs ⁺++⁺ ys) ≡ length (ys ⁺++⁺ xs)
+  length-⁺++⁺-≤ˡ : (xs ys : List⁺ A) → length xs ≤ length (xs ⁺++⁺ ys)
+  length-⁺++⁺-≤ʳ : (xs ys : List⁺ A) → length ys ≤ length (xs ⁺++⁺ ys)
+  map-⁺++⁺ : ∀ (f : A → B) xs ys → map f (xs ⁺++⁺ ys) ≡ map f xs ⁺++⁺ map f ys
+  ⁺++⁺-assoc : Associative _⁺++⁺_
+  ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
+  ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
+  ⁺++⁺-cancel : Cancellative _⁺++⁺_
+  map-id : map id ≗ id {A = List⁺ A}
   ```
 
 * In `Data.Product.Function.Dependent.Propositional`:
@@ -345,4 +370,18 @@ Additions to existing modules
   ```agda
   ⊤-reflects : Reflects (⊤ {a}) true
   ⊥-reflects : Reflects (⊥ {a}) false
+
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
+  ```agda
+  map⁻ : AllPairs R (map f xs) → AllPairs (R on f) xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
+  ```agda
+  map⁻ : Congruent _≈₁_ _≈₂_ f → Unique R (map f xs) → Unique S xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
+  ```agda
+  map⁻ : Unique (map f xs) → Unique xs
   ```
