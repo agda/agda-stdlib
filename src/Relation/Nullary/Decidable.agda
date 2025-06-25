@@ -85,7 +85,7 @@ dec-no a? ¬a with no _ ← a? | refl ← dec-false a? ¬a = refl
 
 dec-yes-irr : (a? : Dec A) → Irrelevant A → (a : A) → a? ≡ yes a
 dec-yes-irr a? irr a =
-  trans (dec-yes-recompute a? a) (≡.cong yes (recompute-irr≗id a? irr a))
+  trans (dec-yes-recompute a? a) (≡.cong yes (recompute-irrelevant-id a? irr a))
 
 ⌊⌋-map′ : ∀ t f (a? : Dec A) → ⌊ map′ {B = B} t f a? ⌋ ≡ ⌊ a? ⌋
 ⌊⌋-map′ t f a? = trans (isYes≗does (map′ t f a?)) (sym (isYes≗does a?))
