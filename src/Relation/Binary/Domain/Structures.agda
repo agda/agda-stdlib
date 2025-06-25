@@ -62,8 +62,8 @@ module _ (P : Poset c ℓ₁ ℓ₂) where
 -- Scott‐continuous maps between two (possibly different‐universe) posets
 ------------------------------------------------------------------------
 
-module _ (P : Poset c₁ ℓ₁₁ ℓ₁₂) (Q : Poset c₂ ℓ₂₁ ℓ₂₂) 
-  where 
+module _ (P : Poset c₁ ℓ₁₁ ℓ₁₂) (Q : Poset c₂ ℓ₂₁ ℓ₂₂)
+  where
     module P = Poset P
     module Q = Poset Q
 
