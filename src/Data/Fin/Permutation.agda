@@ -9,20 +9,13 @@
 module Data.Fin.Permutation where
 
 open import Data.Bool.Base using (true; false)
-<<<<<<< refactor-Fin-properties
-open import Data.Fin.Base using (Fin; suc; opposite; punchIn; punchOut)
-open import Data.Fin.Patterns using (0F)
-open import Data.Fin.Properties
-  using (¬Fin0; _≟_; ≟-diag-refl; ≟-off-diag
-        ; opposite-involutive
-        ; punchInᵢ≢i; punchOut-punchIn; punchIn-punchOut
-        ; punchOut-cong; punchOut-cong′)
-=======
 open import Data.Fin.Base using (Fin; suc; cast; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F; 1F)
-open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
-  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0; cast-involutive)
->>>>>>> master
+open import Data.Fin.Properties
+  using (¬Fin0; _≟_; ≟-diag-refl; ≟-off-diag
+        ; cast-involutive; opposite-involutive
+        ; punchInᵢ≢i; punchOut-punchIn; punchIn-punchOut
+        ; punchOut-cong; punchOut-cong′)
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product.Base using (_,_)
@@ -106,13 +99,8 @@ flip = ↔-sym
 
 infixr 9 _∘ₚ_
 
-<<<<<<< refactor-Fin-properties
-reverse : Permutation′ n
-reverse = permutation opposite opposite opposite-involutive opposite-involutive
-=======
 _∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
 π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
->>>>>>> master
 
 ------------------------------------------------------------------------
 -- Non-trivial identity
@@ -144,8 +132,8 @@ reverse : Permutation n n
 reverse = permutation
   opposite
   opposite
-  PC.reverse-involutive
-  PC.reverse-involutive
+  opposite-involutive
+  opposite-involutive
 
 ------------------------------------------------------------------------
 -- Element removal
