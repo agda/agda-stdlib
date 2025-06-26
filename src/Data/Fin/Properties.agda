@@ -59,6 +59,13 @@ private
     m n o : ℕ
     i j : Fin n
 
+
+------------------------------------------------------------------------
+-- Reexport Core properties
+------------------------------------------------------------------------
+
+open import Data.Fin.Properties.Core public
+
 ------------------------------------------------------------------------
 -- Fin
 ------------------------------------------------------------------------
@@ -81,47 +88,6 @@ nonZeroIndex {n = suc _} _ = _
 2↔Bool : Fin 2 ↔ Bool
 2↔Bool = mk↔ₛ′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
   (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
-
-------------------------------------------------------------------------
--- Properties of _≡_
-------------------------------------------------------------------------
-
-0≢1+n : zero ≢ Fin.suc i
-0≢1+n ()
-
-suc-injective : Fin.suc i ≡ suc j → i ≡ j
-suc-injective refl = refl
-
-infix 4 _≟_
-
-_≟_ : DecidableEquality (Fin n)
-zero  ≟ zero  = yes refl
-zero  ≟ suc y = no λ()
-suc x ≟ zero  = no λ()
-suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
-
-------------------------------------------------------------------------
--- Structures
-
-≡-isDecEquivalence : IsDecEquivalence {A = Fin n} _≡_
-≡-isDecEquivalence = record
-  { isEquivalence = ≡.isEquivalence
-  ; _≟_           = _≟_
-  }
-
-------------------------------------------------------------------------
--- Bundles
-
-≡-preorder : ℕ → Preorder _ _ _
-≡-preorder n = ≡.preorder (Fin n)
-
-≡-setoid : ℕ → Setoid _ _
-≡-setoid n = ≡.setoid (Fin n)
-
-≡-decSetoid : ℕ → DecSetoid _ _
-≡-decSetoid n = record
-  { isDecEquivalence = ≡-isDecEquivalence {n}
-  }
 
 ------------------------------------------------------------------------
 -- toℕ
