@@ -36,7 +36,7 @@ open import Relation.Unary.Properties using (U?)
 
 private
   variable
-    p q : Level
+    f p q : Level
     m n o : ℕ
     i j : Fin n
     P : Pred (Fin n) p
@@ -90,13 +90,13 @@ decFinSubset {suc n} {Q = Q} {P = P} Q? P? = dec[Q⊆P]
   ... | true  because  [Q0] = let q₀ = invert [Q0] in
     map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q∘suc⊆P∘suc > (P? q₀ ×-dec ih)
 
-any? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
-any? {n = zero}  P? = no λ { (() , _) }
-any? {n = suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
+any? : Decidable P → Dec (∃ P)
+any? {zero}  P? = no λ { (() , _) }
+any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 
-all? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
-all? {n = zero}  P? = yes λ()
-all? {n = suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
+all? : Decidable P → Dec (∀ f → P f)
+all? {zero}  P? = yes λ()
+all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
 
 Universal< : Pred (Fin n) p → Pred (Fin n) p
 Universal< P i = (j : Fin′ i) → P (inject j)
@@ -111,12 +111,10 @@ syntax ExistsMinimalCounterexample P = μ⟨¬ P ⟩
 min? : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
 min? {n = zero}  {P = _} P? = inj₁ λ()
 min? {n = suc n} {P = P} P? with P? zero
-... | false because [¬p₀] = inj₂ (_ , invert [¬p₀] , λ())
-... | true  because  [p₀] = Sum.map (∀-cons p₀) μ⁺ (min? (P? ∘ suc))
+... | no ¬p₀ = inj₂ (_ , ¬p₀ , λ())
+... | yes p₀ = Sum.map (∀-cons p₀) μ⁺ (min? (P? ∘ suc))
   where
-  p₀ : P zero
-  p₀ = invert [p₀]
-  μ⁺ : μ⟨¬ (P ∘ suc) ⟩ → μ⟨¬ P ⟩
+  μ⁺ : μ⟨¬ P ∘ suc ⟩ → μ⟨¬ P ⟩
   μ⁺ (i , ¬pᵢ , Π<[P∘suc]) = suc i , ¬pᵢ , ∀-cons p₀ Π<[P∘suc]
 
 private
@@ -147,16 +145,16 @@ private
 -- Effectful
 ------------------------------------------------------------------------
 
-module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
+module _ {F : Set f → Set f} (RA : RawApplicative F) where
 
   open RawApplicative RA
 
-  sequence : ∀ {n} {P : Pred (Fin n) f} →
+  sequence : ∀ {P : Pred (Fin n) f} →
              (∀ i → F (P i)) → F (∀ i → P i)
-  sequence {zero}  ∀iPi = pure λ()
-  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
+  sequence {n = zero}  ∀iPi = pure λ()
+  sequence {n = suc _} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
 
-module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
+module _ {F : Set f → Set f} (RF : RawFunctor F) where
 
   open RawFunctor RF
 
