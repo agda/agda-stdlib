@@ -15,7 +15,7 @@ open import Algebra.Definitions using (Involutive)
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ
@@ -923,6 +923,35 @@ pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
       (suc-injective eq))
 
 ------------------------------------------------------------------------
+-- Opposite
+------------------------------------------------------------------------
+
+opposite-prop : ∀ (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
+opposite-prop {suc n} zero    = toℕ-fromℕ n
+opposite-prop {suc n} (suc i) = begin
+  toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩
+  toℕ (opposite i)           ≡⟨ opposite-prop i ⟩
+  n ∸ suc (toℕ i)            ∎
+  where open ≡-Reasoning
+
+opposite-involutive : Involutive {A = Fin n} _≡_ opposite
+opposite-involutive {suc n} i = toℕ-injective (begin
+  toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
+  n ∸ (toℕ (opposite i))      ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
+  n ∸ (n ∸ (toℕ i))           ≡⟨ ℕ.m∸[m∸n]≡n (toℕ≤pred[n] i) ⟩
+  toℕ i                       ∎)
+  where open ≡-Reasoning
+
+opposite-suc : ∀ (i : Fin n) → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
+opposite-suc {n} i = begin
+  toℕ (opposite (suc i))     ≡⟨ opposite-prop (suc i) ⟩
+  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
+  n ∸ toℕ (suc i)            ≡⟨⟩
+  n ∸ suc (toℕ i)            ≡⟨ opposite-prop i ⟨
+  toℕ (opposite i)           ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
 -- Quantification
 ------------------------------------------------------------------------
 
@@ -1097,35 +1126,6 @@ module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
       ; _≟_           = inj⇒≟
       }
     }
-
-------------------------------------------------------------------------
--- Opposite
-------------------------------------------------------------------------
-
-opposite-prop : ∀ (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
-opposite-prop {suc n} zero    = toℕ-fromℕ n
-opposite-prop {suc n} (suc i) = begin
-  toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩
-  toℕ (opposite i)           ≡⟨ opposite-prop i ⟩
-  n ∸ suc (toℕ i)            ∎
-  where open ≡-Reasoning
-
-opposite-involutive : Involutive {A = Fin n} _≡_ opposite
-opposite-involutive {suc n} i = toℕ-injective (begin
-  toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
-  n ∸ (toℕ (opposite i))      ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))           ≡⟨ ℕ.m∸[m∸n]≡n (toℕ≤pred[n] i) ⟩
-  toℕ i                       ∎)
-  where open ≡-Reasoning
-
-opposite-suc : ∀ (i : Fin n) → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
-opposite-suc {n} i = begin
-  toℕ (opposite (suc i))     ≡⟨ opposite-prop (suc i) ⟩
-  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
-  n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ opposite-prop i ⟨
-  toℕ (opposite i)           ∎
-  where open ≡-Reasoning
 
 
 ------------------------------------------------------------------------
