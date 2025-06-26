@@ -795,17 +795,21 @@ if-xor false = refl
 if-xor true {false} = refl
 if-xor true {true } = refl
 
-if-congˡ : ∀ b {x y z : A} → x ≡ z →
-           (if b then x else y) ≡ (if b then z else y)
-if-congˡ _ refl = refl
+if-cong : ∀ {b c} {x y : A} → b ≡ c →
+               (if b then x else y) ≡ (if c then x else y)
+if-cong refl = refl
 
-if-congʳ : ∀ b {x y z : A} → y ≡ z →
-           (if b then x else y) ≡ (if b then x else z)
-if-congʳ _ refl = refl
+if-cong-then : ∀ b {x y z : A} → x ≡ z →
+               (if b then x else y) ≡ (if b then z else y)
+if-cong-then _ refl = refl
 
-if-cong : ∀ b {x y z w : A} → x ≡ z → y ≡ w →
-          (if b then x else y) ≡ (if b then z else w)
-if-cong _ refl refl = refl
+if-cong-else : ∀ b {x y z : A} → y ≡ z →
+               (if b then x else y) ≡ (if b then x else z)
+if-cong-else _ refl = refl
+
+if-cong₂ : ∀ b {x y z w : A} → x ≡ z → y ≡ w →
+           (if b then x else y) ≡ (if b then z else w)
+if-cong₂ _ refl refl = refl
 
 ------------------------------------------------------------------------
 -- Properties of T
