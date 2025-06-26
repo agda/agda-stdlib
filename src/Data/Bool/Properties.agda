@@ -750,11 +750,12 @@ if-eta : ∀ b {x : A} →
 if-eta false = refl
 if-eta true  = refl
 
-if-swap : ∀ b c {x y : A} →
-          (if b then x else (if c then x else y)) ≡ (if c then x else (if b then x else y))
-if-swap false _     = refl
-if-swap true  false = refl
-if-swap true  true  = refl
+if-swap-else : ∀ b c {x y : A} →
+          (if b then x else (if c then x else y))
+        ≡ (if c then x else (if b then x else y))
+if-swap-else false _     = refl
+if-swap-else true  false = refl
+if-swap-else true  true  = refl
 
 if-not : ∀ b {x y : A} →
          (if not b then x else y) ≡ (if b then y else x)
