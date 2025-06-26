@@ -8,6 +8,8 @@
 
 module Data.Vec.Relation.Binary.Pointwise.Inductive where
 
+open import Algebra.Definitions
+  using (Associative; Commutative; LeftIdentity; RightIdentity; Congruent₂)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (_×_; _,_; uncurry; <_,_>)
@@ -33,6 +35,7 @@ private
     B : Set b
     C : Set c
     D : Set d
+    n : ℕ
 
 ------------------------------------------------------------------------
 -- Definition
@@ -231,6 +234,42 @@ module _ {_∼_ : Rel A ℓ} (refl : Reflexive _∼_) where
               Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
   cong-[ zero ]≔  p (_   ∷ eqn) = refl ∷ eqn
   cong-[ suc i ]≔ p (x∼y ∷ eqn) = x∼y  ∷ cong-[ i ]≔ p eqn
+
+------------------------------------------------------------------------
+-- zipWith
+
+module _ {_∼_ : Rel A ℓ} where
+  module _ {f : A → A → A} where
+    zipWith-assoc : Associative _∼_ f →
+                    Associative (Pointwise _∼_) (zipWith {n = n} f)
+    zipWith-assoc assoc [] [] [] = []
+    zipWith-assoc assoc (x ∷ xs) (y ∷ ys) (z ∷ zs) = assoc x y z ∷ zipWith-assoc assoc xs ys zs
+
+  module _ {f : A → A → A} {e : A} where
+    zipWith-identityˡ : LeftIdentity _∼_ e f →
+                        LeftIdentity (Pointwise _∼_) (replicate n e) (zipWith f)
+    zipWith-identityˡ idˡ []       = []
+    zipWith-identityˡ idˡ (x ∷ xs) = idˡ x ∷ zipWith-identityˡ idˡ xs
+
+    zipWith-identityʳ : RightIdentity _∼_ e f →
+                        RightIdentity (Pointwise _∼_) (replicate n e) (zipWith f)
+    zipWith-identityʳ idʳ []       = []
+    zipWith-identityʳ idʳ (x ∷ xs) = idʳ x ∷ zipWith-identityʳ idʳ xs
+
+  module _ {f : A → A → A} where
+    zipWith-comm : Commutative _∼_ f →
+                   Commutative (Pointwise _∼_) (zipWith {n = n} f)
+    zipWith-comm comm []       []       = []
+    zipWith-comm comm (x ∷ xs) (y ∷ ys) = comm x y ∷ zipWith-comm comm xs ys
+
+  module _ {f : A → A → A} where
+    zipWith-cong : ∀ {m n}
+          {ws : Vec A m} {xs : Vec A n} {ys : Vec A m} {zs : Vec A n} →
+          Congruent₂ _∼_ f →
+          Pointwise _∼_ ws xs → Pointwise _∼_ ys zs →
+          Pointwise _∼_ (zipWith f ws ys) (zipWith f xs zs)
+    zipWith-cong cong [] [] = []
+    zipWith-cong cong (x∼y ∷ xs) (a∼b ∷ ys) = cong x∼y a∼b ∷ zipWith-cong cong xs ys
 
 ------------------------------------------------------------------------
 -- Degenerate pointwise relations
