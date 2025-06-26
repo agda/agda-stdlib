@@ -12,9 +12,7 @@ module Data.Fin.Properties where
 
 open import Axiom.Extensionality.Propositional
 open import Algebra.Definitions using (Involutive)
-open import Effect.Applicative using (RawApplicative)
-open import Effect.Functor using (RawFunctor)
-open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
@@ -34,7 +32,7 @@ open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
 open import Level using (Level)
-open import Relation.Binary.Definitions as B hiding (Decidable)
+open import Relation.Binary.Definitions
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
 open import Relation.Binary.Bundles
   using (Preorder; Setoid; DecSetoid; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
@@ -48,9 +46,7 @@ open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (Reflects; invert)
-open import Relation.Unary as U
-  using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
-open import Relation.Unary.Properties using (U?)
+
 
 private
   variable
@@ -61,10 +57,51 @@ private
 
 
 ------------------------------------------------------------------------
--- Reexport Core properties
+-- Properties of _≡_
 ------------------------------------------------------------------------
 
-open import Data.Fin.Properties.Core public
+0≢1+n : zero ≢ suc i
+0≢1+n ()
+
+suc-injective : suc i ≡ suc j → i ≡ j
+suc-injective refl = refl
+
+infix 4 _≟_
+
+_≟_ : DecidableEquality (Fin n)
+zero  ≟ zero  = yes refl
+zero  ≟ suc y = no λ()
+suc x ≟ zero  = no λ()
+suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
+
+------------------------------------------------------------------------
+-- Structures
+
+≡-isDecEquivalence : IsDecEquivalence {A = Fin n} _≡_
+≡-isDecEquivalence = record
+  { isEquivalence = ≡.isEquivalence
+  ; _≟_           = _≟_
+  }
+
+------------------------------------------------------------------------
+-- Bundles
+
+≡-preorder : ℕ → Preorder _ _ _
+≡-preorder n = ≡.preorder (Fin n)
+
+≡-setoid : ℕ → Setoid _ _
+≡-setoid n = ≡.setoid (Fin n)
+
+≡-decSetoid : ℕ → DecSetoid _ _
+≡-decSetoid n = record
+  { isDecEquivalence = ≡-isDecEquivalence {n}
+  }
+
+------------------------------------------------------------------------
+-- Reexport Decidable properties
+------------------------------------------------------------------------
+
+open import Data.Fin.Relation.Unary.Decidable public
 
 ------------------------------------------------------------------------
 -- Fin
@@ -270,10 +307,10 @@ cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
 
 infix 4 _≤?_ _<?_
 
-_≤?_ : B.Decidable (_≤_ {m} {n})
+_≤?_ : Decidable (_≤_ {m} {n})
 a ≤? b = toℕ a ℕ.≤? toℕ b
 
-_<?_ : B.Decidable (_<_ {m} {n})
+_<?_ : Decidable (_<_ {m} {n})
 m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 ------------------------------------------------------------------------
@@ -918,106 +955,6 @@ opposite-suc {n} i = begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- Quantification
-------------------------------------------------------------------------
-
-module _ {p} {P : Pred (Fin (suc n)) p} where
-
-  ∀-cons : P zero → Π[ P ∘ suc ] → Π[ P ]
-  ∀-cons z s zero    = z
-  ∀-cons z s (suc i) = s i
-
-  ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
-  ∀-cons-⇔ = mk⇔ (uncurry ∀-cons) < _$ zero , _∘ suc >
-
-  ∃-here : P zero → ∃⟨ P ⟩
-  ∃-here = zero ,_
-
-  ∃-there : ∃⟨ P ∘ suc ⟩ → ∃⟨ P ⟩
-  ∃-there = map suc id
-
-  ∃-toSum : ∃⟨ P ⟩ → P zero ⊎ ∃⟨ P ∘ suc ⟩
-  ∃-toSum ( zero , P₀ ) = inj₁ P₀
-  ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
-
-  ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
-  ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
-
-decFinSubset : ∀ {p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
-               Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
-decFinSubset {zero}  {_}     {_} Q? P? = yes λ {}
-decFinSubset {suc n} {P = P} {Q} Q? P? = dec[Q⊆P]
-  module DecFinSubset where
-  
-  cons : (Q 0F → P 0F) → (Q ∘ suc ⊆ P ∘ suc) → Q ⊆ P
-  cons q₀⊆p₀ f = ∀-cons {P = λ x → Q x → P x} q₀⊆p₀ (λ- f) $-
-  
-  ih : Dec (Q ∘ suc ⊆ P ∘ suc)
-  ih = decFinSubset (Q? ∘ suc) P?
-  
-  Q⊆P⇒Q∘suc⊆P∘suc : Q ⊆ P → Q ∘ suc ⊆ P ∘ suc
-  Q⊆P⇒Q∘suc⊆P∘suc f {x} = f {suc x}
-  
-  dec[Q⊆P] : Dec (Q ⊆ P)
-  dec[Q⊆P] with Q? zero
-  ... | false because [¬Q0] = let ¬q₀ = invert [¬Q0] in
-    map′ (cons (flip contradiction ¬q₀)) Q⊆P⇒Q∘suc⊆P∘suc ih
-  ... | true  because  [Q0] = let q₀ = invert [Q0] in
-    map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q∘suc⊆P∘suc > (P? q₀ ×-dec ih)
-
-any? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
-any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
-
-all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
-all? {n = zero}  P? = yes λ()
-all? {n = suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
-
-Universal< : ∀ {p} → Pred (Fin n) p → Pred (Fin n) p
-Universal< P i = (j : Fin′ i) → P (inject j)
-
-syntax Universal< (λ j → P) i = ∀[ j < i ] P
-
-MinimalCounterexample : ∀ {p} (P : Pred (Fin n) p) → Set p
-MinimalCounterexample P = ∃[ i ] ¬ P i × ∀[ j < i ] P j
-
-syntax MinimalCounterexample P = μ⟨¬ P ⟩
-
-min? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
-min? {n = zero}  {P = _} P? = inj₁ λ()
-min? {n = suc n} {P = P} P? with P? zero
-... | false because [¬p₀] = inj₂ (_ , invert [¬p₀] , λ())
-... | true  because  [p₀] = Sum.map (∀-cons p₀) μ⁺ (min? (P? ∘ suc))
-  where
-  p₀ : P zero
-  p₀ = invert [p₀]
-  μ⁺ : μ⟨¬ (P ∘ suc) ⟩ → μ⟨¬ P ⟩
-  μ⁺ (i , ¬pᵢ , Π<[P∘suc]) = suc i , ¬pᵢ , ∀-cons p₀ Π<[P∘suc]
-
-private
-  -- A nice computational property of `all?`:
-  -- The boolean component of the result is exactly the
-  -- obvious fold of boolean tests (`foldr _∧_ true`).
-  note : ∀ {p} {P : Pred (Fin 3) p} (P? : Decidable P) →
-         ∃ λ z → Dec.does (all? P?) ≡ z
-  note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
-          , refl
-
--- If a decidable predicate P over a finite set is sometimes false,
--- then we can find the smallest value for which this is the case.
-
-¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-                 ¬ (∀ i → P i) → MinimalCounterexample P
-¬∀⟶∃¬-smallest _ _ P? ¬∀[i]P = [ flip contradiction ¬∀[i]P , id ] $ min? P?
-
--- When P is a decidable predicate over a finite set the following
--- lemma can be proved.
-
-¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-          ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
-¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
-
-------------------------------------------------------------------------
 -- Properties of functions to and from Fin
 ------------------------------------------------------------------------
 
@@ -1055,34 +992,13 @@ cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
   (injective⇒≤ f-inj) (injective⇒≤ g-inj)
 
 ------------------------------------------------------------------------
--- Effectful
-------------------------------------------------------------------------
-
-module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
-
-  open RawApplicative RA
-
-  sequence : ∀ {n} {P : Pred (Fin n) f} →
-             (∀ i → F (P i)) → F (∀ i → P i)
-  sequence {zero}  ∀iPi = pure λ()
-  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
-
-module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
-
-  open RawFunctor RF
-
-  sequence⁻¹ : ∀ {A : Set f} {P : Pred A f} →
-               F (∀ i → P i) → (∀ i → F (P i))
-  sequence⁻¹ F∀iPi i = (λ f → f i) <$> F∀iPi
-
-------------------------------------------------------------------------
 -- If there is an injection from a type A to a finite set, then the type
 -- has decidable equality.
 
 module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
   open Setoid S
 
-  inj⇒≟ : B.Decidable _≈_
+  inj⇒≟ : Decidable _≈_
   inj⇒≟ = Dec.via-injection inj _≟_
 
   inj⇒decSetoid : DecSetoid a ℓ

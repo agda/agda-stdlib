@@ -155,7 +155,7 @@ New modules
 
 * `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
 
-* `Data.Fin.Properties.Core` to avoid dependency cycles
+* `Data.Fin.Relation.Unary.Decidable` for properties of decidable unary predicates on `Fin`.
 
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 

@@ -19,6 +19,8 @@ open import Data.Product.Base as Product
 open import Data.Product.Properties using (,-injective)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Functor using (RawFunctor)
 open import Function.Base using (_∘_; id; _$_; flip; const; _$-; λ-)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Level using (Level)
@@ -39,7 +41,7 @@ private
     i j : Fin n
     P : Pred (Fin n) p
     Q : Pred (Fin n) q
-               
+
 
 ------------------------------------------------------------------------
 -- Quantification
@@ -71,16 +73,16 @@ decFinSubset : Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
 decFinSubset {zero}  {_}     {_}     Q? P? = yes λ {}
 decFinSubset {suc n} {Q = Q} {P = P} Q? P? = dec[Q⊆P]
   module DecFinSubset where
-  
+
   cons : (Q 0F → P 0F) → (Q ∘ suc ⊆ P ∘ suc) → Q ⊆ P
   cons q₀⊆p₀ f = ∀-cons {P = λ x → Q x → P x} q₀⊆p₀ (λ- f) $-
-  
+
   ih : Dec (Q ∘ suc ⊆ P ∘ suc)
   ih = decFinSubset (Q? ∘ suc) P?
-  
+
   Q⊆P⇒Q∘suc⊆P∘suc : Q ⊆ P → Q ∘ suc ⊆ P ∘ suc
   Q⊆P⇒Q∘suc⊆P∘suc f {x} = f {suc x}
-  
+
   dec[Q⊆P] : Dec (Q ⊆ P)
   dec[Q⊆P] with Q? zero
   ... | false because [¬Q0] = let ¬q₀ = invert [¬Q0] in
@@ -140,4 +142,25 @@ private
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
 
+
+------------------------------------------------------------------------
+-- Effectful
+------------------------------------------------------------------------
+
+module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
+
+  open RawApplicative RA
+
+  sequence : ∀ {n} {P : Pred (Fin n) f} →
+             (∀ i → F (P i)) → F (∀ i → P i)
+  sequence {zero}  ∀iPi = pure λ()
+  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
+
+module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
+
+  open RawFunctor RF
+
+  sequence⁻¹ : ∀ {A : Set f} {P : Pred A f} →
+               F (∀ i → P i) → (∀ i → F (P i))
+  sequence⁻¹ F∀iPi i = (λ f → f i) <$> F∀iPi
 
