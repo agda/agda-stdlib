@@ -42,8 +42,6 @@ Minor improvements
 * Moved the concept `Irrelevant` of irrelevance (h-proposition) from `Relation.Nullary`
   to its own dedicated module `Relation.Nullary.Irrelevant`.
 
-* Permutaions in `Data.List.Sort.MergenSort` and `Data.List.Sort.Base` are now setoid based rather than propositional equality based only.
-
 Deprecated modules
 ------------------
 
@@ -164,10 +162,6 @@ New modules
 * `Data.List.Relation.Binary.Prefix.Propositional.Properties` showing the equivalence to left divisibility induced by the list monoid.
 
 * `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
-
-* `Data.List.Sort.InsertionSort.{agda|Base|Properties}` defines insertion sort and proves properties of insertion sort such as Sorted and Permutation properties.
-
-* `Data.List.Sort.MergenSort.{agda|Base|Properties}` is a refactor of the previous `Data.List.Sort.MergenSort`.
 
 * `Data.Sign.Show` to show a sign
 
