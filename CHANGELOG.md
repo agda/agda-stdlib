@@ -377,6 +377,20 @@ Additions to existing modules
   ⊥-dec : Dec {a} ⊥
   ```
 
+* In `Relation.Unary`:
+  ```agda
+  _⊥_ _⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  ```
+
+* In `Relation.Unary.Properties`:
+  ```agda
+  ≬-symmetric : Sym _≬_ _≬_
+  ⊥-symmetric : Sym _⊥_ _⊥_
+  ≬-sym : Symmetric _≬_
+  ⊥-sym : Symmetric _⊥_
+  ≬⇒¬⊥ : _≬_ ⇒  (¬_ ∘₂ _⊥_)
+  ⊥⇒¬≬ : _⊥_ ⇒  (¬_ ∘₂ _≬_)
+
 * In `Relation.Nullary.Negation.Core`:
   ```agda
   contra-diagonal : (A → ¬ A) → ¬ A
