@@ -15,8 +15,10 @@ module Data.List.Sort.InsertionSort.Properties
 
 open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.List.Base using (List; []; _∷_)
-open import Data.List.Relation.Unary.Linked using ([]; [-]; _∷_)
 open import Data.List.Relation.Binary.Pointwise using ([]; _∷_; decidable; setoid)
+open import Data.List.Relation.Binary.Permutation.Propositional
+import Data.List.Relation.Binary.Permutation.Propositional.Properties as Perm
+open import Data.List.Relation.Unary.Linked using ([]; [-]; _∷_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.Properties.DecTotalOrder O using (≰⇒≥)
@@ -28,7 +30,6 @@ open DecTotalOrder O renaming (Carrier to A; trans to ≤-trans)
 
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
   using (_≋_; ≋-refl; ≋-sym; ≋-trans)
-open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
 open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder using (Sorted)
 open import Data.List.Sort.Base totalOrder using (SortingAlgorithm)
 open import Data.List.Sort.InsertionSort.Base O
@@ -42,21 +43,21 @@ insert-↭ x [] = ↭-refl
 insert-↭ x (y ∷ xs) with does (x ≤? y)
 ... | true  = ↭-refl
 ... | false = begin
-  y ∷ insert x xs ↭⟨ prep Eq.refl (insert-↭ x xs) ⟩
-  y ∷ x ∷ xs      ↭⟨ swap Eq.refl Eq.refl ↭-refl ⟩
+  y ∷ insert x xs ↭⟨ prep y (insert-↭ x xs) ⟩
+  y ∷ x ∷ xs      ↭⟨ swap y x refl ⟩
   x ∷ y ∷ xs ∎
   where open PermutationReasoning
 
-insert-cong-↭ : ∀ {x xs y ys} → x ≈ y → xs ↭ ys → insert x xs ↭ y ∷ ys
-insert-cong-↭ {x} {xs} {y} {ys} eq₁ eq₂ = begin
+insert-cong-↭ : ∀ {x xs ys} → xs ↭ ys → insert x xs ↭ x ∷ ys
+insert-cong-↭ {x} {xs} {ys} eq = begin
   insert x xs ↭⟨ insert-↭ x xs ⟩
-  x ∷ xs      ↭⟨ prep eq₁ eq₂ ⟩
-  y ∷ ys ∎
+  x ∷ xs      ↭⟨ prep x eq ⟩
+  x ∷ ys ∎
   where open PermutationReasoning
 
 sort-↭ : ∀ (xs : List A) → sort xs ↭ xs
 sort-↭ [] = ↭-refl
-sort-↭ (x ∷ xs) = insert-cong-↭ Eq.refl (sort-↭ xs)
+sort-↭ (x ∷ xs) = insert-cong-↭ (sort-↭ xs)
 
 ------------------------------------------------------------------------
 -- Sorted property
@@ -151,32 +152,3 @@ insert-swap-cong {x} {y} {x′} {y′} {xs} {ys} eq₁ eq₂ eq₃ = begin
   insert x′ (insert y′ ys) ≈⟨ insert-swap x′ y′ ys ⟩
   insert y′ (insert x′ ys) ∎
   where open ≋-Reasoning
-
--- Ideally, we want:
-
---   property1 : ∀ {xs ys} → xs ↭ ys → Sorted xs → Sorted ys → xs ≋ ys
-
--- But the induction over xs ↭ ys is hard to do for the "transitive"
--- constructor. So instead we have a similar property that depends on
--- the particular sorting algorithm used.
-
-sort-cong-↭ : ∀ {xs ys} → xs ↭ ys → sort xs ≋ sort ys
-sort-cong-↭ (refl x) = sort-cong x
-sort-cong-↭ (prep eq eq₁) = insert-cong eq (sort-cong-↭ eq₁)
-sort-cong-↭ (swap eq₁ eq₂ eq) = insert-swap-cong eq₁ eq₂ (sort-cong-↭ eq)
-sort-cong-↭ (trans eq eq₁) = ≋-trans (sort-cong-↭ eq) (sort-cong-↭ eq₁)
-
-------------------------------------------------------------------------
--- Decidability property
-
-infix 4 _↭?_
-
-_↭?_ : Decidable _↭_
-xs ↭? ys with decidable Eq._≟_ (sort xs) (sort ys)
-... | yes eq = yes (begin
-  xs      ↭⟨ sort-↭ xs ⟨
-  sort xs ↭⟨ refl eq ⟩
-  sort ys ↭⟨ sort-↭ ys ⟩
-  ys ∎)
-  where open PermutationReasoning
-... | no neq = no (λ x → neq (sort-cong-↭ x))

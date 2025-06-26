@@ -13,10 +13,10 @@ module Data.List.Sort.Base
   where
 
 open import Data.List.Base using (List)
+open import Data.List.Relation.Binary.Permutation.Propositional using (_↭_)
 open import Level using (_⊔_)
 
-open TotalOrder totalOrder renaming (Carrier to A) using (module Eq)
-open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
+open TotalOrder totalOrder renaming (Carrier to A)
 open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder
 
 ------------------------------------------------------------------------
