@@ -150,6 +150,11 @@ Deprecated names
   left-inverse ↦ rightInverse
   ```
 
+* In `Data.Product.Nary.NonDependent`:
+  ```agda
+  Allₙ ↦ Pointwiseₙ
+  ```
+
 New modules
 -----------
 
@@ -355,6 +360,12 @@ Additions to existing modules
     LeftInverse (I ×ₛ A) (J ×ₛ B)
   ```
 
+* In `Data.Product.Nary.NonDependent`:
+  ```agda
+  HomoProduct′ n f = Product n (stabulate n (const _) f)
+  HomoProduct  n A = HomoProduct′ n (const A)
+  ```
+
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
   ```agda
   zipWith-assoc : Associative _∼_ f → Associative (Pointwise _∼_) (zipWith {n = n} f)
@@ -362,6 +373,13 @@ Additions to existing modules
   zipWith-identityʳ: RightIdentity _∼_ e f → RightIdentity (Pointwise _∼_) (replicate n e) (zipWith f)
   zipWith-comm : Commutative _∼_ f → Commutative (Pointwise _∼_) (zipWith {n = n} f)
   zipWith-cong : Congruent₂ _∼_ f → Pointwise _∼_ ws xs → Pointwise _∼_ ys zs → Pointwise _∼_ (zipWith f ws ys) (zipWith f xs zs)
+  ```
+
+* In `Function.Nary.NonDependent.Base`:
+  ```agda
+  lconst l n = ⨆ l (lreplicate l n)
+  stabulate : ∀ n → (f : Fin n → Level) → (g : (i : Fin n) → Set (f i)) → Sets n (ltabulate n f)
+  sreplicate : ∀ n → Set a → Sets n (lreplicate n a)
   ```
 
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:
