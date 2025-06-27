@@ -137,6 +137,7 @@ Deprecated names
   ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
   product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
   ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ∷-ʳ++-eqFree ↦  Data.List.Properties.ʳ++-ʳ++-eqFree
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
@@ -296,13 +297,14 @@ Additions to existing modules
 
 * In `Data.Vec.Properties`:
   ```agda
-  toList-injective : ∀ {m n} → .(m=n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) →
-                     toList xs ≡ toList ys → xs ≈[ m=n ] ys
-  fromList-reverse : (xs : List A) → (fromList (L.reverse xs)) ≈[ L.length-reverse xs ] reverse (fromList xs)
-  ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
-                  cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
-  ʳ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
-                   cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
+  toList-injective : ∀ {m n} → .(m=n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) → toList xs ≡ toList ys → xs ≈[ m=n ] ys
+
+  toList-∷ʳ : ∀ x (xs : Vec A n) → toList (xs ∷ʳ x) ≡ toList xs List.++ List.[ x ]
+
+  fromList-reverse : (xs : List A) → (fromList (List.reverse xs)) ≈[ List.length-reverse xs ] reverse (fromList xs)
+
+  fromList∘toList : ∀  (xs : Vec A n) → fromList (toList xs) ≈[ length-toList xs ] xs
+
   ```
 
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
