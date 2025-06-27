@@ -41,7 +41,7 @@ any? : Decidable P → Dec (∃ P)
 any? {zero}  P? = no λ { (() , _) }
 any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 
-all? : Decidable P → Dec (∀ f → P f)
+all? : Decidable P → Dec (∀ i → P i)
 all? {zero}  P? = yes λ()
 all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
 
@@ -55,7 +55,7 @@ ExistsMinimalCounterexample P = ∃[ i ] ¬ P i × ∀[ j < i ] P j
 
 syntax ExistsMinimalCounterexample P = μ⟨¬ P ⟩
 
-searchMin : Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
+searchMin : Decidable P → (∀ i → P i) ⊎ ∃[ i ] ¬ P i × ∀[ j < i ] P j
 searchMin {zero}  {P = _} P? = inj₁ λ()
 searchMin {suc n} {P = P} P? with P? zero
 ... | no ¬p₀ = inj₂ (_ , ¬p₀ , λ())
@@ -72,6 +72,9 @@ private
          ∃ λ z → Dec.does (all? P?) ≡ z
   note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
           , refl
+
+------------------------------------------------------------------------
+-- Corollaries to `searchMin`
 
 -- If a decidable predicate P over a finite set is sometimes false,
 -- then we can find the smallest value for which this is the case.
