@@ -69,20 +69,20 @@ Please use opposite from Data.Fin.Base instead."
 #-}
 
 reverse-prop = opposite-prop
-{-# WARNING_ON_USAGE reverse
+{-# WARNING_ON_USAGE reverse-prop
 "Warning: reverse-prop was deprecated in v2.0.
 Please use opposite-prop from Data.Fin.Properties instead."
 #-}
 
 reverse-involutive = opposite-involutive
-{-# WARNING_ON_USAGE reverse
+{-# WARNING_ON_USAGE reverse-involutive
 "Warning: reverse-involutive was deprecated in v2.0.
 Please use opposite-involutive from Data.Fin.Properties instead."
 #-}
 
 reverse-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
 reverse-suc {i = i} = opposite-suc i
-{-# WARNING_ON_USAGE reverse
+{-# WARNING_ON_USAGE reverse-suc
 "Warning: reverse-suc was deprecated in v2.0.
 Please use opposite-suc from Data.Fin.Properties instead."
 #-}

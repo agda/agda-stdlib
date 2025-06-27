@@ -12,7 +12,8 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; suc; cast; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F; 1F)
 open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
-  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0; cast-involutive)
+  punchOut-cong; punchOut-cong′; punchIn-punchOut
+  ; _≟_; ¬Fin0; cast-involutive; opposite-involutive)
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product.Base using (_,_; proj₂)
@@ -130,8 +131,8 @@ reverse : Permutation n n
 reverse = permutation
   opposite
   opposite
-  PC.reverse-involutive
-  PC.reverse-involutive
+  opposite-involutive
+  opposite-involutive
 
 ------------------------------------------------------------------------
 -- Element removal
