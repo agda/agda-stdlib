@@ -169,6 +169,10 @@ New modules
 
 * `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
 
+* Added a new domain theory section to the library under `Relation.Binary.Domain.*`:
+  - Introduced new modules and bundles for domain theory, including `DirectedCompletePartialOrder`, `Lub`, and `ScottContinuous`.
+  - All files for domain theory are now available in `src/Relation/Binary/Domain/`.
+
 Additions to existing modules
 -----------------------------
 
