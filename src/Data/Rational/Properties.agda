@@ -51,6 +51,7 @@ open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
 import Data.Sign.Base as Sign
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
+open import Function.Metric.Rational as Metric hiding (Symmetric)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
@@ -1803,6 +1804,89 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ∣∣p∣∣≡∣p∣ : ∀ p → ∣ ∣ p ∣ ∣ ≡ ∣ p ∣
 ∣∣p∣∣≡∣p∣ p = 0≤p⇒∣p∣≡p (0≤∣p∣ p)
 
+------------------------------------------------------------------------
+-- Metric space
+------------------------------------------------------------------------
+
+private
+  d : ℚ → ℚ → ℚ
+  d p q = ∣ p - q ∣
+
+d-cong : Congruent _≡_ d
+d-cong = cong₂ _
+
+d-nonNegative : ∀ {p q} → 0ℚ ≤ d p q
+d-nonNegative {p} {q} = nonNegative⁻¹ _ {{∣-∣-nonNeg (p - q)}}
+
+d-definite : Definite _≡_ d
+d-definite {p} refl = cong ∣_∣ (+-inverseʳ p)
+
+d-indiscernable : Indiscernable _≡_ d
+d-indiscernable {p} {q} ∣p-q∣≡0 = begin
+  p               ≡⟨ +-identityʳ p ⟨
+  p - 0ℚ          ≡⟨ cong (_-_ p) (∣p∣≡0⇒p≡0 (p - q) ∣p-q∣≡0) ⟨
+  p - (p - q)     ≡⟨ cong (_+_ p) (neg-distrib-+ p (- q)) ⟩
+  p + (- p - - q) ≡⟨ +-assoc p (- p) (- - q) ⟨
+  (p - p) - - q   ≡⟨ cong₂ _+_ (+-inverseʳ p) (⁻¹-involutive q) ⟩
+  0ℚ + q          ≡⟨ +-identityˡ q ⟩
+  q               ∎
+  where
+    open ≡-Reasoning
+    open GroupProperties +-0-group
+
+d-sym : Metric.Symmetric d
+d-sym p q = begin
+  ∣ p - q ∣     ≡˘⟨ ∣-p∣≡∣p∣ (p - q) ⟩
+  ∣ - (p - q) ∣ ≡⟨ cong ∣_∣ (⁻¹-anti-homo-// p q) ⟩
+  ∣ q - p ∣     ∎
+  where
+    open ≡-Reasoning
+    open GroupProperties +-0-group
+
+d-triangle : TriangleInequality d
+d-triangle p q r = begin
+  ∣ p - r ∣             ≡⟨ cong (λ # → ∣ # - r ∣) (+-identityʳ p) ⟨
+  ∣ p + 0ℚ - r ∣        ≡⟨ cong (λ # → ∣ p + # - r ∣) (+-inverseˡ q) ⟨
+  ∣ p + (- q + q) - r ∣ ≡⟨ cong (λ # → ∣ # - r ∣) (+-assoc p (- q) q) ⟨
+  ∣ ((p - q) + q) - r ∣ ≡⟨ cong ∣_∣ (+-assoc (p - q) q (- r)) ⟩
+  ∣ (p - q) + (q - r) ∣ ≤⟨ ∣p+q∣≤∣p∣+∣q∣ (p - q) (q - r) ⟩
+  ∣ p - q ∣ + ∣ q - r ∣ ∎
+  where open ≤-Reasoning
+
+d-isProtoMetric : IsProtoMetric _≡_ d
+d-isProtoMetric = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; ≈-isEquivalence = isEquivalence
+  ; cong = cong₂ _
+  ; nonNegative = λ {p q} → d-nonNegative {p} {q}
+  }
+
+d-isPreMetric : IsPreMetric _≡_ d
+d-isPreMetric = record
+  { isProtoMetric = d-isProtoMetric
+  ; ≈⇒0 = d-definite
+  }
+
+d-isQuasiSemiMetric : IsQuasiSemiMetric _≡_ d
+d-isQuasiSemiMetric = record
+  { isPreMetric = d-isPreMetric
+  ; 0⇒≈ = d-indiscernable
+  }
+
+d-isSemiMetric : IsSemiMetric _≡_ d
+d-isSemiMetric = record
+  { isQuasiSemiMetric = d-isQuasiSemiMetric
+  ; sym = d-sym
+  }
+
+d-isMetric : IsMetric _≡_ d
+d-isMetric = record
+  { isSemiMetric = d-isSemiMetric
+  ; triangle = d-triangle
+  }
+
+d-metric : Metric _ _
+d-metric = record { isMetric = d-isMetric }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
