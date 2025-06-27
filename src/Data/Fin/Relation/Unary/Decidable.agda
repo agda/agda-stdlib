@@ -11,84 +11,31 @@ module Data.Fin.Relation.Unary.Decidable where
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat.Base as ℕ
-  using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; s<s⁻¹; _∸_; _^_)
-import Data.Nat.Properties as ℕ
+open import Data.Fin.Relation.Unary.Base
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product
-  using (∃; ∃-syntax; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
-open import Data.Product.Properties using (,-injective)
+  using (∃; ∃-syntax; _×_; _,_; proj₁; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
-open import Data.Sum.Properties using ([,]-map; [,]-∘)
-open import Effect.Applicative using (RawApplicative)
-open import Effect.Functor using (RawFunctor)
-open import Function.Base using (_∘_; id; _$_; flip; const; _$-; λ-)
-open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
+open import Function.Base using (id; _∘_; _$_; const; flip; _$-; λ-)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_)
+  using (_≡_; refl)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
+  using (Dec; yes; no; _×-dec_; _⊎-dec_; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
-  using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
-open import Relation.Unary.Properties using (U?)
+  using (Pred; Decidable; _⊆_; Satisfiable; Universal)
 
 private
   variable
-    f p q : Level
-    m n o : ℕ
-    i j : Fin n
+    p q : Level
+    n : ℕ
     P : Pred (Fin n) p
     Q : Pred (Fin n) q
 
 
 ------------------------------------------------------------------------
 -- Quantification
-------------------------------------------------------------------------
-
-module _ {P : Pred (Fin (suc n)) p} where
-
-  ∀-cons : P zero → Π[ P ∘ suc ] → Π[ P ]
-  ∀-cons z s zero    = z
-  ∀-cons z s (suc i) = s i
-
-  ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
-  ∀-cons-⇔ = mk⇔ (uncurry ∀-cons) < _$ zero , _∘ suc >
-
-  ∃-here : P zero → ∃⟨ P ⟩
-  ∃-here = zero ,_
-
-  ∃-there : ∃⟨ P ∘ suc ⟩ → ∃⟨ P ⟩
-  ∃-there = map suc id
-
-  ∃-toSum : ∃⟨ P ⟩ → P zero ⊎ ∃⟨ P ∘ suc ⟩
-  ∃-toSum ( zero , P₀ ) = inj₁ P₀
-  ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
-
-  ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
-  ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
-
-decFinSubset : Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
-decFinSubset {zero}  {_}     {_}     Q? P? = yes λ {}
-decFinSubset {suc n} {Q = Q} {P = P} Q? P? = dec[Q⊆P]
-  module DecFinSubset where
-
-  cons : (Q 0F → P 0F) → (Q ∘ suc ⊆ P ∘ suc) → Q ⊆ P
-  cons q₀⊆p₀ f = ∀-cons {P = λ x → Q x → P x} q₀⊆p₀ (λ- f) $-
-
-  ih : Dec (Q ∘ suc ⊆ P ∘ suc)
-  ih = decFinSubset (Q? ∘ suc) P?
-
-  Q⊆P⇒Q∘suc⊆P∘suc : Q ⊆ P → Q ∘ suc ⊆ P ∘ suc
-  Q⊆P⇒Q∘suc⊆P∘suc f {x} = f {suc x}
-
-  dec[Q⊆P] : Dec (Q ⊆ P)
-  dec[Q⊆P] with Q? zero
-  ... | false because [¬Q0] = let ¬q₀ = invert [¬Q0] in
-    map′ (cons (flip contradiction ¬q₀)) Q⊆P⇒Q∘suc⊆P∘suc ih
-  ... | true  because  [Q0] = let q₀ = invert [Q0] in
-    map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q∘suc⊆P∘suc > (P? q₀ ×-dec ih)
 
 any? : Decidable P → Dec (∃ P)
 any? {zero}  P? = no λ { (() , _) }
@@ -108,14 +55,14 @@ ExistsMinimalCounterexample P = ∃[ i ] ¬ P i × ∀[ j < i ] P j
 
 syntax ExistsMinimalCounterexample P = μ⟨¬ P ⟩
 
-min? : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
-min? {n = zero}  {P = _} P? = inj₁ λ()
-min? {n = suc n} {P = P} P? with P? zero
+searchMin : Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
+searchMin {zero}  {P = _} P? = inj₁ λ()
+searchMin {suc n} {P = P} P? with P? zero
 ... | no ¬p₀ = inj₂ (_ , ¬p₀ , λ())
-... | yes p₀ = Sum.map (∀-cons p₀) μ⁺ (min? (P? ∘ suc))
+... | yes p₀ = Sum.map (∀-cons p₀) μ⁺ (searchMin (P? ∘ suc))
   where
   μ⁺ : μ⟨¬ P ∘ suc ⟩ → μ⟨¬ P ⟩
-  μ⁺ (i , ¬pᵢ , Π<[P∘suc]) = suc i , ¬pᵢ , ∀-cons p₀ Π<[P∘suc]
+  μ⁺ (i , ¬pᵢ , ∀<[P∘suc]) = suc i , ¬pᵢ , ∀-cons p₀ ∀<[P∘suc]
 
 private
   -- A nice computational property of `all?`:
@@ -131,34 +78,34 @@ private
 
 ¬∀⟶∃¬-smallest : ∀ n (P : Pred (Fin n) p) → Decidable P →
                  ¬ (∀ i → P i) → ExistsMinimalCounterexample P
-¬∀⟶∃¬-smallest _ _ P? ¬∀[i]P = [ flip contradiction ¬∀[i]P , id ] $ min? P?
+¬∀⟶∃¬-smallest _ _ P? ¬∀[i]P = [ flip contradiction ¬∀[i]P , id ] $ searchMin P?
 
 -- When P is a decidable predicate over a finite set the following
 -- lemma can be proved.
 
 ¬∀⟶∃¬ : ∀ n (P : Pred (Fin n) p) → Decidable P →
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
-¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
-
+¬∀⟶∃¬ n P P? ¬P = Product.map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
 
 ------------------------------------------------------------------------
--- Effectful
-------------------------------------------------------------------------
+-- Kleisli lifting of Dec over subset relation
 
-module _ {F : Set f → Set f} (RA : RawApplicative F) where
+decFinSubset : Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
+decFinSubset {zero}  {_}     {_}     Q? P? = yes λ {}
+decFinSubset {suc n} {Q = Q} {P = P} Q? P? = dec[Q⊆P]
+  module DecFinSubset where
 
-  open RawApplicative RA
+  cons : (Q 0F → P 0F) → (Q ∘ suc ⊆ P ∘ suc) → Q ⊆ P
+  cons q₀⊆p₀ f = ∀-cons {P = λ x → Q x → P x} q₀⊆p₀ (λ- f) $-
 
-  sequence : ∀ {P : Pred (Fin n) f} →
-             (∀ i → F (P i)) → F (∀ i → P i)
-  sequence {n = zero}  ∀iPi = pure λ()
-  sequence {n = suc _} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
+  ih : Dec (Q ∘ suc ⊆ P ∘ suc)
+  ih = decFinSubset (Q? ∘ suc) P?
 
-module _ {F : Set f → Set f} (RF : RawFunctor F) where
+  Q⊆P⇒Q∘suc⊆P∘suc : Q ⊆ P → Q ∘ suc ⊆ P ∘ suc
+  Q⊆P⇒Q∘suc⊆P∘suc f {x} = f {suc x}
 
-  open RawFunctor RF
-
-  sequence⁻¹ : ∀ {A : Set f} {P : Pred A f} →
-               F (∀ i → P i) → (∀ i → F (P i))
-  sequence⁻¹ F∀iPi i = (λ f → f i) <$> F∀iPi
+  dec[Q⊆P] : Dec (Q ⊆ P)
+  dec[Q⊆P] with Q? zero
+  ... | no ¬q₀ = map′ (cons (flip contradiction ¬q₀)) Q⊆P⇒Q∘suc⊆P∘suc ih
+  ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q∘suc⊆P∘suc > (P? q₀ ×-dec ih)
 

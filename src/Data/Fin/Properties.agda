@@ -30,7 +30,7 @@ open import Function.Base using (_∘_; id; _$_; flip; const; _$-; λ-)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
-open import Function.Construct.Composition as Comp hiding (injective)
+import Function.Construct.Composition as Comp
 open import Level using (Level)
 open import Relation.Binary.Definitions
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
@@ -43,9 +43,8 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
+  using (Dec; yes; no; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (Reflects; invert)
 
 
 private
@@ -98,9 +97,10 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
   }
 
 ------------------------------------------------------------------------
--- Reexport Decidable properties
+-- Reexport properties of Unary predicates on Fin
 ------------------------------------------------------------------------
 
+open import Data.Fin.Relation.Unary.Base public
 open import Data.Fin.Relation.Unary.Decidable public
 
 ------------------------------------------------------------------------

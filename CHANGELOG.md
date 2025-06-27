@@ -155,6 +155,8 @@ New modules
 
 * `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
 
+* `Data.Fin.Relation.Unary.Base` for basic properties of unary predicates on `Fin`.
+
 * `Data.Fin.Relation.Unary.Decidable` for properties of decidable unary predicates on `Fin`.
 
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
