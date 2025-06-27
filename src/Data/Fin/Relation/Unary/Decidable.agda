@@ -45,6 +45,20 @@ all? : Decidable P → Dec (∀ i → P i)
 all? {zero}  P? = yes λ()
 all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
 
+private
+  -- A nice computational property of `all?`:
+  -- The boolean component of the result is exactly the
+  -- obvious fold of boolean tests (`foldr _∧_ true`).
+  note : ∀ {P : Pred (Fin 3) p} (P? : Decidable P) →
+         ∃ λ z → Dec.does (all? P?) ≡ z
+  note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
+          , refl
+
+------------------------------------------------------------------------
+-- search
+-- a Decidable predicate is either always true, or has a smallest counterexample
+
+
 Universal< : Pred (Fin n) p → Pred (Fin n) p
 Universal< P i = (j : Fin′ i) → P (inject j)
 
@@ -64,14 +78,8 @@ searchMin {suc n} {P = P} P? with P? zero
   μ⁺ : μ⟨¬ P ∘ suc ⟩ → μ⟨¬ P ⟩
   μ⁺ (i , ¬pᵢ , ∀<[P∘suc]) = suc i , ¬pᵢ , ∀-cons p₀ ∀<[P∘suc]
 
-private
-  -- A nice computational property of `all?`:
-  -- The boolean component of the result is exactly the
-  -- obvious fold of boolean tests (`foldr _∧_ true`).
-  note : ∀ {P : Pred (Fin 3) p} (P? : Decidable P) →
-         ∃ λ z → Dec.does (all? P?) ≡ z
-  note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
-          , refl
+searchMin′ : Decidable P → (∀ i → ¬ P i) ⊎ ∃[ i ] P i × ∀[ j < i ] (¬ P j)
+searchMin′ P? = Sum.map id (Product.map₂ (Product.map₁ (Dec.decidable-stable (P? _)))) $ searchMin (Dec.¬? ∘ P?)
 
 ------------------------------------------------------------------------
 -- Corollaries to `searchMin`
