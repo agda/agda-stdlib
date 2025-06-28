@@ -113,32 +113,33 @@ sort-cong : ∀ {xs ys} → xs ≋ ys → sort xs ≋ sort ys
 sort-cong [] = []
 sort-cong (x∼y ∷ eq) = insert-cong x∼y (sort-cong eq)
 
-insert-swap-≤ : ∀ {x y} xs → x ≤ y → insert x (insert y xs) ≋ insert y (insert x xs)
-insert-swap-≤ {x} {y} [] x≤y with x ≤? y
-... | no  xy = contradiction x≤y xy
-... | yes xy with y ≤? x
-... | yes yx = Eq.sym eq ∷ eq ∷ [] where eq = antisym yx xy
-... | no  _  = ≋-refl
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y with y ≤? z
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz with x ≤? y
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy with x ≤? z
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz with y ≤? x
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | yes yx =
-  Eq.sym eq ∷ eq ∷ ≋-refl where eq = antisym yx xy
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx with y ≤? z
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | yes yz' = ≋-refl
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | no  yz' = contradiction yz yz'
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | no xz = contradiction (≤-trans xy yz) xz
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | no xy = contradiction x≤y xy
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz with x ≤? z
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz with y ≤? x
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | yes yx = contradiction (≤-trans yx xz) yz
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | no  yx with y ≤? z
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | no  yx | yes yz' = contradiction yz' yz
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | no  yx | no yz' = ≋-refl
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | no  xz with y ≤? z
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | no  xz | yes yz' = contradiction yz' yz
-insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | no  xz | no  yz' = Eq.refl ∷ (insert-swap-≤ xs x≤y)
+private
+  insert-swap-≤ : ∀ {x y} xs → x ≤ y → insert x (insert y xs) ≋ insert y (insert x xs)
+  insert-swap-≤ {x} {y} [] x≤y with x ≤? y
+  ... | no  xy = contradiction x≤y xy
+  ... | yes xy with y ≤? x
+  ... | yes yx = Eq.sym eq ∷ eq ∷ [] where eq = antisym yx xy
+  ... | no  _  = ≋-refl
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y with y ≤? z
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz with x ≤? y
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy with x ≤? z
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz with y ≤? x
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | yes yx =
+    Eq.sym eq ∷ eq ∷ ≋-refl where eq = antisym yx xy
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx with y ≤? z
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | yes yz' = ≋-refl
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | yes xz | no yx | no  yz' = contradiction yz yz'
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | yes xy | no xz = contradiction (≤-trans xy yz) xz
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | yes yz | no xy = contradiction x≤y xy
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz with x ≤? z
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz with y ≤? x
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | yes yx = contradiction (≤-trans yx xz) yz
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | no  yx with y ≤? z
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | no  yx | yes yz' = contradiction yz' yz
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | yes xz | no  yx | no yz' = ≋-refl
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | no  xz with y ≤? z
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | no  xz | yes yz' = contradiction yz' yz
+  insert-swap-≤ {x} {y} (z ∷ xs) x≤y | no  yz | no  xz | no  yz' = Eq.refl ∷ (insert-swap-≤ xs x≤y)
 
 insert-swap : ∀ x y xs → insert x (insert y xs) ≋ insert y (insert x xs)
 insert-swap x y xs with x ≤? y
