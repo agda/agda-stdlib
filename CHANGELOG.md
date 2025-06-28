@@ -251,9 +251,21 @@ Additions to existing modules
   swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
   ```
 
+* In `Data.Fin.Permutation.Components`:
+  ```agda
+  transpose-iij : (i j : Fin n) → transpose i i j ≡ j
+  transpose-ijj : (i j : Fin n) → transpose i j j ≡ i
+  transpose-iji : (i j : Fin n) → transpose i j i ≡ j
+  transpose-transpose : transpose i j k ≡ l → transpose j i l ≡ k
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   cast-involutive : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  ≡-irrelevant : Irrelevant {A = Fin n} _≡_
+  ≟-diag       : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
+  ≟-diag-refl  : (i : Fin n) → (i ≟ i) ≡ yes refl
+  ≟-off-diag   : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
   ```
 
 * In `Data.Fin.Subset`:
@@ -262,7 +274,6 @@ Additions to existing modules
   _⊉_ : Subset n → Subset n → Set
   _⊃_ : Subset n → Subset n → Set
   _⊅_ : Subset n → Subset n → Set
-
   ```
 
 * In `Data.Fin.Subset.Induction`:
@@ -335,6 +346,12 @@ Additions to existing modules
   ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
   ⁺++⁺-cancel : Cancellative _⁺++⁺_
   map-id : map id ≗ id {A = List⁺ A}
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ≟-diag-refl : ∀ n → (n ≟ n) ≡ yes refl
+  ≟-off-diag  : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ```
 
 * In `Data.Product.Function.Dependent.Propositional`:
