@@ -1,8 +1,19 @@
 -------------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A declarative definition of the permutation relation,
--- as the least congruence making `_++_` commutative
+-- A declarative definition of the permutation relation, inductively defined
+-- as the least congruence on `List` which makes `_++_` commutative. Thus, for
+-- `(A, _≈_)` a setoid, `List A` with equality given by `_∼_` is a constructive
+-- presentation of the free commutative monoid on `A`.
+--
+-- NB. we do not need to specify symmetry as a constructor; the rules defining
+-- `_∼_` are themselves symmetric, by inspection, whence `∼-sym` below.
+--
+-- `_∼_` is somehow the 'maximally non-deterministic' (permissive) presentation
+-- of the permutation relation on lists, so is 'easiest' to establish for any
+-- given pair of lists, while nevertheless provably equivalent to more
+-- operationally defined versions, in particular
+-- `Declarative` ⊆ `Data.List.Relation.Binary.Permutation.Algorithmic`
 -------------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

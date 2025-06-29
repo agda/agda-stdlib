@@ -6,6 +6,17 @@
 -- Constructor `_⋎_` below is rule (3), directly after the proof of Theorem 6.3,
 -- and appears as rule `commrel` of their earlier presentation at (HoTT, 2019),
 -- "The finite-multiset construction in HoTT".
+--
+-- `Algorithmic` ⊆ `Data.List.Relation.Binary.Permutation.Declarative`
+-- but enjoys a much smaller space of derivations, without being so (over-)
+-- deterministic as to being inductively defined as the relation generated
+-- by swapping the top two elements (the relational analogue of bubble-sort).
+
+-- In particular, transitivity, `∼-trans` below, is an admissible property.
+--
+-- So this relation is 'better' for proving properties of `_∼_`, while at the
+-- same time also being a better fit, via `_⋎_`, for the operational features
+-- of e.g. sorting algorithms which transpose at arbitary positions.
 -------------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
