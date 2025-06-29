@@ -906,7 +906,7 @@ pinch-surjective _       zero    = zero , λ { refl → refl }
 pinch-surjective zero    (suc j) = suc (suc j) , λ { refl → refl }
 pinch-surjective (suc i) (suc j) = map suc (λ {f refl → cong suc (f refl)}) (pinch-surjective i j)
 
-pinch-mono-≤ : ∀ (i : Fin n) → (pinch i) Preserves _≤_ ⟶ _≤_
+pinch-mono-≤ : ∀ (i : Fin n) → Monotonic₁ _≤_ _≤_ (pinch i)
 pinch-mono-≤ 0F      {0F}    {k}     0≤n = z≤n
 pinch-mono-≤ 0F      {suc j} {suc k} j≤k = ℕ.s≤s⁻¹ j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n = z≤n
