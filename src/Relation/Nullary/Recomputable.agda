@@ -8,7 +8,6 @@
 
 module Relation.Nullary.Recomputable where
 
-open import Agda.Builtin.Equality using (_≡_; refl)
 open import Data.Empty using (⊥)
 open import Data.Irrelevant using (Irrelevant; irrelevant; [_])
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
@@ -22,22 +21,10 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
--- Definition
---
--- The idea of being 'recomputable' is that, given an *irrelevant* proof
--- of a proposition `A` (signalled by being a value of type `.A`, all of
--- whose inhabitants are identified up to definitional equality, and hence
--- do *not* admit pattern-matching), one may 'promote' such a value to a
--- 'genuine' value of `A`, available for subsequent eg. pattern-matching.
+-- Re-export
 
-Recomputable : (A : Set a) → Set a
-Recomputable A = .A → A
+open import Relation.Nullary.Recomputable.Core public
 
-------------------------------------------------------------------------
--- Fundamental property: 'promotion' is a constant function
-
-recompute-constant : (r : Recomputable A) (p q : A) → r p ≡ r q
-recompute-constant r p q = refl
 
 ------------------------------------------------------------------------
 -- Constructions
