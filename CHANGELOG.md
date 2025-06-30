@@ -174,6 +174,8 @@ New modules
 
 * `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
 
+* `Relation.Nullary.Recomputable.Core`
+
 Additions to existing modules
 -----------------------------
 
@@ -389,10 +391,17 @@ Additions to existing modules
   <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
   ```
 
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec : Dec {a} ⊤
   ⊥-dec : Dec {a} ⊥
+  recompute-irrelevant-id : (a? : Decidable A) → Irrelevant A →
+                            (a : A) → recompute a? a ≡ a
   ```
 
 * In `Relation.Unary`:
@@ -418,6 +427,7 @@ Additions to existing modules
   ```agda
   ⊤-reflects : Reflects (⊤ {a}) true
   ⊥-reflects : Reflects (⊥ {a}) false
+  ```
 
 * In `Data.List.Relation.Unary.AllPairs.Properties`:
   ```agda
