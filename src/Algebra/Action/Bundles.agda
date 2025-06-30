@@ -18,8 +18,9 @@
 
 module Algebra.Action.Bundles where
 
+import Algebra.Action.Definitions as Definitions
 open import Algebra.Action.Structures using (IsLeftAction; IsRightAction)
-open import Algebra.Bundles using (Monoid)
+open import Algebra.Bundles using (Magma; Monoid)
 open import Level using (Level; _⊔_)
 open import Data.List.Base using ([]; _++_)
 import Data.List.Relation.Binary.Equality.Setoid as ≋
@@ -82,14 +83,15 @@ module SetoidAction (S : Setoid c ℓ) (A : Setoid a r) where
 
 
 ------------------------------------------------------------------------
--- Definition: indexed over an underlying SetoidAction
+-- Definitions: indexed over an underlying SetoidAction
 
-module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
+module MagmaAction (M : Magma c ℓ) (A : Setoid a r) where
 
   private
 
-    open module M = Monoid M using (ε; _∙_; setoid)
+    open module M = Magma M using (_∙_; setoid)
     open module A = Setoid A using (_≈_)
+    open Definitions M._≈_ _≈_
 
   record Left (leftAction : SetoidAction.Left setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
@@ -97,8 +99,7 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
     open SetoidAction.Left leftAction public
 
     field
-      ∙-act  : ∀ m n x → m ∙ n ▷ x ≈ m ▷ n ▷ x
-      ε-act  : ∀ x → ε ▷ x ≈ x
+      ∙-act  : IsActionˡ _▷_ _∙_
 
   record Right (rightAction : SetoidAction.Right setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
@@ -106,5 +107,31 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
     open SetoidAction.Right rightAction public
 
     field
-      ∙-act  : ∀ x m n → x ◁ m ∙ n ≈ x ◁ m ◁ n
-      ε-act  : ∀ x → x ◁ ε ≈ x
+      ∙-act  : IsActionʳ _◁_ _∙_
+
+
+module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
+
+  private
+
+    open module M = Monoid M using (ε; _∙_; setoid)
+    open module A = Setoid A using (_≈_)
+    open Definitions M._≈_ _≈_
+
+  record Left (leftAction : SetoidAction.Left setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
+    where
+
+    open SetoidAction.Left leftAction public
+
+    field
+      ∙-act  : IsActionˡ _▷_ _∙_
+      ε-act  : IsIdentityˡ _▷_ ε
+
+  record Right (rightAction : SetoidAction.Right setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
+    where
+
+    open SetoidAction.Right rightAction public
+
+    field
+      ∙-act  : IsActionʳ _◁_ _∙_
+      ε-act  : IsIdentityʳ _◁_ ε
