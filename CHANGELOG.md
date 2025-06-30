@@ -137,6 +137,7 @@ Deprecated names
   ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
   product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
   ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ∷-ʳ++-eqFree ↦  Data.List.Properties.ʳ++-ʳ++-eqFree
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
@@ -364,6 +365,17 @@ Additions to existing modules
     (I↩J : I ↩ J) →
     (∀ {i} → LeftInverse (A atₛ i) (B atₛ (to I↩J i))) →
     LeftInverse (I ×ₛ A) (J ×ₛ B)
+  ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  toList-injective : ∀ {m n} → .(m=n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) → toList xs ≡ toList ys → xs ≈[ m=n ] ys
+
+  toList-∷ʳ : ∀ x (xs : Vec A n) → toList (xs ∷ʳ x) ≡ toList xs List.++ List.[ x ]
+
+  fromList-reverse : (xs : List A) → (fromList (List.reverse xs)) ≈[ List.length-reverse xs ] reverse (fromList xs)
+
+  fromList∘toList : ∀  (xs : Vec A n) → fromList (toList xs) ≈[ length-toList xs ] xs
   ```
 
 * In `Data.Product.Nary.NonDependent`:
