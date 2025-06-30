@@ -350,7 +350,6 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
-  ≟-diag-refl : ∀ n → (n ≟ n) ≡ yes refl
   ≟-off-diag  : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ```
 
