@@ -173,6 +173,11 @@ New modules
   Algebra.Action.Construct.Self
   ```
 
+* Basic definitions for left- and right- actions:
+  ```
+  Algebra.Action.Definitions
+  ```
+
 * Structures for left- and right- actions:
   ```
   Algebra.Action.Structures

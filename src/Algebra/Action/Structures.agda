@@ -21,6 +21,8 @@ open import Data.List.Relation.Binary.Pointwise as Pointwise
 open import Function.Base using (id)
 open import Level using (Level; _⊔_)
 
+open import Algebra.Action.Definitions _≈ᴹ_ _≈_
+
 private
   variable
     x y z : A
@@ -35,8 +37,8 @@ record IsLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   infixr 5 _▷_ _▷⋆_ _▷⁺_
 
   field
-    _▷_  : M → A → A
-    ▷-cong : m ≈ᴹ n → x ≈ y → (m ▷ x) ≈ (n ▷ y)
+    _▷_    : Actˡ
+    ▷-cong : Congruentˡ _▷_
 
 -- derived form: iterated action, satisfying congruence
 
@@ -61,12 +63,13 @@ record IsLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   []-act-cong : x ≈ y → ([] ▷⋆ x) ≈ y
   []-act-cong = id
 
+
 record IsRightAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   infixl 5 _◁_ _◁⋆_ _◁⁺_
 
   field
-    _◁_  : A → M → A
-    ◁-cong : x ≈ y → m ≈ᴹ n → (x ◁ m) ≈ (y ◁ n)
+    _◁_    : Actʳ
+    ◁-cong : Congruentʳ _◁_
 
 -- derived form: iterated action, satisfying congruence
 
