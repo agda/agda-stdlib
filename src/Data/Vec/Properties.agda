@@ -1361,20 +1361,30 @@ fromList-reverse xs =
     toList (reverse (fromList xs))      ∎
     where open ≡-Reasoning
 
+
 ------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+∷-ʳ++-eqFree : ∀ a (xs : Vec A m) {ys : Vec A n} → let eq = sym (+-suc m n) in
+               cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
+∷-ʳ++-eqFree a xs {ys} = ʳ++-ʳ++-eqFree (a ∷ []) {ys = xs} {zs = ys}
+{-# WARNING_ON_USAGE ∷-ʳ++-eqFree
+"Warning: ∷-ʳ++-eqFree was deprecated in v2.3.
+Please use ʳ++-ʳ++-eqFree instead, which does not take eq."
+#-}
+
+-- Version 2.2
+
 -- TRANSITION TO EQ-FREE LEMMA
-------------------------------------------------------------------------
+--
 -- Please use the new proofs, which do not require an `eq` parameter.
 -- In v3, `name` will be changed to be the same lemma as `name-eqFree`,
 -- and `name-eqFree` will be deprecated.
-
-++-assoc : ∀ .(eq : (m + n) + o ≡ m + (n + o)) (xs : Vec A m) (ys : Vec A n) (zs : Vec A o) →
-           cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
-++-assoc _ = ++-assoc-eqFree
-{-# WARNING_ON_USAGE ++-assoc
-"Warning: ++-assoc was deprecated in v2.2.
-Please use ++-assoc-eqFree instead, which does not take eq."
-#-}
 
 ++-identityʳ : ∀ .(eq : n + zero ≡ n) (xs : Vec A n) → cast eq (xs ++ []) ≡ xs
 ++-identityʳ _ = ++-identityʳ-eqFree
@@ -1423,15 +1433,6 @@ Please use reverse-++-eqFree instead, which does not take eq."
 Please use ∷-ʳ++-eqFree instead, which does not take eq."
 #-}
 
-∷-ʳ++-eqFree : ∀ a (xs : Vec A m) {ys : Vec A n} → let eq = sym (+-suc m n) in
-               cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
-∷-ʳ++-eqFree a xs {ys} = ʳ++-ʳ++-eqFree (a ∷ []) {ys = xs} {zs = ys}
-
-{-# WARNING_ON_USAGE ∷-ʳ++-eqFree
-"Warning: ∷-ʳ++-eqFree was deprecated in v2.2.
-Please use ʳ++-ʳ++-eqFree instead, which does not take eq."
-#-}
-
 ++-ʳ++ : ∀ .(eq : m + n + o ≡ n + (m + o)) (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} →
          cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
 ++-ʳ++ _ = ++-ʳ++-eqFree
@@ -1448,11 +1449,13 @@ Please use ++-ʳ++-eqFree instead, which does not take eq."
 Please use ʳ++-ʳ++-eqFree instead, which does not take eq."
 #-}
 
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
+++-assoc : ∀ .(eq : (m + n) + o ≡ m + (n + o)) (xs : Vec A m) (ys : Vec A n) (zs : Vec A o) →
+           cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
+++-assoc _ = ++-assoc-eqFree
+{-# WARNING_ON_USAGE ++-assoc
+"Warning: ++-assoc was deprecated in v2.2.
+Please use ++-assoc-eqFree instead, which does not take eq."
+#-}
 
 -- Version 2.0
 
