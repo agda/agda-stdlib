@@ -168,6 +168,10 @@ New modules
 
 * `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
 
+* `Data.List.Sort.InsertionSort.{agda|Base|Properties}` defines insertion sort and proves properties of insertion sort such as Sorted and Permutation properties.
+
+* `Data.List.Sort.MergenSort.{agda|Base|Properties}` is a refactor of the previous `Data.List.Sort.MergenSort`.
+
 * `Data.Sign.Show` to show a sign.
 
 * `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`.
