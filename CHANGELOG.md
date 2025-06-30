@@ -26,3 +26,9 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ```
+
