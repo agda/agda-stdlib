@@ -53,10 +53,10 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
 
   module Pair (P : RawMagma c ℓ₃) where
 
-    isMagmaHomomorphism : ∀ {f h} →
+    isMagmaHomomorphism : ∀ {f g} →
                           IsMagmaHomomorphism P M f →
-                          IsMagmaHomomorphism P N h →
-                          IsMagmaHomomorphism P (rawMagma M N) (Product.< f , h >)
+                          IsMagmaHomomorphism P N g →
+                          IsMagmaHomomorphism P (rawMagma M N) (Product.< f , g >)
     isMagmaHomomorphism F G = record
       { isRelHomomorphism = RP.< F.isRelHomomorphism , G.isRelHomomorphism >
       ; homo              = λ x y → F.homo x y , G.homo x y
@@ -113,10 +113,10 @@ module Monoid (M : RawMonoid a ℓ₁) (N : RawMonoid b ℓ₂) where
     private
       module P = RawMonoid P
 
-    isMonoidHomomorphism : ∀ {f h} →
+    isMonoidHomomorphism : ∀ {f g} →
                           IsMonoidHomomorphism P M f →
-                          IsMonoidHomomorphism P N h →
-                          IsMonoidHomomorphism P (rawMonoid M N) (Product.< f , h >)
+                          IsMonoidHomomorphism P N g →
+                          IsMonoidHomomorphism P (rawMonoid M N) (Product.< f , g >)
     isMonoidHomomorphism F G = record
       { isMagmaHomomorphism = Magma.Pair.isMagmaHomomorphism M.rawMagma N.rawMagma P.rawMagma F.isMagmaHomomorphism G.isMagmaHomomorphism
       ; ε-homo              = F.ε-homo , G.ε-homo }
