@@ -1524,6 +1524,10 @@ pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
+∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+∸-suc z≤n       = refl
+∸-suc (s≤s m≤n) = ∸-suc m≤n
+
 m∸n≤m : ∀ m n → m ∸ n ≤ m
 m∸n≤m n       zero    = ≤-refl
 m∸n≤m zero    (suc n) = ≤-refl
