@@ -57,13 +57,13 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
                           IsMagmaHomomorphism P M f →
                           IsMagmaHomomorphism P N h →
                           IsMagmaHomomorphism P (rawMagma M N) (Product.< f , h >)
-    isMagmaHomomorphism F H = record
-      { isRelHomomorphism = RP.< F.isRelHomomorphism , H.isRelHomomorphism >
-      ; homo              = λ x y → F.homo x y , H.homo x y
+    isMagmaHomomorphism F G = record
+      { isRelHomomorphism = RP.< F.isRelHomomorphism , G.isRelHomomorphism >
+      ; homo              = λ x y → F.homo x y , G.homo x y
       }
       where
         module F = IsMagmaHomomorphism F
-        module H = IsMagmaHomomorphism H
+        module G = IsMagmaHomomorphism G
 
 -- Package for export
 module Magma-Export {M : RawMagma a ℓ₁} {N : RawMagma b ℓ₂} where
@@ -117,12 +117,12 @@ module Monoid (M : RawMonoid a ℓ₁) (N : RawMonoid b ℓ₂) where
                           IsMonoidHomomorphism P M f →
                           IsMonoidHomomorphism P N h →
                           IsMonoidHomomorphism P (rawMonoid M N) (Product.< f , h >)
-    isMonoidHomomorphism F H = record
-      { isMagmaHomomorphism = Magma.Pair.isMagmaHomomorphism M.rawMagma N.rawMagma P.rawMagma F.isMagmaHomomorphism H.isMagmaHomomorphism
-      ; ε-homo              = F.ε-homo , H.ε-homo }
+    isMonoidHomomorphism F G = record
+      { isMagmaHomomorphism = Magma.Pair.isMagmaHomomorphism M.rawMagma N.rawMagma P.rawMagma F.isMagmaHomomorphism G.isMagmaHomomorphism
+      ; ε-homo              = F.ε-homo , G.ε-homo }
       where
         module F = IsMonoidHomomorphism F
-        module H = IsMonoidHomomorphism H
+        module G = IsMonoidHomomorphism G
 
 -- Package for export
 module Monoid-Export {M : RawMonoid a ℓ₁} {N : RawMonoid b ℓ₂} where
