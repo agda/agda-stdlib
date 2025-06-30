@@ -8,7 +8,7 @@
 -- equalities than _≡_.
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
 
