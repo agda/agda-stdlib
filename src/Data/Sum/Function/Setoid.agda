@@ -11,11 +11,15 @@ module Data.Sum.Function.Setoid where
 open import Data.Product.Base as Product using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Relation.Binary.Pointwise as Pointwise
-open import Relation.Binary
-open import Function.Base
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Function.Base using (id; _∘_)
 open import Function.Bundles
+  using (Func; Equivalence; Injection; Surjection; Bijection; LeftInverse
+        ; RightInverse; Inverse)
 open import Function.Definitions
-open import Level
+  using (Injective; Surjective; Bijective; StrictlySurjective)
+open import Level using (Level; _⊔_)
 
 private
   variable

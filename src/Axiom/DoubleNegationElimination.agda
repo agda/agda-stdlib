@@ -8,11 +8,15 @@
 
 module Axiom.DoubleNegationElimination where
 
-open import Axiom.ExcludedMiddle
-open import Level
-open import Relation.Nullary
-open import Relation.Nullary.Negation
-open import Relation.Nullary.Decidable
+open import Axiom.ExcludedMiddle using (ExcludedMiddle)
+open import Level using (Level; suc)
+open import Relation.Nullary.Decidable.Core
+  using (decidable-stable; ¬¬-excluded-middle)
+open import Relation.Nullary.Negation.Core using (Stable)
+
+private
+  variable
+    ℓ : Level
 
 ------------------------------------------------------------------------
 -- Definition
@@ -20,16 +24,16 @@ open import Relation.Nullary.Decidable
 -- The classical statement of double negation elimination says that
 -- if a property is not not true then it is true.
 
-DoubleNegationElimination : (ℓ : Level) → Set (suc ℓ)
-DoubleNegationElimination ℓ = {P : Set ℓ} → ¬ ¬ P → P
+DoubleNegationElimination : ∀ ℓ → Set (suc ℓ)
+DoubleNegationElimination ℓ = {P : Set ℓ} → Stable P
 
 ------------------------------------------------------------------------
 -- Properties
 
 -- Double negation elimination is equivalent to excluded middle
 
-em⇒dne : ∀ {ℓ} → ExcludedMiddle ℓ → DoubleNegationElimination ℓ
+em⇒dne : ExcludedMiddle ℓ → DoubleNegationElimination ℓ
 em⇒dne em = decidable-stable em
 
-dne⇒em : ∀ {ℓ} → DoubleNegationElimination ℓ → ExcludedMiddle ℓ
+dne⇒em : DoubleNegationElimination ℓ → ExcludedMiddle ℓ
 dne⇒em dne = dne ¬¬-excluded-middle

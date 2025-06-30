@@ -13,11 +13,8 @@ module Effect.Foldable where
 open import Algebra.Bundles.Raw using (RawMonoid)
 open import Algebra.Bundles using (Monoid)
 import Algebra.Construct.Flip.Op as Op
-
 open import Data.List.Base as List using (List; [_]; _++_)
-
 open import Effect.Functor as Fun using (RawFunctor)
-
 open import Function.Base using (id; flip)
 open import Function.Endo.Propositional using (∘-id-monoid)
 open import Level using (Level; Setω)

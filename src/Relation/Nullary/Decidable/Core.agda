@@ -13,17 +13,20 @@ module Relation.Nullary.Decidable.Core where
 
 -- decToMaybe was deprecated in v2.1 #2330/#2336
 -- this can go through `Data.Maybe.Base` once that deprecation is fully done.
-open import Agda.Builtin.Maybe using (Maybe; just; nothing)
-
 open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Recomputable as Recomputable hiding (recompute-constant)
-open import Relation.Nullary.Reflects as Reflects hiding (recompute; recompute-constant)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
+open import Relation.Nullary.Recomputable.Core as Recomputable
+  using (Recomputable)
+open import Relation.Nullary.Reflects as Reflects
+  hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
   using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
 
@@ -82,6 +85,9 @@ recompute = Reflects.recompute ∘ proof
 recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
 recompute-constant = Recomputable.recompute-constant ∘ recompute
 
+recompute-irrelevant-id : (a? : Dec A) → Irrelevant A → (a : A) → recompute a? a ≡ a
+recompute-irrelevant-id = Recomputable.recompute-irrelevant-id ∘ recompute
+
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
 
@@ -95,9 +101,17 @@ T? x = x because T-reflects x
 does  (¬? a?) = not (does a?)
 proof (¬? a?) = ¬-reflects (proof a?)
 
+⊤-dec : Dec {a} ⊤
+does  ⊤-dec = true
+proof ⊤-dec = ⊤-reflects
+
 _×-dec_ : Dec A → Dec B → Dec (A × B)
 does  (a? ×-dec b?) = does a? ∧ does b?
 proof (a? ×-dec b?) = proof a? ×-reflects proof b?
+
+⊥-dec : Dec {a} ⊥
+does  ⊥-dec  = false
+proof ⊥-dec  = ⊥-reflects
 
 _⊎-dec_ : Dec A → Dec B → Dec (A ⊎ B)
 does  (a? ⊎-dec b?) = does a? ∨ does b?

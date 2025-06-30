@@ -8,7 +8,7 @@
 
 module Foreign.Haskell.Maybe where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Maybe.Base as Data using (just; nothing)
 
 private

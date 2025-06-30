@@ -25,7 +25,7 @@ open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
-open import Relation.Nullary
+open import Relation.Nullary.Negation.Core using (¬_)
 import Relation.Nullary.Decidable as Dec
 
 private

@@ -14,10 +14,13 @@ open import Relation.Binary.Structures using (IsEquivalence)
 module Algebra.Module.Structures.Biased where
 
 open import Algebra.Bundles
-open import Algebra.Core
-open import Algebra.Module.Core
+  using (Semiring; Ring; CommutativeSemiring; CommutativeRing)
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Module.Consequences
 open import Algebra.Module.Structures
+  using (IsLeftSemimodule; IsRightSemimodule; IsBisemimodule;
+  IsSemimodule; IsLeftModule; IsRightModule; IsModule)
 open import Function.Base using (flip)
 open import Level using (Level; _⊔_)
 
@@ -48,12 +51,12 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
         ; *ᵣ-distribˡ = *ₗ-distribʳ
         ; *ᵣ-identityʳ = *ₗ-identityˡ
         ; *ᵣ-assoc =
-          *ₗ-assoc+comm⇒*ᵣ-assoc _≈_ ≈ᴹ-setoid *ₗ-congʳ *ₗ-assoc *-comm
+          *ₗ-assoc∧comm⇒*ᵣ-assoc _≈_ ≈ᴹ-setoid *ₗ-congʳ *ₗ-assoc *-comm
         ; *ᵣ-zeroˡ = *ₗ-zeroʳ
         ; *ᵣ-distribʳ = *ₗ-distribˡ
         }
       ; *ₗ-*ᵣ-assoc =
-        *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc _≈_ ≈ᴹ-setoid *ₗ-congʳ *ₗ-assoc *-comm
+        *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc _≈_ ≈ᴹ-setoid *ₗ-congʳ *ₗ-assoc *-comm
       }
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ *ₗ (flip *ₗ)
@@ -81,13 +84,13 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
         ; *ₗ-distribʳ = *ᵣ-distribˡ
         ; *ₗ-identityˡ = *ᵣ-identityʳ
         ; *ₗ-assoc =
-          *ᵣ-assoc+comm⇒*ₗ-assoc _≈_ ≈ᴹ-setoid *ᵣ-congˡ *ᵣ-assoc *-comm
+          *ᵣ-assoc∧comm⇒*ₗ-assoc _≈_ ≈ᴹ-setoid *ᵣ-congˡ *ᵣ-assoc *-comm
         ; *ₗ-zeroʳ = *ᵣ-zeroˡ
         ; *ₗ-distribˡ = *ᵣ-distribʳ
         }
       ; isPrerightSemimodule = isPrerightSemimodule
       ; *ₗ-*ᵣ-assoc =
-        *ᵣ-assoc+comm⇒*ₗ-*ᵣ-assoc _≈_ ≈ᴹ-setoid *ᵣ-congˡ *ᵣ-assoc *-comm
+        *ᵣ-assoc∧comm⇒*ₗ-*ᵣ-assoc _≈_ ≈ᴹ-setoid *ᵣ-congˡ *ᵣ-assoc *-comm
       }
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ (flip *ᵣ) *ᵣ

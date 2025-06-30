@@ -13,7 +13,7 @@ open import Data.Fin.Base as Fin using (Fin)
 open import Data.Product.Base using (proj₁)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Word8.Base as Word8 using (Word8)
-open import Data.Word64.Base
+open import Data.Word64.Base using (Word64; fromℕ)
 open import Function.Base using (_$_; _|>_)
 
 ------------------------------------------------------------------------

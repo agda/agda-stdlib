@@ -17,7 +17,7 @@ open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
         ; Decidable; DecidableEquality; IsEquivalence; IsDecEquivalence
         ; Setoid; DecSetoid; StrictTotalOrder)
-import Relation.Binary.Construct.On as On
+import Relation.Binary.Construct.On as On using (decidable; strictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; sym; trans; subst)
 open import Relation.Binary.PropositionalEquality.Properties

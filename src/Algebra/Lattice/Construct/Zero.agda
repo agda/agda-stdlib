@@ -17,8 +17,8 @@ open import Level using (Level)
 
 module Algebra.Lattice.Construct.Zero {c ℓ : Level} where
 
-open import Algebra.Lattice.Bundles
-open import Data.Unit.Polymorphic
+open import Algebra.Lattice.Bundles using (Semilattice)
+open import Data.Unit.Polymorphic using (⊤)
 
 ------------------------------------------------------------------------
 -- Bundles

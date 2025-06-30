@@ -9,7 +9,14 @@
 
 module Function.Related.TypeIsomorphisms where
 
-open import Algebra
+open import Algebra.Bundles public
+  using (Magma; Semigroup; Monoid; CommutativeMonoid; CommutativeSemiring)
+open import Algebra.Definitions
+  using (Identity; LeftIdentity; RightIdentity; Zero; LeftZero; RightZero
+        ; Associative; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_)
+open import Algebra.Structures public
+  using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid
+        ; IsCommutativeSemiring)
 open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
@@ -30,15 +37,20 @@ open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ; contradiction)
+open import Relation.Nullary.Negation.Core using (¬_)
 import Relation.Nullary.Indexed as I
-open import Relation.Nullary.Decidable using (True)
 
 private
   variable
     a b c d : Level
     A B C D : Set a
+
+------------------------------------------------------------------------
+-- A lemma relating True dec and P, where dec : Dec P
+
+open import Relation.Nullary.Decidable public
+  using ()
+  renaming (True-↔ to True↔)
 
 ------------------------------------------------------------------------
 -- Properties of Σ and _×_
@@ -344,19 +356,10 @@ Related-cong {A = A} {B = B} {C = C} {D = D} A≈B C≈D = mk⇔
   where open EquationalReasoning
 
 ------------------------------------------------------------------------
--- A lemma relating True dec and P, where dec : Dec P
-
-True↔ : ∀ {p} {P : Set p}
-        (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ ( true because  [p]) irr =
-  mk↔ₛ′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → refl)
-True↔ (false because ofⁿ ¬p) _ =
-  mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (λ x → flip contradiction ¬p x) (λ ())
-
-------------------------------------------------------------------------
 -- Relating a predicate to an existentially quantified one with the
 -- restriction that the quantified variable is equal to the given one
 
 ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
 ∃-≡ P {x} = mk↔ₛ′ (λ Px → x , refl , Px) (λ where (_ , refl , Py) → Py)
   (λ where (_ , refl , _) → refl) (λ where _ → refl)
+
