@@ -443,3 +443,8 @@ Additions to existing modules
   ```agda
   map⁻ : Unique (map f xs) → Unique xs
   ```
+
+* In `Data.List.Instances`:
+  ```agda
+  instance listIsString : IsString (List Char)
+  ```
