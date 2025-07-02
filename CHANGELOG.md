@@ -253,6 +253,23 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Bool.Properties`:
+  ```agda
+  if-eta : ∀ b → (if b then x else x) ≡ x
+  if-idem-then : ∀ b → (if b then (if b then x else y) else y) ≡ (if b then x else y)
+  if-idem-else : ∀ b → (if b then x else (if b then x else y)) ≡ (if b then x else y)
+  if-swap-then : ∀ b c → (if b then (if c then x else y) else y) ≡ (if c then (if b then x else y) else y)
+  if-swap-else : ∀ b c → (if b then x else (if c then x else y)) ≡ (if c then x else (if b then x else y))
+  if-not : ∀ b → (if not b then x else y) ≡ (if b then y else x)
+  if-∧ : ∀ b → (if b ∧ c then x else y) ≡ (if b then (if c then x else y) else y)
+  if-∨ : ∀ b → (if b ∨ c then x else y) ≡ (if b then x else (if c then x else y))
+  if-xor : ∀ b → (if b xor c then x else y) ≡ (if b then (if c then y else x) else (if c then x else y))
+  if-cong : b ≡ c → (if b then x else y) ≡ (if c then x else y)
+  if-cong-then : ∀ b → x ≡ z → (if b then x else y) ≡ (if b then z else y)
+  if-cong-else : ∀ b → y ≡ z → (if b then x else y) ≡ (if b then x else z)
+  if-cong₂ : ∀ b → x ≡ z → y ≡ w → (if b then x else y) ≡ (if b then z else w)
+  ```
+
 * In `Data.Fin.Base`:
   ```agda
   _≰_ : Rel (Fin n) 0ℓ
