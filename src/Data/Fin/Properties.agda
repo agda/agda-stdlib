@@ -12,10 +12,8 @@ module Data.Fin.Properties where
 
 open import Axiom.Extensionality.Propositional
 open import Algebra.Definitions using (Involutive)
-open import Effect.Applicative using (RawApplicative)
-open import Effect.Functor using (RawFunctor)
-open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Bool.Base using (Bool; true; false)
+open import Data.Empty using (⊥)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ
@@ -23,18 +21,18 @@ open import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product.Base as Product
-  using (∃; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
+  using (∃; ∃-syntax; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
-open import Function.Base using (_∘_; id; _$_; flip)
+open import Function.Base using (_∘_; id; _$_; flip; const; _$-; λ-)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
-open import Function.Construct.Composition as Comp hiding (injective)
+import Function.Construct.Composition as Comp
 open import Level using (Level)
-open import Relation.Binary.Definitions as B hiding (Decidable)
+open import Relation.Binary.Definitions
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
 open import Relation.Binary.Bundles
   using (Preorder; Setoid; DecSetoid; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
@@ -45,12 +43,9 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
+  using (Dec; yes; no; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (Reflects; invert)
-open import Relation.Unary as U
-  using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
-open import Relation.Unary.Properties using (U?)
+
 
 private
   variable
@@ -59,37 +54,15 @@ private
     m n o : ℕ
     i j : Fin n
 
-------------------------------------------------------------------------
--- Fin
-------------------------------------------------------------------------
-
-¬Fin0 : ¬ Fin 0
-¬Fin0 ()
-
-nonZeroIndex : Fin n → ℕ.NonZero n
-nonZeroIndex {n = suc _} _ = _
-
-------------------------------------------------------------------------
--- Bundles
-
-0↔⊥ : Fin 0 ↔ ⊥
-0↔⊥ = mk↔ₛ′ ¬Fin0 (λ ()) (λ ()) (λ ())
-
-1↔⊤ : Fin 1 ↔ ⊤
-1↔⊤ = mk↔ₛ′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
-
-2↔Bool : Fin 2 ↔ Bool
-2↔Bool = mk↔ₛ′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
-  (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
 
-0≢1+n : zero ≢ Fin.suc i
+0≢1+n : zero ≢ suc i
 0≢1+n ()
 
-suc-injective : Fin.suc i ≡ suc j → i ≡ j
+suc-injective : suc i ≡ suc j → i ≡ j
 suc-injective refl = refl
 
 infix 4 _≟_
@@ -122,6 +95,36 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 ≡-decSetoid n = record
   { isDecEquivalence = ≡-isDecEquivalence {n}
   }
+
+------------------------------------------------------------------------
+-- Reexport properties of Unary predicates on Fin
+------------------------------------------------------------------------
+
+open import Data.Fin.Relation.Unary.Base public
+open import Data.Fin.Relation.Unary.Decidable public
+
+------------------------------------------------------------------------
+-- Fin
+------------------------------------------------------------------------
+
+¬Fin0 : ¬ Fin 0
+¬Fin0 ()
+
+nonZeroIndex : Fin n → ℕ.NonZero n
+nonZeroIndex {n = suc _} _ = _
+
+------------------------------------------------------------------------
+-- Bundles
+
+0↔⊥ : Fin 0 ↔ ⊥
+0↔⊥ = mk↔ₛ′ ¬Fin0 (λ ()) (λ ()) (λ ())
+
+1↔⊤ : Fin 1 ↔ ⊤
+1↔⊤ = mk↔ₛ′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
+
+2↔Bool : Fin 2 ↔ Bool
+2↔Bool = mk↔ₛ′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
+  (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
 
 ------------------------------------------------------------------------
 -- toℕ
@@ -308,10 +311,10 @@ cast-involutive eq₁ eq₂ k = trans (cast-trans eq₂ eq₁ k) (cast-is-id ref
 
 infix 4 _≤?_ _<?_
 
-_≤?_ : B.Decidable (_≤_ {m} {n})
+_≤?_ : Decidable (_≤_ {m} {n})
 a ≤? b = toℕ a ℕ.≤? toℕ b
 
-_<?_ : B.Decidable (_<_ {m} {n})
+_<?_ : Decidable (_<_ {m} {n})
 m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 ------------------------------------------------------------------------
@@ -927,157 +930,6 @@ pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
       (suc-injective eq))
 
 ------------------------------------------------------------------------
--- Quantification
-------------------------------------------------------------------------
-
-module _ {p} {P : Pred (Fin (suc n)) p} where
-
-  ∀-cons : P zero → Π[ P ∘ suc ] → Π[ P ]
-  ∀-cons z s zero    = z
-  ∀-cons z s (suc i) = s i
-
-  ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
-  ∀-cons-⇔ = mk⇔ (uncurry ∀-cons) < _$ zero , _∘ suc >
-
-  ∃-here : P zero → ∃⟨ P ⟩
-  ∃-here = zero ,_
-
-  ∃-there : ∃⟨ P ∘ suc ⟩ → ∃⟨ P ⟩
-  ∃-there = map suc id
-
-  ∃-toSum : ∃⟨ P ⟩ → P zero ⊎ ∃⟨ P ∘ suc ⟩
-  ∃-toSum ( zero , P₀ ) = inj₁ P₀
-  ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
-
-  ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
-  ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
-
-decFinSubset : ∀ {p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
-               Decidable Q → (∀ {i} → Q i → Dec (P i)) → Dec (Q ⊆ P)
-decFinSubset {zero}  {_}     {_} Q? P? = yes λ {}
-decFinSubset {suc n} {P = P} {Q} Q? P?
-  with Q? zero | ∀-cons {P = λ x → Q x → P x}
-... | false because [¬Q0] | cons =
-  map′ (λ f {x} → cons (⊥-elim ∘ invert [¬Q0]) (λ x → f {x}) x)
-       (λ f {x} → f {suc x})
-       (decFinSubset (Q? ∘ suc) P?)
-... | true  because  [Q0] | cons =
-  map′ (uncurry λ P0 rec {x} → cons (λ _ → P0) (λ x → rec {x}) x)
-       < _$ invert [Q0] , (λ f {x} → f {suc x}) >
-       (P? (invert [Q0]) ×-dec decFinSubset (Q? ∘ suc) P?)
-
-any? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
-any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
-
-all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
-all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
-               (decFinSubset U? (λ {f} _ → P? f))
-
-private
-  -- A nice computational property of `all?`:
-  -- The boolean component of the result is exactly the
-  -- obvious fold of boolean tests (`foldr _∧_ true`).
-  note : ∀ {p} {P : Pred (Fin 3) p} (P? : Decidable P) →
-         ∃ λ z → Dec.does (all? P?) ≡ z
-  note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
-          , refl
-
--- If a decidable predicate P over a finite set is sometimes false,
--- then we can find the smallest value for which this is the case.
-
-¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-                 ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
-¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
-¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
-... | false because [¬P₀] = (zero , invert [¬P₀] , λ ())
-... | true  because  [P₀] = map suc (map id (∀-cons (invert [P₀])))
-  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons (invert [P₀]))))
-
--- When P is a decidable predicate over a finite set the following
--- lemma can be proved.
-
-¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-          ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
-¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
-
-------------------------------------------------------------------------
--- Properties of functions to and from Fin
-------------------------------------------------------------------------
-
--- The pigeonhole principle.
-
-pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × f i ≡ f j
-pigeonhole z<s               f = contradiction (f zero) λ()
-pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
-... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
-... | no  f₀≢fₖ
-  with i , j , i<j , fᵢ≡fⱼ ← pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
-  = suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
-
-injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
-injective⇒≤ {zero}  {_}     {f} _   = z≤n
-injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
-injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
-  suc-injective (inj (punchOut-injective
-    (contraInjective inj 0≢1+n)
-    (contraInjective inj 0≢1+n) eq))))
-
-<⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
-<⇒notInjective n<m inj = ℕ.≤⇒≯ (injective⇒≤ inj) n<m
-
-ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f inj = ℕ.<-irrefl refl
-  (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
-
--- Cantor-Schröder-Bernstein for finite sets
-
-cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} →
-                            Injective _≡_ _≡_ f → Injective _≡_ _≡_ g →
-                            m ≡ n
-cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
-  (injective⇒≤ f-inj) (injective⇒≤ g-inj)
-
-------------------------------------------------------------------------
--- Effectful
-------------------------------------------------------------------------
-
-module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
-
-  open RawApplicative RA
-
-  sequence : ∀ {n} {P : Pred (Fin n) f} →
-             (∀ i → F (P i)) → F (∀ i → P i)
-  sequence {zero}  ∀iPi = pure λ()
-  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
-
-module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
-
-  open RawFunctor RF
-
-  sequence⁻¹ : ∀ {A : Set f} {P : Pred A f} →
-               F (∀ i → P i) → (∀ i → F (P i))
-  sequence⁻¹ F∀iPi i = (λ f → f i) <$> F∀iPi
-
-------------------------------------------------------------------------
--- If there is an injection from a type A to a finite set, then the type
--- has decidable equality.
-
-module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
-  open Setoid S
-
-  inj⇒≟ : B.Decidable _≈_
-  inj⇒≟ = Dec.via-injection inj _≟_
-
-  inj⇒decSetoid : DecSetoid a ℓ
-  inj⇒decSetoid = record
-    { isDecEquivalence = record
-      { isEquivalence = isEquivalence
-      ; _≟_           = inj⇒≟
-      }
-    }
-
-------------------------------------------------------------------------
 -- Opposite
 ------------------------------------------------------------------------
 
@@ -1105,6 +957,61 @@ opposite-suc {n} i = begin
   n ∸ suc (toℕ i)            ≡⟨ opposite-prop i ⟨
   toℕ (opposite i)           ∎
   where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of functions to and from Fin
+------------------------------------------------------------------------
+
+-- The pigeonhole principle.
+
+pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × f i ≡ f j
+pigeonhole z<s               f = contradiction (f zero) λ()
+pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
+... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
+... | no  f₀≢fₖ       =
+  let i , j , i<j , fᵢ≡fⱼ = pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
+  in suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
+
+injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
+injective⇒≤ {zero}  {_}     {f} _   = z≤n
+injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
+injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
+  suc-injective (inj (punchOut-injective
+    (contraInjective inj 0≢1+n)
+    (contraInjective inj 0≢1+n) eq))))
+
+<⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
+<⇒notInjective n<m inj = ℕ.≤⇒≯ (injective⇒≤ inj) n<m
+
+ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
+ℕ→Fin-notInjective f inj = ℕ.<-irrefl refl
+  (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
+
+-- Cantor-Schröder-Bernstein for finite sets
+
+cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} →
+                            Injective _≡_ _≡_ f → Injective _≡_ _≡_ g →
+                            m ≡ n
+cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
+  (injective⇒≤ f-inj) (injective⇒≤ g-inj)
+
+------------------------------------------------------------------------
+-- If there is an injection from a type A to a finite set, then the type
+-- has decidable equality.
+
+module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
+  open Setoid S
+
+  inj⇒≟ : Decidable _≈_
+  inj⇒≟ = Dec.via-injection inj _≟_
+
+  inj⇒decSetoid : DecSetoid a ℓ
+  inj⇒decSetoid = record
+    { isDecEquivalence = record
+      { isEquivalence = isEquivalence
+      ; _≟_           = inj⇒≟
+      }
+    }
 
 
 ------------------------------------------------------------------------
