@@ -751,12 +751,14 @@ if-eta false = refl
 if-eta true  = refl
 
 if-idem-then : ∀ b {x y : A} →
-               (if b then (if b then x else y) else y) ≡ (if b then x else y)
+               (if b then (if b then x else y) else y)
+             ≡ (if b then x                    else y)
 if-idem-then false = refl
 if-idem-then true  = refl
 
 if-idem-else : ∀ b {x y : A} →
-               (if b then x else (if b then x else y)) ≡ (if b then x else y)
+               (if b then x else (if b then x else y))
+             ≡ (if b then x else y)
 if-idem-else false = refl
 if-idem-else true  = refl
 
@@ -790,7 +792,8 @@ if-∨ false = refl
 if-∨ true  = refl
 
 if-xor : ∀ b {c} {x y : A} →
-         (if b xor c then x else y) ≡ (if b then (if c then y else x) else (if c then x else y))
+         (if b xor c then x else y)
+       ≡ (if b then (if c then y else x) else (if c then x else y))
 if-xor false = refl
 if-xor true {false} = refl
 if-xor true {true } = refl
@@ -808,19 +811,23 @@ if-xor true {true } = refl
 -- unfortunately fails to resolve the omitted argument.)
 
 if-cong : ∀ {b c} {x y : A} → b ≡ c →
-          (if b then x else y) ≡ (if c then x else y)
+          (if b then x else y)
+        ≡ (if c then x else y)
 if-cong refl = refl
 
 if-cong-then : ∀ b {x y z : A} → x ≡ z →
-               (if b then x else y) ≡ (if b then z else y)
+               (if b then x else y)
+             ≡ (if b then z else y)
 if-cong-then _ refl = refl
 
 if-cong-else : ∀ b {x y z : A} → y ≡ z →
-               (if b then x else y) ≡ (if b then x else z)
+               (if b then x else y)
+             ≡ (if b then x else z)
 if-cong-else _ refl = refl
 
 if-cong₂ : ∀ b {x y z w : A} → x ≡ z → y ≡ w →
-           (if b then x else y) ≡ (if b then z else w)
+           (if b then x else y)
+         ≡ (if b then z else w)
 if-cong₂ _ refl refl = refl
 
 ------------------------------------------------------------------------
