@@ -203,9 +203,9 @@ module _ (O : TotalOrder a ℓ₁ ℓ₂) where
               ∀ {i j} → toℕ i ≡ toℕ j →
               lookup ys j ≤ lookup xs i
     ↗↭↗⇒≤ {xs} {ys} xs↭ys xs↗ ys↗ {i} {j} i≡j
-      with Fin.injective⇒existsPivot _ (inverseʳ⇒injective _ (Inverse.inverseʳ (toFin xs↭ys))) i
+      with Fin.injective⇒existsPivot (inverseʳ⇒injective _ (Inverse.inverseʳ (onIndices xs↭ys))) i
     ... | (k , k≤i , i≤π[k]) = begin
-      lookup ys j                     ≤⟨ lookup-mono-≤ O ys↗ (P.subst (ℕ._≤ _) i≡j i≤π[k]) ⟩
-      lookup ys (toFin xs↭ys ⟨$⟩ʳ k)  ≈⟨ toFin-lookup xs↭ys k ⟨
-      lookup xs k                     ≤⟨ lookup-mono-≤ O xs↗ k≤i ⟩
-      lookup xs i                     ∎
+      lookup ys j                         ≤⟨ lookup-mono-≤ O ys↗ (P.subst (ℕ._≤ _) i≡j i≤π[k]) ⟩
+      lookup ys (onIndices xs↭ys ⟨$⟩ʳ k)  ≈⟨ onIndices-lookup xs↭ys k ⟨
+      lookup xs k                         ≤⟨ lookup-mono-≤ O xs↗ k≤i ⟩
+      lookup xs i                         ∎

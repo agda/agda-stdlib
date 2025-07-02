@@ -249,7 +249,7 @@ Additions to existing modules
 * In `Data.Fin.Permutation`:
   ```agda
   cast-id : .(m ≡ n) → Permutation m n
-  inject!-injective : swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
+  swap : Permutation m n → Permutation (2+ m) (2+ n)
   ```
 
 * In `Data.Fin.Properties`:
