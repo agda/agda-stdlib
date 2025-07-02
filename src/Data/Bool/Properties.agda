@@ -795,6 +795,18 @@ if-xor false = refl
 if-xor true {false} = refl
 if-xor true {true } = refl
 
+-- The following congruence lemmas are short hands for
+--   cong (if_then x else y)
+--   cong (if b then_else y)
+--   cong (if b then x else_)
+--   cong (if b then_else_)
+-- on the different sub-terms in an if_then_else_ expression.
+-- With these short hands, the branches x and y can be inferred
+-- automatically (i.e., they are implicit arguments) whereas
+-- the branches have to be spelled out explicitly when using cong.
+-- (Using underscores as in "cong (if b then _ else_)"
+-- unfortunately fails to resolve the omitted argument.)
+
 if-cong : ∀ {b c} {x y : A} → b ≡ c →
           (if b then x else y) ≡ (if c then x else y)
 if-cong refl = refl
