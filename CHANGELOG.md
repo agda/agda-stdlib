@@ -137,6 +137,7 @@ Deprecated names
   ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
   product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
   ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ∷-ʳ++-eqFree ↦  Data.List.Properties.ʳ++-ʳ++-eqFree
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
@@ -150,10 +151,17 @@ Deprecated names
   left-inverse ↦ rightInverse
   ```
 
+* In `Data.Product.Nary.NonDependent`:
+  ```agda
+  Allₙ ↦ Pointwiseₙ
+  ```
+
 New modules
 -----------
 
 * `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
+
+* `Algebra.Morphism.Construct.DirectProduct`.
 
 * `Data.Fin.Relation.Unary.Base` for basic properties of unary predicates on `Fin`.
 
@@ -167,9 +175,17 @@ New modules
 
 * `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
 
-* `Data.Sign.Show` to show a sign
+* `Data.List.Sort.InsertionSort.{agda|Base|Properties}` defines insertion sort and proves properties of insertion sort such as Sorted and Permutation properties.
+
+* `Data.List.Sort.MergenSort.{agda|Base|Properties}` is a refactor of the previous `Data.List.Sort.MergenSort`.
+
+* `Data.Sign.Show` to show a sign.
+
+* `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`.
 
 * `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
+
+* `Relation.Nullary.Recomputable.Core`
 
 Additions to existing modules
 -----------------------------
@@ -241,6 +257,23 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Fin.Base`:
+  ```agda
+  _≰_ : Rel (Fin n) 0ℓ
+  _≮_ : Rel (Fin n) 0ℓ
+  ```
+
+* In `Data.Fin.Permutation`:
+  ```agda
+  cast-id : .(m ≡ n) → Permutation m n
+  swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  cast-involutive : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  ```
+
 * In `Data.Fin.Subset`:
   ```agda
   _⊇_ : Subset n → Subset n → Set
@@ -266,10 +299,20 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
+  length-++-sucˡ : ∀ (x : A) (xs ys : List A) → length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+  length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) → length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+  length-++-comm : ∀ (xs ys : List A) → length (xs ++ ys) ≡ length (ys ++ xs)
+  length-++-≤ˡ : ∀ (xs : List A) → length xs ≤ length (xs ++ ys)
+  length-++-≤ʳ : ∀ (ys : List A) → length ys ≤ length (xs ++ ys)
   map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
   map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
   map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
   map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`:
+  ```agda
+  onIndices : Permutation R xs ys → Fin.Permutation (length xs) (length ys)
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional`:
@@ -277,9 +320,39 @@ Additions to existing modules
   ↭⇒↭ₛ′ : IsEquivalence _≈_ → _↭_ ⇒ _↭ₛ′_
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  xs↭ys⇒|xs|≡|ys| : xs ↭ ys → length xs ≡ length ys
+  ¬x∷xs↭[] : ¬ (x ∷ xs ↭ [])
+  onIndices-lookup : ∀ i → lookup xs i ≈ lookup ys (Inverse.to (onIndices xs↭ys) i)
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+        ```
+
+* In `Data.List.Relation.Binary.Pointwise.Properties`:
+  ```agda
+  lookup-cast : Pointwise R xs ys → .(∣xs∣≡∣ys∣ : length xs ≡ length ys) → ∀ i → R (lookup xs i) (lookup ys (cast ∣xs∣≡∣ys∣ i))
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  ∷→∷⁺ : (x List.∷ xs) ≡ (y List.∷ ys) →
+         (x List⁺.∷ xs) ≡ (y List⁺.∷ ys)
+  ∷⁺→∷ : (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
+         (x List.∷ xs) ≡ (y List.∷ ys)
+  length-⁺++⁺ : (xs ys : List⁺ A) → length (xs ⁺++⁺ ys) ≡ length xs + length ys
+  length-⁺++⁺-comm : ∀ (xs ys : List⁺ A) → length (xs ⁺++⁺ ys) ≡ length (ys ⁺++⁺ xs)
+  length-⁺++⁺-≤ˡ : (xs ys : List⁺ A) → length xs ≤ length (xs ⁺++⁺ ys)
+  length-⁺++⁺-≤ʳ : (xs ys : List⁺ A) → length ys ≤ length (xs ⁺++⁺ ys)
+  map-⁺++⁺ : ∀ (f : A → B) xs ys → map f (xs ⁺++⁺ ys) ≡ map f xs ⁺++⁺ map f ys
+  ⁺++⁺-assoc : Associative _⁺++⁺_
+  ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
+  ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
+  ⁺++⁺-cancel : Cancellative _⁺++⁺_
+  map-id : map id ≗ id {A = List⁺ A}
   ```
 
 * In `Data.Product.Function.Dependent.Propositional`:
@@ -300,6 +373,23 @@ Additions to existing modules
     LeftInverse (I ×ₛ A) (J ×ₛ B)
   ```
 
+* In `Data.Vec.Properties`:
+  ```agda
+  toList-injective : ∀ {m n} → .(m=n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) → toList xs ≡ toList ys → xs ≈[ m=n ] ys
+
+  toList-∷ʳ : ∀ x (xs : Vec A n) → toList (xs ∷ʳ x) ≡ toList xs List.++ List.[ x ]
+
+  fromList-reverse : (xs : List A) → (fromList (List.reverse xs)) ≈[ List.length-reverse xs ] reverse (fromList xs)
+
+  fromList∘toList : ∀  (xs : Vec A n) → fromList (toList xs) ≈[ length-toList xs ] xs
+  ```
+
+* In `Data.Product.Nary.NonDependent`:
+  ```agda
+  HomoProduct′ n f = Product n (stabulate n (const _) f)
+  HomoProduct  n A = HomoProduct′ n (const A)
+  ```
+
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
   ```agda
   zipWith-assoc : Associative _∼_ f → Associative (Pointwise _∼_) (zipWith {n = n} f)
@@ -309,6 +399,13 @@ Additions to existing modules
   zipWith-cong : Congruent₂ _∼_ f → Pointwise _∼_ ws xs → Pointwise _∼_ ys zs → Pointwise _∼_ (zipWith f ws ys) (zipWith f xs zs)
   ```
 
+* In `Function.Nary.NonDependent.Base`:
+  ```agda
+  lconst l n = ⨆ l (lreplicate l n)
+  stabulate : ∀ n → (f : Fin n → Level) → (g : (i : Fin n) → Set (f i)) → Sets n (ltabulate n f)
+  sreplicate : ∀ n → Set a → Sets n (lreplicate n a)
+  ```
+
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:
   ```agda
   <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
@@ -316,11 +413,32 @@ Additions to existing modules
   <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
   ```
 
+* In `Relation.Nullary.Decidable`:
+  ```agda
+  dec-yes-recompute : (a? : Dec A) → .(a : A) → a? ≡ yes (recompute a? a)
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec : Dec {a} ⊤
   ⊥-dec : Dec {a} ⊥
+  recompute-irrelevant-id : (a? : Decidable A) → Irrelevant A →
+                            (a : A) → recompute a? a ≡ a
   ```
+
+* In `Relation.Unary`:
+  ```agda
+  _⊥_ _⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  ```
+
+* In `Relation.Unary.Properties`:
+  ```agda
+  ≬-symmetric : Sym _≬_ _≬_
+  ⊥-symmetric : Sym _⊥_ _⊥_
+  ≬-sym : Symmetric _≬_
+  ⊥-sym : Symmetric _⊥_
+  ≬⇒¬⊥ : _≬_ ⇒  (¬_ ∘₂ _⊥_)
+  ⊥⇒¬≬ : _⊥_ ⇒  (¬_ ∘₂ _≬_)
 
 * In `Relation.Nullary.Negation.Core`:
   ```agda
@@ -331,4 +449,19 @@ Additions to existing modules
   ```agda
   ⊤-reflects : Reflects (⊤ {a}) true
   ⊥-reflects : Reflects (⊥ {a}) false
+  ```
+
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
+  ```agda
+  map⁻ : AllPairs R (map f xs) → AllPairs (R on f) xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
+  ```agda
+  map⁻ : Congruent _≈₁_ _≈₂_ f → Unique R (map f xs) → Unique S xs
+  ```
+
+* In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
+  ```agda
+  map⁻ : Unique (map f xs) → Unique xs
   ```

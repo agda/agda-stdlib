@@ -6,7 +6,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ and _≻toℕ_ (issue #1726)
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated _≺_ and _≻toℕ_ (issue #1726)
 
 module Data.Fin.Properties where
 
@@ -281,6 +281,10 @@ cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (k : Fin m) →
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
   cong suc (cast-trans (ℕ.suc-injective eq₁) (ℕ.suc-injective eq₂) k)
+
+cast-involutive : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) →
+                  ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+cast-involutive eq₁ eq₂ k = trans (cast-trans eq₂ eq₁ k) (cast-is-id refl k)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
