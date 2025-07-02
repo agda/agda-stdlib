@@ -796,7 +796,7 @@ if-xor true {false} = refl
 if-xor true {true } = refl
 
 if-cong : ∀ {b c} {x y : A} → b ≡ c →
-               (if b then x else y) ≡ (if c then x else y)
+          (if b then x else y) ≡ (if c then x else y)
 if-cong refl = refl
 
 if-cong-then : ∀ b {x y z : A} → x ≡ z →
