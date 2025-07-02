@@ -41,7 +41,7 @@ import Relation.Binary.Reasoning.PartialOrder as PosetReasoning
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (contradiction)
 open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
   variable
@@ -194,7 +194,7 @@ module _ (O : TotalOrder a ℓ₁ ℓ₂) where
   ↗↭↗⇒≋ {xs} {ys} xs↗ ys↗ xs↭ys = Pointwise.lookup⁻
     (xs↭ys⇒|xs|≡|ys| xs↭ys)
     (λ i≡j → antisym
-      (↗↭↗⇒≤ (↭-sym xs↭ys) ys↗ xs↗ (P.sym i≡j))
+      (↗↭↗⇒≤ (↭-sym xs↭ys) ys↗ xs↗ (≡.sym i≡j))
       (↗↭↗⇒≤ xs↭ys  xs↗ ys↗ i≡j))
     where
     ↗↭↗⇒≤ : ∀ {xs ys}
@@ -205,7 +205,7 @@ module _ (O : TotalOrder a ℓ₁ ℓ₂) where
     ↗↭↗⇒≤ {xs} {ys} xs↭ys xs↗ ys↗ {i} {j} i≡j
       with Fin.injective⇒existsPivot (inverseʳ⇒injective _ (Inverse.inverseʳ (onIndices xs↭ys))) i
     ... | (k , k≤i , i≤π[k]) = begin
-      lookup ys j                         ≤⟨ lookup-mono-≤ O ys↗ (P.subst (ℕ._≤ _) i≡j i≤π[k]) ⟩
+      lookup ys j                         ≤⟨ lookup-mono-≤ O ys↗ (≡.subst (ℕ._≤ _) i≡j i≤π[k]) ⟩
       lookup ys (onIndices xs↭ys ⟨$⟩ʳ k)  ≈⟨ onIndices-lookup xs↭ys k ⟨
       lookup xs k                         ≤⟨ lookup-mono-≤ O xs↗ k≤i ⟩
       lookup xs i                         ∎

@@ -254,12 +254,11 @@ Additions to existing modules
 
 * In `Data.Fin.Properties`:
   ```agda
-  cast-involutive                  : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
-  inject!-injective                : Injective _≡_ _≡_ inject!
-  inject!-<                        : (k : Fin′ i) → inject! k < i
-  lower-injective                  : lower i i<n ≡ lower j j<n → i ≡ j
-  injective⇒nonStrictlyContractive : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f → ∀ i → ¬ (∀ j → j ≤ i → f j < i)
-  injective⇒existsPivot            : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f → ∀ (i : Fin n) → ∃ λ (j : Fin n) → j ≤ i × i ≤ f j
+  cast-involutive       : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  inject!-injective     : Injective _≡_ _≡_ inject!
+  inject!-<             : (k : Fin′ i) → inject! k < i
+  lower-injective       : lower i i<n ≡ lower j j<n → i ≡ j
+  injective⇒existsPivot : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f → ∀ (i : Fin n) → ∃ λ j → j ≤ i × i ≤ f j
   ```
 
 * In `Data.Fin.Subset`:
