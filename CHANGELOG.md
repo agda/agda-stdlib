@@ -332,9 +332,9 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
-  ≟-diag       : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
-  ≟-diag-refl  : (i : Fin n) → (i ≟ i) ≡ yes refl
-  ≟-off-diag   : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
+  ≟-≡          : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
+  ≟-≡-refl     : (i : Fin n) → (i ≟ i) ≡ yes refl
+  ≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
   cast-involutive       : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
   inject!-injective     : Injective _≡_ _≡_ inject!
   inject!-<             : (k : Fin′ i) → inject! k < i
@@ -424,7 +424,7 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
-  ≟-off-diag  : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
+  ≟-≢  : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ```
 
 * In `Data.Product.Function.Dependent.Propositional`:

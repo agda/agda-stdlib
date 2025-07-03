@@ -106,14 +106,14 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 ≡-irrelevant : Irrelevant {A = Fin n} _≡_
 ≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≟_
 
-≟-diag : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
-≟-diag = ≡-≟-identity _≟_
+≟-≡ : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
+≟-≡ = ≡-≟-identity _≟_
 
-≟-diag-refl : (i : Fin n)  → (i ≟ i) ≡ yes refl
-≟-diag-refl _ = ≟-diag refl
+≟-≡-refl : (i : Fin n)  → (i ≟ i) ≡ yes refl
+≟-≡-refl _ = ≟-≡ refl
 
-≟-off-diag : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
-≟-off-diag = ≢-≟-identity _≟_
+≟-≢ : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
+≟-≢ = ≢-≟-identity _≟_
 
 ------------------------------------------------------------------------
 -- Structures
