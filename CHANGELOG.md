@@ -323,9 +323,9 @@ Additions to existing modules
 
 * In `Data.Fin.Permutation.Components`:
   ```agda
-  transpose-iij : (i j : Fin n) → transpose i i j ≡ j
-  transpose-ijj : (i j : Fin n) → transpose i j j ≡ i
-  transpose-iji : (i j : Fin n) → transpose i j i ≡ j
+  transpose[i,i,j]≡j  : (i j : Fin n) → transpose i i j ≡ j
+  transpose[i,j,j]≡i  : (i j : Fin n) → transpose i j j ≡ i
+  transpose[i,j,i]≡j  : (i j : Fin n) → transpose i j i ≡ j
   transpose-transpose : transpose i j k ≡ l → transpose j i l ≡ k
   ```
 
