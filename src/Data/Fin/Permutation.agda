@@ -335,9 +335,9 @@ insert-remove : ∀ i (π : Permutation (suc m) (suc n)) → insert i (π ⟨$�
 insert-remove {m = m} {n = n} i π j with i ≟ j
 ... | yes i≡j = cong (π ⟨$⟩ʳ_) i≡j
 ... | no  i≢j = begin
-  punchIn (π ⟨$⟩ʳ i) (punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ Injection.injective (↔⇒↣ π)))                             ≡⟨ punchIn-punchOut _ ⟩
-  π ⟨$⟩ʳ punchIn i (punchOut i≢j)    ≡⟨ cong (π ⟨$⟩ʳ_) (punchIn-punchOut i≢j) ⟩
-  π ⟨$⟩ʳ j                           ∎
+  punchIn (π ⟨$⟩ʳ i) (punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ Injection.injective (↔⇒↣ π))) ≡⟨ punchIn-punchOut _ ⟩
+  π ⟨$⟩ʳ punchIn i (punchOut i≢j) ≡⟨ cong (π ⟨$⟩ʳ_) (punchIn-punchOut i≢j) ⟩
+  π ⟨$⟩ʳ j ∎
 
 remove-insert : ∀ i j (π : Permutation m n) → remove i (insert i j π) ≈ π
 remove-insert i j π k rewrite ≟-≡-refl i = begin
