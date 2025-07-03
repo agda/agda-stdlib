@@ -1415,7 +1415,6 @@ private
         | [1+m]⊖[1+n]≡m⊖n (m ℕ.+ o ℕ.* suc m) (m ℕ.+ n ℕ.* suc m)
         | +-cancelˡ-⊖ m (o ℕ.* suc m) (n ℕ.* suc m)
         | ⊖-≥ n≤o
-        | +-comm (- (+ (m ℕ.+ n ℕ.* suc m))) (+ (m ℕ.+ o ℕ.* suc m))
         | ⊖-≥ (ℕ.*-mono-≤ n≤o (ℕ.≤-refl {x = suc m}))
         | ℕ.*-distribʳ-∸ (suc m) o n
         | +◃n≡+n (o ℕ.* suc m ∸ n ℕ.* suc m)
