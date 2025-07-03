@@ -11,7 +11,7 @@ module Data.Fin.Permutation.Components where
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Fin.Base using (Fin; suc; opposite; toℕ)
 open import Data.Fin.Properties
-  using (_≟_; ≟-diag; ≟-diag-refl
+  using (_≟_; ≟-≡; ≟-≡-refl
         ; opposite-prop; opposite-involutive; opposite-suc)
 open import Relation.Nullary.Decidable.Core using (does; yes; no)
 open import Relation.Binary.PropositionalEquality.Core
@@ -42,15 +42,15 @@ transpose[i,i,j]≡j i j with j ≟ i in j≟i
 transpose[i,j,j]≡i : ∀ {n} (i j : Fin n) → transpose i j j ≡ i
 transpose[i,j,j]≡i i j with j ≟ i
 ... | yes j≡i                     = j≡i
-... | no  _ rewrite ≟-diag-refl j = refl
+... | no  _ rewrite ≟-≡-refl j = refl
 
 transpose[i,j,i]≡j : ∀ {n} (i j : Fin n) → transpose i j i ≡ j
-transpose[i,j,i]≡j i j rewrite ≟-diag-refl i = refl
+transpose[i,j,i]≡j i j rewrite ≟-≡-refl i = refl
 
 transpose-transpose : ∀ {n} {i j k l : Fin n} →
                       transpose i j k ≡ l → transpose j i l ≡ k
 transpose-transpose {n} {i} {j} {k} {l} eq with k ≟ i in k≟i
-... | yes k≡i rewrite ≟-diag (sym eq) = sym k≡i
+... | yes k≡i rewrite ≟-≡ (sym eq) = sym k≡i
 ... | no k≢i with k ≟ j in k≟j
 ...   | yes k≡j rewrite eq | transpose[i,j,j]≡i j l = sym k≡j
 ...   | no  k≢j rewrite eq | k≟j | k≟i = refl

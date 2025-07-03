@@ -12,7 +12,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; suc; cast; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F; 1F)
 open import Data.Fin.Properties
-  using (¬Fin0; _≟_; ≟-diag-refl; ≟-off-diag
+  using (¬Fin0; _≟_; ≟-≡-refl; ≟-≢
         ; cast-involutive; opposite-involutive
         ; punchInᵢ≢i; punchOut-punchIn; punchIn-punchOut
         ; punchOut-cong; punchOut-cong′)
@@ -229,10 +229,10 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ k with i ≟ k
-  ... | yes i≡k rewrite ≟-diag-refl j = i≡k
+  ... | yes i≡k rewrite ≟-≡-refl j = i≡k
   ... | no  i≢k
     with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
-    rewrite ≟-off-diag j≢punchInⱼπʳpunchOuti≢k
+    rewrite ≟-≢ j≢punchInⱼπʳpunchOuti≢k
     = begin
     punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)                    ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-cong j refl) ⟩
     punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
@@ -242,10 +242,10 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ k with j ≟ k
-  ... | yes j≡k rewrite ≟-diag-refl i = j≡k
+  ... | yes j≡k rewrite ≟-≡-refl i = j≡k
   ... | no  j≢k
     with i≢punchInᵢπˡpunchOutj≢k ← punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym
-    rewrite ≟-off-diag i≢punchInᵢπˡpunchOutj≢k
+    rewrite ≟-≢ i≢punchInᵢπˡpunchOutj≢k
     = begin
     punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
     punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
@@ -340,7 +340,7 @@ insert-remove {m = m} {n = n} i π j with i ≟ j
   π ⟨$⟩ʳ j                           ∎
 
 remove-insert : ∀ i j (π : Permutation m n) → remove i (insert i j π) ≈ π
-remove-insert i j π k rewrite ≟-diag-refl i = begin
+remove-insert i j π k rewrite ≟-≡-refl i = begin
   punchOut {i = j} _                               ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
   punchOut {i = j} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym) ≡⟨ punchOut-punchIn j ⟩
   π ⟨$⟩ʳ k                                         ∎
