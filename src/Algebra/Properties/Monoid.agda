@@ -51,10 +51,10 @@ module _ (a≈ε : a ≈ ε) where
 module _ (inv : a ∙ c ≈ ε) where
 
   cancelʳ : ∀ b → (b ∙ a) ∙ c ≈ b
-  cancelʳ b = trans (assoc b a c) (trans (∙-congˡ inv) (identityʳ b))
+  cancelʳ b = trans (uv≈w⇒xu∙v≈xw inv b) (identityʳ b)
 
   cancelˡ : ∀ b → a ∙ (c ∙ b) ≈ b
-  cancelˡ b = trans (sym (assoc a c b)) (trans (∙-congʳ inv) (identityˡ b))
+  cancelˡ b = trans (uv≈w⇒u∙vx≈wx inv b) (identityˡ b)
 
   insertˡ : ∀ b → b ≈ a ∙ (c ∙ b)
   insertˡ = sym ∘ cancelˡ

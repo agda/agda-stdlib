@@ -159,13 +159,9 @@ Deprecated names
 New modules
 -----------
 
-<<<<<<< HEAD
 * `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
 
 * `Algebra.Morphism.Construct.DirectProduct`.
-=======
-* `Algebra.Properties.Monoid` adding consequences for identity for monoids
->>>>>>> bbf664506 (update)
 
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
