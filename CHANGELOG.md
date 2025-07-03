@@ -159,6 +159,31 @@ Deprecated names
 New modules
 -----------
 
+* Bundles for left- and right- actions:
+  ```
+  Algebra.Action.Bundles
+  ```
+
+* The free `Monoid` actions over a `SetoidAction`:
+  ```
+  Algebra.Action.Construct.FreeMonoid
+  ```
+
+* The left- and right- regular actions (of a `Monoid`) over itself:
+  ```
+  Algebra.Action.Construct.Self
+  ```
+
+* Basic definitions for left- and right- actions:
+  ```
+  Algebra.Action.Definitions
+  ```
+
+* Structures for left- and right- actions:
+  ```
+  Algebra.Action.Structures
+  ```
+
 * `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
 
 * `Algebra.Morphism.Construct.DirectProduct`.
