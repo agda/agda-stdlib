@@ -186,7 +186,7 @@ New modules
 Additions to existing modules
 -----------------------------
 
-* `Algebra.Properties.Monoid` adding consequences for identity for monoids
+* In `Algebra.Properties.Monoid` adding consequences for identity for monoids
 
 * In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
 
