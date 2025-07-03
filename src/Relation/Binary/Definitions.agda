@@ -154,19 +154,25 @@ Monotonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
 Monotonic₁ _≤_ _⊑_ f = f Preserves _≤_ ⟶ _⊑_
 
 Antitonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
-Antitonic₁ _≤_ _⊑_ f = f Preserves (flip _≤_) ⟶ _⊑_
+Antitonic₁ _≤_ = Monotonic₁ (flip _≤_)
+
+LeftMonotonic : Rel B ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
+LeftMonotonic _≤_ _⊑_ _∙_ = ∀ x → Monotonic₁ _≤_ _⊑_ (x ∙_)
+
+RightMonotonic : Rel A ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
+RightMonotonic _≤_ _⊑_ _∙_ = ∀ y → Monotonic₁ _≤_ _⊑_ (_∙ y)
 
 Monotonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
 Monotonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
 
 MonotonicAntitonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
-MonotonicAntitonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ (flip _⊑_) ⟶ _≼_
+MonotonicAntitonic _≤_ _⊑_ = Monotonic₂ _≤_ (flip _⊑_)
 
 AntitonicMonotonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
-AntitonicMonotonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ _⊑_ ⟶ _≼_
+AntitonicMonotonic _≤_ = Monotonic₂ (flip _≤_)
 
 Antitonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
-Antitonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ (flip _⊑_) ⟶ _≼_
+Antitonic₂ _≤_ _⊑_ = Monotonic₂ (flip _≤_) (flip _⊑_)
 
 Adjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
 Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
