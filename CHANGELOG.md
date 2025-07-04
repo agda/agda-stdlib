@@ -411,6 +411,11 @@ Additions to existing modules
   map-id : map id ≗ id {A = List⁺ A}
   ```
 
+* In `Data.Nat.Properties`:
+  ```agda
+  ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ```
+
 * In `Data.Product.Function.Dependent.Propositional`:
   ```agda
   Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
