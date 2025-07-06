@@ -45,8 +45,8 @@ module _ (a≈ε : a ≈ ε) where
   introˡ : ∀ b → b ≈ a ∙ b
   introˡ = sym ∘ elimˡ
 
-  introcenter : ∀ c → b ∙ c ≈ b ∙ (a ∙ c)
-  introcenter c = trans (∙-congˡ (sym (identityˡ c))) (∙-congˡ (∙-congʳ (sym a≈ε)))
+  introᶜ : ∀ c → b ∙ c ≈ b ∙ (a ∙ c)
+  introᶜ c = trans (∙-congˡ (sym (identityˡ c))) (∙-congˡ (∙-congʳ (sym a≈ε)))
 
 module _ (inv : a ∙ c ≈ ε) where
 
