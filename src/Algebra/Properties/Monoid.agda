@@ -62,9 +62,9 @@ module _ (inv : a ∙ c ≈ ε) where
   insertʳ : ∀ b → b ≈ (b ∙ a) ∙ c
   insertʳ = sym ∘ cancelʳ
 
-  cancelInner : ∀ b d → (b ∙ a) ∙ (c ∙ d) ≈ b ∙ d
-  cancelInner b d = trans (uv≈w⇒xu∙vy≈x∙wy inv b d) (∙-congˡ (identityˡ d))
+  cancelᶜ : ∀ b d → (b ∙ a) ∙ (c ∙ d) ≈ b ∙ d
+  cancelᶜ b d = trans (uv≈w⇒xu∙vy≈x∙wy inv b d) (∙-congˡ (identityˡ d))
 
-  insertInner : ∀ b d → b ∙ d ≈ (b ∙ a) ∙ (c ∙ d)
-  insertInner = λ b d → sym (cancelInner b d)
+  insertᶜ : ∀ b d → b ∙ d ≈ (b ∙ a) ∙ (c ∙ d)
+  insertᶜ = λ b d → sym (cancelInner b d)
 
