@@ -66,5 +66,5 @@ module _ (inv : a ∙ c ≈ ε) where
   cancelᶜ b d = trans (uv≈w⇒xu∙vy≈x∙wy inv b d) (∙-congˡ (identityˡ d))
 
   insertᶜ : ∀ b d → b ∙ d ≈ (b ∙ a) ∙ (c ∙ d)
-  insertᶜ = λ b d → sym (cancelInner b d)
+  insertᶜ = λ b d → sym (cancelᶜ b d)
 
