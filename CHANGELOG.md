@@ -137,6 +137,7 @@ Deprecated names
   ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
   product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
   ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ∷-ʳ++-eqFree ↦  Data.List.Properties.ʳ++-ʳ++-eqFree
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
@@ -185,6 +186,8 @@ New modules
 
 * `Algebra.Module.Properties.{Bimodule|LeftModule|RightModule}`.
 
+* `Algebra.Morphism.Construct.DirectProduct`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
@@ -192,6 +195,10 @@ New modules
 * `Data.List.Relation.Binary.Prefix.Propositional.Properties` showing the equivalence to left divisibility induced by the list monoid.
 
 * `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
+
+* `Data.List.Sort.InsertionSort.{agda|Base|Properties}` defines insertion sort and proves properties of insertion sort such as Sorted and Permutation properties.
+
+* `Data.List.Sort.MergenSort.{agda|Base|Properties}` is a refactor of the previous `Data.List.Sort.MergenSort`.
 
 * `Data.Sign.Show` to show a sign.
 
@@ -203,6 +210,21 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Consequences.Base`:
+  ```agda
+  module Congruence (_≈_ : Rel A ℓ) (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
+  where
+    ∙-congˡ : LeftCongruent _≈_ _∙_
+    ∙-congʳ : RightCongruent _≈_ _∙_
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  module Congruence (cong : Congruent₂ _≈_ _∙_) where
+    ∙-congˡ : LeftCongruent _≈_ _∙_
+    ∙-congʳ : RightCongruent _≈_ _∙_
+  ```
 
 * In `Algebra.Construct.Pointwise`:
   ```agda
@@ -257,6 +279,29 @@ Additions to existing modules
   ∣ˡ-preorder   : Preorder a ℓ _
   ```
 
+* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
+
+```
+  uv≈w⇒xu∙v≈xw          : ∀ x → (x ∙ u) ∙ v ≈ x ∙ w
+  uv≈w⇒u∙vx≈wx          : ∀ x → u ∙ (v ∙ x) ≈ w ∙ x
+  uv≈w⇒u[vx∙y]≈w∙xy     : ∀ x y → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ (x ∙ y)
+  uv≈w⇒x[uv∙y]≈x∙wy     : ∀ x y → x ∙ (u ∙ (v ∙ y)) ≈ x ∙ (w ∙ y)
+  uv≈w⇒[x∙yu]v≈x∙yw     : ∀ x y → (x ∙ (y ∙ u)) ∙ v ≈ x ∙ (y ∙ w)
+  uv≈w⇒[xu∙v]y≈x∙wy     : ∀ x y → ((x ∙ u) ∙ v) ∙ y ≈ x ∙ (w ∙ y)
+  uv≈w⇒[xy∙u]v≈x∙yw     : ∀ x y → ((x ∙ y) ∙ u) ∙ v ≈ x ∙ (y ∙ w)
+  uv≈w⇒xu∙vy≈x∙wy       : ∀ x y → (x ∙ u) ∙ (v ∙ y) ≈ x ∙ (w ∙ y)
+  uv≈w⇒xy≈z⇒u[vx∙y]≈wz  : ∀ z → x ∙ y ≈ z → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ z
+  uv≈w⇒x∙wy≈x∙[u∙vy]    : x ∙ (w ∙ y) ≈ x ∙ (u ∙ (v ∙ y))
+  [uv∙w]x≈u[vw∙x]       : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
+  [uv∙w]x≈u[v∙wx]       : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
+  [u∙vw]x≈uv∙wx         : (u ∙ (v ∙ w)) ∙ x ≈ (u ∙ v) ∙ (w ∙ x)
+  [u∙vw]x≈u[v∙wx]       : (u ∙ (v ∙ w)) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
+  uv∙wx≈u[vw∙x]         : (u ∙ v) ∙ (w ∙ x) ≈ u ∙ ((v ∙ w) ∙ x)
+  uv≈wx⇒yu∙v≈yw∙x       : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
+  uv≈wx⇒u∙vy≈w∙xy       : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
+  uv≈wx⇒yu∙vz≈yw∙xz     : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
+```
+
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
   ∣ˡ-trans     : Transitive _∣ˡ_
@@ -271,21 +316,43 @@ Additions to existing modules
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
 
+* In `Data.Bool.Properties`:
+  ```agda
+  if-eta : ∀ b → (if b then x else x) ≡ x
+  if-idem-then : ∀ b → (if b then (if b then x else y) else y) ≡ (if b then x else y)
+  if-idem-else : ∀ b → (if b then x else (if b then x else y)) ≡ (if b then x else y)
+  if-swap-then : ∀ b c → (if b then (if c then x else y) else y) ≡ (if c then (if b then x else y) else y)
+  if-swap-else : ∀ b c → (if b then x else (if c then x else y)) ≡ (if c then x else (if b then x else y))
+  if-not : ∀ b → (if not b then x else y) ≡ (if b then y else x)
+  if-∧ : ∀ b → (if b ∧ c then x else y) ≡ (if b then (if c then x else y) else y)
+  if-∨ : ∀ b → (if b ∨ c then x else y) ≡ (if b then x else (if c then x else y))
+  if-xor : ∀ b → (if b xor c then x else y) ≡ (if b then (if c then y else x) else (if c then x else y))
+  if-cong : b ≡ c → (if b then x else y) ≡ (if c then x else y)
+  if-cong-then : ∀ b → x ≡ z → (if b then x else y) ≡ (if b then z else y)
+  if-cong-else : ∀ b → y ≡ z → (if b then x else y) ≡ (if b then x else z)
+  if-cong₂ : ∀ b → x ≡ z → y ≡ w → (if b then x else y) ≡ (if b then z else w)
+  ```
+
 * In `Data.Fin.Base`:
   ```agda
   _≰_ : Rel (Fin n) 0ℓ
   _≮_ : Rel (Fin n) 0ℓ
+  lower : ∀ (i : Fin m) → .(toℕ i ℕ.< n) → Fin n
   ```
 
 * In `Data.Fin.Permutation`:
   ```agda
   cast-id : .(m ≡ n) → Permutation m n
-  swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
+  swap : Permutation m n → Permutation (2+ m) (2+ n)
   ```
 
 * In `Data.Fin.Properties`:
   ```agda
-  cast-involutive : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  cast-involutive       : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
+  inject!-injective     : Injective _≡_ _≡_ inject!
+  inject!-<             : (k : Fin′ i) → inject! k < i
+  lower-injective       : lower i i<n ≡ lower j j<n → i ≡ j
+  injective⇒existsPivot : ∀ (f : Fin n → Fin m) → Injective _≡_ _≡_ f → ∀ (i : Fin n) → ∃ λ j → j ≤ i × i ≤ f j
   ```
 
 * In `Data.Fin.Subset`:
@@ -387,6 +454,17 @@ Additions to existing modules
     LeftInverse (I ×ₛ A) (J ×ₛ B)
   ```
 
+* In `Data.Vec.Properties`:
+  ```agda
+  toList-injective : ∀ {m n} → .(m=n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) → toList xs ≡ toList ys → xs ≈[ m=n ] ys
+
+  toList-∷ʳ : ∀ x (xs : Vec A n) → toList (xs ∷ʳ x) ≡ toList xs List.++ List.[ x ]
+
+  fromList-reverse : (xs : List A) → (fromList (List.reverse xs)) ≈[ List.length-reverse xs ] reverse (fromList xs)
+
+  fromList∘toList : ∀  (xs : Vec A n) → fromList (toList xs) ≈[ length-toList xs ] xs
+  ```
+
 * In `Data.Product.Nary.NonDependent`:
   ```agda
   HomoProduct′ n f = Product n (stabulate n (const _) f)
@@ -409,11 +487,26 @@ Additions to existing modules
   sreplicate : ∀ n → Set a → Sets n (lreplicate n a)
   ```
 
+* In `Relation.Binary.Consequences`:
+  ```agda
+  mono₂⇒monoˡ : Reflexive ≤₁ → Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
+  mono₂⇒monoˡ : Reflexive ≤₂ → Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
+  monoˡ∧monoʳ⇒mono₂ : Transitive ≤₃ →
+                      LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
+                      Monotonic₂ ≤₁ ≤₂ ≤₃ f
+  ```
+
 * In `Relation.Binary.Construct.Add.Infimum.Strict`:
   ```agda
   <₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
   <₋-accessible[_] : Acc _<_ x → Acc _<₋_ [ x ]
   <₋-wellFounded   : WellFounded _<_ → WellFounded _<₋_
+  ```
+
+* In `Relation.Binary.Definitions`:
+  ```agda
+  LeftMonotonic  : Rel B ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
+  RightMonotonic : Rel A ℓ₁ → Rel C ℓ₂ → (A → B → C) → Set _
   ```
 
 * In `Relation.Nullary.Decidable`:
@@ -459,6 +552,11 @@ Additions to existing modules
   map⁻ : AllPairs R (map f xs) → AllPairs (R on f) xs
   ```
 
+* In `Data.List.Relation.Unary.Linked`:
+  ```agda
+  lookup : Transitive R → Linked R xs → Connected R (just x) (head xs) → ∀ i → R x (List.lookup xs i)
+  ```
+
 * In `Data.List.Relation.Unary.Unique.Setoid.Properties`:
   ```agda
   map⁻ : Congruent _≈₁_ _≈₂_ f → Unique R (map f xs) → Unique S xs
@@ -467,4 +565,15 @@ Additions to existing modules
 * In `Data.List.Relation.Unary.Unique.Propositional.Properties`:
   ```agda
   map⁻ : Unique (map f xs) → Unique xs
+  ```
+
+* In `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
+  ```agda
+  lookup-mono-≤ : Sorted xs → i Fin.≤ j → lookup xs i ≤ lookup xs j
+  ↗↭↗⇒≋         : Sorted xs → Sorted ys → xs ↭ ys → xs ≋ ys
+  ```
+
+* In `Data.List.Sort.Base`:
+  ```agda
+  SortingAlgorithm.sort-↭ₛ : ∀ xs → sort xs Setoid.↭ xs
   ```

@@ -55,12 +55,7 @@ record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   setoid : Setoid a ℓ
   setoid = record { isEquivalence = isEquivalence }
 
-  ∙-congˡ : LeftCongruent ∙
-  ∙-congˡ y≈z = ∙-cong refl y≈z
-
-  ∙-congʳ : RightCongruent ∙
-  ∙-congʳ y≈z = ∙-cong y≈z refl
-
+  open Consequences.Congruence setoid ∙-cong public
 
 record IsCommutativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
