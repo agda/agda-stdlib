@@ -1614,12 +1614,11 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 ∸-+-assoc (suc m) (suc n) o = ∸-+-assoc m n o
 
 +-∸-assoc : ∀ m {n o} → o ≤ n → (m + n) ∸ o ≡ m + (n ∸ o)
-+-∸-assoc m (z≤n {n = n})             = begin-equality m + n ∎
-+-∸-assoc m (s≤s {m = o} {n = n} o≤n) = begin-equality
-  (m + suc n) ∸ suc o  ≡⟨ cong (_∸ suc o) (+-suc m n) ⟩
-  suc (m + n) ∸ suc o  ≡⟨⟩
-  (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
-  m + (n ∸ o)          ∎
++-∸-assoc zero    {n = n} {o = o} _   = begin-equality n ∸ o ∎
++-∸-assoc (suc m) {n = n} {o = o} o≤n = begin-equality
+  suc (m + n) ∸ o   ≡⟨ ∸-suc (m≤n⇒m≤o+n m o≤n) ⟩
+  suc ((m + n) ∸ o) ≡⟨ cong suc (+-∸-assoc m o≤n) ⟩
+  suc (m + (n ∸ o)) ∎
 
 m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
 m≤n+o⇒m∸n≤o      m  zero    le = le
