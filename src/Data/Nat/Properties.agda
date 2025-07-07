@@ -1634,7 +1634,7 @@ m<n+o⇒m∸n<o (suc m) (suc n)             lt = m<n+o⇒m∸n<o m n  (s<s⁻¹ 
 m+n≤o⇒m≤o∸n : ∀ m {n o} → m + n ≤ o → m ≤ o ∸ n
 m+n≤o⇒m≤o∸n zero    le       = z≤n
 m+n≤o⇒m≤o∸n (suc m) (s≤s le)
-  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m le)
+  rewrite ∸-suc(m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m le)
 
 m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
 m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
@@ -1671,7 +1671,7 @@ m∸n+n≡m {m} {n} n≤m = begin-equality
 m∸[m∸n]≡n : ∀ {m n} → n ≤ m → m ∸ (m ∸ n) ≡ n
 m∸[m∸n]≡n {m}     {_}     z≤n       = n∸n≡0 m
 m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
-  suc m ∸ (m ∸ n)   ≡⟨ +-∸-assoc 1 (m∸n≤m m n) ⟩
+  suc m ∸ (m ∸ n)   ≡⟨ ∸-suc (m∸n≤m m n) ⟩
   suc (m ∸ (m ∸ n)) ≡⟨ cong suc (m∸[m∸n]≡n n≤m) ⟩
   suc n             ∎
 
