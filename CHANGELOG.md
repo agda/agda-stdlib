@@ -201,6 +201,12 @@ Additions to existing modules
     ∙-congʳ : RightCongruent _≈_ _∙_
   ```
 
+* In `Algebra.Construct.Initial`:
+  ```agda
+  assoc : Associative _≈_ _∙_
+  idem  : Idempotent _≈_ _∙_
+  ```
+
 * In `Algebra.Construct.Pointwise`:
   ```agda
   isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
