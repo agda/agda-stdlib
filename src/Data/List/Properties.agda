@@ -269,7 +269,7 @@ module _ (A : Set a) where
     { isRelHomomorphism = record
       { cong = cong length
       }
-    ; homo = λ xs ys → length-++ xs {ys}
+    ; ∙-homo = λ xs ys → length-++ xs {ys}
     }
 
   length-isMonoidHomomorphism : IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length

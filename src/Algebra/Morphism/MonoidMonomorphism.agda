@@ -45,14 +45,14 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   identityˡ : LeftIdentity _≈₂_ ε₂ _◦_ → LeftIdentity _≈₁_ ε₁ _∙_
   identityˡ idˡ x = injective (begin
-    ⟦ ε₁ ∙ x ⟧      ≈⟨ homo ε₁ x ⟩
+    ⟦ ε₁ ∙ x ⟧      ≈⟨ ∙-homo ε₁ x ⟩
     ⟦ ε₁ ⟧ ◦ ⟦ x ⟧  ≈⟨ ◦-cong ε-homo refl ⟩
     ε₂ ◦ ⟦ x ⟧      ≈⟨ idˡ ⟦ x ⟧ ⟩
     ⟦ x ⟧           ∎)
 
   identityʳ : RightIdentity _≈₂_ ε₂ _◦_ → RightIdentity _≈₁_ ε₁ _∙_
   identityʳ idʳ x = injective (begin
-    ⟦ x ∙ ε₁ ⟧      ≈⟨ homo x ε₁ ⟩
+    ⟦ x ∙ ε₁ ⟧      ≈⟨ ∙-homo x ε₁ ⟩
     ⟦ x ⟧ ◦ ⟦ ε₁ ⟧  ≈⟨ ◦-cong refl ε-homo ⟩
     ⟦ x ⟧ ◦ ε₂      ≈⟨ idʳ ⟦ x ⟧ ⟩
     ⟦ x ⟧           ∎)
@@ -62,17 +62,17 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   zeroˡ : LeftZero _≈₂_ ε₂ _◦_ → LeftZero _≈₁_ ε₁ _∙_
   zeroˡ zeˡ x = injective (begin
-    ⟦ ε₁ ∙ x ⟧     ≈⟨  homo ε₁ x ⟩
-    ⟦ ε₁ ⟧ ◦ ⟦ x ⟧ ≈⟨  ◦-cong ε-homo refl ⟩
-    ε₂   ◦ ⟦ x ⟧   ≈⟨  zeˡ ⟦ x ⟧ ⟩
+    ⟦ ε₁ ∙ x ⟧     ≈⟨ ∙-homo ε₁ x ⟩
+    ⟦ ε₁ ⟧ ◦ ⟦ x ⟧ ≈⟨ ◦-cong ε-homo refl ⟩
+    ε₂   ◦ ⟦ x ⟧   ≈⟨ zeˡ ⟦ x ⟧ ⟩
     ε₂             ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧         ∎)
 
   zeroʳ : RightZero _≈₂_ ε₂ _◦_ → RightZero _≈₁_ ε₁ _∙_
   zeroʳ zeʳ x = injective (begin
-    ⟦ x ∙ ε₁ ⟧     ≈⟨  homo x ε₁ ⟩
-    ⟦ x ⟧ ◦ ⟦ ε₁ ⟧ ≈⟨  ◦-cong refl ε-homo ⟩
-    ⟦ x ⟧ ◦ ε₂     ≈⟨  zeʳ ⟦ x ⟧ ⟩
+    ⟦ x ∙ ε₁ ⟧     ≈⟨ ∙-homo x ε₁ ⟩
+    ⟦ x ⟧ ◦ ⟦ ε₁ ⟧ ≈⟨ ◦-cong refl ε-homo ⟩
+    ⟦ x ⟧ ◦ ε₂     ≈⟨ zeʳ ⟦ x ⟧ ⟩
     ε₂             ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧         ∎)
 
