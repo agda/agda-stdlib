@@ -39,7 +39,7 @@ record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
     zero#            : Carrier
     isSuccessorSet   : IsSuccessorSet _≈_ suc# zero#
 
-  open IsSuccessorSet isSuccessorSet public
+  open IsSuccessorSet _≈_ isSuccessorSet public
 
   rawSuccessorSet : RawSuccessorSet _ _
   rawSuccessorSet = record { _≈_ = _≈_; suc# = suc#; zero# = zero# }
@@ -59,7 +59,7 @@ record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     isMagma : IsMagma _≈_ _∙_
 
-  open IsMagma isMagma public
+  open IsMagma _≈_ isMagma public
 
   rawMagma : RawMagma _ _
   rawMagma = record { _≈_ = _≈_; _∙_ = _∙_ }
@@ -77,7 +77,7 @@ record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_              : Op₂ Carrier
     isSelectiveMagma : IsSelectiveMagma _≈_ _∙_
 
-  open IsSelectiveMagma isSelectiveMagma public
+  open IsSelectiveMagma _≈_ isSelectiveMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -94,7 +94,7 @@ record CommutativeMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_                : Op₂ Carrier
     isCommutativeMagma : IsCommutativeMagma _≈_ _∙_
 
-  open IsCommutativeMagma isCommutativeMagma public
+  open IsCommutativeMagma _≈_ isCommutativeMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -110,7 +110,7 @@ record IdempotentMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     isIdempotentMagma  : IsIdempotentMagma _≈_ _∙_
 
-  open IsIdempotentMagma isIdempotentMagma public
+  open IsIdempotentMagma _≈_ isIdempotentMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -127,7 +127,7 @@ record AlternativeMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     isAlternativeMagma  : IsAlternativeMagma _≈_ _∙_
 
-  open IsAlternativeMagma isAlternativeMagma public
+  open IsAlternativeMagma _≈_ isAlternativeMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -144,7 +144,7 @@ record FlexibleMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     isFlexibleMagma  : IsFlexibleMagma _≈_ _∙_
 
-  open IsFlexibleMagma isFlexibleMagma public
+  open IsFlexibleMagma _≈_ isFlexibleMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -161,7 +161,7 @@ record MedialMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     isMedialMagma  : IsMedialMagma _≈_ _∙_
 
-  open IsMedialMagma isMedialMagma public
+  open IsMedialMagma _≈_ isMedialMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -178,7 +178,7 @@ record SemimedialMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     isSemimedialMagma  : IsSemimedialMagma _≈_ _∙_
 
-  open IsSemimedialMagma isSemimedialMagma public
+  open IsSemimedialMagma _≈_ isSemimedialMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -196,7 +196,7 @@ record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_         : Op₂ Carrier
     isSemigroup : IsSemigroup _≈_ _∙_
 
-  open IsSemigroup isSemigroup public
+  open IsSemigroup _≈_ isSemigroup public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -214,7 +214,7 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     isBand  : IsBand _≈_ _∙_
 
-  open IsBand isBand public
+  open IsBand _≈_ isBand public
 
   semigroup : Semigroup c ℓ
   semigroup = record { isSemigroup = isSemigroup }
@@ -232,7 +232,7 @@ record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_                     : Op₂ Carrier
     isCommutativeSemigroup  : IsCommutativeSemigroup _≈_ _∙_
 
-  open IsCommutativeSemigroup isCommutativeSemigroup public
+  open IsCommutativeSemigroup _≈_ isCommutativeSemigroup public
 
   semigroup : Semigroup c ℓ
   semigroup = record { isSemigroup = isSemigroup }
@@ -252,7 +252,7 @@ record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_                : Op₂ Carrier
     isCommutativeBand  : IsCommutativeBand _≈_ _∙_
 
-  open IsCommutativeBand isCommutativeBand public
+  open IsCommutativeBand _≈_ isCommutativeBand public
 
   band : Band _ _
   band = record { isBand = isBand }
@@ -281,7 +281,7 @@ record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     ε        : Carrier
     isUnitalMagma : IsUnitalMagma _≈_ _∙_ ε
 
-  open IsUnitalMagma isUnitalMagma public
+  open IsUnitalMagma _≈_ isUnitalMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -300,7 +300,7 @@ record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ε        : Carrier
     isMonoid : IsMonoid _≈_ _∙_ ε
 
-  open IsMonoid isMonoid public
+  open IsMonoid _≈_ isMonoid public
 
   semigroup : Semigroup _ _
   semigroup = record { isSemigroup = isSemigroup }
@@ -325,7 +325,7 @@ record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ε                   : Carrier
     isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε
 
-  open IsCommutativeMonoid isCommutativeMonoid public
+  open IsCommutativeMonoid _≈_ isCommutativeMonoid public
 
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
@@ -349,7 +349,7 @@ record IdempotentMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ε                  : Carrier
     isIdempotentMonoid : IsIdempotentMonoid _≈_ _∙_ ε
 
-  open IsIdempotentMonoid isIdempotentMonoid public
+  open IsIdempotentMonoid _≈_ isIdempotentMonoid public
 
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
@@ -371,7 +371,7 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ε                             : Carrier
     isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _≈_ _∙_ ε
 
-  open IsIdempotentCommutativeMonoid isIdempotentCommutativeMonoid public
+  open IsIdempotentCommutativeMonoid _≈_ isIdempotentCommutativeMonoid public
 
   commutativeMonoid : CommutativeMonoid _ _
   commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
@@ -418,7 +418,7 @@ record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _⁻¹     : Op₁ Carrier
     isInvertibleMagma : IsInvertibleMagma _≈_ _∙_ ε _⁻¹
 
-  open IsInvertibleMagma isInvertibleMagma public
+  open IsInvertibleMagma _≈_ isInvertibleMagma public
 
   magma : Magma _ _
   magma = record { isMagma = isMagma }
@@ -439,7 +439,7 @@ record InvertibleUnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     _⁻¹                      : Op₁ Carrier
     isInvertibleUnitalMagma  : IsInvertibleUnitalMagma _≈_ _∙_ ε _⁻¹
 
-  open IsInvertibleUnitalMagma isInvertibleUnitalMagma public
+  open IsInvertibleUnitalMagma _≈_ isInvertibleUnitalMagma public
 
   invertibleMagma : InvertibleMagma _ _
   invertibleMagma = record { isInvertibleMagma = isInvertibleMagma }
@@ -459,7 +459,7 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
     _⁻¹     : Op₁ Carrier
     isGroup : IsGroup _≈_ _∙_ ε _⁻¹
 
-  open IsGroup isGroup public
+  open IsGroup _≈_ isGroup public
 
   rawGroup : RawGroup _ _
   rawGroup = record { _≈_ = _≈_; _∙_ = _∙_; ε = ε; _⁻¹ = _⁻¹}
@@ -492,7 +492,7 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _⁻¹            : Op₁ Carrier
     isAbelianGroup : IsAbelianGroup _≈_ _∙_ ε _⁻¹
 
-  open IsAbelianGroup isAbelianGroup public
+  open IsAbelianGroup _≈_ isAbelianGroup public
 
   group : Group _ _
   group = record { isGroup = isGroup }
@@ -1139,9 +1139,9 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_          : Op₂ Carrier
     _\\_         : Op₂ Carrier
     _//_         : Op₂ Carrier
-    isQuasigroup : IsQuasigroup  _≈_ _∙_ _\\_ _//_
+    isQuasigroup : IsQuasigroup _≈_ _∙_ _\\_ _//_
 
-  open IsQuasigroup isQuasigroup public
+  open IsQuasigroup _≈_ isQuasigroup public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
@@ -1174,7 +1174,7 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
     ε       : Carrier
     isLoop  : IsLoop  _≈_ _∙_ _\\_ _//_ ε
 
-  open IsLoop isLoop public
+  open IsLoop _≈_ isLoop public
 
   rawLoop : RawLoop c ℓ
   rawLoop = record
@@ -1205,7 +1205,7 @@ record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
     ε       : Carrier
     isLeftBolLoop : IsLeftBolLoop  _≈_ _∙_ _\\_ _//_ ε
 
-  open IsLeftBolLoop isLeftBolLoop public
+  open IsLeftBolLoop _≈_ isLeftBolLoop public
 
   loop : Loop _ _
   loop = record { isLoop = isLoop }
@@ -1227,7 +1227,7 @@ record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
     ε       : Carrier
     isRightBolLoop : IsRightBolLoop  _≈_ _∙_ _\\_ _//_ ε
 
-  open IsRightBolLoop isRightBolLoop public
+  open IsRightBolLoop _≈_ isRightBolLoop public
 
   loop : Loop _ _
   loop = record { isLoop = isLoop }
@@ -1249,7 +1249,7 @@ record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ)) where
     ε       : Carrier
     isMoufangLoop : IsMoufangLoop  _≈_ _∙_ _\\_ _//_ ε
 
-  open IsMoufangLoop isMoufangLoop public
+  open IsMoufangLoop _≈_ isMoufangLoop public
 
   leftBolLoop : LeftBolLoop _ _
   leftBolLoop = record { isLeftBolLoop = isLeftBolLoop }
@@ -1271,11 +1271,10 @@ record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
     ε               : Carrier
     isMiddleBolLoop : IsMiddleBolLoop  _≈_ _∙_ _\\_ _//_ ε
 
-  open IsMiddleBolLoop isMiddleBolLoop public
+  open IsMiddleBolLoop _≈_ isMiddleBolLoop public
 
   loop : Loop _ _
   loop = record { isLoop = isLoop }
 
   open Loop loop public
     using (quasigroup)
-
