@@ -163,6 +163,8 @@ New modules
 
 * `Algebra.Morphism.Construct.DirectProduct`.
 
+* `Algebra.Properties.BooleanRing`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
@@ -185,6 +187,11 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Bundles`:
+  ```agda
+  record BooleanRing _ _ : Set _
+  ```
 
 * In `Algebra.Consequences.Base`:
   ```agda
@@ -254,9 +261,13 @@ Additions to existing modules
   ∣ˡ-preorder   : Preorder a ℓ _
   ```
 
-* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
+* In `Algebra.Properties.RingWithoutOne`:
+  ```agda
+  [-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
+  ```
 
-```
+* In `Algebra.Properties.Semigroup`, consequences for associativity for semigroups:
+  ```
   uv≈w⇒xu∙v≈xw          : ∀ x → (x ∙ u) ∙ v ≈ x ∙ w
   uv≈w⇒u∙vx≈wx          : ∀ x → u ∙ (v ∙ x) ≈ w ∙ x
   uv≈w⇒u[vx∙y]≈w∙xy     : ∀ x y → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ (x ∙ y)
@@ -275,7 +286,7 @@ Additions to existing modules
   uv≈wx⇒yu∙v≈yw∙x       : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
   uv≈wx⇒u∙vy≈w∙xy       : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
   uv≈wx⇒yu∙vz≈yw∙xz     : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
-```
+  ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
@@ -289,6 +300,11 @@ Additions to existing modules
 * In `Algebra.Properties.CommutativeSemigroup.Divisibility`:
   ```agda
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
+  ```
+
+* In `Algebra.Structures`:
+  ```agda
+  record IsBooleanRing + * - 0# 1# : Set _
   ```
 
 * In `Data.Bool.Properties`:

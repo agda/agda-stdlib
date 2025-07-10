@@ -962,6 +962,18 @@ record IsCommutativeRing
     ; *-isCommutativeMonoid
     )
 
+record IsBooleanRing
+         (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isRing : IsRing + * - 0# 1#
+    *-idem : Idempotent *
+
+  open IsRing isRing public
+
+  isIdempotentMonoid :  IsIdempotentMonoid * 1#
+  isIdempotentMonoid = record { isMonoid = *-isMonoid ; idem = *-idem }
+
+
 ------------------------------------------------------------------------
 -- Structures with 3 binary operations
 ------------------------------------------------------------------------
