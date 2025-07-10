@@ -261,10 +261,6 @@ Additions to existing modules
   ∣ˡ-preorder   : Preorder a ℓ _
   ```
 
-* In `Algebra.Properties.RingWithoutOne`:
-  ```agda
-  [-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
-  ```
 
 * In `Algebra.Properties.Semigroup`, consequences for associativity for semigroups:
   ```
