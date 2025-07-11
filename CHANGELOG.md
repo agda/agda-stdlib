@@ -163,6 +163,8 @@ New modules
 
 * `Algebra.Morphism.Construct.DirectProduct`.
 
+* `Algebra.Properties.BooleanRing`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
@@ -186,6 +188,11 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Bundles`:
+  ```agda
+  record BooleanRing _ _ : Set _
+  ```
+
 * In `Algebra.Consequences.Base`:
   ```agda
   module Congruence (_≈_ : Rel A ℓ) (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
@@ -194,11 +201,19 @@ Additions to existing modules
     ∙-congʳ : RightCongruent _≈_ _∙_
   ```
 
+* In `Algebra.Consequences.Propositional`:
+  ```agda
+  binomial-expansion : Associative _∙_ → _◦_ DistributesOver _∙_ →
+    ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  ```
+
 * In `Algebra.Consequences.Setoid`:
   ```agda
   module Congruence (cong : Congruent₂ _≈_ _∙_) where
     ∙-congˡ : LeftCongruent _≈_ _∙_
     ∙-congʳ : RightCongruent _≈_ _∙_
+  binomial-expansion : Congruent₂ _∙_  → Associative _∙_ → _◦_ DistributesOver _∙_ →
+    ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
   ```
 
 * In `Algebra.Construct.Initial`:
@@ -260,9 +275,9 @@ Additions to existing modules
   ∣ˡ-preorder   : Preorder a ℓ _
   ```
 
-* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
 
-```
+* In `Algebra.Properties.Semigroup`, consequences for associativity for semigroups:
+  ```
   uv≈w⇒xu∙v≈xw          : ∀ x → (x ∙ u) ∙ v ≈ x ∙ w
   uv≈w⇒u∙vx≈wx          : ∀ x → u ∙ (v ∙ x) ≈ w ∙ x
   uv≈w⇒u[vx∙y]≈w∙xy     : ∀ x y → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ (x ∙ y)
@@ -281,7 +296,7 @@ Additions to existing modules
   uv≈wx⇒yu∙v≈yw∙x       : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
   uv≈wx⇒u∙vy≈w∙xy       : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
   uv≈wx⇒yu∙vz≈yw∙xz     : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
-```
+  ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
@@ -296,6 +311,12 @@ Additions to existing modules
   ```agda
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
+
+* In `Algebra.Structures`:
+  ```agda
+  record IsBooleanRing + * - 0# 1# : Set _
+  ```
+  NB. based on `IsRing`, rather than `IsRingWithoutOne`.
 
 * In `Data.Bool.Properties`:
   ```agda

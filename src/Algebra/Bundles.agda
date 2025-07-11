@@ -1124,6 +1124,28 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; commutativeSemiringWithoutOne
     )
 
+
+record BooleanRing c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    -_            : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isBooleanRing : IsBooleanRing _≈_ _+_ _*_ -_ 0# 1#
+
+  open IsBooleanRing isBooleanRing public
+
+  ring : Ring _ _
+  ring = record { isRing = isRing }
+
+
 ------------------------------------------------------------------------
 -- Bundles with 3 binary operations
 ------------------------------------------------------------------------
