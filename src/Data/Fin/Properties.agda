@@ -11,6 +11,7 @@
 module Data.Fin.Properties where
 
 open import Axiom.Extensionality.Propositional
+open import Axiom.UniquenessOfIdentityProofs using (module Decidable⇒UIP)
 open import Algebra.Definitions using (Involutive)
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Functor using (RawFunctor)
@@ -44,10 +45,12 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_)
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality as ≡
+  using (≡-≟-identity; ≢-≟-identity)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (Reflects; invert)
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
@@ -99,6 +102,18 @@ zero  ≟ zero  = yes refl
 zero  ≟ suc y = no λ()
 suc x ≟ zero  = no λ()
 suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
+
+≡-irrelevant : Irrelevant {A = Fin n} _≡_
+≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≟_
+
+≟-≡ : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
+≟-≡ = ≡-≟-identity _≟_
+
+≟-≡-refl : (i : Fin n)  → (i ≟ i) ≡ yes refl
+≟-≡-refl _ = ≟-≡ refl
+
+≟-≢ : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
+≟-≢ = ≢-≟-identity _≟_
 
 ------------------------------------------------------------------------
 -- Structures
