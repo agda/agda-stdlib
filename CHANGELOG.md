@@ -201,11 +201,19 @@ Additions to existing modules
     ∙-congʳ : RightCongruent _≈_ _∙_
   ```
 
+* In `Algebra.Consequences.Propositional`:
+  ```agda
+  binomial-expansion : Associative _∙_ → _◦_ DistributesOver _∙_ →
+    ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  ```
+
 * In `Algebra.Consequences.Setoid`:
   ```agda
   module Congruence (cong : Congruent₂ _≈_ _∙_) where
     ∙-congˡ : LeftCongruent _≈_ _∙_
     ∙-congʳ : RightCongruent _≈_ _∙_
+  binomial-expansion : Congruent₂ _∙_  → Associative _∙_ → _◦_ DistributesOver _∙_ →
+    ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
   ```
 
 * In `Algebra.Construct.Pointwise`:

@@ -42,6 +42,7 @@ open Base public
   ; subst∧comm⇒sym
   ; wlog
   ; sel⇒idem
+  ; binomial-expansion
 -- plus all the deprecated versions of the above
   ; comm+assoc⇒middleFour
   ; identity+middleFour⇒assoc
@@ -100,6 +101,15 @@ module _ {_∙_ _◦_ : Op₂ A} (∙-comm : Commutative _∙_) where
 
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y ∙ z)) ≡ ((x ◦ y) ∙ (x ◦ z)))
   comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _◦_) ∙-comm
+
+module _ {_∙_ _◦_ : Op₂ A}
+         (∙-assoc : Associative _∙_)
+         (distrib : _◦_ DistributesOver _∙_)
+         where
+
+  binomial-expansion : ∀ w x y z →
+             ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  binomial-expansion = Base.binomial-expansion {_∙_} {_◦_} (cong₂ _) ∙-assoc distrib
 
 ------------------------------------------------------------------------
 -- Selectivity

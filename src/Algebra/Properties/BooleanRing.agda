@@ -14,6 +14,7 @@ module Algebra.Properties.BooleanRing {r₁ r₂} (R : BooleanRing r₁ r₂) wh
 open import Function.Base using (_∘_; _$_)
 
 open BooleanRing R
+open import Algebra.Consequences.Setoid setoid using (binomial-expansion)
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
   using (IsCommutativeMonoid; IsIdempotentCommutativeMonoid; IsCommutativeRing)
@@ -30,14 +31,13 @@ open import Algebra.Properties.Ring ring public
 xy+yx≈0 : ∀ x y → x * y + y * x ≈ 0#
 xy+yx≈0 x y = +-cancelˡ (x * x) _ _ $ +-cancelʳ (y * y) _ _ $ begin
   x * x + ((x * y) + (y * x)) + y * y ≈⟨ +-congʳ (+-assoc _ _ _) ⟨
-  x * x + x * y + y * x + y * y       ≈⟨ +-assoc _ _ _ ⟩
-  (x * x + x * y) + (y * x + y * y)   ≈⟨ +-cong (distribˡ x x y) (distribˡ y x y) ⟨
-  x * (x + y) + y * (x + y)           ≈⟨ distribʳ (x + y) x y ⟨
+  x * x + x * y + y * x + y * y       ≈⟨ expand x y x y ⟨
   (x + y) * (x + y)                   ≈⟨ *-idem (x + y) ⟩
   x + y                               ≈⟨ +-congˡ (*-idem y) ⟨
   x + y * y                           ≈⟨ +-congʳ (*-idem x) ⟨
   x * x + y * y                       ≈⟨ +-congʳ (+-identityʳ (x * x)) ⟨
   x * x + 0# + y * y                  ∎
+  where expand = binomial-expansion +-cong +-assoc distrib
 
 y≈x⇒x+y≈0 : ∀ {x y} → y ≈ x → x + y ≈ 0#
 y≈x⇒x+y≈0 {x = x} {y = y} y≈x = begin
