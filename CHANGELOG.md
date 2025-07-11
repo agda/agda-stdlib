@@ -302,6 +302,7 @@ Additions to existing modules
   ```agda
   record IsBooleanRing + * - 0# 1# : Set _
   ```
+  NB. based on `IsRing`, rather than `IsRingWithoutOne`.
 
 * In `Data.Bool.Properties`:
   ```agda
