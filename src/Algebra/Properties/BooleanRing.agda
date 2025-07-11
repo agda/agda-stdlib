@@ -11,7 +11,7 @@ open import Algebra.Bundles
 
 module Algebra.Properties.BooleanRing {r₁ r₂} (R : BooleanRing r₁ r₂) where
 
-open import Function.Base using (_$_)
+open import Function.Base using (_∘_; _$_)
 
 open BooleanRing R
 open import Algebra.Definitions _≈_
@@ -39,16 +39,24 @@ xy+yx≈0 x y = +-cancelˡ (x * x) _ _ $ +-cancelʳ (y * y) _ _ $ begin
   x * x + y * y                       ≈⟨ +-congʳ (+-identityʳ (x * x)) ⟨
   x * x + 0# + y * y                  ∎
 
-x+x≈0 : ∀ x → x + x ≈ 0#
-x+x≈0 x = begin
-  x + x         ≈⟨ +-cong (*-idem x) (*-idem x) ⟨
-  x * x + x * x ≈⟨ xy+yx≈0 x x ⟩
+y≈x⇒x+y≈0 : ∀ {x y} → y ≈ x → x + y ≈ 0#
+y≈x⇒x+y≈0 {x = x} {y = y} y≈x = begin
+  x + y         ≈⟨ +-cong (*-idem x) (*-idem y) ⟨
+  x * x + y * y ≈⟨ +-cong (*-congˡ (sym y≈x)) (*-congˡ y≈x) ⟩
+  x * y + y * x ≈⟨ xy+yx≈0 x y ⟩
   0#            ∎
 
--x≈x : ∀ x → - x ≈ x
--x≈x x = begin
+x+x≈0 : ∀ x → x + x ≈ 0#
+x+x≈0 x = y≈x⇒x+y≈0 refl
+
+x+y≈0⇒y≈x : ∀ {x y} → x + y ≈ 0# → y ≈ x
+x+y≈0⇒y≈x {x = x} {y = y} x+y≈0 = begin
+  y   ≈⟨ +-inverseʳ-unique x y x+y≈0 ⟩
   - x ≈⟨ +-inverseˡ-unique x x (x+x≈0 x) ⟨
   x   ∎
+
+-x≈x : ∀ x → - x ≈ x
+-x≈x = x+y≈0⇒y≈x ∘ -‿inverseʳ
 
 *-comm : Commutative _*_
 *-comm x y = begin
