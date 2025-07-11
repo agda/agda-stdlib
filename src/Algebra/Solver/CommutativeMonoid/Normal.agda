@@ -13,7 +13,7 @@ open import Algebra.Bundles using (CommutativeMonoid)
 module Algebra.Solver.CommutativeMonoid.Normal {c ℓ} (M : CommutativeMonoid c ℓ) where
 
 import Algebra.Properties.CommutativeSemigroup as CSProperties
-  using (interchange)
+  using (medial)
 import Algebra.Properties.Monoid.Mult as MultProperties
   using (_×_; ×-homo-1; ×-homo-+)
 open import Data.Fin.Base using (Fin; zero; suc)
@@ -27,7 +27,7 @@ import Relation.Nullary.Decidable as Dec using (map)
 
 open CommutativeMonoid M
 open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
-open CSProperties commutativeSemigroup using (interchange)
+open CSProperties commutativeSemigroup using (medial)
 open ≈-Reasoning setoid
 
 private
@@ -117,7 +117,7 @@ comp-correct [] [] _ =  sym (identityˡ _)
 comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = begin
   ((l + m) × a) ∙ ⟦ v • w ⟧⇓ ρ              ≈⟨ ∙-congʳ  (×-homo-+ a l m) ⟩
   (l × a) ∙ (m × a) ∙ ⟦ v • w ⟧⇓ ρ          ≈⟨ ∙-congˡ  (comp-correct v w ρ) ⟩
-  (l × a) ∙ (m × a) ∙ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ) ≈⟨ interchange _ _ _ _ ⟩
+  (l × a) ∙ (m × a) ∙ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ) ≈⟨ medial _ _ _ _ ⟩
   ⟦ l ∷ v ⟧⇓ (a ∷ ρ) ∙ ⟦ m ∷ w ⟧⇓ (a ∷ ρ)   ∎
 
 ------------------------------------------------------------------------
