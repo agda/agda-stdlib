@@ -23,14 +23,11 @@ private
     variable
         a b c d : Carrier
 
-id-unique : ∀ a → (∀ b → b ∙ a ≈ b) → a ≈ ε
-id-unique a b∙a≈b = trans (sym (identityˡ a)) (b∙a≈b ε)
+ε-unique : ∀ a → (∀ b → b ∙ a ≈ b) → a ≈ ε
+ε-unique a b∙a≈b = trans (sym (identityˡ a)) (b∙a≈b ε)
 
-id-comm : ∀ a → a ∙ ε ≈ ε ∙ a
-id-comm a = trans (identityʳ a) (sym (identityˡ a))
-
-id-comm-sym : ∀ a → ε ∙ a ≈ a ∙ ε
-id-comm-sym = sym ∘ id-comm
+ε-comm : ∀ a → a ∙ ε ≈ ε ∙ a
+ε-comm a = trans (identityʳ a) (sym (identityˡ a))
 
 module _ (a≈ε : a ≈ ε) where
   elimʳ : ∀ b → b ∙ a ≈ b
