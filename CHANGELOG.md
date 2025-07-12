@@ -192,7 +192,7 @@ Additions to existing modules
 
 * In `Algebra.Properties.Ring` adding consequences for identity for
   both monoids, as renamed from `Algebra.Properties.Monoid`
-  
+
 * In `Algebra.Consequences.Base`:
   ```agda
   module Congruence (_≈_ : Rel A ℓ) (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
