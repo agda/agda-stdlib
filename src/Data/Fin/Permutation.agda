@@ -15,7 +15,7 @@ open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
   punchOut-cong; punchOut-cong′; punchIn-punchOut
   ; _≟_; ¬Fin0; cast-involutive; opposite-involutive)
 import Data.Fin.Permutation.Components as PC
-open import Data.Nat.Base using (ℕ; suc; zero)
+open import Data.Nat.Base using (ℕ; suc; zero; 2+)
 open import Data.Product.Base using (_,_; proj₂)
 open import Function.Bundles using (_↔_; Injection; Inverse; mk↔ₛ′)
 open import Function.Construct.Composition using (_↔-∘_)
@@ -261,7 +261,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 --
 -- Note: should be refactored as a special-case when we add the
 -- concatenation of two permutations
-swap : Permutation m n → Permutation (suc (suc m)) (suc (suc n))
+swap : Permutation m n → Permutation (2+ m) (2+ n)
 swap π = transpose 0F 1F ∘ₚ lift₀ (lift₀ π)
 
 ------------------------------------------------------------------------

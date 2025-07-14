@@ -8,7 +8,7 @@
 
 -- Disabled to prevent warnings from deprecated
 -- Algebra.Operations.CommutativeMonoid
-{-# OPTIONS --warn=noUserWarning #-}
+{-# OPTIONS --warning=noUserWarning #-}
 
 open import Algebra
 import Algebra.Operations.CommutativeMonoid as MonoidOperations

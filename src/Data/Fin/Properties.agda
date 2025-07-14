@@ -6,7 +6,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ and _≻toℕ_ (issue #1726)
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated _≺_ and _≻toℕ_ (issue #1726)
 
 module Data.Fin.Properties where
 
@@ -490,6 +490,19 @@ i≤inject₁[j]⇒i≤1+j {i = zero}              _   = z≤n
 i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} i≤j = s≤s (ℕ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) (ℕ.s≤s⁻¹ i≤j)))
 
 ------------------------------------------------------------------------
+-- inject!
+------------------------------------------------------------------------
+
+inject!-injective : ∀ {i : Fin (suc n)} → Injective _≡_ _≡_ (inject! {i = i})
+inject!-injective {n = suc n} {i = suc i} {0F}    {0F}    refl = refl
+inject!-injective {n = suc n} {i = suc i} {suc x} {suc y} eq =
+  cong suc (inject!-injective (suc-injective eq))
+
+inject!-< : ∀ {i : Fin (suc n)} (k : Fin′ i) → inject! k < i
+inject!-< {suc n} {suc i} 0F      = s≤s z≤n
+inject!-< {suc n} {suc i} (suc k) = s≤s (inject!-< k)
+
+------------------------------------------------------------------------
 -- lower₁
 ------------------------------------------------------------------------
 
@@ -536,6 +549,17 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (ℕ.suc n)} →
                   (n≢j : n ≢ toℕ j) → inject₁ i ≡ j → lower₁ j n≢j ≡ i
 inject₁≡⇒lower₁≡ n≢j i≡j = inject₁-injective (trans (inject₁-lower₁ _ n≢j) (sym i≡j))
+
+------------------------------------------------------------------------
+-- lower
+------------------------------------------------------------------------
+
+lower-injective : ∀ (i j : Fin m)
+                  .{i<n : toℕ i ℕ.< n} .{j<n : toℕ j ℕ.< n}  →
+                  lower i i<n ≡ lower j j<n → i ≡ j
+lower-injective {n = suc n} zero    zero    eq = refl
+lower-injective {n = suc n} (suc i) (suc j) eq =
+  cong suc (lower-injective i j (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- inject≤
@@ -906,7 +930,7 @@ pinch-surjective _       zero    = zero , λ { refl → refl }
 pinch-surjective zero    (suc j) = suc (suc j) , λ { refl → refl }
 pinch-surjective (suc i) (suc j) = map suc (λ {f refl → cong suc (f refl)}) (pinch-surjective i j)
 
-pinch-mono-≤ : ∀ (i : Fin n) → (pinch i) Preserves _≤_ ⟶ _≤_
+pinch-mono-≤ : ∀ (i : Fin n) → Monotonic₁ _≤_ _≤_ (pinch i)
 pinch-mono-≤ 0F      {0F}    {k}     0≤n = z≤n
 pinch-mono-≤ 0F      {suc j} {suc k} j≤k = ℕ.s≤s⁻¹ j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n = z≤n
@@ -1037,6 +1061,24 @@ cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} →
                             m ≡ n
 cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
   (injective⇒≤ f-inj) (injective⇒≤ g-inj)
+
+injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f →
+                        ∀ (i : Fin n) → ∃ λ j → j ≤ i × i ≤ f j
+injective⇒existsPivot {f = f} f-injective i
+  with any? (λ j → j ≤? i ×-dec i ≤? f j)
+... | yes result = result
+... | no ¬result = contradiction (injective⇒≤ f∘inject!-injective) ℕ.1+n≰n
+  where
+  fj<i : (j : Fin′ (suc i)) → f (inject! j) < i
+  fj<i j with f (inject! j) <? i
+  ... | yes fj<i = fj<i
+  ... | no  fj≮i = contradiction (_  , ℕ.s≤s⁻¹ (inject!-< j) , ℕ.≮⇒≥ fj≮i) ¬result
+
+  f∘inject! : Fin′ (suc i) → Fin′ i
+  f∘inject! j = lower (f (inject! j)) (fj<i j)
+
+  f∘inject!-injective : Injective _≡_ _≡_ f∘inject!
+  f∘inject!-injective = inject!-injective ∘ f-injective ∘ lower-injective _ _
 
 ------------------------------------------------------------------------
 -- Effectful
