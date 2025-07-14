@@ -970,8 +970,8 @@ record IsBooleanRing
 
   open IsRing isRing public
 
-  isIdempotentMonoid :  IsIdempotentMonoid * 1#
-  isIdempotentMonoid = record { isMonoid = *-isMonoid ; idem = *-idem }
+  *-isIdempotentMonoid :  IsIdempotentMonoid * 1#
+  *-isIdempotentMonoid = record { isMonoid = *-isMonoid ; idem = *-idem }
 
 
 ------------------------------------------------------------------------
