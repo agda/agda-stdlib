@@ -50,19 +50,19 @@ x+x≈0 : ∀ x → x + x ≈ 0#
 x+x≈0 x = y≈x⇒x+y≈0 refl
 
 x+y≈0⇒y≈x : ∀ {x y} → x + y ≈ 0# → y ≈ x
-x+y≈0⇒y≈x {x = x} {y = y} x+y≈0 = begin
-  y   ≈⟨ +-inverseʳ-unique x y x+y≈0 ⟩
-  - x ≈⟨ +-inverseˡ-unique x x (x+x≈0 x) ⟨
-  x   ∎
+x+y≈0⇒y≈x {x = x} {y = y} x+y≈0 = +-cancelˡ x _ _ $ begin
+  x + y  ≈⟨ x+y≈0 ⟩
+  0#     ≈⟨ x+x≈0 x ⟨
+  x + x  ∎
 
 -x≈x : ∀ x → - x ≈ x
 -x≈x = x+y≈0⇒y≈x ∘ -‿inverseʳ
 
 *-comm : Commutative _*_
-*-comm x y = begin
-  x * y     ≈⟨ +-inverseˡ-unique  _ _ (xy+yx≈0 x y) ⟩
-  - (y * x) ≈⟨ -x≈x _ ⟩
-  y * x     ∎
+*-comm x y = +-cancelʳ (y * x) _ _ $ begin
+  x * y + y * x ≈⟨ xy+yx≈0 x y ⟩
+  0#            ≈⟨ x+x≈0 (y * x) ⟨
+  y * x + y * x ∎
 
 ------------------------------------------------------------------------
 -- Additional structures
