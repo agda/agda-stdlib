@@ -1145,6 +1145,9 @@ record BooleanRing c ℓ : Set (suc (c ⊔ ℓ)) where
   ring : Ring _ _
   ring = record { isRing = isRing }
 
+  *-idempotentMonoid :  IdempotentMonoid c ℓ
+  *-idempotentMonoid = record { isIdempotentMonoid = *-isIdempotentMonoid }
+
 
 ------------------------------------------------------------------------
 -- Bundles with 3 binary operations
