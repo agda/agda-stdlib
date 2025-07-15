@@ -28,12 +28,12 @@ open import Algebra.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
--- Export properties of rings
+-- Export properties of semirings
 {-
 open import Algebra.Properties.Semiring semiring public
 -}
 ------------------------------------------------------------------------
--- Extra properties of Boolean rings
+-- Extra properties of Boolean semirings
 
 xy+yx≈0 : ∀ x y → x * y + y * x ≈ 0#
 xy+yx≈0 x y = +-cancelˡ (x * x) _ _ $ +-cancelʳ (y * y) _ _ $ begin
@@ -119,6 +119,9 @@ open IdempotentCommutativeMonoid *-idempotentCommutativeMonoid public
 
 commutativeRing : CommutativeRing _ _
 commutativeRing = record { isCommutativeRing = isCommutativeRing }
+
+open CommutativeRing commutativeRing public
+  using (ring)
 
 booleanRing : BooleanRing _ _
 booleanRing = record { isBooleanRing = isBooleanRing }
