@@ -1169,14 +1169,16 @@ record BooleanRing c ℓ : Set (suc (c ⊔ ℓ)) where
     isBooleanRing : IsBooleanRing _≈_ _+_ _*_ -_ 0# 1#
 
   open IsBooleanRing isBooleanRing public
-    using (isCommutativeRing; isSemiring; *-idem)
+    using (isCommutativeRing; *-idem)
+
+  open IsCommutativeRing isCommutativeRing public
 
   commutativeRing : CommutativeRing _ _
   commutativeRing = record { isCommutativeRing = isCommutativeRing }
 
   open CommutativeRing commutativeRing public
     using
-    (_≉_; rawRing; setoid
+    (_≉_; rawRing
     ; +-invertibleMagma; +-invertibleUnitalMagma
     ; +-group; +-abelianGroup
     ; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
@@ -1189,7 +1191,6 @@ record BooleanRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; commutativeSemiringWithoutOne; commutativeSemiring
     ; ring
     )
-
 
 
 ------------------------------------------------------------------------

@@ -12,6 +12,7 @@ open import Algebra.Bundles
 module Algebra.Properties.BooleanRing
   {c ℓ} (booleanRing : BooleanRing c ℓ) where
 
+open import Function.Base using (_∘_)
 open import Data.Product.Base using (_,_)
 
 open BooleanRing booleanRing
@@ -50,3 +51,10 @@ open BooleanSemiring booleanSemiring public
 -- Export properties of Boolean semirings
 
 open import Algebra.Properties.BooleanSemiring booleanSemiring public
+
+------------------------------------------------------------------------
+-- Further consequences
+
+-x≈x : ∀ x → - x ≈ x
+-x≈x = x+y≈0⇒y≈x ∘ -‿inverseʳ
+
