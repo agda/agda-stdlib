@@ -993,32 +993,6 @@ record IsBooleanRing
 
   open IsCommutativeRing isCommutativeRing public
 
-  +-cancelˡ : LeftCancellative +
-  +-cancelˡ x y z x+y≈x+z = begin
-    y               ≈⟨ +-identityˡ y ⟨
-    + 0# y          ≈⟨ +-congʳ (-‿inverseˡ x) ⟨
-    + (+ (- x) x) y ≈⟨ +-assoc (- x) x y ⟩
-    + (- x) (+ x y) ≈⟨ +-congˡ x+y≈x+z ⟩
-    + (- x) (+ x z) ≈⟨ +-assoc (- x) x z ⟨
-    + (+ (- x) x) z ≈⟨ +-congʳ (-‿inverseˡ x) ⟩
-    + 0# z          ≈⟨ +-identityˡ z ⟩
-    z               ∎
-    where open ≈-Reasoning setoid
-
-  +-cancelʳ : RightCancellative +
-  +-cancelʳ x y z y+x≈z+x =
-    Consequences.comm∧cancelˡ⇒cancelʳ setoid +-comm +-cancelˡ x y z y+x≈z+x
-
-  isBooleanSemiring : IsBooleanSemiring + * 0# 1#
-  isBooleanSemiring = record
-    { isSemiring = isSemiring
-    ; +-cancel = +-cancelˡ , +-cancelʳ
-    ; *-idem = *-idem
-    }
-
-  open IsBooleanSemiring isBooleanSemiring public
-    using (*-isIdempotentMonoid)
-
 
 ------------------------------------------------------------------------
 -- Structures with 3 binary operations

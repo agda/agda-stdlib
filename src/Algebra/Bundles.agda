@@ -1131,7 +1131,10 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   ring : Ring _ _
   ring = record { isRing = isRing }
 
-  open Ring ring public using (_≉_; rawRing; +-invertibleMagma; +-invertibleUnitalMagma; +-group; +-abelianGroup)
+  open Ring ring public
+    using (_≉_; rawRing
+          ; +-invertibleMagma; +-invertibleUnitalMagma
+          ; +-group; +-abelianGroup)
 
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring =
@@ -1166,15 +1169,27 @@ record BooleanRing c ℓ : Set (suc (c ⊔ ℓ)) where
     isBooleanRing : IsBooleanRing _≈_ _+_ _*_ -_ 0# 1#
 
   open IsBooleanRing isBooleanRing public
+    using (isCommutativeRing; isSemiring; *-idem)
 
   commutativeRing : CommutativeRing _ _
   commutativeRing = record { isCommutativeRing = isCommutativeRing }
 
-  booleanSemiring : BooleanSemiring _ _
-  booleanSemiring = record { isBooleanSemiring = isBooleanSemiring }
+  open CommutativeRing commutativeRing public
+    using
+    (_≉_; rawRing; setoid
+    ; +-invertibleMagma; +-invertibleUnitalMagma
+    ; +-group; +-abelianGroup
+    ; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+    ; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-commutativeMagma; *-semigroup; *-commutativeSemigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid; *-commutativeMonoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero; semiring
+    ; commutativeSemiringWithoutOne; commutativeSemiring
+    ; ring
+    )
 
-  open BooleanSemiring booleanSemiring public
-    using (*-idempotentMonoid)
 
 
 ------------------------------------------------------------------------
