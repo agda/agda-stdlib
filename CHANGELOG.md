@@ -167,6 +167,8 @@ New modules
 
 * `Algebra.Properties.BooleanSemiring`.
 
+* `Algebra.Properties.CommutativeRing`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
