@@ -921,6 +921,31 @@ record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawMonoid to *-rawMonoid
     )
 
+record BooleanSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ
+    _+_               : Op₂ Carrier
+    _*_               : Op₂ Carrier
+    0#                : Carrier
+    1#                : Carrier
+    isBooleanSemiring : IsBooleanSemiring _≈_ _+_ _*_ 0# 1#
+
+  open IsBooleanSemiring isBooleanSemiring public
+
+  semiring : Semiring _ _
+  semiring = record { isSemiring = isSemiring }
+
+  *-idempotentMonoid :  IdempotentMonoid c ℓ
+  *-idempotentMonoid = record { isIdempotentMonoid = *-isIdempotentMonoid }
+
+  open IdempotentMonoid *-idempotentMonoid public
+    using () renaming (band to *-band)
+
+
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
@@ -1142,11 +1167,14 @@ record BooleanRing c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsBooleanRing isBooleanRing public
 
-  ring : Ring _ _
-  ring = record { isRing = isRing }
+  commutativeRing : CommutativeRing _ _
+  commutativeRing = record { isCommutativeRing = isCommutativeRing }
 
-  *-idempotentMonoid :  IdempotentMonoid c ℓ
-  *-idempotentMonoid = record { isIdempotentMonoid = *-isIdempotentMonoid }
+  booleanSemiring : BooleanSemiring _ _
+  booleanSemiring = record { isBooleanSemiring = isBooleanSemiring }
+
+  open BooleanSemiring booleanSemiring public
+    using (*-idempotentMonoid)
 
 
 ------------------------------------------------------------------------

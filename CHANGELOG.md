@@ -165,6 +165,8 @@ New modules
 
 * `Algebra.Properties.BooleanRing`.
 
+* `Algebra.Properties.BooleanSemiring`.
+
 * `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
 
 * `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
@@ -190,7 +192,8 @@ Additions to existing modules
 
 * In `Algebra.Bundles`:
   ```agda
-  record BooleanRing _ _ : Set _
+  record BooleanSemiring _ _ : Set _
+  record BooleanRing _ _     : Set _
   ```
 
 * In `Algebra.Consequences.Base`:
@@ -308,9 +311,10 @@ Additions to existing modules
 
 * In `Algebra.Structures`:
   ```agda
+  record IsBooleanSemiring + * 0# 1# : Set _
   record IsBooleanRing + * - 0# 1# : Set _
   ```
-  NB. based on `IsRing`, rather than `IsRingWithoutOne`.
+  NB. the latter is based on `IsCommutativeRing`, with the former on `IsSemiring`.
 
 * In `Data.Bool.Properties`:
   ```agda

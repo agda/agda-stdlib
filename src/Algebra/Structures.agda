@@ -26,6 +26,7 @@ open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Structures with 1 unary operation & 1 element
@@ -732,6 +733,27 @@ record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; identityʳ   to *-identityʳ
     )
 
+record IsBooleanSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring : IsSemiring + * 0# 1#
+    +-cancel   : Cancellative +
+    *-idem     : Idempotent *
+
+  open IsSemiring isSemiring public
+
+  +-cancelˡ : LeftCancellative +
+  +-cancelˡ = proj₁ +-cancel
+
+  +-cancelʳ : RightCancellative +
+  +-cancelʳ = proj₂ +-cancel
+
+  *-isIdempotentMonoid : IsIdempotentMonoid * 1#
+  *-isIdempotentMonoid = record { isMonoid = *-isMonoid ; idem = *-idem }
+
+  open IsIdempotentMonoid *-isIdempotentMonoid public
+    using () renaming (isBand to *-isBand)
+
+
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
@@ -962,16 +984,40 @@ record IsCommutativeRing
     ; *-isCommutativeMonoid
     )
 
+
 record IsBooleanRing
          (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
-    isRing : IsRing + * - 0# 1#
-    *-idem : Idempotent *
+    isCommutativeRing : IsCommutativeRing + * - 0# 1#
+    *-idem            : Idempotent *
 
-  open IsRing isRing public
+  open IsCommutativeRing isCommutativeRing public
 
-  *-isIdempotentMonoid :  IsIdempotentMonoid * 1#
-  *-isIdempotentMonoid = record { isMonoid = *-isMonoid ; idem = *-idem }
+  +-cancelˡ : LeftCancellative +
+  +-cancelˡ x y z x+y≈x+z = begin
+    y               ≈⟨ +-identityˡ y ⟨
+    + 0# y          ≈⟨ +-congʳ (-‿inverseˡ x) ⟨
+    + (+ (- x) x) y ≈⟨ +-assoc (- x) x y ⟩
+    + (- x) (+ x y) ≈⟨ +-congˡ x+y≈x+z ⟩
+    + (- x) (+ x z) ≈⟨ +-assoc (- x) x z ⟨
+    + (+ (- x) x) z ≈⟨ +-congʳ (-‿inverseˡ x) ⟩
+    + 0# z          ≈⟨ +-identityˡ z ⟩
+    z               ∎
+    where open ≈-Reasoning setoid
+
+  +-cancelʳ : RightCancellative +
+  +-cancelʳ x y z y+x≈z+x =
+    Consequences.comm∧cancelˡ⇒cancelʳ setoid +-comm +-cancelˡ x y z y+x≈z+x
+
+  isBooleanSemiring : IsBooleanSemiring + * 0# 1#
+  isBooleanSemiring = record
+    { isSemiring = isSemiring
+    ; +-cancel = +-cancelˡ , +-cancelʳ
+    ; *-idem = *-idem
+    }
+
+  open IsBooleanSemiring isBooleanSemiring public
+    using (*-isIdempotentMonoid)
 
 
 ------------------------------------------------------------------------
