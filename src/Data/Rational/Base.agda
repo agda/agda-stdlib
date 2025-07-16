@@ -9,6 +9,7 @@
 module Data.Rational.Base where
 
 open import Algebra.Bundles.Raw
+  using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_])
@@ -269,15 +270,11 @@ ceiling p@record{} = ℤ.- floor (- p)
 
 -- Truncate  (round towards 0)
 truncate : ℚ → ℤ
-truncate p with p ≤ᵇ 0ℚ
-... | true  = ceiling p
-... | false = floor p
+truncate p = if p ≤ᵇ 0ℚ then ceiling p else floor p
 
 -- Round (to nearest integer)
 round : ℚ → ℤ
-round p with p ≤ᵇ 0ℚ
-... | true  = ceiling (p - ½)
-... | false = floor (p + ½)
+round p = if p ≤ᵇ 0ℚ then ceiling (p - ½) else floor (p + ½)
 
 -- Fractional part (remainder after floor)
 fracPart : ℚ → ℚ

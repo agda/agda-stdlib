@@ -18,7 +18,7 @@ module Data.Vec.Recursive where
 
 open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred)
 open import Data.Nat.Properties using (+-comm; *-comm)
-open import Data.Empty.Polymorphic
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Fin.Properties using (1↔⊤; *↔×)
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
@@ -28,7 +28,6 @@ open import Data.Unit.Base using (tt)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Unit.Polymorphic.Properties using (⊤↔⊤*)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
-open import Data.Vec.N-ary using (N-ary)
 open import Function.Base using (_∘′_; _∘_; id; const)
 open import Function.Bundles using (_↔_; mk↔ₛ′; mk↔)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)

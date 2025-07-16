@@ -6,10 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
-open import Data.Nat.Base as ℕ using (zero; suc)
-import Data.Nat.Properties as ℕ
-open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Algebra.Bundles using (CommutativeSemiring)
+
 
 module Algebra.Properties.CommutativeSemiring.Exp.TCOptimised
   {a ℓ} (S : CommutativeSemiring a ℓ) where
@@ -21,7 +19,9 @@ import Algebra.Properties.CommutativeMonoid.Mult.TCOptimised *-commutativeMonoid
 
 ------------------------------------------------------------------------
 -- Re-export definition and properties for semirings
-
+open import Data.Nat.Base as ℕ using (zero; suc)
+import Data.Nat.Properties as ℕ using (+-assoc; +-identityˡ; +-identityʳ)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Algebra.Properties.Semiring.Exp.TCOptimised semiring public
 
 ------------------------------------------------------------------------

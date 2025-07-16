@@ -8,10 +8,10 @@
 
 module IO.Effectful where
 
-open import Level
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
+open import Level using (Level; _⊔_)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
 
 open import IO.Base
 

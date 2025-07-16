@@ -13,9 +13,11 @@ module Relation.Binary.PropositionalEquality.Core where
 
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_)
-open import Level
-open import Relation.Binary.Core
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Substitutive
+        ; _Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Negation.Core using (¬_)
 
 private

@@ -19,8 +19,8 @@ module Algebra.Module.Definitions.Left
 ------------------------------------------------------------------------
 -- Binary operations
 
-open import Algebra.Core
-open import Algebra.Module.Core
+open import Algebra.Core using (Op₂)
+open import Algebra.Module.Core using (Opₗ)
 
 ------------------------------------------------------------------------
 -- Properties of operations
@@ -30,6 +30,8 @@ LeftIdentity a _∙ᴮ_ = ∀ m → (a ∙ᴮ m) ≈ m
 
 Associative : Op₂ A → Opₗ A B → Set _
 Associative _∙ᴬ_ _∙ᴮ_ = ∀ x y m → ((x ∙ᴬ y) ∙ᴮ m) ≈ (x ∙ᴮ (y ∙ᴮ m))
+
+infix 4 _DistributesOverˡ_ _DistributesOverʳ_⟶_
 
 _DistributesOverˡ_ : Opₗ A B → Op₂ B → Set _
 _*_ DistributesOverˡ _+_ =

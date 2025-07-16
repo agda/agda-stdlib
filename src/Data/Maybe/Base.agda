@@ -10,14 +10,13 @@
 
 module Data.Maybe.Base where
 
-open import Level
+open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Product.Base as Prod using (_×_; _,_)
-open import Function.Base using (const; _∘_; id)
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Decidable.Core using (Dec; _because_)
+open import Function.Base using (_∘_; id; const)
+import Relation.Nullary.Decidable.Core as Dec
 
 private
   variable
@@ -45,10 +44,6 @@ is-just nothing  = false
 
 is-nothing : Maybe A → Bool
 is-nothing = not ∘ is-just
-
-decToMaybe : Dec A → Maybe A
-decToMaybe ( true because [a]) = just (invert [a])
-decToMaybe (false because  _ ) = nothing
 
 -- A dependent eliminator.
 
@@ -137,3 +132,14 @@ thisM a = maybe′ (these a) (this a)
 
 thatM : Maybe A → B → These A B
 thatM = maybe′ these that
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.1
+-- decToMaybe
+
+open Dec using (decToMaybe) public

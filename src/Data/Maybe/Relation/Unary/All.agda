@@ -8,18 +8,19 @@
 
 module Data.Maybe.Relation.Unary.All where
 
-open import Effect.Applicative
-open import Effect.Monad
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Data.Product.Base as Product using (_,_)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
 open import Function.Base using (id; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Unary
 open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+import Relation.Nullary.Decidable as Dec using (Dec; yes; no; map)
+open import Relation.Unary
+  using (Pred; _⊆_; _∩_; _∪_; Decidable; Universal; Irrelevant; Satisfiable)
 
 ------------------------------------------------------------------------
 -- Definition

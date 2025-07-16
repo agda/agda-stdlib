@@ -18,18 +18,17 @@ open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Function.Base as F
+open import Function.Base as F using (const; _∘_; id; flip; _∘′_)
 open import Level using (Level)
-
 open import Relation.Binary.Definitions using (_Respects_; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_) renaming (refl to ≡-refl)
-open import Relation.Nullary using (¬_; Dec; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Decidable.Core as Dec using (Dec; yes; no)
 open import Relation.Unary using (Pred; _∩_)
 
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (_≉_; sym; trans)
+open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
 
 open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 

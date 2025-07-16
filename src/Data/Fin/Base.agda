@@ -11,16 +11,15 @@
 
 module Data.Fin.Base where
 
-open import Data.Bool.Base using (Bool; T)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function.Base using (id; _∘_; _on_; flip)
+open import Function.Base using (id; _∘_; _on_; flip; _$_)
 open import Level using (0ℓ)
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
   variable
@@ -122,6 +121,10 @@ lower₁ {zero}  zero    ne = contradiction refl ne
 lower₁ {suc n} zero    _  = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
+lower : ∀ (i : Fin m) → .(toℕ i ℕ.< n) → Fin n
+lower {n = suc n} zero    leq = zero
+lower {n = suc n} (suc i) leq = suc (lower i (ℕ.s≤s⁻¹ leq))
+
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)
 strengthen zero    = zero
@@ -134,7 +137,7 @@ strengthen (suc i) = suc (strengthen i)
 splitAt : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
 splitAt zero    i       = inj₂ i
 splitAt (suc m) zero    = inj₁ zero
-splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
+splitAt (suc m) (suc i) = Sum.map₁ suc (splitAt m i)
 
 -- inverse of above function
 join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
@@ -144,9 +147,10 @@ join m n = [ _↑ˡ n , m ↑ʳ_ ]′
 -- This is dual to group from Data.Vec.
 
 quotRem : ∀ n → Fin (m ℕ.* n) → Fin n × Fin m
-quotRem {suc m} n i with splitAt n i
-... | inj₁ j = j , zero
-... | inj₂ j = Product.map₂ suc (quotRem {m} n j)
+quotRem {suc m} n i =
+  [ (_, zero)
+  , Product.map₂ suc ∘ quotRem {m} n
+  ]′ $ splitAt n i
 
 -- a variant of quotRem the type of whose result matches the order of multiplication
 remQuot : ∀ n → Fin (m ℕ.* n) → Fin m × Fin n
@@ -271,7 +275,7 @@ pinch {suc n} (suc i) (suc j) = suc (pinch i j)
 ------------------------------------------------------------------------
 -- Order relations
 
-infix 4 _≤_ _≥_ _<_ _>_
+infix 4 _≤_ _≥_ _<_ _>_ _≰_ _≮_
 
 _≤_ : IRel Fin 0ℓ
 i ≤ j = toℕ i ℕ.≤ toℕ j
@@ -285,6 +289,11 @@ i < j = toℕ i ℕ.< toℕ j
 _>_ : IRel Fin 0ℓ
 i > j = toℕ i ℕ.> toℕ j
 
+_≰_ : ∀ {n} → Rel (Fin n) 0ℓ
+i ≰ j = ¬ (i ≤ j)
+
+_≮_ : ∀ {n} → Rel (Fin n) 0ℓ
+i ≮ j = ¬ (i < j)
 
 ------------------------------------------------------------------------
 -- An ordering view.

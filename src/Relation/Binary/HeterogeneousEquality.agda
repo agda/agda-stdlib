@@ -8,25 +8,25 @@
 
 module Relation.Binary.HeterogeneousEquality where
 
-import Axiom.Extensionality.Heterogeneous as Ext
-open import Data.Unit.NonEta
 open import Data.Product.Base using (_,_)
-open import Function.Base
+open import Function.Base using (case_of_; _∋_; id)
 open import Function.Bundles using (Inverse)
-open import Level
-open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Unary using (Pred)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
 open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
-open import Relation.Binary.Definitions using (Substitutive; Irrelevant; Decidable; _Respects₂_; Trans; Reflexive)
-open import Relation.Binary.Consequences
+open import Relation.Binary.Definitions using (Substitutive; Irrelevant
+  ; Decidable; _Respects₂_; Trans; Reflexive)
+open import Relation.Binary.Consequences using (subst⇒resp₂)
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 open import Relation.Binary.Reasoning.Syntax
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Unary using (Pred)
 
 import Relation.Binary.PropositionalEquality.Properties as ≡
 import Relation.Binary.HeterogeneousEquality.Core as Core
@@ -234,22 +234,22 @@ module ≅-Reasoning where
 
   infix 4 _IsRelatedTo_
 
-  data _IsRelatedTo_ {A : Set ℓ} {B : Set ℓ} (x : A) (y : B) : Set ℓ where
+  data _IsRelatedTo_ {A : Set a} {B : Set b} (x : A) (y : B) : Set a where
     relTo : (x≅y : x ≅ y) → x IsRelatedTo y
 
   start : ∀ {x : A} {y : B} → x IsRelatedTo y → x ≅ y
   start (relTo x≅y) = x≅y
 
-  ≡-go : ∀ {A : Set a} → Trans {A = A} {C = A} _≡_ _IsRelatedTo_ _IsRelatedTo_
+  ≡-go : ∀ {A : Set a} {B : Set b} → Trans {A = A} {C = B} _≡_ _IsRelatedTo_ _IsRelatedTo_
   ≡-go x≡y (relTo y≅z) = relTo (trans (reflexive x≡y) y≅z)
 
   -- Combinators with one heterogeneous relation
-  module _ {A : Set ℓ} {B : Set ℓ} where
+  module _ {A : Set a} {B : Set b} where
     open begin-syntax (_IsRelatedTo_ {A = A} {B}) start public
+    open ≡-syntax (_IsRelatedTo_ {A = A} {B}) ≡-go public
 
   -- Combinators with homogeneous relations
-  module _ {A : Set ℓ} where
-    open ≡-syntax (_IsRelatedTo_ {A = A}) ≡-go public
+  module _ {A : Set a} where
     open end-syntax (_IsRelatedTo_ {A = A}) (relTo refl) public
 
   -- Can't create syntax in the standard `Syntax` module for

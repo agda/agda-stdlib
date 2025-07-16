@@ -8,22 +8,21 @@
 
 module Relation.Binary.Consequences where
 
-open import Data.Maybe.Base using (just; nothing; decToMaybe)
-open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Data.Product.Base using (_,_)
-open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘_; _∘₂_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
-open import Relation.Nullary using (yes; no; recompute; ¬_)
-open import Relation.Nullary.Decidable.Core using (map′)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Decidable.Core
+  using (yes; no; recompute; map′; dec⇒maybe)
 open import Relation.Unary using (∁; Pred)
 
 private
   variable
     a ℓ ℓ₁ ℓ₂ ℓ₃ ℓ₄ p : Level
-    A B : Set a
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Substitutive properties
@@ -87,23 +86,38 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃} {≤₂ : Rel B ℓ₄} where
 
   mono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
-              ∀ {f} → f Preserves ≤₁ ⟶ ≤₂ → f Preserves ≈₁ ⟶ ≈₂
+              ∀ {f} → Monotonic₁ ≤₁ ≤₂ f → Monotonic₁ ≈₁ ≈₂ f
   mono⇒cong sym reflexive antisym mono x≈y = antisym
     (mono (reflexive x≈y))
     (mono (reflexive (sym x≈y)))
 
   antimono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
-                  ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → f Preserves ≈₁ ⟶ ≈₂
+                  ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → Monotonic₁ ≈₁ ≈₂ f
   antimono⇒cong sym reflexive antisym antimono p≈q = antisym
     (antimono (reflexive (sym p≈q)))
     (antimono (reflexive p≈q))
 
-  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
-                f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
-                f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
+  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
+                ∀ {f} → Monotonic₂ ≤₁ ≤₁ ≤₂ f → Monotonic₂ ≈₁ ≈₁ ≈₂ f
   mono₂⇒cong₂ sym reflexive antisym mono x≈y u≈v = antisym
     (mono (reflexive x≈y) (reflexive u≈v))
     (mono (reflexive (sym x≈y)) (reflexive (sym u≈v)))
+
+module _ (≤₁ : Rel A ℓ₁) (≤₂ : Rel B ℓ₂) (≤₃ : Rel C ℓ₂) where
+
+  mono₂⇒monoˡ : ∀ {f} → Reflexive ≤₁ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
+  mono₂⇒monoˡ refl mono x = mono (refl {x = x})
+
+  mono₂⇒monoʳ : ∀ {f} → Reflexive ≤₂ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
+  mono₂⇒monoʳ refl mono y = flip mono (refl {x = y})
+
+  monoˡ∧monoʳ⇒mono₂ : ∀ {f} → Transitive ≤₃ →
+                      LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
+                      Monotonic₂ ≤₁ ≤₂ ≤₃ f
+  monoˡ∧monoʳ⇒mono₂ trans monoˡ monoʳ x≤₁y u≤₂v =
+    trans (monoˡ _ u≤₂v) (monoʳ _ x≤₁y)
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders
@@ -121,7 +135,7 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
     irrefl (antisym x<y y<x) x<y
 
   asym⇒antisym : Asymmetric _<_ → Antisymmetric _≈_ _<_
-  asym⇒antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
+  asym⇒antisym asym x<y y<x = contradiction y<x (asym x<y)
 
   asym⇒irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
              Asymmetric _<_ → Irreflexive _≈_ _<_
@@ -157,16 +171,16 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
                     _<_ Respectsʳ _≈_
   trans∧tri⇒respʳ sym ≈-tr <-tr tri {x} {y} {z} y≈z x<y with tri x z
   ... | tri< x<z _ _ = x<z
-  ... | tri≈ _ x≈z _ = ⊥-elim (tri⇒irr tri (≈-tr x≈z (sym y≈z)) x<y)
-  ... | tri> _ _ z<x = ⊥-elim (tri⇒irr tri (sym y≈z) (<-tr z<x x<y))
+  ... | tri≈ _ x≈z _ = contradiction x<y (tri⇒irr tri (≈-tr x≈z (sym y≈z)))
+  ... | tri> _ _ z<x = contradiction (<-tr z<x x<y) (tri⇒irr tri (sym y≈z))
 
   trans∧tri⇒respˡ : Transitive _≈_ →
                     Transitive _<_ → Trichotomous _≈_ _<_ →
                     _<_ Respectsˡ _≈_
   trans∧tri⇒respˡ ≈-tr <-tr tri {z} {_} {y} x≈y x<z with tri y z
   ... | tri< y<z _ _ = y<z
-  ... | tri≈ _ y≈z _ = ⊥-elim (tri⇒irr tri (≈-tr x≈y y≈z) x<z)
-  ... | tri> _ _ z<y = ⊥-elim (tri⇒irr tri x≈y (<-tr x<z z<y))
+  ... | tri≈ _ y≈z _ = contradiction x<z (tri⇒irr tri (≈-tr x≈y y≈z))
+  ... | tri> _ _ z<y = contradiction (<-tr x<z z<y) (tri⇒irr tri x≈y)
 
   trans∧tri⇒resp : Symmetric _≈_ → Transitive _≈_ →
                    Transitive _<_ → Trichotomous _≈_ _<_ →
@@ -193,7 +207,7 @@ module _  {_R_ : Rel A ℓ₁} {Q : Rel A ℓ₂} where
 module _ {R : REL A B p} where
 
   dec⇒weaklyDec : Decidable R → WeaklyDecidable R
-  dec⇒weaklyDec dec x y = decToMaybe (dec x y)
+  dec⇒weaklyDec dec x y = dec⇒maybe (dec x y)
 
   dec⇒recomputable : Decidable R → Recomputable R
   dec⇒recomputable dec {a} {b} = recompute $ dec a b

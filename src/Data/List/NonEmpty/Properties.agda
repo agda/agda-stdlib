@@ -8,25 +8,28 @@
 
 module Data.List.NonEmpty.Properties where
 
+import Algebra.Definitions as AlgebraicDefinitions
 open import Effect.Monad using (RawMonad)
-open import Data.Nat.Base using (suc; _+_)
+open import Data.Nat.Base using (suc; _+_; _≤_; s≤s)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Effectful using () renaming (monad to listMonad)
+open import Data.List.Properties using (length-++; length-++-comm; length-++-≤ˡ; length-++-≤ʳ; ++-assoc; map-++)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
-open import Data.List.NonEmpty
+open import Data.List.NonEmpty as List⁺
   using (List⁺; _∷_; tail; head; toList; _⁺++_; _⁺++⁺_; _++⁺_; length; fromList;
-    drop+; map; groupSeqs; ungroupSeqs)
+    drop+; map; inits; tails; groupSeqs; ungroupSeqs)
 open import Data.List.NonEmpty.Relation.Unary.All using (All; toList⁺; _∷_)
 open import Data.List.Relation.Unary.All using ([]; _∷_) renaming (All to ListAll)
 import Data.List.Properties as List
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Unary.All using (inj₁; inj₂)
 import Data.Sum.Relation.Unary.All as Sum using (All; inj₁; inj₂)
 open import Level using (Level)
-open import Function.Base using (_∘_; _$_)
+open import Function.Base using (id; _∘_; _$_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -68,6 +71,56 @@ toList->>= f (x ∷ xs) = begin
     ≡⟨ cong List.concat $ List.map-∘ {g = toList} (x ∷ xs) ⟩
   List.concat (List.map toList (List.map f (x ∷ xs)))
     ∎
+
+-- turning equalities of lists that are not empty to equalities on non-empty lists ...
+∷→∷⁺ : ∀ {x y : A} {xs ys : List A} →
+      (x List.∷ xs) ≡ (y List.∷ ys) →
+      (x List⁺.∷ xs) ≡ (y List⁺.∷ ys)
+∷→∷⁺ refl = refl
+
+-- ... and vice versa
+∷⁺→∷ : ∀ {x y : A} {xs ys : List A} →
+      (x List⁺.∷ xs) ≡ (y List⁺.∷ ys) →
+      (x List.∷ xs) ≡ (y List.∷ ys)
+∷⁺→∷ refl = refl
+
+------------------------------------------------------------------------
+-- _⁺++⁺_
+
+length-⁺++⁺ : (xs ys : List⁺ A) →
+              length (xs ⁺++⁺ ys) ≡ length xs + length ys
+length-⁺++⁺ (x ∷ xs) (y ∷ ys) = length-++ (x ∷ xs)
+
+length-⁺++⁺-comm : ∀ (xs ys : List⁺ A) →
+                   length (xs ⁺++⁺ ys) ≡ length (ys ⁺++⁺ xs)
+length-⁺++⁺-comm (x ∷ xs) (y ∷ ys) = length-++-comm (x ∷ xs) (y ∷ ys)
+
+length-⁺++⁺-≤ˡ : (xs ys : List⁺ A) →
+                length xs ≤ length (xs ⁺++⁺ ys)
+length-⁺++⁺-≤ˡ (x ∷ xs) (y ∷ ys) = s≤s (length-++-≤ˡ xs)
+
+length-⁺++⁺-≤ʳ : (xs ys : List⁺ A) →
+                length ys ≤ length (xs ⁺++⁺ ys)
+length-⁺++⁺-≤ʳ (x ∷ xs) (y ∷ ys) = length-++-≤ʳ (y ∷ ys) {x ∷ xs}
+
+map-⁺++⁺ : ∀ (f : A → B) xs ys →
+           map f (xs ⁺++⁺ ys) ≡ map f xs ⁺++⁺ map f ys
+map-⁺++⁺ f (x ∷ xs) (y ∷ ys) = ∷→∷⁺ (map-++ f (x ∷ xs) (y ∷ ys))
+
+module _ {A : Set a} where
+  open AlgebraicDefinitions {A = List⁺ A} _≡_
+
+  ⁺++⁺-assoc : Associative _⁺++⁺_
+  ⁺++⁺-assoc (x ∷ xs) (y ∷ ys) (z ∷ zs) = cong (x ∷_) (++-assoc xs (y ∷ ys) (z ∷ zs))
+
+  ⁺++⁺-cancelˡ : LeftCancellative _⁺++⁺_
+  ⁺++⁺-cancelˡ (x ∷ xs) (y ∷ ys) (z ∷ zs) eq = ∷→∷⁺ (List.++-cancelˡ (x ∷ xs) (y ∷ ys) (z ∷ zs) (∷⁺→∷ eq))
+
+  ⁺++⁺-cancelʳ : RightCancellative _⁺++⁺_
+  ⁺++⁺-cancelʳ (x ∷ xs) (y ∷ ys) (z ∷ zs) eq = ∷→∷⁺ (List.++-cancelʳ (x ∷ xs) (y ∷ ys) (z ∷ zs) (∷⁺→∷ eq))
+
+  ⁺++⁺-cancel : Cancellative _⁺++⁺_
+  ⁺++⁺-cancel = ⁺++⁺-cancelˡ , ⁺++⁺-cancelʳ
 
 ------------------------------------------------------------------------
 -- _++⁺_
@@ -117,6 +170,21 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
+
+map-id : map id ≗ id {A = List⁺ A}
+map-id (x ∷ xs) = cong (x ∷_) (List.map-id xs)
+
+------------------------------------------------------------------------
+-- inits
+
+toList-inits : toList ∘ inits ≗ List.inits {A = A}
+toList-inits _ = refl
+
+------------------------------------------------------------------------
+-- tails
+
+toList-tails : toList ∘ tails ≗ List.tails {A = A}
+toList-tails _ = refl
 
 ------------------------------------------------------------------------
 -- groupSeqs

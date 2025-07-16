@@ -10,20 +10,20 @@
 -- Relation.Nullary.Construct.Add.Point
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence)
-open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Decidable; Irrelevant; Substitutive)
 
 module Relation.Binary.Construct.Add.Point.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Function.Base
+open import Function.Base using (id; _∘_; _∘′_)
 import Relation.Binary.PropositionalEquality.Core as ≡
-open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Construct.Add.Point
-import Relation.Nullary.Decidable as Dec
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Decidable; Irrelevant; Substitutive)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Construct.Add.Point as Point using (Pointed; ∙ ;[_])
+import Relation.Nullary.Decidable.Core as Dec using (map′)
 
 ------------------------------------------------------------------------
 -- Definition

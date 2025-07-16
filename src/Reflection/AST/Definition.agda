@@ -8,19 +8,19 @@
 
 module Reflection.AST.Definition where
 
-import Data.List.Properties as List                    using (≡-dec)
-import Data.Nat.Properties as ℕ                        using (_≟_)
-open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable.Core            using (map′; _×-dec_; yes; no)
-open import Relation.Binary.Definitions                using (DecidableEquality)
+import Data.List.Properties as List using (≡-dec)
+import Data.Nat.Properties as ℕ using (_≟_)
+open import Data.Product.Base using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable.Core using (map′; _×-dec_; yes; no)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
-
-import Reflection.AST.Argument as Arg
-import Reflection.AST.Name     as Name
-import Reflection.AST.Term     as Term
+import Reflection.AST.Argument as Arg using (Arg; ≡-dec)
+import Reflection.AST.Argument.Quantity as Quantity using (Quantity; _≟_)
+import Reflection.AST.Name as Name using (Name; _≟_)
+import Reflection.AST.Term as Term using (Term; _≟-Clauses_)
 
 ------------------------------------------------------------------------
--- Re-exporting type publically
+-- Re-exporting type publicly
 
 open import Agda.Builtin.Reflection public
   using    ( Definition
@@ -56,8 +56,14 @@ record′-injective₂ refl = refl
 record′-injective : ∀ {c c′ fs fs′} → record′ c fs ≡ record′ c′ fs′ → c ≡ c′ × fs ≡ fs′
 record′-injective = < record′-injective₁ , record′-injective₂ >
 
-constructor′-injective : ∀ {c c′} → constructor′ c ≡ constructor′ c′ → c ≡ c′
-constructor′-injective refl = refl
+constructor′-injective₁ : ∀ {c c′ q q′} → constructor′ c q ≡ constructor′ c′ q′ → c ≡ c′
+constructor′-injective₁ refl = refl
+
+constructor′-injective₂ : ∀ {c c′ q q′} → constructor′ c q ≡ constructor′ c′ q′ → q ≡ q′
+constructor′-injective₂ refl = refl
+
+constructor′-injective : ∀ {c c′ q q′} → constructor′ c q ≡ constructor′ c′ q′ → c ≡ c′ × q ≡ q′
+constructor′-injective = < constructor′-injective₁ , constructor′-injective₂ >
 
 infix 4 _≟_
 
@@ -70,39 +76,40 @@ data-type pars cs ≟ data-type pars′ cs′ =
 record′ c fs      ≟ record′ c′ fs′      =
   map′ (uncurry (cong₂ record′)) record′-injective
            (c Name.≟ c′ ×-dec List.≡-dec (Arg.≡-dec Name._≟_) fs fs′)
-constructor′ d    ≟ constructor′ d′     =
-  map′ (cong constructor′) constructor′-injective (d Name.≟ d′)
+constructor′ d q  ≟ constructor′ d′ q′  =
+  map′ (uncurry (cong₂ constructor′)) constructor′-injective
+           (d Name.≟ d′ ×-dec q Quantity.≟ q′)
 axiom             ≟ axiom               = yes refl
 primitive′        ≟ primitive′          = yes refl
 
 -- antidiagonal
 function cs ≟ data-type pars cs₁ = no (λ ())
 function cs ≟ record′ c fs = no (λ ())
-function cs ≟ constructor′ d = no (λ ())
+function cs ≟ constructor′ d q = no (λ ())
 function cs ≟ axiom = no (λ ())
 function cs ≟ primitive′ = no (λ ())
 data-type pars cs ≟ function cs₁ = no (λ ())
 data-type pars cs ≟ record′ c fs = no (λ ())
-data-type pars cs ≟ constructor′ d = no (λ ())
+data-type pars cs ≟ constructor′ d q = no (λ ())
 data-type pars cs ≟ axiom = no (λ ())
 data-type pars cs ≟ primitive′ = no (λ ())
 record′ c fs ≟ function cs = no (λ ())
 record′ c fs ≟ data-type pars cs = no (λ ())
-record′ c fs ≟ constructor′ d = no (λ ())
+record′ c fs ≟ constructor′ d q = no (λ ())
 record′ c fs ≟ axiom = no (λ ())
 record′ c fs ≟ primitive′ = no (λ ())
-constructor′ d ≟ function cs = no (λ ())
-constructor′ d ≟ data-type pars cs = no (λ ())
-constructor′ d ≟ record′ c fs = no (λ ())
-constructor′ d ≟ axiom = no (λ ())
-constructor′ d ≟ primitive′ = no (λ ())
+constructor′ d q ≟ function cs = no (λ ())
+constructor′ d q ≟ data-type pars cs = no (λ ())
+constructor′ d q ≟ record′ c fs = no (λ ())
+constructor′ d q ≟ axiom = no (λ ())
+constructor′ d q ≟ primitive′ = no (λ ())
 axiom ≟ function cs = no (λ ())
 axiom ≟ data-type pars cs = no (λ ())
 axiom ≟ record′ c fs = no (λ ())
-axiom ≟ constructor′ d = no (λ ())
+axiom ≟ constructor′ d q = no (λ ())
 axiom ≟ primitive′ = no (λ ())
 primitive′ ≟ function cs = no (λ ())
 primitive′ ≟ data-type pars cs = no (λ ())
 primitive′ ≟ record′ c fs = no (λ ())
-primitive′ ≟ constructor′ d = no (λ ())
+primitive′ ≟ constructor′ d q = no (λ ())
 primitive′ ≟ axiom = no (λ ())

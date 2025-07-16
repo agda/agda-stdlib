@@ -10,12 +10,13 @@ module Data.Star.Pointer {ℓ} {I : Set ℓ} where
 
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Star.Decoration
-open import Data.Unit.Base
-open import Function.Base using (const)
-open import Level
+open import Data.Unit.Base using (tt)
+open import Function.Base using (const; case_of_)
+open import Level using (Level; _⊔_; lift)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (NonEmpty; nonEmpty)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+      using (Star; ε; _◅_; gmap; map; _◅◅_; _▻▻_; _⋆)
 
 private
   variable
@@ -92,5 +93,5 @@ module _ {T : Rel I r} {P : EdgePred p T} {Q : EdgePred q T} where
 
   last : ∀ {i j} {xs : Star T i j} →
          Any P Q xs → NonEmptyEdgePred T Q
-  last ps with lookup {r = p} (decorate (const (lift tt)) _) ps
-  ... | result q _ = nonEmptyEdgePred q
+  last ps with result q _ ← lookup {r = p} (decorate (const (lift tt)) _) ps =
+    nonEmptyEdgePred q

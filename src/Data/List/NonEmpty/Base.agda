@@ -12,12 +12,12 @@ open import Level using (Level)
 open import Data.Bool.Base using (Bool; false; true)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
-open import Data.Nat.Base as ℕ
+open import Data.Nat.Base as ℕ using (ℕ; suc; zero; pred)
 open import Data.Product.Base as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Function.Base
+open import Function.Base using (id; _∘′_; _∘_; const)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Unary using (Pred; Decidable; U; ∅)
@@ -143,6 +143,16 @@ concatMap f = concat ∘′ map f
 ap : List⁺ (A → B) → List⁺ A → List⁺ B
 ap fs as = concatMap (λ f → map f as) fs
 
+-- Inits
+
+inits : List A → List⁺ (List A)
+inits xs = [] ∷ List.Inits.tail xs
+
+-- Tails
+
+tails : List A → List⁺ (List A)
+tails xs = xs ∷ List.Tails.tail xs
+
 -- Reverse
 
 reverse : List⁺ A → List⁺ A
@@ -203,9 +213,12 @@ snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 
 -- The last element in the list.
 
+private
+  last′ : ∀ {l} → SnocView {A = A} l → A
+  last′ (_ ∷ʳ′ y) = y
+
 last : List⁺ A → A
-last xs with snocView xs
-last .(ys ∷ʳ y) | ys ∷ʳ′ y = y
+last = last′ ∘ snocView
 
 -- Groups all contiguous elements for which the predicate returns the
 -- same result into lists. The left sums are the ones for which the

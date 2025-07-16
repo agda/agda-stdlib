@@ -8,10 +8,10 @@
 
 module Data.Vec.Bounded.Base where
 
-open import Data.Nat.Base
+open import Data.Nat.Base as ℕ
+  using (ℕ; suc; zero; _+_; _∸_; _⊓_; _⊔_; _≤_; ⌊_/2⌋; ⌈_/2⌉; z≤n; s≤s; s≤s⁻¹)
 import Data.Nat.Properties as ℕ
 open import Data.List.Base as List using (List)
-open import Data.List.Extrema ℕ.≤-totalOrder
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Membership.Propositional using (mapWith∈)
@@ -21,9 +21,11 @@ open import Data.These.Base as These using (These)
 open import Function.Base using (_∘_; id; _$_)
 open import Level using (Level)
 open import Relation.Nullary.Decidable.Core using (recompute)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
+
+open import Data.List.Extrema ℕ.≤-totalOrder
 
 private
   variable
@@ -43,20 +45,27 @@ record Vec≤ (A : Set a) (n : ℕ) : Set a where
         vec      : Vec A length
         .bound   : length ≤ n
 
+-- projection to recompute irrelevant field
+isBounded : (as : Vec≤ A n) → Vec≤.length as ≤ n
+isBounded as@(_ , m≤n) = recompute (_ ℕ.≤? _) m≤n
+
 ------------------------------------------------------------------------
 -- Conversion functions
+
+toVec : (as : Vec≤ A n) → Vec A (Vec≤.length as)
+toVec as@(vs , _) = vs
 
 fromVec : Vec A n → Vec≤ A n
 fromVec v = v , ℕ.≤-refl
 
 padRight : A → Vec≤ A n → Vec A n
-padRight a (vs , m≤n)
-  with ≤″-offset k ← recompute (_ ℕ.≤″? _) (ℕ.≤⇒≤″ m≤n)
+padRight a as@(vs , m≤n)
+  with k , refl ← ℕ.m≤n⇒∃[o]m+o≡n m≤n
   = vs Vec.++ Vec.replicate k a
 
 padLeft : A → Vec≤ A n → Vec A n
 padLeft a record { length = m ; vec = vs ; bound = m≤n }
-  with ≤″-offset k ← recompute (_ ℕ.≤″? _) (ℕ.≤⇒≤″ m≤n)
+  with k , refl ← ℕ.m≤n⇒∃[o]m+o≡n m≤n
   rewrite ℕ.+-comm m k
   = Vec.replicate k a Vec.++ vs
 
@@ -72,7 +81,7 @@ private
 
 padBoth : A → A → Vec≤ A n → Vec A n
 padBoth aₗ aᵣ record { length = m ; vec = vs ; bound = m≤n }
-  with ≤″-offset k ← recompute (_ ℕ.≤″? _) (ℕ.≤⇒≤″ m≤n)
+  with k , refl ← ℕ.m≤n⇒∃[o]m+o≡n m≤n
   rewrite split m k
   = Vec.replicate ⌊ k /2⌋ aₗ
       Vec.++ vs
@@ -83,7 +92,7 @@ fromList : (as : List A) → Vec≤ A (List.length as)
 fromList = fromVec ∘ Vec.fromList
 
 toList : Vec≤ A n → List A
-toList = Vec.toList ∘ Vec≤.vec
+toList = Vec.toList ∘ toVec
 
 ------------------------------------------------------------------------
 -- Creating new Vec≤ vectors

@@ -9,14 +9,16 @@
 
 open import Algebra.Core using (Op₂)
 open import Data.Product.Base using (_,_; _×_)
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂; map)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder
+        ; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Decidable)
+  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_
+        ; _Respectsˡ_; _Respects₂_; Decidable)
 
 open import Relation.Nullary.Negation using (¬_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -58,9 +60,8 @@ antisym isEq comm {x} {y} x≤y y≤x = begin
   where open ≈-Reasoning (record { isEquivalence = isEq })
 
 total : Symmetric _≈_ → Transitive _≈_ → Selective _∙_ → Commutative _∙_ → Total _≤_
-total sym trans sel comm x y with sel x y
-... | inj₁ x∙y≈x = inj₁ (trans (sym x∙y≈x) (comm x y) )
-... | inj₂ x∙y≈y = inj₂ (sym x∙y≈y)
+total sym trans sel comm x y =
+  map (λ x∙y≈x → trans (sym x∙y≈x) (comm x y)) sym (sel x y)
 
 trans : IsSemigroup _∙_ → Transitive _≤_
 trans semi {x} {y} {z} x≤y y≤z = begin

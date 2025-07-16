@@ -8,15 +8,17 @@
 
 module Data.List.Fresh.Relation.Unary.All where
 
-open import Level using (Level; _⊔_; Lift)
-open import Data.Product.Base using (_×_; _,_; proj₁; uncurry)
-open import Data.Sum.Base as Sum using (inj₁; inj₂)
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_)
-open import Relation.Unary  as U
-open import Relation.Binary.Core using (Rel)
-
 open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 open import Data.List.Fresh.Relation.Unary.Any as Any using (Any; here; there)
+open import Data.Product.Base using (_×_; _,_; proj₁; uncurry)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
+open import Function.Base using (_∘_; _$_)
+open import Level using (Level; _⊔_; Lift)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_)
+open import Relation.Unary as U
+  using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
+open import Relation.Binary.Core using (Rel)
+
 
 private
   variable
@@ -74,6 +76,7 @@ module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
 
   decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
   decide p∪q [] = inj₁ []
-  decide p∪q (x ∷# xs) with p∪q x
-  ... | inj₂ qx = inj₂ (here qx)
-  ... | inj₁ px = Sum.map (px ∷_) there (decide p∪q xs)
+  decide p∪q (x ∷# xs) =
+    [ (λ px → Sum.map (px ∷_) there (decide p∪q xs))
+    , inj₂ ∘ here
+    ]′ $ p∪q x

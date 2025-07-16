@@ -6,19 +6,20 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product.Base using (_,_)
-open import Function.Base using (_∘_; id; _$_; flip)
-open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Binary.Core using (_⇒_)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
-open import Relation.Binary.Definitions
-  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
-open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Binary.Construct.Composition
-  using (_;_; impliesˡ; transitive⇒≈;≈⊆≈)
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
+
+open import Data.Product.Base using (_,_)
+open import Function.Base using (_∘_; id; _$_; flip)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Construct.Composition
+  using (_;_; impliesˡ; transitive⇒≈;≈⊆≈)
+open import Relation.Binary.Definitions
+  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Irreflexive)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 open Setoid S
 
@@ -80,6 +81,9 @@ preorder = record
 ≉-resp₂ : _≉_ Respects₂ _≈_
 ≉-resp₂ = ≉-respʳ , ≉-respˡ
 
+≉-irrefl : Irreflexive _≈_ _≉_
+≉-irrefl x≈y x≉y = contradiction x≈y x≉y
+
 ------------------------------------------------------------------------
 -- Equality is closed under composition
 
@@ -97,3 +101,4 @@ respʳ-flip y≈z x≈z = trans x≈z (sym y≈z)
 
 respˡ-flip : _≈_ Respectsˡ (flip _≈_)
 respˡ-flip = trans
+

@@ -8,11 +8,10 @@
 
 module Relation.Nullary.Negation.Core where
 
-open import Data.Bool.Base using (not)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
-open import Function.Base using (flip; _$_; _∘_; const)
-open import Level
+open import Function.Base using (flip; _∘_; const)
+open import Level using (Level; _⊔_)
 
 private
   variable
@@ -48,8 +47,11 @@ _¬-⊎_ = [_,_]
 ------------------------------------------------------------------------
 -- Uses of negation
 
+contradiction-irr : .A → ¬ A → Whatever
+contradiction-irr a ¬a = ⊥-elim-irr (¬a a)
+
 contradiction : A → ¬ A → Whatever
-contradiction a ¬a = ⊥-elim (¬a a)
+contradiction a = contradiction-irr a
 
 contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
 contradiction₂ (inj₁ a) ¬a ¬b = contradiction a ¬a
@@ -58,13 +60,18 @@ contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 contraposition : (A → B) → ¬ B → ¬ A
 contraposition f ¬b a = contradiction (f a) ¬b
 
+-- Self-contradictory propositions are false by 'diagonalisation'
+
+contra-diagonal : (A → ¬ A) → ¬ A
+contra-diagonal self a = self a a
+
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
-stable ¬[¬¬a→a] = ¬[¬¬a→a] (λ ¬¬a → ⊥-elim (¬¬a (¬[¬¬a→a] ∘ const)))
+stable ¬[¬¬a→a] = ¬[¬¬a→a] (contradiction (¬[¬¬a→a] ∘ const))
 
 -- Negated predicates are stable.
 negated-stable : Stable (¬ A)
-negated-stable ¬¬¬a a = ¬¬¬a (_$ a)
+negated-stable ¬¬¬a a = ¬¬¬a (contradiction a)
 
 ¬¬-map : (A → B) → ¬ ¬ A → ¬ ¬ B
 ¬¬-map f = contraposition (contraposition f)
@@ -73,3 +80,4 @@ negated-stable ¬¬¬a a = ¬¬¬a (_$ a)
 private
   note : (A → ¬ B) → B → ¬ A
   note = flip
+

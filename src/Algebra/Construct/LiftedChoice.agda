@@ -10,14 +10,15 @@ open import Algebra
 
 module Algebra.Construct.LiftedChoice where
 
-open import Algebra.Consequences.Base
-open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
-open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Nullary using (¬_; yes; no)
-open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Algebra.Consequences.Base using (sel⇒idem)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Product.Base using (_×_; _,_)
+open import Function.Base using (const; _$_)
 open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
+open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Unary using (Pred)
 
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -34,9 +35,7 @@ private
 module _ (_≈_ : Rel B ℓ) (_•_ : Op₂ B) where
 
   Lift : Selective _≈_ _•_ → (A → B) → Op₂ A
-  Lift ∙-sel f x y with ∙-sel (f x) (f y)
-  ... | inj₁ _ = x
-  ... | inj₂ _ = y
+  Lift ∙-sel f x y = [ const x , const y ]′ $ ∙-sel (f x) (f y)
 
 ------------------------------------------------------------------------
 -- Algebraic properties

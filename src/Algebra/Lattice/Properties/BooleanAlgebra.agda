@@ -15,11 +15,11 @@ module Algebra.Lattice.Properties.BooleanAlgebra
 open BooleanAlgebra B
 
 import Algebra.Lattice.Properties.DistributiveLattice as DistribLatticeProperties
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures _≈_
 open import Algebra.Definitions _≈_
 open import Algebra.Consequences.Setoid setoid
-open import Algebra.Bundles
+open import Algebra.Bundles using (CommutativeSemiring; CommutativeRing)
 open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Function.Base using (id; _$_; _⟨_⟩_)
@@ -192,11 +192,11 @@ private
     ⊤ ∧ y              ≈⟨  ∧-identityˡ _ ⟩
     y                  ∎
 
-⊥≉⊤ : ¬ ⊥ ≈ ⊤
-⊥≉⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
+¬⊥≈⊤ : ¬ ⊥ ≈ ⊤
+¬⊥≈⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
 
-⊤≉⊥ : ¬ ⊤ ≈ ⊥
-⊤≉⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
+¬⊤≈⊥ : ¬ ⊤ ≈ ⊥
+¬⊤≈⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
 
 ¬-involutive : Involutive ¬_
 ¬-involutive x = lemma (¬ x) x (∧-complementˡ _) (∨-complementˡ _)
@@ -308,7 +308,7 @@ module XorRing
   ⊕-identityˡ x = begin
     ⊥ ⊕ x                ≈⟨ ⊕-def _ _ ⟩
     (⊥ ∨ x) ∧ ¬ (⊥ ∧ x)  ≈⟨ helper (∨-identityˡ _) (∧-zeroˡ _) ⟩
-    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ⊥≉⊤ ⟩
+    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ¬⊥≈⊤ ⟩
     x ∧ ⊤                ≈⟨ ∧-identityʳ _ ⟩
     x                    ∎
 
@@ -536,3 +536,23 @@ _⊕_ : Op₂ Carrier
 x ⊕ y = (x ∨ y) ∧ ¬ (x ∧ y)
 
 module DefaultXorRing = XorRing _⊕_ (λ _ _ → refl)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+⊥≉⊤ = ¬⊥≈⊤
+{-# WARNING_ON_USAGE ⊥≉⊤
+"Warning: ⊥≉⊤ was deprecated in v2.3.
+Please use ¬⊥≈⊤ instead."
+#-}
+⊤≉⊥ = ¬⊤≈⊥
+{-# WARNING_ON_USAGE ⊤≉⊥
+"Warning: ⊤≉⊥ was deprecated in v2.3.
+Please use ¬⊤≈⊥ instead."
+#-}

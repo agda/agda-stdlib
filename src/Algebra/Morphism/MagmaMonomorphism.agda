@@ -9,10 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
-open import Relation.Binary.Core
+open import Algebra.Bundles using (RawMagma)
+open import Algebra.Morphism.Structures using (IsMagmaMonomorphism)
 
 module Algebra.Morphism.MagmaMonomorphism
   {a b ℓ₁ ℓ₂} {M₁ : RawMagma a ℓ₁} {M₂ : RawMagma b ℓ₂} {⟦_⟧}
@@ -24,11 +22,15 @@ open RawMagma M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_)
 open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
 
 open import Algebra.Structures
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma)
 open import Algebra.Definitions
+  using (Congruent₂; Associative; Commutative; Idempotent ; Selective
+        ; LeftCancellative; RightCancellative; Cancellative)
 open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism
+open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------
 -- Properties

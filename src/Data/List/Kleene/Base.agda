@@ -8,15 +8,15 @@
 
 module Data.List.Kleene.Base where
 
+open import Algebra.Core using (Op₂)
 open import Data.Product.Base as Product
   using (_×_; _,_; map₂; map₁; proj₁; proj₂)
 open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
-open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Function.Base using (id; _$_; _∘_)
 open import Level using (Level)
 
-open import Algebra.Core using (Op₂)
-open import Function.Base
 
 private
   variable
@@ -137,9 +137,7 @@ module _ (f : A → Maybe B) where
   mapMaybe+ : A + → B *
   mapMaybe* : A * → B *
 
-  mapMaybe+ (x & xs) with f x
-  ... | just y  = ∹ y & mapMaybe* xs
-  ... | nothing = mapMaybe* xs
+  mapMaybe+ (x & xs) = maybe′ (λ y z → ∹ y & z) id (f x) $ mapMaybe* xs
 
   mapMaybe* []     = []
   mapMaybe* (∹ xs) = mapMaybe+ xs
@@ -268,7 +266,7 @@ module _ (f : A → Maybe B → B) where
   foldrMaybe* []     = nothing
   foldrMaybe* (∹ xs) = just (foldrMaybe+ xs)
 
-  foldrMaybe+ xs = f (head xs) (foldrMaybe* (tail xs))
+  foldrMaybe+ (x & xs) = f x (foldrMaybe* xs)
 
 ------------------------------------------------------------------------
 -- Indexing

@@ -9,16 +9,15 @@
 module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.Empty
+open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 open import Data.Product.Base using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
-open import Relation.Unary  as U
+open import Level using (Level; _⊔_; Lift)
+open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Decidable as Dec using (Dec; no; _⊎-dec_)
+open import Relation.Unary  as U using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
 open import Relation.Binary.Core using (Rel)
-
-open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 
 private
   variable
@@ -35,10 +34,10 @@ module _ {R : Rel A r} {P : Pred A p} {x} {xs : List# A R} {pr} where
 
   head : ¬ Any P xs → Any P (cons x xs pr) → P x
   head ¬tail (here p)   = p
-  head ¬tail (there ps) = ⊥-elim (¬tail ps)
+  head ¬tail (there ps) = contradiction ps ¬tail
 
   tail : ¬ P x → Any P (cons x xs pr) → Any P xs
-  tail ¬head (here p)   = ⊥-elim (¬head p)
+  tail ¬head (here p)   = contradiction p ¬head
   tail ¬head (there ps) = ps
 
   toSum : Any P (cons x xs pr) → P x ⊎ Any P xs

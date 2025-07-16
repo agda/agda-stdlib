@@ -7,20 +7,21 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Bundles using (TotalOrder; DecTotalOrder)
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.Structures using (IsTotalOrder)
 
 module Relation.Binary.Properties.TotalOrder
   {t₁ t₂ t₃} (T : TotalOrder t₁ t₂ t₃) where
 
-open TotalOrder T
-
 open import Data.Product.Base using (proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.Structures using (IsTotalOrder)
+open import Relation.Binary.Consequences using (total∧dec⇒dec)
+
+open TotalOrder T
+
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Poset poset as PosetProperties
-open import Relation.Binary.Consequences
 
 ------------------------------------------------------------------------
 -- Total orders are almost decidable total orders

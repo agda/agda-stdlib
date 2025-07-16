@@ -8,13 +8,13 @@
 
 module Codata.Sized.Cowriter where
 
-open import Size
+open import Size using (Size; ∞)
 open import Level as L using (Level)
 open import Codata.Sized.Thunk using (Thunk; force)
-open import Codata.Sized.Conat
+open import Codata.Sized.Conat using (Conat; zero; suc)
 open import Codata.Sized.Delay using (Delay; later; now)
 open import Codata.Sized.Stream as Stream using (Stream; _∷_)
-open import Data.Unit.Base
+open import Data.Unit.Base using (⊤)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty.Base using (List⁺; _∷_)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
@@ -113,6 +113,7 @@ _>>=_ : ∀ {i} → Cowriter W A i → (A → Cowriter W X i) → Cowriter W X i
 -- Construction.
 
 unfold : ∀ {i} → (X → (W × X) ⊎ A) → X → Cowriter W A i
-unfold next seed with next seed
-... | inj₁ (w , seed′) = w ∷ λ where .force → unfold next seed′
-... | inj₂ a           = [ a ]
+unfold next seed =
+  Sum.[ (λ where (w , seed′) → w ∷ λ where .force → unfold next seed′)
+      , [_]
+      ] (next seed)

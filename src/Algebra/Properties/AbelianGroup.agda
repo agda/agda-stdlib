@@ -6,13 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra.Bundles using (AbelianGroup)
 
 module Algebra.Properties.AbelianGroup
   {a ℓ} (G : AbelianGroup a ℓ) where
 
-open AbelianGroup G
 open import Function.Base using (_$_)
+
+open AbelianGroup G
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
@@ -22,6 +23,9 @@ open import Algebra.Properties.Group group public
 
 ------------------------------------------------------------------------
 -- Properties of abelian groups
+
+⁻¹-anti-homo‿- : ∀ x y → (x - y) ⁻¹ ≈ y - x
+⁻¹-anti-homo‿- = ⁻¹-anti-homo-//
 
 xyx⁻¹≈y : ∀ x y → x ∙ y ∙ x ⁻¹ ≈ y
 xyx⁻¹≈y x y = begin

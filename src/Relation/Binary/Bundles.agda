@@ -12,9 +12,10 @@ module Relation.Binary.Bundles where
 
 open import Function.Base using (flip)
 open import Level using (Level; suc; _⊔_)
-open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles.Raw using (RawRelation; RawSetoid)
 open import Relation.Binary.Structures -- most of it
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Setoids
@@ -29,9 +30,11 @@ record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
 
   open IsPartialEquivalence isPartialEquivalence public
 
-  infix 4 _≉_
-  _≉_ : Rel Carrier _
-  x ≉ y = ¬ (x ≈ y)
+  rawSetoid : RawSetoid _ _
+  rawSetoid = record { _≈_ = _≈_ }
+
+  open RawSetoid rawSetoid public
+    hiding (Carrier; _≈_ )
 
 
 record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -94,19 +97,13 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
     open Setoid setoid public
 
-  infix 4 _⋦_
-  _⋦_ : Rel Carrier _
-  x ⋦ y = ¬ (x ≲ y)
+  rawRelation : RawRelation _ _ _
+  rawRelation = record { _≈_ = _≈_ ; _∼_ = _≲_ }
 
-  infix 4 _≳_
-  _≳_ = flip _≲_
-
-  infix 4 _⋧_
-  _⋧_ = flip _⋦_
-
+  open RawRelation rawRelation public
+    renaming (_≁_ to _⋦_; _∼ᵒ_ to _≳_; _≁ᵒ_ to _⋧_)
+    hiding (Carrier; _≈_)
   -- Deprecated.
-  infix 4 _∼_
-  _∼_ = _≲_
   {-# WARNING_ON_USAGE _∼_
   "Warning: _∼_ was deprecated in v2.0.
   Please use _≲_ instead. "
@@ -132,6 +129,36 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open Preorder preorder public
     hiding (Carrier; _≈_; _≲_; isPreorder)
 
+
+record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  field
+    Carrier         : Set c
+    _≈_             : Rel Carrier ℓ₁  -- The underlying equality.
+    _≲_             : Rel Carrier ℓ₂  -- The relation.
+    isDecPreorder   : IsDecPreorder _≈_ _≲_
+
+  private module DPO = IsDecPreorder isDecPreorder
+
+  open DPO public
+    using (_≟_; _≲?_; isPreorder)
+
+  preorder : Preorder c ℓ₁ ℓ₂
+  preorder = record
+    { isPreorder = isPreorder
+    }
+
+  open Preorder preorder public
+    hiding (Carrier; _≈_; _≲_; isPreorder; module Eq)
+
+  module Eq where
+    decSetoid : DecSetoid c ℓ₁
+    decSetoid = record
+      { isDecEquivalence = DPO.Eq.isDecEquivalence
+      }
+
+    open DecSetoid decSetoid public
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------
@@ -153,13 +180,16 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Preorder preorder public
-    hiding (Carrier; _≈_; _≲_; isPreorder)
+    hiding (Carrier; _≈_; _≲_; isPreorder; _⋦_; _≳_; _⋧_)
     renaming
-    ( _⋦_ to _≰_; _≳_ to _≥_; _⋧_ to _≱_
-    ; ≲-respˡ-≈ to ≤-respˡ-≈
+    ( ≲-respˡ-≈ to ≤-respˡ-≈
     ; ≲-respʳ-≈ to ≤-respʳ-≈
     ; ≲-resp-≈  to ≤-resp-≈
     )
+
+  open RawRelation rawRelation public
+    renaming (_≁_ to _≰_; _∼ᵒ_ to _≥_; _≁ᵒ_ to _≱_)
+    hiding (Carrier; _≈_ ; _∼_; _≉_; rawSetoid)
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -173,7 +203,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DPO = IsDecPartialOrder isDecPartialOrder
 
   open DPO public
-    using (_≟_; _≤?_; isPartialOrder)
+    using (_≟_; _≤?_; isPartialOrder; isDecPreorder)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
@@ -183,13 +213,11 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open Poset poset public
     hiding (Carrier; _≈_; _≤_; isPartialOrder; module Eq)
 
-  module Eq where
-    decSetoid : DecSetoid c ℓ₁
-    decSetoid = record
-      { isDecEquivalence = DPO.Eq.isDecEquivalence
-      }
+  decPreorder : DecPreorder c ℓ₁ ℓ₂
+  decPreorder = record { isDecPreorder = isDecPreorder }
 
-    open DecSetoid decSetoid public
+  open DecPreorder decPreorder public
+    using (module Eq)
 
 
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -211,15 +239,12 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
 
     open Setoid setoid public
 
-  infix 4 _≮_
-  _≮_ : Rel Carrier _
-  x ≮ y = ¬ (x < y)
+  rawRelation : RawRelation _ _ _
+  rawRelation = record { _≈_ = _≈_ ; _∼_ = _<_ }
 
-  infix 4 _>_
-  _>_ = flip _<_
-
-  infix 4 _≯_
-  _≯_ = flip _≮_
+  open RawRelation rawRelation public
+    renaming (_≁_ to _≮_; _∼ᵒ_ to _>_; _≁ᵒ_ to _≯_)
+    hiding (Carrier; _≈_ ; _∼_)
 
 
 record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -390,3 +415,12 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsApartnessRelation isApartnessRelation public
+    hiding (_¬#_)
+
+  rawRelation : RawRelation _ _ _
+  rawRelation = record { _≈_ = _≈_ ; _∼_ = _#_ }
+
+  open RawRelation rawRelation public
+    renaming (_≁_ to _¬#_; _∼ᵒ_ to _#ᵒ_; _≁ᵒ_ to _¬#ᵒ_)
+    hiding (Carrier; _≈_ ; _∼_)
+

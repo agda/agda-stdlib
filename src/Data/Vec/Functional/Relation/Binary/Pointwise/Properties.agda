@@ -17,7 +17,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
-open import Function.Base
+open import Function.Base using (const; _∘_)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid)
@@ -172,12 +172,10 @@ module _ {R : REL A B r} {S : REL A′ B′ s} {T : REL A″ B″ t} where
 module _ {R : REL A B r} {S : REL A′ B′ s} {n xs ys xs′ ys′} where
 
   zip⁺ : Pointwise R xs ys → Pointwise S xs′ ys′ →
-         Pointwise (λ xx yy → R (proj₁ xx) (proj₁ yy) × S (proj₂ xx) (proj₂ yy))
-                   (zip xs xs′) (zip {n = n} ys ys′)
+         Pointwise (×-Pointwise R S) (zip xs xs′) (zip {n = n} ys ys′)
   zip⁺ rs ss i = rs i , ss i
 
-  zip⁻ : Pointwise (λ xx yy → R (proj₁ xx) (proj₁ yy) × S (proj₂ xx) (proj₂ yy))
-                   (zip xs xs′) (zip {n = n} ys ys′) →
+  zip⁻ : Pointwise (×-Pointwise R S) (zip xs xs′) (zip {n = n} ys ys′) →
          Pointwise R xs ys × Pointwise S xs′ ys′
   zip⁻ rss = proj₁ ∘ rss , proj₂ ∘ rss
 

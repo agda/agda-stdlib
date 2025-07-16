@@ -7,19 +7,20 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
+open import Relation.Binary.Bundles using (TotalPreorder)
+open import Algebra.Construct.NaturalChoice.Base using (MinOperator; MinOp⇒MaxOp)
+
+module Algebra.Construct.NaturalChoice.MinOp
+  {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (minOp : MinOperator O) where
+
+open import Algebra.Core using (Op₂)
 open import Algebra.Bundles
-open import Algebra.Construct.NaturalChoice.Base
+  using (RawMagma; Magma; Semigroup; Band; CommutativeSemigroup; SelectiveMagma; Monoid)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.Bundles using (TotalPreorder)
 open import Relation.Binary.Definitions using (Maximum; Minimum)
-open import Relation.Binary.Consequences
-
-module Algebra.Construct.NaturalChoice.MinOp
-  {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (minOp : MinOperator O) where
 
 open TotalPreorder O renaming
   ( Carrier   to A
@@ -39,13 +40,13 @@ open import Relation.Binary.Reasoning.Preorder preorder
 
 x⊓y≤x : ∀ x y → x ⊓ y ≤ x
 x⊓y≤x x y with total x y
-... | inj₁ x≤y = ≤-respˡ-≈ (Eq.sym (x≤y⇒x⊓y≈x x≤y)) refl
+... | inj₁ x≤y = reflexive (x≤y⇒x⊓y≈x x≤y)
 ... | inj₂ y≤x = ≤-respˡ-≈ (Eq.sym (x≥y⇒x⊓y≈y y≤x)) y≤x
 
 x⊓y≤y : ∀ x y → x ⊓ y ≤ y
 x⊓y≤y x y with total x y
 ... | inj₁ x≤y = ≤-respˡ-≈ (Eq.sym (x≤y⇒x⊓y≈x x≤y)) x≤y
-... | inj₂ y≤x = ≤-respˡ-≈ (Eq.sym (x≥y⇒x⊓y≈y y≤x)) refl
+... | inj₂ y≤x = reflexive (x≥y⇒x⊓y≈y y≤x)
 
 ------------------------------------------------------------------------
 -- Algebraic properties

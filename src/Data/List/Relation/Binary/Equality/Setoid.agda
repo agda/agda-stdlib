@@ -29,6 +29,8 @@ open Setoid S renaming (Carrier to A)
 private
   variable
     p q : Level
+    ws xs xs′ ys ys′ zs : List A
+    xss yss : List (List A)
 
 ------------------------------------------------------------------------
 -- Definition of equality
@@ -46,23 +48,16 @@ open PW public
 -- Relational properties
 ------------------------------------------------------------------------
 
-≋-refl : Reflexive _≋_
-≋-refl = PW.refl refl
-
-≋-reflexive : _≡_ ⇒ _≋_
-≋-reflexive ≡.refl = ≋-refl
-
-≋-sym : Symmetric _≋_
-≋-sym = PW.symmetric sym
-
-≋-trans : Transitive _≋_
-≋-trans = PW.transitive trans
-
-≋-isEquivalence : IsEquivalence _≋_
-≋-isEquivalence = PW.isEquivalence isEquivalence
-
 ≋-setoid : Setoid _ _
 ≋-setoid = PW.setoid S
+
+open Setoid ≋-setoid public
+  using ()
+  renaming ( refl to ≋-refl
+           ; reflexive to ≋-reflexive
+           ; sym to ≋-sym
+           ; trans to ≋-trans
+           ; isEquivalence to ≋-isEquivalence)
 
 ------------------------------------------------------------------------
 -- Relationships to predicates
@@ -113,8 +108,14 @@ foldr⁺ ∙⇔◦ e≈f xs≋ys = PW.foldr⁺ ∙⇔◦ e≈f xs≋ys
 ------------------------------------------------------------------------
 -- _++_
 
-++⁺ : ∀ {ws xs ys zs} → ws ≋ xs → ys ≋ zs → ws ++ ys ≋ xs ++ zs
+++⁺ : ws ≋ xs → ys ≋ zs → ws ++ ys ≋ xs ++ zs
 ++⁺ = PW.++⁺
+
+++⁺ˡ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
+++⁺ˡ xs = PW.++⁺ˡ refl xs
+
+++⁺ʳ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
+++⁺ʳ zs = PW.++⁺ʳ refl zs
 
 ++-cancelˡ : ∀ xs {ys zs} → xs ++ ys ≋ xs ++ zs → ys ≋ zs
 ++-cancelˡ xs = PW.++-cancelˡ xs
@@ -125,7 +126,7 @@ foldr⁺ ∙⇔◦ e≈f xs≋ys = PW.foldr⁺ ∙⇔◦ e≈f xs≋ys
 ------------------------------------------------------------------------
 -- concat
 
-concat⁺ : ∀ {xss yss} → Pointwise _≋_ xss yss → concat xss ≋ concat yss
+concat⁺ : Pointwise _≋_ xss yss → concat xss ≋ concat yss
 concat⁺ = PW.concat⁺
 
 ------------------------------------------------------------------------
@@ -146,14 +147,14 @@ module _ {n} {f g : Fin n → A}
 module _ {P : Pred A p} (P? : U.Decidable P) (resp : P Respects _≈_)
   where
 
-  filter⁺ : ∀ {xs ys} → xs ≋ ys → filter P? xs ≋ filter P? ys
+  filter⁺ : xs ≋ ys → filter P? xs ≋ filter P? ys
   filter⁺ xs≋ys = PW.filter⁺ P? P? resp (resp ∘ sym) xs≋ys
 
 ------------------------------------------------------------------------
 -- reverse
 
-ʳ++⁺ : ∀{xs xs′ ys ys′} → xs ≋ xs′ → ys ≋ ys′ → xs ʳ++ ys ≋ xs′ ʳ++ ys′
+ʳ++⁺ : xs ≋ xs′ → ys ≋ ys′ → xs ʳ++ ys ≋ xs′ ʳ++ ys′
 ʳ++⁺ = PW.ʳ++⁺
 
-reverse⁺ : ∀ {xs ys} → xs ≋ ys → reverse xs ≋ reverse ys
+reverse⁺ : xs ≋ ys → reverse xs ≋ reverse ys
 reverse⁺ = PW.reverse⁺

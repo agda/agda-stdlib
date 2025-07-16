@@ -8,18 +8,29 @@
 
 module Relation.Binary.Construct.Interior.Symmetric where
 
-open import Function.Base using (flip)
-open import Level
-open import Relation.Binary
+open import Data.Bool.Base using (_∧_)
+open import Function.Base using (flip; _∘_)
+open import Level using (Level)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Trans; Asymmetric; Empty; Decidable)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder
+        ; IsDecEquivalence)
+open import Relation.Binary.Bundles using (Poset; DecPoset)
+open import Relation.Nullary.Decidable.Core
+open import Relation.Nullary.Reflects
 
 private
   variable
-    a b c ℓ r s t : Level
+    a ℓ : Level
     A : Set a
-    R S T : Rel A r
+    R S T : Rel A ℓ
 
 ------------------------------------------------------------------------
 -- Definition
+
+infixr 4 _,_
 
 record SymInterior (R : Rel A ℓ) (x y : A) : Set ℓ where
   constructor _,_
@@ -56,28 +67,60 @@ transitive tr = trans tr tr
 asymmetric⇒empty : Asymmetric R → Empty (SymInterior R)
 asymmetric⇒empty asym (r , r′) = asym r r′
 
+-- Decidability
+decidable : Decidable R → Decidable (SymInterior R)
+does  (decidable R? x y) = does (R? x y) ∧ does (R? y x)
+proof (decidable R? x y) = proof (R? x y) reflects proof (R? y x)
+  where
+  _reflects_ : ∀ {bxy byx} → Reflects (R x y) bxy → Reflects (R y x) byx →
+               Reflects (SymInterior R x y) (bxy ∧ byx)
+  ofʸ rxy  reflects ofʸ ryx  = of (rxy , ryx)
+  ofʸ rxy  reflects ofⁿ ¬ryx = of (¬ryx ∘ rhs≤lhs)
+  ofⁿ ¬rxy reflects _        = of (¬rxy ∘ lhs≤rhs)
+
 -- A reflexive transitive relation _≤_ gives rise to a poset in which the
 -- equivalence relation is SymInterior _≤_.
 
-isEquivalence : Reflexive R → Transitive R → IsEquivalence (SymInterior R)
-isEquivalence refl trans = record
-  { refl = reflexive refl
-  ; sym = symmetric
-  ; trans = transitive trans
-  }
+module _ {R : Rel A ℓ} (refl : Reflexive R) (trans : Transitive R) where
 
-isPartialOrder : Reflexive R → Transitive R → IsPartialOrder (SymInterior R) R
-isPartialOrder refl trans = record
-  { isPreorder = record
-    { isEquivalence = isEquivalence refl trans
+  isEquivalence : IsEquivalence (SymInterior R)
+  isEquivalence = record
+    { refl = reflexive refl
+    ; sym = symmetric
+    ; trans = transitive trans
+    }
+
+  isPreorder : IsPreorder (SymInterior R) R
+  isPreorder = record
+    { isEquivalence = isEquivalence
     ; reflexive = lhs≤rhs
     ; trans = trans
     }
-  ; antisym = _,_
-  }
 
-poset : ∀ {a} {A : Set a} {R : Rel A ℓ} → Reflexive R → Transitive R → Poset a ℓ ℓ
-poset {R = R} refl trans = record
-  { _≤_ = R
-  ; isPartialOrder = isPartialOrder refl trans
-  }
+  isPartialOrder : IsPartialOrder (SymInterior R) R
+  isPartialOrder = record
+    { isPreorder = isPreorder
+    ; antisym = _,_
+    }
+
+  poset : Poset _ ℓ ℓ
+  poset = record { isPartialOrder = isPartialOrder }
+
+  module _ (R? : Decidable R) where
+
+    isDecPartialOrder : IsDecPartialOrder (SymInterior R) R
+    isDecPartialOrder = record
+      { isPartialOrder = isPartialOrder
+      ; _≟_ = decidable R?
+      ; _≤?_ = R?
+      }
+
+    decPoset : DecPoset _ ℓ ℓ
+    decPoset = record { isDecPartialOrder = isDecPartialOrder }
+
+    open DecPoset public
+      using (isDecPreorder; decPreorder)
+
+    isDecEquivalence : IsDecEquivalence (SymInterior R)
+    isDecEquivalence = DecPoset.Eq.isDecEquivalence decPoset
+

@@ -8,7 +8,7 @@
 
 module Codata.Musical.Cofin where
 
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Codata.Musical.Conat as Conat using (Coℕ; suc; ∞ℕ)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
