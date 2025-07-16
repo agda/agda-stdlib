@@ -8,8 +8,9 @@
 
 module Effect.Monad.Random where
 
+open import Algebra using (RawMonoid)
 open import Effect.Functor using (RawFunctor)
-open import Function.Base using (id)
+open import Function.Base using (id; const)
 open import IO.Base using (IO)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
@@ -18,8 +19,11 @@ open import System.Random as Random using (RandomRIO; InBounds)
 
 private
   variable
-    f g : Level
+    e f g s w : Level
     A : Set f
+    B : Set g
+    E : Set e
+    S : Set s
     R : Rel A f
     M : Set f → Set g
 
@@ -39,7 +43,7 @@ record RawMonadRandomR
        : Set (f ⊔ g) where
   field
     getRandom  : M A
-    getRandomR : (lo hi : A) → .(lo ≤ hi) → M (InBounds _≤_ lo hi)
+    getRandomR : (lo hi : A) → .(lo≤hi : lo ≤ hi) → M (InBounds _≤_ lo hi)
 
 ------------------------------------------------------------------------
 -- Operations over RawMonadRandom
@@ -86,7 +90,7 @@ module ℕ where
 
 module Word64 where
 
-  open import Data.Word.Base using (Word64; _≤_)
+  open import Data.Word64.Base using (Word64; _≤_)
   open MkRandomIOInstances _≤_ Random.Word64.randomIO Random.Word64.randomRIO public
 
 module Fin where
@@ -144,3 +148,99 @@ module RangedString≤ (a b : Char)  .(a≤b : a ≤ b) (n : ℕ) where
 
   monadRandom : RawMonadRandom String IO
   monadRandom = record { getRandom = Random.RangedString≤.randomIO a b a≤b n }
+
+open import Effect.Monad.Reader.Transformer.Base
+
+liftReaderT : RawMonadRandom A M → RawMonadRandom A (ReaderT B M)
+liftReaderT rand = record
+  { getRandom = mkReaderT (const Rand.getRandom)
+  } where module Rand = RawMonadRandom rand
+
+liftRReaderT : RawMonadRandomR A R M → RawMonadRandomR A R (ReaderT B M)
+liftRReaderT randR = record
+  { getRandom = mkReaderT (const RandR.getRandom)
+  ; getRandomR = λ lo hi lo≤hi → mkReaderT (const (RandR.getRandomR lo hi lo≤hi))
+  } where module RandR = RawMonadRandomR randR
+
+open import Data.Product.Base using (_,_)
+open import Effect.Monad.Writer.Transformer.Base
+
+module _ {𝕎 : RawMonoid w g} where
+
+  open RawMonoid 𝕎 renaming (Carrier to W)
+
+  liftWriterT : RawFunctor M →
+                RawMonadRandom A M →
+                RawMonadRandom A (WriterT 𝕎 M)
+  liftWriterT M rand = record
+    { getRandom = mkWriterT (λ w → (w ,_) <$> Rand.getRandom)
+    } where open RawFunctor M
+            module Rand = RawMonadRandom rand
+
+  liftRWriterT : RawFunctor M →
+                 RawMonadRandomR A R M →
+                 RawMonadRandomR A R (WriterT 𝕎 M)
+  liftRWriterT M randR = record
+    { getRandom = mkWriterT (λ w → (w ,_) <$> RandR.getRandom)
+    ; getRandomR = λ lo hi lo≤hi → mkWriterT (λ w → (w ,_) <$> RandR.getRandomR lo hi lo≤hi)
+    } where open RawFunctor M
+            module RandR = RawMonadRandomR randR
+
+open import Effect.Monad.State.Transformer.Base
+
+liftStateT : RawFunctor M →
+             RawMonadRandom A M →
+             RawMonadRandom A (StateT S M)
+liftStateT M rand = record
+  { getRandom = mkStateT (λ w → (w ,_) <$> Rand.getRandom)
+  } where open RawFunctor M
+          module Rand = RawMonadRandom rand
+
+liftRStateT : RawFunctor M →
+              RawMonadRandomR A R M →
+              RawMonadRandomR A R (StateT S M)
+liftRStateT M randR = record
+  { getRandom = mkStateT (λ s → (s ,_) <$> RandR.getRandom)
+  ; getRandomR = λ lo hi lo≤hi → mkStateT (λ s → (s ,_) <$> RandR.getRandomR lo hi lo≤hi)
+  } where open RawFunctor M
+          module RandR = RawMonadRandomR randR
+
+
+open import Data.Sum.Base using (inj₁; inj₂; [_,_]′)
+open import Data.Sum.Effectful.Left.Transformer
+
+liftSumₗT : RawFunctor M →
+            RawMonadRandom A M →
+            RawMonadRandom A (SumₗT E _ M)
+liftSumₗT M rand = record
+  { getRandom = mkSumₗT (inj₂ <$> Rand.getRandom)
+  } where open RawFunctor M
+          module Rand = RawMonadRandom rand
+
+liftRSumₗT : RawFunctor M →
+             RawMonadRandomR A R M →
+             RawMonadRandomR A R (SumₗT E _ M)
+liftRSumₗT M randR = record
+  { getRandom = mkSumₗT (inj₂ <$> RandR.getRandom)
+  ; getRandomR = λ lo hi lo≤hi → mkSumₗT (inj₂ <$> RandR.getRandomR lo hi lo≤hi)
+  } where open RawFunctor M
+          module RandR = RawMonadRandomR randR
+
+open import Data.Sum.Effectful.Right.Transformer
+
+liftSumᵣT : RawFunctor M →
+            RawMonadRandom A M →
+            RawMonadRandom A (SumᵣT _ E M)
+liftSumᵣT M rand = record
+  { getRandom = mkSumᵣT (inj₁ <$> Rand.getRandom)
+  } where open RawFunctor M
+          module Rand = RawMonadRandom rand
+
+liftRSumᵣT : RawFunctor M →
+             RawMonadRandomR A R M →
+             RawMonadRandomR A R (SumᵣT _ E M)
+liftRSumᵣT M randR = record
+  { getRandom = mkSumᵣT (inj₁ <$> RandR.getRandom)
+  ; getRandomR = λ lo hi lo≤hi → mkSumᵣT (inj₁ <$> RandR.getRandomR lo hi lo≤hi)
+  } where open RawFunctor M
+          module RandR = RawMonadRandomR randR
