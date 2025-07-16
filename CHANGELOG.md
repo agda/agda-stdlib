@@ -250,6 +250,12 @@ Additions to existing modules
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
   ```
 
+* In `Algebra.Lattice.Properties.BooleanAlgebra.XorRing`:
+  ```agda
+  ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
+  ⊕-∧-booleanRing   : BooleanRing _ _
+  ```
+
 * In `Algebra.Modules.Properties`:
   ```agda
   inverseˡ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → x ≈ -ᴹ y
