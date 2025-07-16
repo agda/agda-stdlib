@@ -559,3 +559,9 @@ Additions to existing modules
   ```agda
   SortingAlgorithm.sort-↭ₛ : ∀ xs → sort xs Setoid.↭ xs
   ```
+
+* In `System.Random`:
+  ```agda
+  randomIO : IO Bool
+  randomRIO : RandomRIO {A = Bool} _≤_
+  ```

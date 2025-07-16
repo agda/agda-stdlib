@@ -67,7 +67,6 @@ module MkRandomIOInstances
   monadRandom : RawMonadRandom A IO
   monadRandom = forgetRanged monadRandomR
 
-
 module Char where
 
   open import Data.Char.Base using (Char; _≤_)
@@ -101,6 +100,10 @@ module Fin where
   module _ (n : ℕ) .{{p : NonZero n}} where
     open MkRandomIOInstances _≤_ (Random.Fin.randomIO {{p}}) Random.Fin.randomRIO public
 
+module Bool where
+
+  open import Data.Bool.Base using (Bool; _≤_)
+  open MkRandomIOInstances _≤_ Random.Bool.randomIO Random.Bool.randomRIO public
 
 module List {a} {A : Set a} (rIO : IO A)  where
 
@@ -142,7 +145,7 @@ module String≤ (n : ℕ) where
 
 open import Data.Char.Base using (Char; _≤_)
 
-module RangedString≤ (a b : Char)  .(a≤b : a ≤ b) (n : ℕ) where
+module RangedString≤ (a b : Char) .(a≤b : a ≤ b) (n : ℕ) where
 
   open import Data.String.Base using (String)
 

@@ -1,0 +1,3 @@
+Bool: false
+Vec≤ Bool 10: [false, false, true, true, false]
+Success!
