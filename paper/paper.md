@@ -156,8 +156,9 @@ Firstly, `agda-stdlib` contains basic discrete mathematics and algebra useful fo
 Organising this material into a coherent and logical structure is difficult, although some recent efforts have looked at generating such structure mechanistically [@carette2020leveraging] [@cohen2020hierarchy].
 For `agda-stdlib` there is a tension between organising the material to be as general as possible (e.g., defining subtraction using addition and inverse over some abstract algebraic structure) and providing direct and intuitive definitions (e.g., defining subtraction directly over integers).
 Additionally, there is the temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular application, which can come at the potential cost of redundancy/duplication.
-Our current aim is to provide canonical definitions for mathematical objects and introduce new representations only sparingly.
-
+Some theorem provers such as Rocq [@coq2024manual] have a rich ecosystem of external libraries, which reduces the emphasis on ensuring the existence of canonical definitions for common concepts, at the slightly increased risk of incompatibilities between various libraries.
+On the other hand, `batteries` and `mathlib` [@van2020maintaining] for Lean provide a repository of canonical definitions.
+Philosophically, `agda-stdlib` is more closely aligned with the approach of the MathLib library, and our aim is to provide canonical definitions for mathematical objects and introduce new representations only sparingly.
 
 A second challenge is that `agda-stdlib` has embraced the "intrinsic style" of dependent types, in which correctness-related invariants are part of data structures, rather than separate predicates.
 Many definitions in agda-stdlib use this intrinsic style.
