@@ -1207,21 +1207,27 @@ padRight-zipWith₁ : ∀ {p} (f : A → B → C) (m≤n : m ≤ n) (p≤m : p �
 padRight-zipWith₁ {p} f m≤n p≤m a b xs ys = trans (cong (zipWith f (padRight m≤n a xs)) (padRight-trans p≤m m≤n b ys))
                                             (padRight-zipWith f m≤n a b xs (padRight p≤m b ys))
 
-padRight-take : ∀ {p} (m≤n : m ≤ n) (a : A) (xs : Vec A m) (n≡m+p : n ≡ m + p) →
-                take m (subst (Vec A) n≡m+p (padRight m≤n a xs)) ≡ xs
-padRight-take {m = zero} z≤n a [] refl = refl
-padRight-take {m = suc m} {p = p} (s≤s m≤n) a (x ∷ xs) refl = cong (x ∷_) (padRight-take {p = p} m≤n a xs refl)
+padRight-take : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
+padRight-take m≤n a [] p = refl
+padRight-take (s≤s m≤n) a (x ∷ xs) p = cong (x ∷_) (padRight-take m≤n a xs (suc-injective p))
 
-padRight-drop : ∀ {p} (m≤n : m ≤ n) (a : A) (xs : Vec A m) (n≡m+p : n ≡ m + p) →
-                drop m (subst (Vec A) n≡m+p (padRight m≤n a xs)) ≡ replicate p a
-padRight-drop {m = zero} z≤n a [] refl = refl
-padRight-drop {m = suc m} {p = p} (s≤s m≤n) a (x ∷ xs) refl = padRight-drop {p = p} m≤n a xs refl
+
+cast-replicate : ∀ .(m≡n : m ≡ n) (x : A) → cast m≡n (replicate m x) ≡ replicate n x
+cast-replicate {m = zero}  {n = zero}  _  _  = refl
+cast-replicate {m = suc _} {n = suc _} eq x = cong (x ∷_) (cast-replicate (suc-injective eq) x)
+
+padRight-drop : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+padRight-drop {m = zero}  z≤n a [] eq = cast-replicate eq a
+padRight-drop {m = suc _} {n = suc _} (s≤s m≤n) a (x ∷ xs) eq = padRight-drop m≤n a xs ((suc-injective eq))
+
 
 padRight-updateAt : ∀ (m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin m) (x : A) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
                     padRight m≤n x (updateAt xs i f)
-padRight-updateAt (s≤s m≤n) (y ∷ xs) f zero x = refl
-padRight-updateAt (s≤s m≤n) (y ∷ xs) f (suc i) x = cong (y ∷_) (padRight-updateAt m≤n xs f i x)
+padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f zero x = refl
+padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f (suc i) x = cong (y ∷_) ((padRight-updateAt m≤n xs f i x))
 
 ------------------------------------------------------------------------
 -- iterate
