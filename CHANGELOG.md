@@ -562,3 +562,8 @@ Additions to existing modules
   ```agda
   SortingAlgorithm.sort-↭ₛ : ∀ xs → sort xs Setoid.↭ xs
   ```
+
+* In `Data.List.Instances`:
+  ```agda
+  instance listIsString : IsString (List Char)
+  ```
