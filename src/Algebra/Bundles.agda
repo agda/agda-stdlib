@@ -939,6 +939,16 @@ record BooleanSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   semiring : Semiring _ _
   semiring = record { isSemiring = isSemiring }
 
+  open Semiring semiring public
+    using ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+    ; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma;  *-magma;  *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid
+    ; rawNearSemiring ; rawSemiring; nearSemiring
+    ; semiringWithoutOne; semiringWithoutAnnihilatingZero
+    )
+
   *-idempotentMonoid :  IdempotentMonoid c ℓ
   *-idempotentMonoid = record { isIdempotentMonoid = *-isIdempotentMonoid }
 
