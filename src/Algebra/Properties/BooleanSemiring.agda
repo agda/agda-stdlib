@@ -17,6 +17,7 @@ module Algebra.Properties.BooleanSemiring
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Lattice.Bundles
   using (BooleanAlgebra)
+import Algebra.Properties.CommutativeMonoid as CommutativeMonoidProperties
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_; _$_)
 
@@ -31,16 +32,12 @@ open import Algebra.Lattice.Structures.Biased _≈_
 open import Algebra.Lattice.Structures _≈_
   using (IsLattice; IsDistributiveLattice; IsBooleanAlgebra)
 open import Algebra.Structures _≈_
-  using (IsCommutativeMonoid; IsIdempotentCommutativeMonoid
+  using (IsMagma; IsSemigroup; IsBand
+        ; IsCommutativeMonoid; IsIdempotentCommutativeMonoid
         ; IsGroup; IsAbelianGroup
         ; IsRing; IsCommutativeRing; IsBooleanRing
         )
 open import Relation.Binary.Reasoning.Setoid setoid
-
-------------------------------------------------------------------------
--- Export properties of additive submonoid
-
-open import Algebra.Properties.CommutativeMonoid +-commutativeMonoid public
 
 ------------------------------------------------------------------------
 -- Extra properties of Boolean semirings
@@ -145,23 +142,8 @@ infix  8 ¬_
 ¬_ : Op₁ Carrier
 ¬ x = 1# + x
 
-infixr 6 _∨_
-_∨_ : Op₂ Carrier
-x ∨ y = x + y + x * y
-
--- Properties
-
-∨-absorbs-* : _∨_ Absorbs _*_
-∨-absorbs-* = {!!}
-
-*-absorbs-∨ : _*_ Absorbs _∨_
-*-absorbs-∨ = {!!}
-
-absorptive : Absorptive _∨_ _*_
-absorptive = ∨-absorbs-* , *-absorbs-∨
-
-∨-distribʳ-∧ : _∨_ DistributesOverʳ _*_
-∨-distribʳ-∧ = {!!}
+¬-cong : Congruent₁ ¬_
+¬-cong = +-congˡ
 
 ∧-complementʳ : RightInverse 0# ¬_ _*_
 ∧-complementʳ x = begin
@@ -170,20 +152,82 @@ absorptive = ∨-absorbs-* , *-absorbs-∨
   x + x          ≈⟨ x+x≈0 x ⟩
   0#             ∎
 
+infixr 6 _∨_
+_∨_ : Op₂ Carrier
+x ∨ y = x + y * ¬ x
+
+-- Basic properties
+
+∨-def : ∀ x y → x ∨ y ≈ x + y + x * y
+∨-def x y = begin
+  x ∨ y                ≈⟨ +-congˡ (distribˡ y 1# x) ⟩
+  x + (y * 1# + y * x) ≈⟨ +-assoc x (y * 1#) (y * x) ⟨
+  x + y * 1# + y * x   ≈⟨ +-cong (+-congˡ (*-identityʳ y)) (*-comm y x) ⟩
+  x + y + x * y        ∎
+
+∨-cong : Congruent₂ _∨_
+∨-cong x≈x′ y≈y′ = +-cong x≈x′ (*-cong y≈y′ (¬-cong x≈x′))
+
+∨-comm : Commutative _∨_
+∨-comm x y = begin
+  x ∨ y         ≈⟨ ∨-def x y ⟩
+  x + y + x * y ≈⟨ +-cong (+-comm x y) (*-comm x y) ⟩
+  y + x + y * x ≈⟨ ∨-def y x ⟨
+  y ∨ x         ∎
+
+∨-idem : Idempotent _∨_
+∨-idem x = begin
+  x ∨ x     ≈⟨ +-congˡ (∧-complementʳ x) ⟩
+  x + 0#    ≈⟨ +-identityʳ x ⟩
+  x         ∎
+
+∨-assoc : Associative _∨_
+∨-assoc x y z = {!!}
+
+-- Lattice properties
+
+∨-absorbs-* : _∨_ Absorbs _*_
+∨-absorbs-* x y = begin
+  x ∨ x * y         ≈⟨ +-congˡ (xy∙z≈xz∙y x y (¬ x)) ⟩
+  x + (x * ¬ x) * y ≈⟨ +-congˡ (*-congʳ (∧-complementʳ x)) ⟩
+  x + 0# * y        ≈⟨ +-congˡ (zeroˡ y) ⟩
+  x + 0#            ≈⟨ +-identityʳ _ ⟩
+  x                 ∎
+  where open CommutativeMonoidProperties *-commutativeMonoid
+
+*-absorbs-∨ : _*_ Absorbs _∨_
+*-absorbs-∨ x y = {!!}
+
+absorptive : Absorptive _∨_ _*_
+absorptive = ∨-absorbs-* , *-absorbs-∨
+
+∨-distribʳ-∧ : _∨_ DistributesOverʳ _*_
+∨-distribʳ-∧ x y z = {!(y ∨ x) * (z ∨ x)!}
+
 ∨-complementʳ : RightInverse 1# ¬_ _∨_
 ∨-complementʳ x = begin
-  x ∨ ¬ x           ≈⟨ +-cong (x∙yz≈y∙xz x 1# x) (∧-complementʳ x) ⟩
-  1# + (x + x) + 0# ≈⟨ +-identityʳ _ ⟩
-  1# + (x + x)      ≈⟨ +-congˡ (x+x≈0 x) ⟩
-  1# + 0#           ≈⟨ +-identityʳ _ ⟩
-  1#                ∎
+  x ∨ ¬ x      ≈⟨ +-congˡ (*-idem (¬ x)) ⟩
+  x + ¬ x      ≈⟨ x∙yz≈y∙xz x 1# x ⟩
+  1# + (x + x) ≈⟨ +-congˡ (x+x≈0 x) ⟩
+  1# + 0#      ≈⟨ +-identityʳ _ ⟩
+  1#           ∎
+  where open CommutativeMonoidProperties +-commutativeMonoid
 
 -- Structures
 
+∨-isMagma : IsMagma _∨_
+∨-isMagma = record { isEquivalence = isEquivalence ; ∙-cong = ∨-cong }
+
+∨-isSemigroup : IsSemigroup _∨_
+∨-isSemigroup = record { isMagma = ∨-isMagma ; assoc = ∨-assoc }
+
+∨-isBand : IsBand _∨_
+∨-isBand = record { isSemigroup = ∨-isSemigroup ; idem = ∨-idem }
+
 isLattice : IsLattice _∨_ _*_
 isLattice = isLattice₂ $ record
-  { isJoinSemilattice = {!!}
-  ; isMeetSemilattice = {!!}
+  { isJoinSemilattice = record { isBand = ∨-isBand ; comm = ∨-comm }
+  ; isMeetSemilattice = record { isBand = *-isBand ; comm = *-comm }
   ; absorptive = absorptive
   }
 
@@ -198,7 +242,7 @@ isBooleanAlgebra = isBooleanAlgebraʳ $ record
   { isDistributiveLattice = isDistributiveLattice
   ; ∨-complementʳ = ∨-complementʳ
   ; ∧-complementʳ = ∧-complementʳ
-  ; ¬-cong = +-congˡ
+  ; ¬-cong = ¬-cong
   }
 
 -- Bundle
