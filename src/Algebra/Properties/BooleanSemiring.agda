@@ -14,12 +14,22 @@ open import Algebra.Bundles
 module Algebra.Properties.BooleanSemiring
   {c ℓ} (booleanSemiring : BooleanSemiring c ℓ) where
 
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Lattice.Bundles
+  using (BooleanAlgebra)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_; _$_)
 
 open BooleanSemiring booleanSemiring
 open import Algebra.Consequences.Setoid setoid using (binomial-expansion)
 open import Algebra.Definitions _≈_
+open import Algebra.Lattice.Structures.Biased _≈_
+  using (IsLattice₂; isLattice₂
+        ; IsDistributiveLatticeʳʲᵐ; isDistributiveLatticeʳʲᵐ
+        ; IsBooleanAlgebraʳ; isBooleanAlgebraʳ
+        )
+open import Algebra.Lattice.Structures _≈_
+  using (IsLattice; IsDistributiveLattice; IsBooleanAlgebra)
 open import Algebra.Structures _≈_
   using (IsCommutativeMonoid; IsIdempotentCommutativeMonoid
         ; IsGroup; IsAbelianGroup
@@ -28,10 +38,10 @@ open import Algebra.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
--- Export properties of semirings
-{-
-open import Algebra.Properties.Semiring semiring public
--}
+-- Export properties of additive submonoid
+
+open import Algebra.Properties.CommutativeMonoid +-commutativeMonoid public
+
 ------------------------------------------------------------------------
 -- Extra properties of Boolean semirings
 
@@ -125,3 +135,73 @@ open CommutativeRing commutativeRing public
 
 booleanRing : BooleanRing _ _
 booleanRing = record { isBooleanRing = isBooleanRing }
+
+------------------------------------------------------------------------
+-- Boolean Semirings yield Boolean Algebras
+
+-- Definitions
+
+infix  8 ¬_
+¬_ : Op₁ Carrier
+¬ x = 1# + x
+
+infixr 6 _∨_
+_∨_ : Op₂ Carrier
+x ∨ y = x + y + x * y
+
+-- Properties
+
+∨-absorbs-* : _∨_ Absorbs _*_
+∨-absorbs-* = {!!}
+
+*-absorbs-∨ : _*_ Absorbs _∨_
+*-absorbs-∨ = {!!}
+
+absorptive : Absorptive _∨_ _*_
+absorptive = ∨-absorbs-* , *-absorbs-∨
+
+∨-distribʳ-∧ : _∨_ DistributesOverʳ _*_
+∨-distribʳ-∧ = {!!}
+
+∧-complementʳ : RightInverse 0# ¬_ _*_
+∧-complementʳ x = begin
+  x * (¬ x)      ≈⟨ distribˡ x 1# x ⟩
+  x * 1# + x * x ≈⟨ +-cong (*-identityʳ x) (*-idem x) ⟩
+  x + x          ≈⟨ x+x≈0 x ⟩
+  0#             ∎
+
+∨-complementʳ : RightInverse 1# ¬_ _∨_
+∨-complementʳ x = begin
+  x ∨ ¬ x           ≈⟨ +-cong (x∙yz≈y∙xz x 1# x) (∧-complementʳ x) ⟩
+  1# + (x + x) + 0# ≈⟨ +-identityʳ _ ⟩
+  1# + (x + x)      ≈⟨ +-congˡ (x+x≈0 x) ⟩
+  1# + 0#           ≈⟨ +-identityʳ _ ⟩
+  1#                ∎
+
+-- Structures
+
+isLattice : IsLattice _∨_ _*_
+isLattice = isLattice₂ $ record
+  { isJoinSemilattice = {!!}
+  ; isMeetSemilattice = {!!}
+  ; absorptive = absorptive
+  }
+
+isDistributiveLattice : IsDistributiveLattice _∨_ _*_
+isDistributiveLattice = isDistributiveLatticeʳʲᵐ $ record
+  { isLattice = isLattice
+  ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+  }
+
+isBooleanAlgebra : IsBooleanAlgebra _∨_ _*_ ¬_ 1# 0#
+isBooleanAlgebra = isBooleanAlgebraʳ $ record
+  { isDistributiveLattice = isDistributiveLattice
+  ; ∨-complementʳ = ∨-complementʳ
+  ; ∧-complementʳ = ∧-complementʳ
+  ; ¬-cong = +-congˡ
+  }
+
+-- Bundle
+
+booleanAlgebra : BooleanAlgebra _ _
+booleanAlgebra = record { isBooleanAlgebra = isBooleanAlgebra }
