@@ -59,6 +59,8 @@ unsafeModules = map modToFile
   , "Debug.Trace"
   , "Effect.Monad.IO"
   , "Effect.Monad.IO.Instances"
+  , "Effect.Monad.Random"
+  , "Effect.Monad.Random.Instances"
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"

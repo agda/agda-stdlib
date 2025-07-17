@@ -177,11 +177,14 @@ New modules
 
 * `Data.Sign.Show` to show a sign.
 
+* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint
+
 * `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`.
 
 * `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
 
 * `Relation.Nullary.Recomputable.Core`
+
 
 Additions to existing modules
 -----------------------------
@@ -566,4 +569,10 @@ Additions to existing modules
 * In `Data.List.Instances`:
   ```agda
   instance listIsString : IsString (List Char)
+  ```
+
+* In `System.Random`:
+  ```agda
+  randomIO : IO Bool
+  randomRIO : RandomRIO {A = Bool} _≤_
   ```
