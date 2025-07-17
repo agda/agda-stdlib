@@ -1220,14 +1220,14 @@ cast-replicate {m = suc _} {n = suc _} eq x = cong (x ∷_) (cast-replicate (suc
 padRight-drop : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
                 drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
 padRight-drop {m = zero}  z≤n a [] eq = cast-replicate eq a
-padRight-drop {m = suc _} {n = suc _} (s≤s m≤n) a (x ∷ xs) eq = padRight-drop m≤n a xs ((suc-injective eq))
+padRight-drop {m = suc _} {n = suc _} (s≤s m≤n) a (x ∷ xs) eq = padRight-drop m≤n a xs (suc-injective eq)
 
 
 padRight-updateAt : ∀ (m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin m) (x : A) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
                     padRight m≤n x (updateAt xs i f)
 padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f zero x = refl
-padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f (suc i) x = cong (y ∷_) ((padRight-updateAt m≤n xs f i x))
+padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f (suc i) x = cong (y ∷_) (padRight-updateAt m≤n xs f i x)
 
 ------------------------------------------------------------------------
 -- iterate
