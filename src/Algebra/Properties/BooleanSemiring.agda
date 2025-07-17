@@ -18,6 +18,7 @@ open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Lattice.Bundles
   using (BooleanAlgebra)
 import Algebra.Properties.CommutativeMonoid as CommutativeMonoidProperties
+import Algebra.Properties.IdempotentCommutativeMonoid as IdempotentCommutativeMonoidProperties
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_; _$_)
 
@@ -152,11 +153,28 @@ infix  8 ¬_
   x + x          ≈⟨ x+x≈0 x ⟩
   0#             ∎
 
+private
+  *-lemma : ∀ x y → x + (x * ¬ x) * y ≈ x
+  *-lemma x y = begin
+    x + (x * ¬ x) * y     ≈⟨ +-congˡ (*-congʳ (∧-complementʳ x)) ⟩
+    x + 0# * y            ≈⟨ +-congˡ (zeroˡ y) ⟩
+    x + 0#                ≈⟨ +-identityʳ _ ⟩
+    x                     ∎
+
 infixr 6 _∨_
 _∨_ : Op₂ Carrier
 x ∨ y = x + y * ¬ x
 
 -- Basic properties
+
+∨-complementʳ : RightInverse 1# ¬_ _∨_
+∨-complementʳ x = begin
+  x ∨ ¬ x      ≈⟨ +-congˡ (*-idem (¬ x)) ⟩
+  x + ¬ x      ≈⟨ x∙yz≈y∙xz x 1# x ⟩
+  1# + (x + x) ≈⟨ +-congˡ (x+x≈0 x) ⟩
+  1# + 0#      ≈⟨ +-identityʳ _ ⟩
+  1#           ∎
+  where open CommutativeMonoidProperties +-commutativeMonoid
 
 ∨-def : ∀ x y → x ∨ y ≈ x + y + x * y
 ∨-def x y = begin
@@ -189,29 +207,38 @@ x ∨ y = x + y * ¬ x
 ∨-absorbs-* : _∨_ Absorbs _*_
 ∨-absorbs-* x y = begin
   x ∨ x * y         ≈⟨ +-congˡ (xy∙z≈xz∙y x y (¬ x)) ⟩
-  x + (x * ¬ x) * y ≈⟨ +-congˡ (*-congʳ (∧-complementʳ x)) ⟩
-  x + 0# * y        ≈⟨ +-congˡ (zeroˡ y) ⟩
-  x + 0#            ≈⟨ +-identityʳ _ ⟩
+  x + (x * ¬ x) * y ≈⟨ *-lemma x y ⟩
   x                 ∎
   where open CommutativeMonoidProperties *-commutativeMonoid
 
 *-absorbs-∨ : _*_ Absorbs _∨_
-*-absorbs-∨ x y = {!!}
+*-absorbs-∨ x y = begin
+  x * (x ∨ y)           ≈⟨ distribˡ x x (y * ¬ x) ⟩
+  x * x + x * (y * ¬ x) ≈⟨ +-cong (*-idem x) (x∙yz≈xz∙y x y (¬ x)) ⟩
+  x + (x * ¬ x) * y     ≈⟨ *-lemma x y ⟩
+  x                     ∎
+  where open CommutativeMonoidProperties *-commutativeMonoid
 
 absorptive : Absorptive _∨_ _*_
 absorptive = ∨-absorbs-* , *-absorbs-∨
 
 ∨-distribʳ-∧ : _∨_ DistributesOverʳ _*_
-∨-distribʳ-∧ x y z = {!(y ∨ x) * (z ∨ x)!}
-
-∨-complementʳ : RightInverse 1# ¬_ _∨_
-∨-complementʳ x = begin
-  x ∨ ¬ x      ≈⟨ +-congˡ (*-idem (¬ x)) ⟩
-  x + ¬ x      ≈⟨ x∙yz≈y∙xz x 1# x ⟩
-  1# + (x + x) ≈⟨ +-congˡ (x+x≈0 x) ⟩
-  1# + 0#      ≈⟨ +-identityʳ _ ⟩
-  1#           ∎
-  where open CommutativeMonoidProperties +-commutativeMonoid
+∨-distribʳ-∧ x y z = begin
+  y * z ∨ x                      ≡⟨⟩
+  y * z + x * (1# + y * z)       ≈⟨ +-congˡ (distribˡ x 1# (y * z)) ⟩
+  y * z + (x * 1# + x * (y * z)) ≈⟨ +-congˡ (+-congʳ (*-identityʳ x)) ⟩
+  y * z + (x + x * (y * z))      ≈⟨ {!!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  y * z + y * (x * ¬ z) + x * ¬ y * z + x * (¬ y * ¬ z)     ≈⟨ +-congˡ (∙-distrˡ-∙ x (¬ y) (¬ z)) ⟩
+  y * z + y * (x * ¬ z) + x * ¬ y * z + x * ¬ y * (x * ¬ z) ≈⟨ expand y (x * ¬ y) z (x * ¬ z) ⟨
+  (y + x * ¬ y) * (z + x * ¬ z)                             ≡⟨⟩
+  (y ∨ x) * (z ∨ x)                                         ∎
+  where
+  open IdempotentCommutativeMonoidProperties *-idempotentCommutativeMonoid
+  expand = binomial-expansion +-cong +-assoc distrib
 
 -- Structures
 
