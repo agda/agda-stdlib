@@ -165,7 +165,7 @@ New modules
 
 * `Relation.Binary.Morphism.Construct.Product` - plumbing in the (categorical) product structure on `RawSetoid`.
 
-* `Relation.Binary.Properties.PartialSetoid` - systematise properties of a partial equivalence relation bundleded with a set.
+* `Relation.Binary.Properties.PartialSetoid` - systematise properties of the partial equivalence relation bundled with a set.
 
 * `Relation.Nullary.Recomputable.Core`
 
