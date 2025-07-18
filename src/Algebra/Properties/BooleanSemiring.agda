@@ -268,27 +268,10 @@ absorptive : Absorptive _∨_ _*_
 absorptive = ∨-absorbs-* , *-absorbs-∨
 
 ∨-distribʳ-∧ : _∨_ DistributesOverʳ _*_
-∨-distribʳ-∧ = {!!}
-{- begin
-  y * z ∨ x                      ≡⟨⟩
-  y * z + x * (1# + y * z) ≈⟨ {!!} ⟩
-  (y + x * (1# + y)) * (z + x * (1# + z))                             ≡⟨⟩
-  (y ∨ x) * (z ∨ x)                                         ∎
--}
-{- comm∧distrˡ⇒distrʳ *-cong ∨-comm (distrib∧absorbs⇒distribˡ {_∙_ = _+_} {!*-cong!} {!!} {!*-comm!} ∨-absorbs-* *-absorbs-∨ {!!})
-  where open Consequences
--}
-{-
-  y * z + x * (1# + y * z)       ≈⟨ +-congˡ (distribˡ x 1# (y * z)) ⟩
-  y * z + (x * 1# + x * (y * z)) ≈⟨ +-congˡ (+-congʳ (*-identityʳ x)) ⟩
-  y * z + (x + x * (y * z))      ≈⟨ {!!} ⟩
+∨-distribʳ-∧ x y z = begin
+  y * z ∨ x ≈⟨ {!!} ⟩
   {!!} ≈⟨ {!!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  y * z + y * (x * ¬ z) + x * ¬ y * z + x * (¬ y * ¬ z)     ≈⟨ +-congˡ (∙-distrˡ-∙ x (¬ y) (¬ z)) ⟩
-  y * z + y * (x * ¬ z) + x * ¬ y * z + x * ¬ y * (x * ¬ z) ≈⟨ expand y (x * ¬ y) z (x * ¬ z) ⟨
--}
+  (y ∨ x) * (z ∨ x) ∎
 
 -- Structures
 
