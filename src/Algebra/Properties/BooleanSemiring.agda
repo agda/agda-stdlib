@@ -23,7 +23,6 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_; _$_)
 
 open BooleanSemiring booleanSemiring
-open import Algebra.Consequences.Setoid setoid using (binomial-expansion)
 open import Algebra.Definitions _≈_
 open import Algebra.Lattice.Structures.Biased _≈_
   using (IsLattice₂; isLattice₂
@@ -40,19 +39,24 @@ open import Algebra.Structures _≈_
         )
 open import Relation.Binary.Reasoning.Setoid setoid
 
+
+------------------------------------------------------------------------
+-- Re-export Semiring properties
+
+open import Algebra.Properties.Semiring semiring public
+
 ------------------------------------------------------------------------
 -- Extra properties of Boolean semirings
 
 xy+yx≈0 : ∀ x y → x * y + y * x ≈ 0#
 xy+yx≈0 x y = +-cancelˡ (x * x) _ _ $ +-cancelʳ (y * y) _ _ $ begin
   x * x + ((x * y) + (y * x)) + y * y ≈⟨ +-congʳ (+-assoc _ _ _) ⟨
-  x * x + x * y + y * x + y * y       ≈⟨ expand x y x y ⟨
+  x * x + x * y + y * x + y * y       ≈⟨ binomial-expansion x y x y ⟨
   (x + y) * (x + y)                   ≈⟨ *-idem (x + y) ⟩
   x + y                               ≈⟨ +-congˡ (*-idem y) ⟨
   x + y * y                           ≈⟨ +-congʳ (*-idem x) ⟨
   x * x + y * y                       ≈⟨ +-congʳ (+-identityʳ (x * x)) ⟨
   x * x + 0# + y * y                  ∎
-  where expand = binomial-expansion +-cong +-assoc distrib
 
 y≈x⇒x+y≈0 : ∀ {x y} → y ≈ x → x + y ≈ 0#
 y≈x⇒x+y≈0 {x = x} {y = y} y≈x = begin
@@ -226,12 +230,10 @@ deMorgan₂ x y = begin
   1# + (x + y + x * y)              ≈⟨ +-assoc _ _ _ ⟨
   1# + (x + y) + x * y              ≈⟨ +-congʳ (x∙yz≈xz∙y 1# x y) ⟩
   1# + y + x + x * y                ≈⟨ +-congʳ (+-cong (+-cong (*-idem _) (*-identityˡ y)) (*-identityʳ x)) ⟨
-  1# * 1# + 1# * y + x * 1# + x * y ≈⟨ expand 1# x 1# y ⟨
+  1# * 1# + 1# * y + x * 1# + x * y ≈⟨ binomial-expansion 1# x 1# y ⟨
   (1# + x) * (1# + y)               ≡⟨⟩
   ¬ x * ¬ y ∎
-  where -- +-congˡ (+-congʳ (+-comm x y)) 
-  open CommutativeMonoidProperties +-commutativeMonoid
-  expand = binomial-expansion +-cong +-assoc distrib
+  where open CommutativeMonoidProperties +-commutativeMonoid
 
 ∨-assoc : Associative _∨_
 ∨-assoc x y z = begin
@@ -281,9 +283,7 @@ absorptive = ∨-absorbs-* , *-absorbs-∨
 -}
   (y + x * (1# + y)) * (z + x * (1# + z))                             ≡⟨⟩
   (y ∨ x) * (z ∨ x)                                         ∎
-  where
-  open IdempotentCommutativeMonoidProperties *-idempotentCommutativeMonoid
-  expand = binomial-expansion +-cong +-assoc distrib
+  where open IdempotentCommutativeMonoidProperties *-idempotentCommutativeMonoid
 
 -- Structures
 
