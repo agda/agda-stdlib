@@ -16,9 +16,10 @@ module Algebra.Properties.BooleanSemiring
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Lattice.Bundles
-  using (BooleanAlgebra)
+  using (DistributiveLattice; BooleanAlgebra)
 import Algebra.Properties.CommutativeMonoid as CommutativeMonoidProperties
 import Algebra.Properties.IdempotentCommutativeMonoid as IdempotentCommutativeMonoidProperties
+import Algebra.Lattice.Properties.DistributiveLattice as DistributiveLatticeProperties
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_; _$_)
 
@@ -264,14 +265,14 @@ deMorgan₂ x y = begin
   x                     ∎
   where open CommutativeMonoidProperties *-commutativeMonoid
 
-absorptive : Absorptive _∨_ _*_
-absorptive = ∨-absorbs-* , *-absorbs-∨
-
-∨-distribʳ-∧ : _∨_ DistributesOverʳ _*_
-∨-distribʳ-∧ x y z = begin
-  y * z ∨ x ≈⟨ {!!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  (y ∨ x) * (z ∨ x) ∎
+*-distribʳ-∨ : _*_ DistributesOverʳ _∨_
+*-distribʳ-∨ x y z = begin
+  (y ∨ z) * x ≈⟨ *-congʳ (∨-def y z) ⟩
+  (y + z + y * z) * x ≈⟨ distribʳ x (y + z) (y * z) ⟩
+  ((y + z) * x + y * z * x) ≈⟨ +-cong (distribʳ x y z) (∙-distrʳ-∙ x y z) ⟩
+  (y * x + z * x) + (y * x) * (z * x)  ≈⟨ ∨-def (y * x) (z * x) ⟨
+  (y * x) ∨ (z * x) ∎
+  where open IdempotentCommutativeMonoidProperties *-idempotentCommutativeMonoid
 
 -- Structures
 
@@ -284,18 +285,25 @@ absorptive = ∨-absorbs-* , *-absorbs-∨
 ∨-isBand : IsBand _∨_
 ∨-isBand = record { isSemigroup = ∨-isSemigroup ; idem = ∨-idem }
 
-isLattice : IsLattice _∨_ _*_
-isLattice = isLattice₂ $ record
-  { isJoinSemilattice = record { isBand = ∨-isBand ; comm = ∨-comm }
-  ; isMeetSemilattice = record { isBand = *-isBand ; comm = *-comm }
-  ; absorptive = absorptive
+*-∨-isLattice : IsLattice _*_ _∨_
+*-∨-isLattice = isLattice₂ $ record
+  { isJoinSemilattice = record { isBand = *-isBand ; comm = *-comm }
+  ; isMeetSemilattice = record { isBand = ∨-isBand ; comm = ∨-comm }
+  ; absorptive = *-absorbs-∨ , ∨-absorbs-*
   }
 
-isDistributiveLattice : IsDistributiveLattice _∨_ _*_
-isDistributiveLattice = isDistributiveLatticeʳʲᵐ $ record
-  { isLattice = isLattice
-  ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+*-∨-isDistributiveLattice : IsDistributiveLattice _*_ _∨_
+*-∨-isDistributiveLattice = isDistributiveLatticeʳʲᵐ $ record
+  { isLattice = *-∨-isLattice
+  ; ∨-distribʳ-∧ = *-distribʳ-∨
   }
+
+*-∨-distributiveLattice : DistributiveLattice _ _
+*-∨-distributiveLattice = record { isDistributiveLattice = *-∨-isDistributiveLattice }
+
+isDistributiveLattice : IsDistributiveLattice _∨_ _*_
+isDistributiveLattice =
+  DistributiveLatticeProperties.∧-∨-isDistributiveLattice *-∨-distributiveLattice
 
 isBooleanAlgebra : IsBooleanAlgebra _∨_ _*_ ¬_ 1# 0#
 isBooleanAlgebra = isBooleanAlgebraʳ $ record
