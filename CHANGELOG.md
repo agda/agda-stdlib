@@ -66,6 +66,11 @@ Deprecated names
   uniqueʳ‿⁻ᴹ   ↦  Algebra.Module.Properties.RightModule.inverseʳ-uniqueᴹ
   ```
 
+* In `Algebra.Properties.CommutativeSemigroup`:
+  ```agda
+  interchange  ↦   medial
+  ```
+
 * In `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∣∣-sym       ↦  ∥-sym
