@@ -146,6 +146,14 @@ infix  8 ¬_
 ¬-cong : Congruent₁ ¬_
 ¬-cong = +-congˡ
 
+¬-involutive : Involutive ¬_
+¬-involutive x = begin
+  ¬ ¬ x         ≡⟨⟩
+  1# + (1# + x) ≈⟨ +-assoc 1# 1# x ⟨
+  1# + 1# + x   ≈⟨ +-congʳ (x+x≈0 1#) ⟩
+  0# + x        ≈⟨ +-identityˡ x ⟩
+  x             ∎
+
 ∧-complementʳ : RightInverse 0# ¬_ _*_
 ∧-complementʳ x = begin
   x * (¬ x)      ≈⟨ distribˡ x 1# x ⟩
@@ -195,12 +203,46 @@ x ∨ y = x + y * ¬ x
 
 ∨-idem : Idempotent _∨_
 ∨-idem x = begin
-  x ∨ x     ≈⟨ +-congˡ (∧-complementʳ x) ⟩
-  x + 0#    ≈⟨ +-identityʳ x ⟩
-  x         ∎
+  x ∨ x   ≈⟨ +-congˡ (∧-complementʳ x) ⟩
+  x + 0#  ≈⟨ +-identityʳ x ⟩
+  x       ∎
+
+deMorgan₁ : ∀ x y → ¬ (x * y) ≈ ¬ x ∨ ¬ y
+deMorgan₁ x y = begin
+  ¬ (x * y)                 ≡⟨⟩
+  1# + x * y                ≈⟨ +-cong (+-identityʳ 1#) (*-comm y x) ⟨
+  1# + 0# + y * x           ≈⟨ +-congʳ (+-congˡ (x+x≈0 x)) ⟨
+  1# + (x + x) + y * x      ≈⟨ +-congʳ (+-assoc 1# x x) ⟨
+  1# + x + x + y * x        ≈⟨ +-congʳ (+-congˡ (*-identityˡ x)) ⟨
+  1# + x + 1# * x + y * x   ≈⟨ +-assoc (1# + x) (1# * x) (y * x) ⟩
+  1# + x + (1# * x + y * x) ≈⟨ +-congˡ (distribʳ x 1# y) ⟨
+  1# + x + ¬ y * x          ≈⟨ +-congˡ (*-congˡ (¬-involutive x)) ⟨
+  ¬ x + ¬ y * ¬ ¬ x         ≡⟨⟩
+  ¬ x ∨ ¬ y                 ∎
+
+deMorgan₂ : ∀ x y → ¬ (x ∨ y) ≈ ¬ x * ¬ y
+deMorgan₂ x y = begin
+  ¬ (x ∨ y)                         ≈⟨ +-congˡ (∨-def x y) ⟩
+  1# + (x + y + x * y)              ≈⟨ +-assoc _ _ _ ⟨
+  1# + (x + y) + x * y              ≈⟨ +-congʳ (x∙yz≈xz∙y 1# x y) ⟩
+  1# + y + x + x * y                ≈⟨ +-congʳ (+-cong (+-cong (*-idem _) (*-identityˡ y)) (*-identityʳ x)) ⟨
+  1# * 1# + 1# * y + x * 1# + x * y ≈⟨ expand 1# x 1# y ⟨
+  (1# + x) * (1# + y)               ≡⟨⟩
+  ¬ x * ¬ y ∎
+  where -- +-congˡ (+-congʳ (+-comm x y)) 
+  open CommutativeMonoidProperties +-commutativeMonoid
+  expand = binomial-expansion +-cong +-assoc distrib
 
 ∨-assoc : Associative _∨_
-∨-assoc x y z = {!!}
+∨-assoc x y z = begin
+  (x ∨ y) ∨ z           ≈⟨ ¬-involutive ((x ∨ y) ∨ z) ⟨
+  ¬ ¬ ((x ∨ y) ∨ z)     ≈⟨ ¬-cong (deMorgan₂ (x ∨ y) z) ⟩
+  ¬ (¬ (x ∨ y) * ¬ z)   ≈⟨ ¬-cong (*-congʳ (deMorgan₂ x y)) ⟩
+  ¬ ((¬ x * ¬ y) * ¬ z) ≈⟨ ¬-cong (*-assoc (¬ x) (¬ y) (¬ z)) ⟩
+  ¬ (¬ x * (¬ y * ¬ z)) ≈⟨ ¬-cong (*-congˡ (deMorgan₂ y z)) ⟨
+  ¬ (¬ x * ¬ (y ∨ z))   ≈⟨ ¬-cong (deMorgan₂ x (y ∨ z)) ⟨
+  ¬ ¬ (x ∨ y ∨ z)       ≈⟨ ¬-involutive (x ∨ y ∨ z) ⟩
+  x ∨ y ∨ z ∎
 
 -- Lattice properties
 
@@ -225,6 +267,8 @@ absorptive = ∨-absorbs-* , *-absorbs-∨
 ∨-distribʳ-∧ : _∨_ DistributesOverʳ _*_
 ∨-distribʳ-∧ x y z = begin
   y * z ∨ x                      ≡⟨⟩
+  y * z + x * (1# + y * z) ≈⟨ {!!} ⟩
+{-
   y * z + x * (1# + y * z)       ≈⟨ +-congˡ (distribˡ x 1# (y * z)) ⟩
   y * z + (x * 1# + x * (y * z)) ≈⟨ +-congˡ (+-congʳ (*-identityʳ x)) ⟩
   y * z + (x + x * (y * z))      ≈⟨ {!!} ⟩
@@ -234,7 +278,8 @@ absorptive = ∨-absorbs-* , *-absorbs-∨
   {!!} ≈⟨ {!!} ⟩
   y * z + y * (x * ¬ z) + x * ¬ y * z + x * (¬ y * ¬ z)     ≈⟨ +-congˡ (∙-distrˡ-∙ x (¬ y) (¬ z)) ⟩
   y * z + y * (x * ¬ z) + x * ¬ y * z + x * ¬ y * (x * ¬ z) ≈⟨ expand y (x * ¬ y) z (x * ¬ z) ⟨
-  (y + x * ¬ y) * (z + x * ¬ z)                             ≡⟨⟩
+-}
+  (y + x * (1# + y)) * (z + x * (1# + z))                             ≡⟨⟩
   (y ∨ x) * (z ∨ x)                                         ∎
   where
   open IdempotentCommutativeMonoidProperties *-idempotentCommutativeMonoid
