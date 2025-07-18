@@ -1168,6 +1168,10 @@ toList-replicate : ∀ (n : ℕ) (x : A) →
 toList-replicate zero    x = refl
 toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 
+cast-replicate : ∀ .(m≡n : m ≡ n) (x : A) → cast m≡n (replicate m x) ≡ replicate n x
+cast-replicate {m = zero}  {n = zero}  _  _  = refl
+cast-replicate {m = suc _} {n = suc _} eq x = cong (x ∷_) (cast-replicate (suc-injective eq) x)
+
 ------------------------------------------------------------------------
 -- pad
 
@@ -1212,16 +1216,10 @@ padRight-take : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m
 padRight-take m≤n a [] p = refl
 padRight-take (s≤s m≤n) a (x ∷ xs) p = cong (x ∷_) (padRight-take m≤n a xs (suc-injective p))
 
-
-cast-replicate : ∀ .(m≡n : m ≡ n) (x : A) → cast m≡n (replicate m x) ≡ replicate n x
-cast-replicate {m = zero}  {n = zero}  _  _  = refl
-cast-replicate {m = suc _} {n = suc _} eq x = cong (x ∷_) (cast-replicate (suc-injective eq) x)
-
 padRight-drop : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
                 drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
 padRight-drop {m = zero}  z≤n a [] eq = cast-replicate eq a
 padRight-drop {m = suc _} {n = suc _} (s≤s m≤n) a (x ∷ xs) eq = padRight-drop m≤n a xs (suc-injective eq)
-
 
 padRight-updateAt : ∀ (m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin m) (x : A) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
@@ -1235,7 +1233,6 @@ padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f (suc i) x = cong (y ∷
 iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate n x
 iterate-id x zero    = refl
 iterate-id x (suc n) = cong (_ ∷_) (iterate-id (id x) n)
-
 take-iterate : ∀ n f (x : A) → take n (iterate f x (n + m)) ≡ iterate f x n
 take-iterate zero    f x = refl
 take-iterate (suc n) f x = cong (_ ∷_) (take-iterate n f (f x))
