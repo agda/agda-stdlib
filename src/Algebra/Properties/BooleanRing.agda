@@ -51,6 +51,7 @@ open BooleanSemiring booleanSemiring public
 -- Export properties of Boolean semirings
 
 open import Algebra.Properties.BooleanSemiring booleanSemiring public
+  hiding (isBooleanRing; booleanRing)
 
 ------------------------------------------------------------------------
 -- Further consequences
