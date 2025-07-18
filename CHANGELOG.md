@@ -159,7 +159,7 @@ New modules
 
 * `Data.List.Sort.InsertionSort(.{Base|Properties})` - defines insertion sort and proves properties of insertion sort.
 
-* `Data.List.Sort.MergeSort(.{Base|Properties}` - a refactor of the previous `Data.List.Sort.MergenSort`.
+* `Data.List.Sort.MergeSort(.{Base|Properties})` - a refactor of the previous `Data.List.Sort.MergeSort`.
 
 * `Data.Sign.Show` - code for converting a sign to a string.
 
