@@ -149,6 +149,14 @@ New modules
 
 * `Algebra.Morphism.Construct.DirectProduct`.
 
+* `Algebra.Properties.BooleanRing`.
+
+* `Algebra.Properties.BooleanSemiring`.
+
+* `Algebra.Properties.CommutativeRing`.
+
+* `Algebra.Properties.Semiring`.
+
 * `Data.Bool.ListAction` - a new location for the lifted specialised list operations `Data.List.Base.{and|or|any|all}`.
 
 * `Data.Nat.ListAction(.Properties)` - a new location for the definitions and properties of `Data.List.Base.{sum|product}`.
@@ -175,6 +183,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Bundles`:
+  ```agda
+  record BooleanSemiring _ _ : Set _
+  record BooleanRing _ _     : Set _
+  ```
+
 * In `Algebra.Consequences.Base`:
   ```agda
   module Congruence (_≈_ : Rel A ℓ) (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
@@ -183,11 +197,19 @@ Additions to existing modules
     ∙-congʳ : RightCongruent _≈_ _∙_
   ```
 
+* In `Algebra.Consequences.Propositional`:
+  ```agda
+  binomial-expansion : Associative _∙_ → _◦_ DistributesOver _∙_ →
+    ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  ```
+
 * In `Algebra.Consequences.Setoid`:
   ```agda
   module Congruence (cong : Congruent₂ _≈_ _∙_) where
     ∙-congˡ : LeftCongruent _≈_ _∙_
     ∙-congʳ : RightCongruent _≈_ _∙_
+  binomial-expansion : Congruent₂ _∙_  → Associative _∙_ → _◦_ DistributesOver _∙_ →
+    ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
   ```
 
 * In `Algebra.Construct.Initial`:
@@ -223,6 +245,12 @@ Additions to existing modules
   kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
   quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
   commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ```
+
+* In `Algebra.Lattice.Properties.BooleanAlgebra.XorRing`:
+  ```agda
+  ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
+  ⊕-∧-booleanRing   : BooleanRing _ _
   ```
 
 * In `Algebra.Modules.Properties`:
@@ -288,27 +316,6 @@ Additions to existing modules
   uv≈wx⇒yu∙vz≈yw∙xz    : (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
   ```
 
-* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
-  ```agda
-  uv≈w⇒xu∙v≈xw          : ∀ x → (x ∙ u) ∙ v ≈ x ∙ w
-  uv≈w⇒u∙vx≈wx          : ∀ x → u ∙ (v ∙ x) ≈ w ∙ x
-  uv≈w⇒u[vx∙y]≈w∙xy     : ∀ x y → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ (x ∙ y)
-  uv≈w⇒x[uv∙y]≈x∙wy     : ∀ x y → x ∙ (u ∙ (v ∙ y)) ≈ x ∙ (w ∙ y)
-  uv≈w⇒[x∙yu]v≈x∙yw     : ∀ x y → (x ∙ (y ∙ u)) ∙ v ≈ x ∙ (y ∙ w)
-  uv≈w⇒[xu∙v]y≈x∙wy     : ∀ x y → ((x ∙ u) ∙ v) ∙ y ≈ x ∙ (w ∙ y)
-  uv≈w⇒[xy∙u]v≈x∙yw     : ∀ x y → ((x ∙ y) ∙ u) ∙ v ≈ x ∙ (y ∙ w)
-  uv≈w⇒xu∙vy≈x∙wy       : ∀ x y → (x ∙ u) ∙ (v ∙ y) ≈ x ∙ (w ∙ y)
-  uv≈w⇒xy≈z⇒u[vx∙y]≈wz  : ∀ z → x ∙ y ≈ z → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ z
-  uv≈w⇒x∙wy≈x∙[u∙vy]    : x ∙ (w ∙ y) ≈ x ∙ (u ∙ (v ∙ y))
-  [uv∙w]x≈u[vw∙x]       : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
-  [uv∙w]x≈u[v∙wx]       : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
-  [u∙vw]x≈uv∙wx         : (u ∙ (v ∙ w)) ∙ x ≈ (u ∙ v) ∙ (w ∙ x)
-  [u∙vw]x≈u[v∙wx]       : (u ∙ (v ∙ w)) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
-  uv∙wx≈u[vw∙x]         : (u ∙ v) ∙ (w ∙ x) ≈ u ∙ ((v ∙ w) ∙ x)
-  uv≈wx⇒yu∙v≈yw∙x       : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
-  uv≈wx⇒u∙vy≈w∙xy       : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
-  uv≈wx⇒yu∙vz≈yw∙xz     : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
-  ```
 
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
@@ -323,6 +330,13 @@ Additions to existing modules
   ```agda
   ∙-cong-∣ : x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
   ```
+
+* In `Algebra.Structures`:
+  ```agda
+  record IsBooleanSemiring + * 0# 1# : Set _
+  record IsBooleanRing + * - 0# 1# : Set _
+  ```
+  NB. the latter is based on `IsCommutativeRing`, with the former on `IsSemiring`.
 
 * In `Data.Bool.Properties`:
   ```agda
