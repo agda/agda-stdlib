@@ -65,3 +65,4 @@ Additions to existing modules
   record IsBooleanRing + * - 0# 1# : Set _
   ```
   NB. the latter is based on `IsCommutativeRing`, with the former on `IsSemiring`.
+  
