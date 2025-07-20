@@ -212,7 +212,7 @@ Flexible : Op₂ A → Set _
 Flexible _∙_ = ∀ x y → ((x ∙ y) ∙ x) ≈ (x ∙ (y ∙ x))
 
 Medial : Op₂ A → Set _
-Medial _∙_ = ∀ x y u z → ((x ∙ y) ∙ (u ∙ z)) ≈ ((x ∙ u) ∙ (y ∙ z))
+Medial _∙_ = Interchangable _∙_ _∙_
 
 LeftSemimedial : Op₂ A → Set _
 LeftSemimedial _∙_ = ∀ x y z → ((x ∙ x) ∙ (y ∙ z)) ≈ ((x ∙ y) ∙ (x ∙ z))
