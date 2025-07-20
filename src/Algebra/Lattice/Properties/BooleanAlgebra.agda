@@ -6,30 +6,31 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice.Bundles
+open import Algebra.Lattice.Bundles using (BooleanAlgebra)
 
 module Algebra.Lattice.Properties.BooleanAlgebra
-  {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
+  {c ℓ} (booleanAlgebra : BooleanAlgebra c ℓ)
   where
 
-open BooleanAlgebra B
+open import Algebra.Bundles
+  using (CommutativeSemiring; CommutativeRing; BooleanRing)
+open import Algebra.Core using (Op₂)
+open import Data.Product.Base using (_,_)
+open import Function.Base using (id; _$_; _⟨_⟩_)
+open import Function.Bundles using (_⇔_; module Equivalence)
 
-import Algebra.Lattice.Properties.DistributiveLattice as DistribLatticeProperties
-open import Algebra.Core using (Op₁; Op₂)
+open BooleanAlgebra booleanAlgebra
 open import Algebra.Structures _≈_
 open import Algebra.Definitions _≈_
 open import Algebra.Consequences.Setoid setoid
-open import Algebra.Bundles using (CommutativeSemiring; CommutativeRing)
 open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Function.Base using (id; _$_; _⟨_⟩_)
-open import Function.Bundles using (_⇔_; module Equivalence)
-open import Data.Product.Base using (_,_)
+
 
 ------------------------------------------------------------------------
 -- Export properties from distributive lattices
 
-open DistribLatticeProperties distributiveLattice public
+open import Algebra.Lattice.Properties.DistributiveLattice distributiveLattice public
 
 ------------------------------------------------------------------------
 -- The dual construction is also a boolean algebra
@@ -529,6 +530,12 @@ module XorRing
     { isCommutativeRing = ⊕-∧-isCommutativeRing
     }
 
+  ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
+  ⊕-∧-isBooleanRing = record
+    { isCommutativeRing = ⊕-∧-isCommutativeRing ; *-idem = ∧-idem }
+
+  ⊕-∧-booleanRing : BooleanRing _ _
+  ⊕-∧-booleanRing = record { isBooleanRing = ⊕-∧-isBooleanRing }
 
 infixl 6 _⊕_
 
