@@ -26,3 +26,8 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Properties.RingWithoutOne`:
+  ```agda
+  [-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
+  ```
