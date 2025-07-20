@@ -11,7 +11,7 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin
-  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_; inject≤)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as List
 open import Data.Nat.Base
@@ -153,22 +153,6 @@ take≡truncate : ∀ m (xs : Vec A (m + n)) →
                 take m xs ≡ truncate (m≤m+n m n) xs
 take≡truncate zero    _        = refl
 take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
-
-------------------------------------------------------------------------
--- pad
-
-padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
-padRight-refl a []       = refl
-padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
-
-padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate n a ≡ padRight m≤n a (replicate m a)
-padRight-replicate z≤n       a = refl
-padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
-
-padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
-            padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
-padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
-padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
 
 ------------------------------------------------------------------------
 -- truncate and padRight together
@@ -1184,13 +1168,71 @@ toList-replicate : ∀ (n : ℕ) (x : A) →
 toList-replicate zero    x = refl
 toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 
+cast-replicate : ∀ .(m≡n : m ≡ n) (x : A) → cast m≡n (replicate m x) ≡ replicate n x
+cast-replicate {m = zero}  {n = zero}  _  _  = refl
+cast-replicate {m = suc _} {n = suc _} eq x = cong (x ∷_) (cast-replicate (suc-injective eq) x)
+
+------------------------------------------------------------------------
+-- pad
+
+padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
+padRight-refl a []       = refl
+padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
+
+padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate n a ≡ padRight m≤n a (replicate m a)
+padRight-replicate z≤n       a = refl
+padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
+
+padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
+            padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
+padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
+padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
+
+padRight-lookup : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) →
+                  lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
+padRight-lookup (s≤s m≤n) a (x ∷ xs) zero = refl
+padRight-lookup (s≤s m≤n) a (x ∷ xs) (suc i) = padRight-lookup m≤n a xs i
+
+padRight-map : ∀ (f : A → B) (m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+               map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
+padRight-map f z≤n a [] = map-replicate f a _
+padRight-map f (s≤s m≤n) a (x ∷ xs) = cong (f x ∷_) (padRight-map f m≤n a xs)
+
+padRight-zipWith : ∀ (f : A → B → C) (m≤n : m ≤ n) (a : A) (b : B)
+                   (xs : Vec A m) (ys : Vec B m) →
+                   zipWith f (padRight m≤n a xs) (padRight m≤n b ys) ≡ padRight m≤n (f a b) (zipWith f xs ys)
+padRight-zipWith f z≤n a b [] [] = zipWith-replicate f a b
+padRight-zipWith f (s≤s m≤n) a b (x ∷ xs) (y ∷ ys) = cong (f x y ∷_) (padRight-zipWith f m≤n a b xs ys)
+
+padRight-zipWith₁ : ∀ {p} (f : A → B → C) (m≤n : m ≤ n) (p≤m : p ≤ m)
+                    (a : A) (b : B) (xs : Vec A m) (ys : Vec B p) →
+                    zipWith f (padRight m≤n a xs) (padRight (≤-trans p≤m m≤n) b ys) ≡
+                    padRight m≤n (f a b) (zipWith f xs (padRight p≤m b ys))
+padRight-zipWith₁ {p} f m≤n p≤m a b xs ys = trans (cong (zipWith f (padRight m≤n a xs)) (padRight-trans p≤m m≤n b ys))
+                                            (padRight-zipWith f m≤n a b xs (padRight p≤m b ys))
+
+padRight-take : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
+padRight-take m≤n a [] p = refl
+padRight-take (s≤s m≤n) a (x ∷ xs) p = cong (x ∷_) (padRight-take m≤n a xs (suc-injective p))
+
+padRight-drop : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+padRight-drop {m = zero}  z≤n a [] eq = cast-replicate eq a
+padRight-drop {m = suc _} {n = suc _} (s≤s m≤n) a (x ∷ xs) eq = padRight-drop m≤n a xs (suc-injective eq)
+
+padRight-updateAt : ∀ (m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin m) (x : A) →
+                    updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
+                    padRight m≤n x (updateAt xs i f)
+padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f zero x = refl
+padRight-updateAt {n = suc n} (s≤s m≤n) (y ∷ xs) f (suc i) x = cong (y ∷_) (padRight-updateAt m≤n xs f i x)
+
 ------------------------------------------------------------------------
 -- iterate
 
 iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate n x
 iterate-id x zero    = refl
 iterate-id x (suc n) = cong (_ ∷_) (iterate-id (id x) n)
-
 take-iterate : ∀ n f (x : A) → take n (iterate f x (n + m)) ≡ iterate f x n
 take-iterate zero    f x = refl
 take-iterate (suc n) f x = cong (_ ∷_) (take-iterate n f (f x))
