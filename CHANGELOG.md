@@ -31,4 +31,3 @@ Additions to existing modules
   ```agda
   [-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
   ```
-
