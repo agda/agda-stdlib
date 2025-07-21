@@ -444,6 +444,24 @@ Additions to existing modules
   fromList-reverse : (xs : List A) → (fromList (List.reverse xs)) ≈[ List.length-reverse xs ] reverse (fromList xs)
 
   fromList∘toList : ∀  (xs : Vec A n) → fromList (toList xs) ≈[ length-toList xs ] xs
+
+  padRight-lookup : ∀ {m n} → (m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) → lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
+
+  padRight-map : ∀ {m n} → (f : A → B) (m≤n : m ≤ n) (a : A) (xs : Vec A m) → map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
+
+  padRight-zipWith : ∀ {m n} → (f : A → B → C) (m≤n : m ≤ n) (a : A) (b : B) (xs : Vec A m) (ys : Vec B m) →
+                   zipWith f (padRight m≤n a xs) (padRight m≤n b ys) ≡ padRight m≤n (f a b) (zipWith f xs ys)
+
+  padRight-zipWith₁ : ∀ {o m n} → (f : A → B → C) (o≤m : o ≤ m) (m≤n : m ≤ n) (a : A) (b : B) (xs : Vec A m) (ys : Vec B o) →
+                    zipWith f (padRight m≤n a xs) (padRight (≤-trans o≤m m≤n) b ys) ≡
+                    padRight m≤n (f a b) (zipWith f xs (padRight o≤m b ys))
+
+  padRight-take : ∀ {m n o} → (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) → take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
+
+  padRight-drop : ∀ {m n o} → (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) → drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+
+  padRight-updateAt : ∀ {m n} → (m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
+                    updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
   ```
 
 * In `Data.Product.Nary.NonDependent`:
