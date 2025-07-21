@@ -1,6 +1,6 @@
 cabal-version:   2.4
 name:            agda-stdlib-utils
-version:         2.2
+version:         2.4
 build-type:      Simple
 description:     Helper programs for setting up the Agda standard library.
 license:         MIT
