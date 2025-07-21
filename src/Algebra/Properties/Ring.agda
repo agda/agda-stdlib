@@ -35,14 +35,15 @@ open RingWithoutOneProperties ringWithoutOne public
 ------------------------------------------------------------------------
 -- Reasoning combinators inherited from Monoid
 
-open PM +-monoid using () renaming
-  ( ε-unique to 0#-unique; ε-comm to 0#-comm
+open PM +-monoid public
+   using ()
+   renaming ( ε-unique to 0#-unique; ε-comm to 0#-comm
   ; elimʳ to +-elimʳ; introʳ to +-introʳ
   ; elimˡ to +-elimˡ; introˡ to +-introˡ
   ; introᶜ to +-introᶜ
   ; cancelʳ to +-cancel-invʳ; insertʳ to +-insertʳ
   ; cancelˡ to +-cancel-invˡ; insertˡ to +-insertˡ
-  ; cancelᶜ to +-cancel-invᶜ; insertᶜ to +-insertᶜ) public
+  ; cancelᶜ to +-cancel-invᶜ; insertᶜ to +-insertᶜ)
 
 open PM *-monoid using () renaming
   ( ε-unique to 1#-unique; ε-comm to 1#-comm
