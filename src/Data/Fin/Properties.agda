@@ -567,6 +567,11 @@ lower₁≗lower {n = zero}   zero    0≢0 = lower₁-¬0≢0 0≢0
 lower₁≗lower {n = suc _ } zero    _   = refl
 lower₁≗lower {n = suc _ } (suc i) ne  = cong suc (lower₁≗lower i (ne ∘ cong suc))
 
+lower≗lower₁ : ∀ (i : Fin (suc n)) .(i<n : toℕ i ℕ.< n) →
+               lower i i<n ≡ lower₁ i {!ℕ.<⇒≢ i<n ∘ sym!}
+lower≗lower₁ {n = suc _ } zero    _   = refl
+lower≗lower₁ {n = suc _ } (suc i) lt  = cong suc (lower≗lower₁ i (ℕ.s<s⁻¹ lt))
+
 ------------------------------------------------------------------------
 -- inject≤
 ------------------------------------------------------------------------
