@@ -19,8 +19,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Recomputable using (¬-recompute)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction-irr)
 
 private
   variable
@@ -117,11 +116,8 @@ inject≤ {n = suc _} (suc i) m≤n = suc (inject≤ i (ℕ.s≤s⁻¹ m≤n))
 
 -- lower₁ "i" _ = "i".
 
-lower₁-¬0≢0 : ∀ {ℓ} {A : Set ℓ} → .(0 ≢ 0) → A
-lower₁-¬0≢0 0≢0 = contradiction refl (¬-recompute 0≢0)
-
 lower₁ : ∀ (i : Fin (suc n)) → .(n ≢ toℕ i) → Fin n
-lower₁ {zero}  zero    ne = lower₁-¬0≢0 ne
+lower₁ {zero}  zero    ne = contradiction-irr refl ne
 lower₁ {suc n} zero    _  = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
@@ -257,7 +253,7 @@ opposite {suc n} (suc i) = inject₁ (opposite i)
 -- McBride's "First-order unification by structural recursion".
 
 punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
-punchOut {_}     {zero}   {zero}  i≢j = contradiction refl i≢j
+punchOut {_}     {zero}   {zero}  i≢j = contradiction-irr refl i≢j
 punchOut {_}     {zero}   {suc j} _   = j
 punchOut {suc _} {suc i}  {zero}  _   = zero
 punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))

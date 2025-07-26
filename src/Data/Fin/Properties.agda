@@ -46,7 +46,8 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contradiction-irr)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
@@ -506,15 +507,15 @@ inject!-< {suc n} {suc i} (suc k) = s≤s (inject!-< k)
 -- lower₁
 ------------------------------------------------------------------------
 
-toℕ-lower₁ : ∀ i .(p : n ≢ toℕ i) → toℕ (lower₁ i p) ≡ toℕ i
-toℕ-lower₁ {ℕ.zero}  zero    0≢0 = lower₁-¬0≢0 0≢0
+toℕ-lower₁ : ∀ i .(n≢i : n ≢ toℕ i) → toℕ (lower₁ i n≢i) ≡ toℕ i
+toℕ-lower₁ {ℕ.zero}  zero    0≢0 = contradiction-irr refl 0≢0
 toℕ-lower₁ {ℕ.suc m} zero    _   = refl
 toℕ-lower₁ {ℕ.suc m} (suc i) ne  = cong ℕ.suc (toℕ-lower₁ i (ne ∘ cong ℕ.suc))
 
 lower₁-injective : ∀ .{n≢i : n ≢ toℕ i} .{n≢j : n ≢ toℕ j} →
                    lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
-lower₁-injective {zero}  {zero}  {_}     {0≢0} {_}   _  = lower₁-¬0≢0 0≢0
-lower₁-injective {zero}  {_}     {zero}  {_}   {0≢0} _  = lower₁-¬0≢0 0≢0
+lower₁-injective {zero}  {zero}  {_}     {0≢0} {_}   _  = contradiction-irr refl 0≢0
+lower₁-injective {zero}  {_}     {zero}  {_}   {0≢0} _  = contradiction-irr refl 0≢0
 lower₁-injective {suc n} {zero}  {zero}  {_}   {_}   _  = refl
 lower₁-injective {suc n} {suc i} {suc j} {_}   {_}   eq =
   cong suc (lower₁-injective (suc-injective eq))
@@ -524,7 +525,7 @@ lower₁-injective {suc n} {suc i} {suc j} {_}   {_}   eq =
 
 inject₁-lower₁ : ∀ (i : Fin (suc n)) .(n≢i : n ≢ toℕ i) →
                  inject₁ (lower₁ i n≢i) ≡ i
-inject₁-lower₁ {zero}  zero     0≢0     = lower₁-¬0≢0 0≢0
+inject₁-lower₁ {zero}  zero     0≢0     = contradiction-irr refl 0≢0
 inject₁-lower₁ {suc n} zero     _       = refl
 inject₁-lower₁ {suc n} (suc i)  n+1≢i+1 =
   cong suc (inject₁-lower₁ i  (n+1≢i+1 ∘ cong suc))
@@ -541,7 +542,7 @@ lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)
 
 lower₁-irrelevant : ∀ (i : Fin (suc n)) .(n≢i₁ n≢i₂ : n ≢ toℕ i) →
                     lower₁ i n≢i₁ ≡ lower₁ i n≢i₂
-lower₁-irrelevant {zero}  zero     0≢0 _ = lower₁-¬0≢0 0≢0
+lower₁-irrelevant {zero}  zero     0≢0 _ = contradiction-irr refl 0≢0
 lower₁-irrelevant {suc n} zero     _   _ = refl
 lower₁-irrelevant {suc n} (suc i)  _   _ =
   cong suc (lower₁-irrelevant i _ _)
@@ -563,7 +564,7 @@ lower-injective {n = suc n} (suc i) (suc j) eq =
 
 lower₁≗lower : ∀ (i : Fin (suc n)) .(n≢i : n ≢ toℕ i) →
                lower₁ i n≢i ≡ lower i (ℕ.≤∧≢⇒< (toℕ≤pred[n]′ i) (n≢i ∘ sym))
-lower₁≗lower {n = zero}   zero    0≢0 = lower₁-¬0≢0 0≢0
+lower₁≗lower {n = zero}   zero    0≢0 = contradiction-irr refl 0≢0
 lower₁≗lower {n = suc _ } zero    _   = refl
 lower₁≗lower {n = suc _ } (suc i) ne  = cong suc (lower₁≗lower i (ne ∘ cong suc))
 
