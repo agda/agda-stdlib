@@ -1063,7 +1063,7 @@ injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f 
 injective⇒existsPivot {f = f} f-injective i
   with any? (λ j → j ≤? i ×-dec i ≤? f j)
 ... | yes result = result
-... | no ¬result = contradiction (injective⇒≤ f∘inject!-injective) ℕ.1+n≰n
+... | no ¬result = flip contradiction (<⇒notInjective (ℕ.n<1+n _)) f∘inject!-injective
   where
   fj<i : (j : Fin′ (suc i)) → f (inject! j) < i
   fj<i j with f (inject! j) <? i
