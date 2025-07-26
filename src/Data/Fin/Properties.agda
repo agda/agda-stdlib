@@ -1047,7 +1047,7 @@ injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m �
 injective⇒≤ = ℕ.≮⇒≥ ∘ flip <⇒notInjective
 
 ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f inj = 
+ℕ→Fin-notInjective f inj =
   <⇒notInjective (ℕ.n<1+n _) (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj)
 
 -- Cantor-Schröder-Bernstein for finite sets
