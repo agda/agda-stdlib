@@ -19,7 +19,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contradiction-irr)
 
 private
   variable
@@ -252,8 +252,8 @@ opposite {suc n} (suc i) = inject₁ (opposite i)
 -- This is a variant of the thick function from Conor
 -- McBride's "First-order unification by structural recursion".
 
-punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
-punchOut {_}     {zero}   {zero}  i≢j = contradiction refl i≢j
+punchOut : ∀ {i j : Fin (suc n)} → .(i ≢ j) → Fin n
+punchOut {_}     {zero}   {zero}  i≢j = contradiction-irr refl i≢j
 punchOut {_}     {zero}   {suc j} _   = j
 punchOut {suc _} {suc i}  {zero}  _   = zero
 punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))

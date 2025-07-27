@@ -46,7 +46,8 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contradiction-irr)
 open import Relation.Nullary.Reflects using (Reflects; invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
@@ -877,13 +878,17 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 -- can be changed out arbitrarily (reflecting the proof-irrelevance of
 -- that argument).
 
+punchOut-cong″ : ∀ (i : Fin (suc n)) {j k} (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                j ≡ k → punchOut i≢j ≡ punchOut i≢k
+punchOut-cong″ i i≢j i≢k refl = refl
+
 punchOut-cong : ∀ (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
                 j ≡ k → punchOut i≢j ≡ punchOut i≢k
-punchOut-cong {_}     zero    {zero}         {i≢j = 0≢0} = contradiction refl 0≢0
-punchOut-cong {_}     zero    {suc j} {zero} {i≢k = 0≢0} = contradiction refl 0≢0
+punchOut-cong {_}     zero    {zero}         {i≢j = 0≢0} = contradiction-irr refl 0≢0
+punchOut-cong {_}     zero    {suc j} {zero} {i≢k = 0≢0} = contradiction-irr refl 0≢0
 punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
-punchOut-cong {suc n} (suc i) {zero}  {zero}   _ = refl
-punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i ∘ suc-injective
+punchOut-cong {suc n} (suc i) {zero}  {zero}           _ = refl
+punchOut-cong {suc n} (suc i) {suc j} {suc k} {i≢j} {i≢k} j≡k   = cong suc (punchOut-cong i {i≢j = i≢j ∘ cong suc} {i≢k = i≢k ∘ cong suc} (suc-injective j≡k))
 
 -- An alternative to 'punchOut-cong' in the which the new inequality
 -- argument is specific. Useful for enabling the omission of that
@@ -891,13 +896,14 @@ punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i 
 
 punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
                  punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
-punchOut-cong′ i q = punchOut-cong i q
+punchOut-cong′ i {p = p} q =
+  punchOut-cong i {i≢j = p} {i≢k = p ∘ sym ∘ trans q ∘ sym} q
 
 punchOut-injective : ∀ {i j k : Fin (suc n)}
                      (i≢j : i ≢ j) (i≢k : i ≢ k) →
                      punchOut i≢j ≡ punchOut i≢k → j ≡ k
-punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction refl 0≢0
-punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction refl 0≢0
+punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction-irr refl 0≢0
+punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction-irr refl 0≢0
 punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
 punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
@@ -905,7 +911,7 @@ punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
 
 punchIn-punchOut : ∀ {i j : Fin (suc n)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
-punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
+punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction-irr refl 0≢0
 punchIn-punchOut {_}     {zero}   {suc j} _   = refl
 punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
@@ -914,11 +920,7 @@ punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
 punchOut-punchIn : ∀ i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
 punchOut-punchIn zero    {j}     = refl
 punchOut-punchIn (suc i) {zero}  = refl
-punchOut-punchIn (suc i) {suc j} = cong suc (begin
-  punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
-  punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
-  j                                                           ∎)
-  where open ≡-Reasoning
+punchOut-punchIn (suc i) {suc j} = cong suc (punchOut-punchIn i)
 
 
 ------------------------------------------------------------------------
@@ -1035,9 +1037,12 @@ pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × 
 pigeonhole z<s               f = contradiction (f zero) λ()
 pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
 ... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
-... | no  f₀≢fₖ
-  with i , j , i<j , fᵢ≡fⱼ ← pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
-  = suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
+... | no  ¬∃[k]f₀≡fₛₖ = 
+  let i , j , i<j , fᵢ≡fⱼ = pigeonhole m<n (λ k → punchOut (f₀≢fₛ k))
+  in suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₛ i) (f₀≢fₛ j) fᵢ≡fⱼ
+  where
+  f₀≢fₛ : ∀ k → f zero ≢ f (suc k)
+  f₀≢fₛ k = ¬∃[k]f₀≡fₛₖ ∘ (k ,_)
 
 injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
 injective⇒≤ {zero}  {_}     {f} _   = z≤n
