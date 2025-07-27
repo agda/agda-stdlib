@@ -94,7 +94,7 @@ open WF using (Acc; acc)
   induct : ∀ {i} → Acc _>_ i → P i
   induct {i} (acc rec) with view i
   ... | ‵fromℕ = Pₙ
-  ... | ‵inject₁ j = Pᵢ₊₁⇒Pᵢ j (induct (rec _ inject₁[j]+1≤[j+1]))
+  ... | ‵inject₁ j = Pᵢ₊₁⇒Pᵢ j (induct (rec inject₁[j]+1≤[j+1]))
     where
     inject₁[j]+1≤[j+1] : suc (toℕ (inject₁ j)) ≤ toℕ (suc j)
     inject₁[j]+1≤[j+1] = ≤-reflexive (toℕ-inject₁ (suc j))
