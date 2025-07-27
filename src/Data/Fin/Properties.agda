@@ -900,7 +900,7 @@ punchOut-cong′ i {p = p} q =
   punchOut-cong i {i≢j = p} {i≢k = p ∘ sym ∘ trans q ∘ sym} q
 
 punchOut-injective : ∀ {i j k : Fin (suc n)}
-                     (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                     .(i≢j : i ≢ j) (i≢k : i ≢ k) →
                      punchOut i≢j ≡ punchOut i≢k → j ≡ k
 punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction-irr refl 0≢0
 punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction-irr refl 0≢0
@@ -909,7 +909,7 @@ punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
 
-punchIn-punchOut : ∀ {i j : Fin (suc n)} (i≢j : i ≢ j) →
+punchIn-punchOut : ∀ {i j : Fin (suc n)} .(i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
 punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction-irr refl 0≢0
 punchIn-punchOut {_}     {zero}   {suc j} _   = refl

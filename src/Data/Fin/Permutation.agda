@@ -168,16 +168,20 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ j = begin
     from (to j)                                                      ≡⟨⟩
-    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong″ i {!!} {!!} (cong πˡ (punchIn-punchOut to-punchOut)) ⟩
-    punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _  ≡⟨ punchOut-cong″ i {!!} {!!} (inverseˡ π) ⟩
+    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _
+      ≡⟨ punchOut-cong″ i from-punchOut {!!} (cong πˡ (punchIn-punchOut to-punchOut)) ⟩
+    punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _
+      ≡⟨ punchOut-cong″ i {!!} (punchInᵢ≢i i j ∘ sym) (inverseˡ π) ⟩
     punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
     j                                                                ∎
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin
     to (from j)                                                       ≡⟨⟩
-    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _  ≡⟨ punchOut-cong″ (πʳ i) {!!} {!!} (cong πʳ (punchIn-punchOut from-punchOut)) ⟩
-    punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _  ≡⟨ punchOut-cong″ (πʳ i) {!!} {!!} (inverseʳ π) ⟩
+    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _
+      ≡⟨ punchOut-cong″ (πʳ i) to-punchOut {!!} (cong πʳ (punchIn-punchOut from-punchOut)) ⟩
+    punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _
+      ≡⟨ punchOut-cong″ (πʳ i) {!!} {!!} (inverseʳ π) ⟩
     punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
     j                                                                 ∎
 
@@ -326,7 +330,7 @@ insert-punchIn : ∀ i j (π : Permutation m n) k → insert i j π ⟨$⟩ʳ pu
 insert-punchIn i j π k with i ≟ punchIn i k
 ... | yes i≡punchInᵢk = contradiction (sym i≡punchInᵢk) (punchInᵢ≢i i k)
 ... | no  i≢punchInᵢk = begin
-  punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk)            ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
+  punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk)            ≡⟨⟩
   punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i k ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
   punchIn j (π ⟨$⟩ʳ k)                               ∎
 
@@ -343,7 +347,7 @@ remove-insert i j π k with i ≟ i
 ... | no i≢i = contradiction refl i≢i
 ... | yes _ = begin
   punchOut {i = j} _
-    ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
+    ≡⟨ punchOut-cong″ j {!!} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym) (insert-punchIn i j π k) ⟩
   punchOut {i = j} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym)
     ≡⟨ punchOut-punchIn j ⟩
   π ⟨$⟩ʳ k
