@@ -562,17 +562,6 @@ lower-injective {n = suc n} zero    zero    eq = refl
 lower-injective {n = suc n} (suc i) (suc j) eq =
   cong suc (lower-injective i j (suc-injective eq))
 
-lower₁≗lower : ∀ (i : Fin (suc n)) .(n≢i : n ≢ toℕ i) →
-               lower₁ i n≢i ≡ lower i (ℕ.≤∧≢⇒< (toℕ≤pred[n]′ i) (n≢i ∘ sym))
-lower₁≗lower {n = zero}   zero    0≢0 = contradiction-irr refl 0≢0
-lower₁≗lower {n = suc _ } zero    _   = refl
-lower₁≗lower {n = suc _ } (suc i) ne  = cong suc (lower₁≗lower i (ne ∘ cong suc))
-
-lower≗lower₁ : ∀ (i : Fin (suc n)) .(i<n : toℕ i ℕ.< n) →
-               lower i i<n ≡ lower₁ i (ℕ.<⇒≢ i<n ∘ sym)
-lower≗lower₁ {n = suc _ } zero    _   = refl
-lower≗lower₁ {n = suc _ } (suc i) lt  = cong suc (lower≗lower₁ i (ℕ.s<s⁻¹ lt))
-
 ------------------------------------------------------------------------
 -- inject≤
 ------------------------------------------------------------------------
