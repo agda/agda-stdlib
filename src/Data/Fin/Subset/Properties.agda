@@ -367,7 +367,7 @@ p∪∁p≡⊤ (inside  ∷ p) = cong (inside ∷_) (p∪∁p≡⊤ p)
 ∣∁p∣≡n∸∣p∣ (inside  ∷ p) = ∣∁p∣≡n∸∣p∣ p
 ∣∁p∣≡n∸∣p∣ (outside ∷ p) = begin
   suc ∣ ∁ p ∣     ≡⟨ cong suc (∣∁p∣≡n∸∣p∣ p) ⟩
-  suc (_ ∸ ∣ p ∣) ≡⟨ sym (ℕ.+-∸-assoc 1 (∣p∣≤n p)) ⟩
+  suc (_ ∸ ∣ p ∣) ≡⟨ sym (ℕ.∸-suc (∣p∣≤n p)) ⟩
   suc  _ ∸ ∣ p ∣  ∎
   where open ≡-Reasoning
 

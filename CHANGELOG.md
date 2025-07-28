@@ -15,6 +15,15 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
+  ```agda
+  README.Data.Fin.Relation.Unary.Top
+  Algebra.Properties.Semiring.Binomial
+  Data.Fin.Subset.Properties
+  Data.Nat.Binary.Subtraction
+  Data.Nat.Combinatorics
+  ```
+
 Deprecated modules
 ------------------
 
