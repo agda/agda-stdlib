@@ -12,7 +12,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; suc; cast; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F; 1F)
 open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
-  punchOut-cong; punchOut-cong′; punchOut-cong″; punchIn-punchOut
+  punchOut-cong; punchIn-punchOut
   ; _≟_; ¬Fin0; cast-involutive; opposite-involutive)
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero; 2+)
@@ -28,7 +28,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (does; ¬_; yes; no)
 open import Relation.Nullary.Decidable using (dec-yes; dec-no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; contradiction-irr)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; subst; cong; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -167,23 +167,23 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ j = begin
-    from (to j)                                                      ≡⟨⟩
-    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _
-      ≡⟨ punchOut-cong″ i from-punchOut {!!} (cong πˡ (punchIn-punchOut to-punchOut)) ⟩
-    punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _
-      ≡⟨ punchOut-cong″ i {!!} (punchInᵢ≢i i j ∘ sym) (inverseˡ π) ⟩
-    punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
-    j                                                                ∎
+    from (to j)                                                          ≡⟨⟩
+    punchOut {i = i} {j = πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong i (cong πˡ (punchIn-punchOut to-punchOut)) ⟩
+    punchOut {j = πˡ (πʳ (punchIn i j))} neq                             ≡⟨ punchOut-cong i (inverseˡ π) ⟩
+    punchOut {i = i} {j = punchIn i j}                            _      ≡⟨ punchOut-punchIn i ⟩
+    j                                                                    ∎
+    where
+    neq : _
+    neq eq = punchInᵢ≢i i j (sym (trans eq (inverseˡ π)))
+    
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin
-    to (from j)                                                       ≡⟨⟩
-    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _
-      ≡⟨ punchOut-cong″ (πʳ i) to-punchOut {!!} (cong πʳ (punchIn-punchOut from-punchOut)) ⟩
-    punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _
-      ≡⟨ punchOut-cong″ (πʳ i) {!!} {!!} (inverseʳ π) ⟩
-    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
-    j                                                                 ∎
+    to (from j)                                                         ≡⟨⟩
+    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _    ≡⟨ punchOut-cong (πʳ i) (cong πʳ (punchIn-punchOut from-punchOut)) ⟩
+    punchOut {j = πʳ (πˡ (punchIn (πʳ i) j))} (permute-≢ from-punchOut) ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
+    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _    ≡⟨ punchOut-punchIn (πʳ i) ⟩
+    j                                                                   ∎
 
 ------------------------------------------------------------------------
 -- Lifting
@@ -289,8 +289,9 @@ module _ (π : Permutation (suc m) (suc n)) where
   lift₀-remove p 0F      = sym p
   lift₀-remove p (suc i) = punchOut-zero (πʳ (suc i)) p
     where
-    punchOut-zero : ∀ {i} (j : Fin (suc n)) {neq} → i ≡ 0F → suc (punchOut {i = i} {j} neq) ≡ j
-    punchOut-zero 0F {neq} p = contradiction p neq
+    punchOut-zero : ∀ {i} (j : Fin (suc n)) .{neq} →
+                    i ≡ 0F → suc (punchOut {i = i} {j} neq) ≡ j
+    punchOut-zero 0F {neq} eq = contradiction-irr eq neq
     punchOut-zero (suc j) refl = refl
 
 ↔⇒≡ : Permutation m n → m ≡ n
@@ -347,7 +348,7 @@ remove-insert i j π k with i ≟ i
 ... | no i≢i = contradiction refl i≢i
 ... | yes _ = begin
   punchOut {i = j} _
-    ≡⟨ punchOut-cong″ j {!!} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym) (insert-punchIn i j π k) ⟩
+    ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
   punchOut {i = j} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym)
     ≡⟨ punchOut-punchIn j ⟩
   π ⟨$⟩ʳ k
