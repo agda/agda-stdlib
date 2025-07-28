@@ -9,6 +9,8 @@ Highlights
 Bug-fixes
 ---------
 
+* Fix a type error in `README.Data.Fin.Relation.Unary.Top` within the definition of `>-weakInduction`.
+
 Non-backwards compatible changes
 --------------------------------
 
