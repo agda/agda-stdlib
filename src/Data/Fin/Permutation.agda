@@ -175,7 +175,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
     where
     neq : _
     neq eq = punchInᵢ≢i i j (sym (trans eq (inverseˡ π)))
-    
+
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin

@@ -1033,7 +1033,7 @@ pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × 
 pigeonhole z<s               f = contradiction (f zero) λ()
 pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
 ... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
-... | no  ¬∃[k]f₀≡fₛₖ = 
+... | no  ¬∃[k]f₀≡fₛₖ =
   let i , j , i<j , fᵢ≡fⱼ = pigeonhole m<n (λ k → punchOut (f₀≢fₛ k))
   in suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₛ i) (f₀≢fₛ j) fᵢ≡fⱼ
   where
