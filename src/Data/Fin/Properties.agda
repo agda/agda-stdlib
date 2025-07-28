@@ -878,11 +878,7 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 -- can be changed out arbitrarily (reflecting the proof-irrelevance of
 -- that argument).
 
-punchOut-cong″ : ∀ (i : Fin (suc n)) {j k} (i≢j : i ≢ j) (i≢k : i ≢ k) →
-                j ≡ k → punchOut i≢j ≡ punchOut i≢k
-punchOut-cong″ i i≢j i≢k refl = refl
-
-punchOut-cong : ∀ (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
+punchOut-cong : ∀ (i : Fin (suc n)) {j k} .{i≢j : i ≢ j} .{i≢k : i ≢ k} →
                 j ≡ k → punchOut i≢j ≡ punchOut i≢k
 punchOut-cong {_}     zero    {zero}         {i≢j = 0≢0} = contradiction-irr refl 0≢0
 punchOut-cong {_}     zero    {suc j} {zero} {i≢k = 0≢0} = contradiction-irr refl 0≢0
@@ -900,7 +896,7 @@ punchOut-cong′ i {p = p} q =
   punchOut-cong i {i≢j = p} {i≢k = p ∘ sym ∘ trans q ∘ sym} q
 
 punchOut-injective : ∀ {i j k : Fin (suc n)}
-                     .(i≢j : i ≢ j) (i≢k : i ≢ k) →
+                     .(i≢j : i ≢ j) .(i≢k : i ≢ k) →
                      punchOut i≢j ≡ punchOut i≢k → j ≡ k
 punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction-irr refl 0≢0
 punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction-irr refl 0≢0
