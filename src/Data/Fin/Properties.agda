@@ -883,8 +883,8 @@ punchOut-cong : ∀ (i : Fin (suc n)) {j k} .{i≢j : i ≢ j} .{i≢k : i ≢ k
 punchOut-cong {_}     zero    {zero}         {i≢j = 0≢0} = contradiction-irr refl 0≢0
 punchOut-cong {_}     zero    {suc j} {zero} {i≢k = 0≢0} = contradiction-irr refl 0≢0
 punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
-punchOut-cong {suc n} (suc i) {zero}  {zero}           _ = refl
-punchOut-cong {suc n} (suc i) {suc j} {suc k} {i≢j} {i≢k} j≡k   = cong suc (punchOut-cong i {i≢j = i≢j ∘ cong suc} {i≢k = i≢k ∘ cong suc} (suc-injective j≡k))
+punchOut-cong {suc n} (suc i) {zero}  {zero}             = λ _ → refl
+punchOut-cong {suc n} (suc i) {suc j} {suc k}            = cong suc ∘ punchOut-cong i ∘ suc-injective
 
 -- An alternative to 'punchOut-cong' in the which the new inequality
 -- argument is specific. Useful for enabling the omission of that
