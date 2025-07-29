@@ -171,7 +171,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
     punchOut {i = i} _ ≡⟨ punchOut-cong i (cong πˡ eq) ⟩
     punchOut neq       ≡⟨ punchOut-cong i (inverseˡ π) ⟩
     punchOut {i = i} _ ≡⟨ punchOut-punchIn i ⟩
-    j                                                                   ∎
+    j                  ∎
     where
     eq : punchIn (πʳ i) (to j) ≡ πʳ (punchIn i j)
     eq = punchIn-punchOut to-punchOut
@@ -185,7 +185,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
     punchOut {i = πʳ i} _ ≡⟨ punchOut-cong (πʳ i) (cong πʳ eq) ⟩
     punchOut neq          ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
     punchOut {i = πʳ i} _ ≡⟨ punchOut-punchIn (πʳ i) ⟩
-    j                                                                   ∎
+    j                     ∎
     where
     eq : punchIn i (from j) ≡ πˡ (punchIn (πʳ i) j)
     eq = punchIn-punchOut from-punchOut
