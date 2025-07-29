@@ -167,11 +167,11 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ j = begin
-    from (to j)                                                          ≡⟨⟩
-    punchOut {i = i} {j = πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong i (cong πˡ (punchIn-punchOut to-punchOut)) ⟩
-    punchOut {j = πˡ (πʳ (punchIn i j))} neq                             ≡⟨ punchOut-cong i (inverseˡ π) ⟩
-    punchOut {i = i} {j = punchIn i j}                            _      ≡⟨ punchOut-punchIn i ⟩
-    j                                                                    ∎
+    from (to j)                                                         ≡⟨⟩
+    punchOut {i = i} {j = πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _ ≡⟨ punchOut-cong i (cong πˡ (punchIn-punchOut to-punchOut)) ⟩
+    punchOut {j = πˡ (πʳ (punchIn i j))} neq                            ≡⟨ punchOut-cong i (inverseˡ π) ⟩
+    punchOut {i = i} {j = punchIn i j}                                _ ≡⟨ punchOut-punchIn i ⟩
+    j                                                                   ∎
     where
     neq : _
     neq eq = punchInᵢ≢i i j (sym (trans eq (inverseˡ π)))
@@ -179,10 +179,10 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin
-    to (from j)                                                         ≡⟨⟩
-    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _    ≡⟨ punchOut-cong (πʳ i) (cong πʳ (punchIn-punchOut from-punchOut)) ⟩
-    punchOut {j = πʳ (πˡ (punchIn (πʳ i) j))} (permute-≢ from-punchOut) ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
-    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _    ≡⟨ punchOut-punchIn (πʳ i) ⟩
+    to (from j)                          ≡⟨⟩
+    punchOut {i = πʳ i}                _ ≡⟨ punchOut-cong (πʳ i) (cong πʳ (punchIn-punchOut from-punchOut)) ⟩
+    punchOut (permute-≢ from-punchOut)   ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
+    punchOut {i = πʳ i}                _ ≡⟨ punchOut-punchIn (πʳ i) ⟩
     j                                                                   ∎
 
 ------------------------------------------------------------------------
