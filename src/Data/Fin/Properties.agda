@@ -892,8 +892,7 @@ punchOut-cong {suc n} (suc i) {suc j} {suc k} {i≢j} {i≢k} j≡k   = cong suc
 
 punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
                  punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
-punchOut-cong′ i {p = p} q =
-  punchOut-cong i {i≢j = p} {i≢k = p ∘ sym ∘ trans q ∘ sym} q
+punchOut-cong′ i q = punchOut-cong i q
 
 punchOut-injective : ∀ {i j k : Fin (suc n)}
                      .(i≢j : i ≢ j) .(i≢k : i ≢ k) →
