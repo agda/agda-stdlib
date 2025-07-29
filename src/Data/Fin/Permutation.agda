@@ -167,23 +167,30 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ j = begin
-    from (to j)                                                         ≡⟨⟩
-    punchOut {i = i} {j = πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _ ≡⟨ punchOut-cong i (cong πˡ (punchIn-punchOut to-punchOut)) ⟩
-    punchOut {j = πˡ (πʳ (punchIn i j))} neq                            ≡⟨ punchOut-cong i (inverseˡ π) ⟩
-    punchOut {i = i} {j = punchIn i j}                                _ ≡⟨ punchOut-punchIn i ⟩
+    from (to j)        ≡⟨⟩
+    punchOut {i = i} _ ≡⟨ punchOut-cong i (cong πˡ eq) ⟩
+    punchOut neq       ≡⟨ punchOut-cong i (inverseˡ π) ⟩
+    punchOut {i = i} _ ≡⟨ punchOut-punchIn i ⟩
     j                                                                   ∎
     where
-    neq : _
+    eq : punchIn (πʳ i) (to j) ≡ πʳ (punchIn i j)
+    eq = punchIn-punchOut to-punchOut
+    neq : i ≢ πˡ (πʳ (punchIn i j))
     neq eq = punchInᵢ≢i i j (sym (trans eq (inverseˡ π)))
 
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin
-    to (from j)                          ≡⟨⟩
-    punchOut {i = πʳ i}                _ ≡⟨ punchOut-cong (πʳ i) (cong πʳ (punchIn-punchOut from-punchOut)) ⟩
-    punchOut (permute-≢ from-punchOut)   ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
-    punchOut {i = πʳ i}                _ ≡⟨ punchOut-punchIn (πʳ i) ⟩
+    to (from j)           ≡⟨⟩
+    punchOut {i = πʳ i} _ ≡⟨ punchOut-cong (πʳ i) (cong πʳ eq) ⟩
+    punchOut neq          ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
+    punchOut {i = πʳ i} _ ≡⟨ punchOut-punchIn (πʳ i) ⟩
     j                                                                   ∎
+    where
+    eq : punchIn i (from j) ≡ πˡ (punchIn (πʳ i) j)
+    eq = punchIn-punchOut from-punchOut
+    neq : πʳ i ≢ πʳ (πˡ (punchIn (πʳ i) j))
+    neq = permute-≢ from-punchOut
 
 ------------------------------------------------------------------------
 -- Lifting
