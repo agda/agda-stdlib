@@ -245,7 +245,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
     rewrite dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) j≢punchInⱼπʳpunchOuti≢k
     = begin
     punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)                    ≡⟨⟩
-    punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
+    punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (punchIn i ∘ (π ⟨$⟩ˡ_)) (punchOut-punchIn j) ⟩
     punchIn i (π ⟨$⟩ˡ (π ⟨$⟩ʳ punchOut i≢k))                               ≡⟨ cong (punchIn i) (inverseˡ π) ⟩
     punchIn i (punchOut i≢k)                                               ≡⟨ punchIn-punchOut i≢k ⟩
     k                                                                      ∎
@@ -258,7 +258,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
     rewrite dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) i≢punchInᵢπˡpunchOutj≢k
     = begin
     punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                    ≡⟨⟩
-    punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
+    punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (punchIn j ∘ (π ⟨$⟩ʳ_)) (punchOut-punchIn i) ⟩
     punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))                               ≡⟨ cong (punchIn j) (inverseʳ π) ⟩
     punchIn j (punchOut j≢k)                                               ≡⟨ punchIn-punchOut j≢k ⟩
     k                                                                      ∎
@@ -334,19 +334,18 @@ lift₀-transpose i j (suc k) with does (k ≟ i)
 ...   | false = refl
 ...   | true = refl
 
-insert-punchIn : ∀ i j (π : Permutation m n) k → insert i j π ⟨$⟩ʳ punchIn i k ≡ punchIn j (π ⟨$⟩ʳ k)
+insert-punchIn : ∀ i j (π : Permutation m n) k →
+                 insert i j π ⟨$⟩ʳ punchIn i k ≡ punchIn j (π ⟨$⟩ʳ k)
 insert-punchIn i j π k with i ≟ punchIn i k
 ... | yes i≡punchInᵢk = contradiction (sym i≡punchInᵢk) (punchInᵢ≢i i k)
-... | no  i≢punchInᵢk = begin
-  punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk)            ≡⟨⟩
-  punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i k ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
-  punchIn j (π ⟨$⟩ʳ k)                               ∎
+... | no  i≢punchInᵢk = cong (punchIn j ∘ (π ⟨$⟩ʳ_)) (punchOut-punchIn i)
 
-insert-remove : ∀ i (π : Permutation (suc m) (suc n)) → insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
-insert-remove {m = m} {n = n} i π j with i ≟ j
+insert-remove : ∀ i (π : Permutation (suc m) (suc n)) →
+                insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
+insert-remove i π j with i ≟ j
 ... | yes i≡j = cong (π ⟨$⟩ʳ_) i≡j
 ... | no  i≢j = begin
-  punchIn (π ⟨$⟩ʳ i) (punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ Injection.injective (↔⇒↣ π))) ≡⟨ punchIn-punchOut _ ⟩
+  punchIn (π ⟨$⟩ʳ i) _            ≡⟨ punchIn-punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ Injection.injective (↔⇒↣ π)) ⟩
   π ⟨$⟩ʳ punchIn i (punchOut i≢j) ≡⟨ cong (π ⟨$⟩ʳ_) (punchIn-punchOut i≢j) ⟩
   π ⟨$⟩ʳ j ∎
 
@@ -354,9 +353,6 @@ remove-insert : ∀ i j (π : Permutation m n) → remove i (insert i j π) ≈ 
 remove-insert i j π k with i ≟ i
 ... | no i≢i = contradiction refl i≢i
 ... | yes _ = begin
-  punchOut {i = j} _
-    ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
-  punchOut {i = j} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym)
-    ≡⟨ punchOut-punchIn j ⟩
-  π ⟨$⟩ʳ k
-    ∎
+  punchOut {i = j} _                       ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
+  punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym) ≡⟨ punchOut-punchIn j ⟩
+  π ⟨$⟩ʳ k                                 ∎
