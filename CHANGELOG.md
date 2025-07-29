@@ -41,6 +41,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Data.Fin.Properties`:
+  ```agda
+  punchOut-cong′  ↦  punchOut-cong
+  ```
+
 New modules
 -----------
 

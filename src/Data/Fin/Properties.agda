@@ -886,14 +886,6 @@ punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
 punchOut-cong {suc n} (suc i) {zero}  {zero}             = λ _ → refl
 punchOut-cong {suc n} (suc i) {suc j} {suc k}            = cong suc ∘ punchOut-cong i ∘ suc-injective
 
--- An alternative to 'punchOut-cong' in the which the new inequality
--- argument is specific. Useful for enabling the omission of that
--- argument during equational reasoning.
-
-punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
-                 punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
-punchOut-cong′ i q = punchOut-cong i q
-
 punchOut-injective : ∀ {i j k : Fin (suc n)}
                      .(i≢j : i ≢ j) .(i≢k : i ≢ k) →
                      punchOut i≢j ≡ punchOut i≢k → j ≡ k
@@ -1232,4 +1224,14 @@ Please use <⇒<′ instead."
 {-# WARNING_ON_USAGE <′⇒≺
 "Warning: <′⇒≺ was deprecated in v2.0.
 Please use <′⇒< instead."
+#-}
+
+-- Version 2.4
+
+punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
+                 punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
+punchOut-cong′ i q = punchOut-cong i q
+{-# WARNING_ON_USAGE punchOut-cong′
+"Warning: punchOut-cong′ was deprecated in v2.4.
+Please use punchOut-cong instead."
 #-}
