@@ -377,10 +377,10 @@ record IsAbelianGroup (∙ : Op₂ A)
 -- *additive* structure over the multiplicative: thus for structure
 -- `IsNearSemiring` defined here, the additive structure is declared
 -- via a field `+-isMonoid : IsMonoid + 0#`, while the multiplicative
--- is given 'unbundled' as the *components* of an `IsMagma *` structure,
+-- is given 'unbundled' as the *components* of an `IsSemigroup *` structure,
 -- namely as an operation satisfying both `*-cong : Congruent₂ *` and
 -- also `*-assoc : Associative *`, from which the corresponding `IsMagma *`
--- may then be immediately derived.
+-- and `IsSemigroup *` are then immediately derived.
 
 -- Similar considerations apply to all of the `Ring`-like structures below.
 
