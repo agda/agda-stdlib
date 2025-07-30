@@ -11,14 +11,14 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin
-  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_; inject≤)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as List
 open import Data.Nat.Base
-  using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_; s≤s⁻¹; z≤n)
+  using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_; s≤s⁻¹; z≤n; _∸_)
 open import Data.Nat.Properties
   using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″
-        ; suc-injective; +-comm; +-suc; +-identityʳ)
+        ; suc-injective; +-comm; +-suc; +-identityʳ; m≤n⇒∃[o]m+o≡n)
 open import Data.Product.Base as Product
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -104,6 +104,11 @@ take-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
 take-map f zero    xs       = refl
 take-map f (suc m) (x ∷ xs) = cong (f x ∷_) (take-map f m xs)
 
+take-updateAt : (f : A → A) {m n : ℕ} (xs : Vec A (m + n)) (i : Fin m) →
+                updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
+take-updateAt f (_ ∷ _ ) zero    = refl
+take-updateAt f (x ∷ xs) (suc i) = cong (x ∷_) (take-updateAt f xs i)
+
 ------------------------------------------------------------------------
 -- drop
 
@@ -153,6 +158,70 @@ take≡truncate : ∀ m (xs : Vec A (m + n)) →
                 take m xs ≡ truncate (m≤m+n m n) xs
 take≡truncate zero    _        = refl
 take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
+
+truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
+  truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+truncate-zipWith f z≤n xs ys = refl
+truncate-zipWith f (s≤s m≤n) (x ∷ xs) (y ∷ ys) =
+  cong (f x y ∷_) (truncate-zipWith f m≤n xs ys)
+
+truncate-zipWith-truncate : ∀ (f : A → B → C) (o≤m : o ≤ m) (m≤n : m ≤ n)
+  (xs : Vec A n) (ys : Vec B m) →
+  let o≤n = ≤-trans o≤m m≤n in
+  truncate o≤m (zipWith f (truncate m≤n xs) ys) ≡
+  zipWith f (truncate o≤n xs) (truncate o≤m ys)
+truncate-zipWith-truncate f o≤m m≤n xs ys =
+  let o≤n = ≤-trans o≤m m≤n in
+  trans (truncate-zipWith f o≤m (truncate m≤n xs) ys)
+  (cong (λ zs → zipWith f zs (truncate o≤m ys)) ((sym (truncate-trans o≤m m≤n xs))))
+
+zipWith-truncate : ∀ (f : A → B → C) {p q : ℕ} (xs : Vec A (p + q)) (ys : Vec B (p + q)) →
+  let p≤p+q = m≤m+n p q in
+  zipWith f (truncate p≤p+q xs) (truncate p≤p+q ys) ≡ truncate p≤p+q (zipWith f xs ys)
+zipWith-truncate f {p} {q} xs ys =
+  let p≤p+q = m≤m+n p q in
+  begin
+    zipWith f (truncate p≤p+q xs) (truncate p≤p+q ys) ≡⟨ cong₂ (zipWith f) (take≡truncate p xs) (take≡truncate p ys) ⟨
+    zipWith f (take p xs) (take p ys)                 ≡⟨ take-zipWith f xs ys ⟨
+    take p (zipWith f xs ys)                          ≡⟨ take≡truncate p (zipWith f xs ys) ⟩
+    truncate p≤p+q (zipWith f xs ys) ∎ where open ≡-Reasoning
+
+module _  (f : A → B → C) {o m n : ℕ} (xs : Vec A (o + m + n)) (ys : Vec B (o + m)) where
+  private
+    o≤o+m = m≤m+n o m
+    o+m≤o+m+n = m≤m+n (o + m) n
+    o≤o+m+n = ≤-trans (m≤m+n o m) (m≤m+n (o + m) n)
+
+  zipWith-truncate₁ : zipWith f (truncate o≤o+m+n xs) (truncate (o≤o+m) ys) ≡
+    truncate (o≤o+m) (zipWith f (truncate (o+m≤o+m+n) xs) ys)
+  zipWith-truncate₁ =
+    trans (cong (λ zs → zipWith f zs (truncate (o≤o+m) ys)) (truncate-trans (o≤o+m) (o+m≤o+m+n) xs))
+    (zipWith-truncate f (truncate (o+m≤o+m+n) xs) ys)
+
+truncate-updateAt : (f : A → A) (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
+                    updateAt (truncate m≤n xs) i f ≡ truncate m≤n (updateAt xs (inject≤ i m≤n) f)
+truncate-updateAt f (s≤s _  ) (_ ∷ _ ) zero = refl
+truncate-updateAt f (s≤s m≤n) (x ∷ xs) (suc i) = cong (x ∷_) (truncate-updateAt f m≤n xs i)
+
+module _  (f : A → A) {p q : ℕ} (xs : Vec A (p + q)) (i : Fin p) where
+  private
+    p≤p+q : p ≤ p + q
+    p≤p+q = m≤m+n p q
+    i′ : Fin (p + q)
+    i′ = inject≤ i p≤p+q
+  
+  updateAt-truncate : updateAt (truncate p≤p+q xs) i f ≡ truncate p≤p+q (updateAt xs i′ f)
+  updateAt-truncate = begin
+    updateAt (truncate p≤p+q xs) i f ≡⟨ cong (λ l → updateAt l i f) (sym (take≡truncate p xs)) ⟩
+    updateAt (take p xs) i f          ≡⟨ take-updateAt f xs i ⟩
+    take p (updateAt xs i′ f)         ≡⟨ take≡truncate p (updateAt xs i′ f) ⟩
+    truncate p≤p+q (updateAt xs i′ f) ∎ where open ≡-Reasoning
+
+truncate++drop≡id : (xs : Vec A (m + n)) → truncate (m≤m+n m n) xs ++ drop m xs ≡ xs
+truncate++drop≡id {m = m} {n} xs = begin
+  truncate (m≤m+n m n) xs ++ drop m xs ≡⟨ cong (_++ drop m xs) (take≡truncate m xs) ⟨
+  take m xs ++ drop m xs               ≡⟨ take++drop≡id m xs ⟩
+  xs ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- pad
@@ -471,6 +540,20 @@ toList-map : ∀ (f : A → B) (xs : Vec A n) →
              toList (map f xs) ≡ List.map f (toList xs)
 toList-map f [] = refl
 toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
+
+truncate-map : (f : A → B) (m : ℕ) (m≤n : m ≤ n) (xs : Vec A n) →
+  map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+truncate-map {n = n} f m m≤n xs =
+  begin
+    map f (truncate m≤n xs)     ≡⟨ cong (map f) (truncate≡take m≤n xs eq) ⟩
+    map f (take m (cast eq xs)) ≡⟨ take-map f m _ ⟨
+    take m (map f (cast eq xs)) ≡⟨ cong (take m) (map-cast f eq xs) ⟩
+    take m (cast eq (map f xs)) ≡⟨ truncate≡take m≤n (map f xs) eq ⟨
+    truncate m≤n (map f xs) ∎
+ where
+   .eq : n ≡ m + (n ∸ m)
+   eq = sym (proj₂ (m≤n⇒∃[o]m+o≡n m≤n))
+   open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _++_
