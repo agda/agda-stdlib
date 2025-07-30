@@ -667,7 +667,6 @@ Additions to existing modules
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
->>>>>>> da073f171 (Wellfounded proof for sum relations (#1920))
   ```agda
   ⊤-dec : Dec ⊤
   ⊥-dec : Dec ⊥
