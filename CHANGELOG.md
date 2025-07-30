@@ -576,6 +576,11 @@ Additions to existing modules
   map-id           : map id ≗ id
   ```
 
+* In `Data.Nat.Combinatorics.Specification`:
+  ```agda
+  k![n∸k]!∣n! : k ≤ n →  k ! * (n ∸ k) ! ∣ n !
+  ```
+  
 * In `Data.Product.Function.Dependent.Propositional`:
   ```agda
   Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
