@@ -9,6 +9,8 @@ Highlights
 Bug-fixes
 ---------
 
+* Fix a type error in `README.Data.Fin.Relation.Unary.Top` within the definition of `>-weakInduction`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -20,6 +22,16 @@ Minor improvements
   backwards compatible, but does change the equational behaviour of these
   functions to be more eager, because no longer blocking on pattern matching
   on that argument.
+  ```
+
+* Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
+  ```agda
+  README.Data.Fin.Relation.Unary.Top
+  Algebra.Properties.Semiring.Binomial
+  Data.Fin.Subset.Properties
+  Data.Nat.Binary.Subtraction
+  Data.Nat.Combinatorics
+  ```
 
 Deprecated modules
 ------------------
@@ -32,3 +44,9 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ```
+
