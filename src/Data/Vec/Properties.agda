@@ -213,8 +213,8 @@ module _  (f : A → A) {p q : ℕ} (xs : Vec A (p + q)) (i : Fin p) where
   updateAt-truncate : updateAt (truncate p≤p+q xs) i f ≡ truncate p≤p+q (updateAt xs i′ f)
   updateAt-truncate = begin
     updateAt (truncate p≤p+q xs) i f ≡⟨ cong (λ l → updateAt l i f) (sym (take≡truncate p xs)) ⟩
-    updateAt (take p xs) i f          ≡⟨ take-updateAt f xs i ⟩
-    take p (updateAt xs i′ f)         ≡⟨ take≡truncate p (updateAt xs i′ f) ⟩
+    updateAt (take p xs) i f         ≡⟨ take-updateAt f xs i ⟩
+    take p (updateAt xs i′ f)        ≡⟨ take≡truncate p (updateAt xs i′ f) ⟩
     truncate p≤p+q (updateAt xs i′ f) ∎ where open ≡-Reasoning
 
 truncate++drop≡id : (xs : Vec A (m + n)) → truncate (m≤m+n m n) xs ++ drop m xs ≡ xs
