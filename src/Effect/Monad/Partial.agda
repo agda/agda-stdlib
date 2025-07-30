@@ -1,4 +1,4 @@
-module Partial where
+module Effect.Monad.Partial where
 
 open import Level
 
