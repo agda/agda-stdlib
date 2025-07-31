@@ -288,28 +288,6 @@ Additions to existing modules
   uv≈wx⇒yu∙vz≈yw∙xz    : (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
   ```
 
-* In `Algebra.Properties.Semigroup` adding consequences for associativity for semigroups
-  ```agda
-  uv≈w⇒xu∙v≈xw          : ∀ x → (x ∙ u) ∙ v ≈ x ∙ w
-  uv≈w⇒u∙vx≈wx          : ∀ x → u ∙ (v ∙ x) ≈ w ∙ x
-  uv≈w⇒u[vx∙y]≈w∙xy     : ∀ x y → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ (x ∙ y)
-  uv≈w⇒x[uv∙y]≈x∙wy     : ∀ x y → x ∙ (u ∙ (v ∙ y)) ≈ x ∙ (w ∙ y)
-  uv≈w⇒[x∙yu]v≈x∙yw     : ∀ x y → (x ∙ (y ∙ u)) ∙ v ≈ x ∙ (y ∙ w)
-  uv≈w⇒[xu∙v]y≈x∙wy     : ∀ x y → ((x ∙ u) ∙ v) ∙ y ≈ x ∙ (w ∙ y)
-  uv≈w⇒[xy∙u]v≈x∙yw     : ∀ x y → ((x ∙ y) ∙ u) ∙ v ≈ x ∙ (y ∙ w)
-  uv≈w⇒xu∙vy≈x∙wy       : ∀ x y → (x ∙ u) ∙ (v ∙ y) ≈ x ∙ (w ∙ y)
-  uv≈w⇒xy≈z⇒u[vx∙y]≈wz  : ∀ z → x ∙ y ≈ z → u ∙ ((v ∙ x) ∙ y) ≈ w ∙ z
-  uv≈w⇒x∙wy≈x∙[u∙vy]    : x ∙ (w ∙ y) ≈ x ∙ (u ∙ (v ∙ y))
-  [uv∙w]x≈u[vw∙x]       : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ ((v ∙ w) ∙ x)
-  [uv∙w]x≈u[v∙wx]       : ((u ∙ v) ∙ w) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
-  [u∙vw]x≈uv∙wx         : (u ∙ (v ∙ w)) ∙ x ≈ (u ∙ v) ∙ (w ∙ x)
-  [u∙vw]x≈u[v∙wx]       : (u ∙ (v ∙ w)) ∙ x ≈ u ∙ (v ∙ (w ∙ x))
-  uv∙wx≈u[vw∙x]         : (u ∙ v) ∙ (w ∙ x) ≈ u ∙ ((v ∙ w) ∙ x)
-  uv≈wx⇒yu∙v≈yw∙x       : ∀ y → (y ∙ u) ∙ v ≈ (y ∙ w) ∙ x
-  uv≈wx⇒u∙vy≈w∙xy       : ∀ y → u ∙ (v ∙ y) ≈ w ∙ (x ∙ y)
-  uv≈wx⇒yu∙vz≈yw∙xz     : ∀ y z → (y ∙ u) ∙ (v ∙ z) ≈ (y ∙ w) ∙ (x ∙ z)
-  ```
-
 * In `Algebra.Properties.Semigroup.Divisibility`:
   ```agda
   ∣ˡ-trans     : Transitive _∣ˡ_
