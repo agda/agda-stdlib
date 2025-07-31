@@ -390,36 +390,6 @@ Additions to existing modules
   ```
 
 * In `Data.Fin.Properties`:
-  the proof that an injection from a type `A` into `Fin n` induces a
-  decision procedure for `_≡_` on `A` has been generalized to other
-  equivalences over `A` (i.e. to arbitrary setoids), and renamed from
-  `eq?` to the more descriptive `inj⇒≟` and `inj⇒decSetoid`.
-
-* Added new proofs in `Data.Fin.Properties`:
-  ```
-  1↔⊤                : Fin 1 ↔ ⊤
-
-  0≢1+n              : zero ≢ suc i
-
-  ↑ˡ-injective       : i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
-  ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
-  finTofun-funToFin  : funToFin ∘ finToFun ≗ id
-  funTofin-funToFun  : finToFun (funToFin f) ≗ f
-  ^↔→                : Extensionality _ _ → Fin (m ^ n) ↔ (Fin n → Fin m)
-
-  toℕ-mono-<         : i < j → toℕ i ℕ.< toℕ j
-  toℕ-mono-≤         : i ≤ j → toℕ i ℕ.≤ toℕ j
-  toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
-  toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
-
-  toℕ-combine        : toℕ (combine i j) ≡ k ℕ.* toℕ i ℕ.+ toℕ j
-  combine-injectiveˡ : combine i j ≡ combine k l → i ≡ k
-  combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
-  combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
-  combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
-  combine-monoˡ-<    : i < j → combine i k < combine j l
-
-  ℕ-ℕ≡toℕ‿ℕ-         : n ℕ-ℕ i ≡ toℕ (n ℕ- i)
 
   punchIn-mono-≤     : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
   punchIn-cancel-≤   : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
