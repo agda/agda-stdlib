@@ -442,16 +442,6 @@ Additions to existing modules
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
   ```
 
-* Added new functions in `Data.Integer.Base`:
-  ```
-  _^_ : ℤ → ℕ → ℤ
- 
-  +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
-
-  *-rawMagma    : RawMagma 0ℓ 0ℓ
-  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
- ```
-
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
   cast-involutive       : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
