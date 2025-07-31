@@ -53,6 +53,9 @@ contradiction-irr a ¬a = ⊥-elim-irr (¬a a)
 contradiction : A → ¬ A → Whatever
 contradiction a = contradiction-irr a
 
+contradiction′ : ¬ A → A → Whatever
+contradiction′ ¬a a = contradiction-irr a ¬a
+
 contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
 contradiction₂ (inj₁ a) ¬a ¬b = contradiction a ¬a
 contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b

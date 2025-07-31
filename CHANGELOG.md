@@ -26,3 +26,8 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Relation.Nullary.Negation.Core`:
+  ```agda
+  contradiction′ : ¬ A → A → Whatever
+  ```
