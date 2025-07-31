@@ -395,20 +395,6 @@ Additions to existing modules
   punchIn-cancel-≤   : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
   punchOut-mono-≤    : (i≢j : i ≢ j) (i≢k : i ≢ k) → j ≤ k → punchOut i≢j ≤ punchOut i≢k
   punchOut-cancel-≤  : (i≢j : i ≢ j) (i≢k : i ≢ k) → punchOut i≢j ≤ punchOut i≢k → j ≤ k
-
-  lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
-  pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
-
-  i<1+i              : i < suc i
-
-  injective⇒≤               : ∀ {f : Fin m → Fin n} → Injective f → m ℕ.≤ n
-  <⇒notInjective            : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective f)
-  ℕ→Fin-notInjective        : ∀ (f : ℕ → Fin n) → ¬ (Injective f)
-  cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} → Injective f → Injective g → m ≡ n
-
-  cast-is-id    : cast eq k ≡ k
-  subst-is-cast : subst Fin eq k ≡ cast eq k
-  cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
