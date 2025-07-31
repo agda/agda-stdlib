@@ -267,7 +267,6 @@ Additions to existing modules
   ```
 
 * In `Algebra.Properties.Magma.Divisibility`:
-
   ```agda
   ∣ˡ-respʳ-≈  : _∣ˡ_ Respectsʳ _≈_
   ∣ˡ-respˡ-≈  : _∣ˡ_ Respectsˡ _≈_
