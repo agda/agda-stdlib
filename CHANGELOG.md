@@ -47,10 +47,10 @@ Additions to existing modules
   ```agda
   take-updateAt : (f : A → A) {m n : ℕ} (xs : Vec A (m + n)) (i : Fin m) →
     updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
-  
+
   truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
     truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
-  
+
   truncate-zipWith-truncate : truncate o≤m (zipWith f (truncate m≤n xs) ys) ≡
     zipWith f (truncate o≤n xs) (truncate o≤m ys)
 
@@ -59,7 +59,7 @@ Additions to existing modules
 
   zipWith-truncate₁ : zipWith f (truncate o≤o+m+n xs) (truncate (o≤o+m) ys) ≡
     truncate (o≤o+m) (zipWith f (truncate (o+m≤o+m+n) xs) ys)
-  
+
   truncate-updateAt : (f : A → A) (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
     updateAt (truncate m≤n xs) i f ≡ truncate m≤n (updateAt xs (inject≤ i m≤n) f)
 

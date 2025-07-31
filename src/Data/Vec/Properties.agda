@@ -209,7 +209,7 @@ module _  (f : A → A) {p q : ℕ} (xs : Vec A (p + q)) (i : Fin p) where
     p≤p+q = m≤m+n p q
     i′ : Fin (p + q)
     i′ = inject≤ i p≤p+q
-  
+
   updateAt-truncate : updateAt (truncate p≤p+q xs) i f ≡ truncate p≤p+q (updateAt xs i′ f)
   updateAt-truncate = begin
     updateAt (truncate p≤p+q xs) i f ≡⟨ cong (λ l → updateAt l i f) (sym (take≡truncate p xs)) ⟩
