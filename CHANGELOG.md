@@ -32,6 +32,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.CommutativeSemigroup`:
+  ```agda
+  interchange  ↦   medial
+  ```
+
 New modules
 -----------
 
