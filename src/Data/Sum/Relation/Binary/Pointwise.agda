@@ -95,8 +95,8 @@ drop-inj₂ (inj₂ x) = x
 ⊎-irreflexive irrefl₁ irrefl₂ (inj₂ x) (inj₂ y) = irrefl₂ x y
 
 -- need to be more explicit here otherwise Agda does something odd with the variables
-⊎-wellFounded : {A : Set a} {≈₁ : Rel A ℓ₁} {≈₂ : Rel A ℓ₂} → WellFounded ≈₁ → WellFounded ≈₂ → WellFounded (Pointwise ≈₁ ≈₂)
-⊎-wellFounded {≈₁ = ≈₁} {≈₂} wf₁ wf₂ x = acc (⊎-acc x)
+⊎-wellFounded : WellFounded ≈₁ → WellFounded ≈₂ → WellFounded (Pointwise ≈₁ ≈₂)
+⊎-wellFounded {≈₁ = ≈₁} {≈₂ = ≈₂} wf₁ wf₂ x = acc (⊎-acc x)
   where
   ⊎-acc₁ : ∀ {x} → Acc ≈₁ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) (inj₁ x)
   ⊎-acc₁ (acc rec) (inj₁ x≈₁y) = acc (⊎-acc₁ (rec x≈₁y))
@@ -107,10 +107,6 @@ drop-inj₂ (inj₂ x) = x
   ⊎-acc  : ∀ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) x
   ⊎-acc (inj₁ x) = ⊎-acc₁ (wf₁ x)
   ⊎-acc (inj₂ x) = ⊎-acc₂ (wf₂ x)
-
-module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
-         {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}
-         {ℓ₃ ℓ₄} {∼₂ : Rel A₂ ℓ₃} {≈₂ : Rel A₂ ℓ₄} where
 
 ⊎-antisymmetric : Antisymmetric ≈₁ R → Antisymmetric ≈₂ S →
                   Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise R S)
