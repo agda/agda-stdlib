@@ -57,7 +57,9 @@ Additions to existing modules
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
   ```
 
-* In `Relation.Nullary.Negation.Core`:
+* In `Relation.Nullary.Negation.Core`: because the *eager* insertion of
+  implicit arguments during type inference interacts badly with `contradiction`,
+  we introduce an explicit name for its `flip`ped version
   ```agda
   contradiction′ : ¬ A → A → Whatever
   ```
