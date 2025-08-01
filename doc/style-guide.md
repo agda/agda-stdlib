@@ -717,3 +717,7 @@ used successfully in PR
 systematic for `Nary` relations in PR
 [#811](https://github.com/agda/agda-stdlib/pull/811)
 
+## Prefer use of `Relation.Nullary.Negation.Core.contradiction`
+
+Where possible, `contradiction`, as a higher-level encapsulated abstraction,
+is to be preferred over direct appeal to `Data.Empty.⊥-elim`.
