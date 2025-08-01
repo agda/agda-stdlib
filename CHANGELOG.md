@@ -391,14 +391,11 @@ Additions to existing modules
 
 * In `Data.Fin.Properties`:
 
+  ```agda
   punchIn-mono-≤     : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
   punchIn-cancel-≤   : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
   punchOut-mono-≤    : (i≢j : i ≢ j) (i≢k : i ≢ k) → j ≤ k → punchOut i≢j ≤ punchOut i≢k
   punchOut-cancel-≤  : (i≢j : i ≢ j) (i≢k : i ≢ k) → punchOut i≢j ≤ punchOut i≢k → j ≤ k
-  ```
-
-* Added new proofs in `Data.Integer.Properties`:
-  ```agda
   cast-involutive       : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
   inject!-injective     : Injective _≡_ _≡_ inject!
   inject!-<             : (k : Fin′ i) → inject! k < i
