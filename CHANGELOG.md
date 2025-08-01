@@ -552,7 +552,7 @@ Additions to existing modules
 
 * in `Data.Sum.Relation.Binary.Pointwise` :
   ```agda
-  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
+  ⊎-wellFounded : WellFounded ≈₁ → WellFounded ≈₂ → WellFounded (Pointwise ≈₁ ≈₂)
   ```
 
 * In `Data.Vec.Properties`:
