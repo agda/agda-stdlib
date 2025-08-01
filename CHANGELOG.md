@@ -44,6 +44,25 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
 
+* `Data.List.Relation.Binary.Prefix.Propositional.Properties` showing the equivalence to left divisibility induced by the list monoid.
+
+* `Data.List.Relation.Binary.Suffix.Propositional.Properties` showing the equivalence to right divisibility induced by the list monoid.
+
+* `Data.List.Sort.InsertionSort.{agda|Base|Properties}` defines insertion sort and proves properties of insertion sort such as Sorted and Permutation properties.
+
+* `Data.List.Sort.MergenSort.{agda|Base|Properties}` is a refactor of the previous `Data.List.Sort.MergenSort`.
+
+* `Data.Sign.Show` to show a sign.
+
+* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint
+
+* `Relation.Binary.Morphism.Construct.Product` to plumb in the (categorical) product structure on `RawSetoid`.
+
+* `Relation.Binary.Properties.PartialSetoid` to systematise properties of a PER
+
+* `Relation.Nullary.Recomputable.Core`
+
+
 Additions to existing modules
 -----------------------------
 
@@ -55,4 +74,10 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ```
+
+* In `System.Random`:
+  ```agda
+  randomIO : IO Bool
+  randomRIO : RandomRIO {A = Bool} _≤_
   ```
