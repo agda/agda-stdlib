@@ -47,6 +47,11 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Properties.RingWithoutOne`:
+  ```agda
+  [-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
+  ```
+
 * In `Data.Nat.Properties`:
   ```agda
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
