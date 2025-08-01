@@ -94,7 +94,6 @@ drop-inj₂ (inj₂ x) = x
 ⊎-irreflexive irrefl₁ irrefl₂ (inj₁ x) (inj₁ y) = irrefl₁ x y
 ⊎-irreflexive irrefl₁ irrefl₂ (inj₂ x) (inj₂ y) = irrefl₂ x y
 
--- need to be more explicit here otherwise Agda does something odd with the variables
 ⊎-wellFounded : WellFounded ≈₁ → WellFounded ≈₂ → WellFounded (Pointwise ≈₁ ≈₂)
 ⊎-wellFounded {≈₁ = ≈₁} {≈₂ = ≈₂} wf₁ wf₂ x = acc (⊎-acc x)
   where
