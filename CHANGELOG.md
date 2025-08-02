@@ -65,6 +65,7 @@ Additions to existing modules
   ```
 
 * In `Data.Fin.Properties`:
+
   ```agda
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
   ≟-≡          : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
