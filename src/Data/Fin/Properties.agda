@@ -29,7 +29,7 @@ open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
-open import Function.Base using (_∘_; id; _$_; flip)
+open import Function.Base using (_∘_; id; _$_; flip; const; λ-; _$-)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
@@ -57,10 +57,11 @@ open import Relation.Unary.Properties using (U?)
 
 private
   variable
-    a : Level
+    a p q : Level
     A : Set a
     m n o : ℕ
     i j : Fin n
+
 
 ------------------------------------------------------------------------
 -- Fin
@@ -995,7 +996,7 @@ pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
 -- Quantification
 ------------------------------------------------------------------------
 
-module _ {p} {P : Pred (Fin (suc n)) p} where
+module _ {P : Pred (Fin (suc n)) p} where
 
   ∀-cons : P zero → Π[ P ∘ suc ] → Π[ P ]
   ∀-cons z s zero    = z
@@ -1017,33 +1018,19 @@ module _ {p} {P : Pred (Fin (suc n)) p} where
   ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
   ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
 
-decFinSubset : ∀ {p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
-               Decidable Q → (∀ {i} → Q i → Dec (P i)) → Dec (Q ⊆ P)
-decFinSubset {zero}  {_}     {_} Q? P? = yes λ {}
-decFinSubset {suc n} {P = P} {Q} Q? P?
-  with Q? zero | ∀-cons {P = λ x → Q x → P x}
-... | false because [¬Q0] | cons =
-  map′ (λ f {x} → cons (⊥-elim ∘ invert [¬Q0]) (λ x → f {x}) x)
-       (λ f {x} → f {suc x})
-       (decFinSubset (Q? ∘ suc) P?)
-... | true  because  [Q0] | cons =
-  map′ (uncurry λ P0 rec {x} → cons (λ _ → P0) (λ x → rec {x}) x)
-       < _$ invert [Q0] , (λ f {x} → f {suc x}) >
-       (P? (invert [Q0]) ×-dec decFinSubset (Q? ∘ suc) P?)
+any? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
+any? {zero}  P? = no λ{ (() , _) }
+any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 
-any? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
-any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
-
-all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
-all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
-               (decFinSubset U? (λ {f} _ → P? f))
+all? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∀ i → P i)
+all? {zero}  P? = yes λ()
+all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
 
 private
   -- A nice computational property of `all?`:
   -- The boolean component of the result is exactly the
   -- obvious fold of boolean tests (`foldr _∧_ true`).
-  note : ∀ {p} {P : Pred (Fin 3) p} (P? : Decidable P) →
+  note : ∀ {P : Pred (Fin 3) p} (P? : Decidable P) →
          ∃ λ z → Dec.does (all? P?) ≡ z
   note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
           , refl
@@ -1065,6 +1052,30 @@ private
 ¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
+
+-- Kleisli lifting of Dec over Unary subset relation
+
+decFinSubset : ∀ {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
+               Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
+decFinSubset {zero}  {_}     {_}     Q? P? = yes λ{}
+decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
+  module DecFinSubset where
+  Q⊆₀P = Q 0F → P 0F
+  Q⊆ₛP = Q ∘ suc ⊆ P ∘ suc
+
+  cons : Q⊆₀P → Q⊆ₛP → Q ⊆ P
+  cons q₀⊆p₀ qₛ⊆pₛ = ∀-cons {P = Q U.⇒ P} q₀⊆p₀ (λ- qₛ⊆pₛ) $-
+
+  ih : Dec Q⊆ₛP
+  ih = decFinSubset (Q? ∘ suc) P?
+
+  Q⊆P⇒Q⊆ₛP : Q ⊆ P → Q⊆ₛP
+  Q⊆P⇒Q⊆ₛP q⊆p {x} = q⊆p {suc x}
+
+  dec[Q⊆P] : Dec (Q ⊆ P)
+  dec[Q⊆P] with Q? zero
+  ... | no ¬q₀ = map′ (cons (flip contradiction ¬q₀)) Q⊆P⇒Q⊆ₛP ih
+  ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×-dec ih)
 
 ------------------------------------------------------------------------
 -- Properties of functions to and from Fin
