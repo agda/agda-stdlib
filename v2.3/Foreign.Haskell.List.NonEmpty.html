@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foreign.Haskell.List.NonEmpty</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The NonEmpty type which calls out to Haskell via the FFI</a>
+<a id="166" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="240" class="Symbol">{-#</a> <a id="244" class="Keyword">OPTIONS</a> <a id="252" class="Pragma">--cubical-compatible</a> <a id="273" class="Symbol">#-}</a>
+
+<a id="278" class="Keyword">module</a> <a id="285" href="Foreign.Haskell.List.NonEmpty.html" class="Module">Foreign.Haskell.List.NonEmpty</a> <a id="315" class="Keyword">where</a>
+
+<a id="322" class="Keyword">open</a> <a id="327" class="Keyword">import</a> <a id="334" href="Level.html" class="Module">Level</a> <a id="340" class="Keyword">using</a> <a id="346" class="Symbol">(</a><a id="347" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="352" class="Symbol">;</a> <a id="354" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="357" class="Symbol">)</a>
+<a id="359" class="Keyword">open</a> <a id="364" class="Keyword">import</a> <a id="371" href="Data.List.NonEmpty.Base.html" class="Module">Data.List.NonEmpty.Base</a> <a id="395" class="Symbol">as</a> <a id="398" class="Module">Data</a> <a id="403" class="Keyword">using</a> <a id="409" class="Symbol">(</a><a id="410" href="Data.List.NonEmpty.Base.html#1331" class="InductiveConstructor Operator">_∷_</a><a id="413" class="Symbol">)</a>
+<a id="415" class="Keyword">open</a> <a id="420" class="Keyword">import</a> <a id="427" href="Data.List.html" class="Module">Data.List</a> <a id="437" class="Keyword">using</a> <a id="443" class="Symbol">(</a><a id="444" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="448" class="Symbol">)</a>
+
+<a id="451" class="Symbol">{-#</a> <a id="455" class="Keyword">FOREIGN</a> <a id="463" class="Pragma">GHC</a> <a id="467" class="Pragma">import</a> <a id="474" class="Pragma">qualified</a> <a id="484" class="Pragma">Data.List.NonEmpty</a> <a id="503" class="Pragma">as</a> <a id="506" class="Pragma">NE</a> <a id="509" class="Symbol">#-}</a>
+
+<a id="514" class="Keyword">private</a>
+  <a id="524" class="Keyword">variable</a>
+    <a id="537" href="Foreign.Haskell.List.NonEmpty.html#537" class="Generalizable">a</a> <a id="539" class="Symbol">:</a> <a id="541" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="551" href="Foreign.Haskell.List.NonEmpty.html#551" class="Generalizable">A</a> <a id="553" class="Symbol">:</a> <a id="555" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="559" href="Foreign.Haskell.List.NonEmpty.html#537" class="Generalizable">a</a>
+
+<a id="562" class="Comment">------------------------------------------------------------------------</a>
+<a id="635" class="Comment">-- Definition</a>
+
+<a id="650" class="Keyword">data</a> <a id="NonEmpty"></a><a id="655" href="Foreign.Haskell.List.NonEmpty.html#655" class="Datatype">NonEmpty</a> <a id="664" class="Symbol">(</a><a id="665" href="Foreign.Haskell.List.NonEmpty.html#665" class="Bound">A</a> <a id="667" class="Symbol">:</a> <a id="669" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="673" href="Foreign.Haskell.List.NonEmpty.html#537" class="Generalizable">a</a><a id="674" class="Symbol">)</a> <a id="676" class="Symbol">:</a> <a id="678" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="682" href="Foreign.Haskell.List.NonEmpty.html#673" class="Bound">a</a> <a id="684" class="Keyword">where</a>
+  <a id="NonEmpty._∷_"></a><a id="692" href="Foreign.Haskell.List.NonEmpty.html#692" class="InductiveConstructor Operator">_∷_</a> <a id="696" class="Symbol">:</a> <a id="698" href="Foreign.Haskell.List.NonEmpty.html#665" class="Bound">A</a> <a id="700" class="Symbol">→</a> <a id="702" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="707" href="Foreign.Haskell.List.NonEmpty.html#665" class="Bound">A</a> <a id="709" class="Symbol">→</a> <a id="711" href="Foreign.Haskell.List.NonEmpty.html#655" class="Datatype">NonEmpty</a> <a id="720" href="Foreign.Haskell.List.NonEmpty.html#665" class="Bound">A</a>
+
+<a id="723" class="Keyword">infixr</a> <a id="730" class="Number">5</a> <a id="732" href="Foreign.Haskell.List.NonEmpty.html#692" class="InductiveConstructor Operator">_∷_</a>
+
+<a id="737" class="Symbol">{-#</a> <a id="741" class="Keyword">FOREIGN</a> <a id="749" class="Pragma">GHC</a> <a id="753" class="Pragma">type</a> <a id="758" class="Pragma">AgdaNonEmpty</a> <a id="771" class="Pragma">l</a> <a id="773" class="Pragma">a</a> <a id="775" class="Pragma">=</a> <a id="777" class="Pragma">NE.NonEmpty</a> <a id="789" class="Pragma">a</a> <a id="791" class="Symbol">#-}</a>
+<a id="795" class="Symbol">{-#</a> <a id="799" class="Keyword">COMPILE</a> <a id="807" class="Keyword">GHC</a> <a id="811" href="Foreign.Haskell.List.NonEmpty.html#655" class="Datatype">NonEmpty</a> <a id="820" class="Pragma">=</a> <a id="822" class="Pragma">data</a> <a id="827" class="Pragma">AgdaNonEmpty</a> <a id="840" class="Pragma">((NE.:|))</a> <a id="850" class="Symbol">#-}</a>
+</pre></body></html>

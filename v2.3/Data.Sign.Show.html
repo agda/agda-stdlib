@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Sign.Show</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Showing signs</a>
+<a id="123" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="197" class="Symbol">{-#</a> <a id="201" class="Keyword">OPTIONS</a> <a id="209" class="Pragma">--cubical-compatible</a> <a id="230" class="Pragma">--safe</a> <a id="237" class="Symbol">#-}</a>
+
+<a id="242" class="Keyword">module</a> <a id="249" href="Data.Sign.Show.html" class="Module">Data.Sign.Show</a> <a id="264" class="Keyword">where</a>
+
+<a id="271" class="Keyword">open</a> <a id="276" class="Keyword">import</a> <a id="283" href="Data.Sign.Base.html" class="Module">Data.Sign.Base</a> <a id="298" class="Keyword">using</a> <a id="304" class="Symbol">(</a><a id="305" href="Data.Sign.Base.html#523" class="Datatype">Sign</a><a id="309" class="Symbol">;</a> <a id="311" href="Data.Sign.Base.html#553" class="InductiveConstructor">+</a><a id="312" class="Symbol">;</a> <a id="314" href="Data.Sign.Base.html#542" class="InductiveConstructor">-</a><a id="315" class="Symbol">)</a>
+<a id="317" class="Keyword">open</a> <a id="322" class="Keyword">import</a> <a id="329" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="346" class="Keyword">using</a> <a id="352" class="Symbol">(</a><a id="353" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="359" class="Symbol">)</a>
+
+<a id="show"></a><a id="362" href="Data.Sign.Show.html#362" class="Function">show</a> <a id="367" class="Symbol">:</a> <a id="369" href="Data.Sign.Base.html#523" class="Datatype">Sign</a> <a id="374" class="Symbol">→</a> <a id="376" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="383" href="Data.Sign.Show.html#362" class="Function">show</a> <a id="388" href="Data.Sign.Base.html#553" class="InductiveConstructor">+</a> <a id="390" class="Symbol">=</a> <a id="392" class="String">&quot;+&quot;</a>
+<a id="396" href="Data.Sign.Show.html#362" class="Function">show</a> <a id="401" href="Data.Sign.Base.html#542" class="InductiveConstructor">-</a> <a id="403" class="Symbol">=</a> <a id="405" class="String">&quot;-&quot;</a>
+</pre></body></html>
