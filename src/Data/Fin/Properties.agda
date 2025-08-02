@@ -58,8 +58,6 @@ private
     A : Set a
     m n o : ℕ
     i j : Fin n
-    P : Pred (Fin n) p
-    Q : Pred (Fin n) q
 
 
 ------------------------------------------------------------------------
@@ -979,11 +977,11 @@ module _ {P : Pred (Fin (suc n)) p} where
   ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
   ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
 
-any? : Decidable P → Dec (∃ P)
+any? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
 any? {zero}  P? = no λ{ (() , _) }
 any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 
-all? : Decidable P → Dec (∀ i → P i)
+all? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∀ i → P i)
 all? {zero}  P? = yes λ()
 all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
 
@@ -1016,9 +1014,10 @@ private
 
 -- Kleisli lifting of Dec over Unary subset relation
 
-decFinSubset : Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
+decFinSubset : ∀ {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
+               Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
 decFinSubset {zero}  {_}     {_}     Q? P? = yes λ{}
-decFinSubset {suc _} {Q = Q} {P = P} Q? P? = dec[Q⊆P]
+decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
   module DecFinSubset where
   Q⊆₀P = Q 0F → P 0F
   Q⊆ₛP = Q ∘ suc ⊆ P ∘ suc
