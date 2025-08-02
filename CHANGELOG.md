@@ -1,5 +1,5 @@
-Version 2.3-rc1
-===============
+Version 2.3
+===========
 
 The library has been tested using Agda 2.7.0 and 2.8.0.
 
