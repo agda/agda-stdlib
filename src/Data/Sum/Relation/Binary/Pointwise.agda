@@ -10,6 +10,7 @@ module Data.Sum.Relation.Binary.Pointwise where
 
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Induction.WellFounded
 open import Level using (Level; _⊔_)
 open import Function.Base using (const; _∘_; id)
 open import Function.Bundles using (Inverse; mk↔)
@@ -92,6 +93,19 @@ drop-inj₂ (inj₂ x) = x
                 Irreflexive (Pointwise ≈₁ ≈₂) (Pointwise R S)
 ⊎-irreflexive irrefl₁ irrefl₂ (inj₁ x) (inj₁ y) = irrefl₁ x y
 ⊎-irreflexive irrefl₁ irrefl₂ (inj₂ x) (inj₂ y) = irrefl₂ x y
+
+⊎-wellFounded : WellFounded ≈₁ → WellFounded ≈₂ → WellFounded (Pointwise ≈₁ ≈₂)
+⊎-wellFounded {≈₁ = ≈₁} {≈₂ = ≈₂} wf₁ wf₂ x = acc (⊎-acc x)
+  where
+  ⊎-acc₁ : ∀ {x} → Acc ≈₁ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) (inj₁ x)
+  ⊎-acc₁ (acc rec) (inj₁ x≈₁y) = acc (⊎-acc₁ (rec x≈₁y))
+
+  ⊎-acc₂ : ∀ {x} → Acc ≈₂ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) (inj₂ x)
+  ⊎-acc₂ (acc rec) (inj₂ x≈₂y) = acc (⊎-acc₂ (rec x≈₂y))
+
+  ⊎-acc  : ∀ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) x
+  ⊎-acc (inj₁ x) = ⊎-acc₁ (wf₁ x)
+  ⊎-acc (inj₂ x) = ⊎-acc₂ (wf₂ x)
 
 ⊎-antisymmetric : Antisymmetric ≈₁ R → Antisymmetric ≈₂ S →
                   Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise R S)

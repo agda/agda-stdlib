@@ -2,8 +2,6 @@
 
 [![Ubuntu build](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml/badge.svg?branch=experimental)](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml)
 
-**Note**: The library is currently tracking Agda 2.8.0 release candidate 3 in preparation for the release of Agda 2.8.0 and version 2.3 of the library. You will need to have the release candidate installed in order to type-check it.
-
 The Agda standard library
 =========================
 
