@@ -1043,12 +1043,18 @@ pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
 <⇒notInjective {f = f} n<m inj =
   let i , j , i<j , fᵢ≡fⱼ = pigeonhole n<m f in <-irrefl (inj fᵢ≡fⱼ) i<j
 
+-- specialised to m = suc n
+
+private
+  notInjective-Fin[1+n]→Fin[n] : ∀ {f : Fin (suc n) → Fin n} → ¬ (Injective _≡_ _≡_ f)
+  notInjective-Fin[1+n]→Fin[n] {n = n} = <⇒notInjective (ℕ.n<1+n n)
+
 injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
 injective⇒≤ = ℕ.≮⇒≥ ∘ flip <⇒notInjective
 
 ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f inj =
-  <⇒notInjective (ℕ.n<1+n _) (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj)
+ℕ→Fin-notInjective f =
+  notInjective-Fin[1+n]→Fin[n] ∘ Comp.injective _≡_ _≡_ _≡_ toℕ-injective
 
 -- Cantor-Schröder-Bernstein for finite sets
 
@@ -1063,7 +1069,7 @@ injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f 
 injective⇒existsPivot {f = f} f-injective i
   with any? (λ j → j ≤? i ×-dec i ≤? f j)
 ... | yes result = result
-... | no ¬result = flip contradiction (<⇒notInjective (ℕ.n<1+n _)) f∘inject!-injective
+... | no ¬result = flip contradiction notInjective-Fin[1+n]→Fin[n] f∘inject!-injective
   where
   fj<i : (j : Fin′ (suc i)) → f (inject! j) < i
   fj<i j with f (inject! j) <? i
