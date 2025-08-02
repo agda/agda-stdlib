@@ -102,7 +102,7 @@ drop-inj₂ (inj₂ x) = x
 
   ⊎-acc₂ : ∀ {x} → Acc ≈₂ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) (inj₂ x)
   ⊎-acc₂ (acc rec) (inj₂ x≈₂y) = acc (⊎-acc₂ (rec x≈₂y))
-  
+
   ⊎-acc  : ∀ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) x
   ⊎-acc (inj₁ x) = ⊎-acc₁ (wf₁ x)
   ⊎-acc (inj₂ x) = ⊎-acc₂ (wf₂ x)
