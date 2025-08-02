@@ -231,6 +231,41 @@ Additions to existing modules
   inverseʳ-uniqueᴹ : x +ᴹ y ≈ 0ᴹ → y ≈ -ᴹ x
   ```
 
+* Added new functions and proofs to `Algebra.Construct.Flip.Op`:
+  ```agda
+  zero : Zero ≈ ε ∙ → Zero ≈ ε (flip ∙)
+  distributes : (≈ DistributesOver ∙) + → (≈ DistributesOver (flip ∙)) +
+  isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero + * 0# 1# →
+                                      IsSemiringWithoutAnnihilatingZero + (flip *) 0# 1#
+  isSemiring : IsSemiring + * 0# 1# → IsSemiring + (flip *) 0# 1#
+  isCommutativeSemiring : IsCommutativeSemiring + * 0# 1# →
+                          IsCommutativeSemiring + (flip *) 0# 1#
+  isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring + * 0# 1# →
+                                      IsCancellativeCommutativeSemiring + (flip *) 0# 1#
+  isIdempotentSemiring : IsIdempotentSemiring + * 0# 1# →
+                         IsIdempotentSemiring + (flip *) 0# 1#
+  isQuasiring : IsQuasiring + * 0# 1# → IsQuasiring + (flip *) 0# 1#
+  isRingWithoutOne : IsRingWithoutOne + * - 0# → IsRingWithoutOne + (flip *) - 0#
+  isNonAssociativeRing : IsNonAssociativeRing + * - 0# 1# →
+                         IsNonAssociativeRing + (flip *) - 0# 1#
+  isRing : IsRing ≈ + * - 0# 1# → IsRing ≈ + (flip *) - 0# 1#
+  isNearring : IsNearring + * 0# 1# - → IsNearring + (flip *) 0# 1# -
+  isCommutativeRing : IsCommutativeRing + * - 0# 1# →
+                      IsCommutativeRing + (flip *) - 0# 1#
+  semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ →
+                                    SemiringWithoutAnnihilatingZero a ℓ
+  commutativeSemiring : CommutativeSemiring a ℓ → CommutativeSemiring a ℓ
+  cancellativeCommutativeSemiring : CancellativeCommutativeSemiring a ℓ →
+                                  CancellativeCommutativeSemiring a ℓ
+  idempotentSemiring : IdempotentSemiring a ℓ → IdempotentSemiring a ℓ
+  quasiring : Quasiring a ℓ → Quasiring a ℓ
+  ringWithoutOne : RingWithoutOne a ℓ → RingWithoutOne a ℓ
+  nonAssociativeRing : NonAssociativeRing a ℓ → NonAssociativeRing a ℓ
+  nearring : Nearring a ℓ → Nearring a ℓ
+  ring : Ring a ℓ → Ring a ℓ
+  commutativeRing : CommutativeRing a ℓ → CommutativeRing a ℓ
+  ```
+
 * In `Algebra.Properties.Magma.Divisibility`:
   ```agda
   ∣ˡ-respʳ-≈  : _∣ˡ_ Respectsʳ _≈_
@@ -333,7 +368,12 @@ Additions to existing modules
   ```
 
 * In `Data.Fin.Properties`:
+
   ```agda
+  punchIn-mono-≤     : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
+  punchIn-cancel-≤   : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
+  punchOut-mono-≤    : (i≢j : i ≢ j) (i≢k : i ≢ k) → j ≤ k → punchOut i≢j ≤ punchOut i≢k
+  punchOut-cancel-≤  : (i≢j : i ≢ j) (i≢k : i ≢ k) → punchOut i≢j ≤ punchOut i≢k → j ≤ k
   cast-involutive       : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
   inject!-injective     : Injective _≡_ _≡_ inject!
   inject!-<             : (k : Fin′ i) → inject! k < i
@@ -478,6 +518,16 @@ Additions to existing modules
   ```agda
   HomoProduct′ n f = Product n (stabulate n (const _) f)
   HomoProduct  n A = HomoProduct′ n (const A)
+  ```
+
+* In `Data.Sum.Relation.Binary.LeftOrder` :
+  ```agda
+  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
+  ```
+
+* in `Data.Sum.Relation.Binary.Pointwise` :
+  ```agda
+  ⊎-wellFounded : WellFounded ≈₁ → WellFounded ≈₂ → WellFounded (Pointwise ≈₁ ≈₂)
   ```
 
 * In `Data.Vec.Properties`:
