@@ -295,7 +295,7 @@ truncate {m = suc _} le (x ∷ xs) = x ∷ (truncate (s≤s⁻¹ le) xs)
 
 -- Pad out a vector with extra elements.
 padRight : .(m ≤ n) → A → Vec A m → Vec A n
-padRight {n = _}     _  a []       = replicate _ a
+padRight {n = n}     _  a []       = replicate n a
 padRight {n = suc _} le a (x ∷ xs) = x ∷ padRight (s≤s⁻¹ le) a xs
 
 ------------------------------------------------------------------------

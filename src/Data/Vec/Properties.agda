@@ -11,14 +11,16 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin
-  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_; inject≤)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as List
 open import Data.Nat.Base
   using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_; s≤s⁻¹; z≤n)
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″
-        ; suc-injective; +-comm; +-suc; +-identityʳ)
+  using (suc-injective; +-assoc;  +-comm; +-suc; +-identityʳ
+        ; m≤n⇒m≤1+n; m≤m+n; suc[m]≤n⇒m≤pred[n]
+        ; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″
+        )
 open import Data.Product.Base as Product
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -136,18 +138,17 @@ truncate-refl : (xs : Vec A n) → truncate ≤-refl xs ≡ xs
 truncate-refl []       = refl
 truncate-refl (x ∷ xs) = cong (x ∷_) (truncate-refl xs)
 
-truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
-                 truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
-truncate-trans z≤n       n≤p       xs = refl
-truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
+truncate-trans : ∀ .(m≤n : m ≤ n) .(n≤o : n ≤ o) (xs : Vec A o) →
+                 truncate (≤-trans m≤n n≤o) xs ≡ truncate m≤n (truncate n≤o xs)
+truncate-trans {m = zero}              _   _   _        = refl
+truncate-trans {m = suc _} {n = suc _} m≤n n≤o (x ∷ xs) =
+  cong (x ∷_) (truncate-trans (s≤s⁻¹ m≤n) (s≤s⁻¹ n≤o) xs)
 
-truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
-truncate-irrelevant m≤n₁ m≤n₂ xs = cong (λ m≤n → truncate m≤n xs) (≤-irrelevant m≤n₁ m≤n₂)
-
-truncate≡take : (m≤n : m ≤ n) (xs : Vec A n) .(eq : n ≡ m + o) →
+truncate≡take : .(m≤n : m ≤ n) (xs : Vec A n) .(eq : n ≡ m + o) →
                 truncate m≤n xs ≡ take m (cast eq xs)
-truncate≡take z≤n       _        eq = refl
-truncate≡take (s≤s m≤n) (x ∷ xs) eq = cong (x ∷_) (truncate≡take m≤n xs (suc-injective eq))
+truncate≡take {m = zero}  _   _        _  = refl
+truncate≡take {m = suc _} m≤n (x ∷ xs) eq =
+  cong (x ∷_) (truncate≡take (s≤s⁻¹ m≤n) xs (suc-injective eq))
 
 take≡truncate : ∀ m (xs : Vec A (m + n)) →
                 take m xs ≡ truncate (m≤m+n m n) xs
@@ -155,28 +156,13 @@ take≡truncate zero    _        = refl
 take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
 
 ------------------------------------------------------------------------
--- pad
-
-padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
-padRight-refl a []       = refl
-padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
-
-padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate n a ≡ padRight m≤n a (replicate m a)
-padRight-replicate z≤n       a = refl
-padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
-
-padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
-            padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
-padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
-padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
-
-------------------------------------------------------------------------
 -- truncate and padRight together
 
-truncate-padRight : (m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+truncate-padRight : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
                     truncate m≤n (padRight m≤n a xs) ≡ xs
-truncate-padRight z≤n       a []       = refl
-truncate-padRight (s≤s m≤n) a (x ∷ xs) = cong (x ∷_) (truncate-padRight m≤n a xs)
+truncate-padRight             _   a []       = refl
+truncate-padRight {n = suc _} m≤n a (x ∷ xs) =
+  cong (x ∷_) (truncate-padRight (s≤s⁻¹ m≤n) a xs)
 
 ------------------------------------------------------------------------
 -- lookup
@@ -203,10 +189,10 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
-lookup-truncate : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
+lookup-truncate : .(m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
                   lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
-lookup-truncate (s≤s m≤m+n) (_ ∷ _)  zero    = refl
-lookup-truncate (s≤s m≤m+n) (_ ∷ xs) (suc i) = lookup-truncate m≤m+n xs i
+lookup-truncate _   (_ ∷ _)  zero    = refl
+lookup-truncate m≤n (_ ∷ xs) (suc i) = lookup-truncate (suc[m]≤n⇒m≤pred[n] m≤n) xs i
 
 lookup-take-inject≤ : (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
@@ -1143,6 +1129,10 @@ sum-++ {ys = ys} (x ∷ xs) = begin
 ------------------------------------------------------------------------
 -- replicate
 
+cast-replicate : ∀ .(m≡n : m ≡ n) (x : A) → cast m≡n (replicate m x) ≡ replicate n x
+cast-replicate {m = zero}  {n = zero}  _  _  = refl
+cast-replicate {m = suc _} {n = suc _} eq x = cong (x ∷_) (cast-replicate (suc-injective eq) x)
+
 lookup-replicate : ∀ (i : Fin n) (x : A) → lookup (replicate n x) i ≡ x
 lookup-replicate zero    x = refl
 lookup-replicate (suc i) x = lookup-replicate i x
@@ -1183,6 +1173,67 @@ toList-replicate : ∀ (n : ℕ) (x : A) →
                    toList (replicate n x) ≡ List.replicate n x
 toList-replicate zero    x = refl
 toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
+
+------------------------------------------------------------------------
+-- pad
+
+padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
+padRight-refl a []       = refl
+padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
+
+padRight-replicate : ∀ .(m≤n : m ≤ n) (a : A) →
+                     replicate n a ≡ padRight m≤n a (replicate m a)
+padRight-replicate {m = zero}              _   a = refl
+padRight-replicate {m = suc _} {n = suc _} m≤n a =
+  cong (a ∷_) (padRight-replicate (s≤s⁻¹ m≤n) a)
+
+padRight-trans : ∀ .(m≤n : m ≤ n) .(n≤o : n ≤ o) (a : A) (xs : Vec A m) →
+            padRight (≤-trans m≤n n≤o) a xs ≡ padRight n≤o a (padRight m≤n a xs)
+padRight-trans                         _   n≤o a []       = padRight-replicate n≤o a
+padRight-trans {n = suc _} {o = suc _} m≤n n≤o a (x ∷ xs) =
+  cong (x ∷_) (padRight-trans (s≤s⁻¹ m≤n) (s≤s⁻¹ n≤o) a xs)
+
+padRight-lookup : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) →
+                  lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
+padRight-lookup {n = suc _} _   a (x ∷ xs) zero    = refl
+padRight-lookup {n = suc _} m≤n a (x ∷ xs) (suc i) = padRight-lookup (s≤s⁻¹ m≤n) a xs i
+
+padRight-map : ∀ (f : A → B) .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+               map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
+padRight-map             f _   a [] = map-replicate f a _
+padRight-map {n = suc _} f m≤n a (x ∷ xs) = cong (f x ∷_) (padRight-map f (s≤s⁻¹ m≤n) a xs)
+
+padRight-zipWith : ∀ (f : A → B → C) .(m≤n : m ≤ n) (a : A) (b : B)
+                   (xs : Vec A m) (ys : Vec B m) →
+                   zipWith f (padRight m≤n a xs) (padRight m≤n b ys) ≡ padRight m≤n (f a b) (zipWith f xs ys)
+padRight-zipWith             f _   a b []       []       = zipWith-replicate f a b
+padRight-zipWith {n = suc _} f m≤n a b (x ∷ xs) (y ∷ ys) =
+  cong (f x y ∷_) (padRight-zipWith f (s≤s⁻¹ m≤n) a b xs ys)
+
+padRight-zipWith₁ : ∀ (f : A → B → C) .(m≤n : m ≤ n) .(n≤o : n ≤ o)
+                    (a : A) (b : B) (xs : Vec A n) (ys : Vec B m) →
+                    zipWith f (padRight n≤o a xs) (padRight (≤-trans m≤n n≤o) b ys) ≡
+                    padRight n≤o (f a b) (zipWith f xs (padRight m≤n b ys))
+padRight-zipWith₁ f m≤n n≤o a b xs ys =
+  trans (cong (zipWith f (padRight n≤o a xs)) (padRight-trans m≤n n≤o b ys))
+        (padRight-zipWith f n≤o a b xs (padRight m≤n b ys))
+
+padRight-drop : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+padRight-drop {m = zero}              _   a []       eq = cast-replicate eq a
+padRight-drop {m = suc _} {n = suc _} m≤n a (x ∷ xs) eq = padRight-drop (s≤s⁻¹ m≤n) a xs (suc-injective eq)
+
+padRight-take : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
+padRight-take {m = zero}              _   a []       _  = refl
+padRight-take {m = suc _} {n = suc _} m≤n a (x ∷ xs) eq = cong (x ∷_) (padRight-take (s≤s⁻¹ m≤n) a xs (suc-injective eq))
+
+padRight-updateAt : ∀ .(m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin m) (x : A) →
+                    updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
+                    padRight m≤n x (updateAt xs i f)
+padRight-updateAt {n = suc _} m≤n (y ∷ xs) f zero    x = refl
+padRight-updateAt {n = suc _} m≤n (y ∷ xs) f (suc i) x = cong (y ∷_) (padRight-updateAt (s≤s⁻¹ m≤n) xs f i x)
+
 
 ------------------------------------------------------------------------
 -- iterate
@@ -1576,3 +1627,13 @@ lookup-inject≤-take m m≤m+n i xs = sym (begin
 "Warning: lookup-inject≤-take was deprecated in v2.0.
 Please use lookup-take-inject≤ or lookup-truncate, take≡truncate instead."
 #-}
+
+-- Version 2.4
+
+truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
+truncate-irrelevant _ _ xs = refl
+{-# WARNING_ON_USAGE truncate-irrelevant
+"Warning: truncate-irrelevant was deprecated in v2.4.
+Definition of truncate has been made definitionally proof-irrelevant."
+#-}
+

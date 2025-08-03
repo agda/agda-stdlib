@@ -21,8 +21,8 @@ Minor improvements
   that the argument of type `m ≤ n` is marked as irrelevant. This should be
   backwards compatible, but does change the equational behaviour of these
   functions to be more eager, because no longer blocking on pattern matching
-  on that argument.
-  ```
+  on that argument. Corresponding changes have been made to the types of their
+  properties (and their proofs).
 
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
