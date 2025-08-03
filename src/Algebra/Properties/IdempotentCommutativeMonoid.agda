@@ -9,16 +9,16 @@
 open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 
 module Algebra.Properties.IdempotentCommutativeMonoid
-  {c ℓ} (M : IdempotentCommutativeMonoid c ℓ) where
+  {c ℓ} (idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ) where
 
-open IdempotentCommutativeMonoid M
+open IdempotentCommutativeMonoid idempotentCommutativeMonoid
 
 open import Algebra.Consequences.Setoid setoid
   using (comm∧distrˡ⇒distrʳ; comm∧distrˡ⇒distr)
 open import Algebra.Definitions _≈_
   using (_DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_)
 open import Algebra.Properties.CommutativeSemigroup commutativeSemigroup
-  using (interchange)
+  using (medial)
 open import Relation.Binary.Reasoning.Setoid setoid
 
 
@@ -28,7 +28,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 ∙-distrˡ-∙ : _∙_ DistributesOverˡ _∙_
 ∙-distrˡ-∙ a b c = begin
     a ∙ (b ∙ c)        ≈⟨ ∙-congʳ (idem a) ⟨
-    (a ∙ a) ∙ (b ∙ c)  ≈⟨ interchange _ _ _ _ ⟩
+    (a ∙ a) ∙ (b ∙ c)  ≈⟨ medial _ _ _ _ ⟩
     (a ∙ b) ∙ (a ∙ c)  ∎
 
 ∙-distrʳ-∙ : _∙_ DistributesOverʳ _∙_
