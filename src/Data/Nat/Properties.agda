@@ -114,6 +114,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≟-diag : (eq : m ≡ n) → (m ≟ n) ≡ yes eq
 ≟-diag = ≡-≟-identity _≟_
 
+≟-≡ : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
+≟-≡ = ≢-≟-identity _≟_
+
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
