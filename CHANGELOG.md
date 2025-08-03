@@ -22,7 +22,8 @@ Minor improvements
   backwards compatible, but does change the equational behaviour of these
   functions to be more eager, because no longer blocking on pattern matching
   on that argument. Corresponding changes have been made to the types of their
-  properties (and their proofs).
+  properties (and their proofs). In particular, `truncate-irrelevant` is now
+  deprecated, because definitionally trivial.
 
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
@@ -46,6 +47,11 @@ Deprecated names
 * In `Algebra.Properties.CommutativeSemigroup`:
   ```agda
   interchange  ↦   medial
+  ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  truncate-irrelevant  ↦  <blank>
   ```
 
 New modules
