@@ -17,7 +17,7 @@ open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
--- Export properties of abelian groups
+-- Re-export abelian group properties for addition
 
 open AbelianGroupProperties +-abelianGroup public
   renaming
@@ -35,6 +35,12 @@ open AbelianGroupProperties +-abelianGroup public
   ; inverseʳ-unique  to +-inverseʳ-unique
   ; ⁻¹-∙-comm        to -‿+-comm
   )
+
+x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
+x+x≈x⇒x≈0 x eq = +-identityˡ-unique x x eq
+
+------------------------------------------------------------------------
+-- Consequences of distributivity
 
 -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
 -‿distribˡ-* x y = sym $ begin
@@ -58,17 +64,21 @@ open AbelianGroupProperties +-abelianGroup public
   - (x * y) + 0#                 ≈⟨ +-identityʳ (- (x * y)) ⟩
   - (x * y)                      ∎
 
-x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
-x+x≈x⇒x≈0 x eq = +-identityˡ-unique x x eq
+[-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
+[-x][-y]≈xy x y = begin
+  - x * - y     ≈⟨ -‿distribˡ-* x (- y) ⟨
+  - (x * - y)   ≈⟨ -‿cong (-‿distribʳ-* x y) ⟨
+  - (- (x * y)) ≈⟨ -‿involutive (x * y) ⟩
+  x * y         ∎
 
 x[y-z]≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
 x[y-z]≈xy-xz x y z = begin
   x * (y - z)      ≈⟨ distribˡ x y (- z) ⟩
-  x * y + x * - z  ≈⟨ +-congˡ (sym (-‿distribʳ-* x z)) ⟩
+  x * y + x * - z  ≈⟨ +-congˡ (-‿distribʳ-* x z) ⟨
   x * y - x * z    ∎
 
 [y-z]x≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
 [y-z]x≈yx-zx x y z = begin
   (y - z) * x      ≈⟨ distribʳ x y (- z) ⟩
-  y * x + - z * x  ≈⟨ +-congˡ (sym (-‿distribˡ-* z x)) ⟩
+  y * x + - z * x  ≈⟨ +-congˡ (-‿distribˡ-* z x) ⟨
   y * x - z * x    ∎

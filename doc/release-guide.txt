@@ -64,7 +64,7 @@ procedure should be followed:
 * Generate and upload documentation for the released version:
 
     cp .github/tooling/* .
-    cabal run GenerateEverything.hs
+    cabal run GenerateEverything
     ./index.sh
     agda -i. -idoc -isrc --html index.agda
     mv html v$VERSION

@@ -14,6 +14,7 @@ open import Data.Sum.Relation.Binary.Pointwise as PW
 open import Data.Product.Base using (_,_)
 open import Data.Empty using (⊥)
 open import Function.Base using (_$_; _∘_)
+open import Induction.WellFounded
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary.Decidable.Core using (yes; no)
@@ -88,6 +89,20 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ⊎-<-decidable dec₁ dec₂ (inj₁ x) (inj₂ y) = yes ₁∼₂
   ⊎-<-decidable dec₁ dec₂ (inj₂ x) (inj₁ y) = no λ()
   ⊎-<-decidable dec₁ dec₂ (inj₂ x) (inj₂ y) = Dec.map′ ₂∼₂ drop-inj₂ (dec₂ x y)
+
+  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
+  ⊎-<-wellFounded wf₁ wf₂ x = acc (⊎-<-acc x)
+    where
+    ⊎-<-acc₁ : ∀ {x} → Acc ∼₁ x → WfRec (∼₁ ⊎-< ∼₂) (Acc (∼₁ ⊎-< ∼₂)) (inj₁ x)
+    ⊎-<-acc₁ (acc rec) (₁∼₁ x∼₁y) = acc (⊎-<-acc₁ (rec x∼₁y))
+
+    ⊎-<-acc₂ : ∀ {x} → Acc ∼₂ x → WfRec (∼₁ ⊎-< ∼₂) (Acc (∼₁ ⊎-< ∼₂)) (inj₂ x)
+    ⊎-<-acc₂ (acc rec) {inj₁ x} ₁∼₂ = acc (⊎-<-acc₁ (wf₁ x))
+    ⊎-<-acc₂ (acc rec) (₂∼₂ x∼₂y) = acc (⊎-<-acc₂ (rec x∼₂y))
+
+    ⊎-<-acc  : ∀ x → WfRec (∼₁ ⊎-< ∼₂) (Acc (∼₁ ⊎-< ∼₂)) x
+    ⊎-<-acc (inj₁ x) = ⊎-<-acc₁ (wf₁ x)
+    ⊎-<-acc (inj₂ x) = ⊎-<-acc₂ (wf₂ x)
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}
