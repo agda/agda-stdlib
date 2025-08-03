@@ -17,13 +17,14 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
-open import Data.Unit.Polymorphic.Base using (⊤; tt)
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Recomputable as Recomputable
-  hiding (recompute-constant)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
+open import Relation.Nullary.Recomputable.Core as Recomputable
+  using (Recomputable)
 open import Relation.Nullary.Reflects as Reflects
   hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
@@ -84,6 +85,9 @@ recompute = Reflects.recompute ∘ proof
 recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
 recompute-constant = Recomputable.recompute-constant ∘ recompute
 
+recompute-irrelevant-id : (a? : Dec A) → Irrelevant A → (a : A) → recompute a? a ≡ a
+recompute-irrelevant-id = Recomputable.recompute-irrelevant-id ∘ recompute
+
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
 
@@ -99,7 +103,7 @@ proof (¬? a?) = ¬-reflects (proof a?)
 
 ⊤-dec : Dec {a} ⊤
 does  ⊤-dec = true
-proof ⊤-dec = ofʸ tt
+proof ⊤-dec = ⊤-reflects
 
 _×-dec_ : Dec A → Dec B → Dec (A × B)
 does  (a? ×-dec b?) = does a? ∧ does b?
@@ -107,7 +111,7 @@ proof (a? ×-dec b?) = proof a? ×-reflects proof b?
 
 ⊥-dec : Dec {a} ⊥
 does  ⊥-dec  = false
-proof ⊥-dec  = ofⁿ λ ()
+proof ⊥-dec  = ⊥-reflects
 
 _⊎-dec_ : Dec A → Dec B → Dec (A ⊎ B)
 does  (a? ⊎-dec b?) = does a? ∨ does b?

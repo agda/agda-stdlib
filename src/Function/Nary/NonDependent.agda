@@ -22,7 +22,7 @@ open import Data.Product.Nary.NonDependent
   using (Product; uncurryₙ; Equalₙ; curryₙ; fromEqualₙ; toEqualₙ)
 open import Function.Base using (_∘′_; _$′_; const; flip)
 open import Relation.Unary using (IUniversal)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; subst; cong)
 
 private
   variable
@@ -34,19 +34,6 @@ private
 -- Re-exporting the basic operations
 
 open import Function.Nary.NonDependent.Base public
-
-------------------------------------------------------------------------
--- Additional operations on Levels
-
-ltabulate : ∀ n → (Fin n → Level) → Levels n
-ltabulate zero    f = _
-ltabulate (suc n) f = f zero , ltabulate n (f ∘′ suc)
-
-lreplicate : ∀ n → Level → Levels n
-lreplicate n ℓ = ltabulate n (const ℓ)
-
-0ℓs : ∀[ Levels ]
-0ℓs = lreplicate _ 0ℓ
 
 ------------------------------------------------------------------------
 -- Congruence

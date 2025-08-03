@@ -16,6 +16,8 @@ import Data.List.Effectful.Transformer as Trans
   using (functor; applicative; monad; monadT)
 open import Data.List.Properties
   using (≡-dec)
+open import Data.List.Literals
+  using (isString)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise)
 open import Data.List.Relation.Binary.Lex.NonStrict
@@ -42,6 +44,7 @@ instance
   listMonad = monad
   listMonadZero = monadZero
   listMonadPlus = monadPlus
+  listIsString = isString
   -- ListT
   listTFunctor = λ {f} {g} {M} {{inst}} → Trans.functor {f} {g} {M} inst
   listTApplicative = λ {f} {g} {M} {{inst}} → Trans.applicative {f} {g} {M} inst

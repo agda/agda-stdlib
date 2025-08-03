@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-}
+{-# OPTIONS --warning=noUserWarning #-}
 
 module Function.Bijection where
 

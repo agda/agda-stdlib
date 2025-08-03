@@ -9,12 +9,15 @@
 module Data.Fin.Permutation where
 
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base using (Fin; suc; opposite; punchIn; punchOut)
-open import Data.Fin.Patterns using (0F)
-open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;
-  punchOut-cong; punchOut-cong′; punchIn-punchOut; _≟_; ¬Fin0)
+open import Data.Fin.Base using (Fin; suc; cast; opposite; punchIn; punchOut)
+open import Data.Fin.Patterns using (0F; 1F)
+open import Data.Fin.Properties
+  using (¬Fin0; _≟_; ≟-≡-refl; ≟-≢
+        ; cast-involutive; opposite-involutive
+        ; punchInᵢ≢i; punchOut-punchIn; punchIn-punchOut
+        ; punchOut-cong; punchOut-cong′)
 import Data.Fin.Permutation.Components as PC
-open import Data.Nat.Base using (ℕ; suc; zero)
+open import Data.Nat.Base using (ℕ; suc; zero; 2+)
 open import Data.Product.Base using (_,_; proj₂)
 open import Function.Bundles using (_↔_; Injection; Inverse; mk↔ₛ′)
 open import Function.Construct.Composition using (_↔-∘_)
@@ -22,12 +25,11 @@ open import Function.Construct.Identity using (↔-id)
 open import Function.Construct.Symmetry using (↔-sym)
 open import Function.Definitions using (StrictlyInverseˡ; StrictlyInverseʳ)
 open import Function.Properties.Inverse using (↔⇒↣)
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; _∘′_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Nullary using (does; ¬_; yes; no)
-open import Relation.Nullary.Decidable using (dec-yes; dec-no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (does; yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; subst; cong; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -57,11 +59,15 @@ Permutation′ n = Permutation n n
 ------------------------------------------------------------------------
 -- Helper functions
 
-permutation : ∀ (f : Fin m → Fin n) (g : Fin n → Fin m) →
-              StrictlyInverseˡ _≡_ f g → StrictlyInverseʳ _≡_ f g → Permutation m n
+permutation : ∀ (f : Fin m → Fin n)
+              (g : Fin n → Fin m) →
+              StrictlyInverseˡ _≡_ f g →
+              StrictlyInverseʳ _≡_ f g →
+              Permutation m n
 permutation = mk↔ₛ′
 
 infixl 5 _⟨$⟩ʳ_ _⟨$⟩ˡ_
+
 _⟨$⟩ʳ_ : Permutation m n → Fin m → Fin n
 _⟨$⟩ʳ_ = Inverse.to
 
@@ -75,44 +81,61 @@ inverseʳ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ʳ (π ⟨$⟩ˡ i) ≡
 inverseʳ π = Inverse.inverseˡ π refl
 
 ------------------------------------------------------------------------
--- Equality
+-- Equality over permutations
 
 infix 6 _≈_
+
 _≈_ : Rel (Permutation m n) 0ℓ
 π ≈ ρ = ∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i
 
 ------------------------------------------------------------------------
--- Example permutations
+-- Permutation properties
 
--- Identity
-
-id : Permutation′ n
+id : Permutation n n
 id = ↔-id _
-
--- Transpose two indices
-
-transpose : Fin n → Fin n → Permutation′ n
-transpose i j = permutation (PC.transpose i j) (PC.transpose j i) (λ _ → PC.transpose-inverse _ _) (λ _ → PC.transpose-inverse _ _)
-
--- Reverse the order of indices
-
-reverse : Permutation′ n
-reverse = permutation opposite opposite PC.reverse-involutive PC.reverse-involutive
-
-------------------------------------------------------------------------
--- Operations
-
--- Composition
-
-infixr 9 _∘ₚ_
-_∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
-π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
-
--- Flip
 
 flip : Permutation m n → Permutation n m
 flip = ↔-sym
 
+infixr 9 _∘ₚ_
+
+_∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
+π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
+
+------------------------------------------------------------------------
+-- Non-trivial identity
+
+cast-id : .(m ≡ n) → Permutation m n
+cast-id m≡n = permutation
+  (cast m≡n)
+  (cast (sym m≡n))
+  (cast-involutive m≡n (sym m≡n))
+  (cast-involutive (sym m≡n) m≡n)
+
+------------------------------------------------------------------------
+-- Transposition
+
+-- Transposes two elements in the permutation, keeping the remainder
+-- of the permutation the same
+transpose : Fin n → Fin n → Permutation n n
+transpose i j = permutation
+  (PC.transpose i j)
+  (PC.transpose j i)
+  (λ _ → PC.transpose-inverse _ _)
+  (λ _ → PC.transpose-inverse _ _)
+
+------------------------------------------------------------------------
+-- Reverse
+
+-- Reverses a permutation
+reverse : Permutation n n
+reverse = permutation
+  opposite
+  opposite
+  opposite-involutive
+  opposite-involutive
+
+------------------------------------------------------------------------
 -- Element removal
 --
 -- `remove k [0 ↦ i₀, …, k ↦ iₖ, …, n ↦ iₙ]` yields
@@ -145,22 +168,28 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ j = begin
-    from (to j)                                                      ≡⟨⟩
-    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
-    punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _  ≡⟨ punchOut-cong i (inverseˡ π) ⟩
-    punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
-    j                                                                ∎
+    from (to j)                                                     ≡⟨⟩
+    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _ ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
+    punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _ ≡⟨ punchOut-cong i (inverseˡ π) ⟩
+    punchOut {i = i} {punchIn i j}                                _ ≡⟨ punchOut-punchIn i ⟩
+    j                                                               ∎
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin
-    to (from j)                                                       ≡⟨⟩
-    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
-    punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _  ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
-    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
-    j                                                                 ∎
+    to (from j)                                                      ≡⟨⟩
+    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _ ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
+    punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _ ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
+    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _ ≡⟨ punchOut-punchIn (πʳ i) ⟩
+    j                                                                ∎
 
--- lift: takes a permutation m → n and creates a permutation (suc m) → (suc n)
+------------------------------------------------------------------------
+-- Lifting
+
+-- Takes a permutation m → n and creates a permutation (suc m) → (suc n)
 -- by mapping 0 to 0 and applying the input permutation to everything else
+--
+-- Note: should be refactored as a special-case when we add the
+-- concatenation of two permutations
 lift₀ : Permutation m n → Permutation (suc m) (suc n)
 lift₀ {m} {n} π = permutation to from inverseˡ′ inverseʳ′
   where
@@ -180,6 +209,9 @@ lift₀ {m} {n} π = permutation to from inverseˡ′ inverseʳ′
   inverseˡ′ 0F      = refl
   inverseˡ′ (suc j) = cong suc (inverseʳ π)
 
+------------------------------------------------------------------------
+-- Insertion
+
 -- insert i j π is the permutation that maps i to j and otherwise looks like π
 -- it's roughly an inverse of remove
 insert : ∀ {m n} → Fin (suc m) → Fin (suc n) → Permutation m n → Permutation (suc m) (suc n)
@@ -197,29 +229,41 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 
   inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ k with i ≟ k
-  ... | yes i≡k rewrite proj₂ (dec-yes (j ≟ j) refl) = i≡k
+  ... | yes i≡k rewrite ≟-≡-refl j = i≡k
   ... | no  i≢k
     with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
-    rewrite dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) j≢punchInⱼπʳpunchOuti≢k
+    rewrite ≟-≢ j≢punchInⱼπʳpunchOuti≢k
     = begin
     punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)                    ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-cong j refl) ⟩
     punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
-    punchIn i (π ⟨$⟩ˡ (π ⟨$⟩ʳ punchOut i≢k))                              ≡⟨ cong (punchIn i) (inverseˡ π) ⟩
-    punchIn i (punchOut i≢k)                                              ≡⟨ punchIn-punchOut i≢k ⟩
-    k                                                                     ∎
+    punchIn i (π ⟨$⟩ˡ (π ⟨$⟩ʳ punchOut i≢k))                               ≡⟨ cong (punchIn i) (inverseˡ π) ⟩
+    punchIn i (punchOut i≢k)                                               ≡⟨ punchIn-punchOut i≢k ⟩
+    k                                                                      ∎
 
   inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ k with j ≟ k
-  ... | yes j≡k rewrite proj₂ (dec-yes (i ≟ i) refl) = j≡k
+  ... | yes j≡k rewrite ≟-≡-refl i = j≡k
   ... | no  j≢k
     with i≢punchInᵢπˡpunchOutj≢k ← punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym
-    rewrite dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) i≢punchInᵢπˡpunchOutj≢k
+    rewrite ≟-≢ i≢punchInᵢπˡpunchOutj≢k
     = begin
     punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
     punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
     punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))                               ≡⟨ cong (punchIn j) (inverseʳ π) ⟩
     punchIn j (punchOut j≢k)                                               ≡⟨ punchIn-punchOut j≢k ⟩
     k                                                                      ∎
+
+------------------------------------------------------------------------
+-- Swapping
+
+-- Takes a permutation m → n and creates a permutation
+-- suc (suc m) → suc (suc n) by mapping 0 to 1 and 1 to 0 and
+-- then applying the input permutation to everything else
+--
+-- Note: should be refactored as a special-case when we add the
+-- concatenation of two permutations
+swap : Permutation m n → Permutation (2+ m) (2+ n)
+swap π = transpose 0F 1F ∘ₚ lift₀ (lift₀ π)
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -296,12 +340,7 @@ insert-remove {m = m} {n = n} i π j with i ≟ j
   π ⟨$⟩ʳ j ∎
 
 remove-insert : ∀ i j (π : Permutation m n) → remove i (insert i j π) ≈ π
-remove-insert i j π k with i ≟ i
-... | no i≢i = contradiction refl i≢i
-... | yes _ = begin
-  punchOut {i = j} _
-    ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
-  punchOut {i = j} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym)
-    ≡⟨ punchOut-punchIn j ⟩
-  π ⟨$⟩ʳ k
-    ∎
+remove-insert i j π k rewrite ≟-≡-refl i = begin
+  punchOut {i = j} _                               ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
+  punchOut {i = j} (punchInᵢ≢i j (π ⟨$⟩ʳ k) ∘ sym) ≡⟨ punchOut-punchIn j ⟩
+  π ⟨$⟩ʳ k                                         ∎

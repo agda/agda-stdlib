@@ -37,15 +37,20 @@ open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ; contradiction)
+open import Relation.Nullary.Negation.Core using (¬_)
 import Relation.Nullary.Indexed as I
-open import Relation.Nullary.Decidable using (True)
 
 private
   variable
     a b c d : Level
     A B C D : Set a
+
+------------------------------------------------------------------------
+-- A lemma relating True dec and P, where dec : Dec P
+
+open import Relation.Nullary.Decidable public
+  using ()
+  renaming (True-↔ to True↔)
 
 ------------------------------------------------------------------------
 -- Properties of Σ and _×_
@@ -349,16 +354,6 @@ Related-cong {A = A} {B = B} {C = C} {D = D} A≈B C≈D = mk⇔
             D  ∼⟨ SK-sym C≈D ⟩
             C  ∎)
   where open EquationalReasoning
-
-------------------------------------------------------------------------
--- A lemma relating True dec and P, where dec : Dec P
-
-True↔ : ∀ {p} {P : Set p}
-        (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ ( true because  [p]) irr =
-  mk↔ₛ′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → refl)
-True↔ (false because ofⁿ ¬p) _ =
-  mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (λ x → flip contradiction ¬p x) (λ ())
 
 ------------------------------------------------------------------------
 -- Relating a predicate to an existentially quantified one with the

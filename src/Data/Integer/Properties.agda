@@ -27,6 +27,7 @@ import Data.Sign.Properties as Sign
 open import Function.Base using (_∘_; _$_; _$′_; id)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Definitions using (Monotonic₁; Monotonic₂; LeftMonotonic; RightMonotonic)
 open import Relation.Binary.Bundles using
   (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Consequences using (wlog)
@@ -415,7 +416,7 @@ neg-≤-pos : ∀ {m n} → - (+ m) ≤ + n
 neg-≤-pos {zero}  = +≤+ z≤n
 neg-≤-pos {suc m} = -≤+
 
-neg-mono-≤ : -_ Preserves _≤_ ⟶ _≥_
+neg-mono-≤ : Monotonic₁ _≤_ _≥_ (-_)
 neg-mono-≤ -≤+             = neg-≤-pos
 neg-mono-≤ (-≤- n≤m)       = +≤+ (s≤s n≤m)
 neg-mono-≤ (+≤+ z≤n)       = neg-≤-pos
@@ -430,7 +431,7 @@ neg-cancel-≤ { +0}       { -[1+ n ]}  _               = -≤+
 neg-cancel-≤ { -[1+ m ]} { +0}        (+≤+ ())
 neg-cancel-≤ { -[1+ m ]} { -[1+ n ]}  (+≤+ (s≤s m≤n)) = -≤- m≤n
 
-neg-mono-< : -_ Preserves _<_ ⟶ _>_
+neg-mono-< : Monotonic₁ _<_ _>_ (-_)
 neg-mono-< { -[1+ _ ]} { -[1+ _ ]} (-<- n<m) = +<+ (s<s n<m)
 neg-mono-< { -[1+ _ ]} { +0}       -<+       = +<+ z<s
 neg-mono-< { -[1+ _ ]} { +[1+ n ]} -<+       = -<+
@@ -610,7 +611,7 @@ sign-⊖-< {suc m} {suc n} (ℕ.s<s m<n) = begin
 sign-⊖-≰ : n ℕ.≰ m → sign (m ⊖ n) ≡ Sign.-
 sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 
-⊖-monoʳ-≥-≤ : ∀ n → (n ⊖_) Preserves ℕ._≥_ ⟶ _≤_
+⊖-monoʳ-≥-≤ : LeftMonotonic ℕ._≥_ _≤_ _⊖_
 ⊖-monoʳ-≥-≤ zero    {m}     z≤n      = 0⊖m≤+ m
 ⊖-monoʳ-≥-≤ zero    {_}    (s≤s m≤n) = -≤- m≤n
 ⊖-monoʳ-≥-≤ (suc n) {zero}  z≤n      = ≤-refl
@@ -624,7 +625,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   n ⊖ o         ≡⟨ [1+m]⊖[1+n]≡m⊖n n o ⟨
   suc n ⊖ suc o ∎ where open ≤-Reasoning
 
-⊖-monoˡ-≤ : ∀ n → (_⊖ n) Preserves ℕ._≤_ ⟶ _≤_
+⊖-monoˡ-≤ : RightMonotonic ℕ._≤_ _≤_ _⊖_
 ⊖-monoˡ-≤ zero    {_} {_}     m≤o = +≤+ m≤o
 ⊖-monoˡ-≤ (suc n) {_} {0}     z≤n = ≤-refl
 ⊖-monoˡ-≤ (suc n) {_} {suc o} z≤n = begin
@@ -638,7 +639,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   o ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n o n ⟨
   suc o ⊖ suc n ∎ where open ≤-Reasoning
 
-⊖-monoʳ->-< : ∀ p → (p ⊖_) Preserves ℕ._>_ ⟶ _<_
+⊖-monoʳ->-< : LeftMonotonic ℕ._>_ _<_ _⊖_
 ⊖-monoʳ->-< zero    {_}     z<s       = -<+
 ⊖-monoʳ->-< zero    {_}     (s<s m<n@(s≤s _)) = -<- m<n
 ⊖-monoʳ->-< (suc p) {suc m} z<s       = begin-strict
@@ -651,7 +652,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   p ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n p n ⟨
   suc p ⊖ suc n ∎ where open ≤-Reasoning
 
-⊖-monoˡ-< : ∀ n → (_⊖ n) Preserves ℕ._<_ ⟶ _<_
+⊖-monoˡ-< : RightMonotonic ℕ._<_ _<_ _⊖_
 ⊖-monoˡ-< zero    m<o             = +<+ m<o
 ⊖-monoˡ-< (suc n) {_} {suc o} z<s = begin-strict
   -[1+ n ]      <⟨  -1+m<n⊖m n _ ⟩
@@ -1028,7 +1029,7 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
 ------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
 
-+-monoʳ-≤ : ∀ n → (_+_ n) Preserves _≤_ ⟶ _≤_
++-monoʳ-≤ : LeftMonotonic _≤_ _≤_ _+_
 +-monoʳ-≤ (+ n)    {_}         (-≤- o≤m) = ⊖-monoʳ-≥-≤ n (s≤s o≤m)
 +-monoʳ-≤ (+ n)    { -[1+ m ]} -≤+       = ≤-trans (m⊖n≤m n (suc m)) (+≤+ (ℕ.m≤m+n n _))
 +-monoʳ-≤ (+ n)    {_}         (+≤+ m≤o) = +≤+ (ℕ.+-monoʳ-≤ n m≤o)
@@ -1036,7 +1037,7 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
 +-monoʳ-≤ -[1+ n ] {_} {+ m}   -≤+       = ≤-trans (-≤- (ℕ.m≤m+n (suc n) _)) (-1+m≤n⊖m (suc n) m)
 +-monoʳ-≤ -[1+ n ] {_} {_}     (+≤+ m≤n) = ⊖-monoˡ-≤ (suc n) m≤n
 
-+-monoˡ-≤ : ∀ n → (_+ n) Preserves _≤_ ⟶ _≤_
++-monoˡ-≤ : RightMonotonic _≤_ _≤_ _+_
 +-monoˡ-≤ n {i} {j} rewrite +-comm i n | +-comm j n = +-monoʳ-≤ n
 
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
@@ -1058,7 +1059,7 @@ i≤i+j i j rewrite +-comm i j = i≤j+i i j
 ------------------------------------------------------------------------
 -- Properties of _+_ and _<_
 
-+-monoʳ-< : ∀ i → (_+_ i) Preserves _<_ ⟶ _<_
++-monoʳ-< : LeftMonotonic _<_ _<_ _+_
 +-monoʳ-< (+ n)    {_} {_}   (-<- o<m) = ⊖-monoʳ->-< n (s<s o<m)
 +-monoʳ-< (+ n)    {_} {_}   -<+       = <-≤-trans (m⊖1+n<m n _) (+≤+ (ℕ.m≤m+n n _))
 +-monoʳ-< (+ n)    {_} {_}   (+<+ m<o) = +<+ (ℕ.+-monoʳ-< n m<o)
@@ -1066,20 +1067,20 @@ i≤i+j i j rewrite +-comm i j = i≤j+i i j
 +-monoʳ-< -[1+ n ] {_} {+ o} -<+       = <-≤-trans (-<- (ℕ.m≤m+n (suc n) _)) (-[1+m]≤n⊖m+1 n o)
 +-monoʳ-< -[1+ n ] {_} {_}   (+<+ m<o) = ⊖-monoˡ-< (suc n) m<o
 
-+-monoˡ-< : ∀ i → (_+ i) Preserves _<_ ⟶ _<_
++-monoˡ-< : RightMonotonic _<_ _<_ _+_
 +-monoˡ-< i {j} {k} rewrite +-comm j i | +-comm k i = +-monoʳ-< i
 
-+-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
++-mono-< : Monotonic₂ _<_ _<_ _<_ _+_
 +-mono-< {i} {j} {k} {l} i<j k<l = begin-strict
   i + k <⟨ +-monoˡ-< k i<j ⟩
   j + k <⟨ +-monoʳ-< j k<l ⟩
   j + l ∎
   where open ≤-Reasoning
 
-+-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
++-mono-≤-< : Monotonic₂ _≤_ _<_ _<_ _+_
 +-mono-≤-< {i} {j} {k} i≤j j<k = ≤-<-trans (+-monoˡ-≤ k i≤j) (+-monoʳ-< j j<k)
 
-+-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
++-mono-<-≤ : Monotonic₂ _<_ _≤_ _<_ _+_
 +-mono-<-≤ {i} {j} {k} i<j j≤k = <-≤-trans (+-monoˡ-< k i<j) (+-monoʳ-≤ j j≤k)
 
 ------------------------------------------------------------------------
@@ -1227,7 +1228,7 @@ i≢suc[i] { -[1+ suc n ]} ()
 1-[1+n]≡-n zero    = refl
 1-[1+n]≡-n (suc n) = refl
 
-suc-mono : sucℤ Preserves _≤_ ⟶ _≤_
+suc-mono : Monotonic₁ _≤_ _≤_ sucℤ
 suc-mono (-≤+ {m} {n}) = begin
   1 ⊖ suc m  ≡⟨ [1+m]⊖[1+n]≡m⊖n 0 m ⟩
   0 ⊖ m      ≤⟨ 0⊖m≤+ m ⟩
@@ -1414,7 +1415,6 @@ private
         | [1+m]⊖[1+n]≡m⊖n (m ℕ.+ o ℕ.* suc m) (m ℕ.+ n ℕ.* suc m)
         | +-cancelˡ-⊖ m (o ℕ.* suc m) (n ℕ.* suc m)
         | ⊖-≥ n≤o
-        | +-comm (- (+ (m ℕ.+ n ℕ.* suc m))) (+ (m ℕ.+ o ℕ.* suc m))
         | ⊖-≥ (ℕ.*-mono-≤ n≤o (ℕ.≤-refl {x = suc m}))
         | ℕ.*-distribʳ-∸ (suc m) o n
         | +◃n≡+n (o ℕ.* suc m ∸ n ℕ.* suc m)
@@ -1720,7 +1720,7 @@ neg-distribʳ-* i j = begin
 *-cancelˡ-≤-pos : ∀ i j k .{{_ : Positive k}} → k * i ≤ k * j → i ≤ j
 *-cancelˡ-≤-pos i j k rewrite *-comm k i | *-comm k j = *-cancelʳ-≤-pos i j k
 
-*-monoʳ-≤-nonNeg : ∀ i .{{_ : NonNegative i}} → (_* i) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-nonNeg : ∀ i .{{_ : NonNegative i}} → Monotonic₁ _≤_ _≤_ (_* i)
 *-monoʳ-≤-nonNeg +0 {i} {j} i≤j rewrite *-zeroʳ i | *-zeroʳ j = +≤+ z≤n
 *-monoʳ-≤-nonNeg +[1+ n ] (-≤+ {n = 0})         = -≤+
 *-monoʳ-≤-nonNeg +[1+ n ] (-≤+ {n = suc _})     = -≤+
@@ -1729,7 +1729,7 @@ neg-distribʳ-* i j = begin
 *-monoʳ-≤-nonNeg +[1+ n ] {+0}       {+[1+ _ ]} (+≤+ m≤n) = +≤+ z≤n
 *-monoʳ-≤-nonNeg +[1+ n ] {+[1+ _ ]} {+[1+ _ ]} (+≤+ m≤n) = +≤+ (ℕ.*-monoˡ-≤ (suc n) m≤n)
 
-*-monoˡ-≤-nonNeg : ∀ i .{{_ : NonNegative i}} → (i *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-nonNeg : ∀ i .{{_ : NonNegative i}} → Monotonic₁ _≤_ _≤_ (i *_)
 *-monoˡ-≤-nonNeg i {j} {k} rewrite *-comm i j | *-comm i k = *-monoʳ-≤-nonNeg i
 
 *-cancelˡ-≤-neg : ∀ i j k .{{_ : Negative i}} → i * j ≤ i * k → j ≥ k
@@ -1745,7 +1745,7 @@ neg-distribʳ-* i j = begin
 *-cancelʳ-≤-neg : ∀ i j k .{{_ : Negative k}} → i * k ≤ j * k → i ≥ j
 *-cancelʳ-≤-neg i j k rewrite *-comm i k | *-comm j k = *-cancelˡ-≤-neg k i j
 
-*-monoˡ-≤-nonPos : ∀ i .{{_ : NonPositive i}} → (i *_) Preserves _≤_ ⟶ _≥_
+*-monoˡ-≤-nonPos : ∀ i .{{_ : NonPositive i}} → Monotonic₁ _≤_ _≥_ (i *_)
 *-monoˡ-≤-nonPos +0           {j} {k} j≤k = +≤+ z≤n
 *-monoˡ-≤-nonPos i@(-[1+ m ]) {j} {k} j≤k = begin
   i * k        ≡⟨ neg-distribˡ-* (- i) k ⟨
@@ -1756,18 +1756,18 @@ neg-distribʳ-* i j = begin
   i * j        ∎
   where open ≤-Reasoning
 
-*-monoʳ-≤-nonPos : ∀ i .{{_ : NonPositive i}} → (_* i) Preserves _≤_ ⟶ _≥_
+*-monoʳ-≤-nonPos : ∀ i .{{_ : NonPositive i}} → Monotonic₁ _≤_ _≥_ (_* i)
 *-monoʳ-≤-nonPos i {j} {k} rewrite *-comm k i | *-comm j i = *-monoˡ-≤-nonPos i
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
 
-*-monoˡ-<-pos : ∀ i .{{_ : Positive i}} → (i *_) Preserves _<_ ⟶ _<_
+*-monoˡ-<-pos : ∀ i .{{_ : Positive i}} → Monotonic₁ _<_ _<_ (i *_)
 *-monoˡ-<-pos +[1+ n ] {+ m}       {+ o}       (+<+ m<o) = +◃-mono-< (ℕ.+-mono-<-≤ m<o (ℕ.*-monoʳ-≤ n (ℕ.<⇒≤ m<o)))
 *-monoˡ-<-pos +[1+ n ] { -[1+ m ]} {+ o}       leq       = -◃<+◃ _ (suc n ℕ.* o)
 *-monoˡ-<-pos +[1+ n ] { -[1+ m ]} { -[1+ o ]} (-<- o<m) = -<- (ℕ.+-mono-<-≤ o<m (ℕ.*-monoʳ-≤ n (ℕ.<⇒≤ (s≤s o<m))))
 
-*-monoʳ-<-pos : ∀ i .{{_ : Positive i}} → (_* i) Preserves _<_ ⟶ _<_
+*-monoʳ-<-pos : ∀ i .{{_ : Positive i}} → Monotonic₁ _<_ _<_ (_* i)
 *-monoʳ-<-pos i {j} {k} rewrite *-comm j i | *-comm k i = *-monoˡ-<-pos i
 
 *-cancelˡ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → k * i < k * j → i < j
@@ -1779,7 +1779,7 @@ neg-distribʳ-* i j = begin
 *-cancelʳ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → i * k < j * k → i < j
 *-cancelʳ-<-nonNeg {i} {j} k rewrite *-comm i k | *-comm j k = *-cancelˡ-<-nonNeg k
 
-*-monoˡ-<-neg : ∀ i .{{_ : Negative i}} → (i *_) Preserves _<_ ⟶ _>_
+*-monoˡ-<-neg : ∀ i .{{_ : Negative i}} → Monotonic₁ _<_ _>_ (i *_)
 *-monoˡ-<-neg i@(-[1+ _ ]) {j} {k} j<k = begin-strict
   i * k        ≡⟨ neg-distribˡ-* (- i) k ⟨
   -(- i * k)   ≡⟨  neg-distribʳ-* (- i) k ⟩
@@ -1789,7 +1789,7 @@ neg-distribʳ-* i j = begin
   i * j        ∎
   where open ≤-Reasoning
 
-*-monoʳ-<-neg : ∀ i .{{_ : Negative i}} → (_* i) Preserves _<_ ⟶ _>_
+*-monoʳ-<-neg : ∀ i .{{_ : Negative i}} → Monotonic₁ _<_ _>_ (_* i)
 *-monoʳ-<-neg i {j} {k} rewrite *-comm k i | *-comm j i = *-monoˡ-<-neg i
 
 *-cancelˡ-<-nonPos : ∀ k .{{_ : NonPositive k}} → k * i < k * j → i > j
@@ -1963,41 +1963,41 @@ open ⊓-⊔-latticeProperties public
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _⊔_
 
-mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+mono-≤-distrib-⊔ : ∀ {f} → Monotonic₁ _≤_ _≤_ f →
                    ∀ i j → f (i ⊔ j) ≡ f i ⊔ f j
 mono-≤-distrib-⊔ {f} = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong f)
 
-mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+mono-≤-distrib-⊓ : ∀ {f} → Monotonic₁ _≤_ _≤_ f →
                    ∀ i j → f (i ⊓ j) ≡ f i ⊓ f j
 mono-≤-distrib-⊓ {f} = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong f)
 
-antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+antimono-≤-distrib-⊓ : ∀ {f} → Monotonic₁ _≤_ _≥_ f →
                        ∀ i j → f (i ⊓ j) ≡ f i ⊔ f j
 antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong f)
 
-antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+antimono-≤-distrib-⊔ : ∀ {f} → Monotonic₁ _≤_ _≥_ f →
                        ∀ i j → f (i ⊔ j) ≡ f i ⊓ f j
 antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
 
-mono-<-distrib-⊓ : ∀ f → f Preserves _<_ ⟶ _<_ → ∀ i j → f (i ⊓ j) ≡ f i ⊓ f j
+mono-<-distrib-⊓ : ∀ f → Monotonic₁ _<_ _<_ f → ∀ i j → f (i ⊓ j) ≡ f i ⊓ f j
 mono-<-distrib-⊓ f f-mono-< i j with <-cmp i j
 ... | tri< i<j _    _   = trans (cong f (i≤j⇒i⊓j≡i (<⇒≤ i<j))) (sym (i≤j⇒i⊓j≡i (<⇒≤ (f-mono-< i<j))))
 ... | tri≈ _   refl _   = trans (cong f (i≤j⇒i⊓j≡i ≤-refl))    (sym (i≤j⇒i⊓j≡i ≤-refl))
 ... | tri> _   _    i>j = trans (cong f (i≥j⇒i⊓j≡j (<⇒≤ i>j))) (sym (i≥j⇒i⊓j≡j (<⇒≤ (f-mono-< i>j))))
 
-mono-<-distrib-⊔ : ∀ f → f Preserves _<_ ⟶ _<_ → ∀ i j → f (i ⊔ j) ≡ f i ⊔ f j
+mono-<-distrib-⊔ : ∀ f → Monotonic₁ _<_ _<_ f → ∀ i j → f (i ⊔ j) ≡ f i ⊔ f j
 mono-<-distrib-⊔ f f-mono-< i j with <-cmp i j
 ... | tri< i<j _    _   = trans (cong f (i≤j⇒i⊔j≡j (<⇒≤ i<j))) (sym (i≤j⇒i⊔j≡j (<⇒≤ (f-mono-< i<j))))
 ... | tri≈ _   refl _   = trans (cong f (i≤j⇒i⊔j≡j ≤-refl))    (sym (i≤j⇒i⊔j≡j ≤-refl))
 ... | tri> _   _    i>j = trans (cong f (i≥j⇒i⊔j≡i (<⇒≤ i>j))) (sym (i≥j⇒i⊔j≡i (<⇒≤ (f-mono-< i>j))))
 
-antimono-<-distrib-⊔ : ∀ f  → f Preserves _<_ ⟶ _>_ → ∀ i j → f (i ⊔ j) ≡ f i ⊓ f j
+antimono-<-distrib-⊔ : ∀ f  → Monotonic₁ _<_ _>_ f → ∀ i j → f (i ⊔ j) ≡ f i ⊓ f j
 antimono-<-distrib-⊔ f f-mono-< i j with <-cmp i j
 ... | tri< i<j _    _   = trans (cong f (i≤j⇒i⊔j≡j (<⇒≤ i<j))) (sym (i≥j⇒i⊓j≡j (<⇒≤ (f-mono-< i<j))))
 ... | tri≈ _   refl _   = trans (cong f (i≤j⇒i⊔j≡j ≤-refl))    (sym (i≥j⇒i⊓j≡j ≤-refl))
 ... | tri> _   _    i>j = trans (cong f (i≥j⇒i⊔j≡i (<⇒≤ i>j))) (sym (i≤j⇒i⊓j≡i (<⇒≤ (f-mono-< i>j))))
 
-antimono-<-distrib-⊓ : ∀ f → f Preserves _<_ ⟶ _>_ → ∀ i j → f (i ⊓ j) ≡ f i ⊔ f j
+antimono-<-distrib-⊓ : ∀ f → Monotonic₁ _<_ _>_ f → ∀ i j → f (i ⊓ j) ≡ f i ⊔ f j
 antimono-<-distrib-⊓ f f-mono-< i j with <-cmp i j
 ... | tri< i<j _    _   = trans (cong f (i≤j⇒i⊓j≡i (<⇒≤ i<j))) (sym (i≥j⇒i⊔j≡i (<⇒≤ (f-mono-< i<j))))
 ... | tri≈ _   refl _   = trans (cong f (i≤j⇒i⊓j≡i ≤-refl))    (sym (i≥j⇒i⊔j≡i ≤-refl))

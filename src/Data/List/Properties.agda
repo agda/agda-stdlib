@@ -8,7 +8,7 @@
 -- equalities than _≡_.
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
 
@@ -134,7 +134,6 @@ length-++ (x ∷ xs) = cong suc (length-++ xs)
 module _ {A : Set a} where
 
   open AlgebraicDefinitions {A = List A} _≡_
-  open AlgebraicStructures  {A = List A} _≡_
 
   ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
@@ -189,6 +188,47 @@ module _ {A : Set a} where
 
   ++-conical : Conical [] _++_
   ++-conical = ++-conicalˡ , ++-conicalʳ
+
+length-++-sucˡ : ∀ (x : A) (xs ys : List A) →
+                 length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+length-++-sucˡ _ _ _ = refl
+
+length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) →
+                 length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+length-++-sucʳ []       _ _  = refl
+length-++-sucʳ (_ ∷ xs) y ys = cong suc (length-++-sucʳ xs y ys)
+
+length-++-comm : ∀ (xs ys : List A) →
+                 length (xs ++ ys) ≡ length (ys ++ xs)
+length-++-comm xs       []       = cong length (++-identityʳ xs)
+length-++-comm []       (y ∷ ys) = sym (cong length (++-identityʳ (y ∷ ys)))
+length-++-comm (x ∷ xs) (y ∷ ys) =
+  begin
+    length (x ∷ xs ++ y ∷ ys)
+  ≡⟨⟩
+    suc (length (xs ++ y ∷ ys))
+  ≡⟨ cong suc (length-++-sucʳ xs y ys) ⟩
+    suc (suc (length (xs ++ ys)))
+  ≡⟨ cong suc (cong suc (length-++-comm xs ys)) ⟩
+    suc (suc (length (ys ++ xs)))
+  ≡⟨ cong suc (length-++-sucʳ ys x xs) ⟨
+    suc (length (ys ++ x ∷ xs))
+  ≡⟨⟩
+    length (y ∷ ys ++ x ∷ xs)
+  ∎
+
+length-++-≤ˡ : ∀ (xs : List A) {ys} →
+              length xs ≤ length (xs ++ ys)
+length-++-≤ˡ []       = z≤n
+length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
+
+length-++-≤ʳ : ∀ (ys : List A) {xs} →
+              length ys ≤ length (xs ++ ys)
+length-++-≤ʳ ys {xs} = ≤-trans (length-++-≤ˡ ys) (≤-reflexive (length-++-comm ys xs))
+
+module _ {A : Set a} where
+
+  open AlgebraicStructures  {A = List A} _≡_
 
   ++-isMagma : IsMagma _++_
   ++-isMagma = record

@@ -20,7 +20,7 @@ open import Data.Fin.Base as F using (Fin)
 open import Data.Fin.Properties using (suc-injective; <⇒≢)
 open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m<n⇒m<1+n)
-open import Function.Base using (_∘_; flip)
+open import Function.Base using (_∘_; flip; _on_)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (DecSetoid)
@@ -42,10 +42,13 @@ private
 
 module _ {R : Rel A ℓ} {f : B → A} where
 
-  map⁺ : ∀ {xs} → AllPairs (λ x y → R (f x) (f y)) xs →
-         AllPairs R (map f xs)
+  map⁺ : ∀ {xs} → AllPairs (R on f) xs → AllPairs R (map f xs)
   map⁺ []           = []
   map⁺ (x∉xs ∷ xs!) = All.map⁺ x∉xs ∷ map⁺ xs!
+
+  map⁻ : ∀ {xs} → AllPairs R (map f xs) → AllPairs (R on f) xs
+  map⁻ {[]}     _              = []
+  map⁻ {_ ∷ _} (fx∉fxs ∷ fxs!) = All.map⁻ fx∉fxs ∷ map⁻ fxs!
 
 ------------------------------------------------------------------------
 -- ++
