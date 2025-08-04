@@ -25,13 +25,13 @@ open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
 ------------------------------------------------------------------------
 
 x≈0⇒x*y≈0 : ∀ {x y} → x ≈ 0# → x *ₗ y ≈ᴹ 0ᴹ
-x≈0⇒x*y≈0 {x = x} {y = y} x≈0 = begin
+x≈0⇒x*y≈0 {x} {y} x≈0 = begin
   x  *ₗ y ≈⟨ *ₗ-congʳ x≈0 ⟩
   0# *ₗ y ≈⟨ *ₗ-zeroˡ y ⟩
   0ᴹ      ∎
 
 y≈0⇒x*y≈0 : ∀ {x y} → y ≈ᴹ 0ᴹ → x *ₗ y ≈ᴹ 0ᴹ
-y≈0⇒x*y≈0 {x = x} {y = y} y≈0 = begin
+y≈0⇒x*y≈0 {x} {y} y≈0 = begin
   x *ₗ y  ≈⟨ *ₗ-congˡ y≈0 ⟩
   x *ₗ 0ᴹ ≈⟨ *ₗ-zeroʳ x ⟩
   0ᴹ      ∎
