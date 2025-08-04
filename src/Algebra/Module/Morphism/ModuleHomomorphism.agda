@@ -51,7 +51,7 @@ x≈0⇒fx≈0 {x} x≈0 = begin⟨ B.≈ᴹ-setoid ⟩
   B.0ᴹ   ∎
 
 fx≉0⇒x≉0 : ∀ {x} → f x B.≉ᴹ B.0ᴹ → x A.≉ᴹ A.0ᴹ
-fx≉0⇒x≉0 = contraposition x≈0⇒fx≈0
+fx≉0⇒x≉0 x≈0 = contraposition x≈0⇒fx≈0 x≈0
 
 -- Zero is a unique output of non-trivial (i.e. - ≉ `const 0`) linear map.
 x≉0⇒f[x]≉0 : ∀ {x} → NonTrivial x → x A.≉ᴹ A.0ᴹ → f x B.≉ᴹ B.0ᴹ

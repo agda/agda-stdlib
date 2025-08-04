@@ -39,7 +39,7 @@ module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
 
   map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
          ∀ {n xs} → Unique S {n} xs → Unique R {n} (map f xs)
-  map⁺ inj xs! = AllPairs.map⁺ (AllPairs.map (contraposition inj) xs!)
+  map⁺ inj xs! = AllPairs.map⁺ (AllPairs.map (λ x≈y → contraposition inj x≈y) xs!)
 
 ------------------------------------------------------------------------
 -- take & drop
