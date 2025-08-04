@@ -33,6 +33,11 @@ infix 3 ¬_
 DoubleNegation : Set a → Set a
 DoubleNegation A = ¬ ¬ A
 
+-- Eta law for double-negation
+
+¬¬-η : A → ¬ ¬ A
+¬¬-η a ¬a = ¬a a
+
 -- Stability under double-negation.
 Stable : Set a → Set a
 Stable A = ¬ ¬ A → A
