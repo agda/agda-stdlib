@@ -409,17 +409,17 @@ module Antisymmetry
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length zs        ≤⟨ ℕ.n≤1+n (length zs) ⟩
     length (z ∷ zs)  ≤⟨ length-mono-≤ rs ⟩
-    length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
+    length ys₁       ∎) (ℕ.<-irrefl ≡.refl)
   antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
     contradiction (begin
     length (z ∷ zs) ≤⟨ length-mono-≤ rs ⟩
     length ys₁      ≤⟨ length-mono-≤ ss ⟩
-    length zs       ∎) $ ℕ.<-irrefl ≡.refl
+    length zs       ∎) (ℕ.<-irrefl ≡.refl)
   antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
     contradiction (begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length xs        ≤⟨ length-mono-≤ rs ⟩
-    length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
+    length ys₁       ∎) (ℕ.<-irrefl ≡.refl)
 
 open Antisymmetry public
 
