@@ -56,7 +56,7 @@ open import Relation.Nullary.Negation.Core public
 ¬¬-Monad : RawMonad {a} DoubleNegation
 ¬¬-Monad = mkRawMonad
   DoubleNegation
-  ¬¬-eta
+  ¬¬-η
   (λ x f → negated-stable (¬¬-map f x))
 
 ¬¬-push : DoubleNegation Π[ P ] → Π[ DoubleNegation ∘ P ]
@@ -72,7 +72,7 @@ open import Relation.Nullary.Negation.Core public
 -- ⊥).
 
 call/cc : ((A → Whatever) → DoubleNegation A) → DoubleNegation A
-call/cc hyp ¬a = hyp (flip contradiction ¬a) ¬a
+call/cc hyp ¬a = hyp (λ a → contradiction a ¬a) ¬a
 
 -- The "independence of premise" rule, in the double-negation monad.
 -- It is assumed that the index set (A) is inhabited.
@@ -81,8 +81,8 @@ independence-of-premise : A → (B → Σ A P) → DoubleNegation (Σ[ x ∈ A ]
 independence-of-premise {A = A} {B = B} {P = P} q f = ¬¬-map helper ¬¬-excluded-middle
   where
   helper : Dec B → Σ[ x ∈ A ] (B → P x)
-  helper (yes p) = Product.map₂ const (f p)
-  helper (no ¬p) = (q , flip contradiction ¬p)
+  helper (yes b) = Product.map₂ const (f b)
+  helper (no ¬b) = (q , λ b → contradiction b ¬b)
 
 -- The independence of premise rule for binary sums.
 
@@ -90,8 +90,8 @@ independence-of-premise-⊎ : (A → B ⊎ C) → DoubleNegation ((A → B) ⊎ 
 independence-of-premise-⊎ {A = A} {B = B} {C = C} f = ¬¬-map helper ¬¬-excluded-middle
   where
   helper : Dec A → (A → B) ⊎ (A → C)
-  helper (yes p) = Sum.map const const (f p)
-  helper (no ¬p) = inj₁ (flip contradiction ¬p)
+  helper (yes a) = Sum.map const const (f a)
+  helper (no ¬a) = inj₁ λ a → contradiction a ¬a
 
 private
 
