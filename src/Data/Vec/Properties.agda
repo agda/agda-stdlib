@@ -37,7 +37,8 @@ open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core
   using (Dec; does; yes; _×-dec_; map′)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation.Core
+  using (contradiction; contradiction-irr)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
 private
@@ -1290,9 +1291,9 @@ toList-insertAt (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insertAt xs i 
 ------------------------------------------------------------------------
 -- removeAt
 
-removeAt-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
+removeAt-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} .(i≢j : i ≢ j) →
                   lookup (removeAt xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-removeAt-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
+removeAt-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction-irr refl i≢j
 removeAt-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
 removeAt-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
 removeAt-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
