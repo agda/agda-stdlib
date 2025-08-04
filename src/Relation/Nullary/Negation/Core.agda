@@ -26,6 +26,18 @@ infix 3 ¬_
 ¬_ : Set a → Set a
 ¬ A = A → ⊥
 
+-- Note the following use of flip:
+private
+  note : (A → ¬ B) → B → ¬ A
+  note = flip
+
+------------------------------------------------------------------------
+-- Relationship to sum
+
+infixr 1 _¬-⊎_
+_¬-⊎_ : ¬ A → ¬ B → ¬ (A ⊎ B)
+_¬-⊎_ = [_,_]
+
 ------------------------------------------------------------------------
 -- Stability.
 
@@ -38,26 +50,19 @@ Stable : Set a → Set a
 Stable A = ¬ ¬ A → A
 
 ------------------------------------------------------------------------
--- Relationship to sum
-
-infixr 1 _¬-⊎_
-_¬-⊎_ : ¬ A → ¬ B → ¬ (A ⊎ B)
-_¬-⊎_ = [_,_]
-
-------------------------------------------------------------------------
 -- Uses of negation
 
-contradiction-irr : .A → .(¬ A) → Whatever
-contradiction-irr a ¬a = ⊥-elim-irr (¬a a)
+contradiction : .A → .(¬ A) → Whatever
+contradiction a ¬a = ⊥-elim-irr (¬a a)
 
-contradiction : A → ¬ A → Whatever
-contradiction a ¬a = contradiction-irr a ¬a
+contradiction′ : .(¬ A) → .A → Whatever
+contradiction′ ¬a a = ⊥-elim-irr (¬a a)
 
-contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
+contradiction₂ : A ⊎ B → .(¬ A) → .(¬ B) → Whatever
 contradiction₂ (inj₁ a) ¬a ¬b = contradiction a ¬a
 contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 
-contraposition : (A → B) → ¬ B → ¬ A
+contraposition : (A → B) → .(¬ B) → ¬ A
 contraposition f ¬b a = contradiction (f a) ¬b
 
 -- Self-contradictory propositions are false by 'diagonalisation'
@@ -67,17 +72,11 @@ contra-diagonal self a = self a a
 
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
-stable ¬[¬¬a→a] = ¬[¬¬a→a] (contradiction (¬[¬¬a→a] ∘ const))
+stable ¬[¬¬a→a] = ¬[¬¬a→a] λ ¬¬a → contradiction (¬[¬¬a→a] ∘ const) ¬¬a
 
 -- Negated predicates are stable.
 negated-stable : Stable (¬ A)
-negated-stable ¬¬¬a a = ¬¬¬a (contradiction a)
+negated-stable ¬¬¬a a = ¬¬¬a λ ¬a → contradiction a ¬a
 
 ¬¬-map : (A → B) → ¬ ¬ A → ¬ ¬ B
-¬¬-map f = contraposition (contraposition f)
-
--- Note also the following use of flip:
-private
-  note : (A → ¬ B) → B → ¬ A
-  note = flip
-
+¬¬-map f ¬¬a = contraposition (λ ¬b → contraposition f ¬b) ¬¬a

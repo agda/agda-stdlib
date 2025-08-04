@@ -18,7 +18,7 @@ open import Data.Empty.Polymorphic using (⊥)
 open import Level using (Level)
 open import Function.Base using (_$_; _∘_; const; id)
 open import Relation.Nullary.Negation.Core
-  using (¬_; contradiction-irr; contradiction; _¬-⊎_)
+  using (¬_; contradiction; _¬-⊎_)
 open import Relation.Nullary.Recomputable as Recomputable using (Recomputable)
 
 private
@@ -61,7 +61,7 @@ invert (ofⁿ ¬a) = ¬a
 
 recompute : ∀ {b} → Reflects A b → Recomputable A
 recompute (ofʸ  a) _ = a
-recompute (ofⁿ ¬a) a = contradiction-irr a ¬a
+recompute (ofⁿ ¬a) a = contradiction a ¬a
 
 recompute-constant : ∀ {b} (r : Reflects A b) (p q : A) →
                      recompute r p ≡ recompute r q

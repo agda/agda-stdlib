@@ -717,3 +717,9 @@ used successfully in PR
 systematic for `Nary` relations in PR
 [#811](https://github.com/agda/agda-stdlib/pull/811)
 
+## Prefer use of `Relation.Nullary.Negation.Core.contradiction`
+
+Where possible use `contradiction` between two explicit arguments rather
+than appealing to the lower-level `Data.Empty.⊥-elim`. This provides
+clearer documentation for readers of the code, but also permits a wider
+range of application, thanks to its arguments being made proof-irrelevant.
