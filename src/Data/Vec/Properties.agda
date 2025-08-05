@@ -1227,7 +1227,7 @@ padRight-drop′ : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
                  let o , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
                  in drop m (cast (sym n≡m+o) (padRight m≤n a xs)) ≡ replicate o a
 padRight-drop′ m≤n a xs = let o , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
-  in padRight-drop m≤n a xs (sym n≡m+o) 
+  in padRight-drop m≤n a xs (sym n≡m+o)
 
 padRight-take : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
                 take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
@@ -1238,7 +1238,7 @@ padRight-take′ : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
                  let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
                  in take m (cast (sym n≡m+o) (padRight m≤n a xs)) ≡ xs
 padRight-take′ m≤n a xs = let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
-  in padRight-take m≤n a xs (sym n≡m+o) 
+  in padRight-take m≤n a xs (sym n≡m+o)
 
 padRight-updateAt : ∀ .(m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin m) (x : A) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
