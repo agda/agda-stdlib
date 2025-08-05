@@ -77,7 +77,7 @@ Additions to existing modules
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
   ```
-  
+
 * In `Data.Vec.Properties`:
   ```agda
   padRight-lookup : (m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) → lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
@@ -97,6 +97,7 @@ Additions to existing modules
 
   padRight-updateAt : (m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
+  ```
 
 * In `Relation.Nullary.Negation.Core`
   ```agda
