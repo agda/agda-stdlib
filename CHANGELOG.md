@@ -31,13 +31,3 @@ New modules
 
 Additions to existing modules
 -----------------------------
-
-* In `Relation.Nullary.Negation.Core`
-  ```agda
-  ¬¬-η : A → ¬ ¬ A
-  ```
-
-* In `Relation.Nullary.Negation.Core`
-  ```agda
-  ¬¬-η : A → ¬ ¬ A
-  ```
