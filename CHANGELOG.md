@@ -106,7 +106,15 @@ Additions to existing modules
 
   padRight-take : (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) → take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
 
+  padRight-take′ : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+                   let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+                   in take m (cast (sym n≡m+o) (padRight m≤n a xs)) ≡ xs
+
   padRight-drop : (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) → drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+
+  padRight-drop′ : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+                   let o , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+                   in drop m (cast (sym n≡m+o) (padRight m≤n a xs)) ≡ replicate o a
 
   padRight-updateAt : (m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)

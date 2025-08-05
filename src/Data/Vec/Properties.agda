@@ -19,7 +19,7 @@ open import Data.Nat.Base
 open import Data.Nat.Properties
   using (suc-injective; +-assoc;  +-comm; +-suc; +-identityʳ
         ; m≤n⇒m≤1+n; m≤m+n; suc[m]≤n⇒m≤pred[n]
-        ; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″
+        ; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; m≤n⇒∃[o]m+o≡n
         )
 open import Data.Product.Base as Product
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
@@ -1223,10 +1223,22 @@ padRight-drop : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ 
 padRight-drop {m = zero}              _   a []       eq = cast-replicate eq a
 padRight-drop {m = suc _} {n = suc _} m≤n a (x ∷ xs) eq = padRight-drop (s≤s⁻¹ m≤n) a xs (suc-injective eq)
 
+padRight-drop′ : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+                 let o , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+                 in drop m (cast (sym n≡m+o) (padRight m≤n a xs)) ≡ replicate o a
+padRight-drop′ m≤n a xs = let o , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+  in padRight-drop m≤n a xs (sym n≡m+o) 
+
 padRight-take : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
                 take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
 padRight-take {m = zero}              _   a []       _  = refl
 padRight-take {m = suc _} {n = suc _} m≤n a (x ∷ xs) eq = cong (x ∷_) (padRight-take (s≤s⁻¹ m≤n) a xs (suc-injective eq))
+
+padRight-take′ : ∀ .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+                 let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+                 in take m (cast (sym n≡m+o) (padRight m≤n a xs)) ≡ xs
+padRight-take′ m≤n a xs = let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+  in padRight-take m≤n a xs (sym n≡m+o) 
 
 padRight-updateAt : ∀ .(m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin m) (x : A) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
@@ -1234,7 +1246,7 @@ padRight-updateAt : ∀ .(m≤n : m ≤ n) (xs : Vec A m) (f : A → A) (i : Fin
 padRight-updateAt {n = suc _} m≤n (y ∷ xs) f zero    x = refl
 padRight-updateAt {n = suc _} m≤n (y ∷ xs) f (suc i) x = cong (y ∷_) (padRight-updateAt (s≤s⁻¹ m≤n) xs f i x)
 
-
+--
 ------------------------------------------------------------------------
 -- iterate
 
