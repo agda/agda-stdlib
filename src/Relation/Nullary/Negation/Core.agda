@@ -10,7 +10,7 @@ module Relation.Nullary.Negation.Core where
 
 open import Data.Empty using (⊥; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
-open import Function.Base using (flip; _∘_; const)
+open import Function.Base using (_∘_; const)
 open import Level using (Level; _⊔_)
 
 private
