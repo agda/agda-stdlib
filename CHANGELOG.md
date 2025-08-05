@@ -21,6 +21,9 @@ Minor improvements
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
 
+* As a consequence, the type of `Data.Fin.Base.lower₁` has been correspondingly
+  weakened so that the negated hypothesis `n≢i : n ≢ toℕ i` is marked irrelevant.
+
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
   README.Data.Fin.Relation.Unary.Top
