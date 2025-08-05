@@ -22,7 +22,8 @@ open import Function.Base using (flip; _∘_; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Nullary.Decidable as Dec
   using (yes; no; from-yes; from-no; ¬?; _×-dec_; _⊎-dec_; _→-dec_; decidable-stable)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction; contradiction₂)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contradiction′; contradiction₂)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -347,8 +348,9 @@ irreducible[2] {suc _} d∣2 with ∣⇒≤ d∣2
 ... | s<s z<s = inj₂ refl
 
 irreducible⇒nonZero : Irreducible n → NonZero n
-irreducible⇒nonZero {zero}    = flip contradiction ¬irreducible[0]
-irreducible⇒nonZero {suc _} _ = _
+irreducible⇒nonZero {zero}  irreducible[0] =
+  contradiction′ ¬irreducible[0] irreducible[0]
+irreducible⇒nonZero {suc _} _      = _
 
 irreducible? : Decidable Irreducible
 irreducible? zero      = no ¬irreducible[0]
