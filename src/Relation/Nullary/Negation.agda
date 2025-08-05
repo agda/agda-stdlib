@@ -56,7 +56,7 @@ open import Relation.Nullary.Negation.Core public
 ¬¬-Monad : RawMonad {a} DoubleNegation
 ¬¬-Monad = mkRawMonad
   DoubleNegation
-  contradiction
+  ¬¬-η
   (λ x f → negated-stable (¬¬-map f x))
 
 ¬¬-push : DoubleNegation Π[ P ] → Π[ DoubleNegation ∘ P ]

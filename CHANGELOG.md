@@ -97,4 +97,8 @@ Additions to existing modules
 
   padRight-updateAt : (m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
+
+* In `Relation.Nullary.Negation.Core`
+  ```agda
+  ¬¬-η : A → ¬ ¬ A
   ```
