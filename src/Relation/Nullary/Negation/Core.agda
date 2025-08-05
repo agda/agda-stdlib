@@ -15,7 +15,7 @@ open import Level using (Level; _⊔_)
 
 private
   variable
-    a p q w : Level
+    a w : Level
     A B C : Set a
     Whatever : Set w
 

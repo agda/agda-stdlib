@@ -36,3 +36,8 @@ Additions to existing modules
   ```agda
   ¬¬-η : A → ¬ ¬ A
   ```
+
+* In `Relation.Nullary.Negation.Core`
+  ```agda
+  ¬¬-η : A → ¬ ¬ A
+  ```
