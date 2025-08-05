@@ -29,11 +29,6 @@ infix 3 ¬_
 ------------------------------------------------------------------------
 -- Properties, I: as a definition in *minimal logic*
 
--- Note the following use of flip:
-private
-  note : (A → ¬ B) → B → ¬ A
-  note = flip
-
 -- Contraposition
 contraposition : (A → B) → ¬ B → ¬ A
 contraposition f ¬b a =  ¬b (f a)
