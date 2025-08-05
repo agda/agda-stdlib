@@ -1130,7 +1130,7 @@ sum-++ {ys = ys} (x ∷ xs) = begin
 -- replicate
 
 cast-replicate : ∀ .(m≡n : m ≡ n) (x : A) → cast m≡n (replicate m x) ≡ replicate n x
-cast-replicate {m = zero}  {n = zero}  _  _  = refl
+cast-replicate {m = zero}  {n = zero}  _  _ = refl
 cast-replicate {m = suc _} {n = suc _} eq x = cong (x ∷_) (cast-replicate (suc-injective eq) x)
 
 lookup-replicate : ∀ (i : Fin n) (x : A) → lookup (replicate n x) i ≡ x
