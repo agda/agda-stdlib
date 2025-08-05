@@ -89,8 +89,8 @@ Additions to existing modules
   μ⟨_⟩  : Pred (Fin n) p → Set p
   μ⟨¬_⟩ : Pred (Fin n) p → Set p
   ¬¬μ⇒μ : Decidable P → μ⟨¬ ∁ P ⟩ → μ⟨ P ⟩
-  searchMinimalCounterexample : Decidable P → (∀ i → P i) ⊎ μ⟨¬ P ⟩
-  search-μ⟨¬_⟩                : Decidable P → (∀ i → P i) ⊎ μ⟨¬ P ⟩
+  searchMinimalCounterexample : Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
+  search-μ⟨¬_⟩                : Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
   ```
 
 * In `Data.Nat.Properties`:

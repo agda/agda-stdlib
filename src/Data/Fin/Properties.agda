@@ -1082,7 +1082,7 @@ module _ (P : Pred (Fin n) p) where
 ¬¬μ⇒μ : ∀ {P : Pred (Fin n) p} → Decidable P → μ⟨¬ ∁ P ⟩ → μ⟨ P ⟩
 ¬¬μ⇒μ P? (μ i ¬¬pᵢ ∀[j<i]) = μ i (decidable-stable (P? i) (¬-recompute ¬¬pᵢ)) ∀[j<i]
 
-searchMinimalCounterexample : ∀ {P : Pred (Fin n) p} → Decidable P → (∀ i → P i) ⊎ μ⟨¬ P ⟩
+searchMinimalCounterexample : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
 searchMinimalCounterexample {zero}  {P = _} P? = inj₁ λ()
 searchMinimalCounterexample {suc _} {P = P} P? with P? zero
 ... | no ¬p₀ = inj₂ (μ zero ¬p₀ λ())
@@ -1094,7 +1094,7 @@ searchMinimalCounterexample {suc _} {P = P} P? with P? zero
       {zero}  _     → p₀
       {suc _} sj<si → ∀[j<i]P (ℕ.s<s⁻¹ sj<si)
 
-search-μ⟨¬_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → (∀ i → P i) ⊎ μ⟨¬ P ⟩
+search-μ⟨¬_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
 search-μ⟨¬_⟩ = searchMinimalCounterexample
 
 ¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
