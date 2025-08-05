@@ -77,3 +77,8 @@ Additions to existing modules
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
   ```
+
+* In `Relation.Nullary.Negation.Core`
+  ```agda
+  ¬¬-η : A → ¬ ¬ A
+  ```
