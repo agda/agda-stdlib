@@ -45,29 +45,25 @@ Additions to existing modules
 
 * In `Data.Vec.Properties`:
   ```agda
-  take-updateAt : (f : A → A) {m n : ℕ} (xs : Vec A (m + n)) (i : Fin m) →
-  updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
+  updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                  updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
 
-  truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
-  truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+  truncate-zipWith : (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) (f : A → B → C) →
+                    truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
 
-  truncate-zipWith-truncate : truncate o≤m (zipWith f (truncate m≤n xs) ys) ≡
-  zipWith f (truncate o≤n xs) (truncate o≤m ys)
+  truncate-zipWith-truncate : (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o) (xs : Vec A o) (ys : Vec B n) →
+                              truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
+                              zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
 
-  zipWith-truncate : zipWith f (truncate p≤p+q xs) (truncate p≤p+q ys) ≡
-  truncate p≤p+q (zipWith f xs ys)
+  truncate-updateAt : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
+                      updateAt (truncate m≤n xs) i f ≡
+                      truncate m≤n (updateAt xs (inject≤ i m≤n) f)
 
-  zipWith-truncate₁ : zipWith f (truncate o≤o+m+n xs) (truncate (o≤o+m) ys) ≡
-  truncate (o≤o+m) (zipWith f (truncate (o+m≤o+m+n) xs) ys)
+  updateAt-truncate : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                      updateAt (truncate (m≤m+n m n) xs) i f ≡
+                      truncate (m≤m+n m n) (updateAt xs (inject≤ i (m≤m+n m n)) f)
 
-  truncate-updateAt : (f : A → A) (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
-  updateAt (truncate m≤n xs) i f ≡ truncate m≤n (updateAt xs (inject≤ i m≤n) f)
-
-  updateAt-truncate : updateAt (truncate p≤p+q xs) i f ≡ truncate p≤p+q (updateAt xs i′ f)
-
-  truncate++drop≡id : (xs : Vec A (m + n)) → truncate (m≤m+n m n) xs ++ drop m xs ≡ xs
-
-  truncate-map : (f : A → B) (m : ℕ) (m≤n : m ≤ n) (xs : Vec A n) →
-  map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+  map-truncate : (f : A → B) (m≤n : m ≤ n) (xs : Vec A n) →
+                map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
 
   ```
