@@ -134,6 +134,7 @@ In the list below we present a selection of such projects:
 
 - Verification of routing protocols [@daggitt2023routing]
 
+The library has also been used as a test bed for the design of co-inductive data types in Agda itself, as evidenced by the three different notions of co-inductive data present in the library.
 On occasion, the development of `agda-stdlib` has also had a synergistic relationship with that of Agda itself, prompting the implementation of several new language features, which we now discuss.
 Firstly, Agda is a research compiler supporting a wide range of possibly incompatible language extensions via command line options.
 Examples include `--cubical` (changing the underlying type theory to cubical type theory [@DBLP:journals/jfp/VezzosiMA21]),
