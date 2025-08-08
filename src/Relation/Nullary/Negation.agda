@@ -72,7 +72,7 @@ open import Relation.Nullary.Negation.Core public
 -- ⊥).
 
 call/cc : ((A → Whatever) → DoubleNegation A) → DoubleNegation A
-call/cc hyp ¬a = hyp (flip contradiction ¬a) ¬a
+call/cc hyp ¬a = hyp (contradiction′ ¬a) ¬a
 
 -- The "independence of premise" rule, in the double-negation monad.
 -- It is assumed that the index set (A) is inhabited.
@@ -82,7 +82,7 @@ independence-of-premise {A = A} {B = B} {P = P} q f = ¬¬-map helper ¬¬-exclu
   where
   helper : Dec B → Σ[ x ∈ A ] (B → P x)
   helper (yes p) = Product.map₂ const (f p)
-  helper (no ¬p) = (q , flip contradiction ¬p)
+  helper (no ¬p) = (q , contradiction′ ¬p)
 
 -- The independence of premise rule for binary sums.
 
@@ -91,7 +91,7 @@ independence-of-premise-⊎ {A = A} {B = B} {C = C} f = ¬¬-map helper ¬¬-exc
   where
   helper : Dec A → (A → B) ⊎ (A → C)
   helper (yes p) = Sum.map const const (f p)
-  helper (no ¬p) = inj₁ (flip contradiction ¬p)
+  helper (no ¬p) = inj₁ (contradiction′ ¬p)
 
 private
 
