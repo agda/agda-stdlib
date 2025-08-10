@@ -48,7 +48,7 @@ Additions to existing modules
   updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
                   updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
 
-  truncate-zipWith : (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) (f : A → B → C) →
+  truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
                     truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
 
   truncate-zipWith-truncate : (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o) (xs : Vec A o) (ys : Vec B n) →
