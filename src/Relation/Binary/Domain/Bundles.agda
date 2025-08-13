@@ -10,8 +10,9 @@ module Relation.Binary.Domain.Bundles where
 
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Bundles using (Poset)
+open import Relation.Binary.Structures using (IsDirectedFamily)
 open import Relation.Binary.Domain.Structures
-  using (IsDirectedFamily; IsDirectedCompletePartialOrder; IsScottContinuous
+  using (IsDirectedCompletePartialOrder; IsScottContinuous
         ; IsLub)
 
 private
@@ -23,9 +24,10 @@ private
 -- Directed Complete Partial Orders
 ------------------------------------------------------------------------
 
-record DirectedFamily {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {B : Set c} (f : B → Poset.Carrier P) : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
+record DirectedFamily {c ℓ₁ ℓ₂ : Level} {P : Poset c ℓ₁ ℓ₂} {B : Set c} : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isDirectedFamily : IsDirectedFamily P f
+    f : B → Poset.Carrier P
+    isDirectedFamily : IsDirectedFamily (Poset._≈_ P) (Poset._≤_ P) f
 
   open IsDirectedFamily isDirectedFamily public
 
@@ -44,10 +46,11 @@ record DirectedCompletePartialOrder (c ℓ₁ ℓ₂ : Level) : Set (suc (c ⊔ 
 record ScottContinuous
   {c₁ ℓ₁₁ ℓ₁₂ c₂ ℓ₂₁ ℓ₂₂ : Level}
   (P : Poset c₁ ℓ₁₁ ℓ₁₂)
-  (Q : Poset c₂ ℓ₂₁ ℓ₂₂) : Set (suc (c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
+  (Q : Poset c₂ ℓ₂₁ ℓ₂₂)
+  (κ : Level) : Set (suc (κ ⊔ c₁ ⊔ ℓ₁₁ ⊔ ℓ₁₂ ⊔ c₂ ⊔ ℓ₂₁ ⊔ ℓ₂₂)) where
   field
     f                 : Poset.Carrier P → Poset.Carrier Q
-    isScottContinuous : IsScottContinuous P Q f
+    isScottContinuous : IsScottContinuous P Q f κ
 
   open IsScottContinuous isScottContinuous public
 

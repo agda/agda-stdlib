@@ -24,18 +24,8 @@ private
     I : Set ℓ
 
 ------------------------------------------------------------------------
--- Directed families
+-- Upper bound
 ------------------------------------------------------------------------
 
-semidirected : {A : Set a} → Rel A ℓ → (B : Set b) → (B → A) → Set _
-semidirected _≤_ B f = ∀ i j → ∃[ k ] (f i ≤ f k × f j ≤ f k)
-
-------------------------------------------------------------------------
--- Least upper bounds
-------------------------------------------------------------------------
-
-leastupperbound  : {A : Set a} → Rel A ℓ → {B : Set b} → (g : B → A) → A → Set _
-leastupperbound _≤_ g lub = (∀ i → g i ≤ lub) × (∀ y → (∀ i → g i ≤ y) → lub ≤ y)
-
-preserveLubs : {A : Set a} {B : Set b } (≤₁ : Rel A ℓ₁) (≤₂ : Rel B ℓ₂) (f : A → B) → Set (suc (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂))
-preserveLubs ≤₁ ≤₂ f =  ∀ {I} → ∀ {g : I → _} → ∀ lub → leastupperbound ≤₁ g lub → leastupperbound ≤₂ (f ∘ g) (f lub)
+UpperBound : {A : Set a} → Rel A ℓ → {B : Set b} → (f : B → A) → A → Set _
+UpperBound _≤_ f x = ∀ i → f i ≤ x
