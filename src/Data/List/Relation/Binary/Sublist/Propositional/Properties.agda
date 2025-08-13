@@ -43,7 +43,7 @@ private
 
 module _ {A : Set a} where
   open SetoidProperties (setoid A) public
-    hiding (map⁺; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
+    hiding (map⁺; All-resp-⊆; Any-resp-⊆; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
 
 ------------------------------------------------------------------------
 -- Relationship between _⊆_ and Setoid._⊆_
@@ -103,17 +103,17 @@ map⁺ f = SetoidProperties.map⁺ (setoid _) (setoid _) (cong f)
 ------------------------------------------------------------------------
 -- Relationships to other predicates
 
+module _ {P : Pred A ℓ} where
+
 -- All P is a contravariant functor from _⊆_ to Set.
 
-All-resp-⊆ : {P : Pred A ℓ} → (All P) Respects _⊇_
-All-resp-⊆ []          []       = []
-All-resp-⊆ (_    ∷ʳ p) (_ ∷ xs) = All-resp-⊆ p xs
-All-resp-⊆ (refl ∷  p) (x ∷ xs) = x ∷ All-resp-⊆ p xs
+  All-resp-⊆ : (All P) Respects _⊇_
+  All-resp-⊆ = SetoidProperties.All-resp-⊆ (setoid _) (≡.resp P)
 
 -- Any P is a covariant functor from _⊆_ to Set.
 
-Any-resp-⊆ : {P : Pred A ℓ} → (Any P) Respects _⊆_
-Any-resp-⊆ = lookup
+  Any-resp-⊆ : (Any P) Respects _⊆_
+  Any-resp-⊆ = SetoidProperties.Any-resp-⊆ (setoid _) (≡.resp P)
 
 ------------------------------------------------------------------------
 -- Functor laws for All-resp-⊆
