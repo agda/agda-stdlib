@@ -72,6 +72,12 @@ Additions to existing modules
   ≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  All-resp-⊆ : (P Respects _≈_) → (All P) Respects _⊇_
+  Any-resp-⊆ : (P Respects _≈_) → (Any P) Respects _⊆_
+  ```
+
 * In `Data.Nat.Properties`:
   ```agda
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
