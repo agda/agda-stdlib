@@ -14,7 +14,7 @@ module Algebra.Module.Morphism.RightModuleMonomorphism
   (isRightModuleMonomorphism : IsRightModuleMonomorphism M N ⟦_⟧)
   where
 
-open IsRightModuleMonomorphism isRightModuleMonomorphism
+open IsRightModuleMonomorphism M N isRightModuleMonomorphism
 module M = RawRightModule M
 module N = RawRightModule N
 

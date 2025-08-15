@@ -14,7 +14,7 @@ module Algebra.Module.Morphism.SemimoduleMonomorphism
   (isSemimoduleMonomorphism : IsSemimoduleMonomorphism M N ⟦_⟧)
   where
 
-open IsSemimoduleMonomorphism isSemimoduleMonomorphism
+open IsSemimoduleMonomorphism M N isSemimoduleMonomorphism
 private
   module M = RawSemimodule M
   module N = RawSemimodule N

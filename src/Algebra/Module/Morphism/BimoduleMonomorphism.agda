@@ -14,7 +14,7 @@ module Algebra.Module.Morphism.BimoduleMonomorphism
   (isBimoduleMonomorphism : IsBimoduleMonomorphism M N ⟦_⟧)
   where
 
-open IsBimoduleMonomorphism isBimoduleMonomorphism
+open IsBimoduleMonomorphism M N isBimoduleMonomorphism
 private
   module M = RawBimodule M
   module N = RawBimodule N

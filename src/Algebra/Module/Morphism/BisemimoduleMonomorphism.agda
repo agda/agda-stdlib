@@ -14,7 +14,7 @@ module Algebra.Module.Morphism.BisemimoduleMonomorphism
   (isBisemimoduleMonomorphism : IsBisemimoduleMonomorphism M N ⟦_⟧)
   where
 
-open IsBisemimoduleMonomorphism isBisemimoduleMonomorphism
+open IsBisemimoduleMonomorphism M N isBisemimoduleMonomorphism
 private
   module M = RawBisemimodule M
   module N = RawBisemimodule N
