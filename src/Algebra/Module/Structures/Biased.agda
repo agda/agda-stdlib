@@ -113,7 +113,7 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
 
     open IsLeftModule isLeftModule
 
-    isModule : IsModule commutativeRing ≈ᴹ +ᴹ 0ᴹ -ᴹ *ₗ (flip *ₗ)
+    isModule : IsModule commutativeRing ≈ᴹ +ᴹ 0ᴹ (-ᴹ) *ₗ (flip *ₗ)
     isModule = record
       { isBimodule = record
         { isBisemimodule = IsSemimoduleFromLeft.isBisemimodule
@@ -135,7 +135,7 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
 
     open IsRightModule isRightModule
 
-    isModule : IsModule commutativeRing ≈ᴹ +ᴹ 0ᴹ -ᴹ (flip *ᵣ) *ᵣ
+    isModule : IsModule commutativeRing ≈ᴹ +ᴹ 0ᴹ (-ᴹ) (flip *ᵣ) *ᵣ
     isModule = record
       { isBimodule = record
         { isBisemimodule = IsSemimoduleFromRight.isBisemimodule
