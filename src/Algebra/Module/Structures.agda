@@ -215,6 +215,7 @@ module _ (ring : Ring r ℓr)
       ; inverseʳ   to -ᴹ‿inverseʳ
       ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
       ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
+      ; _-_ to _-ᴹ_
       )
     {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
     "Warning: uniqueˡ‿-ᴹ was deprecated in v2.3.
@@ -252,6 +253,7 @@ module _ (ring : Ring r ℓr)
       ; inverseʳ   to -ᴹ‿inverseʳ
       ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
       ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
+      ; _-_ to _-ᴹ_
       )
     {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
     "Warning: uniqueˡ‿-ᴹ was deprecated in v2.3.
@@ -289,9 +291,9 @@ module _ (R-ring : Ring r ℓr) (S-ring : Ring s ℓs)
 
     open IsLeftModule isLeftModule public
       using ( +ᴹ-isAbelianGroup; +ᴹ-isGroup; -ᴹ‿inverseˡ; -ᴹ‿inverseʳ
-            ; uniqueˡ‿-ᴹ; uniqueʳ‿-ᴹ)
+            ; uniqueˡ‿-ᴹ; uniqueʳ‿-ᴹ; _-ᴹ_)
 
-    isRightModule : IsRightModule S-ring ≈ᴹ +ᴹ 0ᴹ -ᴹ *ᵣ
+    isRightModule : IsRightModule S-ring ≈ᴹ +ᴹ 0ᴹ (-ᴹ) *ᵣ
     isRightModule = record
       { isRightSemimodule = isRightSemimodule
       ; -ᴹ‿cong = -ᴹ‿cong

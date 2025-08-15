@@ -184,7 +184,7 @@ leftModule : {R : Ring r ℓr} →
              LeftModule R m′ ℓm′ →
              LeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 leftModule M N = record
-  { -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
+  { -ᴹ_ = map (M.-ᴹ_) (N.-ᴹ_)
   ; isLeftModule = record
     { isLeftSemimodule = LeftSemimodule.isLeftSemimodule
       (leftSemimodule M.leftSemimodule N.leftSemimodule)
@@ -200,7 +200,7 @@ rightModule : {R : Ring r ℓr} →
               RightModule R m′ ℓm′ →
               RightModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 rightModule M N = record
-  { -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
+  { -ᴹ_ = map (M.-ᴹ_) (N.-ᴹ_)
   ; isRightModule = record
     { isRightSemimodule = RightSemimodule.isRightSemimodule
       (rightSemimodule M.rightSemimodule N.rightSemimodule)
@@ -216,7 +216,7 @@ bimodule : {R : Ring r ℓr} {S : Ring s ℓs} →
            Bimodule R S m′ ℓm′ →
            Bimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
 bimodule M N = record
-  { -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
+  { -ᴹ_ = map (M.-ᴹ_) (N.-ᴹ_)
   ; isBimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule
       (bisemimodule M.bisemimodule N.bisemimodule)
