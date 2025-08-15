@@ -9,7 +9,9 @@
 open import Relation.Binary.Core using (Rel)
 
 module Algebra.Module.Morphism.Definitions
-  {r} (R : Set r) -- The underlying ring
+  {r} (R : Set r) -- The underlying ring of the domain
+  {s} (S : Set s) -- The underlying ring of the codomain
+  ([_] : R → S)   -- The homomorphism between the underlying rings
   {a} (A : Set a) -- The domain of the morphism
   {b} (B : Set b) -- The codomain of the morphism
   {ℓ} (_≈_ : Rel B ℓ) -- The equality relation over the codomain
@@ -18,8 +20,8 @@ module Algebra.Module.Morphism.Definitions
 open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Morphism.Definitions A B _≈_ public
 
-Homomorphicₗ : (A → B) → Opₗ R A → Opₗ R B → Set _
-Homomorphicₗ ⟦_⟧ _∙_ _∘_ = ∀ r x → ⟦ r ∙ x ⟧ ≈ (r ∘ ⟦ x ⟧)
+Homomorphicₗ : (A → B) → Opₗ R A → Opₗ S B → Set _
+Homomorphicₗ ⟦_⟧ _∙_ _∘_ = ∀ r x → ⟦ r ∙ x ⟧ ≈ ([ r ] ∘ ⟦ x ⟧)
 
-Homomorphicᵣ : (A → B) → Opᵣ R A → Opᵣ R B → Set _
-Homomorphicᵣ ⟦_⟧ _∙_ _∘_ = ∀ r x → ⟦ x ∙ r ⟧ ≈ (⟦ x ⟧ ∘ r)
+Homomorphicᵣ : (A → B) → Opᵣ R A → Opᵣ S B → Set _
+Homomorphicᵣ ⟦_⟧ _∙_ _∘_ = ∀ r x → ⟦ x ∙ r ⟧ ≈ (⟦ x ⟧ ∘ [ r ])
