@@ -21,6 +21,11 @@ Minor improvements
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
 
+* Similarly the type of `Data.Fin.Base.punchOut` has been weakened so that the
+  negated equational hypothesis `i ≢ j` is marked as irrelevant. This simplifies
+  some of the proofs of its properties, but also requires some slightly more
+  explicit instantiation in a couple of places.
+
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
   README.Data.Fin.Relation.Unary.Top
@@ -39,6 +44,11 @@ Deprecated names
 * In `Algebra.Properties.CommutativeSemigroup`:
   ```agda
   interchange  ↦   medial
+ ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  punchOut-cong′  ↦  punchOut-cong
   ```
 
 New modules

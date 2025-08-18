@@ -29,7 +29,8 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; map′; _×-dec_)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation
+  using (contradiction; contradiction-irr)
 
 import Data.Fin.Properties as Finₚ
 
@@ -236,9 +237,9 @@ insertAt-punchIn {n = suc n} xs (suc i) v (suc j) = insertAt-punchIn (tail xs) i
 -- removeAt
 
 removeAt-punchOut : ∀ (xs : Vector A (suc n))
-                  {i : Fin (suc n)} {j : Fin (suc n)} (i≢j : i ≢ j) →
+                  {i : Fin (suc n)} {j : Fin (suc n)} .(i≢j : i ≢ j) →
                   removeAt xs i (punchOut i≢j) ≡ xs j
-removeAt-punchOut {n = n}     xs {zero}  {zero}  i≢j = contradiction refl i≢j
+removeAt-punchOut {n = n}     xs {zero}  {zero}  i≢j = contradiction-irr refl i≢j
 removeAt-punchOut {n = suc n} xs {zero}  {suc j} i≢j = refl
 removeAt-punchOut {n = suc n} xs {suc i} {zero}  i≢j = refl
 removeAt-punchOut {n = suc n} xs {suc i} {suc j} i≢j = removeAt-punchOut (tail xs) (i≢j ∘ cong suc)
