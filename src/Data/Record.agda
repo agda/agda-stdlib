@@ -63,8 +63,8 @@ mutual
   -- inferred from a value of type Record Sig.
 
   record Record {s} (Sig : Signature s) : Set s where
-    eta-equality
     inductive
+    no-eta-equality
     constructor rec
     field fun : Record-fun Sig
 
@@ -122,17 +122,19 @@ Proj (_,_≔_ Sig ℓ′ {A = A} a) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
 
 -- Record restriction and projection.
 
+open Record renaming (fun to fields)
+
 infixl 5 _∣_
 
 _∣_ : ∀ {s} {Sig : Signature s} → Record Sig →
       (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} → Restricted Sig ℓ ℓ∈
 _∣_ {Sig = ∅}            r       ℓ {}
-_∣_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
-... | true  = Σ.proj₁ r
-... | false = _∣_ (Σ.proj₁ r) ℓ {ℓ∈}
-_∣_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
-... | true  = Manifest-Σ.proj₁ r
-... | false = _∣_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
+_∣_ {Sig = Sig , ℓ′ ∶ A} r ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+... | true  = Σ.proj₁ (fields r)
+... | false = _∣_ (Σ.proj₁ (fields r)) ℓ {ℓ∈}
+_∣_ {Sig = Sig , ℓ′ ≔ a} r ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+... | true  = Manifest-Σ.proj₁ (fields r)
+... | false = _∣_ (Manifest-Σ.proj₁ (fields r)) ℓ {ℓ∈}
 
 infixl 5 _·_
 
@@ -140,12 +142,12 @@ _·_ : ∀ {s} {Sig : Signature s} (r : Record Sig)
       (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} →
       Proj Sig ℓ {ℓ∈} (r ∣ ℓ)
 _·_ {Sig = ∅}            r       ℓ {}
-_·_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
-... | true  = Σ.proj₂ r
-... | false = _·_ (Σ.proj₁ r) ℓ {ℓ∈}
-_·_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
-... | true  = Manifest-Σ.proj₂ r
-... | false = _·_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
+_·_ {Sig = Sig , ℓ′ ∶ A} r ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+... | true  = Σ.proj₂ (fields r)
+... | false = _·_ (Σ.proj₁ (fields r)) ℓ {ℓ∈}
+_·_ {Sig = Sig , ℓ′ ≔ a} r ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+... | true  = Manifest-Σ.proj₂ (fields r)
+... | false = _·_ (Manifest-Σ.proj₁ (fields r)) ℓ {ℓ∈}
 
 ------------------------------------------------------------------------
 -- With
@@ -170,9 +172,9 @@ mutual
               {a : (r : Restricted Sig ℓ ℓ∈) → Proj Sig ℓ r} →
               Record (_With_≔_ Sig ℓ {ℓ∈} a) → Record Sig
   drop-With {Sig = ∅} {ℓ∈ = ()}      r
-  drop-With {Sig = Sig , ℓ′ ∶ A} {ℓ} (rec r) with does (ℓ ≟ ℓ′)
-  ... | true  = rec (Manifest-Σ.proj₁ r , Manifest-Σ.proj₂ r)
-  ... | false = rec (drop-With (Σ.proj₁ r) , Σ.proj₂ r)
-  drop-With {Sig = Sig , ℓ′ ≔ a} {ℓ} (rec r) with does (ℓ ≟ ℓ′)
-  ... | true  = rec (Manifest-Σ.proj₁ r ,)
-  ... | false = rec (drop-With (Manifest-Σ.proj₁ r) ,)
+  drop-With {Sig = Sig , ℓ′ ∶ A} {ℓ} r with does (ℓ ≟ ℓ′)
+  ... | true  = rec (Manifest-Σ.proj₁ (fields r) , Manifest-Σ.proj₂ (fields r))
+  ... | false = rec (drop-With (Σ.proj₁ (fields r)) , Σ.proj₂ (fields r))
+  drop-With {Sig = Sig , ℓ′ ≔ a} {ℓ} r with does (ℓ ≟ ℓ′)
+  ... | true  = rec (Manifest-Σ.proj₁ (fields r) ,)
+  ... | false = rec (drop-With (Manifest-Σ.proj₁ (fields r)) ,)
