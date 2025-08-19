@@ -26,6 +26,7 @@ open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Structures with 1 unary operation & 1 element
@@ -749,6 +750,27 @@ record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; identityʳ   to *-identityʳ
     )
 
+record IsBooleanSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring : IsSemiring + * 0# 1#
+    +-cancel   : Cancellative +
+    *-idem     : Idempotent *
+
+  open IsSemiring isSemiring public
+
+  +-cancelˡ : LeftCancellative +
+  +-cancelˡ = proj₁ +-cancel
+
+  +-cancelʳ : RightCancellative +
+  +-cancelʳ = proj₂ +-cancel
+
+  *-isIdempotentMonoid : IsIdempotentMonoid * 1#
+  *-isIdempotentMonoid = record { isMonoid = *-isMonoid ; idem = *-idem }
+
+  open IsIdempotentMonoid *-isIdempotentMonoid public
+    using () renaming (isBand to *-isBand)
+
+
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
@@ -978,6 +1000,16 @@ record IsCommutativeRing
     ; *-isCommutativeSemigroup
     ; *-isCommutativeMonoid
     )
+
+
+record IsBooleanRing
+         (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeRing : IsCommutativeRing + * - 0# 1#
+    *-idem            : Idempotent *
+
+  open IsCommutativeRing isCommutativeRing public
+
 
 ------------------------------------------------------------------------
 -- Structures with 3 binary operations

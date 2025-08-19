@@ -292,6 +292,21 @@ module _ {_∙_ _◦_ : Op₂ A}
     (x ◦ (x ∙ z)) ∙ (y ◦ (x ∙ z))  ≈⟨ ◦-distribʳ-∙ _ _ _ ⟨
     (x ∙ y) ◦ (x ∙ z)              ∎
 
+module _ {_∙_ _◦_ : Op₂ A}
+         (∙-cong  : Congruent₂ _∙_)
+         (∙-assoc : Associative _∙_)
+         (distrib@(distribˡ , distribʳ) : _◦_ DistributesOver _∙_)
+         where
+
+  binomial-expansion : ∀ w x y z →
+             ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  binomial-expansion w x y z = begin
+    (w ∙ x) ◦ (y ∙ z)                         ≈⟨ distribʳ _ _ _ ⟩
+    (w ◦ (y ∙ z)) ∙ (x ◦ (y ∙ z))             ≈⟨ ∙-cong (distribˡ _ _ _) (distribˡ _ _ _) ⟩
+    ((w ◦ y) ∙ (w ◦ z)) ∙ ((x ◦ y) ∙ (x ◦ z)) ≈⟨ ∙-assoc _ _ _ ⟨
+    (((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z) ∎
+
+
 ------------------------------------------------------------------------
 -- Ring-like structures
 
