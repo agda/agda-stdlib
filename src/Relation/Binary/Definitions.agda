@@ -96,6 +96,11 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 Dense : Rel A ℓ → Set _
 Dense _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
 
+-- Directedness
+
+Directed : Rel A ℓ → Set _
+Directed _≤_ = ∀ x y → ∃[ z ] x ≤ z × y ≤ z
+
 -- Generalised connex - at least one of the two relations holds.
 
 Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
