@@ -48,6 +48,11 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
 
+* Domain theory basics:
+  - `Relation.Binary.Predomain.Definitions`
+  - `Relation.Binary.Predomain.Structures`
+  - `Relation.Binary.Predomain.Morphism.Structures`
+
 Additions to existing modules
 -----------------------------
 
