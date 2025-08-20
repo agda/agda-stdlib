@@ -96,7 +96,7 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 Dense : Rel A ℓ → Set _
 Dense _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
 
--- Directedness
+-- Directedness (but: we drop the inhabitedness condition)
 
 Directed : Rel A ℓ → Set _
 Directed _≤_ = ∀ x y → ∃[ z ] x ≤ z × y ≤ z

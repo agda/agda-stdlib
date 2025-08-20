@@ -12,12 +12,8 @@ module Relation.Binary.Predomain.Morphism.Structures
   {a b} {A : Set a} {B : Set b}
   where
 
-open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_)
-open import Function.Definitions using (Injective; Surjective; Bijective)
 open import Level using (Level; suc; _⊔_)
-
-open import Relation.Binary.Morphism.Definitions A B
 open import Relation.Binary.Morphism.Structures
 open import Relation.Binary.Predomain.Definitions
 open import Relation.Binary.Predomain.Structures

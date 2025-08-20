@@ -11,8 +11,6 @@ open import Relation.Binary.Core using (Rel)
 module Relation.Binary.Predomain.Definitions
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
-open import Data.Product using (∃-syntax; _×_; _,_)
-open import Function using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred)
 

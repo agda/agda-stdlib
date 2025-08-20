@@ -16,13 +16,8 @@ module Relation.Binary.Predomain.Structures
   where
 
 import Data.Empty.Polymorphic as Empty
-open import Data.Product.Base using (proj₁; proj₂; _,_)
 open import Function.Base using (_on_)
 open import Level using (Level; suc; _⊔_)
-open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Binary.Consequences
-  using (tri⇒dec≈; tri⇒dec<; trans∧irr⇒asym)
 open import Relation.Binary.Definitions
 open import Relation.Binary.Predomain.Definitions
 
