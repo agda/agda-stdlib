@@ -18,14 +18,21 @@ private
   variable
     i : Level
     I : Set i
+    z : A
 
+------------------------------------------------------------------------
+-- Lower bound
+------------------------------------------------------------------------
+
+LowerBound : (f : I → A) → Pred A _
+LowerBound f x = ∀ i → x ≤ f i
 
 ------------------------------------------------------------------------
 -- Upper bound
 ------------------------------------------------------------------------
 
 UpperBound : (f : I → A) → Pred A _
-UpperBound f x = ∀ i → f i ≤ x
+UpperBound f y = ∀ i → f i ≤ y
 
 ------------------------------------------------------------------------
 -- Minimal upper bound above a given element
@@ -36,5 +43,5 @@ record MinimalUpperBoundAbove
   field
     lowerBound : x ≤ y
     upperBound : UpperBound {I = I} f y
-    minimal    : ∀ {z} → x ≤ z → UpperBound f z → y ≤ z
+    minimal    : x ≤ z → UpperBound f z → y ≤ z
     
