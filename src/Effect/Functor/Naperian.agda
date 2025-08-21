@@ -19,6 +19,7 @@ open import Function.Bundles using (_⟶ₛ_; _⟨$⟩_; Func)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -41,21 +42,20 @@ record RawNaperian {F : Set a → Set b} c (RF : RawFunctor F) : Set (suc (a ⊔
 -- Full Naperian has the coherence conditions too.
 -- Propositional version (hard to work with).
 
-module Propositional where
-  record Naperian {F : Set a → Set b} c (RF : RawFunctor F) : Set (suc (a ⊔ c) ⊔ b) where
-    field
-      rawNaperian : RawNaperian c RF
-    open RawNaperian rawNaperian public
-    field
-      tabulate-index : (fa : F A) → tabulate (index fa) ≡ fa
-      index-tabulate : (f : Log → A) → ((l : Log) → index (tabulate f) l ≡ f l)
+-- module Propositional where
+--   record Naperian {F : Set a → Set b} c (RF : RawFunctor F) : Set (suc (a ⊔ c) ⊔ b) where
+--     field
+--       rawNaperian : RawNaperian c RF
+--     open RawNaperian rawNaperian public
+--     field
+--       tabulate-index : (fa : F A) → tabulate (index fa) ≡ fa
+--       index-tabulate : (f : Log → A) → ((l : Log) → index (tabulate f) l ≡ f l)
 
 module _ {F : Set a → Set b} c (RF : RawFunctor F) where
   private
-    FA : (AS : Setoid a e) → (rn : RawNaperian c RF) → Setoid b (c ⊔ e)
-    FA AS rn = record
-      { Carrier = F X
-      ; _≈_ = λ fx fy → (l : Log) → index fx l ≈ index fy l
+    FA : (S : Setoid a e) → (rn : RawNaperian c RF) → Setoid b (c ⊔ e)
+    FA S rn = record
+      { _≈_ = λ (fx fy : F Carrier) → (l : Log) → index fx l ≈ index fy l
       ; isEquivalence = record
         { refl = λ _ → refl
         ; sym = λ eq l → sym (eq l)
@@ -63,16 +63,19 @@ module _ {F : Set a → Set b} c (RF : RawFunctor F) where
         }
       }
       where
-        open Setoid AS renaming (Carrier to X)
+        open Setoid S
         open RawNaperian rn
 
-  record Naperian (AS : Setoid a e) : Set (suc a ⊔ b ⊔ suc c ⊔ e) where
+  record Naperian (S : Setoid a e) : Set (suc a ⊔ b ⊔ suc c ⊔ e) where
     field
       rawNaperian : RawNaperian c RF
     open RawNaperian rawNaperian public
     private
-      module FS = Setoid (FA AS rawNaperian)
-      module A = Setoid AS
+      module FS = Setoid (FA S rawNaperian)
+      module A = Setoid S
     field
       tabulate-index : (fx : F A.Carrier) → tabulate (index fx) FS.≈ fx
       index-tabulate : (f : Log → A.Carrier) → ((l : Log) → index (tabulate f) l A.≈ f l)
+  
+  PropositionalNaperian : Set (suc (a ⊔ c) ⊔ b)
+  PropositionalNaperian = ∀ {A} → Naperian (≡.setoid A)
