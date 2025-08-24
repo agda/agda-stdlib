@@ -99,6 +99,17 @@ Additions to existing modules
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
   ```
 
+* In `Relation.Binary.Properties.PartialSetoid`
+  ```agda
+  Carrierₛ          : Set _
+  _≈ₛ_              : Rel Carrierₛ _
+  reflₛ             : Reflexive _≈ₛ_
+  isEquivalenceₛ    : IsEquivalence _≈ₛ_
+  setoidₛ           : Setoid _ _
+  isRelHomomorphism : IsRelHomomorphism _≈ₛ_ _≈_ proj₁
+  isRelMonomorphism : IsRelMonomorphism _≈ₛ_ _≈_ proj₁
+  ```
+
 * In `Relation.Nullary.Negation.Core`
   ```agda
   ¬¬-η : A → ¬ ¬ A
