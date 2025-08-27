@@ -6,23 +6,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Nullary.Negation using (¬_)
 
 module Data.List.Relation.Unary.Unique.Setoid {a ℓ} (S : Setoid a ℓ) where
 
-open Setoid S renaming (Carrier to A)
+open Setoid S using (_≉_)
 
 ------------------------------------------------------------------------
 -- Definition
 
-private
-  Distinct : Rel A ℓ
-  Distinct x y = ¬ (x ≈ y)
-
-open import Data.List.Relation.Unary.AllPairs.Core Distinct public
+open import Data.List.Relation.Unary.AllPairs.Core _≉_ public
   renaming (AllPairs to Unique)
 
-open import Data.List.Relation.Unary.AllPairs {R = Distinct} public
+open import Data.List.Relation.Unary.AllPairs {R = _≉_} public
   using (head; tail)

@@ -8,7 +8,7 @@
 
 module Data.String.Instances where
 
-open import Data.String.Properties
+open import Data.String.Properties using (_≟_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 

@@ -131,7 +131,7 @@ automate most of this.
   open SetoidEquality S
   ```
 
-* If importing a parametrised module, qualified or otherwise, with its
+* If importing a parameterised module, qualified or otherwise, with its
   parameters instantiated, then such 'instantiated imports' should be placed
   *after* the main block of `import`s, and *before* any `variable` declarations.
 
@@ -229,6 +229,34 @@ automate most of this.
     }
   ```
 
+#### Layout of initial `private` block
+
+* Since the introduction of generalizable `variable`s (see below),
+  this block provides a very useful way to 'fix'/standardise notation
+  for the rest of the module, as well as introducing local
+  instantiations of parameterised `module` definitions, again for the
+  sake of fixing notation via qualified names.
+
+* It should typically follow the `import` and `open` declarations, as
+  above, separated by one blankline, and be followed by *two* blank
+  lines ahead of the main module body.
+
+* The current preferred layout is to use successive indentation by two spaces, eg.
+  ```agda
+  private
+    variable
+      a : Level
+      A : Set a
+  ```
+  rather than to use the more permissive 'stacked' style, available
+  since [agda/agda#5319](https://github.com/agda/agda/pull/5319).
+
+* A possible exception to the above rule is when a *single* declaration
+  is made, such as eg.
+  ```agda
+  private open module M = ...
+  ```
+
 #### Layout of `where` blocks
 
 * `where` blocks are preferred rather than the `let` construction.
@@ -285,6 +313,41 @@ line of code, indented by two spaces.
     (...) ∎
     where open ≤-Reasoning
   ```
+
+#### Layout of deprecation blocks
+
+* There is standard boilerplate text which should go at the end of a
+  file, separated by two blank lines from the main module body:
+  ```agda
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+  ```
+
+* For each (new) version with deprecations, there should be a single
+  line comment, separated by one blank line from the preceding
+  deprecation block:
+  ```agda
+-- Version X.Y
+  ```
+
+* There is standard boilerplate text for deprecating `old-name` in
+  favour of a definition in terms of `new-name`: the actual definition
+  (which need not have a type signature if this is a simple matter of
+  aliasing, or simple function composition), followed by:
+  ```agda
+{-# WARNING_ON_USAGE <old-name>
+"Warning: <old-name> was deprecated in vX.Y.
+Please use <newname> instead."
+#-}
+  ```
+  where the advice on what to use instead may also contain additional
+  information regarding eg. location, or usage patterns.
+
+* Each entry in the block should be correlated with a suitable
+  `CHANGELOG` entry for the associated release version.
 
 #### Mutual and private blocks
 
@@ -371,7 +434,7 @@ line of code, indented by two spaces.
   syntax in preference to the Unicode `⦃_⦄` syntax (written using `\{{`/`\}}`),
   which moreover requires additional whitespace to parse correctly.
   NB. Even for irrelevant instances, such as typically for `NonZero` arguments,
-  neverthelesss it is necessary to supply an underscore binding `{{_ : NonZero n}}`
+  nevertheless it is necessary to supply an underscore binding `{{_ : NonZero n}}`
   if subsequent terms occurring in the type rely on that argument to be well-formed:
   eg in `Data.Nat.DivMod`, in the use of `_/ n` and `_% n`
   ```agda
@@ -508,8 +571,9 @@ word within a compound word is capitalized except for the first word.
 
 * Likewise, standard infix symbols for eg, divisibility on numeric
   datatypes/algebraic structure, should be written `\|`, NOT the
-  unmarked `|` character. An exception to this is the *strict*
-  ordering relation, written using `<`, NOT `\<` as might be expected.
+  unmarked `|` character. Ditto. mutual divisibility `\||` etc. An
+  exception to this is the *strict* ordering relation, written using
+  `<`, NOT `\<` as might be expected.
 
 * Since v2.0, the `Algebra` hierarchy systematically introduces
   consistent symbolic notation for the negated versions of the usual
@@ -524,6 +588,66 @@ word within a compound word is capitalized except for the first word.
 
 * Any exceptions to these conventions should be flagged on the GitHub
   `agda-stdlib` issue tracker in the usual way.
+
+#### Fixity
+
+All functions and operators that are not purely prefix (typically
+anything that has a `_` in its name) should have an explicit fixity
+declared for it. The guidelines for these are as follows:
+
+General operations and relations:
+
+* binary relations of all kinds are `infix 4`
+
+* unary prefix relations `infix 4 ε∣_`
+
+* unary postfix relations `infixr 8 _∣0`
+
+* multiplication-like: `infixl 7 _*_`
+
+* addition-like  `infixl 6 _+_`
+
+* arithmetic prefix minus-like  `infix  8 -_`
+
+* arithmetic infix binary minus-like `infixl 6 _-_`
+
+* and-like  `infixr 7 _∧_`
+
+* or-like  `infixr 6 _∨_`
+
+* negation-like `infix 3 ¬_`
+
+* post-fix inverse  `infix  8 _⁻¹`
+
+* bind `infixl 1 _>>=_`
+
+* list concat-like `infixr 5 _∷_`
+
+* ternary reasoning `infix 1 _⊢_≈_`
+
+* composition `infixr 9 _∘_`
+
+* application `infixr -1 _$_ _$!_`
+
+* combinatorics `infixl 6.5 _P_ _P′_ _C_ _C′_`
+
+* pair `infixr 4 _,_`
+
+Reasoning:
+
+* QED  `infix  3 _∎`
+
+* stepping  `infixr 2 _≡⟨⟩_ step-≡ step-≡˘`
+
+* begin  `infix  1 begin_`
+
+Type formers:
+
+* product-like `infixr 2 _×_ _-×-_ _-,-_`
+
+* sum-like `infixr 1 _⊎_`
+
+* binary properties `infix 4 _Absorbs_`
 
 #### Functions and relations over specific datatypes
 
@@ -569,6 +693,14 @@ word within a compound word is capitalized except for the first word.
 
 #### Specific pragmatics/idiomatic patterns
 
+## Use of `pattern` synonyms
+
+In general, these are intended to be used to provide specialised
+constructors for `Data` types (and sometimes, inductive
+families/binary relations such as `Data.Nat.Divisibility._∣_`), and as
+such, their use should be restricted to `Base` or `Core` modules, and
+not pollute the namespaces of `Properties` or other modules.
+
 ## Use of `with` notation
 
 Thinking on this has changed since the early days of the library, with
@@ -585,3 +717,8 @@ used successfully in PR
 systematic for `Nary` relations in PR
 [#811](https://github.com/agda/agda-stdlib/pull/811)
 
+## Prefer use of `Relation.Nullary.Negation.Core.contradiction`
+
+Where possible use `contradiction` between two explicit arguments rather
+than appealing to the lower-level `Data.Empty.⊥-elim`. This provides
+clearer documentation for readers of the code.

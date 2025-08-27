@@ -3,6 +3,6 @@ message: "If you use this software, please cite it as below."
 authors:
 - name: "The Agda Community"
 title: "Agda Standard Library"
-version: 2.0
-date-released: 2023-12-11
+version: 2.3.0
+date-released: 2025-08-02
 url: "https://github.com/agda/agda-stdlib"

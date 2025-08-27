@@ -8,15 +8,10 @@
 
 module Data.Sum where
 
-open import Agda.Builtin.Equality
-
-open import Data.Bool.Base using (true; false)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Function.Base
 open import Level
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; yes; no; _because_; ¬_)
+import Relation.Nullary.Decidable.Core as Dec
 
 private
   variable
@@ -31,7 +26,7 @@ open import Data.Sum.Base public
 ------------------------------------------------------------------------
 -- Additional functions
 
-module _ {a b} {A : Set a} {B : Set b} where
+module _ {A : Set a} {B : Set b} where
 
   isInj₁ : A ⊎ B → Maybe A
   isInj₁ (inj₁ x) = just x
@@ -57,12 +52,13 @@ module _ {a b} {A : Set a} {B : Set b} where
   from-inj₂ (inj₁ _) = _
   from-inj₂ (inj₂ x) = x
 
--- Conversion back and forth with Dec
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-fromDec : Dec A → A ⊎ ¬ A
-fromDec ( true because  [p]) = inj₁ (invert  [p])
-fromDec (false because [¬p]) = inj₂ (invert [¬p])
+-- Version 2.1
 
-toDec : A ⊎ ¬ A → Dec A
-toDec (inj₁ p)  = yes p
-toDec (inj₂ ¬p) = no ¬p
+open Dec public using (fromDec; toDec)
+

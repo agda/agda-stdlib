@@ -7,7 +7,6 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Bundles using (Preorder; Setoid)
-open import Relation.Binary.Structures using (IsPreorder)
 
 module Relation.Binary.Properties.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
@@ -15,6 +14,8 @@ module Relation.Binary.Properties.Preorder
 open import Function.Base using (flip)
 open import Data.Product.Base as Product using (_×_; _,_; swap)
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
+  using (isPreorder; preorder)
+open import Relation.Binary.Structures using (IsPreorder)
 
 open Preorder P
 

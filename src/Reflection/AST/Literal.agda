@@ -13,11 +13,11 @@ import Data.Char.Properties as Char
 import Data.Float.Properties as Float
 import Data.Nat.Properties as ℕ
 import Data.String.Properties as String
-import Data.Word.Properties as Word
+import Data.Word64.Properties as Word64
 import Reflection.AST.Meta as Meta
 import Reflection.AST.Name as Name
-open import Relation.Nullary.Decidable.Core            using (yes; no; map′; isYes)
-open import Relation.Binary.Definitions                using (DecidableEquality)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′; isYes)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------
@@ -60,7 +60,7 @@ nat x ≟ char x₁ = no (λ ())
 nat x ≟ string x₁ = no (λ ())
 nat x ≟ name x₁ = no (λ ())
 nat x ≟ meta x₁ = no (λ ())
-word64 x ≟ word64 x₁ = map′ (cong word64) word64-injective (x Word.≟ x₁)
+word64 x ≟ word64 x₁ = map′ (cong word64) word64-injective (x Word64.≟ x₁)
 word64 x ≟ nat x₁ = no (λ ())
 word64 x ≟ float x₁ = no (λ ())
 word64 x ≟ char x₁ = no (λ ())

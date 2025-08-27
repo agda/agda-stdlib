@@ -13,9 +13,9 @@ module Relation.Binary.Properties.StrictTotalOrder
        where
 
 open StrictTotalOrder STO
+
 open import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_
 import Relation.Binary.Properties.StrictPartialOrder as SPO
-open import Relation.Binary.Consequences
 
 ------------------------------------------------------------------------
 -- _<_ - the strict version is a decidable total order

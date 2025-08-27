@@ -16,9 +16,9 @@ module Algebra.Morphism.Construct.Initial {c ℓ : Level} where
 
 open import Algebra.Bundles.Raw using (RawMagma)
 open import Algebra.Morphism.Structures
+  using (IsMagmaHomomorphism; IsMagmaMonomorphism)
 open import Function.Definitions using (Injective)
 import Relation.Binary.Morphism.Definitions as Rel
-open import Relation.Binary.Morphism.Structures
 open import Relation.Binary.Core using (Rel)
 
 open import Algebra.Construct.Initial {c} {ℓ}

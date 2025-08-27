@@ -44,7 +44,7 @@ constᵣ _ = id
 infixr 9 _∘_ _∘₂_
 infixl 8 _ˢ_
 infixl 0 _|>_
-infix  0 case_return_of_
+infix  0 case_returning_of_ case_return_of_
 infixr -1 _$_
 
 -- Composition

@@ -15,8 +15,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -26,21 +25,24 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
+open import Relation.Binary.Definitions using (Monotonic₁; Monotonic₂)
+open import Relation.Nullary.Negation.Core using (¬_)
+
 
 ------------------------------------------------------------------------
 -- Properties of operations
 
 Congruent₁ : Op₁ A → Set _
-Congruent₁ f = f Preserves _≈_ ⟶ _≈_
+Congruent₁ = Monotonic₁ _≈_ _≈_
 
 Congruent₂ : Op₂ A → Set _
-Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+Congruent₂ = Monotonic₂ _≈_ _≈_ _≈_
 
 LeftCongruent : Op₂ A → Set _
-LeftCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+LeftCongruent _∙_ = ∀ {x} → Congruent₁ (x ∙_)
 
 RightCongruent : Op₂ A → Set _
-RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+RightCongruent _∙_ = ∀ {x} → Congruent₁ (_∙ x)
 
 Associative : Op₂ A → Set _
 Associative _∙_ = ∀ x y z → ((x ∙ y) ∙ z) ≈ (x ∙ (y ∙ z))
@@ -97,6 +99,8 @@ RightConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → y ≈ e
 Conical : A → Op₂ A → Set _
 Conical e ∙ = (LeftConical e ∙) × (RightConical e ∙)
 
+infix 4 _DistributesOverˡ_ _DistributesOverʳ_ _DistributesOver_
+
 _DistributesOverˡ_ : Op₂ A → Op₂ A → Set _
 _*_ DistributesOverˡ _+_ =
   ∀ x y z → (x * (y + z)) ≈ ((x * y) + (x * z))
@@ -107,6 +111,8 @@ _*_ DistributesOverʳ _+_ =
 
 _DistributesOver_ : Op₂ A → Op₂ A → Set _
 * DistributesOver + = (* DistributesOverˡ +) × (* DistributesOverʳ +)
+
+infix 4 _MiddleFourExchange_ _IdempotentOn_ _Absorbs_
 
 _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
 _*_ MiddleFourExchange _+_ =
@@ -206,7 +212,7 @@ Flexible : Op₂ A → Set _
 Flexible _∙_ = ∀ x y → ((x ∙ y) ∙ x) ≈ (x ∙ (y ∙ x))
 
 Medial : Op₂ A → Set _
-Medial _∙_ = ∀ x y u z → ((x ∙ y) ∙ (u ∙ z)) ≈ ((x ∙ u) ∙ (y ∙ z))
+Medial _∙_ = Interchangable _∙_ _∙_
 
 LeftSemimedial : Op₂ A → Set _
 LeftSemimedial _∙_ = ∀ x y z → ((x ∙ x) ∙ (y ∙ z)) ≈ ((x ∙ y) ∙ (x ∙ z))

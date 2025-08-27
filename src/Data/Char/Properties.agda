@@ -9,28 +9,38 @@
 module Data.Char.Properties where
 
 open import Data.Bool.Base using (Bool)
-open import Data.Char.Base
-import Data.Nat.Base as ℕ
+open import Data.Char.Base using (Char; _≈_; _≉_; _<_; _≤_; toℕ)
+import Data.Nat.Base as ℕ using (ℕ; _<_; _≤_)
 import Data.Nat.Properties as ℕ
+  using (_<?_; <-cmp; <-isStrictPartialOrder; <-isStrictTotalOrder
+        ; <-strictPartialOrder; <-strictTotalOrder; <-irrefl; <-trans; <-asym
+        ; _≟_)
 open import Data.Product.Base using (_,_)
-
-open import Function.Base
+open import Function.Base using (const; _∘′_)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; DecPoset)
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder
+        ; Poset; DecPoset)
 open import Relation.Binary.Structures
-  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsEquivalence)
+  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder
+        ; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsEquivalence)
 open import Relation.Binary.Definitions
-  using (Decidable; DecidableEquality; Trichotomous; Irreflexive; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive; Reflexive; tri<; tri≈; tri>)
+  using (Decidable; DecidableEquality; Trichotomous; Irreflexive
+        ; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive
+        ; Reflexive; tri<; tri≈; tri>)
 import Relation.Binary.Construct.On as On
-import Relation.Binary.Construct.Subst.Equality as Subst
+  using (decidable; transitive; asymmetric; isStrictPartialOrder
+        ; isStrictTotalOrder; strictPartialOrder; strictTotalOrder)
 import Relation.Binary.Construct.Closure.Reflexive as Refl
+  using (Refl; reflexive)
 import Relation.Binary.Construct.Closure.Reflexive.Properties as Refl
+  using (trans; antisym; decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; cong; sym; trans; subst)
-import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Binary.PropositionalEquality.Properties as ≡ using
+  (isDecEquivalence; setoid; decSetoid; isEquivalence)
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -303,3 +313,4 @@ Please use <-strictPartialOrder instead."
 "Warning: <-strictTotalOrder-≈ was deprecated in v1.5.
 Please use <-strictTotalOrder instead."
 #-}
+

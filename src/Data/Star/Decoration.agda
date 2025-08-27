@@ -14,6 +14,7 @@ open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
 open import Relation.Binary.Definitions using (NonEmpty; nonEmpty)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+  using (Star; ε; _◅_; gmap; map; _◅◅_; _▻▻_)
 
 -- A predicate on relation "edges" (think of the relation as a graph).
 

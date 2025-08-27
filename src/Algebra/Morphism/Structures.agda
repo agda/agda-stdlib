@@ -8,13 +8,14 @@
 
 module Algebra.Morphism.Structures where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Bundles
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
-open import Function.Definitions
-open import Relation.Binary.Core
+open import Function.Definitions using (Injective; Surjective)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Morphism.Structures
+  using (IsRelHomomorphism; IsRelMonomorphism; IsRelIsomorphism)
 
 private
   variable
@@ -405,17 +406,20 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
     ( Carrier to A; _≈_ to _≈₁_
     ; _*_ to _*₁_
     ; *-rawMagma to *-rawMagma₁
-    ; +-rawGroup to +-rawGroup₁)
+    ; +-rawGroup to +-rawGroup₁
+    ; rawNearSemiring to rawNearSemiring₁)
 
   open RawRingWithoutOne R₂ renaming
     ( Carrier to B; _≈_ to _≈₂_
     ; _*_ to _*₂_
     ; *-rawMagma to *-rawMagma₂
-    ; +-rawGroup to +-rawGroup₂)
+    ; +-rawGroup to +-rawGroup₂
+    ; rawNearSemiring to rawNearSemiring₂)
 
   private
     module + = GroupMorphisms  +-rawGroup₁  +-rawGroup₂
     module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
+    module +* = NearSemiringMorphisms rawNearSemiring₁ rawNearSemiring₂
 
   open MorphismDefinitions A B _≈₂_
 
@@ -425,7 +429,13 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
       *-homo : Homomorphic₂ ⟦_⟧ _*₁_ _*₂_
 
     open +.IsGroupHomomorphism +-isGroupHomomorphism public
-      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism)
+      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism; isMonoidHomomorphism to +-isMonoidHomomorphism)
+
+    isNearSemiringHomomorphism : +*.IsNearSemiringHomomorphism ⟦_⟧
+    isNearSemiringHomomorphism = record
+      { +-isMonoidHomomorphism = +-isMonoidHomomorphism
+      ; *-homo = *-homo
+      }
 
     *-isMagmaHomomorphism : *.IsMagmaHomomorphism ⟦_⟧
     *-isMagmaHomomorphism = record
@@ -489,6 +499,7 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   open RawRing R₁ renaming
     ( Carrier to A; _≈_ to _≈₁_
     ; -_ to -₁_
+    ; rawRingWithoutOne to rawRingWithoutOne₁
     ; rawSemiring to rawSemiring₁
     ; *-rawMonoid to *-rawMonoid₁
     ; +-rawGroup to +-rawGroup₁)
@@ -496,12 +507,14 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   open RawRing R₂ renaming
     ( Carrier to B; _≈_ to _≈₂_
     ; -_ to -₂_
+    ; rawRingWithoutOne to rawRingWithoutOne₂
     ; rawSemiring to rawSemiring₂
     ; *-rawMonoid to *-rawMonoid₂
     ; +-rawGroup to +-rawGroup₂)
 
   module + = GroupMorphisms  +-rawGroup₁  +-rawGroup₂
   module * = MonoidMorphisms *-rawMonoid₁ *-rawMonoid₂
+  module *+0 = RingWithoutOneMorphisms rawRingWithoutOne₁ rawRingWithoutOne₂
 
   open MorphismDefinitions A B _≈₂_
   open SemiringMorphisms rawSemiring₁ rawSemiring₂
@@ -518,6 +531,12 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
     +-isGroupHomomorphism = record
       { isMonoidHomomorphism = +-isMonoidHomomorphism
       ; ⁻¹-homo = -‿homo
+      }
+
+    isRingWithoutOneHomomorphism : *+0.IsRingWithoutOneHomomorphism ⟦_⟧
+    isRingWithoutOneHomomorphism = record
+      { +-isGroupHomomorphism = +-isGroupHomomorphism
+      ; *-homo = *-homo
       }
 
   record IsRingMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where

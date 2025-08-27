@@ -8,13 +8,16 @@
 
 module Data.Nat.LCM where
 
-open import Algebra
+open import Algebra using (module Semiring)
 open import Data.Nat.Base
+  using (ℕ; suc; zero; NonZero; ≢-nonZero; _+_; _*_; _∸_; _<_; _≤_; _≥_; _>_)
 open import Data.Nat.Coprimality using (Coprime)
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
-open import Data.Nat.Properties
+open import Data.Nat.Properties using (*-comm; *-assoc; *-zeroʳ)
 open import Data.Nat.GCD
+  using (GCD; gcd; gcd-GCD; gcd-greatest; gcd[m,n]≢0; gcd[m,n]∣n; gcd[m,n]∣m
+        ; c*gcd[m,n]≡gcd[cm,cn])
 open import Data.Product.Base using (_×_; _,_; uncurry′; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality.Core

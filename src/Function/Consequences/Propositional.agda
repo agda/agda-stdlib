@@ -15,6 +15,8 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; cong
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
 open import Function.Definitions
+  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ; Inverseˡ
+        ; Inverseʳ; Surjective)
 open import Relation.Nullary.Negation.Core using (contraposition)
 
 import Function.Consequences.Setoid (setoid A) (setoid B) as Setoid

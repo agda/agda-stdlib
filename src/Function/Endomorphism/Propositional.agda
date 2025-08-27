@@ -1,19 +1,20 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Endomorphisms on a Set
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
--- Disabled to prevent warnings from deprecated names
-{-# OPTIONS --warn=noUserWarning #-}
-
 module Function.Endomorphism.Propositional {a} (A : Set a) where
+
+{-# WARNING_ON_IMPORT
+"Function.Endomorphism.Propositional was deprecated in v2.1.
+Use Function.Endo.Propositional instead."
+#-}
 
 open import Algebra
 open import Algebra.Morphism; open Definitions
-
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)

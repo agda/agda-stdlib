@@ -11,6 +11,7 @@ module Data.List.Relation.Unary.Linked {a} {A : Set a} where
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Product.Base as Prod using (_,_; _×_; uncurry; <_,_>)
+open import Data.Fin.Base using (zero; suc)
 open import Data.Maybe.Base using (just)
 open import Data.Maybe.Relation.Binary.Connected
   using (Connected; just; just-nothing)
@@ -26,6 +27,7 @@ open import Relation.Nullary.Decidable using (yes; no; map′; _×-dec_)
 private
   variable
     p q r ℓ : Level
+    R : Rel A ℓ
 
 ------------------------------------------------------------------------
 -- Definition
@@ -91,6 +93,14 @@ module _ {P : Rel A p} {Q : Rel A q} where
 
   unzip : Linked (P ∩ᵇ Q) ⊆ Linked P ∩ᵘ Linked Q
   unzip = unzipWith id
+
+lookup : ∀ {x xs} → Transitive R → Linked R xs →
+         Connected R (just x) (List.head xs) →
+         ∀ i → R x (List.lookup xs i)
+lookup trans [-]       (just Rvx) zero    = Rvx
+lookup trans (x ∷ xs↗) (just Rvx) zero    = Rvx
+lookup trans (x ∷ xs↗) (just Rvx) (suc i) =
+  lookup trans xs↗ (just (trans Rvx x)) i
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Linked

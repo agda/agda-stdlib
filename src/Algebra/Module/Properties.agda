@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra                using (CommutativeRing; Involutive)
+open import Algebra.Bundles        using (CommutativeRing)
 open import Algebra.Module.Bundles using (Module)
 open import Level                  using (Level)
 
@@ -18,7 +18,5 @@ module Algebra.Module.Properties
 
 open Module mod
 open import Algebra.Module.Properties.Semimodule semimodule public
-open import Algebra.Properties.Group using (⁻¹-involutive)
-
--ᴹ-involutive : Involutive _≈ᴹ_ -ᴹ_
--ᴹ-involutive = ⁻¹-involutive +ᴹ-group
+open import Algebra.Module.Properties.Bimodule bimodule public
+  using (inverseˡ-uniqueᴹ; inverseʳ-uniqueᴹ; -ᴹ-involutive)

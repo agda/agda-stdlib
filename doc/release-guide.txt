@@ -13,7 +13,7 @@ procedure should be followed:
   - `README.md`
   - `doc/installation-guide.md`
 
-* Update the copyright year range in the LICENSE file, if necessary.
+* Update the copyright year range in the LICENCE file, if necessary.
 
 #### Pre-release tests
 
@@ -64,7 +64,7 @@ procedure should be followed:
 * Generate and upload documentation for the released version:
 
     cp .github/tooling/* .
-    cabal run GenerateEverything.hs
+    cabal run GenerateEverything
     ./index.sh
     agda -i. -idoc -isrc --html index.agda
     mv html v$VERSION

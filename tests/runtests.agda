@@ -16,6 +16,7 @@ dataTests = mkTestPool "Data structures"
   ∷ "rational"
   ∷ "rational-unnormalised"
   ∷ "trie"
+  ∷ "bytestring"
   ∷ []
 
 systemTests : TestPool

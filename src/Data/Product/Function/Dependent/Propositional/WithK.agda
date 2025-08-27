@@ -9,17 +9,17 @@
 
 module Data.Product.Function.Dependent.Propositional.WithK where
 
-open import Data.Product.Base
-open import Data.Product.Properties
+open import Data.Product.Base using (Σ; _,_)
 open import Data.Product.Function.Dependent.Setoid using (injection)
-open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Data.Product.Relation.Binary.Pointwise.Dependent.WithK
+  using (Pointwise-≡↔≡)
+open import Function.Base using (_$_)
+open import Function.Bundles using (Injection; _↣_)
+open import Function.Properties.Injection using (↣-trans)
+open import Function.Properties.Inverse as Inverse using (Inverse⇒Injection)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At using (_atₛ_)
-open import Relation.Binary.HeterogeneousEquality as H
+open import Relation.Binary.HeterogeneousEquality as H using (_≅_; ≡↔≅)
 open import Level using (Level)
-open import Function
-open import Function.Properties.Injection
-open import Function.Properties.Inverse as Inverse
 
 private
   variable

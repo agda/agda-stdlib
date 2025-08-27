@@ -9,16 +9,25 @@
 module Relation.Unary.Algebra where
 
 open import Algebra.Bundles
+  using (Magma; Semigroup; Band
+        ; Monoid; CommutativeMonoid; IdempotentCommutativeMonoid
+        ; SemiringWithoutAnnihilatingZero; Semiring; CommutativeSemiring)
 import Algebra.Definitions as AlgebraicDefinitions
 open import Algebra.Lattice.Bundles
+  using (Semilattice; Lattice; DistributiveLattice)
 import Algebra.Lattice.Structures as AlgebraicLatticeStructures
+  using (IsLattice; IsDistributiveLattice; IsSemilattice)
 import Algebra.Structures as AlgebraicStructures
+  using (IsMagma; IsSemigroup; IsBand; IsMonoid; IsCommutativeMonoid
+        ; IsIdempotentCommutativeMonoid; IsSemiringWithoutAnnihilatingZero
+        ; IsSemiring; IsCommutativeSemiring)
 open import Data.Empty.Polymorphic using (⊥-elim)
-open import Data.Product.Base as Product using (_,_; proj₁; proj₂; <_,_>; curry; uncurry)
+open import Data.Product.Base as Product
+  using (_,_; proj₁; proj₂; <_,_>; curry; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
 open import Data.Unit.Polymorphic using (tt)
 open import Function.Base using (id; const; _∘_)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Unary hiding (∅; U)
 open import Relation.Unary.Polymorphic using (∅; U)
 open import Relation.Unary.Relation.Binary.Equality using (≐-isEquivalence)

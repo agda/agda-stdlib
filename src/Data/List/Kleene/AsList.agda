@@ -18,7 +18,7 @@ private
     B : Set b
     C : Set c
 
-import Data.List.Kleene.Base as Kleene
+import Data.List.Kleene.Base as Kleene using ([])
 
 ------------------------------------------------------------------------
 -- Here we import half of the functions from Data.KleeneList: the half

@@ -1,4 +1,4 @@
-name: standard-library-2.1
+name: standard-library-2.4
 include: src
 flags:
   --warning=noUnsupportedIndexedMatch

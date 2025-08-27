@@ -7,21 +7,21 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
-open import Algebra.Construct.NaturalChoice.Base
-import Algebra.Construct.NaturalChoice.MinOp as MinOp
-open import Function.Base using (flip)
-open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Algebra.Construct.NaturalChoice.Base using (MaxOperator; MaxOp⇒MinOp)
 open import Relation.Binary.Bundles using (TotalPreorder)
-open import Relation.Binary.Construct.Flip.EqAndOrd using ()
-  renaming (totalPreorder to flipOrder)
 
 module Algebra.Construct.NaturalChoice.MaxOp
   {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (maxOp : MaxOperator O)
   where
 
-open TotalPreorder O renaming (Carrier to A; _≲_ to _≤_)
+import Algebra.Construct.NaturalChoice.MinOp as MinOp
+open import Algebra.Core using (Op₂)
+open import Function.Base using (flip)
 open MaxOperator maxOp
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.Construct.Flip.EqAndOrd using ()
+  renaming (totalPreorder to flipOrder)
+open TotalPreorder O renaming (Carrier to A; _≲_ to _≤_)
 
 -- Max is just min with a flipped order
 

@@ -8,16 +8,14 @@
 
 module Data.Vec.Instances where
 
-open import Data.Vec.Base
-open import Data.Vec.Effectful
-open import Data.Vec.Properties
-  using (≡-dec)
-open import Level
-open import Relation.Binary.PropositionalEquality.Core
+open import Data.Vec.Base using (Vec)
+open import Data.Vec.Effectful using (functor; applicative)
+open import Data.Vec.Properties using (≡-dec)
+open import Level using (Level)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
-open import Data.Vec.Relation.Binary.Equality.DecPropositional
-open import Relation.Binary.TypeClasses
+open import Relation.Binary.TypeClasses using (IsDecEquivalence; _≟_)
 
 private
   variable

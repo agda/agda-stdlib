@@ -9,18 +9,18 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core using (Op₂)
-open import Algebra.Definitions
-open import Algebra.Lattice.Structures
 open import Data.Product.Base using (_,_)
-open import Function.Base
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel ; _⇔_)
 
 module Algebra.Lattice.Construct.Subst.Equality
   {a ℓ₁ ℓ₂} {A : Set a} {≈₁ : Rel A ℓ₁} {≈₂ : Rel A ℓ₂}
   (equiv@(to , from) : ≈₁ ⇔ ≈₂)
   where
 
+open import Algebra.Core using (Op₂)
+open import Algebra.Lattice.Structures
+  using (IsSemilattice ;IsLattice ;IsDistributiveLattice ;IsBooleanAlgebra )
+open import Function.Base using (id)
 open import Algebra.Construct.Subst.Equality equiv
 open import Relation.Binary.Construct.Subst.Equality equiv
 
@@ -35,7 +35,7 @@ isSemilattice : IsSemilattice ≈₁ ∧ → IsSemilattice ≈₂ ∧
 isSemilattice S = record
   { isBand = isBand S.isBand
   ; comm   = comm S.comm
-  } where module S = IsSemilattice S
+  } where module S = IsSemilattice ≈₁ S
 
 isLattice : IsLattice ≈₁ ∨ ∧ → IsLattice ≈₂ ∨ ∧
 isLattice {∨} {∧} S = record

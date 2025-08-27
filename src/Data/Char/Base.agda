@@ -8,13 +8,13 @@
 
 module Data.Char.Base where
 
-open import Level using (zero)
-import Data.Nat.Base as ℕ
+import Data.Nat.Base as ℕ using (_<_; _≡ᵇ_)
 open import Data.Bool.Base using (Bool)
 open import Function.Base using (_on_)
+open import Level using (zero)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality.Core
-open import Relation.Binary.Construct.Closure.Reflexive
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_)
+open import Relation.Binary.Construct.Closure.Reflexive using (ReflClosure)
 
 ------------------------------------------------------------------------
 -- Re-export the type, and renamed primitives

@@ -11,13 +11,15 @@ module Data.Container.Combinator.Properties where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Core using (Container; ⟦_⟧)
 open import Data.Container.Combinator
-open import Data.Empty using (⊥-elim)
-open import Data.Product.Base as P using (∃; _,_; proj₁; proj₂; <_,_>; uncurry; curry)
+open import Data.Product.Base as P
+  using (∃; _,_; proj₁; proj₂; <_,_>; uncurry; curry)
 open import Data.Sum.Base as S using (inj₁; inj₂; [_,_]′; [_,_])
 open import Function.Base as F using (_∘′_)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (_⊔_; lower)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≗_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≗_; refl; cong)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 -- I have proved some of the correctness statements under the
 -- assumption of functional extensionality. I could have reformulated
@@ -34,7 +36,7 @@ module Constant (ext : ∀ {ℓ ℓ′} → Extensionality ℓ ℓ′) where
   correct {x} {y} X {Y} = mk↔ₛ′ (from-const X) (to-const X) (λ _ → refl) from∘to
     where
     from∘to : (x : ⟦ const X ⟧ Y) → to-const X (proj₁ x) ≡ x
-    from∘to xs = cong (proj₁ xs ,_) (ext (λ x → ⊥-elim (lower x)))
+    from∘to xs = cong (proj₁ xs ,_) (ext (λ x → contradiction x lower ))
 
 module Composition {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
 

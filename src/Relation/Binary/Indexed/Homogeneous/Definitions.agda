@@ -15,9 +15,9 @@ open import Data.Product.Base using (_×_)
 open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)
 import Relation.Binary.Definitions as B
+  using (Reflexive; Symmetric; Transitive; Antisymmetric; Decidable)
+open import Relation.Binary.Indexed.Homogeneous.Core using (IRel)
 open import Relation.Unary.Indexed using (IPred)
-
-open import Relation.Binary.Indexed.Homogeneous.Core
 
 private
   variable

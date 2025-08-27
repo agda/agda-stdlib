@@ -9,28 +9,30 @@
 module Codata.Sized.Colist.Properties where
 
 open import Level using (Level)
-open import Size
+open import Size using (Size; ∞)
 open import Codata.Sized.Thunk as Thunk using (Thunk; force)
 open import Codata.Sized.Colist
 open import Codata.Sized.Colist.Bisimilarity
-open import Codata.Sized.Conat
+open import Codata.Sized.Conat using
+  (Conat; zero; suc; _+_; _⊔_; _⊓_; _∸_; fromℕ; _ℕ+_)
 open import Codata.Sized.Conat.Bisimilarity as Conat using (zero; suc)
-import Codata.Sized.Conat.Properties as Conat
+import Codata.Sized.Conat.Properties as Conat using (0∸m≈0)
 open import Codata.Sized.Cowriter as Cowriter using ([_]; _∷_)
 open import Codata.Sized.Cowriter.Bisimilarity as Cowriter using ([_]; _∷_)
 open import Codata.Sized.Stream as Stream using (Stream; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
+import Data.List.Scans.Base as Scans using (scanl)
 open import Data.List.Relation.Binary.Equality.Propositional using (≋-refl)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
-import Data.Maybe.Properties as Maybe
+import Data.Maybe.Properties as Maybe using (map-nothing; map-just)
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
 open import Data.Nat.Base as ℕ using (zero; suc; z≤n; s≤s)
 open import Data.Product.Base as Product using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Function.Base
+open import Function.Base using (const; id; _∘_; _∘′_; flip; _on_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
@@ -283,7 +285,7 @@ fromList-++ []       bs = refl
 fromList-++ (a ∷ as) bs = ≡.refl ∷ λ where .force → fromList-++ as bs
 
 fromList-scanl : ∀ (c : B → A → B) n as →
-                 i ⊢ fromList (List.scanl c n as) ≈ scanl c n (fromList as)
+                 i ⊢ fromList (Scans.scanl c n as) ≈ scanl c n (fromList as)
 fromList-scanl c n []       = ≡.refl ∷ λ where .force → refl
 fromList-scanl c n (a ∷ as) =
   ≡.refl ∷ λ where .force → fromList-scanl c (c n a) as

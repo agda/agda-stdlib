@@ -9,9 +9,9 @@
 module Function.Metric.Nat.Definitions where
 
 open import Algebra.Core using (Op₂)
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; _≤_; _+_; _⊔_ ; _<_)
 open import Level using (Level)
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 open import Function.Metric.Nat.Core

@@ -10,15 +10,15 @@
 -- Relation.Nullary.Construct.Add.Extrema
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence)
-open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Decidable; Irrelevant; Substitutive)
 
 module Relation.Binary.Construct.Add.Extrema.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Function.Base using (_∘′_)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Decidable; Irrelevant; Substitutive)
 import Relation.Binary.Construct.Add.Infimum.Equality as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.Equality as AddSupremum
 open import Relation.Nullary.Construct.Add.Extrema

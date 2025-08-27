@@ -8,15 +8,16 @@
 
 module Function.Related.Propositional where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary
   using (Rel; REL; Sym; Reflexive; Trans; IsEquivalence; Setoid; IsPreorder; Preorder)
 open import Function.Bundles
-open import Function.Base
+  using (Func; Inverse; _⇔_; _↣_; _↠_; _↪_; _⟶_; _↔_; mk⟶; Equivalence; Injection
+        ; Surjection; RightInverse)
+open import Function.Base using (id; flip; _∘_; _∘′_; _$_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Reasoning.Syntax
-
 open import Function.Properties.Surjection   using (↠⇒↪; ↠⇒⇔)
 open import Function.Properties.RightInverse using (↪⇒↠)
 open import Function.Properties.Bijection    using (⤖⇒↔; ⤖⇒⇔)

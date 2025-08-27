@@ -6,13 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice.Bundles
-import Algebra.Lattice.Properties.Lattice as LatticeProperties
+open import Algebra.Lattice.Bundles using (DistributiveLattice)
 
 module Algebra.Lattice.Properties.DistributiveLattice
   {dl₁ dl₂} (DL : DistributiveLattice dl₁ dl₂)
   where
 
+import Algebra.Lattice.Properties.Lattice as LatticeProperties
 open DistributiveLattice DL
 open import Algebra.Definitions _≈_
 open import Algebra.Lattice.Structures _≈_

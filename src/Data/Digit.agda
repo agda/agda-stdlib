@@ -11,8 +11,8 @@ module Data.Digit where
 open import Data.Nat.Base
   using (ℕ; zero; suc; _<_; _/_; _%_; sz<ss; _+_; _*_; 2+; _≤′_)
 open import Data.Nat.Properties
-  using (_≤?_; _<?_; ≤⇒≤′; module ≤-Reasoning; m≤m+n; +-comm; +-assoc;
-    *-distribˡ-+; *-identityʳ)
+  using (_≤?_; _<?_; ≤⇒≤′; module ≤-Reasoning; m≤m+n; +-comm; +-assoc
+        ; *-distribˡ-+; *-identityʳ)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Char.Base using (Char)

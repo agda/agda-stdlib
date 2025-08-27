@@ -8,9 +8,8 @@
 
 module Relation.Binary.PropositionalEquality.TrustMe where
 
+open import Agda.Builtin.TrustMe using (primTrustMe)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-
-open import Agda.Builtin.TrustMe
 
 -- trustMe {x = x} {y = y} evaluates to refl if x and y are
 -- definitionally equal.

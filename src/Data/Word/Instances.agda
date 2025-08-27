@@ -1,16 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Instances for words
+-- This module is DEPRECATED. Please use Data.Word64.Instances instead
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Word.Instances where
 
-open import Data.Word.Properties
-open import Relation.Binary.PropositionalEquality.Properties
-  using (isDecEquivalence)
+open import Data.Word64.Instances public
 
-instance
-  Word-≡-isDecEquivalence = isDecEquivalence _≟_
+{-# WARNING_ON_IMPORT
+"Data.Word.Instances was deprecated in v2.1. Use Data.Word64.Instances instead."
+#-}

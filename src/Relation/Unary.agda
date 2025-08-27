@@ -14,9 +14,8 @@ open import Data.Product.Base using (_×_; _,_; Σ-syntax; ∃; uncurry; swap)
 open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base using (_∘_; _|>_)
 open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
-open import Relation.Nullary.Decidable.Core using (Dec; True)
-open import Relation.Nullary as Nullary using (¬_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Nullary as Nullary using (¬_; Dec; True)
 
 private
   variable
@@ -208,7 +207,7 @@ infixr 8 _⇒_
 infixr 7 _∩_
 infixr 6 _∪_
 infixr 6 _∖_
-infix 4 _≬_
+infix 4 _≬_ _⊥_ _⊥′_
 
 -- Complement.
 
@@ -253,6 +252,14 @@ syntax ⋂ I (λ i → P) = ⋂[ i ∶ I ] P
 
 _≬_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ≬ Q = ∃ λ x → x ∈ P × x ∈ Q
+
+-- Disjoint
+
+_⊥_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥ Q = P ∩ Q ⊆ ∅
+
+_⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥′ Q = P ∩ Q ⊆′ ∅
 
 -- Update.
 

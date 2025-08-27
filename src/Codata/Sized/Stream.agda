@@ -8,10 +8,8 @@
 
 module Codata.Sized.Stream where
 
-open import Size
 open import Codata.Sized.Thunk as Thunk using (Thunk; force)
-
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_; _∷⁺_)
 open import Data.Vec.Base using (Vec; []; _∷_)
@@ -19,6 +17,7 @@ open import Data.Product.Base as P using (Σ; _×_; _,_; <_,_>; proj₁; proj₂
 open import Function.Base using (id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Size using (Size; ∞; Size<_)
 
 private
   variable

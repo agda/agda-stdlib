@@ -9,9 +9,9 @@
 module Data.List.Relation.Unary.Unique.Propositional {a} {A : Set a} where
 
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
-open import Data.List.Relation.Unary.Unique.Setoid as SetoidUnique
 
 ------------------------------------------------------------------------
 -- Re-export the contents of setoid uniqueness
 
-open SetoidUnique (setoid A) public
+open import Data.List.Relation.Unary.Unique.Setoid (setoid A) public
+

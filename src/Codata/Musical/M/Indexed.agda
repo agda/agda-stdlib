@@ -9,12 +9,12 @@
 
 module Codata.Musical.M.Indexed where
 
-open import Level
-open import Codata.Musical.Notation
+open import Level using (Level; _⊔_)
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Container.Indexed.Core
 open import Function.Base using (_∘_)
-open import Relation.Unary
+open import Relation.Unary using (Pred; _⊆_)
 
 -- The family of indexed M-types.
 

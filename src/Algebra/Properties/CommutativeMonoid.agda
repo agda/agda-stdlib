@@ -7,11 +7,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (CommutativeMonoid)
-open import Algebra.Definitions using (LeftInvertible; RightInvertible; Invertible)
-open import Data.Product.Base using (_,_; proj₂)
 
 module Algebra.Properties.CommutativeMonoid
-  {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
+  {g₁ g₂} (M : CommutativeMonoid g₁ g₂)
+  where
+
+open import Algebra.Definitions using (LeftInvertible; RightInvertible; Invertible)
+open import Data.Product.Base using (_,_; proj₂)
 
 open CommutativeMonoid M
   renaming

@@ -10,24 +10,28 @@
 -- Relation.Nullary.Construct.Add.Supremum
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures
-  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.Definitions
-  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans; Trichotomous; tri≈; tri>; tri<; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 
 module Relation.Binary.Construct.Add.Supremum.Strict
   {a r} {A : Set a} (_<_ : Rel A r) where
 
-open import Level using (_⊔_)
 open import Data.Product.Base using (_,_; map)
-open import Function.Base
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Function.Base using (_∘_)
+open import Level using (_⊔_)
+open import Relation.Binary.Definitions
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans
+        ; Trichotomous; tri≈; tri>; tri<; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+open import Relation.Nullary.Construct.Add.Supremum
+  using (⊤⁺; _⁺; [_]; ≡-dec; []-injective)
+import Relation.Binary.Construct.Add.Supremum.Equality as Equality
+  using (_≈⁺_; ⊤⁺≈⊤⁺; ≈⁺-isEquivalence; ≈⁺-dec; [≈]-injective; [_])
+import Relation.Binary.Construct.Add.Supremum.NonStrict as NonStrict
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
 import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Relation.Nullary.Construct.Add.Supremum
-import Relation.Binary.Construct.Add.Supremum.Equality as Equality
-import Relation.Binary.Construct.Add.Supremum.NonStrict as NonStrict
+open import Relation.Binary.Structures
+  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+import Relation.Nullary.Decidable as Dec using (map′)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -187,3 +191,4 @@ module _ {e} {_≈_ : Rel A e} where
     { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
     ; compare              = <⁺-cmp compare
     } where open IsStrictTotalOrder strictot
+

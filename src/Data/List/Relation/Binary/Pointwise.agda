@@ -18,19 +18,24 @@ open import Data.List.Properties using (≡-dec; length-++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Fin.Base using (Fin; toℕ; cast) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base
+  using (Fin; toℕ; cast)
+  renaming (zero to fzero; suc to fsuc)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties
-open import Level
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec using (map′)
-open import Relation.Unary as U using (Pred)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core renaming (Rel to Rel₂)
-open import Relation.Binary.Definitions using (_Respects_; _Respects₂_)
+open import Relation.Binary.Definitions
+  using (Reflexive; _Respects_; _Respects₂_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder; Poset)
-open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence; IsPartialOrder; IsPreorder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPartialOrder; IsPreorder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
+open import Relation.Nullary.Decidable as Dec
+  using (map′; yes; no; Dec; _because_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Unary as U using (Pred)
 
 private
   variable
@@ -126,13 +131,6 @@ AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
 ------------------------------------------------------------------------
 -- Relationship to functions over lists
 ------------------------------------------------------------------------
--- length
-
-Pointwise-length : Pointwise R xs ys → length xs ≡ length ys
-Pointwise-length []            = ≡.refl
-Pointwise-length (x∼y ∷ xs∼ys) = ≡.cong ℕ.suc (Pointwise-length xs∼ys)
-
-------------------------------------------------------------------------
 -- tabulate
 
 tabulate⁺ : ∀ {n} {f : Fin n → A} {g : Fin n → B} →
@@ -165,6 +163,15 @@ tabulate⁻ {n = suc n} (x∼y ∷ xs∼ys) (fsuc i) = tabulate⁻ xs∼ys i
   contradiction (≡.trans (Pointwise-length eq) (length-++ (z ∷ zs))) (m≢1+n+m (length xs))
 ++-cancelʳ {xs = xs}     (y ∷ ys) []       eq   =
   contradiction (≡.trans (≡.sym (length-++ (y ∷ ys))) (Pointwise-length eq)) (m≢1+n+m (length xs) ∘ ≡.sym)
+
+module _ (rfl : Reflexive R) where
+
+  ++⁺ˡ : ∀ xs → (xs ++_) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ˡ xs = ++⁺ (refl rfl)
+
+  ++⁺ʳ : ∀ zs → (_++ zs) Preserves (Pointwise R) ⟶ (Pointwise R)
+  ++⁺ʳ zs rs = ++⁺ rs (refl rfl)
+
 
 ------------------------------------------------------------------------
 -- concat
@@ -261,8 +268,7 @@ lookup⁺ (_   ∷ Rxys) (fsuc i) = lookup⁺ Rxys i
 
 Pointwise-≡⇒≡ : Pointwise {A = A} _≡_ ⇒ _≡_
 Pointwise-≡⇒≡ []               = ≡.refl
-Pointwise-≡⇒≡ (≡.refl ∷ xs∼ys) with Pointwise-≡⇒≡ xs∼ys
-... | ≡.refl = ≡.refl
+Pointwise-≡⇒≡ (≡.refl ∷ xs∼ys) = ≡.cong (_ ∷_) (Pointwise-≡⇒≡ xs∼ys)
 
 ≡⇒Pointwise-≡ :  _≡_ ⇒ Pointwise {A = A} _≡_
 ≡⇒Pointwise-≡ ≡.refl = refl ≡.refl

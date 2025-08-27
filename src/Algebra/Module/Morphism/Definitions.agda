@@ -6,7 +6,7 @@
 ------------------------------------------------------------------------
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Module.Morphism.Definitions
   {r} (R : Set r) -- The underlying ring
@@ -15,7 +15,7 @@ module Algebra.Module.Morphism.Definitions
   {ℓ} (_≈_ : Rel B ℓ) -- The equality relation over the codomain
   where
 
-open import Algebra.Module.Core
+open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Morphism.Definitions A B _≈_ public
 
 Homomorphicₗ : (A → B) → Opₗ R A → Opₗ R B → Set _

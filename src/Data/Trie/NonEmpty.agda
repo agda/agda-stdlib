@@ -10,17 +10,19 @@ open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Trie.NonEmpty {k e r} (S : StrictTotalOrder k e r) where
 
-open import Level
-open import Size
-open import Effect.Monad
 open import Data.Product.Base as Product using (∃; uncurry; -,_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
-open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
+open import Data.Maybe.Base as Maybe
+  using (Maybe; nothing; just; maybe′) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
+open import Effect.Monad using (RawMonad)
 open import Function.Base as F
+  using (const; _∘′_; _$_; id; _∘_; _$′_; case_of_)
+open import Level using (Level; _⊔_)
 import Function.Identity.Effectful as Identity
 open import Relation.Unary using (_⇒_; IUniversal)
+open import Size using (Size; ↑_; ∞)
 
 open StrictTotalOrder S
   using (module Eq)

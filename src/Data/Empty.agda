@@ -35,3 +35,6 @@ private
 
 ⊥-elim : ∀ {w} {Whatever : Set w} → ⊥ → Whatever
 ⊥-elim ()
+
+⊥-elim-irr : ∀ {w} {Whatever : Set w} → .⊥ → Whatever
+⊥-elim-irr ()

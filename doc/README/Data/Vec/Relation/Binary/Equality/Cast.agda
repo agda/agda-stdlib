@@ -20,6 +20,7 @@ open import Data.Nat.Properties
 open import Data.Vec.Base
 open import Data.Vec.Properties
 open import Data.Vec.Relation.Binary.Equality.Cast
+open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
 
@@ -92,7 +93,7 @@ example1a-fromList-∷ʳ x xs eq = begin
   cast eq₂ (cast eq₁ (fromList (xs List.++ List.[ x ])))
     ≡⟨ cong (cast eq₂) (fromList-++ xs) ⟩
   cast eq₂ (fromList xs ++ [ x ])
-    ≡⟨ ≈-sym (unfold-∷ʳ (sym eq₂) x (fromList xs)) ⟩
+    ≡⟨ ≈-sym (unfold-∷ʳ-eqFree x (fromList xs)) ⟩
   fromList xs ∷ʳ x
     ∎
   where
@@ -114,7 +115,7 @@ example1b-fromList-∷ʳ x xs eq = begin
   fromList (xs List.++ List.[ x ])
     ≈⟨ fromList-++ xs ⟩
   fromList xs ++ [ x ]
-    ≈⟨ unfold-∷ʳ (+-comm 1 (List.length xs)) x (fromList xs) ⟨
+    ≈⟨ unfold-∷ʳ-eqFree x (fromList xs) ⟨
   fromList xs ∷ʳ x
     ∎
   where open CastReasoning
@@ -138,8 +139,8 @@ example1b-fromList-∷ʳ x xs eq = begin
 example2a : ∀ .(eq : suc m + n ≡ m + suc n) (xs : Vec A m) a ys →
             cast eq ((reverse xs ∷ʳ a) ++ ys) ≡ reverse xs ++ (a ∷ ys)
 example2a eq xs a ys = begin
-  (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++ eq a (reverse xs) ⟩ -- index: suc m + n
-  reverse xs ++ (a ∷ ys)  ∎                            -- index: m + suc n
+  (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++-eqFree a (reverse xs) ⟩ -- index: suc m + n
+  reverse xs ++ (a ∷ ys)  ∎                                -- index: m + suc n
   where open CastReasoning
 
 -- To interoperate with `_≡_`, this library provides `_≂⟨_⟩_` (\-~) for
@@ -158,26 +159,16 @@ example2b : ∀ .(eq : suc m + n ≡ m + suc n) (xs : Vec A m) a ys →
 example2b eq xs a ys = begin
   (a ∷ xs) ʳ++ ys         ≂⟨ unfold-ʳ++ (a ∷ xs) ys ⟩          -- index: suc m + n
   reverse (a ∷ xs) ++ ys  ≂⟨ cong (_++ ys) (reverse-∷ a xs) ⟩  -- index: suc m + n
-  (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++ eq a (reverse xs) ⟩         -- index: suc m + n
+  (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++-eqFree a (reverse xs) ⟩     -- index: suc m + n
   reverse xs ++ (a ∷ ys)  ≂⟨ unfold-ʳ++ xs (a ∷ ys) ⟨          -- index: m + suc n
   xs ʳ++ (a ∷ ys)         ∎                                    -- index: m + suc n
   where open CastReasoning
 
 -- Oftentimes index-changing identities apply to only part of the proof
 -- term. When reasoning about `_≡_`, `cong` shifts the focus to the
--- subterm of interest. In this library, `≈-cong` does a similar job.
--- Suppose `f : A → B`, `xs : B`, `ys zs : A`, `ys≈zs : ys ≈[ _ ] zs`
--- and `xs≈f⟨c·ys⟩ : xs ≈[ _ ] f (cast _ ys)`, we have
---     xs ≈⟨ ≈-cong f xs≈f⟨c·ys⟩ ys≈zs ⟩
---     f zs
--- The reason for having the extra argument `xs≈f⟨c·ys⟩` is to expose
--- `cast` in the subterm in order to apply the step `ys≈zs`. When using
--- ordinary `cong` the proof has to explicitly push `cast` inside:
---     xs            ≈⟨ xs≈f⟨c·ys⟩ ⟩
---     f (cast _ ys) ≂⟨ cong f ys≈zs ⟩
---     f zs
--- Note. Technically, `A` and `B` should be vectors of different length
--- and that `ys`, `zs` are vectors of non-definitionally equal index.
+-- subterm of interest. In this library, `≈-cong′` does a similar job.
+-- For the typechecker to infer the congruence function `f`, it must be
+-- polymorphic in the length of the given vector,
 example3a-fromList-++-++ : {xs ys zs : List A} →
                            .(eq : List.length (xs List.++ ys List.++ zs) ≡
                                   List.length xs + (List.length ys + List.length zs)) →
@@ -187,7 +178,7 @@ example3a-fromList-++-++ {xs = xs} {ys} {zs} eq = begin
   fromList (xs List.++ ys List.++ zs)
     ≈⟨ fromList-++ xs ⟩
   fromList xs ++ fromList (ys List.++ zs)
-    ≈⟨ ≈-cong (fromList xs ++_) (cast-++ʳ (List.length-++ ys) (fromList xs)) (fromList-++ ys) ⟩
+    ≈⟨ ≈-cong′ (fromList xs ++_) (fromList-++ ys) ⟩
   fromList xs ++ fromList ys ++ fromList zs
     ∎
   where open CastReasoning
@@ -210,19 +201,19 @@ example3b-fromList-++-++′ {xs = xs} {ys} {zs} eq = begin
     ∎
   where open CastReasoning
 
--- `≈-cong` can be chained together much like how `cong` can be nested.
+-- `≈-cong′` can be chained together much like how `cong` can be nested.
 -- In this example, `unfold-∷ʳ` is applied to the term `xs ++ [ a ]`
 -- in `(_++ ys)` inside of `reverse`. Thus the proof employs two
--- `≈-cong`.
+-- `≈-cong′` usages, which is equivalent to using one `≈-cong′` with
+-- a single composed function.
 example4-cong² : ∀ .(eq : (m + 1) + n ≡ n + suc m) a (xs : Vec A m) ys →
           cast eq (reverse ((xs ++ [ a ]) ++ ys)) ≡ ys ʳ++ reverse (xs ∷ʳ a)
 example4-cong² {m = m} {n} eq a xs ys = begin
   reverse ((xs ++ [ a ]) ++ ys)
-    ≈⟨ ≈-cong reverse (cast-reverse (cong (_+ n) (+-comm 1 m)) ((xs ∷ʳ a) ++ ys))
-                                             (≈-cong (_++ ys) (cast-++ˡ (+-comm 1 m) (xs ∷ʳ a))
-                                                     (unfold-∷ʳ _ a xs)) ⟨
+    ≈⟨ ≈-cong′ reverse (≈-cong′ (_++ ys) (unfold-∷ʳ-eqFree a xs)) ⟨
+    -- the same as ≈-cong′ (reverse ∘ (_++ ys)) ...
   reverse ((xs ∷ʳ a) ++ ys)
-    ≈⟨ reverse-++ (+-comm (suc m) n) (xs ∷ʳ a) ys ⟩
+    ≈⟨ reverse-++-eqFree (xs ∷ʳ a) ys ⟩
   reverse ys ++ reverse (xs ∷ʳ a)
     ≂⟨ unfold-ʳ++ ys (reverse (xs ∷ʳ a)) ⟨
   ys ʳ++ reverse (xs ∷ʳ a)
@@ -264,9 +255,9 @@ example6a-reverse-∷ʳ {n = n} x xs = begin-≡
   reverse (xs ∷ʳ x)
     ≡⟨ ≈-reflexive refl ⟨
   reverse (xs ∷ʳ x)
-    ≈⟨ ≈-cong reverse (cast-reverse _ _) (unfold-∷ʳ (+-comm 1 n) x xs) ⟩
+    ≈⟨ ≈-cong′ reverse (unfold-∷ʳ-eqFree x xs) ⟩
   reverse (xs ++ [ x ])
-    ≈⟨ reverse-++ (+-comm n 1) xs [ x ] ⟩
+    ≈⟨ reverse-++-eqFree xs [ x ] ⟩
   x ∷ reverse xs
     ∎
   where open CastReasoning

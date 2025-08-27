@@ -8,7 +8,6 @@
 
 module Data.Vec.Functional.Properties where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ<; reduce≥;
   _↑ˡ_; _↑ʳ_; punchIn; punchOut)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
@@ -30,6 +29,7 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; map′; _×-dec_)
+open import Relation.Nullary.Negation using (contradiction)
 
 import Data.Fin.Properties as Finₚ
 
@@ -70,7 +70,7 @@ updateAt-updates (suc i) xs = updateAt-updates i (tail xs)
 
 updateAt-minimal : ∀ (i j : Fin n) {f : A → A} (xs : Vector A n) →
                    i ≢ j → updateAt xs j f i ≡ xs i
-updateAt-minimal zero    zero    xs 0≢0 = ⊥-elim (0≢0 refl)
+updateAt-minimal zero    zero    xs 0≢0 = contradiction refl 0≢0
 updateAt-minimal zero    (suc j) xs _   = refl
 updateAt-minimal (suc i) zero    xs _   = refl
 updateAt-minimal (suc i) (suc j) xs i≢j = updateAt-minimal i j (tail xs) (i≢j ∘ cong suc)
@@ -117,7 +117,7 @@ updateAt-cong i eq xs = updateAt-cong-local i xs (eq (xs i))
 
 updateAt-commutes : ∀ (i j : Fin n) {f g : A → A} → i ≢ j → (xs : Vector A n) →
                     updateAt (updateAt xs j g) i f ≗ updateAt (updateAt xs i f) j g
-updateAt-commutes zero    zero    0≢0 xs k       = ⊥-elim (0≢0 refl)
+updateAt-commutes zero    zero    0≢0 xs k       = contradiction refl 0≢0
 updateAt-commutes zero    (suc j) _   xs zero    = refl
 updateAt-commutes zero    (suc j) _   xs (suc k) = refl
 updateAt-commutes (suc i) zero    _   xs zero    = refl
@@ -238,7 +238,7 @@ insertAt-punchIn {n = suc n} xs (suc i) v (suc j) = insertAt-punchIn (tail xs) i
 removeAt-punchOut : ∀ (xs : Vector A (suc n))
                   {i : Fin (suc n)} {j : Fin (suc n)} (i≢j : i ≢ j) →
                   removeAt xs i (punchOut i≢j) ≡ xs j
-removeAt-punchOut {n = n}     xs {zero}  {zero}  i≢j = ⊥-elim (i≢j refl)
+removeAt-punchOut {n = n}     xs {zero}  {zero}  i≢j = contradiction refl i≢j
 removeAt-punchOut {n = suc n} xs {zero}  {suc j} i≢j = refl
 removeAt-punchOut {n = suc n} xs {suc i} {zero}  i≢j = refl
 removeAt-punchOut {n = suc n} xs {suc i} {suc j} i≢j = removeAt-punchOut (tail xs) (i≢j ∘ cong suc)

@@ -8,9 +8,9 @@
 
 module Data.Integer.GCD where
 
-open import Data.Integer.Base
-open import Data.Integer.Divisibility
-open import Data.Integer.Properties
+open import Data.Integer.Base using (ℤ; _+_; +_; 0ℤ; 1ℤ; ∣_∣)
+open import Data.Integer.Divisibility using (_∣_)
+open import Data.Integer.Properties using (+-injective; ∣i∣≡0⇒i≡0)
 import Data.Nat.GCD as ℕ
 open import Data.Product.Base using (_,_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)

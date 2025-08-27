@@ -11,8 +11,11 @@ module Relation.Binary.Construct.Closure.Equivalence.Properties where
 open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.Equivalence
+  using (EqClosure; symmetric)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive as RTrans
+  using (Star; _◅◅_)
 import Relation.Binary.Construct.Closure.Symmetric as SymClosure
+  using (SymClosure; fwd)
 
 module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
 

@@ -12,75 +12,83 @@
 
 module Data.List.Membership.Propositional.Properties.Core where
 
-open import Function.Base using (flip; id; _∘_)
-open import Function.Bundles
-open import Data.List.Base using (List)
+open import Data.List.Base using (List; [])
+open import Data.List.Membership.Propositional using (_∈_; _∉_; find; lose)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-open import Data.List.Membership.Propositional
-open import Data.Product.Base as Product
-  using (_,_; proj₁; proj₂; uncurry′; ∃; _×_)
+open import Data.Product.Base as Product using (_,_; ∃; _×_)
+open import Function.Base using (flip; id; _∘_)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; subst)
+  using (_≡_; refl; trans; cong; resp)
 open import Relation.Unary using (Pred; _⊆_)
 
 private
   variable
     a p q : Level
     A : Set a
+    x : A
+    xs : List A
 
 ------------------------------------------------------------------------
--- Lemmas relating map and find.
+-- Basics
 
-map∘find : ∀ {P : Pred A p} {xs}
-           (p : Any P xs) → let p′ = find p in
-           {f : _≡_ (proj₁ p′) ⊆ P} →
-           f refl ≡ proj₂ (proj₂ p′) →
-           Any.map f (proj₁ (proj₂ p′)) ≡ p
-map∘find (here  p) hyp = cong here  hyp
-map∘find (there p) hyp = cong there (map∘find p hyp)
-
-find∘map : ∀ {P : Pred A p} {Q : Pred A q}
-           {xs : List A} (p : Any P xs) (f : P ⊆ Q) →
-           find (Any.map f p) ≡ Product.map id (Product.map id f) (find p)
-find∘map (here  p) f = refl
-find∘map (there p) f rewrite find∘map p f = refl
+∉[] : x ∉ []
+∉[] ()
 
 ------------------------------------------------------------------------
 -- find satisfies a simple equality when the predicate is a
 -- propositional equality.
 
-find-∈ : ∀ {x : A} {xs : List A} (x∈xs : x ∈ xs) →
-         find x∈xs ≡ (x , x∈xs , refl)
+find-∈ : (x∈xs : x ∈ xs) → find x∈xs ≡ (x , x∈xs , refl)
 find-∈ (here refl)  = refl
-find-∈ (there x∈xs) rewrite find-∈ x∈xs = refl
+find-∈ (there x∈xs)
+  = cong (λ where (x , x∈xs , eq) → x , there x∈xs , eq) (find-∈ x∈xs)
 
 ------------------------------------------------------------------------
--- find and lose are inverses (more or less).
+-- Lemmas relating map and find.
 
-lose∘find : ∀ {P : Pred A p} {xs : List A}
-            (p : Any P xs) →
-            uncurry′ lose (proj₂ (find p)) ≡ p
-lose∘find p = map∘find p refl
+module _ {P : Pred A p} where
 
-find∘lose : ∀ (P : Pred A p) {x xs}
-            (x∈xs : x ∈ xs) (pp : P x) →
-            find {P = P} (lose x∈xs pp) ≡ (x , x∈xs , pp)
-find∘lose P x∈xs p
-  rewrite find∘map x∈xs (flip (subst P) p)
-        | find-∈ x∈xs
-        = refl
+  map∘find : (p : Any P xs) → let x , x∈xs , px = find p in
+             {f : (x ≡_) ⊆ P} → f refl ≡ px →
+             Any.map f x∈xs ≡ p
+  map∘find (here  p) hyp = cong here  hyp
+  map∘find (there p) hyp = cong there (map∘find p hyp)
+
+  find∘map : ∀ {Q : Pred A q} {xs} (p : Any P xs) (f : P ⊆ Q) →
+             let x , x∈xs , px = find p in
+             find (Any.map f p) ≡ (x , x∈xs , f px)
+  find∘map (here  p) f = refl
+  find∘map (there p) f
+    = cong (λ where (x , x∈xs , eq) → x , there x∈xs , eq) (find∘map p f)
 
 ------------------------------------------------------------------------
 -- Any can be expressed using _∈_
 
 module _ {P : Pred A p} where
 
-  ∃∈-Any : ∀  {xs} → (∃ λ x → x ∈ xs × P x) → Any P xs
-  ∃∈-Any = uncurry′ lose ∘ proj₂
+  ∃∈-Any : (∃ λ x → x ∈ xs × P x) → Any P xs
+  ∃∈-Any (x , x∈xs , px) = lose x∈xs px
 
-  Any↔ : ∀ {xs} → (∃ λ x → x ∈ xs × P x) ↔ Any P xs
-  Any↔ = mk↔ₛ′ ∃∈-Any find lose∘find from∘to
-    where
-    from∘to : ∀ v → find (∃∈-Any v) ≡ v
-    from∘to p = find∘lose _ (proj₁ (proj₂ p)) (proj₂ (proj₂ p))
+  ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
+  ∃∈-Any∘find p = map∘find p refl
+
+  find∘∃∈-Any : (p : ∃ λ x → x ∈ xs × P x) → find (∃∈-Any p) ≡ p
+  find∘∃∈-Any p@(x , x∈xs , px)
+    = trans (find∘map x∈xs (flip (resp P) px))
+            (cong (λ (x , x∈xs , eq) → x , x∈xs , resp P eq px) (find-∈ x∈xs))
+
+  Any↔ : (∃ λ x → x ∈ xs × P x) ↔ Any P xs
+  Any↔ = mk↔ₛ′ ∃∈-Any find ∃∈-Any∘find find∘∃∈-Any
+
+------------------------------------------------------------------------
+-- Hence, find and lose are inverses (more or less).
+
+lose∘find : ∀ {P : Pred A p} {xs} (p : Any P xs) → ∃∈-Any (find p) ≡ p
+lose∘find = ∃∈-Any∘find
+
+find∘lose : ∀ (P : Pred A p) {x xs}
+            (x∈xs : x ∈ xs) (px : P x) →
+            find (lose {P = P} x∈xs px) ≡ (x , x∈xs , px)
+find∘lose P {x} x∈xs px = find∘∃∈-Any (x , x∈xs , px)

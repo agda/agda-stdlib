@@ -17,28 +17,16 @@ open import Data.Product.Base using (proj₂)
 open import Relation.Binary.Reasoning.Setoid setoid
 
 x//x≈ε : ∀ x → x // x ≈ ε
-x//x≈ε x = begin
-  x // x       ≈⟨ //-congʳ (identityˡ x) ⟨
-  (ε ∙ x) // x ≈⟨ rightDividesʳ x ε ⟩
-  ε            ∎
+x//x≈ε x = sym (x≈z//y _ _ _ (identityˡ x))
 
 x\\x≈ε : ∀ x → x \\ x ≈ ε
-x\\x≈ε x = begin
-  x \\ x       ≈⟨ \\-congˡ (identityʳ x ) ⟨
-  x \\ (x ∙ ε) ≈⟨ leftDividesʳ x ε ⟩
-  ε            ∎
+x\\x≈ε x = sym (y≈x\\z _ _ _ (identityʳ x))
 
 ε\\x≈x : ∀ x → ε \\ x ≈ x
-ε\\x≈x x = begin
-  ε \\ x       ≈⟨ identityˡ (ε \\ x) ⟨
-  ε ∙ (ε \\ x) ≈⟨ leftDividesˡ ε x ⟩
-  x            ∎
+ε\\x≈x x = sym (y≈x\\z _ _ _ (identityˡ x))
 
 x//ε≈x : ∀ x → x // ε ≈ x
-x//ε≈x x = begin
- x // ε       ≈⟨ identityʳ (x // ε) ⟨
- (x // ε) ∙ ε ≈⟨ rightDividesˡ ε x ⟩
- x            ∎
+x//ε≈x x = sym (x≈z//y _ _ _ (identityʳ x))
 
 identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
 identityˡ-unique x y eq = begin

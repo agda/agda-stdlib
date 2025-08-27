@@ -21,7 +21,6 @@ open import Algebra.Morphism
 open import Function.Base using (id; _⟨_⟩_)
 open import Data.Bool.Base using (Bool; true; false; T; if_then_else_)
 open import Data.Maybe.Base
-open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_×_; proj₁; proj₂; _,_)
 open import Data.Vec.Base using (Vec)
@@ -33,9 +32,7 @@ open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 module Ops where
   zero-homo : ∀ x → T (is-just (0≟ x)) → 0# ≈ x
-  zero-homo x _ with 0≟ x
-  zero-homo x _  | just p = p
-  zero-homo x () | nothing
+  zero-homo x _ with just p ← 0≟ x = p
 
   homo : Homomorphism ℓ₁ ℓ₂ ℓ₁ ℓ₂
   homo = record

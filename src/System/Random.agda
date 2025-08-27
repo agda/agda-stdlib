@@ -89,7 +89,7 @@ module ℕ where
 
 module Word64 where
 
-  open import Data.Word.Base using (Word64; _≤_)
+  open import Data.Word64.Base using (Word64; _≤_)
 
   randomIO : IO Word64
   randomIO = lift Prim.randomIO-Word64

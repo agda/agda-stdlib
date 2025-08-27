@@ -14,7 +14,7 @@ import Algebra.Properties.Loop as LoopProperties
 import Algebra.Properties.Quasigroup as QuasigroupProperties
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_)
-open import Function.Definitions
+open import Function.Definitions using (Injective)
 
 open Group G
 open import Algebra.Consequences.Setoid setoid
@@ -114,6 +114,18 @@ inverseʳ-unique x y eq = trans (y≈x\\z x y ε eq) (identityʳ _)
 
 ⁻¹-involutive : Involutive _⁻¹
 ⁻¹-involutive = selfInverse⇒involutive ⁻¹-selfInverse
+
+x∙y⁻¹≈ε⇒x≈y : ∀ x y → (x ∙ y ⁻¹) ≈ ε → x ≈ y
+x∙y⁻¹≈ε⇒x≈y x y x∙y⁻¹≈ε = begin
+  x         ≈⟨ inverseˡ-unique x (y ⁻¹) x∙y⁻¹≈ε ⟩
+  y ⁻¹ ⁻¹   ≈⟨ ⁻¹-involutive y ⟩
+  y         ∎
+
+x≈y⇒x∙y⁻¹≈ε : ∀ {x y} → x ≈ y → (x ∙ y ⁻¹) ≈ ε
+x≈y⇒x∙y⁻¹≈ε {x} {y} x≈y = begin
+  x ∙ y ⁻¹ ≈⟨ ∙-congʳ x≈y ⟩
+  y ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
+  ε        ∎
 
 ⁻¹-injective : Injective _≈_ _≈_ _⁻¹
 ⁻¹-injective = selfInverse⇒injective ⁻¹-selfInverse

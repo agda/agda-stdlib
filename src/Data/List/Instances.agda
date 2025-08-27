@@ -8,21 +8,27 @@
 
 module Data.List.Instances where
 
-open import Data.List.Base
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Effectful
+  using (functor; applicative; applicativeZero; alternative; monad
+        ; monadZero; monadPlus)
 import Data.List.Effectful.Transformer as Trans
+  using (functor; applicative; monad; monadT)
 open import Data.List.Properties
   using (≡-dec)
+open import Data.List.Literals
+  using (isString)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise)
 open import Data.List.Relation.Binary.Lex.NonStrict
   using (Lex-≤; ≤-isDecTotalOrder)
-open import Level
-open import Relation.Binary.Core
-open import Relation.Binary.PropositionalEquality.Core
+open import Level using (Level)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 open import Relation.Binary.TypeClasses
+  using (IsDecTotalOrder; IsDecEquivalence; _≟_)
 
 private
   variable
@@ -38,6 +44,7 @@ instance
   listMonad = monad
   listMonadZero = monadZero
   listMonadPlus = monadPlus
+  listIsString = isString
   -- ListT
   listTFunctor = λ {f} {g} {M} {{inst}} → Trans.functor {f} {g} {M} inst
   listTApplicative = λ {f} {g} {M} {{inst}} → Trans.applicative {f} {g} {M} inst

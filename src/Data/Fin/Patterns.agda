@@ -8,7 +8,7 @@
 
 module Data.Fin.Patterns where
 
-open import Data.Fin.Base
+open import Data.Fin.Base using (Fin; zero; suc)
 
 ------------------------------------------------------------------------
 -- Constants

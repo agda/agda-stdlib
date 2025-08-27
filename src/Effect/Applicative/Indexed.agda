@@ -13,8 +13,8 @@ module Effect.Applicative.Indexed where
 
 open import Effect.Functor using (RawFunctor)
 open import Data.Product.Base using (_×_; _,_)
-open import Function.Base
-open import Level
+open import Function.Base using (const; constᵣ)
+open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)

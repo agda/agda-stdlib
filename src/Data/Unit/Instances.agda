@@ -8,7 +8,7 @@
 
 module Data.Unit.Instances where
 
-open import Data.Unit.Properties
+open import Data.Unit.Properties using (_≟_; ≡-isDecTotalOrder)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 

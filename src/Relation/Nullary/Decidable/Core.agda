@@ -11,16 +11,25 @@
 
 module Relation.Nullary.Decidable.Core where
 
-open import Level using (Level; Lift)
+-- decToMaybe was deprecated in v2.1 #2330/#2336
+-- this can go through `Data.Maybe.Base` once that deprecation is fully done.
+open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product.Base using (_×_)
-open import Data.Sum.Base using (_⊎_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Reflects
+open import Relation.Nullary.Irrelevant using (Irrelevant)
+open import Relation.Nullary.Recomputable.Core as Recomputable
+  using (Recomputable)
+open import Relation.Nullary.Reflects as Reflects
+  hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
-  using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
+  using (¬_; ¬¬-η; Stable; negated-stable; contradiction; DoubleNegation)
+
 
 private
   variable
@@ -69,9 +78,15 @@ module _ {A : Set a} where
 
 -- Given an irrelevant proof of a decidable type, a proof can
 -- be recomputed and subsequently used in relevant contexts.
-recompute : Dec A → .A → A
-recompute (yes a) _ = a
-recompute (no ¬a) a = ⊥-elim (¬a a)
+
+recompute : Dec A → Recomputable A
+recompute = Reflects.recompute ∘ proof
+
+recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+recompute-constant = Recomputable.recompute-constant ∘ recompute
+
+recompute-irrelevant-id : (a? : Dec A) → Irrelevant A → (a : A) → recompute a? a ≡ a
+recompute-irrelevant-id = Recomputable.recompute-irrelevant-id ∘ recompute
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
@@ -86,9 +101,17 @@ T? x = x because T-reflects x
 does  (¬? a?) = not (does a?)
 proof (¬? a?) = ¬-reflects (proof a?)
 
+⊤-dec : Dec {a} ⊤
+does  ⊤-dec = true
+proof ⊤-dec = ⊤-reflects
+
 _×-dec_ : Dec A → Dec B → Dec (A × B)
 does  (a? ×-dec b?) = does a? ∧ does b?
 proof (a? ×-dec b?) = proof a? ×-reflects proof b?
+
+⊥-dec : Dec {a} ⊥
+does  ⊥-dec  = false
+proof ⊥-dec  = ⊥-reflects
 
 _⊎-dec_ : Dec A → Dec B → Dec (A ⊎ B)
 does  (a? ⊎-dec b?) = does a? ∨ does b?
@@ -97,6 +120,24 @@ proof (a? ⊎-dec b?) = proof a? ⊎-reflects proof b?
 _→-dec_ : Dec A → Dec B → Dec (A → B)
 does  (a? →-dec b?) = not (does a?) ∨ does b?
 proof (a? →-dec b?) = proof a? →-reflects proof b?
+
+------------------------------------------------------------------------
+-- Relationship with Maybe
+
+dec⇒maybe : Dec A → Maybe A
+dec⇒maybe ( true because [a]) = just (invert [a])
+dec⇒maybe (false because  _ ) = nothing
+
+------------------------------------------------------------------------
+-- Relationship with Sum
+
+toSum : Dec A → A ⊎ ¬ A
+toSum ( true because  [p]) = inj₁ (invert  [p])
+toSum (false because [¬p]) = inj₂ (invert [¬p])
+
+fromSum : A ⊎ ¬ A → Dec A
+fromSum (inj₁ p)  = yes p
+fromSum (inj₂ ¬p) = no ¬p
 
 ------------------------------------------------------------------------
 -- Relationship with booleans
@@ -161,8 +202,8 @@ from-no (true  because   _ ) = _
 
 map′ : (A → B) → (B → A) → Dec A → Dec B
 does  (map′ A→B B→A a?)                   = does a?
-proof (map′ A→B B→A (true  because  [a])) = ofʸ (A→B (invert [a]))
-proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A)
+proof (map′ A→B B→A (true  because  [a])) = of (A→B (invert [a]))
+proof (map′ A→B B→A (false because [¬a])) = of (invert [¬a] ∘ B→A)
 
 ------------------------------------------------------------------------
 -- Relationship with double-negation
@@ -170,11 +211,11 @@ proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A
 -- Decidable predicates are stable.
 
 decidable-stable : Dec A → Stable A
-decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = contradiction ¬a ¬¬a
+decidable-stable (true  because  [a]) ¬¬a = invert [a]
+decidable-stable (false because [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
-¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
+¬-drop-Dec ¬¬a? = map′ negated-stable ¬¬-η (¬? ¬¬a?)
 
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).
@@ -195,4 +236,24 @@ excluded-middle = ¬¬-excluded-middle
 {-# WARNING_ON_USAGE excluded-middle
 "Warning: excluded-middle was deprecated in v2.0.
 Please use ¬¬-excluded-middle instead."
+#-}
+
+-- Version 2.1
+
+decToMaybe = dec⇒maybe
+{-# WARNING_ON_USAGE decToMaybe
+"Warning: decToMaybe was deprecated in v2.1.
+Please use Relation.Nullary.Decidable.Core.dec⇒maybe instead."
+#-}
+
+fromDec = toSum
+{-# WARNING_ON_USAGE fromDec
+"Warning: fromDec was deprecated in v2.1.
+Please use Relation.Nullary.Decidable.Core.toSum instead."
+#-}
+
+toDec = fromSum
+{-# WARNING_ON_USAGE toDec
+"Warning: toDec was deprecated in v2.1.
+Please use Relation.Nullary.Decidable.Core.fromSum instead."
 #-}

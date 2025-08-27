@@ -17,6 +17,7 @@ import Reflection.AST.Abstraction as Abstraction
 import Reflection.AST.Argument as Argument
 import Reflection.AST.Argument.Visibility as Visibility
 import Reflection.AST.Argument.Relevance as Relevance
+import Reflection.AST.Argument.Quantity as Quantity
 import Reflection.AST.Argument.Information as Information
 import Reflection.AST.Pattern as Pattern
 import Reflection.AST.Term as Term
@@ -37,6 +38,7 @@ instance
   Meta-≡-isDecEquivalence = isDecEquivalence Meta._≟_
   Visibility-≡-isDecEquivalence = isDecEquivalence Visibility._≟_
   Relevance-≡-isDecEquivalence = isDecEquivalence Relevance._≟_
+  Quantity-≡-isDecEquivalence = isDecEquivalence Quantity._≟_
   ArgInfo-≡-isDecEquivalence = isDecEquivalence Information._≟_
   Pattern-≡-isDecEquivalence = isDecEquivalence Pattern._≟_
   Clause-≡-isDecEquivalence = isDecEquivalence Term._≟-Clause_

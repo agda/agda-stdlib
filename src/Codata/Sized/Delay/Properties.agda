@@ -12,10 +12,10 @@ open import Size
 import Data.Sum.Base as Sum
 import Data.Nat.Base as ℕ
 open import Codata.Sized.Thunk using (Thunk; force)
-open import Codata.Sized.Conat
+open import Codata.Sized.Conat using (Conat; zero; suc; infinity; _⊔_; toℕ)
 open import Codata.Sized.Conat.Bisimilarity as Coℕ using (zero ; suc)
 open import Codata.Sized.Delay
-open import Codata.Sized.Delay.Bisimilarity
+open import Codata.Sized.Delay.Bisimilarity using (now; later; _⊢_≈_)
 open import Function.Base using (id; _∘′_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 

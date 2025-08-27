@@ -6,22 +6,25 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Definitions using (Trans)
 open import Relation.Binary.Bundles using (TotalOrder; Setoid)
 
 module Data.List.Extrema.Core
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where
 
-open import Algebra.Core
-open import Algebra.Definitions
+open import Algebra.Construct.LiftedChoice
+  using (Lift; sel-≡; preservesᵒ; preservesᵇ ; forcesᵇ)
+open import Algebra.Core using (Op₂)
+open import Algebra.Definitions using (Selective)
 import Algebra.Construct.NaturalChoice.Min as Min
+  using (_⊓_; x⊓y≈y⇒y≤x; x⊓y≈x⇒x≤y; ⊓-sel; ⊓-isSelectiveMagma)
 import Algebra.Construct.NaturalChoice.Max as Max
+  using (_⊔_; x⊔y≈y⇒x≤y; x⊔y≈x⇒y≤x; ⊔-sel; ⊔-isSelectiveMagma)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.Definitions using (Trans)
 
-open import Algebra.Construct.LiftedChoice
 
 open TotalOrder totalOrder renaming (Carrier to B)
 open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_

@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - experimental
+      - 'v*-release'
   pull_request:
     branches:
       - master
@@ -31,7 +32,7 @@ on:
 ## To be experimented with again in the future to see if things have
 ## gotten better.
 ##
-## We use `v1-install` rather than `install` as Agda as a community
+## We mostly use `v1-install` rather than `install` as Agda as a community
 ## hasn't figured out how to manage dependencies with the new local
 ## style builds (see agda/agda#4627 for details). Once this is resolved
 ## we should upgrade to `install`.
@@ -47,11 +48,11 @@ on:
 ########################################################################
 
 env:
-  GHC_VERSION: 8.10.7
-  CABAL_VERSION: 3.6.2.0
-  CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
-  # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
-  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -isrc -idoc
+  GHC_VERSION: 9.10.1
+  CABAL_VERSION: 3.12.1.0
+  CABAL_V1_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
+  CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
+  AGDA: agda -Werror +RTS -M5G -H3.5G -A128M -RTS -i. -isrc -idoc
 
 jobs:
   test-stdlib:
@@ -75,17 +76,17 @@ jobs:
           if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
              || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
-            echo "AGDA_COMMIT=4d36cb37f8bfb765339b808b13356d760aa6f0ec" >> $GITHUB_ENV;
-            echo "AGDA_HTML_DIR=html/experimental" >> $GITHUB_ENV
+            echo "AGDA_COMMIT=ef912c68fd329ad3046d156e3c1a70a7fec19ba1" >> "${GITHUB_ENV}";
+            echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_ENV}"
           else
             # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.6.4.1" >> $GITHUB_ENV;
-            echo "AGDA_HTML_DIR=html/master" >> $GITHUB_ENV
+            echo "AGDA_COMMIT=tags/v2.8.0-rc3" >> "${GITHUB_ENV}";
+            echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_ENV}"
           fi
 
           if [[ '${{ github.ref }}' == 'refs/heads/master' \
              || '${{ github.ref }}' == 'refs/heads/experimental' ]]; then
-             echo "AGDA_DEPLOY=true" >> $GITHUB_ENV
+             echo "AGDA_DEPLOY=true" >> "${GITHUB_ENV}"
           fi
 
 ########################################################################
@@ -98,7 +99,7 @@ jobs:
       # i.e. if we change either the version of Agda, ghc, or cabal that we want
       # to use for the build.
       - name: Cache ~/.cabal directories
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-cabal
         with:
           path: |
@@ -113,22 +114,22 @@ jobs:
 ########################################################################
 
       - name: Install ghc & cabal
-        uses: haskell/actions/setup@v1
+        uses: haskell-actions/setup@v2
         with:
           ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: true
 
       - name: Put cabal programs in PATH
-        run: echo "~/.cabal/bin" >> $GITHUB_PATH
-
-      - name: Cabal update
-        run: cabal update
+        run: echo ~/.cabal/bin >> "${GITHUB_PATH}"
 
       - name: Install alex & happy
         if: steps.cache-cabal.outputs.cache-hit != 'true'
         run: |
           ${{ env.CABAL_INSTALL }} alex
           ${{ env.CABAL_INSTALL }} happy
+          # happy>=2.0 cannot be v1-installed: https://github.com/haskell/happy/issues/315
+          # Since we only need the executable, it is fine to use v2-install here.
 
       - name: Download and install Agda from github
         if: steps.cache-cabal.outputs.cache-hit != 'true'
@@ -138,7 +139,7 @@ jobs:
           git checkout ${{ env.AGDA_COMMIT }}
           mkdir -p doc
           touch doc/user-manual.pdf
-          ${{ env.CABAL_INSTALL }}
+          ${{ env.CABAL_V1_INSTALL }}
           cd ..
 
 ########################################################################
@@ -147,7 +148,7 @@ jobs:
 
       # By default github actions do not pull the repo
       - name: Checkout stdlib
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Test stdlib
         run: |
@@ -168,7 +169,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          ${{ env.CABAL_INSTALL }} clock
+          ${{ env.CABAL_V1_INSTALL }} clock
           make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
 
 
@@ -190,8 +191,8 @@ jobs:
           ./landing.sh
 
       - name: Deploy HTML
-        uses: JamesIves/github-pages-deploy-action@4.1.3
-        if: ${{ success() && env.AGDA_DEPLOY }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        if: success() && env.AGDA_DEPLOY
 
         with:
           branch: gh-pages

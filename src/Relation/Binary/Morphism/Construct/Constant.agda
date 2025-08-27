@@ -6,15 +6,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Relation.Binary.Morphism.Construct.Constant where
+
 open import Function.Base using (const)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.Morphism.Structures
+  using (IsRelHomomorphism; IsOrderHomomorphism)
 open import Relation.Binary.Morphism.Bundles
-
-module Relation.Binary.Morphism.Construct.Constant where
+  using (SetoidHomomorphism; PreorderHomomorphism)
 
 private
   variable

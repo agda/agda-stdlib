@@ -9,13 +9,14 @@
 
 module Algebra.Solver.Ring.AlmostCommutativeRing where
 
-open import Algebra
-open import Algebra.Structures
-open import Algebra.Definitions
-import Algebra.Morphism as Morphism
-import Algebra.Morphism.Definitions as MorphismDefinitions
+open import Algebra  using
+  (Op₁; Op₂; CommutativeSemiring; RawRing; CommutativeRing)
+open import Algebra.Structures using (IsCommutativeSemiring)
+open import Algebra.Definitions using (Congruent₁; Congruent₂)
+import Algebra.Morphism.Definitions as MorphismDefinitions using
+  (Homomorphic₀; Homomorphic₁; Homomorphic₂; Morphism)
 open import Function.Base using (id)
-open import Level
+open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (Rel)
 
 
@@ -75,6 +76,8 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
 
 ------------------------------------------------------------------------
 -- Homomorphisms
+
+infix 4 _-Raw-AlmostCommutative⟶_
 
 record _-Raw-AlmostCommutative⟶_
   {r₁ r₂ r₃ r₄}

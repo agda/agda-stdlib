@@ -8,8 +8,9 @@
 
 module Data.Nat.WithK where
 
+open import Algebra.Definitions.RawMagma using (_,_)
 open import Data.Nat.Base
 open import Relation.Binary.PropositionalEquality.WithK
 
 ≤″-erase : ∀ {m n} → m ≤″ n → m ≤″ n
-≤″-erase (less-than-or-equal eq) = less-than-or-equal (≡-erase eq)
+≤″-erase (_ , eq) = _ , ≡-erase eq
