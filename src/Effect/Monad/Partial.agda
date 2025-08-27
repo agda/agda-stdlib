@@ -15,8 +15,8 @@ open import Data.Unit using (⊤)
 
 private  
   variable
-    ℓ ℓ' : Level
-    A B : Set ℓ
+    a ℓ ℓ' : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- The partial monad
