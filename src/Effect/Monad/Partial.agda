@@ -21,7 +21,7 @@ private
 ------------------------------------------------------------------------
 -- The partial monad
 
-record ↯ {ℓ} (A : Set ℓ) (ℓ' : Level) : Set (ℓ ⊔ suc ℓ') where
+record ↯ (A : Set a) (ℓ : Level) : Set (a ⊔ suc ℓ) where
   field
     Dom : Set ℓ'
     elt : Dom → A
