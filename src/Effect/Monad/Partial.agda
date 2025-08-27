@@ -23,7 +23,7 @@ private
 
 record ↯ (A : Set a) (ℓ : Level) : Set (a ⊔ suc ℓ) where
   field
-    Dom : Set ℓ'
+    Dom : Set ℓ
     elt : Dom → A
 
 open ↯
