@@ -48,6 +48,8 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
 
+* `Data.Vec.Functional.Algebra(.{Base|Properties})` - structures and bundles about functional vectors and modules.
+
 Additions to existing modules
 -----------------------------
 
