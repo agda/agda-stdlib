@@ -21,7 +21,6 @@ private
   variable
     x y z : Carrier
 
-
 ------------------------------------------------------------------------
 -- Proofs for partial equivalence relations
 
@@ -45,3 +44,4 @@ partial-reflexiveˡ p ≡.refl = partial-reflˡ p
 
 partial-reflexiveʳ : x ≈ y → y ≡ z → y ≈ z
 partial-reflexiveʳ p ≡.refl = partial-reflʳ p
+
