@@ -9,8 +9,8 @@ open import Relation.Binary.Bundles using (PartialSetoid; Setoid)
 module Relation.Binary.Construct.SetoidFromPartialSetoid
   {a ℓ} (S : PartialSetoid a ℓ) where
 
-open import Data.Product.Base using (_,_; Σ; proj₁)
-open import Function.Base using (id)
+open import Data.Product.Base using (_,_; Σ; proj₁; proj₂)
+open import Function.Base using (id; _on_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.Structures
@@ -31,12 +31,12 @@ Carrier : Set _
 Carrier = Σ S.Carrier λ x → x S.≈ x
 
 _≈_ : Rel Carrier _
-x≈x@(x , _) ≈ y≈y@(y , _) = x S.≈ y
+_≈_ = S._≈_ on proj₁
 
 -- Properties
 
 refl : Reflexive _≈_
-refl {x = _ , x≈x} = x≈x
+refl {x = x} = proj₂ x
 
 -- Structure
 
