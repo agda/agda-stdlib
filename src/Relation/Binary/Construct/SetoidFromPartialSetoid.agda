@@ -12,7 +12,6 @@ module Relation.Binary.Construct.SetoidFromPartialSetoid
 open import Data.Product.Base using (_,_; Σ; proj₁; proj₂)
 open import Function.Base using (id; _on_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.Structures
   using (IsPartialEquivalence; IsEquivalence)
 open import Relation.Binary.Morphism.Structures
@@ -33,16 +32,11 @@ Carrier = Σ S.Carrier λ x → x S.≈ x
 _≈_ : Rel Carrier _
 _≈_ = S._≈_ on proj₁
 
--- Properties
-
-refl : Reflexive _≈_
-refl {x = x} = proj₂ x
-
 -- Structure
 
 isEquivalence : IsEquivalence _≈_
 isEquivalence = record
-  { refl = λ {x} → refl {x = x}
+  { refl = λ {x = x} → proj₂ x
   ; sym = S.sym
   ; trans = S.trans
   }
