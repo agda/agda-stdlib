@@ -14,14 +14,17 @@ open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
 open import Effect.Applicative as App using (RawApplicative)
 open import Effect.Functor as Fun using (RawFunctor)
+open import Effect.Functor.Naperian as Nap using (RawNaperian; PropositionalNaperian)
 open import Effect.Monad using (RawMonad; module Join; RawMonadT; mkRawMonad)
 import Function.Identity.Effectful as Id
 open import Function.Base using (flip; _∘_)
-open import Level using (Level)
+open import Level using (Level; 0ℓ)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality
 
 private
   variable
-    a : Level
+    a b : Level
     A : Set a
     n : ℕ
 
@@ -31,6 +34,22 @@ private
 functor : RawFunctor (λ (A : Set a) → Vec A n)
 functor = record
   { _<$>_ = map
+  }
+
+naperian : RawNaperian (λ (A : Set a) → Vec A n) 0ℓ
+naperian {n = n} = record
+  { rawFunctor = functor
+  ; Log = Fin n
+  ; index = lookup
+  ; tabulate = tabulate
+  }
+
+fullNaperian : PropositionalNaperian (λ (A : Set a) → Vec A n) 0ℓ
+fullNaperian A = record
+  { rawNaperian = naperian
+  ; index-tabulate = λ f l → lookup∘tabulate f l
+  ; natural-tabulate = λ f k l → cong (λ fx → lookup fx l) (tabulate-∘ f k)
+  ; natural-index = λ f as l → lookup-map l f as
   }
 
 applicative : RawApplicative (λ (A : Set a) → Vec A n)

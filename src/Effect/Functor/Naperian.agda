@@ -15,10 +15,11 @@
 module Effect.Functor.Naperian where
 
 open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; const)
 
 private
   variable
@@ -69,3 +70,13 @@ module _ (F : Set a → Set b) c where
     
   PropositionalNaperian : Set (suc (a ⊔ c) ⊔ b)
   PropositionalNaperian = ∀ A → Naperian (≡.setoid A)
+
+  Naperian-Applicative : RawNaperian → RawApplicative F
+  Naperian-Applicative rn =
+    record
+      { rawFunctor = rawFunctor
+      ; pure = tabulate ∘ const 
+      ; _<*>_ = λ a b → tabulate (λ i → (index a i) (index b i))
+      }
+      where
+        open RawNaperian rn
