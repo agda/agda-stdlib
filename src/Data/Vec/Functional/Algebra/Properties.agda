@@ -20,7 +20,7 @@ open import Algebra.Bundles
 open import Algebra.Module
 open import Algebra.Module.Structures
 open import Relation.Binary
-import Algebra.Definitions as ADefinitions
+import Algebra.Definitions as Definitions
 open import Algebra.Structures
 open import Data.Vec.Functional.Algebra.Base
 import Data.Vec.Functional.Relation.Binary.Pointwise.Properties as Pointwise
@@ -35,36 +35,36 @@ private variable
 
 module RawMagmaProperties (rawMagma : RawMagma a ℓ) (n : ℕ) where
   private
-    vecMagma = rawMagmaᵛ rawMagma n
-    module VM = RawMagma vecMagma
+    magmaᵛ = rawMagmaᵛ rawMagma n
+    module VM = RawMagma magmaᵛ
     module M = RawMagma rawMagma
 
   open IsEquivalence
 
-  isMagma : IsMagma M._≈_ M._∙_ → IsMagma VM._≈_ VM._∙_
-  isMagma base = record
+  isMagmaᵛ : IsMagma M._≈_ M._∙_ → IsMagma VM._≈_ VM._∙_
+  isMagmaᵛ base = record
     { isEquivalence = flip Pointwise.isEquivalence _ B.isEquivalence
     ; ∙-cong        = λ x≈y u≈v i → B.∙-cong (x≈y i) (u≈v i)
     }
     where module B = IsMagma base
 
-  isCommutativeMagma : IsCommutativeMagma M._≈_ M._∙_ → IsCommutativeMagma VM._≈_ VM._∙_
-  isCommutativeMagma base = record
-    { isMagma = isMagma CM.isMagma
+  isCommutativeMagmaᵛ : IsCommutativeMagma M._≈_ M._∙_ → IsCommutativeMagma VM._≈_ VM._∙_
+  isCommutativeMagmaᵛ base = record
+    { isMagma = isMagmaᵛ CM.isMagma
     ; comm    = λ xs ys i → CM.comm (xs i) (ys i)
     }
     where module CM = IsCommutativeMagma base
 
-  isSemigroup : IsSemigroup M._≈_ M._∙_ → IsSemigroup VM._≈_ VM._∙_
-  isSemigroup base = record
-    { isMagma = isMagma SG.isMagma
+  isSemigroupᵛ : IsSemigroup M._≈_ M._∙_ → IsSemigroup VM._≈_ VM._∙_
+  isSemigroupᵛ base = record
+    { isMagma = isMagmaᵛ SG.isMagma
     ; assoc   = λ xs ys zs i → SG.assoc (xs i) (ys i) (zs i)
     }
     where module SG = IsSemigroup base
 
-  isCommutativeSemigroup : IsCommutativeSemigroup M._≈_ M._∙_ → IsCommutativeSemigroup VM._≈_ VM._∙_
-  isCommutativeSemigroup base = record
-    { isSemigroup = isSemigroup CS.isSemigroup
+  isCommutativeSemigroupᵛ : IsCommutativeSemigroup M._≈_ M._∙_ → IsCommutativeSemigroup VM._≈_ VM._∙_
+  isCommutativeSemigroupᵛ base = record
+    { isSemigroup = isSemigroupᵛ CS.isSemigroup
     ; comm        = λ xs ys i → CS.comm (xs i) (ys i)
     }
     where module CS = IsCommutativeSemigroup base
@@ -73,15 +73,15 @@ module RawMagmaProperties (rawMagma : RawMagma a ℓ) (n : ℕ) where
 
 module RawMonoidProperties (rawMonoid : RawMonoid a ℓ) (n : ℕ) where
   private
-    vecMonoid = rawMonoidᵛ rawMonoid n
-    module VM = RawMonoid vecMonoid
+    monoidᵛ = rawMonoidᵛ rawMonoid n
+    module VM = RawMonoid monoidᵛ
     module RM = RawMonoid rawMonoid
 
   open RawMagmaProperties (RawMonoid.rawMagma rawMonoid) n public
 
   private
-    module ≈ = ADefinitions RM._≈_
-    module ≈ᴹ = ADefinitions VM._≈_
+    module ≈ = Definitions RM._≈_
+    module ≈ᴹ = Definitions VM._≈_
 
   +ᴹ-identityˡ : ≈.LeftIdentity RM.ε RM._∙_ → ≈ᴹ.LeftIdentity VM.ε VM._∙_
   +ᴹ-identityˡ idˡ xs i = idˡ (xs i)
@@ -92,15 +92,15 @@ module RawMonoidProperties (rawMonoid : RawMonoid a ℓ) (n : ℕ) where
   +ᴹ-identity : ≈.Identity RM.ε RM._∙_ → ≈ᴹ.Identity VM.ε VM._∙_
   +ᴹ-identity (idˡ , idʳ) = +ᴹ-identityˡ idˡ , +ᴹ-identityʳ idʳ
 
-  isMonoid : IsMonoid RM._≈_ RM._∙_ RM.ε → IsMonoid VM._≈_ VM._∙_ VM.ε
-  isMonoid isMonoid = record
-    { isSemigroup = isSemigroup M.isSemigroup
+  isMonoidᵛ : IsMonoid RM._≈_ RM._∙_ RM.ε → IsMonoid VM._≈_ VM._∙_ VM.ε
+  isMonoidᵛ isMonoid = record
+    { isSemigroup = isSemigroupᵛ M.isSemigroup
     ; identity = +ᴹ-identity M.identity
     } where module M = IsMonoid isMonoid
 
-  isCommutativeMonoid : IsCommutativeMonoid RM._≈_ RM._∙_ RM.ε → IsCommutativeMonoid VM._≈_ VM._∙_ VM.ε
-  isCommutativeMonoid base = record
-    { isMonoid = isMonoid CM.isMonoid
+  isCommutativeMonoidᵛ : IsCommutativeMonoid RM._≈_ RM._∙_ RM.ε → IsCommutativeMonoid VM._≈_ VM._∙_ VM.ε
+  isCommutativeMonoidᵛ base = record
+    { isMonoid = isMonoidᵛ CM.isMonoid
     ; comm     = λ xs ys i → CM.comm (xs i) (ys i)
     } where module CM = IsCommutativeMonoid base
 
@@ -108,14 +108,14 @@ module RawMonoidProperties (rawMonoid : RawMonoid a ℓ) (n : ℕ) where
 
 module RawGroupProperties (rawGroup : RawGroup a ℓ) (n : ℕ) where
   private
-    vecGroup = rawGroupᵛ rawGroup n
-    module RG = RawGroup vecGroup
+    groupᵛ = rawGroupᵛ rawGroup n
+    module RG = RawGroup groupᵛ
     module G = RawGroup rawGroup
   open RawMonoidProperties (RawGroup.rawMonoid rawGroup) n public
 
   private
-    module ≈ = ADefinitions G._≈_
-    module ≈ᴹ = ADefinitions RG._≈_
+    module ≈ = Definitions G._≈_
+    module ≈ᴹ = Definitions RG._≈_
 
   -ᴹ‿inverseˡ : ≈.LeftInverse G.ε G._⁻¹ G._∙_ → ≈ᴹ.LeftInverse RG.ε RG._⁻¹ RG._∙_
   -ᴹ‿inverseˡ -‿inverseˡ xs i = -‿inverseˡ (xs i)
@@ -129,16 +129,16 @@ module RawGroupProperties (rawGroup : RawGroup a ℓ) (n : ℕ) where
   -ᴹ‿cong : ≈.Congruent₁ G._⁻¹ → ≈ᴹ.Congruent₁ RG._⁻¹
   -ᴹ‿cong -‿cong xs≈ys i = -‿cong (xs≈ys i)
 
-  isGroup : IsGroup G._≈_ G._∙_ G.ε G._⁻¹ → IsGroup RG._≈_ RG._∙_ RG.ε RG._⁻¹
-  isGroup isGroup = record
-    { isMonoid = isMonoid M.isMonoid
+  isGroupᵛ : IsGroup G._≈_ G._∙_ G.ε G._⁻¹ → IsGroup RG._≈_ RG._∙_ RG.ε RG._⁻¹
+  isGroupᵛ isGroup = record
+    { isMonoid = isMonoidᵛ M.isMonoid
     ; inverse = -ᴹ‿inverse M.inverse
     ; ⁻¹-cong = -ᴹ‿cong M.⁻¹-cong
     } where module M = IsGroup isGroup
 
-  isAbelianGroup : IsAbelianGroup G._≈_ G._∙_ G.ε G._⁻¹ → IsAbelianGroup RG._≈_ RG._∙_ RG.ε RG._⁻¹
-  isAbelianGroup base = record
-    { isGroup = isGroup AG.isGroup
+  isAbelianGroupᵛ : IsAbelianGroup G._≈_ G._∙_ G.ε G._⁻¹ → IsAbelianGroup RG._≈_ RG._∙_ RG.ε RG._⁻¹
+  isAbelianGroupᵛ base = record
+    { isGroup = isGroupᵛ AG.isGroup
     ; comm    = λ xs ys i → AG.comm (xs i) (ys i)
     }
     where module AG = IsAbelianGroup base
@@ -150,19 +150,19 @@ module VecSemiringProperties (rawSemiring : RawSemiring a ℓ) (n : ℕ) where
     module SR  = RawSemiring rawSemiring
     rawNearSemiring = SR.rawNearSemiring
     module NS  = RawNearSemiring rawNearSemiring
-    vecNearSemiring = rawNearSemiringᵛ rawNearSemiring n
-    module RNS = RawNearSemiring vecNearSemiring
-    vecLeftSemi  = rawLeftSemimoduleᵛ  rawNearSemiring n
-    vecRightSemi = rawRightSemimoduleᵛ rawNearSemiring n
-    module LSM = RawLeftSemimodule  vecLeftSemi
-    module RSM = RawRightSemimodule vecRightSemi
+    nearSemiringᵛ = rawNearSemiringᵛ rawNearSemiring n
+    module RNS = RawNearSemiring nearSemiringᵛ
+    leftSemiᵛ  = rawLeftSemimoduleᵛ  rawNearSemiring n
+    rightSemiᵛ = rawRightSemimoduleᵛ rawNearSemiring n
+    module LSM = RawLeftSemimodule  leftSemiᵛ
+    module RSM = RawRightSemimodule rightSemiᵛ
 
   open RawMonoidProperties (RawSemiring.*-rawMonoid rawSemiring) n public
     using ()
     renaming (+ᴹ-identity to *ᴹ-identity)
 
   private
-    module ≈  = ADefinitions NS._≈_
+    module ≈  = Definitions NS._≈_
     module LD = LeftDefs  NS.Carrier RNS._≈_
     module RD = RightDefs NS.Carrier RNS._≈_
 
@@ -171,24 +171,25 @@ module VecSemiringProperties (rawSemiring : RawSemiring a ℓ) (n : ℕ) where
 
   *ᵣ-identityʳ : ≈.RightIdentity SR.1# NS._*_ → RD.RightIdentity SR.1# (λ xs r → RSM._*ᵣ_ xs r)
   *ᵣ-identityʳ *-idʳ xs i = *-idʳ (xs i)
+
 ------------------------------------------------------------------------
 
 module RawNearSemiringProperties {ℓ ℓr} (R : Semiring ℓ ℓr) (n : ℕ) where
   open Semiring R
   private
     module SR  = RawSemiring rawSemiring
-    vecLeftSemi = rawLeftSemimoduleᵛ rawNearSemiring n
-    vecRightSemi = rawRightSemimoduleᵛ rawNearSemiring n
-    module LSM = RawLeftSemimodule vecLeftSemi
-    vecNearSemiring = rawNearSemiringᵛ rawNearSemiring n
-    module RNS = RawNearSemiring vecNearSemiring
-    module RSM = RawRightSemimodule vecRightSemi
+    leftSemiᵛ = rawLeftSemimoduleᵛ rawNearSemiring n
+    rightSemiᵛ = rawRightSemimoduleᵛ rawNearSemiring n
+    module LSM = RawLeftSemimodule leftSemiᵛ
+    nearSemiringᵛ = rawNearSemiringᵛ rawNearSemiring n
+    module RNS = RawNearSemiring nearSemiringᵛ
+    module RSM = RawRightSemimodule rightSemiᵛ
     module NS = RawNearSemiring rawNearSemiring
 
   open RawMonoidProperties +-rawMonoid
 
-  isPreleftSemimoduleVec : IsPreleftSemimodule R RNS._≈_ RNS._+_ RNS.0# LSM._*ₗ_
-  isPreleftSemimoduleVec = record
+  isPreleftSemimoduleᵛ : IsPreleftSemimodule R RNS._≈_ RNS._+_ RNS.0# LSM._*ₗ_
+  isPreleftSemimoduleᵛ = record
     { *ₗ-cong      = λ x≈y u≈v i     → *-cong x≈y (u≈v i)
     ; *ₗ-zeroˡ     = λ xs i          → zeroˡ (xs i)
     ; *ₗ-distribʳ  = λ xs m n i      → distribʳ (xs i) m n
@@ -199,8 +200,8 @@ module RawNearSemiringProperties {ℓ ℓr} (R : Semiring ℓ ℓr) (n : ℕ) wh
     }
 
 
-  isPrerightSemimoduleVec : IsPrerightSemimodule R RNS._≈_ RNS._+_ RNS.0# RSM._*ᵣ_
-  isPrerightSemimoduleVec = record
+  isPrerightSemimoduleᵛ : IsPrerightSemimodule R RNS._≈_ RNS._+_ RNS.0# RSM._*ᵣ_
+  isPrerightSemimoduleᵛ = record
     { *ᵣ-cong      = λ x≈y u≈v i     → *-cong (x≈y i) u≈v
     ; *ᵣ-zeroʳ     = λ xs i          → zeroʳ (xs i)
     ; *ᵣ-distribˡ  = λ xs m n i      → distribˡ (xs i) m n
@@ -210,25 +211,25 @@ module RawNearSemiringProperties {ℓ ℓr} (R : Semiring ℓ ℓr) (n : ℕ) wh
     ; *ᵣ-distribʳ  = λ xs m n i      → distribʳ xs (m i) (n i)
     }
 
-  isBisemimoduleVec : IsBisemimodule R R RNS._≈_ RNS._+_ RNS.0# LSM._*ₗ_ RSM._*ᵣ_
-  isBisemimoduleVec = record
-    { +ᴹ-isCommutativeMonoid = isCommutativeMonoid n +-isCommutativeMonoid
-    ; isPreleftSemimodule = isPreleftSemimoduleVec
-    ; isPrerightSemimodule = isPrerightSemimoduleVec
+  isBisemimoduleᵛ : IsBisemimodule R R RNS._≈_ RNS._+_ RNS.0# LSM._*ₗ_ RSM._*ᵣ_
+  isBisemimoduleᵛ = record
+    { +ᴹ-isCommutativeMonoid = isCommutativeMonoidᵛ n +-isCommutativeMonoid
+    ; isPreleftSemimodule = isPreleftSemimoduleᵛ
+    ; isPrerightSemimodule = isPrerightSemimoduleᵛ
     ; *ₗ-*ᵣ-assoc = λ xs m ys i → *-assoc xs (m i) ys
     }
 
   private
-    module ≈ = ADefinitions NS._≈_
-    module ≈ᴹ = ADefinitions RNS._≈_
+    module ≈ = Definitions NS._≈_
+    module ≈ᴹ = Definitions RNS._≈_
 
-  vec1# : Vector NS.Carrier n
-  vec1# = λ _ → SR.1#
+  1#ᵛ : Vector NS.Carrier n
+  1#ᵛ = λ _ → SR.1#
 
-  isSemiringVec : IsSemiring RNS._≈_ RNS._+_ RNS._*_ RNS.0# vec1#
-  isSemiringVec = record
+  isSemiringᵛ : IsSemiring RNS._≈_ RNS._+_ RNS._*_ RNS.0# 1#ᵛ
+  isSemiringᵛ = record
     { isSemiringWithoutAnnihilatingZero = record
-        { +-isCommutativeMonoid = isCommutativeMonoid n +-isCommutativeMonoid
+        { +-isCommutativeMonoid = isCommutativeMonoidᵛ n +-isCommutativeMonoid
         ; *-cong    = λ x≈y u≈v   → ( *-cong   ∘ x≈y) ˢ u≈v
         ; *-assoc   = λ xs ys zs  → ((*-assoc  ∘ xs) ˢ ys) ˢ zs
         ; *-identity = (λ xs → *-identityˡ ∘ xs)
@@ -244,19 +245,14 @@ module RawNearSemiringProperties {ℓ ℓr} (R : Semiring ℓ ℓr) (n : ℕ) wh
 module MagmaProperties (magma : Magma a ℓ) (n : ℕ) where
   open Magma magma using (_≈_; _∙_; isMagma; rawMagma)
   private
-    vecMagma = rawMagmaᵛ rawMagma n
-    module VM = RawMagma vecMagma
+    magmaᵛ = rawMagmaᵛ rawMagma n
+    module VM = RawMagma magmaᵛ
     module RM = RawMagma rawMagma
 
-  open RawMagmaProperties rawMagma n public renaming
-    ( isMagma                to vec-isMagma
-    ; isCommutativeMagma     to vec-isCommutativeMagma
-    ; isSemigroup            to vec-isSemigroup
-    ; isCommutativeSemigroup to vec-isCommutativeSemigroup
-    )
+  open RawMagmaProperties rawMagma n public
 
   +ᴹ-isMagma : IsMagma VM._≈_ VM._∙_
-  +ᴹ-isMagma = vec-isMagma isMagma
+  +ᴹ-isMagma = isMagmaᵛ isMagma
 
   +ᴹ-magma : Magma _ _
   +ᴹ-magma = record { isMagma = +ᴹ-isMagma }
@@ -266,14 +262,14 @@ module MagmaProperties (magma : Magma a ℓ) (n : ℕ) where
 module CommutativeMagmaProperties (commutativeMagma : CommutativeMagma a ℓ) (n : ℕ) where
   open CommutativeMagma commutativeMagma
   private
-    vecMagma = rawMagmaᵛ rawMagma n
-    module VM = RawMagma vecMagma
+    magmaᵛ = rawMagmaᵛ rawMagma n
+    module VM = RawMagma magmaᵛ
     module M  = RawMagma rawMagma
 
   open MagmaProperties magma n public
 
   +ᴹ-isCommutativeMagma : IsCommutativeMagma VM._≈_ VM._∙_
-  +ᴹ-isCommutativeMagma = vec-isCommutativeMagma isCommutativeMagma
+  +ᴹ-isCommutativeMagma = isCommutativeMagmaᵛ isCommutativeMagma
 
   +ᴹ-commutativeMagma : CommutativeMagma _ _
   +ᴹ-commutativeMagma = record { isCommutativeMagma = +ᴹ-isCommutativeMagma }
@@ -284,14 +280,14 @@ module SemiRawGroupProperties (semigroup : Semigroup a ℓ) (n : ℕ) where
   open Semigroup semigroup
 
   private
-    vecMagma = rawMagmaᵛ rawMagma n
-    module VM = RawMagma vecMagma
+    magmaᵛ = rawMagmaᵛ rawMagma n
+    module VM = RawMagma magmaᵛ
     module M  = RawMagma rawMagma
 
   open MagmaProperties magma n public
 
   +ᴹ-isSemigroup : IsSemigroup VM._≈_ VM._∙_
-  +ᴹ-isSemigroup = vec-isSemigroup isSemigroup
+  +ᴹ-isSemigroup = isSemigroupᵛ isSemigroup
 
   +ᴹ-semigroup : Semigroup _ _
   +ᴹ-semigroup = record { isSemigroup = +ᴹ-isSemigroup }
@@ -302,14 +298,14 @@ module CommutativeSemigroupProperties (commutativeSemigroup : CommutativeSemigro
   open CommutativeSemigroup commutativeSemigroup
 
   private
-    vecMagma = rawMagmaᵛ rawMagma n
-    module VM = RawMagma vecMagma
+    magmaᵛ = rawMagmaᵛ rawMagma n
+    module VM = RawMagma magmaᵛ
     module M  = RawMagma rawMagma
 
   open MagmaProperties magma n public
 
   +ᴹ-isCommutativeSemigroup : IsCommutativeSemigroup VM._≈_ VM._∙_
-  +ᴹ-isCommutativeSemigroup = vec-isCommutativeSemigroup isCommutativeSemigroup
+  +ᴹ-isCommutativeSemigroup = isCommutativeSemigroupᵛ isCommutativeSemigroup
 
   +ᴹ-commutativeSemigroup : CommutativeSemigroup _ _
   +ᴹ-commutativeSemigroup = record { isCommutativeSemigroup = +ᴹ-isCommutativeSemigroup }
@@ -319,8 +315,8 @@ module CommutativeSemigroupProperties (commutativeSemigroup : CommutativeSemigro
 module MonoidProperties (monoid : Monoid a ℓ) (n : ℕ) where
   open Monoid monoid
   private
-    vecMonoid = rawMonoidᵛ rawMonoid n
-    module VM = RawMonoid vecMonoid
+    monoidᵛ = rawMonoidᵛ rawMonoid n
+    module VM = RawMonoid monoidᵛ
     module M  = RawMonoid rawMonoid
 
   open RawMonoidProperties rawMonoid n public using (+ᴹ-identity)
@@ -338,16 +334,14 @@ module CommutativeMonoidProperties (commutativeMonoid : CommutativeMonoid a ℓ)
   open CommutativeMonoid commutativeMonoid
 
   private
-    vecMonoid = rawMonoidᵛ rawMonoid n
-    module VM = RawMonoid vecMonoid
+    monoidᵛ = rawMonoidᵛ rawMonoid n
+    module VM = RawMonoid monoidᵛ
     module M  = RawMonoid rawMonoid
 
   open RawMonoidProperties rawMonoid n
-    using ()
-    renaming ( isCommutativeMonoid to vec-isCommutativeMonoid )
 
   +ᴹ-isCommutativeMonoid : IsCommutativeMonoid VM._≈_ VM._∙_ VM.ε
-  +ᴹ-isCommutativeMonoid = vec-isCommutativeMonoid isCommutativeMonoid
+  +ᴹ-isCommutativeMonoid = isCommutativeMonoidᵛ isCommutativeMonoid
 
   +ᴹ-commutativeMonoid : CommutativeMonoid _ _
   +ᴹ-commutativeMonoid = record { isCommutativeMonoid = +ᴹ-isCommutativeMonoid }
@@ -358,8 +352,8 @@ module GroupProperties (group : Group a ℓ) (n : ℕ) where
   open Group group
 
   private
-    vecGroup = rawGroupᵛ rawGroup n
-    module VG = RawGroup vecGroup
+    groupᵛ = rawGroupᵛ rawGroup n
+    module VG = RawGroup groupᵛ
     module G  = RawGroup rawGroup
 
   open RawGroupProperties rawGroup n public using (-ᴹ‿inverse; -ᴹ‿cong)
@@ -380,8 +374,8 @@ module GroupProperties (group : Group a ℓ) (n : ℕ) where
 module AbelianGroupProperties (abelianGroup : AbelianGroup a ℓ) (n : ℕ) where
   open AbelianGroup abelianGroup
   private
-    vecGroup = rawGroupᵛ rawGroup n
-    module VG = RawGroup vecGroup
+    groupᵛ = rawGroupᵛ rawGroup n
+    module VG = RawGroup groupᵛ
 
   open GroupProperties group n public
 
@@ -400,8 +394,8 @@ module NearSemiringProperties (nearSemiring : NearSemiring a ℓ) (n : ℕ) wher
   open NearSemiring nearSemiring
   private
     module N = NearSemiring nearSemiring
-    vecNearSemiring = rawNearSemiringᵛ rawNearSemiring n
-    module RNS = RawNearSemiring vecNearSemiring
+    nearSemiringᵛ = rawNearSemiringᵛ rawNearSemiring n
+    module RNS = RawNearSemiring nearSemiringᵛ
 
   open MonoidProperties +-monoid n public using (+ᴹ-isMonoid)
 
@@ -423,8 +417,8 @@ module NearSemiringProperties (nearSemiring : NearSemiring a ℓ) (n : ℕ) wher
 module SemiringWithoutOneProperties (semiringWithoutOne : SemiringWithoutOne a ℓ) (n : ℕ) where
   open SemiringWithoutOne semiringWithoutOne
   private
-    vecNearSemiring = rawNearSemiringᵛ rawNearSemiring n
-    module RNS = RawNearSemiring vecNearSemiring
+    nearSemiringᵛ = rawNearSemiringᵛ rawNearSemiring n
+    module RNS = RawNearSemiring nearSemiringᵛ
     module SWO = SemiringWithoutOne semiringWithoutOne
 
   open CommutativeMonoidProperties +-commutativeMonoid n public using (+ᴹ-isCommutativeMonoid)
@@ -451,8 +445,8 @@ module CommutativeSemiringWithoutOneProperties
   open CommutativeSemiringWithoutOne commutativeSemiringWithoutOne
   private
     module CSWO = CommutativeSemiringWithoutOne commutativeSemiringWithoutOne
-    vecNearSemiring = rawNearSemiringᵛ rawNearSemiring n
-    module RNS = RawNearSemiring vecNearSemiring
+    nearSemiringᵛ = rawNearSemiringᵛ rawNearSemiring n
+    module RNS = RawNearSemiring nearSemiringᵛ
 
   open SemiringWithoutOneProperties semiringWithoutOne n public
 
@@ -477,8 +471,8 @@ module SemiringWithoutAnnihilatingZeroProperties
   private
     module SWAZ = SemiringWithoutAnnihilatingZero semiringWithoutAnnihilatingZero
 
-    vecSemiring = rawSemiringᵛ rawSemiring n
-    module RS = RawSemiring vecSemiring
+    semiringᵛ = rawSemiringᵛ rawSemiring n
+    module RS = RawSemiring semiringᵛ
 
   open VecSemiringProperties rawSemiring n public
   open CommutativeMonoidProperties +-commutativeMonoid n public using (+ᴹ-isCommutativeMonoid)
@@ -506,40 +500,40 @@ module SemiringProperties {a ℓ} (semiring : Semiring a ℓ) (n : ℕ) where
   module S = Semiring semiring
 
   private
-    vecNearSemiring = rawNearSemiringᵛ S.rawNearSemiring n
-    vecSemiring     = rawSemiringᵛ     S.rawSemiring     n
-    module RNS = RawNearSemiring vecNearSemiring
-    module RS  = RawSemiring     vecSemiring
-    vecLeftSemi  = rawLeftSemimoduleᵛ  S.rawNearSemiring n
-    vecRightSemi = rawRightSemimoduleᵛ S.rawNearSemiring n
-    module LSM = RawLeftSemimodule  vecLeftSemi
-    module RSM = RawRightSemimodule vecRightSemi
+    nearSemiringᵛ = rawNearSemiringᵛ S.rawNearSemiring n
+    semiringᵛ     = rawSemiringᵛ     S.rawSemiring     n
+    module RNS = RawNearSemiring nearSemiringᵛ
+    module RS  = RawSemiring     semiringᵛ
+    leftSemiᵛ  = rawLeftSemimoduleᵛ  S.rawNearSemiring n
+    rightSemiᵛ = rawRightSemimoduleᵛ S.rawNearSemiring n
+    module LSM = RawLeftSemimodule  leftSemiᵛ
+    module RSM = RawRightSemimodule rightSemiᵛ
 
     module RN = RawNearSemiringProperties semiring n
 
   isPreleftSemimodule : IsPreleftSemimodule semiring RNS._≈_ RNS._+_ RNS.0# LSM._*ₗ_
-  isPreleftSemimodule = RN.isPreleftSemimoduleVec
+  isPreleftSemimodule = RN.isPreleftSemimoduleᵛ
 
   isPrerightSemimodule : IsPrerightSemimodule semiring RNS._≈_ RNS._+_ RNS.0# RSM._*ᵣ_
-  isPrerightSemimodule = RN.isPrerightSemimoduleVec
+  isPrerightSemimodule = RN.isPrerightSemimoduleᵛ
 
   isRightSemimodule : IsRightSemimodule semiring RNS._≈_ RNS._+_ RNS.0# RSM._*ᵣ_
   isRightSemimodule = record
-    { +ᴹ-isCommutativeMonoid = IsBisemimodule.+ᴹ-isCommutativeMonoid RN.isBisemimoduleVec
+    { +ᴹ-isCommutativeMonoid = IsBisemimodule.+ᴹ-isCommutativeMonoid RN.isBisemimoduleᵛ
     ; isPrerightSemimodule   = isPrerightSemimodule
     }
 
   isBisemimodule : IsBisemimodule semiring semiring RNS._≈_ RNS._+_ RNS.0# LSM._*ₗ_ RSM._*ᵣ_
-  isBisemimodule = RN.isBisemimoduleVec
+  isBisemimodule = RN.isBisemimoduleᵛ
 
   isLeftSemimodule : IsLeftSemimodule semiring RNS._≈_ RNS._+_ RNS.0# LSM._*ₗ_
   isLeftSemimodule = record
-    { +ᴹ-isCommutativeMonoid = IsBisemimodule.+ᴹ-isCommutativeMonoid RN.isBisemimoduleVec
+    { +ᴹ-isCommutativeMonoid = IsBisemimodule.+ᴹ-isCommutativeMonoid RN.isBisemimoduleᵛ
     ; isPreleftSemimodule    = isPreleftSemimodule
     }
 
   +ᴹ-*-isSemiring : IsSemiring RS._≈_ RS._+_ RS._*_ RS.0# RS.1#
-  +ᴹ-*-isSemiring = RN.isSemiringVec
+  +ᴹ-*-isSemiring = RN.isSemiringᵛ
 
   leftSemimodule : LeftSemimodule _ _ _
   leftSemimodule = record { isLeftSemimodule = isLeftSemimodule }
@@ -555,10 +549,10 @@ module CommutativeSemiringProperties (commutativeSemiring : CommutativeSemiring 
     module SR = RawSemiring rawSemiring
     baseNearSemiring = SR.rawNearSemiring
 
-    vecSemiring     = rawSemiringᵛ     rawSemiring     n
-    vecNearSemiring = rawNearSemiringᵛ baseNearSemiring n
-    module RS  = RawSemiring     vecSemiring
-    module RNS = RawNearSemiring vecNearSemiring
+    semiringᵛ     = rawSemiringᵛ     rawSemiring     n
+    nearSemiringᵛ = rawNearSemiringᵛ baseNearSemiring n
+    module RS  = RawSemiring     semiringᵛ
+    module RNS = RawNearSemiring nearSemiringᵛ
 
     module CS = CommutativeSemiring commutativeSemiring
 
@@ -584,14 +578,14 @@ module RingWithoutOneProperties (ringWithoutOne : RingWithoutOne a ℓ) (n : ℕ
     baseNearSemiring = record
       { Carrier = Carrier ; _≈_ = _≈_ ; _+_ = _+_ ; _*_ = _*_ ; 0# = 0# }
 
-    vecNearSemiring = rawNearSemiringᵛ baseNearSemiring n
-    module RNS = RawNearSemiring vecNearSemiring
+    nearSemiringᵛ = rawNearSemiringᵛ baseNearSemiring n
+    module RNS = RawNearSemiring nearSemiringᵛ
 
   private
     module +G = Group +-group
     addRawGroup  = +G.rawGroup
-    vecAddGroup  = rawGroupᵛ addRawGroup n
-    module VG    = RawGroup vecAddGroup
+    addGroupᵛ = rawGroupᵛ addRawGroup n
+    module VG    = RawGroup addGroupᵛ
 
   open AbelianGroupProperties +-abelianGroup n using (+ᴹ-isAbelianGroup) public
 
@@ -622,20 +616,20 @@ module RingProperties (ring : Ring a ℓ) (n : ℕ) where
     module SR = RawSemiring S.rawSemiring
     baseNearSemiring = SR.rawNearSemiring
 
-    vecNearSemiring = rawNearSemiringᵛ baseNearSemiring n
-    vecSemiring     = rawSemiringᵛ     S.rawSemiring    n
-    module RNS = RawNearSemiring vecNearSemiring
-    module RS  = RawSemiring     vecSemiring
+    nearSemiringᵛ = rawNearSemiringᵛ baseNearSemiring n
+    semiringᵛ     = rawSemiringᵛ     S.rawSemiring    n
+    module RNS = RawNearSemiring nearSemiringᵛ
+    module RS  = RawSemiring     semiringᵛ
 
-    vecLeftSemi  = rawLeftSemimoduleᵛ  baseNearSemiring n
-    vecRightSemi = rawRightSemimoduleᵛ baseNearSemiring n
-    module LSM = RawLeftSemimodule  vecLeftSemi
-    module RSM = RawRightSemimodule vecRightSemi
+    leftSemiᵛ  = rawLeftSemimoduleᵛ  baseNearSemiring n
+    rightSemiᵛ = rawRightSemimoduleᵛ baseNearSemiring n
+    module LSM = RawLeftSemimodule  leftSemiᵛ
+    module RSM = RawRightSemimodule rightSemiᵛ
 
     module +G = Group +-group
     addRawGroup = +G.rawGroup
-    vecAddGroup = rawGroupᵛ addRawGroup n
-    module VG   = RawGroup vecAddGroup
+    addGroupᵛ = rawGroupᵛ addRawGroup n
+    module VG   = RawGroup addGroupᵛ
 
   open SemiringProperties semiring n public
   open AbelianGroupProperties +-abelianGroup n public
@@ -696,21 +690,21 @@ module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) (n : 
     module SR = RawSemiring S.rawSemiring
     baseNearSemiring = SR.rawNearSemiring
 
-    vecNearSemiring = rawNearSemiringᵛ baseNearSemiring n
-    vecSemiring     = rawSemiringᵛ     S.rawSemiring    n
+    nearSemiringᵛ = rawNearSemiringᵛ baseNearSemiring n
+    semiringᵛ     = rawSemiringᵛ     S.rawSemiring    n
 
-    module RNS = RawNearSemiring vecNearSemiring
-    module RS  = RawSemiring     vecSemiring
+    module RNS = RawNearSemiring nearSemiringᵛ
+    module RS  = RawSemiring     semiringᵛ
 
-    vecLeftSemi  = rawLeftSemimoduleᵛ  baseNearSemiring n
-    vecRightSemi = rawRightSemimoduleᵛ baseNearSemiring n
-    module LSM = RawLeftSemimodule  vecLeftSemi
-    module RSM = RawRightSemimodule vecRightSemi
+    leftSemiᵛ  = rawLeftSemimoduleᵛ  baseNearSemiring n
+    rightSemiᵛ = rawRightSemimoduleᵛ baseNearSemiring n
+    module LSM = RawLeftSemimodule  leftSemiᵛ
+    module RSM = RawRightSemimodule rightSemiᵛ
 
     module +G = Group Ri.+-group
     addRawGroup = +G.rawGroup
-    vecAddGroup = rawGroupᵛ addRawGroup n
-    module VG   = RawGroup vecAddGroup
+    addGroupᵛ = rawGroupᵛ addRawGroup n
+    module VG   = RawGroup addGroupᵛ
 
   open RingProperties ring n public
 
@@ -720,10 +714,6 @@ module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) (n : 
     { isRing = +ᴹ-*-isRing
     ; *-comm = λ xs ys i → *-comm (xs i) (ys i)
     }
-
-  private
-    *ₗ-*ᵣ-coincident : SimultaneousBiDefs.Coincident Carrier RNS._≈_ LSM._*ₗ_ RSM._*ᵣ_
-    *ₗ-*ᵣ-coincident r xs i = *-comm r (xs i)
 
   isModule : IsModule commutativeRing RNS._≈_ RNS._+_ RNS.0# VG._⁻¹ LSM._*ₗ_ RSM._*ᵣ_
   isModule = record

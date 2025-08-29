@@ -21,19 +21,19 @@ open import Data.Vec.Functional.Relation.Binary.Pointwise using (Pointwise)
 
 private variable
   a ℓ : Level
-  A : Set ℓ
+  A : Set a
   n : ℕ
 
 ------------------------------------------------------------------------
 -- Vector-lifted relations & operators
 
-pointwiseᵛ : {A : Set a} ( _≈_ : Rel A ℓ ) → Rel (Vector A n) ℓ
+pointwiseᵛ : ( _≈_ : Rel A ℓ ) → Rel (Vector A n) ℓ
 pointwiseᵛ _≈_ = Pointwise _≈_
 
-zipWithᵛ : {A : Set a} → Op₂ A → Op₂ (Vector A n)
+zipWithᵛ : Op₂ A → Op₂ (Vector A n)
 zipWithᵛ _∙_ = zipWith _∙_
 
-mapᵛ : {A : Set a} → Op₁ A → Op₁ (Vector A n)
+mapᵛ : Op₁ A → Op₁ (Vector A n)
 mapᵛ f = map f
 
 ------------------------------------------------------------------------
