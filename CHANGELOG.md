@@ -101,6 +101,11 @@ Additions to existing modules
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
   ```
 
+* In `Relation.Binary.Definitions`
+  ```agda
+  Defined : Rel A ℓ → A → Set ℓ
+  ```
+
 * In `Relation.Nullary.Negation.Core`
   ```agda
   ¬¬-η : A → ¬ ¬ A
