@@ -12,8 +12,8 @@ module Relation.Binary.Construct.SetoidFromPartialSetoid
 open import Function.Base using (id; _on_)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures
-  using (IsEquivalence)
+open import Relation.Binary.Definitions using (Defined)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Morphism.Structures
   using (IsRelHomomorphism; IsRelMonomorphism)
 
@@ -28,7 +28,7 @@ record Carrier : Set (a ⊔ ℓ) where
 
   field
     ι    : S.Carrier
-    refl : ι S.≈ ι
+    refl : Defined S._≈_ ι
 
 open Carrier public using (ι)
 
