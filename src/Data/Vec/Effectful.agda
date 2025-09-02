@@ -36,24 +36,24 @@ functor = record
   { _<$>_ = map
   }
 
-naperian : RawNaperian (λ (A : Set a) → Vec A n) 0ℓ
-naperian {n = n} = record
+rawNaperian : RawNaperian (λ (A : Set a) → Vec A n) 0ℓ
+rawNaperian {n = n} = record
   { rawFunctor = functor
   ; Log = Fin n
   ; index = lookup
   ; tabulate = tabulate
   }
 
-fullNaperian : PropositionalNaperian (λ (A : Set a) → Vec A n) 0ℓ
-fullNaperian A = record
-  { rawNaperian = naperian
+naperian : PropositionalNaperian (λ (A : Set a) → Vec A n) 0ℓ
+naperian A = record
+  { rawNaperian = rawNaperian
   ; index-tabulate = λ f l → lookup∘tabulate f l
   ; natural-tabulate = λ f k l → cong (λ fx → lookup fx l) (tabulate-∘ f k)
   ; natural-index = λ f as l → lookup-map l f as
   }
 
-applicative : RawApplicative (λ (A : Set a) → Vec A n)
-applicative {n = n} = record
+rawApplicative : RawApplicative (λ (A : Set a) → Vec A n)
+rawApplicative {n = n} = record
   { rawFunctor = functor
   ; pure = replicate n
   ; _<*>_  = Vec._⊛_
@@ -61,7 +61,7 @@ applicative {n = n} = record
 
 monad : RawMonad (λ (A : Set a) → Vec A n)
 monad = record
-  { rawApplicative = applicative
+  { rawApplicative = rawApplicative
   ; _>>=_ = DiagonalBind._>>=_
   }
 
@@ -86,10 +86,9 @@ module TraversableA {f g F} (App : RawApplicative {f} {g} F) where
   forA = flip mapA
 
 module TraversableM {m n M} (Mon : RawMonad {m} {n} M) where
-
   open RawMonad Mon
 
-  open TraversableA rawApplicative public
+  open TraversableA (RawMonad.rawApplicative Mon) public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
@@ -109,7 +108,7 @@ lookup-functor-morphism i = record
 
 -- lookup is an applicative functor morphism.
 
-lookup-morphism : (i : Fin n) → App.Morphism (applicative {a}) Id.applicative
+lookup-morphism : (i : Fin n) → App.Morphism (rawApplicative {a}) Id.applicative
 lookup-morphism i = record
   { functorMorphism = lookup-functor-morphism i
   ; op-pure = lookup-replicate i

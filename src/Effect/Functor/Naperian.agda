@@ -71,8 +71,8 @@ module _ (F : Set a → Set b) c where
   PropositionalNaperian : Set (suc (a ⊔ c) ⊔ b)
   PropositionalNaperian = ∀ A → Naperian (≡.setoid A)
 
-  Naperian-Applicative : RawNaperian → RawApplicative F
-  Naperian-Applicative rn =
+  rawApplicative : RawNaperian → RawApplicative F
+  rawApplicative rn =
     record
       { rawFunctor = rawFunctor
       ; pure = tabulate ∘ const 
