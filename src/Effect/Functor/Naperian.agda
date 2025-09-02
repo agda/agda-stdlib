@@ -63,7 +63,7 @@ module _ (F : Set a → Set b) c where
     field
       index-tabulate   : (f : Log → Carrier) → ((l : Log) → index (tabulate f) l ≈ f l)
       natural-tabulate : (f : Carrier → Carrier) (k : Log → Carrier) → (tabulate (f ∘ k)) FS.≈ (f <$> (tabulate k))
-      natural-index    : (f : Carrier → Carrier) (as : F Carrier) (l : Log) → (index (f <$> as) l) ≈ f (index as l)
+      natural-index    : (l : Log) (f : Carrier → Carrier) (as : F Carrier) → (index (f <$> as) l) ≈ f (index as l)
     
     tabulate-index : (fx : F Carrier) → tabulate (index fx) FS.≈ fx
     tabulate-index = index-tabulate ∘ index

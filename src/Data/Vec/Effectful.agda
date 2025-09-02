@@ -47,9 +47,9 @@ rawNaperian {n = n} = record
 naperian : PropositionalNaperian (λ (A : Set a) → Vec A n) 0ℓ
 naperian A = record
   { rawNaperian = rawNaperian
-  ; index-tabulate = λ f l → lookup∘tabulate f l
-  ; natural-tabulate = λ f k l → cong (λ fx → lookup fx l) (tabulate-∘ f k)
-  ; natural-index = λ f as l → lookup-map l f as
+  ; index-tabulate = lookup∘tabulate
+  ; natural-tabulate = λ f k l → cong (flip lookup l) (tabulate-∘ f k)
+  ; natural-index = lookup-map
   }
 
 rawApplicative : RawApplicative (λ (A : Set a) → Vec A n)
