@@ -31,7 +31,7 @@ open ≋ S using (_≋_; _∷_; ≋-refl; ≋-sym; ≋-trans)
 -- Definition, based on `Homogeneous`
 
 open Homogeneous public
-  using (refl; prep; swap; trans)
+  using (refl; prep; swap; trans; onIndices)
 
 infix 3 _↭_
 

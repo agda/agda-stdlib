@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 module Data.Fin.Induction where
 

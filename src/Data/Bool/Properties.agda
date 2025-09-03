@@ -745,6 +745,91 @@ if-float : ∀ (f : A → B) b {x y} →
 if-float _ true  = refl
 if-float _ false = refl
 
+if-eta : ∀ b {x : A} →
+         (if b then x else x) ≡ x
+if-eta false = refl
+if-eta true  = refl
+
+if-idem-then : ∀ b {x y : A} →
+               (if b then (if b then x else y) else y)
+             ≡ (if b then x                    else y)
+if-idem-then false = refl
+if-idem-then true  = refl
+
+if-idem-else : ∀ b {x y : A} →
+               (if b then x else (if b then x else y))
+             ≡ (if b then x else y)
+if-idem-else false = refl
+if-idem-else true  = refl
+
+if-swap-then : ∀ b c {x y : A} →
+          (if b then (if c then x else y) else y)
+        ≡ (if c then (if b then x else y) else y)
+if-swap-then false false = refl
+if-swap-then false true  = refl
+if-swap-then true  _     = refl
+
+if-swap-else : ∀ b c {x y : A} →
+          (if b then x else (if c then x else y))
+        ≡ (if c then x else (if b then x else y))
+if-swap-else false _     = refl
+if-swap-else true  false = refl
+if-swap-else true  true  = refl
+
+if-not : ∀ b {x y : A} →
+         (if not b then x else y) ≡ (if b then y else x)
+if-not false = refl
+if-not true  = refl
+
+if-∧ : ∀ b {c} {x y : A} →
+       (if b ∧ c then x else y) ≡ (if b then (if c then x else y) else y)
+if-∧ false = refl
+if-∧ true  = refl
+
+if-∨ : ∀ b {c} {x y : A} →
+       (if b ∨ c then x else y) ≡ (if b then x else (if c then x else y))
+if-∨ false = refl
+if-∨ true  = refl
+
+if-xor : ∀ b {c} {x y : A} →
+         (if b xor c then x else y)
+       ≡ (if b then (if c then y else x) else (if c then x else y))
+if-xor false = refl
+if-xor true {false} = refl
+if-xor true {true } = refl
+
+-- The following congruence lemmas are short hands for
+--   cong (if_then x else y)
+--   cong (if b then_else y)
+--   cong (if b then x else_)
+--   cong (if b then_else_)
+-- on the different sub-terms in an if_then_else_ expression.
+-- With these short hands, the branches x and y can be inferred
+-- automatically (i.e., they are implicit arguments) whereas
+-- the branches have to be spelled out explicitly when using cong.
+-- (Using underscores as in "cong (if b then _ else_)"
+-- unfortunately fails to resolve the omitted argument.)
+
+if-cong : ∀ {b c} {x y : A} → b ≡ c →
+          (if b then x else y)
+        ≡ (if c then x else y)
+if-cong refl = refl
+
+if-cong-then : ∀ b {x y z : A} → x ≡ z →
+               (if b then x else y)
+             ≡ (if b then z else y)
+if-cong-then _ refl = refl
+
+if-cong-else : ∀ b {x y z : A} → y ≡ z →
+               (if b then x else y)
+             ≡ (if b then x else z)
+if-cong-else _ refl = refl
+
+if-cong₂ : ∀ b {x y z w : A} → x ≡ z → y ≡ w →
+           (if b then x else y)
+         ≡ (if b then z else w)
+if-cong₂ _ refl refl = refl
+
 ------------------------------------------------------------------------
 -- Properties of T
 

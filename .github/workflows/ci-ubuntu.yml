@@ -76,11 +76,11 @@ jobs:
           if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
              || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
-            echo "AGDA_COMMIT=18cc53941e924b144c0f1f3953280ef726009f7e" >> "${GITHUB_ENV}";
+            echo "AGDA_COMMIT=ef912c68fd329ad3046d156e3c1a70a7fec19ba1" >> "${GITHUB_ENV}";
             echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_ENV}"
           else
             # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.7.0.1" >> "${GITHUB_ENV}";
+            echo "AGDA_COMMIT=tags/v2.8.0-rc3" >> "${GITHUB_ENV}";
             echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_ENV}"
           fi
 

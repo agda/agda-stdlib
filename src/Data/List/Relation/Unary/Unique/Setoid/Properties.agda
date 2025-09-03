@@ -24,6 +24,7 @@ import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (_<_)
 open import Function.Base using (_∘_; id)
+open import Function.Definitions using (Congruent)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
@@ -49,6 +50,10 @@ module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
   map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
          ∀ {xs} → Unique S xs → Unique R (map f xs)
   map⁺ inj xs! = AllPairs.map⁺ (AllPairs.map (contraposition inj) xs!)
+
+  map⁻ : ∀ {f} → Congruent _≈₁_ _≈₂_ f →
+         ∀ {xs} → Unique R (map f xs) → Unique S xs
+  map⁻ cong fxs! = AllPairs.map (contraposition cong) (AllPairs.map⁻ fxs!)
 
 ------------------------------------------------------------------------
 -- ++

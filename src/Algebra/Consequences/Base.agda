@@ -11,22 +11,35 @@ module Algebra.Consequences.Base
   {a} {A : Set a} where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Algebra.Definitions
-  using (Selective; Idempotent; SelfInverse; Involutive)
+import Algebra.Definitions as Definitions
+  using (Congruent₂; LeftCongruent; RightCongruent
+        ; Selective; Idempotent; SelfInverse; Involutive)
 open import Data.Sum.Base using (_⊎_; reduce)
+open import Relation.Binary.Consequences
+  using (mono₂⇒monoˡ; mono₂⇒monoʳ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive)
 
-module _ {ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) where
+module Congruence {ℓ} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ) (open Definitions _≈_)
+                  (cong : Congruent₂ _∙_) (refl : Reflexive _≈_)
+  where
 
-  sel⇒idem : Selective _≈_ _•_ → Idempotent _≈_ _•_
+  ∙-congˡ : LeftCongruent _∙_
+  ∙-congˡ {x} = mono₂⇒monoˡ _ _≈_ _≈_ (refl {x = x}) cong x
+
+  ∙-congʳ : RightCongruent _∙_
+  ∙-congʳ {x} = mono₂⇒monoʳ _≈_ _ _≈_ (refl {x = x}) cong x
+
+module _ {ℓ} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ) (open Definitions _≈_) where
+
+  sel⇒idem : Selective _∙_ → Idempotent _∙_
   sel⇒idem sel x = reduce (sel x x)
 
-module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
+module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) (open Definitions _≈_) where
 
   reflexive∧selfInverse⇒involutive : Reflexive _≈_ →
-                                     SelfInverse _≈_ f →
-                                     Involutive _≈_ f
+                                     SelfInverse f →
+                                     Involutive f
   reflexive∧selfInverse⇒involutive refl inv _ = inv refl
 
 ------------------------------------------------------------------------

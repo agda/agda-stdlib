@@ -19,6 +19,8 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Function.Base using (_∘′_; _$′_; const; flip)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Relation.Unary using (IUniversal)
 
 private
   variable
@@ -81,6 +83,28 @@ _⇉_ : ∀ {n ls r} → Sets n ls → Set r → Set (r ⊔ (⨆ n ls))
 _⇉_ = Arrows _
 
 ------------------------------------------------------------------------
+-- Operations on Levels
+
+lmap : (Level → Level) → ∀ n → Levels n → Levels n
+lmap f zero    ls       = _
+lmap f (suc n) (l , ls) = f l , lmap f n ls
+
+ltabulate : ∀ n → (Fin n → Level) → Levels n
+ltabulate zero    f = _
+ltabulate (suc n) f = f zero , ltabulate n (f ∘′ suc)
+
+lreplicate : ∀ n → Level → Levels n
+lreplicate n ℓ = ltabulate n (const ℓ)
+
+0ℓs : ∀[ Levels ]
+0ℓs = lreplicate _ 0ℓ
+
+-- Note that you might think that `lconst n l ≡ l`
+-- but unfortunately this isn't true for `n = 0`.
+lconst : ℕ → Level → Level
+lconst l n = ⨆ l (lreplicate l n)
+
+------------------------------------------------------------------------
 -- Operations on Sets
 
 -- Level-respecting map
@@ -94,14 +118,20 @@ _<$>_ f {suc n}  (a , as)  = f a , (f <$> as)
 
 -- Level-modifying generalised map
 
-lmap : (Level → Level) → ∀ n → Levels n → Levels n
-lmap f zero    ls       = _
-lmap f (suc n) (l , ls) = f l , lmap f n ls
-
 smap : ∀ f → (∀ {l} → Set l → Set (f l)) →
        ∀ n {ls} → Sets n ls → Sets n (lmap f n ls)
 smap f F zero    as       = _
 smap f F (suc n) (a , as) = F a , smap f F n as
+
+stabulate : ∀ n →
+            (f : Fin n → Level) →
+            (g : (i : Fin n) → Set (f i)) →
+            Sets n (ltabulate n f)
+stabulate ℕ.zero f g = _
+stabulate (suc n) f g = g zero , stabulate n (f ∘′ suc) (λ u → g (suc u))
+
+sreplicate : ∀ n {a} → Set a → Sets n (lreplicate n a)
+sreplicate n A = stabulate n (const _) (const A)
 
 ------------------------------------------------------------------------
 -- Operations on Functions

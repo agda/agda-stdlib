@@ -15,7 +15,7 @@ open import Level using (Level; _⊔_)
 
 private
   variable
-    a p q w : Level
+    a w : Level
     A B C : Set a
     Whatever : Set w
 
@@ -33,6 +33,11 @@ infix 3 ¬_
 DoubleNegation : Set a → Set a
 DoubleNegation A = ¬ ¬ A
 
+-- Eta law for double-negation
+
+¬¬-η : A → ¬ ¬ A
+¬¬-η a ¬a = ¬a a
+
 -- Stability under double-negation.
 Stable : Set a → Set a
 Stable A = ¬ ¬ A → A
@@ -47,11 +52,11 @@ _¬-⊎_ = [_,_]
 ------------------------------------------------------------------------
 -- Uses of negation
 
-contradiction-irr : .A → ¬ A → Whatever
+contradiction-irr : .A → .(¬ A) → Whatever
 contradiction-irr a ¬a = ⊥-elim-irr (¬a a)
 
 contradiction : A → ¬ A → Whatever
-contradiction a = contradiction-irr a
+contradiction a ¬a = contradiction-irr a ¬a
 
 contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
 contradiction₂ (inj₁ a) ¬a ¬b = contradiction a ¬a
