@@ -48,6 +48,8 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
 
+* `Relation.Binary.Construct.SetoidFromPartialSetoid`.
+
 Additions to existing modules
 -----------------------------
 
@@ -97,6 +99,11 @@ Additions to existing modules
 
   padRight-updateAt : (m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
+  ```
+
+* In `Relation.Binary.Definitions`
+  ```agda
+  Defined : Rel A ℓ → A → Set ℓ
   ```
 
 * In `Relation.Nullary.Negation.Core`

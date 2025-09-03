@@ -37,8 +37,11 @@ private
 -- e.g. in the definition of `IsEquivalence` later in this file. This
 -- convention is a legacy from the early days of the library.
 
+Defined : Rel A ℓ → A → Set ℓ
+Defined _∼_ x = x ∼ x
+
 Reflexive : Rel A ℓ → Set _
-Reflexive _∼_ = ∀ {x} → x ∼ x
+Reflexive _∼_ = ∀ {x} → Defined _∼_ x
 
 -- Generalised symmetry.
 
