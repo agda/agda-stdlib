@@ -10,9 +10,6 @@ authors:
     orcid: 0000-0002-2552-3671
     corresponding: true
     affiliation: 1
-  - name: Danielsson, Nils Anders
-    orcid: 0000-0001-8688-0333
-    affiliation: 2
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
     affiliation: 3
@@ -204,6 +201,7 @@ We would like to thank those members of the Agda development team who are not au
 Jesper Cockx,
 Andrés Sicard-Ramírez and
 Andrea Vezzosi.
+We also would like to acknowledge the substantial feedback of Nils Anders Danielsson which led to improvements in the papers' presentation.
 
 The authors of this paper are listed approximately in order of contribution to the library. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
 
@@ -211,8 +209,6 @@ The authors of this paper are listed approximately in order of contribution to t
 
 The authors of this paper have no conflicts of interest to declare.
 Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such funding follows:
-
-- Nils Anders Danielsson acknowledges that "The research leading to these results has received funding from the European Research Council under the European Union's Seventh Framework Programme (FP7/2007-2013) / ERC grant agreement n° 247219".
 
 - Jason Z. S. Hu made his contributions during his funded Master's and PhD study.
 
