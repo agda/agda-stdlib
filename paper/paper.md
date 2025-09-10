@@ -47,7 +47,8 @@ authors:
     orcid: 0000-0003-2673-4400
     affiliation: 12
   - name: You, Shu-Hung
-    affiliation: 12
+    orcid: 0009-0003-0003-3945
+    affiliation: 13
   - name: Mullanix, Reed
     orcid: 0000-0002-7970-4961
     affiliation: 9
