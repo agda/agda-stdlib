@@ -203,7 +203,7 @@ Andrés Sicard-Ramírez and
 Andrea Vezzosi.
 We also would like to acknowledge the substantial feedback of Nils Anders Danielsson which led to improvements in the papers' presentation.
 
-The authors of this paper are listed approximately in order of contribution to the library. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
+The authors of this paper are listed approximately in order of contribution to the library. Manuscript preparation was carried out by Matthew Daggitt, Guillaume Allais, James McKinna, Jacques Carette and Nathan van Doorn. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
 
 # Funding and conflicts of interest
 
