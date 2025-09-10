@@ -12,13 +12,13 @@ authors:
     affiliation: 1
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
-    affiliation: 3
+    affiliation: 2
   - name: McKinna, James
     orcid: 0000-0001-6745-2560
-    affiliation: 4
+    affiliation: 3
   - name: Abel, Andreas
     orcid: 0000-0003-0420-4492
-    affiliation: 2
+    affiliation: 4
   - name: van Doorn, Nathan
     orcid: 0009-0009-0598-3663
     affiliation: 5
@@ -27,7 +27,7 @@ authors:
     affiliation: 6
   - name: Norell, Ulf
     orcid: 0000-0003-2999-0637
-    affiliation: 2
+    affiliation: 4
   - name: Kidney, Donnacha Oisín
     orcid: 0000-0003-4952-7359
     affiliation: 7
@@ -36,7 +36,7 @@ authors:
     affiliation: 8
   - name: Stucki, Sandro
 	orcid: 0000-0001-5608-8273
-	affliation: 2
+	affiliation: 4
   - name: Carette, Jacques
     orcid: 0000-0001-8993-9804
     affiliation: 9
@@ -60,11 +60,11 @@ authors:
 affiliations:
  - name: University of Western Australia, Australia
    index: 1
- - name: University of Gothenburg and Chalmers University of Technology, Sweden
-   index: 2
  - name: University of Strathclyde, United Kingdom
-   index: 3
+   index: 2
  - name: Heriot-Watt University, United Kingdom
+   index: 3
+ - name: University of Gothenburg and Chalmers University of Technology, Sweden
    index: 4
  - name: Independent Software Developer
    index: 5
