@@ -12,13 +12,13 @@ authors:
     affiliation: 1
   - name: Allais, Guillaume
     orcid: 0000-0002-4091-657X
-    affiliation: 3
+    affiliation: 2
   - name: McKinna, James
     orcid: 0000-0001-6745-2560
-    affiliation: 4
+    affiliation: 3
   - name: Abel, Andreas
     orcid: 0000-0003-0420-4492
-    affiliation: 2
+    affiliation: 4
   - name: van Doorn, Nathan
     orcid: 0009-0009-0598-3663
     affiliation: 5
@@ -27,13 +27,16 @@ authors:
     affiliation: 6
   - name: Norell, Ulf
     orcid: 0000-0003-2999-0637
-    affiliation: 2
+    affiliation: 4
   - name: Kidney, Donnacha Oisín
     orcid: 0000-0003-4952-7359
     affiliation: 7
   - name: Meshveliani, Sergei
     orcid: 0000-0002-4224-6178
     affiliation: 8
+  - name: Stucki, Sandro
+	orcid: 0000-0001-5608-8273
+	affiliation: 4
   - name: Carette, Jacques
     orcid: 0000-0001-8993-9804
     affiliation: 9
@@ -58,11 +61,11 @@ authors:
 affiliations:
  - name: University of Western Australia, Australia
    index: 1
- - name: University of Gothenburg and Chalmers University of Technology, Sweden
-   index: 2
  - name: University of Strathclyde, United Kingdom
-   index: 3
+   index: 2
  - name: Heriot-Watt University, United Kingdom
+   index: 3
+ - name: University of Gothenburg and Chalmers University of Technology, Sweden
    index: 4
  - name: Independent Software Developer
    index: 5
@@ -204,7 +207,7 @@ Andrés Sicard-Ramírez and
 Andrea Vezzosi.
 We also would like to acknowledge the substantial feedback of Nils Anders Danielsson which led to improvements in the papers' presentation.
 
-The authors of this paper are listed approximately in order of contribution to the library. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
+The authors of this paper are listed approximately in order of contribution to the library. Manuscript preparation was carried out by Matthew Daggitt, Guillaume Allais, James McKinna, Jacques Carette and Nathan van Doorn. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
 
 # Funding and conflicts of interest
 
