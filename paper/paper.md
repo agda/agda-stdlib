@@ -159,7 +159,7 @@ On the other hand, `batteries` and `mathlib` [@van2020maintaining] for Lean prov
 Philosophically, `agda-stdlib` is more closely aligned with the approach of the MathLib library, and our aim is to provide canonical definitions for mathematical objects and introduce new representations only sparingly.
 
 A second challenge is that `agda-stdlib` has embraced the "intrinsic style" of dependent types, in which correctness-related invariants are part of data structures, rather than separate predicates.
-Many definitions in agda-stdlib use this intrinsic style.
+Many definitions in `agda-stdlib` use this intrinsic style.
 For instance, the final definition of rational numbers is a record type that alongside the numerator and denominator contains a proof showing that the numerator and denominator have no common factors.
 The intrinsic style also includes returning proofs rather than, say, booleans from decision procedures.
 The standard library for instance uses this approach for its implementation of regular expression matching which along with the match returns a proof justifying it.
@@ -208,7 +208,7 @@ The authors of this paper are listed approximately in order of contribution to t
 # Funding and conflicts of interest
 
 The authors of this paper have no conflicts of interest to declare.
-Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such funding follows:
+Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affiliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such funding follows:
 
 - Jason Z. S. Hu made his contributions during his funded Master's and PhD study.
 
