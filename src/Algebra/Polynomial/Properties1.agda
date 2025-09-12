@@ -1,20 +1,22 @@
-open import Algebra.Bundles using (Magma; Semiring)
+open import Algebra.Bundles using (Magma; Ring)
 
-module Algebra.Polynomial.Properties
+module Algebra.Polynomial.Properties1
   {ℓ₁ ℓ₂}
-  (SR : Semiring ℓ₁ ℓ₂)
+  (R : Ring ℓ₁ ℓ₂)
   where
 
 open import Algebra.Bundles.Raw 
 import Algebra.Definitions as Def
-import Algebra.Polynomial.Poly.Properties SR as Poly
-open import Algebra.Polynomial.Base SR
+import Algebra.Polynomial.Poly.Properties1 R as Poly
+open import Algebra.Polynomial.Base1 R
   using ( Polynomial; _,_;  _≈_; shift; _+_; _*_; _·_
-        ; zero; one; refl; sym; trans)
+        ; zero; one; -_; refl; sym; trans)
+open import Algebra.Properties.AbelianGroup
+open import Algebra.Properties.Ring
 open import Algebra.Structures
   using ( IsMagma; IsSemigroup; IsCommutativeSemigroup; IsMonoid
-        ; IsSemiring; IsCommutativeMonoid 
-        )
+        ; IsGroup; IsAbelianGroup; IsSemiring; IsCommutativeMonoid 
+        ; IsRing)
 open import Data.Nat.Base as ℕ using (ℕ; _⊔_; suc; pred)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using ([]; _∷_)
@@ -22,7 +24,7 @@ open import Relation.Binary using (IsEquivalence)
 
 open Polynomial
 
-open Semiring SR
+open Ring R
   using (0#; 1#)
   renaming (Carrier to A)
 
@@ -30,7 +32,7 @@ open Def _≈_
 
 private
   variable
-    P Q R : Polynomial
+    P Q W : Polynomial
 
 --------------------------------------------------------------
 -- Algebraic properties of addition
@@ -48,8 +50,20 @@ private
 +-comm P Q = Poly.+-comm (polynomial P) (polynomial Q)
 
 +-assoc : Associative _+_
-+-assoc P Q R
-  = Poly.+-assoc (polynomial P) (polynomial Q) (polynomial R) 
++-assoc P Q W
+  = Poly.+-assoc (polynomial P) (polynomial Q) (polynomial W) 
+  
++-inverseˡ : LeftInverse zero -_ _+_
++-inverseˡ P = Poly.+-inverseˡ (polynomial P)
+
++-inverseʳ : RightInverse zero -_ _+_
++-inverseʳ P = Poly.+-inverseʳ (polynomial P)
+
++-inverse : Inverse zero -_ _+_
++-inverse = +-inverseˡ , +-inverseʳ
+
+-‿cong : P ≈ Q → - P ≈ - Q
+-‿cong = Poly.-‿cong
 
 ---------------------------------------------------------------
 -- Additive structures
@@ -85,14 +99,28 @@ isEquivalence = record
   ; identity = +-identity
   }
 
++-isGroup : IsGroup _≈_ _+_ zero -_
++-isGroup = record
+  { isMonoid = +-isMonoid
+  ; inverse = +-inverse
+  ;  ⁻¹-cong = -‿cong
+  }
+
 +-isCommutativeMonoid : IsCommutativeMonoid _≈_ _+_ zero
 +-isCommutativeMonoid = record
   { isMonoid = +-isMonoid
   ; comm = +-comm
   }
 
++-isAbelianGroup : IsAbelianGroup _≈_ _+_ zero -_
++-isAbelianGroup = record
+  { isGroup = +-isGroup
+  ; comm = +-comm
+  }
+
 ---------------------------------------------------------------
--- Additive raw bundles
+-- Additive bundles
+
 +-rawMagma : Algebra.Bundles.Raw.RawMagma _ _
 +-rawMagma = record
   { Carrier = Polynomial
@@ -100,8 +128,15 @@ isEquivalence = record
   ; _∙_ = _+_
   }
 
-+-rawSemiring : Algebra.Bundles.Raw.RawSemiring _ _
-+-rawSemiring = record
+*-rawMagma : Algebra.Bundles.Raw.RawMagma _ _
+*-rawMagma = record
+  { Carrier = Polynomial
+  ; _≈_ = _≈_
+  ; _∙_ = _*_
+  }
+
+rawSemiring : Algebra.Bundles.Raw.RawSemiring _ _
+rawSemiring = record
   { Carrier = Polynomial
   ; _≈_ = _≈_
   ; _+_ = _+_
@@ -110,8 +145,16 @@ isEquivalence = record
   ; 1# = one
   }
 
-
--- Additive bundles
+rawRing : Algebra.Bundles.Raw.RawRing _ _
+rawRing = record
+  { Carrier = Polynomial
+  ; _≈_ = _≈_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = zero
+  ; 1# = one
+  }
 
 +-magma : Algebra.Bundles.Magma _ _
 +-magma = record
@@ -136,6 +179,11 @@ isEquivalence = record
 +-commutativeMonoid : Algebra.Bundles.CommutativeMonoid _ _
 +-commutativeMonoid = record
   { isCommutativeMonoid =  +-isCommutativeMonoid
+  }
+
++-abelianGroup : Algebra.Bundles.AbelianGroup _ _
++-abelianGroup = record
+  { isAbelianGroup =  +-isAbelianGroup
   }
 
 -----------------------------------------------------------------
@@ -171,8 +219,8 @@ a·p≈a∷[]*p a P = Poly.a·p≈a∷[]*p a (polynomial P)
   = Poly.*-distribʳ-+  (polynomial P) (polynomial Q) (polynomial R)
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ P Q R
-  = Poly.*-distribˡ-+ (polynomial P) (polynomial Q) (polynomial R)
+*-distribˡ-+ P Q W
+  = Poly.*-distribˡ-+ (polynomial P) (polynomial Q) (polynomial W)
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -210,6 +258,15 @@ a·p≈a∷[]*p a P = Poly.a·p≈a∷[]*p a (polynomial P)
   ; zero = *-zero
   }
 
++-*-isRing : IsRing _≈_  _+_ _*_ -_ zero one  
++-*-isRing = record
+  { +-isAbelianGroup = +-isAbelianGroup
+  ; *-cong           = Poly.*-cong
+  ; *-assoc          = *-assoc
+  ; *-identity       = *-identity
+  ; distrib          = *-distrib-+
+  }
+
 ---------------------------------------------------------------
 -- Multiplicative bundles
 
@@ -228,7 +285,8 @@ a·p≈a∷[]*p a P = Poly.a·p≈a∷[]*p a (polynomial P)
   { isMonoid = *-isMonoid
   }
 
-+-*-semiring : Semiring _ _
-+-*-semiring = record
-  { isSemiring = +-*-isSemiring
++-*-ring : Algebra.Bundles.Ring _ _
++-*-ring = record
+  { isRing = +-*-isRing
   }
+

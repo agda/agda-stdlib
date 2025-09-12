@@ -1,7 +1,7 @@
-open import Algebra.Bundles using (Semiring)
+open import Algebra.Bundles using (CommutativeRing)
 
-module Algebra.Polynomial.Poly.Base
-  {ℓ₁ ℓ₂} (SR : Semiring ℓ₁ ℓ₂)
+module Algebra.Polynomial.Poly.Base2
+  {ℓ₁ ℓ₂} (R : CommutativeRing ℓ₁ ℓ₂)
   where
 
 open import Data.Nat.Base as ℕ using (ℕ; suc; pred; _⊔_)
@@ -13,20 +13,21 @@ open import Relation.Binary.PropositionalEquality.Core using (cong)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; cong; module ≡-Reasoning)
 
-module SR = Semiring SR
-open SR
- renaming
-  ( Carrier to A
-  ; _≈_ to _≈A_
-  ; _+_ to _+A_
-  ; _*_ to _*A_
-  )
- using (0#; 1#)
-
+infix  8 -_
 infixl 7 _*_
 infix 7 _·_
 infixl 6 _+_
 infix 4 _≈_
+
+module CR = CommutativeRing R
+open CR
+  renaming
+  ( Carrier to A
+  ; _≈_ to _≈A_
+  ; _+_ to _+A_
+  ; _*_ to _*A_
+  ; -_ to -A_)
+ using (0#; 1#)
 
 private
   variable
@@ -60,6 +61,11 @@ shift p = 0# ∷ p
 IsZero : Poly n → Set (ℓ₁ L.⊔ ℓ₂) 
 IsZero = All (_≈A 0#)
 
+-- The additive inverse 
+-_ : Poly n → Poly n
+- p = Vec.map -A_ p
+
+------------------------------------------------------------------
 -- The representation of a polynomial is not unique
 -- because we allow coefficients to be zero
 -- We define an equivalence relation which takes this into account 
@@ -69,6 +75,7 @@ data _≈_ : (Poly m) → (Poly n) → Set (ℓ₁ L.⊔ ℓ₂) where
   ≈[]  : (p : Poly m) → IsZero p → p ≈ []
   cons : (a ≈A b) → (p ≈ q) → (a ∷ p) ≈ (b ∷ q)
 
+------------------------------------------------------------------
 -- Properties of Polynomial Equality
 
 zeros-unique : IsZero p → IsZero q → p ≈ q
@@ -76,25 +83,26 @@ zeros-unique [] [] = []≈ [] []
 zeros-unique [] (a≈0 ∷ p≈0) = []≈ (_ ∷ _) (a≈0 ∷ p≈0)
 zeros-unique (a≈0 ∷ p≈0) [] = ≈[] (_ ∷ _) (a≈0 ∷ p≈0)
 zeros-unique (a≈0 ∷ p≈0) (b≈0 ∷ q≈0)
-  = cons (SR.trans a≈0 (SR.sym b≈0)) (zeros-unique p≈0 q≈0)
+  = cons (CR.trans a≈0 (CR.sym b≈0)) (zeros-unique p≈0 q≈0)
 
 IsZero-cong : IsZero p → p ≈ q → IsZero q
 IsZero-cong [] ([]≈ q q≈0) = q≈0
 IsZero-cong [] (≈[] p p≈0) = p≈0
 IsZero-cong (a≈0 ∷ p≈0) (≈[] a∷p a∷p≈0) = []
 IsZero-cong (a≈0 ∷ p≈0) (cons a≈b p≈q)
-  = (SR.trans (SR.sym a≈b) a≈0) ∷ IsZero-cong p≈0 p≈q
+  = (CR.trans (CR.sym a≈b) a≈0) ∷ IsZero-cong p≈0 p≈q
 
+------------------------------------------------------------------
 -- _≈_ is an equivalence relation
 
 refl : p ≈ p
 refl {p = []} = []≈ [] []
-refl {p = a ∷ p} = cons SR.refl refl
+refl {p = a ∷ p} = cons CR.refl refl
 
 sym : p ≈ q → q ≈ p
 sym ([]≈ q q≈0) = ≈[] q q≈0
 sym (≈[] p p≈0) = []≈ p p≈0
-sym (cons a≈b p≈q) = cons (SR.sym a≈b) (sym p≈q)
+sym (cons a≈b p≈q) = cons (CR.sym a≈b) (sym p≈q)
 
 trans : p ≈ q → q ≈ r → p ≈ r
 trans {r = r} ([]≈ q q≈0) q≈r = []≈ r (IsZero-cong q≈0 q≈r) 
@@ -102,13 +110,13 @@ trans (≈[] p p≈0) q≈r = zeros-unique p≈0 (IsZero-cong [] q≈r)
 trans (cons a≈b p≈q) (≈[] q q≈0)
   = ≈[] _ (IsZero-cong q≈0 (sym (cons a≈b p≈q)))
 trans (cons a≈b p≈q) (cons b≈c q≈r)
-  = cons (SR.trans a≈b b≈c) (trans p≈q q≈r)
+  = cons (CR.trans a≈b b≈c) (trans p≈q q≈r)
 
 consˡ : (a ≈A b) → (a ∷ p) ≈ (b ∷ p)
 consˡ a≈b = cons a≈b refl
 
 consʳ : p ≈ q → (a ∷ p) ≈ (a ∷ q)
-consʳ = cons SR.refl
+consʳ = cons CR.refl
 
 ----------------------------------------------------------------
 -- Operations
@@ -139,4 +147,3 @@ cast-lem m n = begin
 _*_ : Poly n → Poly m → Poly (pred (n ℕ.+ m))
 _*_ {m = m} [] p  = zeros (pred m)
 _*_ {suc n} {m} (a ∷ p) q = Vec.cast (cast-lem m n) ((a · q) + (p * (0# ∷ q)))
-

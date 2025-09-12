@@ -1,17 +1,17 @@
-open import Algebra.Bundles using (Semiring)
+open import Algebra.Bundles using (Ring)
 open import Data.Nat.Base as ℕ using (ℕ; _⊔_; suc; pred)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using ([]; _∷_)
 import Level as L
 
-module Algebra.Polynomial.Base
-  {ℓ₁ ℓ₂} (SR : Semiring ℓ₁ ℓ₂)
+module Algebra.Polynomial.Base1
+  {ℓ₁ ℓ₂} (R : Ring ℓ₁ ℓ₂)
   where
 
-open import Algebra.Polynomial.Poly.Base SR as Poly
+open import Algebra.Polynomial.Poly.Base1 R as Poly
   using (Poly; zeros)
 
-open Semiring SR
+open Ring R
   using (0#; 1#)
   renaming (Carrier to A)
 
@@ -33,7 +33,7 @@ record Polynomial : Set ℓ₁ where
 
 private
   variable
-    P Q R : Polynomial
+    P Q W : Polynomial
 
 -- Equivalence relation for representations of polynomials
 infix 4 _≈_
@@ -46,7 +46,7 @@ refl = Poly.refl
 sym : P ≈ Q → Q ≈ P
 sym = Poly.sym
 
-trans : P ≈ Q → Q ≈ R → P ≈ R
+trans : P ≈ Q → Q ≈ W → P ≈ W
 trans = Poly.trans
 
 --------------------------------------------------
@@ -64,6 +64,10 @@ one = (1 , (1# ∷ []))
 -- Multiply the polynomial by a factor of x
 shift : Polynomial → Polynomial
 shift (m , p) = (suc m , Poly.shift p)
+
+-- Negation
+-_ : Polynomial → Polynomial
+- (m , p) = (m , Poly.- p)
 
 -- Scaling
 _·_ : A → Polynomial → Polynomial

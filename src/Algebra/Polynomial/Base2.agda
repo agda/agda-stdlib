@@ -1,17 +1,17 @@
-open import Algebra.Bundles using (Semiring)
+open import Algebra.Bundles using (CommutativeRing)
 open import Data.Nat.Base as ℕ using (ℕ; _⊔_; suc; pred)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using ([]; _∷_)
 import Level as L
 
-module Algebra.Polynomial.Base
-  {ℓ₁ ℓ₂} (SR : Semiring ℓ₁ ℓ₂)
+module Algebra.Polynomial.Base2
+  {ℓ₁ ℓ₂} (CR : CommutativeRing ℓ₁ ℓ₂)
   where
 
-open import Algebra.Polynomial.Poly.Base SR as Poly
+open import Algebra.Polynomial.Poly.Base2 CR as Poly
   using (Poly; zeros)
 
-open Semiring SR
+open CommutativeRing CR
   using (0#; 1#)
   renaming (Carrier to A)
 
@@ -64,6 +64,10 @@ one = (1 , (1# ∷ []))
 -- Multiply the polynomial by a factor of x
 shift : Polynomial → Polynomial
 shift (m , p) = (suc m , Poly.shift p)
+
+-- Negation
+-_ : Polynomial → Polynomial
+- (m , p) = (m , Poly.- p)
 
 -- Scaling
 _·_ : A → Polynomial → Polynomial

@@ -1,12 +1,13 @@
-open import Algebra.Bundles using (Semiring)
+open import Algebra.Bundles using (Ring)
 
-module Algebra.Polynomial.Poly.Properties 
-  {ℓ₁ ℓ₂} (SR : Semiring ℓ₁ ℓ₂)
+module Algebra.Polynomial.Poly.Properties1
+  {ℓ₁ ℓ₂} (R : Ring ℓ₁ ℓ₂)
   where
 
-open import Algebra.Polynomial.Poly.Base SR as P
-  using ( Poly; _+_ ; _*_ ; _·_ ; shift; _≈_; refl; trans; sym; zeros
+open import Algebra.Polynomial.Poly.Base1 R as P
+  using ( Poly; _+_ ; _*_ ; _·_ ; -_; shift; _≈_; refl; trans; sym; zeros
         ; IsZero; []≈ ; ≈[]; cons; zeros-unique; consˡ; consʳ; cast-lem)
+open import Algebra.Properties.Ring
 open import Data.Nat.Base as ℕ using (ℕ; suc; pred; _⊔_)
 import Data.Nat.Properties as ℕ
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
@@ -17,14 +18,14 @@ open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_; module ≡-Reasoning)
 open import Relation.Binary.PropositionalEquality.Core using (cong) 
 
-module SR = Semiring SR
-open SR
+module R = Ring R
+open R
   renaming
   ( Carrier to A
   ; _≈_ to _≈A_
   ; _+_ to _+A_
   ; _*_ to _*A_
-  )
+  ; -_ to -A_)
   using (0#; 1#)
 
 private
@@ -81,7 +82,7 @@ private
 
 zerosIsZero : (n : ℕ) → IsZero (zeros n)
 zerosIsZero 0 = []
-zerosIsZero (suc n) = SR.refl ∷ (zerosIsZero n)
+zerosIsZero (suc n) = R.refl ∷ (zerosIsZero n)
 
 zerosm≈zerosn : zeros m ≈ zeros n
 zerosm≈zerosn {m} {n} = zeros-unique (zerosIsZero m) (zerosIsZero n)
@@ -99,7 +100,44 @@ All-p≈0∧q≈0⇒p+q≈0 {p = _} {q = _} [] [] = []
 All-p≈0∧q≈0⇒p+q≈0 {p = _} {q = _} [] (b≈0 ∷ q≈0) = b≈0 ∷ q≈0
 All-p≈0∧q≈0⇒p+q≈0 {p = _} {q = _} (a≈0 ∷ p≈0) [] = a≈0 ∷ p≈0
 All-p≈0∧q≈0⇒p+q≈0 {p = a ∷ p} {q = b ∷ q} (a≈0 ∷ p≈0) (b≈0 ∷ q≈0)
-  = SR.trans (SR.+-cong a≈0 b≈0) (SR.+-identityˡ 0#) ∷ All-p≈0∧q≈0⇒p+q≈0 p≈0 q≈0
+  = R.trans (R.+-cong a≈0 b≈0) (R.+-identityˡ 0#) ∷ All-p≈0∧q≈0⇒p+q≈0 p≈0 q≈0
+
+------------------------------------------------------
+-- Additive inverse
+
+[-p]+pIsZero : {p : Poly m} → IsZero ((- p) + p)
+[-p]+pIsZero {p = []} = []
+[-p]+pIsZero {p = a ∷ p} = R.-‿inverseˡ a ∷ [-p]+pIsZero
+
+p+[-p]IsZero : {p : Poly m} → IsZero (p + (- p))
+p+[-p]IsZero {p = []} = []
+p+[-p]IsZero {p = a ∷ p} = R.-‿inverseʳ a ∷ p+[-p]IsZero
+
++-inverseˡ : (p : Poly m) → (- p) + p ≈ []
++-inverseˡ [] = refl
++-inverseˡ (a ∷ p)
+  = ≈[] ((- (a ∷ p)) + (a ∷ p)) (R.-‿inverseˡ a ∷ [-p]+pIsZero)
+
++-inverseʳ : (p : Poly m) → p + (- p) ≈ []
++-inverseʳ []  = refl
++-inverseʳ (a ∷ p)
+  = ≈[] ((a ∷ p) + (- (a ∷ p))) ((R.-‿inverseʳ a) ∷ p+[-p]IsZero)
+
+-------------------------------------------------------
+-- Negation is congruent
+
+-⁺ : IsZero p → IsZero (- p)
+-⁺ [] = []
+-⁺ (a≈0 ∷ p≈0) = x≈ε⇒x⁻¹≈ε R a≈0 ∷ (-⁺ p≈0)
+
+-⁻ : IsZero (- p) → IsZero p
+-⁻ {p = []} -p≈0 = -p≈0
+-⁻ {p = a ∷ p} (-a≈0 ∷ -p≈0) = x⁻¹≈ε⇒x≈ε R -a≈0 ∷ (-⁻ -p≈0)
+
+-‿cong : p ≈ q → - p ≈ - q
+-‿cong ([]≈ q q≈0) = []≈ (- q) (-⁺ q≈0)
+-‿cong (≈[] p p≈0) = ≈[] (- p) (-⁺ p≈0)
+-‿cong (cons a≈b p≈q) = cons (R.-‿cong a≈b) (-‿cong p≈q)
 
 -----------------------------------------------------
 -- Properties of polynomial addition
@@ -108,14 +146,14 @@ All-p≈0∧q≈0⇒p+q≈0 {p = a ∷ p} {q = b ∷ q} (a≈0 ∷ p≈0) (b≈0
 +-comm [] [] = refl
 +-comm [] (a ∷ p) = refl
 +-comm (a ∷ p) [] = refl
-+-comm (a ∷ p) (b ∷ q) = cons (SR.+-comm a b) (+-comm p q)
++-comm (a ∷ p) (b ∷ q) = cons (R.+-comm a b) (+-comm p q)
 
 +-idʳ : (p : Poly n) → (q : Poly m) → IsZero q → p + q ≈ p
 +-idʳ [] q [] = refl
 +-idʳ (a ∷ p) q [] = refl
 +-idʳ [] (a ∷ q) (a≈0 ∷ q≈0) = ≈[] (a ∷ q) (a≈0 ∷ q≈0)
 +-idʳ (a ∷ p) (b ∷ q) (b≈0 ∷ q≈0)
-  = cons (SR.trans (SR.+-congˡ b≈0) (SR.+-identityʳ a)) (+-idʳ p q q≈0)
+  = cons (R.trans (R.+-congˡ b≈0) (R.+-identityʳ a)) (+-idʳ p q q≈0)
 
 +-idˡ : (p : Poly n) → (q : Poly m) → IsZero p → p + q ≈ q
 +-idˡ p q p≈0 = begin
@@ -149,7 +187,7 @@ All-p≈0∧q≈0⇒p+q≈0 {p = a ∷ p} {q = b ∷ q} (a≈0 ∷ p≈0) (b≈0
   a ∷ p        ≈⟨ cons a≈b p≈q ⟩
   b ∷ q        ∎
 +-cong (cons a≈b p≈q) (cons c≈d r≈s)
-  = cons (SR.+-cong a≈b c≈d) (+-cong p≈q r≈s)
+  = cons (R.+-cong a≈b c≈d) (+-cong p≈q r≈s)
 
 +-congˡ : p ≈ q → p + r ≈ q + r
 +-congˡ p≈q = +-cong p≈q refl
@@ -166,7 +204,7 @@ All-p≈0∧q≈0⇒p+q≈0 {p = a ∷ p} {q = b ∷ q} (a≈0 ∷ p≈0) (b≈0
 +-assoc (a ∷ p) [] r = +-congʳ (sym (+-identityˡ r))
 +-assoc (a ∷ p) (b ∷ q) [] = refl
 +-assoc (a ∷ p) (b ∷ q) (c ∷ r)
-  = cons (SR.+-assoc a b c) (+-assoc p q r)
+  = cons (R.+-assoc a b c) (+-assoc p q r)
 
 middleFour : (p : Poly m) → (q : Poly n) → (r : Poly k) → (w : Poly l) →
              (p + q) + (r + w) ≈ (p + r) + (q + w)   
@@ -207,19 +245,19 @@ private
   (a ∷ p) * (0# ∷ q)
     ≈⟨ cast-p≈p (cast-lem (suc n) m) ⟩  
   a · (0# ∷ q) + p * (0# ∷ 0# ∷ q)
-    ≈⟨ +-congˡ (consˡ (SR.zeroʳ a)) ⟩
+    ≈⟨ +-congˡ (consˡ (R.zeroʳ a)) ⟩
   (0# ∷ a · q) + p * (0# ∷ 0# ∷ q)
     ≈⟨ +-congʳ (*-distrib-shift p (0# ∷ q)) ⟩
   (0# ∷ a · q) + (0# ∷ (p * (0# ∷ q)))
-    ≈⟨ consˡ (SR.+-identityˡ 0#) ⟩
+    ≈⟨ consˡ (R.+-identityˡ 0#) ⟩
   0# ∷ (a · q + p * (0# ∷ q))
     ≈⟨ consʳ (cast-p≈p (cast-lem n m)) ⟨
   0# ∷ ((a ∷ p) * q)
     ∎ 
 
 ·-distrib-shift : (a : A) → (p : Poly m) → a · (shift p) ≈ shift (a · p)
-·-distrib-shift a [] = cons (SR.zeroʳ a) (refl)
-·-distrib-shift a (b ∷ p) = consˡ (SR.zeroʳ a)
+·-distrib-shift a [] = cons (R.zeroʳ a) (refl)
+·-distrib-shift a (b ∷ p) = consˡ (R.zeroʳ a)
 
 ----------------------------------------------------------------
 -- Properties of polynomial scaling
@@ -228,25 +266,25 @@ a·p≈a∷[]*p : (a : A) → (p : Poly n) → a · p ≈ (a ∷ []) * p
 a·p≈a∷[]*p {_} a [] = refl
 a·p≈a∷[]*p {suc n} a (b ∷ p) = begin
   a · (b ∷ p)
-    ≈⟨ cons (SR.+-identityʳ (a *A b)) (+-identityʳ (a · p)) ⟨
+    ≈⟨ cons (R.+-identityʳ (a *A b)) (+-identityʳ (a · p)) ⟨
   a *A b +A 0# ∷ (a · p + zeros n)
     ≈⟨ consʳ (cast-p≈p (ℕ.⊔-idem n)) ⟨
   (a ∷ []) * (b ∷ p) ∎
 
 1·p≈p : (p : Poly n) → 1# · p ≈ p
 1·p≈p [] = refl
-1·p≈p (a ∷ p) = cons (SR.*-identityˡ a) (1·p≈p p)
+1·p≈p (a ∷ p) = cons (R.*-identityˡ a) (1·p≈p p)
 
 
 pIsZero⇒a·pIsZero : (a : A) → (p : Poly n) → IsZero p → IsZero (a · p) 
 pIsZero⇒a·pIsZero a p [] = []
 pIsZero⇒a·pIsZero a (b ∷ p) (b≈0 ∷ p≈0)
-  = (SR.trans (SR.*-congˡ b≈0) (SR.zeroʳ a)) ∷ pIsZero⇒a·pIsZero a p p≈0
+  = (R.trans (R.*-congˡ b≈0) (R.zeroʳ a)) ∷ pIsZero⇒a·pIsZero a p p≈0
 
 a≈0⇒a·pIsZero : (a : A) → (p : Poly n) → a ≈A 0# → IsZero (a · p)
 a≈0⇒a·pIsZero a [] a≈0 = []
 a≈0⇒a·pIsZero a (b ∷ p) a≈0
-  = SR.trans (SR.*-congʳ a≈0) (SR.zeroˡ b) ∷ (a≈0⇒a·pIsZero a p a≈0)
+  = R.trans (R.*-congʳ a≈0) (R.zeroˡ b) ∷ (a≈0⇒a·pIsZero a p a≈0)
 
 ·-cong : a ≈A b → p ≈ q → a · p ≈ b · q
 ·-cong {a = _} {b = b} _ ([]≈ q q≈0)
@@ -254,30 +292,30 @@ a≈0⇒a·pIsZero a (b ∷ p) a≈0
 ·-cong {a = a} {b = _}  _ (≈[] p p≈0)
   = IsZero⇒≈0 (pIsZero⇒a·pIsZero a p p≈0)                                       
 ·-cong {a = _} {b = _} c≈d (cons a≈b p≈q)
-  = cons (SR.*-cong c≈d a≈b) (·-cong c≈d p≈q)
+  = cons (R.*-cong c≈d a≈b) (·-cong c≈d p≈q)
 
 ·-congˡ : a ≈A b → a · p ≈ b · p
 ·-congˡ a≈b  = ·-cong a≈b refl
 
 ·-congʳ : p ≈ q → a · p ≈ a · q
-·-congʳ = ·-cong SR.refl
+·-congʳ = ·-cong R.refl
 
 ·-dist : a · (p + q) ≈ (a · p) + (a · q)
 ·-dist {p = []} {q = []} = refl
 ·-dist {p = []} {q = b ∷ q} = refl
 ·-dist {p = b ∷ p} {q = []} = refl
-·-dist {a = a} {p = b ∷ p} {q = c ∷ q} = cons (SR.distribˡ a b c) ·-dist
+·-dist {a = a} {p = b ∷ p} {q = c ∷ q} = cons (R.distribˡ a b c) ·-dist
 
 ·-assoc : a · (b · p) ≈ (a *A b) · p
 ·-assoc {p = []} = refl
-·-assoc {a} {b} {p = c ∷ p} = cons (SR.sym (SR.*-assoc a b c)) ·-assoc
+·-assoc {a} {b} {p = c ∷ p} = cons (R.sym (R.*-assoc a b c)) ·-assoc
 
 a·-cong : p ≈ q → a · p ≈ a · q
-a·-cong = ·-cong SR.refl
+a·-cong = ·-cong R.refl
 
 ·-distrib-+A : (a b : A) → (p : Poly m) → (a +A b) · p ≈ a · p + b · p
 ·-distrib-+A a b [] = refl
-·-distrib-+A a b (c ∷ p) = cons (SR.distribʳ c a b) (·-distrib-+A a b p)
+·-distrib-+A a b (c ∷ p) = cons (R.distribʳ c a b) (·-distrib-+A a b p)
 
 -----------------------------------------------------------------
 -- Properties of polynomial multiplication
@@ -344,7 +382,7 @@ p≈[]⇒p*q≈[] q p≈0 = IsZero⇒≈0 (pIsZero⇒p*qIsZero q (≈0⇒IsZero 
   (a ∷ p) * (c ∷ r)
     ≈⟨ cast-p≈p (cast-lem (suc k) m)⟩
   (a *A c ∷ a · r) + p * (0# ∷ c ∷ r)
-    ≈⟨ +-congˡ (consˡ (SR.*-cong a≈b c≈d)) ⟩
+    ≈⟨ +-congˡ (consˡ (R.*-cong a≈b c≈d)) ⟩
   (b *A d ∷ a · r) + p * (0# ∷ c ∷ r)
     ≈⟨ +-congˡ (consʳ (·-cong a≈b r≈s)) ⟩
   (b *A d ∷ b · s) + p * (0# ∷ c ∷ r)
@@ -377,7 +415,7 @@ q≈[]→p*q≈[] p q≈0 = IsZero⇒≈0 (qIsZero⇒p*qIsZero p (≈0⇒IsZero 
 
 shift-distrib-+ : (p : Poly m) → (q : Poly n) →
                   shift (p + q) ≈ (shift p) + (shift q)
-shift-distrib-+ p q = cons (SR.sym (SR.+-identityʳ 0#)) refl
+shift-distrib-+ p q = cons (R.sym (R.+-identityʳ 0#)) refl
 
 *-identityʳ : (p : Poly n) → p * (1# ∷ []) ≈ p
 *-identityʳ {0} [] = zerosm≈zerosn
@@ -385,11 +423,11 @@ shift-distrib-+ p q = cons (SR.sym (SR.+-identityʳ 0#)) refl
   (a ∷ p) * (1# ∷ [])
     ≈⟨ cast-p≈p (cast-lem 1 n) ⟩
   (a *A 1# ∷ []) + (p * (0# ∷ 1# ∷ []))
-    ≈⟨ +-congˡ (consˡ (SR.*-identityʳ a)) ⟩
+    ≈⟨ +-congˡ (consˡ (R.*-identityʳ a)) ⟩
   (a ∷ []) + (p * (0# ∷ 1# ∷ []))
     ≈⟨ +-congʳ (*-distrib-shift p (1# ∷ [])) ⟩
   (a ∷ []) + (0# ∷ (p * (1# ∷ [])))
-    ≈⟨ cons (SR.+-identityʳ a) (+-identityˡ (p * (1# ∷ []))) ⟩
+    ≈⟨ cons (R.+-identityʳ a) (+-identityˡ (p * (1# ∷ []))) ⟩
   a ∷ (p * (1# ∷ []))
     ≈⟨ consʳ (*-identityʳ p) ⟩
   a ∷ p ∎
@@ -404,7 +442,7 @@ shift-distrib-+ p q = cons (SR.sym (SR.+-identityʳ 0#)) refl
   1# · (a ∷ p) + []
     ≈⟨ +-identityʳ {m = 0} (1# · (a ∷ p)) ⟩
   1# · (a ∷ p)
-    ≈⟨ cons (SR.*-identityˡ a) (1·p≈p p) ⟩
+    ≈⟨ cons (R.*-identityˡ a) (1·p≈p p) ⟩
   a ∷ p ∎
 
 -- (0# ∷ 1# ∷ []) is the center of a polynomial ring
@@ -412,7 +450,7 @@ shiftp≈p*x :  (p : Poly n) → shift p ≈ p * (0# ∷ 1# ∷ [])
 shiftp≈p*x [] = refl
 shiftp≈p*x {suc n} (a ∷ p) = begin
  0# ∷ a ∷ p
-   ≈⟨ cons (SR.+-identityˡ 0#) (cons (SR.+-identityʳ a) (+-identityˡ p)) ⟨
+   ≈⟨ cons (R.+-identityˡ 0#) (cons (R.+-identityʳ a) (+-identityˡ p)) ⟨
  (0# ∷ a ∷ []) + shift (shift p)
    ≈⟨ consʳ (consʳ (+-congʳ (*-identityʳ p))) ⟨
  (0# ∷ a ∷ []) + (shift (shift (p * (1# ∷ []))))
@@ -420,14 +458,13 @@ shiftp≈p*x {suc n} (a ∷ p) = begin
  (0# ∷ a ∷ []) + shift (p * shift (1# ∷ []))
    ≈⟨ +-congʳ {p = 0# ∷ a ∷ []} (*-distrib-shift p (0# ∷ 1# ∷ [])) ⟨
  (0# ∷ a ∷ []) + p * shift (shift (1# ∷ []))
-   ≈⟨ +-congˡ (cons (SR.zeroʳ a) (consˡ (SR.*-identityʳ a))) ⟨
+   ≈⟨ +-congˡ (cons (R.zeroʳ a) (consˡ (R.*-identityʳ a))) ⟨
  a · (0# ∷ 1# ∷ []) + p * (0# ∷ 0# ∷ 1# ∷ [])
    ≈⟨ cast-p≈p (cast-lem 2 n) ⟨
  (a ∷ p) * (0# ∷ 1# ∷ []) ∎
 
 shiftp≈x*p : (p : Poly n) → shift p ≈ (0# ∷ 1# ∷ []) * p
-shiftp≈x*p []
-  = consˡ (SR.sym (SR.trans (SR.+-identityʳ (1# *A 0#)) (SR.zeroʳ 1#)))
+shiftp≈x*p [] = consˡ (R.sym (R.trans (R.+-identityʳ (1# *A 0#)) (R.zeroʳ 1#)))
 shiftp≈x*p {suc n} (a ∷ p) = begin
  0# ∷ a ∷ p
    ≈⟨ *-identityˡ (0# ∷ a ∷ p) ⟨
@@ -437,7 +474,7 @@ shiftp≈x*p {suc n} (a ∷ p) = begin
    ≈⟨ +-identityˡ {m = 0} ((1# ∷ []) * (0# ∷ a ∷ p)) ⟩
  (1# ∷ []) * (0# ∷ a ∷ p)
    ≈⟨ +-idˡ (0# *A a ∷ 0# · p) ((1# ∷ []) * (0# ∷ a ∷ p))
-      ((SR.zeroˡ a) ∷ a≈0⇒a·pIsZero 0# p SR.refl) ⟨
+      ((R.zeroˡ a) ∷ a≈0⇒a·pIsZero 0# p R.refl) ⟨
  0# · (a ∷ p) + (1# ∷ []) * (0# ∷ a ∷ p)
    ≈⟨ consʳ (cast-p≈p (ℕ.m≤n⇒m⊔n≡n (ℕ.n≤1+n n))) ⟨
  (0# ∷ 1# ∷ []) * (a ∷ p) ∎
@@ -469,7 +506,7 @@ shiftp≈x*p {suc n} (a ∷ p) = begin
   a · ((b · (c ∷ q)) + (p * (0# ∷ c ∷ q)))
     ≈⟨ ·-dist ⟩
   a · (b *A c ∷ (b · q)) + a · (p * (0# ∷ c ∷ q))
-    ≈⟨ +-congˡ (cons (SR.sym (SR.*-assoc a b c)) ·-assoc) ⟩
+    ≈⟨ +-congˡ (cons (R.sym (R.*-assoc a b c)) ·-assoc) ⟩
   (a *A b *A c ∷ ((a *A b) · q)) + a · (p * (0# ∷ c ∷ q))
     ≈⟨ +-congʳ (·-distrib-* p (0# ∷ c ∷ q) a) ⟩
   (a *A b) · (c ∷ q) + (a · p) * (0# ∷ c ∷ q)
@@ -483,7 +520,7 @@ shiftp≈x*p {suc n} (a ∷ p) = begin
   shift ([] * q)
     ≈⟨ consʳ zerosm≈zerosn ⟩
   shift []
-    ≈⟨ IsZero⇒≈0 (All-p≈0∧q≈0⇒p+q≈0 (a≈0⇒a·pIsZero 0# q SR.refl)
+    ≈⟨ IsZero⇒≈0 (All-p≈0∧q≈0⇒p+q≈0 (a≈0⇒a·pIsZero 0# q R.refl)
        (≈0⇒IsZero {m = n} zerosm≈zerosn)) ⟨
   0# · q + zeros (pred (suc n))
     ≈⟨ cast-p≈p (ℕ.⊔-idem (pred (1 ℕ.+ n))) ⟨
@@ -495,7 +532,7 @@ shiftp≈x*p {suc n} (a ∷ p) = begin
     ≈⟨ cast-p≈p (cast-lem (suc n) m) ⟩
   a · shift q + p * (0# ∷ shift q)
     ≈⟨ +-idˡ (0# · q) (a · (0# ∷ q) + p * (0# ∷ 0# ∷ q))
-       (a≈0⇒a·pIsZero 0# q SR.refl) ⟨
+       (a≈0⇒a·pIsZero 0# q R.refl) ⟨
   0# · q + (a · (0# ∷ q) + p * (0# ∷ 0# ∷ q))
     ≈⟨ +-congʳ (cast-p≈p (cast-lem (suc n) m)) ⟨
   0# · q + (a ∷ p) * (0# ∷ q)
@@ -518,7 +555,7 @@ shiftp≈x*p {suc n} (a ∷ p) = begin
   (a · q + a · r) + (0# ∷ (p * (q + r)))
     ≈⟨ +-congʳ (consʳ (*-distribˡ-+ p q r)) ⟩
   (a · q + a · r) + (0# ∷ (p * q + p * r))
-    ≈⟨ +-congʳ (consˡ (SR.+-identityʳ 0#)) ⟨
+    ≈⟨ +-congʳ (consˡ (R.+-identityʳ 0#)) ⟨
   (a · q + a · r) + ((0# ∷ (p * q)) + (0# ∷ (p * r)))
     ≈⟨ middleFour (a · q) (a · r) (0# ∷ p * q) (0# ∷ p * r) ⟩
   ((a · q) + (0# ∷ (p * q))) + ((a · r) + (0# ∷ (p * r)))
@@ -596,7 +633,7 @@ shiftp≈x*p {suc n} (a ∷ p) = begin
       (0# ∷ (p * q)) * r
         ≈⟨ cast-p≈p (cast-lem k (m ℕ.+ n ℕ.∸ 1)) ⟩
       (0# · r) + ((p * q) * (0# ∷ r))
-        ≈⟨ +-congˡ (IsZero⇒≈0 (a≈0⇒a·pIsZero 0# r SR.refl) ) ⟩
+        ≈⟨ +-congˡ (IsZero⇒≈0 (a≈0⇒a·pIsZero 0# r R.refl) ) ⟩
       zeros k + ((p * q) * (0# ∷ r))
         ≈⟨ +-congʳ (*-distrib-shift (p * q) r) ⟩
       zeros k + (0# ∷ ((p * q) * r))
