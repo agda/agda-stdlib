@@ -29,13 +29,13 @@ import Relation.Binary.Lattice.Properties.JoinSemilattice as J
 fact0 : (F : Carrier → Set κ) → IsFilter F _≤_ → F ⊤
 fact0 F filter = 
   let (x ,  Fx) = downDirected .proj₁
-  in upClosed x ⊤ (maximum x , Fx)
+  in upClosed {x = x} {y = ⊤} (maximum x) Fx
   where
     open IsFilter filter
 
 fact1 : (F : Carrier → Set κ) → IsFilter F _≤_ → (∀ x y → F x × F y → F (x ∧ y))
 fact1 F filter x y (Fx , Fy) = 
   let (z , Fz , z≤x , z≤y) = downDirected .proj₂ x y (Fx , Fy)
-  in upClosed z (x ∧ y) (∧-greatest z≤x z≤y , Fz)
+  in upClosed {x = z} {y = x ∧ y} (∧-greatest z≤x z≤y)  Fz
   where
     open IsFilter filter

@@ -57,6 +57,7 @@ open import Relation.Binary.Core using (Rel)
 open import Data.Product.Base using (∃-syntax; _×_; _,_)
 open import Level
 open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions using (_Respects_)
 open import Function.Base using (flip)
 
 private
@@ -65,7 +66,7 @@ private
     A : Set a
 
 UpwardClosure : (A → Set ℓ₁) → Rel A ℓ₂ → Set _
-UpwardClosure {A = A} F _≤_ = ∀ (x y : A) → (x ≤ y) × (F x) → F y
+UpwardClosure F _≤_ = F Respects _≤_
 
 DownwardDirectdness : (A → Set ℓ₁) → Rel A ℓ₂ → Set _
 DownwardDirectdness {A = A} F _≤_ = (∃[ x ] F x) × (∀ x y → (F x) × (F y) → ∃[ z ] (F z × z ≤ x × z ≤ y))
