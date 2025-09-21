@@ -114,6 +114,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≟-diag : (eq : m ≡ n) → (m ≟ n) ≡ yes eq
 ≟-diag = ≡-≟-identity _≟_
 
+≟-≡ : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
+≟-≡ = ≢-≟-identity _≟_
+
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
@@ -1524,6 +1527,10 @@ pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
+∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+∸-suc z≤n       = refl
+∸-suc (s≤s m≤n) = ∸-suc m≤n
+
 m∸n≤m : ∀ m n → m ∸ n ≤ m
 m∸n≤m n       zero    = ≤-refl
 m∸n≤m zero    (suc n) = ≤-refl
@@ -1614,12 +1621,11 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 ∸-+-assoc (suc m) (suc n) o = ∸-+-assoc m n o
 
 +-∸-assoc : ∀ m {n o} → o ≤ n → (m + n) ∸ o ≡ m + (n ∸ o)
-+-∸-assoc m (z≤n {n = n})             = begin-equality m + n ∎
-+-∸-assoc m (s≤s {m = o} {n = n} o≤n) = begin-equality
-  (m + suc n) ∸ suc o  ≡⟨ cong (_∸ suc o) (+-suc m n) ⟩
-  suc (m + n) ∸ suc o  ≡⟨⟩
-  (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
-  m + (n ∸ o)          ∎
++-∸-assoc zero    {n = n} {o = o} _   = begin-equality n ∸ o ∎
++-∸-assoc (suc m) {n = n} {o = o} o≤n = begin-equality
+  suc (m + n) ∸ o   ≡⟨ ∸-suc (m≤n⇒m≤o+n m o≤n) ⟩
+  suc ((m + n) ∸ o) ≡⟨ cong suc (+-∸-assoc m o≤n) ⟩
+  suc (m + (n ∸ o)) ∎
 
 m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
 m≤n+o⇒m∸n≤o      m  zero    le = le
@@ -1634,7 +1640,7 @@ m<n+o⇒m∸n<o (suc m) (suc n)             lt = m<n+o⇒m∸n<o m n  (s<s⁻¹ 
 m+n≤o⇒m≤o∸n : ∀ m {n o} → m + n ≤ o → m ≤ o ∸ n
 m+n≤o⇒m≤o∸n zero    le       = z≤n
 m+n≤o⇒m≤o∸n (suc m) (s≤s le)
-  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m le)
+  rewrite ∸-suc (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m le)
 
 m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
 m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
@@ -1671,7 +1677,7 @@ m∸n+n≡m {m} {n} n≤m = begin-equality
 m∸[m∸n]≡n : ∀ {m n} → n ≤ m → m ∸ (m ∸ n) ≡ n
 m∸[m∸n]≡n {m}     {_}     z≤n       = n∸n≡0 m
 m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
-  suc m ∸ (m ∸ n)   ≡⟨ +-∸-assoc 1 (m∸n≤m m n) ⟩
+  suc m ∸ (m ∸ n)   ≡⟨ ∸-suc (m∸n≤m m n) ⟩
   suc (m ∸ (m ∸ n)) ≡⟨ cong suc (m∸[m∸n]≡n n≤m) ⟩
   suc n             ∎
 
