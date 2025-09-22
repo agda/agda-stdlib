@@ -80,7 +80,7 @@ jobs:
             echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_ENV}"
           else
             # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.8.0-rc3" >> "${GITHUB_ENV}";
+            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_ENV}";
             echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_ENV}"
           fi
 
