@@ -8,7 +8,7 @@ AGDA=$(AGDA_EXEC) $(AGDA_OPTIONS) $(AGDA_RTS_OPTIONS)
 #
 #   cabal install fix-whitespace
 
-test: Everything.agda check-whitespace
+test: doc/Everything.agda check-whitespace
 	cd doc && $(AGDA) README.agda
 
 testsuite:
@@ -20,16 +20,16 @@ fix-whitespace:
 check-whitespace:
 	cabal exec -- fix-whitespace --check
 
-setup: Everything.agda
+setup: doc/Everything.agda
 
-.PHONY: Everything.agda
-Everything.agda:
+.PHONY: doc/Everything.agda
+doc/Everything.agda:
 	cabal run GenerateEverything -- --out-dir doc
 
 .PHONY: listings
-listings: Everything.agda
+listings: doc/Everything.agda
 	cd doc && $(AGDA) --html README.agda -v0
 
 clean :
 	find . -type f -name '*.agdai' -delete
-	rm -f Everything.agda EverythingSafe.agda
+	rm -f doc/Everything.agda doc/EverythingSafe.agda
