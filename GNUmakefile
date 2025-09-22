@@ -2,6 +2,8 @@ AGDA_EXEC ?= agda
 AGDA_OPTIONS=-Werror
 AGDA_RTS_OPTIONS=+RTS -M4.0G -H3.5G -A128M -RTS
 AGDA=$(AGDA_EXEC) $(AGDA_OPTIONS) $(AGDA_RTS_OPTIONS)
+CABAL_EXEC ?= cabal
+CABAL_RUN_COMMAND=$(CABAL_EXEC) run
 
 # Before running `make test` the `fix-whitespace` program should
 # be installed:
@@ -15,16 +17,16 @@ testsuite:
 	$(MAKE) -C tests test AGDA="$(AGDA)" AGDA_EXEC="$(AGDA_EXEC)" only=$(only)
 
 fix-whitespace:
-	cabal exec -- fix-whitespace
+	$(CABAL) exec -- fix-whitespace
 
 check-whitespace:
-	cabal exec -- fix-whitespace --check
+	$(CABAL) exec -- fix-whitespace --check
 
 setup: doc/Everything.agda
 
 .PHONY: doc/Everything.agda
 doc/Everything.agda:
-	cabal run GenerateEverything -- --out-dir doc
+	$(CABAL_RUN_COMMAND) GenerateEverything -- --out-dir doc
 
 .PHONY: listings
 listings: doc/Everything.agda
