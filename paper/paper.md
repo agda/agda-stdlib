@@ -46,7 +46,7 @@ authors:
   - name: Hu, Jason Z. S.
     orcid: 0000-0001-6710-6262
     affiliation: 11
-  - name: Xia, Li-yiao
+  - name: Xia, Li-yao
     orcid: 0000-0003-2673-4400
     affiliation: 12
   - name: You, Shu-Hung
@@ -95,7 +95,7 @@ Agda [@agda2024manual] is a dependently-typed functional
 language that serves both as a traditional programming language
 and as an interactive theorem prover (ITP).
 In other words, its type system is expressive enough to formulate
-complex formal requirements as types, and its compiler allows users to interactively build terms and check that they satisfy these requirements.
+complex formal requirements on programs as types, and its compiler allows users to interactively build terms and check that they satisfy these requirements.
 Through the Curry-Howard lens [@DBLP:journals/cacm/Wadler15],
 these types and terms can be seen respectively as theorem
 statements and proofs.
@@ -215,5 +215,11 @@ The authors of this paper have no conflicts of interest to declare.
 Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affiliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such funding follows:
 
 - Jason Z. S. Hu made his contributions during his funded Master's and PhD study.
+
+- Shu-Hung You was partially supported when contributing to the library by the
+U.S. National Science Foundation under Awards No. 2237984 and No.
+2421308. Any opinions, findings and conclusions or recommendations
+expressed in this material are those of the author(s) and do not
+necessarily reflect the views of the National Science Foundation.
 
 # References
