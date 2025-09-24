@@ -35,8 +35,8 @@ authors:
     orcid: 0000-0002-4224-6178
     affiliation: 8
   - name: Stucki, Sandro
-	orcid: 0000-0001-5608-8273
-	affiliation: 4
+    orcid: 0000-0001-5608-8273
+    affiliation: 4
   - name: Carette, Jacques
     orcid: 0000-0001-8993-9804
     affiliation: 9
