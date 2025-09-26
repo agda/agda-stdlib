@@ -103,3 +103,9 @@ Additions to existing modules
   ```agda
   ¬¬-η : A → ¬ ¬ A
   ```
+
+* In Relation.Unary.Properites
+  ```agda
+  ¬∃⟨P⟩⇒Π[∁P] : ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
+  ¬∃⟨P⟩⇒∀[∁P] : ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
+  ```
