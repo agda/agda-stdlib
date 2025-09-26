@@ -92,36 +92,28 @@ bibliography: paper.bib
 # Summary
 
 Agda [@agda2024manual] is a dependently-typed functional
-language that serves both as a traditional programming language
-and as an interactive theorem prover (ITP).
-In other words, its type system is expressive enough to formulate
-complex formal requirements on programs as types, and its compiler allows users to interactively build terms and check that they satisfy these requirements.
-Through the Curry-Howard lens [@DBLP:journals/cacm/Wadler15],
-these types and terms can be seen respectively as theorem
-statements and proofs.
+language that serves as both a programming language
+and an interactive theorem prover (ITP).
+More precisely, one can formulate requirements on programs as types, and building programs satisfying these requirements is performed in a fundamentally interactive manner.
+The Curry-Howard lens [@DBLP:journals/cacm/Wadler15], types and terms can be seen as theorems and their proofs.
 
-This paper presents the Agda standard library [@agda-stdlib-v2.0], hereafter referred to as `agda-stdlib`, which provides definitions intended to be helpful for users to develop Agda programs and proofs.
-Unlike the standard libraries of traditional programming languages, `agda-stdlib` provides not only standard utilities and data structures, but also a range of basic discrete mathematics useful for proving the correctness of programs.
+We present the Agda standard library [@agda-stdlib-v2.0], hereafter referred to as `agda-stdlib`, which provides definitions intended to be generally helpful in developments of programs and proofs.
+Unlike standard libraries of traditional programming languages, `agda-stdlib` provides not only standard utilities and data structures, but also a range of basic discrete mathematics useful for proving the correctness of programs.
 
 # Statement of need
 
-Most programming languages include a "standard" library offering a basic set of algorithms, data structures, and operating system procedures.
-However, there are two reasons why a standard library is particularly significant for Agda compared to traditional programming languages.
+There are two reasons why a standard library for Agda is different than for traditional languages.
 
-First, like other theorem provers, the Agda language provides only a small set of primitives from which programs can be constructed.
-As a result, many concepts traditionally considered part of a language must be defined within the program itself.
-This approach reduces compiler complexity and enhances its reliability, and also demonstrates the strength of the core Agda language as it can push these concepts out to the library.
-For example, in a fresh Agda environment, there is no predefined notion of an integer, let alone more complex data structures such as vectors or maps.
-This lack of basic data types increases the need for a standard library when compared to more mainstream languages.
+First, Agda's language is small but sufficient to define many concepts usually considered part of a language (such
+as the notion of an integer).
+This reduces compiler complexity. But it increases the need for a standard library.
 
-Second, Agda users often seek to prove that programs constructed using data types in the standard library are "correct."
-Constructing the proof that a function obeys a specification (e.g. that a sorting function outputs a permutation of the original list in non-decreasing order) often requires more effort, both in terms of lines of code and in developer time, than writing the original operation.
-By providing proofs of correctness for operations it defines, the standard library saves users significant time during proof development.
+Second, as correctness is an important goal of most Agda users, it is important that functions provided by `agda-stdlib` come with correctness guarantees. Such proofs often require significant effort which should not be downloaded to users.
 
 # Impact
 
 A wide range of projects make use of `agda-stdlib`.
-In the list below we present a selection of such projects:
+Here is a selection:
 
 - Programming Language Foundations in Agda [@plfa22.08]
 
@@ -135,91 +127,76 @@ In the list below we present a selection of such projects:
 
 - Verification of routing protocols [@daggitt2023routing]
 
-The library has also been used as a test bed for the design of co-inductive data types in Agda itself, as evidenced by the three different notions of co-inductive data present in the library.
-On occasion, the development of `agda-stdlib` has also had a synergistic relationship with that of Agda itself, prompting the implementation of several new language features, which we now discuss.
-Firstly, Agda is a research compiler supporting a wide range of possibly incompatible language extensions via command line options.
+`agda-stdlib` has also been used as a test bed for the design of co-inductive data types in Agda itself, resulting having in three different notions.
+
+The development of `agda-stdlib` has also had a synergistic relationship with that of Agda itself, prompting new language features.
+Firstly, Agda supports a wide range of possibly incompatible language extensions.
 Examples include `--cubical` (changing the underlying type theory to cubical type theory [@DBLP:journals/jfp/VezzosiMA21]),
-`--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], a reasoning principle incompatible with the `--cubical`-enabled type theory),
+`--with-K` (adding support for Streicher's axiom K [@streicher1993investigations], with incompatible with the `--cubical`-enabled type theory),
 or `--safe` (an ITP-oriented option enforcing that nothing is postulated and disabling parts of the FFI mechanism).
-In order for `agda-stdlib` to be compatible with as many different compiler options as possible, we designed the library to be broken into units
+In order for `agda-stdlib` to be compatible with as many different variants as possible, we designed the library in units
 requesting the minimal expressive power needed.
-To enable this, in 2019 Agda's language options were categorised as "infective", "coinfective" or "neither".
-Once used in a module, an "infective" option will impact all the import*ing* modules; these are typically for theory-changing options such as `--with-K`.
-On the contrary, "coinfective" options affect the import*ed* modules; these are typically for options adding extra safety checks like `--safe`.
-This categorisation enables libraries to integrate safe Agda code with code that uses "unsafe" operating system calls, while maintaining the safety guarantees of the former.
-Another feature motivated by the development of `agda-stdlib` is the ability to attach custom messages to definitions, which are then displayed by the compiler when the definitions are used.
-This allowed for the implementation of deprecation warnings, making it easier for users to evolve their code alongside new versions of `agda-stdlib`.
+Thus Agda's language options were categorised as "infective", "coinfective" or "neither".
+"infection" options impact all the import*ing* modules (example: `--with-K`). 
+"coinfective" options affect the import*ed* modules (example: `--safe`).
+Another feature motivated by of `agda-stdlib` is attaching custom messages to definitions, displayed on use.
+This enabled deprecation warnings, easing the evolution of user code.
 
-# Design
+# Design Challenges
 
-Designing a standard library for an ITP such as Agda presents several challenges.
+Organising libraries of discrete mathematics and algebra into a coherent and logical structure is notoriously difficult
+[@carette2020leveraging] [@cohen2020hierarchy].
+There is a tension between organising the material to be as general as possible and providing direct and intuitive definitions.
+Mathematical objects often permit multiple representations with varying application-specific usability profiles -- but this leads to redundancy/duplication.
+Some theorem provers ([@coq2024manual], [@paulson1994isabelle]) choose instead to have a rich ecosystem of external libraries, reducing the pressure to have canonical definitions for common concepts at the risk of incompatibilities between libraries.
+We have chosen, like Lean's `mathlib` [@van2020maintaining], to provide a repository of canonical definitions.
 
-Firstly, `agda-stdlib` contains basic discrete mathematics and algebra useful for proving program correctness.
-Organising this material into a coherent and logical structure is difficult, although some recent efforts have looked at generating such structure mechanistically [@carette2020leveraging] [@cohen2020hierarchy].
-For `agda-stdlib` there is a tension between organising the material to be as general as possible (e.g., defining subtraction using addition and inverse over some abstract algebraic structure) and providing direct and intuitive definitions (e.g., defining subtraction directly over integers).
-Additionally, there is the temptation to introduce new representations of existing mathematical objects that are easier to work with for a particular application, which can come at the potential cost of redundancy/duplication.
-Some theorem provers such as Rocq [@coq2024manual] have a rich ecosystem of external libraries, which reduces the emphasis on ensuring the existence of canonical definitions for common concepts, at the slightly increased risk of incompatibilities between various libraries.
-On the other hand, `batteries` and `mathlib` [@van2020maintaining] for Lean provide a repository of canonical definitions.
-Philosophically, `agda-stdlib` is more closely aligned with the approach of the MathLib library, and our aim is to provide canonical definitions for mathematical objects and introduce new representations only sparingly.
+`agda-stdlib` has embraced the "intrinsic style" of dependent types, in which correctness invariants are part of the data structures themselves.
+For instance, the definition of rational numbers carries a proof showing that the numerator and denominator have no common factors.
+The intrinsic style also means returning proofs from decision procedures rather than booleans.
+We believe that `agda-stdlib` has been one of the first standard libraries to tackle this challenge.
 
-A second challenge is that `agda-stdlib` has embraced the "intrinsic style" of dependent types, in which correctness-related invariants are part of data structures, rather than separate predicates.
-Many definitions in `agda-stdlib` use this intrinsic style.
-For instance, the final definition of rational numbers is a record type that alongside the numerator and denominator contains a proof showing that the numerator and denominator have no common factors.
-The intrinsic style also includes returning proofs rather than, say, booleans from decision procedures.
-The standard library for instance uses this approach for its implementation of regular expression matching which along with the match returns a proof justifying it.
-Learning how to design a large library that uses this style is an ongoing journey, and we believe that `agda-stdlib` has been one of the first standard libraries to tackle this challenge.
-
-Another significant influence on the design of `agda-stdlib` is Agda’s module system [@ivardeBruin2023] which supports lists of parameters whose types are dependent on the value of parameters earlier in the list.
-Several functional languages, such as Haskell [@haskell2010], and ITP libraries, like Lean's MathLib, use type classes as the primary mechanism for ad-hoc polymorphism and overloaded syntax.
-While Agda supports an alternative to type-classes known as instance arguments [@devriese2011bright] [@agda2024manual], we have found that the use of qualified, parameterised modules can reproduce most of the abstraction capabilities of instances and type-classes.
-The benefits of using parameterised modules instead of type-classes is that it allows users to specify in a single location how to instantiate all the uses of the abstract module parameters and reduces the overhead of instance search at type-checking time.
-A drawback is that users may sometimes need to use qualified imports or other similar mechanisms when instantiating the abstract code twice in the same scope.
-Another benefit of parameterised modules in the design of `agda-stdlib`, is that they have facilitated the safe and scalable embedding of non-constructive mathematics into what is primarily a constructive library.
-Non-constructive operations, such as classical reasoning, can be made available by passing the operations as parameters to the current module, allowing code access to them throughout the module.
-This enables users to write non-constructive code, without either having to postulate axioms incompatible with the `--safe` flag, or explicitly pass them through as arguments to every function in the module.
+Agda's parametrized modules which also embrace dependent types [@ivardeBruin2023] are used heavily.
+This contrasts with other language which instead rely on type classes for similar functionality.
+This lets users specify in a single location how to instantiate all the abstract module parameters and reduces the overhead of instance search.
+A drawback is the need for qualified imports when instantiating code twice in the same scope.
+Another benefit is ability to safely and scalably embed non-constructive mathematics into a primarily constructive library.
 
 # Testing
 
-Many of the core operations in `agda-stdlib` are accompanied by correctness proofs, and consequently the need for test suites that verify functional correctness is reduced.
-However there are tests for two critical areas.
-Firstly, it is possible to write code in Agda that cannot be reasoned about directly within Agda itself, e.g. functions that use the foreign function interface and tactics that use Agda macros. Therefore, tests for such code are included in the library's test suite.
-Secondly, performance of type-checking and compiled code cannot be analysed inside Agda itself, and so the library includes tests that can be used to reveal regressions in performance.
-Having said this, the test suite's coverage in these two areas is not complete as this has not yet been a major priority for the community.
+Correctness proofs do not entirely obviate the need for testing.
+There are tests for two critical areas: first functions that use features that cannot be reasoned about internally (such as the FFI and tactics implemented as macros); second, performance tests.
+However the test suite's coverage is incomplete as this is not a priority for the community.
 
 # Notable improvements in version 2.0
 
-Finally, we will briefly discuss the state of `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] for which HTML-annotated sources are available at \url{https://agda.github.io/agda-stdlib/v2.0/}.
-The current developers believe we have successfully addressed some of the design flaws and missing functionality present in versions 1.0, including:
+The current developers believe that `agda-stdlib` version 2.0 [@agda-stdlib-v2.0] has successfully addressed some of the
+design flaws and missing functionality of previous versions, including:
 
-- Minimised Dependency Graphs: We have reduced the depth of dependency graphs within the library, ensuring that the most commonly used modules rely on fewer parts of the library. This change has resulted in faster load and compilation times in general.
+- Minimised Dependency Graphs: the most commonly used modules rely on fewer parts of the library, resulting in faster load and compilation times in general.
 
-- Standardisation: We have standardised the construction of mathematical objects such as groups, rings, orders, equivalences, etc., from their sub-objects, enhancing consistency and usability. We have also worked on standardizing morphisms of such objects.
+- Standardisation: Mathematical objects such as groups, rings, orders, equivalences, etc., and their morphisms are now uniformly constructed from their sub-objects, enhancing consistency and usability.
 
-- Tactics Library: We have introduced a growing collection of tactics. Experiments suggest that these tactics are currently slower than those in comparable systems, indicating a potential area for future improvements.
+- Tactics Library: We have more tactics but experiments suggest that they are currently slower than those in comparable systems.
 
-- Testing Framework: We have introduced a golden testing framework that allows users to write their own test suites to assess the performance and correctness of their Agda code.
+- Testing Framework: We have introduced a golden testing framework to let users write their own test suites.
+
+HTML-annotated sources for version 2.0 of `agda-stdlib` is available at \url{https://agda.github.io/agda-stdlib/v2.0/}.
 
 # Acknowledgements
 
-We would like to thank those members of the Agda development team who are not authors on this paper, but nonetheless whose work on Agda makes the standard library possible. This includes, but is not limited to
-Jesper Cockx,
-Andrés Sicard-Ramírez and
-Andrea Vezzosi.
-We also would like to acknowledge the substantial feedback of Nils Anders Danielsson which led to improvements in the papers' presentation.
+Nils Anders Danielsson has provided substantial feedback on this paper.
 
 The authors of this paper are listed approximately in order of contribution to the library. Manuscript preparation was carried out by Matthew Daggitt, Guillaume Allais, James McKinna, Jacques Carette and Nathan van Doorn. A full list of contributors to `agda-stdlib` may be found in the `LICENCE` in the GitHub source tree.
 
 # Funding and conflicts of interest
 
 The authors of this paper have no conflicts of interest to declare.
-Many of the contributions to the library by the authors of this paper were made over a significant period of time and while at other institutions than their current affiliation. Some of the contributions have been made while receiving funding for related projects, and a non-exhaustive list of such funding follows:
+The authors' contributions to `agda-stdlib` were made over a significant period of time and often at other institutions than their current affiliation.
+Some contributations were made thanks to funding for related projects, in particular:
 
-- Jason Z. S. Hu made his contributions during his funded Master's and PhD study.
+- Jason Z. S. Hu during his funded Master's and PhD study.
 
-- Shu-Hung You was partially supported when contributing to the library by the
-U.S. National Science Foundation under Awards No. 2237984 and No.
-2421308. Any opinions, findings and conclusions or recommendations
-expressed in this material are those of the author(s) and do not
-necessarily reflect the views of the National Science Foundation.
+- Shu-Hung You was partially supported by the U.S. National Science Foundation under Awards No. 2237984 and No. 2421308.
 
 # References
