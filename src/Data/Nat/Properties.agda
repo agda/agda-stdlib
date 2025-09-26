@@ -1071,11 +1071,7 @@ m<n⇒m<o*n = m≤n⇒m≤o*n
 ^-distribʳ-* zero n o = refl
 ^-distribʳ-* (suc m) n o = begin-equality
   (n * o) * (n * o) ^ m     ≡⟨ cong (n * o *_) (^-distribʳ-* m n o) ⟩
-  (n * o) * (n ^ m * o ^ m) ≡⟨ *-assoc (n * o) (n ^ m) (o ^ m) ⟨
-  ((n * o) * n ^ m) * o ^ m ≡⟨ cong (_* o ^ m) (*-assoc n o (n ^ m)) ⟩
-  (n * (o * n ^ m)) * o ^ m ≡⟨ cong (_* o ^ m) (cong (n *_) (*-comm o (n ^ m))) ⟩
-  (n * (n ^ m * o)) * o ^ m ≡⟨ cong (_* o ^ m) (*-assoc n (n ^ m) o) ⟨
-  (n ^ suc m * o) * o ^ m   ≡⟨ *-assoc (n ^ suc m) o (o ^ m) ⟩
+  (n * o) * (n ^ m * o ^ m) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] n o (n ^ m) (o ^ m) ⟩
   n ^ suc m * o ^ suc m     ∎
 
 ^-semigroup-morphism : ∀ {n} → (n ^_) Is +-semigroup -Semigroup⟶ *-semigroup
