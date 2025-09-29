@@ -1068,7 +1068,7 @@ m<n⇒m<o*n = m≤n⇒m≤o*n
   (m * (m ^ n)) * (m ^ o) ∎
 
 ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
-^-distribʳ-* zero n o = refl
+^-distribʳ-* zero n o = sym (*-identityˡ 1)
 ^-distribʳ-* (suc m) n o = begin-equality
   (n * o) * (n * o) ^ m     ≡⟨ cong (n * o *_) (^-distribʳ-* m n o) ⟩
   (n * o) * (n ^ m * o ^ m) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] n o (n ^ m) (o ^ m) ⟩
