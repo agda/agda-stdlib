@@ -72,10 +72,18 @@ Additions to existing modules
   ≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
   ```
 
+* In `Data.Nat.ListAction.Properties`
+  ```agda
+  *-distribˡ-sum : ∀ m ns → m * sum ns ≡ sum (map (m *_) ns)
+  *-distribʳ-sum : ∀ m ns → sum ns * m ≡ sum (map (_* m) ns)
+  ^-distribʳ-product : ∀ m ns → product ns ^ m ≡ product (map (_^ m) ns)
+  ```
+
 * In `Data.Nat.Properties`:
   ```agda
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   ```
 
 * In `Data.Vec.Properties`:
