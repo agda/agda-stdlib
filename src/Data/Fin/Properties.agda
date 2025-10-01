@@ -46,7 +46,8 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Reflects using (Reflects; invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
@@ -1069,7 +1070,7 @@ injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f 
 injective⇒existsPivot {f = f} f-injective i
   with any? (λ j → j ≤? i ×-dec i ≤? f j)
 ... | yes result = result
-... | no ¬result = flip contradiction notInjective-Fin[1+n]→Fin[n] f∘inject!-injective
+... | no ¬result = contradiction′ notInjective-Fin[1+n]→Fin[n] f∘inject!-injective
   where
   fj<i : (j : Fin′ (suc i)) → f (inject! j) < i
   fj<i j with f (inject! j) <? i
