@@ -20,6 +20,9 @@ Minor improvements
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
+  Furthermore, because the *eager* insertion of implicit arguments during type
+  inference interacts badly with `contradiction`, we introduce an explicit name
+  `contradiction′` for its `flip`ped version.
 
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
@@ -111,10 +114,18 @@ Additions to existing modules
   ≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
   ```
 
+* In `Data.Nat.ListAction.Properties`
+  ```agda
+  *-distribˡ-sum : ∀ m ns → m * sum ns ≡ sum (map (m *_) ns)
+  *-distribʳ-sum : ∀ m ns → sum ns * m ≡ sum (map (_* m) ns)
+  ^-distribʳ-product : ∀ m ns → product ns ^ m ≡ product (map (_^ m) ns)
+  ```
+
 * In `Data.Nat.Properties`:
   ```agda
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   ```
 
 * In `Data.Vec.Properties`:
@@ -140,5 +151,6 @@ Additions to existing modules
 
 * In `Relation.Nullary.Negation.Core`
   ```agda
-  ¬¬-η : A → ¬ ¬ A
+  ¬¬-η           : A → ¬ ¬ A
+  contradiction′ : ¬ A → A → Whatever
   ```
