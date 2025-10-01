@@ -28,7 +28,7 @@ open import Relation.Nullary.Recomputable.Core as Recomputable
 open import Relation.Nullary.Reflects as Reflects
   hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
-  using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
+  using (¬_; ¬¬-η; Stable; negated-stable; contradiction; DoubleNegation)
 
 
 private
@@ -215,7 +215,7 @@ decidable-stable (true  because  [a]) ¬¬a = invert [a]
 decidable-stable (false because [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
-¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
+¬-drop-Dec ¬¬a? = map′ negated-stable ¬¬-η (¬? ¬¬a?)
 
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).

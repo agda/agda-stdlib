@@ -367,6 +367,23 @@ record IsAbelianGroup (∙ : Op₂ A)
 -- Structures with 2 binary operations & 1 element
 ------------------------------------------------------------------------
 
+-- In what follows, for all the `IsXRing` structures, there is a
+-- fundamental representation problem, namely how to associate the
+-- multiplicative structure to the additive, in such a way as to avoid
+-- the possibility of ambiguity as to the underlying `IsEquivalence`
+-- substructure which is to be *shared* between the two operations.
+
+-- The `stdlib` designers have chosen to privilege the underlying
+-- *additive* structure over the multiplicative: thus for structure
+-- `IsNearSemiring` defined here, the additive structure is declared
+-- via a field `+-isMonoid : IsMonoid + 0#`, while the multiplicative
+-- is given 'unbundled' as the *components* of an `IsSemigroup *` structure,
+-- namely as an operation satisfying both `*-cong : Congruent₂ *` and
+-- also `*-assoc : Associative *`, from which the corresponding `IsMagma *`
+-- and `IsSemigroup *` are then immediately derived.
+
+-- Similar considerations apply to all of the `Ring`-like structures below.
+
 record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     +-isMonoid    : IsMonoid + 0#
