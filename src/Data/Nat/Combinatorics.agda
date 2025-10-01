@@ -122,7 +122,7 @@ module _ {n k} (k<n : k < n) where
     [n-k-1]!         = [n-k-1] !
 
     [n-k]≡1+[n-k-1]  : [n-k] ≡ suc [n-k-1]
-    [n-k]≡1+[n-k-1]  = +-∸-assoc 1 k<n
+    [n-k]≡1+[n-k-1]  = ∸-suc k<n
 
 
   [n-k]*[n-k-1]!≡[n-k]! : [n-k] * [n-k-1]! ≡ [n-k]!
