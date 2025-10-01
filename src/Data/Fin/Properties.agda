@@ -29,7 +29,7 @@ open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
-open import Function.Base using (_∘_; id; _$_; flip; const; λ-; _$-)
+open import Function.Base using (_∘_; id; _$_; const; λ-; _$-)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
@@ -49,7 +49,8 @@ open import Relation.Binary.PropositionalEquality as ≡
   using (≡-≟-identity; ≢-≟-identity)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
@@ -1074,7 +1075,7 @@ decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
 
   dec[Q⊆P] : Dec (Q ⊆ P)
   dec[Q⊆P] with Q? zero
-  ... | no ¬q₀ = map′ (cons (flip contradiction ¬q₀)) Q⊆P⇒Q⊆ₛP ih
+  ... | no ¬q₀ = map′ (cons (contradiction′ ¬q₀)) Q⊆P⇒Q⊆ₛP ih
   ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×-dec ih)
 
 ------------------------------------------------------------------------
