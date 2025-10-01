@@ -20,6 +20,9 @@ Minor improvements
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
+  Furthermore, because the *eager* insertion of implicit arguments during type
+  inference interacts badly with `contradiction`, we introduce an explicit name
+  `contradiction′` for its `flip`ped version.
 
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
@@ -109,5 +112,6 @@ Additions to existing modules
 
 * In `Relation.Nullary.Negation.Core`
   ```agda
-  ¬¬-η : A → ¬ ¬ A
+  ¬¬-η           : A → ¬ ¬ A
+  contradiction′ : ¬ A → A → Whatever
   ```
