@@ -24,6 +24,9 @@ Minor improvements
   inference interacts badly with `contradiction`, we introduce an explicit name
   `contradiction′` for its `flip`ped version.
 
+* As a consequence, the type of `Data.Fin.Base.lower₁` has been correspondingly
+  weakened so that the negated hypothesis `n≢i : n ≢ toℕ i` is marked irrelevant.
+
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
   README.Data.Fin.Relation.Unary.Top
