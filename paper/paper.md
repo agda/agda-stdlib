@@ -92,24 +92,22 @@ bibliography: paper.bib
 # Summary
 
 Agda [@agda2024manual] is a dependently-typed functional language that serves as both a programming language and an interactive theorem prover (ITP).
-In Agda, one can formulate requirements on programs as types, and build programs satisfying these requirements interactively.
+In Agda, one can formulate requirements on programs as types and build programs satisfying these requirements interactively.
 The Curry-Howard correspondance [@DBLP:journals/cacm/Wadler15] allows types and programs to be seen as theorems and proofs.
-
-We present the Agda standard library [@agda-stdlib-v2.0] (`agda-stdlib`), which provides definitions helpful in the development of programs and proofs.
-Unlike standard libraries of traditional programming languages, `agda-stdlib` provides not only standard utilities and data structures, but also basic discrete mathematics useful for proving the correctness of programs.
+We present the Agda standard library [@agda-stdlib-v2.0] (`agda-stdlib`), which provides functions and mathematical concepts helpful in the development of both programs and proofs.
 
 # Statement of need
 
-Aside from the normal justifications for the existence of standard libraries, there are two reasons why `agda-stdlib` is uniquely needed.
+Besides providing common utilities and data structures, `agda-stdlib` is especially necessary compared to standard libraries for traditional languages for two reasons.
 
-First, Agda as a language is small and does not include concepts usually considered part of a language (such as integers and strings).
-This reduces compiler complexity, but means that `agda-stdlib` must define such concepts itself.
+First, Agda is a small, powerful language that omits concepts usually built-in to a language (e.g. numbers, strings).
+This reduces compiler complexity, but leaves `agda-stdlib` to define them.
 
-Second, as program correctness is important for most Agda users, the functions provided by `agda-stdlib` come with correctness guarantees. Such proofs often require significant effort which should not be offloaded to users.
+Second, functions in `agda-stdlib` come with correctness proofs - these require substantial work that should not fall to users.
 
 # Impact
 
-A wide range of projects make use of `agda-stdlib`, including:
+A wide range of projects use `agda-stdlib`, including:
 
 - Programming Language Foundations in Agda [@plfa22.08]
 
@@ -123,14 +121,12 @@ A wide range of projects make use of `agda-stdlib`, including:
 
 - Verification of routing protocols [@daggitt2023routing]
 
-The development of `agda-stdlib` has also had a synergistic relationship with that of Agda itself, helping to both test and motivate new language features.
-For example, Agda supports a wide range of incompatible language extensions and `agda-stdlib` is designed modularly in order to be compatible with many different combinations of extensions.
-Modules then request the minimal expressive power needed.
-To facilitate this, Agda's extensions were categorised as "infective", "coinfective" or "neither", where
-"infective" options impact all the import*ing* modules and "coinfective" options impact the import*ed* modules.
-The library has also acted as a test bed for different approaches to defining co-inductive data types in Agda.
+The library has had a synergistic relationship with Agda itself, both testing and motivating new language features.
+For example, since Agda supports many incompatible language extensions, `agda-stdlib` is structured modularly to remain compatible with different combinations of extensions.
+Each module requests only the minimal expressive power it needs and to facilitate this Agda now categories extensions as "infective" (affecting all import*ing* modules), "coinfective" (affecting all import*ed* modules) or "neither".
+The library has also served as a test bed for alternative approaches to defining co-inductive data types in Agda.
 
-# Design Challenges
+# Design
 
 Organising libraries of discrete mathematics and algebra coherently is notoriously difficult
 [@carette2020leveraging] [@cohen2020hierarchy].
@@ -145,7 +141,7 @@ We believe that `agda-stdlib` has been one of the first ITP standard libraries t
 
 The library has also embraced Agda's parametrised modules to facilitate polymorphism [@ivardeBruin2023].
 This contrasts with other functional languages which often rely on type classes for similar functionality.
-This lets users specify in a single location how to instantiate the abstract parameters in the module and reduces the overhead of instance search.
+This allows users specify in a single location how to instantiate the abstract parameters in the module and reduces the overhead of instance search.
 A drawback is imports must be qualified when instantiating code multiple times in the same scope.
 The library also uses parameterised modules to safely and scalably embed non-constructive mathematics into a constructive library.
 
@@ -154,7 +150,7 @@ The library also uses parameterised modules to safely and scalably embed non-con
 Correctness proofs do not remove the need for testing performance and features that cannot be reasoned about internally (such the FFI and macros).
 However, the test suite's coverage is incomplete as this is not a priority for the community.
 
-# Notable improvements in version 2.0
+# Version 2.0
 
 Version 2.0 of `agda-stdlib` [@agda-stdlib-v2.0] has attempted to address some of the design flaws and missing functionality of previous versions, including:
 
@@ -165,8 +161,6 @@ Version 2.0 of `agda-stdlib` [@agda-stdlib-v2.0] has attempted to address some o
 - Tactics Library: expanded the list of available tactics, although experiments suggest performance can be improved.
 
 - Testing Framework: introduced a golden testing framework to let users write their own test suites.
-
-HTML-annotated sources for version 2.0 of `agda-stdlib` is available at \url{https://agda.github.io/agda-stdlib/v2.0/}.
 
 # Acknowledgements
 
