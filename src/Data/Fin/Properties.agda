@@ -1060,51 +1060,45 @@ private
 
 module _ (P : Pred (Fin n) p) where
 
-  record MinimalCounterexample : Set p where
-    constructor μ
+  record Least⟨¬_⟩ : Set p where
+    constructor least
     field
       witness : Fin n
       .contra : ¬ P witness
       minimal : ∀ {j} → .(j < witness) → P j
 
-  record MinimalExample : Set p where
-    constructor μ
+  record Least⟨_⟩ : Set p where
+    constructor least
     field
       witness : Fin n
       example : P witness
       minimal : ∀ {j} → .(j < witness) → ¬ P j
 
-μ⟨_⟩ : Pred (Fin n) p → Set p
-μ⟨_⟩ = MinimalExample
-
-μ⟨¬_⟩ : Pred (Fin n) p → Set p
-μ⟨¬_⟩ = MinimalCounterexample
-
-¬¬μ⇒μ : ∀ {P : Pred (Fin n) p} → Decidable P → μ⟨¬ ∁ P ⟩ → μ⟨ P ⟩
-¬¬μ⇒μ P? (μ i ¬¬pᵢ ∀[j<i]) = μ i (decidable-stable (P? i) (¬-recompute ¬¬pᵢ)) ∀[j<i]
-
-searchMinimalCounterexample : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
-searchMinimalCounterexample {zero}  {P = _} P? = inj₁ λ()
-searchMinimalCounterexample {suc _} {P = P} P? with P? zero
-... | no ¬p₀ = inj₂ (μ zero ¬p₀ λ())
-... | yes p₀ = Sum.map (∀-cons p₀) μ⁺ (searchMinimalCounterexample (P? ∘ suc))
+search-least⟨¬_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ Least⟨¬ P ⟩
+search-least⟨¬_⟩ {n = zero}  {P = _} P? = inj₁ λ()
+search-least⟨¬_⟩ {n = suc _} {P = P} P? with P? zero
+... | no ¬p₀ = inj₂ (least zero ¬p₀ λ())
+... | yes p₀ = Sum.map (∀-cons p₀) least⁺ search-least⟨¬ P? ∘ suc ⟩
   where
-  μ⁺ : μ⟨¬ P ∘ suc ⟩ → μ⟨¬ P ⟩
-  μ⁺ (μ i ¬pₛᵢ ∀[j<i]P) = μ (suc i) ¬pₛᵢ
+  least⁺ : Least⟨¬ P ∘ suc ⟩ → Least⟨¬ P ⟩
+  least⁺ (least i ¬pₛᵢ ∀[j<i]P) = least (suc i) ¬pₛᵢ
     λ where
       {zero}  _     → p₀
       {suc _} sj<si → ∀[j<i]P (ℕ.s<s⁻¹ sj<si)
 
-search-μ⟨¬_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
-search-μ⟨¬_⟩ = searchMinimalCounterexample
+module _ {P : Pred (Fin n) p} (P? : Decidable P) where
+
+  ¬¬least⇒least : Least⟨¬ ∁ P ⟩ → Least⟨ P ⟩
+  ¬¬least⇒least (least i ¬¬pᵢ ∀[j<i]) =
+    least i (decidable-stable (P? i) (¬-recompute ¬¬pᵢ)) ∀[j<i]
 
 ¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
                  ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
 ¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
-¬∀⟶∃¬-smallest (suc n) P P? ¬∀P = [ flip contradiction ¬∀P , lemma ] $ search-μ⟨¬ P? ⟩
+¬∀⟶∃¬-smallest (suc n) P P? ¬∀P = [ contradiction′ ¬∀P , lemma ] $ search-least⟨¬ P? ⟩
   where
-  lemma : μ⟨¬ P ⟩ → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
-  lemma (μ i ¬pᵢ ∀[j<i]P) = i , ¬-recompute ¬pᵢ , λ j → ∀[j<i]P (inject-< j)
+  lemma : Least⟨¬ P ⟩ → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+  lemma (least i ¬pᵢ ∀[j<i]P) = i , ¬-recompute ¬pᵢ , λ j → ∀[j<i]P (inject-< j)
 
 -- When P is a decidable predicate over a finite set the following
 -- lemma can be proved.

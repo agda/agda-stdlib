@@ -73,27 +73,24 @@ Additions to existing modules
   ≟-≡          : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
   ≟-≡-refl     : (i : Fin n) → (i ≟ i) ≡ yes refl
   ≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
-  inject-< : inject j < i
+  inject-<     : inject j < i
 
-  record MinimalExample (P : Pred (Fin n) p) : Set p where
-    constructor μ
+  record Least⟨_⟩ (P : Pred (Fin n) p) : Set p where
+    constructor least
     field
       witness : Fin n
       example : P witness
       minimal : ∀ {j} → .(j < witness) → ¬ P j
 
-  record MinimalCounterexample (P : Pred (Fin n) p) : Set p where
+  record Least⟨¬_⟩ (P : Pred (Fin n) p) : Set p where
     constructor μ
     field
       witness : Fin n
       .contra : ¬ P witness
       minimal : ∀ {j} → .(j < witness) → P j
 
-  μ⟨_⟩  : Pred (Fin n) p → Set p
-  μ⟨¬_⟩ : Pred (Fin n) p → Set p
-  ¬¬μ⇒μ : Decidable P → μ⟨¬ ∁ P ⟩ → μ⟨ P ⟩
-  searchMinimalCounterexample : Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
-  search-μ⟨¬_⟩                : Decidable P → Π[ P ] ⊎ μ⟨¬ P ⟩
+  search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨¬ P ⟩
+  ¬¬least⇒least    : Decidable P → Least⟨¬ ∁ P ⟩ → Least⟨ P ⟩
   ```
 
 * In `Data.Nat.ListAction.Properties`
