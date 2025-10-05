@@ -11,6 +11,8 @@ Bug-fixes
 
 * Fix a type error in `README.Data.Fin.Relation.Unary.Top` within the definition of `>-weakInduction`.
 
+* Fix a typo in `Algebra.Morphism.Construct.DirectProduct`.
+
 Non-backwards compatible changes
 --------------------------------
 
