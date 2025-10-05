@@ -496,14 +496,14 @@ map-truncate : (f : A → B) (m≤n : m ≤ n) (xs : Vec A n) →
   map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
 map-truncate {m = m} {n = n} f m≤n xs =
   let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+  in let m+o≡n = sym n≡m+o
   in begin
-    map f (truncate m≤n xs)              ≡⟨ cong (map f) (truncate≡take m≤n xs (sym n≡m+o)) ⟩
-    map f (take m (cast (sym n≡m+o) xs)) ≡⟨ sym (take-map f m _) ⟩
-    take m (map f (cast (sym n≡m+o) xs)) ≡⟨ cong (take m) (map-cast f (sym n≡m+o) xs) ⟩
-    take m (cast (sym n≡m+o) (map f xs)) ≡⟨ sym (truncate≡take m≤n (map f xs) (sym n≡m+o)) ⟩
+    map f (truncate m≤n xs)              ≡⟨ cong (map f) (truncate≡take m≤n xs m+o≡n) ⟩
+    map f (take m (cast m+o≡n xs)) ≡⟨ take-map f m _ ⟨
+    take m (map f (cast m+o≡n xs)) ≡⟨ cong (take m) (map-cast f m+o≡n xs) ⟩
+    take m (cast m+o≡n (map f xs)) ≡⟨ truncate≡take m≤n (map f xs) m+o≡n ⟨
     truncate m≤n (map f xs)              ∎
-  where
-    open ≡-Reasoning
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _++_
