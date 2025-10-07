@@ -401,25 +401,20 @@ module Antisymmetry
   open ℕ.≤-Reasoning
 
   antisym : Antisym (Sublist R) (Sublist S) (Pointwise E)
-  antisym []        []        = []
-  antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
   -- impossible cases
-  antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
+  antisym (_∷ʳ_ {xs} {ys₁} y rs) ss =
     contradiction (begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
-    length zs        ≤⟨ ℕ.n≤1+n (length zs) ⟩
-    length (z ∷ zs)  ≤⟨ length-mono-≤ rs ⟩
+    length xs        ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
-  antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
-    contradiction (begin
-    length (z ∷ zs) ≤⟨ length-mono-≤ rs ⟩
-    length ys₁      ≤⟨ length-mono-≤ ss ⟩
-    length zs       ∎) $ ℕ.<-irrefl ≡.refl
   antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
     contradiction (begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length xs        ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
+  -- diagonal cases
+  antisym []        []        = []
+  antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
 
 open Antisymmetry public
 
