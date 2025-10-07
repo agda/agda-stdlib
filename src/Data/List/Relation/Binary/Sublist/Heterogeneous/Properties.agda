@@ -400,18 +400,19 @@ module Antisymmetry
 
   open ℕ.≤-Reasoning
 
+  private
+    antisym-lemma : ∀ xs ys₁ y → Sublist R xs ys₁ → ¬ Sublist S (y ∷ ys₁) xs
+    antisym-lemma xs ys₁ y rs ss = ℕ.<-irrefl ≡.refl (begin
+      length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
+      length xs        ≤⟨ length-mono-≤ rs ⟩
+      length ys₁       ∎)
+
   antisym : Antisym (Sublist R) (Sublist S) (Pointwise E)
   -- impossible cases
   antisym (_∷ʳ_ {xs} {ys₁} y rs) ss =
-    contradiction (begin
-    length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
-    length xs        ≤⟨ length-mono-≤ rs ⟩
-    length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
+    case (antisym-lemma xs ys₁ y rs ss) of λ()
   antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
-    contradiction (begin
-    length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
-    length xs        ≤⟨ length-mono-≤ rs ⟩
-    length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
+    case (antisym-lemma xs ys₁ y rs ss) of λ()
   -- diagonal cases
   antisym []        []        = []
   antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
