@@ -48,8 +48,8 @@ on:
 ########################################################################
 
 env:
-  GHC_VERSION: 9.10.1
-  CABAL_VERSION: 3.12.1.0
+  GHC_VERSION: 9.12.2
+  CABAL_VERSION: 3.16.0.0
   CABAL_V1_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
   AGDA: agda -Werror +RTS -M5G -H3.5G -A128M -RTS -i. -isrc -idoc
@@ -76,11 +76,12 @@ jobs:
           if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
              || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
-            echo "AGDA_COMMIT=ef912c68fd329ad3046d156e3c1a70a7fec19ba1" >> "${GITHUB_ENV}";
+            echo "AGDA_COMMIT=3d04bacca842729f9c0869b9287256321b5f450f" >> "${GITHUB_ENV}";
+              # Andreas, 2025-10-07: 3d04bacca842729f9c0869b9287256321b5f450f is tags/v2.8.0
             echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_ENV}"
           else
             # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.8.0-rc3" >> "${GITHUB_ENV}";
+            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_ENV}";
             echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_ENV}"
           fi
 
@@ -148,7 +149,7 @@ jobs:
 
       # By default github actions do not pull the repo
       - name: Checkout stdlib
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Test stdlib
         run: |
