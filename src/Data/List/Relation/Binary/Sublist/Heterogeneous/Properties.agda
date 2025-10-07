@@ -29,7 +29,7 @@ open import Function.Base
 open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
 open import Function.Consequences.Propositional using (strictlySurjective⇒surjective)
 open import Relation.Nullary.Decidable as Dec using (Dec; does; _because_; yes; no; ¬?)
-open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Negation using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
@@ -410,9 +410,9 @@ module Antisymmetry
   antisym : Antisym (Sublist R) (Sublist S) (Pointwise E)
   -- impossible cases
   antisym (_∷ʳ_ {xs} {ys₁} y rs) ss =
-    case (antisym-lemma xs ys₁ y rs ss) of λ()
+    contradiction′ (antisym-lemma xs ys₁ y rs) ss
   antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
-    case (antisym-lemma xs ys₁ y rs ss) of λ()
+    contradiction′ (antisym-lemma xs ys₁ y rs) ss
   -- diagonal cases
   antisym []        []        = []
   antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
