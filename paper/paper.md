@@ -129,10 +129,10 @@ The library has also served as a test bed for alternative approaches to defining
 # Design
 
 Organising libraries of discrete mathematics and algebra coherently is notoriously difficult
-[@carette2020leveraging] [@cohen2020hierarchy].
+[@carette2020leveraging; @cohen2020hierarchy].
 There is a tension between maximising generality and providing direct, intuitive definitions.
 Mathematical objects often admit multiple representations with different benefits, but this leads to redundancy.
-Some ITPs ([@coq2024manual], [@paulson1994isabelle]) have a rich ecosystem of external libraries, avoiding canonical definitions at the cost of incompatibilities.
+Some ITPs ([@coq2024manual; @paulson1994isabelle]) have a rich ecosystem of external libraries, avoiding canonical definitions at the cost of incompatibilities.
 We have chosen, like Lean's `mathlib` [@van2020maintaining], to provide a repository of canonical definitions.
 
 `agda-stdlib` adopts the "intrinsic style" of dependent types, where data structures themselves contain correctness invariants.
