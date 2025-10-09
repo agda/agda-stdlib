@@ -46,6 +46,12 @@ Deprecated names
   interchange  ↦   medial
   ```
 
+* In `Data.Fin.Properties`:
+  ```agda
+  ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
+  ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  ```
+
 New modules
 -----------
 
