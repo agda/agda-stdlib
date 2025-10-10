@@ -48,17 +48,18 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.PropositionalEquality as ≡
   using (≡-≟-identity; ≢-≟-identity)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
+  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′; decidable-stable)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; contradiction′)
+open import Relation.Nullary.Recomputable using (¬-recompute)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
-  using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
+  using (U; Pred; Decidable; _⊆_; ∁; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
 
 private
   variable
-    a : Level
+    a p q : Level
     A : Set a
     m n o : ℕ
     i j : Fin n
@@ -469,6 +470,10 @@ i<1+i = ℕ.n<1+n ∘ toℕ
 toℕ-inject : ∀ {i : Fin n} (j : Fin′ i) → toℕ (inject j) ≡ toℕ j
 toℕ-inject {i = suc i} zero    = refl
 toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
+
+inject-< : ∀ {i : Fin n} (j : Fin′ i) → inject j < i
+inject-< {i = suc i} zero    = z<s
+inject-< {i = suc i} (suc j) = s<s (inject-< j)
 
 ------------------------------------------------------------------------
 -- inject₁
@@ -1049,16 +1054,51 @@ private
   note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
           , refl
 
--- If a decidable predicate P over a finite set is sometimes false,
--- then we can find the smallest value for which this is the case.
+------------------------------------------------------------------------
+-- A decidable predicate P over a finite set is either always true,
+-- or else we can find the smallest value for which P is false.
+
+module _ (P : Pred (Fin n) p) where
+
+  record Least⟨¬_⟩ : Set p where
+    constructor least
+    field
+      witness : Fin n
+      .contra : ¬ P witness
+      minimal : ∀ {j} → .(j < witness) → P j
+
+  record Least⟨_⟩ : Set p where
+    constructor least
+    field
+      witness : Fin n
+      example : P witness
+      minimal : ∀ {j} → .(j < witness) → ¬ P j
+
+search-least⟨¬_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ Least⟨¬ P ⟩
+search-least⟨¬_⟩ {n = zero}  {P = _} P? = inj₁ λ()
+search-least⟨¬_⟩ {n = suc _} {P = P} P? with P? zero
+... | no ¬p₀ = inj₂ (least zero ¬p₀ λ())
+... | yes p₀ = Sum.map (∀-cons p₀) least⁺ search-least⟨¬ P? ∘ suc ⟩
+  where
+  least⁺ : Least⟨¬ P ∘ suc ⟩ → Least⟨¬ P ⟩
+  least⁺ (least i ¬pₛᵢ ∀[j<i]P) = least (suc i) ¬pₛᵢ
+    λ where
+      {zero}  _     → p₀
+      {suc _} sj<si → ∀[j<i]P (ℕ.s<s⁻¹ sj<si)
+
+module _ {P : Pred (Fin n) p} (P? : Decidable P) where
+
+  ¬¬least⇒least : Least⟨¬ ∁ P ⟩ → Least⟨ P ⟩
+  ¬¬least⇒least (least i ¬¬pᵢ ∀[j<i]) =
+    least i (decidable-stable (P? i) (¬-recompute ¬¬pᵢ)) ∀[j<i]
 
 ¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
                  ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
 ¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
-¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
-... | false because [¬P₀] = (zero , invert [¬P₀] , λ ())
-... | true  because  [P₀] = map suc (map id (∀-cons (invert [P₀])))
-  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons (invert [P₀]))))
+¬∀⟶∃¬-smallest (suc n) P P? ¬∀P = [ contradiction′ ¬∀P , lemma ] $ search-least⟨¬ P? ⟩
+  where
+  lemma : Least⟨¬ P ⟩ → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+  lemma (least i ¬pᵢ ∀[j<i]P) = i , ¬-recompute ¬pᵢ , λ j → ∀[j<i]P (inject-< j)
 
 -- When P is a decidable predicate over a finite set the following
 -- lemma can be proved.
