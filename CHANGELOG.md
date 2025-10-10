@@ -134,6 +134,27 @@ Additions to existing modules
 
 * In `Data.Vec.Properties`:
   ```agda
+  updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                  updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
+
+  truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
+                    truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+
+  truncate-zipWith-truncate : (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o) (xs : Vec A o) (ys : Vec B n) →
+                              truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
+                              zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
+
+  truncate-updateAt : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
+                      updateAt (truncate m≤n xs) i f ≡
+                      truncate m≤n (updateAt xs (inject≤ i m≤n) f)
+
+  updateAt-truncate : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                      updateAt (truncate (m≤m+n m n) xs) i f ≡
+                      truncate (m≤m+n m n) (updateAt xs (inject≤ i (m≤m+n m n)) f)
+
+  map-truncate : (f : A → B) (m≤n : m ≤ n) (xs : Vec A n) →
+                map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+
   padRight-lookup : (m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) → lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
 
   padRight-map : (f : A → B) (m≤n : m ≤ n) (a : A) (xs : Vec A m) → map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
