@@ -1,0 +1,5 @@
+snapshot: lts-24.11
+compiler: ghc-9.10.2
+compiler-check: match-exact
+packages:
+- .
