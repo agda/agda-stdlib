@@ -29,7 +29,7 @@ open import Function.Base
 open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
 open import Function.Consequences.Propositional using (strictlySurjective⇒surjective)
 open import Relation.Nullary.Decidable as Dec using (Dec; does; _because_; yes; no; ¬?)
-open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Negation using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
@@ -400,26 +400,21 @@ module Antisymmetry
 
   open ℕ.≤-Reasoning
 
+  private
+    antisym-lemma : Sublist R xs ys → ¬ Sublist S (y ∷ ys) xs
+    antisym-lemma {xs} {ys} {y} rs ss = ℕ.<-irrefl ≡.refl $ begin
+      length (y ∷ ys) ≤⟨ length-mono-≤ ss ⟩
+      length xs       ≤⟨ length-mono-≤ rs ⟩
+      length ys       ∎
+
   antisym : Antisym (Sublist R) (Sublist S) (Pointwise E)
+  -- impossible cases
+  antisym (_ ∷ʳ rs) ss = contradiction′ (antisym-lemma rs) ss
+  antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
+    contradiction′ (antisym-lemma rs) ss
+  -- diagonal cases
   antisym []        []        = []
   antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
-  -- impossible cases
-  antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
-    contradiction (begin
-    length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
-    length zs        ≤⟨ ℕ.n≤1+n (length zs) ⟩
-    length (z ∷ zs)  ≤⟨ length-mono-≤ rs ⟩
-    length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
-  antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
-    contradiction (begin
-    length (z ∷ zs) ≤⟨ length-mono-≤ rs ⟩
-    length ys₁      ≤⟨ length-mono-≤ ss ⟩
-    length zs       ∎) $ ℕ.<-irrefl ≡.refl
-  antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
-    contradiction (begin
-    length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
-    length xs        ≤⟨ length-mono-≤ rs ⟩
-    length ys₁       ∎) $ ℕ.<-irrefl ≡.refl
 
 open Antisymmetry public
 

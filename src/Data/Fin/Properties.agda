@@ -1088,24 +1088,26 @@ pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × 
 pigeonhole z<s               f = contradiction (f zero) λ()
 pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
 ... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
-... | no  f₀≢fₖ
-  with i , j , i<j , fᵢ≡fⱼ ← pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
-  = suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
-
-injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
-injective⇒≤ {zero}  {_}     {f} _   = z≤n
-injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
-injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
-  suc-injective (inj (punchOut-injective
-    (contraInjective inj 0≢1+n)
-    (contraInjective inj 0≢1+n) eq))))
+... | no  f₀≢fₖ =
+  let i , j , i<j , fᵢ≡fⱼ = pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
+  in suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
 <⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
-<⇒notInjective n<m inj = ℕ.≤⇒≯ (injective⇒≤ inj) n<m
+<⇒notInjective {f = f} n<m inj =
+  let i , j , i<j , fᵢ≡fⱼ = pigeonhole n<m f in <-irrefl (inj fᵢ≡fⱼ) i<j
+
+-- specialised to m = suc n
+
+private
+  notInjective-Fin[1+n]→Fin[n] : ∀ {f : Fin (suc n) → Fin n} → ¬ (Injective _≡_ _≡_ f)
+  notInjective-Fin[1+n]→Fin[n] {n = n} = <⇒notInjective (ℕ.n<1+n n)
+
+injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
+injective⇒≤ = ℕ.≮⇒≥ ∘ flip <⇒notInjective
 
 ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f inj = ℕ.<-irrefl refl
-  (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
+ℕ→Fin-notInjective f =
+  notInjective-Fin[1+n]→Fin[n] ∘ Comp.injective _≡_ _≡_ _≡_ toℕ-injective
 
 -- Cantor-Schröder-Bernstein for finite sets
 
@@ -1120,7 +1122,7 @@ injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f 
 injective⇒existsPivot {f = f} f-injective i
   with any? (λ j → j ≤? i ×-dec i ≤? f j)
 ... | yes result = result
-... | no ¬result = contradiction (injective⇒≤ f∘inject!-injective) ℕ.1+n≰n
+... | no ¬result = contradiction′ notInjective-Fin[1+n]→Fin[n] f∘inject!-injective
   where
   fj<i : (j : Fin′ (suc i)) → f (inject! j) < i
   fj<i j with f (inject! j) <? i
