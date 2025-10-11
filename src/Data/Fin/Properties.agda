@@ -1054,7 +1054,7 @@ private
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
 
--- Kleisli lifting of Dec over Unary subset relation
+-- lifting Dec over Unary subset relation
 
 decFinSubset : ∀ {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
