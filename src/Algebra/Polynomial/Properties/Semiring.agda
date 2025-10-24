@@ -1,14 +1,14 @@
 open import Algebra.Bundles using (Magma; Semiring)
 
-module Algebra.Polynomial.Properties
+module Algebra.Polynomial.Properties.Semiring
   {ℓ₁ ℓ₂}
   (SR : Semiring ℓ₁ ℓ₂)
   where
 
 open import Algebra.Bundles.Raw 
 import Algebra.Definitions as Def
-import Algebra.Polynomial.Poly.Properties SR as Poly
-open import Algebra.Polynomial.Base SR
+import Algebra.Polynomial.Poly.Properties.Semiring SR as Poly
+open import Algebra.Polynomial.Base.Semiring SR
   using ( Polynomial; _,_;  _≈_; shift; _+_; _*_; _·_
         ; zero; one; refl; sym; trans)
 open import Algebra.Structures

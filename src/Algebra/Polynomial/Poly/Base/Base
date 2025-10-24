@@ -1,6 +1,6 @@
 open import Algebra.Bundles using (Semiring)
 
-module Algebra.Polynomial.Poly.Base
+module Algebra.Polynomial.Poly.Base.Semiring
   {ℓ₁ ℓ₂} (SR : Semiring ℓ₁ ℓ₂)
   where
 

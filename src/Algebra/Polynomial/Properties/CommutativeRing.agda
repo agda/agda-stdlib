@@ -1,7 +1,7 @@
 open import Algebra.Bundles using (Magma; CommutativeRing)
 open import Algebra.Bundles.Raw
 
-module Algebra.Polynomial.Properties2
+module Algebra.Polynomial.Properties.CommutativeRing
   {ℓ₁ ℓ₂}
   (CR : CommutativeRing ℓ₁ ℓ₂)
   where
@@ -9,8 +9,8 @@ module Algebra.Polynomial.Properties2
 import Algebra.Consequences.Setoid as C
   using (comm∧distrʳ⇒distrˡ ; comm∧idʳ⇒idˡ)
 import Algebra.Definitions as Def
-import Algebra.Polynomial.Poly.Properties2 CR as Poly
-open import Algebra.Polynomial.Base2 CR
+import Algebra.Polynomial.Poly.Properties.CommutativeRing CR as Poly
+open import Algebra.Polynomial.Base.CommutativeRing CR
   using ( Polynomial; _,_;  _≈_; shift; _+_; _*_; _·_
         ; zero; one; -_; refl; sym; trans)
 open import Algebra.Properties.AbelianGroup
@@ -156,8 +156,6 @@ rawSemiring = record
   ; 0# = zero
   ; 1# = one
   }
-
-
 
 rawRing : Algebra.Bundles.Raw.RawRing _ _
 rawRing = record

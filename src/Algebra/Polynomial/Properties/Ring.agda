@@ -1,14 +1,14 @@
 open import Algebra.Bundles using (Magma; Ring)
 
-module Algebra.Polynomial.Properties1
+module Algebra.Polynomial.Properties.Ring
   {ℓ₁ ℓ₂}
   (R : Ring ℓ₁ ℓ₂)
   where
 
 open import Algebra.Bundles.Raw 
 import Algebra.Definitions as Def
-import Algebra.Polynomial.Poly.Properties1 R as Poly
-open import Algebra.Polynomial.Base1 R
+import Algebra.Polynomial.Poly.Properties.Ring R as Poly
+open import Algebra.Polynomial.Base.Ring R
   using ( Polynomial; _,_;  _≈_; shift; _+_; _*_; _·_
         ; zero; one; -_; refl; sym; trans)
 open import Algebra.Properties.AbelianGroup

@@ -136,8 +136,7 @@ x≈ε⇒x⁻¹≈ε {x} x≈ε = begin
 x⁻¹≈ε⇒x≈ε : ∀ {x} → x ⁻¹ ≈ ε → x ≈ ε
 x⁻¹≈ε⇒x≈ε {x} x⁻¹≈ε = begin
   x       ≈⟨ ⁻¹-involutive x ⟨
-  x ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong x⁻¹≈ε ⟩
-  ε ⁻¹    ≈⟨  ε⁻¹≈ε ⟩
+  x ⁻¹ ⁻¹ ≈⟨ x≈ε⇒x⁻¹≈ε x⁻¹≈ε ⟩
   ε ∎
 
 ⁻¹-injective : Injective _≈_ _≈_ _⁻¹

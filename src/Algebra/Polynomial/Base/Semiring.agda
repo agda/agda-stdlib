@@ -1,17 +1,17 @@
-open import Algebra.Bundles using (Ring)
+open import Algebra.Bundles using (Semiring)
 open import Data.Nat.Base as ℕ using (ℕ; _⊔_; suc; pred)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using ([]; _∷_)
 import Level as L
 
-module Algebra.Polynomial.Base1
-  {ℓ₁ ℓ₂} (R : Ring ℓ₁ ℓ₂)
+module Algebra.Polynomial.Base.Semiring
+  {ℓ₁ ℓ₂} (SR : Semiring ℓ₁ ℓ₂)
   where
 
-open import Algebra.Polynomial.Poly.Base1 R as Poly
+open import Algebra.Polynomial.Poly.Base.Semiring SR as Poly
   using (Poly; zeros)
 
-open Ring R
+open Semiring SR
   using (0#; 1#)
   renaming (Carrier to A)
 
@@ -25,6 +25,8 @@ private
 ---------------------------------------------------
 -- Types
 
+-- The degree of the polynomial denotes the length of the vector
+-- The polynomial a₀ + a₁x + ⋯ + aₙxⁿ has degree n+1
 record Polynomial : Set ℓ₁ where
   constructor _,_
   field
@@ -33,7 +35,7 @@ record Polynomial : Set ℓ₁ where
 
 private
   variable
-    P Q W : Polynomial
+    P Q R : Polynomial
 
 -- Equivalence relation for representations of polynomials
 infix 4 _≈_
@@ -46,7 +48,7 @@ refl = Poly.refl
 sym : P ≈ Q → Q ≈ P
 sym = Poly.sym
 
-trans : P ≈ Q → Q ≈ W → P ≈ W
+trans : P ≈ Q → Q ≈ R → P ≈ R
 trans = Poly.trans
 
 --------------------------------------------------
@@ -61,13 +63,14 @@ one = (1 , (1# ∷ []))
 ---------------------------------------------------
 -- Operations
 
--- Multiply the polynomial by a factor of x
+-- Multiply the polynomial by x
 shift : Polynomial → Polynomial
 shift (m , p) = (suc m , Poly.shift p)
 
--- Negation
--_ : Polynomial → Polynomial
-- (m , p) = (m , Poly.- p)
+-- Multiply the polynomial by xⁿ
+shift-by-n : (n : ℕ) → Polynomial → Polynomial
+shift-by-n 0 (m , p) = (m , p)
+shift-by-n (suc n) (m , p) = shift (shift-by-n n (m , p))
 
 -- Scaling
 _·_ : A → Polynomial → Polynomial
