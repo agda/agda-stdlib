@@ -51,7 +51,6 @@ open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′; decidable-stable)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; contradiction′)
-open import Relation.Nullary.Recomputable using (¬-recompute)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; ∁; Satisfiable; Universal)
