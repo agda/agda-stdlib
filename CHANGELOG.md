@@ -82,15 +82,8 @@ Additions to existing modules
       example : P witness
       minimal : ∀ {j} → .(j < witness) → ¬ P j
 
-  record Least⟨¬_⟩ (P : Pred (Fin n) p) : Set p where
-    constructor μ
-    field
-      witness : Fin n
-      .contra : ¬ P witness
-      minimal : ∀ {j} → .(j < witness) → P j
-
-  search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨¬ P ⟩
-  ¬¬least⇒least    : Decidable P → Least⟨¬ ∁ P ⟩ → Least⟨ P ⟩
+  search-least⟨_⟩  : Decidable P → Π[ ∁ P ] ⊎ Least⟨ P ⟩
+  search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
   ```
 
 * In `Data.Nat.ListAction.Properties`
