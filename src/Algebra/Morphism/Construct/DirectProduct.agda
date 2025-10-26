@@ -133,7 +133,7 @@ module Monoid-Export {M : RawMonoid a ℓ₁} {N : RawMonoid b ℓ₂} where
     module N = RawMonoid N
 
   module _ {refl : Reflexive M._≈_} where
-    proj₁ = Proj₁.isMonoidHomomorphism M M refl
+    proj₁ = Proj₁.isMonoidHomomorphism M N refl
 
   module _ {refl : Reflexive N._≈_} where
     proj₂ = Proj₂.isMonoidHomomorphism M N refl
