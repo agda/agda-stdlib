@@ -20,7 +20,7 @@ open import Function.Base using (flip; _∘_; const)
 open import Function.Nary.NonDependent using (congₙ)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Nullary.Decidable.Core using (Dec; yes; map′; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; map′; _×?_)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant; _⊆_; _∪_)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
@@ -80,7 +80,7 @@ unnode (node p l r) = p , l , r
 all? : Decidable P → ∀ (t : Tree V l u n) → Dec (All P t)
 all? p? (leaf l<u)        = yes leaf
 all? p? (node kv l r bal) = map′ (uncurryₙ 3 node) unnode
-                                 (p? kv ×-dec all? p? l ×-dec all? p? r)
+                                 (p? kv ×? all? p? l ×? all? p? r)
 
 universal : Universal P → (t : Tree V l u n) → All P t
 universal u (leaf l<u)        = leaf

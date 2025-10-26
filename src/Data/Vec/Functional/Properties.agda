@@ -28,7 +28,7 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable
-  using (Dec; does; yes; no; map′; _×-dec_)
+  using (Dec; does; yes; no; map′; _×?_)
 open import Relation.Nullary.Negation using (contradiction)
 
 import Data.Fin.Properties as Finₚ
@@ -54,7 +54,7 @@ module _ {xs ys : Vector A (suc n)} where
 ≗-dec {n = zero}  _≟_ xs ys = yes λ ()
 ≗-dec {n = suc n} _≟_ xs ys =
   map′ (Product.uncurry ∷-cong) ∷-injective
-       (head xs ≟ head ys ×-dec ≗-dec _≟_ (tail xs) (tail ys))
+       (head xs ≟ head ys ×? ≗-dec _≟_ (tail xs) (tail ys))
 
 ------------------------------------------------------------------------
 -- updateAt
