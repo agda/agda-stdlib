@@ -53,6 +53,12 @@ Deprecated names
   interchange  ↦   medial
   ```
 
+* In `Data.Fin.Properties`:
+  ```agda
+  ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
+  ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec     ↦   ⊤?
@@ -60,7 +66,6 @@ Deprecated names
   _×-dec_  ↦   _×?_
   _⊎-dec_  ↦   _⊎?_
   _→-dec_  ↦   _→?_
-  ```
 
 * In `Relation.Nullary.Negation`:
   ```agda
