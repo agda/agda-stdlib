@@ -48,7 +48,7 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.PropositionalEquality as ≡
   using (≡-≟-identity; ≢-≟-identity)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
+  using (Dec; _because_; yes; no; _×?_; _⊎?_; map′)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Reflects using (invert)
@@ -1030,11 +1030,11 @@ decFinSubset {suc n} {P = P} {Q} Q? P?
 ... | true  because  [Q0] | cons =
   map′ (uncurry λ P0 rec {x} → cons (λ _ → P0) (λ x → rec {x}) x)
        < _$ invert [Q0] , (λ f {x} → f {suc x}) >
-       (P? (invert [Q0]) ×-dec decFinSubset (Q? ∘ suc) P?)
+       (P? (invert [Q0]) ×? decFinSubset (Q? ∘ suc) P?)
 
 any? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
 any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
+any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎? any? (P? ∘ suc))
 
 all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
 all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
@@ -1109,7 +1109,7 @@ cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
 injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f →
                         ∀ (i : Fin n) → ∃ λ j → j ≤ i × i ≤ f j
 injective⇒existsPivot {f = f} f-injective i
-  with any? (λ j → j ≤? i ×-dec i ≤? f j)
+  with any? (λ j → j ≤? i ×? i ≤? f j)
 ... | yes result = result
 ... | no ¬result = contradiction′ notInjective-Fin[1+n]→Fin[n] f∘inject!-injective
   where

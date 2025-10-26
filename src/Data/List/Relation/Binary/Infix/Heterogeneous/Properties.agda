@@ -23,7 +23,7 @@ open import Data.Nat.Base using (zero; suc; _≤_)
 import Data.Nat.Properties as ℕ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (case_of_; _$′_)
-open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎-dec_)
+open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎?_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (REL; _⇒_)
@@ -167,4 +167,4 @@ infix? R? [] [] = yes (here [])
 infix? R? (a ∷ as) [] = no (λ where (here ()))
 infix? R? as bbs@(_ ∷ bs) =
   map′ [ here , there ]′ ∷⁻
-  (Prefix.prefix? R? as bbs ⊎-dec infix? R? as bs)
+  (Prefix.prefix? R? as bbs ⊎? infix? R? as bs)

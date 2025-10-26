@@ -36,7 +36,7 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core
-  using (Dec; does; yes; _×-dec_; map′)
+  using (Dec; does; yes; _×?_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -76,7 +76,7 @@ toList-injective m≡n (x ∷ xs) (y ∷ ys) xs=ys =
 ≡-dec : DecidableEquality A → DecidableEquality (Vec A n)
 ≡-dec _≟_ []       []       = yes refl
 ≡-dec _≟_ (x ∷ xs) (y ∷ ys) = map′ (uncurry (cong₂ _∷_))
-  ∷-injective (x ≟ y ×-dec ≡-dec _≟_ xs ys)
+  ∷-injective (x ≟ y ×? ≡-dec _≟_ xs ys)
 
 ------------------------------------------------------------------------
 -- _[_]=_
