@@ -32,20 +32,20 @@ open import Relation.Nullary.Negation.Core public
 ------------------------------------------------------------------------
 -- Quantifier juggling
 
-∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
-∃⟶¬∀¬ = flip uncurry
+∃⇒¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
+∃⇒¬∀¬ = flip uncurry
 
-∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
-∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
+∀⇒¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
+∀⇒¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
 
-¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
-¬∃⟶∀¬ = curry
+¬∃⇒∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
+¬∃⇒∀¬ = curry
 
-∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
-∀¬⟶¬∃ = uncurry
+∀¬⇒¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
+∀¬⇒¬∃ = uncurry
 
-∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
-∃¬⟶¬∀ = flip ∀⟶¬∃¬
+∃¬⇒¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
+∃¬⇒¬∀ = flip ∀⇒¬∃¬
 
 ------------------------------------------------------------------------
 -- Double Negation
@@ -106,3 +106,42 @@ private
     helper : ∃ (λ b → A → if b then B else C) → (A → B) ⊎ (A → C)
     helper (true  , f) = inj₁ f
     helper (false , f) = inj₂ f
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+∃⟶¬∀¬ = ∃⇒¬∀¬
+{-# WARNING_ON_USAGE ∃⟶¬∀¬
+"Warning: ∃⟶¬∀¬ was deprecated in v2.4.
+Please use ∃⇒¬∀¬ instead."
+#-}
+
+∀⟶¬∃¬ = ∀⇒¬∃¬
+{-# WARNING_ON_USAGE ∀⟶¬∃¬
+"Warning: ∀⟶¬∃¬ was deprecated in v2.4.
+Please use ∀⇒¬∃¬ instead."
+#-}
+
+¬∃⟶∀¬ = ¬∃⇒∀¬
+{-# WARNING_ON_USAGE ¬∃⟶∀¬
+"Warning: ¬∃⟶∀¬ was deprecated in v2.4.
+Please use ¬∃⇒∀¬ instead."
+#-}
+
+∀¬⟶¬∃ = ∀¬⇒¬∃
+{-# WARNING_ON_USAGE ∀¬⟶¬∃
+"Warning: ∀¬⟶¬∃ was deprecated in v2.4.
+Please use ∀¬⇒¬∃ instead."
+#-}
+
+∃¬⟶¬∀ = ∃¬⇒¬∀
+{-# WARNING_ON_USAGE ∃¬⟶¬∀
+"Warning: ∃¬⟶¬∀ was deprecated in v2.4.
+Please use ∃¬⇒¬∀ instead."
+#-}

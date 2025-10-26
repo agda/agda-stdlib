@@ -13,6 +13,8 @@ Bug-fixes
 
 * Fix a typo in `Algebra.Morphism.Construct.DirectProduct`.
 
+* Fix a typo in `Function.Construct.Constant`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -25,6 +27,11 @@ Minor improvements
   Furthermore, because the *eager* insertion of implicit arguments during type
   inference interacts badly with `contradiction`, we introduce an explicit name
   `contradiction′` for its `flip`ped version.
+
+* More generally, `Relation.Nullary.Negation.Core` has been reorganised into two
+  parts: the first concerns definitions and properties of negation considered as
+  a connective in *minimal logic*; the second making actual use of *ex falso* in
+  the form of `Data.Empty.⊥-elim`.
 
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
@@ -52,6 +59,15 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Relation.Nullary.Negation`:
+  ```agda
+  ∃⟶¬∀¬  ↦   ∃⇒¬∀¬
+  ∀⟶¬∃¬  ↦   ∀⇒¬∃¬
+  ¬∃⟶∀¬  ↦   ¬∃⇒∀¬
+  ∀¬⟶¬∃  ↦   ∀¬⇒¬∃
+  ∃¬⟶¬∀  ↦   ∃¬⇒¬∀
+  ```
+
 New modules
 -----------
 
@@ -66,6 +82,8 @@ New modules
 * `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
+
+* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
 
 Additions to existing modules
 -----------------------------
@@ -138,6 +156,27 @@ Additions to existing modules
 
 * In `Data.Vec.Properties`:
   ```agda
+  updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                  updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
+
+  truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
+                    truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+
+  truncate-zipWith-truncate : (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o) (xs : Vec A o) (ys : Vec B n) →
+                              truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
+                              zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
+
+  truncate-updateAt : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
+                      updateAt (truncate m≤n xs) i f ≡
+                      truncate m≤n (updateAt xs (inject≤ i m≤n) f)
+
+  updateAt-truncate : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                      updateAt (truncate (m≤m+n m n) xs) i f ≡
+                      truncate (m≤m+n m n) (updateAt xs (inject≤ i (m≤m+n m n)) f)
+
+  map-truncate : (f : A → B) (m≤n : m ≤ n) (xs : Vec A n) →
+                map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+
   padRight-lookup : (m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) → lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
 
   padRight-map : (f : A → B) (m≤n : m ≤ n) (a : A) (xs : Vec A m) → map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
@@ -161,4 +200,10 @@ Additions to existing modules
   ```agda
   ¬¬-η           : A → ¬ ¬ A
   contradiction′ : ¬ A → A → Whatever
+  ```
+
+* In `System.Random`:
+  ```agda
+  randomIO : IO Bool
+  randomRIO : RandomRIO {A = Bool} _≤_
   ```
