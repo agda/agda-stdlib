@@ -13,6 +13,8 @@ Bug-fixes
 
 * Fix a typo in `Algebra.Morphism.Construct.DirectProduct`.
 
+* Fix a typo in `Function.Construct.Constant`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -25,6 +27,11 @@ Minor improvements
   Furthermore, because the *eager* insertion of implicit arguments during type
   inference interacts badly with `contradiction`, we introduce an explicit name
   `contradiction′` for its `flip`ped version.
+
+* More generally, `Relation.Nullary.Negation.Core` has been reorganised into two
+  parts: the first concerns definitions and properties of negation considered as
+  a connective in *minimal logic*; the second making actual use of *ex falso* in
+  the form of `Data.Empty.⊥-elim`.
 
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
@@ -44,6 +51,21 @@ Deprecated names
 * In `Algebra.Properties.CommutativeSemigroup`:
   ```agda
   interchange  ↦   medial
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
+  ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  ```
+
+* In `Relation.Nullary.Negation`:
+  ```agda
+  ∃⟶¬∀¬  ↦   ∃⇒¬∀¬
+  ∀⟶¬∃¬  ↦   ∀⇒¬∃¬
+  ¬∃⟶∀¬  ↦   ¬∃⇒∀¬
+  ∀¬⟶¬∃  ↦   ∀¬⇒¬∃
+  ∃¬⟶¬∀  ↦   ∃¬⇒¬∀
   ```
 
 New modules
