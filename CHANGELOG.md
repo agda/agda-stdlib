@@ -48,6 +48,15 @@ Deprecated names
   interchange  ↦   medial
   ```
 
+* In `Relation.Nullary.Negation`:
+  ```agda
+  ∃⟶¬∀¬  ↦   ∃⇒¬∀¬
+  ∀⟶¬∃¬  ↦   ∀⇒¬∃¬
+  ¬∃⟶∀¬  ↦   ¬∃⇒∀¬
+  ∀¬⟶¬∃  ↦   ∀¬⇒¬∃
+  ∃¬⟶¬∀  ↦   ∃¬⇒¬∀
+  ```
+
 New modules
 -----------
 
