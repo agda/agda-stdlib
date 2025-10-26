@@ -1021,11 +1021,11 @@ module _ {P : Pred (Fin (suc n)) p} where
 
 any? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
 any? {zero}  P? = no λ{ (() , _) }
-any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
+any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎? any? (P? ∘ suc))
 
 all? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∀ i → P i)
 all? {zero}  P? = yes λ()
-all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
+all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×? all? (P? ∘ suc))
 
 private
   -- A nice computational property of `all?`:
@@ -1076,7 +1076,7 @@ decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
   dec[Q⊆P] : Dec (Q ⊆ P)
   dec[Q⊆P] with Q? zero
   ... | no ¬q₀ = map′ (cons (contradiction′ ¬q₀)) Q⊆P⇒Q⊆ₛP ih
-  ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×-dec ih)
+  ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×? ih)
 
 ------------------------------------------------------------------------
 -- Properties of functions to and from Fin
