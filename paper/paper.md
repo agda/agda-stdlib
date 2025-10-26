@@ -123,7 +123,7 @@ A diverse set of verification projects use `agda-stdlib`, including:
 
 The library has had a synergistic relationship with Agda itself, both testing and motivating new language features.
 For example, since Agda supports many incompatible language extensions, `agda-stdlib` is structured modularly to remain compatible with different combinations of extensions.
-Each module requests only the minimal expressive power it needs and to facilitate this Agda now categories extensions as "infective" (affecting all import*ing* modules), "coinfective" (affecting all import*ed* modules) or "neither".
+Each module requests only the minimal expressive power it needs and to facilitate this Agda now categorises extensions as "infective" (affecting all import*ing* modules), "coinfective" (affecting all import*ed* modules) or "neither".
 The library has also served as a test bed for alternative approaches to defining co-inductive data types in Agda.
 
 # Design
@@ -140,7 +140,7 @@ For examples, rational numbers carry a proof that the numerator and denominator 
 To our knowledge, `agda-stdlib` is among the first ITP standard libraries to whole-heartedly embrace this style of programming.
 
 In contrast to the type-class mechanisms often used by other functional languages, `agda-stdlib` primarily supports polymorphism [@ivardeBruin2023] via extensive use of parametrised modules.
-This allows users specify instantiations of abstract parameters for whole modules in a single location, reducing the need for instance search.
+This allows users to specify instantiations of abstract parameters for whole modules in a single location, reducing the need for instance search.
 A drawback is imports must be qualified when code is instantiated multiple times in the same scope.
 Parameterised modules are also used to safely and scalably embed non-constructive mathematics into a constructive setting.
 
@@ -170,7 +170,7 @@ Authors are listed approximately in order of contribution. Manuscript by Daggitt
 # Funding and conflicts of interest
 
 The authors have no conflicts of interest.
-Some contributations were enabled by funding for related projects:
+Some contributions were enabled by funding for related projects:
 
 - Jason Z. S. Hu: funded Master's/PhD.
 
