@@ -1078,20 +1078,13 @@ search-least⟨_⟩ {n = suc _} {P = P} P? with P? zero
 search-least⟨¬_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
 search-least⟨¬_⟩ {P = P} P? =
   Sum.map₁ (λ ∀[¬¬P] j → decidable-stable (P? j) (∀[¬¬P] j)) search-least⟨ ∁? P? ⟩
-¬∀⇒∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-                 ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
-¬∀⇒∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
-¬∀⇒∃¬-smallest (suc n) P P? ¬∀P with P? zero
-... | false because [¬P₀] = (zero , invert [¬P₀] , λ ())
-... | true  because  [P₀] = map suc (map id (∀-cons (invert [P₀])))
-  (¬∀⇒∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons (invert [P₀]))))
 
 -- When P is a decidable predicate over a finite set the following
 -- lemmas can be proved.
 
-¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+¬∀⇒∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
                  ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
-¬∀⟶∃¬-smallest n P P? ¬∀P = [ contradiction′ ¬∀P , lemma ] $ search-least⟨¬ P? ⟩
+¬∀⇒∃¬-smallest n P P? ¬∀P = [ contradiction′ ¬∀P , lemma ] $ search-least⟨¬ P? ⟩
   where
   lemma : Least⟨ ∁ P ⟩ → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
   lemma (least i ¬pᵢ ∀[j<i]¬¬P) = i , ¬pᵢ , λ j →
@@ -1099,7 +1092,8 @@ search-least⟨¬_⟩ {P = P} P? =
 
 ¬∀⇒∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
-¬∀⇒∃¬ n P P? ¬P = map id proj₁ (¬∀⇒∃¬-smallest n P P? ¬P)
+¬∀⇒∃¬ n P P? ¬∀P =
+  [ contradiction′ ¬∀P , (λ (least i ¬pᵢ _) → i , ¬pᵢ) ] $ search-least⟨¬ P? ⟩
 
 ------------------------------------------------------------------------
 -- Properties of functions to and from Fin
