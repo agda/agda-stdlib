@@ -28,6 +28,11 @@ Minor improvements
   inference interacts badly with `contradiction`, we introduce an explicit name
   `contradiction′` for its `flip`ped version.
 
+* More generally, `Relation.Nullary.Negation.Core` has been reorganised into two
+  parts: the first concerns definitions and properties of negation considered as
+  a connective in *minimal logic*; the second making actual use of *ex falso* in
+  the form of `Data.Empty.⊥-elim`.
+
 * Refactored usages of `+-∸-assoc 1` to `∸-suc` in:
   ```agda
   README.Data.Fin.Relation.Unary.Top
