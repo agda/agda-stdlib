@@ -17,10 +17,10 @@ testsuite:
 	$(MAKE) -C tests test AGDA="$(AGDA)" AGDA_EXEC="$(AGDA_EXEC)" only=$(only)
 
 fix-whitespace:
-	$(CABAL) exec -- fix-whitespace
+	$(CABAL_EXEC) exec -- fix-whitespace
 
 check-whitespace:
-	$(CABAL) exec -- fix-whitespace --check
+	$(CABAL_EXEC) exec -- fix-whitespace --check
 
 setup: doc/Everything.agda
 
