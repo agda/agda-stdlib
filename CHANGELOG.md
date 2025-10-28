@@ -59,6 +59,14 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Relation.Nullary.Decidable.Core`:
+  ```agda
+  ⊤-dec     ↦   ⊤?
+  ⊥-dec     ↦   ⊥?
+  _×-dec_  ↦   _×?_
+  _⊎-dec_  ↦   _⊎?_
+  _→-dec_  ↦   _→?_
+
 * In `Relation.Nullary.Negation`:
   ```agda
   ∃⟶¬∀¬  ↦   ∃⇒¬∀¬

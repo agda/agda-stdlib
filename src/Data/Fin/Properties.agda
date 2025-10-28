@@ -48,7 +48,7 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.PropositionalEquality as ≡
   using (≡-≟-identity; ≢-≟-identity)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′; decidable-stable)
+  using (Dec; _because_; yes; no; _×?_; _⊎?_; map′; decidable-stable)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Reflects using (invert)
@@ -1025,11 +1025,11 @@ module _ {P : Pred (Fin (suc n)) p} where
 
 any? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
 any? {zero}  P? = no λ{ (() , _) }
-any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
+any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎? any? (P? ∘ suc))
 
 all? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∀ i → P i)
 all? {zero}  P? = yes λ()
-all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×-dec all? (P? ∘ suc))
+all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×? all? (P? ∘ suc))
 
 private
   -- A nice computational property of `all?`:
@@ -1104,7 +1104,7 @@ decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
   dec[Q⊆P] : Dec (Q ⊆ P)
   dec[Q⊆P] with Q? zero
   ... | no ¬q₀ = map′ (cons (contradiction′ ¬q₀)) Q⊆P⇒Q⊆ₛP ih
-  ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×-dec ih)
+  ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×? ih)
 
 ------------------------------------------------------------------------
 -- Properties of functions to and from Fin
@@ -1148,7 +1148,7 @@ cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
 injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f →
                         ∀ (i : Fin n) → ∃ λ j → j ≤ i × i ≤ f j
 injective⇒existsPivot {f = f} f-injective i
-  with any? (λ j → j ≤? i ×-dec i ≤? f j)
+  with any? (λ j → j ≤? i ×? i ≤? f j)
 ... | yes result = result
 ... | no ¬result = contradiction′ notInjective-Fin[1+n]→Fin[n] f∘inject!-injective
   where

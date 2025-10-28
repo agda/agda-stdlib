@@ -11,7 +11,7 @@ module Reflection.AST.Definition where
 import Data.List.Properties as List using (≡-dec)
 import Data.Nat.Properties as ℕ using (_≟_)
 open import Data.Product.Base using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable.Core using (map′; _×-dec_; yes; no)
+open import Relation.Nullary.Decidable.Core using (map′; _×?_; yes; no)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 import Reflection.AST.Argument as Arg using (Arg; ≡-dec)
@@ -72,13 +72,13 @@ function cs       ≟ function cs′        =
   map′ (cong function) function-injective (cs Term.≟-Clauses cs′)
 data-type pars cs ≟ data-type pars′ cs′ =
   map′ (uncurry (cong₂ data-type)) data-type-injective
-           (pars ℕ.≟ pars′ ×-dec List.≡-dec Name._≟_ cs cs′)
+           (pars ℕ.≟ pars′ ×? List.≡-dec Name._≟_ cs cs′)
 record′ c fs      ≟ record′ c′ fs′      =
   map′ (uncurry (cong₂ record′)) record′-injective
-           (c Name.≟ c′ ×-dec List.≡-dec (Arg.≡-dec Name._≟_) fs fs′)
+           (c Name.≟ c′ ×? List.≡-dec (Arg.≡-dec Name._≟_) fs fs′)
 constructor′ d q  ≟ constructor′ d′ q′  =
   map′ (uncurry (cong₂ constructor′)) constructor′-injective
-           (d Name.≟ d′ ×-dec q Quantity.≟ q′)
+           (d Name.≟ d′ ×? q Quantity.≟ q′)
 axiom             ≟ axiom               = yes refl
 primitive′        ≟ primitive′          = yes refl
 
