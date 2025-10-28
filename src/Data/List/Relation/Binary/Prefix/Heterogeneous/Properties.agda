@@ -28,7 +28,7 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; cong₂)
 open import Relation.Nullary.Decidable.Core as Dec
-  using (_×-dec_; yes; no; _because_)
+  using (_×?_; yes; no; _because_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 
@@ -221,4 +221,4 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   prefix? R? []       bs       = yes []
   prefix? R? (a ∷ as) []       = no (λ ())
   prefix? R? (a ∷ as) (b ∷ bs) = Dec.map′ (uncurry _∷_) uncons
-                               $ R? a b ×-dec prefix? R? as bs
+                               $ R? a b ×? prefix? R? as bs
