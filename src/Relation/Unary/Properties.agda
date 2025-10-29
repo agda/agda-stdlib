@@ -18,7 +18,7 @@ open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Nullary.Decidable as Dec
-  using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
+  using (yes; no; ¬?; map′; does)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary
 
@@ -238,19 +238,19 @@ infixr 6 _∪?_
 
 _∪?_ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ∪ Q)
-_∪?_ P? Q? x = (P? x) ⊎-dec (Q? x)
+_∪?_ P? Q? x = (P? x) Dec.⊎? (Q? x)
 
 _∩?_ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ∩ Q)
-_∩?_ P? Q? x = (P? x) ×-dec (Q? x)
+_∩?_ P? Q? x = (P? x) Dec.×? (Q? x)
 
 _×?_ : {P : Pred A ℓ₁} {Q : Pred B ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
-_×?_ P? Q? (a , b) = (P? a) ×-dec (Q? b)
+_×?_ P? Q? (a , b) = (P? a) Dec.×? (Q? b)
 
 _⊙?_ : {P : Pred A ℓ₁} {Q : Pred B ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
-_⊙?_ P? Q? (a , b) = (P? a) ⊎-dec (Q? b)
+_⊙?_ P? Q? (a , b) = (P? a) Dec.⊎? (Q? b)
 
 _⊎?_ : {P : Pred A ℓ} {Q : Pred B ℓ} →
        Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)

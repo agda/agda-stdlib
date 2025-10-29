@@ -25,7 +25,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Trans; Decidable; Reflexive; Sym)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary.Decidable using (yes; no; _×-dec_; map′)
+open import Relation.Nullary.Decidable using (yes; no; _×?_; map′)
 open import Relation.Unary using (Pred)
 
 private
@@ -111,7 +111,7 @@ decidable dec []       []       = yes []
 decidable dec []       (y ∷ ys) = no λ()
 decidable dec (x ∷ xs) []       = no λ()
 decidable dec (x ∷ xs) (y ∷ ys) =
-  map′ (uncurry _∷_) uncons (dec x y ×-dec decidable dec xs ys)
+  map′ (uncurry _∷_) uncons (dec x y ×? decidable dec xs ys)
 
 ------------------------------------------------------------------------
 -- Structures

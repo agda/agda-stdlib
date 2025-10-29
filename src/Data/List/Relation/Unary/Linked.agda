@@ -22,7 +22,7 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality.Core using (refl; cong₂)
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
-open import Relation.Nullary.Decidable using (yes; no; map′; _×-dec_)
+open import Relation.Nullary.Decidable using (yes; no; map′; _×?_)
 
 private
   variable
@@ -111,7 +111,7 @@ module _ {R : Rel A ℓ} where
   linked? R? []           = yes []
   linked? R? (x ∷ [])     = yes [-]
   linked? R? (x ∷ y ∷ xs) =
-    map′ (uncurry _∷_) < head , tail > (R? x y ×-dec linked? R? (y ∷ xs))
+    map′ (uncurry _∷_) < head , tail > (R? x y ×? linked? R? (y ∷ xs))
 
   irrelevant : B.Irrelevant R → U.Irrelevant (Linked R)
   irrelevant irr []           []           = refl

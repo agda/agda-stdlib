@@ -25,7 +25,7 @@ open import Relation.Binary.Structures using (IsPartialEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong)
 import Relation.Nullary as Nullary
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_; _⊎-dec_)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×?_; _⊎?_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
@@ -138,7 +138,7 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     decidable : ∀ {m n} → Decidable (_<ₗₑₓ_ {m} {n})
     decidable {m} {n} xs ys with m ℕ.≟ n
     decidable {_} {_} []       []       | yes refl = Dec.map P⇔[]<[] P?
-    decidable {_} {_} (x ∷ xs) (y ∷ ys) | yes refl = Dec.map ∷<∷-⇔ ((x ≺? y) ⊎-dec (x ≈? y) ×-dec (decidable xs ys))
+    decidable {_} {_} (x ∷ xs) (y ∷ ys) | yes refl = Dec.map ∷<∷-⇔ ((x ≺? y) ⊎? (x ≈? y) ×? (decidable xs ys))
     decidable {_} {_} _        _        | no  m≢n    = no (λ xs<ys → contradiction (length-equal xs<ys) m≢n)
 
   module _ (P-irrel  : Nullary.Irrelevant P)

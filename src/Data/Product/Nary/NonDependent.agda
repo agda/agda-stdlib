@@ -22,7 +22,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Unit.Base using (⊤)
 open import Function.Base using (const; _∘′_; _∘_)
-open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×?_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 
@@ -131,12 +131,12 @@ uncurry⊤ₙ (suc n) f = uncurry (uncurry⊤ₙ n ∘′ f)
 
 Product⊤-dec : ∀ n {ls} {as : Sets n ls} → Product⊤ n (Dec <$> as) → Dec (Product⊤ n as)
 Product⊤-dec zero    _          = yes _
-Product⊤-dec (suc n) (p? , ps?) = p? ×-dec Product⊤-dec n ps?
+Product⊤-dec (suc n) (p? , ps?) = p? ×? Product⊤-dec n ps?
 
 Product-dec : ∀ n {ls} {as : Sets n ls} → Product n (Dec <$> as) → Dec (Product n as)
 Product-dec 0               _          = yes _
 Product-dec 1               p?         = p?
-Product-dec (suc n@(suc _)) (p? , ps?) = p? ×-dec Product-dec n ps?
+Product-dec (suc n@(suc _)) (p? , ps?) = p? ×? Product-dec n ps?
 
 ------------------------------------------------------------------------
 -- pointwise liftings

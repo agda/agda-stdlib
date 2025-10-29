@@ -15,7 +15,7 @@ open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_; flip)
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Decidable using (¬?; _×-dec_)
+open import Relation.Nullary.Decidable using (¬?; _×?_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.Structures
   using (IsPartialOrder; IsEquivalence; IsStrictPartialOrder; IsDecPartialOrder
@@ -117,7 +117,7 @@ x < y = x ≤ y × x ≉ y
 ...   | inj₂ y≤x = tri> (x≉y ∘ flip antisym y≤x ∘ proj₁) x≉y (y≤x , x≉y ∘ ≈-sym)
 
 <-decidable : Decidable _≈_ → Decidable _≤_ → Decidable _<_
-<-decidable _≟_ _≤?_ x y = x ≤? y ×-dec ¬? (x ≟ y)
+<-decidable _≟_ _≤?_ x y = x ≤? y ×? ¬? (x ≟ y)
 
 ------------------------------------------------------------------------
 -- Structures

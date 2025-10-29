@@ -29,7 +29,7 @@ open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
-open import Function.Base using (_∘_; id; _$_; flip)
+open import Function.Base using (_∘_; id; _$_; flip; const; λ-; _$-)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
@@ -48,19 +48,21 @@ open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.PropositionalEquality as ≡
   using (≡-≟-identity; ≢-≟-identity)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+  using (Dec; _because_; yes; no; _×?_; _⊎?_; map′; decidable-stable)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
-  using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
-open import Relation.Unary.Properties using (U?)
+  using (U; Pred; Decidable; _⊆_; ∁; Satisfiable; Universal)
+open import Relation.Unary.Properties using (U?; ∁?)
 
 private
   variable
-    a : Level
+    a p q : Level
     A : Set a
     m n o : ℕ
     i j : Fin n
+
 
 ------------------------------------------------------------------------
 -- Fin
@@ -468,6 +470,10 @@ i<1+i = ℕ.n<1+n ∘ toℕ
 toℕ-inject : ∀ {i : Fin n} (j : Fin′ i) → toℕ (inject j) ≡ toℕ j
 toℕ-inject {i = suc i} zero    = refl
 toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
+
+inject-< : ∀ {i : Fin n} (j : Fin′ i) → inject j < i
+inject-< {i = suc i} zero    = z<s
+inject-< {i = suc i} (suc j) = s<s (inject-< j)
 
 ------------------------------------------------------------------------
 -- inject₁
@@ -995,7 +1001,7 @@ pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
 -- Quantification
 ------------------------------------------------------------------------
 
-module _ {p} {P : Pred (Fin (suc n)) p} where
+module _ {P : Pred (Fin (suc n)) p} where
 
   ∀-cons : P zero → Π[ P ∘ suc ] → Π[ P ]
   ∀-cons z s zero    = z
@@ -1017,54 +1023,88 @@ module _ {p} {P : Pred (Fin (suc n)) p} where
   ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
   ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
 
-decFinSubset : ∀ {p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
-               Decidable Q → (∀ {i} → Q i → Dec (P i)) → Dec (Q ⊆ P)
-decFinSubset {zero}  {_}     {_} Q? P? = yes λ {}
-decFinSubset {suc n} {P = P} {Q} Q? P?
-  with Q? zero | ∀-cons {P = λ x → Q x → P x}
-... | false because [¬Q0] | cons =
-  map′ (λ f {x} → cons (⊥-elim ∘ invert [¬Q0]) (λ x → f {x}) x)
-       (λ f {x} → f {suc x})
-       (decFinSubset (Q? ∘ suc) P?)
-... | true  because  [Q0] | cons =
-  map′ (uncurry λ P0 rec {x} → cons (λ _ → P0) (λ x → rec {x}) x)
-       < _$ invert [Q0] , (λ f {x} → f {suc x}) >
-       (P? (invert [Q0]) ×-dec decFinSubset (Q? ∘ suc) P?)
+any? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
+any? {zero}  P? = no λ{ (() , _) }
+any? {suc _} P? = Dec.map ⊎⇔∃ (P? zero ⊎? any? (P? ∘ suc))
 
-any? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
-any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
-
-all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
-all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
-               (decFinSubset U? (λ {f} _ → P? f))
+all? : ∀ {P : Pred (Fin n) p} → Decidable P → Dec (∀ i → P i)
+all? {zero}  P? = yes λ()
+all? {suc _} P? = Dec.map ∀-cons-⇔ (P? zero ×? all? (P? ∘ suc))
 
 private
   -- A nice computational property of `all?`:
   -- The boolean component of the result is exactly the
   -- obvious fold of boolean tests (`foldr _∧_ true`).
-  note : ∀ {p} {P : Pred (Fin 3) p} (P? : Decidable P) →
+  note : ∀ {P : Pred (Fin 3) p} (P? : Decidable P) →
          ∃ λ z → Dec.does (all? P?) ≡ z
   note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
           , refl
 
--- If a decidable predicate P over a finite set is sometimes false,
--- then we can find the smallest value for which this is the case.
+------------------------------------------------------------------------
+-- A decidable predicate P over a finite set is either always false, or
+-- else we can find the least value for which P is true (and vice versa).
 
-¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-                 ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
-¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
-¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
-... | false because [¬P₀] = (zero , invert [¬P₀] , λ ())
-... | true  because  [P₀] = map suc (map id (∀-cons (invert [P₀])))
-  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons (invert [P₀]))))
+record Least⟨_⟩ (P : Pred (Fin n) p) : Set p where
+  constructor least
+  field
+    witness : Fin n
+    example : P witness
+    minimal : ∀ {j} → .(j < witness) → ¬ P j
+
+search-least⟨_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ ∁ P ] ⊎ Least⟨ P ⟩
+search-least⟨_⟩ {n = zero}  {P = _} P? = inj₁ λ()
+search-least⟨_⟩ {n = suc _} {P = P} P? with P? zero
+... | yes p₀ = inj₂ (least zero p₀ λ())
+... | no ¬p₀ = Sum.map (∀-cons ¬p₀) lemma search-least⟨ P? ∘ suc ⟩
+  where
+  lemma : Least⟨ P ∘ suc ⟩ → Least⟨ P ⟩
+  lemma (least i pₛᵢ ∀[j<i]¬P) = least (suc i) pₛᵢ λ where
+    {zero}  _     → ¬p₀
+    {suc _} sj<si → ∀[j<i]¬P (ℕ.s<s⁻¹ sj<si)
+
+search-least⟨¬_⟩ : ∀ {P : Pred (Fin n) p} → Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
+search-least⟨¬_⟩ {P = P} P? =
+  Sum.map₁ (λ ∀[¬¬P] j → decidable-stable (P? j) (∀[¬¬P] j)) search-least⟨ ∁? P? ⟩
 
 -- When P is a decidable predicate over a finite set the following
--- lemma can be proved.
+-- lemmas can be proved.
 
-¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+¬∀⇒∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+                 ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+¬∀⇒∃¬-smallest n P P? ¬∀P = [ contradiction′ ¬∀P , lemma ] $ search-least⟨¬ P? ⟩
+  where
+  lemma : Least⟨ ∁ P ⟩ → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+  lemma (least i ¬pᵢ ∀[j<i]¬¬P) = i , ¬pᵢ , λ j →
+    decidable-stable (P? (inject j)) (∀[j<i]¬¬P (inject-< j))
+
+¬∀⇒∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
-¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
+¬∀⇒∃¬ n P P? ¬∀P =
+  [ contradiction′ ¬∀P , (λ (least i ¬pᵢ _) → i , ¬pᵢ) ] $ search-least⟨¬ P? ⟩
+
+-- lifting Dec over Unary subset relation
+
+decFinSubset : ∀ {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
+               Decidable Q → Q ⊆ Dec ∘ P → Dec (Q ⊆ P)
+decFinSubset {zero}  {_}     {_}     Q? P? = yes λ{}
+decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
+  module DecFinSubset where
+  Q⊆₀P = Q 0F → P 0F
+  Q⊆ₛP = Q ∘ suc ⊆ P ∘ suc
+
+  cons : Q⊆₀P → Q⊆ₛP → Q ⊆ P
+  cons q₀⊆p₀ qₛ⊆pₛ = ∀-cons {P = Q U.⇒ P} q₀⊆p₀ (λ- qₛ⊆pₛ) $-
+
+  ih : Dec Q⊆ₛP
+  ih = decFinSubset (Q? ∘ suc) P?
+
+  Q⊆P⇒Q⊆ₛP : Q ⊆ P → Q⊆ₛP
+  Q⊆P⇒Q⊆ₛP q⊆p {x} = q⊆p {suc x}
+
+  dec[Q⊆P] : Dec (Q ⊆ P)
+  dec[Q⊆P] with Q? zero
+  ... | no ¬q₀ = map′ (cons (contradiction′ ¬q₀)) Q⊆P⇒Q⊆ₛP ih
+  ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×? ih)
 
 ------------------------------------------------------------------------
 -- Properties of functions to and from Fin
@@ -1076,24 +1116,26 @@ pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × 
 pigeonhole z<s               f = contradiction (f zero) λ()
 pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
 ... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
-... | no  f₀≢fₖ
-  with i , j , i<j , fᵢ≡fⱼ ← pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
-  = suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
-
-injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
-injective⇒≤ {zero}  {_}     {f} _   = z≤n
-injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
-injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
-  suc-injective (inj (punchOut-injective
-    (contraInjective inj 0≢1+n)
-    (contraInjective inj 0≢1+n) eq))))
+... | no  f₀≢fₖ =
+  let i , j , i<j , fᵢ≡fⱼ = pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
+  in suc i , suc j , s<s i<j , punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
 <⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
-<⇒notInjective n<m inj = ℕ.≤⇒≯ (injective⇒≤ inj) n<m
+<⇒notInjective {f = f} n<m inj =
+  let i , j , i<j , fᵢ≡fⱼ = pigeonhole n<m f in <-irrefl (inj fᵢ≡fⱼ) i<j
+
+-- specialised to m = suc n
+
+private
+  notInjective-Fin[1+n]→Fin[n] : ∀ {f : Fin (suc n) → Fin n} → ¬ (Injective _≡_ _≡_ f)
+  notInjective-Fin[1+n]→Fin[n] {n = n} = <⇒notInjective (ℕ.n<1+n n)
+
+injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
+injective⇒≤ = ℕ.≮⇒≥ ∘ flip <⇒notInjective
 
 ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f inj = ℕ.<-irrefl refl
-  (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
+ℕ→Fin-notInjective f =
+  notInjective-Fin[1+n]→Fin[n] ∘ Comp.injective _≡_ _≡_ _≡_ toℕ-injective
 
 -- Cantor-Schröder-Bernstein for finite sets
 
@@ -1106,9 +1148,9 @@ cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
 injective⇒existsPivot : ∀ {f : Fin n → Fin m} → Injective _≡_ _≡_ f →
                         ∀ (i : Fin n) → ∃ λ j → j ≤ i × i ≤ f j
 injective⇒existsPivot {f = f} f-injective i
-  with any? (λ j → j ≤? i ×-dec i ≤? f j)
+  with any? (λ j → j ≤? i ×? i ≤? f j)
 ... | yes result = result
-... | no ¬result = contradiction (injective⇒≤ f∘inject!-injective) ℕ.1+n≰n
+... | no ¬result = contradiction′ notInjective-Fin[1+n]→Fin[n] f∘inject!-injective
   where
   fj<i : (j : Fin′ (suc i)) → f (inject! j) < i
   fj<i j with f (inject! j) <? i
@@ -1273,4 +1315,17 @@ Please use <⇒<′ instead."
 {-# WARNING_ON_USAGE <′⇒≺
 "Warning: <′⇒≺ was deprecated in v2.0.
 Please use <′⇒< instead."
+#-}
+
+-- Version 2.4
+
+¬∀⟶∃¬-smallest = ¬∀⇒∃¬-smallest
+{-# WARNING_ON_USAGE ¬∀⟶∃¬-smallest
+"Warning: ¬∀⟶∃¬-smallest was deprecated in v2.4.
+Please use ¬∀⇒∃¬-smallest instead."
+#-}
+¬∀⟶∃¬ = ¬∀⇒∃¬
+{-# WARNING_ON_USAGE ¬∀⟶∃¬
+"Warning: ¬∀⟶∃¬ was deprecated in v2.4.
+Please use ¬∀⇒∃¬ instead."
 #-}

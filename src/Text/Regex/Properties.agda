@@ -18,7 +18,7 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_$_)
 
 open import Relation.Nullary.Decidable
-  using (Dec; yes; no; map′; ¬?; _×-dec_; _⊎-dec_)
+  using (Dec; yes; no; map′; ¬?; _×?_; _⊎?_)
 open import Relation.Nullary.Negation
   using (¬_; contradiction)
 
@@ -44,9 +44,9 @@ open import Text.Regex.Properties.Core preorder public
 []∈? [ rs ]  = no (λ ())
 []∈? [^ rs ] = no (λ ())
 []∈? (e ∣ f) = map′ sum (λ where (sum pr) → pr)
-             $ ([]∈? e) ⊎-dec ([]∈? f)
+             $ ([]∈? e) ⊎? ([]∈? f)
 []∈? (e ∙ f) = map′ (uncurry (prod ([]++ []))) []∈e∙f-inv
-             $ ([]∈? e) ×-dec ([]∈? f)
+             $ ([]∈? e) ×? ([]∈? f)
 []∈? (e ⋆)   = yes (star (sum (inj₁ ε)))
 
 infix 4 _∈ᴿ?_ _∉ᴿ?_ _∈?ε _∈?[_] _∈?[^_]
@@ -54,7 +54,7 @@ infix 4 _∈ᴿ?_ _∉ᴿ?_ _∈?ε _∈?[_] _∈?[^_]
 _∈ᴿ?_ : Decidable _∈ᴿ_
 c ∈ᴿ? [ a ]     = map′ [_] (λ where [ eq ] → eq) (c ≟ a)
 c ∈ᴿ? (lb ─ ub) = map′ (uncurry _─_) (λ where (ge ─ le) → ge , le)
-                $ (lb ≤? c) ×-dec (c ≤? ub)
+                $ (lb ≤? c) ×? (c ≤? ub)
 
 _∉ᴿ?_ : Decidable _∉ᴿ_
 a ∉ᴿ? r = ¬? (a ∈ᴿ? r)

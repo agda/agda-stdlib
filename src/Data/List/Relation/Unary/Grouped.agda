@@ -16,7 +16,7 @@ open import Relation.Binary.Core using (REL; Rel)
 open import Relation.Binary.Definitions as B
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable as Dec using (yes; ¬?; _⊎-dec_; _×-dec_)
+open import Relation.Nullary.Decidable as Dec using (yes; ¬?; _⊎?_; _×?_)
 open import Level using (Level; _⊔_)
 
 private
@@ -45,7 +45,7 @@ module _ {_≈_ : Rel A ℓ} where
   grouped? _≟_ [] = yes []
   grouped? _≟_ (x ∷ []) = yes ([] ∷≉ [])
   grouped? _≟_ (x ∷ y ∷ xs) =
-    Dec.map′ from to ((x ≟ y ⊎-dec all? (λ z → ¬? (x ≟ z)) (y ∷ xs)) ×-dec (grouped? _≟_ (y ∷ xs)))
+    Dec.map′ from to ((x ≟ y ⊎? all? (λ z → ¬? (x ≟ z)) (y ∷ xs)) ×? (grouped? _≟_ (y ∷ xs)))
     where
     from : ((x ≈ y) ⊎ All (λ z → ¬ (x ≈ z)) (y ∷ xs)) × Grouped _≈_ (y ∷ xs) → Grouped _≈_ (x ∷ y ∷ xs)
     from (inj₁ x≈y          , grouped[y∷xs]) = x≈y          ∷≈ grouped[y∷xs]

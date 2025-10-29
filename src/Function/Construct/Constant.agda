@@ -53,7 +53,7 @@ module _
 ------------------------------------------------------------------------
 -- Setoid bundles
 
-module _ (S : Setoid a ℓ₂) (T : Setoid b ℓ₂) where
+module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) where
 
   open Setoid
 

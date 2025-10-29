@@ -32,20 +32,20 @@ open import Relation.Nullary.Negation.Core public
 ------------------------------------------------------------------------
 -- Quantifier juggling
 
-∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
-∃⟶¬∀¬ = flip uncurry
+∃⇒¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
+∃⇒¬∀¬ = flip uncurry
 
-∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
-∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
+∀⇒¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
+∀⇒¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
 
-¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
-¬∃⟶∀¬ = curry
+¬∃⇒∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
+¬∃⇒∀¬ = curry
 
-∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
-∀¬⟶¬∃ = uncurry
+∀¬⇒¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
+∀¬⇒¬∃ = uncurry
 
-∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
-∃¬⟶¬∀ = flip ∀⟶¬∃¬
+∃¬⇒¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
+∃¬⇒¬∀ = flip ∀⇒¬∃¬
 
 ------------------------------------------------------------------------
 -- Double Negation
@@ -72,7 +72,7 @@ open import Relation.Nullary.Negation.Core public
 -- ⊥).
 
 call/cc : ((A → Whatever) → DoubleNegation A) → DoubleNegation A
-call/cc hyp ¬a = hyp (λ a → contradiction a ¬a) ¬a
+call/cc hyp ¬a = hyp (contradiction′ ¬a) ¬a
 
 -- The "independence of premise" rule, in the double-negation monad.
 -- It is assumed that the index set (A) is inhabited.
@@ -81,8 +81,8 @@ independence-of-premise : A → (B → Σ A P) → DoubleNegation (Σ[ x ∈ A ]
 independence-of-premise {A = A} {B = B} {P = P} q f = ¬¬-map helper ¬¬-excluded-middle
   where
   helper : Dec B → Σ[ x ∈ A ] (B → P x)
-  helper (yes b) = Product.map₂ const (f b)
-  helper (no ¬b) = (q , λ b → contradiction b ¬b)
+  helper (yes p) = Product.map₂ const (f p)
+  helper (no ¬p) = (q , contradiction′ ¬p)
 
 -- The independence of premise rule for binary sums.
 
@@ -90,8 +90,8 @@ independence-of-premise-⊎ : (A → B ⊎ C) → DoubleNegation ((A → B) ⊎ 
 independence-of-premise-⊎ {A = A} {B = B} {C = C} f = ¬¬-map helper ¬¬-excluded-middle
   where
   helper : Dec A → (A → B) ⊎ (A → C)
-  helper (yes a) = Sum.map const const (f a)
-  helper (no ¬a) = inj₁ λ a → contradiction a ¬a
+  helper (yes p) = Sum.map const const (f p)
+  helper (no ¬p) = inj₁ (contradiction′ ¬p)
 
 private
 
@@ -106,3 +106,42 @@ private
     helper : ∃ (λ b → A → if b then B else C) → (A → B) ⊎ (A → C)
     helper (true  , f) = inj₁ f
     helper (false , f) = inj₂ f
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+∃⟶¬∀¬ = ∃⇒¬∀¬
+{-# WARNING_ON_USAGE ∃⟶¬∀¬
+"Warning: ∃⟶¬∀¬ was deprecated in v2.4.
+Please use ∃⇒¬∀¬ instead."
+#-}
+
+∀⟶¬∃¬ = ∀⇒¬∃¬
+{-# WARNING_ON_USAGE ∀⟶¬∃¬
+"Warning: ∀⟶¬∃¬ was deprecated in v2.4.
+Please use ∀⇒¬∃¬ instead."
+#-}
+
+¬∃⟶∀¬ = ¬∃⇒∀¬
+{-# WARNING_ON_USAGE ¬∃⟶∀¬
+"Warning: ¬∃⟶∀¬ was deprecated in v2.4.
+Please use ¬∃⇒∀¬ instead."
+#-}
+
+∀¬⟶¬∃ = ∀¬⇒¬∃
+{-# WARNING_ON_USAGE ∀¬⟶¬∃
+"Warning: ∀¬⟶¬∃ was deprecated in v2.4.
+Please use ∀¬⇒¬∃ instead."
+#-}
+
+∃¬⟶¬∀ = ∃¬⇒¬∀
+{-# WARNING_ON_USAGE ∃¬⟶¬∀
+"Warning: ∃¬⟶¬∀ was deprecated in v2.4.
+Please use ∃¬⇒¬∀ instead."
+#-}

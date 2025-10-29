@@ -19,7 +19,7 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (_⊔_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; yes; no; _×-dec_; _⊎-dec_)
+  using (Dec; yes; no; _×?_; _⊎?_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
@@ -116,4 +116,4 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     decidable []       (y ∷ ys) = yes halt
     decidable (x ∷ xs) []       = no λ()
     decidable (x ∷ xs) (y ∷ ys) =
-      Dec.map ∷<∷-⇔ (dec-≺ x y ⊎-dec (dec-≈ x y ×-dec decidable xs ys))
+      Dec.map ∷<∷-⇔ (dec-≺ x y ⊎? (dec-≈ x y ×? decidable xs ys))
