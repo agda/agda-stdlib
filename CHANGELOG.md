@@ -79,6 +79,10 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Sub.Group` for the definition of subgroups.
+
+* `Algebra.Module.Construct.Sub.Module` for the definition of submodules.
+
 * `Algebra.Properties.BooleanRing`.
 
 * `Algebra.Properties.BooleanSemiring`.
