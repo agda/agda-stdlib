@@ -26,18 +26,6 @@ infix 3 ¬_
 ¬_ : Set a → Set a
 ¬ A = A → ⊥
 
--- Note the following use of flip:
-private
-  note : (A → ¬ B) → B → ¬ A
-  note = flip
-
-------------------------------------------------------------------------
--- Relationship to sum
-
-infixr 1 _¬-⊎_
-_¬-⊎_ : ¬ A → ¬ B → ¬ (A ⊎ B)
-_¬-⊎_ = [_,_]
-
 ------------------------------------------------------------------------
 -- Properties, I: as a definition in *minimal logic*
 
