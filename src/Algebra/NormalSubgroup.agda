@@ -25,7 +25,7 @@ record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) wh
     ι : RawGroup.Carrier N → Carrier
     ι-monomorphism : IsGroupMonomorphism N rawGroup ι
     -- every element of N commutes in G
-    normal : ∀ n g → ∃[ n′ ] g ∙ ι n ∙ g ⁻¹ ≈ ι n′
+    normal : ∀ n g → ∃[ n′ ] g ∙ ι n ≈ ι n′ ∙ g
 
   module N = RawGroup N
   module ι = IsGroupMonomorphism ι-monomorphism

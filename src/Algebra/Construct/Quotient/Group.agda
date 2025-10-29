@@ -29,31 +29,26 @@ open NormalSubgroup N
 infix 0 _by_
 
 data _≋_ (x y : Carrier) : Set (c ⊔ ℓ ⊔ c′) where
-  _by_ : ∀ g → x // y ≈ ι g → x ≋ y
+  _by_ : ∀ g → ι g ∙ x ≈ y → x ≋ y
 
 ≋-refl : Reflexive _≋_
-≋-refl {x} = N.ε by begin
-  x // x ≈⟨ inverseʳ x ⟩
-  ε      ≈⟨ ι.ε-homo ⟨
-  ι N.ε  ∎
+≋-refl {x} = N.ε by trans (∙-congʳ ι.ε-homo) (identityˡ x)
 
 ≋-sym : Symmetric _≋_
-≋-sym {x} {y} (g by x//y≈ιg) = g N.⁻¹ by begin
-  y // x      ≈⟨ ⁻¹-anti-homo-// x y ⟨
-  (x // y) ⁻¹ ≈⟨ ⁻¹-cong x//y≈ιg ⟩
-  ι g ⁻¹      ≈⟨ ι.⁻¹-homo g ⟨
-  ι (g N.⁻¹)  ∎
-
+≋-sym {x} {y} (g by ιg∙x≈y) = g N.⁻¹ by begin
+  ι (g N.⁻¹) ∙ y      ≈⟨ ∙-cong (ι.⁻¹-homo g) (sym ιg∙x≈y) ⟩
+  ι g ⁻¹ ∙ (ι g ∙ x)  ≈⟨ assoc (ι g ⁻¹) (ι g) x ⟨
+  (ι g ⁻¹  ∙ ι g) ∙ x ≈⟨ ∙-congʳ (inverseˡ (ι g)) ⟩
+  ε ∙ x               ≈⟨ identityˡ x ⟩
+  x                   ∎
 
 ≋-trans : Transitive _≋_
-≋-trans {x} {y} {z} (g by x//y≈ιg) (h by y//z≈ιh) = g N.∙ h by begin
-  x // z              ≈⟨ ∙-congʳ (identityʳ x) ⟨
-  x ∙ ε // z          ≈⟨ ∙-congʳ (∙-congˡ (inverseˡ y)) ⟨
-  x ∙ (y \\ y) // z   ≈⟨ ∙-congʳ (assoc x (y ⁻¹) y) ⟨
-  (x // y) ∙ y // z   ≈⟨ assoc (x // y) y (z ⁻¹) ⟩
-  (x // y) ∙ (y // z) ≈⟨ ∙-cong x//y≈ιg y//z≈ιh ⟩
-  ι g ∙ ι h           ≈⟨ ι.∙-homo g h ⟨
-  ι (g N.∙ h)         ∎
+≋-trans {x} {y} {z} (g by ιg∙x) (h by ιh∙y) = h N.∙ g by begin
+  ι (h N.∙ g) ∙ x ≈⟨ ∙-congʳ (ι.∙-homo h g) ⟩
+  (ι h ∙ ι g) ∙ x ≈⟨ assoc (ι h) (ι g) x ⟩
+  ι h ∙ (ι g ∙ x) ≈⟨ ∙-congˡ ιg∙x ⟩
+  ι h ∙ y         ≈⟨ ιh∙y ⟩
+  z               ∎
 
 ≋-isEquivalence : IsEquivalence _≋_
 ≋-isEquivalence = record
@@ -63,38 +58,39 @@ data _≋_ (x y : Carrier) : Set (c ⊔ ℓ ⊔ c′) where
   }
 
 ≈⇒≋ : _≈_ ⇒ _≋_
-≈⇒≋ {x} {y} x≈y = N.ε by begin
-  x // y ≈⟨ x≈y⇒x∙y⁻¹≈ε x≈y ⟩
-  ε      ≈⟨ ι.ε-homo ⟨
-  ι N.ε  ∎
+≈⇒≋ {x} {y} x≈y = N.ε by trans (∙-cong ι.ε-homo x≈y) (identityˡ y)
 
 open AlgDefs _≋_
 
 ≋-∙-cong : Congruent₂ _∙_
-≋-∙-cong {x} {y} {u} {v} (g by x//y≈ιg) (h by u//v≈ιh) = g N.∙ normal h y .proj₁ by begin
-  x ∙ u // y ∙ v              ≈⟨ ∙-congˡ (⁻¹-anti-homo-∙ y v) ⟩
-  x ∙ u ∙ (v ⁻¹ ∙ y ⁻¹)       ≈⟨ assoc (x ∙ u) (v ⁻¹) (y ⁻¹) ⟨
-  (x ∙ u // v) // y           ≈⟨ ∙-congʳ (assoc x u (v ⁻¹)) ⟩
-  x ∙ (u // v) // y           ≈⟨ ∙-congʳ (∙-congˡ u//v≈ιh) ⟩
-  x ∙ ι h // y                ≈⟨ ∙-congʳ (∙-congˡ (identityˡ (ι h))) ⟨
-  x ∙ (ε ∙ ι h) // y          ≈⟨ ∙-congʳ (∙-congˡ (∙-congʳ (inverseˡ y))) ⟨
-  x ∙ ((y \\ y) ∙ ι h) // y   ≈⟨ ∙-congʳ (∙-congˡ (assoc (y ⁻¹) y (ι h))) ⟩
-  x ∙ (y \\ y ∙ ι h) // y     ≈⟨ ∙-congʳ (assoc x (y ⁻¹) (y ∙ ι h)) ⟨
-  (x // y) ∙ (y ∙ ι h) // y   ≈⟨ assoc (x // y) (y ∙ ι h) (y ⁻¹) ⟩
-  (x // y) ∙ (y ∙ ι h // y)   ≈⟨ ∙-cong x//y≈ιg (proj₂ (normal h y)) ⟩
-  ι g ∙ ι (normal h y .proj₁) ≈⟨ ι.∙-homo g (normal h y .proj₁) ⟨
-  ι (g N.∙ normal h y .proj₁) ∎
+≋-∙-cong {x} {y} {u} {v} (g by ιg∙x≈y) (h by ιh∙u≈v) = g N.∙ h′ by begin
+  ι (g N.∙ h′) ∙ (x ∙ u) ≈⟨ ∙-congʳ (ι.∙-homo g h′) ⟩
+  (ι g ∙ ι h′) ∙ (x ∙ u) ≈⟨ assoc (ι g) (ι h′) (x ∙ u) ⟩
+  ι g ∙ (ι h′ ∙ (x ∙ u)) ≈⟨ ∙-congˡ (assoc (ι h′) x u) ⟨
+  ι g ∙ ((ι h′ ∙ x) ∙ u) ≈⟨ ∙-congˡ (∙-congʳ x∙ιh≈ιh′∙x) ⟨
+  ι g ∙ ((x ∙ ι h) ∙ u)  ≈⟨ ∙-congˡ (assoc x (ι h) u) ⟩
+  ι g ∙ (x ∙ (ι h ∙ u))  ≈⟨ assoc (ι g) x (ι h ∙ u) ⟨
+  (ι g ∙ x) ∙ (ι h ∙ u)  ≈⟨ ∙-cong ιg∙x≈y ιh∙u≈v ⟩
+  y ∙ v                  ∎
+  where
+    h′ : N.Carrier
+    h′ = normal h x .proj₁
+    x∙ιh≈ιh′∙x : x ∙ ι h ≈ ι h′ ∙ x
+    x∙ιh≈ιh′∙x = normal h x .proj₂
+
 
 ≋-⁻¹-cong : Congruent₁ _⁻¹
-≋-⁻¹-cong {x} {y} (g by x//y≈ιg) = normal (g N.⁻¹) (y ⁻¹) .proj₁ by begin
-  x ⁻¹ ∙ y ⁻¹ ⁻¹                      ≈⟨ ∙-congʳ (identityˡ (x ⁻¹)) ⟨
-  (ε ∙ x ⁻¹) ∙ y ⁻¹ ⁻¹                ≈⟨ ∙-congʳ (∙-congʳ (inverseʳ (y ⁻¹))) ⟨
-  ((y ⁻¹ ∙ y ⁻¹ ⁻¹) ∙ x ⁻¹) ∙ y ⁻¹ ⁻¹ ≈⟨ ∙-congʳ (assoc (y ⁻¹) ((y ⁻¹) ⁻¹) (x ⁻¹)) ⟩
-  y ⁻¹ ∙ (y ⁻¹ ⁻¹ ∙ x ⁻¹) ∙ y ⁻¹ ⁻¹   ≈⟨ ∙-congʳ (∙-congˡ (⁻¹-anti-homo-∙ x (y ⁻¹))) ⟨
-  y ⁻¹ ∙ (x ∙ y ⁻¹) ⁻¹ ∙ y ⁻¹ ⁻¹      ≈⟨ ∙-congʳ (∙-congˡ (⁻¹-cong x//y≈ιg)) ⟩
-  y ⁻¹ ∙ ι g ⁻¹ ∙ y ⁻¹ ⁻¹             ≈⟨ ∙-congʳ (∙-congˡ (ι.⁻¹-homo g)) ⟨
-  y ⁻¹ ∙ ι (g N.⁻¹) ∙ y ⁻¹ ⁻¹         ≈⟨ proj₂ (normal (g N.⁻¹) (y ⁻¹)) ⟩
-  ι (normal (g N.⁻¹) (y ⁻¹) .proj₁)   ∎
+≋-⁻¹-cong {x} {y} (g by ιg∙x≈y) = g′ by begin
+  ι g′ ∙ x ⁻¹       ≈⟨ x⁻¹∙ιg⁻¹≈ιg′∙x⁻¹ ⟨
+  x ⁻¹ ∙ ι (g N.⁻¹) ≈⟨ ∙-congˡ (ι.⁻¹-homo g) ⟩
+  x ⁻¹ ∙ ι g ⁻¹     ≈⟨ ⁻¹-anti-homo-∙ (ι g) x ⟨
+  (ι g ∙ x) ⁻¹      ≈⟨ ⁻¹-cong ιg∙x≈y ⟩
+  y ⁻¹              ∎
+  where
+    g′ : N.Carrier
+    g′ = normal (g N.⁻¹) (x ⁻¹) .proj₁
+    x⁻¹∙ιg⁻¹≈ιg′∙x⁻¹ : x ⁻¹ ∙ ι (g N.⁻¹) ≈ ι g′ ∙ x ⁻¹
+    x⁻¹∙ιg⁻¹≈ιg′∙x⁻¹ = normal (g N.⁻¹) (x ⁻¹) .proj₂
 
 quotientIsGroup : IsGroup _≋_ _∙_ ε _⁻¹
 quotientIsGroup = record

@@ -36,12 +36,7 @@ record Ideal c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
     ; ι-monomorphism = ι.+ᴹ-isGroupMonomorphism
     ; normal = λ n g → record
       { fst = n
-      ; snd = begin
-        g + ι n - g     ≈⟨ +-assoc g (ι n) (- g) ⟩
-        g + (ι n - g)   ≈⟨ +-congˡ (+-comm (ι n) (- g)) ⟩
-        g + (- g + ι n) ≈⟨ +-assoc g (- g) (ι n) ⟨
-        g - g + ι n     ≈⟨ +-congʳ (-‿inverseʳ g) ⟩
-        0# + ι n        ≈⟨ +-identityˡ (ι n) ⟩
-        ι n             ∎
+      -- this ends up a lot simpler now
+      ; snd = +-comm g (ι n)
       }
     }

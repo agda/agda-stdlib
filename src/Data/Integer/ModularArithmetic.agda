@@ -38,17 +38,8 @@ module _ .{{_ : NonZero m}} where
 
   from-% : ∀ {x y} → x % m ≡ y % m → x ≋ y
   from-% {x} {y} x%m≡y%m = x / m - y / m by begin
-    x - y                                                   ≡⟨ ≡.cong₂ _-_ (a≡a%n+[a/n]*n x m) (a≡a%n+[a/n]*n y m) ⟩
-    (+ (x % m) + (x / m) * m) - (+ (y % m) + (y / m) * m)   ≡⟨ ≡.cong (λ z → (+ (x % m) + (x / m) * m) + z) (neg-distrib-+ (+ (y % m)) ((y / m) * m)) ⟩
-    (+ (x % m) + (x / m) * m) + (- + (y % m) - (y / m) * m) ≡⟨ +-assoc (+ (x % m) + (x / m) * m) (- + (y % m)) (- ((y / m) * m)) ⟨
-    ((+ (x % m) + (x / m) * m) - + (y % m)) - (y / m) * m   ≡⟨ ≡.cong (λ z → z - (y / m) * m) (+-assoc (+ (x % m)) ((x / m) * m) (- + (y % m))) ⟩
-    (+ (x % m) + ((x / m) * m - + (y % m))) - (y / m) * m   ≡⟨ ≡.cong (λ z → (+ (x % m) + z) - (y / m) * m) (+-comm ((x / m) * m) (- + (y % m))) ⟩
-    (+ (x % m) + (- + (y % m) + (x / m) * m)) - (y / m) * m ≡⟨ ≡.cong (λ z → z - (y / m) * m) (+-assoc (+ (x % m)) (- + (y % m)) ((x / m) * m)) ⟨
-    ((+ (x % m) - + (y % m)) + (x / m) * m) - (y / m) * m   ≡⟨ +-assoc (+ (x % m) - + (y % m)) ((x / m) * m) (- ((y / m) * m)) ⟩
-    (+ (x % m) - + (y % m)) + ((x / m) * m - (y / m) * m)   ≡⟨ ≡.cong₂ (λ a b → (+ a - + (y % m)) + ((x / m) * m + b)) x%m≡y%m (neg-distribˡ-* (y / m) m) ⟩
-    (+ (y % m) - + (y % m)) + ((x / m) * m + - (y / m) * m) ≡⟨ ≡.cong₂ _+_ (+-inverseʳ (+ (y % m))) (≡.sym (*-distribʳ-+ m (x / m) (- (y / m)))) ⟩
-    0ℤ + (x / m - y / m) * m                                ≡⟨ +-identityˡ ((x / m - y / m) * m) ⟩
-    (x / m - y / m) * m                                     ∎
+    (x / m - y / m) * m + x ≡⟨ {!!} ⟩
+    y                       ∎
     where open ≡-Reasoning
 
   to-% : ∀ {x y} → x ≋ y → x % m ≡ y % m
@@ -91,6 +82,3 @@ _≋?_ : Decidable _≋_
 _≋?_ with ℕ.nonZero? ∣ m ∣
 ... | yes p = _≋?′_ {{p}}
 ... | no ¬p = {!!}
-
-
-        
