@@ -1071,7 +1071,8 @@ search-least⟨¬_⟩ {P = P} P? =
 
 ¬∀⇒∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
                  ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
-¬∀⇒∃¬-smallest n P P? ¬∀P = [ contradiction′ ¬∀P , lemma ] $ search-least⟨¬ P? ⟩
+¬∀⇒∃¬-smallest n P P? ¬∀P =
+  [ (λ ∀P → contradiction′ ¬∀P ∀P) , lemma ] $ search-least⟨¬ P? ⟩
   where
   lemma : Least⟨ ∁ P ⟩ → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
   lemma (least i ¬pᵢ ∀[j<i]¬¬P) = i , ¬pᵢ , λ j →
@@ -1080,7 +1081,7 @@ search-least⟨¬_⟩ {P = P} P? =
 ¬∀⇒∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⇒∃¬ n P P? ¬∀P =
-  [ contradiction′ ¬∀P , (λ (least i ¬pᵢ _) → i , ¬pᵢ) ] $ search-least⟨¬ P? ⟩
+  [ (λ ∀P → contradiction′ ¬∀P ∀P) , (λ (least i ¬pᵢ _) → i , ¬pᵢ) ] $ search-least⟨¬ P? ⟩
 
 -- lifting Dec over Unary subset relation
 
@@ -1103,7 +1104,7 @@ decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
 
   dec[Q⊆P] : Dec (Q ⊆ P)
   dec[Q⊆P] with Q? zero
-  ... | no ¬q₀ = map′ (cons (contradiction′ ¬q₀)) Q⊆P⇒Q⊆ₛP ih
+  ... | no ¬q₀ = map′ (cons (λ q₀ → contradiction′ ¬q₀ q₀)) Q⊆P⇒Q⊆ₛP ih
   ... | yes q₀ = map′ (uncurry (cons ∘ const)) < _$ q₀ , Q⊆P⇒Q⊆ₛP > (P? q₀ ×? ih)
 
 ------------------------------------------------------------------------
@@ -1155,7 +1156,7 @@ injective⇒existsPivot {f = f} f-injective i
   fj<i : (j : Fin′ (suc i)) → f (inject! j) < i
   fj<i j with f (inject! j) <? i
   ... | yes fj<i = fj<i
-  ... | no  fj≮i = contradiction (_  , ℕ.s≤s⁻¹ (inject!-< j) , ℕ.≮⇒≥ fj≮i) ¬result
+  ... | no  fj≮i = contradiction′ ¬result (_  , ℕ.s≤s⁻¹ (inject!-< j) , ℕ.≮⇒≥ fj≮i)
 
   f∘inject! : Fin′ (suc i) → Fin′ i
   f∘inject! j = lower (f (inject! j)) (fj<i j)
