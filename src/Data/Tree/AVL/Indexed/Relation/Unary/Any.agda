@@ -17,7 +17,7 @@ open import Data.Product.Base using (_,_; ∃; -,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘′_; _∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary.Decidable.Core using (Dec; no; map′; _⊎-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; no; map′; _⊎?_)
 open import Relation.Unary
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
@@ -107,7 +107,7 @@ module _ {hˡ hʳ h} {kv : K& V}
 any? : Decidable P → (t : Tree V l u n) → Dec (Any P t)
 any? P? (leaf _)          = no λ ()
 any? P? (node kv l r bal) = map′ fromSum toSum
-  (P? kv ⊎-dec any? P? l ⊎-dec any? P? r)
+  (P? kv ⊎? any? P? l ⊎? any? P? r)
 
 satisfiable : ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
               Satisfiable (P ∘ (k ,_)) →
