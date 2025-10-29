@@ -37,7 +37,7 @@ y≈0⇒x*y≈0 {x} {y} y≈0 = begin
   0ᴹ      ∎
 
 x*y≉0⇒x≉0 : ∀ {x y} → x *ₗ y ≉ᴹ 0ᴹ → x ≉ 0#
-x*y≉0⇒x≉0 x≈0 = contraposition x≈0⇒x*y≈0 x≈0
+x*y≉0⇒x≉0 = contraposition x≈0⇒x*y≈0
 
 x*y≉0⇒y≉0 : ∀ {x y} → x *ₗ y ≉ᴹ 0ᴹ → y ≉ᴹ 0ᴹ
-x*y≉0⇒y≉0 y≈0 = contraposition y≈0⇒x*y≈0 y≈0
+x*y≉0⇒y≉0 = contraposition y≈0⇒x*y≈0
