@@ -35,9 +35,24 @@ private variable
 
 
 ------------------------------------------------------------------------
--- Re-export properties of commutative semigroups
+-- Re-export properties of monoids and commutative semigroups
 
 open import Algebra.Properties.CommutativeSemigroup commutativeSemigroup public
+open import Algebra.Properties.Monoid monoid public
+  using
+    ( ε-unique
+    ; elimʳ
+    ; elimˡ
+    ; introʳ
+    ; introˡ
+    ; introᶜ
+    ; cancelˡ
+    ; cancelʳ
+    ; insertˡ
+    ; insertʳ
+    ; cancelᶜ
+    ; insertᶜ
+    )
 
 ------------------------------------------------------------------------
 -- Additional properties
