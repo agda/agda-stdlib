@@ -20,18 +20,18 @@ open import Level using (suc; _⊔_)
 
 record Subgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
-    Sub : RawGroup c′ ℓ′
+    domain : RawGroup c′ ℓ′
 
   private
-    module Sub = RawGroup Sub
+    module H = RawGroup domain
 
   field
-    ι : Sub.Carrier → G.Carrier
-    ι-monomorphism : IsGroupMonomorphism Sub G.rawGroup ι
+    ι : H.Carrier → G.Carrier
+    ι-monomorphism : IsGroupMonomorphism domain G.rawGroup ι
 
   module ι = IsGroupMonomorphism ι-monomorphism
 
-  isGroup : IsGroup Sub._≈_ Sub._∙_ Sub.ε Sub._⁻¹
+  isGroup : IsGroup H._≈_ H._∙_ H.ε H._⁻¹
   isGroup = GroupMonomorphism.isGroup ι-monomorphism G.isGroup
 
   group : Group _ _

@@ -23,18 +23,18 @@ open import Level using (suc; _⊔_)
 
 record Submodule cm′ ℓm′ : Set (c ⊔ cm ⊔ ℓm ⊔ suc (cm′ ⊔ ℓm′)) where
   field
-    Sub : RawModule R.Carrier cm′ ℓm′
+    domain : RawModule R.Carrier cm′ ℓm′
 
   private
-    module Sub = RawModule Sub
+    module N = RawModule domain
 
   field
-    ι : Sub.Carrierᴹ → M.Carrierᴹ
-    ι-monomorphism : IsModuleMonomorphism Sub M.rawModule ι
+    ι : N.Carrierᴹ → M.Carrierᴹ
+    ι-monomorphism : IsModuleMonomorphism domain M.rawModule ι
 
   module ι = IsModuleMonomorphism ι-monomorphism
 
-  isModule : IsModule R Sub._≈ᴹ_ Sub._+ᴹ_ Sub.0ᴹ Sub.-ᴹ_ Sub._*ₗ_ Sub._*ᵣ_
+  isModule : IsModule R N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ₗ_ N._*ᵣ_
   isModule = ModuleMonomorphism.isModule ι-monomorphism R.isCommutativeRing M.isModule
 
   ⟨module⟩ : Module R _ _
