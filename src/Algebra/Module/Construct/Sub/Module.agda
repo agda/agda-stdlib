@@ -43,8 +43,4 @@ record Submodule cm′ ℓm′ : Set (c ⊔ cm ⊔ ℓm ⊔ suc (cm′ ⊔ ℓm�
   open Module ⟨module⟩ public hiding (isModule)
 
   subgroup : Subgroup cm′ ℓm′
-  subgroup = record
-    { Sub = Sub.+ᴹ-rawGroup
-    ; ι = ι
-    ; ι-monomorphism = ι.+ᴹ-isGroupMonomorphism
-    }
+  subgroup = record { ι-monomorphism = ι.+ᴹ-isGroupMonomorphism }
