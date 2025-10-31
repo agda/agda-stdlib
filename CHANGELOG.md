@@ -81,7 +81,7 @@ New modules
 
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
-* `Algebra.Module.Construct.Sub.Module` for the definition of submodules.
+* `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
 
 * `Algebra.Properties.BooleanRing`.
 
