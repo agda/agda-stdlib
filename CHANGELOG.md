@@ -221,6 +221,20 @@ Additions to existing modules
   contradiction′ : ¬ A → A → Whatever
   ```
 
+* In `Relation.Unary`
+  ```agda
+  ⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
+  [_]⊢_ : (A → B) → Pred A ℓ → Pred B _
+  ```
+
+* In `Relation.Unary.Properties`
+  ```agda
+  ⟨_⟩⊢ˡ : (f : A → B) → ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
+  ⟨_⟩⊢ʳ : (f : A → B) → P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
+  [_]⊢ˡ : (f : A → B) → Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
+  [_]⊢ʳ : (f : A → B) → f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
+  ```
+
 * In `System.Random`:
   ```agda
   randomIO : IO Bool

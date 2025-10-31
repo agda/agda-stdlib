@@ -221,6 +221,23 @@ U-Universal = λ _ → _
 ⊥⇒¬≬ P⊥Q = P⊥Q ∘ Product.proj₂
 
 ------------------------------------------------------------------------
+-- Adjoint properties for change-of-base
+
+module _ {P : Pred A ℓ₁} {Q : Pred B ℓ₂} (f : A → B) where
+
+  ⟨_⟩⊢ˡ : ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
+  ⟨_⟩⊢ˡ ⟨f⟩⊢P⊆Q Px = ⟨f⟩⊢P⊆Q (_ , refl , Px)
+
+  ⟨_⟩⊢ʳ : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
+  ⟨_⟩⊢ʳ P⊆f⊢Q (x , refl , Px) = P⊆f⊢Q Px
+
+  [_]⊢ˡ : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
+  [_]⊢ˡ Q⊆[f]⊢P Qfx = Q⊆[f]⊢P Qfx refl
+
+  [_]⊢ʳ : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
+  [_]⊢ʳ f⊢Q⊆P Qfx refl = f⊢Q⊆P Qfx
+
+------------------------------------------------------------------------
 -- Decidability properties
 
 map : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
