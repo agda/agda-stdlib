@@ -79,9 +79,13 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Cosntruct.Quotient.Group` for the definition of quotient groups.
+
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
 * `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
+
+* `Algebra.NormalSubgroup` for the definition of normal subgroups.
 
 * `Algebra.Properties.BooleanRing`.
 
