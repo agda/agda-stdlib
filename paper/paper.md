@@ -172,8 +172,8 @@ Authors are listed approximately in order of contribution. Manuscript by Daggitt
 The authors have no conflicts of interest.
 Some contributions were enabled by funding for related projects:
 
-- Jason Z. S. Hu: funded Master's/PhD.
-
 - Shu-Hung You: U.S. National Science Foundation Awards 2237984 and 2421308.
+
+- Jason Z. S. Hu: Postgraduate Scholarship (Doctoral) from the Natural Sciences and Engineering Research Council of Canada and Doctoral (B2X) Research Scholarship from Fonds de recherche du Québec (Nature et technologies).
 
 # References
