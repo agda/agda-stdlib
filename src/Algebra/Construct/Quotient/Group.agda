@@ -66,15 +66,14 @@ open AlgDefs _≋_
 ≋-∙-cong : Congruent₂ _∙_
 ≋-∙-cong {x} {y} {u} {v} (g by ιg∙x≈y) (h by ιh∙u≈v) = g N.∙ h′ by begin
   ι (g N.∙ h′) ∙ (x ∙ u) ≈⟨ ∙-congʳ (ι.∙-homo g h′) ⟩
-  (ι g ∙ ι h′) ∙ (x ∙ u) ≈⟨ uv∙wx≈u[vw∙x] (ι g) (ι h′) x u ⟩
-  ι g ∙ ((ι h′ ∙ x) ∙ u) ≈⟨ uv≈w⇒xu∙v≈xw (uv≈w⇒u∙vx≈wx (normal h x .proj₂) u) (ι g) ⟨
+  (ι g ∙ ι h′) ∙ (x ∙ u) ≈⟨ uv≈wx⇒yu∙vz≈yw∙xz (normal h x .proj₂) (ι g) u ⟩
   (ι g ∙ x) ∙ (ι h ∙ u)  ≈⟨ ∙-cong ιg∙x≈y ιh∙u≈v ⟩
   y ∙ v                  ∎
   where h′ = normal h x .proj₁
 
 ≋-⁻¹-cong : Congruent₁ _⁻¹
 ≋-⁻¹-cong {x} {y} (g by ιg∙x≈y) = h by begin
-  ι h ∙ x ⁻¹        ≈⟨ normal (g N.⁻¹) (x ⁻¹) .proj₂ ⟨
+  ι h ∙ x ⁻¹        ≈⟨ normal (g N.⁻¹) (x ⁻¹) .proj₂ ⟩
   x ⁻¹ ∙ ι (g N.⁻¹) ≈⟨ ∙-congˡ (ι.⁻¹-homo g) ⟩
   x ⁻¹ ∙ ι g ⁻¹     ≈⟨ ⁻¹-anti-homo-∙ (ι g) x ⟨
   (ι g ∙ x) ⁻¹      ≈⟨ ⁻¹-cong ιg∙x≈y ⟩

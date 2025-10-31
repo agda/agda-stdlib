@@ -20,7 +20,7 @@ private
 
 -- every element of the subgroup commutes in G
 Normal : ∀ {c′ ℓ′} → Subgroup c′ ℓ′ → Set (c ⊔ ℓ ⊔ c′)
-Normal subgroup = ∀ n g → ∃[ n′ ] g G.∙ ι n G.≈ ι n′ G.∙ g
+Normal subgroup = ∀ n g → ∃[ n′ ] ι n′ G.∙ g G.≈ g G.∙ ι n
   where open Subgroup subgroup
 
 record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
@@ -31,5 +31,5 @@ record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) wh
   open Subgroup subgroup public
 
 abelian⇒subgroup-normal : ∀ {c′ ℓ′} → Commutative G._≈_ G._∙_ → (subgroup : Subgroup c′ ℓ′) → Normal subgroup
-abelian⇒subgroup-normal ∙-comm subgroup n g = n , ∙-comm g (ι n)
+abelian⇒subgroup-normal ∙-comm subgroup n g = n , ∙-comm (ι n) g
   where open Subgroup subgroup
