@@ -105,6 +105,9 @@ quotientIsGroup = record
 quotientGroup : Group c (c ⊔ ℓ ⊔ c′)
 quotientGroup = record { isGroup = quotientIsGroup }
 
+_/_ : Group c (c ⊔ ℓ ⊔ c′)
+_/_ = quotientGroup
+
 project : Group.Carrier G → Group.Carrier quotientGroup
 project x = x -- because we do all the work in the relation
 
