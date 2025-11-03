@@ -19,6 +19,11 @@ private
   module G = Group G
 
 -- every element of the subgroup commutes in G
+record IsNormal {c′ ℓ′} (subgroup : Subgroup c′ ℓ′) : Set (c ⊔ ℓ ⊔ c′) where
+  open Subgroup subgroup
+  field
+    normal : ∀ n g → ∃[ n′ ] ι n′ G.∙ g G.≈ g G.∙ ι n
+
 Normal : ∀ {c′ ℓ′} → Subgroup c′ ℓ′ → Set (c ⊔ ℓ ⊔ c′)
 Normal subgroup = ∀ n g → ∃[ n′ ] ι n′ G.∙ g G.≈ g G.∙ ι n
   where open Subgroup subgroup
@@ -26,10 +31,11 @@ Normal subgroup = ∀ n g → ∃[ n′ ] ι n′ G.∙ g G.≈ g G.∙ ι n
 record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
     subgroup : Subgroup c′ ℓ′
-    normal : Normal subgroup
+    isNormal : IsNormal subgroup
 
   open Subgroup subgroup public
+  open IsNormal isNormal public
 
-abelian⇒subgroup-normal : ∀ {c′ ℓ′} → Commutative G._≈_ G._∙_ → (subgroup : Subgroup c′ ℓ′) → Normal subgroup
-abelian⇒subgroup-normal ∙-comm subgroup n g = n , ∙-comm (ι n) g
+abelian⇒subgroup-normal : ∀ {c′ ℓ′} → Commutative G._≈_ G._∙_ → (subgroup : Subgroup c′ ℓ′) → IsNormal subgroup
+abelian⇒subgroup-normal ∙-comm subgroup = record { normal = λ n g → n , ∙-comm (ι n) g }
   where open Subgroup subgroup
