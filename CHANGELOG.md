@@ -93,6 +93,10 @@ New modules
 
 * `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
 
+* Added a new domain theory section to the library under `Relation.Binary.Domain.*`:
+  - Introduced new modules and bundles for domain theory, including `DirectedCompletePartialOrder`, `Lub`, and `ScottContinuous`.
+  - All files for domain theory are now available in `src/Relation/Binary/Domain/`.
+
 Additions to existing modules
 -----------------------------
 
