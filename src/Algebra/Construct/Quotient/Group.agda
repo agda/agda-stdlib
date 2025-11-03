@@ -18,7 +18,7 @@ open import Algebra.Morphism.Structures using (IsGroupHomomorphism)
 open import Algebra.Properties.Monoid monoid
 open import Algebra.Properties.Group G using (⁻¹-anti-homo-∙)
 open import Algebra.Structures using (IsGroup)
-open import Data.Product.Base using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_)
 open import Function.Definitions using (Surjective)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (_⇒_)
@@ -28,7 +28,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 
 private
   module N = NormalSubgroup N
-open NormalSubgroup N using (ι; module ι; normal)
+open NormalSubgroup N using (ι; module ι; conjugate; normal)
 
 infix 0 _by_
 
@@ -66,19 +66,19 @@ open AlgDefs _≋_
 ≋-∙-cong : Congruent₂ _∙_
 ≋-∙-cong {x} {y} {u} {v} (g by ιg∙x≈y) (h by ιh∙u≈v) = g N.∙ h′ by begin
   ι (g N.∙ h′) ∙ (x ∙ u) ≈⟨ ∙-congʳ (ι.∙-homo g h′) ⟩
-  (ι g ∙ ι h′) ∙ (x ∙ u) ≈⟨ uv≈wx⇒yu∙vz≈yw∙xz (normal h x .proj₂) (ι g) u ⟩
+  (ι g ∙ ι h′) ∙ (x ∙ u) ≈⟨ uv≈wx⇒yu∙vz≈yw∙xz (normal h x) (ι g) u ⟩
   (ι g ∙ x) ∙ (ι h ∙ u)  ≈⟨ ∙-cong ιg∙x≈y ιh∙u≈v ⟩
   y ∙ v                  ∎
-  where h′ = normal h x .proj₁
+  where h′ = conjugate h x
 
 ≋-⁻¹-cong : Congruent₁ _⁻¹
 ≋-⁻¹-cong {x} {y} (g by ιg∙x≈y) = h by begin
-  ι h ∙ x ⁻¹        ≈⟨ normal (g N.⁻¹) (x ⁻¹) .proj₂ ⟩
+  ι h ∙ x ⁻¹        ≈⟨ normal (g N.⁻¹) (x ⁻¹) ⟩
   x ⁻¹ ∙ ι (g N.⁻¹) ≈⟨ ∙-congˡ (ι.⁻¹-homo g) ⟩
   x ⁻¹ ∙ ι g ⁻¹     ≈⟨ ⁻¹-anti-homo-∙ (ι g) x ⟨
   (ι g ∙ x) ⁻¹      ≈⟨ ⁻¹-cong ιg∙x≈y ⟩
   y ⁻¹              ∎
-  where h = normal (g N.⁻¹) (x ⁻¹) .proj₁
+  where h = conjugate (g N.⁻¹) (x ⁻¹)
 
 quotientIsGroup : IsGroup _≋_ _∙_ ε _⁻¹
 quotientIsGroup = record

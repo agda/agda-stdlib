@@ -12,7 +12,6 @@ module Algebra.NormalSubgroup {c ℓ} (G : Group c ℓ)  where
 
 open import Algebra.Definitions
 open import Algebra.Construct.Sub.Group G using (Subgroup)
-open import Data.Product.Base using (∃-syntax; _,_)
 open import Level using (suc; _⊔_)
 
 private
@@ -22,7 +21,8 @@ private
 record IsNormal {c′ ℓ′} (subgroup : Subgroup c′ ℓ′) : Set (c ⊔ ℓ ⊔ c′) where
   open Subgroup subgroup
   field
-    normal : ∀ n g → ∃[ n′ ] ι n′ G.∙ g G.≈ g G.∙ ι n
+    conjugate : ∀ n g → Carrier
+    normal : ∀ n g → ι (conjugate n g) G.∙ g G.≈ g G.∙ ι n
 
 record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
@@ -33,5 +33,5 @@ record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) wh
   open IsNormal isNormal public
 
 abelian⇒subgroup-normal : ∀ {c′ ℓ′} → Commutative G._≈_ G._∙_ → (subgroup : Subgroup c′ ℓ′) → IsNormal subgroup
-abelian⇒subgroup-normal ∙-comm subgroup = record { normal = λ n g → n , ∙-comm (ι n) g }
+abelian⇒subgroup-normal ∙-comm subgroup = record { normal = λ n g → ∙-comm (ι n) g }
   where open Subgroup subgroup
