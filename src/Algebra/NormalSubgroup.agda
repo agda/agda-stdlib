@@ -24,10 +24,6 @@ record IsNormal {c′ ℓ′} (subgroup : Subgroup c′ ℓ′) : Set (c ⊔ ℓ
   field
     normal : ∀ n g → ∃[ n′ ] ι n′ G.∙ g G.≈ g G.∙ ι n
 
-Normal : ∀ {c′ ℓ′} → Subgroup c′ ℓ′ → Set (c ⊔ ℓ ⊔ c′)
-Normal subgroup = ∀ n g → ∃[ n′ ] ι n′ G.∙ g G.≈ g G.∙ ι n
-  where open Subgroup subgroup
-
 record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
     subgroup : Subgroup c′ ℓ′
