@@ -944,9 +944,6 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
 
-  ringWithoutOne : RingWithoutOne _ _
-  ringWithoutOne = record { isRingWithoutOne = isRingWithoutOne }
-
   semiring : Semiring _ _
   semiring = record { isSemiring = isSemiring }
 

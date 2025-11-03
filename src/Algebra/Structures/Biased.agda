@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- Ways to give instances of certain structures where some fields can
--- be given in terms of others. Re-exported via `Algebra`.
+-- be given in terms of others
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -36,7 +36,7 @@ record IsCommutativeMonoidˡ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   isCommutativeMonoid = record
     { isMonoid = record
       { isSemigroup = isSemigroup
-      ; identity    = comm∧idˡ⇒id setoid comm identityˡ
+      ; identity    = comm+idˡ⇒id setoid comm identityˡ
       }
     ; comm = comm
     } where open IsSemigroup isSemigroup
@@ -55,7 +55,7 @@ record IsCommutativeMonoidʳ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   isCommutativeMonoid = record
     { isMonoid = record
       { isSemigroup = isSemigroup
-      ; identity    = comm∧idʳ⇒id setoid comm identityʳ
+      ; identity    = comm+idʳ⇒id setoid comm identityʳ
       }
     ; comm = comm
     } where open IsSemigroup isSemigroup
@@ -146,9 +146,9 @@ record IsCommutativeSemiringˡ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
         ; *-cong                = *.∙-cong
         ; *-assoc               = *.assoc
         ; *-identity            = *.identity
-        ; distrib               = comm∧distrʳ⇒distr +.setoid +.∙-cong *.comm distribʳ
+        ; distrib               = comm+distrʳ⇒distr +.setoid +.∙-cong *.comm distribʳ
         }
-      ; zero = comm∧zeˡ⇒ze +.setoid *.comm zeroˡ
+      ; zero = comm+zeˡ⇒ze +.setoid *.comm zeroˡ
       }
     ; *-comm = *.comm
     }
@@ -175,9 +175,9 @@ record IsCommutativeSemiringʳ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
         ; *-cong                = *.∙-cong
         ; *-assoc               = *.assoc
         ; *-identity            = *.identity
-        ; distrib               = comm∧distrˡ⇒distr +.setoid +.∙-cong *.comm distribˡ
+        ; distrib               = comm+distrˡ⇒distr +.setoid +.∙-cong *.comm distribˡ
         }
-      ; zero = comm∧zeʳ⇒ze +.setoid *.comm zeroʳ
+      ; zero = comm+zeʳ⇒ze +.setoid *.comm zeroʳ
       }
     ; *-comm = *.comm
     }
@@ -191,33 +191,6 @@ open IsCommutativeSemiringʳ public
 
 ------------------------------------------------------------------------
 -- IsRing
-
-record IsRing* (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
-  field
-    +-isAbelianGroup : IsAbelianGroup + 0# -_
-    *-isMonoid       : IsMonoid * 1#
-    distrib          : * DistributesOver +
-    zero             : Zero 0# *
-
-  isRing : IsRing + * -_ 0# 1#
-  isRing = record
-    { +-isAbelianGroup = +-isAbelianGroup
-    ; *-cong = ∙-cong
-    ; *-assoc = assoc
-    ; *-identity = identity
-    ; distrib = distrib
-    } where open IsMonoid *-isMonoid
-
-open IsRing* public
-  using () renaming (isRing to isRing*)
-
-
-
-------------------------------------------------------------------------
--- Deprecated
-------------------------------------------------------------------------
-
--- Version 2.0
 
 -- We can recover a ring without proving that 0# annihilates *.
 record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
@@ -234,11 +207,11 @@ record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
   open * using ()       renaming (∙-cong to *-cong)
 
   zeroˡ : LeftZero 0# *
-  zeroˡ = assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ setoid
+  zeroˡ = assoc+distribʳ+idʳ+invʳ⇒zeˡ setoid
             +-cong *-cong +.assoc (proj₂ distrib) +.identityʳ +.inverseʳ
 
   zeroʳ : RightZero 0# *
-  zeroʳ = assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ setoid
+  zeroʳ = assoc+distribˡ+idʳ+invʳ⇒zeʳ setoid
             +-cong *-cong +.assoc (proj₁ distrib) +.identityʳ +.inverseʳ
 
   zero : Zero 0# *
@@ -251,16 +224,28 @@ record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
     ; *-assoc          = *.assoc
     ; *-identity       = *.identity
     ; distrib          = distrib
+    ; zero             = zero
     }
 
 open IsRingWithoutAnnihilatingZero public
   using () renaming (isRing to isRingWithoutAnnihilatingZero)
 
-{-# WARNING_ON_USAGE IsRingWithoutAnnihilatingZero
-"Warning: IsRingWithoutAnnihilatingZero was deprecated in v2.0.
-Please use the standard `IsRing` instead."
-#-}
-{-# WARNING_ON_USAGE isRingWithoutAnnihilatingZero
-"Warning: isRingWithoutAnnihilatingZero was deprecated in v2.0.
-Please use the standard `IsRing` instead."
-#-}
+record IsRing* (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isAbelianGroup : IsAbelianGroup + 0# -_
+    *-isMonoid       : IsMonoid * 1#
+    distrib          : * DistributesOver +
+    zero             : Zero 0# *
+
+  isRing : IsRing + * -_ 0# 1#
+  isRing = record
+    { +-isAbelianGroup = +-isAbelianGroup
+    ; *-cong = ∙-cong
+    ; *-assoc = assoc
+    ; *-identity = identity
+    ; distrib = distrib
+    ; zero = zero
+    } where open IsMonoid *-isMonoid
+
+open IsRing* public
+  using () renaming (isRing to isRing*)

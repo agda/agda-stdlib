@@ -8,12 +8,14 @@
 
 module Relation.Binary.PropositionalEquality where
 
+import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base using (id; _∘_)
 import Function.Dependent.Bundles as Dependent
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (Irrelevant)
+open import Data.Product.Base using (∃)
+
 open import Relation.Nullary.Decidable using (yes; no; dec-yes-irr; dec-no)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (DecidableEquality)
@@ -57,6 +59,12 @@ _≗_ {A = A} {B = B} = Setoid._≈_ (A →-setoid B)
          (A → Setoid.Carrier B) →
          Dependent.Func (setoid A) (Trivial.indexedSetoid B)
 →-to-⟶ = :→-to-Π
+
+------------------------------------------------------------------------
+-- Propositionality
+
+isPropositional : Set a → Set a
+isPropositional A = (a b : A) → a ≡ b
 
 ------------------------------------------------------------------------
 -- More complex rearrangement lemmas
@@ -105,7 +113,7 @@ module _ (_≟_ : DecidableEquality A) {x y : A} where
 -- See README.Inspect for an explanation of how/why to use this.
 
 -- Normally (but not always) the new `with ... in` syntax described at
--- https://agda.readthedocs.io/en/v2.6.4/language/with-abstraction.html#with-abstraction-equality
+-- https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality
 -- can be used instead."
 
 record Reveal_·_is_ {A : Set a} {B : A → Set b}
@@ -117,21 +125,3 @@ record Reveal_·_is_ {A : Set a} {B : A → Set b}
 inspect : ∀ {A : Set a} {B : A → Set b}
           (f : (x : A) → B x) (x : A) → Reveal f · x is f x
 inspect f x = [ refl ]
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.0
-
-isPropositional : Set a → Set a
-isPropositional = Irrelevant
-
-{-# WARNING_ON_USAGE isPropositional
-"Warning: isPropositional was deprecated in v2.0.
-Please use Relation.Nullary.Irrelevant instead. "
-#-}
-

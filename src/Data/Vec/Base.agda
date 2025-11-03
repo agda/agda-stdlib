@@ -8,7 +8,7 @@
 
 module Data.Vec.Base where
 
-open import Data.Bool.Base using (Bool; true; false; if_then_else_)
+open import Data.Bool.Base using (Bool; if_then_else_)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
@@ -17,7 +17,7 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; trans; cong)
-open import Relation.Nullary.Decidable.Core using (does; T?)
+open import Relation.Nullary.Decidable.Core using (does)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -230,14 +230,12 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 sum : Vec ℕ n → ℕ
 sum = foldr _ _+_ 0
 
-count : ∀ {P : Pred A p} → Decidable P → Vec A n → ℕ
-count P? []       = zero
-count P? (x ∷ xs) with does (P? x)
-... | true  = suc (count P? xs)
-... | false = count P? xs
-
 countᵇ : (A → Bool) → Vec A n → ℕ
-countᵇ p = count (T? ∘ p)
+countᵇ p []       = zero
+countᵇ p (x ∷ xs) = if p x then suc (countᵇ p xs) else countᵇ p xs
+
+count : ∀ {P : Pred A p} → Decidable P → Vec A n → ℕ
+count P? = countᵇ (does ∘ P?)
 
 ------------------------------------------------------------------------
 -- Operations for building vectors

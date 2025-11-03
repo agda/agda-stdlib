@@ -20,7 +20,7 @@ open import Data.Fin.Substitution.Lemmas
 open import Data.Nat.Base hiding (_/_)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 open PropEq.≡-Reasoning
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive

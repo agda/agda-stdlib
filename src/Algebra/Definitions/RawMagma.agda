@@ -27,31 +27,18 @@ open RawMagma M renaming (Carrier to A)
 
 infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_
 
--- Divisibility from the left.
---
--- This and, the definition of right divisibility below, are defined as
--- records rather than in terms of the base product type in order to
--- make the use of pattern synonyms more ergonomic (see #2216 for
--- further details). The record field names are not designed to be
--- used explicitly and indeed aren't re-exported publicly by
--- `Algebra.X.Properties.Divisibility` modules.
+-- Divisibility from the left
 
-record _∣ˡ_ (x y : A) : Set (a ⊔ ℓ) where
-  constructor _,_
-  field
-    quotient : A
-    equality : x ∙ quotient ≈ y
+_∣ˡ_ : Rel A (a ⊔ ℓ)
+x ∣ˡ y = ∃ λ q → (x ∙ q) ≈ y
 
 _∤ˡ_ : Rel A (a ⊔ ℓ)
 x ∤ˡ y = ¬ x ∣ˡ y
 
 -- Divisibility from the right
 
-record _∣ʳ_ (x y : A) : Set (a ⊔ ℓ) where
-  constructor _,_
-  field
-    quotient : A
-    equality : quotient ∙ x ≈ y
+_∣ʳ_ : Rel A (a ⊔ ℓ)
+x ∣ʳ y = ∃ λ q → (q ∙ x) ≈ y
 
 _∤ʳ_ : Rel A (a ⊔ ℓ)
 x ∤ʳ y = ¬ x ∣ʳ y

@@ -20,8 +20,8 @@ open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
-import Data.Vec.Effectful as Vec
-import Function.Identity.Effectful as Identity
+import Data.Vec.Effectful as VecCat
+import Function.Identity.Effectful as IdCat
 open import Data.Vec.Properties using (lookup-map)
 open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
   using (Pointwise; ext)
@@ -165,18 +165,18 @@ lift n = record
     }
   }
   where
-  open RawApplicative Vec.applicative
+  open RawApplicative VecCat.applicative
     using (pure; zipWith) renaming (_<$>_ to map)
 
   ⟦_⟧Id : ∀ {n} → Expr n → Vec Carrier n → Carrier
-  ⟦_⟧Id = Semantics.⟦_⟧ Identity.applicative
+  ⟦_⟧Id = Semantics.⟦_⟧ IdCat.applicative
 
   ⟦_⟧Vec : ∀ {m n} → Expr n → Vec (Vec Carrier m) n → Vec Carrier m
-  ⟦_⟧Vec = Semantics.⟦_⟧ Vec.applicative
+  ⟦_⟧Vec = Semantics.⟦_⟧ VecCat.applicative
 
   open module R {n} (i : Fin n) =
     Reflection setoid var
       (λ e ρ → Vec.lookup (⟦ e ⟧Vec ρ) i)
       (λ e ρ → ⟦ e ⟧Id (Vec.map (flip Vec.lookup i) ρ))
       (λ e ρ → sym $ reflexive $
-                 Naturality.natural (Vec.lookup-morphism i) e ρ)
+                 Naturality.natural (VecCat.lookup-morphism i) e ρ)

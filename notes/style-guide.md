@@ -333,16 +333,6 @@ line of code, indented by two spaces.
   ...                  | false = filter p xs
   ```
 
-* Instance arguments, and their types, should use the vanilla ASCII/UTF-8 `{{_}}`
-  syntax in preference to the Unicode `⦃_⦄` syntax (written using `\{{`/`\}}`),
-  which moreover requires additional whitespace to parse correctly.
-  NB. Even for irrelevant instances, such as typically for `NonZero` arguments,
-  neverthelesss it is necessary to supply an underscore binding `{{_ : NonZero n}}`
-  if subsequent terms occurring in the type rely on that argument to be well-formed:
-  eg in `Data.Nat.DivMod`, in the use of `_/ n` and `_% n`
-  ```agda
-  m≡m%n+[m/n]*n : ∀ m n .{{_ : NonZero n}} → m ≡ m % n + (m / n) * n
-  ```
 
 ## Types
 
@@ -357,12 +347,12 @@ line of code, indented by two spaces.
 
 #### Variables
 
-* `Level` and `Set`s can always be generalised using the keyword `variable`.
+* `Level` and `Set`s can always be generalized using the keyword `variable`.
 
 * A file may only declare variables of other types if those types are used
   in the definition of the main type that the file concerns itself with.
-  At the moment the policy is *not* to generalise over any other types to
-  minimise the amount of information that users have to keep in their head
+  At the moment the policy is *not* to generalize over any other types to
+  minimize the amount of information that users have to keep in their head
   concurrently.
 
 * Example 1: the main type in `Data.List.Properties` is `List A` where `A : Set a`.
@@ -412,7 +402,7 @@ word within a compound word is capitalized except for the first word.
 
 * Rational variables are named `p`, `q`, `r`, ... (default `p`)
 
-* All other variables should be named `x`, `y`, `z`.
+* All other variables tend to be named `x`, `y`, `z`.
 
 * Collections of elements are usually indicated by appending an `s`
   (e.g. if you are naming your variables `x` and `y` then lists
@@ -452,44 +442,6 @@ word within a compound word is capitalized except for the first word.
 * If the relevant Unicode characters are available, negated forms of
   relations should be used over the `¬` symbol (e.g. `m+n≮n` should be
   used instead of `¬m+n<n`).
-
-#### Symbols for operators and relations
-
-* The stdlib aims to use a consistent set of notations, governed by a
-  consistent set of conventions, but sometimes, different
-  Unicode/emacs-input-method symbols nevertheless can be rendered by
-  identical-*seeming* symbols, so this is an attempt to document these.
-
-* The typical binary operator in the `Algebra` hierarchy, inheriting
-  from the root `Structure`/`Bundle` `isMagma`/`Magma`, is written as
-  infix `∙`, obtained as `\.`, NOT as `\bu2`. Nevertheless, there is
-  also a 'generic' operator, written as infix `·`, obtained as
-  `\cdot`. Do NOT attempt to use related, but typographically
-  indistinguishable, symbols.
-
-* Similarly, 'primed' names and symbols, used to standardise names
-  apart, or to provide (more) simply-typed versions of
-  dependently-typed operations, should be written using `\'`, NOT the
-  unmarked `'` character.
-
-* Likewise, standard infix symbols for eg, divisibility on numeric
-  datatypes/algebraic structure, should be written `\|`, NOT the
-  unmarked `|` character. An exception to this is the *strict*
-  ordering relation, written using `<`, NOT `\<` as might be expected.
-
-* Since v2.0, the `Algebra` hierarchy systematically introduces
-  consistent symbolic notation for the negated versions of the usual
-  binary predicates for equality, ordering etc. These are obtained
-  from the corresponding input sequence by adding `n` to the symbol
-  name, so that `≤`, obtained as `\le`, becomes `≰` obtained as
-  `\len`, etc.
-
-* Correspondingly, the flipped symbols (and their negations) for the
-  converse relations are systematically introduced, eg `≥` as `\ge`
-  and `≱` as `\gen`.
-
-* Any exceptions to these conventions should be flagged on the GitHub
-  `agda-stdlib` issue tracker in the usual way.
 
 #### Functions and relations over specific datatypes
 

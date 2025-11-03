@@ -8,7 +8,6 @@ on:
     branches:
       - master
       - experimental
-  merge_group:
 
 ########################################################################
 ## CONFIGURATION
@@ -51,7 +50,7 @@ env:
   CABAL_VERSION: 3.6.2.0
   CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
-  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -isrc -idoc
+  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
 
 jobs:
   test-stdlib:
@@ -72,15 +71,16 @@ jobs:
 
       - name: Initialise variables
         run: |
-          if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
-             || '${{ github.base_ref }}' == 'experimental' ]]; then
+          if [[ '${{ github.ref }}' == 'refs/heads/master' \
+             || '${{ github.base_ref }}' == 'master' ]]; then
+            # Pick Agda version for master
+            echo "AGDA_COMMIT=tags/v2.6.4" >> $GITHUB_ENV;
+            echo "AGDA_HTML_DIR=html/master" >> $GITHUB_ENV
+          elif [[ '${{ github.ref }}' == 'refs/heads/experimental' \
+               || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
             echo "AGDA_COMMIT=4d36cb37f8bfb765339b808b13356d760aa6f0ec" >> $GITHUB_ENV;
             echo "AGDA_HTML_DIR=html/experimental" >> $GITHUB_ENV
-          else
-            # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.6.4.1" >> $GITHUB_ENV;
-            echo "AGDA_HTML_DIR=html/master" >> $GITHUB_ENV
           fi
 
           if [[ '${{ github.ref }}' == 'refs/heads/master' \
@@ -151,19 +151,10 @@ jobs:
 
       - name: Test stdlib
         run: |
-          # Including deprecated modules purely for testing
-          cabal run GenerateEverything -- --include-deprecated
-          ${{ env.AGDA }} -WnoUserWarning --safe EverythingSafe.agda
-          ${{ env.AGDA }} -WnoUserWarning Everything.agda
-
-      - name: Prepare HTML index
-        run: |
-          # Regenerating the Everything files without the deprecated modules
           cabal run GenerateEverything
-          cp .github/tooling/* .
+          cp travis/* .
           ./index.sh
           ${{ env.AGDA }} --safe EverythingSafe.agda
-          ${{ env.AGDA }} Everything.agda
           ${{ env.AGDA }} index.agda
 
       - name: Golden testing
@@ -186,7 +177,8 @@ jobs:
           rm -f '${{ env.AGDA_HTML_DIR }}'/*.html
           rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
           ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
-          cp .github/tooling/* .
+
+          cp travis/* .
           ./landing.sh
 
       - name: Deploy HTML

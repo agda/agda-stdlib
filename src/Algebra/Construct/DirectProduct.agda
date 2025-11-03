@@ -335,6 +335,8 @@ ringWithoutOne R S = record
       ; *-assoc          = Semigroup.assoc (semigroup R.*-semigroup S.*-semigroup)
       ; distrib          = (λ x y z → (R.distribˡ , S.distribˡ) <*> x <*> y <*> z)
                             , (λ x y z → (R.distribʳ , S.distribʳ) <*> x <*> y <*> z)
+      ; zero             = uncurry (λ x y → R.zeroˡ x , S.zeroˡ y)
+                            , uncurry (λ x y → R.zeroʳ x , S.zeroʳ y)
       }
 
   } where module R = RingWithoutOne R; module S = RingWithoutOne S
@@ -387,6 +389,7 @@ ring R S = record
       ; *-assoc          = Semiring.*-assoc Semi
       ; *-identity       = Semiring.*-identity Semi
       ; distrib          = Semiring.distrib Semi
+      ; zero             = Semiring.zero Semi
       }
   }
   where

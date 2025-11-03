@@ -1,7 +1,5 @@
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE MultiWayIf #-}
 
 import Control.Applicative
 import Control.Monad
@@ -228,10 +226,10 @@ extractHeader mod = extract
 
 -- | A crude classifier looking for lines containing options
 
-data Safety = Unsafe | Safe deriving (Eq)
-data Status = Deprecated | Active deriving (Eq)
+data Status = Deprecated | Unsafe | Safe
+  deriving (Eq)
 
-classify :: FilePath -> [String] -> [String] -> Exc (Safety, Status)
+classify :: FilePath -> [String] -> [String] -> Exc Status
 classify fp hd ls
   -- We start with sanity checks
   | isUnsafe && safe          = throwError $ fp ++ contradiction "unsafe" "safe"
@@ -240,12 +238,11 @@ classify fp hd ls
   | isWithK && not withK      = throwError $ fp ++ missingWithK
   | not (isWithK || cubicalC) = throwError $ fp ++ uncategorized "as relying on K" "cubical-compatible"
   -- And then perform the actual classification
-  | otherwise = do
-      let safety = if | safe -> Safe
-                      | isUnsafe -> Unsafe
-                      | otherwise -> error "IMPOSSIBLE"
-      let status = if deprecated then Deprecated else Active
-      pure (safety, status)
+  | deprecated                = pure $ Deprecated
+  | isUnsafe                  = pure $ Unsafe
+  | safe                      = pure $ Safe
+  -- We know that @not (isUnsafe || safe)@, all cases are covered
+  | otherwise                 = error "IMPOSSIBLE"
 
   where
 
@@ -282,20 +279,18 @@ classify fp hd ls
 data LibraryFile = LibraryFile
   { filepath   :: FilePath -- ^ FilePath of the source file
   , header     :: [String] -- ^ All lines in the headers are already prefixed with \"-- \".
-  , safety     :: Safety
-  , status     :: Status   -- ^ Deprecation status options used by the module
+  , status     :: Status   -- ^ Safety options used by the module
   }
 
 analyse :: FilePath -> IO LibraryFile
 analyse fp = do
   ls <- lines <$> readFileUTF8 fp
   hd <- runExc $ extractHeader fp ls
-  (sf, st) <- runExc $ classify fp hd ls
+  cl <- runExc $ classify fp hd ls
   return $ LibraryFile
-    { filepath = fp
-    , header   = hd
-    , safety   = sf
-    , status   = st
+    { filepath   = fp
+    , header     = hd
+    , status     = cl
     }
 
 checkFilePaths :: String -> [FilePath] -> IO ()
@@ -304,37 +299,18 @@ checkFilePaths cat fps = forM_ fps $ \ fp -> do
   unless b $
     die $ fp ++ " is listed as " ++ cat ++ " but does not exist."
 
-data Options = Options
-  { includeDeprecated :: Bool
-  , outputDirectory :: FilePath
-  }
-
-initOptions :: Options
-initOptions = Options
-  { includeDeprecated = False
-  , outputDirectory = "."
-  }
-
-parseOptions :: [String] -> Options -> Maybe Options
-parseOptions [] opts = pure opts
-parseOptions ("--include-deprecated" : rest) opts
-  = parseOptions rest (opts { includeDeprecated = True })
-parseOptions ("--out-dir" : dir : rest) opts
-  = parseOptions rest (opts { outputDirectory = dir })
-parseOptions _ _ = Nothing
-
 ---------------------------------------------------------------------------
 -- Collecting all non-Core library files, analysing them and generating
--- 2 files:
+-- 4 files:
 -- Everything.agda                 all the modules
 -- EverythingSafe.agda             all the safe modules
 
-main :: IO ()
 main = do
   args <- getArgs
-  Options{..} <- case parseOptions args initOptions of
-    Just opts -> pure opts
-    Nothing -> hPutStr stderr usage >> exitFailure
+  includeDeprecated <- case args of
+    [] -> return False
+    ["--include-deprecated"] -> return True
+    _  -> hPutStr stderr usage >> exitFailure
 
   checkFilePaths "unsafe" unsafeModules
   checkFilePaths "using K" withKModules
@@ -349,18 +325,18 @@ main = do
 
   let mkModule str = "module " ++ str ++ " where"
 
-  writeFileUTF8 (outputDirectory ++ "/" ++ allOutputFile ++ ".agda") $
+  writeFileUTF8 (allOutputFile ++ ".agda") $
     unlines [ header
             , "{-# OPTIONS --rewriting --guardedness --sized-types #-}\n"
             , mkModule allOutputFile
             , format libraryfiles
             ]
 
-  writeFileUTF8 (outputDirectory ++ "/" ++ safeOutputFile ++ ".agda") $
+  writeFileUTF8 (safeOutputFile ++ ".agda") $
     unlines [ header
             , "{-# OPTIONS --safe --guardedness #-}\n"
             , mkModule safeOutputFile
-            , format $ filter ((Unsafe /=) . safety) libraryfiles
+            , format $ filter ((Unsafe /=) . status) libraryfiles
             ]
 
 -- | Usage info.
@@ -377,9 +353,6 @@ usage = unlines
   , "The program generates documentation for the library by extracting"
   , "headers from library modules. The output is written to " ++ allOutputFile
   , "with the file " ++ headerFile ++ " inserted verbatim at the beginning."
-  , ""
-  , "If the option --out-dir is used then the output is placed in the"
-  , "subdirectory thus selected."
   ]
 
 

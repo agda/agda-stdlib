@@ -82,9 +82,9 @@ record IsDistributiveLatticeʳʲᵐ (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   setoid : Setoid a ℓ
   setoid = record { isEquivalence = isEquivalence }
 
-  ∨-distrib-∧  = comm∧distrʳ⇒distr setoid ∧-cong ∨-comm ∨-distribʳ-∧
-  ∧-distribˡ-∨ = distrib∧absorbs⇒distribˡ setoid ∧-cong ∧-assoc ∨-comm ∧-absorbs-∨ ∨-absorbs-∧ ∨-distrib-∧
-  ∧-distrib-∨  = comm∧distrˡ⇒distr setoid ∨-cong ∧-comm ∧-distribˡ-∨
+  ∨-distrib-∧  = comm+distrʳ⇒distr setoid ∧-cong ∨-comm ∨-distribʳ-∧
+  ∧-distribˡ-∨ = distrib+absorbs⇒distribˡ setoid ∧-cong ∧-assoc ∨-comm ∧-absorbs-∨ ∨-absorbs-∧ ∨-distrib-∧
+  ∧-distrib-∨  = comm+distrˡ⇒distr setoid ∨-cong ∧-comm ∧-distribˡ-∨
 
   isDistributiveLatticeʳʲᵐ : IsDistributiveLattice ∨ ∧
   isDistributiveLatticeʳʲᵐ = record
@@ -115,8 +115,8 @@ record IsBooleanAlgebraʳ
   isBooleanAlgebraʳ : IsBooleanAlgebra  ∨ ∧ ¬ ⊤ ⊥
   isBooleanAlgebraʳ = record
     { isDistributiveLattice = isDistributiveLattice
-    ; ∨-complement          = comm∧invʳ⇒inv setoid ∨-comm ∨-complementʳ
-    ; ∧-complement          = comm∧invʳ⇒inv setoid ∧-comm ∧-complementʳ
+    ; ∨-complement          = comm+invʳ⇒inv setoid ∨-comm ∨-complementʳ
+    ; ∧-complement          = comm+invʳ⇒inv setoid ∧-comm ∧-complementʳ
     ; ¬-cong                = ¬-cong
     }
 

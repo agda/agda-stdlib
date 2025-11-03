@@ -22,7 +22,7 @@ open import Level using (Level; 0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable.Core using (does; T?)
+open import Relation.Nullary.Decidable.Core using (does)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -160,11 +160,11 @@ fromAlignment Right  = padLeft ' '
 ------------------------------------------------------------------------
 -- Splitting strings
 
-wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
-
 wordsByᵇ : (Char → Bool) → String → List String
-wordsByᵇ p = wordsBy (T? ∘ p)
+wordsByᵇ p = List.map fromList ∘ List.wordsByᵇ p ∘ toList
+
+wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+wordsBy P? = wordsByᵇ (does ∘ P?)
 
 words : String → List String
 words = wordsByᵇ Char.isSpace
@@ -173,11 +173,11 @@ words = wordsByᵇ Char.isSpace
 _ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
 _ = refl
 
-linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
-
 linesByᵇ : (Char → Bool) → String → List String
-linesByᵇ p = linesBy (T? ∘ p)
+linesByᵇ p = List.map fromList ∘ List.linesByᵇ p ∘ toList
+
+linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+linesBy P? = linesByᵇ (does ∘ P?)
 
 lines : String → List String
 lines = linesByᵇ ('\n' Char.≈ᵇ_)

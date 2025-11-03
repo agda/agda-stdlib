@@ -11,12 +11,11 @@ module Relation.Nullary.Reflects where
 open import Agda.Builtin.Equality
 
 open import Data.Bool.Base
-open import Data.Unit.Base using (⊤)
 open import Data.Empty
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
-open import Function.Base using (_$_; _∘_; const; id)
+open import Function.Base using (_$_; _∘_; const)
 
 open import Relation.Nullary.Negation.Core
 
@@ -55,31 +54,28 @@ invert (ofⁿ ¬a) = ¬a
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
 
-infixr 1 _⊎-reflects_
-infixr 2 _×-reflects_ _→-reflects_
-
-T-reflects : ∀ b → Reflects (T b) b
-T-reflects true  = of _
-T-reflects false = of id
-
 -- If we can decide A, then we can decide its negation.
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
 ¬-reflects (ofʸ  a) = ofⁿ (_$ a)
 ¬-reflects (ofⁿ ¬a) = ofʸ ¬a
 
 -- If we can decide A and Q then we can decide their product
+infixr 2 _×-reflects_
 _×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A × B) (a ∧ b)
 ofʸ  a ×-reflects ofʸ  b = ofʸ (a , b)
 ofʸ  a ×-reflects ofⁿ ¬b = ofⁿ (¬b ∘ proj₂)
 ofⁿ ¬a ×-reflects _      = ofⁿ (¬a ∘ proj₁)
 
+
+infixr 1 _⊎-reflects_
 _⊎-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A ⊎ B) (a ∨ b)
 ofʸ  a ⊎-reflects      _ = ofʸ (inj₁ a)
 ofⁿ ¬a ⊎-reflects ofʸ  b = ofʸ (inj₂ b)
 ofⁿ ¬a ⊎-reflects ofⁿ ¬b = ofⁿ (¬a ¬-⊎ ¬b)
 
+infixr 2 _→-reflects_
 _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                 Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = ofʸ (const b)
@@ -99,6 +95,3 @@ det (ofʸ  a) (ofʸ  _) = refl
 det (ofʸ  a) (ofⁿ ¬a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofʸ  a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofⁿ  _) = refl
-
-T-reflects-elim : ∀ {a b} → Reflects (T a) b → b ≡ a
-T-reflects-elim {a} r = det r (T-reflects a)

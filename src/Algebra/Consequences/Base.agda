@@ -23,21 +23,8 @@ module _ {ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) where
 
 module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
 
-  reflexive∧selfInverse⇒involutive : Reflexive _≈_ →
+  reflexive+selfInverse⇒involutive : Reflexive _≈_ →
                                      SelfInverse _≈_ f →
                                      Involutive _≈_ f
-  reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+  reflexive+selfInverse⇒involutive refl inv _ = inv refl
 
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.0
-
-reflexive+selfInverse⇒involutive = reflexive∧selfInverse⇒involutive
-{-# WARNING_ON_USAGE reflexive+selfInverse⇒involutive
-"Warning: reflexive+selfInverse⇒involutive was deprecated in v2.0.
-Please use reflexive∧selfInverse⇒involutive instead."
-#-}

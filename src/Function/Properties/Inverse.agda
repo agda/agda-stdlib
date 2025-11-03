@@ -19,7 +19,7 @@ open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
-import Function.Consequences.Setoid as Consequences
+open import Function.Consequences
 
 import Function.Construct.Identity as Identity
 import Function.Construct.Symmetry as Symmetry
@@ -77,25 +77,25 @@ fromFunction I = record { to = from ; cong = from-cong }
   where open Inverse I
 
 Inverse⇒Injection : Inverse S T → Injection S T
-Inverse⇒Injection {S = S} {T = T} I = record
+Inverse⇒Injection I = record
   { to = to
   ; cong = to-cong
-  ; injective = inverseʳ⇒injective to inverseʳ
-  } where open Inverse I; open Consequences S T
+  ; injective = inverseʳ⇒injective Eq₂._≈_ to Eq₂.refl Eq₁.sym Eq₁.trans inverseʳ
+  } where open Inverse I
 
 Inverse⇒Surjection : Inverse S T → Surjection S T
 Inverse⇒Surjection {S = S} {T = T} I = record
   { to = to
   ; cong = to-cong
-  ; surjective = inverseˡ⇒surjective inverseˡ
-  } where open Inverse I; open Consequences S T
+  ; surjective = inverseˡ⇒surjective (_≈_ T) inverseˡ
+  } where open Inverse I; open Setoid
 
 Inverse⇒Bijection : Inverse S T → Bijection S T
-Inverse⇒Bijection {S = S} {T = T} I = record
+Inverse⇒Bijection I = record
   { to        = to
   ; cong      = to-cong
-  ; bijective = inverseᵇ⇒bijective inverse
-  } where open Inverse I; open Consequences S T
+  ; bijective = inverseᵇ⇒bijective Eq₂._≈_ Eq₂.refl Eq₁.sym Eq₁.trans inverse
+  } where open Inverse I
 
 Inverse⇒Equivalence : Inverse S T → Equivalence S T
 Inverse⇒Equivalence I = record

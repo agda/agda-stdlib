@@ -12,6 +12,7 @@ open import Data.List.Relation.Unary.All.Properties using (all-filter)
 open import Data.List.Relation.Unary.Unique.Setoid.Properties
 open import Level
 open import Relation.Binary.Bundles using (DecSetoid)
+open import Relation.Nullary.Decidable using (¬?)
 
 module Data.List.Relation.Unary.Unique.DecSetoid.Properties where
 
@@ -29,4 +30,5 @@ module _ (DS : DecSetoid a ℓ) where
 
   deduplicate-! : ∀ xs → Unique (deduplicate _≟_ xs)
   deduplicate-! []       = []
-  deduplicate-! (x ∷ xs) = all-filter _ (deduplicate _≟_ xs) ∷ filter⁺ S _ (deduplicate-! xs)
+  deduplicate-! (x ∷ xs) = all-filter (λ y → ¬? (x ≟ y)) (deduplicate _≟_ xs)
+                         ∷ filter⁺ S  (λ y → ¬? (x ≟ y)) (deduplicate-! xs)

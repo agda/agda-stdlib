@@ -61,15 +61,6 @@ nonZero? zero    = no NonZero.nonZero
 nonZero? (suc n) = yes _
 
 ------------------------------------------------------------------------
--- Properties of NonTrivial
-------------------------------------------------------------------------
-
-nonTrivial? : U.Decidable NonTrivial
-nonTrivial? 0      = no λ()
-nonTrivial? 1      = no λ()
-nonTrivial? (2+ n) = yes _
-
-------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
 
@@ -790,7 +781,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   suc n * m + o * m   ∎
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-+
+*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -911,12 +902,6 @@ m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
 m*n≢0 (suc m) (suc n) = _
 
-m*n≢0⇒m≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero m
-m*n≢0⇒m≢0 (suc _) = _
-
-m*n≢0⇒n≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero n
-m*n≢0⇒n≢0 m {n} rewrite *-comm m n = m*n≢0⇒m≢0 n {m}
-
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
 m*n≡0⇒m≡0 zero (suc _) eq = refl
 
@@ -936,12 +921,6 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
   m * (o * (n * p)) ≡⟨ *-assoc m o (n * p) ⟨
   (m * o) * (n * p) ∎
   where open CommSemigroupProperties *-commutativeSemigroup
-
-m≢0∧n>1⇒m*n>1 : ∀ m n .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
-m≢0∧n>1⇒m*n>1 (suc m) (2+ n) = _
-
-n≢0∧m>1⇒m*n>1 : ∀ m n .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
-n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
@@ -1329,7 +1308,7 @@ m⊔n<o⇒n<o m n m⊔n<o = ≤-<-trans (m≤n⊔m m n) m⊔n<o
 +-distribˡ-⊔ (suc m) n o = cong suc (+-distribˡ-⊔ m n o)
 
 +-distribʳ-⊔ : _+_ DistributesOverʳ _⊔_
-+-distribʳ-⊔ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊔
++-distribʳ-⊔ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊔
 
 +-distrib-⊔ : _+_ DistributesOver _⊔_
 +-distrib-⊔ = +-distribˡ-⊔ , +-distribʳ-⊔
@@ -1358,7 +1337,7 @@ m⊔n≤m+n m n with ⊔-sel m n
   (m * suc n) ⊔ (m * suc o)  ∎
 
 *-distribʳ-⊔ : _*_ DistributesOverʳ _⊔_
-*-distribʳ-⊔ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊔
+*-distribʳ-⊔ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊔
 
 *-distrib-⊔ : _*_ DistributesOver _⊔_
 *-distrib-⊔ = *-distribˡ-⊔ , *-distribʳ-⊔
@@ -1437,7 +1416,7 @@ m<n⊓o⇒m<o = m≤n⊓o⇒m≤o
 +-distribˡ-⊓ (suc m) n o = cong suc (+-distribˡ-⊓ m n o)
 
 +-distribʳ-⊓ : _+_ DistributesOverʳ _⊓_
-+-distribʳ-⊓ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊓
++-distribʳ-⊓ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊓
 
 +-distrib-⊓ : _+_ DistributesOver _⊓_
 +-distrib-⊓ = +-distribˡ-⊓ , +-distribʳ-⊓
@@ -1472,7 +1451,7 @@ m⊓n≤m+n m n with ⊓-sel m n
   (m * suc n) ⊓ (m * suc o) ∎
 
 *-distribʳ-⊓ : _*_ DistributesOverʳ _⊓_
-*-distribʳ-⊓ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊓
+*-distribʳ-⊓ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊓
 
 *-distrib-⊓ : _*_ DistributesOver _⊓_
 *-distrib-⊓ = *-distribˡ-⊓ , *-distribʳ-⊓
@@ -1660,7 +1639,7 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
   m + n * m ∸ (m + o * m) ∎
 
 *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
-*-distribˡ-∸ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-∸
+*-distribˡ-∸ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-∸
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
@@ -1725,7 +1704,7 @@ pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {zero}          _   = z≤n
 pred-mono-≤ {suc _} {suc _} m≤n = s≤s⁻¹ m≤n
 
-pred-mono-< : .{{NonZero m}} → m < n → pred m < pred n
+pred-mono-< : .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
 pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
 
 ------------------------------------------------------------------------
@@ -1822,7 +1801,7 @@ private
   ∣ a * m - a * n ∣ ∎
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
-*-distribʳ-∣-∣ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
+*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
 
 *-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
 *-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣
@@ -2363,6 +2342,6 @@ open Data.Nat.Base public
 
 <-transˡ = <-≤-trans
 {-# WARNING_ON_USAGE <-transˡ
-"Warning: <-transˡ was deprecated in v2.0. Please use <-≤-trans instead. "
+"Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-trans instead. "
 #-}
 

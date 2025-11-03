@@ -810,7 +810,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 +-identityˡ (+ _)    = refl
 
 +-identityʳ : RightIdentity +0 _+_
-+-identityʳ = comm∧idˡ⇒idʳ +-comm +-identityˡ
++-identityʳ = comm+idˡ⇒idʳ +-comm +-identityˡ
 
 +-identity : Identity +0 _+_
 +-identity = +-identityˡ , +-identityʳ
@@ -904,7 +904,7 @@ distribʳ-⊖-+-neg m n o = begin
 +-inverseˡ +[1+ n ] = n⊖n≡0 (suc n)
 
 +-inverseʳ : RightInverse +0 -_ _+_
-+-inverseʳ = comm∧invˡ⇒invʳ +-comm +-inverseˡ
++-inverseʳ = comm+invˡ⇒invʳ +-comm +-inverseˡ
 
 +-inverse : Inverse +0 -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
@@ -1319,7 +1319,7 @@ pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 *-identityˡ +[1+ n ] rewrite ℕ.+-identityʳ n = refl
 
 *-identityʳ : RightIdentity 1ℤ _*_
-*-identityʳ = comm∧idˡ⇒idʳ *-comm *-identityˡ
+*-identityʳ = comm+idˡ⇒idʳ *-comm *-identityˡ
 
 *-identity : Identity 1ℤ _*_
 *-identity = *-identityˡ , *-identityʳ
@@ -1328,7 +1328,7 @@ pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 *-zeroˡ _ = refl
 
 *-zeroʳ : RightZero 0ℤ _*_
-*-zeroʳ = comm∧zeˡ⇒zeʳ *-comm *-zeroˡ
+*-zeroʳ = comm+zeˡ⇒zeʳ *-comm *-zeroˡ
 
 *-zero : Zero 0ℤ _*_
 *-zero = *-zeroˡ , *-zeroʳ
@@ -1469,7 +1469,7 @@ private
         = refl
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-+
+*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -1532,6 +1532,7 @@ private
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
+  ; zero             = *-zero
   }
 
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℤ 1ℤ

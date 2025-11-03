@@ -56,7 +56,7 @@ record RawApplicative (F : Set f → Set g) : Set (suc f ⊔ g) where
   -- Haskell-style alternative name for pure
   return : A → F A
   return = pure
-
+  
   -- backwards compatibility: unicode variants
   _⊛_ : F (A → B) → F A → F B
   _⊛_ = _<*>_

@@ -3,7 +3,7 @@ procedure should be followed:
 
 #### Pre-release changes
 
-* Update `doc/README.agda` by replacing 'development version' by 'version X.Y' in the title.
+* Update `README.agda` by replacing 'development version' by 'version X.Y' in the title.
 
 * Update the version to `X.Y` in:
   - `agda-stdlib-utils.cabal`
@@ -11,7 +11,7 @@ procedure should be followed:
   - `CITATION.cff`
   - `CHANGELOG.md`
   - `README.md`
-  - `doc/installation-guide.md`
+  - `notes/installation-guide.txt`
 
 * Update the copyright year range in the LICENSE file, if necessary.
 
@@ -61,12 +61,20 @@ procedure should be followed:
 * Announce the release of the new version on the Agda mailing lists
   (users and developers).
 
+* Add v$VERSION to the list of protected directories in the .travis.yml
+  file of BOTH master and experimental. They should look something like:
+
+  >  git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ (...)
+
+  Commit & push these changes. This will prevent the next step from being
+  overwritten by travis.
+
 * Generate and upload documentation for the released version:
 
-    cp .github/tooling/* .
+    cp travis/* .
     runhaskell GenerateEverything.hs
     ./index.sh
-    agda -i. -idoc -isrc --html index.agda
+    agda -i. -isrc --html index.agda
     mv html v$VERSION
     git checkout gh-pages
     git add v$VERSION/*.html v$VERSION/*.css

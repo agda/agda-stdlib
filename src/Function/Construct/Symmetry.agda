@@ -108,7 +108,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ :
   isLeftInverse : IsRightInverse ≈₁ ≈₂ f f⁻¹ → IsLeftInverse ≈₂ ≈₁ f⁻¹ f
   isLeftInverse inv = record
     { isCongruent = isCongruent F.isCongruent F.from-cong
-    ; from-cong   = F.to-cong
+    ; from-cong   = F.cong₁
     ; inverseˡ    = inverseˡ ≈₁ ≈₂ F.inverseʳ
     } where module F = IsRightInverse inv
 

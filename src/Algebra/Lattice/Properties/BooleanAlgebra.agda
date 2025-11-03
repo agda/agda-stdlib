@@ -57,7 +57,7 @@ open DistribLatticeProperties distributiveLattice public
   x              ∎
 
 ∧-identityˡ : LeftIdentity ⊤ _∧_
-∧-identityˡ = comm∧idʳ⇒idˡ ∧-comm ∧-identityʳ
+∧-identityˡ = comm+idʳ⇒idˡ ∧-comm ∧-identityʳ
 
 ∧-identity : Identity ⊤ _∧_
 ∧-identity = ∧-identityˡ , ∧-identityʳ
@@ -69,7 +69,7 @@ open DistribLatticeProperties distributiveLattice public
   x              ∎
 
 ∨-identityˡ : LeftIdentity ⊥ _∨_
-∨-identityˡ = comm∧idʳ⇒idˡ ∨-comm ∨-identityʳ
+∨-identityˡ = comm+idʳ⇒idˡ ∨-comm ∨-identityʳ
 
 ∨-identity : Identity ⊥ _∨_
 ∨-identity = ∨-identityˡ , ∨-identityʳ
@@ -83,7 +83,7 @@ open DistribLatticeProperties distributiveLattice public
   ⊥              ∎
 
 ∧-zeroˡ : LeftZero ⊥ _∧_
-∧-zeroˡ = comm∧zeʳ⇒zeˡ ∧-comm ∧-zeroʳ
+∧-zeroˡ = comm+zeʳ⇒zeˡ ∧-comm ∧-zeroʳ
 
 ∧-zero : Zero ⊥ _∧_
 ∧-zero = ∧-zeroˡ , ∧-zeroʳ
@@ -97,7 +97,7 @@ open DistribLatticeProperties distributiveLattice public
   ⊤              ∎
 
 ∨-zeroˡ : LeftZero ⊤ _∨_
-∨-zeroˡ = comm∧zeʳ⇒zeˡ ∨-comm ∨-zeroʳ
+∨-zeroˡ = comm+zeʳ⇒zeˡ ∨-comm ∨-zeroʳ
 
 ∨-zero : Zero ⊤ _∨_
 ∨-zero = ∨-zeroˡ , ∨-zeroʳ
@@ -377,7 +377,7 @@ module XorRing
         (x ∧ (y ∨ z)) ∧ ¬ x    ∎
 
   ∧-distribʳ-⊕ : _∧_ DistributesOverʳ _⊕_
-  ∧-distribʳ-⊕ = comm∧distrˡ⇒distrʳ ⊕-cong ∧-comm ∧-distribˡ-⊕
+  ∧-distribʳ-⊕ = comm+distrˡ⇒distrʳ ⊕-cong ∧-comm ∧-distribˡ-⊕
 
   ∧-distrib-⊕ : _∧_ DistributesOver _⊕_
   ∧-distrib-⊕ = ∧-distribˡ-⊕ , ∧-distribʳ-⊕
@@ -516,6 +516,7 @@ module XorRing
     ; *-assoc = ∧-assoc
     ; *-identity = ∧-identity
     ; distrib = ∧-distrib-⊕
+    ; zero = ∧-zero
     }
 
   ⊕-∧-isCommutativeRing : IsCommutativeRing _⊕_ _∧_ id ⊥ ⊤
