@@ -20,7 +20,6 @@ module Function.Structures {a b ℓ₁ ℓ₂}
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base
 open import Function.Definitions
-open import Function.Consequences
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -121,7 +120,7 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
     inverseʳ    : Inverseʳ _≈₁_ _≈₂_ to from
 
   open IsCongruent isCongruent public
-    renaming (cong to cong₁)
+    renaming (cong to to-cong)
 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
   strictlyInverseʳ x = inverseʳ Eq₂.refl

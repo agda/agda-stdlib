@@ -28,8 +28,7 @@ open import Relation.Binary.Definitions
   using (Decidable; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
-open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
-open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
+open import Relation.Nullary.Decidable.Core using (True; yes; no; fromWitness)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -726,15 +725,17 @@ xor-∧-commutativeRing = ⊕-∧-commutativeRing
   open XorRing _xor_ xor-is-ok
 
 ------------------------------------------------------------------------
--- Miscellaneous other properties
+-- Properties of if_then_else_
 
-⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
-⇔→≡ {true } {true }         hyp = refl
-⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp refl)
-⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp refl
-⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp refl
-⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp refl)
-⇔→≡ {false} {false}         hyp = refl
+if-float : ∀ (f : A → B) b {x y} →
+           f (if b then x else y) ≡ (if b then f x else f y)
+if-float _ true  = refl
+if-float _ false = refl
+
+------------------------------------------------------------------------
+-- Properties of T
+
+open Relation.Nullary.Decidable.Core public using (T?)
 
 T-≡ : ∀ {x} → T x ⇔ x ≡ true
 T-≡ {false} = mk⇔ (λ ())       (λ ())
@@ -757,18 +758,20 @@ T-∨ {false} {false} = mk⇔ inj₁ [ id , id ]
 T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
-T? : U.Decidable T
-does  (T? b) = b
-proof (T? true ) = ofʸ _
-proof (T? false) = ofⁿ λ()
-
 T?-diag : ∀ b → T b → True (T? b)
-T?-diag true  _ = _
+T?-diag b = fromWitness
 
-if-float : ∀ (f : A → B) b {x y} →
-           f (if b then x else y) ≡ (if b then f x else f y)
-if-float _ true  = refl
-if-float _ false = refl
+------------------------------------------------------------------------
+-- Miscellaneous other properties
+
+⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
+⇔→≡ {true } {true }         hyp = refl
+⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp refl)
+⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp refl)
+⇔→≡ {false} {false}         hyp = refl
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

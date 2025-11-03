@@ -9,7 +9,7 @@
 module Data.Nat.Binary.Subtraction where
 
 open import Algebra using (Op₂; Magma)
-open import Algebra.Consequences.Propositional using (comm+distrˡ⇒distrʳ)
+open import Algebra.Consequences.Propositional using (comm∧distrˡ⇒distrʳ)
 open import Algebra.Morphism.Consequences using (homomorphic₂-inv)
 open import Data.Bool.Base using (true; false)
 open import Data.Nat as ℕ using (ℕ)
@@ -237,7 +237,7 @@ x∸y<x {x} {y} x≢0 y≢0 = begin-strict
   where open ≡-Reasoning;  k = toℕ x;  m = toℕ y;  n = toℕ z
 
 *-distribʳ-∸ : _*_ DistributesOverʳ _∸_
-*-distribʳ-∸ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∸
+*-distribʳ-∸ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-∸
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸

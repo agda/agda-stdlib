@@ -57,17 +57,19 @@ true  xor b = not b
 false xor b = b
 
 ------------------------------------------------------------------------
+-- Conversion to Set
+
+-- A function mapping true to an inhabited type and false to an empty
+-- type.
+T : Bool → Set
+T true  = ⊤
+T false = ⊥
+
+------------------------------------------------------------------------
 -- Other operations
 
-infix  0 if_then_else_
+infix 0 if_then_else_
 
 if_then_else_ : Bool → A → A → A
 if true  then t else f = t
 if false then t else f = f
-
--- A function mapping true to an inhabited type and false to an empty
--- type.
-
-T : Bool → Set
-T true  = ⊤
-T false = ⊥

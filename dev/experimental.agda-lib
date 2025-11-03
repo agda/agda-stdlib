@@ -1,0 +1,4 @@
+name: standard-library-dev
+include: . ../src
+flags:
+  --warning=noUnsupportedIndexedMatch

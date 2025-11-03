@@ -380,7 +380,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   -- For further background on (split) surjections, one may consult any
   -- general mathematical references which work without the principle
   -- of choice. For example:
-  -- 
+  --
   --   https://ncatlab.org/nlab/show/split+epimorphism.
   --
   -- The connection to set-theoretic notions with the same names is

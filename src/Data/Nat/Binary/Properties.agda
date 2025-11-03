@@ -1077,7 +1077,7 @@ private
   where open ≡-Reasoning;  k = toℕ a;  m = toℕ b;  n = toℕ c
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
-*-distribʳ-+ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-+
+*-distribʳ-+ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+

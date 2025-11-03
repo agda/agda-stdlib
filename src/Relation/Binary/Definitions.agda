@@ -99,7 +99,7 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 Dense : Rel A ℓ → Set _
 Dense _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
 
--- Generalised connex - exactly one of the two relations holds.
+-- Generalised connex - at least one of the two relations holds.
 
 Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
 Connex P Q = ∀ x y → P x y ⊎ Q y x

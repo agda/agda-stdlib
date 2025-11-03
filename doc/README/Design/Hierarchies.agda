@@ -265,7 +265,7 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 --       IsA                     A
 --    /  ||   \               /  ||  \
 -- IsB   IsC   IsD          B    C    D
- 
+
 -- The procedure for re-exports in the bundles is as follows:
 
 -- 1. `open IsA isA public using (IsC, M)` where `M` is everything
@@ -280,7 +280,7 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 
 -- 5. `open B b public using (O)` where `O` is everything exported
 --    by `B` but not exported by `IsA`.
- 
+
 -- 6. Construct `d : D` via the `isC` obtained in step 1.
 
 -- 7. `open D d public using (P)` where `P` is everything exported

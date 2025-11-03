@@ -28,7 +28,7 @@ open import Relation.Nullary using (yes; no)
 open import Algebra.Structures {A = Parity} _≡_
 open import Algebra.Definitions {A = Parity} _≡_
 open import Algebra.Consequences.Propositional
-  using (selfInverse⇒involutive; selfInverse⇒injective; comm+distrˡ⇒distrʳ)
+  using (selfInverse⇒involutive; selfInverse⇒injective; comm∧distrˡ⇒distrʳ)
 open import Algebra.Morphism.Structures
 
 ------------------------------------------------------------------------
@@ -254,7 +254,7 @@ p+p≡0ℙ 1ℙ = refl
 *-distribˡ-+ 1ℙ 1ℙ 1ℙ = refl
 
 *-distribʳ-+ : ℙ._*_ DistributesOverʳ ℙ._+_
-*-distribʳ-+ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-+
+*-distribʳ-+ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-+
 
 *-distrib-+ : ℙ._*_ DistributesOver ℙ._+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -371,7 +371,6 @@ p+p≡0ℙ 1ℙ = refl
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
-  ; zero             = *-zero
   }
 
 +-*-ring : Ring 0ℓ 0ℓ

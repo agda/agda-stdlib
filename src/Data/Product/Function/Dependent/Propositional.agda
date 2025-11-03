@@ -185,7 +185,7 @@ module _ where
        (∀ {x} → A x ↠ B (to I↠J x)) →
        Σ I A ↠ Σ J B
   Σ-↠ {I = I} {J = J} {A = A} {B = B} I↠J A↠B =
-    mk↠ (strictlySurjective⇒surjective strictlySurjective′)
+    mk↠ₛ strictlySurjective′
     where
     to′ : Σ I A → Σ J B
     to′ = map (to I↠J) (to A↠B)

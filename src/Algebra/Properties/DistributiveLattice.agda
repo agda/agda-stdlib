@@ -12,8 +12,7 @@
 open import Algebra.Lattice.Bundles
 open import Algebra.Lattice.Structures.Biased
 open import Relation.Binary
-open import Function.Equality
-open import Function.Equivalence
+open import Function.Bundles using (module Equivalence; _⇔_)
 import Algebra.Construct.Subst.Equality as SubstEq
 
 module Algebra.Properties.DistributiveLattice
@@ -44,7 +43,7 @@ replace-equality {_≈′_} ≈⇔≈′ = record
   { isDistributiveLattice = isDistributiveLatticeʳʲᵐ (record
     { isLattice    = Lattice.isLattice
                        (LatticeProperties.replace-equality lattice ≈⇔≈′)
-    ; ∨-distribʳ-∧ = λ x y z → to ⟨$⟩ ∨-distribʳ-∧ x y z
+    ; ∨-distribʳ-∧ = λ x y z → to (∨-distribʳ-∧ x y z)
     })
   } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
 {-# WARNING_ON_USAGE replace-equality
