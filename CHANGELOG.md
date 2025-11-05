@@ -182,7 +182,8 @@ Additions to existing modules
 
 * In `Relation.Unary`
   ```agda
-  _⊣_ : (A → B) → Pred A ℓ → Pred B _
+  ⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
+  [_]⊢_ : (A → B) → Pred A ℓ → Pred B _
   ```
 
 * In `System.Random`:
