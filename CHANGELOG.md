@@ -79,6 +79,12 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Quotient.{Abelian}Group` for the definition of quotient (Abelian) groups.
+
+* `Algebra.Construct.Sub.{Abelian}Group` for the definition of sub-(Abelian)groups.
+
+* `Algebra.Construct.Sub.Group.Normal` for the definition of normal subgroups.
+
 * `Algebra.Properties.BooleanRing`.
 
 * `Algebra.Properties.BooleanSemiring`.
