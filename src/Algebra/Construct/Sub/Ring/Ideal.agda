@@ -12,7 +12,7 @@ module Algebra.Construct.Sub.Ring.Ideal {c ℓ} (R : Ring c ℓ) where
 
 open import Algebra.Module.Construct.Sub.Bimodule using (Subbimodule)
 open import Algebra.Module.Construct.TensorUnit using (bimodule)
-open import Level
+open import Level using (suc; _⊔_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -20,7 +20,6 @@ open import Level
 
 record Ideal c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
-
     subbimodule : Subbimodule {R = R} bimodule c′ ℓ′
 
   open Subbimodule subbimodule public
