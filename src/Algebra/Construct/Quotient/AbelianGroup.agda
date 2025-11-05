@@ -11,7 +11,7 @@ import Algebra.Construct.Sub.AbelianGroup as AbelianSubgroup
 
 module Algebra.Construct.Quotient.AbelianGroup
   {c ℓ} (G : AbelianGroup c ℓ)
-  (open AbelianSubgroup G using (Subgroup; normalSubgroup)) 
+  (open AbelianSubgroup G using (Subgroup; normalSubgroup))
   {c′ ℓ′} (N : Subgroup c′ ℓ′)
   where
 
