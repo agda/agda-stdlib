@@ -85,6 +85,8 @@ New modules
 
 * `Algebra.Construct.Sub.Group.Normal` for the definition of normal subgroups.
 
+* `Algebra.Module.Construct.Sub.Bimodule` for the definition of sub-bimodules.
+
 * `Algebra.Properties.BooleanRing`.
 
 * `Algebra.Properties.BooleanSemiring`.
