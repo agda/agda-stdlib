@@ -8,7 +8,7 @@
 
 open import Algebra.Bundles using (Group)
 
-module Algebra.Construct.Sub.Group.Normal {c ℓ} (G : Group c ℓ)  where
+module Algebra.Construct.Sub.Group.Normal {c ℓ} (G : Group c ℓ) where
 
 open import Algebra.Construct.Sub.Group G using (Subgroup)
 open import Level using (suc; _⊔_)

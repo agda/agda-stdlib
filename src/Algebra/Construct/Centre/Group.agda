@@ -14,30 +14,27 @@ open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions using (Commutative)
 open import Function.Base using (id; const; _$_; _on_)
 open import Level using (_⊔_)
-open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open import Algebra.Construct.Sub.Group G using (Subgroup)
-open import Algebra.Construct.Sub.Group.Normal G using (IsNormal; NormalSubgroup)
+open import Algebra.Construct.Sub.Group.Normal G using (NormalSubgroup)
 open import Algebra.Properties.Group G using (∙-cancelʳ)
+
+------------------------------------------------------------------------
+-- Definition
 
 private
   module G = Group G
 
-
-CommutesWith : Pred G.Carrier _
-CommutesWith g = ∀ k → g G.∙ k G.≈ k G.∙ g
-
-private
   open ≈-Reasoning G.setoid
 
   record Carrier : Set (c ⊔ ℓ) where
     field
       commuter : G.Carrier
-      commutes : CommutesWith commuter
+      commutes : ∀ k → commuter G.∙ k G.≈ k G.∙ commuter
 
-  open Carrier
+  open Carrier using (commuter; commutes)
 
   _≈_ : Rel Carrier _
   _≈_ = G._≈_ on commuter
@@ -77,45 +74,45 @@ private
   ∙-comm : Commutative _≈_ _∙_
   ∙-comm g h = commutes g $ commuter h
 
-
-open Carrier public using (commuter; commutes)
-
-centre : NormalSubgroup _ _
-centre = record
-  { subgroup = record
-    { domain = record
-      { _≈_ = _≈_
-      ; _∙_ = _∙_
-      ; ε = ε
-      ; _⁻¹ = _⁻¹
-      }
-    ; ι = commuter
-    ; ι-monomorphism = record
-        { isGroupHomomorphism = record
-          { isMonoidHomomorphism = record
-            { isMagmaHomomorphism = record
-              { isRelHomomorphism = record { cong = id }
-              ; homo = λ _ _ → G.refl
-              }
-            ; ε-homo = G.refl
-            }
-          ; ⁻¹-homo = λ _ → G.refl
+  centre : NormalSubgroup _ _
+  centre = record
+    { subgroup = record
+      { domain = record
+        { _≈_ = _≈_
+        ; _∙_ = _∙_
+        ; ε = ε
+        ; _⁻¹ = _⁻¹
         }
-      ; injective = id
+      ; ι = commuter
+      ; ι-monomorphism = record
+          { isGroupHomomorphism = record
+            { isMonoidHomomorphism = record
+              { isMagmaHomomorphism = record
+                { isRelHomomorphism = record { cong = id }
+                ; homo = λ _ _ → G.refl
+                }
+              ; ε-homo = G.refl
+              }
+            ; ⁻¹-homo = λ _ → G.refl
+          }
+        ; injective = id
+        }
       }
+    ; isNormal = record { conjugate = const ; normal = commutes }
     }
-  ; isNormal = record { conjugate = const ; normal = commutes }
-  }
+
+
+------------------------------------------------------------------------
+-- Public exports
 
 open NormalSubgroup centre public
 
 abelianGroup : AbelianGroup _ _
 abelianGroup = record
-  {
-    isAbelianGroup = record { isGroup = isGroup ; comm = ∙-comm }
+  { isAbelianGroup = record
+    { isGroup = isGroup
+    ; comm = ∙-comm
+    }
   }
 
--- Public export
-
 Z[_] = centre
-
