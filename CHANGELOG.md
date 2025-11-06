@@ -79,6 +79,8 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Centre.Group` for the definition of the centre of a group.
+
 * `Algebra.Construct.Quotient.{Abelian}Group` for the definition of quotient (Abelian) groups.
 
 * `Algebra.Construct.Sub.{Abelian}Group` for the definition of sub-(Abelian)groups.
