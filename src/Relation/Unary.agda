@@ -266,7 +266,7 @@ P ⊥′ Q = P ∩ Q ⊆′ ∅
 _⊢_ : (A → B) → Pred B ℓ → Pred A ℓ
 f ⊢ P = λ x → P (f x)
 
--- Diamond/Box
+-- Diamond/Box: for given `f`, these are the left- and right adjoints to `f ⊢_`
 -- These are specialization of Diamond/Box in
 -- Relation.Unary.Closure.Base.
 
