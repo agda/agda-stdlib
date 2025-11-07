@@ -98,7 +98,10 @@ private
         ; injective = id
         }
       }
-    ; isNormal = record { conjugate = const ; normal = commutes }
+    ; isNormal = record
+      { conjugate = const
+      ; normal = commutes
+      }
     }
 
 
