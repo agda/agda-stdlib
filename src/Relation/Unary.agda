@@ -273,7 +273,10 @@ f ⊢ P = λ x → P (f x)
 
 -- Change-of-base has left- and right- adjoints (Lawvere).
 -- We borrow the 'diamond'/'box' notation from modal logic, cf.
--- `Relation.Unary.Closure.Base`
+-- `Relation.Unary.Closure.Base`, rather than Lawvere's ∃f, ∀f.
+-- In some settings, the left adjoint is called 'image' or 'pushforward',
+-- but the right adjoint doesn't seem to have a non-symbolic name.
+
 ⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
 ⟨ f ⟩⊢ P = λ y → ∃ λ x → f x ≡ y × P x
 
