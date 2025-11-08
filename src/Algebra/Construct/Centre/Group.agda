@@ -6,7 +6,7 @@
 
 {-# OPTIONS --safe --cubical-compatible #-}
 
-open import Algebra.Bundles using (AbelianGroup; Group; RawGroup)
+open import Algebra.Bundles using (AbelianGroup; Group)
 
 module Algebra.Construct.Centre.Group {c ℓ} (G : Group c ℓ) where
 
@@ -36,7 +36,7 @@ private
 
   open Carrier using (commuter; commutes)
 
-  _≈_ : Rel Carrier _
+  _≈_ : Rel Carrier ℓ
   _≈_ = G._≈_ on commuter
 
   _∙_ : Op₂ Carrier
@@ -74,7 +74,7 @@ private
   ∙-comm : Commutative _≈_ _∙_
   ∙-comm g h = commutes g $ commuter h
 
-  centre : NormalSubgroup _ _
+  centre : NormalSubgroup (c ⊔ ℓ) ℓ
   centre = record
     { subgroup = record
       { domain = record
@@ -110,7 +110,7 @@ private
 
 open NormalSubgroup centre public
 
-abelianGroup : AbelianGroup _ _
+abelianGroup : AbelianGroup (c ⊔ ℓ) ℓ
 abelianGroup = record
   { isAbelianGroup = record
     { isGroup = isGroup
