@@ -39,8 +39,7 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Negation.Core using (¬_)
 import Relation.Nullary.Indexed as I
-open import Relation.Unary using (⟨_⟩⊢_)
-open import Relation.Unary.Properties using (⟨_⟩⊢ˡ; ⟨_⟩⊢ʳ)
+open import Relation.Unary.Properties using (⟨_⟩⊢⁻_; ⟨_⟩⊢⁺_)
 
 private
   variable
@@ -361,7 +360,7 @@ Related-cong {A = A} {B = B} {C = C} {D = D} A≈B C≈D = mk⇔
 -- Relating a predicate to an existentially quantified one with the
 -- restriction that the quantified variable is equal to the given one
 
-∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (⟨ id ⟩⊢ P) x
-∃-≡ P {x} = mk↔ₛ′ (⟨ id ⟩⊢ˡ id) (⟨ id ⟩⊢ʳ id) 
+∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+∃-≡ P {x} = mk↔ₛ′ (⟨ id ⟩⊢⁻ id) (⟨ id ⟩⊢⁺ id) 
   (λ where (_ , refl , _) → refl) (λ where _ → refl)
 
