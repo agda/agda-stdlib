@@ -228,14 +228,6 @@ module _ {P : Pred B ℓ₁} {Q : Pred B ℓ₂} where
   _map-⊢_ : (f : A → B) → P ⊆ Q → f ⊢ P ⊆ f ⊢ Q
   f map-⊢ P⊆Q = P⊆Q
 
-module _ {P : Pred A ℓ₁} {Q : Pred A ℓ₂} (f : A → B) where
-
-  map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
-  map-⟨_⟩⊢_ P⊆Q (_ , refl , Px) = (_ , refl , P⊆Q  Px)
-
-  map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
-  map-[_]⊢_ P⊆Q Px refl = P⊆Q (Px refl)
-
 module _ {P : Pred A ℓ₁} {Q : Pred B ℓ₂} (f : A → B) where
 
   ⟨_⟩⊢⁻_ : ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
@@ -249,6 +241,14 @@ module _ {P : Pred A ℓ₁} {Q : Pred B ℓ₂} (f : A → B) where
 
   [_]⊢⁺_ : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
   [_]⊢⁺_ f⊢Q⊆P Qfx refl = f⊢Q⊆P Qfx
+
+module _ {P : Pred A ℓ₁} {Q : Pred A ℓ₂} (f : A → B) where
+
+  map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
+  map-⟨_⟩⊢_ P⊆Q = ⟨ f ⟩⊢⁺ ⊆-trans {j = Q} P⊆Q (⟨ f ⟩⊢⁻ ⊆-refl {x = ⟨ f ⟩⊢ Q})
+
+  map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
+  map-[_]⊢_ P⊆Q = [ f ]⊢⁺ ⊆-trans {j = P} ([ f ]⊢⁻ ⊆-refl {x = [ f ]⊢ P}) P⊆Q
 
 
 ------------------------------------------------------------------------
