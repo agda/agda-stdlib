@@ -8,11 +8,9 @@
 
 module Data.List.NonEmpty.Relation.Unary.Any where
 
-open import Data.List.NonEmpty using (List⁺; _∷_)
-
+open import Data.List.NonEmpty.Base using (List⁺; _∷_; toList)
 open import Data.List.Relation.Unary.Any as List using (here; there)
 open import Data.List.Base using ([]; _∷_)
-open import Data.List.NonEmpty.Base using (List⁺; _∷_; toList)
 open import Data.Product.Base using (_,_)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Satisfiable; _⊆_)

@@ -39,7 +39,7 @@ data All {A : Set a} (P : Pred A p) : Pred (List⁺ A) (a ⊔ p) where
 ------------------------------------------------------------------------
 -- Functions
 
-map : P ⊆ Q → All P xs → All Q xs
+map : P ⊆ Q → All P ⊆ All Q
 map P⊆Q (px ∷ pxs) = P⊆Q px ∷ List.map P⊆Q pxs
 
 lookup : All P xs → ∀ {x} → x ∈ xs → P x
