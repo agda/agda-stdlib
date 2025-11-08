@@ -361,6 +361,6 @@ Related-cong {A = A} {B = B} {C = C} {D = D} A≈B C≈D = mk⇔
 -- restriction that the quantified variable is equal to the given one
 
 ∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
-∃-≡ P {x} = mk↔ₛ′ (⟨ id ⟩⊢⁻ id) (⟨ id ⟩⊢⁺ id) 
+∃-≡ P {x} = mk↔ₛ′ (⟨ id ⟩⊢⁻ id) (⟨ id ⟩⊢⁺ id)
   (λ where (_ , refl , _) → refl) (λ where _ → refl)
 
