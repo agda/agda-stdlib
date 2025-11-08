@@ -71,7 +71,7 @@ xs ─ x∈xs = removeAt xs (index x∈xs)
 
 -- If any element satisfies P, then P is satisfied.
 
-satisfied : Any P xs → ∃ P
+satisfied : Any P xs → Satisfiable P
 satisfied (here px)   = _ , px
 satisfied (there pxs) = satisfied pxs
 
