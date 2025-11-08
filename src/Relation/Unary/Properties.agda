@@ -245,10 +245,12 @@ module _ {P : Pred A ℓ₁} {Q : Pred B ℓ₂} (f : A → B) where
 module _ {P : Pred A ℓ₁} {Q : Pred A ℓ₂} (f : A → B) where
 
   map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
-  map-⟨_⟩⊢_ P⊆Q = ⟨ f ⟩⊢⁺ ⊆-trans {j = Q} P⊆Q (⟨ f ⟩⊢⁻ ⊆-refl {x = ⟨ f ⟩⊢ Q})
+  map-⟨_⟩⊢_ P⊆Q = ⟨ f ⟩⊢⁺ ⊆-trans {k = f ⊢ ⟨f⟩⊢Q} P⊆Q (⟨ f ⟩⊢⁻ ⊆-refl {x = ⟨f⟩⊢Q})
+    where ⟨f⟩⊢Q = ⟨ f ⟩⊢ Q
 
   map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
-  map-[_]⊢_ P⊆Q = [ f ]⊢⁺ ⊆-trans {j = P} ([ f ]⊢⁻ ⊆-refl {x = [ f ]⊢ P}) P⊆Q
+  map-[_]⊢_ P⊆Q = [ f ]⊢⁺ ⊆-trans {i = f ⊢ [f]⊢P} ([ f ]⊢⁻ ⊆-refl {x = [f]⊢P}) P⊆Q
+    where [f]⊢P = [ f ]⊢ P
 
 
 ------------------------------------------------------------------------
