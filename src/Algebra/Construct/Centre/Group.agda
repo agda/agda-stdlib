@@ -11,13 +11,10 @@ open import Algebra.Bundles using (AbelianGroup; Group)
 module Algebra.Construct.Centre.Group {c ℓ} (G : Group c ℓ) where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Algebra.Definitions using (Commutative)
-open import Function.Base using (id; const; _$_; _on_)
+open import Function.Base using (id; _∘_; const; _$_; _on_)
 open import Level using (_⊔_)
-open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
-open import Algebra.Construct.Sub.Group G using (Subgroup)
 open import Algebra.Construct.Sub.Group.Normal G using (NormalSubgroup)
 open import Algebra.Properties.Group G using (∙-cancelʳ)
 
@@ -31,59 +28,52 @@ private
 
   record Carrier : Set (c ⊔ ℓ) where
     field
-      commuter : G.Carrier
-      commutes : ∀ k → commuter G.∙ k G.≈ k G.∙ commuter
+      ι      : G.Carrier
+      normal : ∀ g → ι G.∙ g G.≈ g G.∙ ι
 
-  open Carrier using (commuter; commutes)
-
-  _≈_ : Rel Carrier ℓ
-  _≈_ = G._≈_ on commuter
+  open Carrier using (ι; normal)
 
   _∙_ : Op₂ Carrier
   g ∙ h = record
-    { commuter = commuter g G.∙ commuter h
-    ; commutes = λ k → begin
-      (commuter g G.∙ commuter h) G.∙ k ≈⟨ G.assoc _ _ _ ⟩
-      commuter g G.∙ (commuter h G.∙ k) ≈⟨ G.∙-congˡ $ commutes h k ⟩
-      commuter g G.∙ (k G.∙ commuter h) ≈⟨ G.assoc _ _ _ ⟨
-      commuter g G.∙ k G.∙ commuter h   ≈⟨ G.∙-congʳ $ commutes g k ⟩
-      k G.∙ commuter g G.∙ commuter h   ≈⟨ G.assoc _ _ _ ⟩
-      k G.∙ (commuter g G.∙ commuter h) ∎
+    { ι = ι g G.∙ ι h
+    ; normal = λ k → begin
+      (ι g G.∙ ι h) G.∙ k ≈⟨ G.assoc _ _ _ ⟩
+      ι g G.∙ (ι h G.∙ k) ≈⟨ G.∙-congˡ $ normal h k ⟩
+      ι g G.∙ (k G.∙ ι h) ≈⟨ G.assoc _ _ _ ⟨
+      ι g G.∙ k G.∙ ι h   ≈⟨ G.∙-congʳ $ normal g k ⟩
+      k G.∙ ι g G.∙ ι h   ≈⟨ G.assoc _ _ _ ⟩
+      k G.∙ (ι g G.∙ ι h) ∎
     }
 
   ε : Carrier
   ε = record
-    { commuter = G.ε
-    ; commutes = λ k → G.trans (G.identityˡ k) (G.sym (G.identityʳ k))
+    { ι = G.ε
+    ; normal = λ k → G.trans (G.identityˡ k) (G.sym (G.identityʳ k))
     }
 
   _⁻¹ : Op₁ Carrier
   g ⁻¹ = record
-    { commuter = commuter g G.⁻¹
-    ; commutes = λ k → ∙-cancelʳ (commuter g) _ _ $ begin
-        (commuter g G.⁻¹ G.∙ k) G.∙ (commuter g) ≈⟨ G.assoc _ _ _ ⟩
-        commuter g G.⁻¹ G.∙ (k G.∙ commuter g)   ≈⟨ G.∙-congˡ $ commutes g k ⟨
-        commuter g G.⁻¹ G.∙ (commuter g G.∙ k)   ≈⟨ G.assoc _ _ _ ⟨
-        (commuter g G.⁻¹ G.∙ commuter g) G.∙ k   ≈⟨ G.∙-congʳ $ G.inverseˡ _ ⟩
-        G.ε G.∙ k                                ≈⟨ commutes ε k ⟩
-        k G.∙ G.ε                                ≈⟨ G.∙-congˡ $ G.inverseˡ _ ⟨
-        k G.∙ (commuter g G.⁻¹ G.∙ commuter g)   ≈⟨ G.assoc _ _ _ ⟨
-        (k G.∙ commuter g G.⁻¹) G.∙ (commuter g) ∎
+    { ι = ι g G.⁻¹
+    ; normal = λ k → ∙-cancelʳ (ι g) _ _ $ begin
+        (ι g G.⁻¹ G.∙ k) G.∙ (ι g) ≈⟨ G.assoc _ _ _ ⟩
+        ι g G.⁻¹ G.∙ (k G.∙ ι g)   ≈⟨ G.∙-congˡ $ normal g k ⟨
+        ι g G.⁻¹ G.∙ (ι g G.∙ k)   ≈⟨ G.assoc _ _ _ ⟨
+        (ι g G.⁻¹ G.∙ ι g) G.∙ k   ≈⟨ G.∙-congʳ $ G.inverseˡ _ ⟩
+        G.ε G.∙ k                  ≈⟨ normal ε k ⟩
+        k G.∙ G.ε                  ≈⟨ G.∙-congˡ $ G.inverseˡ _ ⟨
+        k G.∙ (ι g G.⁻¹ G.∙ ι g)   ≈⟨ G.assoc _ _ _ ⟨
+        (k G.∙ ι g G.⁻¹) G.∙ (ι g) ∎
     }
 
-  ∙-comm : Commutative _≈_ _∙_
-  ∙-comm g h = commutes g $ commuter h
-
-  centre : NormalSubgroup (c ⊔ ℓ) ℓ
-  centre = record
+  normalSubgroup : NormalSubgroup (c ⊔ ℓ) ℓ
+  normalSubgroup = record
     { subgroup = record
       { domain = record
-        { _≈_ = _≈_
-        ; _∙_ = _∙_
+        { _∙_ = _∙_
         ; ε = ε
         ; _⁻¹ = _⁻¹
         }
-      ; ι = commuter
+      ; ι = ι
       ; ι-monomorphism = record
           { isGroupHomomorphism = record
             { isMonoidHomomorphism = record
@@ -100,7 +90,7 @@ private
       }
     ; isNormal = record
       { conjugate = const
-      ; normal = commutes
+      ; normal = normal
       }
     }
 
@@ -108,14 +98,14 @@ private
 ------------------------------------------------------------------------
 -- Public exports
 
-open NormalSubgroup centre public
+open NormalSubgroup normalSubgroup public
 
 abelianGroup : AbelianGroup (c ⊔ ℓ) ℓ
 abelianGroup = record
   { isAbelianGroup = record
     { isGroup = isGroup
-    ; comm = ∙-comm
+    ; comm = λ g → normal g ∘ ι
     }
   }
 
-Z[_] = centre
+Z[_] = normalSubgroup
