@@ -79,7 +79,7 @@ Deprecated names
 New modules
 -----------
 
-* `Algebra.Construct.Quotient.{Abelian}Group` for the definition of quotient (Abelian) groups.
+* `Algebra.Construct.Quotient.{{Abelian}Group|Ring}` for the definition of quotient (Abelian) groups and rings.
 
 * `Algebra.Construct.Sub.{Abelian}Group` for the definition of sub-(Abelian)groups.
 
