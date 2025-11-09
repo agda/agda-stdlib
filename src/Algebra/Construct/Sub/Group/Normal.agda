@@ -57,7 +57,8 @@ record IsNormal {c′ ℓ′} (subgroup : Subgroup c′ ℓ′) : Set (c ⊔ ℓ
 
 -- As with `Subgroup` itself, this domain `Carrier` type is canonically inferrable
 -- by the typechecker, as in the inline comment. But perhaps this use of `_` might
--- also be usefully documented as `Function.Base.typeOf n`?
+-- also be usefully documented as `Function.Base.typeOf n`? Or is that itself too
+-- 'occult' a usage?
 
     conjugate : ∀ n g → _ -- where _ = RawGroup.Carrier (Subgroup.domain subgroup)
 
@@ -68,7 +69,7 @@ record IsNormal {c′ ℓ′} (subgroup : Subgroup c′ ℓ′) : Set (c ⊔ ℓ
 
     normal : ∀ n g → ι (conjugate n g) G.∙ g G.≈ g G.∙ ι n
 
--- NormalSubgroup: a Subgroup which IsNormal (sic)
+-- NormalSubgroup: a Subgroup which IsNormal (sic).
 
 record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
@@ -85,3 +86,12 @@ record NormalSubgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) wh
 
   open Subgroup subgroup public
   open IsNormal isNormal public
+
+-- NB. Nowhere does this module define, nor need to, the lemma introduced in
+-- Taneb's original PR, viz. `abelian⇒subgroup-normal` of type
+-- `Commutative G._≈_ G._∙_ → (subgroup : Subgroup _ _) → IsNormal subgroup`.
+--
+-- This element of reasoning is itself handled by having a distinct module
+-- `Algebra.Construct.Sub.AbelianGroup` which encapsulates such reasoning
+-- within the scope of (an `Abelian`!)`Group` `G` in which the premise
+-- `Commutative G._≈_ G._∙_` is already known to hold.
