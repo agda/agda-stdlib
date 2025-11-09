@@ -114,11 +114,11 @@ _/_ = group
       { isRelHomomorphism = record
         { cong = ≈⇒≋
         }
-      ; homo = λ _ _ → refl
+      ; homo = λ _ _ → Q.refl
       }
-    ; ε-homo = refl
+    ; ε-homo = Q.refl
     }
-  ; ⁻¹-homo = λ _ → refl
+  ; ⁻¹-homo = λ _ → Q.refl
   }
 
 open IsGroupHomomorphism π-isGroupHomomorphism public
