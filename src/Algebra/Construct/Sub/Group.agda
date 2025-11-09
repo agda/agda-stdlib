@@ -36,43 +36,44 @@ private
 record Subgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
 
--- as above, this name is essentially arbitrary,
--- exisitng solely to be mentioned in the third field below
+-- As above, the following name is essentially arbitrary, existing
+-- solely to be mentioned in the third field `ι-monomorphism` below.
 
     domain         : RawGroup c′ ℓ′
 
--- this function (obviously) needs a source and target:
--- * the target, for the sake of the third field, needs to be
---   `Carrier` subfield of the top-level `X` module parameter
+-- The next field, a function, (obviously) needs a source and target:
+-- * the target, again for the sake of the third field, needs to be
+--   `Carrier` subfield of the top-level `X` module parameter;
 -- * the source, however, really exists solely to give a type to `ι`
---   and indeed, the typechecker can infer (from the third field)
---   that this type *must* be the `Carrier` of the `RawX` `domain`
+--   and indeed, the typechecker can infer (again from the third field)
+--   that this type *must* be the `Carrier` of the `RawX` `domain`.
 
 -- Taneb's design introduces a `private` module
 -- `private module H = RawGroup domain`
 -- for the sake of affording easy/easier named access to its
 -- `Carrier` field, and as preferable to the hideous explicit form
--- `RawGroup.Carrier domain` which is the definiens of `H.Carrier`
+-- `RawGroup.Carrier domain` which is the definiens of `H.Carrier`.
 
--- Neither is necessary, but can be, and is, reconstructed by the
--- typechecker by offering instead a placeholder, in exactly the same way
+-- Neither is necessary, but instead can be, and is here, reconstructed by
+-- the typechecker by offering instead a placeholder, in exactly the same way
 -- that `domain` exists as a named field solely to express the dependency
 -- in the type of `ι-monomorphism`. In that sense, it is an ephemeral form
--- derived from `domain`, which moreover will never play a role in client
--- uses of this module, except as a typing constraint on any application
--- of `ι`, a constraint which is already inherited (by definitional equality!)
--- from the type of the `⟦_⟧` parameter to `IsXHomomorphism`...
+-- derived from `domain`, which moreover will *never* play a role in client
+-- uses of this module (eg exemplarily in `Algebra.Construct.Sub.Group.Normal),
+-- except as a typing constraint on any application of `ι`, a constraint
+-- which is already inherited (by definitional equality!) from the type of
+-- the `⟦_⟧` parameter to `IsXHomomorphism`...
 
     ι              : _ → G.Carrier -- where _ = RawGroup.Carrier domain
 
--- now all the pieces are in place, we can define what we *really* want
+-- Now all the pieces are in place, we can define what we *really* want:
 
     ι-monomorphism : IsGroupMonomorphism domain G.rawGroup ι
 
--- this is 'admin': any client module of `Subgroup` will likely want to
--- refer to primitive *and* manifest subfields of `IsXMonmorphism`, so
--- this is automatically made available to clients, but not `open`ed,
--- so that such affordance is client-definable, as usual.
+-- The next manifest field is an 'admin' decision: any client module of
+-- `Subgroup` will likely want to refer to primitive *and* manifest subfields
+-- of `IsXMonomorphism`, so this is automatically made available to clients,
+-- but not `open`ed, so that such affordance is client-definable, as usual.
 
   module ι = IsGroupMonomorphism ι-monomorphism
 
@@ -80,7 +81,7 @@ record Subgroup c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
 -- will want access to *the `X` defined as the domain of the `IsXMonomorphism`*.
 -- But here, it is both automatically made available to clients, as above,
 -- *and* also `open`ed, so that its affordances are offered to any client
--- via the 'canonical' names associated with the `X`/`IsX` bundle/structure
+-- via the 'canonical' names associated with the `X`/`IsX` bundle/structure.
 
 -- Taneb's design does this in two steps:
 -- * first, create the `IsX` structure, with name `isX`
