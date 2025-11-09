@@ -13,7 +13,8 @@ open import Algebra.Bundles using (Ring)
 
 -- As with `Algebra.Construct.Sub.Group.Normal`, this module
 -- relocates Taneb's original `Algebra.Ideal`
--- to a level one *below* that of `Algebra.Construct.Sub.Ring`.
+-- to a level one *below* that of `Algebra.Construct.Sub.Ring`,
+-- notwithstanding that we have yet to define `Sub.XRing`s...
 
 module Algebra.Construct.Sub.Ring.Ideal {c ℓ} (R : Ring c ℓ) where
 
