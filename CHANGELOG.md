@@ -79,6 +79,16 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Quotient.{{Abelian}Group|Ring}` for the definition of quotient (Abelian) groups and rings.
+
+* `Algebra.Construct.Sub.{Abelian}Group` for the definition of sub-(Abelian)groups.
+
+* `Algebra.Construct.Sub.Group.Normal` for the definition of normal subgroups.
+
+* `Algebra.Construct.Sub.Ring.Ideal` for the definition of ideals of a ring.
+
+* `Algebra.Module.Construct.Sub.Bimodule` for the definition of sub-bimodules.
+
 * `Algebra.Properties.BooleanRing`.
 
 * `Algebra.Properties.BooleanSemiring`.
