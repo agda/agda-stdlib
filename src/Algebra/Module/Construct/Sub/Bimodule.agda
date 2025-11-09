@@ -8,9 +8,10 @@
 -- but uses the `Algebra.Construct.Sub.AbelianGroup` module
 -- to plumb in that any sub-bimodule of a `Bimodule` defines
 -- a sub-AbelianGroup, hence a `NormalSubgroup`, so that when
--- an ideal in a `Ring` is defined as a suitable sub-bimodule,
+-- an `Ideal` in a `Ring` is defined as a suitable sub-bimodule,
+-- as in https://github.com/agda/agda-stdlib/pull/2855
 -- the quotient structure of the additive subgroup is immediate,
--- on which the quotient `Ring` structure may then be defined.
+-- on which the quotient `Ring` structure may then be based.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
