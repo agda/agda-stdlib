@@ -8,6 +8,7 @@
 
 open import Algebra.Bundles using (Group; AbelianGroup)
 import Algebra.Construct.Sub.AbelianGroup as AbelianSubgroup
+import Algebra.Construct.Quotient.Group as Quotient
 
 module Algebra.Construct.Quotient.AbelianGroup
   {c ℓ} (G : AbelianGroup c ℓ)
@@ -20,16 +21,19 @@ private
 
 -- Re-export the quotient group
 
-open import Algebra.Construct.Quotient.Group G.group (normalSubgroup N) public
+open Quotient G.group (normalSubgroup N) public
+  hiding (_/_)
 
 -- With its additional bundle
 
-quotientAbelianGroup : AbelianGroup c _
-quotientAbelianGroup = record
+abelianGroup : AbelianGroup c _
+abelianGroup = record
   { isAbelianGroup = record
     { isGroup = isGroup
     ; comm = λ g h → ≈⇒≋ (G.comm g h)
     }
-  } where open Group quotientGroup
+  } where open Group group
 
--- Public re-exports, as needed?
+-- Public re-exports
+
+_/_ = abelianGroup
