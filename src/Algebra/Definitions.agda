@@ -53,8 +53,8 @@ Commutative _∙_ = ∀ x y → (x ∙ y) ≈ (y ∙ x)
 LeftIdentity : A → Op₂ A → Set _
 LeftIdentity e _∙_ = ∀ x → (e ∙ x) ≈ x
 
-Central : A → Op₂ A → Set _
-Central x _∙_ = ∀ y → (x ∙ y) ≈ (y ∙ x)
+Central : Op₂ A → A → Set _
+Central _∙_ x = ∀ y → (x ∙ y) ≈ (y ∙ x)
 
 RightIdentity : A → Op₂ A → Set _
 RightIdentity e _∙_ = ∀ x → (x ∙ e) ≈ x
