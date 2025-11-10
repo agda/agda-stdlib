@@ -19,6 +19,7 @@ open import Algebra.Properties.Monoid monoid
 open import Algebra.Properties.Group G using (⁻¹-anti-homo-∙)
 open import Algebra.Structures using (IsGroup)
 open import Data.Product.Base using (_,_)
+open import Function.Base using (_∘_)
 open import Function.Definitions using (Surjective)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (_⇒_)
@@ -90,15 +91,9 @@ quotientIsGroup = record
         }
       ; assoc = λ x y z → ≈⇒≋ (assoc x y z)
       }
-    ; identity = record
-      { fst = λ x → ≈⇒≋ (identityˡ x)
-      ; snd = λ x → ≈⇒≋ (identityʳ x)
-      }
+    ; identity = ≈⇒≋ ∘ identityˡ , ≈⇒≋ ∘ identityʳ
     }
-  ; inverse = record
-    { fst = λ x → ≈⇒≋ (inverseˡ x)
-    ; snd = λ x → ≈⇒≋ (inverseʳ x)
-    }
+  ; inverse = ≈⇒≋ ∘ inverseˡ , ≈⇒≋ ∘ inverseʳ
   ; ⁻¹-cong = ≋-⁻¹-cong
   }
 
