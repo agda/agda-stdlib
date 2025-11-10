@@ -79,7 +79,7 @@ Deprecated names
 New modules
 -----------
 
-* `Algebra.Cosntruct.Quotient.Group` for the definition of quotient groups.
+* `Algebra.Construct.Quotient.Group` for the definition of quotient groups.
 
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
