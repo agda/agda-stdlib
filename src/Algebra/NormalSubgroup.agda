@@ -10,7 +10,7 @@ open import Algebra.Bundles using (Group)
 
 module Algebra.NormalSubgroup {c ℓ} (G : Group c ℓ)  where
 
-open import Algebra.Definitions
+open import Algebra.Definitions using (Commutative)
 open import Algebra.Construct.Sub.Group G using (Subgroup)
 open import Level using (suc; _⊔_)
 
