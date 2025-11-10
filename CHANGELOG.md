@@ -81,7 +81,11 @@ New modules
 
 * `Algebra.Construct.Quotient.Group` for the definition of quotient groups.
 
+* `Algebra.Construct.Quotient.Ring` for the definition of quotient rings.
+
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
+
+* `Algebra.Ideal` for the definition of (two sided) ideals of rings.
 
 * `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
 
