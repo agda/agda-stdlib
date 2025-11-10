@@ -35,8 +35,11 @@ infix 0 _by_
 data _≋_ (x y : Carrier) : Set (c ⊔ ℓ ⊔ c′) where
   _by_ : ∀ g → ι g ∙ x ≈ y → x ≋ y
 
+≈⇒≋ : _≈_ ⇒ _≋_
+≈⇒≋ {x} {y} x≈y = N.ε by trans (∙-cong ι.ε-homo x≈y) (identityˡ y)
+
 ≋-refl : Reflexive _≋_
-≋-refl {x} = N.ε by trans (∙-congʳ ι.ε-homo) (identityˡ x)
+≋-refl = ≈⇒≋ refl
 
 ≋-sym : Symmetric _≋_
 ≋-sym {x} {y} (g by ιg∙x≈y) = g N.⁻¹ by begin
@@ -57,9 +60,6 @@ data _≋_ (x y : Carrier) : Set (c ⊔ ℓ ⊔ c′) where
   ; sym = ≋-sym
   ; trans = ≋-trans
   }
-
-≈⇒≋ : _≈_ ⇒ _≋_
-≈⇒≋ {x} {y} x≈y = N.ε by trans (∙-cong ι.ε-homo x≈y) (identityˡ y)
 
 open AlgDefs _≋_
 
