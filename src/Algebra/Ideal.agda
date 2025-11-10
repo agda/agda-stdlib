@@ -23,7 +23,7 @@ open import Level
 -- a (two sided) ideal is exactly a subbimodule of R considered as a bimodule over itself
 record Ideal c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
-    subbimodule : Subbimodule (TU.bimodule {R = R}) c′ ℓ′
+    subbimodule : Subbimodule {R = R} TU.bimodule c′ ℓ′
 
   open Subbimodule subbimodule public
 
