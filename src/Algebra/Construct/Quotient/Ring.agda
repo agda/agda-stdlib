@@ -11,6 +11,11 @@ open import Algebra.Ideal using (Ideal)
 
 module Algebra.Construct.Quotient.Ring {c ℓ} (R : Ring c ℓ) {c′ ℓ′} (I : Ideal R c′ ℓ′) where
 
+open import Algebra.Morphism.Structures using (IsRingHomomorphism)
+open import Algebra.Properties.Ring R
+open import Algebra.Structures
+open import Level
+
 open Ring R
 private module I = Ideal I
 open I using (ι; normalSubgroup)
@@ -18,14 +23,8 @@ open I using (ι; normalSubgroup)
 open import Algebra.Construct.Quotient.Group +-group normalSubgroup public
   using (_≋_; _by_; ≋-refl; ≋-sym; ≋-trans; ≋-isEquivalence; ≈⇒≋; quotientIsGroup; quotientGroup; π; π-surjective)
   renaming (≋-∙-cong to ≋-+-cong; ≋-⁻¹-cong to ≋‿-‿cong)
-
 open import Algebra.Definitions _≋_
-open import Algebra.Morphism.Structures using (IsRingHomomorphism)
 open import Algebra.Properties.Semiring semiring
-open import Algebra.Properties.Ring R
-open import Algebra.Structures
-open import Function.Definitions using (Surjective)
-open import Level
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ≋-*-cong : Congruent₂ _*_
