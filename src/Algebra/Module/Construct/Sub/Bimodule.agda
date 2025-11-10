@@ -9,7 +9,14 @@
 open import Algebra.Bundles using (Ring)
 open import Algebra.Module.Bundles using (Bimodule; RawBimodule)
 
-module Algebra.Module.Construct.Sub.Bimodule {cr ℓr cs ℓs cm ℓm} {R : Ring cr ℓr} {S : Ring cs ℓs}  (M : Bimodule R S cm ℓm) where
+module Algebra.Module.Construct.Sub.Bimodule
+  {cr ℓr cs ℓs cm ℓm} {R : Ring cr ℓr} {S : Ring cs ℓs}  (M : Bimodule R S cm ℓm)
+  where
+
+open import Algebra.Module.Structures using (IsBimodule)
+open import Algebra.Module.Morphism.Structures using (IsBimoduleMonomorphism)
+import Algebra.Module.Morphism.BimoduleMonomorphism as BimoduleMonomorphism
+open import Level using (suc; _⊔_)
 
 private
   module R = Ring R
@@ -17,10 +24,6 @@ private
   module M = Bimodule M
 
 open import Algebra.Construct.Sub.Group M.+ᴹ-group
-open import Algebra.Module.Structures using (IsBimodule)
-open import Algebra.Module.Morphism.Structures using (IsBimoduleMonomorphism)
-import Algebra.Module.Morphism.BimoduleMonomorphism as BimoduleMonomorphism
-open import Level using (suc; _⊔_)
 
 record Subbimodule cm′ ℓm′ : Set (cr ⊔ cs ⊔ cm ⊔ ℓm ⊔ suc (cm′ ⊔ ℓm′)) where
   field
