@@ -108,11 +108,11 @@ quotientGroup = record { isGroup = quotientIsGroup }
 _/_ : Group c (c ⊔ ℓ ⊔ c′)
 _/_ = quotientGroup
 
-project : Group.Carrier G → Group.Carrier quotientGroup
-project x = x -- because we do all the work in the relation
+π : Group.Carrier G → Group.Carrier quotientGroup
+π x = x -- because we do all the work in the relation
 
-project-isHomomorphism : IsGroupHomomorphism rawGroup (Group.rawGroup quotientGroup) project
-project-isHomomorphism = record
+π-isHomomorphism : IsGroupHomomorphism rawGroup (Group.rawGroup quotientGroup) π
+π-isHomomorphism = record
   { isMonoidHomomorphism = record
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record
@@ -125,5 +125,5 @@ project-isHomomorphism = record
   ; ⁻¹-homo = λ _ → ≋-refl
   }
 
-project-surjective : Surjective _≈_ _≋_ project
-project-surjective g = g , ≈⇒≋
+π-surjective : Surjective _≈_ _≋_ π
+π-surjective g = g , ≈⇒≋
