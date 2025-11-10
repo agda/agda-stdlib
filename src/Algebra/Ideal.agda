@@ -17,9 +17,12 @@ import Algebra.Module.Construct.TensorUnit as TU
 open import Algebra.NormalSubgroup (+-group)
 open import Level
 
+------------------------------------------------------------------------
+-- Definition
+
+-- a (two sided) ideal is exactly a subbimodule of R considered as a bimodule over itself
 record Ideal c′ ℓ′ : Set (c ⊔ ℓ ⊔ suc (c′ ⊔ ℓ′)) where
   field
-    -- a (two sided) ideal is exactly a subbimodule of R considered as a bimodule over itself
     subbimodule : Subbimodule (TU.bimodule {R = R}) c′ ℓ′
 
   open Subbimodule subbimodule public
