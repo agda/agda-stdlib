@@ -26,6 +26,7 @@ open import Data.Product.Base as Product
 open import Data.Product.Function.NonDependent.Propositional
 import Data.Product.Properties as Product
 open import Data.Sum.Base as Sum
+  using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 import Data.Sum.Properties as Sum
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit.Polymorphic.Base using (⊤)
