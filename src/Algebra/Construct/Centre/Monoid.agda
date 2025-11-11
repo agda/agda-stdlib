@@ -27,7 +27,7 @@ private
 
 open Z public
   using (Center; ι; central)
-  
+
 ε : Center
 ε = record
   { ι = G.ε
