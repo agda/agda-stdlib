@@ -202,7 +202,7 @@ Decidable P = ∀ x → Dec (P x)
 -- Operations on sets
 
 infix 10 ⋃ ⋂
-infixr 9 _⊢_
+infixr 9 _⊢_ ⟨_⟩⊢_ [_]⊢_
 infixr 8 _⇒_
 infixr 7 _∩_
 infixr 6 _∪_
@@ -277,8 +277,12 @@ f ⊢ P = λ x → P (f x)
 -- In some settings, the left adjoint is called 'image' or 'pushforward',
 -- but the right adjoint doesn't seem to have a non-symbolic name.
 
+-- Diamond
+
 ⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
 ⟨ f ⟩⊢ P = λ y → ∃ λ x → f x ≡ y × P x
+
+-- Box
 
 [_]⊢_ : (A → B) → Pred A ℓ → Pred B _
 [ f ]⊢ P = λ y → ∀ {x} → f x ≡ y → P x
