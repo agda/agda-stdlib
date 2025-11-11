@@ -261,21 +261,26 @@ P ⊥ Q = P ∩ Q ⊆ ∅
 _⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ⊥′ Q = P ∩ Q ⊆′ ∅
 
--- Update/functorial change-of-base
-
--- The notation captures the Martin-Löf tradition of only mentioning
--- updates to the ambient context when describing a context-indexed
--- family P e.g. (_, σ) ⊢ Tm τ is
+-- Update/preimage/inverse image/functorial change-of-base
+--
+-- The notation, which elsewhere might be rendered
+-- * `f⁻¹ P`, for preimage/inverse image
+-- * `f* P`, for change-of-base/pullback along `f`
+-- captures the Martin-Löf tradition of only mentioning updates to
+-- the ambient context when describing a context-indexed family P:
+-- e.g. (_, σ) ⊢ Tm τ is
 -- "a term of type τ in the ambient context extended with a fresh σ".
 
 _⊢_ : (A → B) → Pred B ℓ → Pred A ℓ
 f ⊢ P = λ x → P (f x)
 
 -- Change-of-base has left- and right- adjoints (Lawvere).
+--
 -- We borrow the 'diamond'/'box' notation from modal logic, cf.
 -- `Relation.Unary.Closure.Base`, rather than Lawvere's ∃f, ∀f.
--- In some settings, the left adjoint is called 'image' or 'pushforward',
--- but the right adjoint doesn't seem to have a non-symbolic name.
+-- In some settings (eg statistics/probability), the left adjoint
+-- is called 'image' or 'pushforward', but the right adjoint
+-- doesn't seem to have a non-symbolic name.
 
 -- Diamond
 

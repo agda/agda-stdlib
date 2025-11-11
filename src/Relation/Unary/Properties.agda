@@ -230,11 +230,15 @@ module _ {P : Pred B ℓ₁} {Q : Pred B ℓ₂} where
 
 module _ {P : Pred A ℓ₁} {Q : Pred B ℓ₂} (f : A → B) where
 
+-- ⟨ f ⟩⊢_ is left adjoint to f ⊢_ for given f
+
   ⟨_⟩⊢⁻_ : ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
   ⟨_⟩⊢⁻_ ⟨f⟩⊢P⊆Q Px = ⟨f⟩⊢P⊆Q (_ , refl , Px)
 
   ⟨_⟩⊢⁺_ : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
   ⟨_⟩⊢⁺_ P⊆f⊢Q (_ , refl , Px) = P⊆f⊢Q Px
+
+-- [ f ]⊢_ is right adjoint to f ⊢_ for given f
 
   [_]⊢⁻_ : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
   [_]⊢⁻_ Q⊆[f]⊢P Qfx = Q⊆[f]⊢P Qfx refl
