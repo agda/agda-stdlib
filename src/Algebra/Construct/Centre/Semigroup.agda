@@ -56,9 +56,7 @@ domain = record { _≈_ = Z._≈_; _∙_ = _∙_ }
 
 semigroup : Semigroup _ _
 semigroup = Subsemigroup.semigroup record
-  { domain = domain
-  ; ι = ι
-  ; ι-monomorphism = record
+  { ι-monomorphism = record
     { isMagmaHomomorphism = ι-isMagmaHomomorphism
     ; injective = id
     }

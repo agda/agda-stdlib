@@ -49,9 +49,7 @@ domain = record { RawMagma Z.domain ; ε = ε }
 
 monoid : Monoid _ _
 monoid = Submonoid.monoid record
-  { domain = domain
-  ; ι = ι
-  ; ι-monomorphism = record
+  { ι-monomorphism = record
     { isMonoidHomomorphism = ι-isMonoidHomomorphism
     ; injective = id
     }

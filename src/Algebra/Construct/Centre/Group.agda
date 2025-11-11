@@ -61,9 +61,7 @@ domain = record { RawMonoid Z.domain; _⁻¹ = _⁻¹ }
 normalSubgroup : NormalSubgroup (c ⊔ ℓ) ℓ
 normalSubgroup = record
   { subgroup = record
-    { domain = domain
-    ; ι = ι
-    ; ι-monomorphism = record
+    { ι-monomorphism = record
         { isGroupHomomorphism = ι-isGroupHomomorphism
         ; injective = id
         }
