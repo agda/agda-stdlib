@@ -79,6 +79,10 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Sub.Group` for the definition of subgroups.
+
+* `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
+
 * `Algebra.Properties.BooleanRing`.
 
 * `Algebra.Properties.BooleanSemiring`.
@@ -92,6 +96,14 @@ New modules
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
 
 * `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
+
+* Various additions over non-empty lists:
+  ```
+  Data.List.NonEmpty.Relation.Binary.Pointwise
+  Data.List.NonEmpty.Relation.Unary.Any
+  Data.List.NonEmpty.Membership.Propositional
+  Data.List.NonEmpty.Membership.Setoid
+  ```
 
 Additions to existing modules
 -----------------------------
@@ -157,6 +169,11 @@ Additions to existing modules
 
   search-least⟨_⟩  : Decidable P → Π[ ∁ P ] ⊎ Least⟨ P ⟩
   search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
+  ```
+
+* In `Data.List.NonEmpty.Relation.Unary.All`:
+  ```
+  map : P ⊆ Q → All P xs → All Q xs
   ```
 
 * In `Data.Nat.ListAction.Properties`
