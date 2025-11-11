@@ -9,9 +9,9 @@
 module Data.Product.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs using (UIP; module Decidable⇒UIP)
-open import Data.Product.Base using (_,_; Σ; _×_; map; swap; ∃; ∃₂)
+open import Data.Product.Base using (_,_; Σ; _,′_; _×_; map; swap; ∃; ∃₂)
 open import Function.Base using (_∋_; _∘_; id)
-open import Function.Bundles using (_↔_; mk↔ₛ′)
+open import Function.Bundles using (_↔_; mk↔ₛ′; Inverse)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core
@@ -114,3 +114,14 @@ module _ {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} where
 
   from : (∃₂ λ y x → R x y) → (∃₂ λ x y → R x y)
   from (y , x , Rxy) = (x , y , Rxy)
+
+------------------------------------------------------------------------
+-- Non-dependent product (_×_) preserves type isomorphism (_↔_)
+
+infixr 4 _,′-↔_
+
+_,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
+i ,′-↔ j = mk↔ₛ′ (map (Inverse.to i) (Inverse.to j))
+                 (map (Inverse.from i) (Inverse.from j))
+                 (λ _ → ×-≡,≡→≡ (Inverse.inverseˡ i refl ,′ Inverse.inverseˡ j refl))
+                 (λ _ → ×-≡,≡→≡ (Inverse.inverseʳ i refl ,′ Inverse.inverseʳ j refl))
