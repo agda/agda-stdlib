@@ -64,6 +64,9 @@ map-cong f≗g h≗i (x , y) = cong₂ _,_ (f≗g x) (h≗i y)
 swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
 swap-involutive _ = refl
 
+swap-↔ : (A × B) ↔ (B × A)
+swap-↔ = mk↔ₛ′ swap swap swap-involutive swap-involutive
+
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
 

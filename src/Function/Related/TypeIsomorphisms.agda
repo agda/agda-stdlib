@@ -24,8 +24,9 @@ open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base as Product
   using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃; ∃-syntax)
 open import Data.Product.Function.NonDependent.Propositional
+import Data.Product.Properties as Product
 open import Data.Sum.Base as Sum
-open import Data.Sum.Properties using (swap-involutive)
+import Data.Sum.Properties as Sum
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Level using (Level; Lift; 0ℓ; suc)
@@ -63,7 +64,7 @@ open import Relation.Nullary.Decidable public
 -- × is commutative
 
 ×-comm : ∀ (A : Set a) (B : Set b) → (A × B) ↔ (B × A)
-×-comm _ _ = mk↔ₛ′ Product.swap Product.swap (λ _ → refl) λ _ → refl
+×-comm _ _ = Product.swap-↔
 
 -- × has ⊤ as its identity
 
@@ -102,7 +103,7 @@ open import Relation.Nullary.Decidable public
 -- ⊎ is commutative
 
 ⊎-comm : ∀ (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
-⊎-comm _ _ = mk↔ₛ′ swap swap swap-involutive swap-involutive
+⊎-comm _ _ = Sum.swap-↔
 
 -- ⊎ has ⊥ as its identity
 
@@ -279,13 +280,7 @@ open import Relation.Nullary.Decidable public
 
 ∃∃↔∃∃ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) →
         (∃₂ λ x y → P x y) ↔ (∃₂ λ y x → P x y)
-∃∃↔∃∃ P = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
-  where
-  to : (∃₂ λ x y → P x y) → (∃₂ λ y x → P x y)
-  to (x , y , Pxy) = (y , x , Pxy)
-
-  from : (∃₂ λ y x → P x y) → (∃₂ λ x y → P x y)
-  from (y , x , Pxy) = (x , y , Pxy)
+∃∃↔∃∃ = Product.∃∃↔∃∃
 
 ------------------------------------------------------------------------
 -- Implicit and explicit function spaces are isomorphic
