@@ -190,6 +190,12 @@ Additions to existing modules
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   ```
 
+* In `Data.Product.Properties`:
+  ```agda
+  swap-↔ : (A × B) ↔ (B × A)
+  _,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
