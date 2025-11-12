@@ -105,6 +105,10 @@ New modules
   Data.List.NonEmpty.Membership.Setoid
   ```
 
+* `Relation.Binary.Morphism.Construct.On`: given a relation `_∼_` on `B`,
+  and a function `f : A → B`, lift to various `IsRelHomomorphism`s between
+  `_∼_ on f` and `_∼_`.
+
 Additions to existing modules
 -----------------------------
 
