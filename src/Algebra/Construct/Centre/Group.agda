@@ -71,17 +71,17 @@ normalSubgroup = record
     ; normal = central
     }
   }
-{-
+
 open NormalSubgroup normalSubgroup public
-  hiding (_⁻¹)
+  hiding (domain; _⁻¹)
 
 abelianGroup : AbelianGroup (c ⊔ ℓ) ℓ
 abelianGroup = record
   { isAbelianGroup = record
     { isGroup = isGroup
-    ; comm = λ g → central g ∘ ι
+    ; comm = λ g → central g ∘ Z.ι
     }
   }
 
 Z[_] = abelianGroup
--}
+
