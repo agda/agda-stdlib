@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Definition of the centre of a Group
+-- Definition of Z[ G ] the centre of a Group G
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
