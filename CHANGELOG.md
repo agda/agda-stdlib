@@ -11,6 +11,10 @@ Bug-fixes
 
 * Fix a type error in `README.Data.Fin.Relation.Unary.Top` within the definition of `>-weakInduction`.
 
+* Remove spurious definition of `Algebra.Consequences.Propositional.sel⇒idem`,
+  which duplicated lemma from `Algebra.Consequences.Base`, instead of importing
+  from `Algebra.Consequences.Setoid`.
+
 * Fix a typo in `Algebra.Morphism.Construct.DirectProduct`.
 
 * Fix a typo in `Function.Construct.Constant`.
@@ -122,6 +126,7 @@ Additions to existing modules
 
 * In `Algebra.Consequences.Setoid`:
   ```agda
+  sel⇒idem : Selective _∙_ → Idempotent _∙_
   binomial-expansion : Congruent₂ _∙_  → Associative _∙_ → _◦_ DistributesOver _∙_ →
     ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
   ```
