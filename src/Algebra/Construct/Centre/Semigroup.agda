@@ -29,7 +29,7 @@ private
 -- Definition
 
 open Z public
-  using (Center; ι; central)
+  using (Center; ι; central; ∙-comm)
   hiding (module ι)
   
 _∙_ : Op₂ Center
@@ -42,9 +42,6 @@ central (g ∙ h) = λ k → begin
   k G.∙ ι g G.∙ ι h   ≈⟨ G.assoc _ _ _ ⟩
   k G.∙ (ι g G.∙ ι h) ∎
   where open ≈-Reasoning G.setoid
-
-∙-comm : Commutative Z._≈_ _∙_
-∙-comm g = central g ∘ ι
 
 domain : RawMagma _ _
 domain = record { _≈_ = Z._≈_; _∙_ = _∙_ }

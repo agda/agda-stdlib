@@ -52,3 +52,6 @@ _≈_ = G._≈_ on ι
   }
 
 module ι = IsRelMonomorphism ι-isRelMonomorphism
+
+∙-comm : ∀ g h → ι g G.∙ ι h G.≈ ι h G.∙ ι g 
+∙-comm g h = central g (ι h)
