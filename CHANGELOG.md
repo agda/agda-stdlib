@@ -126,6 +126,11 @@ Additions to existing modules
     ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
   ```
 
+* In `Algebra.Definitions`:
+  ```agda
+  Central : Op₂ A → A → Set _
+  ```
+
 * In `Algebra.Lattice.Properties.BooleanAlgebra.XorRing`:
   ```agda
   ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤

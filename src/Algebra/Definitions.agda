@@ -50,6 +50,9 @@ Associative _∙_ = ∀ x y z → ((x ∙ y) ∙ z) ≈ (x ∙ (y ∙ z))
 Commutative : Op₂ A → Set _
 Commutative _∙_ = ∀ x y → (x ∙ y) ≈ (y ∙ x)
 
+Central : Op₂ A → A → Set _
+Central _∙_ x = ∀ y → (x ∙ y) ≈ (y ∙ x)
+
 LeftIdentity : A → Op₂ A → Set _
 LeftIdentity e _∙_ = ∀ x → (e ∙ x) ≈ x
 
