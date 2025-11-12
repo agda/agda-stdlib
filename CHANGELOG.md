@@ -118,12 +118,16 @@ Additions to existing modules
   ```agda
   binomial-expansion : Associative _∙_ → _◦_ DistributesOver _∙_ →
     ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  identity⇒central   : Identity e _∙_ → Central _∙_ e
+  zero⇒central       : Zero e _∙_ → Central _∙_ e
   ```
 
 * In `Algebra.Consequences.Setoid`:
   ```agda
   binomial-expansion : Congruent₂ _∙_  → Associative _∙_ → _◦_ DistributesOver _∙_ →
     ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  identity⇒central   : Identity e _∙_ → Central _∙_ e
+  zero⇒central       : Zero e _∙_ → Central _∙_ e
   ```
 
 * In `Algebra.Definitions`:
