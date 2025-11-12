@@ -50,12 +50,6 @@ domain = record { RawMagma Z.domain ; ε = ε }
 monoid : Monoid _ _
 monoid = Submonoid.monoid record { ι-monomorphism = ι-isMonoidMonomorphism }
 
-
-------------------------------------------------------------------------
--- Public exports
-
-module ι = IsMonoidMonomorphism ι-isMonoidMonomorphism
-
 commutativeMonoid : CommutativeMonoid _ _
 commutativeMonoid = record
   { isCommutativeMonoid = record
@@ -63,6 +57,12 @@ commutativeMonoid = record
     ; comm = ∙-comm
     }
   } where open Monoid monoid using (isMonoid)
+
+
+------------------------------------------------------------------------
+-- Public exports
+
+module ι = IsMonoidMonomorphism ι-isMonoidMonomorphism
 
 Z[_] = commutativeMonoid
 

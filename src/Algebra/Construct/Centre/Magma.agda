@@ -45,7 +45,7 @@ _≈_ = G._≈_ on ι
 ι-isRelHomomorphism : IsRelHomomorphism _≈_ G._≈_ ι
 ι-isRelHomomorphism = record { cong = id }
 
-ι-isRelMonomorphism : IsRelMonomorphism _≈_ G._≈_ ι
+ι-isRelMonomorphism : IsRelMonomorphism _≈_ _ _
 ι-isRelMonomorphism = record
   { isHomomorphism = ι-isRelHomomorphism
   ; injective = id

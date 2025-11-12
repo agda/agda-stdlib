@@ -14,7 +14,6 @@ import Algebra.Construct.Centre.Monoid as Centre
 open import Algebra.Core using (Op₁)
 open import Algebra.Morphism.Structures using (IsGroupMonomorphism)
 open import Function.Base using (id; _∘_; const; _$_)
-open import Level using (_⊔_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open import Algebra.Construct.Sub.Group.Normal G using (NormalSubgroup)
@@ -62,7 +61,9 @@ domain = record { RawMonoid Z.domain; _⁻¹ = _⁻¹ }
 ------------------------------------------------------------------------
 -- Public exports
 
-normalSubgroup : NormalSubgroup (c ⊔ ℓ) ℓ
+module ι = IsGroupMonomorphism ι-isGroupMonomorphism
+
+normalSubgroup : NormalSubgroup _ _
 normalSubgroup = record
   { subgroup = record { ι-monomorphism = ι-isGroupMonomorphism }
   ; isNormal = record
@@ -74,9 +75,7 @@ normalSubgroup = record
 open NormalSubgroup normalSubgroup public
   using (group)
 
-module ι = IsGroupMonomorphism ι-isGroupMonomorphism
-
-abelianGroup : AbelianGroup (c ⊔ ℓ) ℓ
+abelianGroup : AbelianGroup _ _
 abelianGroup = record
   { isAbelianGroup = record
     { isGroup = isGroup

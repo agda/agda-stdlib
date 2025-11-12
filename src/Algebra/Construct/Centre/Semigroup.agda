@@ -46,7 +46,7 @@ central (g ∙ h) = λ k → begin
 domain : RawMagma _ _
 domain = record { _≈_ = Z._≈_; _∙_ = _∙_ }
 
-ι-isMagmaMonomorphism : IsMagmaMonomorphism domain G.rawMagma ι
+ι-isMagmaMonomorphism : IsMagmaMonomorphism domain _ _
 ι-isMagmaMonomorphism = record
   { isMagmaHomomorphism = record
     { isRelHomomorphism = Z.ι.isHomomorphism
@@ -61,12 +61,6 @@ submagma = record { ι-monomorphism = ι-isMagmaMonomorphism }
 semigroup : Semigroup _ _
 semigroup = Subsemigroup.semigroup submagma
 
-
-------------------------------------------------------------------------
--- Public exports
-
-module ι = IsMagmaMonomorphism ι-isMagmaMonomorphism
-
 commutativeSemigroup : CommutativeSemigroup _ _
 commutativeSemigroup = record
   { isCommutativeSemigroup = record
@@ -74,5 +68,11 @@ commutativeSemigroup = record
     ; comm = ∙-comm
     }
   } where open Semigroup semigroup using (isSemigroup)
+
+
+------------------------------------------------------------------------
+-- Public exports
+
+module ι = IsMagmaMonomorphism ι-isMagmaMonomorphism
 
 Z[_] = commutativeSemigroup
