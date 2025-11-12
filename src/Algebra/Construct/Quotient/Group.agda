@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Quotient groups
+-- Quotient of a Group by a NormalSubgroup
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}

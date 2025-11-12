@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Quotient rings
+-- Quotient of a Ring by an Ideal
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}

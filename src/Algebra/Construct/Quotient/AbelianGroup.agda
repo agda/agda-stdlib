@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Quotient Abelian groups
+-- Quotient of an Abelian group by a subgroup
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
