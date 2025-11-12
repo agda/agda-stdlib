@@ -54,7 +54,7 @@ open Base public
   ; comm+distrʳ⇒distrˡ
   ; subst+comm⇒sym
   )
-test = {!sel⇒idem!}
+
 ------------------------------------------------------------------------
 -- Group-like structures
 
