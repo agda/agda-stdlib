@@ -12,7 +12,7 @@ module Algebra.Construct.Centre.Group {c ℓ} (G : Group c ℓ) where
 
 import Algebra.Construct.Centre.Monoid as Centre
 open import Algebra.Core using (Op₁)
-open import Algebra.Morphism.Structures using (IsGroupHomomorphism)
+open import Algebra.Morphism.Structures using (IsGroupMonomorphism)
 open import Function.Base using (id; _∘_; const; _$_)
 open import Level using (_⊔_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -29,7 +29,8 @@ private
 -- Definition
 
 open Z public
-  using (Center; ι; central)
+  using (Center; ι; central; ∙-comm)
+  hiding (module ι)
 
 _⁻¹ : Op₁ Center
 g ⁻¹ = record
@@ -48,10 +49,13 @@ g ⁻¹ = record
 domain : RawGroup _ _
 domain = record { RawMonoid Z.domain; _⁻¹ = _⁻¹ }
 
-ι-isGroupHomomorphism : IsGroupHomomorphism domain _ _
-ι-isGroupHomomorphism = record
-  { isMonoidHomomorphism = Z.ι-isMonoidHomomorphism
-  ; ⁻¹-homo = λ _ → G.refl
+ι-isGroupMonomorphism : IsGroupMonomorphism domain _ _
+ι-isGroupMonomorphism = record
+  { isGroupHomomorphism = record
+    { isMonoidHomomorphism = Z.ι.isMonoidHomomorphism
+    ; ⁻¹-homo = λ _ → G.refl
+    }
+  ; injective = id
   }
 
 
@@ -60,12 +64,7 @@ domain = record { RawMonoid Z.domain; _⁻¹ = _⁻¹ }
 
 normalSubgroup : NormalSubgroup (c ⊔ ℓ) ℓ
 normalSubgroup = record
-  { subgroup = record
-    { ι-monomorphism = record
-        { isGroupHomomorphism = ι-isGroupHomomorphism
-        ; injective = id
-        }
-    }
+  { subgroup = record { ι-monomorphism = ι-isGroupMonomorphism }
   ; isNormal = record
     { conjugate = const
     ; normal = central
@@ -79,7 +78,7 @@ abelianGroup : AbelianGroup (c ⊔ ℓ) ℓ
 abelianGroup = record
   { isAbelianGroup = record
     { isGroup = isGroup
-    ; comm = λ g → central g ∘ Z.ι
+    ; comm = ∙-comm
     }
   }
 

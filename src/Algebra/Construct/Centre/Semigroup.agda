@@ -12,7 +12,8 @@ module Algebra.Construct.Centre.Semigroup {c ℓ} (G : Semigroup c ℓ) where
 
 import Algebra.Construct.Centre.Magma as Centre
 open import Algebra.Core using (Op₂)
-open import Algebra.Morphism.Structures using (IsMagmaHomomorphism)
+open import Algebra.Definitions using (Commutative)
+open import Algebra.Morphism.Structures using (IsMagmaMonomorphism)
 open import Function.Base using (id; _∘_; const; _$_; _on_)
 open import Level using (_⊔_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -29,6 +30,7 @@ private
 
 open Z public
   using (Center; ι; central)
+  hiding (module ι)
   
 _∙_ : Op₂ Center
 ι       (g ∙ h) = ι g G.∙ ι h
@@ -41,32 +43,38 @@ central (g ∙ h) = λ k → begin
   k G.∙ (ι g G.∙ ι h) ∎
   where open ≈-Reasoning G.setoid
 
+∙-comm : Commutative Z._≈_ _∙_
+∙-comm g = central g ∘ ι
+
 domain : RawMagma _ _
 domain = record { _≈_ = Z._≈_; _∙_ = _∙_ }
 
-ι-isMagmaHomomorphism : IsMagmaHomomorphism domain G.rawMagma ι
-ι-isMagmaHomomorphism = record
-  { isRelHomomorphism = Z.ι-isRelHomomorphism
-  ; homo = λ _ _ → G.refl
+ι-isMagmaMonomorphism : IsMagmaMonomorphism domain G.rawMagma ι
+ι-isMagmaMonomorphism = record
+  { isMagmaHomomorphism = record
+    { isRelHomomorphism = Z.ι.isHomomorphism
+    ; homo = λ _ _ → G.refl
+    }
+  ; injective = id
   }
+
+module ι = IsMagmaMonomorphism ι-isMagmaMonomorphism
 
 
 ------------------------------------------------------------------------
 -- Public exports
 
+submagma : Subsemigroup.Submagma _ _
+submagma = record { ι-monomorphism = ι-isMagmaMonomorphism }
+
 semigroup : Semigroup _ _
-semigroup = Subsemigroup.semigroup record
-  { ι-monomorphism = record
-    { isMagmaHomomorphism = ι-isMagmaHomomorphism
-    ; injective = id
-    }
-  }
+semigroup = Subsemigroup.semigroup submagma
 
 commutativeSemigroup : CommutativeSemigroup _ _
 commutativeSemigroup = record
   { isCommutativeSemigroup = record
     { isSemigroup = isSemigroup
-    ; comm = λ g → central g ∘ ι
+    ; comm = ∙-comm
     }
   }
   where open Semigroup semigroup using (isSemigroup)

@@ -17,11 +17,13 @@ open import Algebra.Bundles using (Magma)
 
 module Algebra.Construct.Centre.Magma {c ℓ} (G : Magma c ℓ) where
 
+open import Algebra.Core using (Op₂)
 open import Algebra.Definitions using (Central)
 open import Function.Base using (id; _on_)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Morphism.Structures using (IsRelHomomorphism)
+open import Relation.Binary.Morphism.Structures
+  using (IsRelHomomorphism; IsRelMonomorphism)
 
 private
   module G = Magma G
@@ -42,3 +44,11 @@ _≈_ = G._≈_ on ι
 
 ι-isRelHomomorphism : IsRelHomomorphism _≈_ G._≈_ ι
 ι-isRelHomomorphism = record { cong = id }
+
+ι-isRelMonomorphism : IsRelMonomorphism _≈_ G._≈_ ι
+ι-isRelMonomorphism = record
+  { isHomomorphism = ι-isRelHomomorphism
+  ; injective = id
+  }
+
+module ι = IsRelMonomorphism ι-isRelMonomorphism

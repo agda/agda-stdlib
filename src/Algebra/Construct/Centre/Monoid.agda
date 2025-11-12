@@ -11,7 +11,7 @@ open import Algebra.Bundles
 
 module Algebra.Construct.Centre.Monoid {c ℓ} (G : Monoid c ℓ) where
 
-open import Algebra.Morphism.Structures using (IsMonoidHomomorphism)
+open import Algebra.Morphism.Structures using (IsMonoidMonomorphism)
 open import Function.Base using (id; _∘_)
 
 import Algebra.Construct.Centre.Semigroup as Centre
@@ -26,7 +26,8 @@ private
 -- Definition
 
 open Z public
-  using (Center; ι; central)
+  using (Center; ι; central; ∙-comm)
+  hiding (module ι)
 
 ε : Center
 ε = record
@@ -37,29 +38,29 @@ open Z public
 domain : RawMonoid _ _
 domain = record { RawMagma Z.domain ; ε = ε }
 
-ι-isMonoidHomomorphism : IsMonoidHomomorphism domain _ _
-ι-isMonoidHomomorphism = record
-  { isMagmaHomomorphism = Z.ι-isMagmaHomomorphism
-  ; ε-homo = G.refl
+ι-isMonoidMonomorphism : IsMonoidMonomorphism domain _ _
+ι-isMonoidMonomorphism = record
+  { isMonoidHomomorphism = record
+    { isMagmaHomomorphism = Z.ι.isMagmaHomomorphism
+    ; ε-homo = G.refl
+    }
+  ; injective = id
   }
+
+module ι = IsMonoidMonomorphism ι-isMonoidMonomorphism
 
 
 ------------------------------------------------------------------------
 -- Public exports
 
 monoid : Monoid _ _
-monoid = Submonoid.monoid record
-  { ι-monomorphism = record
-    { isMonoidHomomorphism = ι-isMonoidHomomorphism
-    ; injective = id
-    }
-  }
+monoid = Submonoid.monoid record { ι-monomorphism = ι-isMonoidMonomorphism }
 
 commutativeMonoid : CommutativeMonoid _ _
 commutativeMonoid = record
   { isCommutativeMonoid = record
     { isMonoid = isMonoid
-    ; comm = λ g → central g ∘ ι
+    ; comm = ∙-comm
     }
   }
   where open Monoid monoid using (isMonoid)
