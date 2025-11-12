@@ -72,7 +72,9 @@ normalSubgroup = record
   }
 
 open NormalSubgroup normalSubgroup public
-  hiding (domain; _⁻¹)
+  using (group)
+
+module ι = IsGroupMonomorphism ι-isGroupMonomorphism
 
 abelianGroup : AbelianGroup (c ⊔ ℓ) ℓ
 abelianGroup = record
@@ -80,7 +82,7 @@ abelianGroup = record
     { isGroup = isGroup
     ; comm = ∙-comm
     }
-  }
+  } where open Group group using (isGroup)
 
 Z[_] = abelianGroup
 

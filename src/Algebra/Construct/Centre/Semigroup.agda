@@ -55,17 +55,17 @@ domain = record { _≈_ = Z._≈_; _∙_ = _∙_ }
   ; injective = id
   }
 
-module ι = IsMagmaMonomorphism ι-isMagmaMonomorphism
-
-
-------------------------------------------------------------------------
--- Public exports
-
 submagma : Subsemigroup.Submagma _ _
 submagma = record { ι-monomorphism = ι-isMagmaMonomorphism }
 
 semigroup : Semigroup _ _
 semigroup = Subsemigroup.semigroup submagma
+
+
+------------------------------------------------------------------------
+-- Public exports
+
+module ι = IsMagmaMonomorphism ι-isMagmaMonomorphism
 
 commutativeSemigroup : CommutativeSemigroup _ _
 commutativeSemigroup = record
@@ -73,7 +73,6 @@ commutativeSemigroup = record
     { isSemigroup = isSemigroup
     ; comm = ∙-comm
     }
-  }
-  where open Semigroup semigroup using (isSemigroup)
+  } where open Semigroup semigroup using (isSemigroup)
 
 Z[_] = commutativeSemigroup
