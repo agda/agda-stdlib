@@ -105,6 +105,10 @@ New modules
   Data.List.NonEmpty.Membership.Setoid
   ```
 
+* Added a new domain theory section to the library under `Relation.Binary.Domain.*`:
+  - Introduced new modules and bundles for domain theory, including `DirectedCompletePartialOrder`, `Lub`, and `ScottContinuous`.
+  - All files for domain theory are now available in `src/Relation/Binary/Domain/`.
+
 Additions to existing modules
 -----------------------------
 
