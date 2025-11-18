@@ -50,6 +50,7 @@ Associative _∙_ = ∀ x y z → ((x ∙ y) ∙ z) ≈ (x ∙ (y ∙ z))
 Commutative : Op₂ A → Set _
 Commutative _∙_ = ∀ x y → (x ∙ y) ≈ (y ∙ x)
 
+-- An element is called `Central` for a binary operation if it commutes with all other elements.
 Central : Op₂ A → A → Set _
 Central _∙_ x = ∀ y → (x ∙ y) ≈ (y ∙ x)
 
