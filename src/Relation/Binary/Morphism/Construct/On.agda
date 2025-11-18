@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Construct IsRelHomomorphisms from a relation and a function
+-- Construct Morphisms from a relation and a function via `_on_`
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
