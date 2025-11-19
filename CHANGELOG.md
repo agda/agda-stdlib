@@ -80,8 +80,8 @@ New modules
 -----------
 
 * `Algebra.Construct.Centre.X` for the definition of the centre of an algebra,
-  where `X = {Semigroup|Monoid|Group}`, based on an underlying type defined in
-  `Algebra.Construct.Centre`.
+  where `X = {Semigroup|Monoid|Group|Ring}`, based on an underlying type defined
+  in `Algebra.Construct.Centre`.
 
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
