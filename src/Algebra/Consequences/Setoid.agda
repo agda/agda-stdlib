@@ -184,6 +184,15 @@ module _ {_∙_ : Op₂ A} (comm : Commutative _∙_) {e : A} where
       x ∙ z ≈⟨ comm x z ⟩
       z ∙ x ∎
 
+module _ {_∙_ : Op₂ A} {e : A} where
+
+  identity⇒central : Identity e _∙_ → Central _∙_ e
+  identity⇒central (identityˡ , identityʳ) x = trans (identityˡ x) (sym (identityʳ x))
+
+  zero⇒central : Zero e _∙_ → Central _∙_ e
+  zero⇒central (zeroˡ , zeroʳ) x = trans (zeroˡ x) (sym (zeroʳ x))
+
+
 ------------------------------------------------------------------------
 -- Group-like structures
 
