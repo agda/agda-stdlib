@@ -1,7 +1,9 @@
 TEST_NAME=num
 
 # Get configuration information
-. ../../config.sh
+. ../../_config/config.sh
+
+sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.cabal > "$TEST_NAME".cabal
 
 # Set up clean logs directory
 rm -rf logs/
@@ -18,5 +20,6 @@ cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 cabal exec -v0 "$TEST_NAME" --with-compiler "$GHC_EXEC" > output
 
 # Clean up after ourselves
+rm "$TEST_NAME".cabal
 rm -R dist-newstyle
 rm -R _build/MAlonzo/Code/

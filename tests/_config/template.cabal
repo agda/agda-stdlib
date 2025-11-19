@@ -1,5 +1,5 @@
 cabal-version:   2.4
-name:            num
+name:            TEST_NAME
 version:         2.0
 build-type:      Simple
 description:     Run this test
@@ -21,7 +21,7 @@ common common-build-parameters
 
   ghc-options: -Wno-missing-home-modules
 
-executable num
+executable TEST_NAME
   import:           common-build-parameters
   hs-source-dirs:   _build
   main-is:          MAlonzo/Code/Main.hs
