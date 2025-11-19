@@ -1,7 +1,9 @@
 TEST_NAME=appending
 
 # Get configuration information
-. ../../config.sh
+. ../../_config/config.sh
+
+sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib
 
 # Set up clean logs directory
 rm -rf logs/

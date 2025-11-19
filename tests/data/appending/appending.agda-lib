@@ -1,4 +1,0 @@
-name: list
-include: ../../../src/ .
-flags:
-  --warning=noUnsupportedIndexedMatch

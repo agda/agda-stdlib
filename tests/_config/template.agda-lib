@@ -1,5 +1,4 @@
-name: colist
+name: TEST_NAME
 include: ../../../src/ .
-
 flags:
   --warning=noUnsupportedIndexedMatch
