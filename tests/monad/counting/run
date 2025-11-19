@@ -15,7 +15,7 @@ $1 --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
 cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 
 # Run the test
-cabal exec "$TEST_NAME" --with-compiler "$GHC_EXEC" > output
+cabal exec -v0 "$TEST_NAME" --with-compiler "$GHC_EXEC" > output
 
 # Clean up after ourselves
 rm -R dist-newstyle
