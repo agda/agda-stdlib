@@ -47,7 +47,7 @@ on:
 ########################################################################
 
 env:
-  GHC_VERSION: 8.10.7
+  GHC_VERSION: 9.2.8
   CABAL_VERSION: 3.6.2.0
   CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
@@ -169,7 +169,7 @@ jobs:
       - name: Golden testing
         run: |
           ${{ env.CABAL_INSTALL }} clock
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda' GHC_EXEC=${{ env.GHC_VERSION }}
 
 
 ########################################################################
