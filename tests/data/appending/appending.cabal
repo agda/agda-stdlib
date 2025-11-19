@@ -1,0 +1,29 @@
+cabal-version:   2.4
+name:            appending
+version:         2.0
+build-type:      Simple
+description:     Run this test
+license:         MIT
+
+tested-with:
+  GHC == 9.2.8
+
+common common-build-parameters
+  default-language:
+    Haskell2010
+
+  default-extensions:
+    PatternGuards
+    PatternSynonyms
+
+  build-depends:
+      base      >= 4.12 && < 4.20
+    , text      >= 2.0 && <2.2
+
+  ghc-options: -Wno-missing-home-modules
+
+executable appending
+  import:           common-build-parameters
+  hs-source-dirs:   _build
+  main-is:          MAlonzo/Code/Main.hs
+  ghc-options:      -main-is MAlonzo.Code.Main
