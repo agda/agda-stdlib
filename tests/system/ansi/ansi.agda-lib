@@ -1,2 +1,4 @@
 name: ansi
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

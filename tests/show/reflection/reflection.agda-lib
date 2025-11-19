@@ -1,2 +1,4 @@
 name: reflection
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

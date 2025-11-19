@@ -1,2 +1,4 @@
 name: tabular
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

@@ -1,2 +1,4 @@
 name: printf
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

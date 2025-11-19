@@ -1,2 +1,4 @@
 name: tree
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

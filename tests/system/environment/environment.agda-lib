@@ -1,2 +1,4 @@
 name: environment
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

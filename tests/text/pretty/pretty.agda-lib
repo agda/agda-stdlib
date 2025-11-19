@@ -1,2 +1,4 @@
 name: pretty
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

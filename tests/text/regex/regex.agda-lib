@@ -1,2 +1,4 @@
 name: regex
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch
