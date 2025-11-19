@@ -99,7 +99,7 @@ jobs:
       # i.e. if we change either the version of Agda, ghc, or cabal that we want
       # to use for the build.
       - name: Cache ~/.cabal directories
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-cabal
         with:
           path: |
