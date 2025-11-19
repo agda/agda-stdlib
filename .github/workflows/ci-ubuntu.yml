@@ -170,7 +170,7 @@ jobs:
       - name: Golden testing
         run: |
           ${{ env.CABAL_INSTALL }} clock
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda' GHC_EXEC=${{ env.GHC_VERSION }}
+          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda' GHC_EXEC=ghc
 
 
 ########################################################################
