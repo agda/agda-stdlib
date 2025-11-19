@@ -1,2 +1,5 @@
 name: colist
 include: ../../../src/ .
+
+flags:
+  --warning=noUnsupportedIndexedMatch

@@ -1,3 +1,5 @@
+TEST_NAME=appending
+
 # Get configuration information
 . ../../config.sh
 
@@ -10,10 +12,10 @@ ln -sf ../../_build _build
 
 # Compile the Agda module and build the generated code
 $1 --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
-cabal build appending --with-compiler "$GHC_EXEC" > logs/cabal-build
+cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 
 # Run the test
-cabal exec appending --with-compiler "$GHC_EXEC" < input > output
+cabal exec "$TEST_NAME" --with-compiler "$GHC_EXEC" < input > output
 
 # Clean up after ourselves
 rm -R dist-newstyle
