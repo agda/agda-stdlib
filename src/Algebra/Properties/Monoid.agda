@@ -8,26 +8,37 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
-open import Function using (_∘_)
 
 module Algebra.Properties.Monoid {o ℓ} (M : Monoid o ℓ) where
 
+open import Function using (_∘_)
+
 open Monoid M
-  using (Carrier; _∙_; _≈_; setoid; isMagma; semigroup; ε; sym; identityˡ
-  ; identityʳ ; ∙-cong; refl; assoc; ∙-congˡ; ∙-congʳ; trans)
+  using (Carrier; _∙_; ε; _≈_; refl; sym; trans; setoid
+        ; ∙-cong; ∙-congˡ; ∙-congʳ; isMagma
+        ; assoc; semigroup; identity; identityˡ; identityʳ)
+
+open import Algebra.Consequences.Setoid setoid using (identity⇒central)
+open import Algebra.Definitions _≈_ using (Central)
 open import Relation.Binary.Reasoning.Setoid setoid
+
+private
+  variable
+    a b c d : Carrier
+
+------------------------------------------------------------------------
+-- Re-export `Semigroup` properties
 
 open import Algebra.Properties.Semigroup semigroup public
 
-private
-    variable
-        a b c d : Carrier
+------------------------------------------------------------------------
+-- Properties of identity
 
 ε-unique : ∀ a → (∀ b → b ∙ a ≈ b) → a ≈ ε
 ε-unique a b∙a≈b = trans (sym (identityˡ a)) (b∙a≈b ε)
 
-ε-comm : ∀ a → a ∙ ε ≈ ε ∙ a
-ε-comm a = trans (identityʳ a) (sym (identityˡ a))
+ε-central : Central _∙_ ε
+ε-central = identity⇒central {_∙_ = _∙_} identity
 
 module _ (a≈ε : a ≈ ε) where
   elimʳ : ∀ b → b ∙ a ≈ b
@@ -65,3 +76,17 @@ module _ (inv : a ∙ c ≈ ε) where
   insertᶜ : ∀ b d → b ∙ d ≈ (b ∙ a) ∙ (c ∙ d)
   insertᶜ = λ b d → sym (cancelᶜ b d)
 
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+ε-comm = ε-central
+{-# WARNING_ON_USAGE ε-comm
+"Warning: ε-comm was deprecated in v2.4.
+Please use ε-central instead."
+#-}
