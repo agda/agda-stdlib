@@ -114,7 +114,7 @@ jobs:
 ########################################################################
 
       - name: Install ghc & cabal
-        uses: haskell-actions/setup@v1
+        uses: haskell-actions/setup@v2
         with:
           ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}

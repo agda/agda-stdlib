@@ -1,4 +1,0 @@
-name: rational-unnormalised
-include: ../../../src/ .
-flags:
-  --warning=noUnsupportedIndexedMatch

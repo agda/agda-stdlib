@@ -1,4 +1,0 @@
-name: tcm
-include: ../../../src/ .
-flags:
-  --warning=noUnsupportedIndexedMatch

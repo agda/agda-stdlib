@@ -1,4 +1,0 @@
-name: fibonacci
-include: ../../../src/ .
-flags:
-  --warning=noUnsupportedIndexedMatch

@@ -1,4 +1,0 @@
-name: directory
-include: ../../../src/ .
-flags:
-  --warning=noUnsupportedIndexedMatch
