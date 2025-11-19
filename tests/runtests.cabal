@@ -1,0 +1,34 @@
+cabal-version:   2.4
+name:            runtests
+version:         2.0
+build-type:      Simple
+description:     Building the test runner
+license:         MIT
+
+tested-with:
+  GHC == 9.2.8
+
+common common-build-parameters
+  default-language:
+    Haskell2010
+
+  default-extensions:
+    PatternGuards
+    PatternSynonyms
+
+  build-depends:
+      base      >= 4.12 && < 4.20
+    , clock     >= 0.8 && <0.9
+    , directory >= 1.3.6 && < 1.3.7
+    , filemanip >= 0.3.6 && < 0.4
+    , filepath  >= 1.4 && <1.6
+    , process   >= 1.6 && <1.7
+    , text      >= 2.0 && <2.2
+
+  ghc-options: -Wno-missing-home-modules
+
+executable runtests
+  import:           common-build-parameters
+  hs-source-dirs:   _build
+  main-is:          MAlonzo/Code/Qruntests.hs
+  ghc-options:      -main-is MAlonzo.Code.Qruntests

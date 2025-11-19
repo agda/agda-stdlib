@@ -1,3 +1,4 @@
+GHC_EXEC ?= ghc
 AGDA_EXEC ?= agda
 AGDA_OPTIONS=-Werror
 AGDA_RTS_OPTIONS=+RTS -M4.0G -H3.5G -A128M -RTS
@@ -12,7 +13,7 @@ test: Everything.agda check-whitespace
 	cd doc && $(AGDA) README.agda
 
 testsuite:
-	$(MAKE) -C tests test AGDA="$(AGDA)" AGDA_EXEC="$(AGDA_EXEC)" only=$(only)
+	$(MAKE) -C tests test GHC_EXEC="$(GHC_EXEC)" AGDA="$(AGDA)" AGDA_EXEC="$(AGDA_EXEC)" only=$(only)
 
 fix-whitespace:
 	cabal exec -- fix-whitespace
