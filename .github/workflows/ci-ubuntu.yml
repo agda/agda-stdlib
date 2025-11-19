@@ -8,6 +8,7 @@ on:
     branches:
       - master
       - experimental
+      - v2.0-joss-submission
   merge_group:
 
 ########################################################################
