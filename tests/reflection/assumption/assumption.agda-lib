@@ -1,2 +1,4 @@
 name: assumption
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

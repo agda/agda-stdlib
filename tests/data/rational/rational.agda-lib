@@ -1,2 +1,4 @@
 name: rational
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

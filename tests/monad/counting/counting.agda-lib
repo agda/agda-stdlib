@@ -1,2 +1,4 @@
 name: counting
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

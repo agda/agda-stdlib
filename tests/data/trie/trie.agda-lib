@@ -1,2 +1,4 @@
 name: trie
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch

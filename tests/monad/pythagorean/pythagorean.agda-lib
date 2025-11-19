@@ -1,2 +1,4 @@
 name: pythagorean
 include: ../../../src/ .
+flags:
+  --warning=noUnsupportedIndexedMatch
