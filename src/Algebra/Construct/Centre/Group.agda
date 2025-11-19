@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Definition of the centre of an Algebra
+-- Definition of the centre of a Group
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --cubical-compatible #-}
