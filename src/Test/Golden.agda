@@ -207,7 +207,7 @@ runTest opts testPath = do
   putStr $ concat (testPath ∷ ": " ∷ [])
   time ← time′ $ callCommand $ unwords
            $ "cd" ∷ testPath
-           ∷ "&&" ∷ "sh ./run" ∷ opts .exeUnderTest
+           ∷ "&&" ∷ "sh ./run" ∷ (concat $ "\"" ∷ opts .exeUnderTest ∷ "\"" ∷ [])
            ∷ "| tr -d '\\r' > output"
            ∷ []
 

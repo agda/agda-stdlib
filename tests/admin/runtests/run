@@ -5,6 +5,7 @@ TEST_NAME=runtests
 
 # Specialise template agda-lib
 sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib
+sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.cabal > "$TEST_NAME".cabal
 
 # Set up clean logs directory
 rm -rf logs/
@@ -20,7 +21,7 @@ mkdir -p "$CABAL_BUILD_DIR"
 ln -sf "$CABAL_BUILD_DIR" dist-newstyle
 
 # Compile the Agda module and build the generated code
-$AGDA --library-file ../../_config/libraries --compile-dir=_build -c --ghc-dont-call-ghc runtests.agda > logs/agda-build
+$AGDA --library-file ../../_config/libraries --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
 cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 
 # Copy the executable to the test root directory
@@ -28,5 +29,6 @@ cp $(find dist-newstyle/ -name "runtests" -type f) ../../
 
 # Clean up after ourselves
 rm "$TEST_NAME".agda-lib
+rm "$TEST_NAME".cabal
 rm _build
 rm dist-newstyle

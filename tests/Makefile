@@ -6,7 +6,7 @@ CABAL_OPTIONS ?= --with-compiler $(GHC_EXEC)
 AGDA_BUILD_DIR  = _config/_build
 CABAL_BUILD_DIR = _config/dist-newstyle
 
-./runtests: admin/runtests/runtests.agda
+./runtests: admin/runtests/Main.agda
 	cd admin/runtests && AGDA="$(AGDA)" sh run
 
 test: ./runtests
