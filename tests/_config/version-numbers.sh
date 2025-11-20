@@ -5,9 +5,7 @@
 # It provides a number of default config options corresponding
 # to the compiler versions the stdlib is being tested with
 #
-# Usage: . PATH/TO/config.sh
-
-set -e
+# Usage: . PATH/TO/version-numbers.sh
 
 if [ -z ${AGDA_EXEC} ]; then
     export AGDA_EXEC=agda-2.6.4

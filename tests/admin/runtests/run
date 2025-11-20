@@ -1,16 +1,7 @@
-#!/bin/sh
-
-set -e
-
-if [ -z ${AGDA_EXEC} ]; then
-    export AGDA_EXEC=agda-2.6.4
-fi
-
-if [ -z ${GHC_EXEC} ]; then
-  export GHC_EXEC=ghc-9.2.8
-fi
-
 TEST_NAME=runtests
+
+# Use the shared version numbers
+. ../../_config/version-numbers.sh
 
 # Specialise template agda-lib
 sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib

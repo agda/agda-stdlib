@@ -1,7 +1,7 @@
 TEST_NAME=appending
 
-# Get configuration information
-. ../../_config/config.sh
+# Use the shared version numbers
+. ../../_config/version-numbers.sh
 
 # Specialise template agda-lib
 sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib
