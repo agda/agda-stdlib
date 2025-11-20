@@ -169,7 +169,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda' GHC_EXEC=ghc
+          make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
 
 
 ########################################################################
