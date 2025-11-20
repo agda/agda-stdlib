@@ -7,7 +7,7 @@
 #
 # Usage: . ../../config.sh
 
-set -e
+set -eu
 
 # Ugh, paths are relative to the script sourcing this file!
 . ../../_config/version-numbers.sh
@@ -16,6 +16,14 @@ goldenTest () {
 
   AGDA=$1
   TEST_NAME=$2
+
+  # Remember whether the script has an input -- ugh
+  if [ -f input ]; then
+    HAS_INPUT="true"
+  else
+    touch input
+    HAS_INPUT="false"
+  fi
 
   # Specialise template agda-lib & cabal files
   sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib
@@ -39,9 +47,12 @@ goldenTest () {
   cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 
   # Run the test
-  cabal exec -v0 "$TEST_NAME" --with-compiler "$GHC_EXEC" > output
+  cabal exec -v0 "$TEST_NAME" --with-compiler "$GHC_EXEC" < input > output
 
   # Clean up after ourselves
+  if ! "$HAS_INPUT"; then
+    rm input
+  fi
   rm "$TEST_NAME".cabal
   rm "$TEST_NAME".agda-lib
   rm _build
