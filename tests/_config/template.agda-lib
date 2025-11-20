@@ -1,4 +1,5 @@
 name: TEST_NAME
-include: ../../../src/ .
+include: .
+depend: standard-library
 flags:
   --warning=noUnsupportedIndexedMatch

@@ -40,7 +40,7 @@ goldenTest () {
   ln -sf "$CABAL_BUILD_DIR" dist-newstyle
 
   # Compile the Agda module and build the generated code
-  $AGDA --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
+  $AGDA --library-file=../../_config/libraries --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
   cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 
   # Run the test

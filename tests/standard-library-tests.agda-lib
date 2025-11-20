@@ -1,4 +1,0 @@
-name: standard-library-tests
-include: ../src/ .
-flags:
-  --warning=noUnsupportedIndexedMatch

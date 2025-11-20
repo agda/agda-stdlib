@@ -3,15 +3,15 @@ GHC_EXEC      ?= ghc
 CABAL         ?= cabal
 CABAL_OPTIONS ?= --with-compiler $(GHC_EXEC)
 
-runtests: runtests.agda
-	rm -f _build/runtests
-	rm -f _build/MAlonzo/Code/Qruntests*
-	$(AGDA) --compile-dir=_build/ -c --ghc-dont-call-ghc runtests.agda
-	$(CABAL) build $(CABAL_OPTIONS)
+AGDA_BUILD_DIR  = _config/_build
+CABAL_BUILD_DIR = _config/dist-newstyle
 
-test: runtests
-	$(CABAL) exec $(CABAL_OPTIONS) runtests -- $(AGDA_EXEC) $(INTERACTIVE) --timing --failure-file failures --only $(only)
+./runtests: admin/runtests/runtests.agda
+	cd admin/runtests && sh run
+
+test: ./runtests
+	./runtests "$(AGDA)" $(INTERACTIVE) --timing --failure-file failures --only $(only)
 
 
-retest: runtests
-	$(CABAL) exec $(CABAL_OPTIONS) runtests -- $(AGDA_EXEC) $(INTERACTIVE) --timing --failure-file failures --only-file failures --only $(only)
+retest: ./runtests
+	./runtests "$(AGDA)" $(INTERACTIVE) --timing --failure-file failures --only-file failures --only $(only)
