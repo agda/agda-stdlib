@@ -7,7 +7,7 @@ AGDA_BUILD_DIR  = _config/_build
 CABAL_BUILD_DIR = _config/dist-newstyle
 
 ./runtests: admin/runtests/runtests.agda
-	cd admin/runtests && sh run
+	cd admin/runtests && AGDA="$(AGDA)" sh run
 
 test: ./runtests
 	./runtests "$(AGDA)" $(INTERACTIVE) --timing --failure-file failures --only $(only)
