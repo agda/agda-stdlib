@@ -15,6 +15,7 @@ common common-build-parameters
 
   build-depends:
       base      >= 4.12 && < 4.20
+    , text      >= 2.0 && <2.2
 
   ghc-options: -Wno-missing-home-modules
 
