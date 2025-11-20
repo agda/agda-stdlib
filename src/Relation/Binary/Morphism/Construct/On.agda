@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Construct Morphisms from a relation and a function via `_on_`
+-- Construct monomorphism from a relation and a function via `_on_`
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -30,6 +30,3 @@ isRelMonomorphism = record
   { isHomomorphism = isRelHomomorphism
   ; injective = id
   }
-
-module ι = IsRelMonomorphism isRelMonomorphism
-
