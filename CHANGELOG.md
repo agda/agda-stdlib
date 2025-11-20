@@ -11,10 +11,6 @@ Bug-fixes
 
 * Fix a type error in `README.Data.Fin.Relation.Unary.Top` within the definition of `>-weakInduction`.
 
-* Remove spurious definition of `Algebra.Consequences.Propositional.sel⇒idem`,
-  which duplicated lemma from `Algebra.Consequences.Base`, instead of importing
-  from `Algebra.Consequences.Setoid`.
-
 * Fix a typo in `Algebra.Morphism.Construct.DirectProduct`.
 
 * Fix a typo in `Function.Construct.Constant`.
