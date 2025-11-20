@@ -204,6 +204,7 @@ runTest opts testPath = do
   true ← doesDirectoryExist (mkFilePath testPath)
     where false → fail directoryNotFound
 
+  putStr $ concat (testPath ∷ ": " ∷ [])
   time ← time′ $ callCommand $ unwords
            $ "cd" ∷ testPath
            ∷ "&&" ∷ "sh ./run" ∷ opts .exeUnderTest
@@ -303,14 +304,14 @@ runTest opts testPath = do
       when b $ writeFile (testPath String.++ "/expected") out
 
     printTiming : Bool → Time → String → IO _
-    printTiming false _    msg = putStrLn $ concat (testPath ∷ ": " ∷ msg ∷ [])
+    printTiming false _    msg = putStrLn msg
     printTiming true  time msg =
       let time  = ℕ.show (time .seconds) String.++ "s"
           spent = 9 + List.sum (List.map String.length (testPath ∷ time ∷ []))
                -- ^ hack: both "success" and "FAILURE" have the same length
                --   can't use `String.length msg` because the msg contains escape codes
           pad   = String.replicate (72 ∸ spent) ' '
-      in putStrLn (concat (testPath ∷ ": " ∷ msg ∷ pad ∷ time ∷ []))
+      in putStrLn (concat (msg ∷ pad ∷ time ∷ []))
 
 -- A test pool is characterised by
 --  + a name
