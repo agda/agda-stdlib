@@ -22,6 +22,7 @@ goldenTest () {
   AGDA=$1
   TEST_NAME=$2
 
+  # Specialise template agda-lib & cabal files
   sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib
   sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.cabal > "$TEST_NAME".cabal
 
@@ -29,8 +30,14 @@ goldenTest () {
   rm -rf logs/
   mkdir logs
 
-  # Use pre-existing build directory to avoid rechecking stdlib modules
-  ln -sf ../../_build _build
+  # Use shared directories to avoid rechecking stdlib modules
+  AGDA_BUILD_DIR=../../_config/_build
+  CABAL_BUILD_DIR=../../_config/dist-newstyle
+
+  mkdir -p "$AGDA_BUILD_DIR"
+  ln -sf "$AGDA_BUILD_DIR" _build
+  mkdir -p "$CABAL_BUILD_DIR"
+  ln -sf "$CABAL_BUILD_DIR" dist-newstyle
 
   # Compile the Agda module and build the generated code
   $AGDA --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
@@ -41,7 +48,7 @@ goldenTest () {
 
   # Clean up after ourselves
   rm "$TEST_NAME".cabal
-  rm -R dist-newstyle
-  rm -R _build/MAlonzo/Code/
-
+  rm "$TEST_NAME".agda-lib
+  rm _build
+  rm dist-newstyle
 }

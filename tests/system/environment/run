@@ -3,6 +3,7 @@ TEST_NAME=environment
 # Get configuration information
 . ../../_config/config.sh
 
+# Specialise template agda-lib & cabal files
 sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib
 sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.cabal > "$TEST_NAME".cabal
 
@@ -10,8 +11,14 @@ sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.cabal > "$TEST_NAME".cabal
 rm -rf logs/
 mkdir logs
 
-# Use pre-existing build directory to avoid rechecking stdlib modules
-ln -sf ../../_build _build
+# Use shared directories to avoid rechecking stdlib modules
+AGDA_BUILD_DIR=../../_config/_build
+CABAL_BUILD_DIR=../../_config/dist-newstyle
+
+mkdir -p "$AGDA_BUILD_DIR"
+ln -sf "$AGDA_BUILD_DIR" _build
+mkdir -p "$CABAL_BUILD_DIR"
+ln -sf "$CABAL_BUILD_DIR" dist-newstyle
 
 # Compile the Agda module and build the generated code
 $1 --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
@@ -21,5 +28,7 @@ cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 cabal exec -v0 "$TEST_NAME" --with-compiler "$GHC_EXEC" -- hello world > output
 
 # Clean up after ourselves
-rm -R dist-newstyle
-rm -R _build/MAlonzo/Code/
+rm "$TEST_NAME".cabal
+rm "$TEST_NAME".agda-lib
+rm _build
+rm dist-newstyle
