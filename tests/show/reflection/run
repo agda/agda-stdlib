@@ -1,2 +1,2 @@
 . ../../_config/config.sh
-goldenTest $1 "reflection"
+goldenTest "$1" "reflection"

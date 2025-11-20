@@ -15,3 +15,8 @@ test: ./runtests
 
 retest: ./runtests
 	./runtests "$(AGDA)" $(INTERACTIVE) --timing --failure-file failures --only-file failures --only $(only)
+
+clean:
+	rm -rf runtests
+	rm -rf _config/_build
+	rm -rf _config/dist-newstyle

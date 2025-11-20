@@ -1,2 +1,2 @@
 . ../../_config/config.sh
-goldenTest $1 "printf"
+goldenTest "$1" "printf"
