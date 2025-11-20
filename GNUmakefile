@@ -13,7 +13,7 @@ test: Everything.agda check-whitespace
 	cd doc && $(AGDA) README.agda
 
 testsuite:
-	$(MAKE) -C tests test GHC_EXEC="$(GHC_EXEC)" AGDA="$(AGDA)" AGDA_EXEC="$(AGDA_EXEC)" only=$(only)
+	$(MAKE) -C tests test GHC_EXEC="$(GHC_EXEC)" AGDA="$(AGDA)" only=$(only)
 
 fix-whitespace:
 	cabal exec -- fix-whitespace
