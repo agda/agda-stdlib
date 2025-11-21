@@ -13,10 +13,11 @@ module Algebra.Construct.Centre.Monoid
   {c ℓ} (monoid : Monoid c ℓ)
   where
 
-open import Algebra.Consequences.Setoid using (identity⇒central)
 open import Algebra.Morphism.Structures
 open import Algebra.Morphism.MonoidMonomorphism using (isMonoid)
 open import Function.Base using (id)
+
+open import Algebra.Properties.Monoid monoid using (ε-central)
 
 private
   module G = Monoid monoid
@@ -35,7 +36,7 @@ open import Algebra.Construct.Centre.Semigroup G.semigroup as Z public
 ε : Center
 ε = record
   { ι = G.ε
-  ; central = identity⇒central G.setoid {_∙_ = G._∙_} G.identity
+  ; central = ε-central
   }
 
 domain : RawMonoid _ _
