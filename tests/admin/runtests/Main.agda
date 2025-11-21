@@ -1,6 +1,6 @@
 {-# OPTIONS --guardedness #-}
 
-module runtests where
+module Main where
 
 open import Data.List.Base as List using (_∷_; [])
 open import Data.String.Base using (String; _++_)
