@@ -53,6 +53,11 @@ Deprecated names
   interchange  ↦   medial
   ```
 
+* In `Algebra.Properties.Monoid`:
+  ```agda
+  ε-comm  ↦   ε-central
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
