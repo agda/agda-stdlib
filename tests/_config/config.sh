@@ -7,7 +7,7 @@
 #
 # Usage: . ../../config.sh
 
-set -eux
+set -eu
 
 # Ugh, paths are relative to the script sourcing this file!
 . ../../_config/version-numbers.sh
