@@ -7,10 +7,10 @@
 #
 # Usage: . PATH/TO/version-numbers.sh
 
-if [ -z ${AGDA_EXEC} ]; then
+if [ -z ${AGDA_EXEC-} ]; then
     export AGDA_EXEC=agda-2.6.4
 fi
 
-if [ -z ${GHC_EXEC} ]; then
+if [ -z ${GHC_EXEC-} ]; then
   export GHC_EXEC=ghc-9.2.8
 fi

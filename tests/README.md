@@ -10,6 +10,19 @@ AGDA_EXEC=agda-2.6.4 GHC_EXEC=ghc-9.2.8 make testsuite
 
 # Structure of the test suite
 
+## Test case
+
+Each test case is under 2 levels of nesting (this is hard-coded)
+and should comprise:
+
+1. A `Main.agda` file containing a `main` entrypoint
+2. An `expected` file containing the expected output of running `Main`
+3. A `run` file describing how to run `Main` (most likely implemented
+   using the `goldenTest` function defined in
+   [_config/config.sh](_config/config.sh).
+4. Optionally, an `input` file for the stdin content to feed to
+   the executable obtained by compiling `Main`.
+
 ## Configuration
 
 The Agda & GHC version numbers the stdlib is tested against

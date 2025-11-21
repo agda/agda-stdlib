@@ -7,15 +7,43 @@
 #
 # Usage: . ../../config.sh
 
-set -eu
+set -eux
 
 # Ugh, paths are relative to the script sourcing this file!
 . ../../_config/version-numbers.sh
 
+
+
+# Main entry point to build and run an Agda program
+#
+# Typically called like `goldenTest "$1" "echo" "hello world"`
+#
+# INPUTS:
+#    $1 is the agda executable (typically "$1" in the ̀ run` file
+#       because this info is provided by the test runner
+#    $2 the name of the test as a string
+#    $3 is OPTIONAL and corresponds to the extra arguments to pass
+#       to the executable obtained by compiling the Agda program
+#
+# LOGGING:
+#    logs/agda-build for the trace produced by Agda
+#    logs/cabal-build for the trace produced by cabal+ghc
+#
+# OUTPUT:
+#    the output obtained by running the Agda program is stored in
+#    the file named `output`. The test runner will then diff it
+#    against the expected file.
 goldenTest () {
 
   AGDA=$1
   TEST_NAME="stdlib-test-$2"
+
+  # Taking extra args for the executable?
+  if [ -z ${3-} ]; then
+    EXTRA_ARGS=""
+  else
+    EXTRA_ARGS="-- $3"
+  fi
 
   # Remember whether the script has an input -- ugh
   if [ -f input ]; then
@@ -47,7 +75,7 @@ goldenTest () {
   cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
 
   # Run the test
-  cabal exec -v0 "$TEST_NAME" --with-compiler "$GHC_EXEC" < input > output
+  cabal exec -v0 "$TEST_NAME" --with-compiler "$GHC_EXEC" $EXTRA_ARGS < input > output
 
   # Clean up after ourselves
   if ! "$HAS_INPUT"; then

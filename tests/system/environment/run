@@ -1,2 +1,2 @@
 . ../../_config/config.sh
-goldenTest "$1" "environment"
+goldenTest "$1" "environment" "hello world"
