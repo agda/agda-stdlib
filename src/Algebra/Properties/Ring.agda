@@ -14,8 +14,26 @@ open Ring ring
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
--- Export properties of rings without a 1#.
+-- Export properties of semirings and rings without a 1#.
 
+open import Algebra.Properties.Semiring semiring public
+  using
+    ( 1#-unique
+    ; 1#-comm
+
+    ; *-elimʳ
+    ; *-elimˡ
+    ; *-introʳ
+    ; *-introˡ
+    ; *-introᶜ
+
+    ; *-cancelʳ
+    ; *-cancelˡ
+    ; *-insertˡ
+    ; *-insertʳ
+    ; *-cancelᶜ
+    ; *-insertᶜ
+    )
 open import Algebra.Properties.RingWithoutOne ringWithoutOne public
 
 ------------------------------------------------------------------------
