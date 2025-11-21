@@ -53,6 +53,11 @@ Deprecated names
   interchange  ↦   medial
   ```
 
+* In `Algebra.Properties.Monoid`:
+  ```agda
+  ε-comm  ↦   ε-central
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
@@ -108,6 +113,10 @@ New modules
   Data.List.NonEmpty.Membership.Propositional
   Data.List.NonEmpty.Membership.Setoid
   ```
+
+* `Relation.Binary.Morphism.Construct.On`: given a relation `_∼_` on `B`,
+  and a function `f : A → B`, construct the canonical `IsRelMonomorphism`
+  between `_∼_ on f` and `_∼_`, witnessed by `f` itself.
 
 Additions to existing modules
 -----------------------------
