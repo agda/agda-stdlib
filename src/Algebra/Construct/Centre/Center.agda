@@ -16,8 +16,7 @@ module Algebra.Construct.Centre.Center
 open import Algebra.Definitions _∼_ using (Central)
 open import Function.Base using (id; _on_)
 open import Level using (_⊔_)
-open import Relation.Binary.Morphism.Structures
-  using (IsRelHomomorphism; IsRelMonomorphism)
+import Relation.Binary.Morphism.Construct.On as On
 
 
 ------------------------------------------------------------------------
@@ -36,14 +35,5 @@ open Center public
 
 -- Center as subtype of Carrier
 
-_≈_ : Rel Center _
-_≈_ = _∼_ on ι
-
-isRelHomomorphism : IsRelHomomorphism _≈_ _∼_ ι
-isRelHomomorphism = record { cong = id }
-
-isRelMonomorphism : IsRelMonomorphism _≈_ _∼_ ι
-isRelMonomorphism = record
-  { isHomomorphism = isRelHomomorphism
-  ; injective = id
-  }
+open On _∼_ ι public
+  using (_≈_; isRelHomomorphism; isRelMonomorphism)
