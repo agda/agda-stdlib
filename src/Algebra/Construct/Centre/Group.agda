@@ -21,6 +21,8 @@ private
   module G = Group group
 
 open import Relation.Binary.Reasoning.Setoid G.setoid as ≈-Reasoning
+open import Algebra.Properties.Monoid G.monoid
+  renaming (cancelˡ to inverse⇒cancelˡ; cancelʳ to inverse⇒cancelʳ)
 open import Algebra.Properties.Group group using (∙-cancelʳ)
 
 
@@ -40,11 +42,8 @@ g ⁻¹ = record
   ; central = λ k → ∙-cancelʳ (ι g) _ _ $ begin
       (ι g G.⁻¹ G.∙ k) G.∙ (ι g) ≈⟨ G.assoc _ _ _ ⟩
       ι g G.⁻¹ G.∙ (k G.∙ ι g)   ≈⟨ G.∙-congˡ $ Center.central g k ⟨
-      ι g G.⁻¹ G.∙ (ι g G.∙ k)   ≈⟨ G.assoc _ _ _ ⟨
-      (ι g G.⁻¹ G.∙ ι g) G.∙ k   ≈⟨ G.∙-congʳ $ G.inverseˡ _ ⟩
-      G.ε G.∙ k                  ≈⟨ Center.central Z.ε k ⟩
-      k G.∙ G.ε                  ≈⟨ G.∙-congˡ $ G.inverseˡ _ ⟨
-      k G.∙ (ι g G.⁻¹ G.∙ ι g)   ≈⟨ G.assoc _ _ _ ⟨
+      ι g G.⁻¹ G.∙ (ι g G.∙ k)   ≈⟨ inverse⇒cancelˡ (G.inverseˡ _) _ ⟩
+      k                          ≈⟨ inverse⇒cancelʳ (G.inverseˡ _) _ ⟨
       (k G.∙ ι g G.⁻¹) G.∙ (ι g) ∎
   } where open ≈-Reasoning
 
