@@ -72,14 +72,3 @@ abelianGroup = record
   }
 
 Z[_] = abelianGroup
-
-{-
-  normalSubgroup : NormalSubgroup _ _
-  normalSubgroup = record
-    { subgroup = record { ι-isGroupMonomorphism = isGroupMonomorphism }
-    ; normal = record
-      { conjugate = const
-      ; normal = Center.central
-      }
-    }
--}
