@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Properties of the construction of integers as a pair of naturals
+------------------------------------------------------------------------
+
 {-# OPTIONS --safe --cubical-compatible #-}
 
 module Data.Integer.IntConstruction.Properties where
