@@ -12,6 +12,7 @@ import Algebra.Properties.CommutativeSemigroup as CommSemigroupProps
 open import Data.Integer.IntConstruction
 open import Data.Nat.Base as ℕ using (ℕ)
 import Data.Nat.Properties as ℕ
+open import Data.Product.Base
 open import Function.Base
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -61,6 +62,9 @@ _≃?_ : Decidable _≃_
 
 ≤-refl : Reflexive _≤_
 ≤-refl = ℕ.≤-refl
+
+≤-reflexive : _≃_ ⇒ _≤_
+≤-reflexive = ℕ.≤-reflexive
 
 ≤-trans : Transitive _≤_
 ≤-trans {a ⊖ b} {c ⊖ d} {e ⊖ f} i≤j j≤k = ℕ.+-cancelʳ-≤ (d ℕ.+ c) (a ℕ.+ f) (e ℕ.+ b) $ trans-helper ℕ._≤_ a b c d e f (ℕ.+-mono-≤ i≤j j≤k)
@@ -253,3 +257,61 @@ _<?_ : Decidable _<_
 
 *-comm : Commutative _*_
 *-comm (a ⊖ b) (c ⊖ d) = cong₂ ℕ._+_ (cong₂ ℕ._+_ (ℕ.*-comm a c) (ℕ.*-comm b d)) (trans (ℕ.+-comm (c ℕ.* b) (d ℕ.* a)) (cong₂ ℕ._+_ (ℕ.*-comm d a) (ℕ.*-comm c b)))
+
+------------------------------------------------------------------------
+-- Properties of ⁺_
+
+⁺-cong : ∀ {m n} → m ≡ n → ⁺ m ≃ ⁺ n
+⁺-cong refl = refl
+
+⁺-injective : ∀ {m n} → ⁺ m ≃ ⁺ n → m ≡ n
+⁺-injective {m} {n} m+0≡n+0 = begin
+  m       ≡⟨ ℕ.+-identityʳ m ⟨
+  m ℕ.+ 0 ≡⟨ m+0≡n+0 ⟩
+  n ℕ.+ 0 ≡⟨ ℕ.+-identityʳ n ⟩
+  n       ∎
+  where open ≡-Reasoning
+
+⁺-mono-≤ : Monotonic₁ ℕ._≤_ _≤_ ⁺_
+⁺-mono-≤ = ℕ.+-monoˡ-≤ 0
+
+⁺-mono-< : Monotonic₁ ℕ._<_ _<_ ⁺_
+⁺-mono-< = ℕ.+-monoˡ-< 0
+
+⁺-+-homo : ∀ m n → ⁺ (m ℕ.+ n) ≃ ⁺ m + ⁺ n
+⁺-+-homo m n = refl
+
+⁺-0-homo : ⁺ 0 ≡ 0ℤ
+⁺-0-homo = refl
+
+⁺-*-homo : ∀ m n → ⁺ (m ℕ.* n) ≃ ⁺ m * ⁺ n
+⁺-*-homo m n = begin
+  m ℕ.* n ℕ.+ (m ℕ.* 0 ℕ.+ 0) ≡⟨ cong (m ℕ.* n ℕ.+_) (ℕ.+-identityʳ (m ℕ.* 0)) ⟩
+  m ℕ.* n ℕ.+ m ℕ.* 0         ≡⟨ cong (m ℕ.* n ℕ.+_) (ℕ.*-zeroʳ m) ⟩
+  m ℕ.* n ℕ.+ 0               ≡⟨ ℕ.+-identityʳ (m ℕ.* n ℕ.+ 0) ⟨
+  m ℕ.* n ℕ.+ 0 ℕ.+ 0         ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of ∣_∣
+
+∣∣-cong : ∀ {i j} → i ≃ j → ∣ i ∣ ≡ ∣ j ∣
+∣∣-cong {a ⊖ b} {c ⊖ d} a+d≡c+b = begin
+  ℕ.∣ a - b ∣′            ≡⟨ ℕ.∣-∣≡∣-∣′ a b ⟨
+  ℕ.∣ a - b ∣             ≡⟨ ℕ.∣m+o-n+o∣≡∣m-n∣ a b d ⟨
+  ℕ.∣ a ℕ.+ d - b ℕ.+ d ∣ ≡⟨ cong ℕ.∣_- b ℕ.+ d ∣ a+d≡c+b ⟩
+  ℕ.∣ c ℕ.+ b - b ℕ.+ d ∣ ≡⟨ cong ℕ.∣_- b ℕ.+ d ∣ (ℕ.+-comm c b) ⟩
+  ℕ.∣ b ℕ.+ c - b ℕ.+ d ∣ ≡⟨ ℕ.∣m+n-m+o∣≡∣n-o∣ b c d ⟩
+  ℕ.∣ c - d ∣             ≡⟨ ℕ.∣-∣≡∣-∣′ c d ⟩
+  ℕ.∣ c - d ∣′            ∎
+  where open ≡-Reasoning
+
+∣⁺_∣ : ∀ n → ∣ ⁺ n ∣ ≡ n
+∣⁺ n ∣ = refl
+
+∣⁻_∣ : ∀ n → ∣ ⁻ n ∣ ≡ n
+∣⁻ ℕ.zero ∣ = refl
+∣⁻ ℕ.suc n ∣ = refl
+
+∣∣-surjective : ∀ n → ∃[ i ] ∀ {j} → j ≃ i → ∣ j ∣ ≡ n
+∣∣-surjective n = ⁺ n , λ {j} j≃⁺n → trans (∣∣-cong {i = j} j≃⁺n) ∣⁺ n ∣
