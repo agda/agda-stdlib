@@ -267,7 +267,7 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
       *-homo : Homomorphic₂ ⟦_⟧ _*₁_ _*₂_
 
     open +.IsMonoidHomomorphism +-isMonoidHomomorphism public
-      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism)
+      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism; ⟦_⟧∙_ to ⟦_⟧+_; _∙⟦_⟧ to _+⟦_⟧)
 
     *-isMagmaHomomorphism : *.IsMagmaHomomorphism ⟦_⟧
     *-isMagmaHomomorphism = record
@@ -435,7 +435,7 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
       *-homo : Homomorphic₂ ⟦_⟧ _*₁_ _*₂_
 
     open +.IsGroupHomomorphism +-isGroupHomomorphism public
-      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism; isMonoidHomomorphism to +-isMonoidHomomorphism)
+      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism; isMonoidHomomorphism to +-isMonoidHomomorphism; ⟦_⟧∙_ to ⟦_⟧+_; _∙⟦_⟧ to _+⟦_⟧)
 
     isNearSemiringHomomorphism : +*.IsNearSemiringHomomorphism ⟦_⟧
     isNearSemiringHomomorphism = record
