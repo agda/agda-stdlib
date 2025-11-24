@@ -89,6 +89,12 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
     open IsRelHomomorphism isRelHomomorphism public
       renaming (cong to ⟦⟧-cong)
 
+    ⟦_⟧∙_ : A → B → B
+    ⟦ x ⟧∙ y = ⟦ x ⟧ ◦ y
+
+    _∙⟦_⟧ : B → A → B
+    y ∙⟦ x ⟧ = y ◦ ⟦ x ⟧
+
 
   record IsMagmaMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
