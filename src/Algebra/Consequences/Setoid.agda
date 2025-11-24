@@ -33,13 +33,21 @@ open import Relation.Binary.Reasoning.Setoid S
 -- Export base lemmas that don't require the setoid
 
 open Base public
-  hiding (module Congruence)
+  hiding (module Congruence; sel⇒idem)
 
 -- Export congruence lemmas using reflexivity
 
 module Congruence {_∙_ : Op₂ A} (cong : Congruent₂ _∙_) where
 
   open Base.Congruence _≈_ cong refl public
+
+------------------------------------------------------------------------
+-- Selectivity
+
+module _ {_∙_ : Op₂ A} where
+
+  sel⇒idem : Selective _∙_ → Idempotent _∙_
+  sel⇒idem = Base.sel⇒idem _≈_
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
