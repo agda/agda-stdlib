@@ -14,16 +14,16 @@ module Algebra.Construct.Centre.Ring {c ℓ} (ring : Ring c ℓ) where
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Consequences.Setoid using (zero⇒central)
 open import Algebra.Morphism.Structures
+  using (IsRingHomomorphism; IsRingMonomorphism)
 open import Algebra.Morphism.RingMonomorphism using (isRing)
 open import Function.Base using (id; const; _$_)
 
 
 private
   module R = Ring ring
-  module R* = Monoid R.*-monoid
 
-open import Relation.Binary.Reasoning.Setoid R.setoid as ≈-Reasoning
 open import Algebra.Properties.Ring ring using (-‿distribˡ-*; -‿distribʳ-*)
+open import Relation.Binary.Reasoning.Setoid R.setoid as ≈-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -49,10 +49,11 @@ g + h = record
 -_ : Op₁ Center
 - g = record
   { ι       = R.- ι g
-  ; central = λ r → begin R.- ι g R.* r ≈⟨ -‿distribˡ-* (ι g) r ⟨
-  R.- (ι g R.* r) ≈⟨ R.-‿cong (Center.central g r) ⟩
-  R.- (r R.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
-  r  R.* R.- ι g ∎
+  ; central = λ r → begin
+    R.- ι g R.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟨
+    R.- (ι g R.* r) ≈⟨ R.-‿cong (Center.central g r) ⟩
+    R.- (r R.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
+    r  R.* R.- ι g  ∎
   }
 
 0# : Center
