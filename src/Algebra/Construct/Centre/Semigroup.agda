@@ -16,11 +16,13 @@ module Algebra.Construct.Centre.Semigroup
 open import Algebra.Core using (Op₂)
 open import Algebra.Morphism.MagmaMonomorphism using (isSemigroup)
 open import Algebra.Morphism.Structures
+  using (IsMagmaHomomorphism; IsMagmaMonomorphism)
 open import Function.Base using (id; _$_)
 
 private
   module G = Semigroup semigroup
 
+open import Algebra.Properties.Semigroup semigroup
 open import Relation.Binary.Reasoning.Setoid G.setoid as ≈-Reasoning
 
 
@@ -38,10 +40,8 @@ _∙_ : Op₂ Center
 g ∙ h = record
   { ι = ι g G.∙ ι h
   ; central = λ k → begin
-    (ι g G.∙ ι h) G.∙ k ≈⟨ G.assoc _ _ _ ⟩
-    ι g G.∙ (ι h G.∙ k) ≈⟨ G.∙-congˡ $ Center.central h k ⟩
-    ι g G.∙ (k G.∙ ι h) ≈⟨ G.assoc _ _ _ ⟨
-    ι g G.∙ k G.∙ ι h   ≈⟨ G.∙-congʳ $ Center.central g k ⟩
+    (ι g G.∙ ι h) G.∙ k ≈⟨ uv≈w⇒xu∙v≈xw (Center.central h k) (ι g) ⟩
+    ι g G.∙ (k G.∙ ι h) ≈⟨ uv≈w⇒u∙vx≈wx (Center.central g k) (ι h) ⟩
     k G.∙ ι g G.∙ ι h   ≈⟨ G.assoc _ _ _ ⟩
     k G.∙ (ι g G.∙ ι h) ∎
   } where open ≈-Reasoning
