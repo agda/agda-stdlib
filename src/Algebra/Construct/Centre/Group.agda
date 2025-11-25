@@ -13,6 +13,7 @@ module Algebra.Construct.Centre.Group {c ℓ} (group : Group c ℓ) where
 
 open import Algebra.Core using (Op₁)
 open import Algebra.Morphism.Structures
+  using (IsGroupHomomorphism; IsGroupMonomorphism)
 open import Algebra.Morphism.GroupMonomorphism using (isGroup)
 open import Function.Base using (id; const; _$_)
 
