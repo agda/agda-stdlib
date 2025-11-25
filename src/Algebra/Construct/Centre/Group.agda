@@ -20,10 +20,11 @@ open import Function.Base using (id; const; _$_)
 private
   module G = Group group
 
-open import Relation.Binary.Reasoning.Setoid G.setoid as ≈-Reasoning
-open import Algebra.Properties.Monoid G.monoid
-  renaming (cancelˡ to inverse⇒cancelˡ; cancelʳ to inverse⇒cancelʳ)
 open import Algebra.Properties.Group group using (∙-cancelʳ)
+open import Algebra.Properties.Monoid G.monoid
+  using (uv≈w⇒xu∙v≈xw)
+  renaming (cancelˡ to inverse⇒cancelˡ; cancelʳ to inverse⇒cancelʳ)
+open import Relation.Binary.Reasoning.Setoid G.setoid as ≈-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -40,8 +41,7 @@ _⁻¹ : Op₁ Center
 g ⁻¹ = record
   { ι = ι g G.⁻¹
   ; central = λ k → ∙-cancelʳ (ι g) _ _ $ begin
-      (ι g G.⁻¹ G.∙ k) G.∙ (ι g) ≈⟨ G.assoc _ _ _ ⟩
-      ι g G.⁻¹ G.∙ (k G.∙ ι g)   ≈⟨ G.∙-congˡ $ Center.central g k ⟨
+      (ι g G.⁻¹ G.∙ k) G.∙ (ι g) ≈⟨ uv≈w⇒xu∙v≈xw (G.sym (Center.central g k)) _ ⟩
       ι g G.⁻¹ G.∙ (ι g G.∙ k)   ≈⟨ inverse⇒cancelˡ (G.inverseˡ _) _ ⟩
       k                          ≈⟨ inverse⇒cancelʳ (G.inverseˡ _) _ ⟨
       (k G.∙ ι g G.⁻¹) G.∙ (ι g) ∎
