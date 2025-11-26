@@ -23,8 +23,10 @@ record ℤ : Set where
 
 infix 4 _≃_ _≤_ _≥_ _<_ _>_
 
-_≃_ : Rel ℤ _
-(a ⊖ b) ≃ (c ⊖ d) = a ℕ.+ d ≡ c ℕ.+ b
+record _≃_ (i j : ℤ) : Set where
+  constructor mk≃
+  field
+    eq : ℤ.minuend i ℕ.+ ℤ.subtrahend j ≡ ℤ.minuend j ℕ.+ ℤ.subtrahend i
 
 _≤_ : Rel ℤ _
 (a ⊖ b) ≤ (c ⊖ d) = a ℕ.+ d ℕ.≤ c ℕ.+ b

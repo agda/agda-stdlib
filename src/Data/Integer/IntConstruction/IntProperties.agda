@@ -9,7 +9,7 @@
 module Data.Integer.IntConstruction.IntProperties where
 
 open import Data.Integer.Base
-open import Data.Integer.IntConstruction as INT using (_≃_)
+open import Data.Integer.IntConstruction as INT using (_≃_; mk≃)
 open import Data.Integer.IntConstruction.Tmp
 open import Data.Integer.Properties
 import Data.Nat.Base as ℕ
@@ -18,7 +18,7 @@ open import Function.Base
 open import Relation.Binary.PropositionalEquality
 
 fromINT-cong : ∀ {i j} → i ≃ j → fromINT i ≡ fromINT j
-fromINT-cong {a INT.⊖ b} {c INT.⊖ d} a+d≡c+b = begin
+fromINT-cong {a INT.⊖ b} {c INT.⊖ d} (mk≃ a+d≡c+b) = begin
   a ⊖ b                       ≡⟨ m-n≡m⊖n a b ⟨
   + a - + b                   ≡⟨ cong (_- + b) (+-identityʳ (+ a)) ⟨
   (+ a + 0ℤ) - + b            ≡⟨ cong (λ z → (+ a + z) - + b) (+-inverseʳ (+ d)) ⟨
@@ -34,7 +34,7 @@ fromINT-cong {a INT.⊖ b} {c INT.⊖ d} a+d≡c+b = begin
   where open ≡-Reasoning
 
 fromINT-injective : ∀ {i j} → fromINT i ≡ fromINT j → i ≃ j
-fromINT-injective {a INT.⊖ b} {c INT.⊖ d} a⊖b≡c⊖d = +-injective $ begin
+fromINT-injective {a INT.⊖ b} {c INT.⊖ d} a⊖b≡c⊖d = mk≃ $ +-injective $ begin
   + a + + d                   ≡⟨ cong (_+ + d) (+-identityʳ (+ a)) ⟨
   (+ a + 0ℤ) + + d            ≡⟨ cong (λ z → (+ a + z) + + d) (+-inverseˡ (+ b)) ⟨
   (+ a + (- + b + + b)) + + d ≡⟨ cong (_+ + d) (+-assoc (+ a) (- + b) (+ b)) ⟨
@@ -52,7 +52,7 @@ fromINT-injective {a INT.⊖ b} {c INT.⊖ d} a⊖b≡c⊖d = +-injective $ begi
 
 fromINT-surjective : ∀ j → ∃[ i ] ∀ {z} → z ≃ i → fromINT z ≡ j
 fromINT-surjective j .proj₁ = toINT j
-fromINT-surjective (+ n) .proj₂ {a INT.⊖ b} a+0≡n+b = begin
+fromINT-surjective (+ n) .proj₂ {a INT.⊖ b} (mk≃ a+0≡n+b) = begin
   a ⊖ b             ≡⟨ m-n≡m⊖n a b ⟨
   + a - + b         ≡⟨ cong (_- + b) (+-identityʳ (+ a)) ⟨
   (+ a + 0ℤ) - + b  ≡⟨ cong (λ z → + z - + b) a+0≡n+b ⟩
@@ -61,7 +61,7 @@ fromINT-surjective (+ n) .proj₂ {a INT.⊖ b} a+0≡n+b = begin
   + n + 0ℤ          ≡⟨ +-identityʳ (+ n) ⟩
   + n               ∎
   where open ≡-Reasoning
-fromINT-surjective (-[1+ n ]) .proj₂ {a INT.⊖ b} a+sn≡b = begin
+fromINT-surjective (-[1+ n ]) .proj₂ {a INT.⊖ b} (mk≃ a+sn≡b) = begin
   a ⊖ b                     ≡⟨ m-n≡m⊖n a b ⟨
   + a - + b                 ≡⟨ cong (λ z → + a - + z) a+sn≡b ⟨
   + a - (+ a + + ℕ.suc n)   ≡⟨ cong (_+_ (+ a)) (neg-distrib-+ (+ a) (+ ℕ.suc n)) ⟩

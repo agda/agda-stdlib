@@ -46,16 +46,18 @@ private
 -- Properties of _≃_
 
 ≃-refl : Reflexive _≃_
-≃-refl = refl
+≃-refl = mk≃ refl
 
 ≃-sym : Symmetric _≃_
-≃-sym = sym
+≃-sym (mk≃ eq) = mk≃ (sym eq)
 
 ≃-trans : Transitive _≃_
-≃-trans {a ⊖ b} {c ⊖ d} {e ⊖ f} i≃j j≃k = ℕ.+-cancelʳ-≡ (d ℕ.+ c) (a ℕ.+ f) (e ℕ.+ b) $ trans-helper _≡_ a b c d e f (cong₂ ℕ._+_ i≃j j≃k)
+≃-trans {a ⊖ b} {c ⊖ d} {e ⊖ f} (mk≃ i≃j) (mk≃ j≃k) = mk≃ (ℕ.+-cancelʳ-≡ (d ℕ.+ c) (a ℕ.+ f) (e ℕ.+ b) $ trans-helper _≡_ a b c d e f (cong₂ ℕ._+_ i≃j j≃k))
 
 _≃?_ : Decidable _≃_
-(a ⊖ b) ≃? (c ⊖ d) = a ℕ.+ d ℕ.≟ c ℕ.+ b
+(a ⊖ b) ≃? (c ⊖ d) with a ℕ.+ d ℕ.≟ c ℕ.+ b
+... | no a+d≢c+b = no λ (mk≃ a+d≡c+b) → a+d≢c+b a+d≡c+b
+... | yes a+d≡c+b = yes (mk≃ a+d≡c+b)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -64,13 +66,13 @@ _≃?_ : Decidable _≃_
 ≤-refl = ℕ.≤-refl
 
 ≤-reflexive : _≃_ ⇒ _≤_
-≤-reflexive = ℕ.≤-reflexive
+≤-reflexive (mk≃ eq) = ℕ.≤-reflexive eq
 
 ≤-trans : Transitive _≤_
 ≤-trans {a ⊖ b} {c ⊖ d} {e ⊖ f} i≤j j≤k = ℕ.+-cancelʳ-≤ (d ℕ.+ c) (a ℕ.+ f) (e ℕ.+ b) $ trans-helper ℕ._≤_ a b c d e f (ℕ.+-mono-≤ i≤j j≤k)
 
 ≤-antisym : Antisymmetric _≃_ _≤_
-≤-antisym i≤j j≤i = ℕ.≤-antisym i≤j j≤i
+≤-antisym i≤j j≤i = mk≃ (ℕ.≤-antisym i≤j j≤i)
 
 ≤-total : Total _≤_
 ≤-total (a ⊖ b) (c ⊖ d) = ℕ.≤-total (a ℕ.+ d) (c ℕ.+ b)
@@ -82,28 +84,31 @@ _≤?_ : Decidable _≤_
 -- Properties of _<_
 
 <-irrefl : Irreflexive _≃_ _<_
-<-irrefl = ℕ.<-irrefl
+<-irrefl (mk≃ eq) = ℕ.<-irrefl eq
 
 <-trans : Transitive _<_
 <-trans {a ⊖ b} {c ⊖ d} {e ⊖ f} i<j j<k = ℕ.+-cancelʳ-< (d ℕ.+ c) (a ℕ.+ f) (e ℕ.+ b) $ trans-helper ℕ._<_ a b c d e f (ℕ.+-mono-< i<j j<k)
 
 <-respˡ-≃ : _<_ Respectsˡ _≃_
-<-respˡ-≃ {a ⊖ b} {c ⊖ d} {e ⊖ f} j≃k i>j = ℕ.+-cancelʳ-< (d ℕ.+ c) (e ℕ.+ b) (a ℕ.+ f) $ trans-helper ℕ._>_ a b c d e f (ℕ.+-mono-<-≤ i>j (ℕ.≤-reflexive (sym j≃k)))
+<-respˡ-≃ {a ⊖ b} {c ⊖ d} {e ⊖ f} (mk≃ j≃k) i>j = ℕ.+-cancelʳ-< (d ℕ.+ c) (e ℕ.+ b) (a ℕ.+ f) $ trans-helper ℕ._>_ a b c d e f (ℕ.+-mono-<-≤ i>j (ℕ.≤-reflexive (sym j≃k)))
 
 <-respʳ-≃ : _<_ Respectsʳ _≃_
-<-respʳ-≃ {a ⊖ b} {c ⊖ d} {e ⊖ f} j≃k i<j = ℕ.+-cancelʳ-< (d ℕ.+ c) (a ℕ.+ f) (e ℕ.+ b) $ trans-helper ℕ._<_ a b c d e f (ℕ.+-mono-<-≤ i<j (ℕ.≤-reflexive j≃k))
+<-respʳ-≃ {a ⊖ b} {c ⊖ d} {e ⊖ f} (mk≃ j≃k) i<j = ℕ.+-cancelʳ-< (d ℕ.+ c) (a ℕ.+ f) (e ℕ.+ b) $ trans-helper ℕ._<_ a b c d e f (ℕ.+-mono-<-≤ i<j (ℕ.≤-reflexive j≃k))
 
 _<?_ : Decidable _<_
 (a ⊖ b) <? (c ⊖ d) = a ℕ.+ d ℕ.<? c ℕ.+ b
 
 <-cmp : Trichotomous _≃_ _<_
-<-cmp (a ⊖ b) (c ⊖ d) = ℕ.<-cmp (a ℕ.+ d) (c ℕ.+ b)
+<-cmp (a ⊖ b) (c ⊖ d) with ℕ.<-cmp (a ℕ.+ d) (c ℕ.+ b)
+... | tri< a+d<c+b a+d≢c+d a+d≯c+d = tri< a+d<c+b (a+d≢c+d ∘ _≃_.eq) a+d≯c+d
+... | tri≈ a+d≮c+b a+d≡c+d a+d≯c+d = tri≈ a+d≮c+b (mk≃ a+d≡c+d) a+d≯c+d
+... | tri> a+d≮c+b a+d≢c+d a+d>c+d = tri> a+d≮c+b (a+d≢c+d ∘ _≃_.eq) a+d>c+d
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _+_
 
 +-cong : Congruent₂ _+_
-+-cong {a ⊖ b} {c ⊖ d} {e ⊖ f} {g ⊖ h} a+d≡c+b e+h≡g+f = begin
++-cong {a ⊖ b} {c ⊖ d} {e ⊖ f} {g ⊖ h} (mk≃ a+d≡c+b) (mk≃ e+h≡g+f) = mk≃ $ begin
   (a ℕ.+ e) ℕ.+ (d ℕ.+ h) ≡⟨ medial a e d h ⟩
   (a ℕ.+ d) ℕ.+ (e ℕ.+ h) ≡⟨ cong₂ ℕ._+_ a+d≡c+b e+h≡g+f ⟩
   (c ℕ.+ b) ℕ.+ (g ℕ.+ f) ≡⟨ medial c b g f ⟩
@@ -113,16 +118,16 @@ _<?_ : Decidable _<_
     open CommSemigroupProps ℕ.+-commutativeSemigroup
 
 +-assoc : Associative _+_
-+-assoc (a ⊖ b) (c ⊖ d) (e ⊖ f) = cong₂ ℕ._+_ (ℕ.+-assoc a c e) (sym (ℕ.+-assoc b d f))
++-assoc (a ⊖ b) (c ⊖ d) (e ⊖ f) = mk≃ $ cong₂ ℕ._+_ (ℕ.+-assoc a c e) (sym (ℕ.+-assoc b d f))
 
 +-identityˡ : LeftIdentity 0ℤ _+_
-+-identityˡ (a ⊖ b) = refl
++-identityˡ (a ⊖ b) = mk≃ refl
 
 +-identityʳ : RightIdentity 0ℤ _+_
-+-identityʳ (a ⊖ b) = cong₂ ℕ._+_ (ℕ.+-identityʳ a) (sym (ℕ.+-identityʳ b))
++-identityʳ (a ⊖ b) = mk≃ $ cong₂ ℕ._+_ (ℕ.+-identityʳ a) (sym (ℕ.+-identityʳ b))
 
 +-comm : Commutative _+_
-+-comm (a ⊖ b) (c ⊖ d) = cong₂ ℕ._+_ (ℕ.+-comm a c) (ℕ.+-comm d b)
++-comm (a ⊖ b) (c ⊖ d) = mk≃ $ cong₂ ℕ._+_ (ℕ.+-comm a c) (ℕ.+-comm d b)
 
 ------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
@@ -141,7 +146,7 @@ _<?_ : Decidable _<_
 -- Algebraic properties of -_
 
 -‿cong : Congruent₁ -_
--‿cong {a ⊖ b} {c ⊖ d} a+d≡c+b = begin
+-‿cong {a ⊖ b} {c ⊖ d} (mk≃ a+d≡c+b) = mk≃ $ begin
   b ℕ.+ c ≡⟨ ℕ.+-comm b c ⟩
   c ℕ.+ b ≡⟨ a+d≡c+b ⟨
   a ℕ.+ d ≡⟨ ℕ.+-comm a d ⟩
@@ -149,10 +154,10 @@ _<?_ : Decidable _<_
   where open ≡-Reasoning
 
 +-inverseˡ : LeftInverse 0ℤ -_ _+_
-+-inverseˡ (a ⊖ b) = trans (ℕ.+-identityʳ (b ℕ.+ a)) (ℕ.+-comm b a)
++-inverseˡ (a ⊖ b) = mk≃ $ trans (ℕ.+-identityʳ (b ℕ.+ a)) (ℕ.+-comm b a)
 
 +-inverseʳ : RightInverse 0ℤ -_ _+_
-+-inverseʳ (a ⊖ b) = trans (ℕ.+-identityʳ (a ℕ.+ b)) (ℕ.+-comm a b)
++-inverseʳ (a ⊖ b) = mk≃ $ trans (ℕ.+-identityʳ (a ℕ.+ b)) (ℕ.+-comm a b)
 
 ------------------------------------------------------------------------
 -- Properties of -_ and _≤_
@@ -169,7 +174,7 @@ _<?_ : Decidable _<_
 -- Algebraic properties of _*_
 
 *-cong : Congruent₂ _*_
-*-cong {a ⊖ b} {c ⊖ d} {e ⊖ f} {g ⊖ h} a+d≡c+b e+h≡g+f = ℕ.+-cancelʳ-≡ (d ℕ.* e) _ _ $ begin
+*-cong {a ⊖ b} {c ⊖ d} {e ⊖ f} {g ⊖ h} (mk≃ a+d≡c+b) (mk≃ e+h≡g+f) = mk≃ $ ℕ.+-cancelʳ-≡ (d ℕ.* e) _ _ $ begin
   ((a ℕ.* e ℕ.+ b ℕ.* f) ℕ.+ (c ℕ.* h ℕ.+ d ℕ.* g)) ℕ.+ d ℕ.* e ≡⟨ ℕ.+-assoc (a ℕ.* e ℕ.+ b ℕ.* f) (c ℕ.* h ℕ.+ d ℕ.* g) (d ℕ.* e) ⟩
   (a ℕ.* e ℕ.+ b ℕ.* f) ℕ.+ ((c ℕ.* h ℕ.+ d ℕ.* g) ℕ.+ d ℕ.* e) ≡⟨ cong (a ℕ.* e ℕ.+ b ℕ.* f ℕ.+_) (ℕ.+-comm (c ℕ.* h ℕ.+ d ℕ.* g) (d ℕ.* e)) ⟩
   (a ℕ.* e ℕ.+ b ℕ.* f) ℕ.+ (d ℕ.* e ℕ.+ (c ℕ.* h ℕ.+ d ℕ.* g)) ≡⟨ medial (a ℕ.* e) (b ℕ.* f) (d ℕ.* e) (c ℕ.* h ℕ.+ d ℕ.* g) ⟩
@@ -197,7 +202,7 @@ _<?_ : Decidable _<_
     open CommSemigroupProps ℕ.+-commutativeSemigroup
 
 *-assoc : Associative _*_
-*-assoc (a ⊖ b) (c ⊖ d) (e ⊖ f) = cong₂ ℕ._+_ (lemma a b c d e f) (sym (lemma a b c d f e))
+*-assoc (a ⊖ b) (c ⊖ d) (e ⊖ f) = mk≃ $ cong₂ ℕ._+_ (lemma a b c d e f) (sym (lemma a b c d f e))
   where
     open ≡-Reasoning
     open CommSemigroupProps ℕ.+-commutativeSemigroup
@@ -212,19 +217,19 @@ _<?_ : Decidable _<_
       u ℕ.* (w ℕ.* y ℕ.+ x ℕ.* z) ℕ.+ v ℕ.* (w ℕ.* z ℕ.+ x ℕ.* y)                     ∎
 
 *-zeroˡ : LeftZero 0ℤ _*_
-*-zeroˡ _ = refl
+*-zeroˡ _ = mk≃ refl
 
 *-zeroʳ : RightZero 0ℤ _*_
-*-zeroʳ _ = ℕ.+-identityʳ _
+*-zeroʳ _ = mk≃ $ ℕ.+-identityʳ _
 
 *-identityˡ : LeftIdentity 1ℤ _*_
-*-identityˡ (a ⊖ b) = cong₂ ℕ._+_ (lemma a) (sym (lemma b))
+*-identityˡ (a ⊖ b) = mk≃ $ cong₂ ℕ._+_ (lemma a) (sym (lemma b))
   where
     lemma : ∀ n → n ℕ.+ 0 ℕ.+ 0 ≡ n
     lemma n = trans (ℕ.+-identityʳ (n ℕ.+ 0)) (ℕ.+-identityʳ n)
 
 *-identityʳ : RightIdentity 1ℤ _*_
-*-identityʳ (a ⊖ b) = cong₂ ℕ._+_ l (sym r)
+*-identityʳ (a ⊖ b) = mk≃ $ cong₂ ℕ._+_ l (sym r)
   where
     l : a ℕ.* 1 ℕ.+ b ℕ.* 0 ≡ a
     l = trans (cong₂ ℕ._+_ (ℕ.*-identityʳ a) (ℕ.*-zeroʳ b)) (ℕ.+-identityʳ a)
@@ -232,7 +237,7 @@ _<?_ : Decidable _<_
     r = trans (cong₂ ℕ._+_ (ℕ.*-zeroʳ a) (ℕ.*-identityʳ b)) (ℕ.+-identityˡ b)
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ (a ⊖ b) (c ⊖ d) (e ⊖ f) = cong₂ ℕ._+_ (lemma a b c d e f) (sym (lemma a b d c f e))
+*-distribˡ-+ (a ⊖ b) (c ⊖ d) (e ⊖ f) = mk≃ $ cong₂ ℕ._+_ (lemma a b c d e f) (sym (lemma a b d c f e))
   where
     open ≡-Reasoning
     open CommSemigroupProps ℕ.+-commutativeSemigroup
@@ -244,7 +249,7 @@ _<?_ : Decidable _<_
       (u ℕ.* w ℕ.+ v ℕ.* x) ℕ.+ (u ℕ.* y ℕ.+ v ℕ.* z) ∎
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
-*-distribʳ-+ (a ⊖ b) (c ⊖ d) (e ⊖ f) = cong₂ ℕ._+_ (lemma a b c d e f) (sym (lemma b a c d e f))
+*-distribʳ-+ (a ⊖ b) (c ⊖ d) (e ⊖ f) = mk≃ $ cong₂ ℕ._+_ (lemma a b c d e f) (sym (lemma b a c d e f))
   where
     open ≡-Reasoning
     open CommSemigroupProps ℕ.+-commutativeSemigroup
@@ -256,16 +261,16 @@ _<?_ : Decidable _<_
       (w ℕ.* u ℕ.+ x ℕ.* v) ℕ.+ (y ℕ.* u ℕ.+ z ℕ.* v) ∎
 
 *-comm : Commutative _*_
-*-comm (a ⊖ b) (c ⊖ d) = cong₂ ℕ._+_ (cong₂ ℕ._+_ (ℕ.*-comm a c) (ℕ.*-comm b d)) (trans (ℕ.+-comm (c ℕ.* b) (d ℕ.* a)) (cong₂ ℕ._+_ (ℕ.*-comm d a) (ℕ.*-comm c b)))
+*-comm (a ⊖ b) (c ⊖ d) = mk≃ $ cong₂ ℕ._+_ (cong₂ ℕ._+_ (ℕ.*-comm a c) (ℕ.*-comm b d)) (trans (ℕ.+-comm (c ℕ.* b) (d ℕ.* a)) (cong₂ ℕ._+_ (ℕ.*-comm d a) (ℕ.*-comm c b)))
 
 ------------------------------------------------------------------------
 -- Properties of ⁺_
 
 ⁺-cong : ∀ {m n} → m ≡ n → ⁺ m ≃ ⁺ n
-⁺-cong refl = refl
+⁺-cong refl = mk≃ refl
 
 ⁺-injective : ∀ {m n} → ⁺ m ≃ ⁺ n → m ≡ n
-⁺-injective {m} {n} m+0≡n+0 = begin
+⁺-injective {m} {n} (mk≃ m+0≡n+0) = begin
   m       ≡⟨ ℕ.+-identityʳ m ⟨
   m ℕ.+ 0 ≡⟨ m+0≡n+0 ⟩
   n ℕ.+ 0 ≡⟨ ℕ.+-identityʳ n ⟩
@@ -279,13 +284,13 @@ _<?_ : Decidable _<_
 ⁺-mono-< = ℕ.+-monoˡ-< 0
 
 ⁺-+-homo : ∀ m n → ⁺ (m ℕ.+ n) ≃ ⁺ m + ⁺ n
-⁺-+-homo m n = refl
+⁺-+-homo m n = mk≃ refl
 
 ⁺-0-homo : ⁺ 0 ≡ 0ℤ
 ⁺-0-homo = refl
 
 ⁺-*-homo : ∀ m n → ⁺ (m ℕ.* n) ≃ ⁺ m * ⁺ n
-⁺-*-homo m n = begin
+⁺-*-homo m n = mk≃ $ begin
   m ℕ.* n ℕ.+ (m ℕ.* 0 ℕ.+ 0) ≡⟨ cong (m ℕ.* n ℕ.+_) (ℕ.+-identityʳ (m ℕ.* 0)) ⟩
   m ℕ.* n ℕ.+ m ℕ.* 0         ≡⟨ cong (m ℕ.* n ℕ.+_) (ℕ.*-zeroʳ m) ⟩
   m ℕ.* n ℕ.+ 0               ≡⟨ ℕ.+-identityʳ (m ℕ.* n ℕ.+ 0) ⟨
@@ -296,7 +301,7 @@ _<?_ : Decidable _<_
 -- Properties of ∣_∣
 
 ∣∣-cong : ∀ {i j} → i ≃ j → ∣ i ∣ ≡ ∣ j ∣
-∣∣-cong {a ⊖ b} {c ⊖ d} a+d≡c+b = begin
+∣∣-cong {a ⊖ b} {c ⊖ d} (mk≃ a+d≡c+b) = begin
   ℕ.∣ a - b ∣′            ≡⟨ ℕ.∣-∣≡∣-∣′ a b ⟨
   ℕ.∣ a - b ∣             ≡⟨ ℕ.∣m+o-n+o∣≡∣m-n∣ a b d ⟨
   ℕ.∣ a ℕ.+ d - b ℕ.+ d ∣ ≡⟨ cong ℕ.∣_- b ℕ.+ d ∣ a+d≡c+b ⟩
