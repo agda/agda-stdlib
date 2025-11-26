@@ -13,7 +13,7 @@ import Data.Nat
 open import Relation.Unary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
-open import Relation.Nullary.Product
+open import Relation.Nullary.Decidable
 
 -- Original bug reported in #1765 by James Wood
 _ : Appending (3 ∷ []) (2 ∷ []) (3 ∷ 2 ∷ [])

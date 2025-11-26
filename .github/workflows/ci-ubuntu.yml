@@ -8,6 +8,7 @@ on:
     branches:
       - master
       - experimental
+      - v2.0-joss-submission
   merge_group:
 
 ########################################################################
@@ -47,7 +48,7 @@ on:
 ########################################################################
 
 env:
-  GHC_VERSION: 8.10.7
+  GHC_VERSION: 9.2.8
   CABAL_VERSION: 3.6.2.0
   CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
@@ -98,7 +99,7 @@ jobs:
       # i.e. if we change either the version of Agda, ghc, or cabal that we want
       # to use for the build.
       - name: Cache ~/.cabal directories
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-cabal
         with:
           path: |
@@ -113,7 +114,7 @@ jobs:
 ########################################################################
 
       - name: Install ghc & cabal
-        uses: haskell/actions/setup@v1
+        uses: haskell-actions/setup@v2
         with:
           ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
@@ -168,8 +169,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          ${{ env.CABAL_INSTALL }} clock
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+          make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
 
 
 ########################################################################
