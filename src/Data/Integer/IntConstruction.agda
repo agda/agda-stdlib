@@ -38,6 +38,12 @@ _<_ : Rel ℤ _
 _>_ : Rel ℤ _
 _>_ = flip _<_
 
+suc : ℤ → ℤ
+suc (a ⊖ b) = ℕ.suc a ⊖ b
+
+pred : ℤ → ℤ
+pred (a ⊖ b) = a ⊖ ℕ.suc b
+
 0ℤ : ℤ
 0ℤ = 0 ⊖ 0
 
