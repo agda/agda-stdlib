@@ -9,6 +9,7 @@ on:
     branches:
       - master
       - experimental
+      - v2.0-joss-submission
   merge_group:
 
 ########################################################################
@@ -170,8 +171,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          ${{ env.CABAL_V1_INSTALL }} clock
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+          make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
 
 
 ########################################################################
