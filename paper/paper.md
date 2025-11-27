@@ -144,6 +144,10 @@ This allows users to specify instantiations of abstract parameters for whole mod
 A drawback is imports must be qualified when code is instantiated multiple times in the same scope.
 Parameterised modules are also used to safely and scalably embed non-constructive mathematics into a constructive setting.
 
+The README directory within the library contains both documentation on the general design decisions and
+examples of how to use the most common modules in the library to prove basic concepts.
+There are many excellent tutorials online that introduce both Agda and `agda-stdlib` together, with ``Programming Language Foundations in Agda'' [@wadler2018programming] being an example of one such tutorial.
+
 # Testing
 
 Correctness proofs do not remove the need for testing performance and features that cannot be reasoned about internally (such as the FFI and macros).
