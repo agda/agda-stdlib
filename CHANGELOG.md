@@ -251,6 +251,16 @@ Additions to existing modules
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
   ```
 
+* In `Function.Properties`: the `_→_` (pseudo-)type constructor defines a `PartialOrder`,
+  with `Level`-polymorphic and monomorphic versions
+  ```agda
+  →-refl   : Reflexive {A = Set a} _→_
+  →-trans  : Trans {A = Set a} {B = Set b} {C = Set c} _→_ _→_ _→_
+  →-refl′  : Reflexive {A = Set a} _→_
+  →-trans′ : Transitive {A = Set a} _→_
+  →-poset  : Poset (suc a) _ _
+  ```
+
 * In `Relation.Nullary.Negation.Core`
   ```agda
   ¬¬-η           : A → ¬ ¬ A
