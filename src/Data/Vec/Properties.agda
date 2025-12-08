@@ -463,6 +463,11 @@ map-insertAt f _ []        Fin.zero = refl
 map-insertAt f _ (x' ∷ xs) Fin.zero = refl
 map-insertAt f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insertAt f x xs i)
 
+map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
+               map f (removeAt xs i) ≡ removeAt (map f xs) i
+map-removeAt f (x ∷ xs) zero = refl
+map-removeAt f (x ∷ xs@(_ ∷ _)) (suc i) = cong (f x ∷_) (map-removeAt f xs i)
+
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
 map-[]≔ f xs i = map-updateAt xs i refl

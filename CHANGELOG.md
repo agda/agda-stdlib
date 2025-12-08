@@ -211,6 +211,9 @@ Additions to existing modules
 
 * In `Data.Vec.Properties`:
   ```agda
+  map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
+               map f (removeAt xs i) ≡ removeAt (map f xs) i
+  
   updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
                   updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
 
