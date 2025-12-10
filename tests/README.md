@@ -5,7 +5,7 @@ and running (change accordingly if you have the right versions of Agda
 & GHC installed but the executable names are different).
 
 ```shell
-AGDA_EXEC=agda-2.6.4 GHC_EXEC=ghc-9.2.8 make testsuite
+AGDA_EXEC=agda-2.6.8 GHC_EXEC=ghc-9.12.2 make testsuite
 ```
 
 # Structure of the test suite
