@@ -1,5 +1,8 @@
 #!/bin/sh
 
+########################################################################
+# DEBUG AND LOGGING
+
 set -eu
 
 isDebugMode() {
@@ -23,6 +26,9 @@ logWarning() {
   echo "\033[93m⚠\033[0m $1"
 }
 
+########################################################################
+## PRELIMINARY CHECKS
+
 checkDependency () {
   if ! [ -x "$(command -v $1)" ]; then
     throwError "Missing dependency: I could not find the executable '$1'"
@@ -38,6 +44,9 @@ checkDependency "sed"
 checkDependency "tar"
 checkDependency "touch"
 checkDependency "wget"
+
+########################################################################
+## IDENTIFY AND INSTALL THE CORRECT STDLIB VERSION
 
 # Pick the Agda executable to analyse
 # unless the caller has specified one
