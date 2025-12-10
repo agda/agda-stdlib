@@ -14,10 +14,10 @@ logHappy() {
 # Pick the Agda executable to analyse
 # unless the caller has specified one
 if [ -z ${AGDA_EXEC-} ]; then
-    read -p "What's the name of your Agda executable (default: agda)? " AGDA_EXEC
-    if [ -z "$AGDA_EXEC" ]; then
-        AGDA_EXEC=agda
-    fi
+  read -p "What's the name of your Agda executable (default: agda)? " AGDA_EXEC
+  if [ -z "$AGDA_EXEC" ]; then
+    AGDA_EXEC=agda
+  fi
 fi
 
 # Double check that the command exists
