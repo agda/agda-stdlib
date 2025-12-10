@@ -1,2 +1,5 @@
 . ../../_config/config.sh
 goldenTest "$1" "random"
+# The output is, unsurprisingly, random, so we erase it
+mv output logs/random-values
+touch output
