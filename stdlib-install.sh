@@ -2,6 +2,14 @@
 
 set -eu
 
+isDebugMode() {
+  ! [ -z ${DEBUG-} ]
+}
+
+if ! [ -z ${SHELL_DEBUG-} ]; then
+  set -x
+fi
+
 throwError() {
   echo "\033[91m✗\033[0m $1." >&2
   exit 1
@@ -10,6 +18,22 @@ throwError() {
 logHappy() {
   echo "\033[32m✔\033[0m $1"
 }
+
+checkDependency () {
+  if ! [ -x "$(command -v $1)" ]; then
+    throwError "Missing dependency: I could not find the executable '$1'"
+  elif isDebugMode; then
+    logHappy "Found '$1'"
+  fi
+}
+
+checkDependency "grep"
+checkDependency "head"
+checkDependency "mkdir"
+checkDependency "sed"
+checkDependency "tar"
+checkDependency "touch"
+checkDependency "wget"
 
 # Pick the Agda executable to analyse
 # unless the caller has specified one
