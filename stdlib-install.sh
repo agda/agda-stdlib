@@ -57,60 +57,28 @@ logHappy "Agda directory: $AGDA_DIR"
 
 if [ -z ${STDLIB_VERSION-} ]; then
   case "$AGDA_VERSION" in
-    "2.8.0")
-      STDLIB_VERSION=2.3
-      ;;
-    "2.7.0.1")
-      STDLIB_VERSION=2.3
-      ;;
-    "2.7.0")
-      STDLIB_VERSION=2.2
-      ;;
-    "2.6.4.3")
-      STDLIB_VERSION=2.1
-      ;;
-    "2.6.4.2")
-      STDLIB_VERSION=2.0
-      ;;
-    "2.6.4.2")
-      STDLIB_VERSION=2.0
-      ;;
-    "2.6.4.1")
-      STDLIB_VERSION=2.0
-      ;;
-    "2.6.4")
-      STDLIB_VERSION=2.0
-      ;;
-    "2.6.3")
-      STDLIB_VERSION=1.7.3
-      ;;
-    "2.6.2.2")
-      STDLIB_VERSION=1.7.1
-      ;;
-    "2.6.2.1")
-      STDLIB_VERSION=1.7.1
-      ;;
-    "2.6.1")
-      STDLIB_VERSION=1.7.1
-      ;;
-    *)
-      STDLIB_VERSION=experimental
-      ;;
+    "2.8.0")   STDLIB_VERSION="2.3" ;;
+    "2.7.0.1") STDLIB_VERSION="2.3" ;;
+    "2.7.0")   STDLIB_VERSION="2.2" ;;
+    "2.6.4.3") STDLIB_VERSION="2.1" ;;
+    "2.6.4.2") STDLIB_VERSION="2.0" ;;
+    "2.6.4.2") STDLIB_VERSION="2.0" ;;
+    "2.6.4.1") STDLIB_VERSION="2.0" ;;
+    "2.6.4")   STDLIB_VERSION="2.0" ;;
+    "2.6.3")   STDLIB_VERSION="1.7.3" ;;
+    "2.6.2.2") STDLIB_VERSION="1.7.1" ;;
+    "2.6.2.1") STDLIB_VERSION="1.7.1" ;;
+    "2.6.1")   STDLIB_VERSION="1.7.1" ;;
+    *)         STDLIB_VERSION="experimental" ;;
   esac
 fi
 
 logHappy "Standard library version: $STDLIB_VERSION"
 
 case "$STDLIB_VERSION" in
-  "master")
-    STDLIB_TAG="refs/heads/master"
-    ;;
-  "experimental")
-    STDLIB_TAG="refs/heads/experimental"
-    ;;
-  *)
-    STDLIB_TAG="v$STDLIB_VERSION"
-    ;;
+  "master")       STDLIB_TAG="refs/heads/master" ;;
+  "experimental") STDLIB_TAG="refs/heads/experimental" ;;
+  *)              STDLIB_TAG="v$STDLIB_VERSION" ;;
 esac
 
 # Setting up the Agda install directory
