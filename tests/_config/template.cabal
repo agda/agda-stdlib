@@ -16,7 +16,7 @@ common common-build-parameters
   build-depends:
       base      >= 4.12 && < 4.22
     , clock     >= 0.8 && <0.9
-    , directory >= 1.3.7 && < 1.3.8
+    , directory >= 1.3.7 && < 1.4
     , filemanip >= 0.3.6 && < 0.4
     , filepath  >= 1.4 && <1.6
     , process   >= 1.6 && <1.7

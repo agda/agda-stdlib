@@ -46,7 +46,7 @@ open import Data.Char
 open import Data.String using (toList)
 
 lower? : (c : Char) → Dec ('a' ≤ c × c ≤ 'z')
-lower? c = 'a' ≤? c ×-dec c ≤? 'z'
+lower? c = 'a' ≤? c ×? c ≤? 'z'
 
 _ : takeWhile lower? (toList "helLo")
   ≡ record { prefix = toList "hel"
