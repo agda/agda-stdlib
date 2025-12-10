@@ -3,6 +3,20 @@ Installation instructions
 
 Note: the full story on installing Agda libraries can be found at [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
 
+
+## Automated installation on Unix-style systems
+
+Running the following command in a terminal will download the
+[installation script](../stdlib-install.sh) and run. It will
+ask you some questions about your setup and automatically install
+a version of the stdlib compatible with your version of Agda.
+
+```shell
+sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh))"
+```
+
+## Manual installation
+
 Use version v2.3 of the standard library with Agda v2.8.0 or v2.7.0.1. You can find the correct version of the library to use for different Agda versions on the [Agda Wiki](https://wiki.portal.chalmers.se/agda/Libraries/StandardLibrary).
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where

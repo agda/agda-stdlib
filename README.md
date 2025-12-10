@@ -30,6 +30,12 @@ in glorious clickable HTML.
 
 ## Installation instructions
 
+On Unix-style systems, it should be as simple as
+
+```shell
+sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh))"
+```
+
 See the [installation instructions](https://github.com/agda/agda-stdlib/blob/master/doc/installation-guide.md) for the latest version of the standard library.
 
 #### Old versions of Agda
