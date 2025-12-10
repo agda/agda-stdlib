@@ -11,12 +11,12 @@ open import Test.Golden
 dataTests : TestPool
 dataTests = mkTestPool "Data structures"
   $ "appending"
+  ∷ "bytestring"
   ∷ "colist"
   ∷ "list"
   ∷ "rational"
   ∷ "rational-unnormalised"
   ∷ "trie"
-  ∷ "bytestring"
   ∷ []
 
 systemTests : TestPool
