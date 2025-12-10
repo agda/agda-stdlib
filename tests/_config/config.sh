@@ -35,11 +35,11 @@ set -eu
 #    against the expected file.
 goldenTest () {
 
-  AGDA=$1
+  AGDA="$1"
   TEST_NAME="stdlib-test-$2"
 
   # Taking extra args for the executable?
-  if [ -z ${3-} ]; then
+  if [ -z "${3-}" ]; then
     EXTRA_ARGS=""
   else
     EXTRA_ARGS="-- $3"
