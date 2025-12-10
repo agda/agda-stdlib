@@ -22,6 +22,10 @@ logHappy() {
   echo "\033[32m✔\033[0m $1"
 }
 
+logUnhappy() {
+  echo "\033[91m✗\033[0m $1."
+}
+
 logWarning() {
   echo "\033[93m⚠\033[0m $1"
 }
@@ -51,14 +55,19 @@ checkDependency "wget"
 # Pick the Agda executable to analyse
 # unless the caller has specified one
 if [ -z ${AGDA_EXEC-} ]; then
-  read -p "What's the name of your Agda executable (default: agda)? " AGDA_EXEC
-  if [ -z "$AGDA_EXEC" ]; then
-    AGDA_EXEC=agda
-  fi
-fi
-
-# Double check that the command exists
-if ! [ -x "$(command -v $AGDA_EXEC)" ]; then
+  while true; do
+    read -p "What's the name of your Agda executable (default: agda)? " AGDA_EXEC
+    if [ -z "$AGDA_EXEC" ]; then
+      AGDA_EXEC=agda
+    fi
+    # Double check that the command exists
+    if ! [ -x "$(command -v $AGDA_EXEC)" ]; then
+      logUnhappy "'$AGDA_EXEC' is not a valid executable"
+    else
+      break
+    fi
+  done
+elif ! [ -x "$(command -v $AGDA_EXEC)" ]; then
   throwError "'$AGDA_EXEC' is not a valid executable"
 fi
 
@@ -141,7 +150,7 @@ if [ -d "$STDLIB_DIR_NAME" ]; then
     case "$DIR_OVERWRITE" in
       [yY]*) DIR_OVERWRITE="y"; break;;
       [nN]*) DIR_OVERWRITE="n"; break;;
-      *) echo "Please answer y or n.";;
+      *) logUnhappy "Invalid answer: '$DIR_OVERWRITE'. Please answer y or n.";;
     esac
   done
   if [ "$DIR_OVERWRITE" = "y" ]; then
