@@ -102,6 +102,7 @@ open import Relation.Nullary.Decidable.Core using (does)
 
 open import Codata.Musical.Notation using (♯_)
 open import IO
+open import IO.Handle
 
 open import System.Clock as Clock using (time′; Time; seconds)
 open import System.Console.ANSI
@@ -386,6 +387,7 @@ poolRunner opts pool = do
 
 runner : List TestPool → IO ⊤
 runner tests = do
+  hSetBuffering stdout noBuffering
   -- figure out the options
   args ← getArgs
   inj₂ opts ← options args

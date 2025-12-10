@@ -65,10 +65,12 @@ goldenTest () {
   AGDA_BUILD_DIR=../../_config/_build
   CABAL_BUILD_DIR=../../_config/dist-newstyle
 
+  rm -f _build
   mkdir -p "$AGDA_BUILD_DIR"
-  ln -sf "$AGDA_BUILD_DIR" _build
+  ln -sf "$AGDA_BUILD_DIR" .
+  rm -f dist-newstyle
   mkdir -p "$CABAL_BUILD_DIR"
-  ln -sf "$CABAL_BUILD_DIR" dist-newstyle
+  ln -sf "$CABAL_BUILD_DIR" .
 
   # Compile the Agda module and build the generated code
   $AGDA --library-file=../../_config/libraries --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
