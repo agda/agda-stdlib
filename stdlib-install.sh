@@ -98,10 +98,12 @@ logHappy "Successfully downloaded the standard library"
 STDLIB_PATH="$AGDA_DIR/agda-stdlib-$STDLIB_VERSION/standard-library.agda-lib"
 AGDA_LIBRARIES_FILE="libraries-$AGDA_VERSION"
 
+touch "$AGDA_LIBRARIES_FILE"
 if ! grep -Eq "$STDLIB_PATH" "$AGDA_LIBRARIES_FILE"; then
   echo "$STDLIB_PATH" >> "$AGDA_LIBRARIES_FILE"
 fi
 
+touch "defaults-$AGDA_VERSION"
 if ! grep -Eq "^standard-library$" "defaults-$AGDA_VERSION"; then
   echo "standard-library" >> "defaults-$AGDA_VERSION"
 fi
