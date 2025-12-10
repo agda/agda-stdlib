@@ -57,6 +57,10 @@ procedure should be followed:
 * Submit a pull request to update the version of standard library on Homebrew
   (https://github.com/Homebrew/homebrew-core/blob/master/Formula/agda.rb)
 
+* Update the [install script](../stdlib-install.sh):
+
+  ** The big `case` block mapping Agda versions to stdlib versions
+
 * Update the Agda wiki:
 
   ** The standard library page.
