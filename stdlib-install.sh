@@ -30,6 +30,8 @@ logHappy "Agda executable: $AGDA_EXEC"
 # Ask the executable for its version number
 # unless the caller has specified one
 if [ -z ${AGDA_VERSION-} ]; then
+  # There is a more recent "--numeric-version" option but old
+  # versions of Agda do not implement it!
   AGDA_VERSION=$($AGDA_EXEC --version | head -n 1 | sed "s/^[a-zA-Z ]*\(2[0-9.]*\)\(-.*\)*$/\1/")
 fi
 
