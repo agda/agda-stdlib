@@ -19,6 +19,10 @@ logHappy() {
   echo "\033[32m✔\033[0m $1"
 }
 
+logWarning() {
+  echo "\033[93m⚠\033[0m $1"
+}
+
 checkDependency () {
   if ! [ -x "$(command -v $1)" ]; then
     throwError "Missing dependency: I could not find the executable '$1'"
@@ -113,12 +117,31 @@ cd "$AGDA_DIR"
 mkdir -p logs
 
 # Downloading and extracting the standard library
-STDLIB_TARBALL_NAME="/tmp/agda-stdlib-$STDLIB_VERSION.tar.gz"
+STDLIB_DIR_NAME="agda-stdlib-$STDLIB_VERSION"
+STDLIB_TARBALL_NAME="/tmp/$STDLIB_DIR_NAME.tar.gz"
 STDLIB_TARBALL_URL="https://github.com/agda/agda-stdlib/archive/$STDLIB_TAG.tar.gz"
 wget -O "$STDLIB_TARBALL_NAME" "$STDLIB_TARBALL_URL" -o logs/wget
-tar -zxvf "$STDLIB_TARBALL_NAME" > logs/tar
 
 logHappy "Successfully downloaded the standard library"
+
+if [ -d "$STDLIB_DIR_NAME" ]; then
+  logWarning "The directory $AGDA_DIR/$STDLIB_DIR_NAME already exists."
+  while true; do
+    read -p "Do you want to overwrite it? (yN) " DIR_OVERWRITE
+    DIR_OVERWRITE=${DIR_OVERWRITE:-n}
+    case "$DIR_OVERWRITE" in
+      [yY]*) DIR_OVERWRITE="y"; break;;
+      [nN]*) DIR_OVERWRITE="n"; break;;
+      *) echo "Please answer y or n.";;
+    esac
+  done
+  if [ "$DIR_OVERWRITE" = "y" ]; then
+    rm -rf "$STDLIB_DIR_NAME"
+    tar -zxvf "$STDLIB_TARBALL_NAME" > logs/tar
+  fi
+else
+  tar -zxvf "$STDLIB_TARBALL_NAME" > logs/tar
+fi
 
 # Adding the standard library to the list of installed and default libraries
 STDLIB_PATH="$AGDA_DIR/agda-stdlib-$STDLIB_VERSION/standard-library.agda-lib"
