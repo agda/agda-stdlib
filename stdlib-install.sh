@@ -156,18 +156,20 @@ else
   tar -zxvf "$STDLIB_TARBALL_NAME" > logs/tar
 fi
 
+
 # Adding the standard library to the list of installed and default libraries
 STDLIB_PATH="$AGDA_DIR/agda-stdlib-$STDLIB_VERSION/standard-library.agda-lib"
 AGDA_LIBRARIES_FILE="libraries-$AGDA_VERSION"
+AGDA_DEFAULTS_FILE="defaults-$AGDA_VERSION"
 
 touch "$AGDA_LIBRARIES_FILE"
 if ! grep -Eq "$STDLIB_PATH" "$AGDA_LIBRARIES_FILE"; then
   echo "$STDLIB_PATH" >> "$AGDA_LIBRARIES_FILE"
 fi
 
-touch "defaults-$AGDA_VERSION"
-if ! grep -Eq "^standard-library$" "defaults-$AGDA_VERSION"; then
-  echo "standard-library" >> "defaults-$AGDA_VERSION"
+touch "$AGDA_DEFAULTS_FILE"
+if ! grep -Eq "^standard-library$" "$AGDA_DEFAULTS_FILE"; then
+  echo "standard-library" >> "$AGDA_DEFAULTS_FILE"
 fi
 
 logHappy "Successfully installed the standard library"
