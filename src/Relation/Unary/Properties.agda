@@ -8,7 +8,7 @@
 
 module Relation.Unary.Properties where
 
-open import Data.Product.Base as Product using (_×_; _,_; swap; proj₁; zip′)
+open import Data.Product.Base as Product using (_×_; _,_; -,_; swap; proj₁; zip′; curry)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (id; _$_; _∘_; _∘₂_)
@@ -51,6 +51,27 @@ U-Universal = λ _ → _
 
 ∁U-Empty : Empty {A = A} (∁ U)
 ∁U-Empty = λ x x∈∁U → x∈∁U _
+
+------------------------------------------------------------------------
+-- De Morgan's laws
+
+¬∃⟨P⟩⇒Π[∁P] : ∀ {P : Pred A ℓ} → ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
+¬∃⟨P⟩⇒Π[∁P] ¬sat = curry ¬sat
+
+¬∃⟨P⟩⇒∀[∁P] : ∀ {P : Pred A ℓ} → ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
+¬∃⟨P⟩⇒∀[∁P] ¬sat = curry ¬sat _
+
+∃⟨∁P⟩⇒¬Π[P] : ∀ {P : Pred A ℓ} → ∃⟨ ∁ P ⟩ → ¬ Π[ P ]
+∃⟨∁P⟩⇒¬Π[P] (x , ¬Px) ΠP = ¬Px (ΠP x)
+
+∃⟨∁P⟩⇒¬∀[P] : ∀ {P : Pred A ℓ} → ∃⟨ ∁ P ⟩ → ¬ ∀[ P ]
+∃⟨∁P⟩⇒¬∀[P] (_ , ¬Px) ∀P = ¬Px ∀P
+
+Π[∁P]⇒¬∃[P] : ∀ {P : Pred A ℓ} → Π[ ∁ P ] → ¬ ∃⟨ P ⟩
+Π[∁P]⇒¬∃[P] Π∁P (x , Px) = Π∁P x Px
+
+∀[∁P]⇒¬∃[P] : ∀ {P : Pred A ℓ} → ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
+∀[∁P]⇒¬∃[P] ∀∁P (_ , Px) = ∀∁P Px
 
 ------------------------------------------------------------------------
 -- Subset properties
