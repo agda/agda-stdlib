@@ -30,7 +30,8 @@ in glorious clickable HTML.
 
 ## Installation instructions
 
-On Unix-style systems, it should be as simple as
+On Unix-style systems, it should be as simple as running the following command in
+a shell:
 
 ```shell
 sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh))"

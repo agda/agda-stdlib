@@ -7,9 +7,10 @@ Note: the full story on installing Agda libraries can be found at [readthedocs](
 ## Automated installation on Unix-style systems
 
 Running the following command in a terminal will download the
-[installation script](../stdlib-install.sh) and run. It will
+[installation script](../stdlib-install.sh) and run it. It will
 ask you some questions about your setup and automatically install
-a version of the stdlib compatible with your version of Agda.
+a version of the standard library compatible with your installed
+version of Agda.
 
 ```shell
 sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh))"
