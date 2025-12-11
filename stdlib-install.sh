@@ -131,7 +131,8 @@ mkdir -p logs
 STDLIB_DIR_NAME="agda-stdlib-$STDLIB_VERSION"
 STDLIB_TARBALL_NAME="/tmp/$STDLIB_DIR_NAME.tar.gz"
 STDLIB_TARBALL_URL="https://github.com/agda/agda-stdlib/archive/$STDLIB_TAG.tar.gz"
-wget -O "$STDLIB_TARBALL_NAME" "$STDLIB_TARBALL_URL" -o logs/wget
+
+wget -O "$STDLIB_TARBALL_NAME" "$STDLIB_TARBALL_URL" -o logs/wget || throwError "Download of $STDLIB_TARBALL_URL failed"
 
 logHappy "Successfully downloaded the standard library"
 
