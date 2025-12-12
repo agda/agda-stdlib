@@ -137,7 +137,7 @@ wget -O "$STDLIB_TARBALL_NAME" "$STDLIB_TARBALL_URL" -o logs/wget || throwError 
 logHappy "Successfully downloaded the standard library"
 
 if [ -d "$STDLIB_DIR_NAME" ]; then
-  logWarning "The directory $AGDA_DIR/$STDLIB_DIR_NAME already exists."
+  logWarning "The directory $AGDA_DIR/$STDLIB_DIR_NAME already exists"
   while true; do
     printf "Do you want to overwrite it? (yN) "
     read -r DIR_OVERWRITE
@@ -145,7 +145,7 @@ if [ -d "$STDLIB_DIR_NAME" ]; then
     case "$DIR_OVERWRITE" in
       [yY]*) DIR_OVERWRITE="y"; break;;
       [nN]*) DIR_OVERWRITE="n"; break;;
-      *) logUnhappy "Invalid answer: '$DIR_OVERWRITE'. Please answer y or n.";;
+      *) logUnhappy "Invalid answer: '$DIR_OVERWRITE'. Please answer y or n";;
     esac
   done
   if [ "$DIR_OVERWRITE" = "y" ]; then
