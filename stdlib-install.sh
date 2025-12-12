@@ -160,7 +160,9 @@ fi
 # Adding the standard library to the list of installed and default libraries
 STDLIB_PATH="$AGDA_DIR/agda-stdlib-$STDLIB_VERSION/standard-library.agda-lib"
 AGDA_LIBRARIES_FILE="libraries-$AGDA_VERSION"
-AGDA_DEFAULTS_FILE="defaults-$AGDA_VERSION"
+# For now we shove it in the 'defaults' file as using a version-specific
+# "defaults-$AGDA_VERSION" is not supported yet by Agda :(
+AGDA_DEFAULTS_FILE="defaults"
 
 touch "$AGDA_LIBRARIES_FILE"
 if ! grep -Eq "$STDLIB_PATH" "$AGDA_LIBRARIES_FILE"; then
