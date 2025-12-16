@@ -13,7 +13,7 @@ open import IO.Primitive.Core using (IO)
 open import Foreign.Haskell using (Pair)
 
 data Clock : Set where
-  monotonic realTime processCPUTime : Clock
+  monotonic realtime processCPUTime : Clock
   threadCPUTime monotonicRaw : Clock
 
 {-# FOREIGN GHC import System.Clock  #-}
@@ -21,7 +21,7 @@ data Clock : Set where
 {-# FOREIGN GHC
 data AgdaClock
   = AgdaMonotonic
-  | AgdaRealTime
+  | AgdaRealtime
   | AgdaProcessCPUTime
   | AgdaThreadCPUTime
   | AgdaMonotonicRaw
@@ -29,7 +29,7 @@ data AgdaClock
 fromAgdaClock :: AgdaClock -> Clock
 fromAgdaClock ac = case ac of
   AgdaMonotonic -> Monotonic
-  AgdaRealTime -> RealTime
+  AgdaRealtime -> Realtime
   AgdaProcessCPUTime -> ProcessCPUTime
   AgdaThreadCPUTime -> ThreadCPUTime
   AgdaMonotonicRaw -> MonotonicRaw
@@ -38,7 +38,7 @@ fromAgdaClock ac = case ac of
 {-# COMPILE GHC Clock =
   data AgdaClock
   ( AgdaMonotonic
-  | AgdaRealTime
+  | AgdaRealtime
   | AgdaProcessCPUTime
   | AgdaThreadCPUTime
   | AgdaMonotonicRaw
