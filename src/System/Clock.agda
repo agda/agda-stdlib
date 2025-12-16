@@ -44,13 +44,6 @@ open import System.Clock.Primitive as Prim
         ; threadCPUTime
         -- A raw hardware version of Monotonic ignoring adjustments
         ; monotonicRaw
-        -- Linux-specific clocks
-        -- Similar to Monotonic, includes time spent suspended
-        ; bootTime
-        -- Faster but less precise alternative to Monotonic
-        ; monotonicCoarse
-        -- Faster but less precise alternative to RealTime
-        ; realTimeCoarse
         )
 
 ------------------------------------------------------------------------
