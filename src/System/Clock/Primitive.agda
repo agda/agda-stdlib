@@ -38,7 +38,7 @@ fromAgdaClock ac = case ac of
 {-# COMPILE GHC Clock =
   data AgdaClock
   ( AgdaMonotonic
-  | AgdaRealtime
+  | AgdaRealTime
   | AgdaProcessCPUTime
   | AgdaThreadCPUTime
   | AgdaMonotonicRaw
