@@ -13,7 +13,7 @@ a version of the standard library compatible with your installed
 version of Agda.
 
 ```shell
-sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh))"
+sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh)"
 ```
 
 ## Manual installation

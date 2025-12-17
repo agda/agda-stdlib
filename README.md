@@ -36,7 +36,7 @@ On Unix-style systems, it should be as simple as running the following command i
 a shell:
 
 ```shell
-sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh))"
+sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh)"
 ```
 
 ### Manual installation
