@@ -100,7 +100,7 @@ We present the Agda standard library [@agda-stdlib-v2.0] (`agda-stdlib`), which 
 
 Besides providing common utilities and data structures, `agda-stdlib` is especially necessary compared to standard libraries for traditional languages for two reasons.
 
-First, Agda is a small, powerful language that omits concepts usually built-in to a language (e.g. numbers, strings).
+First, Agda is a small, powerful language that omits concepts usually built-in to a language (e.g., numbers, strings).
 This reduces compiler complexity, but leaves `agda-stdlib` to define them.
 
 Second, functions in `agda-stdlib` come with correctness proofs - these require substantial work that should not fall to users.
@@ -123,7 +123,7 @@ A diverse set of verification projects use `agda-stdlib`, including:
 
 The library has had a synergistic relationship with Agda itself, both testing and motivating new language features.
 For example, since Agda supports many incompatible language extensions, `agda-stdlib` is structured modularly to remain compatible with different combinations of extensions.
-Each module requests only the minimal expressive power it needs and to facilitate this Agda now categorises extensions as "infective" (affecting all import*ing* modules), "coinfective" (affecting all import*ed* modules) or "neither".
+Each module requests only the minimal expressive power it needs and to facilitate this Agda now categorises extensions as "infective" (affecting all import*ing* modules), "coinfective" (affecting all import*ed* modules), or "neither".
 The library has also served as a test bed for alternative approaches to defining co-inductive data types in Agda.
 
 # Design
@@ -141,7 +141,7 @@ To our knowledge, `agda-stdlib` is among the first ITP standard libraries to who
 
 In contrast to the type-class mechanisms often used by other functional languages, `agda-stdlib` primarily supports polymorphism [@ivardeBruin2023] via extensive use of parametrised modules.
 This allows users to specify instantiations of abstract parameters for whole modules in a single location, reducing the need for instance search.
-A drawback is imports must be qualified when code is instantiated multiple times in the same scope.
+A drawback is that imports must be qualified when code is instantiated multiple times in the same scope.
 Parameterised modules are also used to safely and scalably embed non-constructive mathematics into a constructive setting.
 
 The README directory within the library contains both documentation on the general design decisions and
@@ -159,7 +159,7 @@ Version 2.0 of `agda-stdlib` [@agda-stdlib-v2.0] has attempted to address some o
 
 - Minimised Dependency Graphs: core modules rely on fewer parts of the library, resulting in faster load times.
 
-- Standardisation: mathematical objects and their morphisms (e.g. groups, rings) are now constructed more uniformly, enhancing consistency and usability.
+- Standardisation: mathematical objects and their morphisms (e.g., groups, rings) are now constructed more uniformly, enhancing consistency and usability.
 
 - Tactics Library: expanded the set of available tactics (although performance can still be improved).
 
@@ -169,7 +169,7 @@ Version 2.0 of `agda-stdlib` [@agda-stdlib-v2.0] has attempted to address some o
 
 Nils Anders Danielsson provided substantial feedback.
 
-Authors are listed approximately in order of contribution. Manuscript by Daggitt, Allais, McKinna, Carette and van Doorn. A list of all contributors is available on GitHub.
+Authors are listed approximately in order of contribution. Manuscript by Daggitt, Allais, McKinna, Carette, and van Doorn. A list of all contributors is available on GitHub.
 
 # Funding and conflicts of interest
 
