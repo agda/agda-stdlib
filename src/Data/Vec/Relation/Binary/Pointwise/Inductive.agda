@@ -94,18 +94,18 @@ irrelevant irr (p ∷ r) (q ∷ s) = ≡.cong₂ _∷_ (irr p q) (irrelevant irr
 
 refl : ∀ {_∼_ : Rel A ℓ} {n} →
        Reflexive _∼_ → Reflexive (Pointwise _∼_ {n})
-refl ∼-refl {[]}      = []
+refl ∼-refl {[]}     = []
 refl ∼-refl {x ∷ xs} = ∼-refl ∷ refl ∼-refl
 
-sym : ∀ {P : REL A B ℓ} {Q : REL B A ℓ} {m n} →
+sym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {m n} →
       Sym P Q → Sym (Pointwise P) (Pointwise Q {m} {n})
-sym sm []             = []
+sym sm []            = []
 sym sm (x∼y ∷ xs∼ys) = sm x∼y ∷ sym sm xs∼ys
 
-trans : ∀ {P : REL A B ℓ} {Q : REL B C ℓ} {R : REL A C ℓ} {m n o} →
+trans : ∀ {P : REL A B ℓ₁} {Q : REL B C ℓ₂} {R : REL A C ℓ} {m n o} →
         Trans P Q R →
         Trans (Pointwise P {m}) (Pointwise Q {n} {o}) (Pointwise R)
-trans trns []             []             = []
+trans trns []            []            = []
 trans trns (x∼y ∷ xs∼ys) (y∼z ∷ ys∼zs) =
   trns x∼y y∼z ∷ trans trns xs∼ys ys∼zs
 
