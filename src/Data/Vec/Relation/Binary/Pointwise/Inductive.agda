@@ -23,7 +23,7 @@ open import Relation.Binary.Bundles using (Setoid; DecSetoid)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.Definitions
-  using (Trans; Decidable; Reflexive; Sym)
+  using (Trans; Decidable; Reflexive; Sym; Antisym; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Decidable using (yes; no; _×?_; map′)
 open import Relation.Unary using (Pred)
@@ -88,6 +88,10 @@ module _ {_∼_ : REL A B ℓ} where
 ------------------------------------------------------------------------
 -- Relational properties
 
+irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
+irrelevant irr []      []      = ≡.refl
+irrelevant irr (p ∷ r) (q ∷ s) = ≡.cong₂ _∷_ (irr p q) (irrelevant irr r s)
+
 refl : ∀ {_∼_ : Rel A ℓ} {n} →
        Reflexive _∼_ → Reflexive (Pointwise _∼_ {n})
 refl ∼-refl {[]}      = []
@@ -104,6 +108,11 @@ trans : ∀ {P : REL A B ℓ} {Q : REL B C ℓ} {R : REL A C ℓ} {m n o} →
 trans trns []             []             = []
 trans trns (x∼y ∷ xs∼ys) (y∼z ∷ ys∼zs) =
   trns x∼y y∼z ∷ trans trns xs∼ys ys∼zs
+
+antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
+          Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
+antisym asym []            []            = []
+antisym asym (x∼y ∷ xs∼ys) (y∼x ∷ ys∼xs) = asym x∼y y∼x ∷ antisym asym xs∼ys ys∼xs
 
 decidable : ∀ {_∼_ : REL A B ℓ} →
             Decidable _∼_ → ∀ {m n} → Decidable (Pointwise _∼_ {m} {n})
