@@ -14,7 +14,7 @@ module Algebra.Module.Morphism.LeftModuleMonomorphism
   (isLeftModuleMonomorphism : IsLeftModuleMonomorphism M N ⟦_⟧)
   where
 
-open IsLeftModuleMonomorphism isLeftModuleMonomorphism
+open IsLeftModuleMonomorphism M N isLeftModuleMonomorphism
 private
   module M = RawLeftModule M
   module N = RawLeftModule N
