@@ -1,13 +1,22 @@
-INTERACTIVE ?= --interactive
+INTERACTIVE   ?= --interactive
+GHC_EXEC      ?= ghc
+CABAL         ?= cabal
+CABAL_OPTIONS ?= --with-compiler $(GHC_EXEC)
 
-runtests: runtests.agda
-	rm -f _build/runtests
-	rm -f _build/MAlonzo/Code/Qruntests*
-	$(AGDA) --compile-dir=_build/ -c runtests.agda
+AGDA_BUILD_DIR  = _config/_build
+CABAL_BUILD_DIR = _config/dist-newstyle
 
-test: runtests
-	./_build/runtests $(AGDA_EXEC) $(INTERACTIVE) --timing --failure-file failures --only $(only)
+./runtests: admin/runtests/Main.agda
+	cd admin/runtests && AGDA="$(AGDA)" sh run
+
+test: ./runtests
+	./runtests "$(AGDA)" $(INTERACTIVE) --timing --failure-file failures --only $(only)
 
 
-retest: runtests
-	./_build/runtests $(AGDA_EXEC) $(INTERACTIVE) --timing --failure-file failures --only-file failures --only $(only)
+retest: ./runtests
+	./runtests "$(AGDA)" $(INTERACTIVE) --timing --failure-file failures --only-file failures --only $(only)
+
+clean:
+	rm -rf runtests
+	rm -rf _config/_build
+	rm -rf _config/dist-newstyle

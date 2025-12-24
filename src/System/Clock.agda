@@ -37,20 +37,13 @@ open import System.Clock.Primitive as Prim
         -- System-wide monotonic time since an arbitrary point in the past
         ; monotonic
         -- System-wide real time since the Epoch
-        ; realTime
+        ; realtime
         -- Amount of execution time of the current process
         ; processCPUTime
         -- Amount of execution time of the current OS thread
         ; threadCPUTime
         -- A raw hardware version of Monotonic ignoring adjustments
         ; monotonicRaw
-        -- Linux-specific clocks
-        -- Similar to Monotonic, includes time spent suspended
-        ; bootTime
-        -- Faster but less precise alternative to Monotonic
-        ; monotonicCoarse
-        -- Faster but less precise alternative to RealTime
-        ; realTimeCoarse
         )
 
 ------------------------------------------------------------------------
@@ -86,9 +79,9 @@ record Timed (A : Set a) : Set a where
 
 time : IO A → IO (Timed A)
 time io = do
-  start ← lift! $ getTime realTime
+  start ← lift! $ getTime realtime
   a     ← io
-  end   ← lift! $ getTime realTime
+  end   ← lift! $ getTime realtime
   pure $ mkTimed a $ diff (lower start) (lower end)
 
 time′ : IO {0ℓ} A → IO Time
