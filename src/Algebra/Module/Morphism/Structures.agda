@@ -35,7 +35,7 @@ module LeftSemimoduleMorphisms
 
     open IsMonoidHomomorphism +ᴹ-isMonoidHomomorphism public
       using (isRelHomomorphism; ⟦⟧-cong)
-      renaming (isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo)
+      renaming (isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⟦_⟧∙_ to ⟦_⟧+ᴹ_; _∙⟦_⟧ to _+ᴹ⟦_⟧)
 
   record IsLeftSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -92,7 +92,7 @@ module LeftModuleMorphisms
       using (isRelHomomorphism; ⟦⟧-cong)
       renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
                ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
-               )
+               ; ⟦_⟧∙_ to ⟦_⟧+ᴹ_; _∙⟦_⟧ to _+ᴹ⟦_⟧)
 
     isLeftSemimoduleHomomorphism : IsLeftSemimoduleHomomorphism ⟦_⟧
     isLeftSemimoduleHomomorphism = record
@@ -162,7 +162,7 @@ module RightSemimoduleMorphisms
 
     open IsMonoidHomomorphism +ᴹ-isMonoidHomomorphism public
       using (isRelHomomorphism; ⟦⟧-cong)
-      renaming (isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo)
+      renaming (isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⟦_⟧∙_ to ⟦_⟧+ᴹ_; _∙⟦_⟧ to _+ᴹ⟦_⟧)
 
   record IsRightSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -219,7 +219,7 @@ module RightModuleMorphisms
       using (isRelHomomorphism; ⟦⟧-cong)
       renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
                ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
-               )
+               ; ⟦_⟧∙_ to ⟦_⟧+ᴹ_; _∙⟦_⟧ to _+ᴹ⟦_⟧)
     isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
     isRightSemimoduleHomomorphism = record
       { +ᴹ-isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
@@ -376,7 +376,7 @@ module BimoduleMorphisms
       using (isRelHomomorphism; ⟦⟧-cong)
       renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
                ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
-               )
+               ; ⟦_⟧∙_ to ⟦_⟧+ᴹ_; _∙⟦_⟧ to _+ᴹ⟦_⟧)
 
     isBisemimoduleHomomorphism : IsBisemimoduleHomomorphism ⟦_⟧
     isBisemimoduleHomomorphism = record
