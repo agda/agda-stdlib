@@ -155,6 +155,13 @@ Additions to existing modules
   ⊕-∧-booleanRing   : BooleanRing _ _
   ```
 
+* In `Algebra.Module.Properties.LeftModule`:
+  ```agda
+  -1#*m≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
+  -‿distribˡ-*ₗ : ∀ r m → - r *ₗ m ≈ᴹ -ᴹ (r *ₗ m)
+  -ᴹ‿distrib-*ₗ : ∀ r m → r *ₗ (-ᴹ m) ≈ᴹ -ᴹ (r *ₗ m)
+  ```
+
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda
   [-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
