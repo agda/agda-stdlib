@@ -264,6 +264,36 @@ Additions to existing modules
                     updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
   ```
 
+* In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
+  ```agda
+  ≤±-respˡ-≡ : _≤±_ Respectsˡ _≡_
+  ≤±-respʳ-≡ : _≤±_ Respectsʳ _≡_
+  ≤±-resp-≡ : _≤±_ Respects₂ _≡_
+  ≤±-respˡ-≈± : _≤_ Respectsˡ _≈_ → _≤±_ Respectsˡ _≈±_
+  ≤±-respʳ-≈± : _≤_ Respectsʳ _≈_ → _≤±_ Respectsʳ _≈±_
+  ≤±-resp-≈± : _≤_ Respects₂ _≈_ → _≤±_ Respects₂ _≈±_
+  ```
+
+* In `Relation.Binary.Construct.Add.Infimum.NonStrict`:
+  ```agda
+  ≤₋-respˡ-≡ : _≤₋_ Respectsˡ _≡_
+  ≤₋-respʳ-≡ : _≤₋_ Respectsʳ _≡_
+  ≤₋-resp-≡ : _≤₋_ Respects₂ _≡_
+  ≤₋-respˡ-≈₋ : _≤_ Respectsˡ _≈_ → _≤₋_ Respectsˡ _≈₋_
+  ≤₋-respʳ-≈₋ : _≤_ Respectsʳ _≈_ → _≤₋_ Respectsʳ _≈₋_
+  ≤₋-resp-≈₋ : _≤_ Respects₂ _≈_ → _≤₋_ Respects₂ _≈₋_
+  ```
+
+* In `Relation.Binary.Construct.Add.Extrema.Supremum.NonStrict`:
+  ```agda
+  ≤⁺-respˡ-≡ : _≤⁺_ Respectsˡ _≡_
+  ≤⁺-respʳ-≡ : _≤⁺_ Respectsʳ _≡_
+  ≤⁺-resp-≡ : _≤⁺_ Respects₂ _≡_
+  ≤⁺-respˡ-≈⁺ : _≤_ Respectsˡ _≈_ → _≤⁺_ Respectsˡ _≈⁺_
+  ≤⁺-respʳ-≈⁺ : _≤_ Respectsʳ _≈_ → _≤⁺_ Respectsʳ _≈⁺_
+  ≤⁺-resp-≈⁺ : _≤_ Respects₂ _≈_ → _≤⁺_ Respects₂ _≈⁺_
+  ```
+
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`
   ```agda
   irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
