@@ -305,7 +305,6 @@ Additions to existing modules
   ```agda
   antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
             Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
-
   ```
 
 * In `Relation.Nullary.Negation.Core`
