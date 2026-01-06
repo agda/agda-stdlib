@@ -1,6 +1,6 @@
 {-# OPTIONS --guardedness #-}
 
-module runtests where
+module Main where
 
 open import Data.List.Base as List using (_∷_; [])
 open import Data.String.Base using (String; _++_)
@@ -11,12 +11,12 @@ open import Test.Golden
 dataTests : TestPool
 dataTests = mkTestPool "Data structures"
   $ "appending"
+  ∷ "bytestring"
   ∷ "colist"
   ∷ "list"
   ∷ "rational"
   ∷ "rational-unnormalised"
   ∷ "trie"
-  ∷ "bytestring"
   ∷ []
 
 systemTests : TestPool

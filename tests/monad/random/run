@@ -1,6 +1,5 @@
-$1 --compile-dir=../../_build -c Main.agda > log
-./../../_build/Main > random_values
+. ../../_config/config.sh
+goldenTest "$1" "random"
+# The output is, unsurprisingly, random, so we erase it
+mv output logs/random-values
 touch output
-
-rm ../../_build/Main
-rm ../../_build/MAlonzo/Code/Main*

@@ -76,8 +76,7 @@ jobs:
           if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
              || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
-            echo "AGDA_COMMIT=3d04bacca842729f9c0869b9287256321b5f450f" >> "${GITHUB_ENV}";
-              # Andreas, 2025-10-07: 3d04bacca842729f9c0869b9287256321b5f450f is tags/v2.8.0
+            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_ENV}";
             echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_ENV}"
           else
             # Pick Agda version for master
@@ -170,8 +169,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          ${{ env.CABAL_V1_INSTALL }} clock
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+          make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
 
 
 ########################################################################
