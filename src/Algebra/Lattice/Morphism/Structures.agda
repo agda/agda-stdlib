@@ -87,6 +87,7 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
 
     open ∧.IsMagmaMonomorphism ∧-isMagmaMonomorphism public
       using (isRelMonomorphism)
+      renaming (⟦_⟧∙_ to ⟦_⟧∧_; _∙⟦_⟧ to _∧⟦_⟧)
 
 
   record IsLatticeIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where

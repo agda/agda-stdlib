@@ -155,6 +155,12 @@ Additions to existing modules
   ⊕-∧-booleanRing   : BooleanRing _ _
   ```
 
+* In `Algebra.Morphism.Structures.IsMagmaHomomorphism`:
+  ```agda
+  ⟦_⟧∙_ : A → B → B
+  _∙⟦_⟧ : B → A → B
+  ```
+
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda
   [-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y

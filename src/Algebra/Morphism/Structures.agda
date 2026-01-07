@@ -89,6 +89,12 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
     open IsRelHomomorphism isRelHomomorphism public
       renaming (cong to ⟦⟧-cong)
 
+    ⟦_⟧∙_ : A → B → B
+    ⟦ x ⟧∙ y = ⟦ x ⟧ ◦ y
+
+    _∙⟦_⟧ : B → A → B
+    y ∙⟦ x ⟧ = y ◦ ⟦ x ⟧
+
 
   record IsMagmaMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -261,13 +267,20 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
       *-homo : Homomorphic₂ ⟦_⟧ _*₁_ _*₂_
 
     open +.IsMonoidHomomorphism +-isMonoidHomomorphism public
-      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism)
+      renaming (homo to +-homo; ε-homo to 0#-homo
+               ; isMagmaHomomorphism to +-isMagmaHomomorphism
+               ; ⟦_⟧∙_ to ⟦_⟧+_; _∙⟦_⟧ to _+⟦_⟧
+               )
 
     *-isMagmaHomomorphism : *.IsMagmaHomomorphism ⟦_⟧
     *-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
       ; homo = *-homo
       }
+
+    open *.IsMagmaHomomorphism *-isMagmaHomomorphism public
+      using ()
+      renaming (⟦_⟧∙_ to ⟦_⟧*_; _∙⟦_⟧ to _*⟦_⟧)
 
   record IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -429,7 +442,11 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
       *-homo : Homomorphic₂ ⟦_⟧ _*₁_ _*₂_
 
     open +.IsGroupHomomorphism +-isGroupHomomorphism public
-      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism; isMonoidHomomorphism to +-isMonoidHomomorphism)
+      renaming (homo to +-homo; ε-homo to 0#-homo
+               ; isMagmaHomomorphism to +-isMagmaHomomorphism
+               ; isMonoidHomomorphism to +-isMonoidHomomorphism
+               ; ⟦_⟧∙_ to ⟦_⟧+_; _∙⟦_⟧ to _+⟦_⟧
+               )
 
     isNearSemiringHomomorphism : +*.IsNearSemiringHomomorphism ⟦_⟧
     isNearSemiringHomomorphism = record
@@ -442,6 +459,10 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
       { isRelHomomorphism = isRelHomomorphism
       ; homo = *-homo
       }
+
+    open *.IsMagmaHomomorphism *-isMagmaHomomorphism public
+      using ()
+      renaming (⟦_⟧∙_ to ⟦_⟧*_; _∙⟦_⟧ to _*⟦_⟧)
 
   record IsRingWithoutOneMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
