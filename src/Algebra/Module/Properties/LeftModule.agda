@@ -28,20 +28,12 @@ open import Algebra.Properties.Ring ring
 
 open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
 
--1#*m≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
--1#*m≈-ᴹm m = uniqueʳ‿-ᴹ m (- 1# *ₗ m) (begin
-    m +ᴹ (- 1# *ₗ m)       ≈⟨ +ᴹ-congʳ (*ₗ-identityˡ m) ⟨
-    1# *ₗ m +ᴹ (- 1# *ₗ m) ≈⟨ *ₗ-distribʳ m 1# (- 1#) ⟨
-    (1# - 1#) *ₗ m         ≈⟨ *ₗ-congʳ (-‿inverseʳ 1#) ⟩
-    0#        *ₗ m         ≈⟨ *ₗ-zeroˡ _ ⟩
-    0ᴹ                     ∎)
-
--‿distribˡ-*ₗ : ∀ r m → - r *ₗ m ≈ᴹ -ᴹ (r *ₗ m)
--‿distribˡ-*ₗ r m = begin
-  - r *ₗ m           ≈⟨ *ₗ-congʳ (-1*x≈-x _) ⟨
-  (- 1# * r) *ₗ m    ≈⟨ *ₗ-assoc _ _ _ ⟩
-  (- 1#) *ₗ (r *ₗ m) ≈⟨ -1#*m≈-ᴹm _ ⟩
-  -ᴹ (r *ₗ m )       ∎
+-‿distrib-*ₗ : ∀ r m → - r *ₗ m ≈ᴹ -ᴹ (r *ₗ m)
+-‿distrib-*ₗ r m = uniqueʳ‿-ᴹ (r *ₗ m) (- r *ₗ m) (begin
+  r *ₗ m +ᴹ - r *ₗ m ≈⟨ *ₗ-distribʳ m r (- r) ⟨
+  (r - r) *ₗ m       ≈⟨ *ₗ-congʳ (-‿inverseʳ r) ⟩
+  0# *ₗ m            ≈⟨ *ₗ-zeroˡ m ⟩
+  0ᴹ                 ∎)
 
 -ᴹ‿distrib-*ₗ : ∀ r m → r *ₗ (-ᴹ m) ≈ᴹ -ᴹ (r *ₗ m)
 -ᴹ‿distrib-*ₗ r m = uniqueʳ‿-ᴹ (r *ₗ m) (r *ₗ (-ᴹ m))
@@ -50,3 +42,9 @@ open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
     r *ₗ (m +ᴹ (-ᴹ m))    ≈⟨ *ₗ-congˡ (-ᴹ‿inverseʳ m) ⟩
     r *ₗ 0ᴹ               ≈⟨ *ₗ-zeroʳ r ⟩
     0ᴹ                    ∎)
+
+-1#*m≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
+-1#*m≈-ᴹm m = begin
+  - 1# *ₗ m    ≈⟨ -‿distrib-*ₗ 1# m ⟩
+  -ᴹ (1# *ₗ m) ≈⟨ -ᴹ‿cong (*ₗ-identityˡ m) ⟩
+  -ᴹ m         ∎
