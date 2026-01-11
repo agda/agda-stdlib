@@ -7,12 +7,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
+
+module Algebra.Properties.Monoid.Mult {a ℓ} (M : Monoid a ℓ) where
+
 open import Data.Bool.Base as Bool using (true; false; _∧_)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-
-module Algebra.Properties.Monoid.Mult {a ℓ} (M : Monoid a ℓ) where
 
 -- View of the monoid operator as addition
 open Monoid M
@@ -27,9 +28,9 @@ open Monoid M
   ; ε         to 0#
   )
 
-open import Relation.Binary.Reasoning.Setoid setoid
-
 open import Algebra.Definitions _≈_
+open import Algebra.Properties.Semigroup semigroup
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Definition
@@ -60,10 +61,7 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 
 ×-homo-+ : ∀ x m n → (m ℕ.+ n) × x ≈ m × x + n × x
 ×-homo-+ x 0       n = sym (+-identityˡ (n × x))
-×-homo-+ x (suc m) n = begin
-  x + (m ℕ.+ n) × x    ≈⟨ +-congˡ (×-homo-+ x m n) ⟩
-  x + (m × x + n × x)  ≈⟨ sym (+-assoc x (m × x) (n × x)) ⟩
-  x + m × x + n × x    ∎
+×-homo-+ x (suc m) n = sym (uv≈w⇒xu∙v≈xw (sym (×-homo-+ x m n)) x)
 
 ×-idem : ∀ {c} → _+_ IdempotentOn c →
          ∀ n → .{{_ : NonZero n}} → n × c ≈ c
