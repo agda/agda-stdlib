@@ -69,16 +69,16 @@ sum : ∀ {n} → Vector Carrier n → Carrier
 sum = Vector.foldr _+_ 0#
 
 ------------------------------------------------------------------------
--- 'Conjunction' with a Boolean: action of the Boolean (true,∧)-rawMonoid
+-- 'Guard' with a Boolean: action of the Boolean (true,∧)-rawMonoid
 ------------------------------------------------------------------------
 
-infixr 8 _∧_
+infixr 8 _?>₀_
 
-_∧_ : Bool → Carrier → Carrier
-b ∧ x = if b then x else 0#
+_?>₀_ : Bool → Carrier → Carrier
+b ?>₀ x = if b then x else 0#
 
--- tail-recursive optimisation
-infixl 8 _∧′_∙_
+-- accumulator optimisation
+infixl 8 _?>_∙_
 
-_∧′_∙_ : Bool → Carrier → Carrier → Carrier
-b ∧′ x ∙ y = if b then x + y else y
+_?>_∙_ : Bool → Carrier → Carrier → Carrier
+b ?> x ∙ y = if b then x + y else y
