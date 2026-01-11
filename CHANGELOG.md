@@ -166,7 +166,7 @@ Additions to existing modules
   ?>₀-homo-true  : true ?>₀ x ≈ x
   ?>₀-assocˡ     : b ?>₀ b′ ?>₀ x ≈ (b ∧ b′) ?>₀ x
   b?>x∙y≈b?>₀x+y : b ?> x ∙ y ≈ (b ?>₀ x) + y
-  b?>₀x≈b?>x+0   : b ?>₀ x ≈ b ?> x ∙ 0#
+  b?>₀x≈b?>x∙0   : b ?>₀ x ≈ b ?> x ∙ 0#
    ```
 
 * In `Algebra.Properties.RingWithoutOne`:

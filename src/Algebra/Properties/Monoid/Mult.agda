@@ -93,6 +93,6 @@ b?>x∙y≈b?>₀x+y : ∀ b x y → b ?> x ∙ y ≈ b ?>₀ x + y
 b?>x∙y≈b?>₀x+y true  _ _ = refl
 b?>x∙y≈b?>₀x+y false _ y = sym (+-identityˡ y)
 
-b?>₀x≈b?>x+0 : ∀ b x → b ?>₀ x ≈ b ?> x ∙ 0#
-b?>₀x≈b?>x+0 true  _ = sym (+-identityʳ _)
-b?>₀x≈b?>x+0 false x = refl
+b?>₀x≈b?>x∙0 : ∀ b x → b ?>₀ x ≈ b ?> x ∙ 0#
+b?>₀x≈b?>x∙0 true  _ = sym (+-identityʳ _)
+b?>₀x≈b?>x∙0 false x = refl
