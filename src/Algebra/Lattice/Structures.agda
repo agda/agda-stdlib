@@ -13,7 +13,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)

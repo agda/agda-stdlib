@@ -22,9 +22,13 @@ open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_)
 import Relation.Binary.Definitions as B
-import Relation.Binary.Structures as B
+  using (Reflexive; Symmetric; Transitive; Antisymmetric
+        ;_Respectsˡ_; _Respectsʳ_; _Respects₂_)
+import Relation.Binary.Structures as B using (IsEquivalence; IsPreorder; IsPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Indexed.Homogeneous.Definitions
+import Relation.Binary.Structures as B
+  using (IsEquivalence; IsPreorder; IsPartialOrder)
 
 ------------------------------------------------------------------------
 -- Equivalences

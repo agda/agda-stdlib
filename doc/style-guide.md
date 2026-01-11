@@ -131,7 +131,7 @@ automate most of this.
   open SetoidEquality S
   ```
 
-* If importing a parametrised module, qualified or otherwise, with its
+* If importing a parameterised module, qualified or otherwise, with its
   parameters instantiated, then such 'instantiated imports' should be placed
   *after* the main block of `import`s, and *before* any `variable` declarations.
 
@@ -314,6 +314,41 @@ line of code, indented by two spaces.
     where open ≤-Reasoning
   ```
 
+#### Layout of deprecation blocks
+
+* There is standard boilerplate text which should go at the end of a
+  file, separated by two blank lines from the main module body:
+  ```agda
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+  ```
+
+* For each (new) version with deprecations, there should be a single
+  line comment, separated by one blank line from the preceding
+  deprecation block:
+  ```agda
+-- Version X.Y
+  ```
+
+* There is standard boilerplate text for deprecating `old-name` in
+  favour of a definition in terms of `new-name`: the actual definition
+  (which need not have a type signature if this is a simple matter of
+  aliasing, or simple function composition), followed by:
+  ```agda
+{-# WARNING_ON_USAGE <old-name>
+"Warning: <old-name> was deprecated in vX.Y.
+Please use <newname> instead."
+#-}
+  ```
+  where the advice on what to use instead may also contain additional
+  information regarding eg. location, or usage patterns.
+
+* Each entry in the block should be correlated with a suitable
+  `CHANGELOG` entry for the associated release version.
+
 #### Mutual and private blocks
 
 * Non-trivial proofs in `private` blocks are generally discouraged. If it is
@@ -399,7 +434,7 @@ line of code, indented by two spaces.
   syntax in preference to the Unicode `⦃_⦄` syntax (written using `\{{`/`\}}`),
   which moreover requires additional whitespace to parse correctly.
   NB. Even for irrelevant instances, such as typically for `NonZero` arguments,
-  neverthelesss it is necessary to supply an underscore binding `{{_ : NonZero n}}`
+  nevertheless it is necessary to supply an underscore binding `{{_ : NonZero n}}`
   if subsequent terms occurring in the type rely on that argument to be well-formed:
   eg in `Data.Nat.DivMod`, in the use of `_/ n` and `_% n`
   ```agda
@@ -536,8 +571,9 @@ word within a compound word is capitalized except for the first word.
 
 * Likewise, standard infix symbols for eg, divisibility on numeric
   datatypes/algebraic structure, should be written `\|`, NOT the
-  unmarked `|` character. An exception to this is the *strict*
-  ordering relation, written using `<`, NOT `\<` as might be expected.
+  unmarked `|` character. Ditto. mutual divisibility `\||` etc. An
+  exception to this is the *strict* ordering relation, written using
+  `<`, NOT `\<` as might be expected.
 
 * Since v2.0, the `Algebra` hierarchy systematically introduces
   consistent symbolic notation for the negated versions of the usual
@@ -611,7 +647,7 @@ Type formers:
 
 * sum-like `infixr 1 _⊎_`
 
-*  binary properties `infix 4 _Absorbs_`
+* binary properties `infix 4 _Absorbs_`
 
 #### Functions and relations over specific datatypes
 
@@ -681,3 +717,8 @@ used successfully in PR
 systematic for `Nary` relations in PR
 [#811](https://github.com/agda/agda-stdlib/pull/811)
 
+## Prefer use of `Relation.Nullary.Negation.Core.contradiction`
+
+Where possible use `contradiction` between two explicit arguments rather
+than appealing to the lower-level `Data.Empty.⊥-elim`. This provides
+clearer documentation for readers of the code.

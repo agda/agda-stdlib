@@ -11,7 +11,7 @@
 
 module Data.Vec.Relation.Binary.Lex.NonStrict where
 
-open import Data.Empty
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Data.Nat.Base using (ℕ)
@@ -23,13 +23,17 @@ open import Function.Base using (id)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles
-  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
+  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder
+        ; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder; IsPreorder; IsTotalOrder)
+  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder
+        ; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder
+        ; IsPreorder; IsTotalOrder)
 open import Relation.Binary.Definitions
-  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous)
+  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Trans
+        ; Decidable; Total; Trichotomous)
 import Relation.Binary.Construct.NonStrictToStrict as Conv
-open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 
 private
   variable

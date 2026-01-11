@@ -8,25 +8,24 @@
 
 module Reflection.AST.Term where
 
-open import Data.List.Base as List                     hiding (_++_)
-open import Data.List.Properties                       using (∷-dec)
-open import Data.Nat.Base                              using (ℕ; zero; suc)
-import Data.Nat.Properties as ℕ
-open import Data.Product.Base                          using (_×_; _,_; <_,_>; uncurry; map₁)
-open import Data.Product.Properties                    using (,-injective)
-open import Data.Maybe.Base                            using (Maybe; just; nothing)
-open import Data.String.Base                           using (String)
-open import Data.String.Properties as String           hiding (_≟_)
-open import Relation.Nullary.Decidable                 using (map′; _×-dec_; yes; no)
-open import Relation.Binary.Definitions                using (Decidable; DecidableEquality)
+open import Data.List.Base as List hiding (_++_)
+open import Data.List.Properties using (∷-dec)
+open import Data.Nat.Base using (ℕ; zero; suc)
+import Data.Nat.Properties as ℕ using (_≟_)
+open import Data.Product.Base using (_×_; _,_; <_,_>; uncurry; map₁)
+open import Data.Product.Properties using (,-injective)
+open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.String.Base using (String)
+open import Data.String.Properties as String hiding (_≟_)
+open import Relation.Nullary.Decidable using (map′; _×?_; yes; no)
+open import Relation.Binary.Definitions using (Decidable; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
-
-open import Reflection.AST.Abstraction
-open import Reflection.AST.Argument
+open import Reflection.AST.Abstraction using (Abs; abs; unAbs-dec)
+open import Reflection.AST.Argument as Arg
 open import Reflection.AST.Argument.Information using (visibility)
 open import Reflection.AST.Argument.Visibility as Visibility hiding (_≟_)
-import Reflection.AST.Literal as Literal
-import Reflection.AST.Meta as Meta
+import Reflection.AST.Literal as Literal using (Literal; _≟_)
+import Reflection.AST.Meta as Meta using (Meta; _≟_)
 open import Reflection.AST.Name as Name using (Name)
 
 ------------------------------------------------------------------------
@@ -167,7 +166,7 @@ arg i a ≟-ArgType arg i′ a′ = unArg-dec (a ≟ a′)
 _≟-Telescope_ : DecidableEquality Telescope
 [] ≟-Telescope [] = yes refl
 ((x , t) ∷ tel) ≟-Telescope ((x′ , t′) ∷ tel′) = ∷-dec
-  (map′ (uncurry (cong₂ _,_)) ,-injective ((x String.≟ x′) ×-dec (t ≟-ArgTerm t′)))
+  (map′ (uncurry (cong₂ _,_)) ,-injective ((x String.≟ x′) ×? (t ≟-ArgTerm t′)))
   (tel ≟-Telescope tel′)
 [] ≟-Telescope (_ ∷ _) = no λ ()
 (_ ∷ _) ≟-Telescope [] = no λ ()
@@ -175,11 +174,11 @@ _≟-Telescope_ : DecidableEquality Telescope
 clause tel ps b ≟-Clause clause tel′ ps′ b′ =
   map′ (λ (tel≡tel′ , ps≡ps′ , b≡b′) → cong₂ (uncurry clause) (cong₂ _,_ tel≡tel′ ps≡ps′) b≡b′)
            clause-injective
-           (tel ≟-Telescope tel′ ×-dec ps ≟-Patterns ps′ ×-dec b ≟ b′)
+           (tel ≟-Telescope tel′ ×? ps ≟-Patterns ps′ ×? b ≟ b′)
 absurd-clause tel ps ≟-Clause absurd-clause tel′ ps′ =
   map′ (uncurry (cong₂ absurd-clause))
            absurd-clause-injective
-           (tel ≟-Telescope tel′ ×-dec ps ≟-Patterns ps′)
+           (tel ≟-Telescope tel′ ×? ps ≟-Patterns ps′)
 clause _ _ _      ≟-Clause absurd-clause _ _ = no λ()
 absurd-clause _ _ ≟-Clause clause _ _ _      = no λ()
 
@@ -268,19 +267,19 @@ inf-injective : ∀ {x y} → inf x ≡ inf y → x ≡ y
 inf-injective refl = refl
 
 var x args ≟ var x′ args′ =
-  map′ (uncurry (cong₂ var)) var-injective (x ℕ.≟ x′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ var)) var-injective (x ℕ.≟ x′ ×? args ≟-Args args′)
 con c args ≟ con c′ args′ =
-  map′ (uncurry (cong₂ con)) con-injective (c Name.≟ c′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ con)) con-injective (c Name.≟ c′ ×? args ≟-Args args′)
 def f args ≟ def f′ args′ =
-  map′ (uncurry (cong₂ def)) def-injective (f Name.≟ f′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ def)) def-injective (f Name.≟ f′ ×? args ≟-Args args′)
 meta x args ≟ meta x′ args′ =
-  map′ (uncurry (cong₂ meta)) meta-injective (x Meta.≟ x′   ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ meta)) meta-injective (x Meta.≟ x′   ×? args ≟-Args args′)
 lam v t    ≟ lam v′ t′    =
-  map′ (uncurry (cong₂ lam)) lam-injective (v Visibility.≟ v′ ×-dec t ≟-AbsTerm t′)
+  map′ (uncurry (cong₂ lam)) lam-injective (v Visibility.≟ v′ ×? t ≟-AbsTerm t′)
 pat-lam cs args ≟ pat-lam cs′ args′ =
-  map′ (uncurry (cong₂ pat-lam)) pat-lam-injective (cs ≟-Clauses cs′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ pat-lam)) pat-lam-injective (cs ≟-Clauses cs′ ×? args ≟-Args args′)
 pi t₁ t₂   ≟ pi t₁′ t₂′   =
-  map′ (uncurry (cong₂ pi))  pi-injective (t₁ ≟-ArgType t₁′  ×-dec t₂ ≟-AbsType t₂′)
+  map′ (uncurry (cong₂ pi))  pi-injective (t₁ ≟-ArgType t₁′  ×? t₂ ≟-AbsType t₂′)
 sort s     ≟ sort s′      = map′ (cong sort)  sort-injective (s ≟-Sort s′)
 lit l      ≟ lit l′       = map′ (cong lit)   lit-injective (l Literal.≟ l′)
 unknown    ≟ unknown      = yes refl
@@ -438,7 +437,7 @@ dot-injective refl = refl
 absurd-injective : ∀ {x y} → absurd x ≡ absurd y → x ≡ y
 absurd-injective refl = refl
 
-con c ps ≟-Pattern con c′ ps′ = map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≟ c′ ×-dec ps ≟-Patterns ps′)
+con c ps ≟-Pattern con c′ ps′ = map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≟ c′ ×? ps ≟-Patterns ps′)
 var x    ≟-Pattern var x′     = map′ (cong var) pat-var-injective (x ℕ.≟ x′)
 lit l    ≟-Pattern lit l′     = map′ (cong lit) pat-lit-injective (l Literal.≟ l′)
 proj a   ≟-Pattern proj a′    = map′ (cong proj) proj-injective (a Name.≟ a′)

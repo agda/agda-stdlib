@@ -8,11 +8,11 @@
 
 module Data.List.Fresh.NonEmpty where
 
-open import Level using (Level; _⊔_)
 open import Data.List.Fresh as List# using (List#; []; cons; fresh)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; suc)
 open import Data.Product.Base using (_×_; _,_)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 
 private

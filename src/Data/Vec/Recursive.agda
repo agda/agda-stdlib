@@ -18,7 +18,7 @@ module Data.Vec.Recursive where
 
 open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred)
 open import Data.Nat.Properties using (+-comm; *-comm)
-open import Data.Empty.Polymorphic
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Fin.Properties using (1↔⊤; *↔×)
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)

@@ -5,12 +5,15 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
+{-# OPTIONS --warning=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Properties where
 
 open import Algebra.Apartness
+  using (IsHeytingCommutativeRing; IsHeytingField
+        ; HeytingCommutativeRing; HeytingField)
 open import Algebra.Construct.NaturalChoice.Base
+  using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Algebra.Consequences.Propositional
@@ -42,16 +45,17 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   renaming
   ( ↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; ↧ₙ_ to ↧ₙᵘ_
   ; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_; _<_ to _<ᵘ_
-  ; _+_ to _+ᵘ_
-  )
+  ; _+_ to _+ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
 import Data.Sign.Base as Sign
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
-open import Function.Definitions using (Injective)
+open import Function.Definitions using (Congruent; Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
+  using (IsRelHomomorphism; IsRelMonomorphism
+        ; IsOrderHomomorphism; IsOrderMonomorphism)
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
 import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
 open import Relation.Binary.PropositionalEquality.Core
@@ -442,10 +446,10 @@ fromℚᵘ-toℚᵘ (mkℚ (-[1+ n ]) d-1 c) = cong (-_) (normalize-coprime c)
 toℚᵘ-fromℚᵘ : ∀ p → toℚᵘ (fromℚᵘ p) ≃ᵘ p
 toℚᵘ-fromℚᵘ p = fromℚᵘ-injective (fromℚᵘ-toℚᵘ (fromℚᵘ p))
 
-toℚᵘ-cong : toℚᵘ Preserves _≡_ ⟶ _≃ᵘ_
+toℚᵘ-cong : Congruent _≡_ _≃ᵘ_ toℚᵘ
 toℚᵘ-cong refl = *≡* refl
 
-fromℚᵘ-cong : fromℚᵘ Preserves _≃ᵘ_ ⟶ _≡_
+fromℚᵘ-cong : Congruent _≃ᵘ_ _≡_ fromℚᵘ
 fromℚᵘ-cong {p} {q} p≃q = toℚᵘ-injective (begin-equality
   toℚᵘ (fromℚᵘ p)  ≃⟨  toℚᵘ-fromℚᵘ p ⟩
   p                ≃⟨  p≃q ⟩
@@ -998,7 +1002,7 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
 ------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
 
-+-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
++-mono-≤ : Monotonic₂ _≤_ _≤_ _≤_ _+_
 +-mono-≤ {p} {q} {r} {s} p≤q r≤s = toℚᵘ-cancel-≤ (begin
   toℚᵘ(p + r)          ≃⟨ toℚᵘ-homo-+ p r ⟩
   toℚᵘ(p) ℚᵘ.+ toℚᵘ(r) ≤⟨ ℚᵘ.+-mono-≤ (toℚᵘ-mono-≤ p≤q) (toℚᵘ-mono-≤ r≤s) ⟩
@@ -1006,16 +1010,22 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
   toℚᵘ(q + s)          ∎)
   where open ℚᵘ.≤-Reasoning
 
-+-monoˡ-≤ : ∀ r → (_+ r) Preserves _≤_ ⟶ _≤_
++-monoˡ-≤ : RightMonotonic _≤_ _≤_ _+_
 +-monoˡ-≤ r p≤q = +-mono-≤ p≤q (≤-refl {r})
 
-+-monoʳ-≤ : ∀ r → (_+_ r) Preserves _≤_ ⟶ _≤_
++-monoʳ-≤ : LeftMonotonic _≤_ _≤_ _+_
 +-monoʳ-≤ r p≤q = +-mono-≤ (≤-refl {r}) p≤q
+
+nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p + q)
+nonNeg+nonNeg⇒nonNeg p q = nonNegative $ +-mono-≤ (nonNegative⁻¹ p) (nonNegative⁻¹ q)
+
+nonPos+nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p + q)
+nonPos+nonPos⇒nonPos p q = nonPositive $ +-mono-≤ (nonPositive⁻¹ p) (nonPositive⁻¹ q)
 
 ------------------------------------------------------------------------
 -- Properties of _+_ and _<_
 
-+-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
++-mono-<-≤ : Monotonic₂ _<_ _≤_ _<_ _+_
 +-mono-<-≤ {p} {q} {r} {s} p<q r≤s = toℚᵘ-cancel-< (begin-strict
   toℚᵘ(p + r)          ≃⟨ toℚᵘ-homo-+ p r ⟩
   toℚᵘ(p) ℚᵘ.+ toℚᵘ(r) <⟨ ℚᵘ.+-mono-<-≤ (toℚᵘ-mono-< p<q) (toℚᵘ-mono-≤ r≤s) ⟩
@@ -1023,17 +1033,35 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
   toℚᵘ(q + s)          ∎)
   where open ℚᵘ.≤-Reasoning
 
-+-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
++-mono-≤-< : Monotonic₂ _≤_ _<_ _<_ _+_
 +-mono-≤-< {p} {q} {r} {s} p≤q r<s rewrite +-comm p r | +-comm q s = +-mono-<-≤ r<s p≤q
 
-+-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
++-mono-< : Monotonic₂ _<_ _<_ _<_ _+_
 +-mono-< {p} {q} {r} {s} p<q r<s = <-trans (+-mono-<-≤ p<q (≤-refl {r})) (+-mono-≤-< (≤-refl {q}) r<s)
 
-+-monoˡ-< : ∀ r → (_+ r) Preserves _<_ ⟶ _<_
++-monoˡ-< : RightMonotonic _<_ _<_ _+_
 +-monoˡ-< r p<q = +-mono-<-≤ p<q (≤-refl {r})
 
-+-monoʳ-< : ∀ r → (_+_ r) Preserves _<_ ⟶ _<_
++-monoʳ-< : LeftMonotonic _<_ _<_ _+_
 +-monoʳ-< r p<q = +-mono-≤-< (≤-refl {r}) p<q
+
+pos+nonNeg⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : NonNegative q}} → Positive (p + q)
+pos+nonNeg⇒pos p q = positive $ +-mono-<-≤ (positive⁻¹ p) (nonNegative⁻¹ q)
+
+nonNeg+pos⇒pos : ∀ p .{{_ : NonNegative p}} q .{{_ : Positive q}} → Positive (p + q)
+nonNeg+pos⇒pos p q = positive $ +-mono-≤-< (nonNegative⁻¹ p) (positive⁻¹ q)
+
+pos+pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p + q)
+pos+pos⇒pos p q = positive $ +-mono-< (positive⁻¹ p) (positive⁻¹ q)
+
+neg+nonPos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : NonPositive q}} → Negative (p + q)
+neg+nonPos⇒neg p q = negative $ +-mono-<-≤ (negative⁻¹ p) (nonPositive⁻¹ q)
+
+nonPos+neg⇒neg : ∀ p .{{_ : NonPositive p}} q .{{_ : Negative q}} → Negative (p + q)
+nonPos+neg⇒neg p q = negative $ +-mono-≤-< (nonPositive⁻¹ p) (negative⁻¹ q)
+
+neg+neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p + q)
+neg+neg⇒neg p q = negative $ +-mono-< (negative⁻¹ p) (negative⁻¹ q)
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -1307,7 +1335,7 @@ module _ where
 *-cancelˡ-≤-pos : ∀ r .{{_ : Positive r}} → r * p ≤ r * q → p ≤ q
 *-cancelˡ-≤-pos {p} {q} r rewrite *-comm r p | *-comm r q = *-cancelʳ-≤-pos r
 
-*-monoʳ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → (_* r) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → Monotonic₁ _≤_ _≤_ (_* r)
 *-monoʳ-≤-nonNeg r {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (p * r)        ≃⟨  toℚᵘ-homo-* p r ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≤⟨  ℚᵘ.*-monoˡ-≤-nonNeg (toℚᵘ r) (toℚᵘ-mono-≤ p≤q) ⟩
@@ -1315,10 +1343,10 @@ module _ where
   toℚᵘ (q * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoˡ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → (r *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → Monotonic₁ _≤_ _≤_ (r *_)
 *-monoˡ-≤-nonNeg r {p} {q} rewrite *-comm r p | *-comm r q = *-monoʳ-≤-nonNeg r
 
-*-monoʳ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → (_* r) Preserves _≤_ ⟶ _≥_
+*-monoʳ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → Monotonic₁ _≤_ _≥_ (_* r)
 *-monoʳ-≤-nonPos r {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (q * r)        ≃⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ≤⟨ ℚᵘ.*-monoˡ-≤-nonPos (toℚᵘ r) (toℚᵘ-mono-≤ p≤q) ⟩
@@ -1326,7 +1354,7 @@ module _ where
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoˡ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → (r *_) Preserves _≤_ ⟶ _≥_
+*-monoˡ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → Monotonic₁ _≤_ _≥_ (r *_)
 *-monoˡ-≤-nonPos r {p} {q} rewrite *-comm r p | *-comm r q = *-monoʳ-≤-nonPos r
 
 *-cancelʳ-≤-neg : ∀ r .{{_ : Negative r}} → p * r ≤ q * r → p ≥ q
@@ -1340,10 +1368,38 @@ module _ where
 *-cancelˡ-≤-neg : ∀ r .{{_ : Negative r}} → r * p ≤ r * q → p ≥ q
 *-cancelˡ-≤-neg {p} {q} r rewrite *-comm r p | *-comm r q = *-cancelʳ-≤-neg r
 
+nonNeg*nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p * q)
+nonNeg*nonNeg⇒nonNeg p q = nonNegative $ begin
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ ≤⟨ *-monoˡ-≤-nonNeg p (nonNegative⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
+nonPos*nonNeg⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonNegative q}} → NonPositive (p * q)
+nonPos*nonNeg⇒nonPos p q = nonPositive $ begin
+  p * q  ≤⟨ *-monoˡ-≤-nonPos p (nonNegative⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+nonNeg*nonPos⇒nonPos : ∀ p .{{_ : NonNegative p}} q .{{_ : NonPositive q}} → NonPositive (p * q)
+nonNeg*nonPos⇒nonPos p q = nonPositive $ begin
+  p * q  ≤⟨ *-monoˡ-≤-nonNeg p (nonPositive⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+nonPos*nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+nonPos*nonPos⇒nonPos p q = nonNegative $ begin
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ ≤⟨ *-monoˡ-≤-nonPos p (nonPositive⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
 
-*-monoˡ-<-pos : ∀ r .{{_ : Positive r}} → (_* r) Preserves _<_ ⟶ _<_
+*-monoˡ-<-pos : ∀ r .{{_ : Positive r}} → Monotonic₁ _<_ _<_ (_* r)
 *-monoˡ-<-pos r {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (p * r)        ≃⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-pos (toℚᵘ r) (toℚᵘ-mono-< p<q) ⟩
@@ -1351,7 +1407,7 @@ module _ where
   toℚᵘ (q * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoʳ-<-pos : ∀ r .{{_ : Positive r}} → (r *_) Preserves _<_ ⟶ _<_
+*-monoʳ-<-pos : ∀ r .{{_ : Positive r}} → Monotonic₁ _<_ _<_ (r *_)
 *-monoʳ-<-pos r {p} {q} rewrite *-comm r p | *-comm r q = *-monoˡ-<-pos r
 
 *-cancelˡ-<-nonNeg : ∀ r .{{_ : NonNegative r}} → ∀ {p q} → r * p < r * q → p < q
@@ -1365,7 +1421,7 @@ module _ where
 *-cancelʳ-<-nonNeg : ∀ r .{{_ : NonNegative r}} → ∀ {p q} → p * r < q * r → p < q
 *-cancelʳ-<-nonNeg r {p} {q} rewrite *-comm p r | *-comm q r = *-cancelˡ-<-nonNeg r
 
-*-monoˡ-<-neg : ∀ r .{{_ : Negative r}} → (_* r) Preserves _<_ ⟶ _>_
+*-monoˡ-<-neg : ∀ r .{{_ : Negative r}} → Monotonic₁ _<_ _>_ (_* r)
 *-monoˡ-<-neg r {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (q * r)        ≃⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-neg (toℚᵘ r) (toℚᵘ-mono-< p<q) ⟩
@@ -1373,7 +1429,7 @@ module _ where
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoʳ-<-neg : ∀ r .{{_ : Negative r}} → (r *_) Preserves _<_ ⟶ _>_
+*-monoʳ-<-neg : ∀ r .{{_ : Negative r}} → Monotonic₁ _<_ _>_ (r *_)
 *-monoʳ-<-neg r {p} {q} rewrite *-comm r p | *-comm r q = *-monoˡ-<-neg r
 
 *-cancelˡ-<-nonPos : ∀ r .{{_ : NonPositive r}} → r * p < r * q → p > q
@@ -1386,6 +1442,34 @@ module _ where
 
 *-cancelʳ-<-nonPos : ∀ r .{{_ : NonPositive r}} → p * r < q * r → p > q
 *-cancelʳ-<-nonPos {p} {q} r rewrite *-comm p r | *-comm q r = *-cancelˡ-<-nonPos r
+
+pos*pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p * q)
+pos*pos⇒pos p q = positive $ begin-strict
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ <⟨ *-monoʳ-<-pos p (positive⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
+
+neg*pos⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Positive q}} → Negative (p * q)
+neg*pos⇒neg p q = negative $ begin-strict
+  p * q  <⟨ *-monoʳ-<-neg p (positive⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+pos*neg⇒neg : ∀ p .{{_ : Positive p}} q .{{_ : Negative q}} → Negative (p * q)
+pos*neg⇒neg p q = negative $ begin-strict
+  p * q  <⟨ *-monoʳ-<-pos p (negative⁻¹ q) ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≤-Reasoning
+
+neg*neg⇒pos : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Positive (p * q)
+neg*neg⇒pos p q = positive $ begin-strict
+  0ℚ     ≡⟨ *-zeroʳ p ⟨
+  p * 0ℚ <⟨ *-monoʳ-<-neg p (negative⁻¹ q) ⟩
+  p * q  ∎
+  where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_
@@ -1531,15 +1615,15 @@ open ⊓-⊔-latticeProperties public
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _⊔_
 
-mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+mono-≤-distrib-⊔ : ∀ {f} → Monotonic₁ _≤_ _≤_ f →
                    ∀ p q → f (p ⊔ q) ≡ f p ⊔ f q
 mono-≤-distrib-⊔ {f} = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong f)
 
-mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+mono-≤-distrib-⊓ : ∀ {f} → Monotonic₁ _≤_ _≤_ f →
                    ∀ p q → f (p ⊓ q) ≡ f p ⊓ f q
 mono-≤-distrib-⊓ {f} = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong f)
 
-mono-<-distrib-⊓ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
+mono-<-distrib-⊓ : ∀ {f} → Monotonic₁ _<_ _<_ f →
                    ∀ p q → f (p ⊓ q) ≡ f p ⊓ f q
 mono-<-distrib-⊓ {f} f-mono-< p q with <-cmp p q
 ... | tri< p<q p≢r  p≯q = begin
@@ -1558,7 +1642,7 @@ mono-<-distrib-⊓ {f} f-mono-< p q with <-cmp p q
   f p ⊓ f q  ∎
   where open ≡-Reasoning
 
-mono-<-distrib-⊔ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
+mono-<-distrib-⊔ : ∀ {f} → Monotonic₁ _<_ _<_ f →
                    ∀ p q → f (p ⊔ q) ≡ f p ⊔ f q
 mono-<-distrib-⊔ {f} f-mono-< p q with <-cmp p q
 ... | tri< p<q p≢r  p≯q = begin
@@ -1577,11 +1661,11 @@ mono-<-distrib-⊔ {f} f-mono-< p q with <-cmp p q
   f p ⊔ f q  ∎
   where open ≡-Reasoning
 
-antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+antimono-≤-distrib-⊓ : ∀ {f} → Monotonic₁ _≤_ _≥_ f →
                        ∀ p q → f (p ⊓ q) ≡ f p ⊔ f q
 antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong f)
 
-antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+antimono-≤-distrib-⊔ : ∀ {f} → Monotonic₁ _≤_ _≥_ f →
                        ∀ p q → f (p ⊔ q) ≡ f p ⊓ f q
 antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
 

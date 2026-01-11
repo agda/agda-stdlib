@@ -6,20 +6,21 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Structures
-  using (IsDecTotalOrder; IsStrictTotalOrder)
-open import Relation.Binary.Bundles
-  using (DecTotalOrder; StrictTotalOrder)
+open import Relation.Binary.Bundles using (DecTotalOrder; StrictTotalOrder)
 
 module Relation.Binary.Properties.DecTotalOrder
   {d₁ d₂ d₃} (DTO : DecTotalOrder d₁ d₂ d₃) where
 
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
+  using (isDecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsDecTotalOrder; IsStrictTotalOrder)
+open import Relation.Nullary.Negation.Core using (¬_)
+
 open DecTotalOrder DTO hiding (trans)
 
-import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
-import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.TotalOrder totalOrder as TotalOrderProperties
-open import Relation.Nullary.Negation using (¬_)
+import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 
 ------------------------------------------------------------------------
 -- _≥_ - the flipped relation is also a total order
@@ -94,3 +95,4 @@ open TotalOrderProperties public
 
 ≮⇒≥ : ∀ {x y} → x ≮ y → y ≤ x
 ≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≟_ reflexive total
+

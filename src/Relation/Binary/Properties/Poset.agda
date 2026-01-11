@@ -6,26 +6,28 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product.Base using (_,_)
-open import Function.Base using (flip; _∘_)
-open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Relation.Binary.Bundles using (Poset; StrictPartialOrder)
-open import Relation.Binary.Structures
-  using (IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder)
-open import Relation.Binary.Definitions
-  using (_Respectsˡ_; _Respectsʳ_; Decidable)
-import Relation.Binary.Consequences as Consequences
-open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
 
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
+
+open import Data.Product.Base using (_,_)
+open import Function.Base using (flip; _∘_)
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
+import Relation.Binary.Consequences as Consequences
+  using (mono⇒cong; antimono⇒cong)
+open import Relation.Binary.Definitions
+  using (_Respectsˡ_; _Respectsʳ_; Decidable)
+open import Relation.Binary.Structures
+  using (IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 open Poset P renaming (Carrier to A)
 
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
-open Eq using (_≉_)
+
 
 ------------------------------------------------------------------------
 -- The _≥_ relation is also a poset.

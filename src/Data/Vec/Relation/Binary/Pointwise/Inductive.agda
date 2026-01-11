@@ -8,6 +8,8 @@
 
 module Data.Vec.Relation.Binary.Pointwise.Inductive where
 
+open import Algebra.Definitions
+  using (Associative; Commutative; LeftIdentity; RightIdentity; Congruent₂)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (_×_; _,_; uncurry; <_,_>)
@@ -21,9 +23,9 @@ open import Relation.Binary.Bundles using (Setoid; DecSetoid)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.Definitions
-  using (Trans; Decidable; Reflexive; Sym)
+  using (Trans; Decidable; Reflexive; Sym; Antisym; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary.Decidable using (yes; no; _×-dec_; map′)
+open import Relation.Nullary.Decidable using (yes; no; _×?_; map′)
 open import Relation.Unary using (Pred)
 
 private
@@ -33,6 +35,7 @@ private
     B : Set b
     C : Set c
     D : Set d
+    n : ℕ
 
 ------------------------------------------------------------------------
 -- Definition
@@ -85,22 +88,31 @@ module _ {_∼_ : REL A B ℓ} where
 ------------------------------------------------------------------------
 -- Relational properties
 
+irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
+irrelevant irr []      []      = ≡.refl
+irrelevant irr (p ∷ r) (q ∷ s) = ≡.cong₂ _∷_ (irr p q) (irrelevant irr r s)
+
 refl : ∀ {_∼_ : Rel A ℓ} {n} →
        Reflexive _∼_ → Reflexive (Pointwise _∼_ {n})
-refl ∼-refl {[]}      = []
+refl ∼-refl {[]}     = []
 refl ∼-refl {x ∷ xs} = ∼-refl ∷ refl ∼-refl
 
-sym : ∀ {P : REL A B ℓ} {Q : REL B A ℓ} {m n} →
+sym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {m n} →
       Sym P Q → Sym (Pointwise P) (Pointwise Q {m} {n})
-sym sm []             = []
+sym sm []            = []
 sym sm (x∼y ∷ xs∼ys) = sm x∼y ∷ sym sm xs∼ys
 
-trans : ∀ {P : REL A B ℓ} {Q : REL B C ℓ} {R : REL A C ℓ} {m n o} →
+trans : ∀ {P : REL A B ℓ₁} {Q : REL B C ℓ₂} {R : REL A C ℓ} {m n o} →
         Trans P Q R →
         Trans (Pointwise P {m}) (Pointwise Q {n} {o}) (Pointwise R)
-trans trns []             []             = []
+trans trns []            []            = []
 trans trns (x∼y ∷ xs∼ys) (y∼z ∷ ys∼zs) =
   trns x∼y y∼z ∷ trans trns xs∼ys ys∼zs
+
+antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
+          Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
+antisym asym []            []            = []
+antisym asym (x∼y ∷ xs∼ys) (y∼x ∷ ys∼xs) = asym x∼y y∼x ∷ antisym asym xs∼ys ys∼xs
 
 decidable : ∀ {_∼_ : REL A B ℓ} →
             Decidable _∼_ → ∀ {m n} → Decidable (Pointwise _∼_ {m} {n})
@@ -108,7 +120,7 @@ decidable dec []       []       = yes []
 decidable dec []       (y ∷ ys) = no λ()
 decidable dec (x ∷ xs) []       = no λ()
 decidable dec (x ∷ xs) (y ∷ ys) =
-  map′ (uncurry _∷_) uncons (dec x y ×-dec decidable dec xs ys)
+  map′ (uncurry _∷_) uncons (dec x y ×? decidable dec xs ys)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -231,6 +243,42 @@ module _ {_∼_ : Rel A ℓ} (refl : Reflexive _∼_) where
               Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
   cong-[ zero ]≔  p (_   ∷ eqn) = refl ∷ eqn
   cong-[ suc i ]≔ p (x∼y ∷ eqn) = x∼y  ∷ cong-[ i ]≔ p eqn
+
+------------------------------------------------------------------------
+-- zipWith
+
+module _ {_∼_ : Rel A ℓ} where
+  module _ {f : A → A → A} where
+    zipWith-assoc : Associative _∼_ f →
+                    Associative (Pointwise _∼_) (zipWith {n = n} f)
+    zipWith-assoc assoc [] [] [] = []
+    zipWith-assoc assoc (x ∷ xs) (y ∷ ys) (z ∷ zs) = assoc x y z ∷ zipWith-assoc assoc xs ys zs
+
+  module _ {f : A → A → A} {e : A} where
+    zipWith-identityˡ : LeftIdentity _∼_ e f →
+                        LeftIdentity (Pointwise _∼_) (replicate n e) (zipWith f)
+    zipWith-identityˡ idˡ []       = []
+    zipWith-identityˡ idˡ (x ∷ xs) = idˡ x ∷ zipWith-identityˡ idˡ xs
+
+    zipWith-identityʳ : RightIdentity _∼_ e f →
+                        RightIdentity (Pointwise _∼_) (replicate n e) (zipWith f)
+    zipWith-identityʳ idʳ []       = []
+    zipWith-identityʳ idʳ (x ∷ xs) = idʳ x ∷ zipWith-identityʳ idʳ xs
+
+  module _ {f : A → A → A} where
+    zipWith-comm : Commutative _∼_ f →
+                   Commutative (Pointwise _∼_) (zipWith {n = n} f)
+    zipWith-comm comm []       []       = []
+    zipWith-comm comm (x ∷ xs) (y ∷ ys) = comm x y ∷ zipWith-comm comm xs ys
+
+  module _ {f : A → A → A} where
+    zipWith-cong : ∀ {m n}
+          {ws : Vec A m} {xs : Vec A n} {ys : Vec A m} {zs : Vec A n} →
+          Congruent₂ _∼_ f →
+          Pointwise _∼_ ws xs → Pointwise _∼_ ys zs →
+          Pointwise _∼_ (zipWith f ws ys) (zipWith f xs zs)
+    zipWith-cong cong [] [] = []
+    zipWith-cong cong (x∼y ∷ xs) (a∼b ∷ ys) = cong x∼y a∼b ∷ zipWith-cong cong xs ys
 
 ------------------------------------------------------------------------
 -- Degenerate pointwise relations

@@ -19,8 +19,8 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; const)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core as Dec
+  using (_×?_; yes; no; map′)
 open import Relation.Unary hiding (_∈_)
 import Relation.Unary.Properties as Unary
 open import Relation.Binary.Bundles using (Setoid)
@@ -115,7 +115,7 @@ zip = zipWith id
 unzip : All (P ∩ Q) ⊆ All P ∩ All Q
 unzip = unzipWith id
 
-module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
+module _ (S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
   open Setoid S renaming (refl to ≈-refl)
   open SetoidMembership S
 
@@ -206,7 +206,7 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
 
 all? : Decidable P → Decidable (All P)
 all? p []       = yes []
-all? p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×-dec all? p xs)
+all? p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×? all? p xs)
 
 universal : Universal P → Universal (All P)
 universal u []       = []

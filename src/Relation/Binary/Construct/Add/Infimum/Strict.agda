@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The lifting of a non-strict order to incorporate a new infimum
+-- The lifting of a strict order to incorporate a new infimum
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -10,24 +10,31 @@
 -- Relation.Nullary.Construct.Add.Infimum
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures
-  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.Definitions
-  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans; Trichotomous; tri≈; tri<; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 
 module Relation.Binary.Construct.Add.Infimum.Strict
   {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
 open import Data.Product.Base using (_,_; map)
-open import Function.Base
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
+open import Function.Base using (_∘_)
+open import Induction.WellFounded using (WfRec; Acc; acc; WellFounded)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; subst)
 import Relation.Binary.PropositionalEquality.Properties as ≡
+  using (isEquivalence)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
+  using (_≈₋_; ⊥₋≈⊥₋; ≈₋-isEquivalence; ≈₋-isDecEquivalence; ≈₋-refl; ≈₋-dec
+        ; [_]; [≈]-injective)
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
-open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Binary.Structures
+  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans
+        ; Trichotomous; tri≈; tri<; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Construct.Add.Infimum
-import Relation.Nullary.Decidable as Dec
+  using (⊥₋; [_]; _₋; ≡-dec; []-injective)
+open import Relation.Nullary.Decidable.Core as Dec using (yes; no; map′)
+
 
 ------------------------------------------------------------------------
 -- Definition
@@ -66,13 +73,27 @@ module _ {r} {_≤_ : Rel A r} where
   open NonStrict _≤_
 
   <₋-transʳ : Trans _≤_ _<_ _<_ → Trans _≤₋_ _<₋_ _<₋_
-  <₋-transʳ <-transʳ (⊥₋≤ .⊥₋) (⊥₋<[ l ]) = ⊥₋<[ l ]
-  <₋-transʳ <-transʳ (⊥₋≤ l)   [ q ]  = ⊥₋<[ _ ]
-  <₋-transʳ <-transʳ [ p ]     [ q ]  = [ <-transʳ p q ]
+  <₋-transʳ <-transʳ (⊥₋≤ ⊥₋)  q   = q
+  <₋-transʳ <-transʳ (⊥₋≤ _) [ q ] = ⊥₋<[ _ ]
+  <₋-transʳ <-transʳ [ p ]   [ q ] = [ <-transʳ p q ]
 
   <₋-transˡ : Trans _<_ _≤_ _<_ → Trans _<₋_ _≤₋_ _<₋_
-  <₋-transˡ <-transˡ ⊥₋<[ l ] [ q ] = ⊥₋<[ _ ]
+  <₋-transˡ <-transˡ ⊥₋<[ _ ] [ q ] = ⊥₋<[ _ ]
   <₋-transˡ <-transˡ [ p ]    [ q ] = [ <-transˡ p q ]
+
+<₋-accessible-⊥₋ : Acc _<₋_ ⊥₋
+<₋-accessible-⊥₋ = acc λ()
+
+<₋-accessible[_] : ∀ {x} → Acc _<_ x → Acc _<₋_ [ x ]
+<₋-accessible[_] = acc ∘ wf-acc
+  where
+  wf-acc : ∀ {x} → Acc _<_ x → WfRec _<₋_ (Acc _<₋_) [ x ]
+  wf-acc _       ⊥₋<[ _ ] = <₋-accessible-⊥₋
+  wf-acc (acc ih) [ y<x ] = <₋-accessible[ ih y<x ]
+
+<₋-wellFounded : WellFounded _<_ → WellFounded _<₋_
+<₋-wellFounded wf ⊥₋    = <₋-accessible-⊥₋
+<₋-wellFounded wf [ x ] = <₋-accessible[ wf x ]
 
 ------------------------------------------------------------------------
 -- Relational properties + propositional equality

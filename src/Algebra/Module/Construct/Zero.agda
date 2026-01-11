@@ -10,13 +10,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level
+open import Level using (Level)
 
 module Algebra.Module.Construct.Zero {c ℓ : Level} where
 
-open import Algebra.Bundles
+open import Algebra.Bundles using (RawSemiring; Semiring; Ring; CommutativeSemiring; CommutativeRing)
 open import Algebra.Module.Bundles
-open import Data.Unit.Polymorphic
+open import Data.Unit.Polymorphic using (⊤)
 open import Relation.Binary.Core using (Rel)
 
 private

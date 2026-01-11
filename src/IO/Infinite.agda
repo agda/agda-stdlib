@@ -8,14 +8,15 @@
 
 module IO.Infinite where
 
-open import Codata.Musical.Costring
-open import Agda.Builtin.String
-open import Data.Unit.Polymorphic.Base
-import Data.Unit.Base as Unit0
-open import IO.Base
-import IO.Primitive.Core as Prim
+open import Codata.Musical.Costring using (Costring)
+open import Agda.Builtin.String using (String)
+open import Data.Unit.Polymorphic.Base using (⊤)
+import Data.Unit.Base as Unit0 using (⊤)
+open import IO.Base as Base using (IO; lift; lift′)
+import IO.Primitive.Core as Prim using (IO; _>>=_; _>>_)
 import IO.Primitive.Infinite as Prim
-open import Level
+  using (getContents; writeFile; appendFile; putStr; putStrLn)
+open import Level using (Level; Lift; 0ℓ; suc)
 
 private
   variable

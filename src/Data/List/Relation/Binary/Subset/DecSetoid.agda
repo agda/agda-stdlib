@@ -14,10 +14,10 @@ open import Function.Base using (_∘_)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there; map)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary using (yes; no)
-open DecSetoid S
-open import Data.List.Relation.Binary.Equality.DecSetoid S
-open import Data.List.Membership.DecSetoid S
+open import Relation.Nullary.Decidable.Core using (yes; no)
+
+open DecSetoid S using (setoid; refl; trans)
+open import Data.List.Membership.DecSetoid S using (_∈?_)
 
 -- Re-export definitions
 open import Data.List.Relation.Binary.Subset.Setoid setoid public

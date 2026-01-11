@@ -9,10 +9,13 @@
 module Axiom.UniquenessOfIdentityProofs where
 
 open import Level using (Level)
-open import Relation.Nullary.Decidable.Core using (recompute; recompute-constant)
-open import Relation.Binary.Core
+open import Relation.Nullary.Decidable.Core
+  using (recompute; recompute-constant)
+open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Definitions
+  using (Sym; Irrelevant; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; trans; sym; cong)
 open import Relation.Binary.PropositionalEquality.Properties
 
 private

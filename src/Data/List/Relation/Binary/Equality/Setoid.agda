@@ -48,23 +48,16 @@ open PW public
 -- Relational properties
 ------------------------------------------------------------------------
 
-≋-refl : Reflexive _≋_
-≋-refl = PW.refl refl
-
-≋-reflexive : _≡_ ⇒ _≋_
-≋-reflexive ≡.refl = ≋-refl
-
-≋-sym : Symmetric _≋_
-≋-sym = PW.symmetric sym
-
-≋-trans : Transitive _≋_
-≋-trans = PW.transitive trans
-
-≋-isEquivalence : IsEquivalence _≋_
-≋-isEquivalence = PW.isEquivalence isEquivalence
-
 ≋-setoid : Setoid _ _
 ≋-setoid = PW.setoid S
+
+open Setoid ≋-setoid public
+  using ()
+  renaming ( refl to ≋-refl
+           ; reflexive to ≋-reflexive
+           ; sym to ≋-sym
+           ; trans to ≋-trans
+           ; isEquivalence to ≋-isEquivalence)
 
 ------------------------------------------------------------------------
 -- Relationships to predicates
@@ -118,11 +111,11 @@ foldr⁺ ∙⇔◦ e≈f xs≋ys = PW.foldr⁺ ∙⇔◦ e≈f xs≋ys
 ++⁺ : ws ≋ xs → ys ≋ zs → ws ++ ys ≋ xs ++ zs
 ++⁺ = PW.++⁺
 
-++⁺ʳ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
-++⁺ʳ xs = PW.++⁺ʳ refl xs
+++⁺ˡ : ∀ xs → ys ≋ zs → xs ++ ys ≋ xs ++ zs
+++⁺ˡ xs = PW.++⁺ˡ refl xs
 
-++⁺ˡ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
-++⁺ˡ zs = PW.++⁺ˡ refl zs
+++⁺ʳ : ∀ zs → ws ≋ xs → ws ++ zs ≋ xs ++ zs
+++⁺ʳ zs = PW.++⁺ʳ refl zs
 
 ++-cancelˡ : ∀ xs {ys zs} → xs ++ ys ≋ xs ++ zs → ys ≋ zs
 ++-cancelˡ xs = PW.++-cancelˡ xs

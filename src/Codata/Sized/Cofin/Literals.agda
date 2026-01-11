@@ -8,12 +8,12 @@
 
 module Codata.Sized.Cofin.Literals where
 
-open import Data.Nat.Base
-open import Agda.Builtin.FromNat
-open import Codata.Sized.Conat
-open import Codata.Sized.Conat.Properties
-open import Codata.Sized.Cofin
-open import Relation.Nullary.Decidable
+open import Agda.Builtin.FromNat using (Number)
+open import Data.Nat.Base using (ℕ; suc)
+open import Codata.Sized.Conat using (Conat)
+open import Codata.Sized.Conat.Properties using (_ℕ≤?_)
+open import Codata.Sized.Cofin using (Cofin; fromℕ<)
+open import Relation.Nullary.Decidable using (True; toWitness)
 
 number : ∀ n → Number (Cofin n)
 number n = record

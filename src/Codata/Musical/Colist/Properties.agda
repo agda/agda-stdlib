@@ -9,8 +9,8 @@
 module Codata.Musical.Colist.Properties where
 
 open import Level using (Level)
-open import Codata.Musical.Notation
-open import Codata.Musical.Colist.Base
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
+open import Codata.Musical.Colist.Base using (Colist; []; _∷_)
 open import Function.Base using (_∋_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 

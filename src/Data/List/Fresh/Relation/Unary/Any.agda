@@ -9,15 +9,15 @@
 module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
+open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 open import Data.Product.Base using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
+open import Level using (Level; _⊔_; Lift)
 open import Relation.Nullary.Negation using (¬_; contradiction)
-open import Relation.Nullary.Decidable as Dec using (Dec; no; _⊎-dec_)
-open import Relation.Unary  as U
+open import Relation.Nullary.Decidable as Dec using (Dec; no; _⊎?_)
+open import Relation.Unary  as U using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
 open import Relation.Binary.Core using (Rel)
-
-open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 
 private
   variable
@@ -78,4 +78,4 @@ module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   any? : (xs : List# A R) → Dec (Any P xs)
   any? []        = no (λ ())
-  any? (x ∷# xs) = Dec.map ⊎⇔Any (P? x ⊎-dec any? xs)
+  any? (x ∷# xs) = Dec.map ⊎⇔Any (P? x ⊎? any? xs)

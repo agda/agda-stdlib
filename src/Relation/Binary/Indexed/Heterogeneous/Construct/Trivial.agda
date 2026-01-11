@@ -13,6 +13,8 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
 open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid; IndexedPreorder
+        ; IsIndexedEquivalence; IsIndexedPreorder)
 
 ------------------------------------------------------------------------
 -- Structures

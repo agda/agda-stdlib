@@ -20,7 +20,6 @@ open import Data.Unit.Base             using (⊤)
 open import Data.String.Base as String using (String; _++_; parens)
 open import Data.Product.Base          using (_,_; proj₁)
 open import Function.Base
-open import Relation.Nullary.Decidable
 
 open import Reflection
 open import Reflection.AST.Argument

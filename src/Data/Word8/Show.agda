@@ -12,10 +12,10 @@ open import Agda.Builtin.String using (String)
 
 open import Data.Bool.Show using (showBit)
 open import Data.Fin.Base as Fin using (Fin)
-import Data.Nat.Show as ℕ
+import Data.Nat.Show as ℕ using (showInBase)
 open import Data.String using (_++_; fromVec; padLeft)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Data.Word8.Base
+open import Data.Word8.Base using (Word8; toℕ; toBits)
 open import Function.Base using (_$_)
 
 showBits : Word8 → String

@@ -8,13 +8,13 @@
 
 module Data.These.Instances where
 
-open import Data.These.Base
-open import Data.These.Properties
-open import Level
-open import Relation.Binary.PropositionalEquality.Core
+open import Data.These.Base using (These; this; that; these)
+open import Data.These.Properties using (≡-dec)
+open import Level using (Level)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
-open import Relation.Binary.TypeClasses
+open import Relation.Binary.TypeClasses using (IsDecEquivalence; _≟_)
 
 private
   variable

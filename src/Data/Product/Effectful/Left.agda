@@ -18,12 +18,11 @@ open import Level
 module Data.Product.Effectful.Left
   {a e} (A : RawMonoid a e) (b : Level) where
 
-open import Data.Product.Base
-import Data.Product.Effectful.Left.Base as Base
+open import Data.Product.Base using (_,_; map₁; map₂; zip; uncurry)
+import Data.Product.Effectful.Left.Base as Base using (Productₗ; functor)
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
 open import Function.Base using (id; flip; _∘_; _∘′_)
-import Function.Identity.Effectful as Id
 
 open RawMonoid A
 

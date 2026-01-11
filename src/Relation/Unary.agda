@@ -202,12 +202,12 @@ Decidable P = ∀ x → Dec (P x)
 -- Operations on sets
 
 infix 10 ⋃ ⋂
-infixr 9 _⊢_
+infixr 9 _⊢_ ⟨_⟩⊢_ [_]⊢_
 infixr 8 _⇒_
 infixr 7 _∩_
 infixr 6 _∪_
 infixr 6 _∖_
-infix 4 _≬_
+infix 4 _≬_ _⊥_ _⊥′_
 
 -- Complement.
 
@@ -253,10 +253,32 @@ syntax ⋂ I (λ i → P) = ⋂[ i ∶ I ] P
 _≬_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ≬ Q = ∃ λ x → x ∈ P × x ∈ Q
 
+-- Disjoint
+
+_⊥_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥ Q = P ∩ Q ⊆ ∅
+
+_⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥′ Q = P ∩ Q ⊆′ ∅
+
 -- Update.
 
 _⊢_ : (A → B) → Pred B ℓ → Pred A ℓ
 f ⊢ P = λ x → P (f x)
+
+-- Diamond/Box: for given `f`, these are the left- and right adjoints to `f ⊢_`
+-- These are specialization of Diamond/Box in
+-- Relation.Unary.Closure.Base.
+
+-- Diamond
+
+⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
+⟨ f ⟩⊢ P = λ b → ∃ λ a → f a ≡ b × P a
+
+-- Box
+
+[_]⊢_ : (A → B) → Pred A ℓ → Pred B _
+[ f ]⊢ P = λ b → ∀ a → f a ≡ b → P a
 
 ------------------------------------------------------------------------
 -- Predicate combinators

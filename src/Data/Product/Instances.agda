@@ -8,16 +8,13 @@
 
 module Data.Product.Instances where
 
-open import Data.Product.Base
-  using (Σ)
-open import Data.Product.Properties
-open import Level
+open import Data.Product.Base using (Σ)
+open import Data.Product.Properties using (≡-dec)
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_)
-open import Relation.Binary.Structures
-  using (IsDecEquivalence)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.Structures using (IsDecEquivalence)
 open import Relation.Binary.TypeClasses
 
 private

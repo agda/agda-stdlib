@@ -873,6 +873,16 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring; semiring
     )
 
+  rawKleeneAlgebra : RawKleeneAlgebra _ _
+  rawKleeneAlgebra = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; _⋆  = _⋆
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
 record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
@@ -911,6 +921,41 @@ record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawMonoid to *-rawMonoid
     )
 
+record BooleanSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ
+    _+_               : Op₂ Carrier
+    _*_               : Op₂ Carrier
+    0#                : Carrier
+    1#                : Carrier
+    isBooleanSemiring : IsBooleanSemiring _≈_ _+_ _*_ 0# 1#
+
+  open IsBooleanSemiring isBooleanSemiring public
+
+  semiring : Semiring _ _
+  semiring = record { isSemiring = isSemiring }
+
+  open Semiring semiring public
+    using ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+    ; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma;  *-magma;  *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid
+    ; rawNearSemiring ; rawSemiring; nearSemiring
+    ; semiringWithoutOne; semiringWithoutAnnihilatingZero
+    )
+
+  *-idempotentMonoid :  IdempotentMonoid c ℓ
+  *-idempotentMonoid = record { isIdempotentMonoid = *-isIdempotentMonoid }
+
+  open IdempotentMonoid *-idempotentMonoid public
+    using () renaming (band to *-band)
+
+
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
@@ -931,20 +976,33 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsRingWithoutOne isRingWithoutOne public
 
+  nearSemiring : NearSemiring _ _
+  nearSemiring = record { isNearSemiring = isNearSemiring }
+
+  open NearSemiring nearSemiring public
+    using (*-semigroup; *-magma)
+
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
 
-  *-semigroup : Semigroup _ _
-  *-semigroup = record { isSemigroup = *-isSemigroup }
-
   open AbelianGroup +-abelianGroup public
-    using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
+    using ()
+    renaming (group to +-group;
+      invertibleMagma to +-invertibleMagma;
+      invertibleUnitalMagma to +-invertibleUnitalMagma)
 
-  open Semigroup *-semigroup public
-    using () renaming
-    ( rawMagma to *-rawMagma
-    ; magma    to *-magma
-    )
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  rawRingWithoutOne = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; -_  = -_
+    ; 0#  = 0#
+    }
+
+  open RawRingWithoutOne rawRingWithoutOne public
+    using (+-rawGroup; *-rawMagma; rawNearSemiring)
+
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
@@ -1083,7 +1141,10 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   ring : Ring _ _
   ring = record { isRing = isRing }
 
-  open Ring ring public using (_≉_; rawRing; +-invertibleMagma; +-invertibleUnitalMagma; +-group; +-abelianGroup)
+  open Ring ring public
+    using (_≉_; rawRing
+          ; +-invertibleMagma; +-invertibleUnitalMagma
+          ; +-group; +-abelianGroup)
 
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring =
@@ -1100,6 +1161,47 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero; semiring
     ; commutativeSemiringWithoutOne
     )
+
+
+record BooleanRing c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    -_            : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isBooleanRing : IsBooleanRing _≈_ _+_ _*_ -_ 0# 1#
+
+  open IsBooleanRing isBooleanRing public
+    using (isCommutativeRing; *-idem)
+
+  open IsCommutativeRing isCommutativeRing public
+
+  commutativeRing : CommutativeRing _ _
+  commutativeRing = record { isCommutativeRing = isCommutativeRing }
+
+  open CommutativeRing commutativeRing public
+    using
+    (_≉_; rawRing
+    ; +-invertibleMagma; +-invertibleUnitalMagma
+    ; +-group; +-abelianGroup
+    ; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+    ; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-commutativeMagma; *-semigroup; *-commutativeSemigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid; *-commutativeMonoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero; semiring
+    ; commutativeSemiringWithoutOne; commutativeSemiring
+    ; ring
+    )
+
 
 ------------------------------------------------------------------------
 -- Bundles with 3 binary operations

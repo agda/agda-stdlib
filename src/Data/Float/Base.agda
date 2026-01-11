@@ -9,10 +9,10 @@
 module Data.Float.Base where
 
 open import Data.Bool.Base using (T)
-import Data.Word64.Base as Word64
-import Data.Maybe.Base as Maybe
+import Data.Word64.Base as Word64 using (Word64; toℕ)
+import Data.Maybe.Base as Maybe using (Maybe; map)
 open import Function.Base using (_on_; _∘_)
-open import Agda.Builtin.Equality
+open import Agda.Builtin.Equality using (_≡_)
 open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------

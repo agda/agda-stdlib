@@ -15,23 +15,6 @@ open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product.Base using (_,_)
 
-cancelˡ : LeftCancellative _∙_
-cancelˡ x y z eq = begin
-  y             ≈⟨ leftDividesʳ x y ⟨
-  x \\ (x ∙ y)  ≈⟨ \\-congˡ eq ⟩
-  x \\ (x ∙ z)  ≈⟨ leftDividesʳ x z ⟩
-  z             ∎
-
-cancelʳ : RightCancellative _∙_
-cancelʳ x y z eq = begin
-  y             ≈⟨ rightDividesʳ x y ⟨
-  (y ∙ x) // x  ≈⟨ //-congʳ eq ⟩
-  (z ∙ x) // x  ≈⟨ rightDividesʳ x z ⟩
-  z             ∎
-
-cancel : Cancellative _∙_
-cancel = cancelˡ , cancelʳ
-
 y≈x\\z : ∀ x y z → x ∙ y ≈ z → y ≈ x \\ z
 y≈x\\z x y z eq = begin
   y            ≈⟨ leftDividesʳ x y ⟨
@@ -43,3 +26,18 @@ x≈z//y x y z eq = begin
   x            ≈⟨ rightDividesʳ y x ⟨
   (x ∙ y) // y ≈⟨ //-congʳ eq ⟩
   z // y       ∎
+
+cancelˡ : LeftCancellative _∙_
+cancelˡ x y z eq = begin
+  y             ≈⟨ y≈x\\z x y (x ∙ z) eq ⟩
+  x \\ (x ∙ z)  ≈⟨ leftDividesʳ x z ⟩
+  z             ∎
+
+cancelʳ : RightCancellative _∙_
+cancelʳ x y z eq = begin
+  y             ≈⟨ x≈z//y y x (z ∙ x) eq ⟩
+  (z ∙ x) // x  ≈⟨ rightDividesʳ x z ⟩
+  z             ∎
+
+cancel : Cancellative _∙_
+cancel = cancelˡ , cancelʳ

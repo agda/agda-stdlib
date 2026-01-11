@@ -10,7 +10,7 @@
 
 module Data.Star.BoundedVec where
 
-import Data.Maybe.Base as Maybe
+import Data.Maybe.Base as Maybe using (Maybe; map)
 open import Data.Star.Nat using (ℕ; suc; length)
 open import Data.Star.Decoration using (decoration)
 open import Data.Star.Pointer

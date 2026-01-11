@@ -17,12 +17,13 @@ open import Function.Base using (const)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
-open import Relation.Binary.PropositionalEquality.Properties using (isEquivalence)
-
+open import Relation.Binary.PropositionalEquality.Properties
+  using (isEquivalence)
 open import Function.Metric.Nat.Core using (DistanceFunction)
 open import Function.Metric.Nat.Structures
-open import Function.Metric.Bundles as Base
-  using (GeneralMetric)
+  using (IsProtoMetric; IsPreMetric; IsQuasiSemiMetric; IsSemiMetric
+        ; IsMetric; IsUltraMetric)
+open import Function.Metric.Bundles as Base using (GeneralMetric)
 
 ------------------------------------------------------------------------
 -- Proto-metric

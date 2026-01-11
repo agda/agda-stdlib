@@ -11,20 +11,20 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Lattice.Properties.JoinSemilattice
   {c ℓ₁ ℓ₂} (J : JoinSemilattice c ℓ₁ ℓ₂) where
 
-open JoinSemilattice J
-
 import Algebra.Lattice as Alg
-import Algebra.Structures as Alg
-open import Algebra.Definitions _≈_
+  using (IsMeetSemilattice; MeetSemilattice; IsSemilattice; Semilattice)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; flip)
 open import Relation.Binary.Core using (_Preserves₂_⟶_⟶_)
 open import Relation.Binary.Structures using (IsDecPartialOrder)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.Properties.Poset poset
-open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Negation using (contraposition)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 
+open JoinSemilattice J
+
+open import Algebra.Definitions _≈_
+open import Relation.Binary.Properties.Poset poset using (≥-isPartialOrder)
 import Relation.Binary.Reasoning.PartialOrder as PoR
 
 ------------------------------------------------------------------------

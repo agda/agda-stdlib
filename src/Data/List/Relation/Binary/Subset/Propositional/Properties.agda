@@ -10,25 +10,26 @@ module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
 open import Data.Bool.Base using (Bool; true; false; T)
-open import Data.List.Base using (List; map; _∷_; _++_; concat; applyUpTo;
-  any; filter)
+open import Data.Bool.ListAction using (any)
+open import Data.List.Base
+  using (List; []; map; _∷_; _++_; concat; concatMap; applyUpTo; filter)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
 open import Data.List.Effectful using (monad)
 open import Data.List.Relation.Unary.Any using (Any)
-open import Data.List.Membership.Propositional using (_∈_; mapWith∈)
+open import Data.List.Membership.Propositional using (_∈_; _∉_; mapWith∈)
 open import Data.List.Membership.Propositional.Properties
   using (map-∈↔; concat-∈↔; >>=-∈↔; ⊛-∈↔; ⊗-∈↔)
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Subset
 open import Data.List.Relation.Binary.Subset.Propositional
-  using (_⊆_; _⊇_)
+  using (_⊆_; _⊇_; _⊈_)
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭-sym; ↭-isEquivalence)
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat.Base using (ℕ; _≤_)
 import Data.Product.Base as Product
-import Data.Sum.Base as Sum
+open import Data.Sum.Base as Sum using (_⊎_)
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)
 open import Function.Bundles using (_↔_; Inverse; Equivalence)
@@ -52,7 +53,18 @@ private
     a b p q : Level
     A : Set a
     B : Set b
+    x y : A
     ws xs ys zs : List A
+
+------------------------------------------------------------------------
+-- Basics
+------------------------------------------------------------------------
+
+∷⊈[] : x ∷ xs ⊈ []
+∷⊈[] = Subset.∷⊈[] (setoid _)
+
+⊆[]⇒≡[] : ∀ {A : Set a} → (_⊆ []) ⋐ (_≡ [])
+⊆[]⇒≡[] {A = A} = Subset.⊆[]⇒≡[] (setoid A)
 
 ------------------------------------------------------------------------
 -- Relational properties with _≋_ (pointwise equality)
@@ -150,6 +162,12 @@ xs⊆x∷xs = Subset.xs⊆x∷xs (setoid _)
 ∈-∷⁺ʳ : ∀ {x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
 ∈-∷⁺ʳ = Subset.∈-∷⁺ʳ (setoid _)
 
+⊆∷⇒∈∨⊆ : xs ⊆ y ∷ ys → y ∈ xs ⊎ xs ⊆ ys
+⊆∷⇒∈∨⊆ = Subset.⊆∷⇒∈∨⊆ (setoid _)
+
+⊆∷∧∉⇒⊆ : xs ⊆ y ∷ ys → y ∉ xs → xs ⊆ ys
+⊆∷∧∉⇒⊆ = Subset.⊆∷∧∉⇒⊆ (setoid _)
+
 ------------------------------------------------------------------------
 -- _++_
 
@@ -178,6 +196,12 @@ module _ {xss yss : List (List A)} where
     Inverse.to concat-∈↔ ∘
     Product.map₂ (Product.map₂ xss⊆yss) ∘
     Inverse.from concat-∈↔
+
+------------------------------------------------------------------------
+-- concatMap
+
+concatMap⁺ : ∀ (f : A → List B) → xs ⊆ ys → concatMap f xs ⊆ concatMap f ys
+concatMap⁺ _ = concat⁺ ∘ map⁺ _
 
 ------------------------------------------------------------------------
 -- applyUpTo

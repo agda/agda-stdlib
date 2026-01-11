@@ -8,14 +8,15 @@
 
 module Data.List.Fresh.Properties where
 
-open import Level using (Level; _⊔_)
+open import Data.List.Fresh using (List#; _∷#_; _#_; Empty; NonEmpty; cons; [])
 open import Data.Product.Base using (_,_)
-open import Relation.Nullary
+open import Level using (Level; _⊔_)
+open import Relation.Nullary.Decidable using (Dec; yes; no)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary as U using (Pred)
-import Relation.Binary.Definitions as B
+import Relation.Binary.Definitions as B using (_Respectsˡ_; Irrelevant)
 open import Relation.Binary.Core using (Rel)
 
-open import Data.List.Fresh
 
 private
   variable

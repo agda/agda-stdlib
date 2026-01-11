@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated monoid solver
-{-# OPTIONS --warn=noUserWarning #-}
+{-# OPTIONS --warning=noUserWarning #-}
 
 module Data.List.Solver where
 

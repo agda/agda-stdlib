@@ -16,8 +16,8 @@ import Data.String.Properties as String
 import Data.Word64.Properties as Word64
 import Reflection.AST.Meta as Meta
 import Reflection.AST.Name as Name
-open import Relation.Nullary.Decidable.Core            using (yes; no; map′; isYes)
-open import Relation.Binary.Definitions                using (DecidableEquality)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′; isYes)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------

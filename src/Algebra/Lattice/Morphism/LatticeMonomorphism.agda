@@ -9,21 +9,22 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
 open import Algebra.Lattice
-open import Algebra.Lattice.Morphism.Structures
-import Algebra.Consequences.Setoid as Consequences
+  using (RawLattice; IsLattice; IsDistributiveLattice; isDistributiveLatticeʳʲᵐ)
+open import Algebra.Lattice.Morphism.Structures using (IsLatticeMonomorphism)
+
+module Algebra.Lattice.Morphism.LatticeMonomorphism
+  {a b ℓ₁ ℓ₂} {L₁ : RawLattice a ℓ₁} {L₂ : RawLattice b ℓ₂} {⟦_⟧}
+  (isLatticeMonomorphism : IsLatticeMonomorphism L₁ L₂ ⟦_⟧)
+  where
+
+open import Algebra using (Absorptive; _Absorbs_; _DistributesOverʳ_)
 import Algebra.Morphism.MagmaMonomorphism as MagmaMonomorphisms
 import Algebra.Lattice.Properties.Lattice as LatticeProperties
 open import Data.Product.Base using (_,_; map)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Morphism.RelMonomorphism as RelMonomorphisms
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-
-module Algebra.Lattice.Morphism.LatticeMonomorphism
-  {a b ℓ₁ ℓ₂} {L₁ : RawLattice a ℓ₁} {L₂ : RawLattice b ℓ₂} {⟦_⟧}
-  (isLatticeMonomorphism : IsLatticeMonomorphism L₁ L₂ ⟦_⟧)
-  where
 
 open IsLatticeMonomorphism isLatticeMonomorphism
 open RawLattice L₁ renaming (_≈_ to _≈₁_; _∨_ to _∨_; _∧_ to _∧_)

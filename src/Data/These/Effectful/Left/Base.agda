@@ -17,10 +17,10 @@ open import Level
 
 module Data.These.Effectful.Left.Base {a} (A : Set a) (b : Level) where
 
-open import Data.These.Base
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
+open import Data.These.Base using (These; this; that; these; map₂)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
 open import Function.Base using (_∘_; flip)
 
 Theseₗ : Set (a ⊔ b) → Set (a ⊔ b)

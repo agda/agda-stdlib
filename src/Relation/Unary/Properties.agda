@@ -11,14 +11,16 @@ module Relation.Unary.Properties where
 open import Data.Product.Base as Product using (_×_; _,_; swap; proj₁; zip′)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
+open import Function.Base using (id; _$_; _∘_; _∘₂_)
 open import Level using (Level)
 open import Relation.Binary.Core as Binary
 open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
+open import Relation.Nullary.Decidable as Dec
+  using (yes; no; ¬?; map′; does)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary
-open import Relation.Nullary.Decidable as Dec using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
-open import Function.Base using (id; _$_; _∘_)
 
 private
   variable
@@ -198,6 +200,27 @@ U-Universal = λ _ → _
 ≐′⇒≐ = Product.map ⊆′⇒⊆ ⊆′⇒⊆
 
 ------------------------------------------------------------------------
+-- Between/Disjoint properties
+
+≬-symmetric : Sym {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≬_ _≬_
+≬-symmetric = Product.map₂ swap
+
+⊥-symmetric : Sym {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊥_ _⊥_
+⊥-symmetric = _∘ swap
+
+≬-sym : Symmetric {A = Pred A ℓ₁} _≬_
+≬-sym = ≬-symmetric
+
+⊥-sym : Symmetric {A = Pred A ℓ₁} _⊥_
+⊥-sym = ⊥-symmetric
+
+≬⇒¬⊥ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≬_ (¬_ ∘₂ _⊥_)
+≬⇒¬⊥ P≬Q ¬P⊥Q = ¬P⊥Q (Product.proj₂ P≬Q)
+
+⊥⇒¬≬ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊥_ (¬_ ∘₂ _≬_)
+⊥⇒¬≬ P⊥Q = P⊥Q ∘ Product.proj₂
+
+------------------------------------------------------------------------
 -- Decidability properties
 
 map : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
@@ -215,19 +238,19 @@ infixr 6 _∪?_
 
 _∪?_ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ∪ Q)
-_∪?_ P? Q? x = (P? x) ⊎-dec (Q? x)
+_∪?_ P? Q? x = (P? x) Dec.⊎? (Q? x)
 
 _∩?_ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ∩ Q)
-_∩?_ P? Q? x = (P? x) ×-dec (Q? x)
+_∩?_ P? Q? x = (P? x) Dec.×? (Q? x)
 
 _×?_ : {P : Pred A ℓ₁} {Q : Pred B ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
-_×?_ P? Q? (a , b) = (P? a) ×-dec (Q? b)
+_×?_ P? Q? (a , b) = (P? a) Dec.×? (Q? b)
 
 _⊙?_ : {P : Pred A ℓ₁} {Q : Pred B ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
-_⊙?_ P? Q? (a , b) = (P? a) ⊎-dec (Q? b)
+_⊙?_ P? Q? (a , b) = (P? a) Dec.⊎? (Q? b)
 
 _⊎?_ : {P : Pred A ℓ} {Q : Pred B ℓ} →
        Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)

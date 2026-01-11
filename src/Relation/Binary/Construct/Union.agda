@@ -8,14 +8,14 @@
 
 module Relation.Binary.Construct.Union where
 
-open import Data.Product.Base
-open import Data.Sum.Base as Sum
+open import Data.Product.Base using (_,_; _×_; map; zip; <_,_>)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Definitions
   using (Reflexive; Total; Minimum; Maximum; Symmetric; Irreflexive; Decidable; _Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
-open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_)
+open import Relation.Nullary.Decidable using (yes; no; _⊎?_)
 
 private
   variable
@@ -85,4 +85,4 @@ module _ (≈ : REL A B ℓ₁) (L : REL A B ℓ₂) (R : REL A B ℓ₃) where
 module _ {L : REL A B ℓ₁} {R : REL A B ℓ₂} where
 
   decidable : Decidable L → Decidable R → Decidable (L ∪ R)
-  decidable L? R? x y = L? x y ⊎-dec R? x y
+  decidable L? R? x y = L? x y ⊎? R? x y

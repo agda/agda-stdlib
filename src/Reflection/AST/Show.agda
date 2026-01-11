@@ -24,6 +24,7 @@ open import Relation.Nullary.Decidable.Core using (yes; no)
 
 open import Reflection.AST.Abstraction hiding (map)
 open import Reflection.AST.Argument hiding (map)
+open import Reflection.AST.Argument.Quantity
 open import Reflection.AST.Argument.Relevance
 open import Reflection.AST.Argument.Visibility
 open import Reflection.AST.Argument.Modality
@@ -57,6 +58,10 @@ showVisibility : Visibility → String
 showVisibility visible   = "visible"
 showVisibility hidden    = "hidden"
 showVisibility instance′ = "instance"
+
+showQuantity : Quantity → String
+showQuantity quantity-0 = "quantity-0"
+showQuantity quantity-ω = "quantity-ω"
 
 showLiteral : Literal → String
 showLiteral (nat x)    = ℕ.show x
@@ -144,6 +149,6 @@ showDefinition (data-type pars cs) =
  "datatype" <+> ℕ.show pars <+> braces (intersperse ", " (map showName cs))
 showDefinition (record′ c fs)      =
  "record" <+> showName c <+> braces (intersperse ", " (map (showName ∘′ unArg) fs))
-showDefinition (constructor′ d)    = "constructor" <+> showName d
+showDefinition (constructor′ d q)  = "constructor" <+> showName d <+> showQuantity q
 showDefinition axiom               = "axiom"
 showDefinition primitive′          = "primitive"

@@ -9,10 +9,11 @@
 module Data.List.Relation.Unary.Any.Properties where
 
 open import Data.Bool.Base using (Bool; false; true; T)
+open import Data.Bool.ListAction using (any)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (find)
+open import Data.List.Base as List hiding (find; and; or; all; any)
 open import Data.List.Effectful as List using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
@@ -460,6 +461,17 @@ module _ {P : A → Set p} where
 
   concat↔ : ∀ {xss} → Any (Any P) xss ↔ Any P (concat xss)
   concat↔ {xss} = mk↔ₛ′ concat⁺ (concat⁻ xss) (concat⁺∘concat⁻ xss) concat⁻∘concat⁺
+
+------------------------------------------------------------------------
+-- concatMap
+
+module _ (f : A → List B) {p} {P : Pred B p} where
+
+  concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
+  concatMap⁺ = concat⁺ ∘ map⁺
+
+  concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
+  concatMap⁻ = map⁻ ∘ concat⁻ _
 
 ------------------------------------------------------------------------
 -- cartesianProductWith

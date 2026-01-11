@@ -9,10 +9,10 @@
 module Codata.Sized.Covec.Bisimilarity where
 
 open import Level using (_⊔_)
-open import Size
-open import Codata.Sized.Thunk
+open import Size using (Size; ∞)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
 open import Codata.Sized.Conat hiding (_⊔_)
-open import Codata.Sized.Covec
+open import Codata.Sized.Covec using (Covec; _∷_; [])
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)

@@ -8,9 +8,12 @@
 
 module Data.List.Relation.Unary.Unique.Propositional.Properties where
 
-open import Data.List.Base using (map; _++_; concat; cartesianProductWith;
-  cartesianProduct; drop; take; applyUpTo; upTo; applyDownFrom; downFrom;
-  tabulate; allFin; filter)
+open import Data.List.Base
+  using ( List; _∷_; map; _++_; concat; cartesianProductWith
+        ; cartesianProduct; drop; take; applyUpTo; upTo; applyDownFrom; downFrom
+        ; tabulate; allFin; filter
+        )
+open import Data.List.Membership.Propositional using (_∉_)
 open import Data.List.Relation.Binary.Disjoint.Propositional
   using (Disjoint)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -27,7 +30,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core
-  using (refl; _≡_; _≢_; sym)
+  using (refl; _≡_; _≢_; sym; cong)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Negation using (¬_)
@@ -35,6 +38,9 @@ open import Relation.Nullary.Negation using (¬_)
 private
   variable
     a b c p : Level
+    A : Set a
+    x y : A
+    xs : List A
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
@@ -46,6 +52,9 @@ module _ {A : Set a} {B : Set b} where
   map⁺ : ∀ {f} → (∀ {x y} → f x ≡ f y → x ≡ y) →
          ∀ {xs} → Unique xs → Unique (map f xs)
   map⁺ = Setoid.map⁺ (setoid A) (setoid B)
+
+  map⁻ : ∀ {f xs} → Unique (map f xs) → Unique xs
+  map⁻ = Setoid.map⁻ (setoid A) (setoid B) (cong _)
 
 ------------------------------------------------------------------------
 -- ++
@@ -154,3 +163,9 @@ module _ {A : Set a} {P : Pred _ p} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → Unique xs → Unique (filter P? xs)
   filter⁺ = Setoid.filter⁺ (setoid A) P?
+
+------------------------------------------------------------------------
+-- ∷
+
+Unique[x∷xs]⇒x∉xs : Unique (x ∷ xs) → x ∉ xs
+Unique[x∷xs]⇒x∉xs = Setoid.Unique[x∷xs]⇒x∉xs (setoid _)

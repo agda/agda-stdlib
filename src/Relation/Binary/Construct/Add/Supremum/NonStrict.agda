@@ -10,22 +10,25 @@
 -- Relation.Nullary.Construct.Add.Supremum
 
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Structures
-  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Maximum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
 
 module Relation.Binary.Construct.Add.Supremum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
+open import Data.Product.Base as Product using (_,_)
 open import Data.Sum.Base as Sum
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Maximum; Transitive; Total; Decidable; Irrelevant; Antisymmetric
+        ; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+import Relation.Nullary.Decidable.Core as Dec using (map′)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong)
+  using (_≡_; refl; cong; subst)
 import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Relation.Nullary.Construct.Add.Supremum
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Construct.Add.Supremum using (⊤⁺; _⁺; [_]; ≡-dec)
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 
 ------------------------------------------------------------------------
@@ -75,6 +78,15 @@ data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
 ≤⁺-antisym-≡ antisym (_ ≤⊤⁺) (_ ≤⊤⁺) = refl
 ≤⁺-antisym-≡ antisym [ p ] [ q ]     = cong [_] (antisym p q)
 
+≤⁺-respˡ-≡ : _≤⁺_ Respectsˡ _≡_
+≤⁺-respˡ-≡ = subst (_≤⁺ _)
+
+≤⁺-respʳ-≡ : _≤⁺_ Respectsʳ _≡_
+≤⁺-respʳ-≡ = subst (_ ≤⁺_)
+
+≤⁺-resp-≡ : _≤⁺_ Respects₂ _≡_
+≤⁺-resp-≡ = ≤⁺-respʳ-≡ , ≤⁺-respˡ-≡
+
 ------------------------------------------------------------------------
 -- Relation properties + setoid equality
 
@@ -89,6 +101,18 @@ module _ {e} {_≈_ : Rel A e} where
   ≤⁺-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈⁺_ _≤⁺_
   ≤⁺-antisym ≤-antisym [ p ]    [ q ]  = [ ≤-antisym p q ]
   ≤⁺-antisym ≤-antisym (_ ≤⊤⁺) (_ ≤⊤⁺) = ⊤⁺≈⊤⁺
+
+  ≤⁺-respˡ-≈⁺ : _≤_ Respectsˡ _≈_ → _≤⁺_ Respectsˡ _≈⁺_
+  ≤⁺-respˡ-≈⁺ ≤-respˡ-≈ [ p ] [ q ] = [ ≤-respˡ-≈ p q ]
+  ≤⁺-respˡ-≈⁺ ≤-respˡ-≈ [ p ] (l ≤⊤⁺) = [ _ ] ≤⊤⁺
+  ≤⁺-respˡ-≈⁺ ≤-respˡ-≈ (⊤⁺≈⊤⁺) q = q
+
+  ≤⁺-respʳ-≈⁺ : _≤_ Respectsʳ _≈_ → _≤⁺_ Respectsʳ _≈⁺_
+  ≤⁺-respʳ-≈⁺ ≤-respʳ-≈ [ p ] [ q ] = [ ≤-respʳ-≈ p q ]
+  ≤⁺-respʳ-≈⁺ ≤-respʳ-≈ ⊤⁺≈⊤⁺ q = q
+
+  ≤⁺-resp-≈⁺ : _≤_ Respects₂ _≈_ → _≤⁺_ Respects₂ _≈⁺_
+  ≤⁺-resp-≈⁺ = Product.map ≤⁺-respʳ-≈⁺ ≤⁺-respˡ-≈⁺
 
 ------------------------------------------------------------------------
 -- Structures + propositional equality

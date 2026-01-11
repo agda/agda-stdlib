@@ -10,12 +10,12 @@ module Data.Vec.Functional.Relation.Unary.Any where
 
 open import Data.Fin.Base using (zero; suc)
 open import Data.Fin.Properties using (any?)
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base as Σ using (Σ; ∃; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Functional as VF hiding (map)
 open import Function.Base using (id)
 open import Level using (Level)
-open import Relation.Unary
+open import Relation.Unary using (Pred; _⊆_; Decidable)
 
 private
   variable

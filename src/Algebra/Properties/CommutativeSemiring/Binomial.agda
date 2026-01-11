@@ -6,8 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles
-  using (CommutativeSemiring)
+open import Algebra.Bundles using (CommutativeSemiring)
 
 module Algebra.Properties.CommutativeSemiring.Binomial {a ℓ} (S : CommutativeSemiring a ℓ) where
 

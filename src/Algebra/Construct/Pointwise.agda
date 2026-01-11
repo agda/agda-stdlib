@@ -17,11 +17,10 @@ open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘′_; const)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-
 
 private
 
@@ -30,7 +29,7 @@ private
     C : Set c
     _≈_ : Rel C ℓ
     ε 0# 1# : C
-    _⁻¹ -_ : Op₁ C
+    _⁻¹ -_ _⋆ : Op₁ C
     _∙_ _+_ _*_ : Op₂ C
 
   lift₀ : C → A → C
@@ -121,6 +120,36 @@ isAbelianGroup isAbelianGroup = record
   }
   where module M = IsAbelianGroup isAbelianGroup
 
+isNearSemiring : IsNearSemiring _≈_ _+_ _*_ 0# →
+             IsNearSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
+isNearSemiring isNearSemiring = record
+  { +-isMonoid = isMonoid M.+-isMonoid
+  ; *-cong =  λ g h _ → M.*-cong (g _) (h _)
+  ; *-assoc =  λ f g h _ → M.*-assoc (f _) (g _) (h _)
+  ; distribʳ = λ f g h _ → M.distribʳ (f _) (g _) (h _)
+  ; zeroˡ = λ f _ → M.zeroˡ (f _)
+  }
+  where module M = IsNearSemiring isNearSemiring
+
+isSemiringWithoutOne : IsSemiringWithoutOne _≈_ _+_ _*_ 0# →
+  IsSemiringWithoutOne (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
+isSemiringWithoutOne isSemiringWithoutOne = record
+  { +-isCommutativeMonoid = isCommutativeMonoid M.+-isCommutativeMonoid
+  ; *-cong =  λ g h _ → M.*-cong (g _) (h _)
+  ; *-assoc =  λ f g h _ → M.*-assoc (f _) (g _) (h _)
+  ; distrib = (λ f g h _ → M.distribˡ (f _) (g _) (h _)) , (λ f g h _ → M.distribʳ (f _) (g _) (h _))
+  ; zero = (λ f _ → M.zeroˡ (f _)) , (λ f _ → M.zeroʳ (f _))
+  }
+  where module M = IsSemiringWithoutOne isSemiringWithoutOne
+
+isCommutativeSemiringWithoutOne : IsCommutativeSemiringWithoutOne _≈_ _+_ _*_ 0# →
+  IsCommutativeSemiringWithoutOne (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
+isCommutativeSemiringWithoutOne isCommutativeSemiringWithoutOne = record
+  { isSemiringWithoutOne = isSemiringWithoutOne M.isSemiringWithoutOne
+  ; *-comm = λ f g _ → M.*-comm (f _) (g _)
+  }
+  where module M = IsCommutativeSemiringWithoutOne isCommutativeSemiringWithoutOne
+
 isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _≈_ _+_ _*_ 0# 1# →
   IsSemiringWithoutAnnihilatingZero (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
 isSemiringWithoutAnnihilatingZero isSemiringWithoutAnnihilatingZero = record
@@ -140,6 +169,44 @@ isSemiring isSemiring = record
   }
   where module M = IsSemiring isSemiring
 
+isCommutativeSemiring : IsCommutativeSemiring _≈_ _+_ _*_ 0# 1# →
+  IsCommutativeSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
+isCommutativeSemiring isCommutativeSemiring = record
+  { isSemiring = isSemiring M.isSemiring
+  ; *-comm = λ f g _ → M.*-comm (f _) (g _)
+  }
+  where module M = IsCommutativeSemiring isCommutativeSemiring
+
+isIdempotentSemiring : IsIdempotentSemiring _≈_ _+_ _*_ 0# 1# →
+  IsIdempotentSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
+isIdempotentSemiring isIdempotentSemiring = record
+  { isSemiring = isSemiring M.isSemiring
+  ; +-idem = λ f _ → M.+-idem (f _)
+  }
+  where module M = IsIdempotentSemiring isIdempotentSemiring
+
+isKleeneAlgebra : IsKleeneAlgebra _≈_ _+_ _*_ _⋆ 0# 1# →
+  IsKleeneAlgebra (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ _⋆) (lift₀ 0#) (lift₀ 1#)
+isKleeneAlgebra isKleeneAlgebra = record
+  { isIdempotentSemiring = isIdempotentSemiring M.isIdempotentSemiring
+  ; starExpansive = (λ f _ → M.starExpansiveˡ (f _)) , λ f _ → M.starExpansiveʳ (f _)
+  ; starDestructive = (λ f g h i _ → M.starDestructiveˡ (f _) (g _) (h _) (i _))
+                    , (λ f g h i _ → M.starDestructiveʳ (f _) (g _) (h _) (i _))
+  }
+  where module M = IsKleeneAlgebra isKleeneAlgebra
+
+isQuasiring : IsQuasiring _≈_ _+_ _*_ 0# 1# →
+  IsQuasiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
+isQuasiring isQuasiring = record
+  { +-isMonoid = isMonoid M.+-isMonoid
+  ; *-cong =  λ g h _ → M.*-cong (g _) (h _)
+  ; *-assoc =  λ f g h _ → M.*-assoc (f _) (g _) (h _)
+  ; *-identity = (λ f _ → M.*-identityˡ (f _)) , λ f _ → M.*-identityʳ (f _)
+  ; distrib = (λ f g h _ → M.distribˡ (f _) (g _) (h _)) , λ f g h _ → M.distribʳ (f _) (g _) (h _)
+  ; zero = (λ f _ → M.zeroˡ (f _)) , λ f _ → M.zeroʳ (f _)
+  }
+  where module M = IsQuasiring isQuasiring
+
 isRing : IsRing _≈_ _+_ _*_ -_ 0# 1# →
          IsRing (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ -_) (lift₀ 0#) (lift₀ 1#)
 isRing isRing = record
@@ -151,6 +218,13 @@ isRing isRing = record
   }
   where module M = IsRing isRing
 
+isCommutativeRing : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1# →
+    IsCommutativeRing (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ -_) (lift₀ 0#) (lift₀ 1#)
+isCommutativeRing isCommutativeRing = record
+  { isRing = isRing M.isRing
+  ; *-comm = λ f g _ → M.*-comm (f _) (g _)
+  }
+  where module M = IsCommutativeRing isCommutativeRing
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -170,15 +244,42 @@ commutativeSemigroup m = record { isCommutativeSemigroup = isCommutativeSemigrou
 monoid : Monoid c ℓ → Monoid (a ⊔ c) (a ⊔ ℓ)
 monoid m = record { isMonoid = isMonoid (Monoid.isMonoid m) }
 
+commutativeMonoid : CommutativeMonoid c ℓ → CommutativeMonoid (a ⊔ c) (a ⊔ ℓ)
+commutativeMonoid m = record { isCommutativeMonoid = isCommutativeMonoid (CommutativeMonoid.isCommutativeMonoid m) }
+
 group : Group c ℓ → Group (a ⊔ c) (a ⊔ ℓ)
 group m = record { isGroup = isGroup (Group.isGroup m) }
 
 abelianGroup : AbelianGroup c ℓ → AbelianGroup (a ⊔ c) (a ⊔ ℓ)
 abelianGroup m = record { isAbelianGroup = isAbelianGroup (AbelianGroup.isAbelianGroup m) }
 
+nearSemiring : NearSemiring c ℓ → NearSemiring (a ⊔ c) (a ⊔ ℓ)
+nearSemiring m = record { isNearSemiring = isNearSemiring (NearSemiring.isNearSemiring m) }
+
+semiringWithoutOne : SemiringWithoutOne c ℓ → SemiringWithoutOne (a ⊔ c) (a ⊔ ℓ)
+semiringWithoutOne m = record { isSemiringWithoutOne = isSemiringWithoutOne (SemiringWithoutOne.isSemiringWithoutOne m) }
+
+commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne c ℓ → CommutativeSemiringWithoutOne (a ⊔ c) (a ⊔ ℓ)
+commutativeSemiringWithoutOne m = record
+  { isCommutativeSemiringWithoutOne = isCommutativeSemiringWithoutOne (CommutativeSemiringWithoutOne.isCommutativeSemiringWithoutOne m) }
+
 semiring : Semiring c ℓ → Semiring (a ⊔ c) (a ⊔ ℓ)
 semiring m = record { isSemiring = isSemiring (Semiring.isSemiring m) }
+
+commutativeSemiring : CommutativeSemiring c ℓ → CommutativeSemiring (a ⊔ c) (a ⊔ ℓ)
+commutativeSemiring m = record { isCommutativeSemiring = isCommutativeSemiring (CommutativeSemiring.isCommutativeSemiring m) }
+
+idempotentSemiring : IdempotentSemiring c ℓ → IdempotentSemiring (a ⊔ c) (a ⊔ ℓ)
+idempotentSemiring m = record { isIdempotentSemiring = isIdempotentSemiring (IdempotentSemiring.isIdempotentSemiring m) }
+
+kleeneAlgebra : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
+kleeneAlgebra m = record { isKleeneAlgebra = isKleeneAlgebra (KleeneAlgebra.isKleeneAlgebra m) }
+
+quasiring : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
+quasiring m = record { isQuasiring = isQuasiring (Quasiring.isQuasiring m) }
 
 ring : Ring c ℓ → Ring (a ⊔ c) (a ⊔ ℓ)
 ring m = record { isRing = isRing (Ring.isRing m) }
 
+commutativeRing : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+commutativeRing m = record { isCommutativeRing = isCommutativeRing (CommutativeRing.isCommutativeRing m) }

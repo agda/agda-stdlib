@@ -9,9 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
-open import Relation.Binary.Core
+open import Algebra.Bundles using (RawMonoid)
+open import Algebra.Morphism.Structures using (IsMonoidMonomorphism)
 
 module Algebra.Morphism.MonoidMonomorphism
   {a b ℓ₁ ℓ₂} {M₁ : RawMonoid a ℓ₁} {M₂ : RawMonoid b ℓ₂} {⟦_⟧}
@@ -23,8 +22,11 @@ open RawMonoid M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_; �
 open RawMonoid M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; ε to ε₂)
 
 open import Algebra.Definitions
+  using (Identity; Zero; LeftIdentity; RightIdentity; LeftZero; RightZero)
 open import Algebra.Structures
+  using (IsMagma; IsMonoid; IsCommutativeMonoid)
 open import Data.Product.Base using (map)
+open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------

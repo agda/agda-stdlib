@@ -9,13 +9,12 @@
 module Data.List.Effectful.Transformer where
 
 open import Data.List.Base as List using (List; []; _∷_)
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import Function.Base
-open import Level
-
 import Data.List.Effectful as List
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; RawMonadT)
+open import Function.Base using (_∘′_; _∘_; _$_)
+open import Level using (Level)
 
 private
   variable

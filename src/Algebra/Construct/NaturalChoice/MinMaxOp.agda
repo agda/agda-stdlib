@@ -7,21 +7,19 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Construct.NaturalChoice.Base
-open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
-open import Data.Product.Base using (_,_)
-open import Function.Base using (id; _∘_; flip)
-open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Algebra.Construct.NaturalChoice.Base using (MinOperator; MaxOperator)
 open import Relation.Binary.Bundles using (TotalPreorder)
-open import Relation.Binary.Consequences
 
 module Algebra.Construct.NaturalChoice.MinMaxOp
   {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂}
   (minOp : MinOperator O)
   (maxOp : MaxOperator O)
   where
+
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
+open import Data.Product.Base using (_,_)
+open import Function.Base using (id; _∘_; flip)
+open import Relation.Binary.Core using (_Preserves_⟶_)
 
 open TotalPreorder O renaming
   ( Carrier   to A
@@ -59,7 +57,7 @@ open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
   (x ⊓ y) ⊔ (x ⊓ z) ∎
 
 ⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
-⊓-distribʳ-⊔ = comm+distrˡ⇒distrʳ ⊔-cong ⊓-comm ⊓-distribˡ-⊔
+⊓-distribʳ-⊔ = comm∧distrˡ⇒distrʳ ⊔-cong ⊓-comm ⊓-distribˡ-⊔
 
 ⊓-distrib-⊔ : _⊓_ DistributesOver _⊔_
 ⊓-distrib-⊔ = ⊓-distribˡ-⊔ , ⊓-distribʳ-⊔
@@ -76,7 +74,7 @@ open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
   (x ⊔ y) ⊓ (x ⊔ z) ∎
 
 ⊔-distribʳ-⊓ : _⊔_ DistributesOverʳ _⊓_
-⊔-distribʳ-⊓ = comm+distrˡ⇒distrʳ ⊓-cong ⊔-comm ⊔-distribˡ-⊓
+⊔-distribʳ-⊓ = comm∧distrˡ⇒distrʳ ⊓-cong ⊔-comm ⊔-distribˡ-⊓
 
 ⊔-distrib-⊓ : _⊔_ DistributesOver _⊓_
 ⊔-distrib-⊓ = ⊔-distribˡ-⊓ , ⊔-distribʳ-⊓

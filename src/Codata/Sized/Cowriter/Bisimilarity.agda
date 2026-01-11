@@ -9,16 +9,16 @@
 module Codata.Sized.Cowriter.Bisimilarity where
 
 open import Level using (Level; _⊔_)
-open import Size
-open import Codata.Sized.Thunk
-open import Codata.Sized.Cowriter
+open import Size using (Size; ∞)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Codata.Sized.Cowriter using (Cowriter; _∷_;[_])
 open import Relation.Binary.Core using (REL; Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 
 private
   variable

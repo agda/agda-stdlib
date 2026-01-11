@@ -11,20 +11,21 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin
-  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_; inject≤)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as List
-open import Data.Nat.Base using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_;
-  s≤s⁻¹; z≤n)
+open import Data.Nat.Base
+  using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_; s≤s⁻¹; z≤n; _∸_)
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc; +-identityʳ)
+  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″
+        ; suc-injective; +-comm; +-suc; +-identityʳ; m≤n⇒∃[o]m+o≡n)
 open import Data.Product.Base as Product
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Equality.Cast as VecCast
-  using (_≈[_]_; ≈-sym; module CastReasoning)
+  using (_≈[_]_; ≈-sym; ≈-cong′; module CastReasoning)
 open import Function.Base using (_∘_; id; _$_; const; _ˢ_; flip)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
@@ -34,7 +35,8 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable.Core using (Dec; does; yes; _×-dec_; map′)
+open import Relation.Nullary.Decidable.Core
+  using (Dec; does; yes; _×?_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -51,6 +53,15 @@ private
     ws xs ys zs : Vec A n
 
 ------------------------------------------------------------------------
+-- Properties of toList
+
+toList-injective : .(m≡n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) →
+                  toList xs ≡ toList ys → xs ≈[ m≡n ] ys
+toList-injective m≡n [] [] xs=ys = refl
+toList-injective m≡n (x ∷ xs) (y ∷ ys) xs=ys =
+  cong₂ _∷_ (List.∷-injectiveˡ xs=ys) (toList-injective (cong pred m≡n) xs ys (List.∷-injectiveʳ xs=ys))
+
+------------------------------------------------------------------------
 -- Properties of propositional equality over vectors
 
 ∷-injectiveˡ : x ∷ xs ≡ y ∷ ys → x ≡ y
@@ -65,7 +76,7 @@ private
 ≡-dec : DecidableEquality A → DecidableEquality (Vec A n)
 ≡-dec _≟_ []       []       = yes refl
 ≡-dec _≟_ (x ∷ xs) (y ∷ ys) = map′ (uncurry (cong₂ _∷_))
-  ∷-injective (x ≟ y ×-dec ≡-dec _≟_ xs ys)
+  ∷-injective (x ≟ y ×? ≡-dec _≟_ xs ys)
 
 ------------------------------------------------------------------------
 -- _[_]=_
@@ -92,6 +103,11 @@ take-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
            take m (map f xs) ≡ map f (take m xs)
 take-map f zero    xs       = refl
 take-map f (suc m) (x ∷ xs) = cong (f x ∷_) (take-map f m xs)
+
+updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
+updateAt-take (_ ∷ _ ) zero    f = refl
+updateAt-take (x ∷ xs) (suc i) f = cong (x ∷_) (updateAt-take xs i f)
 
 ------------------------------------------------------------------------
 -- drop
@@ -143,21 +159,36 @@ take≡truncate : ∀ m (xs : Vec A (m + n)) →
 take≡truncate zero    _        = refl
 take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
 
-------------------------------------------------------------------------
--- pad
+truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
+  truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+truncate-zipWith f z≤n xs ys = refl
+truncate-zipWith f (s≤s m≤n) (x ∷ xs) (y ∷ ys) =
+  cong (f x y ∷_) (truncate-zipWith f m≤n xs ys)
 
-padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
-padRight-refl a []       = refl
-padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
+truncate-zipWith-truncate : ∀ (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o)
+  (xs : Vec A o) (ys : Vec B n) →
+  truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
+  zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
+truncate-zipWith-truncate f m≤n n≤o xs ys =
+  trans (truncate-zipWith f m≤n (truncate n≤o xs) ys)
+  (cong (λ zs → zipWith f zs (truncate m≤n ys)) ((sym (truncate-trans m≤n n≤o xs))))
 
-padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate n a ≡ padRight m≤n a (replicate m a)
-padRight-replicate z≤n       a = refl
-padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
+truncate-updateAt : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
+                    updateAt (truncate m≤n xs) i f ≡ truncate m≤n (updateAt xs (inject≤ i m≤n) f)
+truncate-updateAt (s≤s _  ) (_ ∷ _ ) zero f = refl
+truncate-updateAt (s≤s m≤n) (x ∷ xs) (suc i) f = cong (x ∷_) (truncate-updateAt m≤n xs i f)
 
-padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
-            padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
-padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
-padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
+module _ (xs : Vec A (m + n)) (i : Fin m) (f : A → A) where
+  private
+    i′ = inject≤ i (m≤m+n m n)
+
+  updateAt-truncate : updateAt (truncate (m≤m+n m n) xs) i f ≡ truncate (m≤m+n m n) (updateAt xs i′ f)
+  updateAt-truncate = begin
+    updateAt (truncate (m≤m+n m n) xs) i f ≡⟨ cong (λ l → updateAt l i f) (take≡truncate m xs) ⟨
+    updateAt (take m xs) i f         ≡⟨ updateAt-take xs i f ⟩
+    take m (updateAt xs i′ f)        ≡⟨ take≡truncate m (updateAt xs i′ f) ⟩
+    truncate (m≤m+n m n) (updateAt xs i′ f) ∎
+    where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- truncate and padRight together
@@ -398,9 +429,7 @@ map-const (_ ∷ xs) y = cong (y ∷_) (map-const xs y)
 
 map-cast : (f : A → B) .(eq : m ≡ n) (xs : Vec A m) →
            map f (cast eq xs) ≡ cast eq (map f xs)
-map-cast {n = zero}  f eq []       = refl
-map-cast {n = suc _} f eq (x ∷ xs)
-  = cong (f x ∷_) (map-cast f (suc-injective eq) xs)
+map-cast f _ _ = sym (≈-cong′ (map f) refl)
 
 map-++ : ∀ (f : A → B) (xs : Vec A m) (ys : Vec A n) →
          map f (xs ++ ys) ≡ map f xs ++ map f ys
@@ -434,6 +463,11 @@ map-insertAt f _ []        Fin.zero = refl
 map-insertAt f _ (x' ∷ xs) Fin.zero = refl
 map-insertAt f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insertAt f x xs i)
 
+map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
+               map f (removeAt xs i) ≡ removeAt (map f xs) i
+map-removeAt f (x ∷ xs) zero = refl
+map-removeAt f (x ∷ xs@(_ ∷ _)) (suc i) = cong (f x ∷_) (map-removeAt f xs i)
+
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
 map-[]≔ f xs i = map-updateAt xs i refl
@@ -462,6 +496,19 @@ toList-map : ∀ (f : A → B) (xs : Vec A n) →
              toList (map f xs) ≡ List.map f (toList xs)
 toList-map f [] = refl
 toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
+
+map-truncate : (f : A → B) (m≤n : m ≤ n) (xs : Vec A n) →
+  map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+map-truncate {m = m} {n = n} f m≤n xs =
+  let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+  in let m+o≡n = sym n≡m+o
+  in begin
+    map f (truncate m≤n xs)              ≡⟨ cong (map f) (truncate≡take m≤n xs m+o≡n) ⟩
+    map f (take m (cast m+o≡n xs)) ≡⟨ take-map f m _ ⟨
+    take m (map f (cast m+o≡n xs)) ≡⟨ cong (take m) (map-cast f m+o≡n xs) ⟩
+    take m (cast m+o≡n (map f xs)) ≡⟨ truncate≡take m≤n (map f xs) m+o≡n ⟨
+    truncate m≤n (map f xs)              ∎
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _++_
@@ -494,13 +541,11 @@ toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 
 cast-++ˡ : ∀ .(eq : m ≡ o) (xs : Vec A m) {ys : Vec A n} →
            cast (cong (_+ n) eq) (xs ++ ys) ≡ cast eq xs ++ ys
-cast-++ˡ {o = zero}  eq []       {ys} = cast-is-id refl (cast eq [] ++ ys)
-cast-++ˡ {o = suc o} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ˡ (cong pred eq) xs)
+cast-++ˡ _ _ {ys} = ≈-cong′ (_++ ys) refl
 
 cast-++ʳ : ∀ .(eq : n ≡ o) (xs : Vec A m) {ys : Vec A n} →
            cast (cong (m +_) eq) (xs ++ ys) ≡ xs ++ cast eq ys
-cast-++ʳ {m = zero}  eq []       {ys} = refl
-cast-++ʳ {m = suc m} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ʳ eq xs)
+cast-++ʳ _ xs = ≈-cong′ (xs ++_) refl
 
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
@@ -929,8 +974,7 @@ map-∷ʳ f x (y ∷ xs) = cong (f y ∷_) (map-∷ʳ f x xs)
 
 cast-∷ʳ : ∀ .(eq : suc n ≡ suc m) x (xs : Vec A n) →
           cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
-cast-∷ʳ {m = zero}  eq x []       = refl
-cast-∷ʳ {m = suc m} eq x (y ∷ xs) = cong (y ∷_) (cast-∷ʳ (cong pred eq) x xs)
+cast-∷ʳ _ x _ = ≈-cong′ (_∷ʳ x) refl
 
 -- _++_ and _∷ʳ_
 
@@ -1019,38 +1063,44 @@ map-reverse : ∀ (f : A → B) (xs : Vec A n) →
               map f (reverse xs) ≡ reverse (map f xs)
 map-reverse f []       = refl
 map-reverse f (x ∷ xs) = begin
-  map f (reverse (x ∷ xs))  ≡⟨  cong (map f) (reverse-∷ x xs) ⟩
-  map f (reverse xs ∷ʳ x)   ≡⟨  map-∷ʳ f x (reverse xs) ⟩
-  map f (reverse xs) ∷ʳ f x ≡⟨  cong (_∷ʳ f x) (map-reverse f xs ) ⟩
+  map f (reverse (x ∷ xs))  ≡⟨ cong (map f) (reverse-∷ x xs) ⟩
+  map f (reverse xs ∷ʳ x)   ≡⟨ map-∷ʳ f x (reverse xs) ⟩
+  map f (reverse xs) ∷ʳ f x ≡⟨ cong (_∷ʳ f x) (map-reverse f xs ) ⟩
   reverse (map f xs) ∷ʳ f x ≡⟨ reverse-∷ (f x) (map f xs) ⟨
   reverse (f x ∷ map f xs)  ≡⟨⟩
   reverse (map f (x ∷ xs))  ∎
   where open ≡-Reasoning
 
 -- append and reverse
+toList-∷ʳ : ∀ x (xs : Vec A n) → toList (xs ∷ʳ x) ≡ toList xs List.++ List.[ x ]
+toList-∷ʳ x []       = refl
+toList-∷ʳ x (y ∷ xs) = cong (y List.∷_) (toList-∷ʳ x xs)
 
-reverse-++-eqFree : ∀ (xs : Vec A m) (ys : Vec A n) → let eq = +-comm m n in
-                    cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
-reverse-++-eqFree {m = zero}  {n = n} []       ys = ≈-sym (++-identityʳ-eqFree (reverse ys))
-reverse-++-eqFree {m = suc m} {n = n} (x ∷ xs) ys = begin
-  reverse (x ∷ xs ++ ys)              ≂⟨ reverse-∷ x (xs ++ ys) ⟩
-  reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys)))
-                                                (reverse-++-eqFree xs ys) ⟩
-  (reverse ys ++ reverse xs) ∷ʳ x     ≈⟨ ++-∷ʳ-eqFree x (reverse ys) (reverse xs) ⟩
-  reverse ys ++ (reverse xs ∷ʳ x)     ≂⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟨
-  reverse ys ++ (reverse (x ∷ xs))    ∎
-  where open CastReasoning
+toList-reverse : ∀ (xs : Vec A n) → toList (reverse xs) ≡ List.reverse (toList xs)
+toList-reverse [] = refl
+toList-reverse (x ∷ xs) = begin
+  toList (reverse (x ∷ xs))                   ≡⟨ cong toList (reverse-∷ x xs) ⟩
+  toList (reverse xs ∷ʳ x)                    ≡⟨ toList-∷ʳ x (reverse xs) ⟩
+  toList (reverse xs) List.++ List.[ x ]      ≡⟨ cong (List._++ List.[ x ]) (toList-reverse xs) ⟩
+  List.reverse (toList xs) List.++ List.[ x ] ≡⟨ List.unfold-reverse x (toList xs) ⟨
+  List.reverse (toList (x ∷ xs))              ∎
+  where open ≡-Reasoning
+
+reverse-++-eqFree : ∀ (xs : Vec A m) (ys : Vec A n)
+                  → reverse (xs ++ ys) ≈[ +-comm m n ] reverse ys ++ reverse xs
+reverse-++-eqFree {m = m} {n = n} xs ys =
+  toList-injective (+-comm m n) (reverse (xs ++ ys)) (reverse ys ++ reverse xs) $
+  begin
+    toList (reverse (xs ++ ys))                               ≡⟨ toList-reverse ((xs ++ ys)) ⟩
+    List.reverse (toList (xs ++ ys))                          ≡⟨ cong List.reverse (toList-++ xs ys) ⟩
+    List.reverse (toList xs List.++ toList ys)                ≡⟨ List.reverse-++ (toList xs) (toList ys) ⟩
+    List.reverse (toList ys) List.++ List.reverse (toList xs) ≡⟨ cong₂ List._++_ (toList-reverse ys) (toList-reverse xs) ⟨
+    toList (reverse ys) List.++ toList (reverse xs)           ≡⟨ toList-++ (reverse ys) (reverse xs) ⟨
+    toList (reverse ys ++ reverse xs)                         ∎
+  where open ≡-Reasoning
 
 cast-reverse : ∀ .(eq : m ≡ n) → cast eq ∘ reverse {A = A} {n = m} ≗ reverse ∘ cast eq
-cast-reverse {n = zero}  eq []       = refl
-cast-reverse {n = suc n} eq (x ∷ xs) = begin
-  reverse (x ∷ xs)           ≂⟨ reverse-∷ x xs ⟩
-  reverse xs ∷ʳ x            ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ eq x (reverse xs))
-                                       (cast-reverse (cong pred eq) xs) ⟩
-  reverse (cast _ xs) ∷ʳ x   ≂⟨ reverse-∷ x (cast (cong pred eq) xs) ⟨
-  reverse (x ∷ cast _ xs)    ≈⟨⟩
-  reverse (cast eq (x ∷ xs)) ∎
-  where open CastReasoning
+cast-reverse _ _ = ≈-cong′ reverse refl
 
 ------------------------------------------------------------------------
 -- _ʳ++_
@@ -1073,55 +1123,57 @@ foldr-ʳ++ B f {e} xs = foldl-fusion (foldr B f e) refl (λ _ _ → refl) xs
 map-ʳ++ : ∀ (f : A → B) (xs : Vec A m) →
           map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
 map-ʳ++ {ys = ys} f xs = begin
-  map f (xs ʳ++ ys)              ≡⟨  cong (map f) (unfold-ʳ++ xs ys) ⟩
-  map f (reverse xs ++ ys)       ≡⟨  map-++ f (reverse xs) ys ⟩
-  map f (reverse xs) ++ map f ys ≡⟨  cong (_++ map f ys) (map-reverse f xs) ⟩
+  map f (xs ʳ++ ys)              ≡⟨ cong (map f) (unfold-ʳ++ xs ys) ⟩
+  map f (reverse xs ++ ys)       ≡⟨ map-++ f (reverse xs) ys ⟩
+  map f (reverse xs) ++ map f ys ≡⟨ cong (_++ map f ys) (map-reverse f xs) ⟩
   reverse (map f xs) ++ map f ys ≡⟨ unfold-ʳ++ (map f xs) (map f ys) ⟨
   map f xs ʳ++ map f ys          ∎
   where open ≡-Reasoning
 
-∷-ʳ++-eqFree : ∀ a (xs : Vec A m) {ys : Vec A n} → let eq = sym (+-suc m n) in
-               cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
-∷-ʳ++-eqFree a xs {ys} = begin
-  (a ∷ xs) ʳ++ ys         ≂⟨ unfold-ʳ++ (a ∷ xs) ys ⟩
-  reverse (a ∷ xs) ++ ys  ≂⟨ cong (_++ ys) (reverse-∷ a xs) ⟩
-  (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++-eqFree a (reverse xs) ⟩
-  reverse xs ++ (a ∷ ys)  ≂⟨ unfold-ʳ++ xs (a ∷ ys) ⟨
-  xs ʳ++ (a ∷ ys)         ∎
-  where open CastReasoning
+toList-ʳ++ : ∀ (xs : Vec A m) {ys : Vec A n} →
+            toList (xs ʳ++ ys) ≡ (toList xs) List.ʳ++ toList ys
+toList-ʳ++ xs {ys} = begin
+  toList (xs ʳ++ ys)                          ≡⟨ cong toList (unfold-ʳ++ xs ys) ⟩
+  toList (reverse xs ++ ys)                   ≡⟨ toList-++ ((reverse xs )) ys ⟩
+  toList (reverse xs) List.++ toList ys       ≡⟨ cong (List._++ toList ys) (toList-reverse xs) ⟩
+  List.reverse (toList xs) List.++ toList ys  ≡⟨ List.ʳ++-defn (toList xs) ⟨
+  toList xs List.ʳ++ toList ys                ∎
+  where open ≡-Reasoning
+
 
 ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
                 cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
-++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} = begin
-  ((xs ++ ys) ʳ++ zs)              ≂⟨ unfold-ʳ++ (xs ++ ys) zs ⟩
-  reverse (xs ++ ys) ++ zs         ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (xs ++ ys)))
-                                             (reverse-++-eqFree xs ys) ⟩
-  (reverse ys ++ reverse xs) ++ zs ≈⟨ ++-assoc-eqFree (reverse ys) (reverse xs) zs ⟩
-  reverse ys ++ (reverse xs ++ zs) ≂⟨ cong (reverse ys ++_) (unfold-ʳ++ xs zs) ⟨
-  reverse ys ++ (xs ʳ++ zs)        ≂⟨ unfold-ʳ++ ys (xs ʳ++ zs) ⟨
-  ys ʳ++ (xs ʳ++ zs)               ∎
-  where open CastReasoning
+++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} =
+  toList-injective (m+n+o≡n+[m+o] m n o) ((xs ++ ys) ʳ++ zs) (ys ʳ++ (xs ʳ++ zs)) $
+  begin
+    toList ((xs ++ ys) ʳ++ zs)                          ≡⟨ toList-ʳ++ (xs ++ ys) ⟩
+    toList (xs ++ ys) List.ʳ++ toList zs                ≡⟨ cong (List._ʳ++ toList zs) (toList-++ xs ys)  ⟩
+    ((toList xs) List.++ toList ys ) List.ʳ++ toList zs ≡⟨ List.++-ʳ++ (toList xs) ⟩
+    toList ys List.ʳ++ (toList xs List.ʳ++ toList zs)   ≡⟨ cong (toList ys List.ʳ++_) (toList-ʳ++ xs) ⟨
+    toList ys List.ʳ++ toList (xs ʳ++ zs)               ≡⟨ toList-ʳ++ ys ⟨
+    toList (ys ʳ++ (xs ʳ++ zs))                         ∎
+    where open ≡-Reasoning
 
 ʳ++-ʳ++-eqFree : ∀ (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} → let eq = m+n+o≡n+[m+o] m n o in
                  cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
-ʳ++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} = begin
-  (xs ʳ++ ys) ʳ++ zs                         ≂⟨ cong (_ʳ++ zs) (unfold-ʳ++ xs ys) ⟩
-  (reverse xs ++ ys) ʳ++ zs                  ≂⟨ unfold-ʳ++ (reverse xs ++ ys) zs ⟩
-  reverse (reverse xs ++ ys) ++ zs           ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (reverse xs ++ ys)))
-                                                       (reverse-++-eqFree (reverse xs) ys) ⟩
-  (reverse ys ++ reverse (reverse xs)) ++ zs ≂⟨ cong ((_++ zs) ∘ (reverse ys ++_)) (reverse-involutive xs) ⟩
-  (reverse ys ++ xs) ++ zs                   ≈⟨ ++-assoc-eqFree (reverse ys) xs zs ⟩
-  reverse ys ++ (xs ++ zs)                   ≂⟨ unfold-ʳ++ ys (xs ++ zs) ⟨
-  ys ʳ++ (xs ++ zs)                          ∎
-  where open CastReasoning
+ʳ++-ʳ++-eqFree {m = m} {n} {o} xs {ys} {zs} =
+  toList-injective (m+n+o≡n+[m+o] m n o) ((xs ʳ++ ys) ʳ++ zs) (ys ʳ++ (xs ++ zs)) $
+  begin
+    toList ((xs ʳ++ ys) ʳ++ zs)                       ≡⟨ toList-ʳ++ (xs ʳ++ ys) ⟩
+    toList (xs ʳ++ ys) List.ʳ++ toList zs             ≡⟨ cong (List._ʳ++ toList zs) (toList-ʳ++ xs) ⟩
+    (toList xs List.ʳ++ toList ys) List.ʳ++ toList zs ≡⟨ List.ʳ++-ʳ++ (toList xs) ⟩
+    toList ys List.ʳ++ (toList xs List.++ toList zs)  ≡⟨ cong (toList ys List.ʳ++_) (toList-++ xs zs) ⟨
+    toList ys List.ʳ++ (toList (xs ++ zs))            ≡⟨ toList-ʳ++ ys ⟨
+    toList (ys ʳ++ (xs ++ zs))                        ∎
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- sum
+--sum
 
 sum-++ : ∀ (xs : Vec ℕ m) → sum (xs ++ ys) ≡ sum xs + sum ys
 sum-++ {_}       []       = refl
 sum-++ {ys = ys} (x ∷ xs) = begin
-  x + sum (xs ++ ys)     ≡⟨  cong (x +_) (sum-++ xs) ⟩
+  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++ xs) ⟩
   x + (sum xs + sum ys)  ≡⟨ +-assoc x (sum xs) (sum ys) ⟨
   sum (x ∷ xs) + sum ys  ∎
   where open ≡-Reasoning
@@ -1170,13 +1222,71 @@ toList-replicate : ∀ (n : ℕ) (x : A) →
 toList-replicate zero    x = refl
 toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 
+cast-replicate : ∀ .(m≡n : m ≡ n) (x : A) → cast m≡n (replicate m x) ≡ replicate n x
+cast-replicate {m = zero}  {n = zero}  _  _ = refl
+cast-replicate {m = suc _} {n = suc _} m≡n x = cong (x ∷_) (cast-replicate (suc-injective m≡n) x)
+
+------------------------------------------------------------------------
+-- pad
+
+padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
+padRight-refl a []       = refl
+padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
+
+padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate n a ≡ padRight m≤n a (replicate m a)
+padRight-replicate z≤n       a = refl
+padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
+
+padRight-trans : ∀ (m≤n : m ≤ n) (n≤o : n ≤ o) (a : A) (xs : Vec A m) →
+            padRight (≤-trans m≤n n≤o) a xs ≡ padRight n≤o a (padRight m≤n a xs)
+padRight-trans z≤n       n≤o       a []       = padRight-replicate n≤o a
+padRight-trans (s≤s m≤n) (s≤s n≤o) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤o a xs)
+
+padRight-lookup : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) →
+                  lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
+padRight-lookup (s≤s m≤n) a (x ∷ xs) zero = refl
+padRight-lookup (s≤s m≤n) a (x ∷ xs) (suc i) = padRight-lookup m≤n a xs i
+
+padRight-map : ∀ (f : A → B) (m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+               map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
+padRight-map f z≤n a [] = map-replicate f a _
+padRight-map f (s≤s m≤n) a (x ∷ xs) = cong (f x ∷_) (padRight-map f m≤n a xs)
+
+padRight-zipWith : ∀ (f : A → B → C) (m≤n : m ≤ n) (a : A) (b : B)
+                   (xs : Vec A m) (ys : Vec B m) →
+                   zipWith f (padRight m≤n a xs) (padRight m≤n b ys) ≡ padRight m≤n (f a b) (zipWith f xs ys)
+padRight-zipWith f z≤n a b [] [] = zipWith-replicate f a b
+padRight-zipWith f (s≤s m≤n) a b (x ∷ xs) (y ∷ ys) = cong (f x y ∷_) (padRight-zipWith f m≤n a b xs ys)
+
+padRight-zipWith₁ : ∀ (f : A → B → C) (o≤m : o ≤ m) (m≤n : m ≤ n)
+                    (a : A) (b : B) (xs : Vec A m) (ys : Vec B o) →
+                    zipWith f (padRight m≤n a xs) (padRight (≤-trans o≤m m≤n) b ys) ≡
+                    padRight m≤n (f a b) (zipWith f xs (padRight o≤m b ys))
+padRight-zipWith₁ f o≤m m≤n a b xs ys = trans (cong (zipWith f (padRight m≤n a xs)) (padRight-trans o≤m m≤n b ys))
+                                            (padRight-zipWith f m≤n a b xs (padRight o≤m b ys))
+
+padRight-take : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
+padRight-take m≤n a [] n≡m+o = refl
+padRight-take (s≤s m≤n) a (x ∷ xs) n≡m+o = cong (x ∷_) (padRight-take m≤n a xs (suc-injective n≡m+o))
+
+padRight-drop : ∀ (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+padRight-drop {m = zero}  z≤n a [] n≡m+o = cast-replicate n≡m+o a
+padRight-drop {m = suc _} {n = suc _} (s≤s m≤n) a (x ∷ xs) n≡m+o = padRight-drop m≤n a xs (suc-injective n≡m+o)
+
+padRight-updateAt : ∀ (m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
+                    updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
+                    padRight m≤n x (updateAt xs i f)
+padRight-updateAt {n = suc _} (s≤s m≤n) x (y ∷ xs) f zero = refl
+padRight-updateAt {n = suc _} (s≤s m≤n) x (y ∷ xs) f (suc i) = cong (y ∷_) (padRight-updateAt m≤n x xs f i)
+
 ------------------------------------------------------------------------
 -- iterate
 
 iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate n x
 iterate-id x zero    = refl
 iterate-id x (suc n) = cong (_ ∷_) (iterate-id (id x) n)
-
 take-iterate : ∀ n f (x : A) → take n (iterate f x (n + m)) ≡ iterate f x n
 take-iterate zero    f x = refl
 take-iterate (suc n) f x = cong (_ ∷_) (take-iterate n f (f x))
@@ -1307,6 +1417,10 @@ toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList∘fromList List.[]       = refl
 toList∘fromList (x List.∷ xs) = cong (x List.∷_) (toList∘fromList xs)
 
+fromList∘toList : ∀  (xs : Vec A n) → fromList (toList xs) ≈[ length-toList xs ] xs
+fromList∘toList [] = refl
+fromList∘toList (x ∷ xs) = cong (x ∷_) (fromList∘toList xs)
+
 toList-cast : ∀ .(eq : m ≡ n) (xs : Vec A m) → toList (cast eq xs) ≡ toList xs
 toList-cast {n = zero}  eq []       = refl
 toList-cast {n = suc _} eq (x ∷ xs) =
@@ -1332,33 +1446,41 @@ fromList-++ : ∀ (xs : List A) {ys : List A} →
 fromList-++ List.[]       {ys} = cast-is-id refl (fromList ys)
 fromList-++ (x List.∷ xs) {ys} = cong (x ∷_) (fromList-++ xs)
 
-fromList-reverse : (xs : List A) → cast (List.length-reverse xs) (fromList (List.reverse xs)) ≡ reverse (fromList xs)
-fromList-reverse List.[] = refl
-fromList-reverse (x List.∷ xs) = begin
-  fromList (List.reverse (x List.∷ xs))         ≈⟨ cast-fromList (List.ʳ++-defn xs) ⟩
-  fromList (List.reverse xs List.++ List.[ x ]) ≈⟨ fromList-++ (List.reverse xs) ⟩
-  fromList (List.reverse xs) ++ [ x ]           ≈⟨ unfold-∷ʳ-eqFree x (fromList (List.reverse xs)) ⟨
-  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (List.length-reverse xs)) _ _)
-                                                          (fromList-reverse xs) ⟩
-  reverse (fromList xs) ∷ʳ x                    ≂⟨ reverse-∷ x (fromList xs) ⟨
-  reverse (x ∷ fromList xs)                     ≈⟨⟩
-  reverse (fromList (x List.∷ xs))              ∎
-  where open CastReasoning
+fromList-reverse : (xs : List A) →
+                  (fromList (List.reverse xs)) ≈[ List.length-reverse xs ] reverse (fromList xs)
+fromList-reverse xs =
+  toList-injective (List.length-reverse xs) (fromList (List.reverse xs)) (reverse (fromList xs)) $
+  begin
+    toList (fromList (List.reverse xs)) ≡⟨ toList∘fromList (List.reverse xs) ⟩
+    List.reverse xs                     ≡⟨ cong (λ x → List.reverse x) (toList∘fromList xs) ⟨
+    List.reverse (toList (fromList xs)) ≡⟨ toList-reverse (fromList xs) ⟨
+    toList (reverse (fromList xs))      ∎
+    where open ≡-Reasoning
+
 
 ------------------------------------------------------------------------
--- TRANSITION TO EQ-FREE LEMMA
+-- DEPRECATED NAMES
 ------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+∷-ʳ++-eqFree : ∀ a (xs : Vec A m) {ys : Vec A n} → let eq = sym (+-suc m n) in
+               cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
+∷-ʳ++-eqFree a xs {ys} = ʳ++-ʳ++-eqFree (a ∷ []) {ys = xs} {zs = ys}
+{-# WARNING_ON_USAGE ∷-ʳ++-eqFree
+"Warning: ∷-ʳ++-eqFree was deprecated in v2.3.
+Please use ʳ++-ʳ++-eqFree instead, which does not take eq."
+#-}
+
+-- Version 2.2
+
+-- TRANSITION TO EQ-FREE LEMMA
+--
 -- Please use the new proofs, which do not require an `eq` parameter.
 -- In v3, `name` will be changed to be the same lemma as `name-eqFree`,
 -- and `name-eqFree` will be deprecated.
-
-++-assoc : ∀ .(eq : (m + n) + o ≡ m + (n + o)) (xs : Vec A m) (ys : Vec A n) (zs : Vec A o) →
-           cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
-++-assoc _ = ++-assoc-eqFree
-{-# WARNING_ON_USAGE ++-assoc
-"Warning: ++-assoc was deprecated in v2.2.
-Please use ++-assoc-eqFree instead, which does not take eq."
-#-}
 
 ++-identityʳ : ∀ .(eq : n + zero ≡ n) (xs : Vec A n) → cast eq (xs ++ []) ≡ xs
 ++-identityʳ _ = ++-identityʳ-eqFree
@@ -1400,7 +1522,8 @@ Please use reverse-++-eqFree instead, which does not take eq."
 
 ∷-ʳ++ : ∀ .(eq : (suc m) + n ≡ m + suc n) a (xs : Vec A m) {ys} →
         cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
-∷-ʳ++ _ = ∷-ʳ++-eqFree
+∷-ʳ++ _ a xs {ys} = ʳ++-ʳ++-eqFree (a ∷ []) {ys = xs} {zs = ys}
+
 {-# WARNING_ON_USAGE ∷-ʳ++
 "Warning: ∷-ʳ++ was deprecated in v2.2.
 Please use ∷-ʳ++-eqFree instead, which does not take eq."
@@ -1422,11 +1545,13 @@ Please use ++-ʳ++-eqFree instead, which does not take eq."
 Please use ʳ++-ʳ++-eqFree instead, which does not take eq."
 #-}
 
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
+++-assoc : ∀ .(eq : (m + n) + o ≡ m + (n + o)) (xs : Vec A m) (ys : Vec A n) (zs : Vec A o) →
+           cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
+++-assoc _ = ++-assoc-eqFree
+{-# WARNING_ON_USAGE ++-assoc
+"Warning: ++-assoc was deprecated in v2.2.
+Please use ++-assoc-eqFree instead, which does not take eq."
+#-}
 
 -- Version 2.0
 

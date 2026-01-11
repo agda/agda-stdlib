@@ -7,33 +7,25 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid)
-open import Relation.Binary.Structures using (IsDecEquivalence)
-open import Relation.Binary.Definitions using (Decidable)
 
 module Data.List.Relation.Binary.Equality.DecSetoid
   {a ℓ} (DS : DecSetoid a ℓ) where
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
-import Data.List.Relation.Binary.Pointwise as PW
-open import Level
-open import Relation.Binary.Definitions using (Decidable)
-open DecSetoid DS
+open import Data.List.Relation.Binary.Pointwise using (decSetoid)
+open DecSetoid DS using (setoid)
+
+------------------------------------------------------------------------
+-- Additional properties
+
+≋-decSetoid : DecSetoid _ _
+≋-decSetoid = decSetoid DS
+
+open DecSetoid ≋-decSetoid public
+  using ()
+  renaming (isDecEquivalence to ≋-isDecEquivalence; _≟_ to _≋?_)
 
 ------------------------------------------------------------------------
 -- Make all definitions from setoid equality available
 
 open SetoidEquality setoid public
-
-------------------------------------------------------------------------
--- Additional properties
-
-infix 4 _≋?_
-
-_≋?_ : Decidable _≋_
-_≋?_ = PW.decidable _≟_
-
-≋-isDecEquivalence : IsDecEquivalence _≋_
-≋-isDecEquivalence = PW.isDecEquivalence isDecEquivalence
-
-≋-decSetoid : DecSetoid a (a ⊔ ℓ)
-≋-decSetoid = PW.decSetoid DS

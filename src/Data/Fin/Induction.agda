@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 module Data.Fin.Induction where
 
@@ -16,8 +16,8 @@ open import Data.Fin.Properties using (toℕ-inject₁; ≤-refl; <-cmp;
   pigeonhole; ≺⇒<′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_; s≤s)
 open import Data.Nat.Properties using (n<1+n; ≤⇒≯)
-import Data.Nat.Induction as ℕ
-import Data.Nat.Properties as ℕ
+import Data.Nat.Induction as ℕ using (<′-wellFounded; <-wellFounded)
+import Data.Nat.Properties as ℕ using (<-cmp)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Linked as Linked using (Linked; [-]; _∷_)
@@ -34,7 +34,7 @@ open import Relation.Binary.Definitions using (Decidable)
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.Flip.Ord as Ord
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
-import Relation.Binary.Construct.On as On
+import Relation.Binary.Construct.On as On using (wellFounded)
 open import Relation.Binary.Definitions using (Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym; subst; trans; cong)

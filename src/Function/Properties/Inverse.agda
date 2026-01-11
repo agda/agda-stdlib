@@ -11,15 +11,15 @@ module Function.Properties.Inverse where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Bundles
-import Function.Properties.RightInverse as RightInverse
+import Function.Properties.RightInverse as RightInverse using (to-from)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as ≡
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Function.Consequences.Setoid as Consequences
+  using (inverseʳ⇒injective; inverseˡ⇒surjective; inverseᵇ⇒bijective)
 
 import Function.Construct.Identity as Identity
 import Function.Construct.Symmetry as Symmetry

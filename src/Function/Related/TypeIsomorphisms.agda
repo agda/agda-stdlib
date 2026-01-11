@@ -9,16 +9,25 @@
 
 module Function.Related.TypeIsomorphisms where
 
-open import Algebra
+open import Algebra.Bundles public
+  using (Magma; Semigroup; Monoid; CommutativeMonoid; CommutativeSemiring)
+open import Algebra.Definitions
+  using (Identity; LeftIdentity; RightIdentity; Zero; LeftZero; RightZero
+        ; Associative; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_)
+open import Algebra.Structures public
+  using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid
+        ; IsCommutativeSemiring)
 open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base as Product
-  using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃)
+  using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃; ∃-syntax)
 open import Data.Product.Function.NonDependent.Propositional
+import Data.Product.Properties as Product
 open import Data.Sum.Base as Sum
-open import Data.Sum.Properties using (swap-involutive)
+  using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
+import Data.Sum.Properties as Sum
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Level using (Level; Lift; 0ℓ; suc)
@@ -30,15 +39,20 @@ open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ; contradiction)
+open import Relation.Nullary.Negation.Core using (¬_)
 import Relation.Nullary.Indexed as I
-open import Relation.Nullary.Decidable using (True)
 
 private
   variable
     a b c d : Level
     A B C D : Set a
+
+------------------------------------------------------------------------
+-- A lemma relating True dec and P, where dec : Dec P
+
+open import Relation.Nullary.Decidable public
+  using ()
+  renaming (True-↔ to True↔)
 
 ------------------------------------------------------------------------
 -- Properties of Σ and _×_
@@ -51,7 +65,7 @@ private
 -- × is commutative
 
 ×-comm : ∀ (A : Set a) (B : Set b) → (A × B) ↔ (B × A)
-×-comm _ _ = mk↔ₛ′ Product.swap Product.swap (λ _ → refl) λ _ → refl
+×-comm _ _ = Product.swap-↔
 
 -- × has ⊤ as its identity
 
@@ -90,7 +104,7 @@ private
 -- ⊎ is commutative
 
 ⊎-comm : ∀ (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
-⊎-comm _ _ = mk↔ₛ′ swap swap swap-involutive swap-involutive
+⊎-comm _ _ = Sum.swap-↔
 
 -- ⊎ has ⊥ as its identity
 
@@ -106,26 +120,46 @@ private
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
 
 ------------------------------------------------------------------------
--- Properties of × and ⊎
+-- Properties of Σ and ⊎
 
--- × distributes over ⊎
+-- Σ distributes over ⊎
 
-×-distribˡ-⊎ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribˡ-⊎ ℓ _ _ _ = mk↔ₛ′
+Σ-distribˡ-⊎ : {P : A → Set a} {Q : A → Set b} →
+  (∃ λ a → P a ⊎ Q a) ↔ (∃ P ⊎ ∃ Q)
+Σ-distribˡ-⊎ = mk↔ₛ′
   (uncurry λ x → [ inj₁ ∘′ (x ,_) , inj₂ ∘′ (x ,_) ]′)
   [ Product.map₂ inj₁ , Product.map₂ inj₂ ]′
   [ (λ _ → refl) , (λ _ → refl) ]
   (uncurry λ _ → [ (λ _ → refl) , (λ _ → refl) ])
 
-×-distribʳ-⊎ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribʳ-⊎ ℓ _ _ _ = mk↔ₛ′
-  (uncurry [ curry inj₁ , curry inj₂ ]′)
-  [ Product.map₁ inj₁ , Product.map₁ inj₂ ]′
+Σ-distribʳ-⊎ : {P : A ⊎ B → Set c} →
+  (Σ (A ⊎ B) P) ↔ (Σ A (P ∘ inj₁) ⊎ Σ B (P ∘ inj₂))
+Σ-distribʳ-⊎ = mk↔ₛ′
+  (uncurry [ curry inj₁ , curry inj₂ ])
+  [ Product.dmap inj₁ id , Product.dmap inj₂ id ]
   [ (λ _ → refl) , (λ _ → refl) ]
   (uncurry [ (λ _ _ → refl) , (λ _ _ → refl) ])
 
-×-distrib-⊎ : ∀ ℓ → _DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distrib-⊎ ℓ = ×-distribˡ-⊎ ℓ , ×-distribʳ-⊎ ℓ
+------------------------------------------------------------------------
+-- Properties of × and ⊎
+
+-- × distributes over ⊎
+-- primed variants are less level polymorphic
+
+×-distribˡ-⊎ : (A × (B ⊎ C)) ↔ (A × B ⊎ A × C)
+×-distribˡ-⊎ = Σ-distribˡ-⊎
+
+×-distribˡ-⊎′ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribˡ-⊎′ ℓ _ _ _ = ×-distribˡ-⊎
+
+×-distribʳ-⊎ : ((A ⊎ B) × C) ↔ (A × C ⊎ B × C)
+×-distribʳ-⊎ = Σ-distribʳ-⊎
+
+×-distribʳ-⊎′ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribʳ-⊎′ ℓ _ _ _ = ×-distribʳ-⊎
+
+×-distrib-⊎′ : ∀ ℓ → _DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distrib-⊎′ ℓ = ×-distribˡ-⊎′ ℓ , ×-distribʳ-⊎′ ℓ
 
 ------------------------------------------------------------------------
 -- ⊥, ⊤, _×_ and _⊎_ form a commutative semiring
@@ -228,7 +262,7 @@ private
 ×-⊎-isCommutativeSemiring k ℓ = isCommutativeSemiringˡ record
   { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
-  ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ-⊎ ℓ A B C)
+  ; distribʳ              = λ _ _ _ → ↔⇒ ×-distribʳ-⊎
   ; zeroˡ                 = ↔⇒ ∘ ×-zeroˡ ℓ
   }
 
@@ -247,13 +281,7 @@ private
 
 ∃∃↔∃∃ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) →
         (∃₂ λ x y → P x y) ↔ (∃₂ λ y x → P x y)
-∃∃↔∃∃ P = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
-  where
-  to : (∃₂ λ x y → P x y) → (∃₂ λ y x → P x y)
-  to (x , y , Pxy) = (y , x , Pxy)
-
-  from : (∃₂ λ y x → P x y) → (∃₂ λ x y → P x y)
-  from (y , x , Pxy) = (x , y , Pxy)
+∃∃↔∃∃ = Product.∃∃↔∃∃
 
 ------------------------------------------------------------------------
 -- Implicit and explicit function spaces are isomorphic
@@ -324,11 +352,10 @@ Related-cong {A = A} {B = B} {C = C} {D = D} A≈B C≈D = mk⇔
   where open EquationalReasoning
 
 ------------------------------------------------------------------------
--- A lemma relating True dec and P, where dec : Dec P
+-- Relating a predicate to an existentially quantified one with the
+-- restriction that the quantified variable is equal to the given one
 
-True↔ : ∀ {p} {P : Set p}
-        (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ ( true because  [p]) irr =
-  mk↔ₛ′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → refl)
-True↔ (false because ofⁿ ¬p) _ =
-  mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (λ x → flip contradiction ¬p x) (λ ())
+∃-≡ : ∀ (P : A → Set b) {x} → P x ↔ (∃[ y ] y ≡ x × P y)
+∃-≡ P {x} = mk↔ₛ′ (λ Px → x , refl , Px) (λ where (_ , refl , Py) → Py)
+  (λ where (_ , refl , _) → refl) (λ where _ → refl)
+

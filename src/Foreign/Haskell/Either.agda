@@ -8,7 +8,7 @@
 
 module Foreign.Haskell.Either where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
 private

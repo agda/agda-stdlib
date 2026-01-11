@@ -9,8 +9,8 @@
 module Codata.Musical.Colist where
 
 open import Level using (Level)
-open import Effect.Monad
-open import Codata.Musical.Notation
+open import Effect.Monad using (RawMonad)
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Codata.Musical.Conat using (Coℕ; zero; suc)
 import Codata.Musical.Colist.Properties
 import Codata.Musical.Colist.Relation.Unary.All.Properties
@@ -24,20 +24,20 @@ open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
-open import Function.Base
-open import Function.Bundles
+open import Function.Base using (_∘_; const; id; _∋_; _$_)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Poset; Setoid; Preorder)
 open import Relation.Binary.Definitions using (Transitive; Antisymmetric)
-import Relation.Binary.Construct.FromRel as Ind
+import Relation.Binary.Construct.FromRel as Ind using (preorder)
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.Reasoning.Syntax
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
-open import Relation.Nullary.Negation
+open import Relation.Nullary.Negation using (¬_; contradiction; ¬¬-Monad)
 open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 open import Relation.Unary using (Pred)
 

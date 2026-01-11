@@ -15,7 +15,7 @@ open import Level using (Level; _⊔_)
 open import Data.Product.Base using (_×_)
 open import Relation.Binary.Core as B using (REL; Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-import Relation.Binary.Indexed.Heterogeneous as I
+import Relation.Binary.Indexed.Heterogeneous as I using (IREL)
 open import Relation.Unary.Indexed using (IPred)
 
 private

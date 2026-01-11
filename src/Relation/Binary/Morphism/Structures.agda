@@ -13,8 +13,9 @@ module Relation.Binary.Morphism.Structures
   where
 
 open import Data.Product.Base using (_,_)
-open import Function.Definitions
+open import Function.Definitions using (Injective; Surjective; Bijective)
 open import Level using (Level; _⊔_)
+
 open import Relation.Binary.Morphism.Definitions A B
 
 private

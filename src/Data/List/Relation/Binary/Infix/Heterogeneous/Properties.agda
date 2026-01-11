@@ -8,28 +8,30 @@
 
 module Data.List.Relation.Binary.Infix.Heterogeneous.Properties where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty using (⊥-elim)
 open import Data.List.Base as List using (List; []; _∷_; length; map; filter; replicate)
+open import Data.List.Relation.Binary.Infix.Heterogeneous
+open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
+  using (Prefix; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
+  using (Pointwise)
+import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties as Prefix
+open import Data.List.Relation.Binary.Suffix.Heterogeneous as Suffix
+  using (Suffix; here; there)
 open import Data.Nat.Base using (zero; suc; _≤_)
 import Data.Nat.Properties as ℕ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (case_of_; _$′_)
-
-open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎-dec_)
-open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎?_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions using (Decidable; Trans; Antisym)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_; refl; cong)
-open import Data.List.Relation.Binary.Pointwise.Base as Pointwise using (Pointwise)
-open import Data.List.Relation.Binary.Infix.Heterogeneous
-open import Data.List.Relation.Binary.Prefix.Heterogeneous
-  as Prefix using (Prefix; []; _∷_)
-import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties as Prefix
-open import Data.List.Relation.Binary.Suffix.Heterogeneous
-  as Suffix using (Suffix; here; there)
+open import Relation.Nullary.Negation.Core using (contradiction)
+
+
 
 private
   variable
@@ -98,20 +100,20 @@ module _ {c t} {C : Set c} {T : REL A C t} where
   antisym : Antisym R S T → Antisym (Infix R) (Infix S) (Pointwise T)
   antisym asym (here p) (here q) = Prefix.antisym asym p q
   antisym asym {i = a ∷ as} {j = bs} p@(here _) (there q)
-    = ⊥-elim $′ ℕ.<-irrefl refl $′ begin-strict
+    = contradiction (begin-strict
       length as <⟨ length-mono p ⟩
       length bs ≤⟨ length-mono q ⟩
-      length as ∎ where open ℕ.≤-Reasoning
+      length as ∎) (ℕ.<-irrefl refl) where open ℕ.≤-Reasoning
   antisym asym {i = as} {j = b ∷ bs} (there p) q@(here _)
-    = ⊥-elim $′ ℕ.<-irrefl refl $′ begin-strict
+    = contradiction (begin-strict
       length bs <⟨ length-mono q ⟩
       length as ≤⟨ length-mono p ⟩
-      length bs ∎ where open ℕ.≤-Reasoning
+      length bs ∎) (ℕ.<-irrefl refl) where open ℕ.≤-Reasoning
   antisym asym {i = a ∷ as} {j = b ∷ bs} (there p) (there q)
-    = ⊥-elim $′ ℕ.<-irrefl refl $′ begin-strict
+    = contradiction (begin-strict
       length as <⟨ length-mono p ⟩
       length bs <⟨ length-mono q ⟩
-      length as ∎ where open ℕ.≤-Reasoning
+      length as ∎) (ℕ.<-irrefl refl) where open ℕ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- map
@@ -165,4 +167,4 @@ infix? R? [] [] = yes (here [])
 infix? R? (a ∷ as) [] = no (λ where (here ()))
 infix? R? as bbs@(_ ∷ bs) =
   map′ [ here , there ]′ ∷⁻
-  (Prefix.prefix? R? as bbs ⊎-dec infix? R? as bs)
+  (Prefix.prefix? R? as bbs ⊎? infix? R? as bs)

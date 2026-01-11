@@ -13,6 +13,7 @@ module Data.Bool.Solver where
 import Algebra.Solver.Ring.Simple as Solver
 import Algebra.Solver.Ring.AlmostCommutativeRing as ACR
 open import Data.Bool.Properties
+  using (_≟_;  ∨-∧-commutativeSemiring; xor-∧-commutativeRing)
 
 ------------------------------------------------------------------------
 -- A module for automatically solving propositional equivalences

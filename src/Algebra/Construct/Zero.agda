@@ -19,10 +19,8 @@ open import Level using (Level)
 
 module Algebra.Construct.Zero {c ℓ : Level} where
 
-open import Algebra.Bundles.Raw
-  using (RawMagma)
-open import Algebra.Bundles
-  using (Magma; Semigroup; Band)
+open import Algebra.Bundles.Raw using (RawMagma)
+open import Algebra.Bundles using (Magma; Semigroup; Band)
 
 ------------------------------------------------------------------------
 -- Re-export those algebras which are both initial and terminal

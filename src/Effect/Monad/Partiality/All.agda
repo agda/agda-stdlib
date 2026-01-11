@@ -8,11 +8,11 @@
 
 module Effect.Monad.Partiality.All where
 
-open import Effect.Monad
+open import Effect.Monad using (RawMonad)
 open import Effect.Monad.Partiality as Partiality using (_⊥; ⇒≈)
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Function.Base using (flip; _∘_)
-open import Level
+open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)

@@ -8,10 +8,10 @@
 
 module Relation.Binary.Construct.Closure.Transitive where
 
-open import Function.Base
+open import Function.Base using (id; _∘_; _∋_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Induction.WellFounded
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)

@@ -12,7 +12,7 @@ open import Data.Fin.Properties using (all?)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Functional as VF hiding (map)
 open import Level using (Level)
-open import Relation.Unary
+open import Relation.Unary using (Pred; _⊆_; Decidable; Universal; Satisfiable)
 
 private
   variable

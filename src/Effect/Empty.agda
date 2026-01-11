@@ -8,7 +8,7 @@
 
 module Effect.Empty where
 
-open import Level
+open import Level using (Level; suc; _⊔_)
 
 private
   variable

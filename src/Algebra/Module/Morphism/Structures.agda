@@ -10,8 +10,8 @@ module Algebra.Module.Morphism.Structures where
 open import Algebra.Module.Bundles.Raw
 import Algebra.Module.Morphism.Definitions as MorphismDefinitions
 import Algebra.Morphism.Structures as MorphismStructures
-open import Function.Definitions
-open import Level
+open import Function.Definitions using (Injective; Surjective)
+open import Level using (Level; _⊔_)
 
 private
   variable

@@ -21,16 +21,16 @@ open import Level using (Level; _⊔_; 0ℓ)
 open import Relation.Binary.Core using (Rel; REL; _⇒_; _=[_]⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
-open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Antisym; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
-open import Relation.Nullary
+open import Relation.Nullary.Negation.Core using (¬_)
 import Relation.Nullary.Decidable as Dec
 
 private
   variable
-    a b c ℓ : Level
+    a b c ℓ ℓ₁ ℓ₂ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -98,15 +98,20 @@ refl : ∀ {_∼_ : Rel A ℓ} {n} →
        Reflexive _∼_ → Reflexive (Pointwise _∼_ {n = n})
 refl ∼-rfl = ext (λ _ → ∼-rfl)
 
-sym : ∀ {P : REL A B ℓ} {Q : REL B A ℓ} {n} →
+sym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {n} →
       Sym P Q → Sym (Pointwise P) (Pointwise Q {n = n})
 sym sm xs∼ys = ext λ i → sm (Pointwise.app xs∼ys i)
 
-trans : ∀ {P : REL A B ℓ} {Q : REL B C ℓ} {R : REL A C ℓ} {n} →
+trans : ∀ {P : REL A B ℓ₁} {Q : REL B C ℓ₂} {R : REL A C ℓ} {n} →
         Trans P Q R →
         Trans (Pointwise P) (Pointwise Q) (Pointwise R {n = n})
 trans trns xs∼ys ys∼zs = ext λ i →
   trns (Pointwise.app xs∼ys i) (Pointwise.app ys∼zs i)
+
+antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
+          Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+antisym asym xs∼ys ys∼xs = ext λ i →
+  asym (Pointwise.app xs∼ys i) (Pointwise.app ys∼xs i)
 
 decidable : ∀ {_∼_ : REL A B ℓ} →
             Decidable _∼_ → ∀ {n} → Decidable (Pointwise _∼_ {n = n})

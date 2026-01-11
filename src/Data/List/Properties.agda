@@ -8,11 +8,11 @@
 -- equalities than _≡_.
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
 
-open import Algebra.Bundles
+open import Algebra.Bundles using (Semigroup; Monoid)
 open import Algebra.Consequences.Propositional
  using (selfInverse⇒involutive; selfInverse⇒injective)
 open import Algebra.Definitions as AlgebraicDefinitions using (SelfInverse; Involutive)
@@ -21,13 +21,11 @@ import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ)
 open import Data.List.Base as List
-open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (just) renaming (Any to MAny)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
 open import Data.Product.Base as Product
   using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
@@ -44,9 +42,11 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
-open import Relation.Unary using (Pred; Decidable; ∁)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _because_; does)
+open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
+open import Relation.Nullary.Decidable as Decidable
+  using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
+open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
 open import Relation.Unary.Properties using (∁?)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -54,7 +54,7 @@ open ≡-Reasoning
 
 private
   variable
-    a b c d e p ℓ : Level
+    a b c d e p q ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -134,7 +134,6 @@ length-++ (x ∷ xs) = cong suc (length-++ xs)
 module _ {A : Set a} where
 
   open AlgebraicDefinitions {A = List A} _≡_
-  open AlgebraicStructures  {A = List A} _≡_
 
   ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
@@ -189,6 +188,47 @@ module _ {A : Set a} where
 
   ++-conical : Conical [] _++_
   ++-conical = ++-conicalˡ , ++-conicalʳ
+
+length-++-sucˡ : ∀ (x : A) (xs ys : List A) →
+                 length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+length-++-sucˡ _ _ _ = refl
+
+length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) →
+                 length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+length-++-sucʳ []       _ _  = refl
+length-++-sucʳ (_ ∷ xs) y ys = cong suc (length-++-sucʳ xs y ys)
+
+length-++-comm : ∀ (xs ys : List A) →
+                 length (xs ++ ys) ≡ length (ys ++ xs)
+length-++-comm xs       []       = cong length (++-identityʳ xs)
+length-++-comm []       (y ∷ ys) = sym (cong length (++-identityʳ (y ∷ ys)))
+length-++-comm (x ∷ xs) (y ∷ ys) =
+  begin
+    length (x ∷ xs ++ y ∷ ys)
+  ≡⟨⟩
+    suc (length (xs ++ y ∷ ys))
+  ≡⟨ cong suc (length-++-sucʳ xs y ys) ⟩
+    suc (suc (length (xs ++ ys)))
+  ≡⟨ cong suc (cong suc (length-++-comm xs ys)) ⟩
+    suc (suc (length (ys ++ xs)))
+  ≡⟨ cong suc (length-++-sucʳ ys x xs) ⟨
+    suc (length (ys ++ x ∷ xs))
+  ≡⟨⟩
+    length (y ∷ ys ++ x ∷ xs)
+  ∎
+
+length-++-≤ˡ : ∀ (xs : List A) {ys} →
+              length xs ≤ length (xs ++ ys)
+length-++-≤ˡ []       = z≤n
+length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
+
+length-++-≤ʳ : ∀ (ys : List A) {xs} →
+              length ys ≤ length (xs ++ ys)
+length-++-≤ʳ ys {xs} = ≤-trans (length-++-≤ˡ ys) (≤-reflexive (length-++-comm ys xs))
+
+module _ {A : Set a} where
+
+  open AlgebraicStructures  {A = List A} _≡_
 
   ++-isMagma : IsMagma _++_
   ++-isMagma = record
@@ -677,26 +717,25 @@ concat-concat (xss ∷ xsss) = begin
   concat xss ++ concat (concat xsss) ≡⟨ concat-++ xss (concat xsss) ⟩
   concat (concat (xss ∷ xsss))       ∎
 
-concat-[-] : concat {A = A} ∘ map [_] ≗ id
-concat-[-] [] = refl
-concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
+concat-map-[_] : concat {A = A} ∘ map [_] ≗ id
+concat-map-[ [] ]     = refl
+concat-map-[ x ∷ xs ] = cong (x ∷_) (concat-map-[ xs ])
+
+concat-[_] : concat {A = A} ∘ [_] ≗ id
+concat-[ xs ] = ++-identityʳ xs
 
 ------------------------------------------------------------------------
 -- concatMap
 
 concatMap-cong : ∀ {f g : A → List B} → f ≗ g → concatMap f ≗ concatMap g
-concatMap-cong eq xs = cong concat (map-cong eq xs)
+concatMap-cong eq = cong concat ∘ map-cong eq
 
 concatMap-pure : concatMap {A = A} [_] ≗ id
-concatMap-pure = concat-[-]
+concatMap-pure = concat-map-[_]
 
-concatMap-map : (g : B → List C) → (f : A → B) → (xs : List A) →
-                concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
-concatMap-map g f xs
-  = cong concat
-      {x = map g (map f xs)}
-      {y = map (g ∘′ f) xs}
-      (sym $ map-∘ xs)
+concatMap-map : (g : B → List C) → (f : A → B) →
+                concatMap g ∘′ (map f) ≗ concatMap (g ∘′ f)
+concatMap-map g f = cong concat ∘ sym ∘ map-∘
 
 map-concatMap : (f : B → C) (g : A → List B) →
                 map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
@@ -706,14 +745,19 @@ map-concatMap f g xs = begin
   map f (concat (map g xs))
     ≡⟨ concat-map (map g xs) ⟨
   concat (map (map f) (map g xs))
-    ≡⟨ cong concat
-         {x = map (map f) (map g xs)}
-         {y = map (map f ∘′ g) xs}
-         (sym $ map-∘ xs) ⟩
+    ≡⟨ concatMap-map (map f) g xs ⟩
   concat (map (map f ∘′ g) xs)
     ≡⟨⟩
   concatMap (map f ∘′ g) xs
     ∎
+
+concatMap-++ : ∀ (f : A → List B) xs ys →
+               concatMap f (xs ++ ys) ≡ concatMap f xs ++ concatMap f ys
+concatMap-++ f xs ys = begin
+  concatMap f (xs ++ ys)           ≡⟨⟩
+  concat (map f (xs ++ ys))        ≡⟨ cong concat $ map-++ f xs ys ⟩
+  concat (map f xs ++ map f ys)    ≡⟨ concat-++ (map f xs) (map f ys) ⟨
+  concatMap f xs ++ concatMap f ys ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- catMaybes
@@ -826,23 +870,6 @@ mapMaybeIsInj₂∘mapInj₁ : (xs : List A) → mapMaybe (isInj₂ {B = B}) (ma
 mapMaybeIsInj₂∘mapInj₁ = mapMaybe-map-none λ _ → refl
 
 ------------------------------------------------------------------------
--- sum
-
-sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
-sum-++ []       ys = refl
-sum-++ (x ∷ xs) ys = begin
-  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++ xs ys) ⟩
-  x + (sum xs + sum ys)  ≡⟨ sym (+-assoc x _ _) ⟩
-  (x + sum xs) + sum ys  ∎
-
-------------------------------------------------------------------------
--- product
-
-∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
-∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
-∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
-
-------------------------------------------------------------------------
 -- applyUpTo
 
 length-applyUpTo : ∀ (f : ℕ → A) n → length (applyUpTo f n) ≡ n
@@ -856,6 +883,10 @@ lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
 applyUpTo-∷ʳ : ∀ (f : ℕ → A) n → applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
 applyUpTo-∷ʳ f zero = refl
 applyUpTo-∷ʳ f (suc n) = cong (f 0 ∷_) (applyUpTo-∷ʳ (f ∘ suc) n)
+
+map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
+map-applyUpTo f g zero = refl
+map-applyUpTo f g (suc n) = cong (g (f 0) ∷_) (map-applyUpTo (f ∘ suc) g n)
 
 ------------------------------------------------------------------------
 -- applyDownFrom
@@ -874,6 +905,10 @@ module _ (f : ℕ → A) where
   applyDownFrom-∷ʳ zero = refl
   applyDownFrom-∷ʳ (suc n) = cong (f (suc n) ∷_) (applyDownFrom-∷ʳ n)
 
+  map-applyDownFrom : ∀ (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
+  map-applyDownFrom g zero = refl
+  map-applyDownFrom g (suc n) = cong (g (f n) ∷_) (map-applyDownFrom g n)
+
 ------------------------------------------------------------------------
 -- upTo
 
@@ -886,6 +921,9 @@ lookup-upTo = lookup-applyUpTo id
 upTo-∷ʳ : ∀ n → upTo n ∷ʳ n ≡ upTo (suc n)
 upTo-∷ʳ = applyUpTo-∷ʳ id
 
+map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
+map-upTo = map-applyUpTo id
+
 ------------------------------------------------------------------------
 -- downFrom
 
@@ -897,6 +935,9 @@ lookup-downFrom = lookup-applyDownFrom id
 
 downFrom-∷ʳ : ∀ n → applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
 downFrom-∷ʳ = applyDownFrom-∷ʳ id
+
+map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+map-downFrom = map-applyDownFrom id
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -1217,6 +1258,14 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | true  = cong (x ∷_) ih
   ... | false = ih
 
+module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
+
+  filter-≐ : P ≐ Q → filter P? ≗ filter Q?
+  filter-≐ P≐Q [] = refl
+  filter-≐ P≐Q (x ∷ xs) with P? x
+  ... | yes P[x] = trans (cong (x ∷_) (filter-≐ P≐Q xs)) (sym (filter-accept Q? (proj₁ P≐Q P[x])))
+  ... | no ¬P[x] = trans (filter-≐ P≐Q xs) (sym (filter-reject Q? (¬P[x] ∘ proj₂ P≐Q)))
+
 ------------------------------------------------------------------------
 -- derun and deduplicate
 
@@ -1266,6 +1315,14 @@ module _ {P : Pred A p} (P? : Decidable P) where
   length-partition (x ∷ xs) with ih ← length-partition xs | does (P? x)
   ...  | true  = Product.map s≤s m≤n⇒m≤1+n ih
   ...  | false = Product.map m≤n⇒m≤1+n s≤s ih
+
+  partition-is-foldr : partition P? ≗ foldr
+    (λ x → if does (P? x) then Product.map₁ (x ∷_) else Product.map₂ (x ∷_))
+    ([] , [])
+  partition-is-foldr [] = refl
+  partition-is-foldr (x ∷ xs) with ih ← partition-is-foldr xs | does (P? x)
+  ... | true =  cong (Product.map₁ (x ∷_)) ih
+  ... | false = cong (Product.map₂ (x ∷_)) ih
 
 ------------------------------------------------------------------------
 -- _ʳ++_
@@ -1503,7 +1560,7 @@ module _ (f : A → B) where
 
 
 ------------------------------------------------------------------------
--- DEPRECATED
+-- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
@@ -1530,12 +1587,6 @@ Please use map-∘ instead."
 
 map-++-commute = map-++
 {-# WARNING_ON_USAGE map-++-commute
-"Warning: map-++-commute was deprecated in v2.0.
-Please use map-++ instead."
-#-}
-
-sum-++-commute = sum-++
-{-# WARNING_ON_USAGE sum-++-commute
 "Warning: map-++-commute was deprecated in v2.0.
 Please use map-++ instead."
 #-}
@@ -1618,4 +1669,59 @@ scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
 {-# WARNING_ON_USAGE scanl-defn
 "Warning: scanl-defn was deprecated in v2.1.
 Please use Data.List.Scans.Properties.scanl-defn instead."
+#-}
+
+-- Version 2.2
+
+concat-[-] = concat-map-[_]
+{-# WARNING_ON_USAGE concat-[-]
+"Warning: concat-[-] was deprecated in v2.2.
+Please use concat-map-[_] instead."
+#-}
+
+-- Version 2.3
+
+sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
+sum-++ []       ys = refl
+sum-++ (x ∷ xs) ys = begin
+  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++ xs ys) ⟩
+  x + (sum xs + sum ys)  ≡⟨ +-assoc x _ _ ⟨
+  (x + sum xs) + sum ys  ∎
+{-# WARNING_ON_USAGE sum-++
+"Warning: sum-++ was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.sum-++ instead."
+#-}
+sum-++-commute = sum-++
+{-# WARNING_ON_USAGE sum-++-commute
+"Warning: sum-++-commute was deprecated in v2.0.
+Please use Data.Nat.ListAction.Properties.sum-++ instead."
+#-}
+
+open import Data.List.Membership.Propositional using (_∈_)
+open import Data.Nat.Divisibility using (_∣_; m∣m*n; ∣n⇒∣m*n)
+
+∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
+∈⇒∣product {ns = n ∷ ns} (here  refl) = m∣m*n (product ns)
+∈⇒∣product {ns = m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
+{-# WARNING_ON_USAGE ∈⇒∣product
+"Warning: ∈⇒∣product was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.∈⇒∣product instead."
+#-}
+
+product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
+product≢0 [] = _
+product≢0 {n ∷ ns} (n≢0 ∷ ns≢0) = m*n≢0 n (product ns) {{n≢0}} {{product≢0 ns≢0}}
+{-# WARNING_ON_USAGE product≢0
+"Warning: product≢0 was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.product≢0 instead."
+#-}
+
+∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
+∈⇒≤product {ns = n ∷ ns} (_ ∷ ns≢0) (here refl) =
+  m≤m*n n (product ns) {{product≢0 ns≢0}}
+∈⇒≤product {ns = n ∷ _} (n≢0 ∷ ns≢0) (there n∈ns) =
+  m≤n⇒m≤o*n n {{n≢0}} (∈⇒≤product ns≢0 n∈ns)
+{-# WARNING_ON_USAGE ∈⇒≤product
+"Warning: ∈⇒≤product was deprecated in v2.3.
+Please use Data.Nat.ListAction.Properties.∈⇒≤product instead."
 #-}

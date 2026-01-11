@@ -10,7 +10,7 @@ module Data.Vec.Bounded.Show where
 
 open import Data.String.Base using (String)
 open import Data.Vec.Bounded.Base using (Vec≤)
-import Data.Vec.Show as Vec
+import Data.Vec.Show as Vec using (show)
 open import Function.Base using (_∘_)
 
 show : ∀ {a} {A : Set a} {n} → (A → String) → (Vec≤ A n → String)

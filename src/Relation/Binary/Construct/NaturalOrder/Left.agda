@@ -7,22 +7,25 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
-open import Data.Product.Base using (_,_; _×_)
-open import Data.Sum.Base using (inj₁; inj₂; map)
+open import Algebra.Core using (Op₂)
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Bundles
-  using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Decidable)
-open import Relation.Nullary.Negation using (¬_)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Relation.Binary.Lattice using (Infimum)
 
 module Relation.Binary.Construct.NaturalOrder.Left
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) (_∙_ : Op₂ A) where
+
+open import Data.Product.Base using (_,_; _×_)
+open import Data.Sum.Base using (inj₁; inj₂; map)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder
+        ; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_
+        ; _Respectsˡ_; _Respects₂_; Decidable)
+open import Relation.Nullary.Negation using (¬_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.Lattice using (Infimum)
 
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_

@@ -8,15 +8,16 @@
 
 module IO.Base where
 
-open import Level
-open import Codata.Musical.Notation
-open import Data.Bool.Base using (Bool; true; false; not)
 open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+open import Codata.Musical.Notation using (♭; ♯_; ∞)
+open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-import Agda.Builtin.Unit as Unit0
-open import Data.Unit.Polymorphic.Base
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Function.Base using (_∘′_; const; flip)
-import IO.Primitive.Core as Prim
+open import Level using (Level; Lift; lower; 0ℓ; suc)
+
+import Agda.Builtin.Unit as Unit0 using (⊤)
+import IO.Primitive.Core as Prim using (IO; pure; _>>=_; _>>_)
 
 private
   variable

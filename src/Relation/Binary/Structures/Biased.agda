@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel)
 
 module Relation.Binary.Structures.Biased
   {a ℓ} {A : Set a} -- The underlying set
@@ -17,8 +17,9 @@ module Relation.Binary.Structures.Biased
   where
 
 open import Level using (Level; _⊔_)
-open import Relation.Binary.Consequences
-open import Relation.Binary.Definitions
+open import Relation.Binary.Consequences using (tri⇒irr; tri⇒asym; trans∧tri⇒resp)
+open import Relation.Binary.Definitions using (Transitive; Trichotomous)
+
 open import Relation.Binary.Structures _≈_
 
 private

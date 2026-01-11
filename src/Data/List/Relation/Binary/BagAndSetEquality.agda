@@ -12,7 +12,7 @@ open import Algebra.Bundles using (CommutativeMonoid)
 open import Algebra.Definitions using (Idempotent)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Effect.Monad using (RawMonad)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base
   using (List; []; _∷_; map; _++_; concat; [_]; lookup; length)
@@ -27,9 +27,9 @@ open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
-  using (_↭_; ↭-sym; refl; module PermutationReasoning)
+  using (_↭_; ↭-refl; ↭-sym; ↭-prep; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-  using (∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ↭-sym-involutive; shift; ++-comm)
+  using (∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ∈-resp-[σ∘σ⁻¹]; shift; ++-comm)
 open import Data.Product.Base as Product using (∃; _,_; proj₁; proj₂; _×_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
@@ -53,7 +53,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Binary.Reasoning.Syntax
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
   variable
@@ -485,7 +485,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
         g″ : ∀ {a b} →
              f (inj₂ b) ≡ inj₁ a → ∃ (f (inj₁ a) ≡_) → C
         g″ _   (inj₂ c , _)   = c
-        g″ eq₁ (inj₁ _ , eq₂) = ⊥-elim $ hyp eq₁ eq₂
+        g″ eq₁ (inj₁ _ , eq₂) = contradiction eq₂ (hyp eq₁)
 
     g∘g : ∀ {b c} {B : Set b} {C : Set c}
           (f : (A ⊎ B) ↔ (A ⊎ C)) →
@@ -509,7 +509,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
         inj₂ b             ∎
       ... | ()
       g∘g′ | inj₁ a , eq₁ with inspect (to f (inj₁ a))
-      g∘g′ | inj₁ a , eq₁ | inj₁ a′ , eq₂ = ⊥-elim $ to-hyp eq₁ eq₂
+      g∘g′ | inj₁ a , eq₁ | inj₁ a′ , eq₂ = contradiction eq₂ (to-hyp eq₁)
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ with inspect (from f (inj₂ c))
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₂ b′ , eq₃ with
         inj₁ a             ≡⟨ ≡.sym (to-from f eq₂) ⟩
@@ -517,7 +517,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
         inj₂ b′            ∎
       ... | ()
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ with inspect (from f $ inj₁ a′)
-      g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₁ a″ , eq₄ = ⊥-elim $ from-hyp eq₃ eq₄
+      g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₁ a″ , eq₄ = contradiction eq₄ (from-hyp eq₃)
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₂ b′ , eq₄ = inj₂-injective (
         let lemma =
               inj₁ a′            ≡⟨ ≡.sym eq₃ ⟩
@@ -574,29 +574,18 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
 
 ------------------------------------------------------------------------
--- Relationships to other relations
+-- Relationships to propositional permutation
 
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
-↭⇒∼bag xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
-  where
-  to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
-  to xs↭ys = ∈-resp-↭ xs↭ys
-
-  from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
-  from xs↭ys = ∈-resp-↭ (↭-sym xs↭ys)
-
-  from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-  from∘to = ∈-resp-[σ⁻¹∘σ]
-
-  to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-  to∘from p with res ← from∘to (↭-sym p) rewrite ↭-sym-involutive p = res
+↭⇒∼bag xs↭ys {v} =
+  mk↔ₛ′ (∈-resp-↭ xs↭ys) (∈-resp-↭ (↭-sym xs↭ys)) (∈-resp-[σ∘σ⁻¹] xs↭ys) (∈-resp-[σ⁻¹∘σ] xs↭ys)
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
-∼bag⇒↭ {A = A} {[]} eq with refl ← empty-unique (↔-sym eq) = refl
+∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq) = ↭-refl
 ∼bag⇒↭ {A = A} {x ∷ xs} eq
-  with zs₁ , zs₂ , p ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) rewrite p = begin
-    x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
-    x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
+  with zs₁ , zs₂ , refl ← ∈-∃++ (Inverse.to (eq {x}) (here refl)) = begin
+    x ∷ xs           ↭⟨ ↭-prep x (∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂))))) ⟩
+    x ∷ (zs₂ ++ zs₁) ↭⟨ ↭-prep x (++-comm zs₂ zs₁) ⟩
     x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
     zs₁ ++ x ∷ zs₂   ∎
     where

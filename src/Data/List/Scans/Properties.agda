@@ -10,9 +10,8 @@ module Data.List.Scans.Properties where
 
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty.Base as List⁺ using (List⁺; _∷_; toList)
-import Data.List.Properties as List
-import Data.List.NonEmpty.Properties as List⁺
-open import Data.List.Scans.Base
+import Data.List.Properties as List using (map-∘)
+open import Data.List.Scans.Base using (scanr⁺; scanr; scanl⁺; scanl)
 open import Function.Base using (_∘_; _$_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core

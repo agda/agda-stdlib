@@ -6,30 +6,33 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 
-module Data.List.Fresh.Membership.Setoid.Properties {c ℓ} (S : Setoid c ℓ) where
+module Data.List.Fresh.Membership.Setoid.Properties {c ℓ} (S : Setoid c ℓ)
+  where
 
 open import Level using (Level; _⊔_)
-open import Data.Empty
-open import Data.Nat.Base
-open import Data.Nat.Properties
-open import Data.Product.Base using (∃; _×_; _,_)
-open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
-
-open import Function.Base using (id; _∘′_; _$_)
-open import Relation.Nullary
-open import Relation.Unary as Unary using (Pred)
-import Relation.Binary.Definitions as Binary
-import Relation.Binary.PropositionalEquality.Core as ≡
-open import Relation.Nary
-
 open import Data.List.Fresh
-open import Data.List.Fresh.Properties
-open import Data.List.Fresh.Membership.Setoid S
+open import Data.List.Fresh.Properties using (fresh-respectsˡ)
+open import Data.List.Fresh.Membership.Setoid S using (_∈_; _∉_)
 open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; _─_)
 import Data.List.Fresh.Relation.Unary.Any.Properties as List#
+  using (length-remove)
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Nat.Base using (ℕ; suc; zero; _≤_; _<_; z≤n; s≤s; z<s; s<s)
+open import Data.Nat.Properties using (module ≤-Reasoning)
+open import Data.Product.Base using (∃; _×_; _,_)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
+open import Function.Base using (id; _∘′_; _$_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
+open import Relation.Unary as Unary using (Pred)
+import Relation.Binary.Definitions as Binary using (_Respectsˡ_; Irrelevant)
+import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; cong; sym; subst)
+open import Relation.Nary using (∀[_]; _⇒_)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open Setoid S renaming (Carrier to A)
 
@@ -130,7 +133,7 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
     open ≤-Reasoning
 
     step : ∀ {y} → y ∈ xs → y ∈ (ys ─ x∈ys)
-    step {y} y∈xs = fromInj₂ (λ x≈y → ⊥-elim (x∉xs (≈-subst-∈ (sym x≈y) y∈xs)))
+    step {y} y∈xs = fromInj₂ (λ x≈y → contradiction ((≈-subst-∈ (sym x≈y) y∈xs)) x∉xs)
                   $ remove-inv x∈ys (inj y∈xs)
 
 
@@ -145,6 +148,6 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≈-irrelevant : Binary.I
   ∈-irrelevant (there x∈xs₁) (there x∈xs₂) = ≡.cong there (∈-irrelevant x∈xs₁ x∈xs₂)
   -- absurd cases
   ∈-irrelevant {xs = cons x xs pr} (here x≈y)    (there x∈xs₂) =
-    ⊥-elim (distinct x∈xs₂ (fresh⇒∉ R⇒≉ pr) x≈y)
+    contradiction x≈y (distinct x∈xs₂ (fresh⇒∉ R⇒≉ pr))
   ∈-irrelevant {xs = cons x xs pr} (there x∈xs₁) (here x≈y)    =
-    ⊥-elim (distinct x∈xs₁ (fresh⇒∉ R⇒≉ pr) x≈y)
+    contradiction x≈y (distinct x∈xs₁ (fresh⇒∉ R⇒≉ pr))

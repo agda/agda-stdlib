@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Unary.First.Properties where
 
+open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -16,8 +17,9 @@ open import Data.List.Relation.Unary.First
 import Data.Sum.Base as Sum
 open import Function.Base using (_∘′_; _∘_; id)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; _≗_)
-import Relation.Nullary.Decidable.Core as Dec
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Decidable.Core as Dec
+open import Relation.Nullary.Negation.Core using (¬¬-η; contradiction)
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary using (Pred; _⊆_; ∁; Irrelevant; Decidable)
 
 ------------------------------------------------------------------------
@@ -52,12 +54,25 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
   All⇒¬First : P ⊆ ∁ Q → All P ⊆ ∁ (First P Q)
-  All⇒¬First p⇒¬q (px ∷ pxs) [ qx ]   = contradiction qx (p⇒¬q px)
+  All⇒¬First p⇒¬q (px ∷ pxs) [ qx ]   = p⇒¬q px qx
   All⇒¬First p⇒¬q (_ ∷ pxs)  (_ ∷ hf) = All⇒¬First p⇒¬q pxs hf
 
   First⇒¬All : Q ⊆ ∁ P → First P Q ⊆ ∁ (All P)
   First⇒¬All q⇒¬p [ qx ]     (px ∷ pxs) = q⇒¬p qx px
   First⇒¬All q⇒¬p (_ ∷ pqxs) (_ ∷ pxs)  = First⇒¬All q⇒¬p pqxs pxs
+
+  ¬First⇒All : ∁ Q ⊆ P → ∁ (First P Q) ⊆ All P
+  ¬First⇒All ¬q⇒p {[]}     _      = []
+  ¬First⇒All ¬q⇒p {x ∷ xs} ¬pqxxs =
+    let px = ¬q⇒p (¬pqxxs ∘ [_]) in
+    px ∷ ¬First⇒All ¬q⇒p (¬pqxxs ∘ (px ∷_))
+
+  ¬All⇒First : Decidable P → ∁ P ⊆ Q → ∁ (All P) ⊆ First P Q
+  ¬All⇒First P? ¬p⇒q {x = []} ¬⊤ = contradiction [] ¬⊤
+  ¬All⇒First P? ¬p⇒q {x = x ∷ xs} ¬∀ with P? x
+  ... |  true because  [px] = let px = invert [px] in
+                              px ∷ ¬All⇒First P? ¬p⇒q (¬∀ ∘ (px ∷_))
+  ... | false because [¬px] = [ ¬p⇒q (invert [¬px]) ]
 
 ------------------------------------------------------------------------
 -- Irrelevance
@@ -82,7 +97,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 
   first? : Decidable P → Decidable (First P (∁ P))
   first? P? = Dec.fromSum
-            ∘ Sum.map₂ (All⇒¬First contradiction)
+            ∘ Sum.map₂ (All⇒¬First ¬¬-η)
             ∘ first (Dec.toSum ∘ P?)
 
   cofirst? : Decidable P → Decidable (First (∁ P) P)

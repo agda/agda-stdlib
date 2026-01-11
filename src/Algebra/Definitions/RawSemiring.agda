@@ -7,13 +7,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (RawSemiring)
+
+module Algebra.Definitions.RawSemiring {a ℓ} (M : RawSemiring a ℓ) where
+
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
-
-module Algebra.Definitions.RawSemiring {a ℓ} (M : RawSemiring a ℓ) where
-
 open RawSemiring M renaming (Carrier to A)
 
 ------------------------------------------------------------------------

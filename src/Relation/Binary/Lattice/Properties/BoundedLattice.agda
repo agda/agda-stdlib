@@ -11,14 +11,16 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Lattice.Properties.BoundedLattice
   {c ℓ₁ ℓ₂} (L : BoundedLattice c ℓ₁ ℓ₂) where
 
-open BoundedLattice L
-
-open import Algebra.Definitions _≈_
 open import Data.Product.Base using (_,_)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
-open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
 
+open BoundedLattice L
+
+open import Algebra.Definitions _≈_ using (Zero; RightZero; LeftZero)
+open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
+  using (y≤x⇒x∧y≈y; ∧-comm)
+open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
+  using (x≤y⇒x∨y≈y; ∨-comm )
 open Setoid setoid renaming (trans to ≈-trans)
 
 ∧-zeroʳ : RightZero ⊥ _∧_

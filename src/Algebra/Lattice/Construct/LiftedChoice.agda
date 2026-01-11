@@ -6,14 +6,15 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Algebra.Lattice.Construct.LiftedChoice where
+
 open import Algebra
-open import Algebra.Lattice
-open import Algebra.Construct.LiftedChoice
+  using (Op₂; IsSelectiveMagma; Associative; Commutative)
+open import Algebra.Lattice.Structures using (IsSemilattice)
+open import Algebra.Construct.LiftedChoice using (Lift; isBand; comm)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Level using (Level)
-
-module Algebra.Lattice.Construct.LiftedChoice where
 
 private
   variable
