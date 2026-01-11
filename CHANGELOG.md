@@ -151,8 +151,8 @@ Additions to existing modules
 
 * In `Algebra.Definitions.RawMonoid` action of a Boolean on a RawMonoid:
   ```agda
-  _∧_    : Bool → Carrier → Carrier
-  _∧′_∙_ : Bool → Carrier → Carrier → Carrier
+  _?>₀_  : Bool → Carrier → Carrier
+  _?>_∙_ : Bool → Carrier → Carrier → Carrier
   ```
 
 * In `Algebra.Lattice.Properties.BooleanAlgebra.XorRing`:
@@ -163,10 +163,11 @@ Additions to existing modules
 
 * In `Algebra.Properties.Monoid.Mult` properties of the Boolean action on a RawMonoid:
   ```agda
-  ∧-homo-true : true ∧ x ≈ x
-  ∧-assocˡ    : b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
-  b∧x∙y≈b∧x+y : b ∧′ x ∙ y ≈ (b ∧ x) + y
- ```
+  ?>₀-homo-true  : true ?>₀ x ≈ x
+  ?>₀-assocˡ     : b ?>₀ b′ ?>₀ x ≈ (b ∧ b′) ?>₀ x
+  b?>x∙y≈b?>₀x+y : b ?> x ∙ y ≈ (b ?>₀ x) + y
+  b?>₀x≈b?>x+0   : b ?>₀ x ≈ b ?> x ∙ 0#
+   ```
 
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda

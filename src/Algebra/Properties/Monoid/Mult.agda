@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
-open import Data.Bool.Base as Bool using (Bool; true; false; if_then_else_)
+open import Data.Bool.Base as Bool using (true; false; _∧_)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -35,7 +35,7 @@ open import Algebra.Definitions _≈_
 -- Definition
 
 open import Algebra.Definitions.RawMonoid rawMonoid public
-  using (_×_; _∧_; _∧′_∙_)
+  using (_×_; _?>₀_; _?>_∙_)
 
 ------------------------------------------------------------------------
 -- Properties of _×_
@@ -80,15 +80,19 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
   n × x + (m ℕ.* n) × x ≈⟨ ×-homo-+ x n (m ℕ.* n) ⟨
   (suc m ℕ.* n) × x     ∎
 
--- _∧_ is homomorphic with respect to Bool._∧_.
+-- _?>₀_ is homomorphic with respect to Bool._∧_.
 
-∧-homo-true : ∀ x → true ∧ x ≈ x
-∧-homo-true _ = refl
+?>₀-homo-true : ∀ x → true ?>₀ x ≈ x
+?>₀-homo-true _ = refl
 
-∧-assocˡ : ∀ b b′ x → b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
-∧-assocˡ false _ _ = refl
-∧-assocˡ true  _ _ = refl
+?>₀-assocˡ : ∀ b b′ x → b ?>₀ b′ ?>₀ x ≈ (b ∧ b′) ?>₀ x
+?>₀-assocˡ false _ _ = refl
+?>₀-assocˡ true  _ _ = refl
 
-b∧x∙y≈b∧x+y : ∀ b x y → b ∧′ x ∙ y ≈ (b ∧ x) + y
-b∧x∙y≈b∧x+y true  _ _ = refl
-b∧x∙y≈b∧x+y false _ y = sym (+-identityˡ y)
+b?>x∙y≈b?>₀x+y : ∀ b x y → b ?> x ∙ y ≈ b ?>₀ x + y
+b?>x∙y≈b?>₀x+y true  _ _ = refl
+b?>x∙y≈b?>₀x+y false _ y = sym (+-identityˡ y)
+
+b?>₀x≈b?>x+0 : ∀ b x → b ?>₀ x ≈ b ?> x ∙ 0#
+b?>₀x≈b?>x+0 true  _ = sym (+-identityʳ _)
+b?>₀x≈b?>x+0 false x = refl
