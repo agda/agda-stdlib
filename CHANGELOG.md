@@ -149,11 +149,24 @@ Additions to existing modules
   Central : Op₂ A → A → Set _
   ```
 
+* In `Algebra.Definitions.RawMonoid` action of a Boolean on a RawMonoid:
+  ```agda
+  _∧_    : Bool → Carrier → Carrier
+  _∧′_∙_ : Bool → Carrier → Carrier → Carrier
+  ```
+
 * In `Algebra.Lattice.Properties.BooleanAlgebra.XorRing`:
   ```agda
   ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
   ⊕-∧-booleanRing   : BooleanRing _ _
   ```
+
+* In `Algebra.Properties.Monoid.Mult` properties of the Boolean action on a RawMonoid:
+  ```agda
+  ∧-homo-true : true ∧ x ≈ x
+  ∧-assocˡ    : b ∧ (b′ ∧ x) ≈ (b Bool.∧ b′) ∧ x
+  b∧x∙y≈b∧x+y : b ∧′ x ∙ y ≈ (b ∧ x) + y
+ ```
 
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda
