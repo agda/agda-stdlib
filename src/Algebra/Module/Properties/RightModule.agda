@@ -29,7 +29,7 @@ open import Algebra.Properties.Ring ring
 open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
 
 -‿distrib-*ᵣ : ∀ m r → m *ᵣ (- r) ≈ᴹ -ᴹ (m *ᵣ r)
--‿distrib-*ᵣ m r = uniqueʳ‿-ᴹ (m *ᵣ r) (m *ᵣ - r) (begin
+-‿distrib-*ᵣ m r = inverseʳ-uniqueᴹ (m *ᵣ r) (m *ᵣ - r) (begin
   m *ᵣ r +ᴹ m *ᵣ - r ≈⟨ *ᵣ-distribˡ m r (- r) ⟨
   m *ᵣ (r - r)       ≈⟨ *ᵣ-congˡ (-‿inverseʳ r) ⟩
   m *ᵣ 0#            ≈⟨ *ᵣ-zeroʳ m ⟩
