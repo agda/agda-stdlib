@@ -36,8 +36,7 @@ open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
   0ᴹ                 ∎)
 
 -ᴹ‿distrib-*ᵣ : ∀ m r → (-ᴹ m) *ᵣ r ≈ᴹ -ᴹ (m *ᵣ r)
--ᴹ‿distrib-*ᵣ m r = uniqueʳ‿-ᴹ (m *ᵣ r) ((-ᴹ m) *ᵣ r)
-  (begin
+-ᴹ‿distrib-*ᵣ m r = inverseʳ-uniqueᴹ (m *ᵣ r) ((-ᴹ m) *ᵣ r) (begin
     m *ᵣ r +ᴹ (-ᴹ m) *ᵣ r ≈⟨ *ᵣ-distribʳ r m (-ᴹ m) ⟨
     (m +ᴹ -ᴹ m) *ᵣ r      ≈⟨ *ᵣ-congʳ (-ᴹ‿inverseʳ m) ⟩
     0ᴹ *ᵣ r               ≈⟨ *ᵣ-zeroˡ r ⟩
