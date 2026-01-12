@@ -157,9 +157,16 @@ Additions to existing modules
 
 * In `Algebra.Module.Properties.LeftModule`:
   ```agda
-  -1#*m≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
+  -1#*ₗm≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
   -‿distribˡ-*ₗ : ∀ r m → - r *ₗ m ≈ᴹ -ᴹ (r *ₗ m)
   -ᴹ‿distrib-*ₗ : ∀ r m → r *ₗ (-ᴹ m) ≈ᴹ -ᴹ (r *ₗ m)
+  ```
+
+* In `Algebra.Module.Properties.RightModule`:
+  ```agda
+  -1#*ₗm≈-ᴹm : m*ᵣ-1#≈-ᴹm : ∀ m → m *ᵣ (- 1#) ≈ᴹ -ᴹ m
+  -‿distrib-*ᵣ : ∀ m r → m *ᵣ (- r) ≈ᴹ -ᴹ (m *ᵣ r)
+  -ᴹ‿distrib-*ᵣ : ∀ m r → (-ᴹ m) *ᵣ r ≈ᴹ -ᴹ (m *ᵣ r)
   ```
 
 * In `Algebra.Properties.RingWithoutOne`:
