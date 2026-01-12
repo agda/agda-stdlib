@@ -43,8 +43,8 @@ open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
     r *ₗ 0ᴹ               ≈⟨ *ₗ-zeroʳ r ⟩
     0ᴹ                    ∎)
 
--1#*m≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
--1#*m≈-ᴹm m = begin
+-1#*ₗm≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
+-1#*ₗm≈-ᴹm m = begin
   - 1# *ₗ m    ≈⟨ -‿distrib-*ₗ 1# m ⟩
   -ᴹ (1# *ₗ m) ≈⟨ -ᴹ‿cong (*ₗ-identityˡ m) ⟩
   -ᴹ m         ∎
