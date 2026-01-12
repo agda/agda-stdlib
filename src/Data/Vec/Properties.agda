@@ -160,13 +160,13 @@ take≡truncate : ∀ m (xs : Vec A (m + n)) →
 take≡truncate zero    _        = refl
 take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
 
-truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
+truncate-zipWith : (f : A → B → C) .(m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
   truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
-truncate-zipWith f z≤n xs ys = refl
-truncate-zipWith f (s≤s m≤n) (x ∷ xs) (y ∷ ys) =
-  cong (f x y ∷_) (truncate-zipWith f m≤n xs ys)
+truncate-zipWith {m = zero}  f m≤n  _       _        = refl
+truncate-zipWith {m = suc _} f m≤n (x ∷ xs) (y ∷ ys) =
+  cong (f x y ∷_) (truncate-zipWith f (s≤s⁻¹ m≤n) xs ys)
 
-truncate-zipWith-truncate : ∀ (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o)
+truncate-zipWith-truncate : ∀ (f : A → B → C) .(m≤n : m ≤ n) .(n≤o : n ≤ o)
   (xs : Vec A o) (ys : Vec B n) →
   truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
   zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
@@ -176,8 +176,8 @@ truncate-zipWith-truncate f m≤n n≤o xs ys =
 
 truncate-updateAt : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
                     updateAt (truncate m≤n xs) i f ≡ truncate m≤n (updateAt xs (inject≤ i m≤n) f)
-truncate-updateAt (s≤s _  ) (_ ∷ _ ) zero f = refl
-truncate-updateAt (s≤s m≤n) (x ∷ xs) (suc i) f = cong (x ∷_) (truncate-updateAt m≤n xs i f)
+truncate-updateAt m≤n (_ ∷ _ ) zero f = refl
+truncate-updateAt m≤n (x ∷ xs) (suc i) f = cong (x ∷_) (truncate-updateAt (s≤s⁻¹ m≤n) xs i f)
 
 module _ (xs : Vec A (m + n)) (i : Fin m) (f : A → A) where
   private
