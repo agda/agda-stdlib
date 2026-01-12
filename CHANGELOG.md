@@ -21,6 +21,14 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
+  that the argument of type `m ≤ n` is marked as irrelevant. This should be
+  backwards compatible, but does change the equational behaviour of these
+  functions to be more eager, because no longer blocking on pattern matching
+  on that argument. Corresponding changes have been made to the types of their
+  properties (and their proofs). In particular, `truncate-irrelevant` is now
+  deprecated, because definitionally trivial.
+
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
@@ -66,6 +74,11 @@ Deprecated names
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
