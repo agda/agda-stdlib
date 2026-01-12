@@ -47,6 +47,11 @@ procedure should be followed:
 
     git push --follow-tags
 
+* Create a branch for the release (since tags can't be branches)
+
+    git switch -c v${VERSION}-release
+    git push origin v${VERSION}-release
+
 * Make a new release on Github at https://github.com/agda/agda-stdlib/releases
 
 * Submit a pull request to update the version of standard library on Homebrew
@@ -63,12 +68,13 @@ procedure should be followed:
 
 * Generate and upload documentation for the released version:
 
+    git switch v${VERSION}-release    # Make sure we are working with the release version just in case
     cp .github/tooling/* .
     cabal run GenerateEverything
     ./index.sh
     agda -i. -idoc -isrc --html index.agda
     mv html v$VERSION
-    git checkout gh-pages
+    git switch gh-pages
     git add v$VERSION/*.html v$VERSION/*.css
     git commit -m "[ release ] doc for version $VERSION"
     git push

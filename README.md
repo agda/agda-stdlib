@@ -2,6 +2,8 @@
 
 [![Ubuntu build](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml/badge.svg?branch=experimental)](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml)
 
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.09241/status.svg)](https://doi.org/10.21105/joss.09241)
+
 The Agda standard library
 =========================
 

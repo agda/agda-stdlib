@@ -19,7 +19,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Antisymmetric; Decidable; _Respects_
         ; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Minimum; Maximum; Irreflexive)
-open import Relation.Nullary.Decidable using (yes; no; _×-dec_)
+open import Relation.Nullary.Decidable using (yes; no; _×?_)
 
 private
   variable
@@ -87,7 +87,7 @@ module _ (≈ : Rel A ℓ₁) (L : Rel A ℓ₂) (R : Rel A ℓ₃) where
 module _ {L : REL A B ℓ₁} {R : REL A B ℓ₂} where
 
   decidable : Decidable L → Decidable R → Decidable (L ∩ R)
-  decidable L? R? x y = L? x y ×-dec R? x y
+  decidable L? R? x y = L? x y ×? R? x y
 
 ------------------------------------------------------------------------
 -- Structures

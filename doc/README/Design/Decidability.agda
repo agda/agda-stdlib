@@ -106,8 +106,8 @@ suc m ≟₂ suc n = map′ (cong suc) suc-injective (m ≟₂ n)
 _ : (m n : ℕ) → does (5 + m ≟₂ 3 + n) ≡ does (2 + m ≟₂ n)
 _ = λ m n → refl
 
--- `map′` can be used in conjunction with combinators such as `_⊎-dec_` and
--- `_×-dec_` to build complex (simply typed) decision procedures.
+-- `map′` can be used in conjunction with combinators such as `_⊎?_` and
+-- `_×?_` to build complex (simply typed) decision procedures.
 
 module ListDecEq₀ {a} {A : Set a} (_≟ᴬ_ : (x y : A) → Dec (x ≡ y)) where
 
@@ -116,13 +116,13 @@ module ListDecEq₀ {a} {A : Set a} (_≟ᴬ_ : (x y : A) → Dec (x ≡ y)) whe
   []       ≟ᴸᴬ (y ∷ ys) = no λ ()
   (x ∷ xs) ≟ᴸᴬ []       = no λ ()
   (x ∷ xs) ≟ᴸᴬ (y ∷ ys) =
-    map′ (uncurry (cong₂ _∷_)) ∷-injective (x ≟ᴬ y ×-dec xs ≟ᴸᴬ ys)
+    map′ (uncurry (cong₂ _∷_)) ∷-injective (x ≟ᴬ y ×? xs ≟ᴸᴬ ys)
 
 -- The final case says that `x ∷ xs ≡ y ∷ ys` exactly when `x ≡ y` *and*
 -- `xs ≡ ys`. The proofs are updated by the first two arguments to `map′`.
 
 -- In the case of ≡-equality tests, the pattern
--- `map′ (congₙ c) c-injective (x₀ ≟ y₀ ×-dec ... ×-dec xₙ₋₁ ≟ yₙ₋₁)`
+-- `map′ (congₙ c) c-injective (x₀ ≟ y₀ ×? ... ×? xₙ₋₁ ≟ yₙ₋₁)`
 -- is captured by `≟-mapₙ n c c-injective (x₀ ≟ y₀) ... (xₙ₋₁ ≟ yₙ₋₁)`.
 
 module ListDecEq₁ {a} {A : Set a} (_≟ᴬ_ : (x y : A) → Dec (x ≡ y)) where

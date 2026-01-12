@@ -14,7 +14,7 @@ open import Function.Base using (_∘_)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂)
-open import Relation.Nullary.Decidable using (yes; no; map′; _×-dec_)
+open import Relation.Nullary.Decidable using (yes; no; map′; _×?_)
 
 ------------------------------------------------------------------------
 -- Equality
@@ -48,4 +48,4 @@ module _ {a b} {A : Set a} {B : Set b} where
   ≡-dec dec₁ dec₂ (these x a) (this y)    = no λ()
   ≡-dec dec₁ dec₂ (these x a) (that y)    = no λ()
   ≡-dec dec₁ dec₂ (these x a) (these y b) =
-    map′ (uncurry (cong₂ these)) these-injective (dec₁ x y ×-dec dec₂ a b)
+    map′ (uncurry (cong₂ these)) these-injective (dec₁ x y ×? dec₂ a b)

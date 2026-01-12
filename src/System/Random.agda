@@ -10,8 +10,9 @@ module System.Random where
 
 import System.Random.Primitive as Prim
 
-open import Data.Bool.Base using (T)
+open import Data.Bool.Base using (Bool; T) hiding (module Bool)
 open import Data.Nat.Base using (ℕ; z≤n) hiding (module ℕ)
+open import Data.Vec.Base using ([]; _∷_; lookup)
 open import Foreign.Haskell.Pair using (_,_)
 open import Function.Base using (_$_; _∘_)
 open import IO.Base using (IO; lift; lift!; _<$>_; _>>=_; pure)
@@ -30,7 +31,7 @@ record InBounds {a r} {A : Set a} (_≤_ : Rel A r) (lo hi : A) : Set (a ⊔ r) 
     .isUpperBound : value ≤ hi
 
 RandomRIO : ∀ {a r} {A : Set a} (_≤_ : Rel A r) → Set (suc (a ⊔ r))
-RandomRIO {A = A} _≤_ = (lo hi : A) → .(lo ≤ hi) → IO (InBounds _≤_ lo hi)
+RandomRIO {A = A} _≤_ = (lo hi : A) → .(lo≤hi : lo ≤ hi) → IO (InBounds _≤_ lo hi)
 
 ------------------------------------------------------------------------
 -- Instances
@@ -138,6 +139,21 @@ module Fin where
   randomRIO {n} lo hi p = do
     k ← ℕ.randomRIO (toℕ lo) (toℕ hi) (Fin.toℕ-mono-≤ p)
     pure (toℕ-cancel-InBounds k)
+
+module Bool where
+
+  open import Data.Bool.Base as Bool using (true; false; _≤_)
+  open import Data.Bool.Properties using (≤-refl; ≤-minimum; ≤-maximum)
+
+  randomIO : IO Bool
+  randomIO = lookup (true ∷ false ∷ []) <$> Fin.randomIO
+
+  randomRIO : RandomRIO {A = Bool} _≤_
+  randomRIO false false lo≤hi = pure (false ∈[ ≤-refl , ≤-refl ])
+  randomRIO false true lo≤hi = do
+    b ← randomIO
+    pure (b ∈[ ≤-minimum b , ≤-maximum b ])
+  randomRIO true true lo≤hi = pure (true ∈[ ≤-refl , ≤-refl ])
 
 module List {a} {A : Set a} (rIO : IO A)  where
 

@@ -15,7 +15,7 @@ open import Data.Fin.Base as Fin
 open import Data.List.Base as List using (List)
 import Data.List.Properties as List
 open import Data.Nat.Base
-  using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_; s≤s⁻¹; z≤n)
+  using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_; s≤s⁻¹; z≤n; _∸_)
 open import Data.Nat.Properties
   using (suc-injective; +-assoc;  +-comm; +-suc; +-identityʳ
         ; m≤n⇒m≤1+n; m≤m+n; suc[m]≤n⇒m≤pred[n]
@@ -38,7 +38,7 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core
-  using (Dec; does; yes; _×-dec_; map′)
+  using (Dec; does; yes; _×?_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -78,7 +78,7 @@ toList-injective m≡n (x ∷ xs) (y ∷ ys) xs=ys =
 ≡-dec : DecidableEquality A → DecidableEquality (Vec A n)
 ≡-dec _≟_ []       []       = yes refl
 ≡-dec _≟_ (x ∷ xs) (y ∷ ys) = map′ (uncurry (cong₂ _∷_))
-  ∷-injective (x ≟ y ×-dec ≡-dec _≟_ xs ys)
+  ∷-injective (x ≟ y ×? ≡-dec _≟_ xs ys)
 
 ------------------------------------------------------------------------
 -- _[_]=_
@@ -105,6 +105,11 @@ take-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
            take m (map f xs) ≡ map f (take m xs)
 take-map f zero    xs       = refl
 take-map f (suc m) (x ∷ xs) = cong (f x ∷_) (take-map f m xs)
+
+updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
+updateAt-take (_ ∷ _ ) zero    f = refl
+updateAt-take (x ∷ xs) (suc i) f = cong (x ∷_) (updateAt-take xs i f)
 
 ------------------------------------------------------------------------
 -- drop
@@ -154,6 +159,37 @@ take≡truncate : ∀ m (xs : Vec A (m + n)) →
                 take m xs ≡ truncate (m≤m+n m n) xs
 take≡truncate zero    _        = refl
 take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
+
+truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
+  truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+truncate-zipWith f z≤n xs ys = refl
+truncate-zipWith f (s≤s m≤n) (x ∷ xs) (y ∷ ys) =
+  cong (f x y ∷_) (truncate-zipWith f m≤n xs ys)
+
+truncate-zipWith-truncate : ∀ (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o)
+  (xs : Vec A o) (ys : Vec B n) →
+  truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
+  zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
+truncate-zipWith-truncate f m≤n n≤o xs ys =
+  trans (truncate-zipWith f m≤n (truncate n≤o xs) ys)
+  (cong (λ zs → zipWith f zs (truncate m≤n ys)) ((sym (truncate-trans m≤n n≤o xs))))
+
+truncate-updateAt : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
+                    updateAt (truncate m≤n xs) i f ≡ truncate m≤n (updateAt xs (inject≤ i m≤n) f)
+truncate-updateAt (s≤s _  ) (_ ∷ _ ) zero f = refl
+truncate-updateAt (s≤s m≤n) (x ∷ xs) (suc i) f = cong (x ∷_) (truncate-updateAt m≤n xs i f)
+
+module _ (xs : Vec A (m + n)) (i : Fin m) (f : A → A) where
+  private
+    i′ = inject≤ i (m≤m+n m n)
+
+  updateAt-truncate : updateAt (truncate (m≤m+n m n) xs) i f ≡ truncate (m≤m+n m n) (updateAt xs i′ f)
+  updateAt-truncate = begin
+    updateAt (truncate (m≤m+n m n) xs) i f ≡⟨ cong (λ l → updateAt l i f) (take≡truncate m xs) ⟨
+    updateAt (take m xs) i f         ≡⟨ updateAt-take xs i f ⟩
+    take m (updateAt xs i′ f)        ≡⟨ take≡truncate m (updateAt xs i′ f) ⟩
+    truncate (m≤m+n m n) (updateAt xs i′ f) ∎
+    where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- truncate and padRight together
@@ -429,6 +465,11 @@ map-insertAt f _ []        Fin.zero = refl
 map-insertAt f _ (x' ∷ xs) Fin.zero = refl
 map-insertAt f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insertAt f x xs i)
 
+map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
+               map f (removeAt xs i) ≡ removeAt (map f xs) i
+map-removeAt f (x ∷ xs) zero = refl
+map-removeAt f (x ∷ xs@(_ ∷ _)) (suc i) = cong (f x ∷_) (map-removeAt f xs i)
+
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
 map-[]≔ f xs i = map-updateAt xs i refl
@@ -457,6 +498,19 @@ toList-map : ∀ (f : A → B) (xs : Vec A n) →
              toList (map f xs) ≡ List.map f (toList xs)
 toList-map f [] = refl
 toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
+
+map-truncate : (f : A → B) (m≤n : m ≤ n) (xs : Vec A n) →
+  map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+map-truncate {m = m} {n = n} f m≤n xs =
+  let _ , n≡m+o = m≤n⇒∃[o]m+o≡n m≤n
+  in let m+o≡n = sym n≡m+o
+  in begin
+    map f (truncate m≤n xs)              ≡⟨ cong (map f) (truncate≡take m≤n xs m+o≡n) ⟩
+    map f (take m (cast m+o≡n xs)) ≡⟨ take-map f m _ ⟨
+    take m (map f (cast m+o≡n xs)) ≡⟨ cong (take m) (map-cast f m+o≡n xs) ⟩
+    take m (cast m+o≡n (map f xs)) ≡⟨ truncate≡take m≤n (map f xs) m+o≡n ⟨
+    truncate m≤n (map f xs)              ∎
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _++_
