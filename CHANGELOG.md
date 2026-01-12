@@ -244,7 +244,7 @@ Additions to existing modules
                     truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
 
   truncate-zipWith-truncate : (f : A → B → C) .(m≤n : m ≤ n) .(n≤o : n ≤ o)
-	                      (xs : Vec A o) (ys : Vec B n) →
+                              (xs : Vec A o) (ys : Vec B n) →
                               truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
                               zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
 
@@ -260,30 +260,30 @@ Additions to existing modules
                  map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
 
   padRight-lookup : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) →
-	            lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
+                    lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
 
   padRight-map : (f : A → B) .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
-	         map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
+                 map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
 
   padRight-zipWith : (f : A → B → C) .(m≤n : m ≤ n) (a : A) (b : B)
-	             (xs : Vec A m) (ys : Vec B m) →
+                     (xs : Vec A m) (ys : Vec B m) →
                      zipWith f (padRight m≤n a xs) (padRight m≤n b ys) ≡
-	             padRight m≤n (f a b) (zipWith f xs ys)
+                     padRight m≤n (f a b) (zipWith f xs ys)
 
   padRight-zipWith₁ : (f : A → B → C) .(o≤m : o ≤ m) .(m≤n : m ≤ n) (a : A) (b : B)
-	              (xs : Vec A m) (ys : Vec B o) →
+                      (xs : Vec A m) (ys : Vec B o) →
                       zipWith f (padRight m≤n a xs) (padRight (≤-trans o≤m m≤n) b ys) ≡
                       padRight m≤n (f a b) (zipWith f xs (padRight o≤m b ys))
 
   padRight-take : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
-	          take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
+                  take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
 
   padRight-drop : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
-	          drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+                  drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
 
   padRight-updateAt : .(m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
                       updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
-	              padRight m≤n x (updateAt xs i f)
+                      padRight m≤n x (updateAt xs i f)
   ```
 
 * In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
