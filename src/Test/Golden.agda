@@ -102,6 +102,7 @@ open import Relation.Nullary.Decidable.Core using (does)
 
 open import Codata.Musical.Notation using (♯_)
 open import IO
+open import IO.Handle
 
 open import System.Clock as Clock using (time′; Time; seconds)
 open import System.Console.ANSI
@@ -205,9 +206,10 @@ runTest opts testPath = do
   true ← doesDirectoryExist (mkFilePath testPath)
     where false → fail directoryNotFound
 
+  putStr $ concat (testPath ∷ ": " ∷ [])
   time ← time′ $ callCommand $ unwords
            $ "cd" ∷ testPath
-           ∷ "&&" ∷ "sh ./run" ∷ opts .exeUnderTest
+           ∷ "&&" ∷ "sh ./run" ∷ (concat $ "\"" ∷ opts .exeUnderTest ∷ "\"" ∷ [])
            ∷ "| tr -d '\\r' > output"
            ∷ []
 
@@ -304,14 +306,14 @@ runTest opts testPath = do
       when b $ writeFile (testPath String.++ "/expected") out
 
     printTiming : Bool → Time → String → IO _
-    printTiming false _    msg = putStrLn $ concat (testPath ∷ ": " ∷ msg ∷ [])
+    printTiming false _    msg = putStrLn msg
     printTiming true  time msg =
       let time  = ℕ.show (time .seconds) String.++ "s"
           spent = 9 + sum (List.map String.length (testPath ∷ time ∷ []))
                -- ^ hack: both "success" and "FAILURE" have the same length
                --   can't use `String.length msg` because the msg contains escape codes
           pad   = String.replicate (72 ∸ spent) ' '
-      in putStrLn (concat (testPath ∷ ": " ∷ msg ∷ pad ∷ time ∷ []))
+      in putStrLn (concat (msg ∷ pad ∷ time ∷ []))
 
 -- A test pool is characterised by
 --  + a name
@@ -385,6 +387,7 @@ poolRunner opts pool = do
 
 runner : List TestPool → IO ⊤
 runner tests = do
+  hSetBuffering stdout noBuffering
   -- figure out the options
   args ← getArgs
   inj₂ opts ← options args
