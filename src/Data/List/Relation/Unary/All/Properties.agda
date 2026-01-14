@@ -16,7 +16,7 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup; updateAt; and; or; all; any)
 open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
-  using (there-injective-≢∈; ∈-filter⁻)
+  using (there-injective-≢∈; ∈-filter⁻; ∈-++⁻)
 import Data.List.Membership.Setoid as SetoidMembership
 import Data.List.Properties as List
 import Data.List.Relation.Binary.Equality.Setoid as ≋
@@ -37,11 +37,11 @@ open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base using (_∘_; _$_; id; case_of_; flip)
 open import Function.Bundles using (_↠_; mk↠ₛ; _⇔_; mk⇔; _↔_; mk↔ₛ′; Equivalence)
 open import Level using (Level)
-open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Core using (REL; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_; subst)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
@@ -411,6 +411,8 @@ unsnoc⁻ {xs = .(xs ∷ʳ x)} (just (pxs , px)) | xs ∷ʳ′ x = ∷ʳ⁺ pxs 
 -- cartesianProductWith and cartesianProduct
 
 module _ (S₁ : Setoid a ℓ₁) (S₂ : Setoid b ℓ₂) where
+  open Setoid S₁ renaming (_≈_ to _≈₁_; refl to ≈₁-refl)
+  open Setoid S₂ renaming (_≈_ to _≈₂_; refl to ≈₂-refl)
   open SetoidMembership S₁ using () renaming (_∈_ to _∈₁_)
   open SetoidMembership S₂ using () renaming (_∈_ to _∈₂_)
 
@@ -419,13 +421,30 @@ module _ (S₁ : Setoid a ℓ₁) (S₂ : Setoid b ℓ₂) where
                           All P (cartesianProductWith f xs ys)
   cartesianProductWith⁺ f []       ys pres = []
   cartesianProductWith⁺ f (x ∷ xs) ys pres = ++⁺
-    (map⁺ (All.tabulateₛ S₂ (pres (here (Setoid.refl S₁)))))
+    (map⁺ (All.tabulateₛ S₂ (pres (here ≈₁-refl))))
     (cartesianProductWith⁺ f xs ys (pres ∘ there))
 
   cartesianProduct⁺ : ∀ xs ys →
                       (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y)) →
                       All P (cartesianProduct xs ys)
   cartesianProduct⁺ = cartesianProductWith⁺ _,_
+
+  cartesianProductWith⁻ : ∀ f →
+                          f Preserves₂ _≈₁_ ⟶ _≈₂_ ⟶ _≡_ →
+                          ∀ xs ys →
+                          All P (cartesianProductWith f xs ys) →
+                          (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y))
+  cartesianProductWith⁻ {P = P} f pres (x′ ∷ xs) ys Ps {y = y} x∈x′∷xs y∈ys
+    with x∈x′∷xs   | ++⁻ (map (f x′) ys) Ps
+  ... | here x≈x′  | Ps′ , _ rewrite pres x≈x′ (≈₂-refl {y}) =
+    All.lookupₛ S₂ (subst P ∘ pres ≈₁-refl) (map⁻ Ps′) y∈ys
+  ... | there x∈xs | _   , Ps′ = cartesianProductWith⁻ f pres xs ys Ps′ x∈xs y∈ys
+
+  cartesianProduct⁻ : _,_ Preserves₂ _≈₁_ ⟶ _≈₂_ ⟶ _≡_ →
+                      ∀ xs ys →
+                      All P (cartesianProduct xs ys) →
+                      (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y))
+  cartesianProduct⁻ = cartesianProductWith⁻ _,_
 
 ------------------------------------------------------------------------
 -- take and drop
