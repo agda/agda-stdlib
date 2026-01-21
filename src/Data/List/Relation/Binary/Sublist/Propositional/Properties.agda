@@ -43,7 +43,7 @@ private
 
 module _ {A : Set a} where
   open SetoidProperties (setoid A) public
-    hiding (map⁺; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
+    hiding (map⁺; All-resp-⊆; Any-resp-⊆; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
 
 ------------------------------------------------------------------------
 -- Relationship between _⊆_ and Setoid._⊆_
@@ -103,17 +103,17 @@ map⁺ f = SetoidProperties.map⁺ (setoid _) (setoid _) (cong f)
 ------------------------------------------------------------------------
 -- Relationships to other predicates
 
+module _ {P : Pred A ℓ} where
+
 -- All P is a contravariant functor from _⊆_ to Set.
 
-All-resp-⊆ : {P : Pred A ℓ} → (All P) Respects _⊇_
-All-resp-⊆ []          []       = []
-All-resp-⊆ (_    ∷ʳ p) (_ ∷ xs) = All-resp-⊆ p xs
-All-resp-⊆ (refl ∷  p) (x ∷ xs) = x ∷ All-resp-⊆ p xs
+  All-resp-⊆ : (All P) Respects _⊇_
+  All-resp-⊆ = SetoidProperties.All-resp-⊆ (setoid _) (≡.resp P)
 
 -- Any P is a covariant functor from _⊆_ to Set.
 
-Any-resp-⊆ : {P : Pred A ℓ} → (Any P) Respects _⊆_
-Any-resp-⊆ = lookup
+  Any-resp-⊆ : (Any P) Respects _⊆_
+  Any-resp-⊆ = SetoidProperties.Any-resp-⊆ (setoid _) (≡.resp P)
 
 ------------------------------------------------------------------------
 -- Functor laws for All-resp-⊆
@@ -137,6 +137,12 @@ All-resp-⊆-trans {τ = []      } ([]        ) []       = refl
 ------------------------------------------------------------------------
 -- Functor laws for Any-resp-⊆ / lookup
 
+lookup≗Any-resp-⊆ : ∀ {P : Pred A ℓ} (xs⊆ys : xs ⊆ ys) →
+                    lookup xs⊆ys ≗ Any-resp-⊆ {P = P} xs⊆ys
+lookup≗Any-resp-⊆ (y ∷ʳ xs⊆ys)          = cong there ∘ lookup≗Any-resp-⊆ xs⊆ys
+lookup≗Any-resp-⊆ (x ∷ xs⊆ys) (here px) = refl
+lookup≗Any-resp-⊆ (x ∷ xs⊆ys) (there p) = cong there (lookup≗Any-resp-⊆ xs⊆ys p)
+
 -- First functor law: identity.
 
 Any-resp-⊆-refl : ∀ {P : Pred A ℓ} →
@@ -144,7 +150,9 @@ Any-resp-⊆-refl : ∀ {P : Pred A ℓ} →
 Any-resp-⊆-refl (here p)  = refl
 Any-resp-⊆-refl (there i) = cong there (Any-resp-⊆-refl i)
 
-lookup-⊆-refl = Any-resp-⊆-refl
+lookup-⊆-refl : ∀ {P : Pred A ℓ} →
+                lookup ⊆-refl ≗ id {A = Any P xs}
+lookup-⊆-refl p = trans (lookup≗Any-resp-⊆ ⊆-refl p) (Any-resp-⊆-refl p)
 
 -- Second functor law: composition.
 
@@ -156,7 +164,12 @@ Any-resp-⊆-trans {τ = _    ∷ _} (_ ∷  τ′) (there i) = cong there (Any-
 Any-resp-⊆-trans {τ = refl ∷ _} (_ ∷  τ′) (here _)  = refl
 Any-resp-⊆-trans {τ = []      } []        ()
 
-lookup-⊆-trans = Any-resp-⊆-trans
+lookup-⊆-trans : ∀ {P : Pred A ℓ} {τ : xs ⊆ ys} (τ′ : ys ⊆ zs) →
+                 lookup {P = P} (⊆-trans τ τ′) ≗ lookup τ′ ∘ lookup τ
+lookup-⊆-trans ys⊆zs p =
+  trans (lookup≗Any-resp-⊆ (⊆-trans _ ys⊆zs) p)
+        (trans (Any-resp-⊆-trans ys⊆zs p)
+               (lookup≗Any-resp-⊆ ys⊆zs (lookup _ p)))
 
 ------------------------------------------------------------------------
 -- The `lookup` function for `xs ⊆ ys` is injective.
@@ -167,7 +180,7 @@ lookup-⊆-trans = Any-resp-⊆-trans
 lookup-injective : ∀ {P : Pred A ℓ} {τ : xs ⊆ ys} {i j : Any P xs} →
                    lookup τ i ≡ lookup τ j → i ≡ j
 lookup-injective {τ = _  ∷ʳ _}                     = lookup-injective ∘′ there-injective
-lookup-injective {τ = x≡y ∷ _} {here  _} {here  _} = cong here ∘′ subst-injective x≡y ∘′ here-injective
+lookup-injective {τ = refl ∷ _} {here  _} {here  _} = cong here ∘′ here-injective
   -- Note: instead of using subst-injective, we could match x≡y against refl on the lhs.
   -- However, this turns the following clause into a non-strict match.
 lookup-injective {τ = _   ∷ _} {there _} {there _} = cong there ∘′ lookup-injective ∘′ there-injective
