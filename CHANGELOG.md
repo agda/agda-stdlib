@@ -333,6 +333,17 @@ Additions to existing modules
   [_]⊢_ : (A → B) → Pred A ℓ → Pred B _
   ```
 
+* In `Relation.Unary.Properties`
+  ```agda
+  _map-⊢_   : P ⊆ Q → f ⊢ P ⊆ f ⊢ Q
+  map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
+  map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
+  ⟨_⟩⊢⁻_    : ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
+  ⟨_⟩⊢⁺_    : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
+  [_]⊢⁻_    : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
+  [_]⊢⁺_    : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
+  ```
+
 * In `System.Random`:
   ```agda
   randomIO : IO Bool
