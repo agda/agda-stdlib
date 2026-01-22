@@ -161,6 +161,20 @@ Additions to existing modules
   ⊕-∧-booleanRing   : BooleanRing _ _
   ```
 
+* In `Algebra.Module.Properties.LeftModule`:
+  ```agda
+  -1#*ₗm≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
+  -‿distrib-*ₗ : ∀ r m → - r *ₗ m ≈ᴹ -ᴹ (r *ₗ m)
+  -ᴹ‿distrib-*ₗ : ∀ r m → r *ₗ (-ᴹ m) ≈ᴹ -ᴹ (r *ₗ m)
+  ```
+
+* In `Algebra.Module.Properties.RightModule`:
+  ```agda
+  -1#*ₗm≈-ᴹm : m*ᵣ-1#≈-ᴹm : ∀ m → m *ᵣ (- 1#) ≈ᴹ -ᴹ m
+  -‿distrib-*ᵣ : ∀ m r → m *ᵣ (- r) ≈ᴹ -ᴹ (m *ᵣ r)
+  -ᴹ‿distrib-*ᵣ : ∀ m r → (-ᴹ m) *ᵣ r ≈ᴹ -ᴹ (m *ᵣ r)
+  ```
+
 * In `Algebra.Properties.Monoid.Mult` properties of the Boolean action on a RawMonoid:
   ```agda
   ?>₀-homo-true  : true ?>₀ x ≈ x
@@ -331,6 +345,17 @@ Additions to existing modules
   ```agda
   ⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
   [_]⊢_ : (A → B) → Pred A ℓ → Pred B _
+  ```
+
+* In `Relation.Unary.Properties`
+  ```agda
+  _map-⊢_   : P ⊆ Q → f ⊢ P ⊆ f ⊢ Q
+  map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
+  map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
+  ⟨_⟩⊢⁻_    : ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
+  ⟨_⟩⊢⁺_    : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
+  [_]⊢⁻_    : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
+  [_]⊢⁺_    : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
   ```
 
 * In `System.Random`:
