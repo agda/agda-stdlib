@@ -349,3 +349,13 @@ Additions to existing modules
   randomIO : IO Bool
   randomRIO : RandomRIO {A = Bool} _≤_
   ```
+
+* In Relation.Unary.Properites
+  ```agda
+  ¬∃⟨P⟩⇒Π[∁P] : ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
+  ¬∃⟨P⟩⇒∀[∁P] : ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
+  ∃⟨∁P⟩⇒¬Π[P] : ∃⟨ ∁ P ⟩ → ¬ Π[ P ]
+  ∃⟨∁P⟩⇒¬∀[P] : ∃⟨ ∁ P ⟩ → ¬ ∀[ P ]
+  Π[∁P]⇒¬∃[P] : Π[ ∁ P ] → ¬ ∃⟨ P ⟩
+  ∀[∁P]⇒¬∃[P] : ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
+  ```
