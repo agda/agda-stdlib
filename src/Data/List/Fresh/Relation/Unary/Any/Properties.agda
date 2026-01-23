@@ -52,7 +52,7 @@ module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} (P⇒¬Q : ∀[ P ⇒ ∁ Q
   All⇒¬Any (p ∷ _)  (here q)   = P⇒¬Q p q
   All⇒¬Any (_ ∷ ps) (there qs) = All⇒¬Any ps qs
 
-module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} (P? : Decidable P) where
+module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   ¬All⇒Any : {xs : List# A R} → ¬ (All P xs) → Any (∁ P) xs
   ¬All⇒Any {xs = []}      ¬ps = contradiction [] ¬ps
