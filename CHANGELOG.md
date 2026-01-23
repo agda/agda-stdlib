@@ -23,7 +23,7 @@ Minor improvements
 
 * The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
   that the argument of type `m ≤ n` is marked as irrelevant. This should be
-  backwards compatible, but does change the equational behaviour of these
+  backwards compatible, but does change the intensional behaviour of these
   functions to be more eager, because no longer blocking on pattern matching
   on that argument. Corresponding changes have been made to the types of their
   properties (and their proofs). In particular, `truncate-irrelevant` is now
@@ -241,7 +241,7 @@ Additions to existing modules
                   updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
 
   truncate-zipWith : (f : A → B → C) .(m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
-                    truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+                     truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
 
   truncate-zipWith-truncate : (f : A → B → C) .(m≤n : m ≤ n) .(n≤o : n ≤ o)
                               (xs : Vec A o) (ys : Vec B n) →
