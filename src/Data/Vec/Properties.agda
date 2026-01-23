@@ -1696,7 +1696,7 @@ Please use lookup-take-inject≤ or lookup-truncate, take≡truncate instead."
 -- Version 2.4
 
 truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
-truncate-irrelevant _ _ xs = refl
+truncate-irrelevant _ _ _ = refl
 {-# WARNING_ON_USAGE truncate-irrelevant
 "Warning: truncate-irrelevant was deprecated in v2.4.
 Definition of truncate has been made definitionally proof-irrelevant."
