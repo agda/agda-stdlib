@@ -13,6 +13,9 @@ Bug-fixes
 
 * Fix a typo in `Algebra.Morphism.Construct.DirectProduct`.
 
+* Fix a typo in `Data.Rational.Properties`: `nonPos*nonPos⇒nonPos` erroneously named,
+  corrected to `nonPos*nonPos⇒nonNeg`.
+
 * Fix a typo in `Function.Construct.Constant`.
 
 Non-backwards compatible changes

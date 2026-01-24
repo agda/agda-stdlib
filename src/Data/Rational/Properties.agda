@@ -1389,8 +1389,8 @@ nonNeg*nonPos⇒nonPos p q = nonPositive $ begin
   0ℚ     ∎
   where open ≤-Reasoning
 
-nonPos*nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
-nonPos*nonPos⇒nonPos p q = nonNegative $ begin
+nonPos*nonPos⇒nonNeg : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+nonPos*nonPos⇒nonNeg p q = nonNegative $ begin
   0ℚ     ≡⟨ *-zeroʳ p ⟨
   p * 0ℚ ≤⟨ *-monoˡ-≤-nonPos p (nonPositive⁻¹ q) ⟩
   p * q  ∎
