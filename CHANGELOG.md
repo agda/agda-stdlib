@@ -21,6 +21,14 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
+  that the argument of type `m ≤ n` is marked as irrelevant. This should be
+  backwards compatible, but does change the intensional behaviour of these
+  functions to be more eager, because no longer blocking on pattern matching
+  on that argument. Corresponding changes have been made to the types of their
+  properties (and their proofs). In particular, `truncate-irrelevant` is now
+  deprecated, because definitionally trivial.
+
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
@@ -66,6 +74,11 @@ Deprecated names
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
@@ -236,19 +249,20 @@ Additions to existing modules
 * In `Data.Vec.Properties`:
   ```agda
   map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
-               map f (removeAt xs i) ≡ removeAt (map f xs) i
+                 map f (removeAt xs i) ≡ removeAt (map f xs) i
 
   updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
                   updateAt (take m xs) i f ≡ take m (updateAt xs (inject≤ i (m≤m+n m n)) f)
 
-  truncate-zipWith : (f : A → B → C) (m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
-                    truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
+  truncate-zipWith : (f : A → B → C) .(m≤n : m ≤ n) (xs : Vec A n) (ys : Vec B n) →
+                     truncate m≤n (zipWith f xs ys) ≡ zipWith f (truncate m≤n xs) (truncate m≤n ys)
 
-  truncate-zipWith-truncate : (f : A → B → C) (m≤n : m ≤ n) (n≤o : n ≤ o) (xs : Vec A o) (ys : Vec B n) →
+  truncate-zipWith-truncate : (f : A → B → C) .(m≤n : m ≤ n) .(n≤o : n ≤ o)
+                              (xs : Vec A o) (ys : Vec B n) →
                               truncate m≤n (zipWith f (truncate n≤o xs) ys) ≡
                               zipWith f (truncate (≤-trans m≤n n≤o) xs) (truncate m≤n ys)
 
-  truncate-updateAt : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
+  truncate-updateAt : .(m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A → A) →
                       updateAt (truncate m≤n xs) i f ≡
                       truncate m≤n (updateAt xs (inject≤ i m≤n) f)
 
@@ -256,26 +270,34 @@ Additions to existing modules
                       updateAt (truncate (m≤m+n m n) xs) i f ≡
                       truncate (m≤m+n m n) (updateAt xs (inject≤ i (m≤m+n m n)) f)
 
-  map-truncate : (f : A → B) (m≤n : m ≤ n) (xs : Vec A n) →
-                map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+  map-truncate : (f : A → B) .(m≤n : m ≤ n) (xs : Vec A n) →
+                 map f (truncate m≤n xs) ≡ truncate m≤n (map f xs)
 
-  padRight-lookup : (m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) → lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
+  padRight-lookup : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m) →
+                    lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡ lookup xs i
 
-  padRight-map : (f : A → B) (m≤n : m ≤ n) (a : A) (xs : Vec A m) → map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
+  padRight-map : (f : A → B) .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+                 map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f xs)
 
-  padRight-zipWith : (f : A → B → C) (m≤n : m ≤ n) (a : A) (b : B) (xs : Vec A m) (ys : Vec B m) →
-                   zipWith f (padRight m≤n a xs) (padRight m≤n b ys) ≡ padRight m≤n (f a b) (zipWith f xs ys)
+  padRight-zipWith : (f : A → B → C) .(m≤n : m ≤ n) (a : A) (b : B)
+                     (xs : Vec A m) (ys : Vec B m) →
+                     zipWith f (padRight m≤n a xs) (padRight m≤n b ys) ≡
+                     padRight m≤n (f a b) (zipWith f xs ys)
 
-  padRight-zipWith₁ : (f : A → B → C) (o≤m : o ≤ m) (m≤n : m ≤ n) (a : A) (b : B) (xs : Vec A m) (ys : Vec B o) →
-                    zipWith f (padRight m≤n a xs) (padRight (≤-trans o≤m m≤n) b ys) ≡
-                    padRight m≤n (f a b) (zipWith f xs (padRight o≤m b ys))
+  padRight-zipWith₁ : (f : A → B → C) .(o≤m : o ≤ m) .(m≤n : m ≤ n) (a : A) (b : B)
+                      (xs : Vec A m) (ys : Vec B o) →
+                      zipWith f (padRight m≤n a xs) (padRight (≤-trans o≤m m≤n) b ys) ≡
+                      padRight m≤n (f a b) (zipWith f xs (padRight o≤m b ys))
 
-  padRight-take : (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) → take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
+  padRight-take : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                  take m (cast n≡m+o (padRight m≤n a xs)) ≡ xs
 
-  padRight-drop : (m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) → drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
+  padRight-drop : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡ m + o) →
+                  drop m (cast n≡m+o (padRight m≤n a xs)) ≡ replicate o a
 
-  padRight-updateAt : (m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
-                    updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡ padRight m≤n x (updateAt xs i f)
+  padRight-updateAt : .(m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
+                      updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
+                      padRight m≤n x (updateAt xs i f)
   ```
 
 * In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
