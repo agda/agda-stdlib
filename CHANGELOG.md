@@ -79,6 +79,11 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl

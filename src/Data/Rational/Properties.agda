@@ -1870,3 +1870,11 @@ Please use neg<pos instead."
 open Data.Rational.Base public
   using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
   renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)
+
+-- Version 2.4
+
+nonPos*nonPos⇒nonPos = nonPos*nonPos⇒nonNeg
+{-# WARNING_ON_USAGE nonPos*nonPos⇒nonPos
+"Warning: nonPos*nonPos⇒nonPos was deprecated in v2.4.
+Please use nonPos*nonPos⇒nonNeg instead."
+#-}
