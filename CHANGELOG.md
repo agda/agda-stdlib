@@ -29,6 +29,9 @@ Minor improvements
   properties (and their proofs). In particular, `truncate-irrelevant` is now
   deprecated, because definitionally trivial.
 
+* `Relation.Binary.Morphism.Definitions` is no longer imported by any module,
+  but retained as a stub for compatibility with external users.
+
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.

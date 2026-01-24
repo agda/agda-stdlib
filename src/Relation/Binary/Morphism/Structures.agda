@@ -1,26 +1,25 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Order morphisms
+-- Relational morphisms, incl. in particular, order morphisms
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
-open import Relation.Binary.Core using (Rel)
 
 module Relation.Binary.Morphism.Structures
   {a b} {A : Set a} {B : Set b}
   where
 
 open import Data.Product.Base using (_,_)
-open import Function.Definitions using (Injective; Surjective; Bijective)
+open import Function.Definitions
+  using (Congruent; Injective; Surjective; Bijective)
 open import Level using (Level; _⊔_)
-
-open import Relation.Binary.Morphism.Definitions A B
+open import Relation.Binary.Core using (Rel)
 
 private
   variable
     ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
+
 
 ------------------------------------------------------------------------
 -- Relations
@@ -29,7 +28,7 @@ private
 record IsRelHomomorphism (_∼₁_ : Rel A ℓ₁) (_∼₂_ : Rel B ℓ₂)
                          (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    cong : Homomorphic₂ _∼₁_ _∼₂_ ⟦_⟧
+    cong : Congruent _∼₁_ _∼₂_ ⟦_⟧
 
 
 record IsRelMonomorphism (_∼₁_ : Rel A ℓ₁) (_∼₂_ : Rel B ℓ₂)
@@ -62,8 +61,8 @@ record IsOrderHomomorphism (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
                            (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃ ⊔ ℓ₄)
                            where
   field
-    cong  : Homomorphic₂ _≈₁_ _≈₂_ ⟦_⟧
-    mono  : Homomorphic₂ _≲₁_ _≲₂_ ⟦_⟧
+    cong  : Congruent _≈₁_ _≈₂_ ⟦_⟧
+    mono  : Congruent _≲₁_ _≲₂_ ⟦_⟧
 
   module Eq where
     isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
