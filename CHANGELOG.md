@@ -121,6 +121,8 @@ New modules
 
 * `Algebra.Properties.Semiring`.
 
+* `Data.List.Fresh.Membership.DecSetoid`.
+
 * `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
