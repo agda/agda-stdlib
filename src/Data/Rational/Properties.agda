@@ -1389,8 +1389,8 @@ nonNeg*nonPos⇒nonPos p q = nonPositive $ begin
   0ℚ     ∎
   where open ≤-Reasoning
 
-nonPos*nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
-nonPos*nonPos⇒nonPos p q = nonNegative $ begin
+nonPos*nonPos⇒nonNeg : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+nonPos*nonPos⇒nonNeg p q = nonNegative $ begin
   0ℚ     ≡⟨ *-zeroʳ p ⟨
   p * 0ℚ ≤⟨ *-monoˡ-≤-nonPos p (nonPositive⁻¹ q) ⟩
   p * q  ∎
@@ -1870,3 +1870,11 @@ Please use neg<pos instead."
 open Data.Rational.Base public
   using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
   renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)
+
+-- Version 2.4
+
+nonPos*nonPos⇒nonPos = nonPos*nonPos⇒nonNeg
+{-# WARNING_ON_USAGE nonPos*nonPos⇒nonPos
+"Warning: nonPos*nonPos⇒nonPos was deprecated in v2.4.
+Please use nonPos*nonPos⇒nonNeg instead."
+#-}
