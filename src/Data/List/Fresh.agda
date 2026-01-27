@@ -34,7 +34,6 @@ private
     a b p r s : Level
     A : Set a
     B : Set b
-    P : Pred A p
     R : Rel A r
     S : Rel A s
     x y : A
@@ -161,7 +160,7 @@ drop zero    xs        = xs
 drop (suc n) []        = []
 drop (suc n) (x ∷# xs) = drop n xs
 
-module _ (P? : U.Decidable {A = A} P) where
+module _ {P : Pred A p} (P? : U.Decidable {A = A} P) where
 
   takeWhile   : List# A R → List# A R
   takeWhile-# : ∀ y (xs : List# A R) → y # xs → y # takeWhile xs
