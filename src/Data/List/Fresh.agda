@@ -120,7 +120,7 @@ fromMaybe : Maybe A → List# A R
 fromMaybe nothing  = []
 fromMaybe (just x) = [ x ]
 
-module _ (R-refl : B.Reflexive {A = A} R) where
+module _ (refl : Reflexive {A = A} R) where
 
   replicate   : ℕ → A → List# A R
   replicate-# : (n : ℕ) (x : A) → x # replicate n x
