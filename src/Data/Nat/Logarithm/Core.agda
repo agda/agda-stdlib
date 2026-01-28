@@ -82,12 +82,12 @@ open import Relation.Binary.PropositionalEquality.Properties
   where open ≡-Reasoning
 
 2^⌊log2n⌋≤n : ∀ n → (acc : Acc _<_ (1 + n)) → 2 ^ (⌊log2⌋ (1 + n) acc) ≤ 1 + n
-2^⌊log2n⌋≤n ℕ.zero _ = s≤s z≤n
-2^⌊log2n⌋≤n (ℕ.suc n) (acc rs) =
+2^⌊log2n⌋≤n zero _ = s≤s z≤n
+2^⌊log2n⌋≤n (suc n) (acc rs) =
   begin
   2 ^ (⌊log2⌋ (2 + n) (acc rs))      ≡⟨⟩
-  2 * 2 ^ (⌊log2⌋ (ℕ.suc ⌊ n /2⌋) _) ≤⟨ *-monoʳ-≤ 2 (2^⌊log2n⌋≤n _ _ ) ⟩
-  2 * (ℕ.suc ⌊ n /2⌋)                ≡⟨ 2*suc[n]≡2+n+n _ ⟩
+  2 * 2 ^ (⌊log2⌋ (suc ⌊ n /2⌋) _) ≤⟨ *-monoʳ-≤ 2 (2^⌊log2n⌋≤n _ _ ) ⟩
+  2 * (suc ⌊ n /2⌋)                ≡⟨ 2*suc[n]≡2+n+n _ ⟩
   2 + (⌊ n /2⌋ + ⌊ n /2⌋)            ≤⟨ +-monoʳ-≤ (2 + ⌊ n /2⌋) (⌊n/2⌋≤⌈n/2⌉ _)  ⟩
   2 + (⌊ n /2⌋ + ⌈ n /2⌉)            ≡⟨ cong (2 +_) (⌊n/2⌋+⌈n/2⌉≡n _) ⟩
   2 + n
