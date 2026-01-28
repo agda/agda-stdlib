@@ -25,7 +25,7 @@ open import Function.Base using (_∘′_; flip; id; _on_)
 open import Relation.Nullary using (does)
 open import Relation.Unary as Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel; REL)
-import Relation.Binary.Definitions as B using (Reflexive)
+open import Relation.Binary.Definitions as Binary using (Reflexive)
 open import Relation.Nary using (_⇒_; ∀[_])
 
 
