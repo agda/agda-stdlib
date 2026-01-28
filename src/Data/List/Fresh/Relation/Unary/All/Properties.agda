@@ -14,30 +14,29 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘′_)
 open import Level using (Level; _⊔_; Lift)
-open import Relation.Unary  as U using (Pred)
+open import Relation.Unary  as Unary using (Pred)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-
-
 
 private
   variable
     a p r : Level
     A : Set a
+    R : Rel A r
+    P : Pred A p
+    x : A
+    xs ys : List# A R
 
-module _ {R : Rel A r} where
 
-  fromAll : ∀ {x} {xs : List# A R} → All (R x) xs → x # xs
-  fromAll []       = _
-  fromAll (p ∷ ps) = p , fromAll ps
+fromAll : All {R = R} (R x) xs → x # xs
+fromAll []       = _
+fromAll (p ∷ ps) = p , fromAll ps
 
-  toAll : ∀ {x} {xs : List# A R} → x # xs → All (R x) xs
-  toAll {xs = []}      _        = []
-  toAll {xs = a ∷# as} (p , ps) = p ∷ toAll ps
+toAll : x # xs → All {R = R} (R x) xs
+toAll {xs = []}      _        = []
+toAll {xs = a ∷# as} (p , ps) = p ∷ toAll ps
 
-module _ {R : Rel A r} {P : Pred A p} where
-
-  append⁺ : {xs ys : List# A R} {ps : All (_# ys) xs} →
-            All P xs → All P ys → All P (append xs ys ps)
-  append⁺ []         pys = pys
-  append⁺ (px ∷ pxs) pys = px ∷ append⁺ pxs pys
+append⁺ : {ps : All {R = R} (_# ys) xs} →
+          All P xs → All P ys → All P (append xs ys ps)
+append⁺ []         pys = pys
+append⁺ (px ∷ pxs) pys = px ∷ append⁺ pxs pys
