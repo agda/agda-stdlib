@@ -160,7 +160,7 @@ drop zero    xs        = xs
 drop (suc n) []        = []
 drop (suc n) (x ∷# xs) = drop n xs
 
-module _ {P : Pred A p} (P? : U.Decidable {A = A} P) where
+module _ {P : Pred A p} (P? : Decidable P) where
 
   takeWhile   : List# A R → List# A R
   takeWhile-# : ∀ y (xs : List# A R) → y # xs → y # takeWhile xs
