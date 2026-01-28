@@ -236,6 +236,18 @@ Additions to existing modules
   map : P ⊆ Q → All P xs → All Q xs
   ```
 
+* In `Data.Nat.Logarithm`
+  ```agda
+  2^⌊log₂n⌋≤n : ∀ n → .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
+  n≤2^⌈log₂n⌉ : ∀ n → n ≤ 2 ^ ⌈log₂ n ⌉
+  ```
+
+* In `Data.Nat.Logarithm.Core`
+  ```agda
+  2^⌊log2n⌋≤n : ∀ n → (acc : Acc _<_ (1 + n)) → 2 ^ (⌊log2⌋ (1 + n) acc) ≤ 1 + n
+  n≤2^⌈log2n⌉ : ∀ n → (acc : Acc _<_ n) → n ≤ 2 ^ (⌈log2⌉ n acc)
+  ```
+
 * In `Data.Nat.ListAction.Properties`
   ```agda
   *-distribˡ-sum : ∀ m ns → m * sum ns ≡ sum (map (m *_) ns)
@@ -248,6 +260,7 @@ Additions to existing modules
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
+  2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
   ```
 
 * In `Data.Product.Properties`:
