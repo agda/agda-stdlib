@@ -244,7 +244,7 @@ Additions to existing modules
 
 * In `Data.Nat.Logarithm.Core`
   ```agda
-  2^⌊log2n⌋≤n : ∀ n → (acc : Acc _<_ (1 + n)) → 2 ^ (⌊log2⌋ (1 + n) acc) ≤ 1 + n
+  2^⌊log2n⌋≤n : ∀ n .{{_ : NonZero n}} → (acc : Acc _<_ n) → 2 ^ (⌊log2⌋ n acc) ≤ n
   n≤2^⌈log2n⌉ : ∀ n → (acc : Acc _<_ n) → n ≤ 2 ^ (⌈log2⌉ n acc)
   ```
 
