@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Bundles using (Setoid)
 
-module Data.List.Fresh.Membership.Setoid.PropertiesJHM {c ℓ} (S : Setoid c ℓ)
+module Data.List.Fresh.Membership.Setoid.Properties {c ℓ} (S : Setoid c ℓ)
   where
 
 open import Level using (Level)
