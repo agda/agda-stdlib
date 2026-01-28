@@ -129,7 +129,7 @@ module _ (refl : Reflexive {A = A} R) where
   replicate (suc n) x = cons x (replicate n x) (replicate-# n x)
 
   replicate-# zero    x = _
-  replicate-# (suc n) x = R-refl , replicate-# n x
+  replicate-# (suc n) x = refl , replicate-# n x
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing fresh lists
