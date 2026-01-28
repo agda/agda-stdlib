@@ -23,10 +23,10 @@ open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘′_; flip; id; _on_)
 open import Relation.Nullary using (does)
-open import Relation.Unary as Unary using (Pred; Decidable)
+open import Relation.Unary as Unary using (Pred)
 open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Definitions as Binary using (Reflexive)
-open import Relation.Nary using (_⇒_; ∀[_])
+open import Relation.Nary using (_⇒_; ∀[_]; Decidable)
 
 
 private
@@ -45,7 +45,7 @@ private
 -- If we pick an R such that (R a b) means that a is different from b
 -- then we have a list of distinct values.
 
-module _ {a} (A : Set a) (R : Rel A r) where
+module _ (A : Set a) (R : Rel A r) where
 
   data List# : Set (a ⊔ r)
   fresh : REL A List# r
@@ -123,7 +123,7 @@ fromMaybe (just x) = [ x ]
 module _ (refl : Reflexive {A = A} R) where
 
   replicate   : ℕ → A → List# A R
-  replicate-# : (n : ℕ) (x : A) → x # replicate n x
+  replicate-# : ∀ n x → x # replicate n x
 
   replicate zero    x = []
   replicate (suc n) x = cons x (replicate n x) (replicate-# n x)
