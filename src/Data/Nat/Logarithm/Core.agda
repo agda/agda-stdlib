@@ -139,9 +139,9 @@ open import Relation.Binary.PropositionalEquality.Properties
   where open ≡-Reasoning
 
 n≤2^⌈log2n⌉ : ∀ n → (acc : Acc _<_ n) → n ≤ 2 ^ (⌈log2⌉ n acc)
-n≤2^⌈log2n⌉ ℕ.zero _ = z≤n
-n≤2^⌈log2n⌉ (ℕ.suc ℕ.zero) _ = s≤s z≤n
-n≤2^⌈log2n⌉ (ℕ.suc (ℕ.suc n)) (acc rs) =
+n≤2^⌈log2n⌉ zero _ = z≤n
+n≤2^⌈log2n⌉ (suc zero) _ = s≤s z≤n
+n≤2^⌈log2n⌉ (suc (suc n)) (acc rs) =
   begin
   2 + n                                ≡⟨ cong (2 +_) (⌊n/2⌋+⌈n/2⌉≡n _) ⟨
   2 + (⌊ n /2⌋ + ⌈ n /2⌉)              ≤⟨ +-monoʳ-≤ 2 (+-monoˡ-≤ _ (⌊n/2⌋≤⌈n/2⌉ n)) ⟩
