@@ -204,6 +204,11 @@ Additions to existing modules
   ```
   NB. the latter is based on `IsCommutativeRing`, with the former on `IsSemiring`.
 
+* In `Data.Bool`:
+  ```agda
+  contradiction : b ≡ true → b ≡ false → Whatever
+  ```
+
 * In `Data.Fin.Permutation.Components`:
   ```agda
   transpose[i,i,j]≡j  : (i j : Fin n) → transpose i i j ≡ j
