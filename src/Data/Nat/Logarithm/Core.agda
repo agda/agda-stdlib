@@ -15,7 +15,7 @@ open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-wellFounded)
 open import Induction.WellFounded using (Acc; acc)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; sym; trans)
+  using (_≡_; refl; cong; sym)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 
