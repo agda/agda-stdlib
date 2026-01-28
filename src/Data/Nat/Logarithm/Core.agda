@@ -146,8 +146,8 @@ n≤2^⌈log2n⌉ (suc (suc n)) (acc rs) =
   2 + n                                ≡⟨ cong (2 +_) (⌊n/2⌋+⌈n/2⌉≡n _) ⟨
   2 + (⌊ n /2⌋ + ⌈ n /2⌉)              ≤⟨ +-monoʳ-≤ 2 (+-monoˡ-≤ _ (⌊n/2⌋≤⌈n/2⌉ n)) ⟩
   2 + (⌈ n /2⌉ + ⌈ n /2⌉)              ≡⟨ 2*suc[n]≡2+n+n _ ⟨
-  2 * (1 + ⌊ 1 + n /2⌋)                ≤⟨ *-monoʳ-≤ 2 (n≤2^⌈log2n⌉ (1 + ⌊ 1 + n /2⌋) _) ⟩
-  2 * 2 ^ (⌈log2⌉ (1 + ⌊ 1 + n /2⌋) _) ≡⟨⟩
+  2 * (suc ⌊ suc n /2⌋)                ≤⟨ *-monoʳ-≤ 2 (n≤2^⌈log2n⌉ (suc ⌊ suc n /2⌋) _) ⟩
+  2 * 2 ^ (⌈log2⌉ (suc ⌊ suc n /2⌋) _) ≡⟨⟩
   2 ^ (⌈log2⌉ (2 + n) (acc rs))
   ∎
   where open ≤-Reasoning
