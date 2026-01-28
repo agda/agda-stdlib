@@ -87,7 +87,7 @@ append⁺ʳ : {ps : All (_# ys) xs} → Any P ys → Any P (append xs ys ps)
 append⁺ʳ {xs = []}      p = p
 append⁺ʳ {xs = x ∷# xs} p = there (append⁺ʳ p)
 
-append⁻ : ∀ xs {ps : All (_# ys) xs} →
+append⁻ : ∀ xs {ys} {ps : All {R = R} (_# ys) xs} →
           Any P (append xs ys ps) → Any P xs ⊎ Any P ys
 append⁻ []        p         = inj₂ p
 append⁻ (x ∷# xs) (here px) = inj₁ (here px)
