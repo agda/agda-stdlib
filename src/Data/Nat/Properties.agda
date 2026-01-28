@@ -774,6 +774,9 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   suc (m + (n + m * n)) ≡⟨⟩
   suc m + suc m * n     ∎
 
+2*suc[n]≡2+n+n : ∀ n → 2 * (ℕ.suc n) ≡ 2 + (n + n)
+2*suc[n]≡2+n+n n = trans (cong ((1 + n) +_) (+-identityʳ _)) (+-suc (1 + n) n)
+
 ------------------------------------------------------------------------
 -- Algebraic properties of _*_
 
