@@ -238,7 +238,7 @@ Additions to existing modules
 
 * In `Data.Nat.Logarithm`
   ```agda
-  2^⌊log₂n⌋≤n : ∀ n → .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
+  2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
   n≤2^⌈log₂n⌉ : ∀ n → n ≤ 2 ^ ⌈log₂ n ⌉
   ```
 
