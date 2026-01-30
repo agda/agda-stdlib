@@ -22,9 +22,9 @@
 
 <a id="710" class="Keyword">open</a> <a id="715" class="Keyword">import</a> <a id="722" href="Algebra.Definitions.RawMonoid.html" class="Module">Algebra.Definitions.RawMonoid</a> <a id="752" href="Algebra.Bundles.Raw.html#3062" class="Function">+-rawMonoid</a> <a id="764" class="Keyword">public</a>
   <a id="773" class="Keyword">using</a>
-  <a id="781" class="Symbol">(</a> <a id="783" href="Algebra.Definitions.RawMonoid.html#1089" class="Function Operator">_×_</a>   <a id="789" class="Comment">-- : ℕ → A → A</a>
-  <a id="806" class="Symbol">;</a> <a id="808" href="Algebra.Definitions.RawMonoid.html#1845" class="Function Operator">_×′_</a>  <a id="814" class="Comment">-- : ℕ → A → A</a>
-  <a id="831" class="Symbol">;</a> <a id="833" href="Algebra.Definitions.RawMonoid.html#2111" class="Function">sum</a>   <a id="839" class="Comment">-- : Vector A n → A</a>
+  <a id="781" class="Symbol">(</a> <a id="783" href="Algebra.Definitions.RawMonoid.html#1197" class="Function Operator">_×_</a>   <a id="789" class="Comment">-- : ℕ → A → A</a>
+  <a id="806" class="Symbol">;</a> <a id="808" href="Algebra.Definitions.RawMonoid.html#1953" class="Function Operator">_×′_</a>  <a id="814" class="Comment">-- : ℕ → A → A</a>
+  <a id="831" class="Symbol">;</a> <a id="833" href="Algebra.Definitions.RawMonoid.html#2219" class="Function">sum</a>   <a id="839" class="Comment">-- : Vector A n → A</a>
   <a id="861" class="Symbol">)</a>
 
 <a id="864" class="Comment">------------------------------------------------------------------------</a>
@@ -36,7 +36,7 @@
   <a id="1049" class="Symbol">;</a> <a id="1051" href="Algebra.Definitions.RawMagma.html#1923" class="Function Operator">_∤_</a>
   <a id="1057" class="Symbol">)</a>
   <a id="1061" class="Keyword">renaming</a>
-  <a id="1072" class="Symbol">(</a> <a id="1074" href="Algebra.Definitions.RawMonoid.html#2111" class="Function">sum</a> <a id="1078" class="Symbol">to</a> <a id="1081" class="Function">product</a>
+  <a id="1072" class="Symbol">(</a> <a id="1074" href="Algebra.Definitions.RawMonoid.html#2219" class="Function">sum</a> <a id="1078" class="Symbol">to</a> <a id="1081" class="Function">product</a>
   <a id="1091" class="Symbol">)</a>
 
 <a id="1094" class="Comment">-- Unlike `sum` to `product`, can&#39;t simply rename multiplication to</a>
@@ -46,13 +46,13 @@
 
 <a id="1243" class="Keyword">infixr</a> <a id="1250" class="Number">8</a> <a id="1252" href="Algebra.Definitions.RawSemiring.html#1256" class="Function Operator">_^_</a>
 <a id="_^_"></a><a id="1256" href="Algebra.Definitions.RawSemiring.html#1256" class="Function Operator">_^_</a> <a id="1260" class="Symbol">:</a> <a id="1262" href="Algebra.Definitions.RawSemiring.html#608" class="Field">A</a> <a id="1264" class="Symbol">→</a> <a id="1266" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1268" class="Symbol">→</a> <a id="1270" href="Algebra.Definitions.RawSemiring.html#608" class="Field">A</a>
-<a id="1272" href="Algebra.Definitions.RawSemiring.html#1272" class="Bound">x</a> <a id="1274" href="Algebra.Definitions.RawSemiring.html#1256" class="Function Operator">^</a> <a id="1276" href="Algebra.Definitions.RawSemiring.html#1276" class="Bound">n</a>  <a id="1279" class="Symbol">=</a> <a id="1281" href="Algebra.Definitions.RawSemiring.html#1276" class="Bound">n</a> <a id="1283" href="Algebra.Definitions.RawMonoid.html#1089" class="Function Operator">Mult.×</a> <a id="1290" href="Algebra.Definitions.RawSemiring.html#1272" class="Bound">x</a>
+<a id="1272" href="Algebra.Definitions.RawSemiring.html#1272" class="Bound">x</a> <a id="1274" href="Algebra.Definitions.RawSemiring.html#1256" class="Function Operator">^</a> <a id="1276" href="Algebra.Definitions.RawSemiring.html#1276" class="Bound">n</a>  <a id="1279" class="Symbol">=</a> <a id="1281" href="Algebra.Definitions.RawSemiring.html#1276" class="Bound">n</a> <a id="1283" href="Algebra.Definitions.RawMonoid.html#1197" class="Function Operator">Mult.×</a> <a id="1290" href="Algebra.Definitions.RawSemiring.html#1272" class="Bound">x</a>
 
 <a id="1293" class="Comment">-- Exponentiation optimised for type-checking</a>
 
 <a id="1340" class="Keyword">infixr</a> <a id="1347" class="Number">8</a> <a id="1349" href="Algebra.Definitions.RawSemiring.html#1354" class="Function Operator">_^′_</a>
 <a id="_^′_"></a><a id="1354" href="Algebra.Definitions.RawSemiring.html#1354" class="Function Operator">_^′_</a> <a id="1359" class="Symbol">:</a> <a id="1361" href="Algebra.Definitions.RawSemiring.html#608" class="Field">A</a> <a id="1363" class="Symbol">→</a> <a id="1365" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1367" class="Symbol">→</a> <a id="1369" href="Algebra.Definitions.RawSemiring.html#608" class="Field">A</a>
-<a id="1371" href="Algebra.Definitions.RawSemiring.html#1371" class="Bound">x</a> <a id="1373" href="Algebra.Definitions.RawSemiring.html#1354" class="Function Operator">^′</a> <a id="1376" href="Algebra.Definitions.RawSemiring.html#1376" class="Bound">n</a>  <a id="1379" class="Symbol">=</a> <a id="1381" href="Algebra.Definitions.RawSemiring.html#1376" class="Bound">n</a> <a id="1383" href="Algebra.Definitions.RawMonoid.html#1845" class="Function Operator">Mult.×′</a> <a id="1391" href="Algebra.Definitions.RawSemiring.html#1371" class="Bound">x</a>
+<a id="1371" href="Algebra.Definitions.RawSemiring.html#1371" class="Bound">x</a> <a id="1373" href="Algebra.Definitions.RawSemiring.html#1354" class="Function Operator">^′</a> <a id="1376" href="Algebra.Definitions.RawSemiring.html#1376" class="Bound">n</a>  <a id="1379" class="Symbol">=</a> <a id="1381" href="Algebra.Definitions.RawSemiring.html#1376" class="Bound">n</a> <a id="1383" href="Algebra.Definitions.RawMonoid.html#1953" class="Function Operator">Mult.×′</a> <a id="1391" href="Algebra.Definitions.RawSemiring.html#1371" class="Bound">x</a>
 <a id="1393" class="Symbol">{-#</a> <a id="1397" class="Keyword">INLINE</a> <a id="1404" href="Algebra.Definitions.RawSemiring.html#1354" class="Function Operator">_^′_</a> <a id="1409" class="Symbol">#-}</a>
 
 <a id="1414" class="Comment">-- Exponentiation optimised for tail-recursion</a>
