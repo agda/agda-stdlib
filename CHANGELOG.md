@@ -32,6 +32,11 @@ Minor improvements
   properties (and their proofs). In particular, `truncate-irrelevant` is now
   deprecated, because definitionally trivial.
 
+* The function `Data.Vec.Functional.map` have marked with the `INLINE` pragma.
+  This is consistent with the inlining of `Function.Base._∘_` for which it is
+  an alias, and should be backwards compatible, but does improve the behaviour
+  of the termination checker for `Vector`-defined operations.
+
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
