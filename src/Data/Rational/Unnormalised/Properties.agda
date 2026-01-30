@@ -1542,24 +1542,24 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
 -- Basic specification in terms of _≤_
 
 p≤q⇒p⊔q≃q : p ≤ q → p ⊔ q ≃ q
-p≤q⇒p⊔q≃q {p@record{}} {q@record{}} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | _       = ≃-refl
-... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
+p≤q⇒p⊔q≃q {p@record{}} {q@record{}} p≤q with p ≤ᵇ q in eq
+... | true  = ≃-refl
+... | false = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym eq) λ())
 
 p≥q⇒p⊔q≃p : p ≥ q → p ⊔ q ≃ p
-p≥q⇒p⊔q≃p {p@record{}} {q@record{}} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | [ p≤q ] = ≤-antisym p≥q (≤ᵇ⇒≤ (subst T (sym p≤q) _))
-... | false | [ p≤q ] = ≃-refl
+p≥q⇒p⊔q≃p {p@record{}} {q@record{}} p≥q with p ≤ᵇ q in eq
+... | true  = ≤-antisym p≥q (≤ᵇ⇒≤ (subst T (sym eq) _))
+... | false = ≃-refl
 
 p≤q⇒p⊓q≃p : p ≤ q → p ⊓ q ≃ p
-p≤q⇒p⊓q≃p {p@record{}} {q@record{}} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | _       = ≃-refl
-... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
+p≤q⇒p⊓q≃p {p@record{}} {q@record{}} p≤q with p ≤ᵇ q in eq
+... | true  = ≃-refl
+... | false = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym eq) λ())
 
 p≥q⇒p⊓q≃q : p ≥ q → p ⊓ q ≃ q
-p≥q⇒p⊓q≃q {p@record{}} {q@record{}} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | [ p≤q ] = ≤-antisym (≤ᵇ⇒≤ (subst T (sym p≤q) _)) p≥q
-... | false | [ p≤q ] = ≃-refl
+p≥q⇒p⊓q≃q {p@record{}} {q@record{}} p≥q with p ≤ᵇ q in eq
+... | true  = ≤-antisym (≤ᵇ⇒≤ (subst T (sym eq) _)) p≥q
+... | false = ≃-refl
 
 ⊓-operator : MinOperator ≤-totalPreorder
 ⊓-operator = record
