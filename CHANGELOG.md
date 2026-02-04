@@ -132,6 +132,8 @@ New modules
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
 
+* `Data.Vec.Functional.Algebra.{Base|Properties}` - structures and bundles about functional vectors and modules.
+
 * `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
 
 * Various additions over non-empty lists:
