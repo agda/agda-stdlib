@@ -211,7 +211,7 @@ prime[2] : Prime 2
 prime[2] = prime 2-rough
 
 prime⇒nonZero : Prime p → NonZero p
-prime⇒nonZero _ = nonTrivial⇒nonZero _
+prime⇒nonZero record{} = nonTrivial⇒nonZero _
 
 prime⇒nonTrivial : Prime p → NonTrivial p
 prime⇒nonTrivial _ = recompute-nonTrivial
