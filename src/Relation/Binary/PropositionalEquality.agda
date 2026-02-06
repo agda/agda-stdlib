@@ -92,29 +92,6 @@ module _ (_≟_ : DecidableEquality A) {x y : A} where
 
 
 ------------------------------------------------------------------------
--- Inspect
-
--- Inspect can be used when you want to pattern match on the result r
--- of some expression e, and you also need to "remember" that r ≡ e.
-
--- See README.Inspect for an explanation of how/why to use this.
-
--- Normally (but not always) the new `with ... in` syntax described at
--- https://agda.readthedocs.io/en/v2.6.4/language/with-abstraction.html#with-abstraction-equality
--- can be used instead."
-
-record Reveal_·_is_ {A : Set a} {B : A → Set b}
-                    (f : (x : A) → B x) (x : A) (y : B x) :
-                    Set (a ⊔ b) where
-  constructor [_]
-  field eq : f x ≡ y
-
-inspect : ∀ {A : Set a} {B : A → Set b}
-          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
-inspect f x = [ refl ]
-
-
-------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
@@ -130,3 +107,23 @@ isPropositional = Irrelevant
 Please use Relation.Nullary.Irrelevant instead. "
 #-}
 
+-- Version 2.4
+
+record Reveal_·_is_ {A : Set a} {B : A → Set b}
+                    (f : (x : A) → B x) (x : A) (y : B x) :
+                    Set (a ⊔ b) where
+  constructor [_]
+  field eq : f x ≡ y
+
+inspect : ∀ {A : Set a} {B : A → Set b}
+          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
+inspect f x = [ refl ]
+
+{-# WARNING_ON_USAGE Reveal_·_is_
+"Warning: Reveal_·_is_ was deprecated in v2.4.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
+#-}
+{-# WARNING_ON_USAGE inspect
+"Warning: inspect was deprecated in v2.4.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
+#-}
