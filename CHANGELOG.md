@@ -288,6 +288,21 @@ Additions to existing modules
   _,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  ≤⇒≯           : _≤_ ⇒ _≯_
+  p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
+  p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
+  p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
+  ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+  p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+  p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
