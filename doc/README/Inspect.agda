@@ -2,6 +2,12 @@
 -- The Agda standard library
 --
 -- This module is DEPRECATED.
+--
+-- The record type `Reveal_·_is_`, and its principal mode of use,
+-- via the `inspect` function described below, have been deprecated
+-- in favour of the `with ... in ...` syntax. See the documentation
+--
+-- https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
