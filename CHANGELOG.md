@@ -6,6 +6,13 @@ The library has been tested using Agda 2.8.0.
 Highlights
 ----------
 
+### Deprecated `Relation.Binary.PropositionalEquality.inspect`, in favour
+    of `with ... in ...` syntax (issue #1580; PRs #1630, #1930, #2934)
+
+* In `Relation.Binary.PropositionalEquality`, the record type `Reveal_·_is_`
+  and its principal mode of use, `inspect`, have been deprecated in favour of
+  the new `with ... in ...` syntax. See the documentation of [with-abstraction equality](https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality).
+
 Bug-fixes
 ---------
 
