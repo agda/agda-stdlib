@@ -37,7 +37,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
 open import Data.Product.Base using (_,_; proj₁; proj₂)
-open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
@@ -177,13 +177,14 @@ module ≃-Reasoning = ≈-Reasoning ≃-setoid
 
 p≃0⇒↥p≡0 : ∀ p → p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
 p≃0⇒↥p≡0 p (*≡* eq) = begin
-  ↥ p          ≡⟨ ℤ.*-identityʳ (↥ p) ⟨
+  ↥ p         ≡⟨ ℤ.*-identityʳ (↥ p) ⟨
   ↥ p ℤ.* 1ℤ  ≡⟨ eq ⟩
-  0ℤ           ∎
+  0ℤ          ∎
   where open ≡-Reasoning
 
 ↥p≡↥q≡0⇒p≃q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
 ↥p≡↥q≡0⇒p≃q p q ↥p≡0 ↥q≡0 = ≃-trans (↥p≡0⇒p≃0 p ↥p≡0) (≃-sym (↥p≡0⇒p≃0 _ ↥q≡0))
+
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -1194,6 +1195,24 @@ invertible⇒≄ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≄1 (begin
 
 *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
+
+p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+p*q≃0⇒p≃0∨q≃0 {p@record{}} {q@record{}} p*q≃0 =
+  Sum.map (↥p≡0⇒p≃0 p) (↥p≡0⇒p≃0 q) (ℤ.i*j≡0⇒i≡0∨j≡0 _ (p≃0⇒↥p≡0 _ p*q≃0))
+
+p*q≄0⇒p≄0 : (p * q) ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+p*q≄0⇒p≄0 {p} {q} pq≄0 p≃0 = pq≄0 $ begin-equality
+  p * q   ≃⟨ *-congʳ {q} p≃0 ⟩
+  0ℚᵘ * q ≃⟨ *-zeroˡ q ⟩
+  0ℚᵘ     ∎
+  where open ≤-Reasoning
+
+p*q≢0⇒q≢0 : (p * q) ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+p*q≢0⇒q≢0 {p} {q} pq≄0 q≃0 = pq≄0 $ begin-equality
+  p * q   ≃⟨ *-congˡ {p} q≃0 ⟩
+  p * 0ℚᵘ ≃⟨ *-zeroʳ p ⟩
+  0ℚᵘ     ∎
+  where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and -_
