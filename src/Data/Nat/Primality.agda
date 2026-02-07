@@ -214,7 +214,7 @@ prime⇒nonZero : Prime p → NonZero p
 prime⇒nonZero record{} = nonTrivial⇒nonZero _
 
 prime⇒nonTrivial : Prime p → NonTrivial p
-prime⇒nonTrivial _ = recompute-nonTrivial
+prime⇒nonTrivial record{} = recompute-nonTrivial
 
 prime? : Decidable Prime
 prime? 0        = no ¬prime[0]
