@@ -23,7 +23,7 @@ record Generator : Set where
         .{{modulus≢0}} : NonZero modulus
 
 step : Generator → ℕ → ℕ
-step gen x =
+step gen@record{} x =
   let open Generator gen in
   ((multiplier * x + increment) % modulus)
 
