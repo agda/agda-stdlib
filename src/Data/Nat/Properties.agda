@@ -1840,6 +1840,10 @@ m≤n⇒∣m-n∣≡n∸m {n = _}     (s≤s m≤n) = m≤n⇒∣m-n∣≡n∸m 
 ∣m+n-m+o∣≡∣n-o∣ zero    n o = refl
 ∣m+n-m+o∣≡∣n-o∣ (suc m) n o = ∣m+n-m+o∣≡∣n-o∣ m n o
 
+∣m+o-n+o∣≡∣m-n∣ : ∀ m n o → ∣ m + o - n + o ∣ ≡ ∣ m - n ∣
+∣m+o-n+o∣≡∣m-n∣ m n zero = cong₂ ∣_-_∣ (+-identityʳ m) (+-identityʳ n)
+∣m+o-n+o∣≡∣m-n∣ m n (suc o) = trans (cong₂ ∣_-_∣ (+-suc m o) (+-suc n o)) (∣m+o-n+o∣≡∣m-n∣ m n o)
+
 m∸n≤∣m-n∣ : ∀ m n → m ∸ n ≤ ∣ m - n ∣
 m∸n≤∣m-n∣ m n with ≤-total m n
 ... | inj₁ m≤n = subst (_≤ ∣ m - n ∣) (sym (m≤n⇒m∸n≡0 m≤n)) z≤n
