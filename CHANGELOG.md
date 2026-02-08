@@ -407,6 +407,17 @@ Additions to existing modules
             Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
   ```
 
+* In `Relation.Binary.PropositionalEquality`, replacing `Reveal`/`inspect`:
+  ```agda
+  module Graph {A : Set a} {B : A → Set b} (f : (x : A) → B x) (x : A) where
+
+    record View (y : B x) : Set (a ⊔ b) where
+      field fx≡y : f x ≡ y
+
+    view : View (f x)
+    view = record { fx≡y = refl }
+  ```
+
 * In `Relation.Nullary.Negation.Core`
   ```agda
   ¬¬-η           : A → ¬ ¬ A

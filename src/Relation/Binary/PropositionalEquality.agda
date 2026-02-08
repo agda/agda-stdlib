@@ -92,6 +92,18 @@ module _ (_≟_ : DecidableEquality A) {x y : A} where
 
 
 ------------------------------------------------------------------------
+-- The graph view of a function
+
+module Graph {A : Set a} {B : A → Set b} (f : (x : A) → B x) (x : A) where
+
+  record View (y : B x) : Set (a ⊔ b) where
+    field fx≡y : f x ≡ y
+
+  view : View (f x)
+  view = record { fx≡y = refl }
+
+
+------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
@@ -109,21 +121,28 @@ Please use Relation.Nullary.Irrelevant instead. "
 
 -- Version 2.4
 
-record Reveal_·_is_ {A : Set a} {B : A → Set b}
-                    (f : (x : A) → B x) (x : A) (y : B x) :
-                    Set (a ⊔ b) where
-  constructor [_]
-  field eq : f x ≡ y
+module _ {A : Set a} {B : A → Set b} where
 
-inspect : ∀ {A : Set a} {B : A → Set b}
-          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
-inspect f x = [ refl ]
+  open Graph
 
-{-# WARNING_ON_USAGE Reveal_·_is_
-"Warning: Reveal_·_is_ was deprecated in v2.4.
-Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
-#-}
-{-# WARNING_ON_USAGE inspect
-"Warning: inspect was deprecated in v2.4.
-Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
-#-}
+  Reveal_·_is_ : (f : (x : A) → B x) (x : A) (y : B x) → Set (a ⊔ b)
+  Reveal f · x is y = View f x y
+
+  inspect : (f : (x : A) → B x) (x : A) → Reveal f · x is f x
+  inspect = view
+
+  pattern [_] eq = record { fx≡y = eq }
+  {-# WARNING_ON_USAGE [_]
+  "Warning: [_] was deprecated in v2.4.
+  Please use the `with ... in eq` syntax instead. "
+  #-}
+  {-# WARNING_ON_USAGE inspect
+  "Warning: inspect was deprecated in v2.4.
+  Please use the `with ... in eq` syntax described at
+  https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
+  #-}
+  {-# WARNING_ON_USAGE Reveal_·_is_
+  "Warning: Reveal_·_is_ was deprecated in v2.4.
+  Please use the `with ... in eq` syntax described at
+  https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
+  #-}
