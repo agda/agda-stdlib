@@ -24,6 +24,10 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The function `Data.Nat.LCG.step` is now a manifest field of the record type
+  `Generator`, as per the discussion on #2936 and upstream issues/PRs. This is
+  consistent with a minimal API for such LCGs, and should be backwards compatible.
+
 * The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
   that the argument of type `m ≤ n` is marked as irrelevant. This should be
   backwards compatible, but does change the intensional behaviour of these
