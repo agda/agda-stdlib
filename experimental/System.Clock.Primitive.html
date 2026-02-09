@@ -14,18 +14,40 @@
 <a id="400" class="Keyword">open</a> <a id="405" class="Keyword">import</a> <a id="412" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="428" class="Keyword">using</a> <a id="434" class="Symbol">(</a><a id="435" href="Foreign.Haskell.Pair.html#553" class="Record">Pair</a><a id="439" class="Symbol">)</a>
 
 <a id="442" class="Keyword">data</a> <a id="Clock"></a><a id="447" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a> <a id="453" class="Symbol">:</a> <a id="455" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="459" class="Keyword">where</a>
-  <a id="Clock.monotonic"></a><a id="467" href="System.Clock.Primitive.html#467" class="InductiveConstructor">monotonic</a> <a id="Clock.realTime"></a><a id="477" href="System.Clock.Primitive.html#477" class="InductiveConstructor">realTime</a> <a id="Clock.processCPUTime"></a><a id="486" href="System.Clock.Primitive.html#486" class="InductiveConstructor">processCPUTime</a> <a id="501" class="Symbol">:</a> <a id="503" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a>
-  <a id="Clock.threadCPUTime"></a><a id="511" href="System.Clock.Primitive.html#511" class="InductiveConstructor">threadCPUTime</a> <a id="Clock.monotonicRaw"></a><a id="525" href="System.Clock.Primitive.html#525" class="InductiveConstructor">monotonicRaw</a> <a id="Clock.bootTime"></a><a id="538" href="System.Clock.Primitive.html#538" class="InductiveConstructor">bootTime</a> <a id="547" class="Symbol">:</a> <a id="549" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a>
-  <a id="Clock.monotonicCoarse"></a><a id="557" href="System.Clock.Primitive.html#557" class="InductiveConstructor">monotonicCoarse</a> <a id="Clock.realTimeCoarse"></a><a id="573" href="System.Clock.Primitive.html#573" class="InductiveConstructor">realTimeCoarse</a> <a id="588" class="Symbol">:</a> <a id="590" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a>
+  <a id="Clock.monotonic"></a><a id="467" href="System.Clock.Primitive.html#467" class="InductiveConstructor">monotonic</a> <a id="Clock.realtime"></a><a id="477" href="System.Clock.Primitive.html#477" class="InductiveConstructor">realtime</a> <a id="Clock.processCPUTime"></a><a id="486" href="System.Clock.Primitive.html#486" class="InductiveConstructor">processCPUTime</a> <a id="501" class="Symbol">:</a> <a id="503" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a>
+  <a id="Clock.threadCPUTime"></a><a id="511" href="System.Clock.Primitive.html#511" class="InductiveConstructor">threadCPUTime</a> <a id="Clock.monotonicRaw"></a><a id="525" href="System.Clock.Primitive.html#525" class="InductiveConstructor">monotonicRaw</a> <a id="538" class="Symbol">:</a> <a id="540" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a>
 
-<a id="597" class="Symbol">{-#</a> <a id="601" class="Keyword">COMPILE</a> <a id="609" class="Keyword">GHC</a> <a id="613" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a> <a id="619" class="Pragma">=</a> <a id="621" class="Pragma">data</a> <a id="626" class="Pragma">Clock</a> <a id="632" class="Pragma">(Monotonic</a> <a id="643" class="Pragma">|</a> <a id="645" class="Pragma">Realtime</a> <a id="654" class="Pragma">|</a> <a id="656" class="Pragma">ProcessCPUTime</a>
-                                   <a id="706" class="Pragma">|</a> <a id="708" class="Pragma">ThreadCPUTime</a> <a id="722" class="Pragma">|</a> <a id="724" class="Pragma">MonotonicRaw</a> <a id="737" class="Pragma">|</a> <a id="739" class="Pragma">Boottime</a>
-                                   <a id="783" class="Pragma">|</a> <a id="785" class="Pragma">MonotonicCoarse</a> <a id="801" class="Pragma">|</a> <a id="803" class="Pragma">RealtimeCoarse</a> <a id="818" class="Pragma">)</a>
-<a id="820" class="Symbol">#-}</a>
+<a id="547" class="Symbol">{-#</a> <a id="551" class="Keyword">FOREIGN</a> <a id="559" class="Pragma">GHC</a> <a id="563" class="Pragma">import</a> <a id="570" class="Pragma">System.Clock</a>  <a id="584" class="Symbol">#-}</a>
 
-<a id="825" class="Keyword">postulate</a> <a id="getTime"></a><a id="835" href="System.Clock.Primitive.html#835" class="Postulate">getTime</a> <a id="843" class="Symbol">:</a> <a id="845" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a> <a id="851" class="Symbol">→</a> <a id="853" href="Agda.Builtin.IO.html#137" class="Postulate">IO</a> <a id="856" class="Symbol">(</a><a id="857" href="Foreign.Haskell.Pair.html#553" class="Record">Pair</a> <a id="862" href="Agda.Builtin.Nat.html#203" class="Datatype">Nat</a> <a id="866" href="Agda.Builtin.Nat.html#203" class="Datatype">Nat</a><a id="869" class="Symbol">)</a>
+<a id="589" class="Symbol">{-#</a> <a id="593" class="Keyword">FOREIGN</a> <a id="601" class="Pragma">GHC</a>
+<a id="605" class="Pragma">data</a> <a id="610" class="Pragma">AgdaClock</a>
+  <a id="622" class="Pragma">=</a> <a id="624" class="Pragma">AgdaMonotonic</a>
+  <a id="640" class="Pragma">|</a> <a id="642" class="Pragma">AgdaRealtime</a>
+  <a id="657" class="Pragma">|</a> <a id="659" class="Pragma">AgdaProcessCPUTime</a>
+  <a id="680" class="Pragma">|</a> <a id="682" class="Pragma">AgdaThreadCPUTime</a>
+  <a id="702" class="Pragma">|</a> <a id="704" class="Pragma">AgdaMonotonicRaw</a>
 
-<a id="872" class="Symbol">{-#</a> <a id="876" class="Keyword">FOREIGN</a> <a id="884" class="Pragma">GHC</a> <a id="888" class="Pragma">import</a> <a id="895" class="Pragma">System.Clock</a>  <a id="909" class="Symbol">#-}</a>
-<a id="913" class="Symbol">{-#</a> <a id="917" class="Keyword">FOREIGN</a> <a id="925" class="Pragma">GHC</a> <a id="929" class="Pragma">import</a> <a id="936" class="Pragma">Data.Function</a> <a id="950" class="Symbol">#-}</a>
-<a id="954" class="Symbol">{-#</a> <a id="958" class="Keyword">COMPILE</a> <a id="966" class="Keyword">GHC</a> <a id="970" href="System.Clock.Primitive.html#835" class="Postulate">getTime</a> <a id="978" class="Pragma">=</a> <a id="980" class="Pragma">fmap</a> <a id="985" class="Pragma">(\</a> <a id="988" class="Pragma">(TimeSpec</a> <a id="998" class="Pragma">a</a> <a id="1000" class="Pragma">b)</a> <a id="1003" class="Pragma">-&gt;</a> <a id="1006" class="Pragma">((,)</a> <a id="1011" class="Pragma">`on`</a> <a id="1016" class="Pragma">fromIntegral)</a> <a id="1030" class="Pragma">a</a> <a id="1032" class="Pragma">b)</a> <a id="1035" class="Pragma">.</a> <a id="1037" class="Pragma">getTime</a> <a id="1045" class="Symbol">#-}</a>
+<a id="722" class="Pragma">fromAgdaClock</a> <a id="736" class="Pragma">::</a> <a id="739" class="Pragma">AgdaClock</a> <a id="749" class="Pragma">-&gt;</a> <a id="752" class="Pragma">Clock</a>
+<a id="758" class="Pragma">fromAgdaClock</a> <a id="772" class="Pragma">ac</a> <a id="775" class="Pragma">=</a> <a id="777" class="Pragma">case</a> <a id="782" class="Pragma">ac</a> <a id="785" class="Pragma">of</a>
+  <a id="790" class="Pragma">AgdaMonotonic</a> <a id="804" class="Pragma">-&gt;</a> <a id="807" class="Pragma">Monotonic</a>
+  <a id="819" class="Pragma">AgdaRealtime</a> <a id="832" class="Pragma">-&gt;</a> <a id="835" class="Pragma">Realtime</a>
+  <a id="846" class="Pragma">AgdaProcessCPUTime</a> <a id="865" class="Pragma">-&gt;</a> <a id="868" class="Pragma">ProcessCPUTime</a>
+  <a id="885" class="Pragma">AgdaThreadCPUTime</a> <a id="903" class="Pragma">-&gt;</a> <a id="906" class="Pragma">ThreadCPUTime</a>
+  <a id="922" class="Pragma">AgdaMonotonicRaw</a> <a id="939" class="Pragma">-&gt;</a> <a id="942" class="Pragma">MonotonicRaw</a>
+<a id="955" class="Symbol">#-}</a>
+
+<a id="960" class="Symbol">{-#</a> <a id="964" class="Keyword">COMPILE</a> <a id="972" class="Keyword">GHC</a> <a id="976" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a> <a id="982" class="Pragma">=</a>
+  <a id="986" class="Pragma">data</a> <a id="991" class="Pragma">AgdaClock</a>
+  <a id="1003" class="Pragma">(</a> <a id="1005" class="Pragma">AgdaMonotonic</a>
+  <a id="1021" class="Pragma">|</a> <a id="1023" class="Pragma">AgdaRealtime</a>
+  <a id="1038" class="Pragma">|</a> <a id="1040" class="Pragma">AgdaProcessCPUTime</a>
+  <a id="1061" class="Pragma">|</a> <a id="1063" class="Pragma">AgdaThreadCPUTime</a>
+  <a id="1083" class="Pragma">|</a> <a id="1085" class="Pragma">AgdaMonotonicRaw</a>
+  <a id="1104" class="Pragma">)</a>
+<a id="1106" class="Symbol">#-}</a>
+
+<a id="1111" class="Keyword">postulate</a> <a id="getTime"></a><a id="1121" href="System.Clock.Primitive.html#1121" class="Postulate">getTime</a> <a id="1129" class="Symbol">:</a> <a id="1131" href="System.Clock.Primitive.html#447" class="Datatype">Clock</a> <a id="1137" class="Symbol">→</a> <a id="1139" href="Agda.Builtin.IO.html#137" class="Postulate">IO</a> <a id="1142" class="Symbol">(</a><a id="1143" href="Foreign.Haskell.Pair.html#553" class="Record">Pair</a> <a id="1148" href="Agda.Builtin.Nat.html#203" class="Datatype">Nat</a> <a id="1152" href="Agda.Builtin.Nat.html#203" class="Datatype">Nat</a><a id="1155" class="Symbol">)</a>
+
+<a id="1158" class="Symbol">{-#</a> <a id="1162" class="Keyword">FOREIGN</a> <a id="1170" class="Pragma">GHC</a> <a id="1174" class="Pragma">import</a> <a id="1181" class="Pragma">Data.Function</a> <a id="1195" class="Symbol">#-}</a>
+<a id="1199" class="Symbol">{-#</a> <a id="1203" class="Keyword">COMPILE</a> <a id="1211" class="Keyword">GHC</a> <a id="1215" href="System.Clock.Primitive.html#1121" class="Postulate">getTime</a> <a id="1223" class="Pragma">=</a> <a id="1225" class="Pragma">fmap</a> <a id="1230" class="Pragma">(\</a> <a id="1233" class="Pragma">(TimeSpec</a> <a id="1243" class="Pragma">a</a> <a id="1245" class="Pragma">b)</a> <a id="1248" class="Pragma">-&gt;</a> <a id="1251" class="Pragma">((,)</a> <a id="1256" class="Pragma">`on`</a> <a id="1261" class="Pragma">fromIntegral)</a> <a id="1275" class="Pragma">a</a> <a id="1277" class="Pragma">b)</a> <a id="1280" class="Pragma">.</a> <a id="1282" class="Pragma">getTime</a> <a id="1290" class="Pragma">.</a> <a id="1292" class="Pragma">fromAgdaClock</a> <a id="1306" class="Symbol">#-}</a>
 </pre></body></html>

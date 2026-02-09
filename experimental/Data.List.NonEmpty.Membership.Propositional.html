@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.NonEmpty.Membership.Propositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Propositional membership over non-empty lists</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Symbol">{-#</a> <a id="233" class="Keyword">OPTIONS</a> <a id="241" class="Pragma">--cubical-compatible</a> <a id="262" class="Pragma">--safe</a> <a id="269" class="Symbol">#-}</a>
+
+<a id="274" class="Keyword">module</a> <a id="281" href="Data.List.NonEmpty.Membership.Propositional.html" class="Module">Data.List.NonEmpty.Membership.Propositional</a> <a id="325" class="Symbol">{</a><a id="326" href="Data.List.NonEmpty.Membership.Propositional.html#326" class="Bound">a</a><a id="327" class="Symbol">}</a> <a id="329" class="Symbol">{</a><a id="330" href="Data.List.NonEmpty.Membership.Propositional.html#330" class="Bound">A</a> <a id="332" class="Symbol">:</a> <a id="334" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="338" href="Data.List.NonEmpty.Membership.Propositional.html#326" class="Bound">a</a><a id="339" class="Symbol">}</a> <a id="341" class="Keyword">where</a>
+
+<a id="348" class="Keyword">open</a> <a id="353" class="Keyword">import</a> <a id="360" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="398" class="Keyword">using</a> <a id="404" class="Symbol">(</a><a id="405" href="Relation.Binary.PropositionalEquality.Properties.html#5806" class="Function">setoid</a><a id="411" class="Symbol">;</a> <a id="413" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a><a id="417" class="Symbol">)</a>
+<a id="419" class="Keyword">open</a> <a id="424" class="Keyword">import</a> <a id="431" href="Data.List.NonEmpty.html" class="Module">Data.List.NonEmpty</a>
+<a id="450" class="Keyword">open</a> <a id="455" class="Keyword">import</a> <a id="462" href="Level.html" class="Module">Level</a>
+<a id="468" class="Keyword">open</a> <a id="473" class="Keyword">import</a> <a id="480" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="495" class="Keyword">using</a> <a id="501" class="Symbol">(</a><a id="502" href="Relation.Unary.html#1178" class="Function">Pred</a><a id="506" class="Symbol">)</a>
+
+<a id="509" class="Keyword">import</a> <a id="516" href="Data.List.NonEmpty.Membership.Setoid.html" class="Module">Data.List.NonEmpty.Membership.Setoid</a> <a id="553" class="Symbol">as</a> <a id="556" class="Module">SetoidMembership</a>
+
+<a id="574" class="Keyword">private</a>
+  <a id="584" class="Keyword">variable</a>
+    <a id="597" href="Data.List.NonEmpty.Membership.Propositional.html#597" class="Generalizable">p</a> <a id="599" class="Symbol">:</a> <a id="601" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="611" href="Data.List.NonEmpty.Membership.Propositional.html#611" class="Generalizable">P</a> <a id="613" class="Symbol">:</a> <a id="615" href="Relation.Unary.html#1178" class="Function">Pred</a> <a id="620" href="Data.List.NonEmpty.Membership.Propositional.html#330" class="Bound">A</a> <a id="622" href="Data.List.NonEmpty.Membership.Propositional.html#597" class="Generalizable">p</a>
+    <a id="628" href="Data.List.NonEmpty.Membership.Propositional.html#628" class="Generalizable">xs</a> <a id="631" class="Symbol">:</a> <a id="633" href="Data.List.NonEmpty.Base.html#1285" class="Record">List⁺</a> <a id="639" href="Data.List.NonEmpty.Membership.Propositional.html#330" class="Bound">A</a>
+
+<a id="642" class="Comment">------------------------------------------------------------------------</a>
+<a id="715" class="Comment">-- Re-export contents of setoid membership</a>
+
+<a id="759" class="Keyword">open</a> <a id="764" href="Data.List.NonEmpty.Membership.Setoid.html" class="Module">SetoidMembership</a> <a id="781" class="Symbol">(</a><a id="782" href="Relation.Binary.PropositionalEquality.Properties.html#5806" class="Function">setoid</a> <a id="789" href="Data.List.NonEmpty.Membership.Propositional.html#330" class="Bound">A</a><a id="790" class="Symbol">)</a> <a id="792" class="Keyword">public</a>
+</pre></body></html>
