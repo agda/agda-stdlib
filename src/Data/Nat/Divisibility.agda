@@ -258,6 +258,17 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
   where open ∣-Reasoning
 
 ------------------------------------------------------------------------
+-- Properties of _∣_ and _^_
+
+m∣n⇒m^o∣n^o : ∀ {m n} o → m ∣ n → m ^ o ∣ n ^ o
+m∣n⇒m^o∣n^o zero m∣n = ∣-refl
+m∣n⇒m^o∣n^o (suc o) m∣n = *-pres-∣ m∣n (m∣n⇒m^o∣n^o o m∣n)
+
+n≤o⇒m^n∣m^o : ∀ m {n o} → n ≤ o → m ^ n ∣ m ^ o
+n≤o⇒m^n∣m^o m z≤n = 1∣ _
+n≤o⇒m^n∣m^o m (s≤s n≤o) = *-monoʳ-∣ m (n≤o⇒m^n∣m^o m n≤o)
+
+------------------------------------------------------------------------
 -- Properties of _∣_ and _/_
 
 m/n∣m : .{{_ : NonZero n}} → n ∣ m → m / n ∣ m
