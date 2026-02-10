@@ -1674,16 +1674,16 @@ m+n∸n≡m m n = begin-equality
 m+n∸m≡n : ∀ m n → m + n ∸ m ≡ n
 m+n∸m≡n m n = trans (cong (_∸ m) (+-comm m n)) (m+n∸n≡m n m)
 
-m+[n∸m]≡n : m ≤ n → m + (n ∸ m) ≡ n
+m+[n∸m]≡n : .(m ≤ n) → m + (n ∸ m) ≡ n
 m+[n∸m]≡n {m} {n} m≤n = begin-equality
-  m + (n ∸ m)  ≡⟨ sym $ +-∸-assoc m m≤n ⟩
+  m + (n ∸ m)  ≡⟨ +-∸-assoc m m≤n ⟨
   (m + n) ∸ m  ≡⟨ cong (_∸ m) (+-comm m n) ⟩
   (n + m) ∸ m  ≡⟨ m+n∸n≡m n m ⟩
   n            ∎
 
 m∸n+n≡m : ∀ {m n} → n ≤ m → (m ∸ n) + n ≡ m
 m∸n+n≡m {m} {n} n≤m = begin-equality
-  (m ∸ n) + n ≡⟨ sym (+-∸-comm n n≤m) ⟩
+  (m ∸ n) + n ≡⟨ +-∸-comm n n≤m ⟨
   (m + n) ∸ n ≡⟨ m+n∸n≡m m n ⟩
   m           ∎
 
@@ -2136,6 +2136,8 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 ------------------------------------------------------------------------
 
 -- equivalence of  _≤″_ to _≤_
+-- NB the change in #2939 making the m≤n argument to m+[n∸m]≡n irrelevant
+-- means that this proof must now be eta-expanded in order to typecheck.
 
 ≤⇒≤″ : _≤_ ⇒ _≤″_
 ≤⇒≤″ m≤n = (_ , m+[n∸m]≡n m≤n)

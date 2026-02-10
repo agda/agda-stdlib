@@ -61,6 +61,7 @@ Minor improvements
   Data.Nat.Binary.Subtraction
   Data.Nat.Combinatorics
   ```
+  Moreover, these have been strengthened to take an irrelevant `m ≤ n` argument.
 
 * In `Data.Vec.Relation.Binary.Pointwise.{Inductive,Extensional}`, the types of
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
