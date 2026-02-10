@@ -13,6 +13,7 @@ module Algebra.Properties.RingWithoutOne {r₁ r₂} (R : RingWithoutOne r₁ r�
 open RingWithoutOne R
 
 import Algebra.Properties.AbelianGroup as AbelianGroupProperties
+import Algebra.Properties.SemiringWithoutOne as SemiringWithoutOneProperties
 open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
 
@@ -22,9 +23,6 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open AbelianGroupProperties +-abelianGroup public
   renaming
   ( ε⁻¹≈ε            to -0#≈0#
-  ; ∙-cancelˡ        to +-cancelˡ
-  ; ∙-cancelʳ        to +-cancelʳ
-  ; ∙-cancel         to +-cancel
   ; ⁻¹-involutive    to -‿involutive
   ; ⁻¹-injective     to -‿injective
   ; ⁻¹-anti-homo-∙   to -‿anti-homo-+
@@ -35,6 +33,11 @@ open AbelianGroupProperties +-abelianGroup public
   ; inverseʳ-unique  to +-inverseʳ-unique
   ; ⁻¹-∙-comm        to -‿+-comm
   )
+
+------------------------------------------------------------------------
+-- Re-export semiring without one properties
+
+open SemiringWithoutOneProperties semiringWithoutOne public
 
 x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
 x+x≈x⇒x≈0 x eq = +-identityˡ-unique x x eq
