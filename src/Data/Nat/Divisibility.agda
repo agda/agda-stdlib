@@ -261,8 +261,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 -- Properties of _∣_ and _^_
 
 m∣n⇒m^o∣n^o : ∀ {m n} o → m ∣ n → m ^ o ∣ n ^ o
-m∣n⇒m^o∣n^o zero m∣n = ∣-refl
-m∣n⇒m^o∣n^o (suc o) m∣n = *-pres-∣ m∣n (m∣n⇒m^o∣n^o o m∣n)
+m∣n⇒m^o∣n^o o (divides-refl m/n) = divides (m/n ^ o) (^-distribʳ-* o m/n _)
 
 n≤o⇒m^n∣m^o : ∀ m {n o} → .(n ≤ o) → m ^ n ∣ m ^ o
 n≤o⇒m^n∣m^o m {zero} {o} n≤o = 1∣ _
