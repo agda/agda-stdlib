@@ -259,6 +259,12 @@ Additions to existing modules
   map : P ⊆ Q → All P xs → All Q xs
   ```
 
+* In `Data.Nat.Divisiblity`:
+  ```agad
+  m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
+  n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
+  ```
+
 * In `Data.Nat.Logarithm`
   ```agda
   2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
