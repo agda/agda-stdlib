@@ -61,6 +61,7 @@ Minor improvements
   Data.Nat.Binary.Subtraction
   Data.Nat.Combinatorics
   ```
+  Moreover, these have been strengthened to take an irrelevant `m ≤ n` argument.
 
 * In `Data.Vec.Relation.Binary.Pointwise.{Inductive,Extensional}`, the types of
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
@@ -287,7 +288,7 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
-  ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
   ```
