@@ -264,8 +264,8 @@ m∣n⇒m^o∣n^o : ∀ {m n} o → m ∣ n → m ^ o ∣ n ^ o
 m∣n⇒m^o∣n^o o (divides-refl m/n) = divides (m/n ^ o) (^-distribʳ-* o m/n _)
 
 n≤o⇒m^n∣m^o : ∀ m {n o} → .(n ≤ o) → m ^ n ∣ m ^ o
-n≤o⇒m^n∣m^o m {zero} {o} n≤o = 1∣ _
-n≤o⇒m^n∣m^o m {suc n} {suc o} n≤o = *-monoʳ-∣ m (n≤o⇒m^n∣m^o m (s≤s⁻¹ n≤o))
+n≤o⇒m^n∣m^o m {zero} 0≤o = 1∣ _
+n≤o⇒m^n∣m^o m {suc _} {suc _} sn≤so = *-monoʳ-∣ m (n≤o⇒m^n∣m^o m (s≤s⁻¹ sn≤so))
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _/_
