@@ -9,20 +9,27 @@
 module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
+open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_; fresh)
 open import Data.Product.Base using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_; Lift)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Nullary.Decidable as Dec using (Dec; no; _⊎?_)
-open import Relation.Unary  as U using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
+open import Relation.Unary as Unary
+  using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
 open import Relation.Binary.Core using (Rel)
 
 private
   variable
     a p q r : Level
     A : Set a
+    R : Rel A r
+    P : Pred A p
+    Q : Pred A q
+    x : A
+    xs : List# A R
+
 
 module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
 
@@ -30,7 +37,7 @@ module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
     here  : ∀ {x xs pr} → P x → Any (cons x xs pr)
     there : ∀ {x xs pr} → Any xs → Any (cons x xs pr)
 
-module _ {R : Rel A r} {P : Pred A p} {x} {xs : List# A R} {pr} where
+module _ {pr : fresh A R x xs} where
 
   head : ¬ Any P xs → Any P (cons x xs pr) → P x
   head ¬tail (here p)   = p
@@ -50,32 +57,28 @@ module _ {R : Rel A r} {P : Pred A p} {x} {xs : List# A R} {pr} where
   ⊎⇔Any : (P x ⊎ Any P xs) ⇔ Any P (cons x xs pr)
   ⊎⇔Any = mk⇔ fromSum toSum
 
-module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
+map : ∀[ P ⇒ Q ] → Any P xs → Any Q xs
+map p⇒q (here p)  = here (p⇒q p)
+map p⇒q (there p) = there (map p⇒q p)
 
-  map : {xs : List# A R} → ∀[ P ⇒ Q ] → Any P xs → Any Q xs
-  map p⇒q (here p)  = here (p⇒q p)
-  map p⇒q (there p) = there (map p⇒q p)
+witness : Any P xs → ∃ P
+witness (here p)   = -, p
+witness (there ps) = witness ps
 
-module _ {R : Rel A r} {P : Pred A p} where
+remove   : (xs : List# A R) → Any P xs → List# A R
+remove-# : (p : Any {R = R} P xs) → x # xs → x # (remove xs p)
 
-  witness : {xs : List# A R} → Any P xs → ∃ P
-  witness (here p)   = -, p
-  witness (there ps) = witness ps
+remove (_ ∷# xs)      (here _)  = xs
+remove (cons x xs pr) (there k) = cons x (remove xs k) (remove-# k pr)
 
-  remove   : (xs : List# A R) → Any P xs → List# A R
-  remove-# : ∀ {x} {xs : List# A R} p → x # xs → x # (remove xs p)
-
-  remove (_ ∷# xs)      (here _)  = xs
-  remove (cons x xs pr) (there k) = cons x (remove xs k) (remove-# k pr)
-
-  remove-# (here x)  (p , ps) = ps
-  remove-# (there k) (p , ps) = p , remove-# k ps
+remove-# (here x)  (p , ps) = ps
+remove-# (there k) (p , ps) = p , remove-# k ps
 
 infixl 4 _─_
 _─_ = remove
 
-module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
+module _ (P? : Decidable P) where
 
-  any? : (xs : List# A R) → Dec (Any P xs)
-  any? []        = no (λ ())
+  any? : ∀ xs → Dec (Any {R = R} P xs)
+  any? []        = no λ()
   any? (x ∷# xs) = Dec.map ⊎⇔Any (P? x ⊎? any? xs)
