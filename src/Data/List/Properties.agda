@@ -28,7 +28,7 @@ open import Data.Maybe.Relation.Unary.Any using (just) renaming (Any to MAny)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product.Base as Product
-  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
+  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; swap; <_,_>)
 import Data.Product.Relation.Unary.All as Product using (All)
 open import Data.Sum using (_⊎_; inj₁; inj₂; isInj₁; isInj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -47,7 +47,7 @@ open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
 open import Relation.Nullary.Decidable as Decidable
   using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
 open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
-open import Relation.Unary.Properties using (∁?)
+open import Relation.Unary.Properties using (∁?; _∩?_)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
 open ≡-Reasoning
@@ -1265,6 +1265,25 @@ module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) whe
   filter-≐ P≐Q (x ∷ xs) with P? x
   ... | yes P[x] = trans (cong (x ∷_) (filter-≐ P≐Q xs)) (sym (filter-accept Q? (proj₁ P≐Q P[x])))
   ... | no ¬P[x] = trans (filter-≐ P≐Q xs) (sym (filter-reject Q? (¬P[x] ∘ proj₂ P≐Q)))
+
+  filter-∩ : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-∩ [] = refl
+  filter-∩ (x ∷ xs) with P? x | Q? x
+  ... | yes P[x] | yes _  = trans (cong (x ∷_) (filter-∩ xs)) (sym (filter-accept P? P[x]))
+  ... | no ¬P[x] | yes _  = trans (filter-∩ xs) (sym (filter-reject P? ¬P[x]))
+  ... | yes _    | no  _  = filter-∩ xs
+  ... | no  _    | no  _  = filter-∩ xs
+
+
+module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
+
+  filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  filter-swap ls =  begin
+    filter P? (filter Q? ls)   ≡⟨ sym (filter-∩ P? Q? ls) ⟩
+    filter (P? ∩? Q?) ls       ≡⟨ filter-≐ (P? ∩? Q?) (Q? ∩? P?) (swap , swap) ls ⟩
+    filter (Q? ∩? P?) ls       ≡⟨ filter-∩ Q? P? ls ⟩
+    filter Q? (filter P? ls)   ∎
+
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
