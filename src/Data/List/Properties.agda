@@ -1258,6 +1258,12 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | true  = cong (x ∷_) ih
   ... | false = ih
 
+  filter-map : (f : B → A) → filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-map f [] = refl
+  filter-map f (x ∷ xs) with ih ← filter-map f xs | does (P? (f x))
+  ... | true  = cong (f x ∷_) ih
+  ... | false = ih
+
 module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
 
   filter-≐ : P ≐ Q → filter P? ≗ filter Q?
@@ -1268,18 +1274,18 @@ module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) whe
 
   filter-∩ : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
   filter-∩ [] = refl
-  filter-∩ (x ∷ xs) with P? x | Q? x
-  ... | yes P[x] | yes _  = trans (cong (x ∷_) (filter-∩ xs)) (sym (filter-accept P? P[x]))
-  ... | no ¬P[x] | yes _  = trans (filter-∩ xs) (sym (filter-reject P? ¬P[x]))
-  ... | yes _    | no  _  = filter-∩ xs
-  ... | no  _    | no  _  = filter-∩ xs
+  filter-∩ (x ∷ xs) with ih ← filter-∩ xs | P? x | Q? x
+  ... | yes P[x] | yes _  = trans (cong (x ∷_) ih) (sym (filter-accept P? P[x]))
+  ... | no ¬P[x] | yes _  = trans ih (sym (filter-reject P? ¬P[x]))
+  ... | yes _    | no  _  = ih
+  ... | no  _    | no  _  = ih
 
 
 module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
 
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
   filter-swap ls =  begin
-    filter P? (filter Q? ls)   ≡⟨ sym (filter-∩ P? Q? ls) ⟩
+    filter P? (filter Q? ls)   ≡⟨ filter-∩ P? Q? ls ⟨
     filter (P? ∩? Q?) ls       ≡⟨ filter-≐ (P? ∩? Q?) (Q? ∩? P?) (swap , swap) ls ⟩
     filter (Q? ∩? P?) ls       ≡⟨ filter-∩ Q? P? ls ⟩
     filter Q? (filter P? ls)   ∎
