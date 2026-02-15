@@ -1640,6 +1640,15 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
   suc ((m + n) ∸ o) ≡⟨ cong suc (+-∸-assoc m o≤n) ⟩
   suc (m + (n ∸ o)) ∎
 
+m∸n+o≡m∸[n∸o] : ∀ {m n o} → n ≤ m → o ≤ n → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+m∸n+o≡m∸[n∸o] {m}     {zero}  {zero}  z≤n       _         = +-identityʳ m
+m∸n+o≡m∸[n∸o] {suc m} {suc n} {zero}  (s≤s n≤m) z≤n       = +-identityʳ (m ∸ n)
+m∸n+o≡m∸[n∸o] {suc m} {suc n} {suc o} (s≤s n≤m) (s≤s o≤n) = begin-equality
+  suc m ∸ suc n + suc o ≡⟨ +-suc (m ∸ n) o ⟩
+  suc (m ∸ n + o)       ≡⟨ cong suc (m∸n+o≡m∸[n∸o] n≤m o≤n) ⟩
+  suc (m ∸ (n ∸ o))     ≡⟨ ∸-suc (≤-trans (m∸n≤m n o) n≤m) ⟨
+  suc m ∸ (n ∸ o)       ∎
+
 m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
 m≤n+o⇒m∸n≤o      m  zero    le = le
 m≤n+o⇒m∸n≤o zero    (suc n)  _ = z≤n
@@ -1728,10 +1737,29 @@ even≢odd (suc m) (suc n) eq = even≢odd m n (suc-injective (begin-equality
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_
 
+m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+m∸n≤m⊔n m n = ≤-trans (m∸n≤m m n) (m≤m⊔n m n)
+
 m⊓n+n∸m≡n : ∀ m n → (m ⊓ n) + (n ∸ m) ≡ n
 m⊓n+n∸m≡n zero    n       = refl
 m⊓n+n∸m≡n (suc m) zero    = refl
 m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
+
+m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+m⊔n∸[m∸n]≡n zero    n       = cong (n ∸_) (0∸n≡0 n)
+m⊔n∸[m∸n]≡n (suc m) zero    = n∸n≡0 m
+m⊔n∸[m∸n]≡n (suc m) (suc n) = begin-equality
+  suc  (m ⊔ n) ∸ (m ∸ n)  ≡⟨ ∸-suc (m∸n≤m⊔n m n) ⟩
+  suc ((m ⊔ n) ∸ (m ∸ n)) ≡⟨ cong suc (m⊔n∸[m∸n]≡n m n) ⟩
+  suc n                   ∎
+
+m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+m⊔n≡m∸n+n zero    n       = sym (cong (_+ n) (0∸n≡0 n))
+m⊔n≡m∸n+n (suc m) zero    = sym (cong suc (+-identityʳ m))
+m⊔n≡m∸n+n (suc m) (suc n) = begin-equality
+  suc (m ⊔ n)     ≡⟨ cong suc (m⊔n≡m∸n+n m n) ⟩
+  suc (m ∸ n + n) ≡⟨ +-suc (m ∸ n) n ⟨
+  m ∸ n + suc n   ∎
 
 [m∸n]⊓[n∸m]≡0 : ∀ m n → (m ∸ n) ⊓ (n ∸ m) ≡ 0
 [m∸n]⊓[n∸m]≡0 zero zero       = refl
@@ -1849,6 +1877,17 @@ m∸n≤∣m-n∣ m n with ≤-total m n
 ∣m-n∣≤m⊔n zero    m       = ≤-refl
 ∣m-n∣≤m⊔n (suc m) zero    = ≤-refl
 ∣m-n∣≤m⊔n (suc m) (suc n) = m≤n⇒m≤1+n (∣m-n∣≤m⊔n m n)
+
+∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
+∣m-n∣≡m⊔n∸m⊓n m n with ≤-total m n
+... | inj₁ m≤n = begin-equality
+      ∣ m - n ∣     ≡⟨ m≤n⇒∣m-n∣≡n∸m m≤n ⟩
+      n ∸ m         ≡⟨ cong₂ _∸_ (m≤n⇒m⊔n≡n m≤n) (m≤n⇒m⊓n≡m m≤n) ⟨
+      m ⊔ n ∸ m ⊓ n ∎
+... | inj₂ n≤m = begin-equality
+      ∣ m - n ∣     ≡⟨ m≤n⇒∣n-m∣≡n∸m n≤m ⟩
+      m ∸ n         ≡⟨ cong₂ _∸_ (m≥n⇒m⊔n≡m n≤m) (m≥n⇒m⊓n≡n n≤m) ⟨
+      m ⊔ n ∸ m ⊓ n ∎
 
 ∣-∣-identityˡ : LeftIdentity 0 ∣_-_∣
 ∣-∣-identityˡ x = refl

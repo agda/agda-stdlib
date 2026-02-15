@@ -290,6 +290,11 @@ Additions to existing modules
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
+  m∸n+o≡m∸[n∸o] : ∀ {m n o} → n ≤ m → o ≤ n → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+  m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+  m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+  m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+  ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
   ```
 
 * In `Data.Product.Properties`:
