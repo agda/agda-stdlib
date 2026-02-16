@@ -261,8 +261,8 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```
-  filter-map : (f : B → A) → filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
-  filter-∩ : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
   ```
 
