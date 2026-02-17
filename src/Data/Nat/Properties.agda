@@ -353,7 +353,7 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s<s))
 
 ≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
-≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
+≤∧≢⇒< {_} {zero}  z≤n       m≢n     = ¬[x≢x] m≢n
 ≤∧≢⇒< {_} {suc n} z≤n       m≢n     = z<s
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s<s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
@@ -479,7 +479,7 @@ n>0⇒n≢0 : n > 0 → n ≢ 0
 n>0⇒n≢0 {suc n} _ ()
 
 n≢0⇒n>0 : n ≢ 0 → n > 0
-n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
+n≢0⇒n>0 {zero}  0≢0 =  ¬[x≢x] 0≢0
 n≢0⇒n>0 {suc n} _   =  0<1+n
 
 m<n⇒0<n : m < n → 0 < n
@@ -503,7 +503,7 @@ m<1+n⇒m≤n : m < suc n → m ≤ n
 m<1+n⇒m≤n (s≤s m≤n) = m≤n
 
 ∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
+∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = ¬[x≢x] (m≤n⇒n≢0 z≤n)
 ∀[m≤n⇒m≢o]⇒n<o zero    (suc o) _       = 0<1+n
 ∀[m≤n⇒m≢o]⇒n<o (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒n<o n o rec)
   where
@@ -512,7 +512,7 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 
 ∀[m<n⇒m≢o]⇒n≤o : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
 ∀[m<n⇒m≢o]⇒n≤o zero    n       _       = z≤n
-∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
+∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = ¬[x≢x] (m<n⇒m≢0 0<1+n)
 ∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
