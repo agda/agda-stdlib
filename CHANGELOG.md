@@ -448,3 +448,16 @@ Additions to existing modules
   Π[∁P]⇒¬∃[P] : Π[ ∁ P ] → ¬ ∃⟨ P ⟩
   ∀[∁P]⇒¬∃[P] : ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
   ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  cartesianProductWith⁻ : ∀ f →
+                          f Preserves₂ _≈₁_ ⟶ _≈₂_ ⟶ _≡_ →
+                          ∀ xs ys →
+                          All P (cartesianProductWith f xs ys) →
+                          (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y))
+  cartesianProduct⁻ : _,_ Preserves₂ _≈₁_ ⟶ _≈₂_ ⟶ _≡_ →
+                      ∀ xs ys →
+                      All P (cartesianProduct xs ys) →
+                      (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y))
+   ```
