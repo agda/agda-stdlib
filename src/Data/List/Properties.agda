@@ -1284,11 +1284,11 @@ module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) whe
 module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
 
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
-  filter-swap ls =  begin
-    filter P? (filter Q? ls)   ≡⟨ filter-∩ P? Q? ls ⟨
-    filter (P? ∩? Q?) ls       ≡⟨ filter-≐ (P? ∩? Q?) (Q? ∩? P?) (swap , swap) ls ⟩
-    filter (Q? ∩? P?) ls       ≡⟨ filter-∩ Q? P? ls ⟩
-    filter Q? (filter P? ls)   ∎
+  filter-swap xs =  begin
+    filter P? (filter Q? xs)   ≡⟨ filter-∩ P? Q? xs ⟨
+    filter (P? ∩? Q?) xs       ≡⟨ filter-≐ (P? ∩? Q?) (Q? ∩? P?) (swap , swap) xs ⟩
+    filter (Q? ∩? P?) xs       ≡⟨ filter-∩ Q? P? xs ⟩
+    filter Q? (filter P? xs)   ∎
 
 
 ------------------------------------------------------------------------
