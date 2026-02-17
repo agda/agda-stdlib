@@ -259,6 +259,13 @@ Additions to existing modules
   map : P ⊆ Q → All P xs → All Q xs
   ```
 
+* In `Data.List.Properties`:
+  ```
+  filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  ```
+
 * In `Data.Nat.Divisiblity`:
   ```agad
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
