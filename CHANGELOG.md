@@ -410,6 +410,17 @@ Additions to existing modules
             Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
   ```
 
+* In `Relation.Binary.Properties.Setoid`:
+  ```agda
+  ¬[x≉x] : .(x ≉ x) → Whatever
+  ```
+
+* In `Relation.Binary.Propositional.Equality.Core`:
+  ```agda
+  ≢-irrefl : Irreflexive {A = A} _≡_ _≢_
+  ¬[x≢x] : .(x ≢ x) → Whatever
+  ```
+
 * In `Relation.Nullary.Negation.Core`
   ```agda
   ¬¬-η           : A → ¬ ¬ A
