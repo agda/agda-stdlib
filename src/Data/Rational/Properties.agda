@@ -616,13 +616,16 @@ toℚᵘ-isOrderMonomorphism-< = record
 <⇒≤ (*<* p<q) = *≤* (ℤ.<⇒≤ p<q)
 
 ≮⇒≥ : _≮_ ⇒ _≥_
-≮⇒≥ {p} {q} p≮q = *≤* (ℤ.≮⇒≥ (p≮q ∘ *<*))
+≮⇒≥ p≮q = *≤* (ℤ.≮⇒≥ (p≮q ∘ *<*))
 
 ≰⇒> : _≰_ ⇒ _>_
-≰⇒> {p} {q} p≰q = *<* (ℤ.≰⇒> (p≰q ∘ *≤*))
+≰⇒> p≰q = *<* (ℤ.≰⇒> (p≰q ∘ *≤*))
 
 <⇒≢ : _<_ ⇒ _≢_
-<⇒≢ {p} {q} (*<* p<q) = ℤ.<⇒≢ p<q ∘ drop-*≡* ∘ ≡⇒≃
+<⇒≢ (*<* p<q) = ℤ.<⇒≢ p<q ∘ drop-*≡* ∘ ≡⇒≃
+
+≤⇒≯ : _≤_ ⇒ _≯_
+≤⇒≯ (*≤* p≤q) (*<* q<p) = ℤ.≤⇒≯ p≤q q<p
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl refl (*<* p<p) = ℤ.<-irrefl refl p<p
@@ -1220,6 +1223,28 @@ neg-distribˡ-* = +-*-Monomorphism.neg-distribˡ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 neg-distribʳ-* : ∀ p q → - (p * q) ≡ p * - q
 neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.neg-distribʳ-*
 
+p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
+p*q≡0⇒p≡0∨q≡0 {p} {q} p*q≡0 =
+  Sum.map toℚᵘ-injective toℚᵘ-injective $ ℚᵘ.p*q≃0⇒p≃0∨q≃0 $ begin-equality
+    toℚᵘ p ℚᵘ.* toℚᵘ q ≃⟨ toℚᵘ-homo-* p q ⟨
+    toℚᵘ (p * q)       ≡⟨ cong toℚᵘ p*q≡0 ⟩
+    ℚᵘ.0ℚᵘ             ∎
+  where open ℚᵘ.≤-Reasoning
+
+p*q≢0⇒p≢0 : p * q ≢ 0ℚ → p ≢ 0ℚ
+p*q≢0⇒p≢0 {p} {q} pq≢0 p≡0 = pq≢0 $ begin
+  p * q  ≡⟨ cong (_* q) p≡0 ⟩
+  0ℚ * q ≡⟨ *-zeroˡ q ⟩
+  0ℚ     ∎
+  where open ≡-Reasoning
+
+p*q≢0⇒q≢0 : p * q ≢ 0ℚ → q ≢ 0ℚ
+p*q≢0⇒q≢0 {p} {q} pq≢0 q≡0 = pq≢0 $ begin
+  p * q  ≡⟨ cong (p *_) q≡0 ⟩
+  p * 0ℚ ≡⟨ *-zeroʳ p ⟩
+  0ℚ     ∎
+  where open ≡-Reasoning
+
 ------------------------------------------------------------------------
 -- Structures
 
@@ -1389,8 +1414,8 @@ nonNeg*nonPos⇒nonPos p q = nonPositive $ begin
   0ℚ     ∎
   where open ≤-Reasoning
 
-nonPos*nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
-nonPos*nonPos⇒nonPos p q = nonNegative $ begin
+nonPos*nonPos⇒nonNeg : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonNegative (p * q)
+nonPos*nonPos⇒nonNeg p q = nonNegative $ begin
   0ℚ     ≡⟨ *-zeroʳ p ⟨
   p * 0ℚ ≤⟨ *-monoˡ-≤-nonPos p (nonPositive⁻¹ q) ⟩
   p * q  ∎
@@ -1870,3 +1895,11 @@ Please use neg<pos instead."
 open Data.Rational.Base public
   using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
   renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)
+
+-- Version 2.4
+
+nonPos*nonPos⇒nonPos = nonPos*nonPos⇒nonNeg
+{-# WARNING_ON_USAGE nonPos*nonPos⇒nonPos
+"Warning: nonPos*nonPos⇒nonPos was deprecated in v2.4.
+Please use nonPos*nonPos⇒nonNeg instead."
+#-}

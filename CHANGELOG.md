@@ -13,6 +13,9 @@ Bug-fixes
 
 * Fix a typo in `Algebra.Morphism.Construct.DirectProduct`.
 
+* Fix a typo in `Data.Rational.Properties`: `nonPos*nonPos⇒nonPos` erroneously named,
+  corrected to `nonPos*nonPos⇒nonNeg`.
+
 * Fix a typo in `Function.Construct.Constant`.
 
 Non-backwards compatible changes
@@ -21,6 +24,10 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The function `Data.Nat.LCG.step` is now a manifest field of the record type
+  `Generator`, as per the discussion on #2936 and upstream issues/PRs. This is
+  consistent with a minimal API for such LCGs, and should be backwards compatible.
+
 * The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
   that the argument of type `m ≤ n` is marked as irrelevant. This should be
   backwards compatible, but does change the intensional behaviour of these
@@ -28,6 +35,11 @@ Minor improvements
   on that argument. Corresponding changes have been made to the types of their
   properties (and their proofs). In particular, `truncate-irrelevant` is now
   deprecated, because definitionally trivial.
+
+* The function `Data.Vec.Functional.map` is now marked with the `INLINE` pragma.
+  This is consistent with the inlining of `Function.Base._∘_` for which it is
+  an alias, and should be backwards compatible, but does improve the behaviour
+  of the termination checker for some `Vector`-defined operations.
 
 * `Relation.Binary.Morphism.Definitions` is no longer imported by any module,
   but retained as a stub for compatibility with external users.
@@ -79,6 +91,11 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
@@ -115,6 +132,8 @@ New modules
 * `Algebra.Properties.CommutativeRing`.
 
 * `Algebra.Properties.Semiring`.
+
+* `Data.List.Fresh.Membership.DecSetoid`.
 
 * `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
 
@@ -165,6 +184,12 @@ Additions to existing modules
   Central : Op₂ A → A → Set _
   ```
 
+* In `Algebra.Definitions.RawMonoid` action of a Boolean on a RawMonoid:
+  ```agda
+  _?>₀_  : Bool → Carrier → Carrier
+  _?>_∙_ : Bool → Carrier → Carrier → Carrier
+  ```
+
 * In `Algebra.Lattice.Properties.BooleanAlgebra.XorRing`:
   ```agda
   ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
@@ -184,6 +209,14 @@ Additions to existing modules
   -‿distrib-*ᵣ : ∀ m r → m *ᵣ (- r) ≈ᴹ -ᴹ (m *ᵣ r)
   -ᴹ‿distrib-*ᵣ : ∀ m r → (-ᴹ m) *ᵣ r ≈ᴹ -ᴹ (m *ᵣ r)
   ```
+
+* In `Algebra.Properties.Monoid.Mult` properties of the Boolean action on a RawMonoid:
+  ```agda
+  ?>₀-homo-true  : true ?>₀ x ≈ x
+  ?>₀-assocˡ     : b ?>₀ b′ ?>₀ x ≈ (b ∧ b′) ?>₀ x
+  b?>x∙y≈b?>₀x+y : b ?> x ∙ y ≈ (b ?>₀ x) + y
+  b?>₀x≈b?>x∙0   : b ?>₀ x ≈ b ?> x ∙ 0#
+   ```
 
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda
@@ -229,6 +262,31 @@ Additions to existing modules
   map : P ⊆ Q → All P xs → All Q xs
   ```
 
+* In `Data.List.Properties`:
+  ```
+  filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  ```
+
+* In `Data.Nat.Divisiblity`:
+  ```agad
+  m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
+  n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
+  ```
+
+* In `Data.Nat.Logarithm`
+  ```agda
+  2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
+  n≤2^⌈log₂n⌉ : ∀ n → n ≤ 2 ^ ⌈log₂ n ⌉
+  ```
+
+* In `Data.Nat.Logarithm.Core`
+  ```agda
+  2^⌊log2n⌋≤n : ∀ n .{{_ : NonZero n}} → (acc : Acc _<_ n) → 2 ^ (⌊log2⌋ n acc) ≤ n
+  n≤2^⌈log2n⌉ : ∀ n → (acc : Acc _<_ n) → n ≤ 2 ^ (⌈log2⌉ n acc)
+  ```
+
 * In `Data.Nat.ListAction.Properties`
   ```agda
   *-distribˡ-sum : ∀ m ns → m * sum ns ≡ sum (map (m *_) ns)
@@ -241,12 +299,28 @@ Additions to existing modules
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
   ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
+  2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
   ```
 
 * In `Data.Product.Properties`:
   ```agda
   swap-↔ : (A × B) ↔ (B × A)
   _,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
+  ```
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ≤⇒≯           : _≤_ ⇒ _≯_
+  p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
+  p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
+  p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
+  ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+  p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+  p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
   ```
 
 * In `Data.Vec.Properties`:
