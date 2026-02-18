@@ -266,7 +266,7 @@ Additions to existing modules
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
   ```
 
-* In `Data.Nat.Divisiblity`:
+* In `Data.Nat.Divisibility`:
   ```agda
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
