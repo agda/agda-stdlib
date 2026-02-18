@@ -315,7 +315,7 @@ Additions to existing modules
 
 * In `Data.Rational.Show`:
   ```agda
-  atPrecision : (n : ℕ) → ℚ → Vec ℤ (suc n)
+  atPrecision : (n : ℕ) → ℚ → ℤ × Vec ℕ n
   showAtPrecision : ℕ → ℚ → String
   ```
 
@@ -328,7 +328,6 @@ Additions to existing modules
 
 * In `Data.Rational.Unnormalised.Show`:
   ```agda
-  atPrecision : (n : ℕ) → ℚᵘ → Vec ℤ (suc n)
   showAtPrecision : ℕ → ℚᵘ → String
   ```
 
