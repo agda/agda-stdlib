@@ -33,6 +33,7 @@ import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
         ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
+open import Data.Integer.DivMod using ([n/d]*d≤n)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
@@ -1923,6 +1924,24 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣-∣-nonNeg (mkℚᵘ +0       _) = _
 ∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
 
+------------------------------------------------------------------------
+-- Rounding functions
+
+floor[q]≤q : ∀ q → (floor q) / 1 ≤ q
+floor[q]≤q q@record{} = *≤* (begin
+  floor q ℤ.* (↧ q)      ≡⟨⟩
+  (↥ q ℤ./ ↧ q) ℤ.* (↧ q) ≤⟨ [n/d]*d≤n _ (↧ q) ⟩
+  (↥ q)                  ≡⟨  sym (ℤ.*-identityʳ (↥ q)) ⟩
+  (↥ q) ℤ.* (↧ (floor q / 1)) ∎)
+  where
+  open ℤ.≤-Reasoning
+
+ceiling[q]≥q : ∀ q → (ceiling q) / 1 ≥ q
+ceiling[q]≥q q@record{} = subst
+  (λ h → lhs ≥ h)
+  (neg-involutive-≡ q)
+  (neg-mono-≤ (floor[q]≤q (- q)))
+  where lhs =  - (floor (- q) / 1)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
