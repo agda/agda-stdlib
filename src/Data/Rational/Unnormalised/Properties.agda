@@ -33,7 +33,7 @@ import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
         ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
-open import Data.Integer.DivMod using ([n/d]*d≤n)
+open import Data.Integer.DivMod using ([n/d]*d≤n; a≡a%n+[a/n]*n; n%d<d)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
@@ -1925,23 +1925,43 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
 
 ------------------------------------------------------------------------
--- Rounding functions
+-- Properties of ⌊_⌋ and ⌈_⌉
 
-floor[q]≤q : ∀ q → (floor q) / 1 ≤ q
-floor[q]≤q q@record{} = *≤* (begin
-  floor q ℤ.* (↧ q)      ≡⟨⟩
-  (↥ q ℤ./ ↧ q) ℤ.* (↧ q) ≤⟨ [n/d]*d≤n _ (↧ q) ⟩
-  (↥ q)                  ≡⟨  sym (ℤ.*-identityʳ (↥ q)) ⟩
-  (↥ q) ℤ.* (↧ (floor q / 1)) ∎)
+⌊q⌋≤q : ∀ q → ⌊ q ⌋ / 1 ≤ q
+⌊q⌋≤q q@record{} = *≤* (begin
+  ⌊ q ⌋ ℤ.* (↧ q) ≤⟨ [n/d]*d≤n (↥ q) (↧ q) ⟩
+  (↥ q)           ≡⟨  sym (ℤ.*-identityʳ (↥ q)) ⟩
+  (↥ q) ℤ.* (↧ (⌊ q ⌋ / 1)) ∎)
   where
   open ℤ.≤-Reasoning
 
-ceiling[q]≥q : ∀ q → (ceiling q) / 1 ≥ q
-ceiling[q]≥q q@record{} = subst
-  (λ h → lhs ≥ h)
+q<⌊q⌋+1 : ∀ q → q < ℤ.suc ⌊ q ⌋ / 1
+q<⌊q⌋+1 q@record{} = *<* ( begin-strict
+  ↥q ℤ.* 1ℤ    ≡⟨ ℤ.*-identityʳ ↥q ⟩
+  ↥q           ≡⟨ a≡a%n+[a/n]*n ↥q ↧q ⟩
+  ℤ.+ (↥q ℤ.% ↧q) ℤ.+ ⌊ q ⌋ ℤ.* ↧q
+               <⟨ ℤ.+-monoˡ-< (⌊ q ⌋ ℤ.* ↧q) (ℤ.+<+ (n%d<d ↥q ↧q)) ⟩
+  ↧q ℤ.+ ⌊ q ⌋ ℤ.* ↧q
+               ≡⟨ cong (λ h → h ℤ.+ ⌊ q ⌋ ℤ.* ↧q) (sym (ℤ.*-identityˡ ↧q)) ⟩
+  (1ℤ ℤ.* ↧q) ℤ.+ ⌊ q ⌋ ℤ.* ↧q
+               ≡⟨ sym (ℤ.*-distribʳ-+ ↧q 1ℤ (↥q ℤ./ ↧q)) ⟩
+  ℤ.suc ⌊ q ⌋ ℤ.* ↧q ∎)
+  where
+  open ℤ.≤-Reasoning
+  ↥q = ↥ q
+  ↧q = ↧ q
+
+q≤⌈q⌉ : ∀ q → q ≤ ⌈ q ⌉ / 1
+q≤⌈q⌉ q@record{} = subst
+  (λ h → h ≤ - (⌊ - q ⌋ / 1))
   (neg-involutive-≡ q)
-  (neg-mono-≤ (floor[q]≤q (- q)))
-  where lhs =  - (floor (- q) / 1)
+  (neg-mono-≤ (⌊q⌋≤q (- q)))
+
+⌈q⌉-1<q : ∀ q → ℤ.pred ⌈ q ⌉ / 1 < q
+⌈q⌉-1<q q@record{} = subst₂  _<_
+  (cong (λ h → h / 1) (ℤ.neg-distrib-+ 1ℤ (⌊ - q ⌋)))
+  (neg-involutive-≡ q)
+  (neg-mono-< (q<⌊q⌋+1 (- q)))
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
