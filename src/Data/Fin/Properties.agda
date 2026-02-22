@@ -42,7 +42,7 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_)
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; ¬[x≢x])
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Binary.PropositionalEquality as ≡
@@ -458,7 +458,7 @@ i<1+i = ℕ.n<1+n ∘ toℕ
 <⇒≢ i<i refl = ℕ.n≮n _ i<i
 
 ≤∧≢⇒< : i ≤ j → i ≢ j → i < j
-≤∧≢⇒< {i = zero}  {zero}  _         0≢0   = contradiction refl 0≢0
+≤∧≢⇒< {i = zero}  {zero}  _         0≢0   = ¬[x≢x] 0≢0
 ≤∧≢⇒< {i = zero}  {suc j} _         _     = z<s
 ≤∧≢⇒< {i = suc i} {suc j} 1+i≤1+j 1+i≢1+j =
   s<s (≤∧≢⇒< (ℕ.s≤s⁻¹ 1+i≤1+j) (1+i≢1+j ∘ (cong suc)))
@@ -528,14 +528,14 @@ inject!-< {suc n} {suc i} (suc k) = s≤s (inject!-< k)
 ------------------------------------------------------------------------
 
 toℕ-lower₁ : ∀ i (p : n ≢ toℕ i) → toℕ (lower₁ i p) ≡ toℕ i
-toℕ-lower₁ {ℕ.zero}  zero    p = contradiction refl p
+toℕ-lower₁ {ℕ.zero}  zero    p = ¬[x≢x] p
 toℕ-lower₁ {ℕ.suc m} zero    p = refl
 toℕ-lower₁ {ℕ.suc m} (suc i) p = cong ℕ.suc (toℕ-lower₁ i (p ∘ cong ℕ.suc))
 
 lower₁-injective : ∀ {n≢i : n ≢ toℕ i} {n≢j : n ≢ toℕ j} →
                    lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
-lower₁-injective {zero}  {zero}  {_}     {n≢i} {_}   _    = contradiction refl n≢i
-lower₁-injective {zero}  {_}     {zero}  {_}   {n≢j} _    = contradiction refl n≢j
+lower₁-injective {zero}  {zero}  {_}     {n≢i} {_}   _    = ¬[x≢x] n≢i
+lower₁-injective {zero}  {_}     {zero}  {_}   {n≢j} _    = ¬[x≢x] n≢j
 lower₁-injective {suc n} {zero}  {zero}  {_}   {_}   refl = refl
 lower₁-injective {suc n} {suc i} {suc j} {n≢i} {n≢j} eq   =
   cong suc (lower₁-injective (suc-injective eq))
@@ -545,7 +545,7 @@ lower₁-injective {suc n} {suc i} {suc j} {n≢i} {n≢j} eq   =
 
 inject₁-lower₁ : ∀ (i : Fin (suc n)) (n≢i : n ≢ toℕ i) →
                  inject₁ (lower₁ i n≢i) ≡ i
-inject₁-lower₁ {zero}  zero     0≢0     = contradiction refl 0≢0
+inject₁-lower₁ {zero}  zero     0≢0     = ¬[x≢x] 0≢0
 inject₁-lower₁ {suc n} zero     _       = refl
 inject₁-lower₁ {suc n} (suc i)  n+1≢i+1 =
   cong suc (inject₁-lower₁ i  (n+1≢i+1 ∘ cong suc))
@@ -562,7 +562,7 @@ lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)
 
 lower₁-irrelevant : ∀ (i : Fin (suc n)) (n≢i₁ n≢i₂ : n ≢ toℕ i) →
                     lower₁ i n≢i₁ ≡ lower₁ i n≢i₂
-lower₁-irrelevant {zero}  zero     0≢0 _ = contradiction refl 0≢0
+lower₁-irrelevant {zero}  zero     0≢0 _ = ¬[x≢x] 0≢0
 lower₁-irrelevant {suc n} zero     _   _ = refl
 lower₁-irrelevant {suc n} (suc i)  _   _ =
   cong suc (lower₁-irrelevant i _ _)
@@ -620,7 +620,7 @@ inject≤-irrelevant _ _ i = refl
 ------------------------------------------------------------------------
 
 pred< : ∀ (i : Fin (suc n)) → i ≢ zero → pred i < i
-pred< zero    i≢0 = contradiction refl i≢0
+pred< zero    i≢0 = ¬[x≢x] i≢0
 pred< (suc i) _   = ≤̄⇒inject₁< ℕ.≤-refl
 
 ------------------------------------------------------------------------
@@ -910,8 +910,8 @@ punchIn-cancel-≤ (suc i) (suc j) (suc k) (s≤s ↑j≤↑k) = s≤s (punchIn-
 
 punchOut-cong : ∀ (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
                 j ≡ k → punchOut i≢j ≡ punchOut i≢k
-punchOut-cong {_}     zero    {zero}         {i≢j = 0≢0} = contradiction refl 0≢0
-punchOut-cong {_}     zero    {suc j} {zero} {i≢k = 0≢0} = contradiction refl 0≢0
+punchOut-cong {_}     zero    {zero}         {i≢j = 0≢0} = ¬[x≢x] 0≢0
+punchOut-cong {_}     zero    {suc j} {zero} {i≢k = 0≢0} = ¬[x≢x] 0≢0
 punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
 punchOut-cong {suc n} (suc i) {zero}  {zero}   _ = refl
 punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i ∘ suc-injective
@@ -927,8 +927,8 @@ punchOut-cong′ i q = punchOut-cong i q
 punchOut-injective : ∀ {i j k : Fin (suc n)}
                      (i≢j : i ≢ j) (i≢k : i ≢ k) →
                      punchOut i≢j ≡ punchOut i≢k → j ≡ k
-punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction refl 0≢0
-punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction refl 0≢0
+punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = ¬[x≢x] 0≢0
+punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = ¬[x≢x] 0≢0
 punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
 punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
@@ -936,15 +936,15 @@ punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
 
 punchOut-mono-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
                   j ≤ k → punchOut i≢j ≤ punchOut i≢k
-punchOut-mono-≤ {_    } {zero } {zero } {_    } 0≢0 _   z≤n       = contradiction refl 0≢0
+punchOut-mono-≤ {_    } {zero } {zero } {_    } 0≢0 _   z≤n       = ¬[x≢x] 0≢0
 punchOut-mono-≤ {_    } {zero } {suc _} {suc _} _   _   (s≤s j≤k) = j≤k
 punchOut-mono-≤ {suc _} {suc _} {zero } {_    } _   _   z≤n       = z≤n
 punchOut-mono-≤ {suc _} {suc _} {suc _} {suc _} i≢j i≢k (s≤s j≤k) = s≤s (punchOut-mono-≤ (i≢j ∘ cong suc) (i≢k ∘ cong suc) j≤k)
 
 punchOut-cancel-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
                     punchOut i≢j ≤ punchOut i≢k → j ≤ k
-punchOut-cancel-≤ {_    } {zero } {zero } {_    } 0≢0 _   _           = contradiction refl 0≢0
-punchOut-cancel-≤ {_    } {zero } {suc _} {zero } _   0≢0 _           = contradiction refl 0≢0
+punchOut-cancel-≤ {_    } {zero } {zero } {_    } 0≢0 _   _           = ¬[x≢x] 0≢0
+punchOut-cancel-≤ {_    } {zero } {suc _} {zero } _   0≢0 _           = ¬[x≢x] 0≢0
 punchOut-cancel-≤ {suc _} {zero } {suc _} {suc _} _   _   pⱼ≤pₖ       = s≤s pⱼ≤pₖ
 punchOut-cancel-≤ {_    } {suc _} {zero } {_    } _   _   _           = z≤n
 punchOut-cancel-≤ {suc _} {suc _} {suc _} {zero } _   _   ()
@@ -952,7 +952,7 @@ punchOut-cancel-≤ {suc _} {suc _} {suc _} {suc _} i≢j i≢k (s≤s pⱼ≤p�
 
 punchIn-punchOut : ∀ {i j : Fin (suc n)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
-punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
+punchIn-punchOut {_}     {zero}   {zero}  0≢0 = ¬[x≢x] 0≢0
 punchIn-punchOut {_}     {zero}   {suc j} _   = refl
 punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =

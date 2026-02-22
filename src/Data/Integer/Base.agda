@@ -19,8 +19,8 @@ open import Data.Sign.Base as Sign using (Sign)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+  using (_≡_; _≢_; refl; ¬[x≢x])
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary using (Pred)
 
 infix  8 -_
@@ -163,7 +163,7 @@ instance
 
 ≢-nonZero : ∀ {i} → i ≢ 0ℤ → NonZero i
 ≢-nonZero { +[1+ n ]} _   = _
-≢-nonZero { +0}       0≢0 = contradiction refl 0≢0
+≢-nonZero { +0}       0≢0 = ¬[x≢x] 0≢0
 ≢-nonZero { -[1+ n ]} _   = _
 
 >-nonZero : ∀ {i} → i > 0ℤ → NonZero i
