@@ -260,6 +260,12 @@ Additions to existing modules
   _<ᵇ_ : ℤ → ℤ → Bool
   ```
 
+* In `Data.Integer.Properties`:
+  ```
+  <ᵇ⇒< : T (i <ᵇ j) → i < j
+  <⇒<ᵇ : i < j → T (i <ᵇ j)
+  ```
+
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs
@@ -318,6 +324,8 @@ Additions to existing modules
 
 * In `Data.Rational.Properties`:
   ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
   ≤⇒≯           : _≤_ ⇒ _≯_
   p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
   p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
@@ -337,6 +345,8 @@ Additions to existing modules
 
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
   p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
   p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
   p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
