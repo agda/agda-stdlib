@@ -1540,9 +1540,9 @@ pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
-∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
-∸-suc z≤n       = refl
-∸-suc (s≤s m≤n) = ∸-suc m≤n
+∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
+∸-suc {m = zero}              _   = refl
+∸-suc {m = suc _} {n = suc _} m≤n = ∸-suc (s≤s⁻¹ m≤n)
 
 m∸n≤m : ∀ m n → m ∸ n ≤ m
 m∸n≤m n       zero    = ≤-refl
@@ -1633,7 +1633,7 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 ∸-+-assoc (suc m) zero o = refl
 ∸-+-assoc (suc m) (suc n) o = ∸-+-assoc m n o
 
-+-∸-assoc : ∀ m {n o} → o ≤ n → (m + n) ∸ o ≡ m + (n ∸ o)
++-∸-assoc : ∀ m {n o} → .(o ≤ n) → (m + n) ∸ o ≡ m + (n ∸ o)
 +-∸-assoc zero    {n = n} {o = o} _   = begin-equality n ∸ o ∎
 +-∸-assoc (suc m) {n = n} {o = o} o≤n = begin-equality
   suc (m + n) ∸ o   ≡⟨ ∸-suc (m≤n⇒m≤o+n m o≤n) ⟩
@@ -1674,16 +1674,16 @@ m+n∸n≡m m n = begin-equality
 m+n∸m≡n : ∀ m n → m + n ∸ m ≡ n
 m+n∸m≡n m n = trans (cong (_∸ m) (+-comm m n)) (m+n∸n≡m n m)
 
-m+[n∸m]≡n : m ≤ n → m + (n ∸ m) ≡ n
+m+[n∸m]≡n : .(m ≤ n) → m + (n ∸ m) ≡ n
 m+[n∸m]≡n {m} {n} m≤n = begin-equality
-  m + (n ∸ m)  ≡⟨ sym $ +-∸-assoc m m≤n ⟩
+  m + (n ∸ m)  ≡⟨ +-∸-assoc m m≤n ⟨
   (m + n) ∸ m  ≡⟨ cong (_∸ m) (+-comm m n) ⟩
   (n + m) ∸ m  ≡⟨ m+n∸n≡m n m ⟩
   n            ∎
 
 m∸n+n≡m : ∀ {m n} → n ≤ m → (m ∸ n) + n ≡ m
 m∸n+n≡m {m} {n} n≤m = begin-equality
-  (m ∸ n) + n ≡⟨ sym (+-∸-comm n n≤m) ⟩
+  (m ∸ n) + n ≡⟨ +-∸-comm n n≤m ⟨
   (m + n) ∸ n ≡⟨ m+n∸n≡m m n ⟩
   m           ∎
 
@@ -2136,9 +2136,11 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 ------------------------------------------------------------------------
 
 -- equivalence of  _≤″_ to _≤_
+-- NB the change in #2939 making the m≤n argument to m+[n∸m]≡n irrelevant
+-- means that this proof must now be eta-expanded in order to typecheck.
 
 ≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ = (_ ,_) ∘ m+[n∸m]≡n
+≤⇒≤″ m≤n = (_ , m+[n∸m]≡n m≤n)
 
 <⇒<″ : _<_ ⇒ _<″_
 <⇒<″ = ≤⇒≤″
