@@ -254,6 +254,11 @@ Additions to existing modules
   search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
   ```
 
+* In `Data.Integer.Base`:
+  ```
+  _<ᵇ_ : ℤ → ℤ → Bool
+  ```
+
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs
@@ -305,12 +310,22 @@ Additions to existing modules
   _,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
   ```
 
+* In `Data.Rational.Base`:
+  ```
+  _<ᵇ_ : ℚ → ℚ → Bool
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ≤⇒≯           : _≤_ ⇒ _≯_
   p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
   p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
   p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  _<ᵇ_ : ℚᵘ → ℚᵘ → Bool
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
