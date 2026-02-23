@@ -266,8 +266,8 @@ Additions to existing modules
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
   ```
 
-* In `Data.Nat.Divisiblity`:
-  ```agad
+* In `Data.Nat.Divisibility`:
+  ```agda
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
   ```
@@ -313,11 +313,22 @@ Additions to existing modules
   p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
   ```
 
+* In `Data.Rational.Show`:
+  ```agda
+  atPrecision : (n : ℕ) → ℚ → ℤ × Vec ℕ n
+  showAtPrecision : ℕ → ℚ → String
+  ```
+
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
   p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
   p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
   p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+  ```
+
+* In `Data.Rational.Unnormalised.Show`:
+  ```agda
+  showAtPrecision : ℕ → ℚᵘ → String
   ```
 
 * In `Data.Vec.Properties`:
