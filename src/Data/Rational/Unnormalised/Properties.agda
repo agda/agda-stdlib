@@ -1924,6 +1924,13 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣-∣-nonNeg (mkℚᵘ +0       _) = _
 ∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
 
+-q≤p≤q⇒|p|≤q : ∀ p q → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
+-q≤p≤q⇒|p|≤q p q -q≤p p≤q =
+  [ (λ ∣p∣≡p → subst (λ h → h ≤ q) (sym ∣p∣≡p) p≤q)
+  , (λ ∣p∣≡-p → subst (λ h → h ≤ q) (sym ∣p∣≡-p)
+    (subst (λ h → _ ≤ h) (neg-involutive-≡ q) (neg-mono-≤ -q≤p))) ]′
+  (∣p∣≡p∨∣p∣≡-p p)
+
 ------------------------------------------------------------------------
 -- Properties of ⌊_⌋ and ⌈_⌉
 
