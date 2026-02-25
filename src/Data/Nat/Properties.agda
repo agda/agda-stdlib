@@ -111,11 +111,14 @@ m ≡? n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≡-irrelevant : Irrelevant {A = ℕ} _≡_
 ≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≡?_
 
-≡?-diag : (eq : m ≡ n) → (m ≡? n) ≡ yes eq
-≡?-diag = ≡-≡?-identity _≡?_
+≡?-≡ : (eq : m ≡ n) → (m ≡? n) ≡ yes eq
+≡?-≡ = ≡-≡?-identity _≡?_
 
-≡?-≡ : (m≢n : m ≢ n) → (m ≡? n) ≡ no m≢n
-≡?-≡ = ≢-≡?-identity _≡?_
+≡?-≡-refl : ∀ n  → (n ≡? n) ≡ yes refl
+≡?-≡-refl _ = ≡?-≡ refl
+
+≡?-≢ : (m≢n : m ≢ n) → (m ≡? n) ≡ no m≢n
+≡?-≢ = ≢-≡?-identity _≡?_
 
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
@@ -2470,14 +2473,14 @@ _≟_ = _≡?_
 Please use _≡?_ instead."
 #-}
 
-≟-diag = ≡?-diag
+≟-diag = ≡?-≡
 {-# WARNING_ON_USAGE ≟-diag
 "Warning: ≟-diag was deprecated in v2.4.
-Please use ≡?-diag instead."
+Please use ≡?-≡ instead."
 #-}
 
-≟-≡ = ≡?-≡
+≟-≡ = ≡?-≢
 {-# WARNING_ON_USAGE ≟-≡
 "Warning: ≟-≡ was deprecated in v2.4.
-Please use ≡?-≡ instead."
+Please use ≡?-≢ instead."
 #-}

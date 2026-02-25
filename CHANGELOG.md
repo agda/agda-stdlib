@@ -87,6 +87,15 @@ Deprecated names
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  _≟_       ↦   _≡?_
+  inj⇒≟     ↦   inj⇒≡?
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  _≟_     ↦   _≡?_
+  ≟-diag  ↦   ≡?-≡
+  ≟-≡     ↦   ≡?-≢
   ```
 
 * In `Data.Rational.Properties`:
@@ -239,10 +248,10 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
-  ≟-≡          : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
-  ≟-≡-refl     : (i : Fin n) → (i ≟ i) ≡ yes refl
-  ≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
-  inject-<     : inject j < i
+  ≡?-≡          : (eq : i ≡ j) → (i ≡? j) ≡ yes eq
+  ≡?-≡-refl     : (i : Fin n) → (i ≡? i) ≡ yes refl
+  ≡?-≢          : (i≢j : i ≢ j) → (i ≡? j) ≡ no i≢j
+  inject-<      : inject j < i
 
   record Least⟨_⟩ (P : Pred (Fin n) p) : Set p where
     constructor least
@@ -305,7 +314,7 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
-  ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
+  ≡?-≡-refl : ∀ n  → (n ≡? n) ≡ yes refl
   ∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
