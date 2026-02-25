@@ -33,7 +33,7 @@ import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
         ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
-open import Data.Integer.DivMod using ([n/d]*d≤n; a≡a%n+[a/n]*n; n%d<d)
+open import Data.Integer.DivMod as ℤ using ()
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
@@ -1924,39 +1924,39 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣-∣-nonNeg (mkℚᵘ +0       _) = _
 ∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
 
--q≤p≤q⇒|p|≤q : ∀ p q → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
--q≤p≤q⇒|p|≤q p q -q≤p p≤q =
+-q≤p≤q⇒∣p∣≤q : ∀ p q → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
+-q≤p≤q⇒∣p∣≤q p q -q≤p p≤q =
   [ (λ ∣p∣≡p → subst (λ h → h ≤ q) (sym ∣p∣≡p) p≤q)
   , (λ ∣p∣≡-p → subst (λ h → h ≤ q) (sym ∣p∣≡-p)
     (subst (λ h → _ ≤ h) (neg-involutive-≡ q) (neg-mono-≤ -q≤p))) ]′
   (∣p∣≡p∨∣p∣≡-p p)
 
 ------------------------------------------------------------------------
--- Properties of ⌊_⌋ and ⌈_⌉
+-- Properties of Rounding functions
+------------------------------------------------------------------------
+-- Bounds of ⌊_⌋ and ⌈_⌉
 
 ⌊q⌋≤q : ∀ q → ⌊ q ⌋ / 1 ≤ q
 ⌊q⌋≤q q@record{} = *≤* (begin
-  ⌊ q ⌋ ℤ.* (↧ q) ≤⟨ [n/d]*d≤n (↥ q) (↧ q) ⟩
-  (↥ q)           ≡⟨  sym (ℤ.*-identityʳ (↥ q)) ⟩
-  (↥ q) ℤ.* (↧ (⌊ q ⌋ / 1)) ∎)
-  where
-  open ℤ.≤-Reasoning
+  ⌊ q ⌋ ℤ.* (↧ q)           ≤⟨ ℤ.[n/d]*d≤n (↥ q) (↧ q) ⟩
+  (↥ q)                     ≡⟨  sym (ℤ.*-identityʳ (↥ q)) ⟩
+  (↥ q) ℤ.* (↧ (⌊ q ⌋ / 1)) ∎) where open ℤ.≤-Reasoning
 
-q<⌊q⌋+1 : ∀ q → q < ℤ.suc ⌊ q ⌋ / 1
-q<⌊q⌋+1 q@record{} = *<* ( begin-strict
-  ↥q ℤ.* 1ℤ    ≡⟨ ℤ.*-identityʳ ↥q ⟩
-  ↥q           ≡⟨ a≡a%n+[a/n]*n ↥q ↧q ⟩
-  ℤ.+ (↥q ℤ.% ↧q) ℤ.+ ⌊ q ⌋ ℤ.* ↧q
-               <⟨ ℤ.+-monoˡ-< (⌊ q ⌋ ℤ.* ↧q) (ℤ.+<+ (n%d<d ↥q ↧q)) ⟩
-  ↧q ℤ.+ ⌊ q ⌋ ℤ.* ↧q
-               ≡⟨ cong (λ h → h ℤ.+ ⌊ q ⌋ ℤ.* ↧q) (sym (ℤ.*-identityˡ ↧q)) ⟩
-  (1ℤ ℤ.* ↧q) ℤ.+ ⌊ q ⌋ ℤ.* ↧q
-               ≡⟨ sym (ℤ.*-distribʳ-+ ↧q 1ℤ (↥q ℤ./ ↧q)) ⟩
-  ℤ.suc ⌊ q ⌋ ℤ.* ↧q ∎)
-  where
-  open ℤ.≤-Reasoning
-  ↥q = ↥ q
-  ↧q = ↧ q
+q<⌊q⌋+1 : ∀ q → q < ⌊ q ⌋ / 1 + 1ℚᵘ
+q<⌊q⌋+1 q@record{} = let n = ↥ q; d = ↧ q in *<* ( begin-strict
+  n ℤ.* 1ℤ ≡⟨ ℤ.*-identityʳ n ⟩
+  n        ≡⟨ ℤ.a≡a%n+[a/n]*n n d  ⟩
+  ℤ.+ (n ℤ.% d) ℤ.+ ⌊ q ⌋ ℤ.* d
+      <⟨ ℤ.+-monoˡ-< (⌊ q ⌋ ℤ.* d) (ℤ.+<+ (ℤ.n%d<d n d)) ⟩
+  d ℤ.+ ⌊ q ⌋ ℤ.* d
+      ≡⟨ cong (λ h → h ℤ.+ ⌊ q ⌋ ℤ.* d) (sym (ℤ.*-identityˡ d)) ⟩
+  (1ℤ ℤ.* d) ℤ.+ ⌊ q ⌋ ℤ.* d
+      ≡⟨ sym (ℤ.*-distribʳ-+ d 1ℤ (n ℤ./ d)) ⟩
+  (1ℤ ℤ.+ ⌊ q ⌋) ℤ.* d
+      ≡⟨ cong (λ h → h ℤ.* d) (ℤ.+-comm 1ℤ ⌊ q ⌋) ⟩
+  (⌊ q ⌋ ℤ.+ 1ℤ) ℤ.* d
+      ≡⟨ cong (λ h → (h ℤ.+ 1ℤ) ℤ.* d) (sym (ℤ.*-identityʳ ⌊ q ⌋)) ⟩
+  (↥ (⌊ q ⌋ / 1 + 1ℚᵘ)) ℤ.* d ∎) where open ℤ.≤-Reasoning
 
 q≤⌈q⌉ : ∀ q → q ≤ ⌈ q ⌉ / 1
 q≤⌈q⌉ q@record{} = subst
@@ -1964,11 +1964,90 @@ q≤⌈q⌉ q@record{} = subst
   (neg-involutive-≡ q)
   (neg-mono-≤ (⌊q⌋≤q (- q)))
 
-⌈q⌉-1<q : ∀ q → ℤ.pred ⌈ q ⌉ / 1 < q
+⌈q⌉-1<q : ∀ q → ⌈ q ⌉ / 1 - 1ℚᵘ < q
 ⌈q⌉-1<q q@record{} = subst₂  _<_
-  (cong (λ h → h / 1) (ℤ.neg-distrib-+ 1ℤ (⌊ - q ⌋)))
+  (neg-distrib-+ (⌊ - q ⌋ / 1)  1ℚᵘ)
   (neg-involutive-≡ q)
   (neg-mono-< (q<⌊q⌋+1 (- q)))
+
+------------------------------------------------------------------------
+-- Approximation errors of ⌊_⌋ ⌈_⌉ and round(_)
+
+∣q-⌊q⌋∣≤1 : ∀ q → ∣ q - ⌊ q ⌋ / 1 ∣ ≤ 1ℚᵘ
+∣q-⌊q⌋∣≤1 q = let ⌊q⌋ = ⌊ q ⌋ / 1 in -q≤p≤q⇒∣p∣≤q (q - ⌊ q ⌋ / 1) 1ℚᵘ
+  (begin
+    - 1ℚᵘ     ≤⟨ *≤* ℤ.-≤+ ⟩
+    0ℚᵘ       ≃⟨ ≃-sym (+-inverseʳ ⌊q⌋) ⟩
+    ⌊q⌋ - ⌊q⌋ ≤⟨ +-monoˡ-≤ _ (⌊q⌋≤q q) ⟩
+    q - ⌊q⌋   ∎)
+  (begin
+    q - ⌊q⌋           ≤⟨ <⇒≤ (+-monoˡ-< _ (q<⌊q⌋+1 q)) ⟩
+    ⌊q⌋ + 1ℚᵘ - ⌊q⌋   ≃⟨ +-congˡ (- ⌊q⌋) (+-comm ⌊q⌋ 1ℚᵘ) ⟩
+    1ℚᵘ + ⌊q⌋ - ⌊q⌋   ≃⟨ +-assoc 1ℚᵘ ⌊q⌋ (- ⌊q⌋) ⟩
+    1ℚᵘ + (⌊q⌋ - ⌊q⌋) ≃⟨ +-congʳ 1ℚᵘ (+-inverseʳ ⌊q⌋) ⟩
+    1ℚᵘ + 0ℚᵘ         ≃⟨ +-identityʳ _ ⟩
+    1ℚᵘ               ∎)
+  where open ≤-Reasoning
+
+∣q-⌈q⌉∣≤1 : ∀ q → ∣ q - ⌈ q ⌉ / 1 ∣ ≤ 1ℚᵘ
+∣q-⌈q⌉∣≤1 q@record{} = let ⌊-q⌋ = ⌊ - q ⌋ / 1 in begin
+  ∣ q - ⌈ q ⌉ / 1 ∣ ≡⟨⟩
+  ∣ q - (- ⌊-q⌋) ∣  ≡⟨ cong (λ h → ∣ q + h ∣) (neg-involutive-≡ ⌊-q⌋) ⟩
+  ∣ q + ⌊-q⌋ ∣      ≡⟨ sym (∣-p∣≡∣p∣ (q + ⌊-q⌋)) ⟩
+  ∣ - (q + ⌊-q⌋) ∣  ≡⟨ cong (λ h → ∣ h ∣) (neg-distrib-+ q ⌊-q⌋) ⟩
+  ∣ - q - ⌊-q⌋ ∣    ≤⟨ ∣q-⌊q⌋∣≤1 (- q) ⟩
+  1ℚᵘ               ∎ where open ≤-Reasoning
+
+private
+  -½≤q-⌊q+½⌋ : ∀ q → - ½ ≤ q - ⌊ q + ½ ⌋ / 1
+  -½≤q-⌊q+½⌋ q = begin
+    - ½               ≃⟨ ≃-sym (+-identityˡ _) ⟩
+    0ℚᵘ - ½           ≃⟨ +-congˡ (- ½) (≃-sym (+-inverseʳ q)) ⟩
+    q - q - ½         ≃⟨ +-assoc q _ _ ⟩
+    q + (- q - ½)     ≡⟨ cong (λ h → q + h) (sym (neg-distrib-+ q ½)) ⟩
+    q - (q + ½)       ≤⟨ +-monoʳ-≤ q (neg-mono-≤ (⌊q⌋≤q (q + ½))) ⟩
+    q - ⌊ q + ½ ⌋ / 1 ∎ where open ≤-Reasoning
+
+  q-⌊q+½⌋≤½ : ∀ q → q - ⌊ q + ½ ⌋ / 1 ≤ ½
+  q-⌊q+½⌋≤½ q = let ⌊q+½⌋ = ⌊ q + ½ ⌋ / 1 in begin
+    q - ⌊q+½⌋                 ≃⟨ +-congˡ _ (≃-sym (+-identityʳ q)) ⟩
+    q + 0ℚᵘ - ⌊q+½⌋           ≃⟨ +-congˡ _ (+-congʳ q (≃-sym (+-inverseʳ ½))) ⟩
+    q + (½ - ½) - ⌊q+½⌋       ≃⟨ +-congˡ _ (≃-sym (+-assoc q ½ (- ½))) ⟩
+    q + ½ - ½ - ⌊q+½⌋         <⟨ +-monoˡ-< _ (+-monoˡ-< (- ½) (q<⌊q⌋+1 (q + ½))) ⟩
+    ⌊q+½⌋ + 1ℚᵘ - ½ - ⌊q+½⌋   ≃⟨ +-congˡ (- ⌊q+½⌋) (+-assoc ⌊q+½⌋ 1ℚᵘ (- ½)) ⟩
+    ⌊q+½⌋ + ½ - ⌊q+½⌋         ≃⟨ +-congˡ (- ⌊q+½⌋) (+-comm ⌊q+½⌋ ½) ⟩
+    ½ + ⌊q+½⌋ - ⌊q+½⌋         ≃⟨ +-assoc ½ ⌊q+½⌋ (- ⌊q+½⌋) ⟩
+    ½ + (⌊q+½⌋ - ⌊q+½⌋)       ≃⟨ +-congʳ ½ (+-inverseʳ ⌊q+½⌋) ⟩
+    ½ + 0ℚᵘ                   ≃⟨ +-identityʳ ½ ⟩
+    ½                         ∎ where open ≤-Reasoning
+
+  ceil-to-floor : ∀ q → ⌈ q - ½ ⌉ ≡ ℤ.- ⌊ - q + ½ ⌋
+  ceil-to-floor q@record{} = begin
+    ℤ.- ⌊ - (q - ½) ⌋   ≡⟨ cong (λ h → ℤ.- ⌊ h ⌋) (neg-distrib-+ q (- ½)) ⟩
+    ℤ.- ⌊ - q - (- ½) ⌋ ≡⟨ cong (λ h → ℤ.- ⌊ - q + h ⌋) (neg-involutive-≡ ½) ⟩
+    ℤ.- ⌊ - q + ½ ⌋     ∎ where open ≡-Reasoning
+
+  q-⌈q-½⌉≤½ : ∀ q → q - ⌈ q - ½ ⌉ / 1 ≤ ½
+  q-⌈q-½⌉≤½ q = let ⌊-q+½⌋ = ⌊ - q + ½ ⌋ / 1 in begin
+    q - ⌈ q - ½ ⌉ / 1    ≡⟨ cong (λ h → q - h / 1) (ceil-to-floor q) ⟩
+    q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → h - (- ⌊-q+½⌋)) (sym (neg-involutive-≡ q)) ⟩
+    - (- q) - (- ⌊-q+½⌋) ≡⟨ sym (neg-distrib-+ (- q) _) ⟩
+    - (- q - ⌊-q+½⌋)     ≤⟨ neg-mono-≤ (-½≤q-⌊q+½⌋ (- q)) ⟩
+    - (- ½)              ≡⟨ neg-involutive-≡ ½ ⟩
+    ½ ∎                  where open ≤-Reasoning
+
+  -½≤q-⌈q-½⌉ : ∀ q → - ½ ≤ q - ⌈ q - ½ ⌉ / 1
+  -½≤q-⌈q-½⌉ q = let ⌊-q+½⌋ = ⌊ - q + ½ ⌋ / 1 in begin
+    - ½                  ≤⟨ neg-mono-≤ (q-⌊q+½⌋≤½ (- q)) ⟩
+    - (- q - ⌊-q+½⌋)     ≡⟨ neg-distrib-+ (- q) (- ⌊-q+½⌋) ⟩
+    - (- q) - (- ⌊-q+½⌋) ≡⟨ cong (λ h → h - (- ⌊-q+½⌋)) (neg-involutive-≡ q) ⟩
+    q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → q - h / 1) (sym (ceil-to-floor q)) ⟩
+    q - ⌈ q - ½ ⌉ / 1    ∎ where open ≤-Reasoning
+
+∣q-round[q]∣≤½ : ∀ q → ∣ q - (round q) / 1 ∣ ≤ ½
+∣q-round[q]∣≤½ q with q ≤ᵇ 0ℚᵘ
+... | false = -q≤p≤q⇒∣p∣≤q (q - ⌊ q + ½ ⌋ / 1) ½ (-½≤q-⌊q+½⌋ q) (q-⌊q+½⌋≤½ q)
+... | true  = -q≤p≤q⇒∣p∣≤q (q - ⌈ q - ½ ⌉ / 1) ½ (-½≤q-⌈q-½⌉ q) (q-⌈q-½⌉≤½ q)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
