@@ -49,11 +49,11 @@ open J dualJoinSemilattice public
 -- If ≈ is decidable then so is ≤
 
 ≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
-≈-dec⇒≤-dec _≟_ = flip (≈-dec⇒≥-dec _≟_)
+≈-dec⇒≤-dec _≈?_ = flip (≈-dec⇒≥-dec _≈?_)
 
 ≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
-≈-dec⇒isDecPartialOrder _≟_ = record
+≈-dec⇒isDecPartialOrder _≈?_ = record
   { isPartialOrder = isPartialOrder
-  ; _≟_            = _≟_
-  ; _≤?_           = ≈-dec⇒≤-dec _≟_
+  ; _≈?_           = _≈?_
+  ; _≤?_           = ≈-dec⇒≤-dec _≈?_
   }

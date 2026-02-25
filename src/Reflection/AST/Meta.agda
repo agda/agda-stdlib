@@ -8,7 +8,7 @@
 
 module Reflection.AST.Meta where
 
-import Data.Nat.Properties as ℕ using (_≟_)
+import Data.Nat.Properties as ℕ using (_≡?_)
 open import Function.Base using (_on_)
 open import Relation.Nullary.Decidable.Core using (map′)
 open import Relation.Binary.Core using (Rel)
@@ -24,13 +24,29 @@ open import Agda.Builtin.Reflection.Properties public
 
 -- Equality of metas is decidable.
 
-infix 4 _≈?_ _≟_ _≈_
+infix 4 _≈?_ _≡?_ _≈_
 
 _≈_ : Rel Meta _
 _≈_ = _≡_ on toℕ
 
 _≈?_ : Decidable _≈_
-_≈?_ = On.decidable toℕ _≡_ ℕ._≟_
+_≈?_ = On.decidable toℕ _≡_ ℕ._≡?_
 
-_≟_ : DecidableEquality Meta
-m ≟ n = map′ (toℕ-injective _ _) (cong toℕ) (m ≈? n)
+_≡?_ : DecidableEquality Meta
+m ≡? n = map′ (toℕ-injective _ _) (cong toℕ) (m ≈? n)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

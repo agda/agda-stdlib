@@ -113,10 +113,10 @@ isPartialOrder semilattice = record
 
 isDecPartialOrder : IsSemilattice _∙_ → Decidable _≈_ →
                     IsDecPartialOrder _≈_ _≤_
-isDecPartialOrder semilattice _≟_ = record
+isDecPartialOrder semilattice _≈?_ = record
   { isPartialOrder = isPartialOrder semilattice
-  ; _≟_            = _≟_
-  ; _≤?_           = dec _≟_
+  ; _≈?_           = _≈?_
+  ; _≤?_           = dec _≈?_
   }
 
 isTotalOrder : IsSemilattice _∙_ → Selective _∙_ → IsTotalOrder _≈_ _≤_
@@ -128,10 +128,10 @@ isTotalOrder latt sel  = record
 
 isDecTotalOrder : IsSemilattice _∙_ → Selective _∙_ →
                   Decidable _≈_ → IsDecTotalOrder _≈_ _≤_
-isDecTotalOrder latt sel _≟_ = record
+isDecTotalOrder latt sel _≈?_ = record
   { isTotalOrder = isTotalOrder latt sel
-  ; _≟_          = _≟_
-  ; _≤?_         = dec _≟_
+  ; _≈?_         = _≈?_
+  ; _≤?_         = dec _≈?_
   }
 
 ------------------------------------------------------------------------

@@ -119,7 +119,7 @@ drop-*≡* (*≡* eq) = eq
 infix 4 _≃?_
 
 _≃?_ : Decidable _≃_
-p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
+p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≡? ↥ q ℤ.* ↧ p)
 
 0≄1 : 0ℚᵘ ≄ 1ℚᵘ
 0≄1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
@@ -146,7 +146,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 ≃-isDecEquivalence : IsDecEquivalence _≃_
 ≃-isDecEquivalence = record
   { isEquivalence = ≃-isEquivalence
-  ; _≟_           = _≃?_
+  ; _≈?_          = _≃?_
   }
 
 ≄-isApartnessRelation : IsApartnessRelation _≃_ _≄_
@@ -321,7 +321,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≃_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≃?_
+  ; _≈?_         = _≃?_
   ; _≤?_         = _≤?_
   }
 

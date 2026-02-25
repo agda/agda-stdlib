@@ -50,11 +50,11 @@ Normal n = List (Fin n)
 
 -- We can decide if two normal forms are /syntactically/ equal.
 
-infix 5 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality (Normal n)
-nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
-  where open ≋ Fin._≟_ using (_≋?_; ≋⇒≡; ≡⇒≋)
+_≡?_ : DecidableEquality (Normal n)
+nf₁ ≡? nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
+  where open ≋ Fin._≡?_ using (_≋?_; ≋⇒≡; ≡⇒≋)
 
 -- A normaliser.
 
@@ -87,3 +87,20 @@ correct (e₁ ⊕ e₂) ρ = begin
   ⟦ normalise e₁ ++ normalise e₂ ⟧⇓ ρ        ≈⟨ comp-correct (normalise e₁) (normalise e₂) ρ ⟩
   ⟦ normalise e₁ ⟧⇓ ρ ∙ ⟦ normalise e₂ ⟧⇓ ρ  ≈⟨ ∙-cong (correct e₁ ρ) (correct e₂ ρ) ⟩
   ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ                        ∎
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+
+_≟_ = _≡?_ 
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

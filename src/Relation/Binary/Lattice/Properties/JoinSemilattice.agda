@@ -119,8 +119,8 @@ dualMeetSemilattice = record
 ... | no  x∨y≉y = no (contraposition x≤y⇒x∨y≈y x∨y≉y)
 
 ≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
-≈-dec⇒isDecPartialOrder _≟_ = record
+≈-dec⇒isDecPartialOrder _≈?_ = record
   { isPartialOrder = isPartialOrder
-  ; _≟_            = _≟_
-  ; _≤?_           = ≈-dec⇒≤-dec _≟_
+  ; _≈?_           = _≈?_
+  ; _≤?_           = ≈-dec⇒≤-dec _≈?_
   }

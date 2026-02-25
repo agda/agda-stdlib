@@ -22,7 +22,7 @@ open import Function.Base using (_∘_)
 module Data.Digit.Properties where
 
 digitCharsUnique : Unique digitChars
-digitCharsUnique = from-yes (allPairs? (λ x y → ¬? (x Char.≟ y)) digitChars)
+digitCharsUnique = from-yes (allPairs? (λ x y → ¬? (x Char.≡? y)) digitChars)
 
 module _ (base : ℕ) where
   module _ {base≥2 base≥2′ : True (2 ≤? base)} where

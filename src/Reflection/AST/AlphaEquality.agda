@@ -55,22 +55,22 @@ open AlphaEquality {{...}} public
 
 instance
   α-Visibility : AlphaEquality Visibility
-  α-Visibility = ≟⇒α Visibility._≟_
+  α-Visibility = ≟⇒α Visibility._≡?_
 
   α-Modality : AlphaEquality Modality
-  α-Modality = ≟⇒α Modality._≟_
+  α-Modality = ≟⇒α Modality._≡?_
 
   α-ArgInfo : AlphaEquality ArgInfo
-  α-ArgInfo = ≟⇒α ArgInfo._≟_
+  α-ArgInfo = ≟⇒α ArgInfo._≡?_
 
   α-Literal : AlphaEquality Literal
-  α-Literal = ≟⇒α Literal._≟_
+  α-Literal = ≟⇒α Literal._≡?_
 
   α-Meta : AlphaEquality Meta
-  α-Meta = ≟⇒α Meta._≟_
+  α-Meta = ≟⇒α Meta._≡?_
 
   α-Name : AlphaEquality Name
-  α-Name = ≟⇒α Name._≟_
+  α-Name = ≟⇒α Name._≡?_
 
 ------------------------------------------------------------------------
 -- Interesting cases

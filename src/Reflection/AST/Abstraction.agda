@@ -9,7 +9,7 @@
 module Reflection.AST.Abstraction where
 
 open import Data.String.Base as String using (String)
-open import Data.String.Properties as String using (_≟_)
+open import Data.String.Properties as String using (_≡?_)
 open import Data.Product.Base using (_×_; <_,_>; uncurry)
 open import Level using (Level)
 open import Relation.Nullary.Decidable.Core using (Dec; map′; _×?_)
@@ -58,8 +58,8 @@ unAbs : Abs A → A
 unAbs (abs s a) = a
 
 unAbs-dec : {abs1 abs2 : Abs A} → Dec (unAbs abs1 ≡ unAbs abs2) → Dec (abs1 ≡ abs2)
-unAbs-dec {abs1 = abs s a} {abs t a′} a≟a′ =
-  map′ (uncurry (cong₂ abs)) abs-injective (s String.≟ t ×? a≟a′)
+unAbs-dec {abs1 = abs s a} {abs t a′} a≡?a′ =
+  map′ (uncurry (cong₂ abs)) abs-injective (s String.≡? t ×? a≡?a′)
 
 ≡-dec : DecidableEquality A → DecidableEquality (Abs A)
-≡-dec _≟_ x y = unAbs-dec (unAbs x ≟ unAbs y)
+≡-dec _≡?_ x y = unAbs-dec (unAbs x ≡? unAbs y)
