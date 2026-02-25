@@ -104,23 +104,23 @@ suc-injective = cong pred
 -- We expect the main benefit to be visible in compiled code as the
 -- backend erases proofs.
 
-infix 4 _≟_
-_≟_ : DecidableEquality ℕ
-m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+infix 4 _≡?_
+_≡?_ : DecidableEquality ℕ
+m ≡? n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 
 ≡-irrelevant : Irrelevant {A = ℕ} _≡_
-≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≟_
+≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≡?_
 
-≟-diag : (eq : m ≡ n) → (m ≟ n) ≡ yes eq
-≟-diag = ≡-≟-identity _≟_
+≡?-diag : (eq : m ≡ n) → (m ≡? n) ≡ yes eq
+≡?-diag = ≡-≡?-identity _≡?_
 
-≟-≡ : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
-≟-≡ = ≢-≟-identity _≟_
+≡?-≡ : (m≢n : m ≢ n) → (m ≡? n) ≡ no m≢n
+≡?-≡ = ≢-≡?-identity _≡?_
 
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
-  ; _≟_           = _≟_
+  ; _≈?_           = _≡?_
   }
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
@@ -250,7 +250,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -400,7 +400,7 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 -- backend erases proofs.
 
 <-cmp : Trichotomous _≡_ _<_
-<-cmp m n with m ≟ n | T? (m <ᵇ n)
+<-cmp m n with m ≡? n | T? (m <ᵇ n)
 ... | yes m≡n | _       = tri≈ (<-irrefl m≡n) m≡n (<-irrefl (sym m≡n))
 ... | no  m≢n | yes m<n = tri< (<ᵇ⇒< m n m<n) m≢n (<⇒≯ (<ᵇ⇒< m n m<n))
 ... | no  m≢n | no  m≮n = tri> (m≮n ∘ <⇒<ᵇ)   m≢n (≤∧≢⇒< (≮⇒≥ (m≮n ∘ <⇒<ᵇ)) (m≢n ∘ sym))
@@ -2284,7 +2284,7 @@ _>‴?_ = flip _<‴?_
 -- decidable equality.
 
 eq? : ∀ {a} {A : Set a} → A ↣ ℕ → DecidableEquality A
-eq? inj = via-injection inj _≟_
+eq? inj = via-injection inj _≡?_
 
 -- It's possible to decide existential and universal predicates up to
 -- a limit.
@@ -2299,7 +2299,7 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
     where
     ¬Pn<1+v : ¬ (∃ λ n → n < suc v × P n)
-    ¬Pn<1+v (n , s≤s n≤v , Pn) with n ≟ v
+    ¬Pn<1+v (n , s≤s n≤v , Pn) with n ≡? v
     ... | yes refl = ¬Pv Pn
     ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< n≤v n≢v , Pn)
 
@@ -2311,7 +2311,7 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   ... | yes Pn | yes Pn<v = yes Pn<1+v
     where
       Pn<1+v : ∀ {n} → n < suc v → P n
-      Pn<1+v {n} (s≤s n≤v) with n ≟ v
+      Pn<1+v {n} (s≤s n≤v) with n ≡? v
       ... | yes refl = Pn
       ... | no  n≢v  = Pn<v (≤∧≢⇒< n≤v n≢v)
 
@@ -2459,4 +2459,25 @@ open Data.Nat.Base public
 <-transˡ = <-≤-trans
 {-# WARNING_ON_USAGE <-transˡ
 "Warning: <-transˡ was deprecated in v2.0. Please use <-≤-trans instead. "
+#-}
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
+
+≟-diag = ≡?-diag
+{-# WARNING_ON_USAGE ≟-diag
+"Warning: ≟-diag was deprecated in v2.4.
+Please use ≡?-diag instead."
+#-}
+
+≟-≡ = ≡?-≡
+{-# WARNING_ON_USAGE ≟-≡
+"Warning: ≟-≡ was deprecated in v2.4.
+Please use ≡?-≡ instead."
 #-}
