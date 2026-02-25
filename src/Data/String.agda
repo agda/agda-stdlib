@@ -27,7 +27,7 @@ open import Data.List.Membership.DecPropositional Char._≡?_
 -- Re-export contents of base, and decidability of equality
 
 open import Data.String.Base public
-open import Data.String.Properties using (_≈?_; _≡?_; _<?_; _==_) public
+open import Data.String.Properties using (_≟_; _≈?_; _≡?_; _<?_; _==_) public
 
 ------------------------------------------------------------------------
 -- Conversion functions

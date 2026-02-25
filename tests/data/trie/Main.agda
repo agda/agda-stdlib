@@ -35,7 +35,7 @@ record Lexer t : Set (suc t) where
   Keyword = String × Tok
 
   Distinct : Rel Keyword 0ℓ
-  Distinct a b = ⌊ ¬? ((proj₁ a) String.≟ (proj₁ b)) ⌋
+  Distinct a b = ⌊ ¬? ((proj₁ a) String.≡? (proj₁ b)) ⌋
 
   field
     keywords : List# Keyword Distinct
@@ -90,7 +90,7 @@ module LetIn where
   show RPAR   = "RPAR"
   show (ID x) = "ID \"" ++ x ++ "\""
 
-  keywords : List# (String × TOK) (λ a b → ⌊ ¬? ((proj₁ a) String.≟ (proj₁ b)) ⌋)
+  keywords : List# (String × TOK) (λ a b → ⌊ ¬? ((proj₁ a) String.≡? (proj₁ b)) ⌋)
   keywords =  ("let" , LET)
            ∷# ("="   , EQ)
            ∷# ("in"  , IN)
