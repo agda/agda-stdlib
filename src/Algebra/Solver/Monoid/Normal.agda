@@ -99,7 +99,7 @@ correct (e₁ ⊕ e₂) ρ = begin
 
 infix 4 _≟_
 
-_≟_ = _≡?_ 
+_≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
 "Warning: _≟_ was deprecated in v2.4.
 Please use _≡?_ instead."
