@@ -1970,7 +1970,7 @@ q<⌊q⌋+1 q@record{} = let n = ↥ q; d = ↧ q in *<* ( begin-strict
 
 q≤⌈q⌉ : ∀ q → q ≤ ⌈ q ⌉ / 1
 q≤⌈q⌉ q@record{} = subst
-  (λ h → h ≤ - (⌊ - q ⌋ / 1))
+  (_≤ - (⌊ - q ⌋ / 1))
   (neg-involutive-≡ q)
   (neg-mono-≤ (⌊q⌋≤q (- q)))
 
@@ -2004,7 +2004,7 @@ q≤⌈q⌉ q@record{} = subst
   ∣ q - ⌈ q ⌉ / 1 ∣ ≡⟨⟩
   ∣ q - (- ⌊-q⌋) ∣  ≡⟨ cong (λ h → ∣ q + h ∣) (neg-involutive-≡ ⌊-q⌋) ⟩
   ∣ q + ⌊-q⌋ ∣      ≡⟨ sym (∣-p∣≡∣p∣ (q + ⌊-q⌋)) ⟩
-  ∣ - (q + ⌊-q⌋) ∣  ≡⟨ cong (λ h → ∣ h ∣) (neg-distrib-+ q ⌊-q⌋) ⟩
+  ∣ - (q + ⌊-q⌋) ∣  ≡⟨ cong ∣_∣ (neg-distrib-+ q ⌊-q⌋) ⟩
   ∣ - q - ⌊-q⌋ ∣    ≤⟨ ∣q-⌊q⌋∣≤1 (- q) ⟩
   1ℚᵘ               ∎ where open ≤-Reasoning
 
@@ -2014,7 +2014,7 @@ private
     - ½               ≃⟨ ≃-sym (+-identityˡ _) ⟩
     0ℚᵘ - ½           ≃⟨ +-congˡ (- ½) (≃-sym (+-inverseʳ q)) ⟩
     q - q - ½         ≃⟨ +-assoc q _ _ ⟩
-    q + (- q - ½)     ≡⟨ cong (λ h → q + h) (sym (neg-distrib-+ q ½)) ⟩
+    q + (- q - ½)     ≡⟨ cong (q +_) (sym (neg-distrib-+ q ½)) ⟩
     q - (q + ½)       ≤⟨ +-monoʳ-≤ q (neg-mono-≤ (⌊q⌋≤q (q + ½))) ⟩
     q - ⌊ q + ½ ⌋ / 1 ∎ where open ≤-Reasoning
 
@@ -2040,7 +2040,7 @@ private
   q-⌈q-½⌉≤½ : ∀ q → q - ⌈ q - ½ ⌉ / 1 ≤ ½
   q-⌈q-½⌉≤½ q = let ⌊-q+½⌋ = ⌊ - q + ½ ⌋ / 1 in begin
     q - ⌈ q - ½ ⌉ / 1    ≡⟨ cong (λ h → q - h / 1) (ceil-to-floor q) ⟩
-    q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → h - (- ⌊-q+½⌋)) (sym (neg-involutive-≡ q)) ⟩
+    q - (- ⌊-q+½⌋)       ≡⟨ cong (_- (- ⌊-q+½⌋)) (sym (neg-involutive-≡ q)) ⟩
     - (- q) - (- ⌊-q+½⌋) ≡⟨ sym (neg-distrib-+ (- q) _) ⟩
     - (- q - ⌊-q+½⌋)     ≤⟨ neg-mono-≤ (-½≤q-⌊q+½⌋ (- q)) ⟩
     - (- ½)              ≡⟨ neg-involutive-≡ ½ ⟩
@@ -2050,7 +2050,7 @@ private
   -½≤q-⌈q-½⌉ q = let ⌊-q+½⌋ = ⌊ - q + ½ ⌋ / 1 in begin
     - ½                  ≤⟨ neg-mono-≤ (q-⌊q+½⌋≤½ (- q)) ⟩
     - (- q - ⌊-q+½⌋)     ≡⟨ neg-distrib-+ (- q) (- ⌊-q+½⌋) ⟩
-    - (- q) - (- ⌊-q+½⌋) ≡⟨ cong (λ h → h - (- ⌊-q+½⌋)) (neg-involutive-≡ q) ⟩
+    - (- q) - (- ⌊-q+½⌋) ≡⟨ cong (_- (- ⌊-q+½⌋)) (neg-involutive-≡ q) ⟩
     q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → q - h / 1) (sym (ceil-to-floor q)) ⟩
     q - ⌈ q - ½ ⌉ / 1    ∎ where open ≤-Reasoning
 
