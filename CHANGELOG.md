@@ -108,6 +108,12 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-≟-identity     ↦   ≡-≡?-identity
+  ≢-≟-identity     ↦   ≢-≡?-identity
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec     ↦   ⊤?
@@ -115,6 +121,7 @@ Deprecated names
   _×-dec_  ↦   _×?_
   _⊎-dec_  ↦   _⊎?_
   _→-dec_  ↦   _→?_
+  ```
 
 * In `Relation.Nullary.Negation`:
   ```agda
