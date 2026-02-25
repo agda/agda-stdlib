@@ -122,7 +122,7 @@ infix 4 _∣?_
 _∣?_ : Decidable _∣_
 zero  ∣? zero   = yes (divides-refl 0)
 zero  ∣? suc m  = no ((λ()) ∘′ ∣-antisym (divides-refl 0))
-n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≟ 0)
+n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≡? 0)
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
 ∣-isPreorder = record

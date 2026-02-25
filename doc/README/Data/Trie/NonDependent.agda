@@ -83,7 +83,7 @@ record Lexer t : Set (suc t) where
 
   -- Two keywords are considered distinct if the strings are not equal
   Distinct : Rel Keyword 0ℓ
-  Distinct a b = ⌊ ¬? ((proj₁ a) String.≟ (proj₁ b)) ⌋
+  Distinct a b = ⌊ ¬? ((proj₁ a) String.≡? (proj₁ b)) ⌋
 
   field
 
@@ -175,7 +175,7 @@ module LetIn where
     LPAR RPAR : TOK
     ID : String → TOK
 
-  keywords : List# (String × TOK) (λ a b → ⌊ ¬? ((proj₁ a) String.≟ (proj₁ b)) ⌋)
+  keywords : List# (String × TOK) (λ a b → ⌊ ¬? ((proj₁ a) String.≡? (proj₁ b)) ⌋)
   keywords =  ("let" , LET)
            ∷# ("="   , EQ)
            ∷# ("in"  , IN)

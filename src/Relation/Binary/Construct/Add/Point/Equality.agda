@@ -79,5 +79,5 @@ data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
 ≈∙-isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence _≈∙_
 ≈∙-isDecEquivalence ≈-isDecEquivalence = record
   { isEquivalence = ≈∙-isEquivalence isEquivalence
-  ; _≟_           = ≈∙-dec _≟_
+  ; _≈?_          = ≈∙-dec _≈?_
   } where open IsDecEquivalence ≈-isDecEquivalence

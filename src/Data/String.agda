@@ -17,17 +17,17 @@ open import Data.List.Base as List using (List)
 open import Data.List.Extrema ℕ.≤-totalOrder
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
-import Data.Char.Properties as Char using (_≟_)
+import Data.Char.Properties as Char using (_≡?_)
 open import Relation.Nullary.Decidable.Core using (does)
 
-open import Data.List.Membership.DecPropositional Char._≟_
+open import Data.List.Membership.DecPropositional Char._≡?_
 
 
 ------------------------------------------------------------------------
 -- Re-export contents of base, and decidability of equality
 
 open import Data.String.Base public
-open import Data.String.Properties using (_≈?_; _≟_; _<?_; _==_) public
+open import Data.String.Properties using (_≈?_; _≡?_; _<?_; _==_) public
 
 ------------------------------------------------------------------------
 -- Conversion functions
