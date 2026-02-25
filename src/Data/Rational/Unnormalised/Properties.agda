@@ -33,7 +33,7 @@ import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
         ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
-open import Data.Integer.DivMod as ℤ using ()
+import Data.Integer.DivMod as ℤ
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
@@ -1936,9 +1936,9 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 
 -q≤p≤q⇒∣p∣≤q : ∀ p q → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
 -q≤p≤q⇒∣p∣≤q p q -q≤p p≤q =
-  [ (λ ∣p∣≡p → subst (λ h → h ≤ q) (sym ∣p∣≡p) p≤q)
-  , (λ ∣p∣≡-p → subst (λ h → h ≤ q) (sym ∣p∣≡-p)
-    (subst (λ h → _ ≤ h) (neg-involutive-≡ q) (neg-mono-≤ -q≤p))) ]′
+  [ (λ ∣p∣≡p → subst (_≤ q) (sym ∣p∣≡p) p≤q)
+  , (λ ∣p∣≡-p → subst (_≤ q) (sym ∣p∣≡-p)
+    (subst (_ ≤_) (neg-involutive-≡ q) (neg-mono-≤ -q≤p))) ]′
   (∣p∣≡p∨∣p∣≡-p p)
 
 ------------------------------------------------------------------------
