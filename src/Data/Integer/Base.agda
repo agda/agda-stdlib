@@ -19,8 +19,8 @@ open import Data.Sign.Base as Sign using (Sign)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+  using (_≡_; _≢_; refl; ¬[x≢x])
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary using (Pred)
 
 infix  8 -_
@@ -28,7 +28,7 @@ infixr 8 _^_
 infixl 7 _*_ _⊓_ _/ℕ_ _/_ _%ℕ_ _%_
 infixl 6 _+_ _-_ _⊖_ _⊔_
 infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
-infix  4 _≤ᵇ_
+infix  4 _≤ᵇ_ _<ᵇ_
 
 ------------------------------------------------------------------------
 -- Types
@@ -73,6 +73,23 @@ sign : ℤ → Sign
 sign (+ _)    = Sign.+
 sign -[1+ _ ] = Sign.-
 
+-- A view of integers as sign & absolute value
+
+infix 5 _◂_ _◃_
+
+_◃_ : Sign → ℕ → ℤ
+_      ◃ ℕ.zero  = +0
+Sign.+ ◃ n       = + n
+Sign.- ◃ ℕ.suc n = -[1+ n ]
+
+data SignAbs : ℤ → Set where
+  _◂_ : (s : Sign) (n : ℕ) → SignAbs (s ◃ n)
+
+signAbs : ∀ i → SignAbs i
+signAbs -[1+ n ] = Sign.- ◂ ℕ.suc n
+signAbs +0       = Sign.+ ◂ ℕ.zero
+signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
+
 ------------------------------------------------------------------------
 -- Ordering
 
@@ -105,14 +122,19 @@ _≯_ : Rel ℤ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
--- Boolean ordering
+-- Boolean orderings, non-strict and strict
 
--- A boolean version.
 _≤ᵇ_ : ℤ → ℤ → Bool
 -[1+ m ] ≤ᵇ -[1+ n ] = n ℕ.≤ᵇ m
 (+ m)    ≤ᵇ -[1+ n ] = false
 -[1+ m ] ≤ᵇ (+ n)    = true
 (+ m)    ≤ᵇ (+ n)    = m ℕ.≤ᵇ n
+
+_<ᵇ_ : ℤ → ℤ → Bool
+-[1+ m ] <ᵇ -[1+ n ] = n ℕ.<ᵇ m
+(+ m)    <ᵇ -[1+ n ] = false
+-[1+ m ] <ᵇ (+ n)    = true
+(+ m)    <ᵇ (+ n)    = m ℕ.<ᵇ n
 
 ------------------------------------------------------------------------
 -- Simple predicates
@@ -124,7 +146,7 @@ NonZero i = ℕ.NonZero ∣ i ∣
 
 record Positive (i : ℤ) : Set where
   field
-    pos : T (1ℤ ≤ᵇ i)
+    pos : T (0ℤ <ᵇ i)
 
 record NonNegative (i : ℤ) : Set where
   field
@@ -136,7 +158,7 @@ record NonPositive (i : ℤ) : Set where
 
 record Negative (i : ℤ) : Set where
   field
-    neg : T (i ≤ᵇ -1ℤ)
+    neg : T (i <ᵇ 0ℤ)
 
 -- Instances
 
@@ -163,7 +185,7 @@ instance
 
 ≢-nonZero : ∀ {i} → i ≢ 0ℤ → NonZero i
 ≢-nonZero { +[1+ n ]} _   = _
-≢-nonZero { +0}       0≢0 = contradiction refl 0≢0
+≢-nonZero { +0}       0≢0 = ¬[x≢x] 0≢0
 ≢-nonZero { -[1+ n ]} _   = _
 
 >-nonZero : ∀ {i} → i > 0ℤ → NonZero i
@@ -185,24 +207,6 @@ nonPositive (+≤+ z≤n) = _
 nonNegative : ∀ {i} → i ≥ 0ℤ → NonNegative i
 nonNegative {+0}       _ = _
 nonNegative {+[1+ n ]} _ = _
-
-------------------------------------------------------------------------
--- A view of integers as sign + absolute value
-
-infix 5 _◂_ _◃_
-
-_◃_ : Sign → ℕ → ℤ
-_      ◃ ℕ.zero  = +0
-Sign.+ ◃ n       = + n
-Sign.- ◃ ℕ.suc n = -[1+ n ]
-
-data SignAbs : ℤ → Set where
-  _◂_ : (s : Sign) (n : ℕ) → SignAbs (s ◃ n)
-
-signAbs : ∀ i → SignAbs i
-signAbs -[1+ n ] = Sign.- ◂ ℕ.suc n
-signAbs +0       = Sign.+ ◂ ℕ.zero
-signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
 
 ------------------------------------------------------------------------
 -- Arithmetic
