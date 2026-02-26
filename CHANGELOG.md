@@ -21,6 +21,17 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The notation for `Decidable` relations has been (partially) standardised: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the fieldname of the general `IsDecEquivalence`
+
+  Despite being non-backwards compatible, because a fieldname has changed, the
+  old notation `_≟_` (which was used for both of the above) has been retained,
+  but deprecated. This leads to a large amount of (trivial) deprecations, in
+  addition to the substantive one under `Relation.Binary.Structures`, and in
+  `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
+  are summarised below, but are not each documented for each affected module.
+
 Minor improvements
 ------------------
 
@@ -255,10 +266,10 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
-  ≡?-≡          : (eq : i ≡ j) → (i ≡? j) ≡ yes eq
-  ≡?-≡-refl     : (i : Fin n) → (i ≡? i) ≡ yes refl
-  ≡?-≢          : (i≢j : i ≢ j) → (i ≡? j) ≡ no i≢j
-  inject-<      : inject j < i
+  ≡?-≡         : (eq : i ≡ j) → (i ≡? j) ≡ yes eq
+  ≡?-≡-refl    : (i : Fin n) → (i ≡? i) ≡ yes refl
+  ≡?-≢         : (i≢j : i ≢ j) → (i ≡? j) ≡ no i≢j
+  inject-<     : inject j < i
 
   record Least⟨_⟩ (P : Pred (Fin n) p) : Set p where
     constructor least

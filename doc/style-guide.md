@@ -590,7 +590,7 @@ word within a compound word is capitalized except for the first word.
   where `R` is the underlying property being asserted to be `Decidable`,
   moreover typically sharing the same fixity and precedence as `R`: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
-  - `_≈?_` for the fieldname of the general `IsDecEquivalence`
+  - `_≈?_` (ditto.) for the fieldname of the general `IsDecEquivalence`
 
 * Any exceptions to these conventions should be flagged on the GitHub
   `agda-stdlib` issue tracker in the usual way.
