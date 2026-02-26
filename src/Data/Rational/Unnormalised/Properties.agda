@@ -1934,12 +1934,11 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣-∣-nonNeg (mkℚᵘ +0       _) = _
 ∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
 
--q≤p≤q⇒∣p∣≤q : ∀ p q → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
--q≤p≤q⇒∣p∣≤q p q -q≤p p≤q =
-  [ (λ ∣p∣≡p → subst (_≤ q) (sym ∣p∣≡p) p≤q)
-  , (λ ∣p∣≡-p → subst (_≤ q) (sym ∣p∣≡-p)
-    (subst (_ ≤_) (neg-involutive-≡ q) (neg-mono-≤ -q≤p))) ]′
-  (∣p∣≡p∨∣p∣≡-p p)
+-q≤p≤q⇒∣p∣≤q : ∀ {p q} → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
+-q≤p≤q⇒∣p∣≤q {p} {q} -q≤p p≤q with ∣p∣≡p∨∣p∣≡-p p
+... | inj₁ ∣p∣≡p  rewrite ∣p∣≡p  = p≤q
+... | inj₂ ∣p∣≡-p rewrite ∣p∣≡-p =
+      subst (_ ≤_) (neg-involutive-≡ q) (neg-mono-≤ -q≤p)
 
 ------------------------------------------------------------------------
 -- Properties of Rounding functions
@@ -1954,8 +1953,10 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 
 q<⌊q⌋+1 : ∀ q → q < ⌊ q ⌋ / 1 + 1ℚᵘ
 q<⌊q⌋+1 q@record{} = let n = ↥ q; d = ↧ q in *<* ( begin-strict
-  n ℤ.* 1ℤ ≡⟨ ℤ.*-identityʳ n ⟩
-  n        ≡⟨ ℤ.a≡a%n+[a/n]*n n d  ⟩
+  n ℤ.* 1ℤ
+      ≡⟨ ℤ.*-identityʳ n ⟩
+  n
+      ≡⟨ ℤ.a≡a%n+[a/n]*n n d  ⟩
   ℤ.+ (n ℤ.% d) ℤ.+ ⌊ q ⌋ ℤ.* d
       <⟨ ℤ.+-monoˡ-< (⌊ q ⌋ ℤ.* d) (ℤ.+<+ (ℤ.n%d<d n d)) ⟩
   d ℤ.+ ⌊ q ⌋ ℤ.* d
@@ -1983,21 +1984,25 @@ q≤⌈q⌉ q@record{} = subst
 ------------------------------------------------------------------------
 -- Approximation errors of ⌊_⌋ ⌈_⌉ and round(_)
 
-∣q-⌊q⌋∣≤1 : ∀ q → ∣ q - ⌊ q ⌋ / 1 ∣ ≤ 1ℚᵘ
-∣q-⌊q⌋∣≤1 q = let ⌊q⌋ = ⌊ q ⌋ / 1 in -q≤p≤q⇒∣p∣≤q (q - ⌊ q ⌋ / 1) 1ℚᵘ
-  (begin
+private
+  -1≤q-⌊q⌋ : ∀ q → - 1ℚᵘ ≤ q - ⌊ q ⌋ / 1
+  -1≤q-⌊q⌋ q = let ⌊q⌋ = ⌊ q ⌋ / 1 in begin
     - 1ℚᵘ     ≤⟨ *≤* ℤ.-≤+ ⟩
     0ℚᵘ       ≃⟨ +-inverseʳ ⌊q⌋ ⟨
     ⌊q⌋ - ⌊q⌋ ≤⟨ +-monoˡ-≤ _ (⌊q⌋≤q q) ⟩
-    q - ⌊q⌋   ∎)
-  (begin
+    q - ⌊q⌋   ∎ where open ≤-Reasoning
+
+  q-⌊q⌋≤1 : ∀ q → q - ⌊ q ⌋ / 1 ≤ 1ℚᵘ
+  q-⌊q⌋≤1 q = let ⌊q⌋ = ⌊ q ⌋ / 1 in begin
     q - ⌊q⌋           ≤⟨ <⇒≤ (+-monoˡ-< _ (q<⌊q⌋+1 q)) ⟩
     ⌊q⌋ + 1ℚᵘ - ⌊q⌋   ≃⟨ +-congˡ (- ⌊q⌋) (+-comm ⌊q⌋ 1ℚᵘ) ⟩
     1ℚᵘ + ⌊q⌋ - ⌊q⌋   ≃⟨ +-assoc 1ℚᵘ ⌊q⌋ (- ⌊q⌋) ⟩
     1ℚᵘ + (⌊q⌋ - ⌊q⌋) ≃⟨ +-congʳ 1ℚᵘ (+-inverseʳ ⌊q⌋) ⟩
     1ℚᵘ + 0ℚᵘ         ≃⟨ +-identityʳ _ ⟩
-    1ℚᵘ               ∎)
-  where open ≤-Reasoning
+    1ℚᵘ               ∎ where open ≤-Reasoning
+
+∣q-⌊q⌋∣≤1 : ∀ q → ∣ q - ⌊ q ⌋ / 1 ∣ ≤ 1ℚᵘ
+∣q-⌊q⌋∣≤1 q = -q≤p≤q⇒∣p∣≤q (-1≤q-⌊q⌋ q) (q-⌊q⌋≤1 q)
 
 ∣q-⌈q⌉∣≤1 : ∀ q → ∣ q - ⌈ q ⌉ / 1 ∣ ≤ 1ℚᵘ
 ∣q-⌈q⌉∣≤1 q@record{} = let ⌊-q⌋ = ⌊ - q ⌋ / 1 in begin
@@ -2020,16 +2025,16 @@ private
 
   q-⌊q+½⌋≤½ : ∀ q → q - ⌊ q + ½ ⌋ / 1 ≤ ½
   q-⌊q+½⌋≤½ q = let ⌊q+½⌋ = ⌊ q + ½ ⌋ / 1 in begin
-    q - ⌊q+½⌋                 ≃⟨ +-congˡ _ (≃-sym (+-identityʳ q)) ⟩
-    q + 0ℚᵘ - ⌊q+½⌋           ≃⟨ +-congˡ _ (+-congʳ q (≃-sym (+-inverseʳ ½))) ⟩
-    q + (½ - ½) - ⌊q+½⌋       ≃⟨ +-congˡ _ (≃-sym (+-assoc q ½ (- ½))) ⟩
-    q + ½ - ½ - ⌊q+½⌋         <⟨ +-monoˡ-< _ (+-monoˡ-< (- ½) (q<⌊q⌋+1 (q + ½))) ⟩
-    ⌊q+½⌋ + 1ℚᵘ - ½ - ⌊q+½⌋   ≃⟨ +-congˡ (- ⌊q+½⌋) (+-assoc ⌊q+½⌋ 1ℚᵘ (- ½)) ⟩
-    ⌊q+½⌋ + ½ - ⌊q+½⌋         ≃⟨ +-congˡ (- ⌊q+½⌋) (+-comm ⌊q+½⌋ ½) ⟩
-    ½ + ⌊q+½⌋ - ⌊q+½⌋         ≃⟨ +-assoc ½ ⌊q+½⌋ (- ⌊q+½⌋) ⟩
-    ½ + (⌊q+½⌋ - ⌊q+½⌋)       ≃⟨ +-congʳ ½ (+-inverseʳ ⌊q+½⌋) ⟩
-    ½ + 0ℚᵘ                   ≃⟨ +-identityʳ ½ ⟩
-    ½                         ∎ where open ≤-Reasoning
+    q - ⌊q+½⌋               ≃⟨ +-congˡ _ (≃-sym (+-identityʳ q)) ⟩
+    q + 0ℚᵘ - ⌊q+½⌋         ≃⟨ +-congˡ _ (+-congʳ q (≃-sym (+-inverseʳ ½))) ⟩
+    q + (½ - ½) - ⌊q+½⌋     ≃⟨ +-congˡ _ (≃-sym (+-assoc q ½ (- ½))) ⟩
+    q + ½ - ½ - ⌊q+½⌋       <⟨ +-monoˡ-< _ (+-monoˡ-< (- ½) (q<⌊q⌋+1 (q + ½))) ⟩
+    ⌊q+½⌋ + 1ℚᵘ - ½ - ⌊q+½⌋ ≃⟨ +-congˡ (- ⌊q+½⌋) (+-assoc ⌊q+½⌋ 1ℚᵘ (- ½)) ⟩
+    ⌊q+½⌋ + ½ - ⌊q+½⌋       ≃⟨ +-congˡ (- ⌊q+½⌋) (+-comm ⌊q+½⌋ ½) ⟩
+    ½ + ⌊q+½⌋ - ⌊q+½⌋       ≃⟨ +-assoc ½ ⌊q+½⌋ (- ⌊q+½⌋) ⟩
+    ½ + (⌊q+½⌋ - ⌊q+½⌋)     ≃⟨ +-congʳ ½ (+-inverseʳ ⌊q+½⌋) ⟩
+    ½ + 0ℚᵘ                 ≃⟨ +-identityʳ ½ ⟩
+    ½                       ∎ where open ≤-Reasoning
 
   ceil-to-floor : ∀ q → ⌈ q - ½ ⌉ ≡ ℤ.- ⌊ - q + ½ ⌋
   ceil-to-floor q@record{} = begin
@@ -2056,8 +2061,8 @@ private
 
 ∣q-round[q]∣≤½ : ∀ q → ∣ q - (round q) / 1 ∣ ≤ ½
 ∣q-round[q]∣≤½ q with q ≤ᵇ 0ℚᵘ
-... | false = -q≤p≤q⇒∣p∣≤q (q - ⌊ q + ½ ⌋ / 1) ½ (-½≤q-⌊q+½⌋ q) (q-⌊q+½⌋≤½ q)
-... | true  = -q≤p≤q⇒∣p∣≤q (q - ⌈ q - ½ ⌉ / 1) ½ (-½≤q-⌈q-½⌉ q) (q-⌈q-½⌉≤½ q)
+... | false = -q≤p≤q⇒∣p∣≤q (-½≤q-⌊q+½⌋ q) (q-⌊q+½⌋≤½ q)
+... | true  = -q≤p≤q⇒∣p∣≤q (-½≤q-⌈q-½⌉ q) (q-⌈q-½⌉≤½ q)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
