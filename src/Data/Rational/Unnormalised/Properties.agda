@@ -1949,7 +1949,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ⌊q⌋≤q : ∀ q → ⌊ q ⌋ / 1 ≤ q
 ⌊q⌋≤q q@record{} = *≤* (begin
   ⌊ q ⌋ ℤ.* (↧ q)           ≤⟨ ℤ.[n/d]*d≤n (↥ q) (↧ q) ⟩
-  (↥ q)                     ≡⟨  sym (ℤ.*-identityʳ (↥ q)) ⟩
+  (↥ q)                     ≡⟨ ℤ.*-identityʳ (↥ q) ⟨
   (↥ q) ℤ.* (↧ (⌊ q ⌋ / 1)) ∎) where open ℤ.≤-Reasoning
 
 q<⌊q⌋+1 : ∀ q → q < ⌊ q ⌋ / 1 + 1ℚᵘ
@@ -1961,7 +1961,7 @@ q<⌊q⌋+1 q@record{} = let n = ↥ q; d = ↧ q in *<* ( begin-strict
   d ℤ.+ ⌊ q ⌋ ℤ.* d
       ≡⟨ cong (λ h → h ℤ.+ ⌊ q ⌋ ℤ.* d) (sym (ℤ.*-identityˡ d)) ⟩
   (1ℤ ℤ.* d) ℤ.+ ⌊ q ⌋ ℤ.* d
-      ≡⟨ sym (ℤ.*-distribʳ-+ d 1ℤ (n ℤ./ d)) ⟩
+      ≡⟨ ℤ.*-distribʳ-+ d 1ℤ (n ℤ./ d) ⟨
   (1ℤ ℤ.+ ⌊ q ⌋) ℤ.* d
       ≡⟨ cong (λ h → h ℤ.* d) (ℤ.+-comm 1ℤ ⌊ q ⌋) ⟩
   (⌊ q ⌋ ℤ.+ 1ℤ) ℤ.* d
@@ -1987,7 +1987,7 @@ q≤⌈q⌉ q@record{} = subst
 ∣q-⌊q⌋∣≤1 q = let ⌊q⌋ = ⌊ q ⌋ / 1 in -q≤p≤q⇒∣p∣≤q (q - ⌊ q ⌋ / 1) 1ℚᵘ
   (begin
     - 1ℚᵘ     ≤⟨ *≤* ℤ.-≤+ ⟩
-    0ℚᵘ       ≃⟨ ≃-sym (+-inverseʳ ⌊q⌋) ⟩
+    0ℚᵘ       ≃⟨ +-inverseʳ ⌊q⌋ ⟨
     ⌊q⌋ - ⌊q⌋ ≤⟨ +-monoˡ-≤ _ (⌊q⌋≤q q) ⟩
     q - ⌊q⌋   ∎)
   (begin
@@ -2003,7 +2003,7 @@ q≤⌈q⌉ q@record{} = subst
 ∣q-⌈q⌉∣≤1 q@record{} = let ⌊-q⌋ = ⌊ - q ⌋ / 1 in begin
   ∣ q - ⌈ q ⌉ / 1 ∣ ≡⟨⟩
   ∣ q - (- ⌊-q⌋) ∣  ≡⟨ cong (λ h → ∣ q + h ∣) (neg-involutive-≡ ⌊-q⌋) ⟩
-  ∣ q + ⌊-q⌋ ∣      ≡⟨ sym (∣-p∣≡∣p∣ (q + ⌊-q⌋)) ⟩
+  ∣ q + ⌊-q⌋ ∣      ≡⟨ ∣-p∣≡∣p∣ (q + ⌊-q⌋) ⟨
   ∣ - (q + ⌊-q⌋) ∣  ≡⟨ cong ∣_∣ (neg-distrib-+ q ⌊-q⌋) ⟩
   ∣ - q - ⌊-q⌋ ∣    ≤⟨ ∣q-⌊q⌋∣≤1 (- q) ⟩
   1ℚᵘ               ∎ where open ≤-Reasoning
@@ -2011,7 +2011,7 @@ q≤⌈q⌉ q@record{} = subst
 private
   -½≤q-⌊q+½⌋ : ∀ q → - ½ ≤ q - ⌊ q + ½ ⌋ / 1
   -½≤q-⌊q+½⌋ q = begin
-    - ½               ≃⟨ ≃-sym (+-identityˡ _) ⟩
+    - ½               ≃⟨ +-identityˡ _ ⟨
     0ℚᵘ - ½           ≃⟨ +-congˡ (- ½) (≃-sym (+-inverseʳ q)) ⟩
     q - q - ½         ≃⟨ +-assoc q _ _ ⟩
     q + (- q - ½)     ≡⟨ cong (q +_) (sym (neg-distrib-+ q ½)) ⟩
@@ -2041,7 +2041,7 @@ private
   q-⌈q-½⌉≤½ q = let ⌊-q+½⌋ = ⌊ - q + ½ ⌋ / 1 in begin
     q - ⌈ q - ½ ⌉ / 1    ≡⟨ cong (λ h → q - h / 1) (ceil-to-floor q) ⟩
     q - (- ⌊-q+½⌋)       ≡⟨ cong (_- (- ⌊-q+½⌋)) (sym (neg-involutive-≡ q)) ⟩
-    - (- q) - (- ⌊-q+½⌋) ≡⟨ sym (neg-distrib-+ (- q) _) ⟩
+    - (- q) - (- ⌊-q+½⌋) ≡⟨ neg-distrib-+ (- q) _ ⟨
     - (- q - ⌊-q+½⌋)     ≤⟨ neg-mono-≤ (-½≤q-⌊q+½⌋ (- q)) ⟩
     - (- ½)              ≡⟨ neg-involutive-≡ ½ ⟩
     ½ ∎                  where open ≤-Reasoning
