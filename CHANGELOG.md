@@ -119,6 +119,11 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Reflection.AST.AlphaEquality`:
+  ```agda
+  ≟⇒α     ↦   ≡?⇒α
+  ```
+
 * In `Relation.Binary.PropositionalEquality`:
   ```agda
   ≡-≟-identity     ↦   ≡-≡?-identity
