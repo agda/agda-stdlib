@@ -44,8 +44,8 @@ open AlphaEquality {{...}} public
 ------------------------------------------------------------------------
 -- Utilities
 
-≟⇒α : DecidableEquality A → AlphaEquality A
-≟⇒α _≟_ = mkAlphaEquality (λ x y → ⌊ x ≟ y ⌋)
+≡?⇒α : DecidableEquality A → AlphaEquality A
+≡?⇒α _≡?_ = mkAlphaEquality (λ x y → ⌊ x ≡? y ⌋)
 
 ------------------------------------------------------------------------
 -- Propositional cases
@@ -55,22 +55,22 @@ open AlphaEquality {{...}} public
 
 instance
   α-Visibility : AlphaEquality Visibility
-  α-Visibility = ≟⇒α Visibility._≡?_
+  α-Visibility = ≡?⇒α Visibility._≡?_
 
   α-Modality : AlphaEquality Modality
-  α-Modality = ≟⇒α Modality._≡?_
+  α-Modality = ≡?⇒α Modality._≡?_
 
   α-ArgInfo : AlphaEquality ArgInfo
-  α-ArgInfo = ≟⇒α ArgInfo._≡?_
+  α-ArgInfo = ≡?⇒α ArgInfo._≡?_
 
   α-Literal : AlphaEquality Literal
-  α-Literal = ≟⇒α Literal._≡?_
+  α-Literal = ≡?⇒α Literal._≡?_
 
   α-Meta : AlphaEquality Meta
-  α-Meta = ≟⇒α Meta._≡?_
+  α-Meta = ≡?⇒α Meta._≡?_
 
   α-Name : AlphaEquality Name
-  α-Name = ≟⇒α Name._≡?_
+  α-Name = ≡?⇒α Name._≡?_
 
 ------------------------------------------------------------------------
 -- Interesting cases
@@ -344,3 +344,18 @@ instance
 
   α-ArgsPattern : AlphaEquality (Args Pattern)
   α-ArgsPattern = mkAlphaEquality _=α=-ArgsPattern_
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+≟⇒α = ≡?⇒α
+{-# WARNING_ON_USAGE ≟⇒α
+"Warning: ≟⇒α was deprecated in v2.4.
+Please use ≡?⇒α instead."
+#-}
