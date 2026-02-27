@@ -1994,12 +1994,12 @@ private
 
   q-⌊q⌋≤1 : ∀ q → q - ⌊ q ⌋ / 1 ≤ 1ℚᵘ
   q-⌊q⌋≤1 q = let ⌊q⌋ = ⌊ q ⌋ / 1 in begin
-    q - ⌊q⌋           ≤⟨ <⇒≤ (+-monoˡ-< _ (q<⌊q⌋+1 q)) ⟩
-    ⌊q⌋ + 1ℚᵘ - ⌊q⌋   ≃⟨ +-congˡ (- ⌊q⌋) (+-comm ⌊q⌋ 1ℚᵘ) ⟩
-    1ℚᵘ + ⌊q⌋ - ⌊q⌋   ≃⟨ +-assoc 1ℚᵘ ⌊q⌋ (- ⌊q⌋) ⟩
-    1ℚᵘ + (⌊q⌋ - ⌊q⌋) ≃⟨ +-congʳ 1ℚᵘ (+-inverseʳ ⌊q⌋) ⟩
-    1ℚᵘ + 0ℚᵘ         ≃⟨ +-identityʳ _ ⟩
-    1ℚᵘ               ∎ where open ≤-Reasoning
+    q - ⌊q⌋         ≤⟨ <⇒≤ (+-monoˡ-< _ (q<⌊q⌋+1 q)) ⟩
+    ⌊q⌋ + 1ℚᵘ - ⌊q⌋ ≃⟨ xyx⁻¹≈y ⌊q⌋ 1ℚᵘ ⟩
+    1ℚᵘ             ∎
+    where
+    open ≤-Reasoning
+    open import Algebra.Properties.AbelianGroup +-0-abelianGroup
 
 ∣q-⌊q⌋∣≤1 : ∀ q → ∣ q - ⌊ q ⌋ / 1 ∣ ≤ 1ℚᵘ
 ∣q-⌊q⌋∣≤1 q = -q≤p≤q⇒∣p∣≤q (-1≤q-⌊q⌋ q) (q-⌊q⌋≤1 q)
@@ -2016,25 +2016,24 @@ private
 private
   -½≤q-⌊q+½⌋ : ∀ q → - ½ ≤ q - ⌊ q + ½ ⌋ / 1
   -½≤q-⌊q+½⌋ q = begin
-    - ½               ≃⟨ +-identityˡ _ ⟨
-    0ℚᵘ - ½           ≃⟨ +-congˡ (- ½) (≃-sym (+-inverseʳ q)) ⟩
-    q - q - ½         ≃⟨ +-assoc q _ _ ⟩
+    - ½               ≃⟨ \\-leftDividesˡ q (- ½) ⟨
     q + (- q - ½)     ≡⟨ cong (q +_) (sym (neg-distrib-+ q ½)) ⟩
     q - (q + ½)       ≤⟨ +-monoʳ-≤ q (neg-mono-≤ (⌊q⌋≤q (q + ½))) ⟩
-    q - ⌊ q + ½ ⌋ / 1 ∎ where open ≤-Reasoning
+    q - ⌊ q + ½ ⌋ / 1 ∎
+    where
+    open ≤-Reasoning
+    open import Algebra.Properties.Group +-0-group
 
   q-⌊q+½⌋≤½ : ∀ q → q - ⌊ q + ½ ⌋ / 1 ≤ ½
   q-⌊q+½⌋≤½ q = let ⌊q+½⌋ = ⌊ q + ½ ⌋ / 1 in begin
-    q - ⌊q+½⌋               ≃⟨ +-congˡ _ (≃-sym (+-identityʳ q)) ⟩
-    q + 0ℚᵘ - ⌊q+½⌋         ≃⟨ +-congˡ _ (+-congʳ q (≃-sym (+-inverseʳ ½))) ⟩
-    q + (½ - ½) - ⌊q+½⌋     ≃⟨ +-congˡ _ (≃-sym (+-assoc q ½ (- ½))) ⟩
-    q + ½ - ½ - ⌊q+½⌋       <⟨ +-monoˡ-< _ (+-monoˡ-< (- ½) (q<⌊q⌋+1 (q + ½))) ⟩
+    q - ⌊q+½⌋               ≃⟨ +-congˡ _ (≃-sym (//-rightDividesʳ ½ q)) ⟩
+    q + ½ - ½ - ⌊q+½⌋       <⟨ +-monoˡ-< _ (+-monoˡ-< _ (q<⌊q⌋+1 (q + ½))) ⟩
     ⌊q+½⌋ + 1ℚᵘ - ½ - ⌊q+½⌋ ≃⟨ +-congˡ (- ⌊q+½⌋) (+-assoc ⌊q+½⌋ 1ℚᵘ (- ½)) ⟩
-    ⌊q+½⌋ + ½ - ⌊q+½⌋       ≃⟨ +-congˡ (- ⌊q+½⌋) (+-comm ⌊q+½⌋ ½) ⟩
-    ½ + ⌊q+½⌋ - ⌊q+½⌋       ≃⟨ +-assoc ½ ⌊q+½⌋ (- ⌊q+½⌋) ⟩
-    ½ + (⌊q+½⌋ - ⌊q+½⌋)     ≃⟨ +-congʳ ½ (+-inverseʳ ⌊q+½⌋) ⟩
-    ½ + 0ℚᵘ                 ≃⟨ +-identityʳ ½ ⟩
-    ½                       ∎ where open ≤-Reasoning
+    ⌊q+½⌋ + ½ - ⌊q+½⌋       ≃⟨ xyx⁻¹≈y ⌊q+½⌋ ½ ⟩
+    ½                       ∎
+    where
+    open ≤-Reasoning
+    open import Algebra.Properties.AbelianGroup +-0-abelianGroup
 
   ceil-to-floor : ∀ q → ⌈ q - ½ ⌉ ≡ ℤ.- ⌊ - q + ½ ⌋
   ceil-to-floor q@record{} = begin
