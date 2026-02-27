@@ -1970,16 +1970,17 @@ q<⌊q⌋+1 q@record{} = let n = ↥ q; d = ↧ q in *<* ( begin-strict
   (↥ (⌊ q ⌋ / 1 + 1ℚᵘ)) ℤ.* d ∎) where open ℤ.≤-Reasoning
 
 q≤⌈q⌉ : ∀ q → q ≤ ⌈ q ⌉ / 1
-q≤⌈q⌉ q@record{} = subst
-  (_≤ - (⌊ - q ⌋ / 1))
-  (neg-involutive-≡ q)
-  (neg-mono-≤ (⌊q⌋≤q (- q)))
+q≤⌈q⌉ q@record{} = begin
+  q         ≡⟨ neg-involutive-≡ q ⟨
+  - (- q)   ≤⟨ neg-mono-≤ (⌊q⌋≤q (- q)) ⟩
+  ⌈ q ⌉ / 1 ∎ where open ≤-Reasoning
 
 ⌈q⌉-1<q : ∀ q → ⌈ q ⌉ / 1 - 1ℚᵘ < q
-⌈q⌉-1<q q@record{} = subst₂  _<_
-  (neg-distrib-+ (⌊ - q ⌋ / 1)  1ℚᵘ)
-  (neg-involutive-≡ q)
-  (neg-mono-< (q<⌊q⌋+1 (- q)))
+⌈q⌉-1<q q@record{} = neg-cancel-< (begin-strict
+  - q                       <⟨ q<⌊q⌋+1 (- q) ⟩
+  ⌊ - q ⌋ / 1 + 1ℚᵘ         ≡⟨ neg-involutive-≡ (⌊ - q ⌋ / 1 + 1ℚᵘ) ⟨
+  - (- (⌊ - q ⌋ / 1 + 1ℚᵘ)) ≡⟨ cong -_ (neg-distrib-+ (⌊ - q ⌋ / 1) 1ℚᵘ) ⟩
+  - (⌈ q ⌉ / 1 - 1ℚᵘ)       ∎) where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Approximation errors of ⌊_⌋ ⌈_⌉ and round(_)
