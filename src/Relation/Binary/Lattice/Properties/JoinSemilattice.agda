@@ -114,7 +114,7 @@ dualMeetSemilattice = record
 -- If ≈ is decidable then so is ≤
 
 ≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
-≈-dec⇒≤-dec _≟_ x y with (x ∨ y) ≟ y
+≈-dec⇒≤-dec _≈?_ x y with (x ∨ y) ≈? y
 ... | yes x∨y≈y = yes (trans (x≤x∨y x y) (reflexive x∨y≈y))
 ... | no  x∨y≉y = no (contraposition x≤y⇒x∨y≈y x∨y≉y)
 

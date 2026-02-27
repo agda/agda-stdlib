@@ -172,9 +172,9 @@ setoid A = record
   }
 
 decSetoid : DecidableEquality A → DecSetoid _ _
-decSetoid _≟_ = record
+decSetoid _≡?_ = record
   { _≈_              = _≡_
-  ; isDecEquivalence = isDecEquivalence _≟_
+  ; isDecEquivalence = isDecEquivalence _≡?_
   }
 
 ------------------------------------------------------------------------

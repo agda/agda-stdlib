@@ -1337,7 +1337,6 @@ _≟_ = _≡?_
 Please use _≡?_ instead."
 #-}
 
-
 ≟-≡-refl = ≡?-≡-refl
 {-# WARNING_ON_USAGE ≟-≡-refl
 "Warning: ≟-≡-refl was deprecated in v2.4.

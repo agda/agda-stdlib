@@ -91,7 +91,7 @@ resp₂ : IsMagma _∙_ →  _≤_ Respects₂ _≈_
 resp₂ magma = respʳ magma , respˡ magma
 
 dec : Decidable _≈_ → Decidable _≤_
-dec _≟_ x y = x ≟ (y ∙ x)
+dec _≈?_ x y = x ≈? (y ∙ x)
 
 ------------------------------------------------------------------------
 -- Structures

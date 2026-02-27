@@ -125,6 +125,11 @@ Deprecated names
   ≢-≟-identity     ↦   ≢-≡?-identity
   ```
 
+* In `Relation.Nary`:
+  ```agda
+  ≟-mapₙ     ↦   ≡?-mapₙ
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec     ↦   ⊤?

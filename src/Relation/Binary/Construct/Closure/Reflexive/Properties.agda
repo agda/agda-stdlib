@@ -135,7 +135,7 @@ module _ {_~_ : Rel A ℓ} where
   isDecPartialOrder O = record
     { isPartialOrder = isPartialOrder O.isStrictPartialOrder
     ; _≈?_           = O._≈?_
-    ; _≤?_           = dec O._≟_ O._<?_
+    ; _≤?_           = dec O._≈?_ O._<?_
     } where module O = IsDecStrictPartialOrder O
 
   isTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsTotalOrder _≡_ _~ᵒ_
@@ -148,5 +148,5 @@ module _ {_~_ : Rel A ℓ} where
   isDecTotalOrder O = record
     { isTotalOrder = isTotalOrder O
     ; _≈?_         = _≈?_
-    ; _≤?_         = dec _≟_ _<?_
+    ; _≤?_         = dec _≈?_ _<?_
     } where open IsStrictTotalOrder O
