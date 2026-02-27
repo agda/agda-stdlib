@@ -109,12 +109,12 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
 
   ×-decidable : Decidable _≈₁_ → Decidable _<₁_ → Decidable _<₂_ →
                 Decidable _<ₗₑₓ_
-  ×-decidable dec-≈₁ dec-<₁ dec-≤₂ x y =
+  ×-decidable dec-≈₁ dec-<₁ dec-<₂ x y =
     dec-<₁ (proj₁ x) (proj₁ y)
       ⊎?
     (dec-≈₁ (proj₁ x) (proj₁ y)
        ×?
-     dec-≤₂ (proj₂ x) (proj₂ y))
+     dec-<₂ (proj₂ x) (proj₂ y))
 
 module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          {_≈₂_ : Rel B ℓ₃} {_<₂_ : Rel B ℓ₄} where
