@@ -76,13 +76,13 @@ private
 ∷-injectiveʳ refl = refl
 
 ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y List.∷ ys)
-∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+∷-dec x≡?y xs≡?ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≡?y ×-dec xs≡?ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) []       = no λ()
-≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≟ y) (≡-dec _≟_ xs ys)
+≡-dec _≈?_ []       []       = yes refl
+≡-dec _≈?_ (x ∷ xs) []       = no λ()
+≡-dec _≈?_ []       (y ∷ ys) = no λ()
+≡-dec _≈?_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≈? y) (≡-dec _≈?_ xs ys)
 
 ------------------------------------------------------------------------
 -- map

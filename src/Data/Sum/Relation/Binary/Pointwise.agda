@@ -79,10 +79,10 @@ drop-inj₂ (inj₂ x) = x
 ⊎-substitutive subst₁ subst₂ P (inj₂ x) = subst₂ (P ∘ inj₂) x
 
 ⊎-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
-⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x ≟₁ y)
-⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
-⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
-⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
+⊎-decidable _R?_ _S?_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x R? y)
+⊎-decidable _R?_ _S?_ (inj₁ x) (inj₂ y) = no λ()
+⊎-decidable _R?_ _S?_ (inj₂ x) (inj₁ y) = no λ()
+⊎-decidable _R?_ _S?_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x S? y)
 
 ⊎-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S →
               (Pointwise ≈₁ ≈₂) ⇒ (Pointwise R S)
