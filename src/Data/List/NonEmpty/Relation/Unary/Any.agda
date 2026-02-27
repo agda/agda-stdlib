@@ -42,21 +42,6 @@ map g (there pxs) = there (List.map g pxs)
 ------------------------------------------------------------------------
 -- Predicates
 
-any⇒satisfiable : Any P xs → Satisfiable P
-any⇒satisfiable (here px)  = _ , px
-any⇒satisfiable (there pxs) = List.any⇒satisfiable pxs
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.4
-
-satisfied = any⇒satisfiable
-{-# WARNING_ON_USAGE satisfied
-"Warning: satisfied was deprecated in v2.4.
-Please use any⇒satisfiable instead."
-#-}
+satisfiable : Any P xs → Satisfiable P
+satisfiable (here px)  = _ , px
+satisfiable (there pxs) = List.satisfiable pxs

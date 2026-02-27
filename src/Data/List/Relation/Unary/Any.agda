@@ -71,9 +71,9 @@ xs ─ x∈xs = removeAt xs (index x∈xs)
 
 -- If any element satisfies P, then P is satisfied.
 
-any⇒satisfiable : Any P xs → Satisfiable P
-any⇒satisfiable (here px)   = _ , px
-any⇒satisfiable (there pxs) = any⇒satisfiable pxs
+satisfiable : Any P xs → Satisfiable P
+satisfiable (here px)   = _ , px
+satisfiable (there pxs) = satisfiable pxs
 
 toSum : Any P (x ∷ xs) → P x ⊎ Any P xs
 toSum (here px)   = inj₁ px
@@ -114,14 +114,8 @@ Please use any? instead."
 
 -- Version 2.4
 
-satisfied = any⇒satisfiable
+satisfied = satisfiable
 {-# WARNING_ON_USAGE satisfied
 "Warning: satisfied was deprecated in v2.4.
-Please use any⇒satisfiable instead."
-#-}
-
-satisfiable = satisfiable⁺
-{-# WARNING_ON_USAGE satisfiable
-"Warning: satisfiable was deprecated in v2.4.
-Please use satisfiable⁺ instead."
+Please use satisfiable instead."
 #-}

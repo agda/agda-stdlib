@@ -91,8 +91,7 @@ Deprecated names
 
 * In `Data.List.Relation.Unary.Any`:
   ```agda
-  satisfied    ↦  any⇒satisfiable
-  satisfiable  ↦  satisfiable⁺
+  satisfied    ↦  satisfiable
   ```
 
 * In `Data.Rational.Properties`:
@@ -286,6 +285,7 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.Any`:
   ```agda
+  satisfiable⁺ : Satisfiable P → Satisfiable (Any P)
   satisfiable⁻ : Satisfiable (Any P) → Satisfiable P
   ```
 
