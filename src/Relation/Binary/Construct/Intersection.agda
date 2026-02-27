@@ -86,8 +86,10 @@ module _ (≈ : Rel A ℓ₁) (L : Rel A ℓ₂) (R : Rel A ℓ₃) where
 
 module _ {L : REL A B ℓ₁} {R : REL A B ℓ₂} where
 
-  decidable : Decidable L → Decidable R → Decidable (L ∩ R)
-  decidable L? R? x y = L? x y ×? R? x y
+  infixl 6 _∩?_
+
+  _∩?_ : Decidable L → Decidable R → Decidable (L ∩ R)
+  _∩?_ L? R? x y = L? x y ×? R? x y
 
 ------------------------------------------------------------------------
 -- Structures
@@ -144,3 +146,18 @@ isStrictPartialOrderʳ {L = L} {≈ = ≈} {R = R} transₗ respₗ Oᵣ = recor
   ; trans         = transitive L R transₗ Oᵣ.trans
   ; <-resp-≈      = respects₂ ≈ L R respₗ Oᵣ.<-resp-≈
   } where module Oᵣ = IsStrictPartialOrder Oᵣ
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- version 2.4
+
+decidable = _∩?_
+{-# WARNING_ON_USAGE decidable
+"Warning: decidable was deprecated in v2.4.
+Please use _∩?_ instead."
+#-}
