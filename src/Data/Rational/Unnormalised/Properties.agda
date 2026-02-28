@@ -1963,13 +1963,13 @@ q<⌊q⌋+1 q@record{} = let n = ↥ q; d = ↧ q in *<* ( begin-strict
   ℤ.+ (n ℤ.% d) ℤ.+ ⌊ q ⌋ ℤ.* d
       <⟨ ℤ.+-monoˡ-< (⌊ q ⌋ ℤ.* d) (ℤ.+<+ (ℤ.n%d<d n d)) ⟩
   d ℤ.+ ⌊ q ⌋ ℤ.* d
-      ≡⟨ cong (λ h → h ℤ.+ ⌊ q ⌋ ℤ.* d) (sym (ℤ.*-identityˡ d)) ⟩
+      ≡⟨ cong (ℤ._+ ⌊ q ⌋ ℤ.* d) (ℤ.*-identityˡ d) ⟨
   (1ℤ ℤ.* d) ℤ.+ ⌊ q ⌋ ℤ.* d
-      ≡⟨ ℤ.*-distribʳ-+ d 1ℤ (n ℤ./ d) ⟨
+      ≡⟨ ℤ.*-distribʳ-+ d 1ℤ ⌊ q ⌋ ⟨
   (1ℤ ℤ.+ ⌊ q ⌋) ℤ.* d
-      ≡⟨ cong (λ h → h ℤ.* d) (ℤ.+-comm 1ℤ ⌊ q ⌋) ⟩
+      ≡⟨ cong (ℤ._* d) (ℤ.+-comm 1ℤ ⌊ q ⌋) ⟩
   (⌊ q ⌋ ℤ.+ 1ℤ) ℤ.* d
-      ≡⟨ cong (λ h → (h ℤ.+ 1ℤ) ℤ.* d) (sym (ℤ.*-identityʳ ⌊ q ⌋)) ⟩
+      ≡⟨ cong (λ h → (h ℤ.+ 1ℤ) ℤ.* d) (ℤ.*-identityʳ ⌊ q ⌋) ⟨
   (↥ (⌊ q ⌋ / 1 + 1ℚᵘ)) ℤ.* d ∎) where open ℤ.≤-Reasoning
 
 q≤⌈q⌉ : ∀ q → q ≤ ⌈ q ⌉ / 1
@@ -1993,9 +1993,9 @@ private
     ℤ.- (n ℤ./ d) ℤ.* d
         ≡⟨ ℤ.neg-distribˡ-* (n ℤ./ d) d ⟨
     ℤ.- [n/d]*d
-        ≡⟨ cong ℤ.-_ (sym (\\-leftDividesʳ n%d [n/d]*d)) ⟩
+        ≡⟨ cong ℤ.-_ (\\-leftDividesʳ n%d [n/d]*d) ⟨
     ℤ.- (ℤ.- n%d ℤ.+ (n%d ℤ.+ [n/d]*d))
-        ≡⟨ cong (λ h → ℤ.- (ℤ.- n%d ℤ.+ h)) (sym (ℤ.a≡a%n+[a/n]*n n d)) ⟩
+        ≡⟨ cong (λ h → ℤ.- (ℤ.- n%d ℤ.+ h)) (ℤ.a≡a%n+[a/n]*n n d) ⟨
     ℤ.- (ℤ.- n%d ℤ.+ n)
         ≡⟨ ⁻¹-anti-homo-\\ n%d n ⟩
     ℤ.- n ℤ.+ n%d ∎
@@ -2026,7 +2026,7 @@ private
         -n%d ℤ.+ n%d
             <⟨ ℤ.+-mono-< (ℤ.+<+ (ℤ.n%d<d -n d)) (ℤ.+<+ (ℤ.n%d<d n d)) ⟩
         d ℤ.+ d
-            ≡⟨ cong (λ h → h ℤ.+ h) (sym (ℤ.*-identityˡ d)) ⟩
+            ≡⟨ cong (λ h → h ℤ.+ h) (ℤ.*-identityˡ d) ⟨
         1ℤ ℤ.* d ℤ.+ 1ℤ ℤ.* d
             ≡⟨ ℤ.*-distribʳ-+ d 1ℤ 1ℤ ⟨
         (ℤ.+ 2) ℤ.* d ∎)
@@ -2080,7 +2080,7 @@ private
   -½≤q-⌊q+½⌋ : ∀ q → - ½ ≤ q - ⌊ q + ½ ⌋ / 1
   -½≤q-⌊q+½⌋ q = begin
     - ½               ≃⟨ \\-leftDividesˡ q (- ½) ⟨
-    q + (- q - ½)     ≡⟨ cong (q +_) (sym (neg-distrib-+ q ½)) ⟩
+    q + (- q - ½)     ≡⟨ cong (q +_) (neg-distrib-+ q ½) ⟨
     q - (q + ½)       ≤⟨ +-monoʳ-≤ q (neg-mono-≤ (⌊q⌋≤q (q + ½))) ⟩
     q - ⌊ q + ½ ⌋ / 1 ∎
     where
@@ -2089,7 +2089,7 @@ private
 
   q-⌊q+½⌋≤½ : ∀ q → q - ⌊ q + ½ ⌋ / 1 ≤ ½
   q-⌊q+½⌋≤½ q = let ⌊q+½⌋ = ⌊ q + ½ ⌋ / 1 in begin
-    q - ⌊q+½⌋               ≃⟨ +-congˡ _ (≃-sym (//-rightDividesʳ ½ q)) ⟩
+    q - ⌊q+½⌋               ≃⟨ +-congˡ _ (//-rightDividesʳ ½ q) ⟨
     q + ½ - ½ - ⌊q+½⌋       <⟨ +-monoˡ-< _ (+-monoˡ-< _ (q<⌊q⌋+1 (q + ½))) ⟩
     ⌊q+½⌋ + 1ℚᵘ - ½ - ⌊q+½⌋ ≃⟨ +-congˡ (- ⌊q+½⌋) (+-assoc ⌊q+½⌋ 1ℚᵘ (- ½)) ⟩
     ⌊q+½⌋ + ½ - ⌊q+½⌋       ≃⟨ xyx⁻¹≈y ⌊q+½⌋ ½ ⟩
@@ -2107,7 +2107,7 @@ private
   q-⌈q-½⌉≤½ : ∀ q → q - ⌈ q - ½ ⌉ / 1 ≤ ½
   q-⌈q-½⌉≤½ q = let ⌊-q+½⌋ = ⌊ - q + ½ ⌋ / 1 in begin
     q - ⌈ q - ½ ⌉ / 1    ≡⟨ cong (λ h → q - h / 1) (ceil-to-floor q) ⟩
-    q - (- ⌊-q+½⌋)       ≡⟨ cong (_- (- ⌊-q+½⌋)) (sym (neg-involutive-≡ q)) ⟩
+    q - (- ⌊-q+½⌋)       ≡⟨ cong (_- (- ⌊-q+½⌋)) (neg-involutive-≡ q) ⟨
     - (- q) - (- ⌊-q+½⌋) ≡⟨ neg-distrib-+ (- q) _ ⟨
     - (- q - ⌊-q+½⌋)     ≤⟨ neg-mono-≤ (-½≤q-⌊q+½⌋ (- q)) ⟩
     - (- ½)              ≡⟨ neg-involutive-≡ ½ ⟩
@@ -2118,7 +2118,7 @@ private
     - ½                  ≤⟨ neg-mono-≤ (q-⌊q+½⌋≤½ (- q)) ⟩
     - (- q - ⌊-q+½⌋)     ≡⟨ neg-distrib-+ (- q) (- ⌊-q+½⌋) ⟩
     - (- q) - (- ⌊-q+½⌋) ≡⟨ cong (_- (- ⌊-q+½⌋)) (neg-involutive-≡ q) ⟩
-    q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → q - h / 1) (sym (ceil-to-floor q)) ⟩
+    q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → q - h / 1) (ceil-to-floor q) ⟨
     q - ⌈ q - ½ ⌉ / 1    ∎ where open ≤-Reasoning
 
 ∣q-round[q]∣≤½ : ∀ q → ∣ q - (round q) / 1 ∣ ≤ ½
