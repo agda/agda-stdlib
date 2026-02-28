@@ -1985,6 +1985,65 @@ q≤⌈q⌉ q@record{} = begin
   - (- (⌊ - q ⌋ / 1 + 1ℚᵘ)) ≡⟨ cong -_ (neg-distrib-+ (⌊ - q ⌋ / 1) 1ℚᵘ) ⟩
   - (⌈ q ⌉ / 1 - 1ℚᵘ)       ∎) where open ≤-Reasoning
 
+private
+  -[n/d]*d≡-n+n%d : ∀ (n d : ℤ) .{{_ : ℤ.NonZero d}}
+                    → ℤ.- (n ℤ./ d) ℤ.* d ≡ ℤ.- n ℤ.+ (ℤ.+ (n ℤ.% d))
+  -[n/d]*d≡-n+n%d n d =
+    let [n/d]*d = (n ℤ./ d) ℤ.* d; n%d = ℤ.+ (n ℤ.% d) in begin
+    ℤ.- (n ℤ./ d) ℤ.* d
+        ≡⟨ ℤ.neg-distribˡ-* (n ℤ./ d) d ⟨
+    ℤ.- [n/d]*d
+        ≡⟨ cong ℤ.-_ (sym (\\-leftDividesʳ n%d [n/d]*d)) ⟩
+    ℤ.- (ℤ.- n%d ℤ.+ (n%d ℤ.+ [n/d]*d))
+        ≡⟨ cong (λ h → ℤ.- (ℤ.- n%d ℤ.+ h)) (sym (ℤ.a≡a%n+[a/n]*n n d)) ⟩
+    ℤ.- (ℤ.- n%d ℤ.+ n)
+        ≡⟨ ⁻¹-anti-homo-\\ n%d n ⟩
+    ℤ.- n ℤ.+ n%d ∎
+    where
+    open ≡-Reasoning
+    open import Algebra.Properties.AbelianGroup ℤ.+-0-abelianGroup
+
+  ⌈q⌉-⌊q⌋≤1 : ∀ q → ⌈ q ⌉ ℤ.- ⌊ q ⌋ ℤ.≤ 1ℤ
+  ⌈q⌉-⌊q⌋≤1 q = ℤ.i<j⇒i≤pred[j] (⌈q⌉-⌊q⌋<2 q)
+    where
+    ⌈q⌉-⌊q⌋<2 : ∀ q → ⌈ q ⌉ ℤ.- ⌊ q ⌋ ℤ.< (ℤ.+ 2)
+    ⌈q⌉-⌊q⌋<2 q@record{} =
+      let n = ↥ q; d = ↧ q; -n = ℤ.- n
+          n%d = ℤ.+ (n ℤ.% d); -n%d = ℤ.+ (-n ℤ.% d)
+      in ℤ.*-cancelʳ-<-nonNeg d (begin-strict
+        (⌈ q ⌉ ℤ.- ⌊ q ⌋) ℤ.* d
+            ≡⟨ ℤ.*-distribʳ-+ d ⌈ q ⌉ (ℤ.- ⌊ q ⌋) ⟩
+        ⌈ q ⌉ ℤ.* d ℤ.+ (ℤ.- ⌊ q ⌋ ℤ.* d)
+            ≡⟨⟩
+        ℤ.- (-n ℤ./ d) ℤ.* d ℤ.+ ℤ.- (n ℤ./ d) ℤ.* d
+            ≡⟨ cong₂ ℤ._+_ (-[n/d]*d≡-n+n%d -n d) (-[n/d]*d≡-n+n%d n d) ⟩
+        ℤ.- -n ℤ.+ -n%d ℤ.+ (-n ℤ.+ n%d)
+            ≡⟨ cong (λ h → h ℤ.+ -n%d ℤ.+ (-n ℤ.+ n%d)) (ℤ.neg-involutive n) ⟩
+        n ℤ.+ -n%d ℤ.+ (-n ℤ.+ n%d)
+            ≡⟨ ℤ.+-assoc (n ℤ.+ -n%d) -n n%d ⟨
+        n ℤ.+ -n%d ℤ.+ -n ℤ.+ n%d
+            ≡⟨ cong (ℤ._+ n%d)  (xyx⁻¹≈y n -n%d) ⟩
+        -n%d ℤ.+ n%d
+            <⟨ ℤ.+-mono-< (ℤ.+<+ (ℤ.n%d<d -n d)) (ℤ.+<+ (ℤ.n%d<d n d)) ⟩
+        d ℤ.+ d
+            ≡⟨ cong (λ h → h ℤ.+ h) (sym (ℤ.*-identityˡ d)) ⟩
+        1ℤ ℤ.* d ℤ.+ 1ℤ ℤ.* d
+            ≡⟨ ℤ.*-distribʳ-+ d 1ℤ 1ℤ ⟨
+        (ℤ.+ 2) ℤ.* d ∎)
+      where
+      open ℤ.≤-Reasoning
+      open import Algebra.Properties.AbelianGroup ℤ.+-0-abelianGroup
+
+⌈q⌉≤⌊q⌋+1 : ∀ q → ⌈ q ⌉ ℤ.≤ ⌊ q ⌋ ℤ.+ 1ℤ
+⌈q⌉≤⌊q⌋+1 q = begin
+  ⌈ q ⌉ ≡⟨ //-rightDividesˡ ⌊ q ⌋ ⌈ q ⌉ ⟨
+  (⌈ q ⌉ ℤ.- ⌊ q ⌋) ℤ.+ ⌊ q ⌋ ≤⟨ ℤ.+-monoˡ-≤ ⌊ q ⌋ (⌈q⌉-⌊q⌋≤1 q) ⟩
+  1ℤ ℤ.+ ⌊ q ⌋ ≡⟨ ℤ.+-comm 1ℤ ⌊ q ⌋ ⟩
+  floor q ℤ.+ 1ℤ ∎
+  where
+  open ℤ.≤-Reasoning
+  open import Algebra.Properties.AbelianGroup ℤ.+-0-abelianGroup
+
 ------------------------------------------------------------------------
 -- Approximation errors of ⌊_⌋ ⌈_⌉ and round(_)
 
