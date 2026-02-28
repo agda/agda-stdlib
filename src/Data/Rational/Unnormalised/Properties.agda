@@ -1936,9 +1936,12 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 
 -q≤p≤q⇒∣p∣≤q : ∀ {p q} → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
 -q≤p≤q⇒∣p∣≤q {p} {q} -q≤p p≤q with ∣p∣≡p∨∣p∣≡-p p
-... | inj₁ ∣p∣≡p  rewrite ∣p∣≡p  = p≤q
-... | inj₂ ∣p∣≡-p rewrite ∣p∣≡-p =
-      subst (_ ≤_) (neg-involutive-≡ q) (neg-mono-≤ -q≤p)
+... | inj₁ ∣p∣≡p  =  ≤-respˡ-≃ (≃-reflexive (sym ∣p∣≡p)) p≤q
+... | inj₂ ∣p∣≡-p = begin
+  ∣ p ∣   ≡⟨ ∣p∣≡-p ⟩
+  - p     ≤⟨ neg-mono-≤ -q≤p ⟩
+  - (- q) ≡⟨ neg-involutive-≡ q ⟩
+  q       ∎ where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of Rounding functions
