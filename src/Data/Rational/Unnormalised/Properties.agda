@@ -1986,22 +1986,26 @@ q≤⌈q⌉ q@record{} = begin
   - (⌈ q ⌉ / 1 - 1ℚᵘ)       ∎) where open ≤-Reasoning
 
 private
-  -[n/d]*d≡-n+n%d : ∀ (n d : ℤ) .{{_ : ℤ.NonZero d}}
-                    → ℤ.- (n ℤ./ d) ℤ.* d ≡ ℤ.- n ℤ.+ (ℤ.+ (n ℤ.% d))
-  -[n/d]*d≡-n+n%d n d =
-    let [n/d]*d = (n ℤ./ d) ℤ.* d; n%d = ℤ.+ (n ℤ.% d) in begin
-    ℤ.- (n ℤ./ d) ℤ.* d
-        ≡⟨ ℤ.neg-distribˡ-* (n ℤ./ d) d ⟨
-    ℤ.- [n/d]*d
-        ≡⟨ cong ℤ.-_ (\\-leftDividesʳ n%d [n/d]*d) ⟨
-    ℤ.- (ℤ.- n%d ℤ.+ (n%d ℤ.+ [n/d]*d))
-        ≡⟨ cong (λ h → ℤ.- (ℤ.- n%d ℤ.+ h)) (ℤ.a≡a%n+[a/n]*n n d) ⟨
-    ℤ.- (ℤ.- n%d ℤ.+ n)
-        ≡⟨ ⁻¹-anti-homo-\\ n%d n ⟩
-    ℤ.- n ℤ.+ n%d ∎
+  a≡b+c⇒c≡a-b : ∀ a b c → a ≡ b ℤ.+ c → c ≡ a ℤ.- b
+  a≡b+c⇒c≡a-b a b c a≡b+c = sym (begin
+    a ℤ.- b       ≡⟨ cong (ℤ._- b) a≡b+c ⟩
+    b ℤ.+ c ℤ.- b ≡⟨ xyx⁻¹≈y b c ⟩
+    c             ∎)
     where
     open ≡-Reasoning
     open import Algebra.Properties.AbelianGroup ℤ.+-0-abelianGroup
+
+  -[-n-m]≡n+m : ∀ n m → ℤ.- (ℤ.- n ℤ.- m) ≡ n ℤ.+ m
+  -[-n-m]≡n+m n m = begin
+    ℤ.- (ℤ.- n ℤ.- m)   ≡⟨ cong (ℤ.-_) (ℤ.neg-distrib-+ n m) ⟨
+    ℤ.- (ℤ.- (n ℤ.+ m)) ≡⟨ ℤ.neg-involutive (n ℤ.+ m) ⟩
+    n ℤ.+ m             ∎ where open ≡-Reasoning
+
+  n+n≡2n : ∀ n → n ℤ.+ n ≡ (ℤ.+ 2) ℤ.* n
+  n+n≡2n n = begin
+    n ℤ.+ n               ≡⟨ cong (λ x → x ℤ.+ x) (ℤ.*-identityˡ n) ⟨
+    1ℤ ℤ.* n ℤ.+ 1ℤ ℤ.* n ≡⟨ ℤ.*-distribʳ-+ n 1ℤ 1ℤ ⟨
+    (ℤ.+ 2) ℤ.* n         ∎ where open ≡-Reasoning
 
   ⌈q⌉-⌊q⌋≤1 : ∀ q → ⌈ q ⌉ ℤ.- ⌊ q ⌋ ℤ.≤ 1ℤ
   ⌈q⌉-⌊q⌋≤1 q = ℤ.i<j⇒i≤pred[j] (⌈q⌉-⌊q⌋<2 q)
@@ -2010,25 +2014,31 @@ private
     ⌈q⌉-⌊q⌋<2 q@record{} =
       let n = ↥ q; d = ↧ q; -n = ℤ.- n
           n%d = ℤ.+ (n ℤ.% d); -n%d = ℤ.+ (-n ℤ.% d)
+          [n/d]*d = (n ℤ./ d) ℤ.* d; [-n/d]*d = (-n ℤ./ d) ℤ.* d
       in ℤ.*-cancelʳ-<-nonNeg d (begin-strict
         (⌈ q ⌉ ℤ.- ⌊ q ⌋) ℤ.* d
             ≡⟨ ℤ.*-distribʳ-+ d ⌈ q ⌉ (ℤ.- ⌊ q ⌋) ⟩
-        ⌈ q ⌉ ℤ.* d ℤ.+ (ℤ.- ⌊ q ⌋ ℤ.* d)
-            ≡⟨⟩
-        ℤ.- (-n ℤ./ d) ℤ.* d ℤ.+ ℤ.- (n ℤ./ d) ℤ.* d
-            ≡⟨ cong₂ ℤ._+_ (-[n/d]*d≡-n+n%d -n d) (-[n/d]*d≡-n+n%d n d) ⟩
-        ℤ.- -n ℤ.+ -n%d ℤ.+ (-n ℤ.+ n%d)
-            ≡⟨ cong (λ h → h ℤ.+ -n%d ℤ.+ (-n ℤ.+ n%d)) (ℤ.neg-involutive n) ⟩
-        n ℤ.+ -n%d ℤ.+ (-n ℤ.+ n%d)
-            ≡⟨ ℤ.+-assoc (n ℤ.+ -n%d) -n n%d ⟨
-        n ℤ.+ -n%d ℤ.+ -n ℤ.+ n%d
-            ≡⟨ cong (ℤ._+ n%d)  (xyx⁻¹≈y n -n%d) ⟩
+        (ℤ.- ⌊ - q ⌋) ℤ.* d ℤ.+ (ℤ.- ⌊ q ⌋) ℤ.* d
+            ≡⟨ cong₂ (ℤ._+_) (ℤ.neg-distribˡ-* ⌊ - q ⌋ d)
+                             (ℤ.neg-distribˡ-* ⌊ q ⌋ d)  ⟨
+        ℤ.- [-n/d]*d ℤ.- [n/d]*d
+            ≡⟨ ℤ.neg-distrib-+ [-n/d]*d [n/d]*d ⟨
+        ℤ.- ([-n/d]*d ℤ.+ [n/d]*d)
+            ≡⟨ cong₂ (λ x y → ℤ.- (x ℤ.+ y))
+                     (a≡b+c⇒c≡a-b -n -n%d [-n/d]*d
+                       (ℤ.a≡a%n+[a/n]*n -n d))
+                     (a≡b+c⇒c≡a-b n n%d [n/d]*d
+                       (ℤ.a≡a%n+[a/n]*n n d)) ⟩
+        ℤ.- ((-n ℤ.- -n%d) ℤ.+ (n ℤ.- n%d))
+            ≡⟨ cong (λ x → ℤ.- (x ℤ.+ (n ℤ.- n%d))) (ℤ.+-comm -n _) ⟩
+        ℤ.- ((ℤ.- -n%d ℤ.+ -n) ℤ.+ (n ℤ.- n%d))
+            ≡⟨ cong (ℤ.-_) (ℤ.+-minus-telescope (ℤ.- -n%d) n n%d) ⟩
+        ℤ.- (ℤ.- -n%d ℤ.- n%d)
+            ≡⟨ -[-n-m]≡n+m -n%d n%d ⟩
         -n%d ℤ.+ n%d
             <⟨ ℤ.+-mono-< (ℤ.+<+ (ℤ.n%d<d -n d)) (ℤ.+<+ (ℤ.n%d<d n d)) ⟩
         d ℤ.+ d
-            ≡⟨ cong (λ h → h ℤ.+ h) (ℤ.*-identityˡ d) ⟨
-        1ℤ ℤ.* d ℤ.+ 1ℤ ℤ.* d
-            ≡⟨ ℤ.*-distribʳ-+ d 1ℤ 1ℤ ⟨
+            ≡⟨ n+n≡2n d ⟩
         (ℤ.+ 2) ℤ.* d ∎)
       where
       open ℤ.≤-Reasoning
@@ -2036,10 +2046,10 @@ private
 
 ⌈q⌉≤⌊q⌋+1 : ∀ q → ⌈ q ⌉ ℤ.≤ ⌊ q ⌋ ℤ.+ 1ℤ
 ⌈q⌉≤⌊q⌋+1 q = begin
-  ⌈ q ⌉ ≡⟨ //-rightDividesˡ ⌊ q ⌋ ⌈ q ⌉ ⟨
+  ⌈ q ⌉                       ≡⟨ //-rightDividesˡ ⌊ q ⌋ ⌈ q ⌉ ⟨
   (⌈ q ⌉ ℤ.- ⌊ q ⌋) ℤ.+ ⌊ q ⌋ ≤⟨ ℤ.+-monoˡ-≤ ⌊ q ⌋ (⌈q⌉-⌊q⌋≤1 q) ⟩
-  1ℤ ℤ.+ ⌊ q ⌋ ≡⟨ ℤ.+-comm 1ℤ ⌊ q ⌋ ⟩
-  floor q ℤ.+ 1ℤ ∎
+  1ℤ ℤ.+ ⌊ q ⌋                ≡⟨ ℤ.+-comm 1ℤ ⌊ q ⌋ ⟩
+  floor q ℤ.+ 1ℤ              ∎
   where
   open ℤ.≤-Reasoning
   open import Algebra.Properties.AbelianGroup ℤ.+-0-abelianGroup
@@ -2098,15 +2108,15 @@ private
     open ≤-Reasoning
     open import Algebra.Properties.AbelianGroup +-0-abelianGroup
 
-  ceil-to-floor : ∀ q → ⌈ q - ½ ⌉ ≡ ℤ.- ⌊ - q + ½ ⌋
-  ceil-to-floor q@record{} = begin
-    ℤ.- ⌊ - (q - ½) ⌋   ≡⟨ cong (λ h → ℤ.- ⌊ h ⌋) (neg-distrib-+ q (- ½)) ⟩
-    ℤ.- ⌊ - q - (- ½) ⌋ ≡⟨ cong (λ h → ℤ.- ⌊ - q + h ⌋) (neg-involutive-≡ ½) ⟩
-    ℤ.- ⌊ - q + ½ ⌋     ∎ where open ≡-Reasoning
+  ceil-minus : ∀ p q → ⌈ p - q ⌉ ≡ ℤ.- ⌊ - p + q ⌋
+  ceil-minus p@record{} q@record{} = begin
+    ℤ.- ⌊ - (p - q) ⌋   ≡⟨ cong (λ h → ℤ.- ⌊ h ⌋) (neg-distrib-+ p (- q)) ⟩
+    ℤ.- ⌊ - p - (- q) ⌋ ≡⟨ cong (λ h → ℤ.- ⌊ - p + h ⌋) (neg-involutive-≡ q) ⟩
+    ℤ.- ⌊ - p + q ⌋     ∎ where open ≡-Reasoning
 
   q-⌈q-½⌉≤½ : ∀ q → q - ⌈ q - ½ ⌉ / 1 ≤ ½
   q-⌈q-½⌉≤½ q = let ⌊-q+½⌋ = ⌊ - q + ½ ⌋ / 1 in begin
-    q - ⌈ q - ½ ⌉ / 1    ≡⟨ cong (λ h → q - h / 1) (ceil-to-floor q) ⟩
+    q - ⌈ q - ½ ⌉ / 1    ≡⟨ cong (λ h → q - h / 1) (ceil-minus q ½) ⟩
     q - (- ⌊-q+½⌋)       ≡⟨ cong (_- (- ⌊-q+½⌋)) (neg-involutive-≡ q) ⟨
     - (- q) - (- ⌊-q+½⌋) ≡⟨ neg-distrib-+ (- q) _ ⟨
     - (- q - ⌊-q+½⌋)     ≤⟨ neg-mono-≤ (-½≤q-⌊q+½⌋ (- q)) ⟩
@@ -2118,7 +2128,7 @@ private
     - ½                  ≤⟨ neg-mono-≤ (q-⌊q+½⌋≤½ (- q)) ⟩
     - (- q - ⌊-q+½⌋)     ≡⟨ neg-distrib-+ (- q) (- ⌊-q+½⌋) ⟩
     - (- q) - (- ⌊-q+½⌋) ≡⟨ cong (_- (- ⌊-q+½⌋)) (neg-involutive-≡ q) ⟩
-    q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → q - h / 1) (ceil-to-floor q) ⟨
+    q - (- ⌊-q+½⌋)       ≡⟨ cong (λ h → q - h / 1) (ceil-minus q ½) ⟨
     q - ⌈ q - ½ ⌉ / 1    ∎ where open ≤-Reasoning
 
 ∣q-round[q]∣≤½ : ∀ q → ∣ q - (round q) / 1 ∣ ≤ ½
