@@ -87,8 +87,8 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ... | inj₂ y₁∼x₁ | inj₂ y₂∼x₂ = inj₂ (     y₁∼x₁ , y₂∼x₂)
 ... | inj₂ y₁∼x₁ | inj₁ x₂∼y₂ = inj₁ (sym₁ y₁∼x₁ , x₂∼y₂)
 
-×-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
-×-decidable _≟₁_ _≟₂_ (x₁ , x₂) (y₁ , y₂) = (x₁ ≟₁ y₁) ×? (x₂ ≟₂ y₂)
+pointwise? : Decidable R → Decidable S → Decidable (Pointwise R S)
+pointwise? _R?_ _S?_ (x₁ , x₂) (y₁ , y₂) = (x₁ R? y₁) ×? (x₂ S? y₂)
 
 ------------------------------------------------------------------------
 -- Structures can also be combined.
@@ -108,7 +108,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ×-isDecEquivalence eq₁ eq₂ = record
   { isEquivalence = ×-isEquivalence
                       (isEquivalence eq₁) (isEquivalence eq₂)
-  ; _≟_           = ×-decidable (_≟_ eq₁) (_≟_ eq₂)
+  ; _≟_           = pointwise? (_≟_ eq₁) (_≟_ eq₂)
   } where open IsDecEquivalence
 
 ×-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →
@@ -204,3 +204,18 @@ Pointwise-≡↔≡ = record
   ; from-cong  = ≡⇒≡×≡
   ; inverse    = ≡×≡⇒≡ , ≡⇒≡×≡
   }
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+×-decidable = pointwise?
+{-# WARNING_ON_USAGE ×-decidable
+"Warning: ×-decidable was deprecated in v2.4.
+Please use pointwise? instead."
+#-}
