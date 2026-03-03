@@ -79,6 +79,6 @@ _─_ = remove
 
 module _ (P? : Decidable P) where
 
-  any? : ∀ xs → Dec (Any {R = R} P xs)
+  any? : Decidable (Any {R = R} P)
   any? []        = no λ()
   any? (x ∷# xs) = Dec.map ⊎⇔Any (P? x ⊎? any? xs)
