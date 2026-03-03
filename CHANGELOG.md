@@ -89,6 +89,11 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ≈-subst-∈   ↦   ∈-resp-≈
+  ```
+
 * In `Data.List.Fresh.Relation.Unary.Any`:
   ```agda
   witness   ↦   satisfiable
@@ -284,7 +289,13 @@ Additions to existing modules
 * In `Data.List.Fresh`:
   ```agda
   _#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
- ```
+  ```
+
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ∉-All[x≉] : x ∉ xs → All (x ≉_) xs
+  All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
+  ```
 
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
