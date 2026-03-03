@@ -14,10 +14,10 @@ open import Data.Product.Base using (_×_; _,_; proj₁; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘_; _$_)
 open import Level using (Level; _⊔_; Lift)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Decidable.Core as Dec using (Dec; yes; no; _×?_)
 open import Relation.Unary as Unary
-  using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
-open import Relation.Binary.Core using (Rel)
+  using (Pred; _⊆_; Universal; _∪_; Decidable)
 
 
 private
@@ -44,7 +44,7 @@ module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
 uncons : ∀ {pr} → All P (cons x xs pr) → P x × All P xs
 uncons (p ∷ ps) = p , ps
 
-append   : (xs ys : List# A R) → All (_# ys) xs → List# A R
+append   : ∀ xs ys → All (_#[ R ] ys) xs → List# A R
 append-# : ∀ xs ys {ps} → x # xs → x # ys → x # append {R = R} xs ys ps
 
 append []             ys _  = ys
@@ -55,7 +55,7 @@ append (cons x xs pr) ys ps =
 append-# []             ys x#xs       x#ys = x#ys
 append-# (cons x xs pr) ys (r , x#xs) x#ys = r , append-# xs ys x#xs x#ys
 
-map : ∀[ P ⇒ Q ] → All P xs → All Q xs
+map : P ⊆ Q → All P xs → All Q xs
 map p⇒q []       = []
 map p⇒q (p ∷ ps) = p⇒q p ∷ map p⇒q ps
 

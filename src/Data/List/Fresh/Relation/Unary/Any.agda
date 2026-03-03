@@ -8,7 +8,6 @@
 
 module Data.List.Fresh.Relation.Unary.Any where
 
-open import Level using (Level; _⊔_; Lift)
 open import Data.List.Fresh using (List#; []; cons; _∷#_; _#[_]_; _#_)
 open import Data.Product.Base using (_,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
@@ -29,13 +28,14 @@ private
     Q : Pred A q
     x : A
     xs : List# A R
+    pr : x #[ R ] xs
 
 
 module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
 
   data Any : List# A R → Set (p ⊔ a ⊔ r) where
-    here  : ∀ {x xs pr} → P x → Any (cons x xs pr)
-    there : ∀ {x xs pr} → Any xs → Any (cons x xs pr)
+    here  : P x → Any (cons x xs pr)
+    there : Any xs → Any (cons x xs pr)
 
 module _ {pr : x #[ R ] xs} where
 
