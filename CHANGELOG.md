@@ -24,6 +24,10 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The function `Data.Nat.LCG.step` is now a manifest field of the record type
+  `Generator`, as per the discussion on #2936 and upstream issues/PRs. This is
+  consistent with a minimal API for such LCGs, and should be backwards compatible.
+
 * The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
   that the argument of type `m ≤ n` is marked as irrelevant. This should be
   backwards compatible, but does change the intensional behaviour of these
@@ -31,6 +35,11 @@ Minor improvements
   on that argument. Corresponding changes have been made to the types of their
   properties (and their proofs). In particular, `truncate-irrelevant` is now
   deprecated, because definitionally trivial.
+
+* The function `Data.Vec.Functional.map` is now marked with the `INLINE` pragma.
+  This is consistent with the inlining of `Function.Base._∘_` for which it is
+  an alias, and should be backwards compatible, but does improve the behaviour
+  of the termination checker for some `Vector`-defined operations.
 
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
@@ -52,6 +61,7 @@ Minor improvements
   Data.Nat.Binary.Subtraction
   Data.Nat.Combinatorics
   ```
+  Moreover, these have been strengthened to take an irrelevant `m ≤ n` argument.
 
 * In `Data.Vec.Relation.Binary.Pointwise.{Inductive,Extensional}`, the types of
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
@@ -92,6 +102,16 @@ Deprecated names
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
+  ```
+
+* In `Relation.Binary.Construct.Intersection`:
+  ```agda
+  decidable     ↦   _∩?_
+  ```
+
+* In `Relation.Binary.Construct.Union`:
+  ```agda
+  decidable     ↦   _∪?_
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
@@ -177,6 +197,12 @@ Additions to existing modules
   Central : Op₂ A → A → Set _
   ```
 
+* In `Algebra.Definitions.RawMonoid` action of a Boolean on a RawMonoid:
+  ```agda
+  _?>₀_  : Bool → Carrier → Carrier
+  _?>_∙_ : Bool → Carrier → Carrier → Carrier
+  ```
+
 * In `Algebra.Lattice.Properties.BooleanAlgebra.XorRing`:
   ```agda
   ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
@@ -196,6 +222,14 @@ Additions to existing modules
   -‿distrib-*ᵣ : ∀ m r → m *ᵣ (- r) ≈ᴹ -ᴹ (m *ᵣ r)
   -ᴹ‿distrib-*ᵣ : ∀ m r → (-ᴹ m) *ᵣ r ≈ᴹ -ᴹ (m *ᵣ r)
   ```
+
+* In `Algebra.Properties.Monoid.Mult` properties of the Boolean action on a RawMonoid:
+  ```agda
+  ?>₀-homo-true  : true ?>₀ x ≈ x
+  ?>₀-assocˡ     : b ?>₀ b′ ?>₀ x ≈ (b ∧ b′) ?>₀ x
+  b?>x∙y≈b?>₀x+y : b ?> x ∙ y ≈ (b ?>₀ x) + y
+  b?>₀x≈b?>x∙0   : b ?>₀ x ≈ b ?> x ∙ 0#
+   ```
 
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda
@@ -236,14 +270,50 @@ Additions to existing modules
   search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
   ```
 
+* In `Data.Integer.Base`:
+  ```
+  _<ᵇ_ : ℤ → ℤ → Bool
+  ```
+
+* In `Data.Integer.Properties`:
+  ```
+  <ᵇ⇒< : T (i <ᵇ j) → i < j
+  <⇒<ᵇ : i < j → T (i <ᵇ j)
+  ```
+
 * In `Data.List.Fresh`:
   ```agda
   _#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
-  ```
+ ```
 
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs
+  ```
+
+* In `Data.List.Properties`:
+  ```
+  filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  ```
+
+* In `Data.Nat.Divisibility`:
+  ```agda
+  m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
+  n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
+  ```
+
+* In `Data.Nat.Logarithm`
+  ```agda
+  2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
+  n≤2^⌈log₂n⌉ : ∀ n → n ≤ 2 ^ ⌈log₂ n ⌉
+  ```
+
+* In `Data.Nat.Logarithm.Core`
+  ```agda
+  2^⌊log2n⌋≤n : ∀ n .{{_ : NonZero n}} → (acc : Acc _<_ n) → 2 ^ (⌊log2⌋ n acc) ≤ n
+  n≤2^⌈log2n⌉ : ∀ n → (acc : Acc _<_ n) → n ≤ 2 ^ (⌈log2⌉ n acc)
   ```
 
 * In `Data.Nat.ListAction.Properties`
@@ -256,14 +326,60 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
-  ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
+  2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
+  m∸n+o≡m∸[n∸o] : ∀ {m n o} → .(n ≤ m) → .(o ≤ n) → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+  m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+  m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+  m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+  ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
   ```
 
 * In `Data.Product.Properties`:
   ```agda
   swap-↔ : (A × B) ↔ (B × A)
   _,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
+  ```
+
+* In `Data.Rational.Base`:
+  ```
+  _<ᵇ_ : ℚ → ℚ → Bool
+  ```
+
+* In `Data.Rational.Properties`:
+  ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
+  ≤⇒≯           : _≤_ ⇒ _≯_
+  p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
+  p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
+  p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
+  ```
+
+* In `Data.Rational.Show`:
+  ```agda
+  atPrecision : (n : ℕ) → ℚ → ℤ × Vec ℕ n
+  showAtPrecision : ℕ → ℚ → String
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  _<ᵇ_ : ℚᵘ → ℚᵘ → Bool
+  ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
+  p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+  p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+  p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+  ```
+
+* In `Data.Rational.Unnormalised.Show`:
+  ```agda
+  showAtPrecision : ℕ → ℚᵘ → String
   ```
 
 * In `Data.Vec.Properties`:
@@ -361,6 +477,17 @@ Additions to existing modules
   ```agda
   antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
             Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+  ```
+
+* In `Relation.Binary.Properties.Setoid`:
+  ```agda
+  ¬[x≉x] : .(x ≉ x) → Whatever
+  ```
+
+* In `Relation.Binary.Propositional.Equality.Core`:
+  ```agda
+  ≢-irrefl : Irreflexive {A = A} _≡_ _≢_
+  ¬[x≢x] : .(x ≢ x) → Whatever
   ```
 
 * In `Relation.Nullary.Negation.Core`
