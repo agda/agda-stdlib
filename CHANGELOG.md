@@ -236,6 +236,11 @@ Additions to existing modules
   search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
   ```
 
+* In `Data.List.Fresh`:
+  ```agda
+  _#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+  ```
+
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs

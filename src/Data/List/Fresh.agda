@@ -66,10 +66,14 @@ module _ (A : Set a) (R : Rel A r) where
   fresh a []        = ⊤
   fresh a (x ∷# xs) = R a x × fresh a xs
 
--- Convenient notation for freshness making A and R implicit parameters
-infix 5 _#_
+-- Convenient notation for freshness making A (and R) implicit
+infix 5 _#[_]_ _#_
+
+_#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+x #[ R ] xs = fresh _ R x xs
+
 _#_ : REL A (List# A R) _
-_#_ = fresh _ _
+x # xs = x #[ _ ] xs
 
 ------------------------------------------------------------------------
 -- Operations for modifying fresh lists
@@ -197,7 +201,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
 -- Relationship to List and AllPairs
 
 toList : List# A R → ∃ (AllPairs R)
-toAll  : ∀ xs → x # xs → All (R x) (proj₁ (toList {R = R} xs))
+toAll  : ∀ xs → x #[ R ] xs → All (R x) (proj₁ (toList xs))
 
 toList []             = -, []
 toList (cons x xs ps) = -, toAll xs ps ∷ proj₂ (toList xs)

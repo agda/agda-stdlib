@@ -54,7 +54,7 @@ private
 
 module _ (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
 
-  fresh⇒∉ : ∀ {xs : List# A R} → x # xs → x ∉ xs
+  fresh⇒∉ : x #[ R ] xs → x ∉ xs
   fresh⇒∉ (r , _)    (here x≈y)   = R⇒≉ r x≈y
   fresh⇒∉ (_ , x#xs) (there x∈xs) = fresh⇒∉ x#xs x∈xs
 
@@ -82,12 +82,12 @@ module _ (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≉⇒R : ∀[ _≉_ ⇒ R ]) where
     R≈ : R Binary.Respectsˡ _≈_
     R≈ x≈y Rxz = ≉⇒R (R⇒≉ Rxz ∘′ trans x≈y)
 
-  fresh-remove : ∀ {xs : List# A R} (x∈xs : x ∈ xs) → x # (xs ─ x∈xs)
+  fresh-remove : ∀ (x∈xs : x ∈ xs) → x #[ R ] (xs ─ x∈xs)
   fresh-remove {xs = cons x xs pr} (here x≈y)   = fresh-respectsˡ R≈ (sym x≈y) pr
   fresh-remove {xs = cons x xs pr} (there x∈xs) =
     ≉⇒R (distinct x∈xs (fresh⇒∉ R⇒≉ pr)) , fresh-remove x∈xs
 
-  ∉-remove : ∀ {xs : List# A R} (x∈xs : x ∈ xs) → x ∉ (xs ─ x∈xs)
+  ∉-remove : ∀ {xs} (x∈xs : x ∈ xs) → x ∉ (xs ─ x∈xs)
   ∉-remove x∈xs = fresh⇒∉ R⇒≉ (fresh-remove x∈xs)
 
 ------------------------------------------------------------------------

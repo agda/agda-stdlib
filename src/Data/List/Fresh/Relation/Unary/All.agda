@@ -8,7 +8,7 @@
 
 module Data.List.Fresh.Relation.Unary.All where
 
-open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
+open import Data.List.Fresh using (List#; []; cons; _∷#_; _#[_]_; _#_)
 open import Data.List.Fresh.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Product.Base using (_×_; _,_; proj₁; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
@@ -29,6 +29,7 @@ private
     Q : Pred A q
     x : A
     xs : List# A R
+    pr : x #[ R ] xs
 
 
 module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
@@ -37,7 +38,7 @@ module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
 
   data All : List# A R → Set (p ⊔ a ⊔ r) where
     []  : All []
-    _∷_ : ∀ {x xs pr} → P x → All xs → All (cons x xs pr)
+    _∷_ : P x → All xs → All (cons x xs pr)
 
 
 uncons : ∀ {pr} → All P (cons x xs pr) → P x × All P xs

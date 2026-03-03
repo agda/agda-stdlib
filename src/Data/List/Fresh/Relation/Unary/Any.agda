@@ -9,7 +9,7 @@
 module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_; fresh)
+open import Data.List.Fresh using (List#; []; cons; _∷#_; _#[_]_; _#_)
 open import Data.Product.Base using (_,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
@@ -18,7 +18,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Nullary.Decidable as Dec using (Dec; no; _⊎?_)
 open import Relation.Unary as Unary
-  using (Pred; Satisfiable; Decidable; _⊆_; _∪_; _∩_)
+  using (Pred; Satisfiable; Decidable; _⊆_)
 
 private
   variable
@@ -37,7 +37,7 @@ module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
     here  : ∀ {x xs pr} → P x → Any (cons x xs pr)
     there : ∀ {x xs pr} → Any xs → Any (cons x xs pr)
 
-module _ {pr : fresh A R x xs} where
+module _ {pr : x #[ R ] xs} where
 
   head : ¬ Any P xs → Any P (cons x xs pr) → P x
   head ¬tail (here p)   = p

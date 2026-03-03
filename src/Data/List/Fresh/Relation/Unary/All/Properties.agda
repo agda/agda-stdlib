@@ -8,7 +8,7 @@
 
 module Data.List.Fresh.Relation.Unary.All.Properties where
 
-open import Data.List.Fresh using (List#; []; _∷#_; _#_)
+open import Data.List.Fresh using (List#; []; _∷#_; _#[_]_; _#_)
 open import Data.List.Fresh.Relation.Unary.All using (All; []; _∷_; append)
 open import Data.Product.Base using (_,_)
 open import Level using (Level)
@@ -25,11 +25,11 @@ private
     xs ys : List# A R
 
 
-fromAll : All {R = R} (R x) xs → x # xs
+fromAll : All (R x) xs → x #[ R ] xs
 fromAll []       = _
 fromAll (p ∷ ps) = p , fromAll ps
 
-toAll : x # xs → All {R = R} (R x) xs
+toAll : x #[ R ] xs → All (R x) xs
 toAll {xs = []}      _        = []
 toAll {xs = a ∷# as} (p , ps) = p ∷ toAll ps
 
