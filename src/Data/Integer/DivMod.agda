@@ -19,8 +19,9 @@ import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; sym; subst; trans)
-open ≤-Reasoning
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+
+open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Definition
@@ -140,16 +141,33 @@ n/1≡n : ∀ n → n / + 1 ≡ n
 n/1≡n n = trans (div-pos-is-/ℕ n 1) (n/ℕ1≡n n)
 
 n/ℕd≡0⇒∣n∣<d : ∀ n d .{{_ : ℕ.NonZero d}} → n /ℕ d ≡ 0ℤ → ∣ n ∣ ℕ.< d
-n/ℕd≡0⇒∣n∣<d (+ n) d n/ℕd≡0 with n ℕ./ d in n/d≡0
-... | ℕ.zero = ℕ.m/n≡0⇒m<n n/d≡0
+n/ℕd≡0⇒∣n∣<d (+ n) d _ with ℕ.zero ← n ℕ./ d in n/d≡0 = ℕ.m/n≡0⇒m<n n/d≡0
 n/ℕd≡0⇒∣n∣<d (-[1+ n ]) d n/ℕd≡0 with ℕ.zero ← ℕ.suc n ℕ.% d
     | ℕ.suc n ℕ./ d in n/d
 ... | ℕ.zero  = ℕ.m/n≡0⇒m<n n/d
 ... | ℕ.suc _ = contradiction n/ℕd≡0 λ ()
 
 0≤n<d⇒n/ℕd≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : ℕ.NonZero d}} →
-               ∣ n ∣ ℕ.< d → n /ℕ d ≡ 0ℤ
-0≤n<d⇒n/ℕd≡0 (+ n) d ∣n∣<d = cong (+_) (ℕ.m<n⇒m/n≡0 ∣n∣<d)
+                n < + d → n /ℕ d ≡ 0ℤ
+0≤n<d⇒n/ℕd≡0 (+ n) d (+<+ n<d) = cong (+_) (ℕ.m<n⇒m/n≡0 n<d)
+
+n/d≡0⇒∣n∣<∣d∣ : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → ∣ n ∣ ℕ.< ∣ d ∣
+n/d≡0⇒∣n∣<∣d∣ n (+ d) n/d≡0ℤ =
+              n/ℕd≡0⇒∣n∣<d n d (trans (sym (div-pos-is-/ℕ n d)) n/d≡0ℤ)
+n/d≡0⇒∣n∣<∣d∣ n -[1+ d ] n/d≡0ℤ =
+              n/ℕd≡0⇒∣n∣<d n (ℕ.suc d) (neg-injective {_} {+ 0}
+                (trans (sym (div-neg-is-neg-/ℕ n (ℕ.suc d))) n/d≡0ℤ))
+
+0≤n<∣d∣⇒n/d≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : NonZero d}} →
+                n < + ∣ d ∣ → n / d ≡ 0ℤ
+0≤n<∣d∣⇒n/d≡0 n (+ d) (+<+ n<d) = begin-equality
+  n / + d ≡⟨ div-pos-is-/ℕ n d ⟩
+  n /ℕ d  ≡⟨ (0≤n<d⇒n/ℕd≡0 n d (+<+ n<d)) ⟩
+  0ℤ ∎
+0≤n<∣d∣⇒n/d≡0 n -[1+ d ] (+<+ n<d) = begin-equality
+  n / -[1+ d ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d) ⟩
+  - (n /ℕ ℕ.suc d) ≡⟨ cong (-_) (0≤n<d⇒n/ℕd≡0 n (ℕ.suc d) (+<+ n<d)) ⟩
+  - 0ℤ ∎
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
