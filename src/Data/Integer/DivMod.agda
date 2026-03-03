@@ -9,16 +9,18 @@
 module Data.Integer.DivMod where
 
 open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; NonZero; _%_; ∣_∣;
-  _%ℕ_; _/ℕ_; _+_; _*_; -_; _-_; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; suc;
-  +<+)
+  _%ℕ_; _/ℕ_; _+_; _*_; -_; _-_; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; +<+; suc;
+  NonNegative)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (m∸n≤m)
-import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0)
+import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0;
+  m/n≡0⇒m<n; m<n⇒m/n≡0)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; sym; subst; trans)
 open ≤-Reasoning
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -136,6 +138,18 @@ n/ℕ1≡n -[1+ n ] with ℕ.suc n ℕ.% 1 | ℕ.n%1≡0 (ℕ.suc n)
 
 n/1≡n : ∀ n → n / + 1 ≡ n
 n/1≡n n = trans (div-pos-is-/ℕ n 1) (n/ℕ1≡n n)
+
+n/ℕd≡0⇒∣n∣<d : ∀ n d .{{_ : ℕ.NonZero d}} → n /ℕ d ≡ 0ℤ → ∣ n ∣ ℕ.< d
+n/ℕd≡0⇒∣n∣<d (+ n) d n/ℕd≡0 with n ℕ./ d in n/d≡0
+... | ℕ.zero = ℕ.m/n≡0⇒m<n n/d≡0
+n/ℕd≡0⇒∣n∣<d (-[1+ n ]) d n/ℕd≡0 with ℕ.zero ← ℕ.suc n ℕ.% d
+    | ℕ.suc n ℕ./ d in n/d
+... | ℕ.zero  = ℕ.m/n≡0⇒m<n n/d
+... | ℕ.suc _ = contradiction n/ℕd≡0 λ ()
+
+0≤n<d⇒n/ℕd≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : ℕ.NonZero d}} →
+               ∣ n ∣ ℕ.< d → n /ℕ d ≡ 0ℤ
+0≤n<d⇒n/ℕd≡0 (+ n) d ∣n∣<d = cong (+_) (ℕ.m<n⇒m/n≡0 ∣n∣<d)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
