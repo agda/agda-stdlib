@@ -99,6 +99,16 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Relation.Binary.Construct.Intersection`:
+  ```agda
+  decidable     ↦   _∩?_
+  ```
+
+* In `Relation.Binary.Construct.Union`:
+  ```agda
+  decidable     ↦   _∪?_
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec     ↦   ⊤?
