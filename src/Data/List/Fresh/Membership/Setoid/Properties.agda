@@ -83,7 +83,7 @@ module _ (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≉⇒R : ∀[ _≉_ ⇒ R ]) where
   fresh-remove {xs = cons x xs pr} (here x≈y)   = fresh-respectsˡ resp (sym x≈y) pr
     where
     resp : R Respectsˡ _≈_
-    resp x≈y Rxz = ≉⇒R (R⇒≉ Rxz ∘′ trans x≈y) 
+    resp x≈y Rxz = ≉⇒R (R⇒≉ Rxz ∘′ trans x≈y)
   fresh-remove {xs = cons x xs pr} (there x∈xs) =
     ≉⇒R (distinct x∈xs (fresh⇒∉ R⇒≉ pr)) , fresh-remove x∈xs
 
