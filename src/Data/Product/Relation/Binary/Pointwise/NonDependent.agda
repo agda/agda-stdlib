@@ -13,7 +13,7 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
 open import Function.Base using (id)
 open import Function.Bundles using (Inverse)
-open import Relation.Nullary.Decidable using (_×?_)
+open import Relation.Nullary.Decidable.Core using (_×?_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; Poset; StrictPartialOrder)
