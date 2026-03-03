@@ -14,18 +14,21 @@ module Algebra.Construct.Centre.Group {c ℓ} (group : Group c ℓ) where
 open import Algebra.Core using (Op₁)
 open import Algebra.Morphism.Structures
   using (IsGroupHomomorphism; IsGroupMonomorphism)
-open import Algebra.Morphism.GroupMonomorphism using (isGroup)
-open import Function.Base using (id; const; _$_)
+import Algebra.Morphism.GroupMonomorphism as GroupMonomorphism
+  using (isGroup)
+open import Algebra.Structures
+  using (IsGroup; IsAbelianGroup)
+open import Function.Base using (id; _$_)
 
 
 private
-  module G = Group group
+  module X = Group group
 
 open import Algebra.Properties.Group group using (∙-cancelʳ)
-open import Algebra.Properties.Monoid G.monoid
+open import Algebra.Properties.Monoid X.monoid
   using (uv≈w⇒xu∙v≈xw)
   renaming (cancelˡ to inverse⇒cancelˡ; cancelʳ to inverse⇒cancelʳ)
-open import Relation.Binary.Reasoning.Setoid G.setoid as ≈-Reasoning
+open import Relation.Binary.Reasoning.Setoid X.setoid as ≈-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -33,42 +36,46 @@ open import Relation.Binary.Reasoning.Setoid G.setoid as ≈-Reasoning
 
 -- Re-export the underlying sub-Monoid
 
-open import Algebra.Construct.Centre.Monoid G.monoid as Z public
+open import Algebra.Construct.Centre.Monoid X.monoid as Z public
   using (Centre; ι; ∙-comm)
 
 -- Now, can define a commutative sub-Group
 
 _⁻¹ : Op₁ Centre
 g ⁻¹ = record
-  { ι = ι g G.⁻¹
+  { ι = ι g X.⁻¹
   ; central = λ k → ∙-cancelʳ (ι g) _ _ $ begin
-      (ι g G.⁻¹ G.∙ k) G.∙ (ι g) ≈⟨ uv≈w⇒xu∙v≈xw (G.sym (Centre.central g k)) _ ⟩
-      ι g G.⁻¹ G.∙ (ι g G.∙ k)   ≈⟨ inverse⇒cancelˡ (G.inverseˡ _) _ ⟩
-      k                          ≈⟨ inverse⇒cancelʳ (G.inverseˡ _) _ ⟨
-      (k G.∙ ι g G.⁻¹) G.∙ (ι g) ∎
+      (ι g X.⁻¹ X.∙ k) X.∙ (ι g) ≈⟨ uv≈w⇒xu∙v≈xw (X.sym (Centre.central g k)) _ ⟩
+      ι g X.⁻¹ X.∙ (ι g X.∙ k)   ≈⟨ inverse⇒cancelˡ (X.inverseˡ _) _ ⟩
+      k                          ≈⟨ inverse⇒cancelʳ (X.inverseˡ _) _ ⟨
+      (k X.∙ ι g X.⁻¹) X.∙ (ι g) ∎
   } where open ≈-Reasoning
 
 domain : RawGroup _ _
 domain = record { RawMonoid Z.domain; _⁻¹ = _⁻¹ }
 
-isGroupHomomorphism : IsGroupHomomorphism domain G.rawGroup ι
+isGroupHomomorphism : IsGroupHomomorphism domain X.rawGroup ι
 isGroupHomomorphism = record
   { isMonoidHomomorphism = Z.isMonoidHomomorphism
-  ; ⁻¹-homo = λ _ → G.refl
+  ; ⁻¹-homo = λ _ → X.refl
   }
 
-isGroupMonomorphism : IsGroupMonomorphism domain G.rawGroup ι
+isGroupMonomorphism : IsGroupMonomorphism domain X.rawGroup ι
 isGroupMonomorphism = record
   { isGroupHomomorphism = isGroupHomomorphism
   ; injective = id
   }
 
-abelianGroup : AbelianGroup _ _
-abelianGroup = record
-  { isAbelianGroup = record
-    { isGroup = isGroup isGroupMonomorphism G.isGroup
-    ; comm = ∙-comm
-    }
+isGroup : IsGroup _ _ _ _
+isGroup = GroupMonomorphism.isGroup isGroupMonomorphism X.isGroup
+
+isAbelianGroup : IsAbelianGroup _ _ _ _
+isAbelianGroup = record
+  { isGroup = isGroup
+  ; comm = ∙-comm
   }
+
+abelianGroup : AbelianGroup _ _
+abelianGroup = record { isAbelianGroup = isAbelianGroup }
 
 Z[_] = abelianGroup

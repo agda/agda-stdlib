@@ -14,7 +14,6 @@ module Algebra.Construct.Centre.Centre
   where
 
 open import Algebra.Definitions _∼_ using (Central)
-open import Function.Base using (id; _on_)
 open import Level using (_⊔_)
 import Relation.Binary.Morphism.Construct.On as On
 

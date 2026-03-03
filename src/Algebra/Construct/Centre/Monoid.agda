@@ -14,13 +14,15 @@ module Algebra.Construct.Centre.Monoid
   where
 
 open import Algebra.Morphism.Structures
-open import Algebra.Morphism.MonoidMonomorphism using (isMonoid)
+import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
+  using (isMonoid)
+open import Algebra.Structures using (IsMonoid; IsCommutativeMonoid)
 open import Function.Base using (id)
 
 open import Algebra.Properties.Monoid monoid using (ε-central)
 
 private
-  module G = Monoid monoid
+  module X = Monoid monoid
 
 
 ------------------------------------------------------------------------
@@ -28,27 +30,27 @@ private
 
 -- Re-export the underlying sub-Semigroup
 
-open import Algebra.Construct.Centre.Semigroup G.semigroup as Z public
+open import Algebra.Construct.Centre.Semigroup X.semigroup as Z public
   using (Centre; ι; ∙-comm)
 
 -- Now, can define a sub-Monoid
 
 ε : Centre
 ε = record
-  { ι = G.ε
+  { ι = X.ε
   ; central = ε-central
   }
 
 domain : RawMonoid _ _
 domain = record { RawMagma Z.domain; ε = ε }
 
-isMonoidHomomorphism : IsMonoidHomomorphism domain G.rawMonoid ι
+isMonoidHomomorphism : IsMonoidHomomorphism domain X.rawMonoid ι
 isMonoidHomomorphism = record
   { isMagmaHomomorphism = Z.isMagmaHomomorphism
-  ; ε-homo = G.refl
+  ; ε-homo = X.refl
   }
 
-isMonoidMonomorphism : IsMonoidMonomorphism domain G.rawMonoid ι
+isMonoidMonomorphism : IsMonoidMonomorphism domain X.rawMonoid ι
 isMonoidMonomorphism = record
   { isMonoidHomomorphism = isMonoidHomomorphism
   ; injective = id
@@ -56,12 +58,16 @@ isMonoidMonomorphism = record
 
 -- And hence a CommutativeMonoid
 
-commutativeMonoid : CommutativeMonoid _ _
-commutativeMonoid = record
-  { isCommutativeMonoid = record
-    { isMonoid = isMonoid isMonoidMonomorphism G.isMonoid
-    ; comm = ∙-comm
-    }
+isMonoid : IsMonoid _ _ _
+isMonoid = MonoidMonomorphism.isMonoid isMonoidMonomorphism X.isMonoid
+
+isCommutativeMonoid : IsCommutativeMonoid _ _ _
+isCommutativeMonoid = record
+  { isMonoid = isMonoid
+  ; comm = ∙-comm
   }
+
+commutativeMonoid : CommutativeMonoid _ _
+commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
 
 Z[_] = commutativeMonoid

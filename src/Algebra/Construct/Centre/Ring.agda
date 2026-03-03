@@ -14,16 +14,19 @@ module Algebra.Construct.Centre.Ring {c ℓ} (ring : Ring c ℓ) where
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Consequences.Setoid using (zero⇒central)
 open import Algebra.Morphism.Structures
-  using (IsRingHomomorphism; IsRingMonomorphism)
-open import Algebra.Morphism.RingMonomorphism using (isRing)
-open import Function.Base using (id; const; _$_)
+  using (IsSemiringHomomorphism; IsRingHomomorphism; IsRingMonomorphism)
+import Algebra.Morphism.RingMonomorphism as RingMonomorphism
+  using (isRing)
+open import Algebra.Structures
+  using (IsRing; IsCommutativeRing)
+open import Function.Base using (id)
 
 
 private
-  module R = Ring ring
+  module X = Ring ring
 
 open import Algebra.Properties.Ring ring using (-‿distribˡ-*; -‿distribʳ-*)
-open import Relation.Binary.Reasoning.Setoid R.setoid as ≈-Reasoning
+open import Relation.Binary.Reasoning.Setoid X.setoid as ≈-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -31,35 +34,35 @@ open import Relation.Binary.Reasoning.Setoid R.setoid as ≈-Reasoning
 
 -- Re-export the underlying sub-Monoid
 
-open import Algebra.Construct.Centre.Monoid R.*-monoid as Z public
+open import Algebra.Construct.Centre.Monoid X.*-monoid as Z public
   using (Centre; ι; ∙-comm)
 
 -- Now, can define a commutative sub-Ring
 
 _+_ : Op₂ Centre
 g + h = record
-  { ι       = ι g R.+ ι h
+  { ι       = ι g X.+ ι h
   ; central = λ r → begin
-    (ι g R.+ ι h) R.* r      ≈⟨ R.distribʳ _ _ _ ⟩
-    ι g R.* r R.+ ι h R.* r  ≈⟨ R.+-cong (Centre.central g r) (Centre.central h r) ⟩
-    r R.* ι g  R.+ r R.* ι h ≈⟨ R.distribˡ _ _ _ ⟨
-    r R.* (ι g R.+ ι h)      ∎
+    (ι g X.+ ι h) X.* r      ≈⟨ X.distribʳ _ _ _ ⟩
+    ι g X.* r X.+ ι h X.* r  ≈⟨ X.+-cong (Centre.central g r) (Centre.central h r) ⟩
+    r X.* ι g  X.+ r X.* ι h ≈⟨ X.distribˡ _ _ _ ⟨
+    r X.* (ι g X.+ ι h)      ∎
   }
 
 -_ : Op₁ Centre
 - g = record
-  { ι       = R.- ι g
+  { ι       = X.- ι g
   ; central = λ r → begin
-    R.- ι g R.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟨
-    R.- (ι g R.* r) ≈⟨ R.-‿cong (Centre.central g r) ⟩
-    R.- (r R.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
-    r  R.* R.- ι g  ∎
+    X.- ι g X.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟨
+    X.- (ι g X.* r) ≈⟨ X.-‿cong (Centre.central g r) ⟩
+    X.- (r X.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
+    r  X.* X.- ι g  ∎
   }
 
 0# : Centre
 0# = record
-  { ι = R.0#
-  ; central = zero⇒central R.setoid {_∙_ = R._*_} R.zero
+  { ι = X.0#
+  ; central = zero⇒central X.setoid {_∙_ = X._*_} X.zero
   }
 
 domain : RawRing _ _
@@ -72,36 +75,40 @@ domain = record
   ; 1# = 1#
   } where open RawMonoid Z.domain renaming (ε to 1#; _∙_ to _*_)
 
-isRingHomomorphism : IsRingHomomorphism domain R.rawRing ι
+isRingHomomorphism : IsRingHomomorphism domain X.rawRing ι
 isRingHomomorphism = record
   { isSemiringHomomorphism = record
     { isNearSemiringHomomorphism = record
       { +-isMonoidHomomorphism = record
         { isMagmaHomomorphism = record
           { isRelHomomorphism = record { cong = id }
-          ; homo = λ _ _ → R.refl
+          ; homo = λ _ _ → X.refl
           }
-        ; ε-homo = R.refl
+        ; ε-homo = X.refl
         }
-      ; *-homo = λ _ _ → R.refl
+      ; *-homo = λ _ _ → X.refl
       }
-    ; 1#-homo = R.refl
+    ; 1#-homo = X.refl
     }
-  ; -‿homo = λ _ → R.refl
+  ; -‿homo = λ _ → X.refl
   }
 
-isRingMonomorphism : IsRingMonomorphism domain R.rawRing ι
+isRingMonomorphism : IsRingMonomorphism domain X.rawRing ι
 isRingMonomorphism = record
   { isRingHomomorphism = isRingHomomorphism
   ; injective = id
   }
 
-commutativeRing : CommutativeRing _ _
-commutativeRing = record
-  { isCommutativeRing = record
-    { isRing = isRing isRingMonomorphism R.isRing
-    ; *-comm = ∙-comm
-    }
+isRing : IsRing _ _ _ _ _ _
+isRing = RingMonomorphism.isRing isRingMonomorphism X.isRing
+
+isCommutativeRing : IsCommutativeRing _ _ _ _ _ _
+isCommutativeRing = record
+  { isRing = isRing
+  ; *-comm = ∙-comm
   }
+
+commutativeRing : CommutativeRing _ _
+commutativeRing = record { isCommutativeRing = isCommutativeRing }
 
 Z[_] = commutativeRing
