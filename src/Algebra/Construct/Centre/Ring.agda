@@ -32,31 +32,31 @@ open import Relation.Binary.Reasoning.Setoid R.setoid as ≈-Reasoning
 -- Re-export the underlying sub-Monoid
 
 open import Algebra.Construct.Centre.Monoid R.*-monoid as Z public
-  using (Center; ι; ∙-comm)
+  using (Centre; ι; ∙-comm)
 
 -- Now, can define a commutative sub-Ring
 
-_+_ : Op₂ Center
+_+_ : Op₂ Centre
 g + h = record
   { ι       = ι g R.+ ι h
   ; central = λ r → begin
     (ι g R.+ ι h) R.* r      ≈⟨ R.distribʳ _ _ _ ⟩
-    ι g R.* r R.+ ι h R.* r  ≈⟨ R.+-cong (Center.central g r) (Center.central h r) ⟩
+    ι g R.* r R.+ ι h R.* r  ≈⟨ R.+-cong (Centre.central g r) (Centre.central h r) ⟩
     r R.* ι g  R.+ r R.* ι h ≈⟨ R.distribˡ _ _ _ ⟨
     r R.* (ι g R.+ ι h)      ∎
   }
 
--_ : Op₁ Center
+-_ : Op₁ Centre
 - g = record
   { ι       = R.- ι g
   ; central = λ r → begin
     R.- ι g R.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟨
-    R.- (ι g R.* r) ≈⟨ R.-‿cong (Center.central g r) ⟩
+    R.- (ι g R.* r) ≈⟨ R.-‿cong (Centre.central g r) ⟩
     R.- (r R.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
     r  R.* R.- ι g  ∎
   }
 
-0# : Center
+0# : Centre
 0# = record
   { ι = R.0#
   ; central = zero⇒central R.setoid {_∙_ = R._*_} R.zero

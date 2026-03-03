@@ -29,11 +29,11 @@ private
 -- Re-export the underlying sub-Semigroup
 
 open import Algebra.Construct.Centre.Semigroup G.semigroup as Z public
-  using (Center; ι; ∙-comm)
+  using (Centre; ι; ∙-comm)
 
 -- Now, can define a sub-Monoid
 
-ε : Center
+ε : Centre
 ε = record
   { ι = G.ε
   ; central = ε-central

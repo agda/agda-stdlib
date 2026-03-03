@@ -31,17 +31,17 @@ open import Relation.Binary.Reasoning.Setoid G.setoid as ≈-Reasoning
 
 -- Re-export the underlying subtype
 
-open import Algebra.Construct.Centre.Center G._≈_ G._∙_ as Z public
-  using (Center; ι; ∙-comm)
+open import Algebra.Construct.Centre.Centre G._≈_ G._∙_ as Z public
+  using (Centre; ι; ∙-comm)
 
 -- Now, by associativity, a sub-Magma is definable
 
-_∙_ : Op₂ Center
+_∙_ : Op₂ Centre
 g ∙ h = record
   { ι = ι g G.∙ ι h
   ; central = λ k → begin
-    (ι g G.∙ ι h) G.∙ k ≈⟨ uv≈w⇒xu∙v≈xw (Center.central h k) (ι g) ⟩
-    ι g G.∙ (k G.∙ ι h) ≈⟨ uv≈w⇒u∙vx≈wx (Center.central g k) (ι h) ⟩
+    (ι g G.∙ ι h) G.∙ k ≈⟨ uv≈w⇒xu∙v≈xw (Centre.central h k) (ι g) ⟩
+    ι g G.∙ (k G.∙ ι h) ≈⟨ uv≈w⇒u∙vx≈wx (Centre.central g k) (ι h) ⟩
     k G.∙ ι g G.∙ ι h   ≈⟨ G.assoc _ _ _ ⟩
     k G.∙ (ι g G.∙ ι h) ∎
   } where open ≈-Reasoning

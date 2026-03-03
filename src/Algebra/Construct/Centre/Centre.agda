@@ -9,7 +9,7 @@
 open import Algebra.Core using (Op₂)
 open import Relation.Binary.Core using (Rel)
 
-module Algebra.Construct.Centre.Center
+module Algebra.Construct.Centre.Centre
   {c ℓ} {Carrier : Set c} (_∼_ : Rel Carrier ℓ) (_∙_ : Op₂ Carrier)
   where
 
@@ -22,18 +22,18 @@ import Relation.Binary.Morphism.Construct.On as On
 ------------------------------------------------------------------------
 -- Definitions
 
-record Center : Set (c ⊔ ℓ) where
+record Centre : Set (c ⊔ ℓ) where
   field
     ι       : Carrier
     central : Central _∙_ ι
 
-open Center public
+open Centre public
   using (ι)
 
 ∙-comm : ∀ g h → (ι g ∙ ι h) ∼ (ι h ∙ ι g)
-∙-comm g h = Center.central g (ι h)
+∙-comm g h = Centre.central g (ι h)
 
--- Center as subtype of Carrier
+-- Centre as subtype of Carrier
 
 open On _∼_ ι public
   using (_≈_; isRelHomomorphism; isRelMonomorphism)
