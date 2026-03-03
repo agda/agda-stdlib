@@ -42,6 +42,6 @@ map g (there pxs) = there (List.map g pxs)
 ------------------------------------------------------------------------
 -- Predicates
 
-satisfied : Any P xs → Satisfiable P
-satisfied (here px)  = _ , px
-satisfied (there pxs) = List.satisfied pxs
+satisfiable : Any P xs → Satisfiable P
+satisfiable (here px)  = _ , px
+satisfiable (there pxs) = List.satisfiable pxs

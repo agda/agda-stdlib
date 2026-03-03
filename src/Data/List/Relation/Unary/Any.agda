@@ -71,9 +71,9 @@ xs ─ x∈xs = removeAt xs (index x∈xs)
 
 -- If any element satisfies P, then P is satisfied.
 
-satisfied : Any P xs → Satisfiable P
-satisfied (here px)   = _ , px
-satisfied (there pxs) = satisfied pxs
+satisfiable : Any P xs → Satisfiable P
+satisfiable (here px)   = _ , px
+satisfiable (there pxs) = satisfiable pxs
 
 toSum : Any P (x ∷ xs) → P x ⊎ Any P xs
 toSum (here px)   = inj₁ px
@@ -90,12 +90,16 @@ any? : Decidable P → Decidable (Any P)
 any? P? []       = no λ()
 any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎? any? P? xs)
 
-satisfiable : Satisfiable P → Satisfiable (Any P)
-satisfiable (x , Px) = [ x ] , here Px
+satisfiable⁺ : Satisfiable P → Satisfiable (Any P)
+satisfiable⁺ (x , Px) = [ x ] , here Px
+
+satisfiable⁻ : Satisfiable (Any P) → Satisfiable P
+satisfiable⁻ (x ∷ _  , here px)   = x , px
+satisfiable⁻ (_ ∷ xs , there pxs) = satisfiable⁻ (xs , pxs)
 
 
 ------------------------------------------------------------------------
--- DEPRECATED
+-- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
@@ -106,4 +110,12 @@ any = any?
 {-# WARNING_ON_USAGE any
 "Warning: any was deprecated in v1.4.
 Please use any? instead."
+#-}
+
+-- Version 2.4
+
+satisfied = satisfiable
+{-# WARNING_ON_USAGE satisfied
+"Warning: satisfied was deprecated in v2.4.
+Please use satisfiable instead."
 #-}

@@ -89,6 +89,11 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.List.Relation.Unary.Any`:
+  ```agda
+  satisfied    ↦  satisfiable
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
@@ -286,6 +291,12 @@ Additions to existing modules
   filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
   filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  ```
+
+* In `Data.List.Relation.Unary.Any`:
+  ```agda
+  satisfiable⁺ : Satisfiable P → Satisfiable (Any P)
+  satisfiable⁻ : Satisfiable (Any P) → Satisfiable P
   ```
 
 * In `Data.Nat.Divisibility`:
