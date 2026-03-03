@@ -58,13 +58,13 @@ map : ∀[ P ⇒ Q ] → All P xs → All Q xs
 map p⇒q []       = []
 map p⇒q (p ∷ ps) = p⇒q p ∷ map p⇒q ps
 
-lookup : All Q xs → (ps : Any P xs) → Q (proj₁ (Any.witness ps))
+lookup : All Q xs → (ps : Any P xs) → Q (proj₁ (Any.satisfiable ps))
 lookup (q ∷ _)  (here _)  = q
 lookup (_ ∷ qs) (there k) = lookup qs k
 
 module _ (P? : Decidable P) where
 
-  all? : ∀ xs → Dec (All {R = R} P xs)
+  all? : Decidable (All {R = R} P)
   all? []        = yes []
   all? (x ∷# xs) = Dec.map′ (uncurry _∷_) uncons (P? x ×? all? xs)
 

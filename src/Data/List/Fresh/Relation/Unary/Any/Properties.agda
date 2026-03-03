@@ -16,14 +16,14 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘′_)
-open import Level using (Level; _⊔_; Lift)
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Decidable.Core
-open import Relation.Unary as Unary using (Pred)
+open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Nary using (∀[_]; _⇒_; ∁; Decidable)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
+open import Relation.Nary using (∀[_]; _⇒_; ∁; Decidable)
+open import Relation.Nullary.Decidable.Core
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Unary as Unary using (Pred)
 
 private
   variable

@@ -22,11 +22,11 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘′_; flip; id; _on_)
-open import Relation.Nullary using (does)
-open import Relation.Unary as Unary using (Pred)
 open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Definitions as Binary using (Reflexive)
-open import Relation.Nary using (_⇒_; ∀[_]; Decidable)
+open import Relation.Nary using (_⇒_; ∀[_])
+open import Relation.Nullary using (does)
+open import Relation.Unary as Unary using (Pred; Decidable)
 
 
 private
@@ -145,7 +145,7 @@ tail : List# A R → Maybe (List# A R)
 tail = Maybe.map proj₂ ∘′ uncons
 
 take   : ℕ → List# A R → List# A R
-take-# : ∀ n y (xs : List# A R) → y # xs → y # take n xs
+take-# : ∀ n y xs → y # xs → y # take {R = R} n xs
 
 take zero    xs             = []
 take (suc n) []             = []
@@ -163,7 +163,7 @@ drop (suc n) (x ∷# xs) = drop n xs
 module _ {P : Pred A p} (P? : Decidable P) where
 
   takeWhile   : List# A R → List# A R
-  takeWhile-# : ∀ y (xs : List# A R) → y # xs → y # takeWhile xs
+  takeWhile-# : ∀ y xs → y # xs → y # takeWhile {R = R} xs
 
   takeWhile []             = []
   takeWhile (cons x xs ps) =
@@ -180,7 +180,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   dropWhile xxs@(x ∷# xs)  = if does (P? x) then dropWhile xs else xxs
 
   filter   : List# A R → List# A R
-  filter-# : ∀ y (xs : List# A R) → y # xs → y # filter xs
+  filter-# : ∀ y xs → y # xs → y # filter {R = R} xs
 
   filter []             = []
   filter (cons x xs ps) =
@@ -197,7 +197,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
 -- Relationship to List and AllPairs
 
 toList : List# A R → ∃ (AllPairs R)
-toAll  : (xs : List# A R) → x # xs → All (R x) (proj₁ (toList xs))
+toAll  : ∀ xs → x # xs → All (R x) (proj₁ (toList {R = R} xs))
 
 toList []             = -, []
 toList (cons x xs ps) = -, toAll xs ps ∷ proj₂ (toList xs)

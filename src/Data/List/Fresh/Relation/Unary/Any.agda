@@ -10,15 +10,15 @@ module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
 open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_; fresh)
-open import Data.Product.Base using (∃; _,_; -,_)
+open import Data.Product.Base using (_,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Level using (Level; _⊔_; Lift)
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Nullary.Decidable as Dec using (Dec; no; _⊎?_)
 open import Relation.Unary as Unary
-  using (Pred; IUniversal; Universal; Decidable; _⇒_; _∪_; _∩_)
-open import Relation.Binary.Core using (Rel)
+  using (Pred; Satisfiable; Decidable; _⊆_; _∪_; _∩_)
 
 private
   variable
@@ -57,16 +57,16 @@ module _ {pr : fresh A R x xs} where
   ⊎⇔Any : (P x ⊎ Any P xs) ⇔ Any P (cons x xs pr)
   ⊎⇔Any = mk⇔ fromSum toSum
 
-map : ∀[ P ⇒ Q ] → Any P xs → Any Q xs
+map : P ⊆ Q → Any P xs → Any Q xs
 map p⇒q (here p)  = here (p⇒q p)
 map p⇒q (there p) = there (map p⇒q p)
 
-witness : Any P xs → ∃ P
-witness (here p)   = -, p
-witness (there ps) = witness ps
+satisfiable : Any P xs → Satisfiable P
+satisfiable (here p)   = -, p
+satisfiable (there ps) = satisfiable ps
 
-remove   : (xs : List# A R) → Any P xs → List# A R
-remove-# : (p : Any {R = R} P xs) → x # xs → x # (remove xs p)
+remove   : ∀ xs → Any {R = R} P xs → List# A R
+remove-# : (p : Any {R = R} P xs) → x # xs → x # remove xs p
 
 remove (_ ∷# xs)      (here _)  = xs
 remove (cons x xs pr) (there k) = cons x (remove xs k) (remove-# k pr)
@@ -82,3 +82,19 @@ module _ (P? : Decidable P) where
   any? : Decidable (Any {R = R} P)
   any? []        = no λ()
   any? (x ∷# xs) = Dec.map ⊎⇔Any (P? x ⊎? any? xs)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+witness = satisfiable
+{-# WARNING_ON_USAGE witness
+"Warning: witness was deprecated in v2.4.
+Please use satisfiable instead."
+#-}
+

@@ -79,6 +79,11 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.List.Fresh.Relation.Unary.Any`:
+  ```agda
+  witness   ↦   satisfiable
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
