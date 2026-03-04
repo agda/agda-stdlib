@@ -292,6 +292,23 @@ m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} m≥n = begin-equality
   pred (1 + (m ∸ n) / n) ≡⟨ cong pred (m/n≡1+[m∸n]/n n≥m) ⟨
   pred (m / n)           ∎
 
+sn%d≡0⇒sn/d≡s[n/d] : ∀ n d .{{_ : NonZero d}} → suc n % d ≡ 0 →
+                     suc n / d ≡ suc (n / d)
+sn%d≡0⇒sn/d≡s[n/d] n d@(suc _) sn%d≡0 =
+  *-cancelʳ-≡ (suc n / d) (suc (n / d)) d (begin-equality
+    suc n / d * d           ≡⟨ sn≡[sn/d]*d ⟨
+    suc n                   ≡⟨ cong suc (m≡m%n+[m/n]*n n d) ⟩
+    suc (n % d) + n / d * d ≡⟨ cong (_+ n / d * d) s[n%d]≡d ⟩
+    d + n / d * d           ≡⟨ cong (_+ n / d * d) (*-identityˡ d) ⟨
+    1 * d + n / d * d       ≡⟨ *-distribʳ-+ d 1 (n / d) ⟨
+    (1 + n / d) * d ∎ )
+  where
+  sn≡[sn/d]*d : suc n ≡ (suc n / d) * d
+  sn≡[sn/d]*d = trans (m≡m%n+[m/n]*n (suc n) d)
+                      (cong (_+ suc n / d * d) sn%d≡0)
+  s[n%d]≡d : suc (n % d) ≡ d
+  s[n%d]≡d = trans (cong suc (%-pred-≡0 sn%d≡0)) (∸-suc z≤n)
+
 m∣n⇒o%n%m≡o%m : ∀ m n o .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n →
                 o % n % m ≡ o % m
 m∣n⇒o%n%m≡o%m m n@.(p * m) o (divides-refl p) = begin-equality

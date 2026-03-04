@@ -10,12 +10,12 @@ module Data.Integer.DivMod where
 
 open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; NonZero; _%_; ∣_∣;
   _%ℕ_; _/ℕ_; _+_; _*_; -_; _-_; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; +<+; suc;
-  NonNegative)
+  NonNegative; -<+)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (m∸n≤m)
 import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0;
-  m/n≡0⇒m<n; m<n⇒m/n≡0)
+  m/n≡0⇒m<n; m<n⇒m/n≡0; sn%d≡0⇒sn/d≡s[n/d])
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; sym; subst; trans)
@@ -96,6 +96,15 @@ div-neg-is-neg-/ℕ n (ℕ.suc d) = -1*i≡-i (n /ℕ ℕ.suc d)
 0≤n⇒0≤n/d n (+ d) {{d≢0}} 0≤n (+≤+ 0≤d)
   rewrite div-pos-is-/ℕ n d {{d≢0}}
         = 0≤n⇒0≤n/ℕd n d 0≤n
+
+n<0⇒n/ℕd<0 : ∀ n d .{{_ : ℕ.NonZero d}} → n < 0ℤ → (n /ℕ d) < 0ℤ
+n<0⇒n/ℕd<0 -[1+ n ] d -<+
+  with ℕ.suc n ℕ.% d in sn%d
+... | ℕ.zero  = begin-strict
+  - (+ (ℕ.suc n ℕ./ d))   ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d sn%d) ⟩
+  - (+ (ℕ.suc (n ℕ./ d))) <⟨ -<+ ⟩
+  + 0                     ∎
+... | ℕ.suc _ = -<+
 
 [n/d]*d≤n : ∀ n d .{{_ : NonZero d}} → (n / d) * d ≤ n
 [n/d]*d≤n n (+ d) = begin
