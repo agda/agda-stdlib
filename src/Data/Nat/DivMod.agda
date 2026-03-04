@@ -121,6 +121,13 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 [1+m%d]≤1+n⇒[m%d]≤n : ∀ m n d .{{_ : NonZero d}} → 0 < suc m % d → suc m % d ≤ suc n → m % d ≤ n
 [1+m%d]≤1+n⇒[m%d]≤n m n (suc d-1) leq = 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 n m d-1 leq
 
+%-pred-≡suc : ∀ m d k .{{_ : NonZero d}} → suc m % d ≡ suc k → m % d ≡ k
+%-pred-≡suc m d k sm%d≡sk = ≤-antisym m%d≤k k≤m%d
+  where
+  k<sm%d = ≤-reflexive (sym sm%d≡sk)
+  m%d≤k = ([1+m%d]≤1+n⇒[m%d]≤n m k d (m<n⇒0<n k<sm%d) (≤-reflexive sm%d≡sk))
+  k≤m%d = m<[1+n%d]⇒m≤[n%d] m d k<sm%d
+
 %-distribˡ-+ : ∀ m n d .{{_ : NonZero d}} → (m + n) % d ≡ ((m % d) + (n % d)) % d
 %-distribˡ-+ m n d@(suc d-1) = begin-equality
   (m + n)                         % d ≡⟨ cong (λ v → (v + n) % d) (m≡m%n+[m/n]*n m d) ⟩
@@ -303,10 +310,8 @@ sn%d≡0⇒sn/d≡s[n/d] n d@(suc _) sn%d≡0 =
     1 * d + n / d * d       ≡⟨ *-distribʳ-+ d 1 (n / d) ⟨
     (1 + n / d) * d ∎ )
   where
-  sn≡[sn/d]*d : suc n ≡ (suc n / d) * d
   sn≡[sn/d]*d = trans (m≡m%n+[m/n]*n (suc n) d)
                       (cong (_+ suc n / d * d) sn%d≡0)
-  s[n%d]≡d : suc (n % d) ≡ d
   s[n%d]≡d = trans (cong suc (%-pred-≡0 sn%d≡0)) (∸-suc z≤n)
 
 m∣n⇒o%n%m≡o%m : ∀ m n o .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n →
@@ -509,4 +514,3 @@ m divMod n = result (m / n) (m mod n) $ begin-equality
   m % n                + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< [m%n]<n) ⟨
   toℕ (fromℕ< [m%n]<n) + [m/n]*n  ∎
   where [m/n]*n = m / n * n ; [m%n]<n = m%n<n m n
-
