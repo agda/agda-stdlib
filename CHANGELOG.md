@@ -64,6 +64,7 @@ Minor improvements
   Data.Nat.Binary.Subtraction
   Data.Nat.Combinatorics
   ```
+  Moreover, these have been strengthened to take an irrelevant `m ≤ n` argument.
 
 * In `Data.Vec.Relation.Binary.Pointwise.{Inductive,Extensional}`, the types of
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
@@ -101,6 +102,16 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Relation.Binary.Construct.Intersection`:
+  ```agda
+  decidable     ↦   _∩?_
+  ```
+
+* In `Relation.Binary.Construct.Union`:
+  ```agda
+  decidable     ↦   _∪?_
+  ```
+
 * In `Relation.Binary.Morphism.Definitions`:
   ```agda
   Morphism A B    ↦   A → B
@@ -115,7 +126,6 @@ Deprecated names
   _⊎-dec_  ↦   _⊎?_
   _→-dec_  ↦   _→?_
   ```
-
 
 * In `Relation.Nullary.Negation`:
   ```agda
@@ -265,6 +275,17 @@ Additions to existing modules
   search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
   ```
 
+* In `Data.Integer.Base`:
+  ```
+  _<ᵇ_ : ℤ → ℤ → Bool
+  ```
+
+* In `Data.Integer.Properties`:
+  ```
+  <ᵇ⇒< : T (i <ᵇ j) → i < j
+  <⇒<ᵇ : i < j → T (i <ᵇ j)
+  ```
+
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs
@@ -277,8 +298,8 @@ Additions to existing modules
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
   ```
 
-* In `Data.Nat.Divisiblity`:
-  ```agad
+* In `Data.Nat.Divisibility`:
+  ```agda
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
   ```
@@ -305,9 +326,14 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
-  ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
+  m∸n+o≡m∸[n∸o] : ∀ {m n o} → .(n ≤ m) → .(o ≤ n) → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+  m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+  m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+  m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+  ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
   ```
 
 * In `Data.Product.Properties`:
@@ -316,19 +342,44 @@ Additions to existing modules
   _,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
   ```
 
+* In `Data.Rational.Base`:
+  ```
+  _<ᵇ_ : ℚ → ℚ → Bool
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
   ≤⇒≯           : _≤_ ⇒ _≯_
   p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
   p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
   p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
   ```
 
+* In `Data.Rational.Show`:
+  ```agda
+  atPrecision : (n : ℕ) → ℚ → ℤ × Vec ℕ n
+  showAtPrecision : ℕ → ℚ → String
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  _<ᵇ_ : ℚᵘ → ℚᵘ → Bool
+  ```
+
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
   p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
   p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
   p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+  ```
+
+* In `Data.Rational.Unnormalised.Show`:
+  ```agda
+  showAtPrecision : ℕ → ℚᵘ → String
   ```
 
 * In `Data.Vec.Properties`:
@@ -426,6 +477,17 @@ Additions to existing modules
   ```agda
   antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
             Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+  ```
+
+* In `Relation.Binary.Properties.Setoid`:
+  ```agda
+  ¬[x≉x] : .(x ≉ x) → Whatever
+  ```
+
+* In `Relation.Binary.Propositional.Equality.Core`:
+  ```agda
+  ≢-irrefl : Irreflexive {A = A} _≡_ _≢_
+  ¬[x≢x] : .(x ≢ x) → Whatever
   ```
 
 * In `Relation.Nullary.Negation.Core`
