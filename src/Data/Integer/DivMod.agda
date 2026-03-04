@@ -8,18 +8,19 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; NonZero; _%_; ∣_∣;
-  _%ℕ_; _/ℕ_; _+_; _*_; -_; _-_; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; +<+; suc;
-  NonNegative; -<+)
+open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; ∣_∣; _+_; _*_; -_;
+  _-_; suc; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; -≤-; -≤+; +<+; -<+;
+  NonZero; NonNegative; Negative)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
-import Data.Nat.Properties as ℕ using (m∸n≤m)
+import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
 import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0;
-  m/n≡0⇒m<n; m<n⇒m/n≡0; sn%d≡0⇒sn/d≡s[n/d])
+  m/n≡0⇒m<n; m<n⇒m/n≡0; sn%d≡0⇒sn/d≡s[n/d]; sn%d>0⇒sn/d≡n/d; /-monoˡ-≤)
 open import Function.Base using (_∘′_)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.Definitions using (Monotonic₁)
+open import Relation.Binary.PropositionalEquality
   using (_≡_; cong; sym; subst; trans)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open ≤-Reasoning
 
@@ -177,6 +178,41 @@ n/d≡0⇒∣n∣<∣d∣ n -[1+ d ] n/d≡0ℤ =
   n / -[1+ d ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d) ⟩
   - (n /ℕ ℕ.suc d) ≡⟨ cong (-_) (0≤n<d⇒n/ℕd≡0 n (ℕ.suc d) (+<+ n<d)) ⟩
   - 0ℤ ∎
+
+private
+  /ℕ-monoˡ-≤-pos-pos : ∀ n m d .{{_ : NonNegative n}} .{{_ : NonNegative m}}
+                       .{{_ : ℕ.NonZero d}} → n ≤ m → n /ℕ d ≤ m /ℕ d
+  /ℕ-monoˡ-≤-pos-pos _ _ d (+≤+ n≤m) = +≤+ (ℕ./-monoˡ-≤ d n≤m)
+
+  /ℕ-monoˡ-≤-neg-pos : ∀ n m d .{{_ : Negative n}} .{{_ : NonNegative m}}
+                       .{{_ : ℕ.NonZero d}} → n ≤ m → n /ℕ d ≤ m /ℕ d
+  /ℕ-monoˡ-≤-neg-pos n@(-[1+ _ ]) m@(+ _) d -≤+ =
+    <⇒≤ (<-≤-trans (n<0⇒n/ℕd<0 n d -<+) (0≤n⇒0≤n/ℕd m d (+≤+ z≤n)))
+
+  n≡sk<n : ∀ {n k} → n ≡ ℕ.suc k → 0 ℕ.< n
+  n≡sk<n n≡sk = ℕ.m<n⇒0<n (ℕ.≤-reflexive (sym n≡sk))
+
+  /ℕ-monoˡ-≤-neg-neg : ∀ n m d .{{_ : Negative n}} .{{_ : Negative m}}
+                       .{{_ : ℕ.NonZero d}} → n ≤ m → n /ℕ d ≤ m /ℕ d
+  /ℕ-monoˡ-≤-neg-neg (-[1+ n ]) (-[1+ m ]) d (-≤- m≤n)
+    with ℕ.suc n ℕ.% d in sn%d | ℕ.suc m ℕ.% d in sm%d
+  ... | ℕ.zero | ℕ.zero  = neg-mono-≤ (+≤+ (ℕ./-monoˡ-≤ d (s≤s m≤n)))
+  ... | ℕ.zero | ℕ.suc _ = begin
+    -(+(ℕ.suc n ℕ./ d))   ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d sn%d) ⟩
+    -[1+ n ℕ./ d ]        ≤⟨ -≤- (ℕ./-monoˡ-≤ d m≤n) ⟩
+    -[1+ m ℕ./ d ]        ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d m d (n≡sk<n sm%d))⟨
+    -[1+ ℕ.suc m ℕ./ d ]  ∎
+  ... | ℕ.suc _ | ℕ.zero  = begin
+    -[1+ ℕ.suc n ℕ./ d ]  ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d (n≡sk<n sn%d))⟩
+    -[1+ n ℕ./ d ]        ≤⟨ -≤- (ℕ./-monoˡ-≤ d m≤n) ⟩
+    -(+(ℕ.suc (m ℕ./ d))) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] m d sm%d) ⟨
+    -(+(ℕ.suc m ℕ./ d))   ∎
+  ... | ℕ.suc _ | ℕ.suc _ = -≤- (ℕ./-monoˡ-≤ d (s≤s m≤n))
+
+/ℕ-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ _≤_ _≤_ (_/ℕ d)
+/ℕ-monoˡ-≤ d {n@(+ _)}      {m@(+ _)}      n≤m = /ℕ-monoˡ-≤-pos-pos n m d n≤m
+/ℕ-monoˡ-≤ d {n@(-[1+ _ ])} {m@(+ _)}      n≤m = /ℕ-monoˡ-≤-neg-pos n m d n≤m
+/ℕ-monoˡ-≤ d {n@(-[1+ _ ])} {m@(-[1+ _ ])} n≤m = /ℕ-monoˡ-≤-neg-neg n m d n≤m
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
