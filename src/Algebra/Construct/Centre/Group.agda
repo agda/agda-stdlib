@@ -50,7 +50,7 @@ domain = record { RawMonoid Z.domain; _⁻¹ = _⁻¹ }
         (k X.∙ ι g X.⁻¹) X.∙ (ι g) ∎
     } where open ≈-Reasoning
 
-  
+
 isGroupMonomorphism : IsGroupMonomorphism domain X.rawGroup ι
 isGroupMonomorphism = record
   { isGroupHomomorphism = record
