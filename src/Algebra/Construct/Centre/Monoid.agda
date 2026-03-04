@@ -13,10 +13,8 @@ module Algebra.Construct.Centre.Monoid
   {c ℓ} (monoid : Monoid c ℓ)
   where
 
-open import Algebra.Morphism.Structures
-import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
-  using (isMonoid)
-open import Algebra.Structures using (IsMonoid; IsCommutativeMonoid)
+open import Algebra.Morphism.Structures using (IsMonoidMonomorphism)
+open import Algebra.Morphism.MonoidMonomorphism using (isMonoid)
 open import Function.Base using (id)
 
 open import Algebra.Properties.Monoid monoid using (ε-central)
@@ -35,39 +33,42 @@ open import Algebra.Construct.Centre.Semigroup X.semigroup as Z public
 
 -- Now, can define a sub-Monoid
 
-ε : Centre
-ε = record
-  { ι = X.ε
-  ; central = ε-central
-  }
-
 domain : RawMonoid _ _
 domain = record { RawMagma Z.domain; ε = ε }
-
-isMonoidHomomorphism : IsMonoidHomomorphism domain X.rawMonoid ι
-isMonoidHomomorphism = record
-  { isMagmaHomomorphism = Z.isMagmaHomomorphism
-  ; ε-homo = X.refl
-  }
+  where
+  ε : Centre
+  ε = record
+    { ι = X.ε
+    ; central = ε-central
+    }
 
 isMonoidMonomorphism : IsMonoidMonomorphism domain X.rawMonoid ι
 isMonoidMonomorphism = record
-  { isMonoidHomomorphism = isMonoidHomomorphism
+  { isMonoidHomomorphism = record
+    { isMagmaHomomorphism = Z.isMagmaHomomorphism
+    ; ε-homo = X.refl
+    }
   ; injective = id
   }
 
+-- Public export of the sub-X-homomorphisms
+
+open IsMonoidMonomorphism isMonoidMonomorphism public
+
 -- And hence a CommutativeMonoid
 
-isMonoid : IsMonoid _ _ _
-isMonoid = MonoidMonomorphism.isMonoid isMonoidMonomorphism X.isMonoid
-
-isCommutativeMonoid : IsCommutativeMonoid _ _ _
-isCommutativeMonoid = record
-  { isMonoid = isMonoid
-  ; comm = ∙-comm
+commutativeMonoid : CommutativeMonoid _ _
+commutativeMonoid = record
+  { isCommutativeMonoid = record
+    { isMonoid = isMonoid isMonoidMonomorphism X.isMonoid
+    ; comm = ∙-comm
+    }
   }
 
-commutativeMonoid : CommutativeMonoid _ _
-commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
+-- Public export of the sub-X-structures/bundles
+
+open CommutativeMonoid commutativeMonoid public
+
+-- Public export of the bundle
 
 Z[_] = commutativeMonoid

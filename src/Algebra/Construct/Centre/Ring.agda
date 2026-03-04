@@ -13,12 +13,8 @@ module Algebra.Construct.Centre.Ring {c ℓ} (ring : Ring c ℓ) where
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Consequences.Setoid using (zero⇒central)
-open import Algebra.Morphism.Structures
-  using (IsSemiringHomomorphism; IsRingHomomorphism; IsRingMonomorphism)
-import Algebra.Morphism.RingMonomorphism as RingMonomorphism
-  using (isRing)
-open import Algebra.Structures
-  using (IsRing; IsCommutativeRing)
+open import Algebra.Morphism.Structures using (IsRingMonomorphism)
+open import Algebra.Morphism.RingMonomorphism using (isRing)
 open import Function.Base using (id)
 
 
@@ -39,32 +35,6 @@ open import Algebra.Construct.Centre.Monoid X.*-monoid as Z public
 
 -- Now, can define a commutative sub-Ring
 
-_+_ : Op₂ Centre
-g + h = record
-  { ι       = ι g X.+ ι h
-  ; central = λ r → begin
-    (ι g X.+ ι h) X.* r      ≈⟨ X.distribʳ _ _ _ ⟩
-    ι g X.* r X.+ ι h X.* r  ≈⟨ X.+-cong (Centre.central g r) (Centre.central h r) ⟩
-    r X.* ι g  X.+ r X.* ι h ≈⟨ X.distribˡ _ _ _ ⟨
-    r X.* (ι g X.+ ι h)      ∎
-  }
-
--_ : Op₁ Centre
-- g = record
-  { ι       = X.- ι g
-  ; central = λ r → begin
-    X.- ι g X.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟨
-    X.- (ι g X.* r) ≈⟨ X.-‿cong (Centre.central g r) ⟩
-    X.- (r X.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
-    r  X.* X.- ι g  ∎
-  }
-
-0# : Centre
-0# = record
-  { ι = X.0#
-  ; central = zero⇒central X.setoid {_∙_ = X._*_} X.zero
-  }
-
 domain : RawRing _ _
 domain = record
   { _≈_ = _≈_
@@ -73,42 +43,72 @@ domain = record
   ; -_ = -_
   ; 0# = 0#
   ; 1# = 1#
-  } where open RawMonoid Z.domain renaming (ε to 1#; _∙_ to _*_)
-
-isRingHomomorphism : IsRingHomomorphism domain X.rawRing ι
-isRingHomomorphism = record
-  { isSemiringHomomorphism = record
-    { isNearSemiringHomomorphism = record
-      { +-isMonoidHomomorphism = record
-        { isMagmaHomomorphism = record
-          { isRelHomomorphism = record { cong = id }
-          ; homo = λ _ _ → X.refl
-          }
-        ; ε-homo = X.refl
-        }
-      ; *-homo = λ _ _ → X.refl
-      }
-    ; 1#-homo = X.refl
-    }
-  ; -‿homo = λ _ → X.refl
   }
+  where
+  open RawMonoid Z.domain renaming (ε to 1#; _∙_ to _*_)
+  _+_ : Op₂ Centre
+  g + h = record
+    { ι       = ι g X.+ ι h
+    ; central = λ r → begin
+      (ι g X.+ ι h) X.* r      ≈⟨ X.distribʳ _ _ _ ⟩
+      ι g X.* r X.+ ι h X.* r  ≈⟨ X.+-cong (Centre.central g r) (Centre.central h r) ⟩
+      r X.* ι g  X.+ r X.* ι h ≈⟨ X.distribˡ _ _ _ ⟨
+      r X.* (ι g X.+ ι h)      ∎
+    }
+  -_ : Op₁ Centre
+  - g = record
+    { ι       = X.- ι g
+    ; central = λ r → begin
+      X.- ι g X.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟨
+      X.- (ι g X.* r) ≈⟨ X.-‿cong (Centre.central g r) ⟩
+      X.- (r X.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
+      r  X.* X.- ι g  ∎
+    }
+  0# : Centre
+  0# = record
+    { ι = X.0#
+    ; central = zero⇒central X.setoid {_∙_ = X._*_} X.zero
+    }
 
 isRingMonomorphism : IsRingMonomorphism domain X.rawRing ι
 isRingMonomorphism = record
-  { isRingHomomorphism = isRingHomomorphism
-  ; injective = id
+  { isRingHomomorphism = record
+    { isSemiringHomomorphism = record
+      { isNearSemiringHomomorphism = record
+        { +-isMonoidHomomorphism = record
+          { isMagmaHomomorphism = record
+            { isRelHomomorphism = record { cong = id }
+            ; homo = λ _ _ → X.refl
+            }
+          ; ε-homo = X.refl
+          }
+        ; *-homo = λ _ _ → X.refl
+        }
+      ; 1#-homo = X.refl
+      }
+    ; -‿homo = λ _ → X.refl
+    }
+    ; injective = id
   }
 
-isRing : IsRing _ _ _ _ _ _
-isRing = RingMonomorphism.isRing isRingMonomorphism X.isRing
+-- Public export of the sub-X-homomorphisms
 
-isCommutativeRing : IsCommutativeRing _ _ _ _ _ _
-isCommutativeRing = record
-  { isRing = isRing
-  ; *-comm = ∙-comm
-  }
+open IsRingMonomorphism isRingMonomorphism public
+
+-- And hence a CommutativeRing
 
 commutativeRing : CommutativeRing _ _
-commutativeRing = record { isCommutativeRing = isCommutativeRing }
+commutativeRing = record
+  { isCommutativeRing = record
+    { isRing = isRing isRingMonomorphism X.isRing
+    ; *-comm = ∙-comm
+    }
+  }
+
+-- Public export of the sub-X-structures/bundles
+
+open CommutativeRing commutativeRing public
+
+-- Public export of the bundle
 
 Z[_] = commutativeRing

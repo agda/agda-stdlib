@@ -14,12 +14,8 @@ module Algebra.Construct.Centre.Semigroup
   where
 
 open import Algebra.Core using (Op₂)
-import Algebra.Morphism.MagmaMonomorphism as MagmaMonomorphism
-  using (isSemigroup)
-open import Algebra.Morphism.Structures
-  using (IsMagmaHomomorphism; IsMagmaMonomorphism)
-open import Algebra.Structures
-  using (IsSemigroup; IsCommutativeSemigroup)
+open import Algebra.Morphism.MagmaMonomorphism using (isSemigroup)
+open import Algebra.Morphism.Structures using (IsMagmaMonomorphism)
 open import Function.Base using (id)
 
 private
@@ -39,44 +35,47 @@ open import Algebra.Construct.Centre.Centre X._≈_ X._∙_ as Z public
 
 -- Now, by associativity, a sub-Magma is definable
 
-_∙_ : Op₂ Centre
-g ∙ h = record
-  { ι = ι g X.∙ ι h
-  ; central = λ k → begin
-    (ι g X.∙ ι h) X.∙ k ≈⟨ uv≈w⇒xu∙v≈xw (Centre.central h k) (ι g) ⟩
-    ι g X.∙ (k X.∙ ι h) ≈⟨ uv≈w⇒u∙vx≈wx (Centre.central g k) (ι h) ⟩
-    k X.∙ ι g X.∙ ι h   ≈⟨ X.assoc _ _ _ ⟩
-    k X.∙ (ι g X.∙ ι h) ∎
-  } where open ≈-Reasoning
-
 domain : RawMagma _ _
 domain = record {_≈_ = Z._≈_; _∙_ = _∙_ }
-
-isMagmaHomomorphism : IsMagmaHomomorphism domain X.rawMagma ι
-isMagmaHomomorphism = record
-  { isRelHomomorphism = Z.isRelHomomorphism
-  ; homo = λ _ _ → X.refl
-  }
+  where
+  _∙_ : Op₂ Centre
+  g ∙ h = record
+    { ι = ι g X.∙ ι h
+    ; central = λ k → begin
+      (ι g X.∙ ι h) X.∙ k ≈⟨ uv≈w⇒xu∙v≈xw (Centre.central h k) (ι g) ⟩
+      ι g X.∙ (k X.∙ ι h) ≈⟨ uv≈w⇒u∙vx≈wx (Centre.central g k) (ι h) ⟩
+      k X.∙ ι g X.∙ ι h   ≈⟨ X.assoc _ _ _ ⟩
+      k X.∙ (ι g X.∙ ι h) ∎
+    } where open ≈-Reasoning
 
 isMagmaMonomorphism : IsMagmaMonomorphism domain X.rawMagma ι
 isMagmaMonomorphism = record
-  { isMagmaHomomorphism = isMagmaHomomorphism
-  ; injective = id
+  { isMagmaHomomorphism = record
+    { isRelHomomorphism = Z.isRelHomomorphism
+    ; homo = λ _ _ → X.refl
+    }
+    ; injective = id
   }
+
+-- Public export of the sub-X-homomorphisms
+
+open IsMagmaMonomorphism isMagmaMonomorphism public
 
 -- And hence a CommutativeSemigroup
 
-isSemigroup : IsSemigroup _ _
-isSemigroup = MagmaMonomorphism.isSemigroup isMagmaMonomorphism X.isSemigroup
-
-isCommutativeSemigroup : IsCommutativeSemigroup _ _
-isCommutativeSemigroup = record
-  { isSemigroup = isSemigroup
-  ; comm = ∙-comm
+commutativeSemigroup : CommutativeSemigroup _ _
+commutativeSemigroup = record
+  { isCommutativeSemigroup = record
+    { isSemigroup = isSemigroup isMagmaMonomorphism X.isSemigroup
+    ; comm = ∙-comm
+    }
   }
 
-commutativeSemigroup : CommutativeSemigroup _ _
-commutativeSemigroup = record { isCommutativeSemigroup = isCommutativeSemigroup }
+-- Public export of the sub-X-structures/bundles
+
+open CommutativeSemigroup commutativeSemigroup public
+
+-- Public export of the bundle
 
 Z[_] = commutativeSemigroup
 

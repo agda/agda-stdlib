@@ -12,12 +12,8 @@ open import Algebra.Bundles
 module Algebra.Construct.Centre.Group {c ℓ} (group : Group c ℓ) where
 
 open import Algebra.Core using (Op₁)
-open import Algebra.Morphism.Structures
-  using (IsGroupHomomorphism; IsGroupMonomorphism)
-import Algebra.Morphism.GroupMonomorphism as GroupMonomorphism
-  using (isGroup)
-open import Algebra.Structures
-  using (IsGroup; IsAbelianGroup)
+open import Algebra.Morphism.Structures using (IsGroupMonomorphism)
+open import Algebra.Morphism.GroupMonomorphism using (isGroup)
 open import Function.Base using (id; _$_)
 
 
@@ -41,41 +37,47 @@ open import Algebra.Construct.Centre.Monoid X.monoid as Z public
 
 -- Now, can define a commutative sub-Group
 
-_⁻¹ : Op₁ Centre
-g ⁻¹ = record
-  { ι = ι g X.⁻¹
-  ; central = λ k → ∙-cancelʳ (ι g) _ _ $ begin
-      (ι g X.⁻¹ X.∙ k) X.∙ (ι g) ≈⟨ uv≈w⇒xu∙v≈xw (X.sym (Centre.central g k)) _ ⟩
-      ι g X.⁻¹ X.∙ (ι g X.∙ k)   ≈⟨ inverse⇒cancelˡ (X.inverseˡ _) _ ⟩
-      k                          ≈⟨ inverse⇒cancelʳ (X.inverseˡ _) _ ⟨
-      (k X.∙ ι g X.⁻¹) X.∙ (ι g) ∎
-  } where open ≈-Reasoning
-
 domain : RawGroup _ _
 domain = record { RawMonoid Z.domain; _⁻¹ = _⁻¹ }
+  where
+  _⁻¹ : Op₁ Centre
+  g ⁻¹ = record
+    { ι = ι g X.⁻¹
+    ; central = λ k → ∙-cancelʳ (ι g) _ _ $ begin
+        (ι g X.⁻¹ X.∙ k) X.∙ (ι g) ≈⟨ uv≈w⇒xu∙v≈xw (X.sym (Centre.central g k)) _ ⟩
+        ι g X.⁻¹ X.∙ (ι g X.∙ k)   ≈⟨ inverse⇒cancelˡ (X.inverseˡ _) _ ⟩
+        k                          ≈⟨ inverse⇒cancelʳ (X.inverseˡ _) _ ⟨
+        (k X.∙ ι g X.⁻¹) X.∙ (ι g) ∎
+    } where open ≈-Reasoning
 
-isGroupHomomorphism : IsGroupHomomorphism domain X.rawGroup ι
-isGroupHomomorphism = record
-  { isMonoidHomomorphism = Z.isMonoidHomomorphism
-  ; ⁻¹-homo = λ _ → X.refl
-  }
-
+  
 isGroupMonomorphism : IsGroupMonomorphism domain X.rawGroup ι
 isGroupMonomorphism = record
-  { isGroupHomomorphism = isGroupHomomorphism
+  { isGroupHomomorphism = record
+    { isMonoidHomomorphism = Z.isMonoidHomomorphism
+    ; ⁻¹-homo = λ _ → X.refl
+    }
   ; injective = id
   }
 
-isGroup : IsGroup _ _ _ _
-isGroup = GroupMonomorphism.isGroup isGroupMonomorphism X.isGroup
+-- Public export of the sub-X-homomorphisms
 
-isAbelianGroup : IsAbelianGroup _ _ _ _
-isAbelianGroup = record
-  { isGroup = isGroup
-  ; comm = ∙-comm
-  }
+open IsGroupMonomorphism isGroupMonomorphism public
+
+-- And hence an AbelianGroup
 
 abelianGroup : AbelianGroup _ _
-abelianGroup = record { isAbelianGroup = isAbelianGroup }
+abelianGroup = record
+  { isAbelianGroup = record
+    { isGroup = isGroup isGroupMonomorphism X.isGroup
+    ; comm = ∙-comm
+    }
+  }
+
+-- Public export of the sub-X-structures/bundles
+
+open AbelianGroup abelianGroup public
+
+-- Public export of the bundle
 
 Z[_] = abelianGroup
