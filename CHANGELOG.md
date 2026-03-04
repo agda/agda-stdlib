@@ -101,6 +101,12 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Relation.Binary.Morphism.Definitions`:
+  ```agda
+  Morphism A B    ↦   A → B
+  Homomorphic₂    ↦   Function.Definitions.Congruent
+  ```
+
 * In `Relation.Nullary.Decidable.Core`:
   ```agda
   ⊤-dec     ↦   ⊤?
@@ -108,6 +114,8 @@ Deprecated names
   _×-dec_  ↦   _×?_
   _⊎-dec_  ↦   _⊎?_
   _→-dec_  ↦   _→?_
+  ```
+
 
 * In `Relation.Nullary.Negation`:
   ```agda
