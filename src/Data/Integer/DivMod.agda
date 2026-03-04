@@ -15,7 +15,8 @@ open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
 import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0;
-  m/n≡0⇒m<n; m<n⇒m/n≡0; sn%d≡0⇒sn/d≡s[n/d]; sn%d>0⇒sn/d≡n/d; /-monoˡ-≤)
+  m/n≡0⇒m<n; m<n⇒m/n≡0; sn%d≡0⇒sn/d≡s[n/d]; sn%d>0⇒sn/d≡n/d; /-monoˡ-≤;
+  /-monoʳ-≤)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.Definitions using (Monotonic₁)
 open import Relation.Binary.PropositionalEquality
@@ -213,6 +214,10 @@ private
 /ℕ-monoˡ-≤ d {n@(+ _)}      {m@(+ _)}      n≤m = /ℕ-monoˡ-≤-pos-pos n m d n≤m
 /ℕ-monoˡ-≤ d {n@(-[1+ _ ])} {m@(+ _)}      n≤m = /ℕ-monoˡ-≤-neg-pos n m d n≤m
 /ℕ-monoˡ-≤ d {n@(-[1+ _ ])} {m@(-[1+ _ ])} n≤m = /ℕ-monoˡ-≤-neg-neg n m d n≤m
+
+/ℕ-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
+                    .{{_ : NonNegative n}} → d₁ ℕ.≤ d₂ → n /ℕ d₂ ≤ n /ℕ d₁
+/ℕ-monoʳ-≤-nonNeg (+ n) {d₁} {d₂} d₁≤d₂ = +≤+ (ℕ./-monoʳ-≤ n d₁≤d₂)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
