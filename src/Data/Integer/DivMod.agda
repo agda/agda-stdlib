@@ -10,7 +10,7 @@ module Data.Integer.DivMod where
 
 open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; ∣_∣; _+_; _*_; -_;
   _-_; suc; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; -≤-; -≤+; +<+; -<+;
-  NonZero; NonNegative; Negative)
+  NonZero; NonNegative; NonPositive; Negative)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
@@ -225,6 +225,25 @@ private
 /ℕ-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
                     .{{_ : NonNegative n}} → d₁ ℕ.≤ d₂ → n /ℕ d₂ ≤ n /ℕ d₁
 /ℕ-monoʳ-≤-nonNeg (+ n) {d₁} {d₂} d₁≤d₂ = +≤+ (ℕ./-monoʳ-≤ n d₁≤d₂)
+
+/ℕ-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
+                    .{{_ : NonPositive n}} → d₁ ℕ.≤ d₂ → n /ℕ d₁ ≤ n /ℕ d₂
+/ℕ-monoʳ-≤-nonPos (+ 0) {d₁} {d₂} d₁≤d₂ =
+  ≤-trans (≤-reflexive (0/ℕd≡0 d₁)) (≤-reflexive (sym (0/ℕd≡0 d₂)))
+/ℕ-monoʳ-≤-nonPos -[1+ n ] {d₁} {d₂} d₁≤d₂
+  with ℕ.suc n ℕ.% d₁ in sn%d₁ | ℕ.suc n ℕ.% d₂ in sn%d₂
+... | ℕ.zero | ℕ.zero  = neg-mono-≤ (+≤+ (ℕ./-monoʳ-≤ (ℕ.suc n) d₁≤d₂))
+... | ℕ.zero | ℕ.suc _ = let sn%d₂>0 = n≡sk>0 sn%d₂ in begin
+  -(+ (ℕ.suc n ℕ./ d₁)) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d₁ sn%d₁) ⟩
+  -[1+ n ℕ./ d₁ ]       ≤⟨ -≤- (ℕ./-monoʳ-≤ n d₁≤d₂) ⟩
+  -[1+ n ℕ./ d₂ ]       ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d₂ sn%d₂>0) ⟨
+  -[1+ ℕ.suc n ℕ./ d₂ ] ∎
+... | ℕ.suc _ | ℕ.zero  = let sn%d₁>0 = n≡sk>0 sn%d₁ in begin
+  -[1+ ℕ.suc n ℕ./ d₁ ]   ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d₁ sn%d₁>0) ⟩
+  -[1+ n ℕ./ d₁ ]         ≤⟨ -≤- (ℕ./-monoʳ-≤ n d₁≤d₂) ⟩
+  -(+ (ℕ.suc (n ℕ./ d₂))) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d₂ sn%d₂)⟨
+  -(+ (ℕ.suc n ℕ./ d₂))   ∎
+... | ℕ.suc _ | ℕ.suc _ = -≤- (ℕ./-monoʳ-≤ (ℕ.suc n) d₁≤d₂)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
