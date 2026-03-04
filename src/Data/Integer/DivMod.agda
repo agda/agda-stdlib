@@ -153,8 +153,7 @@ a≡a%n+[a/n]*n n d@(-[1+ _ ]) = begin-equality
 
 n/ℕ1≡n : ∀ n → n /ℕ 1 ≡ n
 n/ℕ1≡n (+ n) = cong +_ (ℕ.n/1≡n n)
-n/ℕ1≡n -[1+ n ] with ℕ.suc n ℕ.% 1 | ℕ.n%1≡0 (ℕ.suc n)
-... | ℕ.zero | suc[n]%1≡0 = cong (λ x → - (+ x)) (ℕ.n/1≡n (ℕ.suc n))
+n/ℕ1≡n -[1+ n ] rewrite ℕ.n%1≡0 (ℕ.suc n) = cong (-_ ∘′ +_) (ℕ.n/1≡n (ℕ.suc n))
 
 n/1≡n : ∀ n → n / + 1 ≡ n
 n/1≡n n = trans (div-pos-is-/ℕ n 1) (n/ℕ1≡n n)
@@ -198,21 +197,21 @@ private
   /ℕ-monoˡ-≤-neg-pos n@(-[1+ _ ]) m@(+ _) d -≤+ =
     <⇒≤ (<-≤-trans (n<0⇒n/ℕd<0 n d -<+) (0≤n⇒0≤n/ℕd m d (+≤+ z≤n)))
 
-  n≡sk<n : ∀ {n k} → n ≡ ℕ.suc k → 0 ℕ.< n
-  n≡sk<n n≡sk = ℕ.m<n⇒0<n (ℕ.≤-reflexive (sym n≡sk))
+  n≡sk>0 : ∀ {n k} → n ≡ ℕ.suc k → 0 ℕ.< n
+  n≡sk>0 n≡sk = ℕ.m<n⇒0<n (ℕ.≤-reflexive (sym n≡sk))
 
   /ℕ-monoˡ-≤-neg-neg : ∀ n m d .{{_ : Negative n}} .{{_ : Negative m}}
                        .{{_ : ℕ.NonZero d}} → n ≤ m → n /ℕ d ≤ m /ℕ d
   /ℕ-monoˡ-≤-neg-neg (-[1+ n ]) (-[1+ m ]) d (-≤- m≤n)
     with ℕ.suc n ℕ.% d in sn%d | ℕ.suc m ℕ.% d in sm%d
   ... | ℕ.zero | ℕ.zero  = neg-mono-≤ (+≤+ (ℕ./-monoˡ-≤ d (s≤s m≤n)))
-  ... | ℕ.zero | ℕ.suc _ = begin
+  ... | ℕ.zero | ℕ.suc _ = let sm%d>0 = n≡sk>0 sm%d in begin
     -(+(ℕ.suc n ℕ./ d))   ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d sn%d) ⟩
     -[1+ n ℕ./ d ]        ≤⟨ -≤- (ℕ./-monoˡ-≤ d m≤n) ⟩
-    -[1+ m ℕ./ d ]        ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d m d (n≡sk<n sm%d))⟨
+    -[1+ m ℕ./ d ]        ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d m d sm%d>0)⟨
     -[1+ ℕ.suc m ℕ./ d ]  ∎
-  ... | ℕ.suc _ | ℕ.zero  = begin
-    -[1+ ℕ.suc n ℕ./ d ]  ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d (n≡sk<n sn%d))⟩
+  ... | ℕ.suc _ | ℕ.zero  = let sn%d>0 = n≡sk>0 sn%d in begin
+    -[1+ ℕ.suc n ℕ./ d ]  ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d sn%d>0)⟩
     -[1+ n ℕ./ d ]        ≤⟨ -≤- (ℕ./-monoˡ-≤ d m≤n) ⟩
     -(+(ℕ.suc (m ℕ./ d))) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] m d sm%d) ⟨
     -(+(ℕ.suc m ℕ./ d))   ∎
