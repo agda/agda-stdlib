@@ -12,6 +12,18 @@ module Relation.Binary.Morphism.Definitions
   where
 
 ------------------------------------------------------------------------
+-- Morphism definition in Function.Core
+
+import Function.Core
+  using (Morphism)
+
+------------------------------------------------------------------------
+-- Basic definitions
+
+import Function.Definitions
+  using (Congruent)
+
+------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
@@ -19,16 +31,13 @@ module Relation.Binary.Morphism.Definitions
 
 -- Version 2.4
 
-open import Function.Core public
-  using (Morphism)
+Morphism = Function.Core.Morphism
 {-# WARNING_ON_USAGE Morphism
 "Warning: Morphism was deprecated in v2.4.
 Please use the standard function notation (e.g. A → B) instead."
 #-}
 
-open import Function.Definitions public
-  using ()
-  renaming (Congruent to Homomorphic₂)
+Homomorphic₂ = Function.Definitions.Congruent
 {-# WARNING_ON_USAGE Homomorphic₂
 "Warning: Homomorphic₂ was deprecated in v2.4.
 Please use Function.Definitions.Congruent instead."
