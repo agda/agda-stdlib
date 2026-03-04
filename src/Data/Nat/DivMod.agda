@@ -314,6 +314,28 @@ sn%d≡0⇒sn/d≡s[n/d] n d@(suc _) sn%d≡0 =
                       (cong (_+ suc n / d * d) sn%d≡0)
   s[n%d]≡d = trans (cong suc (%-pred-≡0 sn%d≡0)) (∸-suc z≤n)
 
+sn%d>0⇒sn/d≡n/d : ∀ n d .{{_ : NonZero d}} →
+                  0 < suc n % d → suc n / d ≡ n / d
+sn%d>0⇒sn/d≡n/d n d 0<sn%d with suc k ← suc n % d in sn%d≡sk =
+  *-cancelʳ-≡ (suc n / d) (n / d) d (begin-equality
+    suc n / d * d
+      ≡⟨ [n/d]*d≡n∸n%d (suc n) d ⟩
+    suc n ∸ suc n % d
+      ≡⟨ cong (suc n ∸_) sn%d≡sk ⟩
+    suc n ∸ suc k
+      ≡⟨ cong (λ x → suc x ∸ suc k) (m≡m%n+[m/n]*n n d) ⟩
+    suc (n % d) + n / d * d ∸ suc k
+      ≡⟨ cong (λ x → suc x + n / d * d ∸ suc k) (%-pred-≡suc n d k sn%d≡sk) ⟩
+    suc k + n / d * d ∸ suc k
+      ≡⟨ m+n∸m≡n (suc k) (n / d * d) ⟩
+    n / d * d ∎)
+  where
+  [n/d]*d≡n∸n%d : ∀ n d .{{_ : NonZero d}} → (n / d) * d ≡ n ∸ n % d
+  [n/d]*d≡n∸n%d n d = sym (begin-equality
+    n ∸ n % d           ≡⟨ cong (n ∸_) (m%n≡m∸m/n*n n d) ⟩
+    n ∸ (n ∸ n / d * d) ≡⟨ m∸[m∸n]≡n (m/n*n≤m n d) ⟩
+    n / d * d           ∎)
+
 m∣n⇒o%n%m≡o%m : ∀ m n o .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n →
                 o % n % m ≡ o % m
 m∣n⇒o%n%m≡o%m m n@.(p * m) o (divides-refl p) = begin-equality
