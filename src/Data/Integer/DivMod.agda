@@ -10,7 +10,7 @@ module Data.Integer.DivMod where
 
 open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; ∣_∣; _+_; _*_; -_;
   _-_; suc; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _≥_; _<_; +≤+; -≤-; -≤+; +<+; -<+;
-  NonZero; NonNegative; NonPositive; Negative; Positive)
+  NonZero; NonNegative; NonPositive; Negative; Positive; sign)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
@@ -260,6 +260,34 @@ private
   - (m /ℕ ℕ.suc d) ≤⟨ neg-mono-≤ (/ℕ-monoˡ-≤ (ℕ.suc d) n≤m) ⟩
   - (n /ℕ ℕ.suc d) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d) ⟨
   n / - +[1+ d ]   ∎
+
+/-monoʳ-≤-nonNeg-eq-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                            .{{_ : NonNegative n}} → {sign d₁ ≡ sign d₂} →
+                            d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+/-monoʳ-≤-nonNeg-eq-signs n {+ d₁} {+ d₂} (+≤+ d₁≤d₂) = begin
+  n / + d₂ ≡⟨ div-pos-is-/ℕ n d₂ ⟩
+  n /ℕ d₂  ≤⟨ /ℕ-monoʳ-≤-nonNeg n d₁≤d₂ ⟩
+  n /ℕ d₁  ≡⟨ div-pos-is-/ℕ n d₁ ⟨
+  n / + d₁ ∎
+/-monoʳ-≤-nonNeg-eq-signs n { -[1+ d₁ ] } { -[1+ d₂ ] } (-≤- d₂≤d₁) = begin
+  n / -[1+ d₂ ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₂) ⟩
+  - (n /ℕ ℕ.suc d₂) ≤⟨ neg-mono-≤ (/ℕ-monoʳ-≤-nonNeg n (s≤s d₂≤d₁)) ⟩
+  - (n /ℕ ℕ.suc d₁) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟨
+  n / - +[1+ d₁ ]   ∎
+
+/-monoʳ-≤-nonPos-eq-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                            .{{_ : NonPositive n}} → {sign d₁ ≡ sign d₂} →
+                            d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+/-monoʳ-≤-nonPos-eq-signs n {+ d₁} {+ d₂} (+≤+ d₁≤d₂) = begin
+  n / + d₁ ≡⟨ div-pos-is-/ℕ n d₁ ⟩
+  n /ℕ d₁  ≤⟨ /ℕ-monoʳ-≤-nonPos n d₁≤d₂ ⟩
+  n /ℕ d₂  ≡⟨ div-pos-is-/ℕ n d₂ ⟨
+  n / + d₂ ∎
+/-monoʳ-≤-nonPos-eq-signs n { -[1+ d₁ ] } { -[1+ d₂ ] } (-≤- d₂≤d₁) = begin
+  n / -[1+ d₁ ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟩
+  - (n /ℕ ℕ.suc d₁) ≤⟨ neg-mono-≤ (/ℕ-monoʳ-≤-nonPos n (s≤s d₂≤d₁)) ⟩
+  - (n /ℕ ℕ.suc d₂) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₂) ⟨
+  n / - +[1+ d₂ ]   ∎
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
