@@ -9,8 +9,8 @@
 module Data.Integer.DivMod where
 
 open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; ∣_∣; _+_; _*_; -_;
-  _-_; suc; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; -≤-; -≤+; +<+; -<+;
-  NonZero; NonNegative; NonPositive; Negative)
+  _-_; suc; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _≥_; _<_; +≤+; -≤-; -≤+; +<+; -<+;
+  NonZero; NonNegative; NonPositive; Negative; Positive)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
@@ -244,6 +244,22 @@ private
   -(+ (ℕ.suc (n ℕ./ d₂))) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d₂ sn%d₂)⟨
   -(+ (ℕ.suc n ℕ./ d₂))   ∎
 ... | ℕ.suc _ | ℕ.suc _ = -≤- (ℕ./-monoʳ-≤ (ℕ.suc n) d₁≤d₂)
+
+/-monoˡ-≤-pos : ∀ d .{{_ : NonZero d}} .{{_ : Positive d}} →
+                Monotonic₁ _≤_ _≤_ (_/ d)
+/-monoˡ-≤-pos (+ d) {n} {m} n≤m = begin
+  n / (+ d) ≡⟨ div-pos-is-/ℕ n d ⟩
+  n /ℕ d    ≤⟨ /ℕ-monoˡ-≤ d n≤m ⟩
+  m /ℕ d    ≡⟨ div-pos-is-/ℕ m d ⟨
+  m / + d   ∎
+
+/-monoˡ-≤-neg : ∀ d .{{_ : NonZero d}} .{{_ : Negative d}} →
+                Monotonic₁ _≤_ _≥_ (_/ d)
+/-monoˡ-≤-neg -[1+ d ] {n} {m} n≤m = begin
+  m / -[1+ d ]     ≡⟨ div-neg-is-neg-/ℕ m (ℕ.suc d) ⟩
+  - (m /ℕ ℕ.suc d) ≤⟨ neg-mono-≤ (/ℕ-monoˡ-≤ (ℕ.suc d) n≤m) ⟩
+  - (n /ℕ ℕ.suc d) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d) ⟨
+  n / - +[1+ d ]   ∎
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
