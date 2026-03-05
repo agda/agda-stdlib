@@ -18,7 +18,7 @@ open import Data.Maybe.Base using (just; nothing; is-just)
 open import Data.Product.Base as Product
   using (_×_; ∃-syntax; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-  renaming (Pointwise to _×ᴿ_)
+  renaming (_×_ to _×ᴿ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_)
 open import Level using (Level)
@@ -100,7 +100,8 @@ private
   ≈ₖᵥ-Resp : k ≈ k′ → kx ≈ₖᵥ (k′ , x) → kx ≈ₖᵥ (k , x)
   ≈ₖᵥ-Resp = (λ{ k′≈l (k≈l , x≡) → (trans k≈l (sym k′≈l) , x≡)})
 
-∈ₖᵥ-insert⁻ : (k , x) ∈ₖᵥ insert k′ x′ m → (k ≈ k′ × x ≡ x′) ⊎ (k ≉ k′ × (k , x) ∈ₖᵥ m)
+∈ₖᵥ-insert⁻ : (k , x) ∈ₖᵥ insert k′ x′ m →
+              (k ≈ k′ × x ≡ x′) ⊎ (k ≉ k′ × (k , x) ∈ₖᵥ m)
 ∈ₖᵥ-insert⁻ {m = tree t} (tree kx∈insert)
     with IAnyₚ.insert⁻ ≈ₖᵥ-Resp _ _ t (⊥⁺<[ _ ]<⊤⁺) kx∈insert
 ... | inj₁ p = inj₁ p

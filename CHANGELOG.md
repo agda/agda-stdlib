@@ -89,6 +89,13 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+  ```agda
+  Pointwise      ↦  _×_
+  ×-decidable    ↦  _×?_
+  Pointwise-≡↔≡  ↦  ×-≡↔≡-×
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg

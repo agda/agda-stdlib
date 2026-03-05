@@ -8,12 +8,11 @@
 
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
-open import Data.Product.Base as Product
+open import Data.Product.Base as Product using (_,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
 open import Function.Base using (id)
 open import Function.Bundles using (Inverse)
-open import Relation.Nullary.Decidable using (_×?_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; Poset; StrictPartialOrder)
@@ -21,6 +20,7 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.Structures
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Nullary.Decidable.Core as Dec using (_×?_)
 
 private
   variable
@@ -31,55 +31,57 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-Pointwise : REL A B ℓ₁ → REL C D ℓ₂ → REL (A × C) (B × D) (ℓ₁ ⊔ ℓ₂)
-Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
+infixr 2 _×_
+
+_×_ : REL A B ℓ₁ → REL C D ℓ₂ → REL (A Product.× C) (B Product.× D) (ℓ₁ ⊔ ℓ₂)
+(R × S) (a , c) (b , d) = (R a b) Product.× (S c d)
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
 
-×-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
+×-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S → (≈₁ × ≈₂) ⇒ (R × S)
 ×-reflexive refl₁ refl₂ = Product.map refl₁ refl₂
 
-×-refl : Reflexive R → Reflexive S → Reflexive (Pointwise R S)
+×-refl : Reflexive R → Reflexive S → Reflexive (R × S)
 ×-refl refl₁ refl₂ = refl₁ , refl₂
 
 ×-irreflexive₁ : Irreflexive ≈₁ R →
-                 Irreflexive (Pointwise ≈₁ ≈₂) (Pointwise R S)
+                 Irreflexive (≈₁ × ≈₂) (R × S)
 ×-irreflexive₁ ir x≈y x<y = ir (proj₁ x≈y) (proj₁ x<y)
 
 ×-irreflexive₂ : Irreflexive ≈₂ S →
-                 Irreflexive (Pointwise ≈₁ ≈₂) (Pointwise R S)
+                 Irreflexive (≈₁ × ≈₂) (R × S)
 ×-irreflexive₂ ir x≈y x<y = ir (proj₂ x≈y) (proj₂ x<y)
 
-×-symmetric : Symmetric R → Symmetric S → Symmetric (Pointwise R S)
+×-symmetric : Symmetric R → Symmetric S → Symmetric (R × S)
 ×-symmetric sym₁ sym₂ = Product.map sym₁ sym₂
 
-×-transitive : Transitive R → Transitive S → Transitive (Pointwise R S)
+×-transitive : Transitive R → Transitive S → Transitive (R × S)
 ×-transitive trans₁ trans₂ = Product.zip trans₁ trans₂
 
 ×-antisymmetric : Antisymmetric ≈₁ R → Antisymmetric ≈₂ S →
-                  Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise R S)
+                  Antisymmetric (≈₁ × ≈₂) (R × S)
 ×-antisymmetric antisym₁ antisym₂ = Product.zip antisym₁ antisym₂
 
-×-asymmetric₁ : Asymmetric R → Asymmetric (Pointwise R S)
+×-asymmetric₁ : Asymmetric R → Asymmetric (R × S)
 ×-asymmetric₁ asym₁ x<y y<x = asym₁ (proj₁ x<y) (proj₁ y<x)
 
-×-asymmetric₂ : Asymmetric S → Asymmetric (Pointwise R S)
+×-asymmetric₂ : Asymmetric S → Asymmetric (R × S)
 ×-asymmetric₂ asym₂ x<y y<x = asym₂ (proj₂ x<y) (proj₂ y<x)
 
 ×-respectsʳ : R Respectsʳ ≈₁ → S Respectsʳ ≈₂ →
-             (Pointwise R S) Respectsʳ (Pointwise ≈₁ ≈₂)
+             (R × S) Respectsʳ (≈₁ × ≈₂)
 ×-respectsʳ resp₁ resp₂ = Product.zip resp₁ resp₂
 
 ×-respectsˡ : R Respectsˡ ≈₁ → S Respectsˡ ≈₂ →
-             (Pointwise R S) Respectsˡ (Pointwise ≈₁ ≈₂)
+             (R × S) Respectsˡ (≈₁ × ≈₂)
 ×-respectsˡ resp₁ resp₂ = Product.zip resp₁ resp₂
 
 ×-respects₂ : R Respects₂ ≈₁ → S Respects₂ ≈₂ →
-              (Pointwise R S) Respects₂ (Pointwise ≈₁ ≈₂)
+              (R × S) Respects₂ (≈₁ × ≈₂)
 ×-respects₂ = Product.zip ×-respectsʳ ×-respectsˡ
 
-×-total : Symmetric R → Total R → Total S → Total (Pointwise R S)
+×-total : Symmetric R → Total R → Total S → Total (R × S)
 ×-total sym₁ total₁ total₂ (x₁ , x₂) (y₁ , y₂)
   with total₁ x₁ y₁ | total₂ x₂ y₂
 ... | inj₁ x₁∼y₁ | inj₁ x₂∼y₂ = inj₁ (     x₁∼y₁ , x₂∼y₂)
@@ -87,8 +89,9 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ... | inj₂ y₁∼x₁ | inj₂ y₂∼x₂ = inj₂ (     y₁∼x₁ , y₂∼x₂)
 ... | inj₂ y₁∼x₁ | inj₁ x₂∼y₂ = inj₁ (sym₁ y₁∼x₁ , x₂∼y₂)
 
-×-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
-×-decidable _≟₁_ _≟₂_ (x₁ , x₂) (y₁ , y₂) = (x₁ ≟₁ y₁) ×? (x₂ ≟₂ y₂)
+infixr 2 _×?_
+_×?_ : Decidable R → Decidable S → Decidable (R × S)
+_×?_ _R?_ _S?_ (x₁ , x₂) (y₁ , y₂) = (x₁ R? y₁) Dec.×? (x₂ S? y₂)
 
 ------------------------------------------------------------------------
 -- Structures can also be combined.
@@ -96,7 +99,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 -- Some collections of properties which are preserved by ×-Rel.
 
 ×-isEquivalence : IsEquivalence R → IsEquivalence S →
-                  IsEquivalence (Pointwise R S)
+                  IsEquivalence (R × S)
 ×-isEquivalence {R = R} {S = S} eq₁ eq₂ = record
   { refl  = ×-refl {R = R} {S = S} (refl eq₁) (refl eq₂)
   ; sym   = ×-symmetric {R = R} {S = S} (sym eq₁) (sym eq₂)
@@ -104,15 +107,15 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
   } where open IsEquivalence
 
 ×-isDecEquivalence : IsDecEquivalence R → IsDecEquivalence S →
-                     IsDecEquivalence (Pointwise R S)
+                     IsDecEquivalence (R × S)
 ×-isDecEquivalence eq₁ eq₂ = record
   { isEquivalence = ×-isEquivalence
                       (isEquivalence eq₁) (isEquivalence eq₂)
-  ; _≟_           = ×-decidable (_≟_ eq₁) (_≟_ eq₂)
+  ; _≟_           = (_≟_ eq₁) ×? (_≟_ eq₂)
   } where open IsDecEquivalence
 
 ×-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →
-               IsPreorder (Pointwise ≈₁ ≈₂) (Pointwise R S)
+               IsPreorder (≈₁ × ≈₂) (R × S)
 ×-isPreorder {R = R} {S = S} pre₁ pre₂ = record
   { isEquivalence = ×-isEquivalence
                       (isEquivalence pre₁) (isEquivalence pre₂)
@@ -123,7 +126,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
   } where open IsPreorder
 
 ×-isPartialOrder : IsPartialOrder ≈₁ R → IsPartialOrder ≈₂ S →
-                   IsPartialOrder (Pointwise ≈₁ ≈₂) (Pointwise R S)
+                   IsPartialOrder (≈₁ × ≈₂) (R × S)
 ×-isPartialOrder {R = R} {S = S} po₁ po₂ = record
   { isPreorder = ×-isPreorder (isPreorder po₁) (isPreorder po₂)
   ; antisym    = ×-antisymmetric {R = R} {S = S}
@@ -132,7 +135,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 
 ×-isStrictPartialOrder : IsStrictPartialOrder ≈₁ R →
                          IsStrictPartialOrder ≈₂ S →
-                         IsStrictPartialOrder (Pointwise ≈₁ ≈₂) (Pointwise R S)
+                         IsStrictPartialOrder (≈₁ × ≈₂) (R × S)
 ×-isStrictPartialOrder {R = R} {≈₂ = ≈₂} {S = S} spo₁ spo₂ = record
   { isEquivalence = ×-isEquivalence
                       (isEquivalence spo₁) (isEquivalence spo₂)
@@ -190,17 +193,44 @@ _×ₛ_ = ×-setoid
 -- The propositional equality setoid over products can be
 -- decomposed using ×-Rel
 
-≡×≡⇒≡ : Pointwise _≡_ _≡_ ⇒ _≡_ {A = A × B}
+≡×≡⇒≡ : (_≡_ × _≡_) ⇒ _≡_ {A = A Product.× B}
 ≡×≡⇒≡ (≡.refl , ≡.refl) = ≡.refl
 
-≡⇒≡×≡ : _≡_ {A = A × B} ⇒ Pointwise _≡_ _≡_
-≡⇒≡×≡ ≡.refl = (≡.refl , ≡.refl)
+≡⇒≡×≡ : _≡_ {A = A Product.× B} ⇒ (_≡_ × _≡_)
+≡⇒≡×≡ ≡.refl = ≡.refl , ≡.refl
 
-Pointwise-≡↔≡ : Inverse (≡.setoid A ×ₛ ≡.setoid B) (≡.setoid (A × B))
-Pointwise-≡↔≡ = record
+×-≡↔≡-× : Inverse (≡.setoid A ×ₛ ≡.setoid B) (≡.setoid (A Product.× B))
+×-≡↔≡-× = record
   { to         = id
   ; from       = id
   ; to-cong    = ≡×≡⇒≡
   ; from-cong  = ≡⇒≡×≡
   ; inverse    = ≡×≡⇒≡ , ≡⇒≡×≡
   }
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+Pointwise = _×_
+{-# WARNING_ON_USAGE Pointwise
+"Warning: Pointwise was deprecated in v2.4.
+Please use _×_ instead."
+#-}
+
+×-decidable = _×?_
+{-# WARNING_ON_USAGE ×-decidable
+"Warning: ×-decidable was deprecated in v2.4.
+Please use _×?_ instead."
+#-}
+
+Pointwise-≡↔≡ = ×-≡↔≡-×
+{-# WARNING_ON_USAGE Pointwise-≡↔≡
+"Warning: Pointwise-≡↔≡ was deprecated in v2.4.
+Please use ×-≡↔≡-× instead."
+#-}
