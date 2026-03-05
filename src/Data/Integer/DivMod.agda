@@ -17,6 +17,7 @@ import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
 import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0;
   m/n≡0⇒m<n; m<n⇒m/n≡0; sn%d≡0⇒sn/d≡s[n/d]; sn%d>0⇒sn/d≡n/d; /-monoˡ-≤;
   /-monoʳ-≤; 0/n≡0)
+open import Data.Sign.Base using (opposite)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.Definitions using (Monotonic₁)
 open import Relation.Binary.PropositionalEquality
@@ -288,6 +289,29 @@ private
   - (n /ℕ ℕ.suc d₁) ≤⟨ neg-mono-≤ (/ℕ-monoʳ-≤-nonPos n (s≤s d₂≤d₁)) ⟩
   - (n /ℕ ℕ.suc d₂) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₂) ⟨
   n / - +[1+ d₂ ]   ∎
+
+/-monoʳ-≤-nonNeg-op-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                            .{{_ : NonNegative n}} →
+                            {sign d₁ ≡ opposite (sign d₂)} →
+                            d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+/-monoʳ-≤-nonNeg-op-signs n { -[1+ d₁ ]} {+ d₂} -≤+ = begin
+  n / -[1+ d₁ ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟩
+  - (n /ℕ ℕ.suc d₁) ≤⟨ neg-mono-≤ (0≤n⇒0≤n/ℕd n (ℕ.suc d₁) (nonNegative⁻¹ n)) ⟩
+  0ℤ                ≤⟨ 0≤n⇒0≤n/d n (+ d₂) (nonNegative⁻¹ n) (+≤+ z≤n) ⟩
+  n / + d₂          ∎
+
+/-monoʳ-≤-nonPos-op-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                           .{{_ : NonPositive n}} →
+                           {sign d₁ ≡ opposite (sign d₂)} →
+                           d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+/-monoʳ-≤-nonPos-op-signs (+ 0) {d₁@(-[1+ _ ])} {d₂@(+ _)} -≤+ =
+   ≤-trans (≤-reflexive (0/d≡0 d₂)) (≤-reflexive (sym (0/d≡0 d₁)))
+/-monoʳ-≤-nonPos-op-signs n@(-[1+ _ ]) { -[1+ d₁ ]} {+ d₂} -≤+ = begin
+  n / + d₂          ≡⟨ div-pos-is-/ℕ n d₂ ⟩
+  n /ℕ d₂           <⟨ n<0⇒n/ℕd<0 n d₂ (negative⁻¹ n) ⟩
+  0ℤ                <⟨ neg-mono-< (n<0⇒n/ℕd<0 n (ℕ.suc d₁) (negative⁻¹ n)) ⟩
+  - (n /ℕ ℕ.suc d₁) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟨
+  n / -[1+ d₁ ]     ∎
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
