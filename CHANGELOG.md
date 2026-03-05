@@ -91,7 +91,9 @@ Deprecated names
 
 * In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
   ```agda
-  ×-decidable  ↦  pointwise?
+  Pointwise      ↦  _×_
+  ×-decidable    ↦  _×?_
+  Pointwise-≡↔≡  ↦  ×-≡↔≡-×
   ```
 
 * In `Data.Rational.Properties`:
