@@ -12,7 +12,7 @@ module Data.Product.Function.NonDependent.Propositional where
 open import Data.Product.Base using (_×_; map)
 open import Data.Product.Function.NonDependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-  using (_×ₛ_; Pointwise-≡↔≡)
+  using (_×ₛ_; ×-≡↔≡-×)
 open import Function.Base using (id)
 open import Function.Bundles
   using (Inverse; _⟶_; _⇔_; _↣_; _↠_; _⤖_; _↩_; _↪_; _↔_)
@@ -43,7 +43,7 @@ private
                    R (setoid A) (setoid C) → R (setoid B) (setoid D) →
                    R (setoid (A × B)) (setoid (C × D))
   liftViaInverse trans inv⇒R lift RAC RBD =
-    Inv.transportVia trans inv⇒R (Inv.sym Pointwise-≡↔≡) (lift RAC RBD) Pointwise-≡↔≡
+    Inv.transportVia trans inv⇒R (Inv.sym ×-≡↔≡-×) (lift RAC RBD) ×-≡↔≡-×
 
 ------------------------------------------------------------------------
 -- Combinators for various function types

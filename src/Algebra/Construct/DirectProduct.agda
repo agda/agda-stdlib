@@ -16,7 +16,7 @@
 module Algebra.Construct.DirectProduct where
 
 open import Algebra
-open import Data.Product.Base using (_×_; zip; _,_; map; _<*>_; uncurry)
+open import Data.Product.Base as Product using (zip; _,_; map; _<*>_; uncurry)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level using (Level; _⊔_)
 
@@ -29,23 +29,23 @@ private
 
 rawMagma : RawMagma a ℓ₁ → RawMagma b ℓ₂ → RawMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawMagma M N = record
-  { Carrier = M.Carrier × N.Carrier
-  ; _≈_     = Pointwise M._≈_ N._≈_
+  { Carrier = M.Carrier Product.× N.Carrier
+  ; _≈_     = M._≈_ × N._≈_
   ; _∙_     = zip M._∙_ N._∙_
   } where module M = RawMagma M; module N = RawMagma N
 
 rawMonoid : RawMonoid a ℓ₁ → RawMonoid b ℓ₂ → RawMonoid (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawMonoid M N = record
-  { Carrier = M.Carrier × N.Carrier
-  ; _≈_     = Pointwise M._≈_ N._≈_
+  { Carrier = M.Carrier Product.× N.Carrier
+  ; _≈_     = M._≈_ × N._≈_
   ; _∙_     = zip M._∙_ N._∙_
   ; ε       = M.ε , N.ε
   } where module M = RawMonoid M; module N = RawMonoid N
 
 rawGroup : RawGroup a ℓ₁ → RawGroup b ℓ₂ → RawGroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawGroup G H = record
-  { Carrier = G.Carrier × H.Carrier
-  ; _≈_     = Pointwise G._≈_ H._≈_
+  { Carrier = G.Carrier Product.× H.Carrier
+  ; _≈_     = G._≈_ × H._≈_
   ; _∙_     = zip G._∙_ H._∙_
   ; ε       = G.ε , H.ε
   ; _⁻¹     = map G._⁻¹ H._⁻¹
@@ -53,8 +53,8 @@ rawGroup G H = record
 
 rawSemiring : RawSemiring a ℓ₁ → RawSemiring b ℓ₂ → RawSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawSemiring R S = record
-  { Carrier = R.Carrier × S.Carrier
-  ; _≈_     = Pointwise R._≈_ S._≈_
+  { Carrier = R.Carrier Product.× S.Carrier
+  ; _≈_     = R._≈_ × S._≈_
   ; _+_     = zip R._+_ S._+_
   ; _*_     = zip R._*_ S._*_
   ; 0#      = R.0# , S.0#
@@ -63,8 +63,8 @@ rawSemiring R S = record
 
 rawRingWithoutOne : RawRingWithoutOne a ℓ₁ → RawRingWithoutOne b ℓ₂ → RawRingWithoutOne (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawRingWithoutOne R S = record
-  { Carrier = R.Carrier × S.Carrier
-  ; _≈_     = Pointwise R._≈_ S._≈_
+  { Carrier = R.Carrier Product.× S.Carrier
+  ; _≈_     = R._≈_ × S._≈_
   ; _+_     = zip R._+_ S._+_
   ; _*_     = zip R._*_ S._*_
   ; -_      = map R.-_ S.-_
@@ -73,8 +73,8 @@ rawRingWithoutOne R S = record
 
 rawRing : RawRing a ℓ₁ → RawRing b ℓ₂ → RawRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawRing R S = record
-  { Carrier = R.Carrier × S.Carrier
-  ; _≈_     = Pointwise R._≈_ S._≈_
+  { Carrier = R.Carrier Product.× S.Carrier
+  ; _≈_     = R._≈_ × S._≈_
   ; _+_     = zip R._+_ S._+_
   ; _*_     = zip R._*_ S._*_
   ; -_      = map R.-_ S.-_
@@ -84,8 +84,8 @@ rawRing R S = record
 
 rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ → RawQuasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawQuasigroup M N = record
-  { Carrier = M.Carrier × N.Carrier
-  ; _≈_     = Pointwise M._≈_ N._≈_
+  { Carrier = M.Carrier Product.× N.Carrier
+  ; _≈_     = M._≈_ × N._≈_
   ; _∙_     = zip M._∙_ N._∙_
   ; _\\_    = zip M._\\_ N._\\_
   ; _//_    = zip M._//_ N._//_
@@ -93,8 +93,8 @@ rawQuasigroup M N = record
 
 rawLoop : RawLoop a ℓ₁ → RawLoop b ℓ₂ → RawLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawLoop M N = record
-  { Carrier = M.Carrier × N.Carrier
-  ; _≈_     = Pointwise M._≈_ N._≈_
+  { Carrier = M.Carrier Product.× N.Carrier
+  ; _≈_     = M._≈_ × N._≈_
   ; _∙_     = zip M._∙_ N._∙_
   ; _\\_    = zip M._\\_ N._\\_
   ; _//_    = zip M._//_ N._//_
@@ -106,8 +106,8 @@ rawLoop M N = record
 
 magma : Magma a ℓ₁ → Magma b ℓ₂ → Magma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 magma M N = record
-  { Carrier = M.Carrier × N.Carrier
-  ; _≈_     = Pointwise M._≈_ N._≈_
+  { Carrier = M.Carrier Product.× N.Carrier
+  ; _≈_     = M._≈_ × N._≈_
   ; _∙_     = zip M._∙_ N._∙_
   ; isMagma = record
     { isEquivalence = ×-isEquivalence M.isEquivalence N.isEquivalence

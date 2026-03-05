@@ -11,7 +11,7 @@ module Relation.Binary.Morphism.Construct.Product where
 
 import Data.Product.Base as Product using (<_,_>; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
-  using (Pointwise)
+  using (_×_)
 open import Level using (Level)
 open import Relation.Binary.Bundles.Raw using (RawSetoid)
 open import Relation.Binary.Core using (Rel)
@@ -32,7 +32,7 @@ module _ (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂) where
 
   private
 
-    _≈_ = Pointwise _≈₁_ _≈₂_
+    _≈_ = _≈₁_ × _≈₂_
 
   module Proj₁ where
 
