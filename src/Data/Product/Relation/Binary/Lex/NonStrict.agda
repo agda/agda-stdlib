@@ -82,11 +82,10 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂} {_≤₂_ : Rel B �
     ...   | inj₁ x₂≤y₂ = inj₁ (inj₂ (x₁≈y₁ , x₂≤y₂))
     ...   | inj₂ x₂≥y₂ = inj₂ (inj₂ (sym₁ x₁≈y₁ , x₂≥y₂))
 
-  ×-decidable : Decidable _≈₁_ → Decidable _≤₁_ → Decidable _≤₂_ →
+  <ₗₑₓ? : Decidable _≈₁_ → Decidable _≤₁_ → Decidable _≤₂_ →
                 Decidable _≤ₗₑₓ_
-  ×-decidable dec-≈₁ dec-≤₁ dec-≤₂ =
-    Strict.×-decidable dec-≈₁ (Conv.<-decidable _ _ dec-≈₁ dec-≤₁)
-                       dec-≤₂
+  <ₗₑₓ? ≈?₁ ≤?₁ ≤?₂ =
+    Strict.<ₗₑₓ? ≈?₁ (Conv.<-decidable _ _ ≈?₁ ≤?₁) ≤?₂
 
 module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
          {_≈₂_ : Rel B ℓ₃} {_≤₂_ : Rel B ℓ₄}
@@ -158,7 +157,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
                                     (isTotalOrder to₁)
                                     (isTotalOrder to₂)
     ; _≟_          = Pointwise.×-decidable (_≟_ to₁) (_≟_ to₂)
-    ; _≤?_         = ×-decidable (_≟_ to₁) (_≤?_ to₁) (_≤?_ to₂)
+    ; _≤?_         = <ₗₑₓ? (_≟_ to₁) (_≤?_ to₁) (_≤?_ to₂)
     }
     where open IsDecTotalOrder
 
@@ -183,3 +182,18 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
 ×-decTotalOrder t₁ t₂ = record
   { isDecTotalOrder = ×-isDecTotalOrder O₁.isDecTotalOrder O₂.isDecTotalOrder
   } where module O₁ = DecTotalOrder t₁; module O₂ = DecTotalOrder t₂
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+×-decidable = <ₗₑₓ?
+{-# WARNING_ON_USAGE ×-decidable
+"Warning: ×-decidable was deprecated in v2.4.
+Please use <ₗₑₓ? instead."
+#-}
