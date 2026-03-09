@@ -107,9 +107,9 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
   ...   | inj₁ x₂≤y₂ = inj₁ (inj₂ (x₁≈y₁     , x₂≤y₂))
   ...   | inj₂ y₂≤x₂ = inj₂ (inj₂ (sym x₁≈y₁ , y₂≤x₂))
 
-  ×-decidable : Decidable _≈₁_ → Decidable _<₁_ → Decidable _<₂_ →
+  <ₗₑₓ? : Decidable _≈₁_ → Decidable _<₁_ → Decidable _<₂_ →
                 Decidable _<ₗₑₓ_
-  ×-decidable _≈₁?_ _<₁?_ _<₂?_ x y =
+  <ₗₑₓ? _≈₁?_ _<₁?_ _<₂?_ x y =
     proj₁ x <₁? proj₁ y
       ⊎?
     (proj₁ x ≈₁? proj₁ y
@@ -304,3 +304,18 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
   { isStrictTotalOrder = ×-isStrictTotalOrder
       (isStrictTotalOrder s₁) (isStrictTotalOrder s₂)
   } where open StrictTotalOrder
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+×-decidable = <ₗₑₓ?
+{-# WARNING_ON_USAGE ×-decidable
+"Warning: ×-decidable was deprecated in v2.4.
+Please use <ₗₑₓ? instead."
+#-}

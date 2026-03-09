@@ -105,7 +105,7 @@ x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
 
 infix 4 _<?_
 _<?_ : Decidable _<_
-x <? y = StrictLex.<-decidable Char._≟_ Char._<?_ (toList x) (toList y)
+x <? y = StrictLex._<?_ Char._≟_ Char._<?_ (toList x) (toList y)
 
 <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
 <-isStrictPartialOrder-≈ =
