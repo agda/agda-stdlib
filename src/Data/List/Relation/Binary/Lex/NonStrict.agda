@@ -19,7 +19,7 @@ open import Function.Base using (const; id)
 import Data.List.Relation.Binary.Lex.Strict as Strict
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
