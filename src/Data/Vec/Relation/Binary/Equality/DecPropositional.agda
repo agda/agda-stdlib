@@ -9,7 +9,7 @@
 open import Relation.Binary.Definitions using (DecidableEquality)
 
 module Data.Vec.Relation.Binary.Equality.DecPropositional
-  {a} {A : Set a} (_≟_ : DecidableEquality A) where
+  {a} {A : Set a} (_≈?_ : DecidableEquality A) where
 
 open import Data.Vec.Base using (Vec)
 open import Data.Vec.Properties using (≡-dec)
@@ -22,7 +22,7 @@ open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 -- equality
 
 open PEq public
-open DSEq (decSetoid _≟_) public
+open DSEq (decSetoid _≈?_) public
   using (_≋?_; ≋-isDecEquivalence; ≋-decSetoid)
 
 ------------------------------------------------------------------------
@@ -31,4 +31,4 @@ open DSEq (decSetoid _≟_) public
 infix 4 _≡?_
 
 _≡?_ : ∀ {n} → DecidableEquality (Vec A n)
-_≡?_ = ≡-dec _≟_
+_≡?_ = ≡-dec _≈?_

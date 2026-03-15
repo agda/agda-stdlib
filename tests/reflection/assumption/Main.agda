@@ -13,7 +13,7 @@ open import Data.Unit.Base using (⊤)
 open import Function.Base using (case_of_; _$_)
 open import Reflection.TCM hiding (pure)
 open import Reflection.AST.Term
-open import Reflection.AST.Literal hiding (_≟_)
+open import Reflection.AST.Literal hiding (_≟_; _≡?_)
 open import Reflection.AST.Argument using (Arg; unArg; arg)
 open import Reflection.AST.DeBruijn
 open import Reflection.AST.Show
@@ -44,7 +44,7 @@ searchEntry : ℕ → Type → List (String × Arg Type) → Maybe ℕ
 searchEntry n ty [] = nothing
 searchEntry n ty ((_ , e) ∷ es) = do
   ty ← strengthen ty
-  if does (ty ≟ unArg e)
+  if does (ty ≡? unArg e)
     then just n
     else searchEntry (suc n) ty es
 

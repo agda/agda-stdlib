@@ -15,7 +15,7 @@ open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
-open import Relation.Binary.TypeClasses using (IsDecEquivalence; _≟_)
+open import Relation.Binary.TypeClasses using (IsDecEquivalence; _≈?_)
 
 private
   variable
@@ -27,4 +27,4 @@ instance
   vecApplicative = applicative
 
   Vec-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → ∀ {n} → IsDecEquivalence {A = Vec A n} _≡_
-  Vec-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_)
+  Vec-≡-isDecEquivalence = isDecEquivalence (≡-dec _≈?_)

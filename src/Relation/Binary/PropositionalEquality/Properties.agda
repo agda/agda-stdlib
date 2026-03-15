@@ -159,9 +159,9 @@ isEquivalence = record
   }
 
 isDecEquivalence : DecidableEquality A → IsDecEquivalence _≡_
-isDecEquivalence _≟_ = record
+isDecEquivalence _≈?_ = record
   { isEquivalence = isEquivalence
-  ; _≟_           = _≟_
+  ; _≈?_          = _≈?_
   }
 
 setoid : Set a → Setoid _ _
@@ -172,9 +172,9 @@ setoid A = record
   }
 
 decSetoid : DecidableEquality A → DecSetoid _ _
-decSetoid _≟_ = record
+decSetoid _≡?_ = record
   { _≈_              = _≡_
-  ; isDecEquivalence = isDecEquivalence _≟_
+  ; isDecEquivalence = isDecEquivalence _≡?_
   }
 
 ------------------------------------------------------------------------

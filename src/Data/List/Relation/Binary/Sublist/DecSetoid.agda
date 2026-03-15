@@ -36,12 +36,12 @@ open SetoidSublist setoid public
 -- Additional relational properties
 
 _⊆?_ : Decidable _⊆_
-_⊆?_ = HeterogeneousProperties.sublist? _≟_
+_⊆?_ = HeterogeneousProperties.sublist? _≈?_
 
 ⊆-isDecPartialOrder : IsDecPartialOrder _≋_ _⊆_
 ⊆-isDecPartialOrder = record
   { isPartialOrder = ⊆-isPartialOrder
-  ; _≟_            = _≋?_
+  ; _≈?_           = _≋?_
   ; _≤?_           = _⊆?_
   }
 

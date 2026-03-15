@@ -21,7 +21,7 @@ import Data.Record as Record
 
 -- Let us use strings as labels.
 
-open Record String _≟_
+open Record String _≡?_
 
 -- Partial equivalence relations.
 

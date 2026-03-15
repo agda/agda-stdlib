@@ -91,19 +91,19 @@ mkℚ-injective : ∀ {n₁ n₂ d₁ d₂}
                 mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂ → n₁ ≡ n₂ × d₁ ≡ d₂
 mkℚ-injective refl = refl , refl
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality ℚ
-mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ = map′
+_≡?_ : DecidableEquality ℚ
+mkℚ n₁ d₁ _ ≡? mkℚ n₂ d₂ _ = map′
   (uncurry mkℚ-cong)
   mkℚ-injective
-  (n₁ ℤ.≟ n₂ ×-dec d₁ ℕ.≟ d₂)
+  (n₁ ℤ.≡? n₂ ×-dec d₁ ℕ.≡? d₂)
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℚ
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 1≢0 : 1ℚ ≢ 0ℚ
 1≢0 = λ ()
@@ -560,7 +560,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -858,7 +858,7 @@ private
 open Definitions ℚ ℚᵘ ℚᵘ._≃_
 
 toℚᵘ-homo-+ : Homomorphic₂ toℚᵘ _+_ ℚᵘ._+_
-toℚᵘ-homo-+ p@record{} q@record{} with +-nf p q ℤ.≟ 0ℤ
+toℚᵘ-homo-+ p@record{} q@record{} with +-nf p q ℤ.≡? 0ℤ
 ... | yes nf[p,q]≡0 = *≡* $ begin
   ↥ᵘ (toℚᵘ (p + q)) ℤ.* ↧+ᵘ p q   ≡⟨ cong (ℤ._* ↧+ᵘ p q) (↥ᵘ-toℚᵘ (p + q)) ⟩
   ↥ (p + q) ℤ.* ↧+ᵘ p q           ≡⟨ cong (ℤ._* ↧+ᵘ p q) eq ⟩
@@ -1094,7 +1094,7 @@ private
 -- Monomorphic to unnormalised _*_
 
 toℚᵘ-homo-* : Homomorphic₂ toℚᵘ _*_ ℚᵘ._*_
-toℚᵘ-homo-* p@record{} q@record{} with *-nf p q ℤ.≟ 0ℤ
+toℚᵘ-homo-* p@record{} q@record{} with *-nf p q ℤ.≡? 0ℤ
 ... | yes nf[p,q]≡0 = *≡* $ begin
   ↥ᵘ (toℚᵘ (p * q)) ℤ.* (↧ p ℤ.* ↧ q)     ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) (↥ᵘ-toℚᵘ (p * q)) ⟩
   ↥ (p * q)         ℤ.* (↧ p ℤ.* ↧ q)     ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) eq ⟩
@@ -1912,4 +1912,11 @@ nonPos*nonPos⇒nonPos = nonPos*nonPos⇒nonNeg
 {-# WARNING_ON_USAGE nonPos*nonPos⇒nonPos
 "Warning: nonPos*nonPos⇒nonPos was deprecated in v2.4.
 Please use nonPos*nonPos⇒nonNeg instead."
+#-}
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
 #-}

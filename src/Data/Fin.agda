@@ -20,7 +20,7 @@ open import Data.Fin.Base public
 -- Publicly re-export queries
 
 open import Data.Fin.Properties public
-  using (_≟_; _≤?_; _<?_)
+  using (_≟_; _≡?_; _≤?_; _<?_)
 
 -- # m = "m".
 

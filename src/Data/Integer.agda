@@ -16,7 +16,7 @@ module Data.Integer where
 
 open import Data.Integer.Base public
 open import Data.Integer.Properties public
-  using (_≟_; _≤?_; _<?_)
+  using (_≡?_; _≤?_; _<?_)
 
 ------------------------------------------------------------------------
 -- Deprecated

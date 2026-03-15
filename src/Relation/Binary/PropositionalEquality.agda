@@ -82,13 +82,13 @@ cong-≡id {f = f} {x} f≡id = begin
   f≡id (f x)                                     ∎
   where open ≡-Reasoning; fx≡x = f≡id x; f²x≡x = f≡id (f x)
 
-module _ (_≟_ : DecidableEquality A) {x y : A} where
+module _ (_≡?_ : DecidableEquality A) {x y : A} where
 
-  ≡-≟-identity : (eq : x ≡ y) → x ≟ y ≡ yes eq
-  ≡-≟-identity eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
+  ≡-≡?-identity : (eq : x ≡ y) → x ≡? y ≡ yes eq
+  ≡-≡?-identity eq = dec-yes-irr (x ≡? y) (Decidable⇒UIP.≡-irrelevant _≡?_) eq
 
-  ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
-  ≢-≟-identity = dec-no (x ≟ y)
+  ≢-≡?-identity : (x≢y : x ≢ y) → x ≡? y ≡ no x≢y
+  ≢-≡?-identity = dec-no (x ≡? y)
 
 
 ------------------------------------------------------------------------
@@ -130,3 +130,16 @@ isPropositional = Irrelevant
 Please use Relation.Nullary.Irrelevant instead. "
 #-}
 
+-- Version 2.4
+
+≡-≟-identity = ≡-≡?-identity
+{-# WARNING_ON_USAGE ≡-≟-identity
+"Warning: ≡-≟-identity was deprecated in v2.4.
+Please use ≡-≡?-identity instead."
+#-}
+
+≢-≟-identity = ≢-≡?-identity
+{-# WARNING_ON_USAGE ≢-≟-identity
+"Warning: ≢-≟-identity was deprecated in v2.4.
+Please use ≢-≡?-identity instead."
+#-}

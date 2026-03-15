@@ -9,7 +9,7 @@
 module Data.Unit.Polymorphic.Instances where
 
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Data.Unit.Polymorphic.Properties using (_≟_; ≡-isDecTotalOrder)
+open import Data.Unit.Polymorphic.Properties using (_≡?_; ≡-isDecTotalOrder)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
@@ -23,7 +23,7 @@ private
 
 instance
   ⊤-≡-isDecEquivalence : IsDecEquivalence {A = ⊤ {a}} _≡_
-  ⊤-≡-isDecEquivalence = isDecEquivalence _≟_
+  ⊤-≡-isDecEquivalence = isDecEquivalence _≡?_
 
   ⊤-≤-isDecTotalOrder : IsDecTotalOrder {A = ⊤ {a}} _≡_ _≡_
   ⊤-≤-isDecTotalOrder = ≡-isDecTotalOrder _
