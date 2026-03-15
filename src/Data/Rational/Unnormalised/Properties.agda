@@ -31,10 +31,11 @@ open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
-        ; *-identityʳ; *-comm; *-assoc; *-suc)
+        ; *-identityˡ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
+import Data.Integer.DivMod as ℤ
 open import Data.Rational.Unnormalised.Base
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
@@ -1566,6 +1567,73 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
     1/q≥0 = pos⇒nonNeg 1/q {{1/pos⇒pos q}}
 
 ------------------------------------------------------------------------
+-- Properties of _/_
+
+n/d≡[n/1]*[1/d] : ∀ n d .{{_ : ℕ.NonZero d}} → n / d ≡ (n / 1) * (1ℤ / d)
+n/d≡[n/1]*[1/d] n d@(suc _) = sym (/-cong (ℤ.*-identityʳ n) (ℕ.*-identityˡ d))
+
+------------------------------------------------------------------------
+-- Properties of _/_ and _+_
+
+private
+  [n+m]/1≡n/1+m/1 : ∀ n m → (n ℤ.+ m) / 1 ≡ n / 1 + m / 1
+  [n+m]/1≡n/1+m/1 n m = sym (begin
+    (n ℤ.* 1ℤ ℤ.+ m ℤ.* 1ℤ) / (1 ℕ.* 1)
+       ≡⟨ /-cong (cong₂ ℤ._+_ (ℤ.*-identityʳ n) (ℤ.*-identityʳ m))
+                (ℕ.*-identityʳ 1) ⟩
+    (n ℤ.+ m) / 1 ∎)
+    where open ≡-Reasoning
+
+/-distribʳ-+ : ∀ d n m .{{_ : ℕ.NonZero d}} → (n ℤ.+ m) / d ≃ n / d + m / d
+/-distribʳ-+ d n m = begin
+  (n ℤ.+ m) / d
+      ≡⟨ n/d≡[n/1]*[1/d] (n ℤ.+ m) d ⟩
+  (n ℤ.+ m) / 1 * (1ℤ / d)
+      ≡⟨ cong (_* (1ℤ / d)) ([n+m]/1≡n/1+m/1 n m) ⟩
+  (n / 1 + m / 1) * (1ℤ / d)
+      ≈⟨ *-distribʳ-+ (1ℤ / d) (n / 1) (m / 1) ⟩
+  n / 1 * (1ℤ / d) + m / 1 * (1ℤ / d)
+      ≡⟨ cong₂ _+_ (n/d≡[n/1]*[1/d] n d) (n/d≡[n/1]*[1/d] m d) ⟨
+  n / d + m / d ∎
+  where open ≃-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of _/_ and _<_
+
+/-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
+/-monoˡ-< d@(suc _) n<m = *<* (ℤ.*-monoʳ-<-pos (ℤ.+ d) n<m)
+
+/-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
+                .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                d₁ ℕ.< d₂ → n / d₂ < n / d₁
+/-monoʳ-<-pos n {d₁@(suc _)} {d₂@(suc _)} d₁<d₂ =
+              *<* (ℤ.*-monoˡ-<-pos n (ℤ.+<+ d₁<d₂))
+
+/-monoʳ-<-neg : ∀ n {d₁ d₂} .{{_ : ℤ.Negative n}}
+                .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                d₁ ℕ.< d₂ → n / d₁ < n / d₂
+/-monoʳ-<-neg n {d₁@(suc _)} {d₂@(suc _)} d₁<d₂ =
+              *<* (ℤ.*-monoˡ-<-neg n (ℤ.+<+ d₁<d₂))
+
+------------------------------------------------------------------------
+-- Properties of _/_ and _≤_
+
+/-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._≤_ _≤_ (_/ d)
+/-monoˡ-≤ d@(suc _) n≤m = *≤* (ℤ.*-monoʳ-≤-nonNeg (ℤ.+ d) n≤m)
+
+/-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℤ.NonNegative n}}
+                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                   d₁ ℕ.≤ d₂ → n / d₂ ≤ n / d₁
+/-monoʳ-≤-nonNeg n {d₁@(suc _)} {d₂@(suc _)} d₁≤d₂ =
+                 *≤* (ℤ.*-monoˡ-≤-nonNeg n (ℤ.+≤+ d₁≤d₂))
+
+/-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℤ.NonPositive n}}
+                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                   d₁ ℕ.≤ d₂ → n / d₁ ≤ n / d₂
+/-monoʳ-≤-nonPos n {d₁@(suc _)} {d₂@(suc _)} d₁≤d₂ =
+                 *≤* (ℤ.*-monoˡ-≤-nonPos n (ℤ.+≤+ d₁≤d₂))
+
+------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
 ------------------------------------------------------------------------
 -- Basic specification in terms of _≤_
@@ -1932,7 +2000,6 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣-∣-nonNeg (mkℚᵘ +[1+ _ ] _) = _
 ∣-∣-nonNeg (mkℚᵘ +0       _) = _
 ∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

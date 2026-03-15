@@ -121,6 +121,13 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 [1+m%d]≤1+n⇒[m%d]≤n : ∀ m n d .{{_ : NonZero d}} → 0 < suc m % d → suc m % d ≤ suc n → m % d ≤ n
 [1+m%d]≤1+n⇒[m%d]≤n m n (suc d-1) leq = 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 n m d-1 leq
 
+%-pred-≡suc : ∀ m d k .{{_ : NonZero d}} → suc m % d ≡ suc k → m % d ≡ k
+%-pred-≡suc m d k sm%d≡sk = ≤-antisym m%d≤k k≤m%d
+  where
+  k<sm%d = ≤-reflexive (sym sm%d≡sk)
+  m%d≤k = ([1+m%d]≤1+n⇒[m%d]≤n m k d (m<n⇒0<n k<sm%d) (≤-reflexive sm%d≡sk))
+  k≤m%d = m<[1+n%d]⇒m≤[n%d] m d k<sm%d
+
 %-distribˡ-+ : ∀ m n d .{{_ : NonZero d}} → (m + n) % d ≡ ((m % d) + (n % d)) % d
 %-distribˡ-+ m n d@(suc d-1) = begin-equality
   (m + n)                         % d ≡⟨ cong (λ v → (v + n) % d) (m≡m%n+[m/n]*n m d) ⟩
@@ -291,6 +298,43 @@ m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} m≥n = begin-equality
   (m ∸ n) / n            ≡⟨⟩
   pred (1 + (m ∸ n) / n) ≡⟨ cong pred (m/n≡1+[m∸n]/n n≥m) ⟨
   pred (m / n)           ∎
+
+sn%d≡0⇒sn/d≡s[n/d] : ∀ n d .{{_ : NonZero d}} → suc n % d ≡ 0 →
+                     suc n / d ≡ suc (n / d)
+sn%d≡0⇒sn/d≡s[n/d] n d@(suc _) sn%d≡0 =
+  *-cancelʳ-≡ (suc n / d) (suc (n / d)) d (begin-equality
+    suc n / d * d           ≡⟨ sn≡[sn/d]*d ⟨
+    suc n                   ≡⟨ cong suc (m≡m%n+[m/n]*n n d) ⟩
+    suc (n % d) + n / d * d ≡⟨ cong (_+ n / d * d) s[n%d]≡d ⟩
+    d + n / d * d           ≡⟨ cong (_+ n / d * d) (*-identityˡ d) ⟨
+    1 * d + n / d * d       ≡⟨ *-distribʳ-+ d 1 (n / d) ⟨
+    (1 + n / d) * d ∎ )
+  where
+  sn≡[sn/d]*d = trans (m≡m%n+[m/n]*n (suc n) d)
+                      (cong (_+ suc n / d * d) sn%d≡0)
+  s[n%d]≡d = trans (cong suc (%-pred-≡0 sn%d≡0)) (∸-suc z≤n)
+
+sn%d>0⇒sn/d≡n/d : ∀ n d .{{_ : NonZero d}} →
+                  0 < suc n % d → suc n / d ≡ n / d
+sn%d>0⇒sn/d≡n/d n d 0<sn%d with suc k ← suc n % d in sn%d≡sk =
+  *-cancelʳ-≡ (suc n / d) (n / d) d (begin-equality
+    suc n / d * d
+      ≡⟨ [n/d]*d≡n∸n%d (suc n) d ⟩
+    suc n ∸ suc n % d
+      ≡⟨ cong (suc n ∸_) sn%d≡sk ⟩
+    suc n ∸ suc k
+      ≡⟨ cong (λ x → suc x ∸ suc k) (m≡m%n+[m/n]*n n d) ⟩
+    suc (n % d) + n / d * d ∸ suc k
+      ≡⟨ cong (λ x → suc x + n / d * d ∸ suc k) (%-pred-≡suc n d k sn%d≡sk) ⟩
+    suc k + n / d * d ∸ suc k
+      ≡⟨ m+n∸m≡n (suc k) (n / d * d) ⟩
+    n / d * d ∎)
+  where
+  [n/d]*d≡n∸n%d : ∀ n d .{{_ : NonZero d}} → (n / d) * d ≡ n ∸ n % d
+  [n/d]*d≡n∸n%d n d = sym (begin-equality
+    n ∸ n % d           ≡⟨ cong (n ∸_) (m%n≡m∸m/n*n n d) ⟩
+    n ∸ (n ∸ n / d * d) ≡⟨ m∸[m∸n]≡n (m/n*n≤m n d) ⟩
+    n / d * d           ∎)
 
 m∣n⇒o%n%m≡o%m : ∀ m n o .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n →
                 o % n % m ≡ o % m
@@ -492,4 +536,3 @@ m divMod n = result (m / n) (m mod n) $ begin-equality
   m % n                + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< [m%n]<n) ⟨
   toℕ (fromℕ< [m%n]<n) + [m/n]*n  ∎
   where [m/n]*n = m / n * n ; [m%n]<n = m%n<n m n
-

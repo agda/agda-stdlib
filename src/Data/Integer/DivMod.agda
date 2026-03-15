@@ -8,16 +8,22 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; NonZero; _%_; ∣_∣;
-  _%ℕ_; _/ℕ_; _+_; _*_; -_; _-_; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; suc;
-  +<+)
+open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; ∣_∣; _+_; _*_; -_;
+  _-_; suc; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _≥_; _<_; +≤+; -≤-; -≤+; +<+; -<+;
+  NonZero; NonNegative; NonPositive; Negative; Positive; sign)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
-import Data.Nat.Properties as ℕ using (m∸n≤m)
-import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n)
+import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
+import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0;
+  m/n≡0⇒m<n; m<n⇒m/n≡0; sn%d≡0⇒sn/d≡s[n/d]; sn%d>0⇒sn/d≡n/d; /-monoˡ-≤;
+  /-monoʳ-≤; 0/n≡0)
+open import Data.Sign.Base using (opposite)
 open import Function.Base using (_∘′_)
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; cong; sym; subst)
+open import Relation.Binary.Definitions using (Monotonic₁)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; cong; sym; subst; trans)
+open import Relation.Nullary.Negation.Core using (contradiction)
+
 open ≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -94,6 +100,15 @@ div-neg-is-neg-/ℕ n (ℕ.suc d) = -1*i≡-i (n /ℕ ℕ.suc d)
   rewrite div-pos-is-/ℕ n d {{d≢0}}
         = 0≤n⇒0≤n/ℕd n d 0≤n
 
+n<0⇒n/ℕd<0 : ∀ n d .{{_ : ℕ.NonZero d}} → n < 0ℤ → (n /ℕ d) < 0ℤ
+n<0⇒n/ℕd<0 -[1+ n ] d -<+
+  with ℕ.suc n ℕ.% d in sn%d
+... | ℕ.zero  = begin-strict
+  - (+ (ℕ.suc n ℕ./ d))   ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d sn%d) ⟩
+  - (+ (ℕ.suc (n ℕ./ d))) <⟨ -<+ ⟩
+  + 0                     ∎
+... | ℕ.suc _ = -<+
+
 [n/d]*d≤n : ∀ n d .{{_ : NonZero d}} → (n / d) * d ≤ n
 [n/d]*d≤n n (+ d) = begin
   n / + d * + d        ≡⟨ cong (_* (+ d)) (div-pos-is-/ℕ n d) ⟩
@@ -128,6 +143,175 @@ a≡a%n+[a/n]*n n d@(-[1+ _ ]) = begin-equality
   + r + - (q * d)    ≡⟨ cong (_+_ (+ r)) (neg-distribˡ-* q d) ⟩
   + r + - q * d      ≡⟨ cong (_+_ (+ r) ∘′ (_* d)) (sym (-1*i≡-i q)) ⟩
   + r + n / d * d    ∎
+
+0/ℕd≡0 : ∀ d .{{_ : ℕ.NonZero d}} → + 0 /ℕ d ≡ + 0
+0/ℕd≡0 d = cong (+_) (ℕ.0/n≡0 d)
+
+0/d≡0 : ∀ d .{{_ : NonZero d}} → + 0 / d ≡ + 0
+0/d≡0 (+ d) = trans (div-pos-is-/ℕ (+ 0) d) (0/ℕd≡0 d)
+0/d≡0 -[1+ d ] = trans (div-neg-is-neg-/ℕ (+ 0) (ℕ.suc d))
+                       (cong (-_) (0/ℕd≡0 (ℕ.suc d)))
+
+n/ℕ1≡n : ∀ n → n /ℕ 1 ≡ n
+n/ℕ1≡n (+ n) = cong +_ (ℕ.n/1≡n n)
+n/ℕ1≡n -[1+ n ] rewrite ℕ.n%1≡0 (ℕ.suc n) = cong (-_ ∘′ +_) (ℕ.n/1≡n (ℕ.suc n))
+
+n/1≡n : ∀ n → n / + 1 ≡ n
+n/1≡n n = trans (div-pos-is-/ℕ n 1) (n/ℕ1≡n n)
+
+n/ℕd≡0⇒∣n∣<d : ∀ n d .{{_ : ℕ.NonZero d}} → n /ℕ d ≡ 0ℤ → ∣ n ∣ ℕ.< d
+n/ℕd≡0⇒∣n∣<d (+ n) d _ with ℕ.zero ← n ℕ./ d in n/d≡0 = ℕ.m/n≡0⇒m<n n/d≡0
+n/ℕd≡0⇒∣n∣<d (-[1+ n ]) d n/ℕd≡0 with ℕ.zero ← ℕ.suc n ℕ.% d
+    | ℕ.suc n ℕ./ d in n/d
+... | ℕ.zero  = ℕ.m/n≡0⇒m<n n/d
+... | ℕ.suc _ = contradiction n/ℕd≡0 λ ()
+
+0≤n<d⇒n/ℕd≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : ℕ.NonZero d}} →
+                n < + d → n /ℕ d ≡ 0ℤ
+0≤n<d⇒n/ℕd≡0 (+ n) d (+<+ n<d) = cong (+_) (ℕ.m<n⇒m/n≡0 n<d)
+
+n/d≡0⇒∣n∣<∣d∣ : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → ∣ n ∣ ℕ.< ∣ d ∣
+n/d≡0⇒∣n∣<∣d∣ n (+ d) n/d≡0ℤ =
+              n/ℕd≡0⇒∣n∣<d n d (trans (sym (div-pos-is-/ℕ n d)) n/d≡0ℤ)
+n/d≡0⇒∣n∣<∣d∣ n -[1+ d ] n/d≡0ℤ =
+              n/ℕd≡0⇒∣n∣<d n (ℕ.suc d) (neg-injective {_} {+ 0}
+                (trans (sym (div-neg-is-neg-/ℕ n (ℕ.suc d))) n/d≡0ℤ))
+
+0≤n<∣d∣⇒n/d≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : NonZero d}} →
+                n < + ∣ d ∣ → n / d ≡ 0ℤ
+0≤n<∣d∣⇒n/d≡0 n (+ d) (+<+ n<d) = begin-equality
+  n / + d ≡⟨ div-pos-is-/ℕ n d ⟩
+  n /ℕ d  ≡⟨ (0≤n<d⇒n/ℕd≡0 n d (+<+ n<d)) ⟩
+  0ℤ ∎
+0≤n<∣d∣⇒n/d≡0 n -[1+ d ] (+<+ n<d) = begin-equality
+  n / -[1+ d ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d) ⟩
+  - (n /ℕ ℕ.suc d) ≡⟨ cong (-_) (0≤n<d⇒n/ℕd≡0 n (ℕ.suc d) (+<+ n<d)) ⟩
+  - 0ℤ ∎
+
+private
+  /ℕ-monoˡ-≤-pos-pos : ∀ n m d .{{_ : NonNegative n}} .{{_ : NonNegative m}}
+                       .{{_ : ℕ.NonZero d}} → n ≤ m → n /ℕ d ≤ m /ℕ d
+  /ℕ-monoˡ-≤-pos-pos _ _ d (+≤+ n≤m) = +≤+ (ℕ./-monoˡ-≤ d n≤m)
+
+  /ℕ-monoˡ-≤-neg-pos : ∀ n m d .{{_ : Negative n}} .{{_ : NonNegative m}}
+                       .{{_ : ℕ.NonZero d}} → n ≤ m → n /ℕ d ≤ m /ℕ d
+  /ℕ-monoˡ-≤-neg-pos n@(-[1+ _ ]) m@(+ _) d -≤+ =
+    <⇒≤ (<-≤-trans (n<0⇒n/ℕd<0 n d -<+) (0≤n⇒0≤n/ℕd m d (+≤+ z≤n)))
+
+  n≡sk>0 : ∀ {n k} → n ≡ ℕ.suc k → 0 ℕ.< n
+  n≡sk>0 n≡sk = ℕ.m<n⇒0<n (ℕ.≤-reflexive (sym n≡sk))
+
+  /ℕ-monoˡ-≤-neg-neg : ∀ n m d .{{_ : Negative n}} .{{_ : Negative m}}
+                       .{{_ : ℕ.NonZero d}} → n ≤ m → n /ℕ d ≤ m /ℕ d
+  /ℕ-monoˡ-≤-neg-neg (-[1+ n ]) (-[1+ m ]) d (-≤- m≤n)
+    with ℕ.suc n ℕ.% d in sn%d | ℕ.suc m ℕ.% d in sm%d
+  ... | ℕ.zero | ℕ.zero  = neg-mono-≤ (+≤+ (ℕ./-monoˡ-≤ d (s≤s m≤n)))
+  ... | ℕ.zero | ℕ.suc _ = let sm%d>0 = n≡sk>0 sm%d in begin
+    -(+(ℕ.suc n ℕ./ d))   ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d sn%d) ⟩
+    -[1+ n ℕ./ d ]        ≤⟨ -≤- (ℕ./-monoˡ-≤ d m≤n) ⟩
+    -[1+ m ℕ./ d ]        ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d m d sm%d>0)⟨
+    -[1+ ℕ.suc m ℕ./ d ]  ∎
+  ... | ℕ.suc _ | ℕ.zero  = let sn%d>0 = n≡sk>0 sn%d in begin
+    -[1+ ℕ.suc n ℕ./ d ]  ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d sn%d>0)⟩
+    -[1+ n ℕ./ d ]        ≤⟨ -≤- (ℕ./-monoˡ-≤ d m≤n) ⟩
+    -(+(ℕ.suc (m ℕ./ d))) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] m d sm%d) ⟨
+    -(+(ℕ.suc m ℕ./ d))   ∎
+  ... | ℕ.suc _ | ℕ.suc _ = -≤- (ℕ./-monoˡ-≤ d (s≤s m≤n))
+
+/ℕ-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ _≤_ _≤_ (_/ℕ d)
+/ℕ-monoˡ-≤ d {n@(+ _)}      {m@(+ _)}      n≤m = /ℕ-monoˡ-≤-pos-pos n m d n≤m
+/ℕ-monoˡ-≤ d {n@(-[1+ _ ])} {m@(+ _)}      n≤m = /ℕ-monoˡ-≤-neg-pos n m d n≤m
+/ℕ-monoˡ-≤ d {n@(-[1+ _ ])} {m@(-[1+ _ ])} n≤m = /ℕ-monoˡ-≤-neg-neg n m d n≤m
+
+/ℕ-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
+                    .{{_ : NonNegative n}} → d₁ ℕ.≤ d₂ → n /ℕ d₂ ≤ n /ℕ d₁
+/ℕ-monoʳ-≤-nonNeg (+ n) {d₁} {d₂} d₁≤d₂ = +≤+ (ℕ./-monoʳ-≤ n d₁≤d₂)
+
+/ℕ-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
+                    .{{_ : NonPositive n}} → d₁ ℕ.≤ d₂ → n /ℕ d₁ ≤ n /ℕ d₂
+/ℕ-monoʳ-≤-nonPos (+ 0) {d₁} {d₂} d₁≤d₂ =
+  ≤-trans (≤-reflexive (0/ℕd≡0 d₁)) (≤-reflexive (sym (0/ℕd≡0 d₂)))
+/ℕ-monoʳ-≤-nonPos -[1+ n ] {d₁} {d₂} d₁≤d₂
+  with ℕ.suc n ℕ.% d₁ in sn%d₁ | ℕ.suc n ℕ.% d₂ in sn%d₂
+... | ℕ.zero | ℕ.zero  = neg-mono-≤ (+≤+ (ℕ./-monoʳ-≤ (ℕ.suc n) d₁≤d₂))
+... | ℕ.zero | ℕ.suc _ = let sn%d₂>0 = n≡sk>0 sn%d₂ in begin
+  -(+ (ℕ.suc n ℕ./ d₁)) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d₁ sn%d₁) ⟩
+  -[1+ n ℕ./ d₁ ]       ≤⟨ -≤- (ℕ./-monoʳ-≤ n d₁≤d₂) ⟩
+  -[1+ n ℕ./ d₂ ]       ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d₂ sn%d₂>0) ⟨
+  -[1+ ℕ.suc n ℕ./ d₂ ] ∎
+... | ℕ.suc _ | ℕ.zero  = let sn%d₁>0 = n≡sk>0 sn%d₁ in begin
+  -[1+ ℕ.suc n ℕ./ d₁ ]   ≡⟨ cong -[1+_] (ℕ.sn%d>0⇒sn/d≡n/d n d₁ sn%d₁>0) ⟩
+  -[1+ n ℕ./ d₁ ]         ≤⟨ -≤- (ℕ./-monoʳ-≤ n d₁≤d₂) ⟩
+  -(+ (ℕ.suc (n ℕ./ d₂))) ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d₂ sn%d₂)⟨
+  -(+ (ℕ.suc n ℕ./ d₂))   ∎
+... | ℕ.suc _ | ℕ.suc _ = -≤- (ℕ./-monoʳ-≤ (ℕ.suc n) d₁≤d₂)
+
+/-monoˡ-≤-pos : ∀ d .{{_ : NonZero d}} .{{_ : Positive d}} →
+                Monotonic₁ _≤_ _≤_ (_/ d)
+/-monoˡ-≤-pos (+ d) {n} {m} n≤m = begin
+  n / (+ d) ≡⟨ div-pos-is-/ℕ n d ⟩
+  n /ℕ d    ≤⟨ /ℕ-monoˡ-≤ d n≤m ⟩
+  m /ℕ d    ≡⟨ div-pos-is-/ℕ m d ⟨
+  m / + d   ∎
+
+/-monoˡ-≤-neg : ∀ d .{{_ : NonZero d}} .{{_ : Negative d}} →
+                Monotonic₁ _≤_ _≥_ (_/ d)
+/-monoˡ-≤-neg -[1+ d ] {n} {m} n≤m = begin
+  m / -[1+ d ]     ≡⟨ div-neg-is-neg-/ℕ m (ℕ.suc d) ⟩
+  - (m /ℕ ℕ.suc d) ≤⟨ neg-mono-≤ (/ℕ-monoˡ-≤ (ℕ.suc d) n≤m) ⟩
+  - (n /ℕ ℕ.suc d) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d) ⟨
+  n / - +[1+ d ]   ∎
+
+/-monoʳ-≤-nonNeg-eq-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                            .{{_ : NonNegative n}} → {sign d₁ ≡ sign d₂} →
+                            d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+/-monoʳ-≤-nonNeg-eq-signs n {+ d₁} {+ d₂} (+≤+ d₁≤d₂) = begin
+  n / + d₂ ≡⟨ div-pos-is-/ℕ n d₂ ⟩
+  n /ℕ d₂  ≤⟨ /ℕ-monoʳ-≤-nonNeg n d₁≤d₂ ⟩
+  n /ℕ d₁  ≡⟨ div-pos-is-/ℕ n d₁ ⟨
+  n / + d₁ ∎
+/-monoʳ-≤-nonNeg-eq-signs n { -[1+ d₁ ] } { -[1+ d₂ ] } (-≤- d₂≤d₁) = begin
+  n / -[1+ d₂ ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₂) ⟩
+  - (n /ℕ ℕ.suc d₂) ≤⟨ neg-mono-≤ (/ℕ-monoʳ-≤-nonNeg n (s≤s d₂≤d₁)) ⟩
+  - (n /ℕ ℕ.suc d₁) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟨
+  n / - +[1+ d₁ ]   ∎
+
+/-monoʳ-≤-nonPos-eq-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                            .{{_ : NonPositive n}} → {sign d₁ ≡ sign d₂} →
+                            d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+/-monoʳ-≤-nonPos-eq-signs n {+ d₁} {+ d₂} (+≤+ d₁≤d₂) = begin
+  n / + d₁ ≡⟨ div-pos-is-/ℕ n d₁ ⟩
+  n /ℕ d₁  ≤⟨ /ℕ-monoʳ-≤-nonPos n d₁≤d₂ ⟩
+  n /ℕ d₂  ≡⟨ div-pos-is-/ℕ n d₂ ⟨
+  n / + d₂ ∎
+/-monoʳ-≤-nonPos-eq-signs n { -[1+ d₁ ] } { -[1+ d₂ ] } (-≤- d₂≤d₁) = begin
+  n / -[1+ d₁ ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟩
+  - (n /ℕ ℕ.suc d₁) ≤⟨ neg-mono-≤ (/ℕ-monoʳ-≤-nonPos n (s≤s d₂≤d₁)) ⟩
+  - (n /ℕ ℕ.suc d₂) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₂) ⟨
+  n / - +[1+ d₂ ]   ∎
+
+/-monoʳ-≤-nonNeg-op-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                            .{{_ : NonNegative n}} →
+                            {sign d₁ ≡ opposite (sign d₂)} →
+                            d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+/-monoʳ-≤-nonNeg-op-signs n { -[1+ d₁ ]} {+ d₂} -≤+ = begin
+  n / -[1+ d₁ ]     ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟩
+  - (n /ℕ ℕ.suc d₁) ≤⟨ neg-mono-≤ (0≤n⇒0≤n/ℕd n (ℕ.suc d₁) (nonNegative⁻¹ n)) ⟩
+  0ℤ                ≤⟨ 0≤n⇒0≤n/d n (+ d₂) (nonNegative⁻¹ n) (+≤+ z≤n) ⟩
+  n / + d₂          ∎
+
+/-monoʳ-≤-nonPos-op-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                           .{{_ : NonPositive n}} →
+                           {sign d₁ ≡ opposite (sign d₂)} →
+                           d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+/-monoʳ-≤-nonPos-op-signs (+ 0) {d₁@(-[1+ _ ])} {d₂@(+ _)} -≤+ =
+   ≤-trans (≤-reflexive (0/d≡0 d₂)) (≤-reflexive (sym (0/d≡0 d₁)))
+/-monoʳ-≤-nonPos-op-signs n@(-[1+ _ ]) { -[1+ d₁ ]} {+ d₂} -≤+ = begin
+  n / + d₂          ≡⟨ div-pos-is-/ℕ n d₂ ⟩
+  n /ℕ d₂           <⟨ n<0⇒n/ℕd<0 n d₂ (negative⁻¹ n) ⟩
+  0ℤ                <⟨ neg-mono-< (n<0⇒n/ℕd<0 n (ℕ.suc d₁) (negative⁻¹ n)) ⟩
+  - (n /ℕ ℕ.suc d₁) ≡⟨ div-neg-is-neg-/ℕ n (ℕ.suc d₁) ⟨
+  n / -[1+ d₁ ]     ∎
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

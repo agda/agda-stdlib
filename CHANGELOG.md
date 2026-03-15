@@ -280,6 +280,28 @@ Additions to existing modules
   _<ᵇ_ : ℤ → ℤ → Bool
   ```
 
+* In `Data.Integer.DivMod`:
+  ```agda
+  n<0⇒n/ℕd<0                : n < 0ℤ → (n /ℕ d) < 0ℤ
+  0/ℕd≡0                    : + 0 /ℕ d ≡ + 0
+  0/d≡0                     : + 0 / d ≡ + 0
+  n/ℕ1≡n                    : n /ℕ 1 ≡ n
+  n/1≡n                     : n / + 1 ≡ n
+  n/ℕd≡0⇒∣n∣<d              : n /ℕ d ≡ 0ℤ → ∣ n ∣ ℕ.< d
+  0≤n<d⇒n/ℕd≡0              : n < + d → n /ℕ d ≡ 0ℤ
+  n/d≡0⇒∣n∣<∣d∣             : n / d ≡ 0ℤ → ∣ n ∣ ℕ.< ∣ d ∣
+  0≤n<∣d∣⇒n/d≡0             : n < + ∣ d ∣ → n / d ≡ 0ℤ
+  /ℕ-monoˡ-≤                : Monotonic₁ _≤_ _≤_ (_/ℕ d)
+  /ℕ-monoʳ-≤-nonNeg         : d₁ ℕ.≤ d₂ → n /ℕ d₂ ≤ n /ℕ d₁
+  /ℕ-monoʳ-≤-nonPos         : d₁ ℕ.≤ d₂ → n /ℕ d₁ ≤ n /ℕ d₂
+  /-monoˡ-≤-pos             : Monotonic₁ _≤_ _≤_ (_/ d)
+  /-monoˡ-≤-neg             : Monotonic₁ _≤_ _≥_ (_/ d)
+  /-monoʳ-≤-nonNeg-eq-signs : {sign d₁ ≡ sign d₂} → d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+  /-monoʳ-≤-nonPos-eq-signs : {sign d₁ ≡ sign d₂} → d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+  /-monoʳ-≤-nonNeg-op-signs : {sign d₁ ≡ opposite (sign d₂)} → d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+  /-monoʳ-≤-nonPos-op-signs : {sign d₁ ≡ opposite (sign d₂)} → d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+  ```
+
 * In `Data.Integer.Properties`:
   ```
   <ᵇ⇒< : T (i <ᵇ j) → i < j
@@ -313,6 +335,13 @@ Additions to existing modules
   ```agda
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
+  ```
+
+* In `Data.Nat.DivMod`:
+  ```agda
+  %-pred-≡suc        : suc m % d ≡ suc k → m % d ≡ k
+  sn%d≡0⇒sn/d≡s[n/d] : suc n % d ≡ 0 → suc n / d ≡ suc (n / d)
+  sn%d>0⇒sn/d≡n/d    : 0 < suc n % d → suc n / d ≡ n / d
   ```
 
 * In `Data.Nat.Logarithm`
@@ -381,11 +410,19 @@ Additions to existing modules
 
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
-  <ᵇ⇒<          : T (p <ᵇ q) → p < q
-  <⇒<ᵇ          : p < q → T (p <ᵇ q)
-  p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
-  p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
-  p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+  <ᵇ⇒<             : T (p <ᵇ q) → p < q
+  <⇒<ᵇ             : p < q → T (p <ᵇ q)
+  p*q≃0⇒p≃0∨q≃0    : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+  p*q≄0⇒p≄0        : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+  p*q≢0⇒q≢0        : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+  n/d≡[n/1]*[1/d]  : n / d ≡ (n / 1) * (1ℤ / d)
+  /-distribʳ-+     : (n ℤ.+ m) / d ≃ n / d + m / d
+  /-monoˡ-<        : Monotonic₁ ℤ._<_ _<_ (_/ d)
+  /-monoʳ-<-pos    : d₁ ℕ.< d₂ → n / d₂ < n / d₁
+  /-monoʳ-<-neg    : d₁ ℕ.< d₂ → n / d₁ < n / d₂
+  /-monoˡ-≤        : Monotonic₁ ℤ._≤_ _≤_ (_/ d)
+  /-monoʳ-≤-nonNeg : d₁ ℕ.≤ d₂ → n / d₂ ≤ n / d₁
+  /-monoʳ-≤-nonPos : d₁ ℕ.≤ d₂ → n / d₁ ≤ n / d₂
   ```
 
 * In `Data.Rational.Unnormalised.Show`:
