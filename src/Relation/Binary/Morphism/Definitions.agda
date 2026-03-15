@@ -1,32 +1,44 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Basic definitions for morphisms between algebraic structures
+-- Issue #2875: this is a stub module, retained solely for compatibility
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
-open import Relation.Binary.Core
 
 module Relation.Binary.Morphism.Definitions
   {a} (A : Set a)     -- The domain of the morphism
   {b} (B : Set b)     -- The codomain of the morphism
   where
 
-open import Level using (Level)
-
-private
-  variable
-    ℓ₁ ℓ₂ : Level
-
 ------------------------------------------------------------------------
 -- Morphism definition in Function.Core
 
-open import Function.Core public
+import Function.Core
   using (Morphism)
 
 ------------------------------------------------------------------------
 -- Basic definitions
 
-Homomorphic₂ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
-Homomorphic₂ _∼₁_ _∼₂_ ⟦_⟧ = ∀ {x y} → x ∼₁ y → ⟦ x ⟧ ∼₂ ⟦ y ⟧
+import Function.Definitions
+  using (Congruent)
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+Morphism = Function.Core.Morphism
+{-# WARNING_ON_USAGE Morphism
+"Warning: Morphism was deprecated in v2.4.
+Please use the standard function notation (e.g. A → B) instead."
+#-}
+
+Homomorphic₂ = Function.Definitions.Congruent
+{-# WARNING_ON_USAGE Homomorphic₂
+"Warning: Homomorphic₂ was deprecated in v2.4.
+Please use Function.Definitions.Congruent instead."
+#-}
