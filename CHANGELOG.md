@@ -139,6 +139,10 @@ Deprecated names
 New modules
 -----------
 
+* Added tactic ring solvers for rational numbers (issue #1879):
+  `Data.Rational.Tactic.RingSolver`,
+  `Data.Rational.Unnormalised.Tactic.RingSolver`.
+
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
 * `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
