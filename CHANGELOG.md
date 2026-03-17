@@ -113,7 +113,7 @@ Deprecated names
 
 * In `Data.Product.Relation.Binary.Lex.NonStrict`:
   ```agda
-  ×-decidable    ↦   <ₗₑₓ?
+  ×-decidable    ↦   ≤ₗₑₓ?
   ```
 
 * In `Data.Product.Relation.Binary.Lex.Strict`:
