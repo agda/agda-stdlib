@@ -89,13 +89,6 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
-<<<<<<< decidable-pointwise
-* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
-  ```agda
-  Pointwise      ↦  _×_
-  ×-decidable    ↦  _×?_
-  Pointwise-≡↔≡  ↦  ×-≡↔≡-×
-=======
 * In `Data.List.Fresh.Membership.Setoid.Properties`:
   ```agda
   ≈-subst-∈   ↦   ∈-resp-≈
@@ -104,7 +97,13 @@ Deprecated names
 * In `Data.List.Fresh.Relation.Unary.Any`:
   ```agda
   witness   ↦   satisfiable
->>>>>>> master
+  ```
+
+* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+  ```agda
+  Pointwise      ↦  _×_
+  ×-decidable    ↦  _×?_
+  Pointwise-≡↔≡  ↦  ×-≡↔≡-×
   ```
 
 * In `Data.Rational.Properties`:
