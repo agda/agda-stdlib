@@ -2,6 +2,8 @@
 
 [![Ubuntu build](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml/badge.svg?branch=experimental)](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml)
 
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.09241/status.svg)](https://doi.org/10.21105/joss.09241)
+
 The Agda standard library
 =========================
 
@@ -29,6 +31,17 @@ some more documentation.
 in glorious clickable HTML.
 
 ## Installation instructions
+
+### Automated installation (currently experimental)
+
+On Unix-style systems, it should be as simple as running the following command in
+a shell:
+
+```shell
+sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh)"
+```
+
+### Manual installation
 
 See the [installation instructions](https://github.com/agda/agda-stdlib/blob/master/doc/installation-guide.md) for the latest version of the standard library.
 

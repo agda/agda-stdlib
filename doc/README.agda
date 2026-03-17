@@ -288,5 +288,4 @@ import EverythingSafe
 
 -- Note that all library sources are located under src or ffi. The
 -- modules README, README.* and Everything are not really part of the
--- library, so these modules are located in the top-level directory
--- instead.
+-- library, so these modules are located in the doc directory instead.

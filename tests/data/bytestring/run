@@ -1,5 +1,2 @@
-$1 --compile-dir=../../_build -c Main.agda > log
-./../../_build/Main > output
-
-rm ../../_build/Main
-rm ../../_build/MAlonzo/Code/Main*
+. ../../_config/config.sh
+goldenTest "$1" "bytestring"

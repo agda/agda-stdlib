@@ -353,7 +353,7 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s<s))
 
 ≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
-≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
+≤∧≢⇒< {_} {zero}  z≤n       m≢n     = ¬[x≢x] m≢n
 ≤∧≢⇒< {_} {suc n} z≤n       m≢n     = z<s
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s<s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
@@ -479,7 +479,7 @@ n>0⇒n≢0 : n > 0 → n ≢ 0
 n>0⇒n≢0 {suc n} _ ()
 
 n≢0⇒n>0 : n ≢ 0 → n > 0
-n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
+n≢0⇒n>0 {zero}  0≢0 =  ¬[x≢x] 0≢0
 n≢0⇒n>0 {suc n} _   =  0<1+n
 
 m<n⇒0<n : m < n → 0 < n
@@ -503,7 +503,7 @@ m<1+n⇒m≤n : m < suc n → m ≤ n
 m<1+n⇒m≤n (s≤s m≤n) = m≤n
 
 ∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
+∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = ¬[x≢x] (m≤n⇒n≢0 z≤n)
 ∀[m≤n⇒m≢o]⇒n<o zero    (suc o) _       = 0<1+n
 ∀[m≤n⇒m≢o]⇒n<o (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒n<o n o rec)
   where
@@ -512,7 +512,7 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 
 ∀[m<n⇒m≢o]⇒n≤o : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
 ∀[m<n⇒m≢o]⇒n≤o zero    n       _       = z≤n
-∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
+∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = ¬[x≢x] (m<n⇒m≢0 0<1+n)
 ∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
@@ -773,6 +773,12 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   suc (m + n + m * n)   ≡⟨ cong suc (+-assoc m n (m * n)) ⟩
   suc (m + (n + m * n)) ≡⟨⟩
   suc m + suc m * n     ∎
+
+2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
+2*suc[n]≡2+n+n n = begin-equality
+  2 * (suc n)    ≡⟨ cong (suc n +_) (+-identityʳ _) ⟩
+  suc n + suc n  ≡⟨ +-suc (suc n) n ⟩
+  2 + (n + n)    ∎
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _*_
@@ -1534,9 +1540,9 @@ pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
-∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
-∸-suc z≤n       = refl
-∸-suc (s≤s m≤n) = ∸-suc m≤n
+∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
+∸-suc {m = zero}              _   = refl
+∸-suc {m = suc _} {n = suc _} m≤n = ∸-suc (s≤s⁻¹ m≤n)
 
 m∸n≤m : ∀ m n → m ∸ n ≤ m
 m∸n≤m n       zero    = ≤-refl
@@ -1627,12 +1633,21 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 ∸-+-assoc (suc m) zero o = refl
 ∸-+-assoc (suc m) (suc n) o = ∸-+-assoc m n o
 
-+-∸-assoc : ∀ m {n o} → o ≤ n → (m + n) ∸ o ≡ m + (n ∸ o)
++-∸-assoc : ∀ m {n o} → .(o ≤ n) → (m + n) ∸ o ≡ m + (n ∸ o)
 +-∸-assoc zero    {n = n} {o = o} _   = begin-equality n ∸ o ∎
 +-∸-assoc (suc m) {n = n} {o = o} o≤n = begin-equality
   suc (m + n) ∸ o   ≡⟨ ∸-suc (m≤n⇒m≤o+n m o≤n) ⟩
   suc ((m + n) ∸ o) ≡⟨ cong suc (+-∸-assoc m o≤n) ⟩
   suc (m + (n ∸ o)) ∎
+
+m∸n+o≡m∸[n∸o] : ∀ {m n o} → .(n ≤ m) → .(o ≤ n) → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+m∸n+o≡m∸[n∸o] {m}     {zero}  {zero}  _     _ = +-identityʳ m
+m∸n+o≡m∸[n∸o] {suc m} {suc n} {zero}  _     _ = +-identityʳ (m ∸ n)
+m∸n+o≡m∸[n∸o] {suc m} {suc n} {suc o} sn≤sm so≤sn = begin-equality
+  suc m ∸ suc n + suc o ≡⟨ +-suc (m ∸ n) o ⟩
+  suc (m ∸ n + o)       ≡⟨ cong suc (m∸n+o≡m∸[n∸o] (s≤s⁻¹ sn≤sm) (s≤s⁻¹ so≤sn)) ⟩
+  suc (m ∸ (n ∸ o))     ≡⟨ ∸-suc (≤-trans (m∸n≤m n o) (s≤s⁻¹ sn≤sm)) ⟨
+  suc m ∸ (n ∸ o)       ∎
 
 m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
 m≤n+o⇒m∸n≤o      m  zero    le = le
@@ -1668,16 +1683,16 @@ m+n∸n≡m m n = begin-equality
 m+n∸m≡n : ∀ m n → m + n ∸ m ≡ n
 m+n∸m≡n m n = trans (cong (_∸ m) (+-comm m n)) (m+n∸n≡m n m)
 
-m+[n∸m]≡n : m ≤ n → m + (n ∸ m) ≡ n
+m+[n∸m]≡n : .(m ≤ n) → m + (n ∸ m) ≡ n
 m+[n∸m]≡n {m} {n} m≤n = begin-equality
-  m + (n ∸ m)  ≡⟨ sym $ +-∸-assoc m m≤n ⟩
+  m + (n ∸ m)  ≡⟨ +-∸-assoc m m≤n ⟨
   (m + n) ∸ m  ≡⟨ cong (_∸ m) (+-comm m n) ⟩
   (n + m) ∸ m  ≡⟨ m+n∸n≡m n m ⟩
   n            ∎
 
 m∸n+n≡m : ∀ {m n} → n ≤ m → (m ∸ n) + n ≡ m
 m∸n+n≡m {m} {n} n≤m = begin-equality
-  (m ∸ n) + n ≡⟨ sym (+-∸-comm n n≤m) ⟩
+  (m ∸ n) + n ≡⟨ +-∸-comm n n≤m ⟨
   (m + n) ∸ n ≡⟨ m+n∸n≡m m n ⟩
   m           ∎
 
@@ -1722,10 +1737,29 @@ even≢odd (suc m) (suc n) eq = even≢odd m n (suc-injective (begin-equality
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_
 
+m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+m∸n≤m⊔n m n = ≤-trans (m∸n≤m m n) (m≤m⊔n m n)
+
 m⊓n+n∸m≡n : ∀ m n → (m ⊓ n) + (n ∸ m) ≡ n
 m⊓n+n∸m≡n zero    n       = refl
 m⊓n+n∸m≡n (suc m) zero    = refl
 m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
+
+m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+m⊔n∸[m∸n]≡n zero    n       = cong (n ∸_) (0∸n≡0 n)
+m⊔n∸[m∸n]≡n (suc m) zero    = n∸n≡0 m
+m⊔n∸[m∸n]≡n (suc m) (suc n) = begin-equality
+  suc  (m ⊔ n) ∸ (m ∸ n)  ≡⟨ ∸-suc (m∸n≤m⊔n m n) ⟩
+  suc ((m ⊔ n) ∸ (m ∸ n)) ≡⟨ cong suc (m⊔n∸[m∸n]≡n m n) ⟩
+  suc n                   ∎
+
+m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+m⊔n≡m∸n+n zero    n       = sym (cong (_+ n) (0∸n≡0 n))
+m⊔n≡m∸n+n (suc m) zero    = sym (cong suc (+-identityʳ m))
+m⊔n≡m∸n+n (suc m) (suc n) = begin-equality
+  suc (m ⊔ n)     ≡⟨ cong suc (m⊔n≡m∸n+n m n) ⟩
+  suc (m ∸ n + n) ≡⟨ +-suc (m ∸ n) n ⟨
+  m ∸ n + suc n   ∎
 
 [m∸n]⊓[n∸m]≡0 : ∀ m n → (m ∸ n) ⊓ (n ∸ m) ≡ 0
 [m∸n]⊓[n∸m]≡0 zero zero       = refl
@@ -1843,6 +1877,17 @@ m∸n≤∣m-n∣ m n with ≤-total m n
 ∣m-n∣≤m⊔n zero    m       = ≤-refl
 ∣m-n∣≤m⊔n (suc m) zero    = ≤-refl
 ∣m-n∣≤m⊔n (suc m) (suc n) = m≤n⇒m≤1+n (∣m-n∣≤m⊔n m n)
+
+∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
+∣m-n∣≡m⊔n∸m⊓n m n with ≤-total m n
+... | inj₁ m≤n = begin-equality
+      ∣ m - n ∣     ≡⟨ m≤n⇒∣m-n∣≡n∸m m≤n ⟩
+      n ∸ m         ≡⟨ cong₂ _∸_ (m≤n⇒m⊔n≡n m≤n) (m≤n⇒m⊓n≡m m≤n) ⟨
+      m ⊔ n ∸ m ⊓ n ∎
+... | inj₂ n≤m = begin-equality
+      ∣ m - n ∣     ≡⟨ m≤n⇒∣n-m∣≡n∸m n≤m ⟩
+      m ∸ n         ≡⟨ cong₂ _∸_ (m≥n⇒m⊔n≡m n≤m) (m≥n⇒m⊓n≡n n≤m) ⟨
+      m ⊔ n ∸ m ⊓ n ∎
 
 ∣-∣-identityˡ : LeftIdentity 0 ∣_-_∣
 ∣-∣-identityˡ x = refl
@@ -2130,9 +2175,11 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 ------------------------------------------------------------------------
 
 -- equivalence of  _≤″_ to _≤_
+-- NB the change in #2939 making the m≤n argument to m+[n∸m]≡n irrelevant
+-- means that this proof must now be eta-expanded in order to typecheck.
 
 ≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ = (_ ,_) ∘ m+[n∸m]≡n
+≤⇒≤″ m≤n = (_ , m+[n∸m]≡n m≤n)
 
 <⇒<″ : _<_ ⇒ _<″_
 <⇒<″ = ≤⇒≤″

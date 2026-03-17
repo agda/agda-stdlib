@@ -1,8 +1,128 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+cff-version: "1.2.0"
 authors:
-- name: "The Agda Community"
-title: "Agda Standard Library"
-version: 2.3.0
-date-released: 2025-08-02
-url: "https://github.com/agda/agda-stdlib"
+- family-names: Daggitt
+  given-names: Matthew L.
+  orcid: "https://orcid.org/0000-0002-2552-3671"
+- family-names: Allais
+  given-names: Guillaume
+  orcid: "https://orcid.org/0000-0002-4091-657X"
+- family-names: McKinna
+  given-names: James
+  orcid: "https://orcid.org/0000-0001-6745-2560"
+- family-names: Abel
+  given-names: Andreas
+  orcid: "https://orcid.org/0000-0003-0420-4492"
+- family-names: Doorn
+  given-names: Nathan
+  name-particle: van
+  orcid: "https://orcid.org/0009-0009-0598-3636"
+- family-names: Wood
+  given-names: James
+  orcid: "https://orcid.org/0000-0002-8080-3350"
+- family-names: Norell
+  given-names: Ulf
+  orcid: "https://orcid.org/0000-0003-2999-0637"
+- family-names: Kidney
+  given-names: Donnacha Oisín
+  orcid: "https://orcid.org/0000-0003-4952-7359"
+- family-names: Meshveliani
+  given-names: Sergei
+  orcid: "https://orcid.org/0000-0002-4224-6178"
+- family-names: Stucki
+  given-names: Sandro
+  orcid: "https://orcid.org/0000-0001-5608-8273"
+- family-names: Carette
+  given-names: Jacques
+  orcid: "https://orcid.org/0000-0001-8993-9804"
+- family-names: Rice
+  given-names: Alex
+  orcid: "https://orcid.org/0000-0002-2698-5122"
+- family-names: Hu
+  given-names: Jason Z. S.
+  orcid: "https://orcid.org/0000-0001-6710-6262"
+- family-names: Xia
+  given-names: Li-yao
+  orcid: "https://orcid.org/0000-0003-2673-4400"
+- family-names: You
+  given-names: Shu-Hung
+  orcid: "https://orcid.org/0009-0003-0003-3945"
+- family-names: Mullanix
+  given-names: Reed
+  orcid: "https://orcid.org/0000-0002-7970-4961"
+- family-names: Kokke
+  given-names: Wen
+  orcid: "https://orcid.org/0000-0002-1662-0381"
+contact:
+- family-names: Daggitt
+  given-names: Matthew L.
+  orcid: "https://orcid.org/0000-0002-2552-3671"
+doi: 10.5281/zenodo.17998438
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Daggitt
+    given-names: Matthew L.
+    orcid: "https://orcid.org/0000-0002-2552-3671"
+  - family-names: Allais
+    given-names: Guillaume
+    orcid: "https://orcid.org/0000-0002-4091-657X"
+  - family-names: McKinna
+    given-names: James
+    orcid: "https://orcid.org/0000-0001-6745-2560"
+  - family-names: Abel
+    given-names: Andreas
+    orcid: "https://orcid.org/0000-0003-0420-4492"
+  - family-names: Doorn
+    given-names: Nathan
+    name-particle: van
+    orcid: "https://orcid.org/0009-0009-0598-3636"
+  - family-names: Wood
+    given-names: James
+    orcid: "https://orcid.org/0000-0002-8080-3350"
+  - family-names: Norell
+    given-names: Ulf
+    orcid: "https://orcid.org/0000-0003-2999-0637"
+  - family-names: Kidney
+    given-names: Donnacha Oisín
+    orcid: "https://orcid.org/0000-0003-4952-7359"
+  - family-names: Meshveliani
+    given-names: Sergei
+    orcid: "https://orcid.org/0000-0002-4224-6178"
+  - family-names: Stucki
+    given-names: Sandro
+    orcid: "https://orcid.org/0000-0001-5608-8273"
+  - family-names: Carette
+    given-names: Jacques
+    orcid: "https://orcid.org/0000-0001-8993-9804"
+  - family-names: Rice
+    given-names: Alex
+    orcid: "https://orcid.org/0000-0002-2698-5122"
+  - family-names: Hu
+    given-names: Jason Z. S.
+    orcid: "https://orcid.org/0000-0001-6710-6262"
+  - family-names: Xia
+    given-names: Li-yao
+    orcid: "https://orcid.org/0000-0003-2673-4400"
+  - family-names: You
+    given-names: Shu-Hung
+    orcid: "https://orcid.org/0009-0003-0003-3945"
+  - family-names: Mullanix
+    given-names: Reed
+    orcid: "https://orcid.org/0000-0002-7970-4961"
+  - family-names: Kokke
+    given-names: Wen
+    orcid: "https://orcid.org/0000-0002-1662-0381"
+  date-published: 2025-12-20
+  doi: 10.21105/joss.09241
+  issn: 2475-9066
+  issue: 116
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 9241
+  title: "The Agda standard library: version 2.0"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.09241"
+  volume: 10
+title: "The Agda standard library: version 2.0"
