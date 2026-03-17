@@ -89,11 +89,22 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+<<<<<<< decidable-pointwise
 * In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
   ```agda
   Pointwise      ↦  _×_
   ×-decidable    ↦  _×?_
   Pointwise-≡↔≡  ↦  ×-≡↔≡-×
+=======
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ≈-subst-∈   ↦   ∈-resp-≈
+  ```
+
+* In `Data.List.Fresh.Relation.Unary.Any`:
+  ```agda
+  witness   ↦   satisfiable
+>>>>>>> master
   ```
 
 * In `Data.Rational.Properties`:
@@ -104,6 +115,16 @@ Deprecated names
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
+  ```
+
+* In `Relation.Binary.Construct.Intersection`:
+  ```agda
+  decidable     ↦   _∩?_
+  ```
+
+* In `Relation.Binary.Construct.Union`:
+  ```agda
+  decidable     ↦   _∪?_
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
@@ -125,6 +146,10 @@ Deprecated names
 
 New modules
 -----------
+
+* Added tactic ring solvers for rational numbers (issue #1879):
+  `Data.Rational.Tactic.RingSolver`,
+  `Data.Rational.Unnormalised.Tactic.RingSolver`.
 
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
@@ -273,6 +298,17 @@ Additions to existing modules
   <⇒<ᵇ : i < j → T (i <ᵇ j)
   ```
 
+* In `Data.List.Fresh`:
+  ```agda
+  _#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+  ```
+
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ∉-All[x≉] : x ∉ xs → All (x ≉_) xs
+  All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
+  ```
+
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs
@@ -316,6 +352,11 @@ Additions to existing modules
   ∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
+  m∸n+o≡m∸[n∸o] : ∀ {m n o} → .(n ≤ m) → .(o ≤ n) → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+  m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+  m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+  m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+  ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
   ```
 
 * In `Data.Product.Properties`:
