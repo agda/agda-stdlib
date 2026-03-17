@@ -31,7 +31,7 @@ open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
-        ; *-identityˡ; *-identityʳ; *-comm; *-assoc; *-suc)
+        ; *-identityˡ; *-identityʳ; *-comm; *-assoc; *-suc; m*n≢0)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
@@ -89,6 +89,9 @@ private
 
 ↧[n/d]≡d : ∀ n d .{{_ : ℕ.NonZero d}} → ↧ (n / d) ≡ ℤ.+ d
 ↧[n/d]≡d n (suc d) = refl
+
+↧ₙ[n/d]≡d : ∀ n d .{{_ : ℕ.NonZero d}} → ↧ₙ (n / d) ≡ d
+↧ₙ[n/d]≡d n (suc d) = refl
 
 ------------------------------------------------------------------------
 -- Properties of _≃_
@@ -1571,6 +1574,27 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
 
 n/d≡[n/1]*[1/d] : ∀ n d .{{_ : ℕ.NonZero d}} → n / d ≡ (n / 1) * (1ℤ / d)
 n/d≡[n/1]*[1/d] n d@(suc _) = sym (/-cong (ℤ.*-identityʳ n) (ℕ.*-identityˡ d))
+
+n/d≃[n/a]*[a/d] : ∀ n d a .{{_ : ℕ.NonZero d}} .{{_ : ℕ.NonZero a}} →
+                  n / d ≃ (n / a) * (ℤ.+ a / d)
+n/d≃[n/a]*[a/d] n d a = let +a = ℤ.+ a in ≃-sym (begin-equality
+  n / a * (+a / d)
+        ≡⟨ *-eta (n / a) (+a / d) ⟩
+  (↥ (n / a) ℤ.* ↥ (+a / d)) / (↧ₙ (n / a) ℕ.* ↧ₙ (+a / d))
+        ≡⟨ /-cong {{_}} {{a*d≢0}}
+                  (cong₂ ℤ._*_ (↥[n/d]≡n n a) (↥[n/d]≡n +a d))
+                  (cong₂ ℕ._*_ (↧ₙ[n/d]≡d n a) (↧ₙ[n/d]≡d +a d)) ⟩
+  ((n ℤ.* +a) / (a ℕ.* d)) {{a*d≢0}}
+        ≡⟨ /-cong {{_}} {{a*d≢0}} (ℤ.*-comm n +a) refl ⟩
+  ((+a ℤ.* n) / (a ℕ.* d)) {{a*d≢0}}
+        ≃⟨ *-cancelˡ-/ a {{_}} {{a*d≢0}} ⟩
+  n / d ∎)
+  where
+  open ≤-Reasoning
+  *-eta : ∀ p q → p * q ≡ (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
+  *-eta p@record{} q@record{} = refl
+  a*d≢0 : ℕ.NonZero (a ℕ.* d)
+  a*d≢0 = ℕ.m*n≢0 a d
 
 ------------------------------------------------------------------------
 -- Properties of _/_ and _+_
