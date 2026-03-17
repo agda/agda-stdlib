@@ -89,6 +89,16 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ≈-subst-∈   ↦   ∈-resp-≈
+  ```
+
+* In `Data.List.Fresh.Relation.Unary.Any`:
+  ```agda
+  witness   ↦   satisfiable
+  ```
+
 * In `Data.List.Relation.Binary.Lex.NonStrict`:
   ```agda
   <-decidable    ↦   _<?_
@@ -109,7 +119,7 @@ Deprecated names
 * In `Data.Product.Relation.Binary.Lex.Strict`:
   ```agda
   ×-decidable    ↦   <ₗₑₓ?
-  ```
+ ```
 
 * In `Data.Rational.Properties`:
   ```agda
@@ -162,6 +172,10 @@ Deprecated names
 
 New modules
 -----------
+
+* Added tactic ring solvers for rational numbers (issue #1879):
+  `Data.Rational.Tactic.RingSolver`,
+  `Data.Rational.Unnormalised.Tactic.RingSolver`.
 
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
@@ -308,6 +322,17 @@ Additions to existing modules
   ```
   <ᵇ⇒< : T (i <ᵇ j) → i < j
   <⇒<ᵇ : i < j → T (i <ᵇ j)
+  ```
+
+* In `Data.List.Fresh`:
+  ```agda
+  _#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+  ```
+
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ∉-All[x≉] : x ∉ xs → All (x ≉_) xs
+  All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
   ```
 
 * In `Data.List.NonEmpty.Relation.Unary.All`:

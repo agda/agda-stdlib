@@ -11,101 +11,96 @@ open import Relation.Binary.Bundles using (Setoid)
 module Data.List.Fresh.Membership.Setoid.Properties {c ℓ} (S : Setoid c ℓ)
   where
 
-open import Level using (Level; _⊔_)
+open import Level using (Level)
 open import Data.List.Fresh
 open import Data.List.Fresh.Properties using (fresh-respectsˡ)
 open import Data.List.Fresh.Membership.Setoid S using (_∈_; _∉_)
-open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; _─_)
-import Data.List.Fresh.Relation.Unary.Any.Properties as List#
+open import Data.List.Fresh.Relation.Unary.All as All using (All; []; _∷_)
+open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; remove; _─_)
+open import Data.List.Fresh.Relation.Unary.Any.Properties as List#
   using (length-remove)
-open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat.Base using (ℕ; suc; zero; _≤_; _<_; z≤n; s≤s; z<s; s<s)
 open import Data.Nat.Properties using (module ≤-Reasoning)
 open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
 open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Binary.Definitions as Binary using (_Respectsˡ_)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (cong)
+open import Relation.Nary using (∀[_]; _⇒_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contradiction′)
 open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Unary as Unary using (Pred)
-import Relation.Binary.Definitions as Binary using (_Respectsˡ_; Irrelevant)
-import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; cong; sym; subst)
-open import Relation.Nary using (∀[_]; _⇒_)
-open import Relation.Nullary.Negation.Core using (contradiction)
 
 open Setoid S renaming (Carrier to A)
 
 private
   variable
-    p r : Level
+    r : Level
+    R : Rel A r
+    x y : A
+    xs : List# A R
+
 
 ------------------------------------------------------------------------
 -- transport
 
-module _ {R : Rel A r} where
-
-  ≈-subst-∈ : ∀ {x y} {xs : List# A R} → x ≈ y → x ∈ xs → y ∈ xs
-  ≈-subst-∈ x≈y (here x≈x′)  = here (trans (sym x≈y) x≈x′)
-  ≈-subst-∈ x≈y (there x∈xs) = there (≈-subst-∈ x≈y x∈xs)
+∈-resp-≈ : x ≈ y → x ∈ xs → y ∈ xs
+∈-resp-≈ x≈y (here x≈x′)  = here (trans (sym x≈y) x≈x′)
+∈-resp-≈ x≈y (there x∈xs) = there (∈-resp-≈ x≈y x∈xs)
 
 ------------------------------------------------------------------------
 -- relationship to fresh
 
-module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
+module _ (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
 
-  fresh⇒∉ : ∀ {x} {xs : List# A R} → x # xs → x ∉ xs
+  fresh⇒∉ : x #[ R ] xs → x ∉ xs
   fresh⇒∉ (r , _)    (here x≈y)   = R⇒≉ r x≈y
   fresh⇒∉ (_ , x#xs) (there x∈xs) = fresh⇒∉ x#xs x∈xs
 
 ------------------------------------------------------------------------
 -- disjointness
 
-module _ {R : Rel A r} where
-
-  distinct : ∀ {x y} {xs : List# A R} → x ∈ xs → y ∉ xs → x ≉ y
-  distinct x∈xs y∉xs x≈y = y∉xs (≈-subst-∈ x≈y x∈xs)
+distinct : x ∈ xs → y ∉ xs → x ≉ y
+distinct x∈xs y∉xs x≈y = y∉xs (∈-resp-≈ x≈y x∈xs)
 
 ------------------------------------------------------------------------
 -- remove
 
-module _ {R : Rel A r} where
+remove-inv : (x∈xs : x ∈ xs) → y ∈ xs → x ≈ y ⊎ y ∈ (xs ─ x∈xs)
+remove-inv (here x≈z)   (here y≈z)   = inj₁ (trans x≈z (sym y≈z))
+remove-inv (here _)     (there y∈xs) = inj₂ y∈xs
+remove-inv (there _)    (here y≈z)   = inj₂ (here y≈z)
+remove-inv (there x∈xs) (there y∈xs) = Sum.map₂ there (remove-inv x∈xs y∈xs)
 
-  remove-inv : ∀ {x y} {xs : List# A R} (x∈xs : x ∈ xs) →
-               y ∈ xs → x ≈ y ⊎ y ∈ (xs ─ x∈xs)
-  remove-inv (here x≈z)   (here y≈z)   = inj₁ (trans x≈z (sym y≈z))
-  remove-inv (here _)     (there y∈xs) = inj₂ y∈xs
-  remove-inv (there _)    (here y≈z)   = inj₂ (here y≈z)
-  remove-inv (there x∈xs) (there y∈xs) = Sum.map₂ there (remove-inv x∈xs y∈xs)
+∈-remove : (x∈xs : x ∈ xs) → y ∈ xs → x ≉ y → y ∈ (xs ─ x∈xs)
+∈-remove x∈xs y∈xs x≉y = fromInj₂ (contradiction′ x≉y) (remove-inv x∈xs y∈xs)
 
-  ∈-remove : ∀ {x y} {xs : List# A R} (x∈xs : x ∈ xs) → y ∈ xs → x ≉ y → y ∈ (xs ─ x∈xs)
-  ∈-remove x∈xs y∈xs x≉y = fromInj₂ (⊥-elim ∘′ x≉y) (remove-inv x∈xs y∈xs)
+module _ (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≉⇒R : ∀[ _≉_ ⇒ R ]) where
 
-module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≉⇒R : ∀[ _≉_ ⇒ R ]) where
-
-  private
-    R≈ : R Binary.Respectsˡ _≈_
-    R≈ x≈y Rxz = ≉⇒R (R⇒≉ Rxz ∘′ trans x≈y)
-
-  fresh-remove : ∀ {x} {xs : List# A R} (x∈xs : x ∈ xs) → x # (xs ─ x∈xs)
-  fresh-remove {xs = cons x xs pr} (here x≈y)   = fresh-respectsˡ R≈ (sym x≈y) pr
+  fresh-remove : (x∈xs : x ∈ xs) → x #[ R ] (xs ─ x∈xs)
+  fresh-remove {xs = cons x xs pr} (here x≈y)   = fresh-respectsˡ resp (sym x≈y) pr
+    where
+    resp : R Respectsˡ _≈_
+    resp x≈y Rxz = ≉⇒R (R⇒≉ Rxz ∘′ trans x≈y)
   fresh-remove {xs = cons x xs pr} (there x∈xs) =
     ≉⇒R (distinct x∈xs (fresh⇒∉ R⇒≉ pr)) , fresh-remove x∈xs
 
-  ∉-remove : ∀ {x} {xs : List# A R} (x∈xs : x ∈ xs) → x ∉ (xs ─ x∈xs)
+  ∉-remove : (x∈xs : x ∈ xs) → x ∉ remove {R = R} xs x∈xs
   ∉-remove x∈xs = fresh⇒∉ R⇒≉ (fresh-remove x∈xs)
 
 ------------------------------------------------------------------------
 -- injection
 
-module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
+module _ (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
 
   injection : ∀ {xs ys : List# A R} (inj : ∀ {x} → x ∈ xs → x ∈ ys) →
               length xs ≤ length ys
   injection {[]}                 {ys} inj = z≤n
   injection {xxs@(cons x xs pr)} {ys} inj = begin
     length xxs               ≤⟨ s≤s (injection step) ⟩
-    suc (length (ys ─ x∈ys)) ≡⟨ ≡.sym (List#.length-remove x∈ys) ⟩
+    suc (length (ys ─ x∈ys)) ≡⟨ length-remove x∈ys ⟨
     length ys                ∎
 
     where
@@ -118,36 +113,63 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
     x∈ys : x ∈ ys
     x∈ys = inj (here refl)
 
-    step : ∀ {y} → y ∈ xs → y ∈ (ys ─ x∈ys)
-    step {y} y∈xs = ∈-remove x∈ys (inj (there y∈xs)) (distinct y∈xs x∉xs ∘′ sym)
+    step : y ∈ xs → y ∈ (ys ─ x∈ys)
+    step y∈xs = ∈-remove x∈ys (inj (there y∈xs)) (distinct y∈xs x∉xs ∘′ sym)
 
   strict-injection : ∀ {xs ys : List# A R} (inj : ∀ {x} → x ∈ xs → x ∈ ys) →
    (∃ λ x → x ∈ ys × x ∉ xs) → length xs < length ys
   strict-injection {xs} {ys} inj (x , x∈ys , x∉xs) = begin
     suc (length xs)          ≤⟨ s≤s (injection step) ⟩
-    suc (length (ys ─ x∈ys)) ≡⟨ ≡.sym (List#.length-remove x∈ys) ⟩
+    suc (length (ys ─ x∈ys)) ≡⟨ length-remove x∈ys ⟨
     length ys                ∎
 
     where
 
     open ≤-Reasoning
 
-    step : ∀ {y} → y ∈ xs → y ∈ (ys ─ x∈ys)
-    step {y} y∈xs = fromInj₂ (λ x≈y → contradiction ((≈-subst-∈ (sym x≈y) y∈xs)) x∉xs)
-                  $ remove-inv x∈ys (inj y∈xs)
+    step : y ∈ xs → y ∈ (ys ─ x∈ys)
+    step y∈xs = fromInj₂ (λ x≈y → contradiction ((∈-resp-≈ (sym x≈y) y∈xs)) x∉xs)
+                $ remove-inv x∈ys (inj y∈xs)
 
 
 ------------------------------------------------------------------------
 -- proof irrelevance
 
-module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≈-irrelevant : Binary.Irrelevant _≈_) where
+module _ (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≈-irrelevant : Binary.Irrelevant _≈_) where
 
-  ∈-irrelevant : ∀ {x} {xs : List# A R} → Irrelevant (x ∈ xs)
+  ∈-irrelevant : ∀ {xs : List# A R} → Irrelevant (x ∈ xs)
   -- positive cases
-  ∈-irrelevant (here x≈y₁)   (here x≈y₂)   = ≡.cong here (≈-irrelevant x≈y₁ x≈y₂)
-  ∈-irrelevant (there x∈xs₁) (there x∈xs₂) = ≡.cong there (∈-irrelevant x∈xs₁ x∈xs₂)
+  ∈-irrelevant (here x≈y₁)   (here x≈y₂)   = cong here (≈-irrelevant x≈y₁ x≈y₂)
+  ∈-irrelevant (there x∈xs₁) (there x∈xs₂) = cong there (∈-irrelevant x∈xs₁ x∈xs₂)
   -- absurd cases
   ∈-irrelevant {xs = cons x xs pr} (here x≈y)    (there x∈xs₂) =
     contradiction x≈y (distinct x∈xs₂ (fresh⇒∉ R⇒≉ pr))
   ∈-irrelevant {xs = cons x xs pr} (there x∈xs₁) (here x≈y)    =
     contradiction x≈y (distinct x∈xs₁ (fresh⇒∉ R⇒≉ pr))
+
+------------------------------------------------------------------------
+-- relationship between x ∉ xs and All (x ≉_) xs
+
+∉-All[x≉] : x ∉ xs → All (x ≉_) xs
+∉-All[x≉] {xs = []}           _ = []
+∉-All[x≉] {xs = _ ∷# _} p = p ∘′ here ∷ ∉-All[x≉] (p ∘′ there)
+
+All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
+All[x≉]-∉ [] ()
+All[x≉]-∉ (p ∷ ps) (here x≈y)   = p x≈y
+All[x≉]-∉ (p ∷ ps) (there x∈ys) = All[x≉]-∉ ps x∈ys
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+≈-subst-∈ = ∈-resp-≈
+{-# WARNING_ON_USAGE ≈-subst-∈
+"Warning: ≈-subst-∈ was deprecated in v1.4.
+Please use ∈-resp-≈ instead."
+#-}
