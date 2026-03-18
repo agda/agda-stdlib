@@ -1986,15 +1986,6 @@ q≤⌈q⌉ q@record{} = begin
   - (⌈ q ⌉ / 1 - 1ℚᵘ)       ∎) where open ≤-Reasoning
 
 private
-  a≡b+c⇒c≡a-b : ∀ a b c → a ≡ b ℤ.+ c → c ≡ a ℤ.- b
-  a≡b+c⇒c≡a-b a b c a≡b+c = sym (begin
-    a ℤ.- b       ≡⟨ cong (ℤ._- b) a≡b+c ⟩
-    b ℤ.+ c ℤ.- b ≡⟨ xyx⁻¹≈y b c ⟩
-    c             ∎)
-    where
-    open ≡-Reasoning
-    open import Algebra.Properties.AbelianGroup ℤ.+-0-abelianGroup
-
   -[-n-m]≡n+m : ∀ n m → ℤ.- (ℤ.- n ℤ.- m) ≡ n ℤ.+ m
   -[-n-m]≡n+m n m = begin
     ℤ.- (ℤ.- n ℤ.- m)   ≡⟨ cong (ℤ.-_) (ℤ.neg-distrib-+ n m) ⟨
@@ -2025,12 +2016,10 @@ private
             ≡⟨ ℤ.neg-distrib-+ [-n/d]*d [n/d]*d ⟨
         ℤ.- ([-n/d]*d ℤ.+ [n/d]*d)
             ≡⟨ cong₂ (λ x y → ℤ.- (x ℤ.+ y))
-                     (a≡b+c⇒c≡a-b -n -n%d [-n/d]*d
-                       (ℤ.a≡a%n+[a/n]*n -n d))
-                     (a≡b+c⇒c≡a-b n n%d [n/d]*d
-                       (ℤ.a≡a%n+[a/n]*n n d)) ⟩
-        ℤ.- ((-n ℤ.- -n%d) ℤ.+ (n ℤ.- n%d))
-            ≡⟨ cong (λ x → ℤ.- (x ℤ.+ (n ℤ.- n%d))) (ℤ.+-comm -n _) ⟩
+                     (y≈x\\z -n%d [-n/d]*d -n (sym (ℤ.a≡a%n+[a/n]*n -n d)))
+                     (y≈x\\z n%d [n/d]*d n (sym (ℤ.a≡a%n+[a/n]*n n d)))  ⟩
+         ℤ.- ( (ℤ.- -n%d ℤ.+ -n) ℤ.+ (ℤ.- n%d ℤ.+ n))
+            ≡⟨ cong (λ x → ℤ.- ((ℤ.- -n%d ℤ.+ -n) ℤ.+ x)) (ℤ.+-comm _ n) ⟩
         ℤ.- ((ℤ.- -n%d ℤ.+ -n) ℤ.+ (n ℤ.- n%d))
             ≡⟨ cong (ℤ.-_) (ℤ.+-minus-telescope (ℤ.- -n%d) n n%d) ⟩
         ℤ.- (ℤ.- -n%d ℤ.- n%d)
