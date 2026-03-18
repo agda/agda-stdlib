@@ -278,8 +278,8 @@ import README.Text.Tabular
 -- For short descriptions of every library module, see Everything;
 -- to exclude unsafe modules, see EverythingSafe:
 
-import Everything
 import EverythingSafe
+import Everything
 
 -- Note that the Everything* modules are generated automatically. If
 -- you have downloaded the library from its Git repository and want
