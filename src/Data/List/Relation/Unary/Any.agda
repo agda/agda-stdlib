@@ -121,5 +121,8 @@ Please use any? instead."
 satisfiable = satisfiable⁺
 {-# WARNING_ON_USAGE satisfiable
 "Warning: satisfiable was deprecated in v2.4.
-Please use satisfiable⁺ instead."
+Please use satisfiable⁺ instead. Moreover,
+the name satisfied will be renamed in v3.0
+to satisfiable, so users should refactor
+as soon as they can."
 #-}
