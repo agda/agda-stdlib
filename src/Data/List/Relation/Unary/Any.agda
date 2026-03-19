@@ -69,7 +69,11 @@ infixl 4 _─_
 _─_ : {P : Pred A p} → ∀ xs → Any P xs → List A
 xs ─ x∈xs = removeAt xs (index x∈xs)
 
--- If any element satisfies P, then P is satisfied.
+-- If any element satisfies P, then P is satisfiable.
+
+-- v2.4 `satisfied` is being retained for compatibility reasons,
+--      while `satisfiable` below is renamed to `satisfiable⁺`
+-- v3.0 `satisfied` will be renamed to `satisfiable`
 
 satisfied : Any P xs → Satisfiable P
 satisfied (here px)   = _ , px
