@@ -489,7 +489,7 @@ module _ (f : A → B → C) where
                           Any P xs × Any Q ys
   cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys with ++⁻ (map (f x) ys) Rxsys
   ... | inj₁ Rfxys = let Rxys = map⁻ Rfxys
-    in here (proj₁ (resp (proj₂ (Any.satisfiable Rxys)))) , Any.map (proj₂ ∘ resp) Rxys
+    in here (proj₁ (resp (proj₂ (Any.satisfied Rxys)))) , Any.map (proj₂ ∘ resp) Rxys
   ... | inj₂ Rc    = let pxs , qys = cartesianProductWith⁻ resp xs ys Rc
     in there pxs , qys
 

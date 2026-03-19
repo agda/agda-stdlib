@@ -44,4 +44,4 @@ map g (there pxs) = there (List.map g pxs)
 
 satisfiable : Any P xs → Satisfiable P
 satisfiable (here px)  = _ , px
-satisfiable (there pxs) = List.satisfiable pxs
+satisfiable (there pxs) = List.satisfied pxs

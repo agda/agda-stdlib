@@ -101,7 +101,7 @@ Deprecated names
 
 * In `Data.List.Relation.Unary.Any`:
   ```agda
-  satisfied    ↦  satisfiable
+  satisfiable    ↦  satisfiable⁺
   ```
 
 * In `Data.Rational.Properties`:
@@ -308,7 +308,7 @@ Additions to existing modules
 
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
-  map : P ⊆ Q → All P xs → All Q xs
+  map : P ⊆ Q → All P ⊆ All Q
   ```
 
 * In `Data.List.Properties`:
@@ -320,7 +320,6 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.Any`:
   ```agda
-  satisfiable⁺ : Satisfiable P → Satisfiable (Any P)
   satisfiable⁻ : Satisfiable (Any P) → Satisfiable P
   ```
 
