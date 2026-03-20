@@ -22,25 +22,15 @@ open StrictTotalOrder sto renaming (Carrier to Key)
 private
   variable
     v p : Level
-    V : Value v
     l u : Key⁺
-    P : Pred (K& V) p
 
-module _ {V : Value v} where
+module _ {V : Value v}
+         {P : Pred (K& V) p}
+         (k : Key) (v : Value.family V k) (l<k<u : l < k < u)
+         where
 
-  private
-    Val  = Value.family V
+  singleton⁺ : P (k , v) → Any P (singleton k v l<k<u)
+  singleton⁺ Pkv = here Pkv
 
-  singleton⁺ : {P : Pred (K& V) p} →
-               (k : Key) →
-               (v : Val k) →
-               (l<k<u : l < k < u) →
-               P (k , v) → Any P (singleton k v l<k<u)
-  singleton⁺ k v l<k<u Pkv = here Pkv
-
-  singleton⁻ : {P : Pred (K& V) p} →
-               (k : Key) →
-               (v : Val k) →
-               (l<k<u : l < k < u) →
-               Any P (singleton k v l<k<u) → P (k , v)
-  singleton⁻ k v l<k<u (here Pkv) = Pkv
+  singleton⁻ : Any P (singleton k v l<k<u) → P (k , v)
+  singleton⁻ (here Pkv) = Pkv
