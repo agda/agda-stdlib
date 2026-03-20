@@ -60,4 +60,4 @@ module _ {V : Value v} where
 -- unfolding of the function in goal types.
 const : Set v → Value v
 Value.family   (const V) = Function.const V
-Value.respects (const V) = Function.const F.id
+Value.respects (const V) = Function.const Function.id
