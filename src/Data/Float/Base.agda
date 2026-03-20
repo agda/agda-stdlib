@@ -4,7 +4,7 @@
 -- Floats: basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Float.Base where
 

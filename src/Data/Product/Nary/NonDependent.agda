@@ -4,7 +4,7 @@
 -- Nondependent heterogeneous N-ary products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Nary.NonDependent where
 

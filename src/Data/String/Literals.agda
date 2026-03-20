@@ -4,7 +4,7 @@
 -- String Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.String.Literals where
 

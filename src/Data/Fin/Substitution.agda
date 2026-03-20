@@ -11,7 +11,7 @@
 -- of how this module can be used: a definition of substitution for
 -- the untyped λ-calculus.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Substitution where
 

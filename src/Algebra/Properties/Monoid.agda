@@ -5,7 +5,7 @@
 -- (Utilities for identity and cancellation reasoning, extending semigroup reasoning)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Monoid)
 

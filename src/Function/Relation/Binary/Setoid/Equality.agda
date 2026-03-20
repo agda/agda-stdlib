@@ -4,7 +4,7 @@
 -- Function Equality setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Bundles using (Setoid)

@@ -4,7 +4,7 @@
 -- Properties of the extensional sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 

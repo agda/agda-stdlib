@@ -4,7 +4,7 @@
 -- Properties for injections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Properties.Injection where
 

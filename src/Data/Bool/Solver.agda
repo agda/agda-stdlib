@@ -6,7 +6,7 @@
 
 -- See README.Data.Nat for examples of how to use similar solvers
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Solver where
 

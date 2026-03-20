@@ -4,7 +4,7 @@
 -- Machine words: basic type and conversion functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Word64.Base where
 

@@ -4,7 +4,7 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Binary.Pointwise where
 

@@ -6,7 +6,7 @@
 -- Preserving Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.List.Base using (List; []; _∷_; [_])
 open import Data.List.Relation.Unary.Any using (Any; here; there)

@@ -4,7 +4,7 @@
 -- Refinement type: a value together with a proof irrelevant witness.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Refinement.Base where
 

@@ -4,7 +4,7 @@
 -- Typeclass instances for Identity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Monad.Identity.Instances where
 

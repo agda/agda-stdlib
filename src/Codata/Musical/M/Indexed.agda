@@ -5,7 +5,7 @@
 -- trees).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe --guardedness #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Codata.Musical.M.Indexed where
 

@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to maybes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.Relation.Binary.Pointwise where
 

@@ -4,7 +4,7 @@
 -- Exponentiation defined over a commutative semiring as repeated multiplication
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (CommutativeSemiring)
 

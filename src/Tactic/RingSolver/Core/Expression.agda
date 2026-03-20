@@ -4,7 +4,7 @@
 -- A type for expressions over a raw ring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Tactic.RingSolver.Core.Expression where
 

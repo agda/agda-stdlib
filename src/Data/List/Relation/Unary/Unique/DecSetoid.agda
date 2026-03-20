@@ -4,7 +4,7 @@
 -- Lists made up entirely of unique elements (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid)
 import Data.List.Relation.Unary.AllPairs as AllPairs

@@ -4,7 +4,7 @@
 -- Subtraction on Bin and some of its properties.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Subtraction where
 

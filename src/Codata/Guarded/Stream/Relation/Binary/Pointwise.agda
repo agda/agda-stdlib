@@ -4,7 +4,7 @@
 -- Coinductive pointwise lifting of relations to streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible --guardedness #-}
+{-# OPTIONS --safe --without-K --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Binary.Pointwise where
 

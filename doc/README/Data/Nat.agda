@@ -5,7 +5,7 @@
 -- operations and properties are defined, and how they can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module README.Data.Nat where
 

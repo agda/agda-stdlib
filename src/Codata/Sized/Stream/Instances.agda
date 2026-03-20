@@ -4,7 +4,7 @@
 -- Typeclass instances for Stream
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Stream.Instances where
 

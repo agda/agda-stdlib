@@ -4,7 +4,7 @@
 -- Natural number division
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.DivMod where
 

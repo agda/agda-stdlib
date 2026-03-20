@@ -4,7 +4,7 @@
 -- Properties of the unit type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.Properties where
 

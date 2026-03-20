@@ -4,7 +4,7 @@
 -- Examples of printing list and vec-based tables
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module README.Text.Tabular where
 

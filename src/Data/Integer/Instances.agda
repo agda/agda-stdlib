@@ -4,7 +4,7 @@
 -- Instances for integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Instances where
 

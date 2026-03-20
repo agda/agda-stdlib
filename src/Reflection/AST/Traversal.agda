@@ -4,7 +4,7 @@
 -- de Bruijn-aware generic traversal of reflected terms.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Effect.Applicative using (RawApplicative)
 

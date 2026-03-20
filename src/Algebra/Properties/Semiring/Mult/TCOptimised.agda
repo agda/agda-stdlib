@@ -4,7 +4,7 @@
 -- Multiplication over a semiring optimised for type-checking.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (zero; suc)

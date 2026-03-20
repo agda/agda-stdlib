@@ -4,7 +4,7 @@
 -- The binary relation defined by a constant
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Constant.Core where
 

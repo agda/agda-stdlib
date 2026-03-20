@@ -4,7 +4,7 @@
 -- Combinatorial operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Combinatorics where
 

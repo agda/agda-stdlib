@@ -4,7 +4,7 @@
 -- Indexed container combinators
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Indexed.Combinator where
 

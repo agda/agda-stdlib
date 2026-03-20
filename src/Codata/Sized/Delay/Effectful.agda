@@ -4,7 +4,7 @@
 -- An effectful view of Delay
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Delay.Effectful where
 

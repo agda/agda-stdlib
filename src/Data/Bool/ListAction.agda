@@ -8,7 +8,7 @@
 -- `Data.List.Effectful.Foldable.foldmap`.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.ListAction where
 

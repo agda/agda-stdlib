@@ -4,7 +4,7 @@
 -- Bundles for morphisms between binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Morphism.Bundles where
 

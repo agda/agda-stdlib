@@ -4,7 +4,7 @@
 -- Properties of operations on floats
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Float.Properties where
 

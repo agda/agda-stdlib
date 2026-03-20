@@ -4,7 +4,7 @@
 -- *Pseudo-random* number generation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module System.Random where
 

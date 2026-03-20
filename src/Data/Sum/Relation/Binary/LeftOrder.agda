@@ -4,7 +4,7 @@
 -- Sums of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Binary.LeftOrder where
 

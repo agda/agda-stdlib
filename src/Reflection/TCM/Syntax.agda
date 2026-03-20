@@ -4,7 +4,7 @@
 -- Monad syntax for the TC monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.TCM.Syntax where
 

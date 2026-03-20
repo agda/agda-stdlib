@@ -4,7 +4,7 @@
 -- Properties of the homogeneous infix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Infix.Homogeneous.Properties where
 

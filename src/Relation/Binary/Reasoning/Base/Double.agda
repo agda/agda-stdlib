@@ -8,7 +8,7 @@
 -- See `Data.Nat.Properties` or `Relation.Binary.Reasoning.PartialOrder`
 -- for examples of how to instantiate this module.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (_⊔_)
 open import Function.Base using (case_of_)

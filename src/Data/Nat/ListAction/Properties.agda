@@ -7,7 +7,7 @@
 -- ahead of a more thorough breaking set of changes.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.ListAction.Properties where
 

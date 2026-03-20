@@ -5,7 +5,7 @@
 -- natural order.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core using (Op₂)
 open import Relation.Binary.Core using (Rel; _⇒_)

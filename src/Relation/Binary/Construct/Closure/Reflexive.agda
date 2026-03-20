@@ -4,7 +4,7 @@
 -- Reflexive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Closure.Reflexive where
 

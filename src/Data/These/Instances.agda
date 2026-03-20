@@ -4,7 +4,7 @@
 -- Typeclass instances for These
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.These.Instances where
 

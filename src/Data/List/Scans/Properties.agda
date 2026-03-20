@@ -4,7 +4,7 @@
 -- List scans: properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Scans.Properties where
 

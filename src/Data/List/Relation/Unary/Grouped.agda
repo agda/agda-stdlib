@@ -4,7 +4,7 @@
 -- Property that elements are grouped
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Grouped where
 

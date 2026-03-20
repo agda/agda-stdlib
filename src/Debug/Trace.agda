@@ -4,7 +4,7 @@
 -- Printing Strings During Evaluation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --rewriting #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 -- see README.Debug.Trace for a use-case
 

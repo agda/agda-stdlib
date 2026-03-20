@@ -8,7 +8,7 @@
 -- relation equivalent to the original one (and similarly for
 -- < → ≤ → <).
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 

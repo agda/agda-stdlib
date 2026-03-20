@@ -5,7 +5,7 @@
 -- `Data.These.Categorical.Right.Base` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.These.Categorical.Right.Base where
 

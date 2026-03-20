@@ -4,7 +4,7 @@
 -- Fixpoints for containers - using guardedness
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible --guardedness #-}
+{-# OPTIONS --safe --without-K --guardedness #-}
 
 module Data.Container.Fixpoints.Guarded where
 

@@ -4,7 +4,7 @@
 -- Reflection utilities for List
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Reflection where
 

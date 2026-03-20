@@ -4,7 +4,7 @@
 -- Lists where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.All where
 

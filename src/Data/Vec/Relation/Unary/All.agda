@@ -4,7 +4,7 @@
 -- Vectors where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Unary.All where
 

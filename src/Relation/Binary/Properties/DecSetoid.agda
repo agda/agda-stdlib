@@ -4,7 +4,7 @@
 -- Every decidable setoid induces tight apartness relation.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid; ApartnessRelation)
 

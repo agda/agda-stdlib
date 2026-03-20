@@ -4,7 +4,7 @@
 -- Reflection utilities
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.TCM.Utilities where
 

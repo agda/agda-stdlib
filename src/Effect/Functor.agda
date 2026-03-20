@@ -6,7 +6,7 @@
 
 -- Note that currently the functor laws are not included here.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Functor where
 

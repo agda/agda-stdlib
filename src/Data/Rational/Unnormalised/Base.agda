@@ -4,7 +4,7 @@
 -- Rational numbers in non-reduced form.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Rational.Unnormalised.Base where
 

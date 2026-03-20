@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to non-empty lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.NonEmpty.Relation.Binary.Pointwise where
 

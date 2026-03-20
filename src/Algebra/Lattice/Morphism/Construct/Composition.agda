@@ -4,7 +4,7 @@
 -- The composition of morphisms between algebraic lattice structures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Algebra.Lattice.Morphism.Construct.Composition where
 

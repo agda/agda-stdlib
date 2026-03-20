@@ -4,7 +4,7 @@
 -- Membership of vectors, along with some additional definitions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (_Respects_)
