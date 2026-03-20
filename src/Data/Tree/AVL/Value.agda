@@ -8,14 +8,20 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Definitions using (_Respects_)
 
 module Data.Tree.AVL.Value {a ℓ} (S : Setoid a ℓ) where
 
 open import Data.Product.Base using (Σ; _,_)
-open import Level using (suc; _⊔_)
-import Function.Base as F
-open Setoid S renaming (Carrier to Key)
+open import Level using (Level; suc; _⊔_)
+import Function.Base as Function
+open import Relation.Binary.Definitions using (_Respects_)
+
+open Setoid S using (_≈_) renaming (Carrier to Key)
+
+private
+  variable
+    v : Level
+
 
 ------------------------------------------------------------------------
 -- A Value
@@ -26,23 +32,25 @@ record Value v : Set (a ⊔ ℓ ⊔ suc v) where
     family   : Key → Set v
     respects : family Respects _≈_
 
+open Value using (family)
+
 ------------------------------------------------------------------------
 -- A Key together with its value
 
-record K&_ {v} (V : Value v) : Set (a ⊔ v) where
+record K&_ (V : Value v) : Set (a ⊔ v) where
   constructor _,_
   field
     key   : Key
-    value : Value.family V key
+    value : family V key
 infixr 4 _,_
 open K&_ public
 
-module _ {v} {V : Value v} where
+module _ {V : Value v} where
 
-  toPair : K& V → Σ Key (Value.family V)
+  toPair : K& V → Σ Key (family V)
   toPair (k , v) = k , v
 
-  fromPair : Σ Key (Value.family V) → K& V
+  fromPair : Σ Key (family V) → K& V
   fromPair (k , v) = k , v
 
 ------------------------------------------------------------------------
@@ -50,6 +58,6 @@ module _ {v} {V : Value v} where
 
 -- The function `const` is defined using copatterns to prevent eager
 -- unfolding of the function in goal types.
-const : ∀ {v} → Set v → Value v
-Value.family   (const V) = F.const V
-Value.respects (const V) = F.const F.id
+const : Set v → Value v
+Value.family   (const V) = Function.const V
+Value.respects (const V) = Function.const F.id
