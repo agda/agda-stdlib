@@ -90,7 +90,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
   ordered (node kv lk ku bal) = trans⁺ _ (ordered lk) (ordered ku)
 
   private
-  
+
   -- This lemma justifies the use of `leaf⁻` pattern matches in code below
 
     tree⁻0 : (t⁻ : Tree⁻ V l u 0) →
