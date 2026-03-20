@@ -81,7 +81,7 @@ lookup (right p)          = lookup p
 lookupKey : Any P t → Key
 lookupKey = key ∘′ lookup
 
--- If any element satisfies P, then P is satisfied.
+-- If any element satisfies P, then P is satisfiable.
 
 satisfied : Any P t → Satisfiable P
 satisfied (here  p) = -, p

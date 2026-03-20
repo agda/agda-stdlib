@@ -13,7 +13,7 @@ module Data.Tree.AVL.Indexed
 
 open import Level using (Level; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Product.Base using (Σ; ∃; _×_; _,_; proj₁)
+open import Data.Product.Base using (Σ; ∃; _×_; _,_)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.List.Base as List using (List)
 open import Data.DifferenceList as DiffList using (DiffList; []; _∷_; _++_)
@@ -22,7 +22,8 @@ open import Relation.Unary
 open import Relation.Binary.Definitions using (_Respects_; Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
-open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
+open StrictTotalOrder strictTotalOrder
+  using (module Eq; compare) renaming (Carrier to Key)
 
 ------------------------------------------------------------------------
 -- Re-export core definitions publicly
@@ -38,7 +39,6 @@ private
   variable
     ℓ v w : Level
     A : Set ℓ
-    k : Key
     l m u : Key⁺
     hˡ hʳ h : ℕ
 
@@ -51,10 +51,9 @@ private
 --
 -- (The bal argument is the balance factor.)
 
-data Tree {v} (V : Value v) (l u : Key⁺) : ℕ → Set (a ⊔ v ⊔ ℓ₂) where
+data Tree (V : Value v) (l u : Key⁺) : ℕ → Set (a ⊔ v ⊔ ℓ₂) where
   leaf : (l<u : l <⁺ u) → Tree V l u 0
-  node : ∀ {hˡ hʳ h}
-         (kv : K& V)
+  node : (kv : K& V)
          (lk : Tree V l [ kv .key ] hˡ)
          (ku : Tree V [ kv .key ] u hʳ)
          (bal : hˡ ∼ hʳ ⊔ h) →
@@ -86,7 +85,7 @@ module _ {V : Value v} {W : Value w}
 
 module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
 
-  ordered : ∀ {l u n} → Tree V l u n → l <⁺ u
+  ordered : Tree V l u h → l <⁺ u
   ordered (leaf l<u)          = l<u
   ordered (node kv lk ku bal) = trans⁺ _ (ordered lk) (ordered ku)
 
@@ -100,7 +99,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
   -- Injectivity of constructors
 
-  leaf-injective : ∀ {l u} {p q : l <⁺ u} → (Tree V l u 0 ∋ leaf p) ≡ leaf q → p ≡ q
+  leaf-injective : ∀ {p q : l <⁺ u} → (Tree V l u 0 ∋ leaf p) ≡ leaf q → p ≡ q
   leaf-injective refl = refl
 
   node-injective-key :
@@ -124,7 +123,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
   -- A singleton tree.
 
-  singleton : ∀ (k : Key) → Val k → l < k < u → Tree V l u 1
+  singleton : ∀ k → Val k → l < k < u → Tree V l u 1
   singleton k v (l<k , k<u) = node (k , v) (leaf l<k) (leaf k<u) ∼0
 
   -- Cast operations. Logarithmic in the size of the tree, if we don't
@@ -229,7 +228,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
   -- tree (assuming constant-time comparisons and a constant-time
   -- combining function).
 
-  insertWith : ∀ (k : Key) → (Maybe (Val k) → Val k) →  -- Maybe old → result.
+  insertWith : ∀ k → (Maybe (Val k) → Val k) →  -- Maybe old → result.
                Tree V l u h → l < k < u → Tree⁺ V l u h
   insertWith k f (leaf l<u) l<k<u = 1# , singleton k (f nothing) l<k<u
   insertWith k f (node kv@(k′ , v) lk ku bal) (l<k , k<u) with compare k k′
@@ -273,13 +272,13 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
   foldr cons nil (leaf l<u)             = nil
   foldr cons nil (node (_ , v) l r bal) = foldr cons (cons v (foldr cons nil r)) l
 
-  toDiffList : ∀ {l u h} → Tree V l u h → DiffList (K& V)
+  toDiffList : Tree V l u h → DiffList (K& V)
   toDiffList (leaf _)       = []
   toDiffList (node k l r _) = toDiffList l ++ k ∷ toDiffList r
 
-  toList : ∀ {l u h} → Tree V l u h → List (K& V)
+  toList : Tree V l u h → List (K& V)
   toList = DiffList.toList ∘ toDiffList
 
-  size : ∀ {l u h} → Tree V l u h → ℕ
+  size : Tree V l u h → ℕ
   size = List.length ∘′ toList
 
