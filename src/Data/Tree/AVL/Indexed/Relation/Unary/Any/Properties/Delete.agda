@@ -49,52 +49,39 @@ module _ (k : Key) where
   delete⁺ : (t : Tree V l u n) (seg : l < k < u) →
             (p : Any P t) → lookupKey p ≉ k →
             Any P (proj₂ (delete k t seg))
-  delete⁺ (node kv@(k′ , _) lk′ k′u bal) (l<k , k<u) (here pk) p≉k
+  delete⁺ (node (k′ , _) _ _ bal) _ (here pk) p≉k
     with compare k′ k
-  ... | tri< k′<k _ _ =
-    joinʳ⁻-here⁺ kv lk′ (delete k k′u ([ k′<k ]ᴿ , k<u)) bal pk
-  ... | tri> _ _ k′>k =
-    joinˡ⁻-here⁺ kv (delete k lk′ (l<k , [ k′>k ]ᴿ)) k′u bal pk
-  ... | tri≈ _ k′≈k _ =
-    contradiction k′≈k p≉k
-  delete⁺ (node kv@(k′ , _) lk′ k′u bal) (l<k , k<u) (left pl) p≉k
+  ... | tri< _ _ _    = joinʳ⁻-here⁺ _ _ _ bal pk
+  ... | tri> _ _ _    = joinˡ⁻-here⁺ _ _ _ bal pk
+  ... | tri≈ _ k′≈k _ = contradiction k′≈k p≉k
+  delete⁺ (node (k′ , _) lk′ k′u bal) (l<k , _) (left pl) p≉k
     with compare k′ k
-  ... | tri< k′<k _ _ =
-    joinʳ⁻-left⁺ kv lk′ (delete k k′u ([ k′<k ]ᴿ , k<u)) bal pl
-  ... | tri> _ _ k′>k =
-    joinˡ⁻-left⁺ kv (delete k lk′ (l<k , [ k′>k ]ᴿ)) k′u bal
-      ((delete⁺ lk′ (l<k , [ k′>k ]ᴿ)) pl p≉k)
-  ... | tri≈ _ _ _ =
-    join-left⁺ lk′ k′u bal pl
-  delete⁺ (node kv@(k′ , _) lk′ k′u bal) (l<k , k<u) (right pr) p≉k
+  ... | tri< _ _ _    = joinʳ⁻-left⁺ _ _ _ bal pl
+  ... | tri> _ _ k′>k = joinˡ⁻-left⁺ _ _ _ bal
+                          (delete⁺ lk′ (l<k , [ k′>k ]ᴿ) pl p≉k)
+  ... | tri≈ _ _ _    = join-left⁺ _ k′u bal pl
+  delete⁺ (node (k′ , _) _ k′u bal) (_ , k<u) (right pr) p≉k
     with compare k′ k
-  ... | tri< k′<k _ _ =
-    joinʳ⁻-right⁺ kv lk′ (delete k k′u ([ k′<k ]ᴿ , k<u)) bal
-      (delete⁺ k′u ([ k′<k ]ᴿ , k<u) pr p≉k)
-  ... | tri> _ _ k′>k =
-    joinˡ⁻-right⁺ kv (delete k lk′ (l<k , [ k′>k ]ᴿ)) k′u bal pr
-  ... | tri≈ _ _ _ =
-    join-right⁺ lk′ k′u bal pr
+  ... | tri< k′<k _ _ = joinʳ⁻-right⁺ _ _ _ bal
+                          (delete⁺ k′u ([ k′<k ]ᴿ , k<u) pr p≉k)
+  ... | tri> _ _ k′>k = joinˡ⁻-right⁺ _ _ _ bal pr
+  ... | tri≈ _ _ _    = join-right⁺ _ _ bal pr
 
   delete-tree⁻ : (t : Tree V l u n) (seg : l < k < u) →
                  Any P (proj₂ (delete k t seg)) →
                  Any P t
-  delete-tree⁻ (node (k′ , _) _ _ _) _ _
-    with compare k′ k
-  delete-tree⁻ (node kv lk′ k′u bal) (_ , k<u) p
-    | tri< k′<k _ _
-    with joinʳ⁻⁻ kv lk′ (delete k k′u ([ k′<k ]ᴿ , k<u)) bal p
-  ... | inj₁ pk = here pk
+  delete-tree⁻ (node (k′ , _) _ _ _) _ _ with compare k′ k
+  delete-tree⁻ (node kv _ k′u bal) (_ , k<u) p | tri< k′<k _ _
+    with joinʳ⁻⁻ _ _ _ bal p
+  ... | inj₁ pk        = here pk
   ... | inj₂ (inj₁ pl) = left pl
   ... | inj₂ (inj₂ pr) = right (delete-tree⁻ k′u ([ k′<k ]ᴿ , k<u) pr)
-  delete-tree⁻ (node kv lk′ k′u bal) (l<k , _) p
-    | tri> _ _ k′>k
-    with joinˡ⁻⁻ kv (delete k lk′ (l<k , [ k′>k ]ᴿ)) k′u bal p
-  ... | inj₁ pk = here pk
+  delete-tree⁻ (node kv lk′ _ bal) (l<k , _) p | tri> _ _ k′>k
+    with joinˡ⁻⁻ _ _ _ bal p
+  ... | inj₁ pk        = here pk
   ... | inj₂ (inj₁ pl) = left (delete-tree⁻ lk′ (l<k , [ k′>k ]ᴿ) pl)
   ... | inj₂ (inj₂ pr) = right pr
-  delete-tree⁻ (node _ lk′ k′u bal) _ p
-    | tri≈ _ _ _ =
+  delete-tree⁻ (node _ lk′ k′u bal) _ p | tri≈ _ _ _ =
     Sum.[ (λ p → left p) , (λ p → right p) ]′ (join⁻ lk′ k′u bal p)
 
 
@@ -108,10 +95,10 @@ module _ (k : Key) where
                   kp ≉ k
   delete-key-∈⁻ (node (k′ , _) _ _ _) _ _ _
     with compare k′ k
-  delete-key-∈⁻ (node kv@(k′ , _) lk′ k′u bal) (_ , k<u) {kp} p kp≈k
+  delete-key-∈⁻ (node (k′ , _) _ k′u bal) (_ , k<u) {kp} p kp≈k
     | tri< k′<k k′≉k _
-    with joinʳ⁻⁻ kv lk′ (delete k k′u ([ k′<k ]ᴿ , k<u)) bal p
-  ... | inj₁ kp≈k′ = contradiction (trans (sym kp≈k′) kp≈k) k′≉k
+    with joinʳ⁻⁻ _ _ _ bal p
+  ... | inj₁ kp≈k′     = contradiction (trans (sym kp≈k′) kp≈k) k′≉k
   ... | inj₂ (inj₁ pl) = begin-contradiction
     [ k  ]                ≈⟨ [ sym kp≈k ]ᴱ ⟩
     [ kp ]                ≈⟨ [ lookup-result pl ]ᴱ ⟩
@@ -119,10 +106,10 @@ module _ (k : Key) where
     [ k′ ]                <⟨ [ k′<k ]ᴿ ⟩
     [ k  ]                ∎
   ... | inj₂ (inj₂ pr) = delete-key-∈⁻ k′u ([ k′<k ]ᴿ , k<u) pr kp≈k
-  delete-key-∈⁻ (node kv@(k′ , _) lk′ k′u bal) (l<k , _) {kp} p kp≈k
+  delete-key-∈⁻ (node (k′ , _) lk′ _ bal) (l<k , _) {kp} p kp≈k
     | tri> _ k′≉k k′>k
-    with joinˡ⁻⁻ kv (delete k lk′ (l<k , [ k′>k ]ᴿ)) k′u bal p
-  ... | inj₁ kp≈k′ = contradiction (trans (sym kp≈k′) kp≈k) k′≉k
+    with joinˡ⁻⁻ _ _ _ bal p
+  ... | inj₁ kp≈k′     = contradiction (trans (sym kp≈k′) kp≈k) k′≉k
   ... | inj₂ (inj₁ pl) = delete-key-∈⁻ lk′ (l<k , [ k′>k ]ᴿ) pl kp≈k
   ... | inj₂ (inj₂ pr) = begin-contradiction
     [ k  ]                <⟨ [ k′>k ]ᴿ ⟩
@@ -130,9 +117,9 @@ module _ (k : Key) where
     [ Any.lookupKey pr ]  ≈⟨ [ sym (lookup-result pr) ]ᴱ ⟩
     [ kp ]                ≈⟨ [ kp≈k ]ᴱ ⟩
     [ k  ]                ∎
-  delete-key-∈⁻ (node (k′ , _) lk′ k′u bal) _ {kp} p kp≈k
+  delete-key-∈⁻ (node (k′ , _) _ k′u bal) _ {kp} p kp≈k
     | tri≈ k′≮k _ k′≯k
-    with join⁻ lk′ k′u bal p
+    with join⁻ _ k′u bal p
   ... | inj₁ p₁ = contradiction
     (begin-strict
       [ k  ]                ≈⟨ [ sym kp≈k ]ᴱ ⟩
