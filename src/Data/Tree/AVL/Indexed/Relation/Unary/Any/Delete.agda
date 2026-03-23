@@ -14,7 +14,7 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Delete
 
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function.Base using (_∘′_)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (tri<; tri≈; tri>)
@@ -26,7 +26,7 @@ open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.AnyLookup sto
   using (lookup-bounded; lookup-result; lookup-rebuild)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Join sto
-  using (join-left⁺; join-right⁺; join-node⁻; join⁻)
+  using (join-left⁺; join-right⁺; join⁻)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.JoinConstFuns sto
   using (joinʳ⁻-here⁺; joinʳ⁻-left⁺; joinʳ⁻-right⁺; joinˡ⁻-here⁺;
          joinˡ⁻-left⁺; joinˡ⁻-right⁺; joinʳ⁻⁻; joinˡ⁻⁻)
@@ -97,7 +97,7 @@ module _ {V : Value v} where
     ... | inj₂ (inj₂ pr) = right pr
     delete-tree⁻ (node (k′ , v) lk′ k′u bal) (l<k , k<u) p
       | tri≈ _ _ _ =
-      join-node⁻ v lk′ k′u bal p
+      Sum.[ (λ p → left p) , (λ p → right p) ]′ (join⁻ lk′ k′u bal p)
 
 
   module _ (k : Key) where
