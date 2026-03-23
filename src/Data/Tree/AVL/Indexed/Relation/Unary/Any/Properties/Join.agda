@@ -43,20 +43,20 @@ module _ {V : Value v} where
                (t₁ : Tree V l m hˡ) (t₂ : Tree V m u hʳ) →
                (bal : hˡ ∼ hʳ ⊔ h) →
                Any P t₁ → Any P (proj₂ (join t₁ t₂ bal))
-  join-left⁺ _ (leaf _) ∼- p = castʳ⁺ p
-  join-left⁺ t₁ t₂₃@(node _ _ _ _) bal p =
-    let (k₂ , m<k₂ , t₃) = headTail t₂₃
-    in joinʳ⁻-left⁺ k₂ (castʳ t₁ m<k₂) t₃ bal (castʳ⁺ p)
+  join-left⁺ _ (leaf _)            ∼-  p = castʳ⁺ p
+  join-left⁺ t₁ t₂₃@(node _ _ _ _) bal p
+    = let (k₂ , m<k₂ , t₃) = headTail t₂₃
+      in joinʳ⁻-left⁺ k₂ (castʳ t₁ m<k₂) t₃ bal (castʳ⁺ p)
 
   join-right⁺ : ∀ {l m u hˡ hʳ h} →
                 (t₁ : Tree V l m hˡ) (t₂ : Tree V m u hʳ) →
                 (bal : hˡ ∼ hʳ ⊔ h) →
                 Any P t₂ → Any P (proj₂ (join t₁ t₂ bal))
-  join-right⁺ t₁ t₂₃@(node _ _ _ _) bal p =
-    let k₂ , m<k₂ , t₃ = headTail t₂₃
-    in Sum.[ joinʳ⁻-here⁺ k₂ (castʳ t₁ m<k₂) t₃ bal
-           , joinʳ⁻-right⁺ k₂ (castʳ t₁ m<k₂) t₃ bal ]′
-           (headTail⁺ t₂₃ p)
+  join-right⁺ t₁ t₂₃@(node _ _ _ _) bal p
+    = let k₂ , m<k₂ , t₃ = headTail t₂₃
+      in Sum.[ joinʳ⁻-here⁺ k₂ (castʳ t₁ m<k₂) t₃ bal
+             , joinʳ⁻-right⁺ k₂ (castʳ t₁ m<k₂) t₃ bal ]′
+             (headTail⁺ t₂₃ p)
 
   join⁻ : ∀ {l m u hˡ hʳ h} →
           (t₁ : Tree V l m hˡ) (t₂ : Tree V m u hʳ) →
@@ -67,6 +67,6 @@ module _ {V : Value v} where
   join⁻ t₁ t₂₃@(node _ _ _ _) bal p
     using (k₂ , m<k₂ , t₃) ← headTail t₂₃
     with joinʳ⁻⁻ k₂ (castʳ t₁ m<k₂) t₃ bal p
-  ... | inj₁ pk = inj₂ (headTail-head⁻ t₂₃ pk)
+  ... | inj₁ pk        = inj₂ (headTail-head⁻ t₂₃ pk)
   ... | inj₂ (inj₁ pl) = inj₁ (castʳ⁻ pl)
   ... | inj₂ (inj₂ pr) = inj₂ (headTail-tail⁻ t₂₃ pr)

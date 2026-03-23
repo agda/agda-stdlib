@@ -34,9 +34,9 @@ private
 headTail⁺ : ∀ {l u h} (t : Tree V l u (1 + h)) →
             let _ , _ , _ , t⁻ = headTail t in
             Any P t → P (proj₁ (headTail t)) ⊎ Any P t⁻
-headTail⁺ (node _ (leaf _) _ ∼+) (here p) = inj₁ p
-headTail⁺ (node _ (leaf _) _ ∼+) (right p) = inj₂ p
-headTail⁺ (node _ (leaf _) _ ∼0) (here p) = inj₁ p
+headTail⁺ (node _ (leaf _) _ ∼+)              (here p)  = inj₁ p
+headTail⁺ (node _ (leaf _) _ ∼+)              (right p) = inj₂ p
+headTail⁺ (node _ (leaf _) _ ∼0)              (here p)  = inj₁ p
 headTail⁺ (node k₃ t₁₂@(node _ _ _ _) t₄ bal) (here p)
   = let _ , _ , t₂ = headTail t₁₂
     in inj₂ (joinˡ⁻-here⁺ k₃ t₂ t₄ bal p)
@@ -49,20 +49,20 @@ headTail⁺ (node k₃ t₁₂@(node _ _ _ _) t₄ bal) (right p)
 
 headTail-head⁻ : ∀ {l u h} → (t : Tree V l u (suc h)) →
                  P (proj₁ (headTail t)) → Any P t
-headTail-head⁻ (node _ (leaf _) _ ∼+) p = here p
-headTail-head⁻ (node _ (leaf _) _ ∼0) p = here p
+headTail-head⁻ (node _ (leaf _) _ ∼+)          p = here p
+headTail-head⁻ (node _ (leaf _) _ ∼0)          p = here p
 headTail-head⁻ (node _ t₁₂@(node _ _ _ _) _ _) p =
   left (headTail-head⁻ t₁₂ p)
 
 headTail-tail⁻ : ∀ {l u h} (t : Tree V l u (1 + h)) →
                  let _ , _ , _ , t⁻ = headTail t in
                  Any P t⁻ → Any P t
-headTail-tail⁻ (node _ (leaf _) _ ∼+) p = right p
-headTail-tail⁻ (node _ (leaf _) _ ∼0) p = right p
+headTail-tail⁻ (node _ (leaf _) _ ∼+)              p = right p
+headTail-tail⁻ (node _ (leaf _) _ ∼0)              p = right p
 headTail-tail⁻ (node k₃ t₁₂@(node _ _ _ _) t₄ bal) p
   using _ , _ , t₂ ← headTail t₁₂
   with joinˡ⁻⁻ k₃ t₂ t₄ bal p
-... | inj₁ pk = here pk
+... | inj₁ pk        = here pk
 ... | inj₂ (inj₂ pr) = right pr
 ... | inj₂ (inj₁ pl) using p⁻ ← headTail-tail⁻ t₁₂ pl with bal
 -- This match on `bal` shows the termination checker that `h` decreases.
