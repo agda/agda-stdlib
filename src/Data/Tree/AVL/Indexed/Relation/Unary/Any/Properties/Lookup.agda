@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
-module Data.Tree.AVL.Indexed.Relation.Unary.Any.Lookup
+module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
@@ -36,7 +36,8 @@ private
     n : ℕ
     P : Pred (K& V) p
 
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.AnyLookup sto using (lookup-bounded)
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.AnyLookup sto
+  using (lookup-bounded)
 
 module _ {V : Value v} where
 
@@ -46,7 +47,9 @@ module _ {V : Value v} where
 
   lookup⁺ : (t : Tree V l u n) (k : Key) (seg : l < k < u) →
             (p : Any P t) →
-            key (Any.lookup p) ≉ k ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (Val≈ p≈k (value (Any.lookup p)))
+            (key (Any.lookup p) ≉ k)
+            ⊎ (∃[ p≈k ] AVL.lookup t k seg
+               ≡ just (Val≈ p≈k (value (Any.lookup p))))
   lookup⁺ (node (k′ , v′) l r bal) k (l<k , k<u) p
       with compare k′ k | p
   ... | tri< k′<k _ _ | right p = lookup⁺ r k ([ k′<k ]ᴿ , k<u) p

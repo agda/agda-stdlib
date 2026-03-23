@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
-module Data.Tree.AVL.Indexed.Relation.Unary.Any.Delete
+module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
@@ -23,11 +23,11 @@ open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.AnyLookup sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.AnyLookup sto
   using (lookup-bounded; lookup-result; lookup-rebuild)
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Join sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join sto
   using (join-left⁺; join-right⁺; join⁻)
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
   using (joinʳ⁻-here⁺; joinʳ⁻-left⁺; joinʳ⁻-right⁺; joinˡ⁻-here⁺;
          joinˡ⁻-left⁺; joinˡ⁻-right⁺; joinʳ⁻⁻; joinˡ⁻⁻)
 open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)

@@ -12,12 +12,12 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.AnyLookup sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Cast sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Delete sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.HeadTail sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Insert sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.JoinConstFuns sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Join sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Lookup sto public
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Singleton sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.AnyLookup sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton sto public

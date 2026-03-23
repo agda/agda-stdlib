@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
-module Data.Tree.AVL.Indexed.Relation.Unary.Any.JoinConstFuns
+module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 

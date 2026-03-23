@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
-module Data.Tree.AVL.Indexed.Relation.Unary.Any.HeadTail
+module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
@@ -22,7 +22,7 @@ open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
   using (joinˡ⁻-here⁺; joinˡ⁻-left⁺; joinˡ⁻-right⁺; joinˡ⁻⁻)
 
 private

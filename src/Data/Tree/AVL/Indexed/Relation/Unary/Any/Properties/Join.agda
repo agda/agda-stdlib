@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
-module Data.Tree.AVL.Indexed.Relation.Unary.Any.Join
+module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
@@ -21,11 +21,11 @@ open import Data.Tree.AVL.Indexed sto
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open StrictTotalOrder sto renaming (Carrier to Key)
 
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Cast sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast sto
   using (castʳ⁺; castʳ⁻)
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
   using (joinʳ⁻-left⁺; joinʳ⁻-here⁺; joinʳ⁻-right⁺; joinʳ⁻⁻)
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.HeadTail sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail sto
   using (headTail⁺; headTail-head⁻; headTail-tail⁻)
 
 private
