@@ -61,12 +61,16 @@ module _ {V : Value v} where
     Any-insertWith-nothing (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr ¬p
       with compare k k′
     ... | tri≈ _ k≈k′ _ = contradiction (here k≈k′) ¬p
-    ... | tri< k<k′ _ _ = let seg′ = l<k , [ k<k′ ]ᴿ; lk′ = insertWith k f lk seg′
-                              ih = Any-insertWith-nothing lk seg′ pr (λ p → ¬p (left p))
-                          in joinˡ⁺-left⁺ kv lk′ ku bal ih
-    ... | tri> _ _ k>k′ = let seg′ = [ k>k′ ]ᴿ , k<u; ku′ = insertWith k f ku seg′
-                              ih = Any-insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
-                          in joinʳ⁺-right⁺ kv lk ku′ bal ih
+    ... | tri< k<k′ _ _ = joinˡ⁺-left⁺ kv lk′ ku bal ih
+      where
+      seg′ = l<k , [ k<k′ ]ᴿ
+      lk′ = insertWith k f lk seg′
+      ih = Any-insertWith-nothing lk seg′ pr (λ p → ¬p (left p))
+    ... | tri> _ _ k>k′ = joinʳ⁺-right⁺ kv lk ku′ bal ih
+      where
+      seg′ = [ k>k′ ]ᴿ , k<u
+      ku′ = insertWith k f ku seg′
+      ih = Any-insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
 
     Any-insertWith-just : (t : Tree V l u n) (seg : l < k < u) →
                           (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , Val≈ eq (f (just (Val≈ (sym eq) v))))) →
@@ -75,10 +79,16 @@ module _ {V : Value v} where
       with p | compare k k′
     -- happy paths
     ... | here _   | tri≈ _ k≈k′ _ = here (pr k′ v k≈k′)
-    ... | left lp  | tri< k<k′ _ _ = let seg′ = l<k , [ k<k′ ]ᴿ; lk′ = insertWith k f lk seg′ in
-                                     joinˡ⁺-left⁺ kv lk′ ku bal (Any-insertWith-just lk seg′ pr lp)
-    ... | right rp | tri> _ _ k>k′ = let seg′ = [ k>k′ ]ᴿ , k<u; ku′ = insertWith k f ku seg′ in
-                                     joinʳ⁺-right⁺ kv lk ku′ bal (Any-insertWith-just ku seg′ pr rp)
+    ... | left lp  | tri< k<k′ _ _ =
+      joinˡ⁺-left⁺ kv lk′ ku bal (Any-insertWith-just lk seg′ pr lp)
+      where
+      seg′ = l<k , [ k<k′ ]ᴿ
+      lk′ = insertWith k f lk seg′
+    ... | right rp | tri> _ _ k>k′ =
+      joinʳ⁺-right⁺ kv lk ku′ bal (Any-insertWith-just ku seg′ pr rp)
+      where
+      seg′ = [ k>k′ ]ᴿ , k<u
+      ku′ = insertWith k f ku seg′
 
     -- impossible cases
     ... | here eq  | tri< k<k′ _ _ = begin-contradiction
