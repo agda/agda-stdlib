@@ -64,13 +64,13 @@ module _ {V : Value v} where
     ... | tri< k<k′ _ _ = joinˡ⁺-left⁺ kv lk′ ku bal ih
       where
       seg′ = l<k , [ k<k′ ]ᴿ
-      lk′ = insertWith k f lk seg′
-      ih = Any-insertWith-nothing lk seg′ pr (λ p → ¬p (left p))
+      lk′  = insertWith k f lk seg′
+      ih   = Any-insertWith-nothing lk seg′ pr (λ p → ¬p (left p))
     ... | tri> _ _ k>k′ = joinʳ⁺-right⁺ kv lk ku′ bal ih
       where
       seg′ = [ k>k′ ]ᴿ , k<u
-      ku′ = insertWith k f ku seg′
-      ih = Any-insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
+      ku′  = insertWith k f ku seg′
+      ih   = Any-insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
 
     Any-insertWith-just : (t : Tree V l u n) (seg : l < k < u) →
                           (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , Val≈ eq (f (just (Val≈ (sym eq) v))))) →
@@ -83,12 +83,12 @@ module _ {V : Value v} where
       joinˡ⁺-left⁺ kv lk′ ku bal (Any-insertWith-just lk seg′ pr lp)
       where
       seg′ = l<k , [ k<k′ ]ᴿ
-      lk′ = insertWith k f lk seg′
+      lk′  = insertWith k f lk seg′
     ... | right rp | tri> _ _ k>k′ =
       joinʳ⁺-right⁺ kv lk ku′ bal (Any-insertWith-just ku seg′ pr rp)
       where
       seg′ = [ k>k′ ]ᴿ , k<u
-      ku′ = insertWith k f ku seg′
+      ku′  = insertWith k f ku seg′
 
     -- impossible cases
     ... | here eq  | tri< k<k′ _ _ = begin-contradiction
@@ -184,7 +184,7 @@ module _ {V : Value v} where
     ... | inj₂ (inj₂ p) = inj₂ (right (lookup-rebuild-accum p k≉p))
       where
       k′<p = [<]-injective (proj₁ (lookup-bounded p))
-      k≉p = λ k≈p → irrefl k≈p (<-trans k<k′ k′<p)
+      k≉p  = λ k≈p → irrefl k≈p (<-trans k<k′ k′<p)
     ... | inj₂ (inj₁ p) = Sum.map₂ (λ q → left q) (insert⁻ l (l<k , [ k<k′ ]ᴿ) p)
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri> _ k≉k′ k′<k
         with joinʳ⁺⁻ kv′ l (insert k v r ([ k′<k ]ᴿ , k<u)) bal p
@@ -192,16 +192,16 @@ module _ {V : Value v} where
     ... | inj₂ (inj₁ p) = inj₂ (left (lookup-rebuild-accum p k≉p))
       where
       p<k′ = [<]-injective (proj₂ (lookup-bounded p))
-      k≉p = λ k≈p → irrefl (sym k≈p) (<-trans p<k′ k′<k)
+      k≉p  = λ k≈p → irrefl (sym k≈p) (<-trans p<k′ k′<k)
     ... | inj₂ (inj₂ p) = Sum.map₂ (λ q → right q) (insert⁻ r ([ k′<k ]ᴿ , k<u) p)
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri≈ _ k≈k′ _
         with p
     ... | left p  = inj₂ (left (lookup-rebuild-accum p k≉p))
       where
       p<k′ = [<]-injective (proj₂ (lookup-bounded p))
-      k≉p = λ k≈p → irrefl (trans (sym k≈p) k≈k′) p<k′
+      k≉p  = λ k≈p → irrefl (trans (sym k≈p) k≈k′) p<k′
     ... | here p  = inj₁ (P-Resp k≈k′ p)
     ... | right p = inj₂ (right (lookup-rebuild-accum p k≉p))
       where
       k′<p = [<]-injective (proj₁ (lookup-bounded p))
-      k≉p = λ k≈p → irrefl (trans (sym k≈k′) k≈p) k′<p
+      k≉p  = λ k≈p → irrefl (trans (sym k≈k′) k≈p) k′<p
