@@ -91,7 +91,10 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
   private
 
-  -- This lemma justifies the use of `leaf⁻` pattern matches in code below
+  -- Lemmas justifying the use of `leaf`/`leaf⁻` pattern matches in code below
+
+    tree0 : (t : Tree V l u 0) → t ≡ leaf (ordered t)
+    tree0 t@(leaf _) = refl
 
     tree⁻0 : (t⁻ : Tree⁻ V l u 0) →
              ∃ λ i → ∃ λ t → t⁻ ≡ (i , t) × t ≡ leaf (ordered t)
@@ -281,4 +284,3 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
   size : Tree V l u h → ℕ
   size = List.length ∘′ toList
-
