@@ -33,7 +33,6 @@ private
     Q : Pred (K& V) q
     k : Key
     l u : Key⁺
-    n : ℕ
     hˡ hʳ h : ℕ
     t : Tree V l u h
 
@@ -46,7 +45,7 @@ private
 -- See `Relation.Unary` for an explanation of predicates.
 
 data Any {V : Value v} (P : Pred (K& V) p)
-     : Tree V l u n → Set (p ⊔ a ⊔ v ⊔ ℓ₂) where
+     : Tree V l u h → Set (p ⊔ a ⊔ v ⊔ ℓ₂) where
   here  : ∀ {kv : K& V} → P kv →
           {lk : Tree V l [ kv .key ] hˡ}
           {ku : Tree V [ kv .key ] u hʳ}
