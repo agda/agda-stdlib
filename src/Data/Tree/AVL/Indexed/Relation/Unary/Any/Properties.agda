@@ -313,13 +313,13 @@ module _ {V : Value v} where
 
   module _ (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) where
 
-    insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
-                     Any P (proj₂ (insert k v t seg))
-    insert-nothing = Any-insertWith-nothing k (F.const v) t seg
+    Any-insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
+                         Any P (proj₂ (insert k v t seg))
+    Any-insert-nothing = Any-insertWith-nothing k (F.const v) t seg
 
-    insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , Val≈ eq v)) →
-                  Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t seg))
-    insert-just pr = Any-insertWith-just k (F.const v) t seg (λ k′ _ eq → pr k′ eq)
+    Any-insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , Val≈ eq v)) →
+                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t seg))
+    Any-insert-just pr = Any-insertWith-just k (F.const v) t seg (λ k′ _ eq → pr k′ eq)
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
