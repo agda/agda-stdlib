@@ -12,7 +12,7 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Nat.Base using (zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product.Base using (∃; _,_; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
@@ -26,12 +26,13 @@ private
     v p : Level
     V : Value v
     P : Pred (K& V) p
+    l u : Key⁺
+    hˡ hʳ h : ℕ
 
 ----------------------------------------------------------------------
 -- joinˡ⁺
 
-joinˡ⁺-here⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
+joinˡ⁺-here⁺ : (kv : K& V) →
                (l : ∃ λ i → Tree V l [ kv .key ] (i ⊕ hˡ)) →
                (r : Tree V [ kv .key ] u hʳ) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -43,8 +44,7 @@ joinˡ⁺-here⁺ _ (1# , node _ _ _ ∼-)     _ ∼- p = right (here p)
 joinˡ⁺-here⁺ _ (1# , node _ _ _ ∼0)     _ ∼- p = right (here p)
 joinˡ⁺-here⁺ _ (1# , node⁺ _ _ _ _ _ _) _ ∼- p = right (here p)
 
-joinˡ⁺-left⁺ : ∀ {l u hˡ hʳ h} →
-               (k : K& V) →
+joinˡ⁺-left⁺ : (k : K& V) →
                (l : ∃ λ i → Tree V l [ k .key ] (i ⊕ hˡ)) →
                (r : Tree V [ k .key ] u hʳ) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -64,8 +64,7 @@ joinˡ⁺-left⁺ _ (1# , node⁺ _ _ _ _ _ _) _ ∼- (right (here p))  = here p
 joinˡ⁺-left⁺ _ (1# , node⁺ _ _ _ _ _ _) _ ∼- (right (left p))  = left (right p)
 joinˡ⁺-left⁺ _ (1# , node⁺ _ _ _ _ _ _) _ ∼- (right (right p)) = right (left p)
 
-joinˡ⁺-right⁺ : ∀ {l u hˡ hʳ h} →
-                (kv@(k , v) : K& V) →
+joinˡ⁺-right⁺ : (kv@(k , v) : K& V) →
                 (l : ∃ λ i → Tree V l [ k ] (i ⊕ hˡ)) →
                 (r : Tree V [ k ] u hʳ) →
                 (bal : hˡ ∼ hʳ ⊔ h) →
@@ -77,13 +76,12 @@ joinˡ⁺-right⁺ _ (1# , node _ _ _ ∼-)     _ ∼- p = right (right p)
 joinˡ⁺-right⁺ _ (1# , node _ _ _ ∼0)     _ ∼- p = right (right p)
 joinˡ⁺-right⁺ _ (1# , node⁺ _ _ _ _ _ _) _ ∼- p = right (right p)
 
-joinˡ⁺⁻ : ∀ {l u hˡ hʳ h} →
-            (kv@(k , v) : K& V) →
-            (l : ∃ λ i → Tree V l [ k ] (i ⊕ hˡ)) →
-            (r : Tree V [ k ] u hʳ) →
-            (bal : hˡ ∼ hʳ ⊔ h) →
-            Any P (proj₂ (joinˡ⁺ kv l r bal)) →
-            P kv ⊎ Any P (proj₂ l) ⊎ Any P r
+joinˡ⁺⁻ : (kv@(k , v) : K& V) →
+          (l : ∃ λ i → Tree V l [ k ] (i ⊕ hˡ)) →
+          (r : Tree V [ k ] u hʳ) →
+          (bal : hˡ ∼ hʳ ⊔ h) →
+          Any P (proj₂ (joinˡ⁺ kv l r bal)) →
+          P kv ⊎ Any P (proj₂ l) ⊎ Any P r
 joinˡ⁺⁻ _ (0# , _)                 _ _  = Any.toSum
 joinˡ⁺⁻ _ (1# , _)                 _ ∼0 = Any.toSum
 joinˡ⁺⁻ _ (1# , _)                 _ ∼+ = Any.toSum
@@ -111,8 +109,7 @@ joinˡ⁺⁻ _ (1# , node⁺ _ _ _ _ _ _) _ ∼- = λ where
 ----------------------------------------------------------------------
 -- joinʳ⁺
 
-joinʳ⁺-here⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
+joinʳ⁺-here⁺ : (kv : K& V) →
                (l : Tree V l [ kv .key ] hˡ) →
                (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -124,8 +121,7 @@ joinʳ⁺-here⁺ _ _ (1# , node _ _ _ ∼+)     ∼+ p = left (here p)
 joinʳ⁺-here⁺ _ _ (1# , node _ _ _ ∼0)     ∼+ p = left (here p)
 joinʳ⁺-here⁺ _ _ (1# , node⁻ _ _ _ _ _ _) ∼+ p = left (here p)
 
-joinʳ⁺-left⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
+joinʳ⁺-left⁺ : (kv : K& V) →
                (l : Tree V l [ kv .key ] hˡ) →
                (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -137,8 +133,7 @@ joinʳ⁺-left⁺ _ _ (1# , node _ _ _ ∼+)     ∼+ p = left (left p)
 joinʳ⁺-left⁺ _ _ (1# , node _ _ _ ∼0)     ∼+ p = left (left p)
 joinʳ⁺-left⁺ _ _ (1# , node⁻ _ _ _ _ _ _) ∼+ p = left (left p)
 
-joinʳ⁺-right⁺ : ∀ {l u hˡ hʳ h} →
-                (kv : K& V) →
+joinʳ⁺-right⁺ : (kv : K& V) →
                 (l : Tree V l [ kv .key ] hˡ) →
                 (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
                 (bal : hˡ ∼ hʳ ⊔ h) →
@@ -158,13 +153,12 @@ joinʳ⁺-right⁺ _ _ (1# , node⁻ _ _ _ _ _ _) ∼+ (left (left p))  = left (
 joinʳ⁺-right⁺ _ _ (1# , node⁻ _ _ _ _ _ _) ∼+ (left (right p)) = right (left p)
 joinʳ⁺-right⁺ _ _ (1# , node⁻ _ _ _ _ _ _) ∼+ (right p)        = right (right p)
 
-joinʳ⁺⁻ : ∀ {l u hˡ hʳ h} →
-            (kv : K& V) →
-            (l : Tree V l [ kv .key ] hˡ) →
-            (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
-            (bal : hˡ ∼ hʳ ⊔ h) →
-            Any P (proj₂ (joinʳ⁺ kv l r bal)) →
-            P kv ⊎ Any P l ⊎ Any P (proj₂ r)
+joinʳ⁺⁻ : (kv : K& V) →
+          (l : Tree V l [ kv .key ] hˡ) →
+          (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
+          (bal : hˡ ∼ hʳ ⊔ h) →
+          Any P (proj₂ (joinʳ⁺ kv l r bal)) →
+          P kv ⊎ Any P l ⊎ Any P (proj₂ r)
 joinʳ⁺⁻ _ _ (0# , _)                 _  = Any.toSum
 joinʳ⁺⁻ _ _ (1# , _)                 ∼0 = Any.toSum
 joinʳ⁺⁻ _ _ (1# , _)                 ∼- = Any.toSum
@@ -192,8 +186,7 @@ joinʳ⁺⁻ _ _ (1# , node⁻ _ _ _ _ _ _) ∼+ = λ where
 ----------------------------------------------------------------------
 -- joinˡ⁻
 
-joinˡ⁻-here⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
+joinˡ⁻-here⁺ : (kv : K& V) →
                (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
                (r : Tree V [ kv .key ] u hʳ) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -207,8 +200,7 @@ joinˡ⁻-here⁺ {hˡ = suc _} _ (0# , _)      _  ∼0 p = here p
 joinˡ⁻-here⁺ {hˡ = suc _} _ (0# , _)      _  ∼- p = here p
 joinˡ⁻-here⁺ {hˡ = suc _} _ (1# , _)      _  _  p = here p
 
-joinˡ⁻-left⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
+joinˡ⁻-left⁺ : (kv : K& V) →
                (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
                (r : Tree V [ kv .key ] u hʳ) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -221,8 +213,7 @@ joinˡ⁻-left⁺ {hˡ = suc _} _ (0# , _)       _  ∼0 p = left p
 joinˡ⁻-left⁺ {hˡ = suc _} _ (0# , _)       _  ∼- p = left p
 joinˡ⁻-left⁺ {hˡ = suc _} _ (1# , _)       _  _  p = left p
 
-joinˡ⁻-right⁺ : ∀ {l u hˡ hʳ h} →
-                (kv : K& V) →
+joinˡ⁻-right⁺ : (kv : K& V) →
                 (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
                 (r : Tree V [ kv .key ] u hʳ) →
                 (bal : hˡ ∼ hʳ ⊔ h) →
@@ -235,8 +226,7 @@ joinˡ⁻-right⁺ {hˡ = suc _} _ (0# , _)       _  ∼0 p = right p
 joinˡ⁻-right⁺ {hˡ = suc _} _ (0# , _)       _  ∼- p = right p
 joinˡ⁻-right⁺ {hˡ = suc _} _ (1# , _)       _  _  p = right p
 
-joinˡ⁻⁻ : ∀ {l u hˡ hʳ h} →
-          (kv : K& V) →
+joinˡ⁻⁻ : (kv : K& V) →
           (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
           (r : Tree V [ kv .key ] u hʳ) →
           (bal : hˡ ∼ hʳ ⊔ h) →
@@ -252,8 +242,7 @@ joinˡ⁻⁻ {hˡ = suc _} _ (1# , _)      _  _  = Any.toSum
 ----------------------------------------------------------------------
 -- joinʳ⁻
 
-joinʳ⁻-here⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
+joinʳ⁻-here⁺ : (kv : K& V) →
                (l : Tree V l [ kv .key ] hˡ) →
                (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -266,8 +255,7 @@ joinʳ⁻-here⁺ {hʳ = suc _} _ _  (0# , _)      ∼0 p = here p
 joinʳ⁻-here⁺ {hʳ = suc _} _ _  (0# , _)      ∼+ p = here p
 joinʳ⁻-here⁺ {hʳ = suc _} _ _  (1# , _)      _  p = here p
 
-joinʳ⁻-left⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
+joinʳ⁻-left⁺ : (kv : K& V) →
                (l : Tree V l [ kv .key ] hˡ) →
                (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
                (bal : hˡ ∼ hʳ ⊔ h) →
@@ -280,8 +268,7 @@ joinʳ⁻-left⁺ {hʳ = suc _} _ _  (0# , _)      ∼0 p = left p
 joinʳ⁻-left⁺ {hʳ = suc _} _ _  (0# , _)      ∼+ p = left p
 joinʳ⁻-left⁺ {hʳ = suc _} _ _  (1# , _)      _  p = left p
 
-joinʳ⁻-right⁺ : ∀ {l u hˡ hʳ h} →
-                (kv : K& V) →
+joinʳ⁻-right⁺ : (kv : K& V) →
                 (l : Tree V l [ kv .key ] hˡ) →
                 (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
                 (bal : hˡ ∼ hʳ ⊔ h) →
@@ -294,8 +281,7 @@ joinʳ⁻-right⁺ {hʳ = suc _} _ _  (0# , _)      ∼0 p = right p
 joinʳ⁻-right⁺ {hʳ = suc _} _ _  (0# , _)      ∼+ p = right p
 joinʳ⁻-right⁺ {hʳ = suc _} _ _  (1# , _)      _  p = right p
 
-joinʳ⁻⁻ : ∀ {l u hˡ hʳ h} →
-          (kv : K& V) →
+joinʳ⁻⁻ : (kv : K& V) →
           (l : Tree V l [ kv .key ] hˡ) →
           (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
           (bal : hˡ ∼ hʳ ⊔ h) →

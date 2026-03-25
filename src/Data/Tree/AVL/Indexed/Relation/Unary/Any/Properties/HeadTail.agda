@@ -32,8 +32,8 @@ private
     P : Pred (K& V) p
 
 headTail⁺ : ∀ {l u h} (t : Tree V l u (1 + h)) →
-            let _ , _ , _ , t⁻ = headTail t in
-            Any P t → P (proj₁ (headTail t)) ⊎ Any P t⁻
+            let kv , _ , _ , t⁻ = headTail t in
+            Any P t → P kv ⊎ Any P t⁻
 headTail⁺ (node _ (leaf _) _ ∼+)              (here p)  = inj₁ p
 headTail⁺ (node _ (leaf _) _ ∼+)              (right p) = inj₂ p
 headTail⁺ (node _ (leaf _) _ ∼0)              (here p)  = inj₁ p
