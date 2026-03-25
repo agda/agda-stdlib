@@ -72,10 +72,10 @@ private
 -- singleton
 
 ∈ₖᵥ-singleton⁺ : (k , x) ∈ₖᵥ singleton k x
-∈ₖᵥ-singleton⁺ = tree (IAnyₚ.singleton⁺ _ _ _ (refl , ≡-refl))
+∈ₖᵥ-singleton⁺ = tree {!IAnyₚ.singleton⁺ _ _ _ (refl , ≡-refl)!}
 
 ∈ₖᵥ-singleton⁻ : (k , x) ∈ₖᵥ singleton k′ x′ → k ≈ k′ × x ≡ x′
-∈ₖᵥ-singleton⁻ (tree p) = IAnyₚ.singleton⁻ _ _ _ p
+∈ₖᵥ-singleton⁻ (tree p) = {!IAnyₚ.singleton⁻ _ _ _ p!}
 
 private
   ≈-lookup : (p : (k , x) ∈ₖᵥ m) → k ≈ Any.lookupKey p
