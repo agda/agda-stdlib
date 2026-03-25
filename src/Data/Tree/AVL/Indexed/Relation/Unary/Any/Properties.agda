@@ -321,8 +321,8 @@ module _ {V : Value v} where
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
     insertWith⁺ : (t : Tree V l u n) (seg : l < k < u) →
-                      (p : Any P t) → k ≉ lookupKey p →
-                      Any P (proj₂ (insertWith k f t seg))
+                  (p : Any P t) → k ≉ Any.lookupKey p →
+                  Any P (proj₂ (insertWith k f t seg))
     insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
       with compare k k′
     ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
@@ -348,7 +348,7 @@ module _ {V : Value v} where
                           in joinʳ⁺-right⁺ kv l r′ bal ih
 
   insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) →
-            (p : Any P t) → k ≉ lookupKey p →
+            (p : Any P t) → k ≉ Any.lookupKey p →
             Any P (proj₂ (insert k v t seg))
   insert⁺ k v = insertWith⁺ k (F.const v)
 
@@ -393,7 +393,7 @@ module _ {V : Value v} where
 
   lookup⁺ : (t : Tree V l u n) (k : Key) (seg : l < k < u) →
             (p : Any P t) →
-            lookupKey p ≉ k ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (Val≈ p≈k (value (Any.lookup p)))
+            key (Any.lookup p) ≉ k ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (Val≈ p≈k (value (Any.lookup p)))
   lookup⁺ (node (k′ , v′) l r bal) k (l<k , k<u) p
       with compare k′ k | p
   ... | tri< k′<k _ _ | right p = lookup⁺ r k ([ k′<k ]ᴿ , k<u) p
@@ -417,5 +417,3 @@ module _ {V : Value v} where
   ... | tri< k′<k _ _ = right (lookup⁻ r k v ([ k′<k ]ᴿ , k<u) eq)
   ... | tri≈ _ k′≈k _ = here (k′≈k , just-injective eq)
   ... | tri> _ _ k<k′ = left (lookup⁻ l k v (l<k , [ k<k′ ]ᴿ) eq)
-
-
