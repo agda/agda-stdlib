@@ -104,6 +104,14 @@ Deprecated names
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
   ```
 
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`:
+  ```agda
+  Any-insertWith-nothing  ↦  insertWith-nothing
+  Any-insertWith-just     ↦  insertWith-just
+  Any-insert-nothing      ↦  insert-nothing
+  Any-insert-just         ↦  insert-just
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
@@ -395,6 +403,20 @@ Additions to existing modules
 * In `Data.Rational.Unnormalised.Show`:
   ```agda
   showAtPrecision : ℕ → ℚᵘ → String
+  ```
+
+* In `Data.Tree.AVL.Height`:
+  ```agda
+  0∼⊔ : 0 ∼ j ⊔ m → j ≡ m
+  ∼0⊔ : i ∼ 0 ⊔ m → i ≡ m
+  ```
+
+* In `Data.Tree.AVL.Indexed`:
+  ```agda
+  Tree⁺ Tree⁻ : (V : Value v) (l u : Key⁺) (h : ℕ) → Set _
+  pattern leaf⁻ l<u = _ , leaf l<u
+  pattern node⁰ʳ k₁ t₁ k₂ t₂ t₃ = node k₁ t₁ (node k₂ t₂ t₃ ∼0) ∼0
+  pattern node⁰ˡ k₁ k₂ t₁ t₂ t₃ = node k₁ (node k₂ t₁ t₂ ∼0) t₃ ∼0
   ```
 
 * In `Data.Vec.Properties`:
