@@ -251,8 +251,7 @@ module _ {V : Value v} where
 
     Any-insertWith-nothing : (t : Tree V l u n) (seg : l < k < u) →
                              P (k , f nothing) →
-                             ¬ (Any ((k ≈_) ∘′ key) t) →
-                             Any P (proj₂ (insertWith k f t seg))
+                             ¬ (Any ((k ≈_) ∘′ key) t) → Any P (proj₂ (insertWith k f t seg))
     Any-insertWith-nothing (leaf l<u)                   seg         pr ¬p = here pr
     Any-insertWith-nothing (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr ¬p
       with compare k k′
@@ -265,9 +264,8 @@ module _ {V : Value v} where
                           in joinʳ⁺-right⁺ kv lk ku′ bal ih
 
     Any-insertWith-just : (t : Tree V l u n) (seg : l < k < u) →
-                      (pr : ∀ k′ v → (eq : k ≈ k′) →
-                            P (k′ , Val≈ eq (f (just (Val≈ (sym eq) v))))) →
-                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t seg))
+                          (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , Val≈ eq (f (just (Val≈ (sym eq) v))))) →
+                          Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t seg))
     Any-insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
       with p | compare k k′
     -- happy paths
@@ -313,8 +311,7 @@ module _ {V : Value v} where
 
   module _ (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) where
 
-    Any-insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
-                         Any P (proj₂ (insert k v t seg))
+    Any-insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) → Any P (proj₂ (insert k v t seg))
     Any-insert-nothing = Any-insertWith-nothing k (F.const v) t seg
 
     Any-insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , Val≈ eq v)) →
