@@ -320,37 +320,37 @@ module _ {V : Value v} where
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
-    Any-insertWith⁺ : (t : Tree V l u n) (seg : l < k < u) →
+    insertWith⁺ : (t : Tree V l u n) (seg : l < k < u) →
                       (p : Any P t) → k ≉ lookupKey p →
                       Any P (proj₂ (insertWith k f t seg))
-    Any-insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
       with compare k k′
     ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
                           in joinˡ⁺-here⁺ kv l′ r bal p
     ... | tri≈ _ k≈k′ _ = contradiction k≈k′ k≉
     ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
                           in joinʳ⁺-here⁺ kv l r′ bal p
-    Any-insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (left p) k≉
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (left p) k≉
       with compare k k′
     ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
-                              ih = Any-insertWith⁺ l (l<k , [ k<k′ ]ᴿ) p k≉
+                              ih = insertWith⁺ l (l<k , [ k<k′ ]ᴿ) p k≉
                           in joinˡ⁺-left⁺ kv l′ r bal ih
     ... | tri≈ _ k≈k′ _ = left p
     ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
                           in joinʳ⁺-left⁺ kv l r′ bal p
-    Any-insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (right p) k≉
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (right p) k≉
       with compare k k′
     ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
                           in joinˡ⁺-right⁺ kv l′ r bal p
     ... | tri≈ _ k≈k′ _ = right p
     ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
-                              ih = Any-insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
+                              ih = insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
                           in joinʳ⁺-right⁺ kv l r′ bal ih
 
   insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) →
             (p : Any P t) → k ≉ lookupKey p →
             Any P (proj₂ (insert k v t seg))
-  insert⁺ k v = Any-insertWith⁺ k (F.const v)
+  insert⁺ k v = insertWith⁺ k (F.const v)
 
   module _
     {P : Pred (K& V) p}
