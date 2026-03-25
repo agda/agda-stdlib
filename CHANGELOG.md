@@ -104,6 +104,14 @@ Deprecated names
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
   ```
 
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`:
+  ```agda
+  Any-insertWith-nothing  ↦  insertWith-nothing
+  Any-insertWith-just     ↦  insertWith-just
+  Any-insert-nothing      ↦  insert-nothing
+  Any-insert-just         ↦  insert-just
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
