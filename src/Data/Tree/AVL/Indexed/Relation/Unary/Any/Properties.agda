@@ -26,7 +26,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable.Core as Dec using (Dec; yes; no)
 open import Relation.Unary using (Pred; _∩_)
 
-open import Data.Tree.AVL.Indexed sto as AVL
+open import Data.Tree.AVL.Indexed sto as AVL hiding (lookup)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
 
@@ -40,38 +40,40 @@ private
     k : Key
     V : Value v
     l u : Key⁺
-    n : ℕ
+    hˡ hʳ h : ℕ
     P Q : Pred (K& V) p
 
 ------------------------------------------------------------------------
--- Any.lookup
+-- lookup
 
-lookup-result : {t : Tree V l u n} (p : Any P t) → P (Any.lookup p)
+lookup-result : {t : Tree V l u h} (p : Any P t) → P (lookup p)
 lookup-result (here p)  = p
 lookup-result (left p)  = lookup-result p
 lookup-result (right p) = lookup-result p
 
-lookup-bounded : {t : Tree V l u n} (p : Any P t) → l < Any.lookup p .key < u
+lookup-bounded : {t : Tree V l u h} (p : Any P t) → l < lookupKey p < u
 lookup-bounded {t = node kv lk ku bal} (here p)  = ordered lk , ordered ku
 lookup-bounded {t = node kv lk ku bal} (left p)  =
   Prod.map₂ (flip (trans⁺ _) (ordered ku)) (lookup-bounded p)
 lookup-bounded {t = node kv lk ku bal} (right p) =
   Prod.map₁ (trans⁺ _ (ordered lk)) (lookup-bounded p)
 
-lookup-rebuild : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any Q t
+lookup-rebuild : {t : Tree V l u h} (p : Any P t) → Q (lookup p) → Any Q t
 lookup-rebuild (here _)  q = here q
 lookup-rebuild (left p)  q = left (lookup-rebuild p q)
 lookup-rebuild (right p) q = right (lookup-rebuild p q)
 
-lookup-rebuild-accum : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any (Q ∩ P) t
+lookup-rebuild-accum : {t : Tree V l u h} (p : Any P t) → Q (lookup p) → Any (Q ∩ P) t
 lookup-rebuild-accum p q = lookup-rebuild p (q , lookup-result p)
 
-joinˡ⁺-here⁺ : ∀ {l u hˡ hʳ h} →
-             (kv : K& V) →
-             (l : ∃ λ i → Tree V l [ kv .key ] (i ⊕ hˡ)) →
-             (r : Tree V [ kv .key ] u hʳ) →
-             (bal : hˡ ∼ hʳ ⊔ h) →
-             P kv → Any P (proj₂ (joinˡ⁺ kv l r bal))
+------------------------------------------------------------------------
+-- joinˡ⁺
+
+joinˡ⁺-here⁺ : (kv@(k , _) : K& V) →
+               (l : Tree⁺ V l [ k ] hˡ) →
+               (r : Tree V [ k ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               P kv → Any P (proj₂ (joinˡ⁺ kv l r bal))
 joinˡ⁺-here⁺ k₂ (0# , t₁)                       t₃ bal p = here p
 joinˡ⁺-here⁺ k₂ (1# , t₁)                       t₃ ∼0  p = here p
 joinˡ⁺-here⁺ k₂ (1# , t₁)                       t₃ ∼+  p = here p
@@ -79,12 +81,11 @@ joinˡ⁺-here⁺ k₄ (1# , node k₂ t₁ t₃ ∼-)         t₅ ∼-  p = ri
 joinˡ⁺-here⁺ k₄ (1# , node k₂ t₁ t₃ ∼0)         t₅ ∼-  p = right (here p)
 joinˡ⁺-here⁺ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼-  p = right (here p)
 
-joinˡ⁺-left⁺ : ∀ {l u hˡ hʳ h} →
-             (k : K& V) →
-             (l : ∃ λ i → Tree V l [ k .key ] (i ⊕ hˡ)) →
-             (r : Tree V [ k .key ] u hʳ) →
-             (bal : hˡ ∼ hʳ ⊔ h) →
-             Any P (proj₂ l) → Any P (proj₂ (joinˡ⁺ k l r bal))
+joinˡ⁺-left⁺ : (kv@(k , _) : K& V) →
+               (l@(_ , t) : Tree⁺ V l [ k ] hˡ) →
+               (r : Tree V [ k ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               Any P t → Any P (proj₂ (joinˡ⁺ kv l r bal))
 joinˡ⁺-left⁺ k₂ (0# , t₁)                       t₃ bal p                 = left p
 joinˡ⁺-left⁺ k₂ (1# , t₁)                       t₃ ∼0  p                 = left p
 joinˡ⁺-left⁺ k₂ (1# , t₁)                       t₃ ∼+  p                 = left p
@@ -100,9 +101,8 @@ joinˡ⁺-left⁺ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼-  (r
 joinˡ⁺-left⁺ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼-  (right (left p))  = left (right p)
 joinˡ⁺-left⁺ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼-  (right (right p)) = right (left p)
 
-joinˡ⁺-right⁺ : ∀ {l u hˡ hʳ h} →
-                (kv@(k , v) : K& V) →
-                (l : ∃ λ i → Tree V l [ k ] (i ⊕ hˡ)) →
+joinˡ⁺-right⁺ : (kv@(k , _) : K& V) →
+                (l : Tree⁺ V l [ k ] hˡ) →
                 (r : Tree V [ k ] u hʳ) →
                 (bal : hˡ ∼ hʳ ⊔ h) →
                 Any P r → Any P (proj₂ (joinˡ⁺ kv l r bal))
@@ -113,60 +113,12 @@ joinˡ⁺-right⁺ k₄ (1# , node k₂ t₁ t₃ ∼-)         t₅ ∼-  p = r
 joinˡ⁺-right⁺ k₄ (1# , node k₂ t₁ t₃ ∼0)         t₅ ∼-  p = right (right p)
 joinˡ⁺-right⁺ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼-  p = right (right p)
 
-joinʳ⁺-here⁺ : ∀ {l u hˡ hʳ h} →
-               (kv : K& V) →
-               (l : Tree V l [ kv .key ] hˡ) →
-               (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
-               (bal : hˡ ∼ hʳ ⊔ h) →
-               P kv → Any P (proj₂ (joinʳ⁺ kv l r bal))
-joinʳ⁺-here⁺ k₂ t₁ (0# , t₃)                       bal p = here p
-joinʳ⁺-here⁺ k₂ t₁ (1# , t₃)                       ∼0  p = here p
-joinʳ⁺-here⁺ k₂ t₁ (1# , t₃)                       ∼-  p = here p
-joinʳ⁺-here⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  p = left (here p)
-joinʳ⁺-here⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  p = left (here p)
-joinʳ⁺-here⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  p = left (here p)
-
-joinʳ⁺-left⁺ : ∀ {l u hˡ hʳ h} →
-              (kv : K& V) →
-              (l : Tree V l [ kv .key ] hˡ) →
-              (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
-              (bal : hˡ ∼ hʳ ⊔ h) →
-              Any P l → Any P (proj₂ (joinʳ⁺ kv l r bal))
-joinʳ⁺-left⁺ k₂ t₁ (0# , t₃)                       bal p = left p
-joinʳ⁺-left⁺ k₂ t₁ (1# , t₃)                       ∼0  p = left p
-joinʳ⁺-left⁺ k₂ t₁ (1# , t₃)                       ∼-  p = left p
-joinʳ⁺-left⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  p = left (left p)
-joinʳ⁺-left⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  p = left (left p)
-joinʳ⁺-left⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  p = left (left p)
-
-joinʳ⁺-right⁺ : ∀ {l u hˡ hʳ h} →
-                (kv : K& V) →
-                (l : Tree V l [ kv .key ] hˡ) →
-                (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
-                (bal : hˡ ∼ hʳ ⊔ h) →
-                Any P (proj₂ r) → Any P (proj₂ (joinʳ⁺ kv l r bal))
-joinʳ⁺-right⁺ k₂ t₁ (0# , t₃)                       bal p                = right p
-joinʳ⁺-right⁺ k₂ t₁ (1# , t₃)                       ∼0  p                = right p
-joinʳ⁺-right⁺ k₂ t₁ (1# , t₃)                       ∼-  p                = right p
-joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  (here p)         = here p
-joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  (left p)         = left (right p)
-joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  (right p)        = right p
-joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  (here p)         = here p
-joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  (left p)         = left (right p)
-joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  (right p)        = right p
-joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (here p)         = right (here p)
-joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (left (here p))  = here p
-joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (left (left p))  = left (right p)
-joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (left (right p)) = right (left p)
-joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (right p)        = right (right p)
-
-joinˡ⁺⁻ : ∀ {l u hˡ hʳ h} →
-            (kv@(k , v) : K& V) →
-            (l : ∃ λ i → Tree V l [ k ] (i ⊕ hˡ)) →
-            (r : Tree V [ k ] u hʳ) →
-            (bal : hˡ ∼ hʳ ⊔ h) →
-            Any P (proj₂ (joinˡ⁺ kv l r bal)) →
-            P kv ⊎ Any P (proj₂ l) ⊎ Any P r
+joinˡ⁺⁻ : (kv@(k , v) : K& V) →
+          (l@(_ , t) : Tree⁺ V l [ k ] hˡ) →
+          (r : Tree V [ k ] u hʳ) →
+          (bal : hˡ ∼ hʳ ⊔ h) →
+          Any P (proj₂ (joinˡ⁺ kv l r bal)) →
+          P kv ⊎ Any P t ⊎ Any P r
 joinˡ⁺⁻ k₂ (0# , t₁)                       t₃ ba = Any.toSum
 joinˡ⁺⁻ k₂ (1# , t₁)                       t₃ ∼0 = Any.toSum
 joinˡ⁺⁻ k₂ (1# , t₁)                       t₃ ∼+ = Any.toSum
@@ -191,13 +143,59 @@ joinˡ⁺⁻ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼- = λ whe
   (right (here p))  → inj₁ p
   (right (right p)) → inj₂ (inj₂ p)
 
-joinʳ⁺⁻ : ∀ {l u hˡ hʳ h} →
-            (kv : K& V) →
-            (l : Tree V l [ kv .key ] hˡ) →
-            (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
-            (bal : hˡ ∼ hʳ ⊔ h) →
-            Any P (proj₂ (joinʳ⁺ kv l r bal)) →
-            P kv ⊎ Any P l ⊎ Any P (proj₂ r)
+------------------------------------------------------------------------
+-- joinʳ⁺
+
+joinʳ⁺-here⁺ : (kv@(k , _) : K& V) →
+               (l : Tree V l [ k ] hˡ) →
+               (r : Tree⁺ V [ k ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               P kv → Any P (proj₂ (joinʳ⁺ kv l r bal))
+joinʳ⁺-here⁺ k₂ t₁ (0# , t₃)                       bal p = here p
+joinʳ⁺-here⁺ k₂ t₁ (1# , t₃)                       ∼0  p = here p
+joinʳ⁺-here⁺ k₂ t₁ (1# , t₃)                       ∼-  p = here p
+joinʳ⁺-here⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  p = left (here p)
+joinʳ⁺-here⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  p = left (here p)
+joinʳ⁺-here⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  p = left (here p)
+
+joinʳ⁺-left⁺ : (kv@(k , _) : K& V) →
+               (l : Tree V l [ k ] hˡ) →
+               (r : Tree⁺ V [ k ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               Any P l → Any P (proj₂ (joinʳ⁺ kv l r bal))
+joinʳ⁺-left⁺ k₂ t₁ (0# , t₃)                       bal p = left p
+joinʳ⁺-left⁺ k₂ t₁ (1# , t₃)                       ∼0  p = left p
+joinʳ⁺-left⁺ k₂ t₁ (1# , t₃)                       ∼-  p = left p
+joinʳ⁺-left⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  p = left (left p)
+joinʳ⁺-left⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  p = left (left p)
+joinʳ⁺-left⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  p = left (left p)
+
+joinʳ⁺-right⁺ : (kv@(k , _) : K& V) →
+                (l : Tree V l [ k ] hˡ) →
+                (r@(_ , t) : Tree⁺ V [ k ] u hʳ) →
+                (bal : hˡ ∼ hʳ ⊔ h) →
+                Any P t → Any P (proj₂ (joinʳ⁺ kv l r bal))
+joinʳ⁺-right⁺ k₂ t₁ (0# , t₃)                       bal p                = right p
+joinʳ⁺-right⁺ k₂ t₁ (1# , t₃)                       ∼0  p                = right p
+joinʳ⁺-right⁺ k₂ t₁ (1# , t₃)                       ∼-  p                = right p
+joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  (here p)         = here p
+joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  (left p)         = left (right p)
+joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  (right p)        = right p
+joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  (here p)         = here p
+joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  (left p)         = left (right p)
+joinʳ⁺-right⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  (right p)        = right p
+joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (here p)         = right (here p)
+joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (left (here p))  = here p
+joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (left (left p))  = left (right p)
+joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (left (right p)) = right (left p)
+joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (right p)        = right (right p)
+
+joinʳ⁺⁻ : (kv@(k , _) : K& V) →
+          (l : Tree V l [ k ] hˡ) →
+          (r@(_ , t) : Tree⁺ V [ k ] u hʳ) →
+          (bal : hˡ ∼ hʳ ⊔ h) →
+          Any P (proj₂ (joinʳ⁺ kv l r bal)) →
+          P kv ⊎ Any P l ⊎ Any P t
 joinʳ⁺⁻ k₂ t₁ (0# , t₃)                       bal = Any.toSum
 joinʳ⁺⁻ k₂ t₁ (1# , t₃)                       ∼0  = Any.toSum
 joinʳ⁺⁻ k₂ t₁ (1# , t₃)                       ∼-  = Any.toSum
@@ -222,23 +220,19 @@ joinʳ⁺⁻ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  = λ wh
   (right (here p))  → inj₂ (inj₂ (here p))
   (right (right p)) → inj₂ (inj₂ (right p))
 
-module _ {V : Value v} where
+----------------------------------------------------------------------
+-- Properties of tree construction operations
 
-  private
-    Val  = Value.family V
-    Val≈ = Value.respects V
+module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
 
-  singleton⁺ : {P : Pred (K& V) p} →
-               (k : Key) →
-               (v : Val k) →
-               (l<k<u : l < k < u) →
+  ----------------------------------------------------------------------
+  -- singleton
+
+  singleton⁺ : (k : Key) (v : Val k) (l<k<u : l < k < u) →
                P (k , v) → Any P (singleton k v l<k<u)
   singleton⁺ k v l<k<u Pkv = here Pkv
 
-  singleton⁻ : {P : Pred (K& V) p} →
-               (k : Key) →
-               (v : Val k) →
-               (l<k<u : l < k < u) →
+  singleton⁻ : (k : Key) (v : Val k) (l<k<u : l < k < u) →
                Any P (singleton k v l<k<u) → P (k , v)
   singleton⁻ k v l<k<u (here Pkv) = Pkv
 
@@ -249,7 +243,7 @@ module _ {V : Value v} where
 
     open <-Reasoning AVL.strictPartialOrder
 
-    insertWith-nothing : (t : Tree V l u n) (seg : l < k < u) →
+    insertWith-nothing : (t : Tree V l u h) (seg : l < k < u) →
                          P (k , f nothing) →
                          ¬ (Any ((k ≈_) ∘′ key) t) →
                          Any P (proj₂ (insertWith k f t seg))
@@ -264,9 +258,9 @@ module _ {V : Value v} where
                               ih = insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
                           in joinʳ⁺-right⁺ kv lk ku′ bal ih
 
-    insertWith-just : (t : Tree V l u n) (seg : l < k < u) →
+    insertWith-just : (t : Tree V l u h) (seg : l < k < u) →
                       (pr : ∀ k′ v → (eq : k ≈ k′) →
-                            P (k′ , Val≈ eq (f (just (Val≈ (sym eq) v))))) →
+                            P (k′ , respects eq (f (just (respects (sym eq) v))))) →
                       Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t seg))
     insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
       with p | compare k k′
@@ -311,19 +305,7 @@ module _ {V : Value v} where
       [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
       [ k  ] ∎
 
-  module _ (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) where
-
-    insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
-                     Any P (proj₂ (insert k v t seg))
-    insert-nothing = insertWith-nothing k (F.const v) t seg
-
-    insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , Val≈ eq v)) →
-                  Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t seg))
-    insert-just pr = insertWith-just k (F.const v) t seg (λ k′ _ eq → pr k′ eq)
-
-  module _ (k : Key) (f : Maybe (Val k) → Val k) where
-
-    insertWith⁺ : (t : Tree V l u n) (seg : l < k < u) →
+    insertWith⁺ : (t : Tree V l u h) (seg : l < k < u) →
                   (p : Any P t) → k ≉ lookupKey p →
                   Any P (proj₂ (insertWith k f t seg))
     insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
@@ -350,18 +332,27 @@ module _ {V : Value v} where
                               ih = insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
                           in joinʳ⁺-right⁺ kv l r′ bal ih
 
-  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) →
-            (p : Any P t) → k ≉ lookupKey p →
-            Any P (proj₂ (insert k v t seg))
-  insert⁺ k v = insertWith⁺ k (F.const v)
+  module _ (k : Key) (v : Val k) (t : Tree V l u h) (seg : l < k < u) where
+
+    insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
+                     Any P (proj₂ (insert k v t seg))
+    insert-nothing = insertWith-nothing k (F.const v) t seg
+
+    insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , respects eq v)) →
+                  Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t seg))
+    insert-just pr = insertWith-just k (F.const v) t seg (λ k′ _ eq → pr k′ eq)
+
+    insert⁺ : (p : Any P t) → k ≉ lookupKey p →
+              Any P (proj₂ (insert k v t seg))
+    insert⁺ = insertWith⁺ k (F.const v) t seg
 
   module _
     {P : Pred (K& V) p}
-    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , Val≈ k≈k′ v) → P (k , v))
+    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , respects k≈k′ v) → P (k , v))
     (k : Key) (v : Val k)
     where
 
-    insert⁻ : (t : Tree V l u n) (seg : l < k < u) →
+    insert⁻ : (t : Tree V l u h) (seg : l < k < u) →
               Any P (proj₂ (insert k v t seg)) →
               P (k , v) ⊎ Any (λ{ (k′ , v′) → k ≉ k′ × P (k′ , v′)}) t
     insert⁻ (leaf l<u) seg (here p) = inj₁ p
@@ -394,9 +385,9 @@ module _ {V : Value v} where
       k′<p = [<]-injective (proj₁ (lookup-bounded p))
       k≉p = λ k≈p → irrefl (trans (sym k≈k′) k≈p) k′<p
 
-  lookup⁺ : (t : Tree V l u n) (k : Key) (seg : l < k < u) →
+  lookup⁺ : (t : Tree V l u h) (k : Key) (seg : l < k < u) →
             (p : Any P t) →
-            lookupKey p ≉ k ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (Val≈ p≈k (value (Any.lookup p)))
+            lookupKey p ≉ k ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (respects p≈k (value (Any.lookup p)))
   lookup⁺ (node (k′ , v′) l r bal) k (l<k , k<u) p
       with compare k′ k | p
   ... | tri< k′<k _ _ | right p = lookup⁺ r k ([ k′<k ]ᴿ , k<u) p
@@ -413,15 +404,13 @@ module _ {V : Value v} where
   ... | tri> _ _ k<k′ | right p = inj₁ (λ p≈k → irrefl (sym p≈k) (<-trans k<k′ k′<p))
     where k′<p = [<]-injective (proj₁ (lookup-bounded p))
 
-  lookup⁻ : (t : Tree V l u n) (k : Key) (v : Val k) (seg : l < k < u) →
+  lookup⁻ : (t : Tree V l u h) (k : Key) (v : Val k) (seg : l < k < u) →
             AVL.lookup t k seg ≡ just v →
-            Any (λ{ (k′ , v′) → ∃ λ k′≈k → Val≈ k′≈k v′ ≡ v}) t
+            Any (λ{ (k′ , v′) → ∃ λ k′≈k → respects k′≈k v′ ≡ v}) t
   lookup⁻ (node (k′ , v′) l r bal) k v (l<k , k<u) eq with compare k′ k
   ... | tri< k′<k _ _ = right (lookup⁻ r k v ([ k′<k ]ᴿ , k<u) eq)
   ... | tri≈ _ k′≈k _ = here (k′≈k , just-injective eq)
   ... | tri> _ _ k<k′ = left (lookup⁻ l k v (l<k , [ k<k′ ]ᴿ) eq)
-
-
 
 
 ------------------------------------------------------------------------
