@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of lookup related to Any
+-- Properties related to Any.lookup
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -12,21 +12,14 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Maybe.Base using (Maybe; just)
-open import Data.Maybe.Properties using (just-injective)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product.Base using (∃; ∃-syntax; _,_; proj₁; proj₂)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Product.Base as Prod using (_,_)
+open import Function.Base using (flip)
 open import Level using (Level)
-open import Relation.Binary.Definitions using (tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_) renaming (refl to ≡-refl)
-open import Relation.Unary using (Pred)
+open import Relation.Unary using (Pred; _∩_)
 
-open import Data.Tree.AVL.Indexed sto as AVL
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
-
-open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
+open import Data.Tree.AVL.Indexed sto hiding (lookup)
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto
 
 private
   variable
@@ -34,42 +27,24 @@ private
     V : Value v
     l u : Key⁺
     n : ℕ
-    P : Pred (K& V) p
+    P Q : Pred (K& V) p
 
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.AnyLookup sto
-  using (lookup-bounded)
+lookup-result : {t : Tree V l u n} (p : Any P t) → P (lookup p)
+lookup-result (here p)  = p
+lookup-result (left p)  = lookup-result p
+lookup-result (right p) = lookup-result p
 
-module _ {V : Value v} where
+lookup-bounded : {t : Tree V l u n} (p : Any P t) → l < lookup p .key < u
+lookup-bounded {t = node kv lk ku bal} (here p)  = ordered lk , ordered ku
+lookup-bounded {t = node kv lk ku bal} (left p)  =
+  Prod.map₂ (flip (trans⁺ _) (ordered ku)) (lookup-bounded p)
+lookup-bounded {t = node kv lk ku bal} (right p) =
+  Prod.map₁ (trans⁺ _ (ordered lk)) (lookup-bounded p)
 
-  private
-    Val  = Value.family V
-    Val≈ = Value.respects V
+lookup-rebuild : {t : Tree V l u n} (p : Any P t) → Q (lookup p) → Any Q t
+lookup-rebuild (here _)  q = here q
+lookup-rebuild (left p)  q = left (lookup-rebuild p q)
+lookup-rebuild (right p) q = right (lookup-rebuild p q)
 
-  lookup⁺ : (t : Tree V l u n) (k : Key) (seg : l < k < u) →
-            (p : Any P t) →
-            (key (Any.lookup p) ≉ k)
-            ⊎ (∃[ p≈k ] AVL.lookup t k seg
-               ≡ just (Val≈ p≈k (value (Any.lookup p))))
-  lookup⁺ (node (k′ , v′) l r bal) k (l<k , k<u) p
-      with compare k′ k | p
-  ... | tri< k′<k _ _ | right p = lookup⁺ r k ([ k′<k ]ᴿ , k<u) p
-  ... | tri≈ _ k′≈k _ | here p = inj₂ (k′≈k , ≡-refl)
-  ... | tri> _ _ k<k′ | left p = lookup⁺ l k (l<k , [ k<k′ ]ᴿ) p
-  ... | tri< k′<k _ _ | left p = inj₁ (λ p≈k → irrefl p≈k (<-trans p<k′ k′<k))
-    where p<k′ = [<]-injective (proj₂ (lookup-bounded p))
-  ... | tri< k′<k _ _ | here p = inj₁ (λ p≈k → irrefl p≈k k′<k)
-  ... | tri≈ _ k′≈k _ | left p = inj₁ (λ p≈k → irrefl (trans p≈k (sym k′≈k)) p<k′)
-    where p<k′ = [<]-injective (proj₂ (lookup-bounded p))
-  ... | tri≈ _ k′≈k _ | right p = inj₁ (λ p≈k → irrefl (trans k′≈k (sym p≈k)) k′<p)
-    where k′<p = [<]-injective (proj₁ (lookup-bounded p))
-  ... | tri> _ _ k<k′ | here p = inj₁ (λ p≈k → irrefl (sym p≈k) k<k′)
-  ... | tri> _ _ k<k′ | right p = inj₁ (λ p≈k → irrefl (sym p≈k) (<-trans k<k′ k′<p))
-    where k′<p = [<]-injective (proj₁ (lookup-bounded p))
-
-  lookup⁻ : (t : Tree V l u n) (k : Key) (v : Val k) (seg : l < k < u) →
-            AVL.lookup t k seg ≡ just v →
-            Any (λ{ (k′ , v′) → ∃ λ k′≈k → Val≈ k′≈k v′ ≡ v}) t
-  lookup⁻ (node (k′ , v′) l r bal) k v (l<k , k<u) eq with compare k′ k
-  ... | tri< k′<k _ _ = right (lookup⁻ r k v ([ k′<k ]ᴿ , k<u) eq)
-  ... | tri≈ _ k′≈k _ = here (k′≈k , just-injective eq)
-  ... | tri> _ _ k<k′ = left (lookup⁻ l k v (l<k , [ k<k′ ]ᴿ) eq)
+lookup-rebuild-accum : {t : Tree V l u n} (p : Any P t) → Q (lookup p) → Any (Q ∩ P) t
+lookup-rebuild-accum p q = lookup-rebuild p (q , lookup-result p)

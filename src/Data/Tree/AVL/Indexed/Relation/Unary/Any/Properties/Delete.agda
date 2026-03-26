@@ -23,7 +23,7 @@ open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.AnyLookup sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
   using (lookup-bounded; lookup-result; lookup-rebuild)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join sto
   using (join-left⁺; join-right⁺; join⁻)
@@ -41,12 +41,12 @@ private
     v p : Level
     V : Value v
     l u : Key⁺
-    n : ℕ
+    h : ℕ
     P : Pred (K& V) p
 
 module _ (k : Key) where
 
-  delete⁺ : (t : Tree V l u n) (seg : l < k < u) →
+  delete⁺ : (t : Tree V l u h) (seg : l < k < u) →
             (p : Any P t) → lookupKey p ≉ k →
             Any P (proj₂ (delete k t seg))
   delete⁺ (node (k′ , _) _ _ bal) _ (here pk) p≉k
@@ -67,7 +67,7 @@ module _ (k : Key) where
   ... | tri> _ _ k′>k = joinˡ⁻-right⁺ _ _ _ bal pr
   ... | tri≈ _ _ _    = join-right⁺ _ _ bal pr
 
-  delete-tree⁻ : (t : Tree V l u n) (seg : l < k < u) →
+  delete-tree⁻ : (t : Tree V l u h) (seg : l < k < u) →
                  Any P (proj₂ (delete k t seg)) →
                  Any P t
   delete-tree⁻ (node (k′ , _) _ _ _) _ _ with compare k′ k
@@ -89,7 +89,7 @@ module _ (k : Key) where
 
   open <-Reasoning AVL.strictPartialOrder
 
-  delete-key-∈⁻ : (t : Tree V l u n) (seg : l < k < u) →
+  delete-key-∈⁻ : (t : Tree V l u h) (seg : l < k < u) →
                   {kp : Key} →
                   Any ((kp ≈_) ∘′ key) (proj₂ (delete k t seg)) →
                   kp ≉ k
@@ -138,7 +138,7 @@ module _ (k : Key) where
 
 module _ (k : Key) where
 
-  delete-key⁻ : (t : Tree V l u n) (seg : l < k < u) →
+  delete-key⁻ : (t : Tree V l u h) (seg : l < k < u) →
                 (p : Any P (proj₂ (delete k t seg))) →
                 Any.lookupKey p ≉ k
   delete-key⁻ t seg p kp≈k =

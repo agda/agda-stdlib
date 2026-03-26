@@ -190,8 +190,7 @@ joinˡ⁻-here⁺ : (kv : K& V) →
                (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
                (r : Tree V [ kv .key ] u hʳ) →
                (bal : hˡ ∼ hʳ ⊔ h) →
-               P kv →
-               Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+               P kv → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
 joinˡ⁻-here⁺ {hˡ = zero}  _ (0# , leaf _) _  _  p = here p
 joinˡ⁻-here⁺ {hˡ = zero}  _ (1# , leaf _) _  _  p = here p
 joinˡ⁻-here⁺ {hˡ = suc _} _ (0# , t₁)     t₃ ∼+ p =

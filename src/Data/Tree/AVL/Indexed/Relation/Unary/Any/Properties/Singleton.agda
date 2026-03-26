@@ -24,13 +24,12 @@ private
     v p : Level
     l u : Key⁺
 
-module _ {V : Value v}
-         {P : Pred (K& V) p}
-         (k : Key) (v2 : Value.family V k) (l<k<u : l < k < u)
+module _ {V : Value v} {P : Pred (K& V) p}
+         (k : Key) (v : Value.family V k) (l<k<u : l < k < u)
          where
 
-  singleton⁺ : P (k , v2) → Any P (singleton k v2 l<k<u)
+  singleton⁺ : P (k , v) → Any P (singleton k v l<k<u)
   singleton⁺ Pkv = here Pkv
 
-  singleton⁻ : Any P (singleton k v2 l<k<u) → P (k , v2)
+  singleton⁻ : Any P (singleton k v l<k<u) → P (k , v)
   singleton⁻ (here Pkv) = Pkv

@@ -67,6 +67,11 @@ Minor improvements
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
   levels to be used.
 
+* Due to becoming large, `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`
+  has been split into small modules
+  `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
+  that are reexported by the original `Properties`.
+
 Deprecated modules
 ------------------
 
@@ -155,6 +160,19 @@ New modules
   Data.List.NonEmpty.Relation.Unary.Any
   Data.List.NonEmpty.Membership.Propositional
   Data.List.NonEmpty.Membership.Setoid
+  ```
+
+* Splits of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`:
+  ```
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.LookupFun
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
   ```
 
 * `Relation.Binary.Morphism.Construct.On`: given a relation `_∼_` on `B`,
@@ -370,6 +388,87 @@ Additions to existing modules
 * In `Data.Rational.Unnormalised.Show`:
   ```agda
   showAtPrecision : ℕ → ℚᵘ → String
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast`:
+  ```agda
+  castʳ⁺ : Any P lm → Any P (castʳ lm m<u)
+  castʳ⁻ : Any P (castʳ lm m<u) → Any P lm
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete`:
+  ```agda
+  delete⁺ : (t : Tree V l u h) (seg : l < k < u) →
+            (p : Any P t) → lookupKey p ≉ k →
+            Any P (proj₂ (delete k t seg))
+  delete-tree⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                 Any P (proj₂ (delete k t seg)) →
+                 Any P t
+  delete-key-∈⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                  {kp : Key} →
+                  Any ((kp ≈_) ∘′ key) (proj₂ (delete k t seg)) →
+                  kp ≉ k
+  delete-key⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                (p : Any P (proj₂ (delete k t seg))) →
+                Any.lookupKey p ≉ k
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail`:
+  ```
+  headTail⁺ : (t : Tree V l u (1 + h)) →
+              let kv , _ , _ , t⁻ = headTail t in
+              Any P t → P kv ⊎ Any P t⁻
+  headTail-head⁻ : (t : Tree V l u (suc h)) →
+                   P (proj₁ (headTail t)) → Any P t
+  headTail-tail⁻ : (t : Tree V l u (1 + h)) →
+                   let _ , _ , _ , t⁻ = headTail t in
+                   Any P t⁻ → Any P t
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns`:
+  ```
+  joinˡ⁻-here⁺ : (kv : K& V) →
+                 (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+                 (r : Tree V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 P kv → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻-left⁺ : (kv : K& V) →
+                 (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+                 (r : Tree V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 Any P (proj₂ l) → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻-right⁺ : (kv : K& V) →
+                  (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+                  (r : Tree V [ kv .key ] u hʳ) →
+                  (bal : hˡ ∼ hʳ ⊔ h) →
+                  Any P r → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻⁻ : (kv : K& V) →
+            (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+            (r : Tree V [ kv .key ] u hʳ) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinˡ⁻ hˡ kv l r bal)) →
+            P kv ⊎ Any P (proj₂ l) ⊎ Any P r
+  joinʳ⁻-here⁺ : (kv : K& V) →
+                 (l : Tree V l [ kv .key ] hˡ) →
+                 (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 P kv → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻-left⁺ : (kv : K& V) →
+                 (l : Tree V l [ kv .key ] hˡ) →
+                 (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 Any P l → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻-right⁺ : (kv : K& V) →
+                  (l : Tree V l [ kv .key ] hˡ) →
+                  (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+                  (bal : hˡ ∼ hʳ ⊔ h) →
+                  Any P (proj₂ r) → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻⁻ : (kv : K& V) →
+            (l : Tree V l [ kv .key ] hˡ) →
+            (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinʳ⁻ hʳ kv l r bal)) →
+            P kv ⊎ Any P l ⊎ Any P (proj₂ r)
   ```
 
 * In `Data.Vec.Properties`:

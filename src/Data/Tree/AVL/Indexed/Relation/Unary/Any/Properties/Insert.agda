@@ -24,7 +24,7 @@ open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.AnyLookup sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
   using (lookup-result; lookup-bounded; lookup-rebuild-accum)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
   using (joinˡ⁺-left⁺; joinʳ⁺-right⁺; joinˡ⁺-here⁺; joinʳ⁺-here⁺;
