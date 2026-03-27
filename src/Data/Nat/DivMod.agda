@@ -17,9 +17,11 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Data.Product.Base using (_,_)
+open import Data.Product.Base using (_,_; ∃)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Construct.Closure.Symmetric
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; cong₂; refl; trans; _≢_; sym)
 open import Relation.Nullary.Negation using (contradiction)
@@ -462,6 +464,82 @@ m%n*o≡m*o%[n*o] m n o = begin-equality
     mn % pn + o <⟨ +-mono-≤-< lem₁ o<n ⟩
     p-1 * n + n ≡⟨ +-comm (p-1 * n) n ⟩
     pn          ∎
+
+-- Lemmas characterising `m ≡ n (mod o)`
+
+-- Definition of an asymmetric version of that notion
+-- NB. `Relation.Binary.Construct.Closure.Symmetric`
+-- gives us the relation we're after.
+
+infix 4 _≲%[_]_ _≡%[_]_
+_≲%[_]_ _≡%[_]_ : ∀ m o n → Set _
+
+m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
+m ≡%[ o ] n = SymClosure _≲%[ o ]_ m n
+
+-- simple properties wrt successor
+
+≲%[o]-suc : m ≲%[ o ] n → (suc m) ≲%[ o ] (suc n)
+≲%[o]-suc (k , eq) = k , cong suc eq
+
+≲%[o]-suc⁻¹ : (suc m) ≲%[ o ] (suc n) → m ≲%[ o ] n
+≲%[o]-suc⁻¹ (k , eq) = k , cong pred eq
+
+-- Equivalence with the relation we seek to characterise
+
+module _ .{{_ : NonZero o}} where
+
+  ≲%[o]⇒%o≡%o : m ≲%[ o ] n → m % o ≡ n % o
+  ≲%[o]⇒%o≡%o {m = m} {n = n} (k , eq) = begin-equality
+    m % o           ≡⟨ [m+kn]%n≡m%n m k o ⟨
+    (m + k * o) % o ≡⟨ cong (_% o) eq ⟨
+    n % o ∎
+
+  %o≡%o⇒≲%[o] : m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
+  %o≡%o⇒≲%[o] {m = m} {n = n} eq m≤n = k , (begin-equality
+    n                           ≡⟨ m≡m%n+[m/n]*n n o ⟩
+    n % o + n / o * o           ≡⟨ cong (_+ n / o * o) eq ⟨
+    m % o + n / o * o           ≡⟨ cong ((m % o +_) ∘ (_* o)) (m+[n∸m]≡n (/-monoˡ-≤ o m≤n)) ⟨
+    m % o + (m / o + k) * o     ≡⟨ cong (m % o +_) (*-distribʳ-+ o (m / o) k) ⟩
+    m % o + (m / o * o + k * o) ≡⟨ +-assoc (m % o) _ _ ⟨
+    (m % o + m / o * o) + k * o ≡⟨ cong (_+ k * o) (m≡m%n+[m/n]*n m o) ⟨
+    m + k * o                   ∎)
+    where k = n / o ∸ m / o
+
+  %o≡%o⇒≡%[o] : m % o ≡ n % o → m ≡%[ o ] n
+  %o≡%o⇒≡%[o] {m = m} {n = n} eq with ≤-total m n
+  ... | inj₁ m≤n = fwd (%o≡%o⇒≲%[o] eq m≤n)
+  ... | inj₂ n≤m = bwd (%o≡%o⇒≲%[o] (sym eq) n≤m)
+
+
+private
+
+  -- Example application, a result sought by Jacques Carette, taken from
+  -- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
+
+  CarettesLemma : ∀ o .{{_ : NonZero o}} → Rel ℕ _
+  CarettesLemma o m n = (suc m) % o ≡ (suc n) % o → m % o ≡ n % o
+
+  carettesLemma : .{{_ : NonZero o}} → CarettesLemma o m n
+  carettesLemma eq with %o≡%o⇒≡%[o] eq
+  ... | fwd m≲n = ≲%[o]⇒%o≡%o (≲%[o]-suc⁻¹ m≲n)
+  ... | bwd n≲m = sym (≲%[o]⇒%o≡%o (≲%[o]-suc⁻¹ n≲m))
+
+  -- Alex Rice's optimised proof
+  carettesLemma′ : .{{_ : NonZero o}} → CarettesLemma o m n
+  carettesLemma′ {o = o@(suc d)} {m = m} {n = n} eq = begin-equality
+    m % o                       ≡⟨ lemma m ⟩
+    (suc m % o + d % o) % suc d ≡⟨ cong (λ a → (a + d % suc d) % suc d) eq ⟩
+    (suc n % o + d % o) % suc d ≡⟨ lemma n ⟨
+    n % o ∎
+    where
+    lemma : ∀ n → n % o ≡ (suc n % o + d % o) % o
+    lemma n = begin-equality
+      n % o                   ≡⟨ [m+n]%n≡m%n n o ⟨
+      (n + suc d) % o         ≡⟨ %-congˡ (+-suc n d) ⟩
+      (suc n + d) % o         ≡⟨ %-distribˡ-+ (suc n) d o ⟩
+      (suc n % o + d % o) % o ∎
+
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

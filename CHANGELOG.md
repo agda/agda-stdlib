@@ -319,6 +319,18 @@ Additions to existing modules
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
   ```
 
+* In `Data.Nat.DivMod`:
+  ```agda
+  infix 4 _≲%[_]_ _≡%[_]_ : ∀ m o n → Set _
+  m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
+  m ≡%[ o ] n = SymClosure _≲%[ o ]_ m n
+  ≲%[o]-suc   : m ≲%[ o ] n → (suc m) ≲%[ o ] (suc n)
+  ≲%[o]-suc⁻¹ : (suc m) ≲%[ o ] (suc n) → m ≲%[ o ] n
+  ≲%[o]⇒%o≡%o : .{{_ : NonZero o}} → m ≲%[ o ] n → m % o ≡ n % o
+  %o≡%o⇒≲%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
+  %o≡%o⇒≡%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≡%[ o ] n
+  ```
+
 * In `Data.Nat.Logarithm`
   ```agda
   2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
