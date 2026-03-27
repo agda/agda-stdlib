@@ -21,7 +21,7 @@ open import Data.Product.Base using (_,_; ∃)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Construct.Closure.Symmetric
+open import Relation.Binary.Construct.Closure.Symmetric as SymClosure
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; cong₂; refl; trans; _≢_; sym)
 open import Relation.Nullary.Negation using (contradiction)
@@ -477,14 +477,6 @@ _≲%[_]_ _≡%[_]_ : ∀ m o n → Set _
 m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
 m ≡%[ o ] n = SymClosure _≲%[ o ]_ m n
 
--- simple properties wrt successor
-
-≲%[o]-suc : m ≲%[ o ] n → (suc m) ≲%[ o ] (suc n)
-≲%[o]-suc (k , eq) = k , cong suc eq
-
-≲%[o]-suc⁻¹ : (suc m) ≲%[ o ] (suc n) → m ≲%[ o ] n
-≲%[o]-suc⁻¹ (k , eq) = k , cong pred eq
-
 -- Equivalence with the relation we seek to characterise
 
 module _ .{{_ : NonZero o}} where
@@ -522,8 +514,8 @@ private
 
   carettesLemma : .{{_ : NonZero o}} → CarettesLemma o m n
   carettesLemma eq with %o≡%o⇒≡%[o] eq
-  ... | fwd m≲n = ≲%[o]⇒%o≡%o (≲%[o]-suc⁻¹ m≲n)
-  ... | bwd n≲m = sym (≲%[o]⇒%o≡%o (≲%[o]-suc⁻¹ n≲m))
+  ... | fwd (k , eq) = ≲%[o]⇒%o≡%o (k , cong pred eq)
+  ... | bwd (k , eq) = sym (≲%[o]⇒%o≡%o (k , cong pred eq))
 
   -- Alex Rice's optimised proof
   carettesLemma′ : .{{_ : NonZero o}} → CarettesLemma o m n
