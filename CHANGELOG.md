@@ -162,7 +162,7 @@ New modules
   Data.List.NonEmpty.Membership.Setoid
   ```
 
-* Splits of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`:
+* Refactoring of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` as smaller modules:
   ```
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast
