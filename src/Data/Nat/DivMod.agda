@@ -21,7 +21,8 @@ open import Data.Product.Base using (_,_; ∃)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Construct.Closure.Symmetric as SymClosure
+open import Relation.Binary.Construct.Closure.Symmetric
+  as SymClosure using (SymClosure; fwd; bwd)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; cong₂; refl; trans; _≢_; sym)
 open import Relation.Nullary.Negation using (contradiction)
@@ -486,6 +487,9 @@ module _ .{{_ : NonZero o}} where
     m % o           ≡⟨ [m+kn]%n≡m%n m k o ⟨
     (m + k * o) % o ≡⟨ cong (_% o) eq ⟨
     n % o ∎
+
+  ≡%[o]⇒%o≡%o : m ≡%[ o ] n → m % o ≡ n % o
+  ≡%[o]⇒%o≡%o {m = m} {n = n} = SymClosure.fold sym ≲%[o]⇒%o≡%o
 
   %o≡%o⇒≲%[o] : m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
   %o≡%o⇒≲%[o] {m = m} {n = n} eq m≤n = k , (begin-equality

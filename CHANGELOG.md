@@ -327,6 +327,7 @@ Additions to existing modules
   ≲%[o]-suc   : m ≲%[ o ] n → (suc m) ≲%[ o ] (suc n)
   ≲%[o]-suc⁻¹ : (suc m) ≲%[ o ] (suc n) → m ≲%[ o ] n
   ≲%[o]⇒%o≡%o : .{{_ : NonZero o}} → m ≲%[ o ] n → m % o ≡ n % o
+  ≡%[o]⇒%o≡%o : .{{_ : NonZero o}} → m ≡%[ o ] n → m % o ≡ n % o
   %o≡%o⇒≲%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
   %o≡%o⇒≡%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≡%[ o ] n
   ```
