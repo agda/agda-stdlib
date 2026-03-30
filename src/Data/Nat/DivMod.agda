@@ -472,28 +472,28 @@ m%n*o≡m*o%[n*o] m n o = begin-equality
 -- NB. `Relation.Binary.Construct.Closure.Symmetric`
 -- gives us the relation we're after.
 
-infix 4 _≲%[_]_ _≡%[_]_
-_≲%[_]_ _≡%[_]_ : ∀ m o n → Set _
+infix 4 _≲%[_]_ _≅%[_]_
+_≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
 
 m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
-m ≡%[ o ] n = SymClosure _≲%[ o ]_ m n
+m ≅%[ o ] n = SymClosure _≲%[ o ]_ m n
 
-infix 4 _≡[_]%_
-_≡[_]%_ : ∀ m o .{{_ : NonZero o}} n → Set _
-m ≡[ o ]% n = m % o ≡ n % o
+infix 4 _≡%[_]_
+_≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
+m ≡%[ o ] n = m % o ≡ n % o
 
--- Equivalence between _≡%[_]_ and _≡[_]%_
+-- Equivalence between _≅%[_]_ and _≡[_]%_
 
 module _ .{{_ : NonZero o}} where
 
-  ≲%[o]⇒≡[o]% : _≲%[ o ]_ ⇒ _≡[ o ]%_
+  ≲%[o]⇒≡[o]% : _≲%[ o ]_ ⇒ _≡%[ o ]_
   ≲%[o]⇒≡[o]% {x = m} {y = n} (k , eq) = begin-equality
     m % o           ≡⟨ [m+kn]%n≡m%n m k o ⟨
     (m + k * o) % o ≡⟨ cong (_% o) eq ⟨
     n % o ∎
 
-  ≡%[o]⇒≡[o]% : _≡%[ o ]_ ⇒ _≡[ o ]%_
-  ≡%[o]⇒≡[o]% = SymClosure.fold sym ≲%[o]⇒≡[o]%
+  ≅%[o]⇒≡[o]% : _≅%[ o ]_ ⇒ _≡%[ o ]_
+  ≅%[o]⇒≡[o]% = SymClosure.fold sym ≲%[o]⇒≡[o]%
 
   ≡[o]%⇒≲%[o] : m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
   ≡[o]%⇒≲%[o] {m = m} {n = n} eq m≤n = k , (begin-equality
@@ -506,8 +506,8 @@ module _ .{{_ : NonZero o}} where
     m + k * o                   ∎)
     where k = n / o ∸ m / o
 
-  ≡[o]%⇒≡%[o] : _≡[ o ]%_ ⇒ _≡%[ o ]_
-  ≡[o]%⇒≡%[o] {x = m} {y = n} eq with ≤-total m n
+  ≡[o]%⇒≅%[o] : _≡%[ o ]_ ⇒ _≅%[ o ]_
+  ≡[o]%⇒≅%[o] {x = m} {y = n} eq with ≤-total m n
   ... | inj₁ m≤n = fwd (≡[o]%⇒≲%[o] eq m≤n)
   ... | inj₂ n≤m = bwd (≡[o]%⇒≲%[o] (sym eq) n≤m)
 
@@ -518,16 +518,16 @@ private
   -- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
 
   CarettesLemma : ∀ o .{{_ : NonZero o}} → Set _
-  CarettesLemma o = (_≡[ o ]%_ on suc) ⇒ _≡[ o ]%_
+  CarettesLemma o = (_≡%[ o ]_ on suc) ⇒ _≡%[ o ]_
 
   carettesLemma : .{{_ : NonZero o}} → CarettesLemma o
-  carettesLemma {o = o} = ≡%[o]⇒≡[o]% ∘ lemma-≡% ∘ ≡[o]%⇒≡%[o]
+  carettesLemma {o = o} = ≅%[o]⇒≡[o]% ∘ lemma-≅% ∘ ≡[o]%⇒≅%[o]
     where
     lemma-≲% : (_≲%[ o ]_ on suc) ⇒ _≲%[ o ]_
     lemma-≲% (k , eq) = k , cong pred eq
 
-    lemma-≡% : (_≡%[ o ]_ on suc) ⇒ _≡%[ o ]_
-    lemma-≡% = SymClosure.hmap suc id lemma-≲%
+    lemma-≅% : (_≅%[ o ]_ on suc) ⇒ _≅%[ o ]_
+    lemma-≅% = SymClosure.hmap suc id lemma-≲%
 
   -- Alex Rice's optimised proof
   carettesLemma′ : .{{_ : NonZero o}} → CarettesLemma o

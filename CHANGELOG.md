@@ -321,17 +321,17 @@ Additions to existing modules
 
 * In `Data.Nat.DivMod`:
   ```agda
-  infix 4 _≲%[_]_ _≡%[_]_ : ∀ m o n → Set _
+  infix 4 _≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
   m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
-  m ≡%[ o ] n = SymClosure _≲%[ o ]_ m n
+  m ≅%[ o ] n = SymClosure _≲%[ o ]_ m n
 
-  infix 4 _≡[_]%_ : ∀ m o .{{_ : NonZero o}} n → Set _
-  m ≡[ o ]% n = m % o ≡ n % o
+  infix 4 _≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
+  m ≡%[ o ] n = m % o ≡ n % o
 
-  ≲%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≲%[ o ]_ ⇒ _≡[ o ]%_
-  ≡%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≡[ o ]%_
+  ≲%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≲%[ o ]_ ⇒ _≡%[ o ]_
+  ≅%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≅%[ o ]_ ⇒ _≡%[ o ]_
   ≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
-  ≡[o]%⇒≡%[o] : .{{_ : NonZero o}} → _≡[ o ]%_ ⇒ _≡%[ o ]_
+  ≡[o]%⇒≅%[o] : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≅%[ o ]_
   ```
 
 * In `Data.Nat.Logarithm`
