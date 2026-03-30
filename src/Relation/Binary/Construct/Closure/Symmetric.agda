@@ -44,12 +44,12 @@ hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
 hmap _ _ g*R⇒f*S (fwd aRb) = fwd (g*R⇒f*S aRb)
 hmap _ _ g*R⇒f*S (bwd bRa) = bwd (g*R⇒f*S bRa)
 
--- Hence SymClosure commutes with `on`
-on-commutesˡ : (g : B → A) → ((SymClosure R) on g) ⇒ SymClosure (R on g)
-on-commutesˡ g = hmap g id id
+-- Hence: SymClosure commutes with `on`
+on⁺ : (g : B → A) → ((SymClosure R) on g) ⇒ SymClosure (R on g)
+on⁺ g = hmap g id id
 
-on-commutesʳ : (g : B → A) → SymClosure (R on g) ⇒ ((SymClosure R) on g)
-on-commutesʳ g = hmap id g id
+on⁻ : (g : B → A) → SymClosure (R on g) ⇒ ((SymClosure R) on g)
+on⁻ g = hmap id g id
 
 -- And: the 'usual' generalised variant of `map`
 gmap : (f : A → B) → R =[ f ]⇒ S → SymClosure R =[ f ]⇒ SymClosure S

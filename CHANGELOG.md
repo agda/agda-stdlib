@@ -500,8 +500,8 @@ Additions to existing modules
   ```
   hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
          ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
-  on-commutesˡ : ((SymClosure R) on g) ⇒ SymClosure (R on g)
-  on-commutesʳ : SymClosure (R on g) ⇒ ((SymClosure R) on g)
+  on⁺  : ((SymClosure R) on g) ⇒ SymClosure (R on g)
+  on⁻  : SymClosure (R on g) ⇒ ((SymClosure R) on g)
   ```
 
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`
