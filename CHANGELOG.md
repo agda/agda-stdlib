@@ -332,6 +332,8 @@ Additions to existing modules
   ≅%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≅%[ o ]_ ⇒ _≡%[ o ]_
   ≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m ≤ n → m % o ≡ n % o → m ≲%[ o ] n
   ≡[o]%⇒≅%[o] : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≅%[ o ]_
+
+  ≡%-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
   ```
 
 * In `Data.Nat.Logarithm`

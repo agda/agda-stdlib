@@ -20,6 +20,7 @@ open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; ∃)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (id; _$_; _∘_; _on_)
+open import Function.Definitions using (Injective)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Consequences using (wlog)
 open import Relation.Binary.Definitions using (Symmetric)
@@ -522,16 +523,11 @@ module _ .{{_ : NonZero o}} where
   ... | inj₂ n≤m = bwd (≡[o]%⇒≲%[o] (sym eq) n≤m)
 -}
 
-private
+-- Example application, originally proposed by Jacques Carette, taken from
+-- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
 
-  -- Example application, originally proposed by Jacques Carette, taken from
-  -- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
-
-  CarettesLemma : ∀ o .{{_ : NonZero o}} → Set _
-  CarettesLemma o = (_≡%[ o ]_ on suc) ⇒ _≡%[ o ]_
-
-  carettesLemma : .{{_ : NonZero o}} → CarettesLemma o
-  carettesLemma {o = o} = ≅%[o]⇒≡[o]% ∘ lemma-≅% ∘ ≡[o]%⇒≅%[o]
+  ≡%-suc-injective : Injective _≡%[ o ]_ _≡%[ o ]_ suc
+  ≡%-suc-injective = ≅%[o]⇒≡[o]% ∘ lemma-≅% ∘ ≡[o]%⇒≅%[o]
     where
     lemma-≲% : (_≲%[ o ]_ on suc) ⇒ _≲%[ o ]_
     lemma-≲% (k , eq) = k , cong pred eq
@@ -539,21 +535,23 @@ private
     lemma-≅% : (_≅%[ o ]_ on suc) ⇒ _≅%[ o ]_
     lemma-≅% = SymClosure.hmap suc id lemma-≲%
 
-  -- Alex Rice's optimised proof
-  carettesLemma′ : .{{_ : NonZero o}} → CarettesLemma o
-  carettesLemma′ {o = o@(suc d)} {x = m} {y = n} eq = begin-equality
-    m % o                   ≡⟨ lemma m ⟩
-    (suc m % o + d % o) % o ≡⟨ cong (λ a → (a + d % o) % o) eq ⟩
-    (suc n % o + d % o) % o ≡⟨ lemma n ⟨
-    n % o ∎
+private
+
+  -- Alex Rice's optimised direct proof of the above
+   ≡%[o]-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
+   ≡%[o]-suc-injective {o = so@(suc o)} {x = m} {y = n} eq = begin-equality
+    m % so                     ≡⟨ lemma m ⟩
+    (suc m % so + o % so) % so ≡⟨ cong (λ a → (a + o % so) % so) eq ⟩
+    (suc n % so + o % so) % so ≡⟨ lemma n ⟨
+    n % so ∎
     where
-    lemma : ∀ n → n % o ≡ (suc n % o + d % o) % o
+    lemma : ∀ n → n % so ≡ (suc n % so + o % so) % so
     lemma n = begin-equality
-      n % o                   ≡⟨ [m+n]%n≡m%n n o ⟨
-      (n + o) % o             ≡⟨⟩
-      (n + suc d) % o         ≡⟨ %-congˡ (+-suc n d) ⟩
-      (suc n + d) % o         ≡⟨ %-distribˡ-+ (suc n) d o ⟩
-      (suc n % o + d % o) % o ∎
+      n % so                     ≡⟨ [m+n]%n≡m%n n so ⟨
+      (n + so) % so              ≡⟨⟩
+      (n + suc o) % so           ≡⟨ %-congˡ (+-suc n o) ⟩
+      (suc n + o) % so           ≡⟨ %-distribˡ-+ (suc n) o so ⟩
+      (suc n % so + o % so) % so ∎
 
 
 ------------------------------------------------------------------------
