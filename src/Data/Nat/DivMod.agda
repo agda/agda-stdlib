@@ -21,6 +21,8 @@ open import Data.Product.Base using (_,_; ∃)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (id; _$_; _∘_; _on_)
 open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Consequences using (wlog)
+open import Relation.Binary.Definitions using (Symmetric)
 open import Relation.Binary.Construct.Closure.Symmetric
   as SymClosure using (SymClosure; fwd; bwd)
 open import Relation.Binary.PropositionalEquality.Core
@@ -495,8 +497,8 @@ module _ .{{_ : NonZero o}} where
   ≅%[o]⇒≡[o]% : _≅%[ o ]_ ⇒ _≡%[ o ]_
   ≅%[o]⇒≡[o]% = SymClosure.fold sym ≲%[o]⇒≡[o]%
 
-  ≡[o]%⇒≲%[o] : m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
-  ≡[o]%⇒≲%[o] {m = m} {n = n} eq m≤n = k , (begin-equality
+  ≡[o]%⇒≲%[o] : m ≤ n → m % o ≡ n % o → m ≲%[ o ] n
+  ≡[o]%⇒≲%[o] {m = m} {n = n} m≤n eq = k , (begin-equality
     n                           ≡⟨ m≡m%n+[m/n]*n n o ⟩
     n % o + n / o * o           ≡⟨ cong (_+ n / o * o) eq ⟨
     m % o + n / o * o           ≡⟨ cong ((m % o +_) ∘ (_* o)) (m+[n∸m]≡n (/-monoˡ-≤ o m≤n)) ⟨
@@ -507,10 +509,18 @@ module _ .{{_ : NonZero o}} where
     where k = n / o ∸ m / o
 
   ≡[o]%⇒≅%[o] : _≡%[ o ]_ ⇒ _≅%[ o ]_
-  ≡[o]%⇒≅%[o] {x = m} {y = n} eq with ≤-total m n
+  ≡[o]%⇒≅%[o] {x = m} {y = n} =
+    wlog ≤-total symQ (λ a b a≤b → fwd ∘ ≡[o]%⇒≲%[o] a≤b) m n
+    where
+    Q : Rel ℕ _
+    Q m n = m ≡%[ o ] n → m ≅%[ o ] n
+    symQ : Symmetric Q
+    symQ mQn = SymClosure.symmetric (_≲%[ o ]_) ∘ mQn ∘ sym
+{-
+  with ≤-total m n
   ... | inj₁ m≤n = fwd (≡[o]%⇒≲%[o] eq m≤n)
   ... | inj₂ n≤m = bwd (≡[o]%⇒≲%[o] (sym eq) n≤m)
-
+-}
 
 private
 
