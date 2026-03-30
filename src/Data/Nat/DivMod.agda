@@ -19,7 +19,7 @@ open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; ∃)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Function.Base using (_$_; _∘_; _on_)
+open import Function.Base using (id; _$_; _∘_; _on_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Construct.Closure.Symmetric
   as SymClosure using (SymClosure; fwd; bwd)
@@ -517,16 +517,17 @@ private
   -- Example application, a result sought by Jacques Carette, taken from
   -- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
 
-  ≲%[o]-suc⁻¹ : (_≲%[ o ]_ on suc) ⇒ _≲%[ o ]_
-  ≲%[o]-suc⁻¹ (k , eq) = k , cong pred eq
-
   CarettesLemma : ∀ o .{{_ : NonZero o}} → Set _
   CarettesLemma o = (_≡[ o ]%_ on suc) ⇒ _≡[ o ]%_
 
   carettesLemma : .{{_ : NonZero o}} → CarettesLemma o
-  carettesLemma eq with ≡[o]%⇒≡%[o] eq
-  ... | fwd m≲n = ≲%[o]⇒≡[o]% (≲%[o]-suc⁻¹ m≲n)
-  ... | bwd n≲m = sym (≲%[o]⇒≡[o]% (≲%[o]-suc⁻¹ n≲m))
+  carettesLemma {o = o} = ≡%[o]⇒≡[o]% ∘ lemma-≡% ∘ ≡[o]%⇒≡%[o]
+    where
+    lemma-≲% : (_≲%[ o ]_ on suc) ⇒ _≲%[ o ]_
+    lemma-≲% (k , eq) = k , cong pred eq
+
+    lemma-≡% : (_≡%[ o ]_ on suc) ⇒ _≡%[ o ]_
+    lemma-≡% = SymClosure.hmap suc id lemma-≲%
 
   -- Alex Rice's optimised proof
   carettesLemma′ : .{{_ : NonZero o}} → CarettesLemma o
