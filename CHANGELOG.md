@@ -496,6 +496,14 @@ Additions to existing modules
   ≤⁺-resp-≈⁺ : _≤_ Respects₂ _≈_ → _≤⁺_ Respects₂ _≈⁺_
   ```
 
+* In `Relation.Binary.Construct.Closure.Symmetric`:
+  ```
+  hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
+         ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
+  on-commutesˡ : ((SymClosure R) on g) ⇒ SymClosure (R on g)
+  on-commutesʳ : SymClosure (R on g) ⇒ ((SymClosure R) on g)
+  ```
+
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`
   ```agda
   irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
