@@ -466,11 +466,11 @@ m%n*o≡m*o%[n*o] m n o = begin-equality
     p-1 * n + n ≡⟨ +-comm (p-1 * n) n ⟩
     pn          ∎
 
--- Lemmas characterising `m ≡ n (mod o)`
+-- Lemmas characterising the relation `m ≡ n (mod o)`
 
--- Definition of an asymmetric version of that notion
--- NB. `Relation.Binary.Construct.Closure.Symmetric`
--- gives us the relation we're after.
+-- Definition of an alternative, *asymmetric* version of that notion
+-- whose `Relation.Binary.Construct.Closure.Symmetric` gives us an
+-- equivalent of the above relation.
 
 infix 4 _≲%[_]_ _≅%[_]_
 _≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
@@ -514,7 +514,7 @@ module _ .{{_ : NonZero o}} where
 
 private
 
-  -- Example application, a result sought by Jacques Carette, taken from
+  -- Example application, originally proposed by Jacques Carette, taken from
   -- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
 
   CarettesLemma : ∀ o .{{_ : NonZero o}} → Set _
