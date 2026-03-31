@@ -22,8 +22,6 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (id; _$_; _∘_; _on_)
 open import Function.Definitions using (Injective)
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Consequences using (wlog)
-open import Relation.Binary.Definitions using (Symmetric)
 open import Relation.Binary.Construct.Closure.Symmetric
   as SymClosure using (SymClosure; fwd; bwd)
 open import Relation.Binary.PropositionalEquality.Core
@@ -513,14 +511,6 @@ module _ .{{_ : NonZero o}} where
   ≡[o]%⇒≅%[o] {x = m} {y = n} eq with ≤-total m n
   ... | inj₁ m≤n = fwd (≡[o]%⇒≲%[o] m≤n eq)
   ... | inj₂ n≤m = bwd (≡[o]%⇒≲%[o] n≤m (sym eq))
-{-
-    = wlog ≤-total symQ (λ a b a≤b → fwd ∘ ≡[o]%⇒≲%[o] a≤b) m n eq
-    where
-    Q : Rel ℕ _
-    Q m n = m ≡%[ o ] n → m ≅%[ o ] n
-    symQ : Symmetric Q
-    symQ mQn = SymClosure.symmetric (_≲%[ o ]_) ∘ mQn ∘ sym
--}
 
 -- Example application, originally proposed by Jacques Carette, taken from
 -- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
