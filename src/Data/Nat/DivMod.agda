@@ -469,21 +469,21 @@ m%n*o≡m*o%[n*o] m n o = begin-equality
     p-1 * n + n ≡⟨ +-comm (p-1 * n) n ⟩
     pn          ∎
 
+------------------------------------------------------------------------
 -- Lemmas characterising the relation `m ≡ n (mod o)`
 
--- Definition of an alternative, *asymmetric* version of that notion
--- whose `Relation.Binary.Construct.Closure.Symmetric` gives us an
--- equivalent of the above relation.
+infix 4 _≡%[_]_
+_≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
+m ≡%[ o ] n = m % o ≡ n % o
+
+-- Definition of an alternative, *asymmetric* version of that relation
+-- whose `Relation.Binary.Construct.Closure.Symmetric` is equivalent.
 
 infix 4 _≲%[_]_ _≅%[_]_
 _≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
 
 m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
 m ≅%[ o ] n = SymClosure _≲%[ o ]_ m n
-
-infix 4 _≡%[_]_
-_≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
-m ≡%[ o ] n = m % o ≡ n % o
 
 -- Equivalence between _≅%[_]_ and _≡[_]%_
 
@@ -510,17 +510,16 @@ module _ .{{_ : NonZero o}} where
     where k = n / o ∸ m / o
 
   ≡[o]%⇒≅%[o] : _≡%[ o ]_ ⇒ _≅%[ o ]_
-  ≡[o]%⇒≅%[o] {x = m} {y = n} =
-    wlog ≤-total symQ (λ a b a≤b → fwd ∘ ≡[o]%⇒≲%[o] a≤b) m n
+  ≡[o]%⇒≅%[o] {x = m} {y = n} eq with ≤-total m n
+  ... | inj₁ m≤n = fwd (≡[o]%⇒≲%[o] m≤n eq)
+  ... | inj₂ n≤m = bwd (≡[o]%⇒≲%[o] n≤m (sym eq))
+{-
+    = wlog ≤-total symQ (λ a b a≤b → fwd ∘ ≡[o]%⇒≲%[o] a≤b) m n eq
     where
     Q : Rel ℕ _
     Q m n = m ≡%[ o ] n → m ≅%[ o ] n
     symQ : Symmetric Q
     symQ mQn = SymClosure.symmetric (_≲%[ o ]_) ∘ mQn ∘ sym
-{-
-  with ≤-total m n
-  ... | inj₁ m≤n = fwd (≡[o]%⇒≲%[o] eq m≤n)
-  ... | inj₂ n≤m = bwd (≡[o]%⇒≲%[o] (sym eq) n≤m)
 -}
 
 -- Example application, originally proposed by Jacques Carette, taken from
@@ -538,8 +537,8 @@ module _ .{{_ : NonZero o}} where
 private
 
   -- Alex Rice's optimised direct proof of the above
-   ≡%[o]-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
-   ≡%[o]-suc-injective {o = so@(suc o)} {x = m} {y = n} eq = begin-equality
+  ≡%[o]-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
+  ≡%[o]-suc-injective {o = so@(suc o)} {x = m} {y = n} eq = begin-equality
     m % so                     ≡⟨ lemma m ⟩
     (suc m % so + o % so) % so ≡⟨ cong (λ a → (a + o % so) % so) eq ⟩
     (suc n % so + o % so) % so ≡⟨ lemma n ⟨
