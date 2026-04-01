@@ -313,6 +313,16 @@ Additions to existing modules
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
   ```
 
+* In `Data.List.Relation.Unary.First`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+  ```
+
+* In `Data.Maybe.Relation.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+  ```
+
 * In `Data.Nat.Divisibility`:
   ```agda
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
@@ -459,6 +469,11 @@ Additions to existing modules
   padRight-updateAt : .(m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
                       updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
                       padRight m≤n x (updateAt xs i f)
+  ```
+
+* In `Data.Vec.Relation.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
   ```
 
 * In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
