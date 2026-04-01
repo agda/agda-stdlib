@@ -66,7 +66,7 @@ lookup : Any P xs → A
 lookup {xs = xs} p = Vec.lookup xs (index p)
 
 -- If any element satisfies P, then P is satisfied.
-satisfied : Any P xs → ∃ P
+satisfied : Any P xs → Satisfiable P
 satisfied (here px)   = _ , px
 satisfied (there pxs) = satisfied pxs
 
