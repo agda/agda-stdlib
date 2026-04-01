@@ -80,7 +80,7 @@ lookupKey = key ∘′ lookup
 
 -- If any element satisfies P, then P is satisfied.
 
-satisfied : Any P t → ∃ P
+satisfied : Any P t → Satisfiable P
 satisfied (here  p) = -, p
 satisfied (left  p) = satisfied p
 satisfied (right p) = satisfied p
@@ -109,8 +109,26 @@ any? P? (leaf _)          = no λ ()
 any? P? (node kv l r bal) = map′ fromSum toSum
   (P? kv ⊎? any? P? l ⊎? any? P? r)
 
-satisfiable : ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
-              Satisfiable (P ∘ (k ,_)) →
-              Satisfiable {A = Tree V l u 1} (Any P)
-satisfiable {k = k} lb ub sat = node (k , proj₁ sat) (leaf lb) (leaf ub) ∼0
-                              , here (proj₂ sat)
+satisfiable⁺ : ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
+               Satisfiable (P ∘ (k ,_)) →
+               Satisfiable {A = Tree V l u 1} (Any P)
+satisfiable⁺ {k = k} lb ub sat = node (k , proj₁ sat) (leaf lb) (leaf ub) ∼0
+                               , here (proj₂ sat)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+satisfiable = satisfiable⁺
+{-# WARNING_ON_USAGE satisfiable
+"Warning: satisfiable was deprecated in v2.4.
+Please use satisfiable⁺ instead. Moreover,
+the name satisfied will be renamed in v3.0
+to satisfiable, so users should refactor
+as soon as they can."
+#-}

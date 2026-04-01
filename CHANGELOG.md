@@ -397,6 +397,16 @@ Additions to existing modules
   showAtPrecision : ℕ → ℚᵘ → String
   ```
 
+* In `Data.Tree.AVL.Relation.Indexed.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+  ```
+
+* In `Data.Tree.AVL.Relation.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
