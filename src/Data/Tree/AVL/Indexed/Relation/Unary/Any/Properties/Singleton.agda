@@ -17,19 +17,21 @@ open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open StrictTotalOrder sto renaming (Carrier to Key)
+
 
 private
   variable
     v p : Level
+    V : Value v
+    P : Pred (K& V) p
     l u : Key⁺
 
-module _ {V : Value v} {P : Pred (K& V) p}
-         (k : Key) (v : Value.family V k) (l<k<u : l < k < u)
-         where
 
-  singleton⁺ : P (k , v) → Any P (singleton k v l<k<u)
+module _ {V : Value v} (open Value V renaming (family to Val))
+         k (v : Val k) (l<k<u : l < k < u) where
+
+  singleton⁺ : P (k , v) → Any {V = V} P (singleton k v l<k<u)
   singleton⁺ Pkv = here Pkv
 
-  singleton⁻ : Any P (singleton k v l<k<u) → P (k , v)
+  singleton⁻ : Any {V = V} P (singleton k v l<k<u) → P (k , v)
   singleton⁻ (here Pkv) = Pkv
