@@ -140,6 +140,6 @@ module _ (k : Key) where
 
   delete-key⁻ : (t : Tree V l u h) (seg : l < k < u) →
                 (p : Any P (proj₂ (delete k t seg))) →
-                Any.lookupKey p ≉ k
+                lookupKey p ≉ k
   delete-key⁻ t seg p kp≈k =
     delete-key-∈⁻ k t seg (lookup-rebuild p Eq.refl) kp≈k
