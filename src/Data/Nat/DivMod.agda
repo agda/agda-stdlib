@@ -18,7 +18,7 @@ open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; ∃)
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function.Base using (id; _$_; _∘_; _on_)
 open import Function.Definitions using (Injective)
 open import Relation.Binary.Core using (Rel; _⇒_)
@@ -496,8 +496,8 @@ module _ .{{_ : NonZero o}} where
   ≅%[o]⇒≡[o]% : _≅%[ o ]_ ⇒ _≡%[ o ]_
   ≅%[o]⇒≡[o]% = SymClosure.fold sym ≲%[o]⇒≡[o]%
 
-  ≡[o]%⇒≲%[o] : m ≤ n → m % o ≡ n % o → m ≲%[ o ] n
-  ≡[o]%⇒≲%[o] {m = m} {n = n} m≤n eq = k , (begin-equality
+  ≡[o]%⇒≲%[o] : m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
+  ≡[o]%⇒≲%[o] {m = m} {n = n} eq m≤n = k , (begin-equality
     n                           ≡⟨ m≡m%n+[m/n]*n n o ⟩
     n % o + n / o * o           ≡⟨ cong (_+ n / o * o) eq ⟨
     m % o + n / o * o           ≡⟨ cong ((m % o +_) ∘ (_* o)) (m+[n∸m]≡n (/-monoˡ-≤ o m≤n)) ⟨
@@ -508,9 +508,8 @@ module _ .{{_ : NonZero o}} where
     where k = n / o ∸ m / o
 
   ≡[o]%⇒≅%[o] : _≡%[ o ]_ ⇒ _≅%[ o ]_
-  ≡[o]%⇒≅%[o] {x = m} {y = n} eq with ≤-total m n
-  ... | inj₁ m≤n = fwd (≡[o]%⇒≲%[o] m≤n eq)
-  ... | inj₂ n≤m = bwd (≡[o]%⇒≲%[o] n≤m (sym eq))
+  ≡[o]%⇒≅%[o] {x = m} {y = n} eq =
+    Sum.[ fwd ∘ ≡[o]%⇒≲%[o] eq , bwd ∘ ≡[o]%⇒≲%[o] (sym eq) ]′ (≤-total m n)
 
 -- Example application, originally proposed by Jacques Carette, taken from
 -- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
