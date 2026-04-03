@@ -27,10 +27,13 @@ open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
   using (lookup-bounded; lookup-result; lookup-rebuild)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join sto
   using (join-left⁺; join-right⁺; join⁻)
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinʳ⁻-here⁺; joinʳ⁻-left⁺; joinʳ⁻-right⁺; joinˡ⁻-here⁺;
          joinˡ⁻-left⁺; joinˡ⁻-right⁺; joinʳ⁻⁻; joinˡ⁻⁻)
-open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
+open StrictTotalOrder sto
+  using (_<_; _≈_; module Eq; compare)
+  renaming (Carrier to Key; trans to <-trans)
+open Eq using (_≉_; sym; trans)
 
 open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
@@ -44,10 +47,11 @@ private
     h : ℕ
     P : Pred (K& V) p
 
+
 module _ (k : Key) where
 
   delete⁺ : (t : Tree V l u h) (seg : l < k < u) →
-            (p : Any P t) → lookupKey p ≉ k →
+            (p : Any P t) → k # p →
             Any P (proj₂ (delete k t seg))
   delete⁺ (node (k′ , _) _ _ bal) _ (here pk) p≉k
     with compare k′ k
@@ -100,11 +104,11 @@ module _ (k : Key) where
     with joinʳ⁻⁻ _ _ _ bal p
   ... | inj₁ kp≈k′     = contradiction (trans (sym kp≈k′) kp≈k) k′≉k
   ... | inj₂ (inj₁ pl) = begin-contradiction
-    [ k  ]                ≈⟨ [ sym kp≈k ]ᴱ ⟩
-    [ kp ]                ≈⟨ [ lookup-result pl ]ᴱ ⟩
-    [ Any.lookupKey pl ]  <⟨ proj₂ (lookup-bounded pl) ⟩
-    [ k′ ]                <⟨ [ k′<k ]ᴿ ⟩
-    [ k  ]                ∎
+    [ k  ]            ≈⟨ [ kp≈k ]ᴱ ⟨
+    [ kp ]            ≈⟨ [ lookup-result pl ]ᴱ ⟩
+    [ lookupKey pl ]  <⟨ proj₂ (lookup-bounded pl) ⟩
+    [ k′ ]            <⟨ [ k′<k ]ᴿ ⟩
+    [ k  ]            ∎
   ... | inj₂ (inj₂ pr) = delete-key-∈⁻ k′u ([ k′<k ]ᴿ , k<u) pr kp≈k
   delete-key-∈⁻ (node (k′ , _) lk′ _ bal) (l<k , _) {kp} p kp≈k
     | tri> _ k′≉k k′>k
@@ -112,27 +116,27 @@ module _ (k : Key) where
   ... | inj₁ kp≈k′     = contradiction (trans (sym kp≈k′) kp≈k) k′≉k
   ... | inj₂ (inj₁ pl) = delete-key-∈⁻ lk′ (l<k , [ k′>k ]ᴿ) pl kp≈k
   ... | inj₂ (inj₂ pr) = begin-contradiction
-    [ k  ]                <⟨ [ k′>k ]ᴿ ⟩
-    [ k′ ]                <⟨ proj₁ (lookup-bounded pr) ⟩
-    [ Any.lookupKey pr ]  ≈⟨ [ sym (lookup-result pr) ]ᴱ ⟩
-    [ kp ]                ≈⟨ [ kp≈k ]ᴱ ⟩
-    [ k  ]                ∎
+    [ k  ]            <⟨ [ k′>k ]ᴿ ⟩
+    [ k′ ]            <⟨ proj₁ (lookup-bounded pr) ⟩
+    [ lookupKey pr ]  ≈⟨ [ lookup-result pr ]ᴱ ⟨
+    [ kp ]            ≈⟨ [ kp≈k ]ᴱ ⟩
+    [ k  ]            ∎
   delete-key-∈⁻ (node (k′ , _) _ k′u bal) _ {kp} p kp≈k
     | tri≈ k′≮k _ k′≯k
     with join⁻ _ k′u bal p
   ... | inj₁ p₁ = contradiction
     (begin-strict
-      [ k  ]                ≈⟨ [ sym kp≈k ]ᴱ ⟩
-      [ kp ]                ≈⟨ [ lookup-result p₁ ]ᴱ ⟩
-      [ Any.lookupKey p₁ ]  <⟨ proj₂ (lookup-bounded p₁) ⟩
-      [ k′ ]                ∎)
+      [ k  ]            ≈⟨ [ kp≈k ]ᴱ ⟨
+      [ kp ]            ≈⟨ [ lookup-result p₁ ]ᴱ ⟩
+      [ lookupKey p₁ ]  <⟨ proj₂ (lookup-bounded p₁) ⟩
+      [ k′ ]            ∎)
     (k′≯k ∘′ [<]-injective)
   ... | inj₂ p₂ = contradiction
     (begin-strict
-      [ k′  ]               <⟨ proj₁ (lookup-bounded p₂) ⟩
-      [ Any.lookupKey p₂ ]  ≈⟨ [ sym (lookup-result p₂) ]ᴱ ⟩
-      [ kp ]                ≈⟨ [ kp≈k ]ᴱ ⟩
-      [ k ]                 ∎)
+      [ k′  ]           <⟨ proj₁ (lookup-bounded p₂) ⟩
+      [ lookupKey p₂ ]  ≈⟨ [ lookup-result p₂ ]ᴱ ⟨
+      [ kp ]            ≈⟨ [ kp≈k ]ᴱ ⟩
+      [ k ]             ∎)
     (k′≮k ∘′ [<]-injective)
 
 
@@ -140,6 +144,6 @@ module _ (k : Key) where
 
   delete-key⁻ : (t : Tree V l u h) (seg : l < k < u) →
                 (p : Any P (proj₂ (delete k t seg))) →
-                lookupKey p ≉ k
+                k # p
   delete-key⁻ t seg p kp≈k =
     delete-key-∈⁻ k t seg (lookup-rebuild p Eq.refl) kp≈k
