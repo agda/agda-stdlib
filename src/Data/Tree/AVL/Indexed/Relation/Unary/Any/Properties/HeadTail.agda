@@ -22,7 +22,7 @@ open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinˡ⁻-here⁺; joinˡ⁻-left⁺; joinˡ⁻-right⁺; joinˡ⁻⁻)
 
 private
