@@ -73,10 +73,10 @@ lookup-rebuild-accum p q = lookup-rebuild p (q , lookup-result p)
 
 module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
 
-  lookup⁺ : (t : Tree V l u h) (k : Key) (seg : l < k < u) →
+  lookup⁺ : (t : Tree V l u h) (k : Key) (l<k<u : l < k < u) →
             (p : Any P t) →
             k # p
-            ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (respects p≈k (value (lookup p)))
+            ⊎ ∃[ p≈k ] AVL.lookup t k l<k<u ≡ just (respects p≈k (value (lookup p)))
   lookup⁺ (node (k′ , v′) l r bal) k (l<k , k<u) p
       with compare k′ k | p
   ... | tri< k′<k _ _ | right p = lookup⁺ r k ([ k′<k ]ᴿ , k<u) p
