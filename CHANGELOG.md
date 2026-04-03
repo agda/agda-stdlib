@@ -435,6 +435,13 @@ Additions to existing modules
   pattern node⁰ˡ k₁ k₂ t₁ t₂ t₃ = node k₁ (node k₂ t₁ t₂ ∼0) t₃ ∼0
   ```
 
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any`:
+  ```agda
+  infix 5 _#[_]_ _#_
+  _#[_]_ : (k : Key) (P : Pred (K& V) p) → Pred (Any P t) ℓ₁
+  _#_ : Key → Pred (Any P t) ℓ₁
+  ```
+
 * In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast`:
   ```agda
   castʳ⁺ : Any P lm → Any P (castʳ lm m<u)
