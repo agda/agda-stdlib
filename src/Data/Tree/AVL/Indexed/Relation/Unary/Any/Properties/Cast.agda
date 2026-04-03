@@ -26,16 +26,15 @@ private
     P : Pred (K& V) p
     l m u : Key⁺
     h : ℕ
+    lm : Tree V l m h
+    m<u : m <⁺ u
 
-
-castʳ⁺ : ∀ {lm : Tree V l m h} {m<u : m <⁺ u} →
-         Any P lm → Any P (castʳ lm m<u)
+castʳ⁺ : Any P lm → Any P (castʳ lm m<u)
 castʳ⁺ (here p)  = here p
 castʳ⁺ (left p)  = left p
 castʳ⁺ (right p) = right (castʳ⁺ p)
 
-castʳ⁻ : ∀ {lm : Tree V l m h} {m<u : m <⁺ u} →
-         Any P (castʳ lm m<u) → Any P lm
+castʳ⁻ : Any P (castʳ lm m<u) → Any P lm
 castʳ⁻ {lm = node _ _ _ _} (here p)  = here p
 castʳ⁻ {lm = node _ _ _ _} (left p)  = left p
 castʳ⁻ {lm = node _ _ _ _} (right p) = right (castʳ⁻ p)
