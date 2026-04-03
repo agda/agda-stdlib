@@ -29,7 +29,7 @@ open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open StrictTotalOrder sto
   using (_<_; module Eq; compare; irrefl)
   renaming (Carrier to Key; trans to <-trans)
-open Eq using (_≉_; sym; trans)
+open Eq using (sym; trans)
 
 open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
@@ -75,7 +75,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
   lookup⁺ : (t : Tree V l u h) (k : Key) (seg : l < k < u) →
             (p : Any P t) →
-            lookupKey p ≉ k
+            k # p
             ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (respects p≈k (value (lookup p)))
   lookup⁺ (node (k′ , v′) l r bal) k (l<k , k<u) p
       with compare k′ k | p
