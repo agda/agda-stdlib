@@ -29,7 +29,10 @@ open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinˡ⁺-left⁺; joinʳ⁺-right⁺; joinˡ⁺-here⁺; joinʳ⁺-here⁺;
          joinʳ⁺-left⁺; joinˡ⁺-right⁺; joinˡ⁺⁻; joinʳ⁺⁻)
-open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
+open StrictTotalOrder sto
+  using (_<_; _≈_; module Eq; compare; irrefl)
+  renaming (Carrier to Key; trans to <-trans)
+open Eq using (_≉_; sym; trans)
 
 open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
@@ -41,20 +44,16 @@ private
     v p : Level
     V : Value v
     l u : Key⁺
-    n : ℕ
+    h : ℕ
     P : Pred (K& V) p
 
-module _ {V : Value v} where
-
-  private
-    Val  = Value.family V
-    Val≈ = Value.respects V
+module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
     open <-Reasoning AVL.strictPartialOrder
 
-    insertWith-nothing : (t : Tree V l u n) (seg : l < k < u) →
+    insertWith-nothing : (t : Tree V l u h) (seg : l < k < u) →
                          P (k , f nothing) →
                          ¬ (Any ((k ≈_) ∘′ key) t) →
                          Any P (proj₂ (insertWith k f t seg))
@@ -73,8 +72,8 @@ module _ {V : Value v} where
       ku′  = insertWith k f ku seg′
       ih   = insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
 
-    insertWith-just : (t : Tree V l u n) (seg : l < k < u) →
-                      (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , Val≈ eq (f (just (Val≈ (sym eq) v))))) →
+    insertWith-just : (t : Tree V l u h) (seg : l < k < u) →
+                      (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , respects eq (f (just (respects (sym eq) v))))) →
                       Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t seg))
     insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
       with p | compare k k′
@@ -125,19 +124,19 @@ module _ {V : Value v} where
       [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
       [ k  ] ∎
 
-  module _ (k : Key) (v : Val k) (t : Tree V l u n) (l<k<u : l < k < u) where
+  module _ (k : Key) (v : Val k) (t : Tree V l u h) (l<k<u : l < k < u) where
 
     insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
                      Any P (proj₂ (insert k v t l<k<u))
     insert-nothing = insertWith-nothing k (F.const v) t l<k<u
 
-    insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , Val≈ eq v)) →
+    insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , respects eq v)) →
                   Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t l<k<u))
     insert-just pr = insertWith-just k (F.const v) t l<k<u (λ k′ _ eq → pr k′ eq)
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
-    insertWith⁺ : (t : Tree V l u n) (l<k<u : l < k < u) →
+    insertWith⁺ : (t : Tree V l u h) (l<k<u : l < k < u) →
                   (p : Any P t) → k ≉ lookupKey p →
                   Any P (proj₂ (insertWith k f t l<k<u))
     insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
@@ -164,18 +163,18 @@ module _ {V : Value v} where
                               ih = insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
                           in joinʳ⁺-right⁺ kv l r′ bal ih
 
-  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (l<k<u : l < k < u) →
+  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u h) (l<k<u : l < k < u) →
             (p : Any P t) → k ≉ lookupKey p →
             Any P (proj₂ (insert k v t l<k<u))
   insert⁺ k v = insertWith⁺ k (F.const v)
 
   module _
     {P : Pred (K& V) p}
-    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , Val≈ k≈k′ v) → P (k , v))
+    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , respects k≈k′ v) → P (k , v))
     (k : Key) (v : Val k)
     where
 
-    insert⁻ : (t : Tree V l u n) (l<k<u : l < k < u) →
+    insert⁻ : (t : Tree V l u h) (l<k<u : l < k < u) →
               Any P (proj₂ (insert k v t l<k<u)) →
               P (k , v) ⊎ Any (λ{ (k′ , v′) → k ≉ k′ × P (k′ , v′)}) t
     insert⁻ (leaf l<u) l<k<u (here p) = inj₁ p
