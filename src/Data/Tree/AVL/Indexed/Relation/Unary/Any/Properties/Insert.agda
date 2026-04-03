@@ -47,48 +47,49 @@ private
     h : ℕ
     P : Pred (K& V) p
 
+
 module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
     open <-Reasoning AVL.strictPartialOrder
 
-    insertWith-nothing : (t : Tree V l u h) (seg : l < k < u) →
+    insertWith-nothing : (t : Tree V l u h) (l<k<u : l < k < u) →
                          P (k , f nothing) →
                          ¬ (Any ((k ≈_) ∘′ key) t) →
-                         Any P (proj₂ (insertWith k f t seg))
-    insertWith-nothing (leaf l<u)                   seg         pr ¬p = here pr
+                         Any P (proj₂ (insertWith k f t l<k<u))
+    insertWith-nothing (leaf l<u)                   l<k<u         pr ¬p = here pr
     insertWith-nothing (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr ¬p
       with compare k k′
     ... | tri≈ _ k≈k′ _ = contradiction (here k≈k′) ¬p
     ... | tri< k<k′ _ _ = joinˡ⁺-left⁺ kv lk′ ku bal ih
       where
-      seg′ = l<k , [ k<k′ ]ᴿ
-      lk′  = insertWith k f lk seg′
-      ih   = insertWith-nothing lk seg′ pr (λ p → ¬p (left p))
+      l<k<u′ = l<k , [ k<k′ ]ᴿ
+      lk′  = insertWith k f lk l<k<u′
+      ih   = insertWith-nothing lk l<k<u′ pr (λ p → ¬p (left p))
     ... | tri> _ _ k>k′ = joinʳ⁺-right⁺ kv lk ku′ bal ih
       where
-      seg′ = [ k>k′ ]ᴿ , k<u
-      ku′  = insertWith k f ku seg′
-      ih   = insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
+      l<k<u′ = [ k>k′ ]ᴿ , k<u
+      ku′  = insertWith k f ku l<k<u′
+      ih   = insertWith-nothing ku l<k<u′ pr (λ p → ¬p (right p))
 
-    insertWith-just : (t : Tree V l u h) (seg : l < k < u) →
+    insertWith-just : (t : Tree V l u h) (l<k<u : l < k < u) →
                       (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , respects eq (f (just (respects (sym eq) v))))) →
-                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t seg))
+                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t l<k<u))
     insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
       with p | compare k k′
     -- happy paths
     ... | here _   | tri≈ _ k≈k′ _ = here (pr k′ v k≈k′)
     ... | left lp  | tri< k<k′ _ _ =
-      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just lk seg′ pr lp)
+      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just lk l<k<u′ pr lp)
       where
-      seg′ = l<k , [ k<k′ ]ᴿ
-      lk′  = insertWith k f lk seg′
+      l<k<u′ = l<k , [ k<k′ ]ᴿ
+      lk′  = insertWith k f lk l<k<u′
     ... | right rp | tri> _ _ k>k′ =
-      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just ku seg′ pr rp)
+      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just ku l<k<u′ pr rp)
       where
-      seg′ = [ k>k′ ]ᴿ , k<u
-      ku′  = insertWith k f ku seg′
+      l<k<u′ = [ k>k′ ]ᴿ , k<u
+      ku′  = insertWith k f ku l<k<u′
 
     -- impossible cases
     ... | here eq  | tri< k<k′ _ _ = begin-contradiction
@@ -132,7 +133,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
     insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , respects eq v)) →
                   Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t l<k<u))
-    insert-just pr = insertWith-just k (F.const v) t l<k<u (λ k′ _ eq → pr k′ eq)
+    insert-just pr = insertWith-just k (F.const v) t l<k<u (λ k′ _ → pr k′)
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
