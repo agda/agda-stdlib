@@ -192,6 +192,7 @@ New modules
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
   ```
 
@@ -439,7 +440,7 @@ Additions to existing modules
   ```agda
   infix 5 _#[_]_ _#_
   _#[_]_ : (k : Key) (P : Pred (K& V) p) → Pred (Any P t) ℓ₁
-  _#_ : Key → Pred (Any P t) ℓ₁
+  _#_    : Key → Pred (Any P t) ℓ₁
   ```
 
 * In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast`:
@@ -477,7 +478,7 @@ Additions to existing modules
                    Any P t⁻ → Any P t
   ```
 
-* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join`:
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas`:
   ```
   joinˡ⁻-here⁺ : (kv : K& V) →
                  (l : Tree⁻ V l [ kv .key ] hˡ) →
