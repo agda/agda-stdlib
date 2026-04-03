@@ -26,7 +26,7 @@ open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
   using (lookup-result; lookup-bounded; lookup-rebuild-accum)
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinˡ⁺-left⁺; joinʳ⁺-right⁺; joinˡ⁺-here⁺; joinʳ⁺-here⁺;
          joinʳ⁺-left⁺; joinˡ⁺-right⁺; joinˡ⁺⁻; joinʳ⁺⁻)
 open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
@@ -125,20 +125,21 @@ module _ {V : Value v} where
       [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
       [ k  ] ∎
 
-  module _ (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) where
+  module _ (k : Key) (v : Val k) (t : Tree V l u n) (l<k<u : l < k < u) where
 
-    insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) → Any P (proj₂ (insert k v t seg))
-    insert-nothing = insertWith-nothing k (F.const v) t seg
+    insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
+                     Any P (proj₂ (insert k v t l<k<u))
+    insert-nothing = insertWith-nothing k (F.const v) t l<k<u
 
     insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , Val≈ eq v)) →
-                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t seg))
-    insert-just pr = insertWith-just k (F.const v) t seg (λ k′ _ eq → pr k′ eq)
+                  Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t l<k<u))
+    insert-just pr = insertWith-just k (F.const v) t l<k<u (λ k′ _ eq → pr k′ eq)
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
-    insertWith⁺ : (t : Tree V l u n) (seg : l < k < u) →
+    insertWith⁺ : (t : Tree V l u n) (l<k<u : l < k < u) →
                   (p : Any P t) → k ≉ lookupKey p →
-                  Any P (proj₂ (insertWith k f t seg))
+                  Any P (proj₂ (insertWith k f t l<k<u))
     insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
       with compare k k′
     ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
@@ -163,9 +164,9 @@ module _ {V : Value v} where
                               ih = insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
                           in joinʳ⁺-right⁺ kv l r′ bal ih
 
-  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) →
+  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (l<k<u : l < k < u) →
             (p : Any P t) → k ≉ lookupKey p →
-            Any P (proj₂ (insert k v t seg))
+            Any P (proj₂ (insert k v t l<k<u))
   insert⁺ k v = insertWith⁺ k (F.const v)
 
   module _
@@ -174,10 +175,10 @@ module _ {V : Value v} where
     (k : Key) (v : Val k)
     where
 
-    insert⁻ : (t : Tree V l u n) (seg : l < k < u) →
-              Any P (proj₂ (insert k v t seg)) →
+    insert⁻ : (t : Tree V l u n) (l<k<u : l < k < u) →
+              Any P (proj₂ (insert k v t l<k<u)) →
               P (k , v) ⊎ Any (λ{ (k′ , v′) → k ≉ k′ × P (k′ , v′)}) t
-    insert⁻ (leaf l<u) seg (here p) = inj₁ p
+    insert⁻ (leaf l<u) l<k<u (here p) = inj₁ p
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p with compare k k′
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri< k<k′ k≉k′ _
         with joinˡ⁺⁻ kv′ (insert k v l (l<k , [ k<k′ ]ᴿ)) r bal p
