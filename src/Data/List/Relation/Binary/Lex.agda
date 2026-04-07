@@ -16,7 +16,7 @@ open import Data.List.Relation.Binary.Pointwise.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_; flip; id)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; yes; no; _×?_; _⊎?_)
@@ -25,6 +25,14 @@ open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Symmetric; Transitive; Irreflexive; Asymmetric; Antisymmetric
         ; Decidable; _Respects₂_; _Respects_)
+
+private
+  variable
+    a ℓ₁ ℓ₂ : Level
+    A : Set a
+    x y : A
+    xs ys : List A
+
 
 
 ------------------------------------------------------------------------
@@ -35,20 +43,17 @@ open import Data.List.Relation.Binary.Lex.Core public
 ------------------------------------------------------------------------
 -- Properties
 
-module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
-         {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
+module _ {A : Set a} {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
   private
     _≋_ = Pointwise _≈_
     _<_ = Lex P _≈_ _≺_
 
-  ¬≤-this : ∀ {x y xs ys} → ¬ (x ≈ y) → ¬ (x ≺ y) →
-            ¬ (x ∷ xs) < (y ∷ ys)
+  ¬≤-this : ¬ (x ≈ y) → ¬ (x ≺ y) → ¬ (x ∷ xs) < (y ∷ ys)
   ¬≤-this x≉y x≮y (this x≺y)       = x≮y x≺y
   ¬≤-this x≉y x≮y (next x≈y xs<ys) = x≉y x≈y
 
-  ¬≤-next : ∀ {x y xs ys} → ¬ x ≺ y → ¬ xs < ys →
-            ¬ (x ∷ xs) < (y ∷ ys)
+  ¬≤-next : ¬ x ≺ y → ¬ xs < ys → ¬ (x ∷ xs) < (y ∷ ys)
   ¬≤-next x≮y xs≮ys (this x≺y)     = x≮y x≺y
   ¬≤-next x≮y xs≮ys (next _ xs<ys) = xs≮ys xs<ys
 
@@ -63,7 +68,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     as (next x≈y xs<ys) (this y≺x)       = contradiction y≺x (ir (sym x≈y))
     as (next x≈y xs<ys) (next y≈x ys<xs) = x≈y ∷ as xs<ys ys<xs
 
-  toSum : ∀ {x y xs ys} → (x ∷ xs) < (y ∷ ys) → (x ≺ y ⊎ (x ≈ y × xs < ys))
+  toSum : (x ∷ xs) < (y ∷ ys) → x ≺ y ⊎ (x ≈ y × xs < ys)
   toSum (this x≺y) = inj₁ x≺y
   toSum (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
 
@@ -87,14 +92,14 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
   respects₂ eq (resp₁ , resp₂) = resp¹ , resp²
     where
     open IsEquivalence eq using (sym; trans)
-    resp¹ : ∀ {xs} → Lex P _≈_ _≺_ xs Respects _≋_
+    resp¹ : Lex P _≈_ _≺_ xs Respects _≋_
     resp¹ []            xs<[]            = xs<[]
     resp¹ (_   ∷ _)     halt             = halt
     resp¹ (x≈y ∷ _)     (this z≺x)       = this (resp₁ x≈y z≺x)
     resp¹ (x≈y ∷ xs≋ys) (next z≈x zs<xs) =
       next (trans z≈x x≈y) (resp¹ xs≋ys zs<xs)
 
-    resp² : ∀ {ys} → flip (Lex P _≈_ _≺_) ys Respects _≋_
+    resp² : flip (Lex P _≈_ _≺_) ys Respects _≋_
     resp² []            []<ys            = []<ys
     resp² (x≈z ∷ _)     (this x≺y)       = this (resp₂ x≈z x≺y)
     resp² (x≈z ∷ xs≋zs) (next x≈y xs<ys) =
@@ -102,10 +107,10 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
 
 
   []<[]-⇔ : P ⇔ [] < []
-  []<[]-⇔ = mk⇔ base (λ { (base p) → p })
+  []<[]-⇔ = mk⇔ base λ { (base p) → p }
 
 
-  ∷<∷-⇔ : ∀ {x y xs ys} → (x ≺ y ⊎ (x ≈ y × xs < ys)) ⇔ (x ∷ xs) < (y ∷ ys)
+  ∷<∷-⇔ : (x ≺ y ⊎ (x ≈ y × xs < ys)) ⇔ (x ∷ xs) < (y ∷ ys)
   ∷<∷-⇔ = mk⇔ [ this , uncurry next ] toSum
 
   module _ (dec-P : Dec P) (dec-≈ : Decidable _≈_) (dec-≺ : Decidable _≺_)

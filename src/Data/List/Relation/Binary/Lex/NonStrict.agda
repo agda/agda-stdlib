@@ -19,7 +19,7 @@ open import Function.Base using (const; id)
 import Data.List.Relation.Binary.Lex.Strict as Strict
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
@@ -86,8 +86,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     <-compare sym _≟_ antisym tot =
       Strict.<-compare sym (Conv.<-trichotomous _ _ sym _≟_ antisym tot)
 
-    <-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _<_
-    <-decidable _≟_ _≼?_ =
+    _<?_ : Decidable _≈_ → Decidable _≼_ → Decidable _<_
+    _<?_ _≟_ _≼?_ =
       Core.decidable (no id) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
 
     <-isStrictPartialOrder : IsPartialOrder _≈_ _≼_ →
@@ -149,9 +149,9 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ≤-resp₂ : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ → _≤_ Respects₂ _≋_
     ≤-resp₂ eq resp = Core.respects₂ eq (Conv.<-resp-≈ _ _ eq resp)
 
-    ≤-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _≤_
-    ≤-decidable _≟_ _≼?_ =
-      Core.decidable (yes tt) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
+    _≤?_ : Decidable _≈_ → Decidable _≼_ → Decidable _≤_
+    _≤?_ _≟_ _≼?_ =
+      Core.decidable (yes _) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
 
     ≤-total : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ →
               Total _≼_ → Total _≤_
@@ -197,3 +197,24 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 ≤-decTotalOrder dtot = record
   { isDecTotalOrder = ≤-isDecTotalOrder isDecTotalOrder
   } where open DecTotalOrder dtot
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+<-decidable = _<?_
+{-# WARNING_ON_USAGE <-decidable
+"Warning: <-decidable was deprecated in v2.4.
+Please use _<?_ instead."
+#-}
+
+≤-decidable = _≤?_
+{-# WARNING_ON_USAGE ≤-decidable
+"Warning: ≤-decidable was deprecated in v2.4.
+Please use _≤?_ instead."
+#-}

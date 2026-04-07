@@ -104,6 +104,28 @@ Deprecated names
   witness   ↦   satisfiable
   ```
 
+* In `Data.List.Relation.Binary.Lex.NonStrict`:
+  ```agda
+  <-decidable    ↦   _<?_
+  ≤-decidable    ↦   _≤?_
+  ```
+
+* In `Data.List.Relation.Binary.Lex.Strict`:
+  ```agda
+  <-decidable    ↦   _<?_
+  ≤-decidable    ↦   _≤?_
+  ```
+
+* In `Data.Product.Relation.Binary.Lex.NonStrict`:
+  ```agda
+  ×-decidable    ↦   ≤ₗₑₓ?
+  ```
+
+* In `Data.Product.Relation.Binary.Lex.Strict`:
+  ```agda
+  ×-decidable    ↦   <ₗₑₓ?
+ ```
+
 * In `Data.List.Relation.Unary.Any`:
   ```agda
   satisfiable    ↦  satisfiable⁺
@@ -117,6 +139,18 @@ Deprecated names
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
+  ```
+
+* In `Data.Vec.Relation.Binary.Lex.NonStrict`:
+  ```agda
+  <-decidable    ↦   _<?_
+  ≤-decidable    ↦   _≤?_
+  ```
+
+* In `Data.Vec.Relation.Binary.Lex.Strict`:
+  ```agda
+  <-decidable    ↦   _<?_
+  ≤-decidable    ↦   _≤?_
   ```
 
 * In `Relation.Binary.Construct.Intersection`:

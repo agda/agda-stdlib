@@ -103,8 +103,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
   <-cmp ≈-sym _≟_ ≼-antisym ≼-total = Strict.<-cmp ≈-sym
     (Conv.<-trichotomous _ _ ≈-sym _≟_ ≼-antisym ≼-total)
 
-  <-dec : Decidable _≈_ → Decidable _≼_ → ∀ {m n} → Decidable (_<_ {m} {n})
-  <-dec _≟_ _≼?_ = Core.decidable (no id) _≟_
+  _<?_ : Decidable _≈_ → Decidable _≼_ → ∀ {m n} → Decidable (_<_ {m} {n})
+  _<?_ _≟_ _≼?_ = Core.decidable (no id) _≟_
     (Conv.<-decidable _ _ _≟_ _≼?_)
 
 ------------------------------------------------------------------------
@@ -189,9 +189,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
   ≤-total ≈-sym _≟_ ≼-antisym ≼-total = Strict.≤-total ≈-sym
     (Conv.<-trichotomous _ _ ≈-sym _≟_ ≼-antisym ≼-total)
 
-  ≤-dec : Decidable _≈_ → Decidable _≼_ →
+  _≤?_ : Decidable _≈_ → Decidable _≼_ →
           ∀ {m n} → Decidable (_≤_ {m} {n})
-  ≤-dec _≟_ _≼?_ = Core.decidable (yes tt) _≟_
+  _≤?_ _≟_ _≼?_ = Core.decidable (yes tt) _≟_
     (Conv.<-decidable _ _ _≟_ _≼?_)
 
   ≤-resp₂ : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ →
@@ -272,3 +272,24 @@ module ≤-Reasoning  {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂}
     (<-transˡ ≼-po)
     (<-transʳ ≼-po)
     public
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+<-dec = _<?_
+{-# WARNING_ON_USAGE <-dec
+"Warning: <-dec was deprecated in v2.4.
+Please use _<?_ instead."
+#-}
+
+≤-dec = _≤?_
+{-# WARNING_ON_USAGE ≤-dec
+"Warning: ≤-dec was deprecated in v2.4.
+Please use _≤?_ instead."
+#-}

@@ -116,9 +116,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     ...   | tri≈ xs≮ys xs≋ys xs≯ys = tri≈ (≰-next x⊀y xs≮ys) (x≈y ∷ xs≋ys) (≰-next x⊁y xs≯ys)
     ...   | tri> xs≮ys xs≋̸ys xs>ys = tri> (≰-next x⊀y xs≮ys) (xs≋̸ys ∘ tail) (next (≈-sym x≈y) xs>ys)
 
-  <-decidable : Decidable _≈_ → Decidable _≺_ →
+  _<?_ : Decidable _≈_ → Decidable _≺_ →
                 ∀ {m n} → Decidable (_<_ {m} {n})
-  <-decidable = Core.decidable (no id)
+  _<?_ = Core.decidable (no id)
 
   <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
@@ -168,7 +168,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   <-isDecStrictPartialOrder ≺-isDecStrictPartialOrder = record
     { isStrictPartialOrder = <-isStrictPartialOrder O.isStrictPartialOrder
     ; _≟_                  = Pointwise.decidable O._≟_
-    ; _<?_                 = <-decidable O._≟_ O._<?_
+    ; _<?_                 = O._≟_ <? O._<?_
     } where module O = IsDecStrictPartialOrder ≺-isDecStrictPartialOrder
 
   <-isStrictTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
@@ -249,9 +249,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     ...   | inj₁ xs<ys = inj₁ (next x≈y xs<ys)
     ...   | inj₂ xs>ys = inj₂ (next (≈-sym x≈y) xs>ys)
 
-  ≤-dec : Decidable _≈_ → Decidable _≺_ →
+  _≤?_ : Decidable _≈_ → Decidable _≺_ →
           ∀ {m n} → Decidable (_≤_ {m} {n})
-  ≤-dec = Core.decidable (yes tt)
+  _≤?_ = Core.decidable (yes tt)
 
   ≤-irrelevant : Irrelevant _≈_ → Irrelevant _≺_ → Irreflexive _≈_ _≺_ →
                  ∀ {m n} → Irrelevant (_≤_ {m} {n})
@@ -278,10 +278,10 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   ≤-isDecPartialOrder : IsDecStrictPartialOrder _≈_ _≺_ →
                         ∀ {n} → IsDecPartialOrder (_≋_ {n} {n}) _≤_
   ≤-isDecPartialOrder ≺-isDecStrictPartialOrder = record
-    { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
-    ; _≟_            = Pointwise.decidable _≟_
-    ; _≤?_           = ≤-dec _≟_ _<?_
-    } where open IsDecStrictPartialOrder ≺-isDecStrictPartialOrder
+    { isPartialOrder = ≤-isPartialOrder O.isStrictPartialOrder
+    ; _≟_            = Pointwise.decidable O._≟_
+    ; _≤?_           = O._≟_ ≤? O._<?_
+    } where module O = IsDecStrictPartialOrder ≺-isDecStrictPartialOrder
 
   ≤-isTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
                    ∀ {n} → IsTotalOrder (_≋_ {n} {n}) _≤_
@@ -294,9 +294,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                       ∀ {n} → IsDecTotalOrder (_≋_ {n} {n}) _≤_
   ≤-isDecTotalOrder ≺-isStrictTotalOrder = record
     { isTotalOrder = ≤-isTotalOrder ≺-isStrictTotalOrder
-    ; _≟_          = Pointwise.decidable _≟_
-    ; _≤?_         = ≤-dec _≟_ _<?_
-    } where open IsStrictTotalOrder ≺-isStrictTotalOrder
+    ; _≟_          = Pointwise.decidable O._≟_
+    ; _≤?_         = O._≟_ ≤? O._<?_
+    } where module O = IsStrictTotalOrder ≺-isStrictTotalOrder
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -348,3 +348,23 @@ module ≤-Reasoning
     (<-transʳ Eq.isPartialEquivalence <-resp-≈ trans)
     public
 
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+<-decidable = _<?_
+{-# WARNING_ON_USAGE <-decidable
+"Warning: <-decidable was deprecated in v2.4.
+Please use _<?_ instead."
+#-}
+
+≤-decidable = _≤?_
+{-# WARNING_ON_USAGE ≤-decidable
+"Warning: ≤-decidable was deprecated in v2.4.
+Please use _≤?_ instead."
+#-}

@@ -100,8 +100,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ...   | tri> xs≮ys xs≉ys ys<xs =
             tri> (¬≤-next x≮y xs≮ys) (xs≉ys ∘ tail) (next (sym x≈y) ys<xs)
 
-    <-decidable : Decidable _≈_ → Decidable _≺_ → Decidable _<_
-    <-decidable = Core.decidable (no id)
+    _<?_ : Decidable _≈_ → Decidable _≺_ → Decidable _<_
+    _<?_ = Core.decidable (no id)
 
     <-respects₂ : IsEquivalence _≈_ → _≺_ Respects₂ _≈_ →
                   _<_ Respects₂ _≋_
@@ -176,8 +176,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ...   | inj₁ xs≲ys = inj₁ (next      x≈y  xs≲ys)
     ...   | inj₂ ys≲xs = inj₂ (next (sym x≈y) ys≲xs)
 
-    ≤-decidable : Decidable _≈_ → Decidable _≺_ → Decidable _≤_
-    ≤-decidable = Core.decidable (yes _)
+    _≤?_ : Decidable _≈_ → Decidable _≺_ → Decidable _≤_
+    _≤?_ = Core.decidable (yes _)
 
     ≤-respects₂ : IsEquivalence _≈_ → _≺_ Respects₂ _≈_ →
                   _≤_ Respects₂ _≋_
@@ -202,10 +202,10 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ≤-isDecPartialOrder : IsStrictTotalOrder _≈_ _≺_ →
                           IsDecPartialOrder _≋_ _≤_
     ≤-isDecPartialOrder sto = record
-      { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
-      ; _≟_            = Pointwise.decidable _≟_
-      ; _≤?_           = ≤-decidable _≟_ _<?_
-      } where open IsStrictTotalOrder sto
+      { isPartialOrder = ≤-isPartialOrder O.isStrictPartialOrder
+      ; _≟_            = Pointwise.decidable O._≟_
+      ; _≤?_           = O._≟_ ≤?  O._<?_
+      } where module O = IsStrictTotalOrder sto
 
     ≤-isTotalOrder : IsStrictTotalOrder _≈_ _≺_ → IsTotalOrder _≋_ _≤_
     ≤-isTotalOrder sto = record
@@ -218,10 +218,10 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
                         IsDecTotalOrder _≋_ _≤_
     ≤-isDecTotalOrder sto = record
       { isTotalOrder = ≤-isTotalOrder sto
-      ; _≟_          = Pointwise.decidable _≟_
-      ; _≤?_         = ≤-decidable _≟_ _<?_
+      ; _≟_          = Pointwise.decidable O._≟_
+      ; _≤?_         = O._≟_ ≤?  O._<?_
       }
-      where open IsStrictTotalOrder sto
+      where module O = IsStrictTotalOrder sto
 
 ≤-preorder : ∀ {a ℓ₁ ℓ₂} → Preorder a ℓ₁ ℓ₂ → Preorder _ _ _
 ≤-preorder pre = record
@@ -245,3 +245,24 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 ≤-decTotalOrder sto = record
   { isDecTotalOrder = ≤-isDecTotalOrder isStrictTotalOrder
   } where open StrictTotalOrder sto
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+<-decidable = _<?_
+{-# WARNING_ON_USAGE <-decidable
+"Warning: <-decidable was deprecated in v2.4.
+Please use _<?_ instead."
+#-}
+
+≤-decidable = _≤?_
+{-# WARNING_ON_USAGE ≤-decidable
+"Warning: ≤-decidable was deprecated in v2.4.
+Please use _≤?_ instead."
+#-}
