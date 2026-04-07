@@ -11,11 +11,11 @@ module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
 open import Data.Fin.Properties using (all?; splitAt-↑ˡ; splitAt-↑ʳ)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-  using () renaming (Pointwise to ×-Pointwise)
+  using (_×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
-open import Data.Vec.Functional as VF hiding (map)
+open import Data.Vec.Functional as Functional hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
 open import Function.Base using (const; _∘_)
 open import Level using (Level)
@@ -91,7 +91,7 @@ module _ {R : REL A B r} {S : REL A′ B′ s} {f : A → A′} {g : B → B′}
 
   map⁺ : (∀ {x y} → R x y → S (f x) (g y)) →
          ∀ {n} {xs : Vector A n} {ys : Vector B n} →
-         Pointwise R xs ys → Pointwise S (VF.map f xs) (VF.map g ys)
+         Pointwise R xs ys → Pointwise S (Functional.map f xs) (Functional.map g ys)
   map⁺ f rs i = f (rs i)
 
 ------------------------------------------------------------------------
@@ -134,7 +134,7 @@ module _ (R : REL A B r) where
 
   ++⁻ : ∀ {m n} xs ys {xs′ ys′} →
         Pointwise R (xs ++ xs′) (ys ++ ys′) →
-        Pointwise R {n = m} xs ys × Pointwise R {n = n} xs′ ys′
+        Pointwise R {n = m} xs ys Product.× Pointwise R {n = n} xs′ ys′
   ++⁻ _ _ rs = ++⁻ˡ _ _ rs , ++⁻ʳ _ _ rs
 
 ------------------------------------------------------------------------
@@ -172,11 +172,11 @@ module _ {R : REL A B r} {S : REL A′ B′ s} {T : REL A″ B″ t} where
 module _ {R : REL A B r} {S : REL A′ B′ s} {n xs ys xs′ ys′} where
 
   zip⁺ : Pointwise R xs ys → Pointwise S xs′ ys′ →
-         Pointwise (×-Pointwise R S) (zip xs xs′) (zip {n = n} ys ys′)
+         Pointwise (R × S) (zip xs xs′) (zip {n = n} ys ys′)
   zip⁺ rs ss i = rs i , ss i
 
-  zip⁻ : Pointwise (×-Pointwise R S) (zip xs xs′) (zip {n = n} ys ys′) →
-         Pointwise R xs ys × Pointwise S xs′ ys′
+  zip⁻ : Pointwise (R × S) (zip xs xs′) (zip {n = n} ys ys′) →
+         Pointwise R xs ys Product.× Pointwise S xs′ ys′
   zip⁻ rss = proj₁ ∘ rss , proj₂ ∘ rss
 
 ------------------------------------------------------------------------

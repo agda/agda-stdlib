@@ -11,9 +11,9 @@
 
 module Data.Product.Relation.Binary.Lex.NonStrict where
 
-open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
-  using (Pointwise)
+  using (_×_; _×?_)
 import Data.Product.Relation.Binary.Lex.Strict as Strict
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level)
@@ -39,7 +39,7 @@ private
 -- Definition
 
 ×-Lex : (_≈₁_ : Rel A ℓ₁) (_≤₁_ : Rel A ℓ₂) (_≤₂_ : Rel B ℓ₃) →
-        Rel (A × B) _
+        Rel (A Product.× B) _
 ×-Lex _≈₁_ _≤₁_ _≤₂_ = Strict.×-Lex _≈₁_ (Conv._<_ _≈₁_ _≤₁_) _≤₂_
 
 ------------------------------------------------------------------------
@@ -48,7 +48,7 @@ private
 ×-reflexive : (_≈₁_ : Rel A ℓ₁) (_≤₁_ : Rel A ℓ₂)
               {_≈₂_ : Rel B ℓ₃} (_≤₂_ : Rel B ℓ₄) →
               _≈₂_ ⇒ _≤₂_ →
-              (Pointwise _≈₁_ _≈₂_) ⇒ (×-Lex _≈₁_ _≤₁_ _≤₂_)
+              (_≈₁_ × _≈₂_) ⇒ (×-Lex _≈₁_ _≤₁_ _≤₂_)
 ×-reflexive _≈₁_ _≤₁_ _≤₂_ refl₂ =
   Strict.×-reflexive _≈₁_ (Conv._<_ _≈₁_ _≤₁_) _≤₂_ refl₂
 
@@ -94,7 +94,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
 
   private
     _≤ₗₑₓ_ = ×-Lex _≈₁_ _≤₁_ _≤₂_
-    _≋_    = Pointwise _≈₁_ _≈₂_
+    _≋_    = _≈₁_ × _≈₂_
 
   ×-antisymmetric : IsPartialOrder _≈₁_ _≤₁_ → Antisymmetric _≈₂_ _≤₂_ →
                    Antisymmetric _≋_ _≤ₗₑₓ_
@@ -157,7 +157,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
     { isTotalOrder = ×-isTotalOrder (_≟_ to₁)
                                     (isTotalOrder to₁)
                                     (isTotalOrder to₂)
-    ; _≟_          = Pointwise.×-decidable (_≟_ to₁) (_≟_ to₂)
+    ; _≟_          =(_≟_ to₁) ×? (_≟_ to₂)
     ; _≤?_         = ×-decidable (_≟_ to₁) (_≤?_ to₁) (_≤?_ to₂)
     }
     where open IsDecTotalOrder

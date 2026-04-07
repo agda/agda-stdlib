@@ -16,7 +16,7 @@ module Data.Tree.AVL.Map.Membership.Propositional
 open import Data.Product.Base using (_×_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using ()
-  renaming (Pointwise to _×ᴿ_)
+  renaming (_×_ to _×ᴿ_)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)

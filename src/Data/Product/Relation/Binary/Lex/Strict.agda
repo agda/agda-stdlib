@@ -11,9 +11,9 @@
 
 module Data.Product.Relation.Binary.Lex.Strict where
 
-open import Data.Product.Base
+open import Data.Product.Base as Product using (_,_; proj₁; proj₂; _-×-_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
-  using (Pointwise)
+  using (_×_)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
 open import Function.Base using (flip; _on_; _$_; _∘_)
 open import Induction.WellFounded using (Acc; acc; WfRec; WellFounded; Acc-resp-flip-≈)
@@ -42,7 +42,7 @@ private
 -- A lexicographic ordering over products
 
 ×-Lex : (_≈₁_ : Rel A ℓ₁) (_<₁_ : Rel A ℓ₂) (_≤₂_ : Rel B ℓ₃) →
-        Rel (A × B) _
+        Rel (A Product.× B) _
 ×-Lex _≈₁_ _<₁_ _≤₂_ =
   (_<₁_ on proj₁) -⊎- (_≈₁_ on proj₁) -×- (_≤₂_ on proj₂)
 
@@ -52,7 +52,7 @@ private
 
 ×-reflexive : (_≈₁_ : Rel A ℓ₁) (_∼₁_ : Rel A ℓ₂)
               {_≈₂_ : Rel B ℓ₃} (_≤₂_ : Rel B ℓ₄) →
-              _≈₂_ ⇒ _≤₂_ → (Pointwise _≈₁_ _≈₂_) ⇒ (×-Lex _≈₁_ _∼₁_ _≤₂_)
+              _≈₂_ ⇒ _≤₂_ → (_≈₁_ × _≈₂_) ⇒ (×-Lex _≈₁_ _∼₁_ _≤₂_)
 ×-reflexive _ _ _ refl₂ = λ x≈y →
   inj₂ (proj₁ x≈y , refl₂ (proj₂ x≈y))
 
@@ -120,11 +120,11 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          {_≈₂_ : Rel B ℓ₃} {_<₂_ : Rel B ℓ₄} where
 
   private
-    _≋_    = Pointwise _≈₁_ _≈₂_
+    _≋_    = _≈₁_ × _≈₂_
     _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
 
   ×-irreflexive : Irreflexive _≈₁_ _<₁_ → Irreflexive _≈₂_ _<₂_ →
-                  Irreflexive (Pointwise _≈₁_ _≈₂_) _<ₗₑₓ_
+                  Irreflexive (_≈₁_ × _≈₂_) _<ₗₑₓ_
   ×-irreflexive ir₁ ir₂ x≈y (inj₁ x₁<y₁) = ir₁ (proj₁ x≈y) x₁<y₁
   ×-irreflexive ir₁ ir₂ x≈y (inj₂ x≈<y)  = ir₂ (proj₂ x≈y) (proj₂ x≈<y)
 
@@ -230,7 +230,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          {_≈₂_ : Rel B ℓ₃} {_<₂_ : Rel B ℓ₄} where
 
   private
-    _≋_    = Pointwise _≈₁_ _≈₂_
+    _≋_    = _≈₁_ × _≈₂_
     _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
 
   ×-isPreorder : IsPreorder _≈₁_ _<₁_ →

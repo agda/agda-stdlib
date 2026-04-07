@@ -9,8 +9,8 @@
 open import Algebra.Bundles using (Magma)
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
-open import Data.Product.Base using (_×_; _,_)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
+open import Data.Product.Base as Product using (_,_)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×_)
 open import Data.Sum.Base using (inj₁; inj₂; map)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Core using (Rel)
@@ -43,8 +43,8 @@ import Algebra.Construct.LexProduct.Inner M N _≟₁_ as InnerLex
 
 private
   infix 4 _≋_
-  _≋_ : Rel (A × B) _
-  _≋_ = Pointwise _≈₁_ _≈₂_
+  _≋_ : Rel (A Product.× B) _
+  _≋_ = _≈₁_ × _≈₂_
 
   variable
     a b : A

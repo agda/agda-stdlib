@@ -16,7 +16,7 @@ open import Algebra.Construct.DirectProduct using (commutativeMonoid)
 open import Algebra.Module.Bundles
 open import Data.Product.Base using (map; zip; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-  using (Pointwise)
+  using (_×_)
 open import Level using (Level; _⊔_)
 
 private
@@ -31,7 +31,7 @@ rawLeftSemimodule : {R : Set r} →
                     RawLeftSemimodule R m′ ℓm′ →
                     RawLeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 rawLeftSemimodule M N = record
-  { _≈ᴹ_ = Pointwise M._≈ᴹ_ N._≈ᴹ_
+  { _≈ᴹ_ = M._≈ᴹ_ × N._≈ᴹ_
   ; _+ᴹ_ = zip M._+ᴹ_ N._+ᴹ_
   ; _*ₗ_ = λ r → map (r M.*ₗ_) (r N.*ₗ_)
   ; 0ᴹ = M.0ᴹ , N.0ᴹ
@@ -52,7 +52,7 @@ rawRightSemimodule : {R : Set r} →
                     RawRightSemimodule R m′ ℓm′ →
                     RawRightSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 rawRightSemimodule M N = record
-  { _≈ᴹ_ = Pointwise M._≈ᴹ_ N._≈ᴹ_
+  { _≈ᴹ_ = M._≈ᴹ_ × N._≈ᴹ_
   ; _+ᴹ_ = zip M._+ᴹ_ N._+ᴹ_
   ; _*ᵣ_ = λ mn r → map (M._*ᵣ r) (N._*ᵣ r) mn
   ; 0ᴹ = M.0ᴹ , N.0ᴹ
@@ -72,7 +72,7 @@ rawBisemimodule : {R : Set r} {S : Set s} →
                     RawBisemimodule R S m′ ℓm′ →
                     RawBisemimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
 rawBisemimodule M N = record
-  { _≈ᴹ_ = Pointwise M._≈ᴹ_ N._≈ᴹ_
+  { _≈ᴹ_ = M._≈ᴹ_ × N._≈ᴹ_
   ; _+ᴹ_ = zip M._+ᴹ_ N._+ᴹ_
   ; _*ₗ_ = λ r → map (r M.*ₗ_) (r N.*ₗ_)
   ; _*ᵣ_ = λ mn r → map (M._*ᵣ r) (N._*ᵣ r) mn
