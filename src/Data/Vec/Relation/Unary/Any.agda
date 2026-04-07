@@ -66,7 +66,7 @@ lookup : Any P xs → A
 lookup {xs = xs} p = Vec.lookup xs (index p)
 
 -- If any element satisfies P, then P is satisfied.
-satisfied : Any P xs → ∃ P
+satisfied : Any P xs → Satisfiable P
 satisfied (here px)   = _ , px
 satisfied (there pxs) = satisfied pxs
 
@@ -77,12 +77,30 @@ any? : Decidable P → ∀ {n} → Decidable (Any P {n})
 any? P? []       = no λ()
 any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎? any? P? xs)
 
-satisfiable : Satisfiable P → ∀ {n} → Satisfiable (Any P {suc n})
-satisfiable (x , p) {zero}  = x ∷ [] , here p
-satisfiable (x , p) {suc n} = Product.map (x ∷_) there (satisfiable (x , p))
+satisfiable⁺ : Satisfiable P → ∀ {n} → Satisfiable (Any P {suc n})
+satisfiable⁺ (x , p) {zero}  = x ∷ [] , here p
+satisfiable⁺ (x , p) {suc n} = Product.map (x ∷_) there (satisfiable⁺ (x , p))
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
 any = any?
 {-# WARNING_ON_USAGE any
 "Warning: any was deprecated in v1.4.
 Please use any? instead."
+#-}
+
+-- Version 2.4
+
+satisfiable = satisfiable⁺
+{-# WARNING_ON_USAGE satisfiable
+"Warning: satisfiable was deprecated in v2.4.
+Please use satisfiable⁺ instead. Moreover,
+the name satisfied will be renamed in v3.0
+to satisfiable, so users should refactor
+as soon as they can."
 #-}

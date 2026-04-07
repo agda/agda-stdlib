@@ -341,6 +341,16 @@ Additions to existing modules
   satisfiable⁻ : Satisfiable (Any P) → Satisfiable P
   ```
 
+* In `Data.List.Relation.Unary.First`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+  ```
+
+* In `Data.Maybe.Relation.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+  ```
+
 * In `Data.Nat.Divisibility`:
   ```agda
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
@@ -425,6 +435,11 @@ Additions to existing modules
   showAtPrecision : ℕ → ℚᵘ → String
   ```
 
+* In `Data.Tree.AVL.Relation.Indexed.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+  ```
+
 * In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast`:
   ```agda
   castʳ⁺ : Any P lm → Any P (castʳ lm m<u)
@@ -506,6 +521,11 @@ Additions to existing modules
             P kv ⊎ Any P l ⊎ Any P (proj₂ r)
   ```
 
+* In `Data.Tree.AVL.Relation.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
+ ```
+
 * In `Data.Vec.Properties`:
   ```agda
   map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
@@ -558,6 +578,11 @@ Additions to existing modules
   padRight-updateAt : .(m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
                       updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
                       padRight m≤n x (updateAt xs i f)
+  ```
+
+* In `Data.Vec.Relation.Unary.Any`:
+  ```agda
+  satisfiable    ↦  satisfiable⁺
   ```
 
 * In `Relation.Binary.Construct.Add.Extrema.NonStrict`:

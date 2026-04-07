@@ -38,7 +38,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   map : ∀ {q} {Q : Pred A q} → P ⊆ Q → Any P ⊆ Any Q
   map f (just px) = just (f px)
 
-  satisfied : ∀ {x} → Any P x → ∃ P
+  satisfied : ∀ {x} → Any P x → Satisfiable P
   satisfied (just p) = -, p
 
 ------------------------------------------------------------------------
@@ -72,5 +72,23 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   irrelevant : Irrelevant P → Irrelevant (Any P)
   irrelevant P-irrelevant (just p) (just q) = cong just (P-irrelevant p q)
 
-  satisfiable : Satisfiable P → Satisfiable (Any P)
-  satisfiable P-satisfiable = Product.map just just P-satisfiable
+  satisfiable⁺ : Satisfiable P → Satisfiable (Any P)
+  satisfiable⁺ P-satisfiable = Product.map just just P-satisfiable
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+satisfiable = satisfiable⁺
+{-# WARNING_ON_USAGE satisfiable
+"Warning: satisfiable was deprecated in v2.4.
+Please use satisfiable⁺ instead. Moreover,
+the name satisfied will be renamed in v3.0
+to satisfiable, so users should refactor
+as soon as they can."
+#-}

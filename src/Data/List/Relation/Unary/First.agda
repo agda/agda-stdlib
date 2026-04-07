@@ -78,11 +78,11 @@ module _ {p q} {P : Pred A p} {Q : Pred A q} where
   index-satisfied [ qx ]     = qx
   index-satisfied (_ ∷ pqxs) = index-satisfied pqxs
 
-  satisfied : ∀ {xs} → First P Q xs → ∃ Q
+  satisfied : ∀ {xs} → First P Q xs → Satisfiable Q
   satisfied pqxs = -, index-satisfied pqxs
 
-  satisfiable : Satisfiable Q → Satisfiable (First P Q)
-  satisfiable (x , qx) = List.[ x ] , [ qx ]
+  satisfiable⁺ : Satisfiable Q → Satisfiable (First P Q)
+  satisfiable⁺ (x , qx) = List.[ x ] , [ qx ]
 
 ------------------------------------------------------------------------
 -- Decidability results
@@ -105,3 +105,21 @@ module _ {q} {Q : Pred A q} where
   toAny : ∀ {p} {P : Pred A p} → First P Q ⊆ Any Q
   toAny [ qx ]     = here qx
   toAny (_ ∷ pqxs) = there (toAny pqxs)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+satisfiable = satisfiable⁺
+{-# WARNING_ON_USAGE satisfiable
+"Warning: satisfiable was deprecated in v2.4.
+Please use satisfiable⁺ instead. Moreover,
+the name satisfied will be renamed in v3.0
+to satisfiable, so users should refactor
+as soon as they can."
+#-}

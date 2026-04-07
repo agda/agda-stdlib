@@ -56,9 +56,9 @@ lookup (tree p) = AVLₚ.lookup p
 lookupKey : Any P t → Key
 lookupKey (tree p) = AVLₚ.lookupKey p
 
--- If any element satisfies P, then P is satisfied.
+-- If any element satisfies P, then P is satisfiable.
 
-satisfied : Any P t → ∃ P
+satisfied : Any P t → Satisfiable P
 satisfied (tree p) = AVLₚ.satisfied p
 
 ------------------------------------------------------------------------
@@ -67,6 +67,24 @@ satisfied (tree p) = AVLₚ.satisfied p
 any? : Decidable P → Decidable (Any {V = V} P)
 any? P? (tree p) = map′ tree (λ where (tree p) → p) (AVLₚ.any? P? p)
 
-satisfiable : (k : Key) → Satisfiable (P ∘ (k ,_)) → Satisfiable (Any {V = V} P)
-satisfiable k sat = Product.map tree tree
-                  $ AVLₚ.satisfiable Indexed.⊥⁺<[ k ] Indexed.[ k ]<⊤⁺ sat
+satisfiable⁺ : (k : Key) → Satisfiable (P ∘ (k ,_)) → Satisfiable (Any {V = V} P)
+satisfiable⁺ k sat = Product.map tree tree
+                  $ AVLₚ.satisfiable⁺ Indexed.⊥⁺<[ k ] Indexed.[ k ]<⊤⁺ sat
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+satisfiable = satisfiable⁺
+{-# WARNING_ON_USAGE satisfiable
+"Warning: satisfiable was deprecated in v2.4.
+Please use satisfiable⁺ instead. Moreover,
+the name satisfied will be renamed in v3.0
+to satisfiable, so users should refactor
+as soon as they can."
+#-}
