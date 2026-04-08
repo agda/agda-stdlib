@@ -1,0 +1,239 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Properties of insert related to Any
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Relation.Binary.Bundles using (StrictTotalOrder)
+
+module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert
+  {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
+  where
+
+open import Data.Maybe.Base using (Maybe; nothing; just)
+open import Data.Nat.Base using (ℕ)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Function.Base as F using (_∘′_)
+open import Level using (Level)
+open import Relation.Binary.Definitions using (tri<; tri≈; tri>)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Unary using (Pred)
+
+open import Data.Tree.AVL.Indexed sto as AVL
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
+  using (lookup-result; lookup-bounded; lookup-rebuild-accum)
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
+  using (joinˡ⁺-left⁺; joinʳ⁺-right⁺; joinˡ⁺-here⁺; joinʳ⁺-here⁺;
+         joinʳ⁺-left⁺; joinˡ⁺-right⁺; joinˡ⁺⁻; joinʳ⁺⁻)
+open StrictTotalOrder sto
+  using (_<_; _≈_; module Eq; compare; irrefl)
+  renaming (Carrier to Key; trans to <-trans)
+open Eq using (_≉_; sym; trans)
+
+open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
+
+import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
+
+
+private
+  variable
+    v p : Level
+    V : Value v
+    l u : Key⁺
+    h : ℕ
+    P : Pred (K& V) p
+
+
+module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
+
+  module _ (k : Key) (f : Maybe (Val k) → Val k) where
+
+    open <-Reasoning AVL.strictPartialOrder
+
+    insertWith-nothing : (t : Tree V l u h) (l<k<u : l < k < u) →
+                         P (k , f nothing) →
+                         ¬ (Any ((k ≈_) ∘′ key) t) →
+                         Any P (proj₂ (insertWith k f t l<k<u))
+    insertWith-nothing (leaf l<u)                   l<k<u         pr ¬p = here pr
+    insertWith-nothing (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr ¬p
+      with compare k k′
+    ... | tri≈ _ k≈k′ _ = contradiction (here k≈k′) ¬p
+    ... | tri< k<k′ _ _ = joinˡ⁺-left⁺ kv lk′ ku bal ih
+      where
+      l<k<u′ = l<k , [ k<k′ ]ᴿ
+      lk′  = insertWith k f lk l<k<u′
+      ih   = insertWith-nothing lk l<k<u′ pr (λ p → ¬p (left p))
+    ... | tri> _ _ k>k′ = joinʳ⁺-right⁺ kv lk ku′ bal ih
+      where
+      l<k<u′ = [ k>k′ ]ᴿ , k<u
+      ku′  = insertWith k f ku l<k<u′
+      ih   = insertWith-nothing ku l<k<u′ pr (λ p → ¬p (right p))
+
+    insertWith-just : (t : Tree V l u h) (l<k<u : l < k < u) →
+                      (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , respects eq (f (just (respects (sym eq) v))))) →
+                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t l<k<u))
+    insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
+      with p | compare k k′
+    -- happy paths
+    ... | here _   | tri≈ _ k≈k′ _ = here (pr k′ v k≈k′)
+    ... | left lp  | tri< k<k′ _ _ =
+      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just lk l<k<u′ pr lp)
+      where
+      l<k<u′ = l<k , [ k<k′ ]ᴿ
+      lk′  = insertWith k f lk l<k<u′
+    ... | right rp | tri> _ _ k>k′ =
+      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just ku l<k<u′ pr rp)
+      where
+      l<k<u′ = [ k>k′ ]ᴿ , k<u
+      ku′  = insertWith k f ku l<k<u′
+
+    -- impossible cases
+    ... | here eq  | tri< k<k′ _ _ = begin-contradiction
+      [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
+      [ k′ ] ≈⟨ [ sym eq ]ᴱ ⟩
+      [ k  ] ∎
+    ... | here eq  | tri> _ _ k>k′ = begin-contradiction
+      [ k  ] ≈⟨ [ eq ]ᴱ ⟩
+      [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
+      [ k  ] ∎
+    ... | left lp  | tri≈ _ k≈k′ _ = begin-contradiction
+      let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
+      [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
+      [ k″ ] <⟨ k″<k′ ⟩
+      [ k′ ] ≈⟨ [ sym k≈k′ ]ᴱ ⟩
+      [ k  ] ∎
+    ... | left lp  | tri> _ _ k>k′ = begin-contradiction
+      let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
+      [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
+      [ k″ ] <⟨ k″<k′ ⟩
+      [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
+      [ k  ] ∎
+    ... | right rp | tri< k<k′ _ _ = begin-contradiction
+      let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
+      [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
+      [ k′ ] <⟨ k′<k″ ⟩
+      [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
+      [ k  ] ∎
+    ... | right rp | tri≈ _ k≈k′ _ = begin-contradiction
+      let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
+      [ k  ] ≈⟨ [ k≈k′ ]ᴱ ⟩
+      [ k′ ] <⟨ k′<k″ ⟩
+      [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
+      [ k  ] ∎
+
+  module _ (k : Key) (v : Val k) (t : Tree V l u h) (l<k<u : l < k < u) where
+
+    insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
+                     Any P (proj₂ (insert k v t l<k<u))
+    insert-nothing = insertWith-nothing k (F.const v) t l<k<u
+
+    insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , respects eq v)) →
+                  Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t l<k<u))
+    insert-just pr = insertWith-just k (F.const v) t l<k<u (λ k′ _ → pr k′)
+
+  module _ (k : Key) (f : Maybe (Val k) → Val k) where
+
+    insertWith⁺ : (t : Tree V l u h) (l<k<u : l < k < u) →
+                  (p : Any P t) → k ≉ lookupKey p →
+                  Any P (proj₂ (insertWith k f t l<k<u))
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
+      with compare k k′
+    ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
+                          in joinˡ⁺-here⁺ kv l′ r bal p
+    ... | tri≈ _ k≈k′ _ = contradiction k≈k′ k≉
+    ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
+                          in joinʳ⁺-here⁺ kv l r′ bal p
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (left p) k≉
+      with compare k k′
+    ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
+                              ih = insertWith⁺ l (l<k , [ k<k′ ]ᴿ) p k≉
+                          in joinˡ⁺-left⁺ kv l′ r bal ih
+    ... | tri≈ _ k≈k′ _ = left p
+    ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
+                          in joinʳ⁺-left⁺ kv l r′ bal p
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (right p) k≉
+      with compare k k′
+    ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
+                          in joinˡ⁺-right⁺ kv l′ r bal p
+    ... | tri≈ _ k≈k′ _ = right p
+    ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
+                              ih = insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
+                          in joinʳ⁺-right⁺ kv l r′ bal ih
+
+  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u h) (l<k<u : l < k < u) →
+            (p : Any P t) → k ≉ lookupKey p →
+            Any P (proj₂ (insert k v t l<k<u))
+  insert⁺ k v = insertWith⁺ k (F.const v)
+
+  module _
+    {P : Pred (K& V) p}
+    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , respects k≈k′ v) → P (k , v))
+    (k : Key) (v : Val k)
+    where
+
+    insert⁻ : (t : Tree V l u h) (l<k<u : l < k < u) →
+              Any P (proj₂ (insert k v t l<k<u)) →
+              P (k , v) ⊎ Any (λ{ (k′ , v′) → k ≉ k′ × P (k′ , v′)}) t
+    insert⁻ (leaf l<u) l<k<u (here p) = inj₁ p
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p with compare k k′
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri< k<k′ k≉k′ _
+        with joinˡ⁺⁻ kv′ (insert k v l (l<k , [ k<k′ ]ᴿ)) r bal p
+    ... | inj₁ p        = inj₂ (here (k≉k′ , p))
+    ... | inj₂ (inj₂ p) = inj₂ (right (lookup-rebuild-accum p k≉p))
+      where
+      k′<p = [<]-injective (proj₁ (lookup-bounded p))
+      k≉p  = λ k≈p → irrefl k≈p (<-trans k<k′ k′<p)
+    ... | inj₂ (inj₁ p) = Sum.map₂ (λ q → left q) (insert⁻ l (l<k , [ k<k′ ]ᴿ) p)
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri> _ k≉k′ k′<k
+        with joinʳ⁺⁻ kv′ l (insert k v r ([ k′<k ]ᴿ , k<u)) bal p
+    ... | inj₁ p        = inj₂ (here (k≉k′ , p))
+    ... | inj₂ (inj₁ p) = inj₂ (left (lookup-rebuild-accum p k≉p))
+      where
+      p<k′ = [<]-injective (proj₂ (lookup-bounded p))
+      k≉p  = λ k≈p → irrefl (sym k≈p) (<-trans p<k′ k′<k)
+    ... | inj₂ (inj₂ p) = Sum.map₂ (λ q → right q) (insert⁻ r ([ k′<k ]ᴿ , k<u) p)
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri≈ _ k≈k′ _
+        with p
+    ... | left p  = inj₂ (left (lookup-rebuild-accum p k≉p))
+      where
+      p<k′ = [<]-injective (proj₂ (lookup-bounded p))
+      k≉p  = λ k≈p → irrefl (trans (sym k≈p) k≈k′) p<k′
+    ... | here p  = inj₁ (P-Resp k≈k′ p)
+    ... | right p = inj₂ (right (lookup-rebuild-accum p k≉p))
+      where
+      k′<p = [<]-injective (proj₁ (lookup-bounded p))
+      k≉p  = λ k≈p → irrefl (trans (sym k≈k′) k≈p) k′<p
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+Any-insertWith-nothing = insertWith-nothing
+{-# WARNING_ON_USAGE Any-insertWith-nothing
+"Warning: Any-insertWith-nothing was deprecated in v2.4.
+Please use insertWith-nothing instead."
+#-}
+Any-insertWith-just = insertWith-just
+{-# WARNING_ON_USAGE Any-insertWith-just
+"Warning: Any-insertWith-just was deprecated in v2.4.
+Please use insertWith-just instead."
+#-}
+Any-insert-nothing = insert-nothing
+{-# WARNING_ON_USAGE Any-insert-nothing
+"Warning: Any-insert-nothing was deprecated in v2.4.
+Please use insert-nothing instead."
+#-}
+Any-insert-just = insert-just
+{-# WARNING_ON_USAGE Any-insert-just
+"Warning: Any-insert-just was deprecated in v2.4.
+Please use insert-just instead."
+#-}

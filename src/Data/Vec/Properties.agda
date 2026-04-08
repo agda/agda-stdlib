@@ -33,13 +33,12 @@ open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst)
+  using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; ¬[x≢x])
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core
   using (Dec; does; yes; _×?_; map′)
-open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
 private
@@ -254,7 +253,7 @@ updateAt-updates (suc i) (x ∷ xs) (there loc) = there (updateAt-updates i xs l
 
 updateAt-minimal : ∀ (i j : Fin n) {f : A → A} (xs : Vec A n) →
                    i ≢ j → xs [ i ]= x → (updateAt xs j f) [ i ]= x
-updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = contradiction refl 0≢0
+updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = ¬[x≢x] 0≢0
 updateAt-minimal zero    (suc j) (x ∷ xs) _   here        = here
 updateAt-minimal (suc i) zero    (x ∷ xs) _   (there loc) = there loc
 updateAt-minimal (suc i) (suc j) (x ∷ xs) i≢j (there loc) =
@@ -324,7 +323,7 @@ updateAt-cong i f≗g xs = updateAt-cong-local i xs (f≗g (lookup xs i))
 
 updateAt-commutes : ∀ (i j : Fin n) {f g : A → A} → i ≢ j → (xs : Vec A n) →
                     updateAt (updateAt xs j g) i f ≡ updateAt (updateAt xs i f) j g
-updateAt-commutes zero    zero    0≢0 (x ∷ xs) = contradiction refl 0≢0
+updateAt-commutes zero    zero    0≢0 (x ∷ xs) = ¬[x≢x] 0≢0
 updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
 updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
 updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
@@ -1408,7 +1407,7 @@ toList-insertAt (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insertAt xs i 
 
 removeAt-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
                   lookup (removeAt xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-removeAt-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
+removeAt-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = ¬[x≢x] i≢j
 removeAt-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
 removeAt-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
 removeAt-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =

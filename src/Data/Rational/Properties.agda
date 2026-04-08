@@ -27,6 +27,7 @@ import Algebra.Lattice.Morphism.LatticeMonomorphism as LatticeMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 import Algebra.Properties.Group as GroupProperties
 open import Data.Bool.Base using (T; true; false)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
@@ -189,6 +190,11 @@ drop-*≡* (*≡* eq) = eq
 
 p≡0⇒↥p≡0 : ∀ p → p ≡ 0ℚ → ↥ p ≡ 0ℤ
 p≡0⇒↥p≡0 p refl = refl
+
+0≡?-weak : (p : ℚ) → Maybe (0ℚ ≡ p)
+0≡?-weak p with ↥ p ℤ.≟ 0ℤ
+... | yes ↥p≡0 = just (sym (↥p≡0⇒p≡0 p ↥p≡0))
+... | no  _    = nothing
 
 ↥p≡↥q≡0⇒p≡q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≡ q
 ↥p≡↥q≡0⇒p≡q p q ↥p≡0 ↥q≡0 = trans (↥p≡0⇒p≡0 p ↥p≡0) (sym (↥p≡0⇒p≡0 q ↥q≡0))
@@ -820,6 +826,16 @@ neg-antimono-≤ {mkℚ +[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*≤* (ℤ.+≤+ (�
 
 ≤⇒≤ᵇ : p ≤ q → T (p ≤ᵇ q)
 ≤⇒≤ᵇ = ℤ.≤⇒≤ᵇ ∘′ drop-*≤*
+
+------------------------------------------------------------------------
+-- Properties of _<ᵇ_
+------------------------------------------------------------------------
+
+<ᵇ⇒< : T (p <ᵇ q) → p < q
+<ᵇ⇒< = *<* ∘′ ℤ.<ᵇ⇒<
+
+<⇒<ᵇ : p < q → T (p <ᵇ q)
+<⇒<ᵇ = ℤ.<⇒<ᵇ ∘′ drop-*<*
 
 ------------------------------------------------------------------------
 -- Properties of _+_

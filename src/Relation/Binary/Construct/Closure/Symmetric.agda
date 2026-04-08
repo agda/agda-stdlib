@@ -17,7 +17,7 @@ import Relation.Binary.Construct.On as On
 private
   variable
     a ℓ ℓ₁ ℓ₂ : Level
-    A B : Set a
+    A B C : Set a
     R S : Rel A ℓ
 
 ------------------------------------------------------------------------
@@ -38,10 +38,22 @@ symmetric _ (bwd bRa) = fwd bRa
 ------------------------------------------------------------------------
 -- Operations
 
--- A generalised variant of `map` which allows the index type to change.
+-- A generalised variant of `map` where *both* index types can change.
+hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
+       ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
+hmap _ _ g*R⇒f*S (fwd aRb) = fwd (g*R⇒f*S aRb)
+hmap _ _ g*R⇒f*S (bwd bRa) = bwd (g*R⇒f*S bRa)
+
+-- Hence: SymClosure commutes with `on`
+on⁺ : (g : B → A) → ((SymClosure R) on g) ⇒ SymClosure (R on g)
+on⁺ g = hmap g id id
+
+on⁻ : (g : B → A) → SymClosure (R on g) ⇒ ((SymClosure R) on g)
+on⁻ g = hmap id g id
+
+-- And: the 'usual' generalised variant of `map`
 gmap : (f : A → B) → R =[ f ]⇒ S → SymClosure R =[ f ]⇒ SymClosure S
-gmap _ g (fwd aRb) = fwd (g aRb)
-gmap _ g (bwd bRa) = bwd (g bRa)
+gmap = hmap id
 
 map : R ⇒ S → SymClosure R ⇒ SymClosure S
 map = gmap id

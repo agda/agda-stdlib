@@ -31,6 +31,10 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The function `Data.Nat.LCG.step` is now a manifest field of the record type
+  `Generator`, as per the discussion on #2936 and upstream issues/PRs. This is
+  consistent with a minimal API for such LCGs, and should be backwards compatible.
+
 * The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
   that the argument of type `m ≤ n` is marked as irrelevant. This should be
   backwards compatible, but does change the intensional behaviour of these
@@ -64,10 +68,16 @@ Minor improvements
   Data.Nat.Binary.Subtraction
   Data.Nat.Combinatorics
   ```
+  Moreover, these have been strengthened to take an irrelevant `m ≤ n` argument.
 
 * In `Data.Vec.Relation.Binary.Pointwise.{Inductive,Extensional}`, the types of
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
   levels to be used.
+
+* Due to becoming large, `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`
+  has been split into smaller modules
+  `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
+  that are reexported by the original `Properties`.
 
 Deprecated modules
 ------------------
@@ -91,14 +101,42 @@ Deprecated names
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
   ```
 
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ≈-subst-∈   ↦   ∈-resp-≈
+  ```
+
+* In `Data.List.Fresh.Relation.Unary.Any`:
+  ```agda
+  witness   ↦   satisfiable
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
   ```
 
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert`:
+  ```agda
+  Any-insertWith-nothing  ↦  insertWith-nothing
+  Any-insertWith-just     ↦  insertWith-just
+  Any-insert-nothing      ↦  insert-nothing
+  Any-insert-just         ↦  insert-just
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
+  ```
+
+* In `Relation.Binary.Construct.Intersection`:
+  ```agda
+  decidable     ↦   _∩?_
+  ```
+
+* In `Relation.Binary.Construct.Union`:
+  ```agda
+  decidable     ↦   _∪?_
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
@@ -120,6 +158,10 @@ Deprecated names
 
 New modules
 -----------
+
+* Added tactic ring solvers for rational numbers (issue #1879):
+  `Data.Rational.Tactic.RingSolver`,
+  `Data.Rational.Unnormalised.Tactic.RingSolver`.
 
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
@@ -147,6 +189,18 @@ New modules
   Data.List.NonEmpty.Relation.Unary.Any
   Data.List.NonEmpty.Membership.Propositional
   Data.List.NonEmpty.Membership.Setoid
+  ```
+
+* Refactoring of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` as smaller modules:
+  ```
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
   ```
 
 * `Relation.Binary.Morphism.Construct.On`: given a relation `_∼_` on `B`,
@@ -257,9 +311,61 @@ Additions to existing modules
   search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
   ```
 
+* In `Data.Integer.Base`:
+  ```
+  _<ᵇ_ : ℤ → ℤ → Bool
+  ```
+
+* In `Data.Integer.Properties`:
+  ```
+  <ᵇ⇒< : T (i <ᵇ j) → i < j
+  <⇒<ᵇ : i < j → T (i <ᵇ j)
+  ```
+
+* In `Data.List.Fresh`:
+  ```agda
+  _#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+  ```
+
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ∉-All[x≉] : x ∉ xs → All (x ≉_) xs
+  All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
+  ```
+
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs
+  ```
+
+* In `Data.List.Properties`:
+  ```
+  filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  ```
+
+* In `Data.Nat.Divisibility`:
+  ```agda
+  m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
+  n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
+  ```
+
+* In `Data.Nat.DivMod`:
+  ```agda
+  infix 4 _≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
+  m ≡%[ o ] n = m % o ≡ n % o
+
+  infix 4 _≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
+  m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
+  m ≅%[ o ] n = SymClosure _≲%[ o ]_ m n
+
+  ≲%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≲%[ o ]_ ⇒ _≡%[ o ]_
+  ≅%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≅%[ o ]_ ⇒ _≡%[ o ]_
+  ≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
+  ≡[o]%⇒≅%[o] : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≅%[ o ]_
+
+  ≡%-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
   ```
 
 * In `Data.Nat.Logarithm`
@@ -284,9 +390,14 @@ Additions to existing modules
 * In `Data.Nat.Properties`:
   ```agda
   ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
-  ∸-suc : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+  ∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
+  m∸n+o≡m∸[n∸o] : ∀ {m n o} → .(n ≤ m) → .(o ≤ n) → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+  m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+  m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+  m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+  ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
   ```
 
 * In `Data.Product.Properties`:
@@ -295,19 +406,146 @@ Additions to existing modules
   _,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
   ```
 
+* In `Data.Rational.Base`:
+  ```
+  _<ᵇ_ : ℚ → ℚ → Bool
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
   ≤⇒≯           : _≤_ ⇒ _≯_
   p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
   p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
   p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
   ```
 
+* In `Data.Rational.Show`:
+  ```agda
+  atPrecision : (n : ℕ) → ℚ → ℤ × Vec ℕ n
+  showAtPrecision : ℕ → ℚ → String
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  _<ᵇ_ : ℚᵘ → ℚᵘ → Bool
+  ```
+
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
+  <ᵇ⇒<          : T (p <ᵇ q) → p < q
+  <⇒<ᵇ          : p < q → T (p <ᵇ q)
   p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
   p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
   p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+  ```
+
+* In `Data.Rational.Unnormalised.Show`:
+  ```agda
+  showAtPrecision : ℕ → ℚᵘ → String
+  ```
+
+* In `Data.Tree.AVL.Height`:
+  ```agda
+  0∼⊔ : 0 ∼ j ⊔ m → j ≡ m
+  ∼0⊔ : i ∼ 0 ⊔ m → i ≡ m
+  ```
+
+* In `Data.Tree.AVL.Indexed`:
+  ```agda
+  Tree⁺ Tree⁻ : (V : Value v) (l u : Key⁺) (h : ℕ) → Set _
+  pattern leaf⁻ l<u = _ , leaf l<u
+  pattern node⁰ʳ k₁ t₁ k₂ t₂ t₃ = node k₁ t₁ (node k₂ t₂ t₃ ∼0) ∼0
+  pattern node⁰ˡ k₁ k₂ t₁ t₂ t₃ = node k₁ (node k₂ t₁ t₂ ∼0) t₃ ∼0
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any`:
+  ```agda
+  infix 5 _#[_]_ _#_
+  _#[_]_ : (k : Key) (P : Pred (K& V) p) → Pred (Any P t) ℓ₁
+  _#_    : Key → Pred (Any P t) ℓ₁
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast`:
+  ```agda
+  castʳ⁺ : Any P lm → Any P (castʳ lm m<u)
+  castʳ⁻ : Any P (castʳ lm m<u) → Any P lm
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete`:
+  ```agda
+  delete⁺ : (t : Tree V l u h) (seg : l < k < u) →
+            (p : Any P t) → lookupKey p ≉ k →
+            Any P (proj₂ (delete k t seg))
+  delete-tree⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                 Any P (proj₂ (delete k t seg)) →
+                 Any P t
+  delete-key-∈⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                  {kp : Key} →
+                  Any ((kp ≈_) ∘′ key) (proj₂ (delete k t seg)) →
+                  kp ≉ k
+  delete-key⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                (p : Any P (proj₂ (delete k t seg))) →
+                Any.lookupKey p ≉ k
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail`:
+  ```
+  headTail⁺ : (t : Tree V l u (1 + h)) →
+              let kv , _ , _ , t⁻ = headTail t in
+              Any P t → P kv ⊎ Any P t⁻
+  headTail-head⁻ : (t : Tree V l u (suc h)) →
+                   P (proj₁ (headTail t)) → Any P t
+  headTail-tail⁻ : (t : Tree V l u (1 + h)) →
+                   let _ , _ , _ , t⁻ = headTail t in
+                   Any P t⁻ → Any P t
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas`:
+  ```
+  joinˡ⁻-here⁺ : (kv : K& V) →
+                 (l : Tree⁻ V l [ kv .key ] hˡ) →
+                 (r : Tree V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 P kv → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻-left⁺ : (kv : K& V) →
+                 (l : Tree⁻ V l [ kv .key ] hˡ) →
+                 (r : Tree V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 Any P (proj₂ l) → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻-right⁺ : (kv : K& V) →
+                  (l : Tree⁻ V l [ kv .key ] hˡ) →
+                  (r : Tree V [ kv .key ] u hʳ) →
+                  (bal : hˡ ∼ hʳ ⊔ h) →
+                  Any P r → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻⁻ : (kv : K& V) →
+            (l : Tree⁻ V l [ kv .key ] hˡ) →
+            (r : Tree V [ kv .key ] u hʳ) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinˡ⁻ hˡ kv l r bal)) →
+            P kv ⊎ Any P (proj₂ l) ⊎ Any P r
+  joinʳ⁻-here⁺ : (kv : K& V) →
+                 (l : Tree V l [ kv .key ] hˡ) →
+                 (r : Tree⁻ V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 P kv → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻-left⁺ : (kv : K& V) →
+                 (l : Tree V l [ kv .key ] hˡ) →
+                 (r : Tree⁻ V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 Any P l → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻-right⁺ : (kv : K& V) →
+                  (l : Tree V l [ kv .key ] hˡ) →
+                  (r : Tree⁻ V [ kv .key ] u hʳ) →
+                  (bal : hˡ ∼ hʳ ⊔ h) →
+                  Any P (proj₂ r) → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻⁻ : (kv : K& V) →
+            (l : Tree V l [ kv .key ] hˡ) →
+            (r : Tree⁻ V [ kv .key ] u hʳ) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinʳ⁻ hʳ kv l r bal)) →
+            P kv ⊎ Any P l ⊎ Any P (proj₂ r)
   ```
 
 * In `Data.Vec.Properties`:
@@ -394,6 +632,14 @@ Additions to existing modules
   ≤⁺-resp-≈⁺ : _≤_ Respects₂ _≈_ → _≤⁺_ Respects₂ _≈⁺_
   ```
 
+* In `Relation.Binary.Construct.Closure.Symmetric`:
+  ```
+  hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
+         ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
+  on⁺  : ((SymClosure R) on g) ⇒ SymClosure (R on g)
+  on⁻  : SymClosure (R on g) ⇒ ((SymClosure R) on g)
+  ```
+
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`
   ```agda
   irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
@@ -407,6 +653,7 @@ Additions to existing modules
             Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
   ```
 
+<<<<<<< deprecate-Inspect
 * In `Relation.Binary.PropositionalEquality`, replacing `Reveal`/`inspect`:
   ```agda
   module Graph {A : Set a} {B : A → Set b} (f : (x : A) → B x) (x : A) where
@@ -416,6 +663,17 @@ Additions to existing modules
 
     view : View (f x)
     view = record { fx≡y = refl }
+=======
+* In `Relation.Binary.Properties.Setoid`:
+  ```agda
+  ¬[x≉x] : .(x ≉ x) → Whatever
+  ```
+
+* In `Relation.Binary.Propositional.Equality.Core`:
+  ```agda
+  ≢-irrefl : Irreflexive {A = A} _≡_ _≢_
+  ¬[x≢x] : .(x ≢ x) → Whatever
+>>>>>>> master
   ```
 
 * In `Relation.Nullary.Negation.Core`
