@@ -511,9 +511,6 @@ module _ .{{_ : NonZero o}} where
   ≡[o]%⇒≅%[o] {x = m} {y = n} eq =
     Sum.[ fwd ∘ ≡[o]%⇒≲%[o] eq , bwd ∘ ≡[o]%⇒≲%[o] (sym eq) ]′ (≤-total m n)
 
--- Example application, originally proposed by Jacques Carette, taken from
--- https://agda.zulipchat.com/#narrow/channel/264623-stdlib/topic/suc.20injective.20under.20_.25_/with/582024092
-
   ≡%-suc-injective : Injective _≡%[ o ]_ _≡%[ o ]_ suc
   ≡%-suc-injective = ≅%[o]⇒≡[o]% ∘ lemma-≅% ∘ ≡[o]%⇒≅%[o]
     where
