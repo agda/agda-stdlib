@@ -139,10 +139,10 @@ module _ {A : Set a} {B : A → Set b} where
   {-# WARNING_ON_USAGE inspect
   "Warning: inspect was deprecated in v2.4.
   Please use the `with ... in eq` syntax described at
-  https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
+  https://agda.readthedocs.io/en/stable/language/with-abstraction.html#with-abstraction-equality instead."
   #-}
   {-# WARNING_ON_USAGE Reveal_·_is_
   "Warning: Reveal_·_is_ was deprecated in v2.4.
   Please use the `with ... in eq` syntax described at
-  https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality instead."
+  https://agda.readthedocs.io/en/stable/language/with-abstraction.html#with-abstraction-equality instead."
   #-}
