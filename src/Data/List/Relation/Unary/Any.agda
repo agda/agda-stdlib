@@ -69,11 +69,7 @@ infixl 4 _─_
 _─_ : {P : Pred A p} → ∀ xs → Any P xs → List A
 xs ─ x∈xs = removeAt xs (index x∈xs)
 
--- If any element satisfies P, then P is satisfiable.
-
--- v2.4 `satisfied` is being retained for compatibility reasons,
---      while `satisfiable` below is renamed to `satisfiable⁺`
--- v3.0 `satisfied` will be renamed to `satisfiable`
+-- If any element satisfies P, then P is satisfied.
 
 satisfied : Any P xs → Satisfiable P
 satisfied (here px)   = _ , px
@@ -94,16 +90,12 @@ any? : Decidable P → Decidable (Any P)
 any? P? []       = no λ()
 any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎? any? P? xs)
 
-satisfiable⁺ : Satisfiable P → Satisfiable (Any P)
-satisfiable⁺ (x , Px) = [ x ] , here Px
-
-satisfiable⁻ : Satisfiable (Any P) → Satisfiable P
-satisfiable⁻ (x ∷ _  , here px)   = x , px
-satisfiable⁻ (_ ∷ xs , there pxs) = satisfiable⁻ (xs , pxs)
+satisfiable : Satisfiable P → Satisfiable (Any P)
+satisfiable (x , Px) = [ x ] , here Px
 
 
 ------------------------------------------------------------------------
--- DEPRECATED NAMES
+-- DEPRECATED
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
@@ -114,15 +106,4 @@ any = any?
 {-# WARNING_ON_USAGE any
 "Warning: any was deprecated in v1.4.
 Please use any? instead."
-#-}
-
--- Version 2.4
-
-satisfiable = satisfiable⁺
-{-# WARNING_ON_USAGE satisfiable
-"Warning: satisfiable was deprecated in v2.4.
-Please use satisfiable⁺ instead. Moreover,
-the name satisfied will be renamed in v3.0
-to satisfiable, so users should refactor
-as soon as they can."
 #-}

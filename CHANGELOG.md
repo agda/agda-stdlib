@@ -104,11 +104,6 @@ Deprecated names
   witness   ↦   satisfiable
   ```
 
-* In `Data.List.Relation.Unary.Any`:
-  ```agda
-  satisfiable    ↦  satisfiable⁺
-  ```
-
 * In `Data.Rational.Properties`:
   ```agda
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
@@ -326,7 +321,7 @@ Additions to existing modules
 
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
-  map : P ⊆ Q → All P ⊆ All Q
+  map : P ⊆ Q → All P xs → All Q xs
   ```
 
 * In `Data.List.Properties`:
@@ -334,11 +329,6 @@ Additions to existing modules
   filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
   filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
-  ```
-
-* In `Data.List.Relation.Unary.Any`:
-  ```agda
-  satisfiable⁻ : Satisfiable (Any P) → Satisfiable P
   ```
 
 * In `Data.Nat.Divisibility`:
