@@ -63,6 +63,7 @@ isGroupMonomorphism = record
 -- Public export of the sub-X-homomorphisms
 
 open IsGroupMonomorphism isGroupMonomorphism public
+ using (isGroupHomomorphism; isMonoidHomomorphism)
 
 -- And hence an AbelianGroup
 
@@ -77,6 +78,7 @@ abelianGroup = record
 -- Public export of the sub-X-structures/bundles
 
 open AbelianGroup abelianGroup public
+  using (isAbelianGroup; isGroup)
 
 -- Public export of the bundle
 

@@ -94,6 +94,14 @@ isRingMonomorphism = record
 -- Public export of the sub-X-homomorphisms
 
 open IsRingMonomorphism isRingMonomorphism public
+  using (isRingHomomorphism
+        ; isSemiringHomomorphism
+        ; isNearSemiringHomomorphism
+        ; +-isMonoidHomomorphism
+        ; +-isMagmaHomomorphism
+        ; *-isMonoidHomomorphism
+        ; *-isMagmaHomomorphism
+        )
 
 -- And hence a CommutativeRing
 
@@ -108,6 +116,7 @@ commutativeRing = record
 -- Public export of the sub-X-structures/bundles
 
 open CommutativeRing commutativeRing public
+  using (isCommutativeRing; isRing)
 
 -- Public export of the bundle
 

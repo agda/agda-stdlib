@@ -54,6 +54,7 @@ isMonoidMonomorphism = record
 -- Public export of the sub-X-homomorphisms
 
 open IsMonoidMonomorphism isMonoidMonomorphism public
+  using (isMonoidHomomorphism; isMagmaHomomorphism)
 
 -- And hence a CommutativeMonoid
 
@@ -68,6 +69,7 @@ commutativeMonoid = record
 -- Public export of the sub-X-structures/bundles
 
 open CommutativeMonoid commutativeMonoid public
+  using (isCommutativeMonoid; isMonoid)
 
 -- Public export of the bundle
 

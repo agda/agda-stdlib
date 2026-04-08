@@ -60,6 +60,7 @@ isMagmaMonomorphism = record
 -- Public export of the sub-X-homomorphisms
 
 open IsMagmaMonomorphism isMagmaMonomorphism public
+  using (isMagmaHomomorphism; injective)
 
 -- And hence a CommutativeSemigroup
 
@@ -74,6 +75,7 @@ commutativeSemigroup = record
 -- Public export of the sub-X-structures/bundles
 
 open CommutativeSemigroup commutativeSemigroup public
+  using (isCommutativeSemigroup; isSemigroup)
 
 -- Public export of the bundle
 
