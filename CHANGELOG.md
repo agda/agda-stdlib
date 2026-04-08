@@ -184,6 +184,11 @@ New modules
   Data.List.NonEmpty.Membership.Setoid
   ```
 
+* A variation on `Fin` seen as a `Nat` refinement
+  ```
+  Data.Nat.Bounded.Base
+  ```
+
 * Refactoring of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` as smaller modules:
   ```
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
