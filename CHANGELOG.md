@@ -344,6 +344,23 @@ Additions to existing modules
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
   ```
 
+* In `Data.Nat.DivMod`:
+  ```agda
+  infix 4 _≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
+  m ≡%[ o ] n = m % o ≡ n % o
+
+  infix 4 _≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
+  m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
+  m ≅%[ o ] n = SymClosure _≲%[ o ]_ m n
+
+  ≲%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≲%[ o ]_ ⇒ _≡%[ o ]_
+  ≅%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≅%[ o ]_ ⇒ _≡%[ o ]_
+  ≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
+  ≡[o]%⇒≅%[o] : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≅%[ o ]_
+
+  ≡%-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
+  ```
+
 * In `Data.Nat.Logarithm`
   ```agda
   2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
@@ -606,6 +623,14 @@ Additions to existing modules
   ≤⁺-respˡ-≈⁺ : _≤_ Respectsˡ _≈_ → _≤⁺_ Respectsˡ _≈⁺_
   ≤⁺-respʳ-≈⁺ : _≤_ Respectsʳ _≈_ → _≤⁺_ Respectsʳ _≈⁺_
   ≤⁺-resp-≈⁺ : _≤_ Respects₂ _≈_ → _≤⁺_ Respects₂ _≈⁺_
+  ```
+
+* In `Relation.Binary.Construct.Closure.Symmetric`:
+  ```
+  hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
+         ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
+  on⁺  : ((SymClosure R) on g) ⇒ SymClosure (R on g)
+  on⁻  : SymClosure (R on g) ⇒ ((SymClosure R) on g)
   ```
 
 * In `Data.Vec.Relation.Binary.Pointwise.Inductive`
