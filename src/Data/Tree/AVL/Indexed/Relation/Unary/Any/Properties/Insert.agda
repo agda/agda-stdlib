@@ -26,10 +26,13 @@ open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
   using (lookup-result; lookup-bounded; lookup-rebuild-accum)
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinˡ⁺-left⁺; joinʳ⁺-right⁺; joinˡ⁺-here⁺; joinʳ⁺-here⁺;
          joinʳ⁺-left⁺; joinˡ⁺-right⁺; joinˡ⁺⁻; joinʳ⁺⁻)
-open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (sym; trans)
+open StrictTotalOrder sto
+  using (_<_; _≈_; module Eq; compare; irrefl)
+  renaming (Carrier to Key; trans to <-trans)
+open Eq using (_≉_; sym; trans)
 
 open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
@@ -41,54 +44,52 @@ private
     v p : Level
     V : Value v
     l u : Key⁺
-    n : ℕ
+    h : ℕ
     P : Pred (K& V) p
 
-module _ {V : Value v} where
 
-  private
-    Val  = Value.family V
-    Val≈ = Value.respects V
+module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
     open <-Reasoning AVL.strictPartialOrder
 
-    Any-insertWith-nothing : (t : Tree V l u n) (seg : l < k < u) →
-                             P (k , f nothing) →
-                             ¬ (Any ((k ≈_) ∘′ key) t) → Any P (proj₂ (insertWith k f t seg))
-    Any-insertWith-nothing (leaf l<u)                   seg         pr ¬p = here pr
-    Any-insertWith-nothing (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr ¬p
+    insertWith-nothing : (t : Tree V l u h) (l<k<u : l < k < u) →
+                         P (k , f nothing) →
+                         ¬ (Any ((k ≈_) ∘′ key) t) →
+                         Any P (proj₂ (insertWith k f t l<k<u))
+    insertWith-nothing (leaf l<u)                   l<k<u         pr ¬p = here pr
+    insertWith-nothing (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr ¬p
       with compare k k′
     ... | tri≈ _ k≈k′ _ = contradiction (here k≈k′) ¬p
     ... | tri< k<k′ _ _ = joinˡ⁺-left⁺ kv lk′ ku bal ih
       where
-      seg′ = l<k , [ k<k′ ]ᴿ
-      lk′  = insertWith k f lk seg′
-      ih   = Any-insertWith-nothing lk seg′ pr (λ p → ¬p (left p))
+      l<k<u′ = l<k , [ k<k′ ]ᴿ
+      lk′  = insertWith k f lk l<k<u′
+      ih   = insertWith-nothing lk l<k<u′ pr (λ p → ¬p (left p))
     ... | tri> _ _ k>k′ = joinʳ⁺-right⁺ kv lk ku′ bal ih
       where
-      seg′ = [ k>k′ ]ᴿ , k<u
-      ku′  = insertWith k f ku seg′
-      ih   = Any-insertWith-nothing ku seg′ pr (λ p → ¬p (right p))
+      l<k<u′ = [ k>k′ ]ᴿ , k<u
+      ku′  = insertWith k f ku l<k<u′
+      ih   = insertWith-nothing ku l<k<u′ pr (λ p → ¬p (right p))
 
-    Any-insertWith-just : (t : Tree V l u n) (seg : l < k < u) →
-                          (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , Val≈ eq (f (just (Val≈ (sym eq) v))))) →
-                          Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t seg))
-    Any-insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
+    insertWith-just : (t : Tree V l u h) (l<k<u : l < k < u) →
+                      (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , respects eq (f (just (respects (sym eq) v))))) →
+                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t l<k<u))
+    insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
       with p | compare k k′
     -- happy paths
     ... | here _   | tri≈ _ k≈k′ _ = here (pr k′ v k≈k′)
     ... | left lp  | tri< k<k′ _ _ =
-      joinˡ⁺-left⁺ kv lk′ ku bal (Any-insertWith-just lk seg′ pr lp)
+      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just lk l<k<u′ pr lp)
       where
-      seg′ = l<k , [ k<k′ ]ᴿ
-      lk′  = insertWith k f lk seg′
+      l<k<u′ = l<k , [ k<k′ ]ᴿ
+      lk′  = insertWith k f lk l<k<u′
     ... | right rp | tri> _ _ k>k′ =
-      joinʳ⁺-right⁺ kv lk ku′ bal (Any-insertWith-just ku seg′ pr rp)
+      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just ku l<k<u′ pr rp)
       where
-      seg′ = [ k>k′ ]ᴿ , k<u
-      ku′  = insertWith k f ku seg′
+      l<k<u′ = [ k>k′ ]ᴿ , k<u
+      ku′  = insertWith k f ku l<k<u′
 
     -- impossible cases
     ... | here eq  | tri< k<k′ _ _ = begin-contradiction
@@ -124,20 +125,21 @@ module _ {V : Value v} where
       [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
       [ k  ] ∎
 
-  module _ (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) where
+  module _ (k : Key) (v : Val k) (t : Tree V l u h) (l<k<u : l < k < u) where
 
-    Any-insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) → Any P (proj₂ (insert k v t seg))
-    Any-insert-nothing = Any-insertWith-nothing k (F.const v) t seg
+    insert-nothing : P (k , v) → ¬ (Any ((k ≈_) ∘′ key) t) →
+                     Any P (proj₂ (insert k v t l<k<u))
+    insert-nothing = insertWith-nothing k (F.const v) t l<k<u
 
-    Any-insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , Val≈ eq v)) →
-                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t seg))
-    Any-insert-just pr = Any-insertWith-just k (F.const v) t seg (λ k′ _ eq → pr k′ eq)
+    insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , respects eq v)) →
+                  Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t l<k<u))
+    insert-just pr = insertWith-just k (F.const v) t l<k<u (λ k′ _ → pr k′)
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
-    insertWith⁺ : (t : Tree V l u n) (seg : l < k < u) →
-                  (p : Any P t) → k ≉ Any.lookupKey p →
-                  Any P (proj₂ (insertWith k f t seg))
+    insertWith⁺ : (t : Tree V l u h) (l<k<u : l < k < u) →
+                  (p : Any P t) → k ≉ lookupKey p →
+                  Any P (proj₂ (insertWith k f t l<k<u))
     insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
       with compare k k′
     ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
@@ -162,21 +164,21 @@ module _ {V : Value v} where
                               ih = insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
                           in joinʳ⁺-right⁺ kv l r′ bal ih
 
-  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) →
-            (p : Any P t) → k ≉ Any.lookupKey p →
-            Any P (proj₂ (insert k v t seg))
+  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u h) (l<k<u : l < k < u) →
+            (p : Any P t) → k ≉ lookupKey p →
+            Any P (proj₂ (insert k v t l<k<u))
   insert⁺ k v = insertWith⁺ k (F.const v)
 
   module _
     {P : Pred (K& V) p}
-    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , Val≈ k≈k′ v) → P (k , v))
+    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , respects k≈k′ v) → P (k , v))
     (k : Key) (v : Val k)
     where
 
-    insert⁻ : (t : Tree V l u n) (seg : l < k < u) →
-              Any P (proj₂ (insert k v t seg)) →
+    insert⁻ : (t : Tree V l u h) (l<k<u : l < k < u) →
+              Any P (proj₂ (insert k v t l<k<u)) →
               P (k , v) ⊎ Any (λ{ (k′ , v′) → k ≉ k′ × P (k′ , v′)}) t
-    insert⁻ (leaf l<u) seg (here p) = inj₁ p
+    insert⁻ (leaf l<u) l<k<u (here p) = inj₁ p
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p with compare k k′
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri< k<k′ k≉k′ _
         with joinˡ⁺⁻ kv′ (insert k v l (l<k , [ k<k′ ]ᴿ)) r bal p
@@ -205,3 +207,33 @@ module _ {V : Value v} where
       where
       k′<p = [<]-injective (proj₁ (lookup-bounded p))
       k≉p  = λ k≈p → irrefl (trans (sym k≈k′) k≈p) k′<p
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+Any-insertWith-nothing = insertWith-nothing
+{-# WARNING_ON_USAGE Any-insertWith-nothing
+"Warning: Any-insertWith-nothing was deprecated in v2.4.
+Please use insertWith-nothing instead."
+#-}
+Any-insertWith-just = insertWith-just
+{-# WARNING_ON_USAGE Any-insertWith-just
+"Warning: Any-insertWith-just was deprecated in v2.4.
+Please use insertWith-just instead."
+#-}
+Any-insert-nothing = insert-nothing
+{-# WARNING_ON_USAGE Any-insert-nothing
+"Warning: Any-insert-nothing was deprecated in v2.4.
+Please use insert-nothing instead."
+#-}
+Any-insert-just = insert-just
+{-# WARNING_ON_USAGE Any-insert-just
+"Warning: Any-insert-just was deprecated in v2.4.
+Please use insert-just instead."
+#-}

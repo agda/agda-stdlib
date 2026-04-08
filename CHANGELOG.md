@@ -68,7 +68,7 @@ Minor improvements
   levels to be used.
 
 * Due to becoming large, `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`
-  has been split into small modules
+  has been split into smaller modules
   `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
   that are reexported by the original `Properties`.
 
@@ -112,6 +112,14 @@ Deprecated names
 * In `Data.Rational.Properties`:
   ```agda
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert`:
+  ```agda
+  Any-insertWith-nothing  ↦  insertWith-nothing
+  Any-insertWith-just     ↦  insertWith-just
+  Any-insert-nothing      ↦  insert-nothing
+  Any-insert-just         ↦  insert-just
   ```
 
 * In `Data.Vec.Properties`:
@@ -188,9 +196,8 @@ New modules
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert
-  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join
-  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.LookupFun
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
   ```
 
@@ -425,6 +432,27 @@ Additions to existing modules
   showAtPrecision : ℕ → ℚᵘ → String
   ```
 
+* In `Data.Tree.AVL.Height`:
+  ```agda
+  0∼⊔ : 0 ∼ j ⊔ m → j ≡ m
+  ∼0⊔ : i ∼ 0 ⊔ m → i ≡ m
+  ```
+
+* In `Data.Tree.AVL.Indexed`:
+  ```agda
+  Tree⁺ Tree⁻ : (V : Value v) (l u : Key⁺) (h : ℕ) → Set _
+  pattern leaf⁻ l<u = _ , leaf l<u
+  pattern node⁰ʳ k₁ t₁ k₂ t₂ t₃ = node k₁ t₁ (node k₂ t₂ t₃ ∼0) ∼0
+  pattern node⁰ˡ k₁ k₂ t₁ t₂ t₃ = node k₁ (node k₂ t₁ t₂ ∼0) t₃ ∼0
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any`:
+  ```agda
+  infix 5 _#[_]_ _#_
+  _#[_]_ : (k : Key) (P : Pred (K& V) p) → Pred (Any P t) ℓ₁
+  _#_    : Key → Pred (Any P t) ℓ₁
+  ```
+
 * In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast`:
   ```agda
   castʳ⁺ : Any P lm → Any P (castʳ lm m<u)
@@ -460,47 +488,47 @@ Additions to existing modules
                    Any P t⁻ → Any P t
   ```
 
-* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns`:
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas`:
   ```
   joinˡ⁻-here⁺ : (kv : K& V) →
-                 (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+                 (l : Tree⁻ V l [ kv .key ] hˡ) →
                  (r : Tree V [ kv .key ] u hʳ) →
                  (bal : hˡ ∼ hʳ ⊔ h) →
                  P kv → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
   joinˡ⁻-left⁺ : (kv : K& V) →
-                 (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+                 (l : Tree⁻ V l [ kv .key ] hˡ) →
                  (r : Tree V [ kv .key ] u hʳ) →
                  (bal : hˡ ∼ hʳ ⊔ h) →
                  Any P (proj₂ l) → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
   joinˡ⁻-right⁺ : (kv : K& V) →
-                  (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+                  (l : Tree⁻ V l [ kv .key ] hˡ) →
                   (r : Tree V [ kv .key ] u hʳ) →
                   (bal : hˡ ∼ hʳ ⊔ h) →
                   Any P r → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
   joinˡ⁻⁻ : (kv : K& V) →
-            (l : ∃ λ i → Tree V l [ kv .key ] pred[ i ⊕ hˡ ]) →
+            (l : Tree⁻ V l [ kv .key ] hˡ) →
             (r : Tree V [ kv .key ] u hʳ) →
             (bal : hˡ ∼ hʳ ⊔ h) →
             Any P (proj₂ (joinˡ⁻ hˡ kv l r bal)) →
             P kv ⊎ Any P (proj₂ l) ⊎ Any P r
   joinʳ⁻-here⁺ : (kv : K& V) →
                  (l : Tree V l [ kv .key ] hˡ) →
-                 (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+                 (r : Tree⁻ V [ kv .key ] u hʳ) →
                  (bal : hˡ ∼ hʳ ⊔ h) →
                  P kv → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
   joinʳ⁻-left⁺ : (kv : K& V) →
                  (l : Tree V l [ kv .key ] hˡ) →
-                 (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+                 (r : Tree⁻ V [ kv .key ] u hʳ) →
                  (bal : hˡ ∼ hʳ ⊔ h) →
                  Any P l → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
   joinʳ⁻-right⁺ : (kv : K& V) →
                   (l : Tree V l [ kv .key ] hˡ) →
-                  (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+                  (r : Tree⁻ V [ kv .key ] u hʳ) →
                   (bal : hˡ ∼ hʳ ⊔ h) →
                   Any P (proj₂ r) → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
   joinʳ⁻⁻ : (kv : K& V) →
             (l : Tree V l [ kv .key ] hˡ) →
-            (r : ∃ λ i → Tree V [ kv .key ] u pred[ i ⊕ hʳ ]) →
+            (r : Tree⁻ V [ kv .key ] u hʳ) →
             (bal : hˡ ∼ hʳ ⊔ h) →
             Any P (proj₂ (joinʳ⁻ hʳ kv l r bal)) →
             P kv ⊎ Any P l ⊎ Any P (proj₂ r)
