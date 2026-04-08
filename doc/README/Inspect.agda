@@ -7,7 +7,7 @@
 -- via the `inspect` function described below, have been deprecated
 -- in favour of the `with ... in ...` syntax. See the documentation
 --
--- https://agda.readthedocs.io/en/v2.9.0/language/with-abstraction.html#with-abstraction-equality
+-- https://agda.readthedocs.io/en/stable/language/with-abstraction.html#with-abstraction-equality
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
