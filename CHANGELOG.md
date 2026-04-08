@@ -67,10 +67,9 @@ Minor improvements
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
   levels to be used.
 
-* Due to becoming large, `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`
-  has been split into smaller modules
-  `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
-  that are reexported by the original `Properties`.
+* The original `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` has been
+  split up into smaller `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
+  modules that are reexported by `Properties`.
 
 Deprecated modules
 ------------------
@@ -595,6 +594,19 @@ Additions to existing modules
                       padRight m≤n x (updateAt xs i f)
   ```
 
+* In `Data.Vec.Relation.Binary.Pointwise.Inductive`
+  ```agda
+  irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
+  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
+            Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
+  ```
+
+* In `Data.Vec.Relation.Binary.Pointwise.Extensional`
+  ```agda
+  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
+            Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+  ```
+
 * In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
   ```agda
   ≤±-respˡ-≡ : _≤±_ Respectsˡ _≡_
@@ -633,19 +645,6 @@ Additions to existing modules
   on⁻  : SymClosure (R on g) ⇒ ((SymClosure R) on g)
   ```
 
-* In `Data.Vec.Relation.Binary.Pointwise.Inductive`
-  ```agda
-  irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
-  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
-            Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
-  ```
-
-* In `Data.Vec.Relation.Binary.Pointwise.Extensional`
-  ```agda
-  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
-            Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
-  ```
-
 * In `Relation.Binary.Properties.Setoid`:
   ```agda
   ¬[x≉x] : .(x ≉ x) → Whatever
@@ -678,20 +677,16 @@ Additions to existing modules
   ⟨_⟩⊢⁺_    : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
   [_]⊢⁻_    : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
   [_]⊢⁺_    : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
-  ```
-
-* In `System.Random`:
-  ```agda
-  randomIO : IO Bool
-  randomRIO : RandomRIO {A = Bool} _≤_
-  ```
-
-* In Relation.Unary.Properites
-  ```agda
   ¬∃⟨P⟩⇒Π[∁P] : ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
   ¬∃⟨P⟩⇒∀[∁P] : ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
   ∃⟨∁P⟩⇒¬Π[P] : ∃⟨ ∁ P ⟩ → ¬ Π[ P ]
   ∃⟨∁P⟩⇒¬∀[P] : ∃⟨ ∁ P ⟩ → ¬ ∀[ P ]
   Π[∁P]⇒¬∃[P] : Π[ ∁ P ] → ¬ ∃⟨ P ⟩
   ∀[∁P]⇒¬∃[P] : ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
+  ```
+
+* In `System.Random`:
+  ```agda
+  randomIO : IO Bool
+  randomRIO : RandomRIO {A = Bool} _≤_
   ```
