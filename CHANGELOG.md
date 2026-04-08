@@ -42,7 +42,8 @@ Minor improvements
   of the termination checker for some `Vector`-defined operations.
 
 * `Relation.Binary.Morphism.Definitions` is no longer imported by any module,
-  but retained as a stub for compatibility with external users.
+  but retained as a compatibility stub for external users, and for uniformity
+  with the design of existing hierarchies.
 
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
@@ -110,12 +111,6 @@ Deprecated names
 * In `Relation.Binary.Construct.Union`:
   ```agda
   decidable     ↦   _∪?_
-  ```
-
-* In `Relation.Binary.Morphism.Definitions`:
-  ```agda
-  Morphism A B    ↦   A → B
-  Homomorphic₂    ↦   Function.Definitions.Congruent
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
