@@ -65,8 +65,8 @@ view : (k : Fin n) → View k
 view {suc n} (0 , prf)     = zero
 view {suc n} (suc k , prf) = suc (k , (| s<s⁻¹ prf |))
 
-unview : {k : Fin n} → View k → Fin n
-unview {k = k} _ = k
+view⁻¹ : {k : Fin n} → View k → Fin n
+view⁻¹ {k = k} _ = k
 
 -- A conversion: toℕ "i" = i.
 
