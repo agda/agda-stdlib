@@ -300,9 +300,9 @@ pred (k , k<n) = ℕ.pred k , (| (ℕₚ.≤-<-trans ℕₚ.pred[n]≤n) k<n |)
 -- opposite "i" = "pred n - i" (i.e. the additive inverse).
 
 opposite : Fin n → Fin n
-opposite {n} i@(k , prf)
-  = n ℕ.∸ suc k
-  , [ ℕₚ.m<n+o⇒m∸n<o n (suc k) {n} {{ nonZero i}} (ℕₚ.m<n+m n z<s) ]
+opposite {n = n@(suc m)} i@(k , _)
+  = m ℕ.∸ k , [ ℕₚ.m<n+o⇒m∸n<o m k (ℕₚ.m≤n+m n k) ]
+
 
 
 ------------------------------------------------------------------------
