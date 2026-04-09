@@ -78,7 +78,15 @@ abelianGroup = record
 -- Public export of the sub-X-structures/bundles
 
 open AbelianGroup abelianGroup public
-  using (isAbelianGroup; isGroup)
+  using (isAbelianGroup; isGroup
+        ; isCommutativeMonoid; isMonoid
+        ; isCommutativeSemigroup; isSemigroup
+        ; isCommutativeMagma; isMagma
+        ; group
+        ; commutativeMonoid; monoid
+        ; commutativeSemigroup; semigroup
+        ; commutativeMagma; magma
+        )
 
 -- Public export of the bundle
 

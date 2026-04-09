@@ -75,7 +75,10 @@ commutativeSemigroup = record
 -- Public export of the sub-X-structures/bundles
 
 open CommutativeSemigroup commutativeSemigroup public
-  using (isCommutativeSemigroup; isSemigroup)
+  using (isCommutativeSemigroup; isSemigroup
+        ; isCommutativeMagma; isMagma
+        ; semigroup; commutativeMagma; magma
+        )
 
 -- Public export of the bundle
 

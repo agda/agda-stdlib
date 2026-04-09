@@ -69,7 +69,13 @@ commutativeMonoid = record
 -- Public export of the sub-X-structures/bundles
 
 open CommutativeMonoid commutativeMonoid public
-  using (isCommutativeMonoid; isMonoid)
+  using (isCommutativeMonoid; isMonoid
+        ; isCommutativeSemigroup; isSemigroup
+        ; isCommutativeMagma; isMagma
+        ; monoid
+        ; commutativeSemigroup; semigroup
+        ; commutativeMagma; magma
+        )
 
 -- Public export of the bundle
 
