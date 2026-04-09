@@ -11,12 +11,12 @@ module Data.Nat.Bounded.Base where
 open import Data.Bool.Base using (T; true; false)
 import Data.Bool.Properties as Boolₚ
 open import Data.Empty using (⊥-elim)
-open import Data.Irrelevant as Irrelevant using (Irrelevant; [_])
+open import Data.Irrelevant as Irrelevant using (Irrelevant; [_]; pure; _<*>_)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; z<s; s<s; s<s⁻¹; NonZero)
 import Data.Nat.Properties as ℕₚ
 import Data.Nat.DivMod as ℕₚ
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
-open import Data.Refinement as Refinement using (Refinement; _,_; Refinement-syntax)
+open import Data.Refinement as Refinement using (Refinement; _,_; Refinement-syntax; proof)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 
 open import Function.Base using (id; _$_; _∘_; _on_)
@@ -63,7 +63,7 @@ data View : ∀ {n} (k : Fin n) → Set where
 
 view : (k : Fin n) → View k
 view {suc n} (0 , prf)     = zero
-view {suc n} (suc k , prf) = suc (k , Irrelevant.map s<s⁻¹ prf)
+view {suc n} (suc k , prf) = suc (k , (| s<s⁻¹ prf |))
 
 unview : {k : Fin n} → View k → Fin n
 unview {k = k} _ = k
@@ -142,7 +142,7 @@ n ↑ʳ i = Refinement.map (n ℕ.+_) (ℕₚ.+-monoʳ-< n) i
 
 reduce≥ : ∀ (i : Fin (m ℕ.+ n)) → .(m ℕ.≤ toℕ i) → Fin n
 reduce≥ {m = m} {n = n} (k , prf) m≤i
-  = k ℕ.∸ m , (Irrelevant.map go prf Irrelevant.<*> [ m≤i ]) where
+  = k ℕ.∸ m , (| go prf [ m≤i ] |) where
 
   go : k ℕ.< m ℕ.+ n → m ℕ.≤ k → k ℕ.∸ m ℕ.< n
   go k<m+n m≤k = let open ℕₚ.≤-Reasoning in begin-strict
@@ -153,27 +153,24 @@ reduce≥ {m = m} {n = n} (k , prf) m≤i
 -- inject⋆ m "i" = "i".
 
 inject : ∀ {i : Fin n} → Fin′ i → Fin n
-inject {i = i} (k , k<i)
-  = k , (Irrelevant.map ℕₚ.<-trans k<i Irrelevant.<*> Refinement.proof i)
+inject {i = i} (k , k<i) = k , (| ℕₚ.<-trans k<i (proof i)|)
 
 inject! : ∀ {i : Fin (suc n)} → Fin′ i → Fin n
 inject! {i = i} (k , k<i)
-  = k , (Irrelevant.map ℕₚ.<-≤-trans k<i
-        Irrelevant.<*> Irrelevant.map ℕ.s≤s⁻¹ (Refinement.proof i))
+  = k , (| ℕₚ.<-≤-trans k<i (| ℕ.s≤s⁻¹ (proof i)|) |)
 
 inject₁ : Fin n → Fin (suc n)
-inject₁ (k , k<n)
-  = k , Irrelevant.map ℕₚ.m<n⇒m<1+n k<n
+inject₁ (k , k<n) = k , (| ℕₚ.m<n⇒m<1+n k<n |)
 
 inject≤ : Fin m → .(m ℕ.≤ n) → Fin n
 inject≤ (k , k<m) m≤n
-  = k , (Irrelevant.map ℕₚ.<-≤-trans k<m Irrelevant.<*> [ m≤n ])
+  = k , (| ℕₚ.<-≤-trans k<m [ m≤n ] |)
 
 -- lower₁ "i" _ = "i".
 
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
 lower₁ (k , k<1+n) n≢i
-  = k , Irrelevant.map (λ prf → ℕₚ.≤∧≢⇒< (ℕ.s≤s⁻¹ prf) (≢-sym n≢i)) k<1+n
+  = k , (| (λ prf → ℕₚ.≤∧≢⇒< (ℕ.s≤s⁻¹ prf) (≢-sym n≢i)) k<1+n |)
 
 lower : ∀ (i : Fin m) → .(toℕ i ℕ.< n) → Fin n
 lower (k , _) k<n = k , [ k<n ]
@@ -203,7 +200,7 @@ quotRem : ∀ n → Fin (m ℕ.* n) → Fin n × Fin m
 quotRem {m = m} zero i = ⊥-elim (¬Fin0 (subst Fin (ℕₚ.*-zeroʳ m) i))
 quotRem {m = m} n@(suc _) (i , i<m*n)
   = (i ℕ.% n , [ ℕₚ.m%n<n i n ])
-  , (i ℕ./ n , Irrelevant.map ℕₚ.m<n*o⇒m/o<n i<m*n)
+  , (i ℕ./ n , (| ℕₚ.m<n*o⇒m/o<n i<m*n |))
 
 -- a variant of quotRem the type of whose result matches the order of multiplication
 remQuot : ∀ n → Fin (m ℕ.* n) → Fin m × Fin n
@@ -218,8 +215,7 @@ remainder {m} n = proj₂ ∘ remQuot {m} n
 -- inverse of remQuot
 combine : Fin m → Fin n → Fin (m ℕ.* n)
 combine {m = suc m} {n = n} (k , k<m) (l , l<n)
-  = (k ℕ.* n) ℕ.+ l
-  , (Irrelevant.map go (Irrelevant.map ℕ.s≤s⁻¹ k<m) Irrelevant.<*> l<n)
+  = (k ℕ.* n) ℕ.+ l , (| go (| ℕ.s≤s⁻¹ k<m |) l<n |)
 
   where
 
@@ -272,7 +268,7 @@ lift {n = n} k f i = [ _↑ˡ n , (k ↑ʳ_) ∘ f ]′ (splitAt k i)
 infixl 6 _+_
 _+_ : ∀ (i : Fin m) (j : Fin n) → Fin (toℕ i ℕ.+ n)
 _+_ {m = m} {n = n} (i , i<m) (j , j<n)
-  = i ℕ.+ j , Irrelevant.map (ℕₚ.+-monoʳ-< i) j<n
+  = i ℕ.+ j , (| (ℕₚ.+-monoʳ-< i) j<n |)
 
 -- "i" - "j" = "i ∸ j".
 
@@ -280,8 +276,7 @@ infixl 6 _-_
 _-_ : ∀ (i : Fin n) (j : Fin′ (fsuc i)) → Fin (n ℕ.∸ toℕ j)
 (i , i<n) - (j , j<1+i)
   = i ℕ.∸ j
-  , (Irrelevant.map (λ i<n → ℕₚ.∸-monoˡ-< i<n ∘ ℕ.s≤s⁻¹) i<n
-     Irrelevant.<*> j<1+i)
+  , (| (λ i<n → ℕₚ.∸-monoˡ-< i<n ∘ ℕ.s≤s⁻¹) i<n j<1+i |)
 
 -- m ℕ- "i" = "m ∸ i".
 
@@ -289,7 +284,7 @@ infixl 6 _ℕ-_
 _ℕ-_ : (n : ℕ) (j : Fin (suc n)) → Fin (suc n ℕ.∸ toℕ j)
 n ℕ- (j , j<1+n)
   = n ℕ.∸ j
-  , Irrelevant.map (λ j<1+n → ℕₚ.≤-reflexive $ sym $ ℕₚ.∸-suc (ℕ.s≤s⁻¹ j<1+n)) j<1+n
+  , (| (λ j<1+n → ℕₚ.≤-reflexive $ sym $ ℕₚ.∸-suc (ℕ.s≤s⁻¹ j<1+n)) j<1+n |)
 
 -- m ℕ-ℕ "i" = m ∸ i.
 
@@ -300,7 +295,7 @@ n ℕ-ℕ (i , i<1+m) = n ℕ.∸ i
 -- pred "i" = "pred i".
 
 pred : Fin n → Fin n
-pred (k , k<n) = ℕ.pred k , Irrelevant.map (ℕₚ.≤-<-trans ℕₚ.pred[n]≤n) k<n
+pred (k , k<n) = ℕ.pred k , (| (ℕₚ.≤-<-trans ℕₚ.pred[n]≤n) k<n |)
 
 -- opposite "i" = "pred n - i" (i.e. the additive inverse).
 
