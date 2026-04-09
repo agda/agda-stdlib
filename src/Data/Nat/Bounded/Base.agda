@@ -19,7 +19,7 @@ open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Refinement as Refinement using (Refinement; _,_; Refinement-syntax; proof)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 
-open import Function.Base using (id; _$_; _∘_; _on_)
+open import Function.Base using (id; _$_; _∘_; λ∙; _on_)
 open import Function.Bundles using (Equivalence); open Equivalence using (from)
 
 open import Level using (0ℓ)
@@ -170,7 +170,7 @@ inject≤ (k , k<m) m≤n
 
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
 lower₁ (k , k<1+n) n≢i
-  = k , (| (λ prf → ℕₚ.≤∧≢⇒< (ℕ.s≤s⁻¹ prf) (≢-sym n≢i)) k<1+n |)
+  = k , (| ℕₚ.≤∧≢⇒< (| ℕ.s≤s⁻¹ k<1+n |) [ ≢-sym n≢i ] |)
 
 lower : ∀ (i : Fin m) → .(toℕ i ℕ.< n) → Fin n
 lower (k , _) k<n = k , [ k<n ]
@@ -276,7 +276,7 @@ infixl 6 _-_
 _-_ : ∀ (i : Fin n) (j : Fin′ (fsuc i)) → Fin (n ℕ.∸ toℕ j)
 (i , i<n) - (j , j<1+i)
   = i ℕ.∸ j
-  , (| (λ i<n → ℕₚ.∸-monoˡ-< i<n ∘ ℕ.s≤s⁻¹) i<n j<1+i |)
+  , (| ℕₚ.∸-monoˡ-< i<n (| ℕ.s≤s⁻¹ j<1+i |) |)
 
 -- m ℕ- "i" = "m ∸ i".
 
@@ -284,7 +284,7 @@ infixl 6 _ℕ-_
 _ℕ-_ : (n : ℕ) (j : Fin (suc n)) → Fin (suc n ℕ.∸ toℕ j)
 n ℕ- (j , j<1+n)
   = n ℕ.∸ j
-  , (| (λ j<1+n → ℕₚ.≤-reflexive $ sym $ ℕₚ.∸-suc (ℕ.s≤s⁻¹ j<1+n)) j<1+n |)
+  , (| (ℕₚ.≤-reflexive ∘ sym ∘ (λ∙ ℕₚ.∸-suc) ∘ ℕ.s≤s⁻¹) j<1+n |)
 
 -- m ℕ-ℕ "i" = m ∸ i.
 

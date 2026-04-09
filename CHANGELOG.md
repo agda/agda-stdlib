@@ -122,6 +122,11 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Function.Base`:
+  ```agda
+  λ∙ : (.(x : A) → B x) → ((x : A) → B x)
+  ```
+
 * In `Relation.Binary.Construct.Intersection`:
   ```agda
   decidable     ↦   _∩?_
