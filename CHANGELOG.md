@@ -151,10 +151,6 @@ Deprecated names
 New modules
 -----------
 
-* Added tactic ring solvers for rational numbers (issue #1879):
-  `Data.Rational.Tactic.RingSolver`,
-  `Data.Rational.Unnormalised.Tactic.RingSolver`.
-
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
 * `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
@@ -169,18 +165,22 @@ New modules
 
 * `Data.List.Fresh.Membership.DecSetoid`.
 
-* `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
-
-* `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
-
-* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
-
 * Various additions over non-empty lists:
   ```
   Data.List.NonEmpty.Relation.Binary.Pointwise
   Data.List.NonEmpty.Relation.Unary.Any
   Data.List.NonEmpty.Membership.Propositional
   Data.List.NonEmpty.Membership.Setoid
+  ```
+
+* `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
+
+* `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
+
+* Added tactic ring solvers for rational numbers (issue #1879):
+  ```agda
+  Data.Rational.Tactic.RingSolver
+  Data.Rational.Unnormalised.Tactic.RingSolver
   ```
 
 * Refactoring of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` as smaller modules:
@@ -194,6 +194,8 @@ New modules
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
   ```
+
+* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
 
 * `Relation.Binary.Morphism.Construct.On`: given a relation `_∼_` on `B`,
   and a function `f : A → B`, construct the canonical `IsRelMonomorphism`
