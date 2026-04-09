@@ -312,7 +312,7 @@ pred (k , k<n) = ℕ.pred k , Irrelevant.map (ℕₚ.≤-<-trans ℕₚ.pred[n]�
 opposite : Fin n → Fin n
 opposite {n} i@(k , prf)
   = n ℕ.∸ suc k
-  , [ ℕₚ.m<n+o⇒m∸n<o n (suc k) {n} ⦃ nonZero i ⦄ (ℕₚ.m<n+m n z<s) ]
+  , [ ℕₚ.m<n+o⇒m∸n<o n (suc k) {n} {{ nonZero i}} (ℕₚ.m<n+m n z<s) ]
 
 
 ------------------------------------------------------------------------
