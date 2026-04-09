@@ -24,7 +24,7 @@ open import Function.Bundles using (Equivalence); open Equivalence using (from)
 
 open import Level using (0ℓ)
 
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; cong; subst; sym; ≢-sym)
@@ -117,13 +117,8 @@ fromℕ<ᵇ p = fromℕ< (ℕₚ.<ᵇ⇒< _ _ p)
 
 -- fromℕ<″ m _ = "m".
 
-open import Relation.Binary using (_⇒_)
-
-<″⇒< : ℕ._<″_ ⇒ ℕ._<_
-<″⇒< = ℕₚ.≤″⇒≤
-
 fromℕ<″ : ∀ m {n} → .(m ℕ.<″ n) → Fin n
-fromℕ<″ m m<″n = m , [ <″⇒< m<″n ]
+fromℕ<″ m m<″n = m , [ ℕₚ.<″⇒< m<″n ]
 
 -- Canonical liftings of i:Fin m to a larger index
 

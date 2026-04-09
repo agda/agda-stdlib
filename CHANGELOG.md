@@ -396,6 +396,7 @@ Additions to existing modules
   m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
   m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
   ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
+  <″⇒< : _<″_ ⇒ _<_
   ```
 
 * In `Data.Product.Properties`:
