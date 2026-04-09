@@ -189,7 +189,7 @@ New modules
   Data.List.NonEmpty.Membership.Setoid
   ```
 
-* A variation on `Fin` seen as a `Nat` refinement
+* A variation on `Fin` seen as a `Nat` refinement, with better runtime representation and performance.
   ```
   Data.Nat.Bounded.Base
   ```
