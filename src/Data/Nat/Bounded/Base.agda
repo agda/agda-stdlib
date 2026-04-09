@@ -46,8 +46,8 @@ Fin n = [ m ∈ ℕ ∣ m ℕ.< n ]
 ¬Fin0 : ¬ (Fin 0)
 ¬Fin0 ()
 
-nonZero : Fin n → ℕ.NonZero n
-nonZero {suc n} k = _
+nonZeroIndex : Fin n → ℕ.NonZero n
+nonZeroIndex {n = suc _} _ = _
 
 -- Recovering constructors and pattern matching
 
