@@ -116,7 +116,19 @@ commutativeRing = record
 -- Public export of the sub-X-structures/bundles
 
 open CommutativeRing commutativeRing public
-  using (isCommutativeRing; isRing)
+  using (isCommutativeRing; isRing
+        ; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+        ; +-invertibleMagma; +-invertibleUnitalMagma
+        ; +-rawMonoid; +-monoid; +-commutativeMonoid
+        ; +-group; +-abelianGroup
+        ; +-semigroup; +-commutativeSemigroup
+        ; *-rawMagma; *-magma; *-commutativeMagma
+        ; *-semigroup; *-commutativeSemigroup
+        ; *-rawMonoid; *-monoid; *-commutativeMonoid
+        ; nearSemiring
+        ; semiringWithoutOne; commutativeSemiringWithoutOne
+        ; semiringWithoutAnnihilatingZero; semiring
+        )
 
 -- Public export of the bundle
 
