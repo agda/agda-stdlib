@@ -30,7 +30,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary.Negation.Core using (¬_; contraposition)
-open import Relation.Unary using (Pred; Decidable)
+open import Relation.Unary using (Pred; _⊆_; Decidable)
 
 private
   variable
@@ -48,11 +48,11 @@ module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
   open Setoid R renaming (_≈_ to _≈₂_)
 
   map⁺ : ∀ {f} → Injective _≈₁_ _≈₂_ f →
-         ∀ {xs} → Unique S xs → Unique R (map f xs)
+         Unique S ⊆ Unique R ∘ map f
   map⁺ inj xs! = AllPairs.map⁺ (AllPairs.map (contraposition inj) xs!)
 
   map⁻ : ∀ {f} → Congruent _≈₁_ _≈₂_ f →
-         ∀ {xs} → Unique R (map f xs) → Unique S xs
+         Unique R ∘ map f ⊆ Unique S
   map⁻ cong fxs! = AllPairs.map (contraposition cong) (AllPairs.map⁻ fxs!)
 
 ------------------------------------------------------------------------
