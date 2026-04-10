@@ -28,6 +28,7 @@ open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
@@ -37,7 +38,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
 open import Data.Product.Base using (_,_; proj₁; proj₂)
-open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
@@ -177,13 +178,18 @@ module ≃-Reasoning = ≈-Reasoning ≃-setoid
 
 p≃0⇒↥p≡0 : ∀ p → p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
 p≃0⇒↥p≡0 p (*≡* eq) = begin
-  ↥ p          ≡⟨ ℤ.*-identityʳ (↥ p) ⟨
+  ↥ p         ≡⟨ ℤ.*-identityʳ (↥ p) ⟨
   ↥ p ℤ.* 1ℤ  ≡⟨ eq ⟩
-  0ℤ           ∎
+  0ℤ          ∎
   where open ≡-Reasoning
 
 ↥p≡↥q≡0⇒p≃q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
 ↥p≡↥q≡0⇒p≃q p q ↥p≡0 ↥q≡0 = ≃-trans (↥p≡0⇒p≃0 p ↥p≡0) (≃-sym (↥p≡0⇒p≃0 _ ↥q≡0))
+
+0≃?-weak : (p : ℚᵘ) → Maybe (0ℚᵘ ≃ p)
+0≃?-weak p with ↥ p ℤ.≟ 0ℤ
+... | yes ↥p≡0 = just (≃-sym (↥p≡0⇒p≃0 p ↥p≡0))
+... | no  _    = nothing
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -406,6 +412,16 @@ antimono⇒cong = BC.antimono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antis
 
 drop-*<* : p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
 drop-*<* (*<* pq<qp) = pq<qp
+
+------------------------------------------------------------------------
+-- Properties of _<ᵇ_
+------------------------------------------------------------------------
+
+<ᵇ⇒< : T (p <ᵇ q) → p < q
+<ᵇ⇒< = *<* ∘ ℤ.<ᵇ⇒<
+
+<⇒<ᵇ : p < q → T (p <ᵇ q)
+<⇒<ᵇ = ℤ.<⇒<ᵇ ∘ drop-*<*
 
 ------------------------------------------------------------------------
 -- Relationship between other operators
@@ -1194,6 +1210,24 @@ invertible⇒≄ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≄1 (begin
 
 *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
+
+p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+p*q≃0⇒p≃0∨q≃0 {p@record{}} {q@record{}} p*q≃0 =
+  Sum.map (↥p≡0⇒p≃0 p) (↥p≡0⇒p≃0 q) (ℤ.i*j≡0⇒i≡0∨j≡0 _ (p≃0⇒↥p≡0 _ p*q≃0))
+
+p*q≄0⇒p≄0 : (p * q) ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+p*q≄0⇒p≄0 {p} {q} pq≄0 p≃0 = pq≄0 $ begin-equality
+  p * q   ≃⟨ *-congʳ {q} p≃0 ⟩
+  0ℚᵘ * q ≃⟨ *-zeroˡ q ⟩
+  0ℚᵘ     ∎
+  where open ≤-Reasoning
+
+p*q≢0⇒q≢0 : (p * q) ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+p*q≢0⇒q≢0 {p} {q} pq≄0 q≃0 = pq≄0 $ begin-equality
+  p * q   ≃⟨ *-congˡ {p} q≃0 ⟩
+  p * 0ℚᵘ ≃⟨ *-zeroʳ p ⟩
+  0ℚᵘ     ∎
+  where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and -_

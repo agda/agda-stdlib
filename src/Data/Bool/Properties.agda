@@ -36,7 +36,7 @@ open import Relation.Binary.Definitions
         ; Minimum; Maximum; Total; Irrelevant ; Irreflexive; Asymmetric; Trans
         ; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; cong₂; subst; trans; _≢_)
+  using (_≡_; refl; sym; cong; cong₂; subst; trans; _≢_; ¬[x≢x])
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
 open import Relation.Nullary.Decidable.Core
@@ -657,10 +657,10 @@ not-¬ {true}  refl ()
 not-¬ {false} refl ()
 
 ¬-not : ∀ {x y} → x ≢ y → x ≡ not y
-¬-not {true}  {true}  x≢y = contradiction refl x≢y
+¬-not {true}  {true}  x≢y = ¬[x≢x] x≢y
 ¬-not {true}  {false} _   = refl
 ¬-not {false} {true}  _   = refl
-¬-not {false} {false} x≢y = contradiction refl x≢y
+¬-not {false} {false} x≢y = ¬[x≢x] x≢y
 
 ------------------------------------------------------------------------
 -- Properties of _xor_
