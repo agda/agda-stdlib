@@ -5,7 +5,7 @@
 -- pattern-matching lambda abstractions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module README.Case where
 

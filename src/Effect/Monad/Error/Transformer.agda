@@ -4,7 +4,7 @@
 -- The error monad transformer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level; _⊔_; suc)
 

@@ -4,7 +4,7 @@
 -- Properties of permutation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 

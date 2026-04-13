@@ -4,7 +4,7 @@
 -- Properties of the propositional suffix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Suffix.Propositional.Properties {a} {A : Set a} where
 

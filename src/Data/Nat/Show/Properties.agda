@@ -4,7 +4,7 @@
 -- Properties of showing natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Digit.Properties using (toDigits-injective; showDigit-injective)
 import Data.List.Properties as Listₚ

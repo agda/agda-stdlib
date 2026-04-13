@@ -4,7 +4,7 @@
 -- Universe levels
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Level where
 

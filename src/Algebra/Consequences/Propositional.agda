@@ -5,7 +5,7 @@
 -- commutativity (specialised to propositional equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Consequences.Propositional
   {a} {A : Set a} where

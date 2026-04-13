@@ -4,7 +4,7 @@
 -- Properties of digits and digit expansions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Digit using (digitChars; Digit; showDigit; toDigits)
 import Data.Char.Properties as Char

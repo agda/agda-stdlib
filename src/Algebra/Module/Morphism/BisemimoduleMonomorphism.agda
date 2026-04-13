@@ -4,7 +4,7 @@
 -- Consequences of a monomorphism between bisemimodules
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Module.Bundles.Raw using (RawBisemimodule)
 open import Algebra.Module.Morphism.Structures using (IsBisemimoduleMonomorphism)

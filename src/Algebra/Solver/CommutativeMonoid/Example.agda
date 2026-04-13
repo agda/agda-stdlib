@@ -4,7 +4,7 @@
 -- An example of how Algebra.CommutativeMonoidSolver can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Solver.CommutativeMonoid.Example where
 

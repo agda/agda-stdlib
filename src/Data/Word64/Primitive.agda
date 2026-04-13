@@ -4,7 +4,7 @@
 -- Word64: simple bindings to Haskell types and functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Data.Word64.Primitive where
 

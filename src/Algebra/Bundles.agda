@@ -7,7 +7,7 @@
 
 -- The contents of this module should be accessed via `Algebra`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Bundles where
 

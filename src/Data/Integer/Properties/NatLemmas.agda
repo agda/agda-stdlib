@@ -5,7 +5,7 @@
 -- Data.Integer.Properties (for distributivity)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Properties.NatLemmas where
 

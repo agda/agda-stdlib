@@ -8,7 +8,7 @@
 -- documentation and examples.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Binary.Equality.Cast where
 

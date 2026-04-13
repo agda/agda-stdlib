@@ -5,7 +5,7 @@
 -- equivalent or…)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Related.TypeIsomorphisms where
 

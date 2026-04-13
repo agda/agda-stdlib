@@ -7,7 +7,7 @@
 -- product and a coproduct in the category of R-modules.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Module.Construct.DirectProduct where
 

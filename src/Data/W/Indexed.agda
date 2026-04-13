@@ -4,7 +4,7 @@
 -- Indexed W-types aka Petersson-Synek trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.W.Indexed where
 

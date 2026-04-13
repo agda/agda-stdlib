@@ -4,7 +4,7 @@
 -- Some functional properties are symmetric
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Construct.Symmetry where
 

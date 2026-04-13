@@ -4,7 +4,7 @@
 -- Pointwise decidable equality over lists parameterised by a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid)
 

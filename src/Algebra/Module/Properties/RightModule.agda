@@ -4,7 +4,7 @@
 -- Properties of right modules.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles        using (Ring)
 open import Algebra.Module.Bundles using (RightModule)

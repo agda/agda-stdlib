@@ -7,7 +7,7 @@
 -- The definition of lexicographic product used here is suitable if
 -- the left-hand relation is a strict partial order.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Relation.Binary.Lex.Strict where
 

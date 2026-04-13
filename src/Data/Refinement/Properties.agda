@@ -4,7 +4,7 @@
 -- Properties of refinement types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Refinement.Properties where
 

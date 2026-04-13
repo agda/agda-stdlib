@@ -4,7 +4,7 @@
 -- Interleavings of lists using propositional equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Ternary.Interleaving.Propositional {a} {A : Set a} where
 

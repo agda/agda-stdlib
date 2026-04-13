@@ -6,6 +6,8 @@ The library has been tested using Agda 2.8.0.
 Highlights
 ----------
 
+* Modules that previously used `--cubical-compatible` once again use `--without-K`.
+
 Bug-fixes
 ---------
 

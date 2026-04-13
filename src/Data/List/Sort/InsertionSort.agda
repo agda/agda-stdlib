@@ -4,7 +4,7 @@
 -- An implementation of insertion sort and its properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecTotalOrder)
 

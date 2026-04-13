@@ -4,7 +4,7 @@
 -- Results concerning double negation elimination.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Axiom.DoubleNegationElimination where
 

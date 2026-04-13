@@ -5,7 +5,7 @@
 -- README.Function.Reasoning for examples
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Reasoning where
 

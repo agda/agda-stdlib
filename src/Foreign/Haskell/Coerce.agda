@@ -4,7 +4,7 @@
 -- Zero-cost coercion to cross the FFI boundary
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Foreign.Haskell.Coerce where
 

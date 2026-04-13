@@ -4,7 +4,7 @@
 -- Properties of linear maps.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 import Algebra.Module.Properties            as ModuleProperties
 import Algebra.Module.Morphism.Structures   as MorphismStructures

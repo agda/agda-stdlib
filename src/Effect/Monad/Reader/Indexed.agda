@@ -4,7 +4,7 @@
 -- The indexed reader monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level; _⊔_; suc; Lift; lift)
 

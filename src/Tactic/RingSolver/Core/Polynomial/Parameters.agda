@@ -4,7 +4,7 @@
 -- Bundles of parameters for passing to the Ring Solver
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module packages up all the stuff that's passed to the other
 -- modules in a convenient form.

@@ -4,7 +4,7 @@
 -- Definitions of the lexicographic product of two operators.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Magma)
 open import Algebra.Definitions

@@ -4,7 +4,7 @@
 -- Properties of Heyting Commutative Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Apartness.Bundles using (HeytingCommutativeRing)
 

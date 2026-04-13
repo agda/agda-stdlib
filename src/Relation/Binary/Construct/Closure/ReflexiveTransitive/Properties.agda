@@ -4,7 +4,7 @@
 -- Some properties of reflexive transitive closures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 

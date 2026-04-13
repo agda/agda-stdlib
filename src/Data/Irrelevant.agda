@@ -9,7 +9,7 @@
 -- Cf. Data.Refinement for a use case
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Irrelevant where
 

@@ -8,7 +8,7 @@
 -- Erwig's FGL. Note that this representation does not aim to be
 -- efficient.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Graph.Acyclic where
 

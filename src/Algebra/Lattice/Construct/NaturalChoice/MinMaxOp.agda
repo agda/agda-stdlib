@@ -4,7 +4,7 @@
 -- Properties of min and max operators specified over a total preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Construct.NaturalChoice.Base using (MinOperator; MaxOperator)
 open import Relation.Binary.Bundles using (TotalPreorder)
