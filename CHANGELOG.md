@@ -41,10 +41,6 @@ Minor improvements
   an alias, and should be backwards compatible, but does improve the behaviour
   of the termination checker for some `Vector`-defined operations.
 
-* `Relation.Binary.Morphism.Definitions` is no longer imported by any module,
-  but retained as a compatibility stub for external users, and for uniformity
-  with the design of existing hierarchies.
-
 * The type of `Relation.Nullary.Negation.Core.contradiction-irr` has been further
   weakened so that the negated hypothesis `¬ A` is marked as irrelevant. This is
   safe to do, in view of `Relation.Nullary.Recomputable.Properties.¬-recompute`.
