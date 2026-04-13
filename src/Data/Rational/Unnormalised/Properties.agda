@@ -1974,7 +1974,7 @@ Please use *-monoʳ-≤-nonNeg instead."
 *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-pos r@{mkℚᵘ +[1+ _ ] _} _ = *-monoˡ-≤-nonNeg r
 {-# WARNING_ON_USAGE *-monoˡ-≤-pos
-"Warning: *-monoˡ-≤-nonNeg was deprecated in v2.0.
+"Warning: *-monoˡ-≤-pos was deprecated in v2.0.
 Please use *-monoˡ-≤-nonNeg instead."
 #-}
 ≤-steps = p≤q⇒p≤r+q
