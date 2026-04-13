@@ -52,7 +52,7 @@ module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
   map⁺ inj xs! = AllPairs.map⁺ (AllPairs.map (contraposition inj) xs!)
 
   map⁻ : ∀ {f} → Congruent _≈₁_ _≈₂_ f →
-         Unique R ∘ map f ⊆ Unique S
+         ∀ {xs} → Unique R (map f xs) → Unique S xs
   map⁻ cong fxs! = AllPairs.map (contraposition cong) (AllPairs.map⁻ fxs!)
 
 ------------------------------------------------------------------------
