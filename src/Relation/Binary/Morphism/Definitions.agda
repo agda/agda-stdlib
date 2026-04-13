@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Issue #2318/#2875:
--- this is now a stub module, retained solely for compatibility
+-- Basic definitions for morphisms between algebraic structures
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
