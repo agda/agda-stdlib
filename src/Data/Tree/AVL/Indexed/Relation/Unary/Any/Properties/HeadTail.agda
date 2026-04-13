@@ -12,7 +12,7 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Nat.Base using (suc; _+_)
+open import Data.Nat.Base using (ℕ; suc)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function using (id)
@@ -22,7 +22,7 @@ open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinConstFuns sto
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinˡ⁻-here⁺; joinˡ⁻-left⁺; joinˡ⁻-right⁺; joinˡ⁻⁻)
 
 private
@@ -30,8 +30,11 @@ private
     v p : Level
     V : Value v
     P : Pred (K& V) p
+    l m u : Key⁺
+    h : ℕ
 
-headTail⁺ : ∀ {l u h} (t : Tree V l u (1 + h)) →
+
+headTail⁺ : (t : Tree V l u (suc h)) →
             let kv , _ , _ , t⁻ = headTail t in
             Any P t → P kv ⊎ Any P t⁻
 headTail⁺ (node _ (leaf _) _ ∼+)              (here p)  = inj₁ p
@@ -47,14 +50,14 @@ headTail⁺ (node k₃ t₁₂@(node _ _ _ _) t₄ bal) (right p)
   = let _ , _ , t₂ = headTail t₁₂
     in inj₂ (joinˡ⁻-right⁺ k₃ t₂ t₄ bal p)
 
-headTail-head⁻ : ∀ {l u h} → (t : Tree V l u (suc h)) →
+headTail-head⁻ : (t : Tree V l u (suc h)) →
                  P (proj₁ (headTail t)) → Any P t
 headTail-head⁻ (node _ (leaf _) _ ∼+)          p = here p
 headTail-head⁻ (node _ (leaf _) _ ∼0)          p = here p
 headTail-head⁻ (node _ t₁₂@(node _ _ _ _) _ _) p =
   left (headTail-head⁻ t₁₂ p)
 
-headTail-tail⁻ : ∀ {l u h} (t : Tree V l u (1 + h)) →
+headTail-tail⁻ : (t : Tree V l u (suc h)) →
                  let _ , _ , _ , t⁻ = headTail t in
                  Any P t⁻ → Any P t
 headTail-tail⁻ (node _ (leaf _) _ ∼+)              p = right p
