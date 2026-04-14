@@ -303,7 +303,58 @@ opposite : Fin n → Fin n
 opposite {n = n@(suc m)} i@(k , _)
   = m ℕ.∸ k , [ ℕₚ.m<n+o⇒m∸n<o m k (ℕₚ.m≤n+m n k) ]
 
+-- The function f(i,j) = if j>i then j-1 else j
+punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
+punchOut {n = n} {i = i , [ [p] ]} {j = j , [ [q] ]} i≢j  = value , (| prf |)
+  where
+  value = if i <ᵇ j then ℕ.pred j else j
+  prf : value ℕ.< n
+  prf using q ← recompute (j ℕₚ.≤? n) (ℕ.s≤s⁻¹ [q]) with i <ᵇ j in eq
+  ... | true  = j≤n
+    where
+    i<j : T (i ℕ.<ᵇ j)
+    i<j rewrite eq = _
+    j≤n : suc (ℕ.pred j) ℕ.≤ n
+    j≤n rewrite ℕₚ.suc-pred j {{ℕ.≢-nonZero (ℕₚ.m<n⇒n≢0 (ℕₚ.<ᵇ⇒< i j i<j))}} = q
+  ... | false = j<n
+    where
+    i≮j : ¬ T (i <ᵇ j)
+    i≮j rewrite eq = id
+    j<n : j ℕ.< n
+    j<n with ℕₚ.m<1+n⇒m<n∨m≡n (recompute (i ℕₚ.<? suc n) [p])
+    ... | inj₁ i<n = ℕₚ.≤-<-trans (ℕₚ.≮⇒≥ (contraposition ℕₚ.<⇒<ᵇ i≮j)) i<n
+    ... | inj₂ refl = ℕₚ.≤∧≢⇒< q (≢-sym (i≢j ∘ Refinement.value-injective))
 
+-- The function f(i,j) = if j≥i then j+1 else j
+
+punchIn : Fin (suc n) → Fin n → Fin (suc n)
+punchIn {n = n} (i , _) (j , [ [p] ]) = value , (| prf |)
+  where
+  value = if j <ᵇ i then j else suc j
+  prf : value ℕ.< suc n
+  prf using p ← recompute (j ℕₚ.<? n) [p] with j <ᵇ i
+  ... | true  = s<s (ℕₚ.<⇒≤ p)
+  ... | false = s<s p
+
+-- The function f(i,j) such that f(i,j) = if j≤i then j else j-1
+pinch : Fin n → Fin (suc n) → Fin n
+pinch {n = n} (i , [ [p] ]) (j , [ [q] ]) = value , (| prf |)
+  where
+  value = if i <ᵇ j then ℕ.pred j else j
+  prf : value ℕ.< n
+  prf using q ← recompute (j ℕₚ.≤? n) (ℕ.s≤s⁻¹ [q]) with i <ᵇ j in eq
+  ... | true  = j≤n
+    where
+    i<j : T (i ℕ.<ᵇ j)
+    i<j rewrite eq = _
+    j≤n : suc (ℕ.pred j) ℕ.≤ n
+    j≤n rewrite ℕₚ.suc-pred j {{ℕ.≢-nonZero (ℕₚ.m<n⇒n≢0 (ℕₚ.<ᵇ⇒< i j i<j))}} = q
+  ... | false = ℕₚ.≤-<-trans (ℕₚ.≮⇒≥ (contraposition ℕₚ.<⇒<ᵇ i≮j)) i<n
+    where
+    i≮j : ¬ T (i <ᵇ j)
+    i≮j rewrite eq = id
+    i<n : i ℕ.< n
+    i<n = recompute (i ℕₚ.<? n) [p]
 
 ------------------------------------------------------------------------
 -- Order relations
