@@ -8,7 +8,7 @@
 
 module Data.Nat.Bounded.Base where
 
-open import Data.Bool.Base using (T; true; false)
+open import Data.Bool.Base using (T; true; false; if_then_else_)
 import Data.Bool.Properties as Boolₚ
 open import Data.Empty using (⊥-elim)
 open import Data.Irrelevant as Irrelevant using (Irrelevant; [_]; pure; _<*>_)
@@ -20,7 +20,7 @@ open import Data.Refinement as Refinement using (Refinement; _,_; Refinement-syn
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 
 open import Function.Base using (id; _$_; _∘_; λ∙; _on_)
-open import Function.Bundles using (Equivalence); open Equivalence using (from)
+open import Function.Bundles using (Equivalence); open Equivalence using (from; to)
 
 open import Level using (0ℓ)
 
@@ -29,7 +29,7 @@ open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; cong; subst; sym; ≢-sym)
 open import Relation.Nullary.Decidable using (recompute; T?; yes; no)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 
 private
   variable
@@ -305,56 +305,50 @@ opposite {n = n@(suc m)} i@(k , _)
 
 -- The function f(i,j) = if j>i then j-1 else j
 punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
-punchOut {n = n} {i = i , [ [p] ]} {j = j , [ [q] ]} i≢j  = value , (| prf |)
+punchOut {n = n} {i = i , i<1+n} {j = j , j<1+n} i≢j
+  = value , (| prf i<1+n (| ℕ.s≤s⁻¹ j<1+n |) |)
   where
-  value = if i <ᵇ j then ℕ.pred j else j
-  prf : value ℕ.< n
-  prf using q ← recompute (j ℕₚ.≤? n) (ℕ.s≤s⁻¹ [q]) with i <ᵇ j in eq
-  ... | true  = j≤n
+  value = if i ℕ.<ᵇ j then ℕ.pred j else j
+
+  prf : i ℕ.< suc n → j ℕ.≤ n → value ℕ.< n
+  prf i<1+n j≤n with T? (i ℕ.<ᵇ j)
+  ... | yes i<j rewrite to Boolₚ.T-≡ i<j = let open ℕₚ.≤-Reasoning in begin
+    suc (ℕ.pred j) ≡⟨ ℕₚ.suc-pred j {{ℕ.≢-nonZero (ℕₚ.m<n⇒n≢0 (ℕₚ.<ᵇ⇒< i j i<j))}} ⟩
+    j              ≤⟨ j≤n ⟩
+    n              ∎
+  ... | no i≮j rewrite to Boolₚ.¬T-≡ i≮j = j<n
+
     where
-    i<j : T (i ℕ.<ᵇ j)
-    i<j rewrite eq = _
-    j≤n : suc (ℕ.pred j) ℕ.≤ n
-    j≤n rewrite ℕₚ.suc-pred j {{ℕ.≢-nonZero (ℕₚ.m<n⇒n≢0 (ℕₚ.<ᵇ⇒< i j i<j))}} = q
-  ... | false = j<n
-    where
-    i≮j : ¬ T (i <ᵇ j)
-    i≮j rewrite eq = id
     j<n : j ℕ.< n
-    j<n with ℕₚ.m<1+n⇒m<n∨m≡n (recompute (i ℕₚ.<? suc n) [p])
+    j<n with ℕₚ.m<1+n⇒m<n∨m≡n i<1+n
     ... | inj₁ i<n = ℕₚ.≤-<-trans (ℕₚ.≮⇒≥ (contraposition ℕₚ.<⇒<ᵇ i≮j)) i<n
-    ... | inj₂ refl = ℕₚ.≤∧≢⇒< q (≢-sym (i≢j ∘ Refinement.value-injective))
+    ... | inj₂ refl = ℕₚ.≤∧≢⇒< j≤n (≢-sym (i≢j ∘ Refinement.value-injective))
 
 -- The function f(i,j) = if j≥i then j+1 else j
-
 punchIn : Fin (suc n) → Fin n → Fin (suc n)
-punchIn {n = n} (i , _) (j , [ [p] ]) = value , (| prf |)
+punchIn {n = n} (i , _) (j , j<n) = value , (| prf j<n |)
   where
-  value = if j <ᵇ i then j else suc j
-  prf : value ℕ.< suc n
-  prf using p ← recompute (j ℕₚ.<? n) [p] with j <ᵇ i
-  ... | true  = s<s (ℕₚ.<⇒≤ p)
-  ... | false = s<s p
+  value = if j ℕ.<ᵇ i then j else suc j
+  prf : j ℕ.< n → value ℕ.< suc n
+  prf j<n with j ℕ.<ᵇ i
+  ... | true  = s<s (ℕₚ.<⇒≤ j<n)
+  ... | false = s<s j<n
 
 -- The function f(i,j) such that f(i,j) = if j≤i then j else j-1
 pinch : Fin n → Fin (suc n) → Fin n
-pinch {n = n} (i , [ [p] ]) (j , [ [q] ]) = value , (| prf |)
+pinch {n = n} (i , i<n) (j , j<1+n) = value , (| prf i<n (| ℕ.s≤s⁻¹ j<1+n |) |)
   where
-  value = if i <ᵇ j then ℕ.pred j else j
-  prf : value ℕ.< n
-  prf using q ← recompute (j ℕₚ.≤? n) (ℕ.s≤s⁻¹ [q]) with i <ᵇ j in eq
-  ... | true  = j≤n
-    where
-    i<j : T (i ℕ.<ᵇ j)
-    i<j rewrite eq = _
-    j≤n : suc (ℕ.pred j) ℕ.≤ n
-    j≤n rewrite ℕₚ.suc-pred j {{ℕ.≢-nonZero (ℕₚ.m<n⇒n≢0 (ℕₚ.<ᵇ⇒< i j i<j))}} = q
-  ... | false = ℕₚ.≤-<-trans (ℕₚ.≮⇒≥ (contraposition ℕₚ.<⇒<ᵇ i≮j)) i<n
-    where
-    i≮j : ¬ T (i <ᵇ j)
-    i≮j rewrite eq = id
-    i<n : i ℕ.< n
-    i<n = recompute (i ℕₚ.<? n) [p]
+  value = if i ℕ.<ᵇ j then ℕ.pred j else j
+  prf : i ℕ.< n → j ℕ.≤ n → value ℕ.< n
+  prf i<n j≤n with T? (i ℕ.<ᵇ j)
+  ... | yes i<j rewrite to Boolₚ.T-≡ i<j = let open ℕₚ.≤-Reasoning in begin
+    suc (ℕ.pred j) ≡⟨ ℕₚ.suc-pred j {{ℕ.≢-nonZero (ℕₚ.m<n⇒n≢0 (ℕₚ.<ᵇ⇒< i j i<j))}} ⟩
+    j              ≤⟨ j≤n ⟩
+    n              ∎
+  ... | no i≮j rewrite to Boolₚ.¬T-≡ i≮j = let open ℕₚ.≤-Reasoning in begin-strict
+    j ≤⟨ ℕₚ.≮⇒≥ (contraposition ℕₚ.<⇒<ᵇ i≮j) ⟩
+    i <⟨ i<n ⟩
+    n ∎
 
 ------------------------------------------------------------------------
 -- Order relations
