@@ -6,6 +6,19 @@ The library has been tested using Agda 2.8.0.
 Highlights
 ----------
 
+* The notation for `Decidable` relations has been (partially) standardised: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the general `IsDecEquivalence`
+
+  At present, the old fieldname `_≟_` has been retained, in order to avoid
+  a non-backwards compatible/breaking change of fieldname, which will plan
+  to do in Version 3.0, with accompanying deprecation of that name, against
+  its eventual removal in subsequent versions.
+
+  The change leads to a number of (trivial) renamings/deprecations, others more
+  substantive in `Data.{Nat|Fin}.Properties` for the concrete datatypes, which
+  are summarised below, but are not each documented for all affected modules.
+
 Bug-fixes
 ---------
 
@@ -20,17 +33,6 @@ Bug-fixes
 
 Non-backwards compatible changes
 --------------------------------
-
-* The notation for `Decidable` relations has been (partially) standardised: thus
-  - `_≡?_` (at `infix 4`) for `DecidableEquality`
-  - `_≈?_` (ditto.) for the fieldname of the general `IsDecEquivalence`
-
-  Despite being non-backwards compatible, because a fieldname has changed, the
-  old notation `_≟_` (which was used for both of the above) has been retained,
-  but deprecated. This leads to a large amount of (trivial) deprecations, in
-  addition to the substantive one under `Relation.Binary.Structures`, and in
-  `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
-  are summarised below, but are not each documented for each affected module.
 
 Minor improvements
 ------------------
