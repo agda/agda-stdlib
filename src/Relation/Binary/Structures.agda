@@ -67,15 +67,18 @@ record IsDecEquivalence : Set (a ⊔ ℓ) where
     isEquivalence : IsEquivalence
     _≟_           : Decidable _≈_
 
-  _≈?_ = _≟_
-
   open IsEquivalence isEquivalence public
-{-
+
+  -- v2.4: establish new name for public re-export and use
+  _≈?_ = _≟_
+  -- v3.0: change field name and export old name, now deprecated
+  {-
+  _≟_ = _≈?_
   {-# WARNING_ON_USAGE _≟_
-  "Warning: _≟_ was deprecated in v2.4.
+  "Warning: _≟_ was deprecated in v3.0.
   Please use _≈?_ instead. "
   #-}
--}
+  -}
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -140,7 +143,7 @@ record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
     isDecEquivalence : IsDecEquivalence
     isDecEquivalence = record
-      { isEquivalence = isEquivalence
+      { isEquivalence = isEquivalence 
       ; _≟_           = _≟_
       }
 
@@ -316,7 +319,7 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
 
     open IsDecEquivalence isDecEquivalence public
 
-  open Eq public hiding (isDecEquivalence; _≟_; _≈?_)
+  open Eq public hiding (isDecEquivalence; _≈?_)
 
   isDecEquivalence : IsDecEquivalence
   isDecEquivalence = record
