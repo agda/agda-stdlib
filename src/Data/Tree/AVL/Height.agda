@@ -11,6 +11,12 @@ module Data.Tree.AVL.Height where
 
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+
+private
+  variable
+    i j m n : ℕ
+
 
 ℕ₂ = Fin 2
 pattern 0# = zero
@@ -39,18 +45,26 @@ infix 4 _∼_⊔_
 -- absolute value of the balance factor is never more than 1.
 
 data _∼_⊔_ : ℕ → ℕ → ℕ → Set where
-  ∼+ : ∀ {n} →     n ∼ 1 + n ⊔ 1 + n
-  ∼0 : ∀ {n} →     n ∼ n     ⊔ n
-  ∼- : ∀ {n} → 1 + n ∼ n     ⊔ 1 + n
+  ∼+ :     n ∼ 1 + n ⊔ 1 + n
+  ∼0 :     n ∼ n     ⊔ n
+  ∼- : 1 + n ∼ n     ⊔ 1 + n
 
 -- Some lemmas.
 
-max∼ : ∀ {i j m} → i ∼ j ⊔ m → m ∼ i ⊔ m
+max∼ : i ∼ j ⊔ m → m ∼ i ⊔ m
 max∼ ∼+ = ∼-
 max∼ ∼0 = ∼0
 max∼ ∼- = ∼0
 
-∼max : ∀ {i j m} → i ∼ j ⊔ m → j ∼ m ⊔ m
+∼max : i ∼ j ⊔ m → j ∼ m ⊔ m
 ∼max ∼+ = ∼0
 ∼max ∼0 = ∼0
 ∼max ∼- = ∼+
+
+0∼⊔ : 0 ∼ j ⊔ m → j ≡ m
+0∼⊔ ∼+ = refl
+0∼⊔ ∼0 = refl
+
+∼0⊔ : i ∼ 0 ⊔ m → i ≡ m
+∼0⊔ ∼- = refl
+∼0⊔ ∼0 = refl

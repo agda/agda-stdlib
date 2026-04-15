@@ -78,6 +78,10 @@ Minor improvements
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
   levels to be used.
 
+* The original `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` has been
+  split up into smaller `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
+  modules that are reexported by `Properties`.
+
 Deprecated modules
 ------------------
 
@@ -109,9 +113,27 @@ Deprecated names
   ≟-≡     ↦   ≡?-≢
   ```
 
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ≈-subst-∈   ↦   ∈-resp-≈
+  ```
+
+* In `Data.List.Fresh.Relation.Unary.Any`:
+  ```agda
+  witness   ↦   satisfiable
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert`:
+  ```agda
+  Any-insertWith-nothing  ↦  insertWith-nothing
+  Any-insertWith-just     ↦  insertWith-just
+  Any-insert-nothing      ↦  insert-nothing
+  Any-insert-just         ↦  insert-just
   ```
 
 * In `Data.Vec.Properties`:
@@ -185,12 +207,6 @@ New modules
 
 * `Data.List.Fresh.Membership.DecSetoid`.
 
-* `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
-
-* `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
-
-* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
-
 * Various additions over non-empty lists:
   ```
   Data.List.NonEmpty.Relation.Binary.Pointwise
@@ -198,6 +214,30 @@ New modules
   Data.List.NonEmpty.Membership.Propositional
   Data.List.NonEmpty.Membership.Setoid
   ```
+
+* `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
+
+* `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
+
+* Added tactic ring solvers for rational numbers (issue #1879):
+  ```agda
+  Data.Rational.Tactic.RingSolver
+  Data.Rational.Unnormalised.Tactic.RingSolver
+  ```
+
+* Refactoring of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` as smaller modules:
+  ```
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
+  ```
+
+* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
 
 * `Relation.Binary.Morphism.Construct.On`: given a relation `_∼_` on `B`,
   and a function `f : A → B`, construct the canonical `IsRelMonomorphism`
@@ -318,6 +358,17 @@ Additions to existing modules
   <⇒<ᵇ : i < j → T (i <ᵇ j)
   ```
 
+* In `Data.List.Fresh`:
+  ```agda
+  _#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+  ```
+
+* In `Data.List.Fresh.Membership.Setoid.Properties`:
+  ```agda
+  ∉-All[x≉] : x ∉ xs → All (x ≉_) xs
+  All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
+  ```
+
 * In `Data.List.NonEmpty.Relation.Unary.All`:
   ```
   map : P ⊆ Q → All P xs → All Q xs
@@ -334,6 +385,23 @@ Additions to existing modules
   ```agda
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
+  ```
+
+* In `Data.Nat.DivMod`:
+  ```agda
+  infix 4 _≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
+  m ≡%[ o ] n = m % o ≡ n % o
+
+  infix 4 _≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
+  m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
+  m ≅%[ o ] n = SymClosure _≲%[ o ]_ m n
+
+  ≲%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≲%[ o ]_ ⇒ _≡%[ o ]_
+  ≅%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≅%[ o ]_ ⇒ _≡%[ o ]_
+  ≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m ≡%[ o ] n → m ≤ n → m ≲%[ o ] n
+  ≡[o]%⇒≅%[o] : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≅%[ o ]_
+
+  ≡%-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
   ```
 
 * In `Data.Nat.Logarithm`
@@ -414,6 +482,108 @@ Additions to existing modules
   showAtPrecision : ℕ → ℚᵘ → String
   ```
 
+* In `Data.Tree.AVL.Height`:
+  ```agda
+  0∼⊔ : 0 ∼ j ⊔ m → j ≡ m
+  ∼0⊔ : i ∼ 0 ⊔ m → i ≡ m
+  ```
+
+* In `Data.Tree.AVL.Indexed`:
+  ```agda
+  Tree⁺ Tree⁻ : (V : Value v) (l u : Key⁺) (h : ℕ) → Set _
+  pattern leaf⁻ l<u = _ , leaf l<u
+  pattern node⁰ʳ k₁ t₁ k₂ t₂ t₃ = node k₁ t₁ (node k₂ t₂ t₃ ∼0) ∼0
+  pattern node⁰ˡ k₁ k₂ t₁ t₂ t₃ = node k₁ (node k₂ t₁ t₂ ∼0) t₃ ∼0
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any`:
+  ```agda
+  infix 5 _#[_]_ _#_
+  _#[_]_ : (k : Key) (P : Pred (K& V) p) → Pred (Any P t) ℓ₁
+  _#_    : Key → Pred (Any P t) ℓ₁
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast`:
+  ```agda
+  castʳ⁺ : Any P lm → Any P (castʳ lm m<u)
+  castʳ⁻ : Any P (castʳ lm m<u) → Any P lm
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete`:
+  ```agda
+  delete⁺ : (t : Tree V l u h) (seg : l < k < u) →
+            (p : Any P t) → lookupKey p ≉ k →
+            Any P (proj₂ (delete k t seg))
+  delete-tree⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                 Any P (proj₂ (delete k t seg)) →
+                 Any P t
+  delete-key-∈⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                  {kp : Key} →
+                  Any ((kp ≈_) ∘′ key) (proj₂ (delete k t seg)) →
+                  kp ≉ k
+  delete-key⁻ : (t : Tree V l u h) (seg : l < k < u) →
+                (p : Any P (proj₂ (delete k t seg))) →
+                Any.lookupKey p ≉ k
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail`:
+  ```
+  headTail⁺ : (t : Tree V l u (1 + h)) →
+              let kv , _ , _ , t⁻ = headTail t in
+              Any P t → P kv ⊎ Any P t⁻
+  headTail-head⁻ : (t : Tree V l u (suc h)) →
+                   P (proj₁ (headTail t)) → Any P t
+  headTail-tail⁻ : (t : Tree V l u (1 + h)) →
+                   let _ , _ , _ , t⁻ = headTail t in
+                   Any P t⁻ → Any P t
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas`:
+  ```
+  joinˡ⁻-here⁺ : (kv : K& V) →
+                 (l : Tree⁻ V l [ kv .key ] hˡ) →
+                 (r : Tree V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 P kv → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻-left⁺ : (kv : K& V) →
+                 (l : Tree⁻ V l [ kv .key ] hˡ) →
+                 (r : Tree V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 Any P (proj₂ l) → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻-right⁺ : (kv : K& V) →
+                  (l : Tree⁻ V l [ kv .key ] hˡ) →
+                  (r : Tree V [ kv .key ] u hʳ) →
+                  (bal : hˡ ∼ hʳ ⊔ h) →
+                  Any P r → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+  joinˡ⁻⁻ : (kv : K& V) →
+            (l : Tree⁻ V l [ kv .key ] hˡ) →
+            (r : Tree V [ kv .key ] u hʳ) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinˡ⁻ hˡ kv l r bal)) →
+            P kv ⊎ Any P (proj₂ l) ⊎ Any P r
+  joinʳ⁻-here⁺ : (kv : K& V) →
+                 (l : Tree V l [ kv .key ] hˡ) →
+                 (r : Tree⁻ V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 P kv → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻-left⁺ : (kv : K& V) →
+                 (l : Tree V l [ kv .key ] hˡ) →
+                 (r : Tree⁻ V [ kv .key ] u hʳ) →
+                 (bal : hˡ ∼ hʳ ⊔ h) →
+                 Any P l → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻-right⁺ : (kv : K& V) →
+                  (l : Tree V l [ kv .key ] hˡ) →
+                  (r : Tree⁻ V [ kv .key ] u hʳ) →
+                  (bal : hˡ ∼ hʳ ⊔ h) →
+                  Any P (proj₂ r) → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+  joinʳ⁻⁻ : (kv : K& V) →
+            (l : Tree V l [ kv .key ] hˡ) →
+            (r : Tree⁻ V [ kv .key ] u hʳ) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinʳ⁻ hʳ kv l r bal)) →
+            P kv ⊎ Any P l ⊎ Any P (proj₂ r)
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
@@ -468,6 +638,19 @@ Additions to existing modules
                       padRight m≤n x (updateAt xs i f)
   ```
 
+* In `Data.Vec.Relation.Binary.Pointwise.Inductive`
+  ```agda
+  irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
+  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
+            Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
+  ```
+
+* In `Data.Vec.Relation.Binary.Pointwise.Extensional`
+  ```agda
+  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
+            Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+  ```
+
 * In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
   ```agda
   ≤±-respˡ-≡ : _≤±_ Respectsˡ _≡_
@@ -498,17 +681,12 @@ Additions to existing modules
   ≤⁺-resp-≈⁺ : _≤_ Respects₂ _≈_ → _≤⁺_ Respects₂ _≈⁺_
   ```
 
-* In `Data.Vec.Relation.Binary.Pointwise.Inductive`
-  ```agda
-  irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
-  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
-            Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
+* In `Relation.Binary.Construct.Closure.Symmetric`:
   ```
-
-* In `Data.Vec.Relation.Binary.Pointwise.Extensional`
-  ```agda
-  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
-            Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+  hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
+         ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
+  on⁺  : ((SymClosure R) on g) ⇒ SymClosure (R on g)
+  on⁻  : SymClosure (R on g) ⇒ ((SymClosure R) on g)
   ```
 
 * In `Relation.Binary.Properties.Setoid`:
@@ -543,20 +721,16 @@ Additions to existing modules
   ⟨_⟩⊢⁺_    : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
   [_]⊢⁻_    : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
   [_]⊢⁺_    : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
-  ```
-
-* In `System.Random`:
-  ```agda
-  randomIO : IO Bool
-  randomRIO : RandomRIO {A = Bool} _≤_
-  ```
-
-* In Relation.Unary.Properites
-  ```agda
   ¬∃⟨P⟩⇒Π[∁P] : ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
   ¬∃⟨P⟩⇒∀[∁P] : ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
   ∃⟨∁P⟩⇒¬Π[P] : ∃⟨ ∁ P ⟩ → ¬ Π[ P ]
   ∃⟨∁P⟩⇒¬∀[P] : ∃⟨ ∁ P ⟩ → ¬ ∀[ P ]
   Π[∁P]⇒¬∃[P] : Π[ ∁ P ] → ¬ ∃⟨ P ⟩
   ∀[∁P]⇒¬∃[P] : ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
+  ```
+
+* In `System.Random`:
+  ```agda
+  randomIO : IO Bool
+  randomRIO : RandomRIO {A = Bool} _≤_
   ```

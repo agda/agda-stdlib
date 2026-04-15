@@ -28,6 +28,7 @@ open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
@@ -185,6 +186,10 @@ p≃0⇒↥p≡0 p (*≡* eq) = begin
 ↥p≡↥q≡0⇒p≃q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
 ↥p≡↥q≡0⇒p≃q p q ↥p≡0 ↥q≡0 = ≃-trans (↥p≡0⇒p≃0 p ↥p≡0) (≃-sym (↥p≡0⇒p≃0 _ ↥q≡0))
 
+0≃?-weak : (p : ℚᵘ) → Maybe (0ℚᵘ ≃ p)
+0≃?-weak p with ↥ p ℤ.≟ 0ℤ
+... | yes ↥p≡0 = just (≃-sym (↥p≡0⇒p≃0 p ↥p≡0))
+... | no  _    = nothing
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -1969,7 +1974,7 @@ Please use *-monoʳ-≤-nonNeg instead."
 *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-pos r@{mkℚᵘ +[1+ _ ] _} _ = *-monoˡ-≤-nonNeg r
 {-# WARNING_ON_USAGE *-monoˡ-≤-pos
-"Warning: *-monoˡ-≤-nonNeg was deprecated in v2.0.
+"Warning: *-monoˡ-≤-pos was deprecated in v2.0.
 Please use *-monoˡ-≤-nonNeg instead."
 #-}
 ≤-steps = p≤q⇒p≤r+q
