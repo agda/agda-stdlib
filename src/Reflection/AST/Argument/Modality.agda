@@ -47,11 +47,28 @@ modality-injective₂ refl = refl
 modality-injective : modality r q ≡ modality r′ q′ → r ≡ r′ × q ≡ q′
 modality-injective = < modality-injective₁ , modality-injective₂ >
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality Modality
-modality r q ≟ modality r′ q′ =
+_≡?_ : DecidableEquality Modality
+modality r q ≡? modality r′ q′ =
   map′
     (uncurry (cong₂ modality))
     modality-injective
-    (r Relevance.≟ r′ ×? q Quantity.≟ q′)
+    (r Relevance.≡? r′ ×? q Quantity.≡? q′)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

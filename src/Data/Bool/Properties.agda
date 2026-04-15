@@ -59,19 +59,19 @@ private
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality Bool
-true  ≟ true  = yes refl
-false ≟ false = yes refl
-true  ≟ false = no λ()
-false ≟ true  = no λ()
+_≡?_ : DecidableEquality Bool
+true  ≡? true  = yes refl
+false ≡? false = yes refl
+true  ≡? false = no λ()
+false ≡? true  = no λ()
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid Bool
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -139,7 +139,7 @@ true  ≤? true  = yes b≤b
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -883,4 +883,13 @@ push-function-into-if = if-float
 {-# WARNING_ON_USAGE push-function-into-if
 "Warning: push-function-into-if was deprecated in v2.0.
 Please use if-float instead."
+#-}
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
 #-}

@@ -62,12 +62,18 @@ record IsEquivalence : Set (a ⊔ ℓ) where
 
 
 record IsDecEquivalence : Set (a ⊔ ℓ) where
-  infix 4 _≟_
+  infix 4 _≈?_ _≟_
   field
     isEquivalence : IsEquivalence
-    _≟_           : Decidable _≈_
+    _≈?_          : Decidable _≈_
 
   open IsEquivalence isEquivalence public
+
+  _≟_ = _≈?_
+  {-# WARNING_ON_USAGE _≟_
+  "Warning: _≟_ was deprecated in v2.4.
+  Please use _≈?_ instead. "
+  #-}
 
 
 ------------------------------------------------------------------------
@@ -123,7 +129,7 @@ record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
     isPreorder : IsPreorder _≲_
-    _≟_        : Decidable _≈_
+    _≈?_       : Decidable _≈_
     _≲?_       : Decidable _≲_
 
   open IsPreorder isPreorder public
@@ -134,7 +140,7 @@ record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
     isDecEquivalence : IsDecEquivalence
     isDecEquivalence = record
       { isEquivalence = isEquivalence
-      ; _≟_           = _≟_
+      ; _≈?_          = _≈?_
       }
 
     open IsDecEquivalence isDecEquivalence public
@@ -151,17 +157,17 @@ record IsPartialOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
   open IsPreorder isPreorder public
     renaming
-    ( ∼-respˡ-≈ to ≤-respˡ-≈
-    ; ∼-respʳ-≈ to ≤-respʳ-≈
-    ; ∼-resp-≈  to ≤-resp-≈
+    ( ≲-respˡ-≈ to ≤-respˡ-≈
+    ; ≲-respʳ-≈ to ≤-respʳ-≈
+    ; ≲-resp-≈  to ≤-resp-≈
     )
 
 
 record IsDecPartialOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
-  infix 4 _≟_ _≤?_
+  infix 4 _≈?_ _≤?_
   field
     isPartialOrder : IsPartialOrder _≤_
-    _≟_            : Decidable _≈_
+    _≈?_           : Decidable _≈_
     _≤?_           : Decidable _≤_
 
   open IsPartialOrder isPartialOrder public
@@ -170,12 +176,14 @@ record IsDecPartialOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) whe
   isDecPreorder : IsDecPreorder _≤_
   isDecPreorder = record
     { isPreorder = isPreorder
-    ; _≟_ = _≟_
+    ; _≈?_ = _≈?_
     ; _≲?_ = _≤?_
     }
 
   open IsDecPreorder isDecPreorder public
     using (module Eq)
+
+  open Eq public using (_≟_)
 
 
 record IsStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
@@ -198,10 +206,10 @@ record IsStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wh
 
 
 record IsDecStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
-  infix 4 _≟_ _<?_
+  infix 4 _≈?_ _<?_
   field
     isStrictPartialOrder : IsStrictPartialOrder _<_
-    _≟_                  : Decidable _≈_
+    _≈?_                 : Decidable _≈_
     _<?_                 : Decidable _<_
 
   private
@@ -214,10 +222,12 @@ record IsDecStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂)
     isDecEquivalence : IsDecEquivalence
     isDecEquivalence = record
       { isEquivalence = SPO.isEquivalence
-      ; _≟_           = _≟_
+      ; _≈?_          = _≈?_
       }
 
     open IsDecEquivalence isDecEquivalence public
+
+  open Eq public using (_≟_)
 
 
 ------------------------------------------------------------------------
@@ -239,10 +249,10 @@ record IsTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
 
 record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
-  infix 4 _≟_ _≤?_
+  infix 4 _≈?_ _≤?_
   field
     isTotalOrder : IsTotalOrder _≤_
-    _≟_          : Decidable _≈_
+    _≈?_         : Decidable _≈_
     _≤?_         : Decidable _≤_
 
   open IsTotalOrder isTotalOrder public
@@ -251,12 +261,15 @@ record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   isDecPartialOrder : IsDecPartialOrder _≤_
   isDecPartialOrder = record
     { isPartialOrder = isPartialOrder
-    ; _≟_            = _≟_
+    ; _≈?_           = _≈?_
     ; _≤?_           = _≤?_
     }
 
   open IsDecPartialOrder isDecPartialOrder public
     using (isDecPreorder; module Eq)
+
+  open Eq public using (_≟_)
+
 
 -- Note that these orders are decidable. The current implementation
 -- of `Trichotomous` subsumes irreflexivity and asymmetry. See
@@ -273,10 +286,10 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
 
   -- `Trichotomous` necessarily separates out the equality case so
   --  it implies decidability.
-  infix 4 _≟_ _<?_
+  infix 4 _≈?_ _<?_
 
-  _≟_ : Decidable _≈_
-  _≟_ = tri⇒dec≈ compare
+  _≈?_ : Decidable _≈_
+  _≈?_ = tri⇒dec≈ compare
 
   _<?_ : Decidable _<_
   _<?_ = tri⇒dec< compare
@@ -284,7 +297,7 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
   isDecStrictPartialOrder : IsDecStrictPartialOrder _<_
   isDecStrictPartialOrder = record
     { isStrictPartialOrder = isStrictPartialOrder
-    ; _≟_                  = _≟_
+    ; _≈?_                  = _≈?_
     ; _<?_                 = _<?_
     }
 
@@ -294,15 +307,17 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
     isDecEquivalence : IsDecEquivalence
     isDecEquivalence = record
       { isEquivalence = isEquivalence
-      ; _≟_           = _≟_
+      ; _≈?_          = _≈?_
       }
 
     open IsDecEquivalence isDecEquivalence public
 
+  open Eq public using (_≟_)
+
   isDecEquivalence : IsDecEquivalence
   isDecEquivalence = record
     { isEquivalence = isEquivalence
-    ; _≟_           = _≟_
+    ; _≈?_          = _≈?_
     }
   {-# WARNING_ON_USAGE isDecEquivalence
   "Warning: isDecEquivalence was deprecated in v2.0.

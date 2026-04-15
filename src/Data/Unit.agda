@@ -17,4 +17,4 @@ open import Data.Unit.Base public
 -- Re-export query operations
 
 open import Data.Unit.Properties public
-  using (_≟_)
+  using (_≡?_)

@@ -24,7 +24,7 @@ open import Data.Nat.Properties public
   -- key values
   ( nonZero?
   -- equalities
-  ; _≟_ ; eq?
+  ; _≟_ ;_≡?_ ; eq?
   -- standard orders & their relationship
   ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
   ; ≤-<-connex ; ≥->-connex ; <-≤-connex ; >-≥-connex

@@ -69,12 +69,18 @@ record IsIndexedEquivalence : Set (i ⊔ a ⊔ ℓ) where
 
 
 record IsIndexedDecEquivalence : Set (i ⊔ a ⊔ ℓ) where
-  infix 4 _≟ᵢ_
+  infix 4 _≟ᵢ_ _≈ᵢ?_
   field
-    _≟ᵢ_           : Decidable A _≈ᵢ_
+    _≈ᵢ?_          : Decidable A _≈ᵢ_
     isEquivalenceᵢ : IsIndexedEquivalence
 
   open IsIndexedEquivalence isEquivalenceᵢ public
+
+  _≟ᵢ_ = _≈ᵢ?_
+  {-# WARNING_ON_USAGE _≟ᵢ_
+  "Warning: _≟ᵢ_ was deprecated in v2.4.
+  Please use _≈ᵢ?_ instead."
+  #-}
 
 
 ------------------------------------------------------------------------

@@ -31,13 +31,13 @@ open import Relation.Binary.Definitions using (DecidableEquality)
 ------------------------------------------------------------------------
 -- deduplicate
 
-module _ {a} {A : Set a} (_≟_ : DecidableEquality A) where
+module _ {a} {A : Set a} (_≡?_ : DecidableEquality A) where
 
   private
-    dedup≡   = deduplicate    _≟_
-    ∈-dedup≡ = deduplicate-∈⇔ _≟_
+    dedup≡   = deduplicate    _≡?_
+    ∈-dedup≡ = deduplicate-∈⇔ _≡?_
 
-  open import Data.List.Relation.Unary.Unique.DecPropositional.Properties _≟_
+  open import Data.List.Relation.Unary.Unique.DecPropositional.Properties _≡?_
     using (deduplicate-!)
 
   dedup-++-↭ : ∀ {xs ys} → Disjoint xs ys → dedup≡ (xs ++ ys) ↭ dedup≡ xs ++ dedup≡ ys
@@ -45,7 +45,7 @@ module _ {a} {A : Set a} (_≟_ : DecidableEquality A) where
     = ∼bag⇒↭
     $ unique∧set⇒bag
         (deduplicate-! _)
-        (++⁺ (deduplicate-! _) (deduplicate-! _) (deduplicate⁺ _≟_ disj))
+        (++⁺ (deduplicate-! _) (deduplicate-! _) (deduplicate⁺ _≡?_ disj))
     λ {x} → begin
     x ∈ dedup≡ (xs ++ ys)           ∼⟨ SK-sym ∈-dedup≡ ⟩
     x ∈ xs ++ ys                    ∼⟨ ++-∈⇔ ⟩

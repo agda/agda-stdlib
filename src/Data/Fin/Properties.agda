@@ -46,7 +46,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Binary.PropositionalEquality as ≡
-  using (≡-≟-identity; ≢-≟-identity)
+  using (≡-≡?-identity; ≢-≡?-identity)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×?_; _⊎?_; map′; decidable-stable)
 open import Relation.Nullary.Negation.Core
@@ -97,25 +97,25 @@ nonZeroIndex {n = suc _} _ = _
 suc-injective : Fin.suc i ≡ suc j → i ≡ j
 suc-injective refl = refl
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality (Fin n)
-zero  ≟ zero  = yes refl
-zero  ≟ suc y = no λ()
-suc x ≟ zero  = no λ()
-suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
+_≡?_ : DecidableEquality (Fin n)
+zero  ≡? zero  = yes refl
+zero  ≡? suc y = no λ()
+suc x ≡? zero  = no λ()
+suc x ≡? suc y = map′ (cong suc) suc-injective (x ≡? y)
 
 ≡-irrelevant : Irrelevant {A = Fin n} _≡_
-≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≟_
+≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≡?_
 
-≟-≡ : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
-≟-≡ = ≡-≟-identity _≟_
+≡?-≡ : (eq : i ≡ j) → (i ≡? j) ≡ yes eq
+≡?-≡ = ≡-≡?-identity _≡?_
 
-≟-≡-refl : (i : Fin n)  → (i ≟ i) ≡ yes refl
-≟-≡-refl _ = ≟-≡ refl
+≡?-≡-refl : (i : Fin n)  → (i ≡? i) ≡ yes refl
+≡?-≡-refl _ = ≡?-≡ refl
 
-≟-≢ : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
-≟-≢ = ≢-≟-identity _≟_
+≡?-≢ : (i≢j : i ≢ j) → (i ≡? j) ≡ no i≢j
+≡?-≢ = ≢-≡?-identity _≡?_
 
 ------------------------------------------------------------------------
 -- Structures
@@ -123,7 +123,7 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 ≡-isDecEquivalence : IsDecEquivalence {A = Fin n} _≡_
 ≡-isDecEquivalence = record
   { isEquivalence = ≡.isEquivalence
-  ; _≟_           = _≟_
+  ; _≈?_          = _≡?_
   }
 
 ------------------------------------------------------------------------
@@ -356,7 +356,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 ≤-isDecTotalOrder : IsDecTotalOrder {A = Fin n} _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -1114,7 +1114,7 @@ decFinSubset {suc _} {P = P} {Q = Q} Q? P? = dec[Q⊆P]
 
 pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × f i ≡ f j
 pigeonhole z<s               f = contradiction (f zero) λ()
-pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
+pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≡? f (suc k))
 ... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
 ... | no  f₀≢fₖ =
   let i , j , i<j , fᵢ≡fⱼ = pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
@@ -1191,14 +1191,14 @@ module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
   open Setoid S
 
-  inj⇒≟ : B.Decidable _≈_
-  inj⇒≟ = Dec.via-injection inj _≟_
+  inj⇒≡? : B.Decidable _≈_
+  inj⇒≡? = Dec.via-injection inj _≡?_
 
   inj⇒decSetoid : DecSetoid a ℓ
   inj⇒decSetoid = record
     { isDecEquivalence = record
       { isEquivalence = isEquivalence
-      ; _≟_           = inj⇒≟
+      ; _≈?_           = inj⇒≡?
       }
     }
 
@@ -1282,10 +1282,10 @@ Fin0↔⊥ = 0↔⊥
 Please use 0↔⊥ instead."
 #-}
 eq? : A ↣ Fin n → DecidableEquality A
-eq? = inj⇒≟
+eq? = inj⇒≡?
 {-# WARNING_ON_USAGE eq?
 "Warning: eq? was deprecated in v2.0.
-Please use inj⇒≟ instead."
+Please use inj⇒≡? instead."
 #-}
 
 private
@@ -1328,4 +1328,29 @@ Please use ¬∀⇒∃¬-smallest instead."
 {-# WARNING_ON_USAGE ¬∀⟶∃¬
 "Warning: ¬∀⟶∃¬ was deprecated in v2.4.
 Please use ¬∀⇒∃¬ instead."
+#-}
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
+
+≟-≡-refl = ≡?-≡-refl
+{-# WARNING_ON_USAGE ≟-≡-refl
+"Warning: ≟-≡-refl was deprecated in v2.4.
+Please use ≡?-≡-refl instead."
+#-}
+
+≟-≡ = ≡?-≡
+{-# WARNING_ON_USAGE ≟-≡
+"Warning: ≟-≡ was deprecated in v2.4.
+Please use ≡?-≡ instead."
+#-}
+
+inj⇒≟ = inj⇒≡?
+{-# WARNING_ON_USAGE inj⇒≟
+"Warning: inj⇒≟ was deprecated in v2.4.
+Please use inj⇒≡? instead."
 #-}

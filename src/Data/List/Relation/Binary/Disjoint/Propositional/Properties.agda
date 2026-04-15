@@ -61,6 +61,6 @@ module _ {a} {A : Set a} where
   concat⁺ʳ = S.concat⁺ʳ (setoid _)
 
   -- deduplicate
-  module _ (_≟_ : DecidableEquality A) where
-    deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≟_ xs) (deduplicate _≟_ ys)
-    deduplicate⁺ = S.deduplicate⁺ Sᴬ _≟_
+  module _ (_≡?_ : DecidableEquality A) where
+    deduplicate⁺ : Disjoint xs ys → Disjoint (deduplicate _≡?_ xs) (deduplicate _≡?_ ys)
+    deduplicate⁺ = S.deduplicate⁺ Sᴬ _≡?_
