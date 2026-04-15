@@ -123,7 +123,7 @@ m ≡? n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
-  ; _≈?_           = _≡?_
+  ; _≟_            = _≡?_
   }
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
@@ -253,7 +253,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≈?_         = _≡?_
+  ; _≟_          = _≡?_
   ; _≤?_         = _≤?_
   }
 

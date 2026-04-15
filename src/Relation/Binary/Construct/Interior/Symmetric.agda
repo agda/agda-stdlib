@@ -111,7 +111,7 @@ module _ {R : Rel A ℓ} (refl : Reflexive R) (trans : Transitive R) where
     isDecPartialOrder : IsDecPartialOrder (SymInterior R) R
     isDecPartialOrder = record
       { isPartialOrder = isPartialOrder
-      ; _≈?_ = decidable R?
+      ; _≟_  = decidable R?
       ; _≤?_ = R?
       }
 

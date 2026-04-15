@@ -145,7 +145,7 @@ isTotalOrder STO = record
 isDecTotalOrder : IsStrictTotalOrder _≈_ _<_ → IsDecTotalOrder _≈_ _≤_
 isDecTotalOrder STO = record
   { isTotalOrder = isTotalOrder STO
-  ; _≈?_         = S._≈?_
+  ; _≟_          = S._≈?_
   ; _≤?_         = decidable′ S.compare
   }
   where module S = IsStrictTotalOrder STO

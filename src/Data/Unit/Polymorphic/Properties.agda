@@ -81,7 +81,7 @@ _ ≡? _ = yes refl
 ≡-isDecTotalOrder : ∀ ℓ → IsDecTotalOrder {ℓ} _≡_ _≡_
 ≡-isDecTotalOrder ℓ = record
   { isTotalOrder = ≡-isTotalOrder ℓ
-  ; _≈?_         = _≡?_
+  ; _≟_          = _≡?_
   ; _≤?_         = _≡?_
   }
 

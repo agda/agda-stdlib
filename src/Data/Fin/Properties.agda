@@ -123,7 +123,7 @@ suc x ≡? suc y = map′ (cong suc) suc-injective (x ≡? y)
 ≡-isDecEquivalence : IsDecEquivalence {A = Fin n} _≡_
 ≡-isDecEquivalence = record
   { isEquivalence = ≡.isEquivalence
-  ; _≈?_          = _≡?_
+  ; _≟_           = _≡?_
   }
 
 ------------------------------------------------------------------------
@@ -356,7 +356,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 ≤-isDecTotalOrder : IsDecTotalOrder {A = Fin n} _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≈?_         = _≡?_
+  ; _≟_          = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -1198,7 +1198,7 @@ module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
   inj⇒decSetoid = record
     { isDecEquivalence = record
       { isEquivalence = isEquivalence
-      ; _≈?_           = inj⇒≡?
+      ; _≟_           = inj⇒≡?
       }
     }
 

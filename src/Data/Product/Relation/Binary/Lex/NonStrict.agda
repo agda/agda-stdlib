@@ -157,7 +157,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
     { isTotalOrder = ×-isTotalOrder (_≟_ to₁)
                                     (isTotalOrder to₁)
                                     (isTotalOrder to₂)
-    ; _≈?_         = Pointwise.×-decidable (_≈?_ to₁) (_≈?_ to₂)
+    ; _≟_          = Pointwise.×-decidable (_≈?_ to₁) (_≈?_ to₂)
     ; _≤?_         = ×-decidable (_≈?_ to₁) (_≤?_ to₁) (_≤?_ to₂)
     }
     where open IsDecTotalOrder

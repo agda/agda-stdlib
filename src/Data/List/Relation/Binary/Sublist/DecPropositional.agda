@@ -35,7 +35,7 @@ open DecSetoidSublist (decSetoid _≈?_) using (_⊆?_) public
 ⊆-isDecPartialOrder : IsDecPartialOrder _≡_ _⊆_
 ⊆-isDecPartialOrder = record
   { isPartialOrder = ⊆-isPartialOrder
-  ; _≈?_           = _≡?_
+  ; _≟_            = _≡?_
   ; _≤?_           = _⊆?_
   }
 

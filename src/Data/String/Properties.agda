@@ -78,7 +78,7 @@ x ≈? y = Pointwise.decidable Char._≡?_ (toList x) (toList y)
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≈?_          = _≈?_
+  ; _≟_           = _≈?_
   }
 
 ≈-decSetoid : DecSetoid _ _

@@ -92,7 +92,7 @@ isTotalOrder O = record
 isDecTotalOrder : IsDecTotalOrder _≈₂_ _≲₂_ → IsDecTotalOrder _≈₁_ _≲₁_
 isDecTotalOrder O = record
   { isTotalOrder = isTotalOrder O.isTotalOrder
-  ; _≈?_         = EqM.dec O._≈?_
+  ; _≟_          = EqM.dec O._≈?_
   ; _≤?_         = dec O._≤?_
   } where module O = IsDecTotalOrder O
 

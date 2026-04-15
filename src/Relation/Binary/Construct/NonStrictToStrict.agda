@@ -135,7 +135,7 @@ x < y = x ≤ y × x ≉ y
                             IsDecStrictPartialOrder _≈_ _<_
 <-isDecStrictPartialOrder dpo = record
   { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
-  ; _≈?_ = _≈?_
+  ; _≟_  = _≈?_
   ; _<?_ = <-decidable _≈?_ _≤?_
   } where open IsDecPartialOrder dpo
 

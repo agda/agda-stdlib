@@ -70,7 +70,7 @@ x ≈? y = toℕ x ℕ.≡? toℕ y
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≈?_          = _≈?_
+  ; _≟_           = _≈?_
   }
 
 ≈-decSetoid : DecSetoid _ _

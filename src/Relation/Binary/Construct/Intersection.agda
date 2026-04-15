@@ -104,7 +104,7 @@ isEquivalence {L = L} {R = R} eqₗ eqᵣ = record
 isDecEquivalence : IsDecEquivalence L → IsDecEquivalence R → IsDecEquivalence (L ∩ R)
 isDecEquivalence eqₗ eqᵣ = record
   { isEquivalence = isEquivalence L.isEquivalence R.isEquivalence
-  ; _≈?_           = L._≈?_ ∩? R._≈?_
+  ; _≟_            = L._≈?_ ∩? R._≈?_
   } where module L = IsDecEquivalence eqₗ; module R = IsDecEquivalence eqᵣ
 
 isPreorder : IsPreorder ≈ L → IsPreorder ≈ R → IsPreorder ≈ (L ∩ R)

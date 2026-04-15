@@ -147,7 +147,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≡? ↥ q ℤ.* �
 ≃-isDecEquivalence : IsDecEquivalence _≃_
 ≃-isDecEquivalence = record
   { isEquivalence = ≃-isEquivalence
-  ; _≈?_          = _≃?_
+  ; _≟_           = _≃?_
   }
 
 ≄-isApartnessRelation : IsApartnessRelation _≃_ _≄_
@@ -326,7 +326,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≃_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≈?_         = _≃?_
+  ; _≟_          = _≃?_
   ; _≤?_         = _≤?_
   }
 

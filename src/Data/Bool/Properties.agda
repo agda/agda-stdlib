@@ -139,7 +139,7 @@ true  ≤? true  = yes b≤b
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≈?_         = _≡?_
+  ; _≟_          = _≡?_
   ; _≤?_         = _≤?_
   }
 

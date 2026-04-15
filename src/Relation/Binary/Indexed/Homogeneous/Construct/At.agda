@@ -37,7 +37,7 @@ isDecEquivalence : ∀ {_≈_ : IRel Aᵢ ℓ} → IsIndexedDecEquivalence Aᵢ 
                    (index : I) → IsDecEquivalence (_≈_ {index})
 isDecEquivalence isEq index = record
   { isEquivalence = isEquivalence E.isEquivalenceᵢ index
-  ; _≈?_           = E._≈ᵢ?_
+  ; _≟_            = E._≈ᵢ?_
   } where module E = IsIndexedDecEquivalence isEq
 
 isPreorder : ∀ {_≈_ : IRel Aᵢ ℓ₁} {_∼_ : IRel Aᵢ ℓ₂} →

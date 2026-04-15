@@ -65,7 +65,7 @@ isEquivalence eq = record
 isDecEquivalence : IsDecEquivalence R → IsDecEquivalence (Pointwise R)
 isDecEquivalence eq = record
   { isEquivalence = isEquivalence DE.isEquivalence
-  ; _≈?_          = decidable     DE._≈?_
+  ; _≟_           = decidable     DE._≈?_
   } where module DE = IsDecEquivalence eq
 
 isPreorder : IsPreorder R S → IsPreorder (Pointwise R) (Pointwise S)

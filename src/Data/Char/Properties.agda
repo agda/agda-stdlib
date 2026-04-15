@@ -179,7 +179,7 @@ _≤?_ = Refl.decidable <-cmp
 ≤-isDecPartialOrder : IsDecPartialOrder _≡_ _≤_
 ≤-isDecPartialOrder = record
   { isPartialOrder = ≤-isPartialOrder
-  ; _≈?_           = _≡?_
+  ; _≟_            = _≡?_
   ; _≤?_           = _≤?_
   }
 
@@ -245,7 +245,7 @@ x ≈? y = toℕ x ℕ.≡? toℕ y
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≈?_           = _≈?_
+  ; _≟_            = _≈?_
   }
 ≈-decSetoid : DecSetoid _ _
 ≈-decSetoid = record

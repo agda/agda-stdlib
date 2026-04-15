@@ -162,7 +162,7 @@ _≤?_ : Decidable _≤_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≈?_         = _≡?_
+  ; _≟_          = _≡?_
   ; _≤?_         = _≤?_
   }
 

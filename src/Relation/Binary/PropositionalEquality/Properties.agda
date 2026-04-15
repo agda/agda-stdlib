@@ -161,7 +161,7 @@ isEquivalence = record
 isDecEquivalence : DecidableEquality A → IsDecEquivalence _≡_
 isDecEquivalence _≈?_ = record
   { isEquivalence = isEquivalence
-  ; _≈?_          = _≈?_
+  ; _≟_           = _≈?_
   }
 
 setoid : Set a → Setoid _ _
