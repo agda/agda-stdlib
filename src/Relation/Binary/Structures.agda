@@ -143,7 +143,7 @@ record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
     isDecEquivalence : IsDecEquivalence
     isDecEquivalence = record
-      { isEquivalence = isEquivalence 
+      { isEquivalence = isEquivalence
       ; _≟_           = _≟_
       }
 
