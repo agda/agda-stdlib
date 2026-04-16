@@ -18,6 +18,8 @@ Bug-fixes
 
 * Fix a typo in `Function.Construct.Constant`.
 
+* Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -182,6 +184,13 @@ New modules
   Data.List.NonEmpty.Relation.Unary.Any
   Data.List.NonEmpty.Membership.Propositional
   Data.List.NonEmpty.Membership.Setoid
+  ```
+
+* A new type of lists that grow on the right.
+  This is typically useful to model contexts of typing rules
+  or type accumulators that need to be reversed in the base case.
+  ```
+  Data.SnocList.Base
   ```
 
 * Refactoring of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` as smaller modules:

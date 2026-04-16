@@ -58,8 +58,9 @@ open import Data.List.Base as List>
 -- because `snoc' is `cons' backwards is a list that grows on the
 -- right, and that is therefore traversed right-to-left.
 
--- :> a right-to-left cons
--- <: its mirror image to get a left-to-right cons (aka snoc)
+-- :> a cons growing the list on the left
+-- <: its mirror image to get a cons that grows the list on the right
+--    (aka snoc)
 
 infixl 5 _<:_
 
@@ -503,14 +504,13 @@ breakᵇ p = break (T? ∘ p)
 -- Some lines may be empty if the input contains at least two
 -- consecutive newline characters.
 linesBy : ∀ {P : Pred A p} → U.Decidable P → List< A → List< (List< A)
-linesBy {A = A} P? = go nothing where
+linesBy {A = A} P? cs = go cs [>] where
 
-  go : Maybe (List> A) → List< A → List< (List< A)
-  go acc [<]       = (([<] <:_) ∘′ fromList>) (Maybe.fromMaybe [>] acc)
-  go acc (cs <: c) = if does (P? c)
-    then go nothing cs <: fromList> acc′
-    else go (just (c :> acc′)) cs
-    where acc′ = Maybe.fromMaybe [>] acc
+  go : List< A → List> A → List< (List< A)
+  go [<]       l = [<] <: fromList> l
+  go (cs <: c) l = if does (P? c)
+    then go cs [>] <: fromList> l
+    else go cs (c :> l)
 
 linesByᵇ : (A → Bool) → List< A → List< (List< A)
 linesByᵇ p = linesBy (T? ∘ p)
@@ -523,25 +523,26 @@ _ : linesByᵇ (ℕ._≤ᵇ 0) ([<] <: 1 <: 2 <: 0 <: 3 <: 0 <: 0 <: 4) ≡
    [<] <: ([<] <: 1 <: 2) <: ([<] <: 3) <: [<] <: ([<] <: 4)
 _ = refl
 
-
-{-
 -- The predicate `P` represents the notion of space character for the
 -- type `A`. It is used to split the input list into a list of words.
 -- All the words are non empty and the output does not contain any space
 -- characters.
-wordsBy : ∀ {P : Pred A p} → Decidable P → List< A → List< (List< A)
-wordsBy {A = A} P? = go [] where
+wordsBy : ∀ {P : Pred A p} → U.Decidable P → List< A → List< (List< A)
+wordsBy {A = A} P? cs = go cs [>] where
 
-  cons : List< A → List< (List< A) → List< (List< A)
-  cons [] ass = ass
-  cons as ass = reverse as ∷ ass
+  snoc : List< (List< A) → List> A → List< (List< A)
+  snoc sas [>] = sas
+  snoc sas as  = sas <: fromList> as
 
-  go : List< A → List< A → List< (List< A)
-  go acc []       = cons acc []
-  go acc (c ∷ cs) = if does (P? c)
-    then cons acc (go [] cs)
-    else go (c ∷ acc) cs
+  go : List< A → List> A → List< (List< A)
+  go [<]       w = snoc [<] w
+  go (cs <: c) w = if does (P? c)
+    then snoc (go cs [>]) w
+    else go cs (c :> w)
+    -- notice that the order cs - c - w in go's LHS
+    -- stays the same in the recursive call
 
+{-
 wordsByᵇ : (A → Bool) → List< A → List< (List< A)
 wordsByᵇ p = wordsBy (T? ∘ p)
 
