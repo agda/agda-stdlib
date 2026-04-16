@@ -496,7 +496,7 @@ module _ .{{_ : NonZero o}} where
   ≅%[o]⇒≡[o]% : _≅%[ o ]_ ⇒ _≡%[ o ]_
   ≅%[o]⇒≡[o]% = SymClosure.fold sym ≲%[o]⇒≡[o]%
 
-  ≡[o]%⇒≲%[o] : m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
+  ≡[o]%⇒≲%[o] : m ≡%[ o ] n → m ≤ n → m ≲%[ o ] n
   ≡[o]%⇒≲%[o] {m = m} {n = n} eq m≤n = k , (begin-equality
     n                           ≡⟨ m≡m%n+[m/n]*n n o ⟩
     n % o + n / o * o           ≡⟨ cong (_+ n / o * o) eq ⟨

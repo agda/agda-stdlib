@@ -69,10 +69,9 @@ Minor improvements
   `refl`, `sym`, and `trans` have been weakened to allow relations of different
   levels to be used.
 
-* Due to becoming large, `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`
-  has been split into smaller modules
-  `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
-  that are reexported by the original `Properties`.
+* The original `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` has been
+  split up into smaller `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*`
+  modules that are reexported by `Properties`.
 
 Deprecated modules
 ------------------
@@ -154,10 +153,6 @@ Deprecated names
 New modules
 -----------
 
-* Added tactic ring solvers for rational numbers (issue #1879):
-  `Data.Rational.Tactic.RingSolver`,
-  `Data.Rational.Unnormalised.Tactic.RingSolver`.
-
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
 * `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
@@ -172,12 +167,6 @@ New modules
 
 * `Data.List.Fresh.Membership.DecSetoid`.
 
-* `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
-
-* `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
-
-* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
-
 * Various additions over non-empty lists:
   ```
   Data.List.NonEmpty.Relation.Binary.Pointwise
@@ -186,11 +175,22 @@ New modules
   Data.List.NonEmpty.Membership.Setoid
   ```
 
+* `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
+
+* `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
+
+
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
   or type accumulators that need to be reversed in the base case.
   ```
   Data.SnocList.Base
+  ```
+
+* Added tactic ring solvers for rational numbers (issue #1879):
+  ```agda
+  Data.Rational.Tactic.RingSolver
+  Data.Rational.Unnormalised.Tactic.RingSolver
   ```
 
 * Refactoring of `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties` as smaller modules:
@@ -204,6 +204,8 @@ New modules
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
   ```
+
+* `Effect.Monad.Random` and `Effect.Monad.Random.Instances` for an mtl-style randomness monad constraint.
 
 * `Relation.Binary.Morphism.Construct.On`: given a relation `_∼_` on `B`,
   and a function `f : A → B`, construct the canonical `IsRelMonomorphism`
@@ -364,7 +366,7 @@ Additions to existing modules
 
   ≲%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≲%[ o ]_ ⇒ _≡%[ o ]_
   ≅%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≅%[ o ]_ ⇒ _≡%[ o ]_
-  ≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m % o ≡ n % o → m ≤ n → m ≲%[ o ] n
+  ≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m ≡%[ o ] n → m ≤ n → m ≲%[ o ] n
   ≡[o]%⇒≅%[o] : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≅%[ o ]_
 
   ≡%-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
@@ -604,6 +606,19 @@ Additions to existing modules
                       padRight m≤n x (updateAt xs i f)
   ```
 
+* In `Data.Vec.Relation.Binary.Pointwise.Inductive`
+  ```agda
+  irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
+  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
+            Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
+  ```
+
+* In `Data.Vec.Relation.Binary.Pointwise.Extensional`
+  ```agda
+  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
+            Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+  ```
+
 * In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
   ```agda
   ≤±-respˡ-≡ : _≤±_ Respectsˡ _≡_
@@ -642,19 +657,6 @@ Additions to existing modules
   on⁻  : SymClosure (R on g) ⇒ ((SymClosure R) on g)
   ```
 
-* In `Data.Vec.Relation.Binary.Pointwise.Inductive`
-  ```agda
-  irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
-  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
-            Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
-  ```
-
-* In `Data.Vec.Relation.Binary.Pointwise.Extensional`
-  ```agda
-  antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
-            Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
-  ```
-
 * In `Relation.Binary.Properties.Setoid`:
   ```agda
   ¬[x≉x] : .(x ≉ x) → Whatever
@@ -687,20 +689,16 @@ Additions to existing modules
   ⟨_⟩⊢⁺_    : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
   [_]⊢⁻_    : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
   [_]⊢⁺_    : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
-  ```
-
-* In `System.Random`:
-  ```agda
-  randomIO : IO Bool
-  randomRIO : RandomRIO {A = Bool} _≤_
-  ```
-
-* In Relation.Unary.Properites
-  ```agda
   ¬∃⟨P⟩⇒Π[∁P] : ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
   ¬∃⟨P⟩⇒∀[∁P] : ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
   ∃⟨∁P⟩⇒¬Π[P] : ∃⟨ ∁ P ⟩ → ¬ Π[ P ]
   ∃⟨∁P⟩⇒¬∀[P] : ∃⟨ ∁ P ⟩ → ¬ ∀[ P ]
   Π[∁P]⇒¬∃[P] : Π[ ∁ P ] → ¬ ∃⟨ P ⟩
   ∀[∁P]⇒¬∃[P] : ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
+  ```
+
+* In `System.Random`:
+  ```agda
+  randomIO : IO Bool
+  randomRIO : RandomRIO {A = Bool} _≤_
   ```
