@@ -48,8 +48,8 @@ on:
 ########################################################################
 
 env:
-  GHC_VERSION: 9.10.1
-  CABAL_VERSION: 3.12.1.0
+  GHC_VERSION: 9.12.2
+  CABAL_VERSION: 3.16.0.0
   CABAL_V1_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
   AGDA: agda -Werror +RTS -M5G -H3.5G -A128M -RTS -i. -isrc -idoc
@@ -76,11 +76,11 @@ jobs:
           if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
              || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
-            echo "AGDA_COMMIT=18cc53941e924b144c0f1f3953280ef726009f7e" >> "${GITHUB_ENV}";
+            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_ENV}";
             echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_ENV}"
           else
             # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.7.0.1" >> "${GITHUB_ENV}";
+            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_ENV}";
             echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_ENV}"
           fi
 
@@ -148,7 +148,7 @@ jobs:
 
       # By default github actions do not pull the repo
       - name: Checkout stdlib
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Test stdlib
         run: |
@@ -169,8 +169,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          ${{ env.CABAL_V1_INSTALL }} clock
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+          make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
 
 
 ########################################################################

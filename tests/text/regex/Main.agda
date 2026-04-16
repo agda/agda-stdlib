@@ -24,26 +24,29 @@ show e (yes match) = case toView (toInfix e (match .Match.related)) of λ where
     ∷ fromList suff
     ∷ []
 
-agdaFile : Exp
-agdaFile = [ 'a' ─ 'z' ∷ 'A' ─ 'Z' ∷ [] ] +
-         ∙ singleton '.'
-         ∙ singleton 'a'
-         ∙ singleton 'g'
-         ∙ singleton 'd'
-         ∙ singleton 'a'
+hell : Exp
+hell = [^ [ ' ' ] ∷ [] ] +
+     ∙ singleton 'h'
+     ∙ · ⁇
+     ∙ singleton 'e'
+     ∙ singleton 'l'
+     ∙ singleton 'l'
+     ∙ [^ [ ' ' ] ∷ [] ] +
 
-buildDir : Exp
-buildDir = singleton '_'
-         ∙ ([ 'a' ─ 'z' ∷ 'A' ─ 'Z' ∷ [] ] + ∙ singleton '/') +
+
+her : Exp
+her = singleton 'h'
+    ∙ singleton 'e'
+    ∙ singleton 'r'
 
 regex : Regex
 regex .Regex.fromStart  = false
 regex .Regex.tillEnd    = false
 regex .Regex.expression
-  = agdaFile ∣ buildDir
+  = hell ∣ her
 
 main : Main
 main = run $ do
-  text ← readFiniteFile "run"
+  text ← readFiniteFile "haystack"
   List.forM′ (lines text) $ λ l →
     putStrLn (show regex $ search (toList l) regex)

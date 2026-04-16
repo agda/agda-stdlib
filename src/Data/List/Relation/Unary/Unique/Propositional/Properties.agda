@@ -30,7 +30,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core
-  using (refl; _≡_; _≢_; sym)
+  using (refl; _≡_; _≢_; sym; cong)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Negation using (¬_)
@@ -52,6 +52,9 @@ module _ {A : Set a} {B : Set b} where
   map⁺ : ∀ {f} → (∀ {x y} → f x ≡ f y → x ≡ y) →
          ∀ {xs} → Unique xs → Unique (map f xs)
   map⁺ = Setoid.map⁺ (setoid A) (setoid B)
+
+  map⁻ : ∀ {f xs} → Unique (map f xs) → Unique xs
+  map⁻ = Setoid.map⁻ (setoid A) (setoid B) (cong _)
 
 ------------------------------------------------------------------------
 -- ++

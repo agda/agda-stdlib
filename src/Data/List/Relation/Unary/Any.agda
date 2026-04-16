@@ -13,7 +13,7 @@ open import Data.List.Base as List using (List; []; [_]; _∷_; removeAt)
 open import Data.Product.Base as Product using (∃; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary.Decidable.Core as Dec using (no; _⊎-dec_)
+open import Relation.Nullary.Decidable.Core as Dec using (no; _⊎?_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; _⊆_; Decidable; Satisfiable)
 
@@ -71,7 +71,7 @@ xs ─ x∈xs = removeAt xs (index x∈xs)
 
 -- If any element satisfies P, then P is satisfied.
 
-satisfied : Any P xs → ∃ P
+satisfied : Any P xs → Satisfiable P
 satisfied (here px)   = _ , px
 satisfied (there pxs) = satisfied pxs
 
@@ -88,7 +88,7 @@ fromSum (inj₂ pxs) = there pxs
 
 any? : Decidable P → Decidable (Any P)
 any? P? []       = no λ()
-any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any? P? xs)
+any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎? any? P? xs)
 
 satisfiable : Satisfiable P → Satisfiable (Any P)
 satisfiable (x , Px) = [ x ] , here Px

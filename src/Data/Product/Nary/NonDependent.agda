@@ -22,7 +22,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Unit.Base using (⊤)
 open import Function.Base using (const; _∘′_; _∘_)
-open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×?_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 
@@ -46,19 +46,32 @@ Product 0       _        = ⊤
 Product 1       (a , _)  = a
 Product (suc n) (a , as) = a × Product n as
 
--- Pointwise lifting of a relation on products
+-- An n-ary product where every element of the product lives at the same universe level.
 
-Allₙ : (∀ {a} {A : Set a} → Rel A a) →
-        ∀ n {ls} {as : Sets n ls} (l r : Product n as) → Sets n ls
-Allₙ R 0               l       r       = _
-Allₙ R 1               a       b       = R a b , _
-Allₙ R (suc n@(suc _)) (a , l) (b , r) = R a b , Allₙ R n l r
+HomoProduct′ : ∀ n {a} → (Fin n → Set a) → Set (lconst n a)
+HomoProduct′ n f = Product n (stabulate n (const _) f)
+
+-- An n-ary product where every element of the product lives in the same type.
+
+HomoProduct : ∀ n {a} → Set a → Set (lconst n a)
+HomoProduct n A = HomoProduct′ n (const A)
+
+-- Pointwise lifting of a relation over n-ary products
+
+Pointwiseₙ : (∀ {a} {A : Set a} → Rel A a) →
+             ∀ n {ls} {as : Sets n ls} (l r : Product n as) → Sets n ls
+Pointwiseₙ R 0               l       r       = _
+Pointwiseₙ R 1               a       b       = R a b , _
+Pointwiseₙ R (suc n@(suc _)) (a , l) (b , r) = R a b , Pointwiseₙ R n l r
+
+-- Pointwise lifting of propositional equality over n-ary products
 
 Equalₙ : ∀ n {ls} {as : Sets n ls} (l r : Product n as) → Sets n ls
-Equalₙ = Allₙ _≡_
+Equalₙ = Pointwiseₙ _≡_
 
 ------------------------------------------------------------------------
 -- Generic Programs
+------------------------------------------------------------------------
 
 -- Once we have these type definitions, we can write generic programs
 -- over them. They will typically be split into two or three definitions:
@@ -66,7 +79,6 @@ Equalₙ = Allₙ _≡_
 -- 1. action on the vector of n levels (if any)
 -- 2. action on the corresponding vector of n Sets
 -- 3. actual program, typed thank to the function defined in step 2.
-------------------------------------------------------------------------
 
 -- see Relation.Binary.PropositionalEquality for congₙ and substₙ, two
 -- equality-related generic programs.
@@ -119,12 +131,12 @@ uncurry⊤ₙ (suc n) f = uncurry (uncurry⊤ₙ n ∘′ f)
 
 Product⊤-dec : ∀ n {ls} {as : Sets n ls} → Product⊤ n (Dec <$> as) → Dec (Product⊤ n as)
 Product⊤-dec zero    _          = yes _
-Product⊤-dec (suc n) (p? , ps?) = p? ×-dec Product⊤-dec n ps?
+Product⊤-dec (suc n) (p? , ps?) = p? ×? Product⊤-dec n ps?
 
 Product-dec : ∀ n {ls} {as : Sets n ls} → Product n (Dec <$> as) → Dec (Product n as)
 Product-dec 0               _          = yes _
 Product-dec 1               p?         = p?
-Product-dec (suc n@(suc _)) (p? , ps?) = p? ×-dec Product-dec n ps?
+Product-dec (suc n@(suc _)) (p? , ps?) = p? ×? Product-dec n ps?
 
 ------------------------------------------------------------------------
 -- pointwise liftings
@@ -168,7 +180,6 @@ projₙ : ∀ n {ls} {as : Sets n ls} k → Product n as → Projₙ as k
 projₙ 1               zero    v        = v
 projₙ (suc n@(suc _)) zero    (v , _)  = v
 projₙ (suc n@(suc _)) (suc k) (_ , vs) = projₙ n k vs
-projₙ 1 (suc ()) v
 
 ------------------------------------------------------------------------
 -- zip
@@ -188,12 +199,10 @@ zipWith (suc n@(suc _)) f (v , vs) (w , ws) =
 Levelₙ⁻ : ∀ {n} → Levels n → Fin n → Levels (pred n)
 Levelₙ⁻               (_ , ls) zero    = ls
 Levelₙ⁻ {suc (suc _)} (l , ls) (suc k) = l , Levelₙ⁻ ls k
-Levelₙ⁻ {1} _ (suc ())
 
 Removeₙ : ∀ {n ls} → Sets n ls → ∀ k → Sets (pred n) (Levelₙ⁻ ls k)
 Removeₙ               (_ , as) zero    = as
 Removeₙ {suc (suc _)} (a , as) (suc k) = a , Removeₙ as k
-Removeₙ {1} _ (suc ())
 
 removeₙ : ∀ n {ls} {as : Sets n ls} k →
           Product n as → Product (pred n) (Removeₙ as k)
@@ -201,7 +210,6 @@ removeₙ (suc zero)          zero    _        = _
 removeₙ (suc (suc _))       zero    (_ , vs) = vs
 removeₙ (suc (suc zero))    (suc k) (v , _)  = v
 removeₙ (suc (suc (suc _))) (suc k) (v , vs) = v , removeₙ _ k vs
-removeₙ (suc zero) (suc ()) _
 
 ------------------------------------------------------------------------
 -- insertion of a k-th component
@@ -209,12 +217,10 @@ removeₙ (suc zero) (suc ()) _
 Levelₙ⁺ : ∀ {n} → Levels n → Fin (suc n) → Level → Levels (suc n)
 Levelₙ⁺         ls       zero    l⁺ = l⁺ , ls
 Levelₙ⁺ {suc _} (l , ls) (suc k) l⁺ = l , Levelₙ⁺ ls k l⁺
-Levelₙ⁺ {0} _ (suc ())
 
 Insertₙ : ∀ {n ls l⁺} → Sets n ls → ∀ k (a⁺ : Set l⁺) → Sets (suc n) (Levelₙ⁺ ls k l⁺)
 Insertₙ         as       zero    a⁺ = a⁺ , as
 Insertₙ {suc _} (a , as) (suc k) a⁺ = a , Insertₙ as k a⁺
-Insertₙ {zero} _ (suc ()) _
 
 insertₙ : ∀ n {ls l⁺} {as : Sets n ls} {a⁺ : Set l⁺} k (v⁺ : a⁺) →
           Product n as → Product (suc n) (Insertₙ as k a⁺)
@@ -222,7 +228,6 @@ insertₙ 0               zero    v⁺ vs       = v⁺
 insertₙ (suc n)         zero    v⁺ vs       = v⁺ , vs
 insertₙ 1               (suc k) v⁺ vs       = vs , insertₙ 0 k v⁺ _
 insertₙ (suc n@(suc _)) (suc k) v⁺ (v , vs) = v , insertₙ n k v⁺ vs
-insertₙ 0 (suc ()) _ _
 
 ------------------------------------------------------------------------
 -- update of a k-th component
@@ -240,8 +245,20 @@ updateₙ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : _ → Set lᵘ} (f : ∀ 
 updateₙ 1               zero    f v        = f v
 updateₙ (suc (suc _))   zero    f (v , vs) = f v , vs
 updateₙ (suc n@(suc _)) (suc k) f (v , vs) = v , updateₙ n k f vs
-updateₙ 1 (suc ()) _ _
 
 updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ as k → aᵘ) →
            Product n as → Product n (Updateₙ as k aᵘ)
 updateₙ′ n k = updateₙ n k
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+Allₙ = Pointwiseₙ
+{-# WARNING_ON_USAGE Allₙ
+"Warning: Allₙ was deprecated in v2.3. Please use Pointwiseₙ instead."
+#-}

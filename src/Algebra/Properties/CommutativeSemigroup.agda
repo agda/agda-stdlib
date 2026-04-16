@@ -9,10 +9,10 @@
 open import Algebra.Bundles using (CommutativeSemigroup)
 
 module Algebra.Properties.CommutativeSemigroup
-  {a ℓ} (CS : CommutativeSemigroup a ℓ)
+  {a ℓ} (commutativeSemigroup : CommutativeSemigroup a ℓ)
   where
 
-open CommutativeSemigroup CS
+open CommutativeSemigroup commutativeSemigroup
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product.Base using (_,_)
@@ -25,8 +25,8 @@ open import Algebra.Properties.Semigroup semigroup public
 ------------------------------------------------------------------------
 -- Properties
 
-interchange : Interchangable _∙_ _∙_
-interchange a b c d = begin
+medial : Medial _∙_
+medial a b c d = begin
   (a ∙ b) ∙ (c ∙ d)  ≈⟨  assoc a b (c ∙ d) ⟩
   a ∙ (b ∙ (c ∙ d))  ≈⟨ ∙-congˡ (assoc b c d) ⟨
   a ∙ ((b ∙ c) ∙ d)  ≈⟨  ∙-congˡ (∙-congʳ (comm b c)) ⟩
@@ -171,3 +171,18 @@ middleSemimedial x y z = begin
 
 semimedial : Semimedial _∙_
 semimedial = semimedialˡ , semimedialʳ
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+interchange = medial
+{-# WARNING_ON_USAGE interchange
+"Warning: interchange was deprecated in v2.3.
+Please use medial instead."
+#-}

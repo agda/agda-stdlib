@@ -20,7 +20,7 @@ open import Relation.Binary.Definitions as B
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality.Core using (refl; cong₂)
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
-open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no)
+open import Relation.Nullary.Decidable as Dec using (_×?_; yes; no)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -69,7 +69,7 @@ module _ {s} {S : Rel A s} where
 allPairs? : B.Decidable R → U.Decidable (AllPairs R)
 allPairs? R? []       = yes []
 allPairs? R? (x ∷ xs) =
-  Dec.map′ (uncurry _∷_) uncons (All.all? (R? x) xs ×-dec allPairs? R? xs)
+  Dec.map′ (uncurry _∷_) uncons (All.all? (R? x) xs ×? allPairs? R? xs)
 
 irrelevant : B.Irrelevant R → U.Irrelevant (AllPairs R)
 irrelevant irr []           []           = refl

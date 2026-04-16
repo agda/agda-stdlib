@@ -29,7 +29,7 @@ open import Relation.Binary.Definitions
         ; tri<; tri>; tri≈)
 open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary.Decidable.Core using (yes; no; _⊎-dec_; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (yes; no; _⊎?_; _×?_)
 open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
@@ -109,12 +109,12 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
 
   ×-decidable : Decidable _≈₁_ → Decidable _<₁_ → Decidable _<₂_ →
                 Decidable _<ₗₑₓ_
-  ×-decidable dec-≈₁ dec-<₁ dec-≤₂ x y =
-    dec-<₁ (proj₁ x) (proj₁ y)
-      ⊎-dec
-    (dec-≈₁ (proj₁ x) (proj₁ y)
-       ×-dec
-     dec-≤₂ (proj₂ x) (proj₂ y))
+  ×-decidable _≈₁?_ _<₁?_ _<₂?_ x y =
+    proj₁ x <₁? proj₁ y
+      ⊎?
+    (proj₁ x ≈₁? proj₁ y
+       ×?
+     proj₂ x <₂? proj₂ y)
 
 module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          {_≈₂_ : Rel B ℓ₃} {_<₂_ : Rel B ℓ₄} where

@@ -84,7 +84,7 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri> _ _    c = inj₂ [ c ]
 
   dec : DecidableEquality A → Decidable _~_ → Decidable _~ᵒ_
-  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b Dec.⊎-dec ~-dec a b)
+  dec ≡? ~? a b = Dec.map ⊎⇔Refl (≡? a b Dec.⊎? ~? a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable _~ᵒ_
   decidable ~-tri a b with ~-tri a b

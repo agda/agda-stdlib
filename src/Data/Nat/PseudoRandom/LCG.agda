@@ -9,9 +9,9 @@
 
 module Data.Nat.PseudoRandom.LCG where
 
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; _+_; _*_; _^_; NonZero)
 open import Data.Nat.DivMod using (_%_)
-open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Base using (List; iterate)
 
 ------------------------------------------------------------------------
 -- Type and generator
@@ -22,14 +22,13 @@ record Generator : Set where
         modulus        : ℕ
         .{{modulus≢0}} : NonZero modulus
 
-step : Generator → ℕ → ℕ
-step gen x =
-  let open Generator gen in
-  ((multiplier * x + increment) % modulus)
+  step : ℕ → ℕ
+  step x = (multiplier * x + increment) % modulus
+
+open Generator public using (step)
 
 list : ℕ → Generator → ℕ → List ℕ
-list zero    gen x = []
-list (suc k) gen x = x ∷ list k gen (step gen x)
+list k gen x = iterate (step gen) x k
 
 ------------------------------------------------------------------------
 -- Examples of parameters

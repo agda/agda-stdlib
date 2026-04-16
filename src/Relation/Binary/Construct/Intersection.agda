@@ -19,7 +19,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Antisymmetric; Decidable; _Respects_
         ; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Minimum; Maximum; Irreflexive)
-open import Relation.Nullary.Decidable using (yes; no; _×-dec_)
+open import Relation.Nullary.Decidable using (yes; no; _×?_)
 
 private
   variable
@@ -86,8 +86,10 @@ module _ (≈ : Rel A ℓ₁) (L : Rel A ℓ₂) (R : Rel A ℓ₃) where
 
 module _ {L : REL A B ℓ₁} {R : REL A B ℓ₂} where
 
-  decidable : Decidable L → Decidable R → Decidable (L ∩ R)
-  decidable L? R? x y = L? x y ×-dec R? x y
+  infixl 6 _∩?_
+
+  _∩?_ : Decidable L → Decidable R → Decidable (L ∩ R)
+  _∩?_ L? R? x y = L? x y ×? R? x y
 
 ------------------------------------------------------------------------
 -- Structures
@@ -102,7 +104,7 @@ isEquivalence {L = L} {R = R} eqₗ eqᵣ = record
 isDecEquivalence : IsDecEquivalence L → IsDecEquivalence R → IsDecEquivalence (L ∩ R)
 isDecEquivalence eqₗ eqᵣ = record
   { isEquivalence = isEquivalence L.isEquivalence R.isEquivalence
-  ; _≟_           = decidable L._≟_ R._≟_
+  ; _≟_           = L._≟_ ∩? R._≟_
   } where module L = IsDecEquivalence eqₗ; module R = IsDecEquivalence eqᵣ
 
 isPreorder : IsPreorder ≈ L → IsPreorder ≈ R → IsPreorder ≈ (L ∩ R)
@@ -144,3 +146,18 @@ isStrictPartialOrderʳ {L = L} {≈ = ≈} {R = R} transₗ respₗ Oᵣ = recor
   ; trans         = transitive L R transₗ Oᵣ.trans
   ; <-resp-≈      = respects₂ ≈ L R respₗ Oᵣ.<-resp-≈
   } where module Oᵣ = IsStrictPartialOrder Oᵣ
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- version 2.4
+
+decidable = _∩?_
+{-# WARNING_ON_USAGE decidable
+"Warning: decidable was deprecated in v2.4.
+Please use _∩?_ instead."
+#-}

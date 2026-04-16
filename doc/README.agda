@@ -3,7 +3,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 2.3-dev
+-- The Agda standard library, version 2.4-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -19,7 +19,7 @@ module README where
 -- and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.7.0
+-- This version of the library has been tested using Agda 2.8.0
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -113,7 +113,7 @@ import README.IO
 -- • Tactic
 --     Tactics for automatic proof generation
 
--- ∙ Text
+-- • Text
 --     Format-based printing, Pretty-printing, and regular expressions
 
 
@@ -278,8 +278,8 @@ import README.Text.Tabular
 -- For short descriptions of every library module, see Everything;
 -- to exclude unsafe modules, see EverythingSafe:
 
-import Everything
 import EverythingSafe
+import Everything
 
 -- Note that the Everything* modules are generated automatically. If
 -- you have downloaded the library from its Git repository and want
@@ -288,5 +288,4 @@ import EverythingSafe
 
 -- Note that all library sources are located under src or ffi. The
 -- modules README, README.* and Everything are not really part of the
--- library, so these modules are located in the top-level directory
--- instead.
+-- library, so these modules are located in the doc directory instead.

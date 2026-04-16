@@ -26,9 +26,9 @@ open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Definitions
   using (Trans; Antisym; Irrelevant; Decidable)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl; cong₂)
+  using (_≡_; _≢_; refl; cong₂; ¬[x≢x])
 open import Relation.Nullary.Decidable.Core as Dec
-  using (_×-dec_; yes; no; _because_)
+  using (_×?_; yes; no; _because_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 
@@ -160,7 +160,7 @@ replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
 
 replicate⁻ : ∀ {m n a b} → m ≢ 0 →
              Prefix R (replicate m a) (replicate n b) → R a b
-replicate⁻ {m = zero}  {n}     m≢0 r  = contradiction refl m≢0
+replicate⁻ {m = zero}  {n}     m≢0 r  = ¬[x≢x] m≢0
 replicate⁻ {m = suc m} {suc n} m≢0 rs = Prefix.head rs
 
 ------------------------------------------------------------------------
@@ -221,4 +221,4 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   prefix? R? []       bs       = yes []
   prefix? R? (a ∷ as) []       = no (λ ())
   prefix? R? (a ∷ as) (b ∷ bs) = Dec.map′ (uncurry _∷_) uncons
-                               $ R? a b ×-dec prefix? R? as bs
+                               $ R? a b ×? prefix? R? as bs

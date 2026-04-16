@@ -22,7 +22,7 @@ open import Relation.Unary using (∁; Pred)
 private
   variable
     a ℓ ℓ₁ ℓ₂ ℓ₃ ℓ₄ p : Level
-    A B : Set a
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Substitutive properties
@@ -86,23 +86,38 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃} {≤₂ : Rel B ℓ₄} where
 
   mono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
-              ∀ {f} → f Preserves ≤₁ ⟶ ≤₂ → f Preserves ≈₁ ⟶ ≈₂
+              ∀ {f} → Monotonic₁ ≤₁ ≤₂ f → Monotonic₁ ≈₁ ≈₂ f
   mono⇒cong sym reflexive antisym mono x≈y = antisym
     (mono (reflexive x≈y))
     (mono (reflexive (sym x≈y)))
 
   antimono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
-                  ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → f Preserves ≈₁ ⟶ ≈₂
+                  ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → Monotonic₁ ≈₁ ≈₂ f
   antimono⇒cong sym reflexive antisym antimono p≈q = antisym
     (antimono (reflexive (sym p≈q)))
     (antimono (reflexive p≈q))
 
-  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
-                f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
-                f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
+  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
+                ∀ {f} → Monotonic₂ ≤₁ ≤₁ ≤₂ f → Monotonic₂ ≈₁ ≈₁ ≈₂ f
   mono₂⇒cong₂ sym reflexive antisym mono x≈y u≈v = antisym
     (mono (reflexive x≈y) (reflexive u≈v))
     (mono (reflexive (sym x≈y)) (reflexive (sym u≈v)))
+
+module _ (≤₁ : Rel A ℓ₁) (≤₂ : Rel B ℓ₂) (≤₃ : Rel C ℓ₂) where
+
+  mono₂⇒monoˡ : ∀ {f} → Reflexive ≤₁ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
+  mono₂⇒monoˡ refl mono x = mono (refl {x = x})
+
+  mono₂⇒monoʳ : ∀ {f} → Reflexive ≤₂ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
+  mono₂⇒monoʳ refl mono y = flip mono (refl {x = y})
+
+  monoˡ∧monoʳ⇒mono₂ : ∀ {f} → Transitive ≤₃ →
+                      LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
+                      Monotonic₂ ≤₁ ≤₂ ≤₃ f
+  monoˡ∧monoʳ⇒mono₂ trans monoˡ monoʳ x≤₁y u≤₂v =
+    trans (monoˡ _ u≤₂v) (monoʳ _ x≤₁y)
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders

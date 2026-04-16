@@ -9,7 +9,7 @@
 module Reflection.AST.Argument.Information where
 
 open import Data.Product.Base using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable.Core using (map′; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (map′; _×?_)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 open import Reflection.AST.Argument.Modality as Modality using (Modality)
@@ -54,4 +54,4 @@ arg-info v m ≟ arg-info v′ m′ =
   map′
     (uncurry (cong₂ arg-info))
     arg-info-injective
-    (v Visibility.≟ v′ ×-dec m Modality.≟ m′)
+    (v Visibility.≟ v′ ×? m Modality.≟ m′)
