@@ -186,7 +186,11 @@ lines : String → List String
 lines = linesByᵇ ('\n' Char.≈ᵇ_)
 
 -- `lines` preserves empty lines
-_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
+_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ "" ∷ []
+_ = refl
+
+-- `lines` does not add a trailing newline
+_ : lines "\nabc\n\nb" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ []
 _ = refl
 
 map : (Char → Char) → String → String
