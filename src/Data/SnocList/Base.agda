@@ -8,9 +8,7 @@
 
 module Data.SnocList.Base where
 
-{-
 open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
--}
 
 open import Data.Bool.Base as Bool using (Bool; true; false; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
@@ -20,7 +18,7 @@ open import Data.Product.Base as Product using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.These.Base as These using (These; this; that; these)
 
-open import Function.Base using (id; _∘_; _∘′_; flip; _$′_; const)
+open import Function.Base using (id; _∘_; _∘′_; _∘₂_; flip; _$′_; const)
 
 open import Level using (Level)
 open import Relation.Unary as U using (Pred)
@@ -28,7 +26,6 @@ open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary.Decidable.Core using (does; T?; ¬?)
-
 
 private
   variable
@@ -542,54 +539,53 @@ wordsBy {A = A} P? cs = go cs [>] where
     -- notice that the order cs - c - w in go's LHS
     -- stays the same in the recursive call
 
-{-
 wordsByᵇ : (A → Bool) → List< A → List< (List< A)
 wordsByᵇ p = wordsBy (T? ∘ p)
 
 derun : ∀ {R : Rel A p} → B.Decidable R → List< A → List< A
-derun R? [] = []
-derun R? (x ∷ []) = x ∷ []
-derun R? (x ∷ sx@(y ∷ _)) with does (R? x y) | derun R? sx
+derun R? [<] = [<]
+derun R? sx@([<] <: x) = sx
+derun R? (sx@(_ <: y) <: x) with does (R? x y) | derun R? sx
 ... | true  | sy = sy
-... | false | sy = x ∷ sy
+... | false | sy = sy <: x
 
 derunᵇ : (A → A → Bool) → List< A → List< A
 derunᵇ r = derun (T? ∘₂ r)
 
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List< A → List< A
-deduplicate R? [] = []
-deduplicate R? (x ∷ sx) = x ∷ filter (¬? ∘ R? x) (deduplicate R? sx)
+deduplicate R? [<] = [<]
+deduplicate R? (sx <: x) = filter (¬? ∘ R? x) (deduplicate R? sx) <: x
 
 deduplicateᵇ : (A → A → Bool) → List< A → List< A
 deduplicateᵇ r = deduplicate (T? ∘₂ r)
 
 -- Finds the first element satisfying the boolean predicate
-find : ∀ {P : Pred A p} → Decidable P → List< A → Maybe A
-find P? []       = nothing
-find P? (x ∷ sx) = if does (P? x) then just x else find P? sx
+find : ∀ {P : Pred A p} → U.Decidable P → List< A → Maybe A
+find P? [<]       = nothing
+find P? (sx <: x) = if does (P? x) then just x else find P? sx
 
 findᵇ : (A → Bool) → List< A → Maybe A
 findᵇ p = find (T? ∘ p)
 
 -- Finds the index of the first element satisfying the boolean predicate
-findIndex : ∀ {P : Pred A p} → Decidable P → (sx : List< A) → Maybe $ Fin (length sx)
-findIndex P? [] = nothing
-findIndex P? (x ∷ sx) = if does (P? x)
+findIndex : ∀ {P : Pred A p} → U.Decidable P → (sx : List< A) → Maybe (Fin (length sx))
+findIndex P? [<]       = nothing
+findIndex P? (sx <: x) = if does (P? x)
   then just zero
   else Maybe.map suc (findIndex P? sx)
 
-findIndexᵇ : (A → Bool) → (sx : List< A) → Maybe $ Fin (length sx)
+findIndexᵇ : (A → Bool) → (sx : List< A) → Maybe (Fin (length sx))
 findIndexᵇ p = findIndex (T? ∘ p)
 
 -- Finds indices of all the elements satisfying the boolean predicate
-findIndices : ∀ {P : Pred A p} → Decidable P → (sx : List< A) → List< $ Fin (length sx)
-findIndices P? []       = []
-findIndices P? (x ∷ sx) = if does (P? x)
-  then zero ∷ indices
+findIndices : ∀ {P : Pred A p} → U.Decidable P → (sx : List< A) → List< (Fin (length sx))
+findIndices P? [<]       = [<]
+findIndices P? (sx <: x) = if does (P? x)
+  then indices <: zero
   else indices
     where indices = map suc (findIndices P? sx)
 
-findIndicesᵇ : (A → Bool) → (sx : List< A) → List< $ Fin (length sx)
+findIndicesᵇ : (A → Bool) → (sx : List< A) → List< (Fin (length sx))
 findIndicesᵇ p = findIndices (T? ∘ p)
 
 ------------------------------------------------------------------------
@@ -610,13 +606,13 @@ sx [ k ]∷= v = sx [ k ]%= const v
 ------------------------------------------------------------------------
 -- Conditional versions of cons and snoc
 
-infixr 5 _?∷_
-_?∷_ : Maybe A → List< A → List< A
-_?∷_ = maybe′ _∷_ id
+infixr 5 _<:?_
+_<:?_ : List< A → Maybe A → List< A
+sx <:? mx = maybe′ (sx <:_) sx mx
 
-infixl 6 _∷ʳ?_
-_∷ʳ?_ : List< A → Maybe A → List< A
-sx ∷ʳ? x = maybe′ (sx ∷ʳ_) sx x
+infixl 6 _?ˡ∷_
+_?ˡ∷_ : Maybe A → List< A → List< A
+mx ?ˡ∷ sx = maybe′ (_ˡ∷ sx) sx mx
 
 ------------------------------------------------------------------------
 -- Raw algebraic bundles
@@ -634,6 +630,5 @@ module _ (A : Set a) where
     { Carrier = List< A
     ; _≈_ = _≡_
     ; _∙_ = _++_
-    ; ε = []
+    ; ε = [<]
     }
--}
