@@ -398,7 +398,7 @@ linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
 linesBy {A = A} P? = go nothing where
 
   go : Maybe (List A) → List A → List (List A)
-  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc []       = ([_] ∘′ reverse) (Maybe.fromMaybe [] acc)
   go acc (c ∷ cs) = if does (P? c)
     then reverse acc′ ∷ go nothing cs
     else go (just (c ∷ acc′)) cs
