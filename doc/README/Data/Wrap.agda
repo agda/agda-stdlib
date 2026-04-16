@@ -108,7 +108,7 @@ module Instances where
 
 module Unification where
 
-  open import Relation.Binary.PropositionalEquality
+  open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
   module Naïve where
 
