@@ -6,8 +6,9 @@ description:     Helper programs for setting up the Agda standard library.
 license:         MIT
 
 tested-with:
-  GHC == 9.12.2
-  GHC == 9.10.2
+  GHC == 9.14.1
+  GHC == 9.12.4
+  GHC == 9.10.3
   GHC == 9.8.4
   GHC == 9.6.7
   GHC == 9.4.8
@@ -25,7 +26,7 @@ common common-build-parameters
     PatternSynonyms
 
   build-depends:
-      base          >= 4.12.0.0 && < 4.22
+      base          >= 4.12.0.0 && < 4.23
     , filemanip     >= 0.3.6.2  && < 0.4
 
 executable GenerateEverything
