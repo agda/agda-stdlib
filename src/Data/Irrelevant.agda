@@ -32,17 +32,15 @@ record Irrelevant (A : Set a) : Set a where
 open Irrelevant public
 
 ------------------------------------------------------------------------
--- Relationship with the . modality: wrapped/unwrapped application
+-- Relationship with the . modality: wrapped/unwrapped abstraction
 
-infixr -1 _$∙⁺_ _$∙⁻_
+λ∙⁻ : (.A → B) → Irrelevant A → B
+λ∙⁻ f [ a ] = f a
+{-# INLINE λ∙⁻ #-}
 
-_$∙⁺_ : (.A → B) → Irrelevant A → B
-f $∙⁺ [ a ] = f a
-{-# INLINE _$∙⁺_ #-}
-
-_$∙⁻_ : (Irrelevant A → B) → .A → B
-f $∙⁻ a = f [ a ]
-{-# INLINE _$∙⁻_ #-}
+λ∙⁺ : (Irrelevant A → B) → .A → B
+λ∙⁺ f a = f [ a ]
+{-# INLINE λ∙⁺ #-}
 
 -- Irrelevant types are Recomputable
 

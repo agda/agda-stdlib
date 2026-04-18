@@ -102,8 +102,8 @@ Deprecated names
 
 * In `Data.Irrelevant`:
   ```agda
-  _$∙⁺_     : (.A → B) → Irrelevant A → B
-  _$∙⁻_     : (Irrelevant A → B) → .A → B
+  λ∙⁻       : (.A → B) → Irrelevant A → B
+  λ∙⁺       : (Irrelevant A → B) → .A → B
   recompute : Recomputable (Irrelevant A)
   ```
 
