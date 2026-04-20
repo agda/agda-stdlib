@@ -24,6 +24,12 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The function `Data.Irrelevant._>>=_` now has the correct type for a 'bind'
+  operation of a `Monad`, by moving the property `irrelevant-recompute`
+  from `Relation.Nullary.Recomputable` to `Data.Irrelevant` as `recompute`,
+  and re-exporting it from the former module with the old name. This should
+  be backwards compatible.
+
 * The function `Data.Nat.LCG.step` is now a manifest field of the record type
   `Generator`, as per the discussion on #2936 and upstream issues/PRs. This is
   consistent with a minimal API for such LCGs, and should be backwards compatible.
@@ -91,6 +97,13 @@ Deprecated names
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  ```
+
+* In `Data.Irrelevant`:
+  ```agda
+  λ∙⁻       : (.A → B) → Irrelevant A → B
+  λ∙⁺       : (Irrelevant A → B) → .A → B
+  recompute : Recomputable (Irrelevant A)
   ```
 
 * In `Data.List.Fresh.Membership.Setoid.Properties`:
