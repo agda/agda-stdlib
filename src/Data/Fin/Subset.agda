@@ -9,7 +9,7 @@
 module Data.Fin.Subset where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Data.Bool using (not; _∧_; _∨_; _≟_)
+open import Data.Bool using (not; _∧_; _∨_; _≡?_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat.Base using (ℕ)
@@ -131,7 +131,7 @@ p - x = p ─ ⁅ x ⁆
 
 -- Size
 ∣_∣ : Subset n → ℕ
-∣ p ∣ = count (_≟ inside) p
+∣ p ∣ = count (_≡? inside) p
 
 ------------------------------------------------------------------------
 -- Properties

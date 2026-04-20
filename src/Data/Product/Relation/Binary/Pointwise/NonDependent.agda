@@ -108,7 +108,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ×-isDecEquivalence eq₁ eq₂ = record
   { isEquivalence = ×-isEquivalence
                       (isEquivalence eq₁) (isEquivalence eq₂)
-  ; _≟_           = ×-decidable (_≟_ eq₁) (_≟_ eq₂)
+  ; _≟_           = ×-decidable (_≈?_ eq₁) (_≈?_ eq₂)
   } where open IsDecEquivalence
 
 ×-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →

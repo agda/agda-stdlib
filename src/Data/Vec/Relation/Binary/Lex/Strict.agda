@@ -167,8 +167,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                               ∀ {n} → IsDecStrictPartialOrder (_≋_ {n} {n}) _<_
   <-isDecStrictPartialOrder ≺-isDecStrictPartialOrder = record
     { isStrictPartialOrder = <-isStrictPartialOrder O.isStrictPartialOrder
-    ; _≟_                  = Pointwise.decidable O._≟_
-    ; _<?_                 = <-decidable O._≟_ O._<?_
+    ; _≟_                  = Pointwise.decidable O._≈?_
+    ; _<?_                 = <-decidable O._≈?_ O._<?_
     } where module O = IsDecStrictPartialOrder ≺-isDecStrictPartialOrder
 
   <-isStrictTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
@@ -279,8 +279,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                         ∀ {n} → IsDecPartialOrder (_≋_ {n} {n}) _≤_
   ≤-isDecPartialOrder ≺-isDecStrictPartialOrder = record
     { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
-    ; _≟_            = Pointwise.decidable _≟_
-    ; _≤?_           = ≤-dec _≟_ _<?_
+    ; _≟_            = Pointwise.decidable _≈?_
+    ; _≤?_           = ≤-dec _≈?_ _<?_
     } where open IsDecStrictPartialOrder ≺-isDecStrictPartialOrder
 
   ≤-isTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
@@ -294,8 +294,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                       ∀ {n} → IsDecTotalOrder (_≋_ {n} {n}) _≤_
   ≤-isDecTotalOrder ≺-isStrictTotalOrder = record
     { isTotalOrder = ≤-isTotalOrder ≺-isStrictTotalOrder
-    ; _≟_          = Pointwise.decidable _≟_
-    ; _≤?_         = ≤-dec _≟_ _<?_
+    ; _≟_          = Pointwise.decidable _≈?_
+    ; _≤?_         = ≤-dec _≈?_ _<?_
     } where open IsStrictTotalOrder ≺-isStrictTotalOrder
 
 ------------------------------------------------------------------------

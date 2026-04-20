@@ -42,6 +42,6 @@ isPartialOrder po = record
 isDecPartialOrder : IsDecPartialOrder R S → IsDecPartialOrder (Pointwise R) (Suffix S)
 isDecPartialOrder dpo = record
   { isPartialOrder = isPartialOrder DPO.isPartialOrder
-  ; _≟_            = Pointwise.decidable DPO._≟_
+  ; _≟_             = Pointwise.decidable DPO._≈?_
   ; _≤?_           = suffix? DPO._≤?_
   } where module DPO = IsDecPartialOrder dpo

@@ -92,7 +92,7 @@ open import Data.Nat.ListAction using (sum)
 import Data.Nat.Show as ℕ using (show)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.String.Base as String using (String; lines; unlines; unwords; concat)
-open import Data.String.Properties as String using (_≟_)
+open import Data.String.Properties as String using (_≡?_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Unit.Base using (⊤)
 
@@ -183,7 +183,7 @@ options(exe ∷ rest) = mkOptions exe rest where
     inj₂ (mfp , opts) ← pure $ go rest nothing (initOptions exe)
       where inj₁ arg → pure (inj₁ (InvalidArgument arg))
     term ← fromMaybe "" <$> lookupEnv "TERM"
-    let opts = if does (term ≟ "DUMB")
+    let opts = if does (term ≡? "DUMB")
                then record opts { colour = false }
                else opts
     just fp ← pure mfp
@@ -221,7 +221,7 @@ runTest opts testPath = do
                          else putStrLn (fileNotFound "expected")
                        pure (inj₁ testPath)
 
-  let result = does (out String.≟ exp)
+  let result = does (out String.≡? exp)
 
   if result
     then printTiming (opts .timing) time
@@ -354,7 +354,7 @@ filterTests : Options → List String → List String
 filterTests opts = case onlyNames opts of λ where
   [] → id
   xs → let names = List.map String.toList xs in
-       filter (λ n → any? (λ m → infix? Char._≟_ m (String.toList n)) names)
+       filter (λ n → any? (λ m → infix? Char._≡?_ m (String.toList n)) names)
 
 poolRunner : Options → TestPool → IO Summary
 poolRunner opts pool = do

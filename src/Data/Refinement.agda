@@ -17,4 +17,4 @@ open import Data.Refinement.Base public
 -- Publicly re-export queries
 
 open import Data.Refinement.Properties public
-  using (value-injective; _≟_)
+  using (value-injective; _≟_; _≡?_)

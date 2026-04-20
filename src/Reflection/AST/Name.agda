@@ -10,7 +10,7 @@ module Reflection.AST.Name where
 
 open import Data.List.Base using (List)
 import Data.Product.Properties as Prodₚ using (≡-dec)
-import Data.Word64.Properties as Wₚ using (_≟_)
+import Data.Word64.Properties as Wₚ using (_≡?_)
 open import Function.Base using (_on_)
 open import Relation.Nullary.Decidable.Core using (map′)
 open import Relation.Binary.Core using (Rel)
@@ -38,13 +38,29 @@ Names = List Name
 -- Decidable equality for names
 ------------------------------------------------------------------------
 
-infix 4 _≈?_ _≟_ _≈_
+infix 4 _≈?_ _≡?_ _≈_
 
 _≈_ : Rel Name _
 _≈_ = _≡_ on toWords
 
 _≈?_ : Decidable _≈_
-_≈?_ = decidable toWords _≡_ (Prodₚ.≡-dec Wₚ._≟_ Wₚ._≟_)
+_≈?_ = decidable toWords _≡_ (Prodₚ.≡-dec Wₚ._≡?_ Wₚ._≡?_)
 
-_≟_ : DecidableEquality Name
-m ≟ n = map′ (toWords-injective _ _) (cong toWords) (m ≈? n)
+_≡?_ : DecidableEquality Name
+m ≡? n = map′ (toWords-injective _ _) (cong toWords) (m ≈? n)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

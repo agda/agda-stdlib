@@ -19,7 +19,6 @@ open import Relation.Binary.Definitions
   using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Irreflexive)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; ¬[x≢x])
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 open Setoid S renaming (Carrier to A)
 

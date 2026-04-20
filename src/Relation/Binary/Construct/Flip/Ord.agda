@@ -101,7 +101,7 @@ isEquivalence {≈ = ≈} eq = record
 isDecEquivalence : IsDecEquivalence ≈ → IsDecEquivalence (flip ≈)
 isDecEquivalence {≈ = ≈} dec = record
   { isEquivalence = isEquivalence Dec.isEquivalence
-  ; _≟_           = decidable ≈ Dec._≟_
+  ; _≟_           = decidable ≈ Dec._≈?_
   } where module Dec = IsDecEquivalence dec
 
 isPreorder : IsPreorder ≈ ∼ → IsPreorder (flip ≈) (flip ∼)
@@ -127,7 +127,7 @@ isTotalOrder {≈ = ≈} {≤ = ≤} O = record
 isDecTotalOrder : IsDecTotalOrder ≈ ≤ → IsDecTotalOrder (flip ≈) (flip ≤)
 isDecTotalOrder {≈ = ≈} {≤ = ≤} O = record
   { isTotalOrder = isTotalOrder O.isTotalOrder
-  ; _≟_          = decidable ≈ O._≟_
+  ; _≟_          = decidable ≈ O._≈?_
   ; _≤?_         = decidable ≤ O._≤?_
   } where module O = IsDecTotalOrder O
 

@@ -6,6 +6,19 @@ The library has been tested using Agda 2.8.0.
 Highlights
 ----------
 
+* The notation for `Decidable` relations has been (partially) standardised: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the general `IsDecEquivalence`
+
+  At present, the old fieldname `_≟_` has been retained, in order to avoid
+  a non-backwards compatible/breaking change of fieldname, which will plan
+  to do in Version 3.0, with accompanying deprecation of that name, against
+  its eventual removal in subsequent versions.
+
+  The change leads to a number of (trivial) renamings/deprecations, others more
+  substantive in `Data.{Nat|Fin}.Properties` for the concrete datatypes, which
+  are summarised below, but are not each documented for all affected modules.
+
 Bug-fixes
 ---------
 
@@ -97,6 +110,15 @@ Deprecated names
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
   ¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+  _≟_       ↦   _≡?_
+  inj⇒≟     ↦   inj⇒≡?
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  _≟_     ↦   _≡?_
+  ≟-diag  ↦   ≡?-≡
+  ≟-≡     ↦   ≡?-≢
   ```
 
 * In `Data.Irrelevant`:
@@ -134,14 +156,35 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Effect.Monad.Partiality`:
+  ```agda
+  _≟-Kind_     ↦   _≡?-Kind_
+  ```
+
+* In `Reflection.AST.AlphaEquality`:
+  ```agda
+  ≟⇒α     ↦   ≡?⇒α
+  ```
+
 * In `Relation.Binary.Construct.Intersection`:
   ```agda
   decidable     ↦   _∩?_
   ```
 
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-≟-identity     ↦   ≡-≡?-identity
+  ≢-≟-identity     ↦   ≢-≡?-identity
+  ```
+
 * In `Relation.Binary.Construct.Union`:
   ```agda
   decidable     ↦   _∪?_
+  ```
+
+* In `Relation.Nary`:
+  ```agda
+  ≟-mapₙ     ↦   ≡?-mapₙ
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
@@ -151,6 +194,7 @@ Deprecated names
   _×-dec_  ↦   _×?_
   _⊎-dec_  ↦   _⊎?_
   _→-dec_  ↦   _→?_
+  ```
 
 * In `Relation.Nullary.Negation`:
   ```agda
@@ -302,9 +346,9 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   ≡-irrelevant : Irrelevant {A = Fin n} _≡_
-  ≟-≡          : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
-  ≟-≡-refl     : (i : Fin n) → (i ≟ i) ≡ yes refl
-  ≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
+  ≡?-≡         : (eq : i ≡ j) → (i ≡? j) ≡ yes eq
+  ≡?-≡-refl    : (i : Fin n) → (i ≡? i) ≡ yes refl
+  ≡?-≢         : (i≢j : i ≢ j) → (i ≡? j) ≡ no i≢j
   inject-<     : inject j < i
 
   record Least⟨_⟩ (P : Pred (Fin n) p) : Set p where
@@ -396,7 +440,7 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
-  ≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
+  ≡?-≡-refl : ∀ n  → (n ≡? n) ≡ yes refl
   ∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
   ^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
   2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)

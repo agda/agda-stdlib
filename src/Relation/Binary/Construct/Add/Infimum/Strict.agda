@@ -166,7 +166,7 @@ module _ {e} {_≈_ : Rel A e} where
                                IsDecStrictPartialOrder _≡_ _<₋_
 <₋-isDecStrictPartialOrder-≡ dectot = record
   { isStrictPartialOrder = <₋-isStrictPartialOrder-≡ isStrictPartialOrder
-  ; _≟_                  = ≡-dec _≟_
+  ; _≟_                  = ≡-dec _≈?_
   ; _<?_                 = <₋-dec _<?_
   } where open IsDecStrictPartialOrder dectot
 
@@ -197,7 +197,7 @@ module _ {e} {_≈_ : Rel A e} where
                                IsDecStrictPartialOrder _≈₋_ _<₋_
   <₋-isDecStrictPartialOrder dectot = record
     { isStrictPartialOrder = <₋-isStrictPartialOrder isStrictPartialOrder
-    ; _≟_                  = ≈₋-dec _≟_
+    ; _≟_                  = ≈₋-dec _≈?_
     ; _<?_                 = <₋-dec _<?_
     } where open IsDecStrictPartialOrder dectot
 

@@ -92,7 +92,7 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   isDecEquivalence : IsDecEquivalence R → IsDecEquivalence (Pointwise R)
   isDecEquivalence R-isDecEquivalence = record
     { isEquivalence = isEquivalence R.isEquivalence
-    ; _≟_           = dec R._≟_
+    ; _≟_           = dec R._≈?_
     } where module R = IsDecEquivalence R-isDecEquivalence
 
   pointwise⊆any : ∀ {x} → Pointwise R (just x) ⊆ Any (R x)
