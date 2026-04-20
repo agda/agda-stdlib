@@ -276,14 +276,14 @@ iterate f e zero    = [<]
 iterate f e (suc n) = iterate f (f e) n <: e
 
 inits : List< A → List< (List< A)
-inits {A = A} = λ sx → tail sx <: [<]
+inits {A = A} sx = tail sx <: [<]
   module Inits where
     tail : List< A → List< (List< A)
     tail [<]       = [<]
     tail (sx <: x) = map (_<: x) (tail sx) <: ([<] <: x)
 
 tails : List< A → List< (List< A)
-tails {A = A} = λ sx → tail sx <: sx
+tails {A = A} sx = tail sx <: sx
   module Tails where
     tail : List< A → List< (List< A)
     tail [<]       = [<]
