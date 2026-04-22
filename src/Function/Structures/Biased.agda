@@ -19,7 +19,8 @@ module Function.Structures.Biased {a b ℓ₁ ℓ₂}
 
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base using (_∘_; id)
-open import Function.Definitions using(StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ; Congruent)
+open import Function.Definitions
+  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ; Congruent)
 open import Function.Consequences.Setoid
   using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ
         ; strictlyInverseʳ⇒inverseʳ)
