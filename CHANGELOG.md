@@ -134,6 +134,11 @@ Deprecated names
   truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
   ```
 
+* In `Function.Base`:
+  ```agda
+  λ∙ : (.(x : A) → B x) → ((x : A) → B x)
+  ```
+
 * In `Relation.Binary.Construct.Intersection`:
   ```agda
   decidable     ↦   _∩?_
@@ -180,6 +185,11 @@ New modules
 * `Algebra.Properties.CommutativeRing`.
 
 * `Algebra.Properties.Semiring`.
+
+* A variation on `Fin` seen as a `Nat` refinement, with better runtime representation and performance.
+  ```
+  Data.Nat.Bounded.Base
+  ```
 
 * `Data.List.Fresh.Membership.DecSetoid`.
 
@@ -296,6 +306,12 @@ Additions to existing modules
   ```
   NB. the latter is based on `IsCommutativeRing`, with the former on `IsSemiring`.
 
+
+* In `Data.Bool.Properties`:
+  ```agda
+  ¬T-≡ : (¬ T x) ⇔ x ≡ false
+  ```
+
 * In `Data.Fin.Permutation.Components`:
   ```agda
   transpose[i,i,j]≡j  : (i j : Fin n) → transpose i i j ≡ j
@@ -410,6 +426,7 @@ Additions to existing modules
   m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
   m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
   ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
+  <″⇒< : _<″_ ⇒ _<_
   ```
 
 * In `Data.Product.Properties`:

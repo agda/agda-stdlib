@@ -41,7 +41,7 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
 open import Relation.Nullary.Decidable.Core
   using (True; yes; no; fromWitness ; toWitness)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -834,6 +834,10 @@ if-cong₂ _ refl refl = refl
 -- Properties of T
 
 open Relation.Nullary.Decidable.Core public using (T?)
+
+¬T-≡ : ∀ {x} → (¬ T x) ⇔ x ≡ false
+¬T-≡ {false} = mk⇔ (const refl) (const id)
+¬T-≡ {true}  = mk⇔ (contradiction _) (λ ())
 
 T-≡ : ∀ {x} → T x ⇔ x ≡ true
 T-≡ {false} = mk⇔ (λ ())       (λ ())
