@@ -18,6 +18,8 @@ Bug-fixes
 
 * Fix a typo in `Function.Construct.Constant`.
 
+* Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -204,6 +206,14 @@ New modules
 * `Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}` for the Choudhury and Fiore definition of permutation, and its equivalence with `Declarative` below.
 
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
+
+
+* A new type of lists that grow on the right.
+  This is typically useful to model contexts of typing rules
+  or type accumulators that need to be reversed in the base case.
+  ```
+  Data.SnocList.Base
+  ```
 
 * Added tactic ring solvers for rational numbers (issue #1879):
   ```agda
