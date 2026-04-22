@@ -62,7 +62,7 @@ naturality : ∀ {x y} {x≡y : x ≡ y} {f g : A → B}
              (f≡g : ∀ x → f x ≡ g x) →
              trans (cong f x≡y) (f≡g y) ≡ trans (f≡g x) (cong g x≡y)
 naturality {x = x} {x≡y = refl} f≡g =
-  f≡g x               ≡⟨ sym (trans-reflʳ _) ⟩
+  f≡g x               ≡⟨ trans-reflʳ _ ⟨
   trans (f≡g x) refl  ∎
   where open ≡-Reasoning
 
@@ -71,9 +71,9 @@ naturality {x = x} {x≡y = refl} f≡g =
 cong-≡id : ∀ {f : A → A} {x : A} (f≡id : ∀ x → f x ≡ x) →
            cong f (f≡id x) ≡ f≡id (f x)
 cong-≡id {f = f} {x} f≡id = begin
-  cong f fx≡x                                    ≡⟨ sym (trans-reflʳ _) ⟩
-  trans (cong f fx≡x) refl                       ≡⟨ cong (trans _) (sym (trans-symʳ fx≡x)) ⟩
-  trans (cong f fx≡x) (trans fx≡x (sym fx≡x))    ≡⟨ sym (trans-assoc (cong f fx≡x)) ⟩
+  cong f fx≡x                                    ≡⟨ trans-reflʳ _ ⟨
+  trans (cong f fx≡x) refl                       ≡⟨ cong (trans _) (trans-symʳ fx≡x) ⟨
+  trans (cong f fx≡x) (trans fx≡x (sym fx≡x))    ≡⟨ trans-assoc (cong f fx≡x) ⟨
   trans (trans (cong f fx≡x) fx≡x) (sym fx≡x)    ≡⟨ cong (λ p → trans p (sym _)) (naturality f≡id) ⟩
   trans (trans f²x≡x (cong id fx≡x)) (sym fx≡x)  ≡⟨ cong (λ p → trans (trans f²x≡x p) (sym fx≡x)) (cong-id _) ⟩
   trans (trans f²x≡x fx≡x) (sym fx≡x)            ≡⟨ trans-assoc f²x≡x ⟩
@@ -92,26 +92,15 @@ module _ (_≟_ : DecidableEquality A) {x y : A} where
 
 
 ------------------------------------------------------------------------
--- Inspect
+-- The graph view of a function
 
--- Inspect can be used when you want to pattern match on the result r
--- of some expression e, and you also need to "remember" that r ≡ e.
+module Graph {A : Set a} {B : A → Set b} (f : (x : A) → B x) (x : A) where
 
--- See README.Inspect for an explanation of how/why to use this.
+  record View (y : B x) : Set (a ⊔ b) where
+    field fx≡y : f x ≡ y
 
--- Normally (but not always) the new `with ... in` syntax described at
--- https://agda.readthedocs.io/en/v2.6.4/language/with-abstraction.html#with-abstraction-equality
--- can be used instead."
-
-record Reveal_·_is_ {A : Set a} {B : A → Set b}
-                    (f : (x : A) → B x) (x : A) (y : B x) :
-                    Set (a ⊔ b) where
-  constructor [_]
-  field eq : f x ≡ y
-
-inspect : ∀ {A : Set a} {B : A → Set b}
-          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
-inspect f x = [ refl ]
+  view : View (f x)
+  view = record { fx≡y = refl }
 
 
 ------------------------------------------------------------------------
@@ -130,3 +119,30 @@ isPropositional = Irrelevant
 Please use Relation.Nullary.Irrelevant instead. "
 #-}
 
+-- Version 2.4
+
+module _ {A : Set a} {B : A → Set b} where
+
+  open Graph
+
+  Reveal_·_is_ : (f : (x : A) → B x) (x : A) (y : B x) → Set (a ⊔ b)
+  Reveal f · x is y = View f x y
+
+  inspect : (f : (x : A) → B x) (x : A) → Reveal f · x is f x
+  inspect = view
+
+  pattern [_] eq = record { fx≡y = eq }
+  {-# WARNING_ON_USAGE [_]
+  "Warning: [_] was deprecated in v2.4.
+  Please use the `with ... in eq` syntax instead. "
+  #-}
+  {-# WARNING_ON_USAGE inspect
+  "Warning: inspect was deprecated in v2.4.
+  Please use the `with ... in eq` syntax described at
+  https://agda.readthedocs.io/en/stable/language/with-abstraction.html#with-abstraction-equality instead."
+  #-}
+  {-# WARNING_ON_USAGE Reveal_·_is_
+  "Warning: Reveal_·_is_ was deprecated in v2.4.
+  Please use the `with ... in eq` syntax described at
+  https://agda.readthedocs.io/en/stable/language/with-abstraction.html#with-abstraction-equality instead."
+  #-}

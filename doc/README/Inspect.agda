@@ -1,19 +1,28 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Explaining how to use the inspect idiom and elaborating on the way
--- it is implemented in the standard library.
+-- This module is DEPRECATED.
+--
+-- The record type `Reveal_·_is_`, and its principal mode of use,
+-- via the `inspect` function described below, have been deprecated
+-- in favour of the `with ... in ...` syntax. See the documentation
+--
+-- https://agda.readthedocs.io/en/stable/language/with-abstraction.html#with-abstraction-equality
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Inspect where
 
+{-# WARNING_ON_IMPORT
+"README.Inspect was deprecated in v2.4."
+#-}
+
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product.Base using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Binary.PropositionalEquality using (inspect; [_])
+import Relation.Binary.PropositionalEquality as ≡ using (inspect; [_])
 
 ------------------------------------------------------------------------
 -- Using inspect
@@ -72,9 +81,9 @@ plus-eq-+ (suc m) n      = refl
 -- the second one is trivial.
 
 plus-eq-with : ∀ m n → Plus-eq m n (m + n)
-plus-eq-with m n with m + n | inspect (m +_) n
-... | zero  | [ m+n≡0   ] = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
-... | suc p | [ m+n≡1+p ] = m+n≡1+p
+plus-eq-with m n with m + n | ≡.inspect (m +_) n
+... | zero  | ≡.[ m+n≡0   ] = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
+... | suc p | ≡.[ m+n≡1+p ] = m+n≡1+p
 
 
 ------------------------------------------------------------------------

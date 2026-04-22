@@ -241,11 +241,6 @@ import README.Debug.Trace
 
 import README.Nary
 
--- Explaining the inspect idiom: use case, equivalent handwritten
--- auxiliary definitions, and implementation details.
-
-import README.Inspect
-
 -- Explaining how to use the automatic solvers
 
 import README.Tactic.MonoidSolver
