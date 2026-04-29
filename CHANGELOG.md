@@ -375,6 +375,7 @@ Additions to existing modules
 
 * In `Data.Nat.Divisibility`:
   ```agda
+  ∣m+n∣n⇒∣m : d ∣ m + n → d ∣ n → d ∣ m
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
   ```
