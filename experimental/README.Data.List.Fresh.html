@@ -21,7 +21,7 @@
 <a id="684" class="Comment">-- existing entries</a>
 
 <a id="SortedList"></a><a id="705" href="README.Data.List.Fresh.html#705" class="Function">SortedList</a> <a id="716" class="Symbol">:</a> <a id="718" href="Agda.Primitive.html#388" class="Primitive">Set</a>
-<a id="722" href="README.Data.List.Fresh.html#705" class="Function">SortedList</a> <a id="733" class="Symbol">=</a> <a id="735" href="Data.List.Fresh.html#1712" class="Datatype">List#</a> <a id="741" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="743" href="Data.Nat.Base.html#1800" class="Function Operator">_&lt;_</a>
+<a id="722" href="README.Data.List.Fresh.html#705" class="Function">SortedList</a> <a id="733" class="Symbol">=</a> <a id="735" href="Data.List.Fresh.html#1712" class="Datatype">List#</a> <a id="741" href="Data.Nat.Base.html#1062" class="Datatype">ℕ</a> <a id="743" href="Data.Nat.Base.html#1800" class="Function Operator">_&lt;_</a>
 
 <a id="748" href="README.Data.List.Fresh.html#748" class="Function">_</a> <a id="750" class="Symbol">:</a> <a id="752" href="README.Data.List.Fresh.html#705" class="Function">SortedList</a>
 <a id="763" class="Symbol">_</a> <a id="765" class="Symbol">=</a> <a id="767" href="Data.List.Fresh.html#1797" class="InductiveConstructor">cons</a> <a id="772" class="Number">0</a> <a id="774" class="Symbol">(</a><a id="775" href="Data.List.Fresh.html#1797" class="InductiveConstructor">cons</a> <a id="780" class="Number">1</a> <a id="782" class="Symbol">(</a><a id="783" href="Data.List.Fresh.html#1797" class="InductiveConstructor">cons</a> <a id="788" class="Number">3</a> <a id="790" class="Symbol">(</a><a id="791" href="Data.List.Fresh.html#1797" class="InductiveConstructor">cons</a> <a id="796" class="Number">10</a> <a id="799" href="Data.List.Fresh.html#1780" class="InductiveConstructor">[]</a> <a id="802" class="Symbol">_)</a>
@@ -37,7 +37,7 @@
 <a id="1190" class="Comment">-- We call this new type *I*SortedList because all the proofs will be implicit.</a>
 
 <a id="ISortedList"></a><a id="1271" href="README.Data.List.Fresh.html#1271" class="Function">ISortedList</a> <a id="1283" class="Symbol">:</a> <a id="1285" href="Agda.Primitive.html#388" class="Primitive">Set</a>
-<a id="1289" href="README.Data.List.Fresh.html#1271" class="Function">ISortedList</a> <a id="1301" class="Symbol">=</a> <a id="1303" href="Data.List.Fresh.html#1712" class="Datatype">List#</a> <a id="1309" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1311" href="Relation.Nary.html#6613" class="Function Operator">⌊</a> <a id="1313" href="Data.Nat.Properties.html#11982" class="Function Operator">_&lt;?_</a> <a id="1318" href="Relation.Nary.html#6613" class="Function Operator">⌋</a>
+<a id="1289" href="README.Data.List.Fresh.html#1271" class="Function">ISortedList</a> <a id="1301" class="Symbol">=</a> <a id="1303" href="Data.List.Fresh.html#1712" class="Datatype">List#</a> <a id="1309" href="Data.Nat.Base.html#1062" class="Datatype">ℕ</a> <a id="1311" href="Relation.Nary.html#6613" class="Function Operator">⌊</a> <a id="1313" href="Data.Nat.Properties.html#11982" class="Function Operator">_&lt;?_</a> <a id="1318" href="Relation.Nary.html#6613" class="Function Operator">⌋</a>
 
 <a id="1321" class="Comment">-- The same example is now much shorter. It looks pretty much like a normal list</a>
 <a id="1402" class="Comment">-- except that we know for sure that it is well ordered.</a>
@@ -50,7 +50,7 @@
 <a id="1654" class="Comment">-- list to a pair of a list and a proof and fromWitness which &quot;unerases&quot;</a>
 <a id="1727" class="Comment">-- a proof.</a>
 
-<a id="ns"></a><a id="1740" href="README.Data.List.Fresh.html#1740" class="Function">ns</a> <a id="1743" class="Symbol">:</a> <a id="1745" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="1750" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="ns"></a><a id="1740" href="README.Data.List.Fresh.html#1740" class="Function">ns</a> <a id="1743" class="Symbol">:</a> <a id="1745" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="1750" href="Data.Nat.Base.html#1062" class="Datatype">ℕ</a>
 <a id="1752" href="README.Data.List.Fresh.html#1740" class="Function">ns</a> <a id="1755" class="Symbol">=</a> <a id="1757" href="Data.Product.Base.html#636" class="Field">proj₁</a> <a id="1763" class="Symbol">(</a><a id="1764" href="Data.List.Fresh.html#6171" class="Function">toList</a> <a id="1771" href="README.Data.List.Fresh.html#1460" class="Function">ins</a><a id="1774" class="Symbol">)</a>
 
 <a id="sorted"></a><a id="1777" href="README.Data.List.Fresh.html#1777" class="Function">sorted</a> <a id="1784" class="Symbol">:</a> <a id="1786" href="Data.List.Relation.Unary.AllPairs.Core.html#955" class="Datatype">AllPairs</a> <a id="1795" href="Data.Nat.Base.html#1800" class="Function Operator">_&lt;_</a> <a id="1799" href="README.Data.List.Fresh.html#1740" class="Function">ns</a>
