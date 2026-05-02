@@ -18,7 +18,7 @@ Bug-fixes
 
 * Fix a typo in `Function.Construct.Constant`.
 
-* Fix a warning for `Data.List.Base.all` referencing the wrong replacement `Data.Nat.ListAction.all`, corrected to `Data.Bool.ListAction.all`.
+* Fix the warning for `Data.List.Base.all` referencing the wrong replacement `Data.Nat.ListAction.all`, corrected to `Data.Bool.ListAction.all`.
 
 Non-backwards compatible changes
 --------------------------------
