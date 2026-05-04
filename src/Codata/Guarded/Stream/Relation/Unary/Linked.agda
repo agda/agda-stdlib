@@ -4,7 +4,7 @@
 -- Streams where every consecutive pair of elements is related
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Unary.Linked {a} {A : Set a} where
 
