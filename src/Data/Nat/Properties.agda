@@ -2190,6 +2190,9 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 ≤″⇒≤ : _≤″_ ⇒ _≤_
 ≤″⇒≤ (k , refl) = m≤m+n _ k
 
+<″⇒< : _<″_ ⇒ _<_
+<″⇒< = ≤″⇒≤
+
 -- equivalence to the old definition of _≤″_
 
 ≤″-proof : (le : m ≤″ n) → let k , _ = le in m + k ≡ n

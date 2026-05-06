@@ -37,6 +37,12 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The function `Data.Irrelevant._>>=_` now has the correct type for a 'bind'
+  operation of a `Monad`, by moving the property `irrelevant-recompute`
+  from `Relation.Nullary.Recomputable` to `Data.Irrelevant` as `recompute`,
+  and re-exporting it from the former module with the old name. This should
+  be backwards compatible.
+
 * The function `Data.Nat.LCG.step` is now a manifest field of the record type
   `Generator`, as per the discussion on #2936 and upstream issues/PRs. This is
   consistent with a minimal API for such LCGs, and should be backwards compatible.
@@ -115,6 +121,13 @@ Deprecated names
   ≟-≡     ↦   ≡?-≢
   ```
 
+* In `Data.Irrelevant`:
+  ```agda
+  λ∙⁻       : (.A → B) → Irrelevant A → B
+  λ∙⁺       : (Irrelevant A → B) → .A → B
+  recompute : Recomputable (Irrelevant A)
+  ```
+
 * In `Data.List.Fresh.Membership.Setoid.Properties`:
   ```agda
   ≈-subst-∈   ↦   ∈-resp-≈
@@ -146,6 +159,11 @@ Deprecated names
 * In `Effect.Monad.Partiality`:
   ```agda
   _≟-Kind_     ↦   _≡?-Kind_
+  ```
+
+* In `Function.Base`:
+  ```agda
+  λ∙ : (.(x : A) → B x) → ((x : A) → B x)
   ```
 
 * In `Reflection.AST.AlphaEquality`:
@@ -195,6 +213,10 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Centre.X` for the definition of the centre of an algebra,
+  where `X = {Semigroup|Monoid|Group|Ring}`, based on an underlying type defined
+  in `Algebra.Construct.Centre.Centre`.
+
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
 * `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
@@ -206,6 +228,11 @@ New modules
 * `Algebra.Properties.CommutativeRing`.
 
 * `Algebra.Properties.Semiring`.
+
+* A variation on `Fin` seen as a `Nat` refinement, with better runtime representation and performance.
+  ```
+  Data.Nat.Bounded.Base
+  ```
 
 * `Data.List.Fresh.Membership.DecSetoid`.
 
@@ -322,6 +349,12 @@ Additions to existing modules
   ```
   NB. the latter is based on `IsCommutativeRing`, with the former on `IsSemiring`.
 
+
+* In `Data.Bool.Properties`:
+  ```agda
+  ¬T-≡ : (¬ T x) ⇔ x ≡ false
+  ```
+
 * In `Data.Fin.Permutation.Components`:
   ```agda
   transpose[i,i,j]≡j  : (i j : Fin n) → transpose i i j ≡ j
@@ -436,6 +469,7 @@ Additions to existing modules
   m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
   m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
   ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
+  <″⇒< : _<″_ ⇒ _<_
   ```
 
 * In `Data.Product.Properties`:
