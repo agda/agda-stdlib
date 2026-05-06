@@ -93,6 +93,11 @@ Deprecated names
   ε-comm  ↦   ε-central
   ```
 
+* In `Data.Char.Properties`:
+  ```agda
+  _==_ ↦ _≡ᵇ_
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   ¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
