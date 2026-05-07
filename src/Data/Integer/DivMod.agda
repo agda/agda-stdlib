@@ -14,10 +14,10 @@ open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; NonZero; _%_; ∣_∣;
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (m∸n≤m)
-import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n)
+import Data.Nat.DivMod as ℕ using (m≡m%n+[m/n]*n; m%n≤n; m%n<n; n/1≡n; n%1≡0)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; cong; sym; subst)
+  using (_≡_; cong; sym; subst; trans)
 open ≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -128,6 +128,14 @@ a≡a%n+[a/n]*n n d@(-[1+ _ ]) = begin-equality
   + r + - (q * d)    ≡⟨ cong (_+_ (+ r)) (neg-distribˡ-* q d) ⟩
   + r + - q * d      ≡⟨ cong (_+_ (+ r) ∘′ (_* d)) (sym (-1*i≡-i q)) ⟩
   + r + n / d * d    ∎
+
+n/ℕ1≡n : ∀ n → n /ℕ 1 ≡ n
+n/ℕ1≡n (+ n) = cong +_ (ℕ.n/1≡n n)
+n/ℕ1≡n -[1+ n ] with ℕ.suc n ℕ.% 1 | ℕ.n%1≡0 (ℕ.suc n)
+... | ℕ.zero | suc[n]%1≡0 = cong (λ x → - (+ x)) (ℕ.n/1≡n (ℕ.suc n))
+
+n/1≡n : ∀ n → n / + 1 ≡ n
+n/1≡n n = trans (div-pos-is-/ℕ n 1) (n/ℕ1≡n n)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
