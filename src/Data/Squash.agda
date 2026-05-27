@@ -11,10 +11,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Irrelevant where
+module Data.Squash where
 
 open import Level using (Level)
-open import Data.Squash as Squash using (Squash; squash)
 
 private
   variable
@@ -26,31 +25,20 @@ private
 ------------------------------------------------------------------------
 -- Type
 
-record Irrelevant (A : Set a) : Set a where
-  constructor [_]
-  field
-    irrelevant : Squash A
-open Irrelevant public
+data Squash (A : Set a) : Prop a where
+  squash : A → Squash A
 
 ------------------------------------------------------------------------
 -- Algebraic structure: Functor, Appplicative and Monad-like
 
-map : (A → B) → Irrelevant A → Irrelevant B
-map f [ a ] = [ Squash.map f a ]
-
-pure : A → Irrelevant A
-pure x = [ squash x ]
+map : (A → B) → Squash A → Squash B
+map f (squash x) = squash (f x)
 
 infixl 4 _<*>_
-_<*>_ : Irrelevant (A → B) → Irrelevant A → Irrelevant B
-[ f ] <*> [ a ] = [ f Squash.<*> a ]
+_<*>_ : Squash (A → B) → Squash A → Squash B
+squash f <*> squash x = squash (f x)
 
 infixl 1 _>>=_
-_>>=_ : Irrelevant A → (A → Irrelevant B) → Irrelevant B
-[ a ] >>= f = [ a Squash.>>= (λ x → irrelevant (f x)) ]
+_>>=_ : Squash A → (A → Squash B) → Squash B
+squash x >>= f = f x
 
-------------------------------------------------------------------------
--- Other functions
-
-zipWith : (A → B → C) → Irrelevant A → Irrelevant B → Irrelevant C
-zipWith f a b = ⦇ f a b ⦈
