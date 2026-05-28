@@ -2,3 +2,4 @@ name: standard-library-2.4
 include: src
 flags:
   --warning=noUnsupportedIndexedMatch
+  --prop
