@@ -81,14 +81,14 @@
 <a id="2809" class="Comment">------------------------------------------------------------------------</a>
 <a id="2882" class="Comment">-- Boolean equality test.</a>
 <a id="2908" class="Comment">--</a>
-<a id="2911" class="Comment">-- Why is the definition _==_ = primCharEquality not used? One reason</a>
+<a id="2911" class="Comment">-- Why is the definition _≡ᵇ_ = primCharEquality not used? One reason</a>
 <a id="2981" class="Comment">-- is that the present definition can sometimes improve type</a>
 <a id="3042" class="Comment">-- inference, at least with the version of Agda that is current at the</a>
 <a id="3113" class="Comment">-- time of writing: see unit-test below.</a>
 
-<a id="3155" class="Keyword">infix</a> <a id="3161" class="Number">4</a> <a id="3163" href="Data.Char.Properties.html#3168" class="Function Operator">_==_</a>
-<a id="_==_"></a><a id="3168" href="Data.Char.Properties.html#3168" class="Function Operator">_==_</a> <a id="3173" class="Symbol">:</a> <a id="3175" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a> <a id="3180" class="Symbol">→</a> <a id="3182" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a> <a id="3187" class="Symbol">→</a> <a id="3189" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
-<a id="3194" href="Data.Char.Properties.html#3194" class="Bound">c₁</a> <a id="3197" href="Data.Char.Properties.html#3168" class="Function Operator">==</a> <a id="3200" href="Data.Char.Properties.html#3200" class="Bound">c₂</a> <a id="3203" class="Symbol">=</a> <a id="3205" href="Relation.Nullary.Decidable.Core.html#4703" class="Function">isYes</a> <a id="3211" class="Symbol">(</a><a id="3212" href="Data.Char.Properties.html#3194" class="Bound">c₁</a> <a id="3215" href="Data.Char.Properties.html#2550" class="Function Operator">≟</a> <a id="3217" href="Data.Char.Properties.html#3200" class="Bound">c₂</a><a id="3219" class="Symbol">)</a>
+<a id="3155" class="Keyword">infix</a> <a id="3161" class="Number">4</a> <a id="3163" href="Data.Char.Properties.html#3168" class="Function Operator">_≡ᵇ_</a>
+<a id="_≡ᵇ_"></a><a id="3168" href="Data.Char.Properties.html#3168" class="Function Operator">_≡ᵇ_</a> <a id="3173" class="Symbol">:</a> <a id="3175" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a> <a id="3180" class="Symbol">→</a> <a id="3182" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a> <a id="3187" class="Symbol">→</a> <a id="3189" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
+<a id="3194" href="Data.Char.Properties.html#3194" class="Bound">c₁</a> <a id="3197" href="Data.Char.Properties.html#3168" class="Function Operator">≡ᵇ</a> <a id="3200" href="Data.Char.Properties.html#3200" class="Bound">c₂</a> <a id="3203" class="Symbol">=</a> <a id="3205" href="Relation.Nullary.Decidable.Core.html#4703" class="Function">isYes</a> <a id="3211" class="Symbol">(</a><a id="3212" href="Data.Char.Properties.html#3194" class="Bound">c₁</a> <a id="3215" href="Data.Char.Properties.html#2550" class="Function Operator">≟</a> <a id="3217" href="Data.Char.Properties.html#3200" class="Bound">c₂</a><a id="3219" class="Symbol">)</a>
 
 <a id="3222" class="Keyword">private</a>
 
@@ -96,9 +96,9 @@
   <a id="3298" class="Comment">-- writing) if _==_ is replaced by primCharEquality.</a>
 
   <a id="3354" class="Keyword">data</a> <a id="P"></a><a id="3359" href="Data.Char.Properties.html#3359" class="Datatype">P</a> <a id="3361" class="Symbol">:</a> <a id="3363" class="Symbol">(</a><a id="3364" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a> <a id="3369" class="Symbol">→</a> <a id="3371" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a><a id="3375" class="Symbol">)</a> <a id="3377" class="Symbol">→</a> <a id="3379" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="3383" class="Keyword">where</a>
-    <a id="P.MkP"></a><a id="3393" href="Data.Char.Properties.html#3393" class="InductiveConstructor">MkP</a> <a id="3397" class="Symbol">:</a> <a id="3399" class="Symbol">(</a><a id="3400" href="Data.Char.Properties.html#3400" class="Bound">c</a> <a id="3402" class="Symbol">:</a> <a id="3404" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a><a id="3408" class="Symbol">)</a> <a id="3410" class="Symbol">→</a> <a id="3412" href="Data.Char.Properties.html#3359" class="Datatype">P</a> <a id="3414" class="Symbol">(</a><a id="3415" href="Data.Char.Properties.html#3400" class="Bound">c</a> <a id="3417" href="Data.Char.Properties.html#3168" class="Function Operator">==_</a><a id="3420" class="Symbol">)</a>
+    <a id="P.MkP"></a><a id="3393" href="Data.Char.Properties.html#3393" class="InductiveConstructor">MkP</a> <a id="3397" class="Symbol">:</a> <a id="3399" class="Symbol">(</a><a id="3400" href="Data.Char.Properties.html#3400" class="Bound">c</a> <a id="3402" class="Symbol">:</a> <a id="3404" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a><a id="3408" class="Symbol">)</a> <a id="3410" class="Symbol">→</a> <a id="3412" href="Data.Char.Properties.html#3359" class="Datatype">P</a> <a id="3414" class="Symbol">(</a><a id="3415" href="Data.Char.Properties.html#3400" class="Bound">c</a> <a id="3417" href="Data.Char.Properties.html#3168" class="Function Operator">≡ᵇ_</a><a id="3420" class="Symbol">)</a>
 
-  <a id="unit-test"></a><a id="3425" href="Data.Char.Properties.html#3425" class="Function">unit-test</a> <a id="3435" class="Symbol">:</a> <a id="3437" href="Data.Char.Properties.html#3359" class="Datatype">P</a> <a id="3439" class="Symbol">(</a><a id="3440" class="String">&#39;x&#39;</a> <a id="3444" href="Data.Char.Properties.html#3168" class="Function Operator">==_</a><a id="3447" class="Symbol">)</a>
+  <a id="unit-test"></a><a id="3425" href="Data.Char.Properties.html#3425" class="Function">unit-test</a> <a id="3435" class="Symbol">:</a> <a id="3437" href="Data.Char.Properties.html#3359" class="Datatype">P</a> <a id="3439" class="Symbol">(</a><a id="3440" class="String">&#39;x&#39;</a> <a id="3444" href="Data.Char.Properties.html#3168" class="Function Operator">≡ᵇ_</a><a id="3447" class="Symbol">)</a>
   <a id="3451" href="Data.Char.Properties.html#3425" class="Function">unit-test</a> <a id="3461" class="Symbol">=</a> <a id="3463" href="Data.Char.Properties.html#3393" class="InductiveConstructor">MkP</a> <a id="3467" class="Symbol">_</a>
 
 <a id="3470" class="Comment">------------------------------------------------------------------------</a>
@@ -315,4 +315,13 @@ Please use &lt;-strictPartialOrder instead.&quot;</a>
 Please use &lt;-strictTotalOrder instead.&quot;</a>
 <a id="9420" class="Symbol">#-}</a>
 
+
+<a id="9426" class="Comment">-- Version 2.4</a>
+
+<a id="_==_"></a><a id="9442" href="Data.Char.Properties.html#9442" class="Function Operator">_==_</a> <a id="9447" class="Symbol">:</a> <a id="9449" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a> <a id="9454" class="Symbol">→</a> <a id="9456" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a> <a id="9461" class="Symbol">→</a> <a id="9463" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
+<a id="9468" href="Data.Char.Properties.html#9442" class="Function Operator">_==_</a> <a id="9473" class="Symbol">=</a> <a id="9475" href="Data.Char.Properties.html#3168" class="Function Operator">_≡ᵇ_</a>
+<a id="9480" class="Symbol">{-#</a> <a id="9484" class="Keyword">WARNING_ON_USAGE</a> <a id="9501" class="Pragma">_==_</a>
+<a id="9506" class="String">&quot;Warning: _==_ was deprecated in v2.4.
+Please use _≡ᵇ_ instead.&quot;</a>
+<a id="9571" class="Symbol">#-}</a>
 </pre></body></html>
