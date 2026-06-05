@@ -262,3 +262,23 @@ record NonEmpty {A : Set a} {B : Set b}
     {x}   : A
     {y}   : B
     proof : T x y
+
+-- LeftUnique - the relation is injective,
+-- i.e. every element of the codomain has at most one preimage.
+LeftUnique : Rel A ℓ₁ → Rel B ℓ₂ → REL A B ℓ → Set _
+LeftUnique _≈₁_ _≈₂_ _↦_ = ∀ {x y u v} → x ↦ u → y ↦ v → u ≈₂ v → x ≈₁ y
+
+-- RightUnique - the relation is a (partial) function,
+-- i.e. every element of the domain has at most one image.
+RightUnique : Rel A ℓ₁ → Rel B ℓ₂ → REL A B ℓ → Set _
+RightUnique _≈₁_ _≈₂_ _↦_ = ∀ {x y u v} → x ↦ u → y ↦ v → x ≈₁ y → u ≈₂ v
+
+-- LeftTotal - the relation is total (as in a total function),
+-- i.e. every element of the domain has at least one image.
+LeftTotal : Rel A ℓ₁ → REL A B ℓ → Set _
+LeftTotal _≈_ _↦_ = ∀ x → ∃[ u ] x ↦ u
+
+-- RightTotal - the relation is surjective,
+-- i.e. every element of the codomain has at least one preimage.
+RightTotal : Rel B ℓ₂ → REL A B ℓ → Set _
+RightTotal _≈_ _↦_ = ∀ u → ∃[ x ] x ↦ u
