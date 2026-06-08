@@ -12,7 +12,7 @@
 <a id="347" class="Keyword">module</a> <a id="354" href="Data.Rational.Tactic.RingSolver.html" class="Module">Data.Rational.Tactic.RingSolver</a> <a id="386" class="Keyword">where</a>
 
 <a id="393" class="Keyword">open</a> <a id="398" class="Keyword">import</a> <a id="405" href="Agda.Builtin.Reflection.html" class="Module">Agda.Builtin.Reflection</a> <a id="429" class="Keyword">using</a> <a id="435" class="Symbol">(</a><a id="436" href="Agda.Builtin.Reflection.html#4993" class="Datatype">Term</a><a id="440" class="Symbol">;</a> <a id="442" href="Agda.Builtin.Reflection.html#8617" class="Postulate">TC</a><a id="444" class="Symbol">)</a>
-<a id="446" class="Keyword">open</a> <a id="451" class="Keyword">import</a> <a id="458" href="Data.Rational.Properties.html" class="Module">Data.Rational.Properties</a> <a id="483" class="Keyword">using</a> <a id="489" class="Symbol">(</a><a id="490" href="Data.Rational.Properties.html#46737" class="Function">+-*-commutativeRing</a><a id="509" class="Symbol">;</a> <a id="511" href="Data.Rational.Properties.html#7183" class="Function">0≡?-weak</a><a id="519" class="Symbol">)</a>
+<a id="446" class="Keyword">open</a> <a id="451" class="Keyword">import</a> <a id="458" href="Data.Rational.Properties.html" class="Module">Data.Rational.Properties</a> <a id="483" class="Keyword">using</a> <a id="489" class="Symbol">(</a><a id="490" href="Data.Rational.Properties.html#46746" class="Function">+-*-commutativeRing</a><a id="509" class="Symbol">;</a> <a id="511" href="Data.Rational.Properties.html#7189" class="Function">0≡?-weak</a><a id="519" class="Symbol">)</a>
 <a id="521" class="Keyword">open</a> <a id="526" class="Keyword">import</a> <a id="533" href="Level.html" class="Module">Level</a> <a id="539" class="Keyword">using</a> <a id="545" class="Symbol">(</a><a id="546" href="Level.html#521" class="Function">0ℓ</a><a id="548" class="Symbol">)</a>
 <a id="550" class="Keyword">open</a> <a id="555" class="Keyword">import</a> <a id="562" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a> <a id="577" class="Keyword">using</a> <a id="583" class="Symbol">(</a><a id="584" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a><a id="585" class="Symbol">)</a>
 
@@ -25,8 +25,8 @@
 
 <a id="ring"></a><a id="881" href="Data.Rational.Tactic.RingSolver.html#881" class="Function">ring</a> <a id="886" class="Symbol">:</a> <a id="888" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html#1288" class="Record">ACR.AlmostCommutativeRing</a> <a id="914" href="Level.html#521" class="Function">0ℓ</a> <a id="917" href="Level.html#521" class="Function">0ℓ</a>
 <a id="920" href="Data.Rational.Tactic.RingSolver.html#881" class="Function">ring</a> <a id="925" class="Symbol">=</a> <a id="927" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html#4064" class="Function">ACR.fromCommutativeRing</a>
-  <a id="953" href="Data.Rational.Properties.html#46737" class="Function">+-*-commutativeRing</a>
-  <a id="975" href="Data.Rational.Properties.html#7183" class="Function">0≡?-weak</a>
+  <a id="953" href="Data.Rational.Properties.html#46746" class="Function">+-*-commutativeRing</a>
+  <a id="975" href="Data.Rational.Properties.html#7189" class="Function">0≡?-weak</a>
 
 <a id="985" class="Keyword">macro</a>
   <a id="solve-∀"></a><a id="993" href="Data.Rational.Tactic.RingSolver.html#993" class="Macro">solve-∀</a> <a id="1001" class="Symbol">:</a> <a id="1003" href="Agda.Builtin.Reflection.html#4993" class="Datatype">Term</a> <a id="1008" class="Symbol">→</a> <a id="1010" href="Agda.Builtin.Reflection.html#8617" class="Postulate">TC</a> <a id="1013" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a>
