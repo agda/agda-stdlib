@@ -1,5 +1,5 @@
-Version 2.4-dev
-===============
+Version 2.4
+===========
 
 The library has been tested using Agda 2.8.0.
 
@@ -18,6 +18,8 @@ Bug-fixes
 
 * Fix a typo in `Function.Construct.Constant`.
 
+* Fix the warning for `Data.List.Base.all` referencing the wrong replacement `Data.Nat.ListAction.all`, corrected to `Data.Bool.ListAction.all`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -35,9 +37,14 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* The function `Data.Irrelevant._>>=_` now has the correct type for a 'bind'
+  operation of a `Monad`, by moving the property `irrelevant-recompute`
+  from `Relation.Nullary.Recomputable` to `Data.Irrelevant` as `recompute`,
+  and re-exporting it from the former module with the old name.
+
 * The function `Data.Nat.LCG.step` is now a manifest field of the record type
   `Generator`, as per the discussion on #2936 and upstream issues/PRs. This is
-  consistent with a minimal API for such LCGs, and should be backwards compatible.
+  consistent with a minimal API for such LCGs.
 
 * The types of `Data.Vec.Base.{truncate|padRight}` have been weakened so
   that the argument of type `m ≤ n` is marked as irrelevant. This should be
@@ -85,6 +92,8 @@ Minor improvements
 Deprecated modules
 ------------------
 
+* None
+
 Deprecated names
 ----------------
 
@@ -96,6 +105,11 @@ Deprecated names
 * In `Algebra.Properties.Monoid`:
   ```agda
   ε-comm  ↦   ε-central
+  ```
+
+* In `Data.Char.Properties`:
+  ```agda
+  _==_ ↦ _≡ᵇ_
   ```
 
 * In `Data.Fin.Properties`:
@@ -111,6 +125,13 @@ Deprecated names
   _≟_     ↦   _≡?_
   ≟-diag  ↦   ≡?-≡
   ≟-≡     ↦   ≡?-≢
+  ```
+
+* In `Data.Irrelevant`:
+  ```agda
+  λ∙⁻       : (.A → B) → Irrelevant A → B
+  λ∙⁺       : (Irrelevant A → B) → .A → B
+  recompute : Recomputable (Irrelevant A)
   ```
 
 * In `Data.List.Fresh.Membership.Setoid.Properties`:
@@ -144,6 +165,11 @@ Deprecated names
 * In `Effect.Monad.Partiality`:
   ```agda
   _≟-Kind_     ↦   _≡?-Kind_
+  ```
+
+* In `Function.Base`:
+  ```agda
+  λ∙ : (.(x : A) → B x) → ((x : A) → B x)
   ```
 
 * In `Reflection.AST.AlphaEquality`:
@@ -193,6 +219,10 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Centre.X` for the definition of the centre of an algebra,
+  where `X = {Semigroup|Monoid|Group|Ring}`, based on an underlying type defined
+  in `Algebra.Construct.Centre.Centre`.
+
 * `Algebra.Construct.Sub.Group` for the definition of subgroups.
 
 * `Algebra.Module.Construct.Sub.Bimodule` for the definition of subbimodules.
@@ -204,6 +234,11 @@ New modules
 * `Algebra.Properties.CommutativeRing`.
 
 * `Algebra.Properties.Semiring`.
+
+* A variation on `Fin` seen as a `Nat` refinement, with better runtime representation and performance.
+  ```
+  Data.Nat.Bounded.Base
+  ```
 
 * `Data.List.Fresh.Membership.DecSetoid`.
 
@@ -320,6 +355,12 @@ Additions to existing modules
   ```
   NB. the latter is based on `IsCommutativeRing`, with the former on `IsSemiring`.
 
+
+* In `Data.Bool.Properties`:
+  ```agda
+  ¬T-≡ : (¬ T x) ⇔ x ≡ false
+  ```
+
 * In `Data.Fin.Permutation.Components`:
   ```agda
   transpose[i,i,j]≡j  : (i j : Fin n) → transpose i i j ≡ j
@@ -383,6 +424,7 @@ Additions to existing modules
 
 * In `Data.Nat.Divisibility`:
   ```agda
+  ∣m+n∣n⇒∣m : d ∣ m + n → d ∣ n → d ∣ m
   m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
   n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
   ```
@@ -434,6 +476,7 @@ Additions to existing modules
   m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
   m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
   ∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
+  <″⇒< : _<″_ ⇒ _<_
   ```
 
 * In `Data.Product.Properties`:

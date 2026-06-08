@@ -80,14 +80,14 @@ isDecEquivalence = ≡.isDecEquivalence _≡?_
 ------------------------------------------------------------------------
 -- Boolean equality test.
 --
--- Why is the definition _==_ = primCharEquality not used? One reason
+-- Why is the definition _≡ᵇ_ = primCharEquality not used? One reason
 -- is that the present definition can sometimes improve type
 -- inference, at least with the version of Agda that is current at the
 -- time of writing: see unit-test below.
 
-infix 4 _==_
-_==_ : Char → Char → Bool
-c₁ == c₂ = isYes (c₁ ≡? c₂)
+infix 4 _≡ᵇ_
+_≡ᵇ_ : Char → Char → Bool
+c₁ ≡ᵇ c₂ = isYes (c₁ ≡? c₂)
 
 private
 
@@ -95,9 +95,9 @@ private
   -- writing) if _==_ is replaced by primCharEquality.
 
   data P : (Char → Bool) → Set where
-    MkP : (c : Char) → P (c ==_)
+    MkP : (c : Char) → P (c ≡ᵇ_)
 
-  unit-test : P ('x' ==_)
+  unit-test : P ('x' ≡ᵇ_)
   unit-test = MkP _
 
 ------------------------------------------------------------------------
@@ -316,10 +316,16 @@ Please use <-strictTotalOrder instead."
 
 -- Version 2.4
 
-infix 4 _≟_
+infix 4 _≟_ _==_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
 "Warning: _≟_ was deprecated in v2.4.
 Please use _≡?_ instead."
 #-}
 
+_==_ : Char → Char → Bool
+_==_ = _≡ᵇ_
+{-# WARNING_ON_USAGE _==_
+"Warning: _==_ was deprecated in v2.4.
+Please use _≡ᵇ_ instead."
+#-}

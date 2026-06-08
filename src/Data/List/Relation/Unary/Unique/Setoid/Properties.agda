@@ -24,18 +24,18 @@ import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (_<_)
 open import Function.Base using (_∘_; id)
-open import Function.Definitions using (Congruent)
+open import Function.Definitions using (Congruent; Injective)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contraposition)
 
 private
   variable
     a b c p ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
@@ -47,7 +47,7 @@ module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
   open Setoid S renaming (_≈_ to _≈₁_)
   open Setoid R renaming (_≈_ to _≈₂_)
 
-  map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
+  map⁺ : ∀ {f} → Injective _≈₁_ _≈₂_ f →
          ∀ {xs} → Unique S xs → Unique R (map f xs)
   map⁺ inj xs! = AllPairs.map⁺ (AllPairs.map (contraposition inj) xs!)
 

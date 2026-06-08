@@ -54,6 +54,17 @@ cast {zero}  {zero}  eq k       = k
 cast {suc m} {suc n} eq zero    = zero
 cast {suc m} {suc n} eq (suc k) = suc (cast (cong ℕ.pred eq) k)
 
+-- Tests showing that cast does compute on constructors
+
+module _ .(eqs : suc m ≡ suc n) where
+
+  _ : cast eqs zero ≡ zero
+  _ = refl
+
+  _ : .(eq : m ≡ n) (k : Fin m) →
+      cast eqs (suc k) ≡ suc (cast eq k)
+  _ = λ eq k → refl
+
 ------------------------------------------------------------------------
 -- Conversions
 
@@ -77,7 +88,7 @@ fromℕ<″ : ∀ m {n} → .(m ℕ.<″ n) → Fin n
 fromℕ<″ zero    {suc _} _    = zero
 fromℕ<″ (suc m) {suc _} m<″n = suc (fromℕ<″ m (ℕ.s<″s⁻¹ m<″n))
 
--- canonical liftings of i:Fin m to larger index
+-- Canonical liftings of i:Fin m to larger index
 
 -- injection on the left: "i" ↑ˡ n = "i" in Fin (m + n)
 infixl 5 _↑ˡ_
@@ -90,6 +101,7 @@ infixr 5 _↑ʳ_
 _↑ʳ_ : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
 zero    ↑ʳ i = i
 (suc n) ↑ʳ i = suc (n ↑ʳ i)
+
 
 -- reduce≥ "m + i" _ = "i".
 
