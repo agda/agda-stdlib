@@ -53,7 +53,7 @@ open import Agda.Builtin.Word.Properties
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕ.≟ toℕ y
+x ≈? y = toℕ x ℕ.≡? toℕ y
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -80,22 +80,22 @@ x ≈? y = toℕ x ℕ.≟ toℕ y
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
-_≟_ : DecidableEquality Word64
-x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
+infix 4 _≡?_
+_≡?_ : DecidableEquality Word64
+x ≡? y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _
 ≡-setoid = setoid Word64
 
 ≡-decSetoid : DecSetoid _ _
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
 
 infix 4 _==_
 _==_ : Word64 → Word64 → Bool
-w₁ == w₂ = ⌊ w₁ ≟ w₂ ⌋
+w₁ == w₂ = ⌊ w₁ ≡? w₂ ⌋
 
 ------------------------------------------------------------------------
 -- Properties of _<_
@@ -106,3 +106,18 @@ _<?_ = On.decidable toℕ ℕ._<_ ℕ._<?_
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
 <-strictTotalOrder-≈ = On.strictTotalOrder ℕ.<-strictTotalOrder toℕ
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

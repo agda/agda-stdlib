@@ -51,59 +51,74 @@ string-injective refl = refl
 name-injective : ∀ {x y} → name x ≡ name y → x ≡ y
 name-injective refl = refl
 
-infix 4 _≟_
-_≟_ : DecidableEquality Literal
-nat x ≟ nat x₁ = map′ (cong nat) nat-injective (x ℕ.≟ x₁)
-nat x ≟ word64 x₁ = no (λ ())
-nat x ≟ float x₁ = no (λ ())
-nat x ≟ char x₁ = no (λ ())
-nat x ≟ string x₁ = no (λ ())
-nat x ≟ name x₁ = no (λ ())
-nat x ≟ meta x₁ = no (λ ())
-word64 x ≟ word64 x₁ = map′ (cong word64) word64-injective (x Word64.≟ x₁)
-word64 x ≟ nat x₁ = no (λ ())
-word64 x ≟ float x₁ = no (λ ())
-word64 x ≟ char x₁ = no (λ ())
-word64 x ≟ string x₁ = no (λ ())
-word64 x ≟ name x₁ = no (λ ())
-word64 x ≟ meta x₁ = no (λ ())
-float x ≟ nat x₁ = no (λ ())
-float x ≟ word64 x₁ = no (λ ())
-float x ≟ float x₁ = map′ (cong float) float-injective (x Float.≟ x₁)
-float x ≟ char x₁ = no (λ ())
-float x ≟ string x₁ = no (λ ())
-float x ≟ name x₁ = no (λ ())
-float x ≟ meta x₁ = no (λ ())
-char x ≟ nat x₁ = no (λ ())
-char x ≟ word64 x₁ = no (λ ())
-char x ≟ float x₁ = no (λ ())
-char x ≟ char x₁ = map′ (cong char) char-injective (x Char.≟ x₁)
-char x ≟ string x₁ = no (λ ())
-char x ≟ name x₁ = no (λ ())
-char x ≟ meta x₁ = no (λ ())
-string x ≟ nat x₁ = no (λ ())
-string x ≟ word64 x₁ = no (λ ())
-string x ≟ float x₁ = no (λ ())
-string x ≟ char x₁ = no (λ ())
-string x ≟ string x₁ = map′ (cong string) string-injective (x String.≟ x₁)
-string x ≟ name x₁ = no (λ ())
-string x ≟ meta x₁ = no (λ ())
-name x ≟ nat x₁ = no (λ ())
-name x ≟ word64 x₁ = no (λ ())
-name x ≟ float x₁ = no (λ ())
-name x ≟ char x₁ = no (λ ())
-name x ≟ string x₁ = no (λ ())
-name x ≟ name x₁ = map′ (cong name) name-injective (x Name.≟ x₁)
-name x ≟ meta x₁ = no (λ ())
-meta x ≟ nat x₁ = no (λ ())
-meta x ≟ word64 x₁ = no (λ ())
-meta x ≟ float x₁ = no (λ ())
-meta x ≟ char x₁ = no (λ ())
-meta x ≟ string x₁ = no (λ ())
-meta x ≟ name x₁ = no (λ ())
-meta x ≟ meta x₁ = map′ (cong meta) meta-injective (x Meta.≟ x₁)
+infix 4 _≡?_
+_≡?_ : DecidableEquality Literal
+nat x ≡? nat x₁ = map′ (cong nat) nat-injective (x ℕ.≡? x₁)
+nat x ≡? word64 x₁ = no (λ ())
+nat x ≡? float x₁ = no (λ ())
+nat x ≡? char x₁ = no (λ ())
+nat x ≡? string x₁ = no (λ ())
+nat x ≡? name x₁ = no (λ ())
+nat x ≡? meta x₁ = no (λ ())
+word64 x ≡? word64 x₁ = map′ (cong word64) word64-injective (x Word64.≡? x₁)
+word64 x ≡? nat x₁ = no (λ ())
+word64 x ≡? float x₁ = no (λ ())
+word64 x ≡? char x₁ = no (λ ())
+word64 x ≡? string x₁ = no (λ ())
+word64 x ≡? name x₁ = no (λ ())
+word64 x ≡? meta x₁ = no (λ ())
+float x ≡? nat x₁ = no (λ ())
+float x ≡? word64 x₁ = no (λ ())
+float x ≡? float x₁ = map′ (cong float) float-injective (x Float.≡? x₁)
+float x ≡? char x₁ = no (λ ())
+float x ≡? string x₁ = no (λ ())
+float x ≡? name x₁ = no (λ ())
+float x ≡? meta x₁ = no (λ ())
+char x ≡? nat x₁ = no (λ ())
+char x ≡? word64 x₁ = no (λ ())
+char x ≡? float x₁ = no (λ ())
+char x ≡? char x₁ = map′ (cong char) char-injective (x Char.≡? x₁)
+char x ≡? string x₁ = no (λ ())
+char x ≡? name x₁ = no (λ ())
+char x ≡? meta x₁ = no (λ ())
+string x ≡? nat x₁ = no (λ ())
+string x ≡? word64 x₁ = no (λ ())
+string x ≡? float x₁ = no (λ ())
+string x ≡? char x₁ = no (λ ())
+string x ≡? string x₁ = map′ (cong string) string-injective (x String.≡? x₁)
+string x ≡? name x₁ = no (λ ())
+string x ≡? meta x₁ = no (λ ())
+name x ≡? nat x₁ = no (λ ())
+name x ≡? word64 x₁ = no (λ ())
+name x ≡? float x₁ = no (λ ())
+name x ≡? char x₁ = no (λ ())
+name x ≡? string x₁ = no (λ ())
+name x ≡? name x₁ = map′ (cong name) name-injective (x Name.≡? x₁)
+name x ≡? meta x₁ = no (λ ())
+meta x ≡? nat x₁ = no (λ ())
+meta x ≡? word64 x₁ = no (λ ())
+meta x ≡? float x₁ = no (λ ())
+meta x ≡? char x₁ = no (λ ())
+meta x ≡? string x₁ = no (λ ())
+meta x ≡? name x₁ = no (λ ())
+meta x ≡? meta x₁ = map′ (cong meta) meta-injective (x Meta.≡? x₁)
 
 infix 4 _≡ᵇ_
 
 _≡ᵇ_ : Literal → Literal → Bool
-l ≡ᵇ l′ = isYes (l ≟ l′)
+l ≡ᵇ l′ = isYes (l ≡? l′)
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
