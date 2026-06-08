@@ -92,7 +92,7 @@ c₁ ≡ᵇ c₂ = isYes (c₁ ≡? c₂)
 private
 
   -- The following unit test does not type-check (at the time of
-  -- writing) if _==_ is replaced by primCharEquality.
+  -- writing) if _≡ᵇ_ is replaced by primCharEquality.
 
   data P : (Char → Bool) → Set where
     MkP : (c : Char) → P (c ≡ᵇ_)
@@ -323,7 +323,6 @@ _≟_ = _≡?_
 Please use _≡?_ instead."
 #-}
 
-_==_ : Char → Char → Bool
 _==_ = _≡ᵇ_
 {-# WARNING_ON_USAGE _==_
 "Warning: _==_ was deprecated in v2.4.
