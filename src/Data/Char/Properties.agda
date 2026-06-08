@@ -87,12 +87,12 @@ isDecEquivalence = ≡.isDecEquivalence _≡?_
 
 infix 4 _≡ᵇ_
 _≡ᵇ_ : Char → Char → Bool
-c₁ ≡ᵇ c₂ = isYes (c₁ ≟ c₂)
+c₁ ≡ᵇ c₂ = isYes (c₁ ≡? c₂)
 
 private
 
   -- The following unit test does not type-check (at the time of
-  -- writing) if _==_ is replaced by primCharEquality.
+  -- writing) if _≡ᵇ_ is replaced by primCharEquality.
 
   data P : (Char → Bool) → Set where
     MkP : (c : Char) → P (c ≡ᵇ_)
