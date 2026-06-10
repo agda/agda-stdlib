@@ -586,6 +586,12 @@ word within a compound word is capitalized except for the first word.
   converse relations are systematically introduced, eg `≥` as `\ge`
   and `≱` as `\gen`.
 
+* Decidable predicates and relations should typically be written as `R?`,
+  where `R` is the underlying property being asserted to be `Decidable`,
+  moreover typically sharing the same fixity and precedence as `R`: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the name of the general `IsDecEquivalence`
+
 * Any exceptions to these conventions should be flagged on the GitHub
   `agda-stdlib` issue tracker in the usual way.
 
@@ -717,3 +723,8 @@ used successfully in PR
 systematic for `Nary` relations in PR
 [#811](https://github.com/agda/agda-stdlib/pull/811)
 
+## Prefer use of `Relation.Nullary.Negation.Core.contradiction`
+
+Where possible use `contradiction` between two explicit arguments rather
+than appealing to the lower-level `Data.Empty.⊥-elim`. This provides
+clearer documentation for readers of the code.

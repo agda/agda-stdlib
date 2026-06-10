@@ -46,7 +46,7 @@ open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; subst; _≢_; sym)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; isEquivalence)
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎?_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable; Satisfiable)
 
@@ -140,7 +140,7 @@ nonempty? p = any? (_∈? p)
 -- ∣_∣
 
 ∣p∣≤n : ∀ (p : Subset n) → ∣ p ∣ ≤ n
-∣p∣≤n = count≤n (_≟ inside)
+∣p∣≤n = count≤n (_≡? inside)
 
 ∣p∣≤∣x∷p∣ : ∀ x (p : Subset n)  → ∣ p ∣ ≤ ∣ x ∷ p ∣
 ∣p∣≤∣x∷p∣ outside p = ℕ.≤-refl
@@ -317,7 +317,7 @@ module _ (n : ℕ) where
   ⊂-isDecStrictPartialOrder : IsDecStrictPartialOrder {A = Subset n} _≡_ _⊂_
   ⊂-isDecStrictPartialOrder = record
     { isStrictPartialOrder = ⊂-isStrictPartialOrder
-    ; _≟_ = ≡-dec _≟_
+    ; _≟_  = ≡-dec _≡?_
     ; _<?_ = _⊂?_
     }
 
@@ -367,9 +367,21 @@ p∪∁p≡⊤ (inside  ∷ p) = cong (inside ∷_) (p∪∁p≡⊤ p)
 ∣∁p∣≡n∸∣p∣ (inside  ∷ p) = ∣∁p∣≡n∸∣p∣ p
 ∣∁p∣≡n∸∣p∣ (outside ∷ p) = begin
   suc ∣ ∁ p ∣     ≡⟨ cong suc (∣∁p∣≡n∸∣p∣ p) ⟩
-  suc (_ ∸ ∣ p ∣) ≡⟨ sym (ℕ.+-∸-assoc 1 (∣p∣≤n p)) ⟩
+  suc (_ ∸ ∣ p ∣) ≡⟨ sym (ℕ.∸-suc (∣p∣≤n p)) ⟩
   suc  _ ∸ ∣ p ∣  ∎
   where open ≡-Reasoning
+
+p⊆q⇒∁p⊇∁q : p ⊆ q → ∁ p ⊇ ∁ q
+p⊆q⇒∁p⊇∁q p⊆q x∈∁q = x∉p⇒x∈∁p (x∈∁p⇒x∉p x∈∁q ∘ p⊆q)
+
+∁p⊆∁q⇒p⊇q : ∁ p ⊆ ∁ q → p ⊇ q
+∁p⊆∁q⇒p⊇q ∁p⊆∁q x∈q = x∉∁p⇒x∈p (x∈p⇒x∉∁p x∈q ∘ ∁p⊆∁q)
+
+p⊂q⇒∁p⊃∁q : p ⊂ q → ∁ p ⊃ ∁ q
+p⊂q⇒∁p⊃∁q (p⊆q , x , x∈q , x∉p) = p⊆q⇒∁p⊇∁q p⊆q , x , x∉p⇒x∈∁p x∉p , x∈p⇒x∉∁p x∈q
+
+∁p⊂∁q⇒p⊃q : ∁ p ⊂ ∁ q → p ⊃ q
+∁p⊂∁q⇒p⊃q (∁p⊆∁q , x , x∈∁q , x∉∁p) = ∁p⊆∁q⇒p⊇q ∁p⊆∁q , x , x∉∁p⇒x∈p x∉∁p , x∈∁p⇒x∉p x∈∁q
 
 ------------------------------------------------------------------------
 -- _∩_
@@ -867,7 +879,7 @@ module _ {P : Pred (Subset (suc n)) ℓ} where
 anySubset? : ∀ {P : Pred (Subset n) ℓ} → Decidable P → Dec ∃⟨ P ⟩
 anySubset? {n = zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
 anySubset? {n = suc n} P? = Dec.map ∃-Subset-∷-⇔
-  (anySubset? (P? ∘ (inside ∷_)) ⊎-dec anySubset? (P? ∘ (outside ∷_)))
+  (anySubset? (P? ∘ (inside ∷_)) ⊎? anySubset? (P? ∘ (outside ∷_)))
 
 
 

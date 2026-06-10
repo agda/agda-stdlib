@@ -21,7 +21,7 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Construct.LexProduct
   {ℓ₁ ℓ₂ ℓ₃ ℓ₄} (M : Magma ℓ₁ ℓ₂) (N : Magma ℓ₃ ℓ₄)
-  (_≟₁_ : Decidable (Magma._≈_ M))
+  (_≈₁?_ : Decidable (Magma._≈_ M))
   where
 
 open Magma M using (_∙_ ; ∙-cong)
@@ -39,7 +39,7 @@ open Magma N using ()
   ; refl    to ≈₂-refl
   )
 
-import Algebra.Construct.LexProduct.Inner M N _≟₁_ as InnerLex
+import Algebra.Construct.LexProduct.Inner M N _≈₁?_ as InnerLex
 
 private
   infix 4 _≋_
@@ -53,7 +53,7 @@ private
 -- Definition
 ------------------------------------------------------------------------
 
-open import Algebra.Construct.LexProduct.Base _∙_ _◦_ _≟₁_ public
+open import Algebra.Construct.LexProduct.Base _∙_ _◦_ _≈₁?_ public
   renaming (lex to _⊕_)
 
 ------------------------------------------------------------------------
@@ -103,7 +103,7 @@ identityʳ : ∀ {e f} → RightIdentity _≈₁_ e _∙_ → RightIdentity _≈
 identityʳ id₁ id₂ (x , a) = id₁ x , InnerLex.identityʳ id₁ id₂
 
 sel : Selective _≈₁_ _∙_ → Selective _≈₂_ _◦_ → Selective _≋_ _⊕_
-sel ∙-sel ◦-sel (a , x) (b , y) with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b
+sel ∙-sel ◦-sel (a , x) (b , y) with (a ∙ b) ≈₁? a | (a ∙ b) ≈₁? b
 ... | no  ab≉a | no  ab≉b  = contradiction₂ (∙-sel a b) ab≉a ab≉b
 ... | yes ab≈a | no  _     = inj₁ (ab≈a , ≈₂-refl)
 ... | no  _    | yes ab≈b  = inj₂ (ab≈b , ≈₂-refl)

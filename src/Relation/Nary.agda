@@ -16,7 +16,6 @@ module Relation.Nary where
 
 open import Data.Unit.Base using (⊤)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat.Base using (zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
@@ -25,7 +24,7 @@ open import Function.Base using (_$_; _∘′_)
 open import Function.Nary.NonDependent
 open import Level using (Level; _⊔_; Lift)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction′)
 open import Relation.Nullary.Decidable.Core as Dec
   using (Dec; yes; no; _because_; _×-dec_)
 import Relation.Unary as Unary
@@ -77,15 +76,15 @@ infix 5 ∃⟨_⟩ Π[_] ∀[_]
 ∀[_] : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
 ∀[_] = quantₙ Unary.IUniversal _
 
--- ≟-mapₙ : ∀ n. (con : A₁ → ⋯ → Aₙ → R) →
---               Injectiveₙ n con →
---               ∀ a₁₁ a₁₂ ⋯ aₙ₁ aₙ₂ →
---               Dec (a₁₁ ≡ a₁₂) → ⋯ → Dec (aₙ₁ ≡ aₙ₂) →
---               Dec (con a₁₁ ⋯ aₙ₁ ≡ con a₁₂ ⋯ aₙ₂)
+-- ≡?-mapₙ : ∀ n. (con : A₁ → ⋯ → Aₙ → R) →
+--                Injectiveₙ n con →
+--                ∀ a₁₁ a₁₂ ⋯ aₙ₁ aₙ₂ →
+--                Dec (a₁₁ ≡ a₁₂) → ⋯ → Dec (aₙ₁ ≡ aₙ₂) →
+--                Dec (con a₁₁ ⋯ aₙ₁ ≡ con a₁₂ ⋯ aₙ₂)
 
-≟-mapₙ : ∀ n {ls} {as : Sets n ls} (con : Arrows n as R) → Injectiveₙ n con →
-         ∀ {l r} → Arrows n (Dec <$> Equalₙ n l r) (Dec (uncurryₙ n con l ≡ uncurryₙ n con r))
-≟-mapₙ n con con-inj =
+≡?-mapₙ : ∀ n {ls} {as : Sets n ls} (con : Arrows n as R) → Injectiveₙ n con →
+          ∀ {l r} → Arrows n (Dec <$> Equalₙ n l r) (Dec (uncurryₙ n con l ≡ uncurryₙ n con r))
+≡?-mapₙ n con con-inj =
   curryₙ n λ a?s → let as? = Product-dec n a?s in
   Dec.map′ (cong (uncurryₙ n con) ∘′ fromEqualₙ n) con-inj as?
 
@@ -205,5 +204,20 @@ toWitness : ∀ {n ls r} {as : Sets n ls} (R : as ⇉ Set r) (R? : Decidable R) 
               ∀[ R ⇒ ⌊ R? ⌋ ]
 toWitness {zero} R R? with R?
 ... | true because _ = _
-... | no          ¬r = ⊥-elim ∘′ ¬r
+... | no          ¬r = contradiction′ ¬r
 toWitness {suc n} R R? = toWitness (R _) (R? _)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+≟-mapₙ = ≡?-mapₙ
+{-# WARNING_ON_USAGE ≟-mapₙ
+"Warning: ≟-mapₙ was deprecated in v2.4.
+Please use ≡?-mapₙ instead."
+#-}

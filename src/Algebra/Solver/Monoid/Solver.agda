@@ -43,7 +43,7 @@ open R public
 -- for determining if two expressions have the same semantics.
 
 prove′ : ∀ e₁ e₂ → Maybe ((ρ : Env n) → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
-prove′ e₁ e₂ = Maybe.map lemma $ dec⇒weaklyDec _≟_ (normalise e₁) (normalise e₂)
+prove′ e₁ e₂ = Maybe.map lemma $ dec⇒weaklyDec _≡?_ (normalise e₁) (normalise e₂)
   where
   open import Relation.Binary.Reasoning.Setoid setoid
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ

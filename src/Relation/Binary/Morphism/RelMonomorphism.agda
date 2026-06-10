@@ -61,5 +61,5 @@ isEquivalence isEq = record
 isDecEquivalence : IsDecEquivalence _∼₂_ → IsDecEquivalence _∼₁_
 isDecEquivalence isDecEq = record
   { isEquivalence  = isEquivalence E.isEquivalence
-  ; _≟_            = dec E._≟_
+  ; _≟_            = dec E._≈?_
   } where module E = IsDecEquivalence isDecEq

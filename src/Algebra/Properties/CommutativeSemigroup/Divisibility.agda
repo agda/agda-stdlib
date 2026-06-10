@@ -7,17 +7,17 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (CommutativeSemigroup)
-open import Data.Product.Base using (_,_)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Properties.CommutativeSemigroup.Divisibility
-  {a ℓ} (CS : CommutativeSemigroup a ℓ)
+  {a ℓ} (commutativeSemigroup : CommutativeSemigroup a ℓ)
   where
 
-open CommutativeSemigroup CS
-open import Algebra.Properties.CommutativeSemigroup CS
-  using (interchange; x∙yz≈xz∙y; x∙yz≈y∙xz)
-open ≈-Reasoning setoid
+open import Data.Product.Base using (_,_)
+
+open CommutativeSemigroup commutativeSemigroup
+open import Algebra.Properties.CommutativeSemigroup commutativeSemigroup
+  using (medial; x∙yz≈xz∙y; x∙yz≈y∙xz)
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Re-export the contents of divisibility over semigroups
@@ -42,7 +42,7 @@ x∣y∧z∣x/y⇒xz∣y {x} {y} {z} (x/y , x/y∙x≈y) (p , pz≈x/y) = p , (b
 
 ∙-cong-∣ : ∀ {x y a b} → x ∣ y → a ∣ b → x ∙ a ∣ y ∙ b
 ∙-cong-∣ {x} {y} {a} {b} (p , px≈y) (q , qa≈b) = p ∙ q , (begin
-  (p ∙ q) ∙ (x ∙ a) ≈⟨ interchange p q x a ⟩
+  (p ∙ q) ∙ (x ∙ a) ≈⟨ medial p q x a ⟩
   (p ∙ x) ∙ (q ∙ a) ≈⟨ ∙-cong px≈y qa≈b ⟩
   y ∙ b ∎)
 

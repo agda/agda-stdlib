@@ -92,7 +92,7 @@ open import Data.Nat.ListAction using (sum)
 import Data.Nat.Show as ℕ using (show)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.String.Base as String using (String; lines; unlines; unwords; concat)
-open import Data.String.Properties as String using (_≟_)
+open import Data.String.Properties as String using (_≡?_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Unit.Base using (⊤)
 
@@ -102,6 +102,7 @@ open import Relation.Nullary.Decidable.Core using (does)
 
 open import Codata.Musical.Notation using (♯_)
 open import IO
+open import IO.Handle
 
 open import System.Clock as Clock using (time′; Time; seconds)
 open import System.Console.ANSI
@@ -182,7 +183,7 @@ options(exe ∷ rest) = mkOptions exe rest where
     inj₂ (mfp , opts) ← pure $ go rest nothing (initOptions exe)
       where inj₁ arg → pure (inj₁ (InvalidArgument arg))
     term ← fromMaybe "" <$> lookupEnv "TERM"
-    let opts = if does (term ≟ "DUMB")
+    let opts = if does (term ≡? "DUMB")
                then record opts { colour = false }
                else opts
     just fp ← pure mfp
@@ -205,9 +206,10 @@ runTest opts testPath = do
   true ← doesDirectoryExist (mkFilePath testPath)
     where false → fail directoryNotFound
 
+  putStr $ concat (testPath ∷ ": " ∷ [])
   time ← time′ $ callCommand $ unwords
            $ "cd" ∷ testPath
-           ∷ "&&" ∷ "sh ./run" ∷ opts .exeUnderTest
+           ∷ "&&" ∷ "sh ./run" ∷ (concat $ "\"" ∷ opts .exeUnderTest ∷ "\"" ∷ [])
            ∷ "| tr -d '\\r' > output"
            ∷ []
 
@@ -219,7 +221,7 @@ runTest opts testPath = do
                          else putStrLn (fileNotFound "expected")
                        pure (inj₁ testPath)
 
-  let result = does (out String.≟ exp)
+  let result = does (out String.≡? exp)
 
   if result
     then printTiming (opts .timing) time
@@ -304,14 +306,14 @@ runTest opts testPath = do
       when b $ writeFile (testPath String.++ "/expected") out
 
     printTiming : Bool → Time → String → IO _
-    printTiming false _    msg = putStrLn $ concat (testPath ∷ ": " ∷ msg ∷ [])
+    printTiming false _    msg = putStrLn msg
     printTiming true  time msg =
       let time  = ℕ.show (time .seconds) String.++ "s"
           spent = 9 + sum (List.map String.length (testPath ∷ time ∷ []))
                -- ^ hack: both "success" and "FAILURE" have the same length
                --   can't use `String.length msg` because the msg contains escape codes
           pad   = String.replicate (72 ∸ spent) ' '
-      in putStrLn (concat (testPath ∷ ": " ∷ msg ∷ pad ∷ time ∷ []))
+      in putStrLn (concat (msg ∷ pad ∷ time ∷ []))
 
 -- A test pool is characterised by
 --  + a name
@@ -352,7 +354,7 @@ filterTests : Options → List String → List String
 filterTests opts = case onlyNames opts of λ where
   [] → id
   xs → let names = List.map String.toList xs in
-       filter (λ n → any? (λ m → infix? Char._≟_ m (String.toList n)) names)
+       filter (λ n → any? (λ m → infix? Char._≡?_ m (String.toList n)) names)
 
 poolRunner : Options → TestPool → IO Summary
 poolRunner opts pool = do
@@ -385,6 +387,7 @@ poolRunner opts pool = do
 
 runner : List TestPool → IO ⊤
 runner tests = do
+  hSetBuffering stdout noBuffering
   -- figure out the options
   args ← getArgs
   inj₂ opts ← options args
