@@ -81,7 +81,7 @@ rawMagma = record { ℤero }
 -- Structures
 
 isEquivalence : IsEquivalence _≈_
-isEquivalence = record { refl = refl; sym = sym; trans = λ where {i = ()} }
+isEquivalence = record { refl = refl; sym = sym; trans = λ where {x = ()} }
 
 isMagma : IsMagma _≈_ _∙_
 isMagma = record { isEquivalence = isEquivalence ; ∙-cong = λ where {x = ()} }
