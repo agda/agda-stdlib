@@ -24,16 +24,11 @@ private
 
 open import Relation.Nullary.Recomputable.Core public
 
--- Irrelevant types are Recomputable
-
-open import Data.Irrelevant public
-  using () renaming (recompute to irrelevant-recompute)
-
 ------------------------------------------------------------------------
 -- Constructions
 
 ⊥-recompute : Recomputable ⊥
-⊥-recompute = irrelevant-recompute
+⊥-recompute ()
 
 _×-recompute_ : Recomputable A → Recomputable B → Recomputable (A × B)
 (rA ×-recompute rB) p = rA (p .proj₁) , rB (p .proj₂)
@@ -51,4 +46,3 @@ _→-recompute_ : (A : Set a) → Recomputable B → Recomputable (A → B)
 
 ¬-recompute : Recomputable (¬ A)
 ¬-recompute {A = A} = A →-recompute ⊥-recompute
-
