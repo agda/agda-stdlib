@@ -41,6 +41,43 @@ Deprecated names
   homo  ↦  ∙-homo
   ```
 
+* In `Data.Fin.Properties`:
+  ```agda
+  _≟_      ↦  _≡?_
+  inj⇒≟    ↦  inj⇒≡?
+  ≟-≡      ↦  ≡?-≡
+  ≟-≡-refl ↦  ≡?-≡-refl
+  ≟-≢     ↦  ≡?-≢
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  _≟_       ↦   _≡?_
+  ≟-diag    ↦   ≡?-≡
+  ≟-≡       ↦   ≡?-≢
+  ≟?-≡-refl ↦ ≡?-≡-refl
+  ```
+
+* In `Effect.Monad.Partiality`:
+  ```agda
+  _≟-Kind_     ↦   _≡?-Kind_
+  ```
+
+* In `Reflection.AST.AlphaEquality`:
+  ```agda
+  ≟⇒α     ↦   ≡?⇒α
+  ```
+
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-≟-identity     ↦   ≡-≡?-identity
+  ≢-≟-identity     ↦   ≢-≡?-identity
+  ```
+
+* In `Relation.Nary`:
+  ```agda
+  ≟-mapₙ     ↦   ≡?-mapₙ
+  ```
 
 New modules
 -----------
