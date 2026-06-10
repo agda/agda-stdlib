@@ -4,9 +4,9 @@
 -- Recomputable types and their algebra as Harrop formulas
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --irrelevant-projections #-}
 
-module Relation.Nullary.Recomputable where
+module Relation.Nullary.Recomputable.Unsafe where
 
 open import Data.Empty using (⊥)
 open import Data.Irrelevant using (Irrelevant; irrelevant; [_])
@@ -23,22 +23,23 @@ private
 ------------------------------------------------------------------------
 -- Re-export
 
-open import Relation.Nullary.Recomputable.Core public
+open import Relation.Nullary.Recomputable public
 
 
 ------------------------------------------------------------------------
 -- Constructions
 
-_×-recompute_ : Recomputable A → Recomputable B → Recomputable (A × B)
-(rA ×-recompute rB) p = rA (p .proj₁) , rB (p .proj₂)
+-- Irrelevant types are Recomputable
 
-_→-recompute_ : (A : Set a) → Recomputable B → Recomputable (A → B)
-(A →-recompute rB) f a = rB (f a)
+irrelevant-recompute : Recomputable (Irrelevant A)
+irrelevant (irrelevant-recompute a) = irrelevant a
 
-Π-recompute : (B : A → Set b) → (∀ x → Recomputable (B x)) → Recomputable (∀ x → B x)
-Π-recompute B rB f a = rB a (f a)
+-- Corollary: so too is ⊥
 
-∀-recompute : (B : A → Set b) → (∀ {x} → Recomputable (B x)) → Recomputable (∀ {x} → B x)
-∀-recompute B rB f = rB f
+⊥-recompute : Recomputable ⊥
+⊥-recompute = irrelevant-recompute
 
+-- Corollary: negations are Recomputable
 
+¬-recompute : Recomputable (¬ A)
+¬-recompute {A = A} = A →-recompute ⊥-recompute
