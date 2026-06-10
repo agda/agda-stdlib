@@ -11,9 +11,10 @@
 
 module Relation.Binary.Indexed.Heterogeneous.Definitions where
 
-open import Level
+open import Level using (Level)
 import Relation.Binary.Definitions as B
-open import Relation.Binary.Indexed.Heterogeneous.Core
+  using (Reflexive; Symmetric; Transitive; Sym; Trans)
+open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
 
 private
   variable

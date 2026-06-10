@@ -15,7 +15,7 @@ module Data.Bool.ListAction where
 open import Data.Bool.Base using (Bool; _∧_; _∨_; true; false)
 open import Data.List.Base using (List; map; foldr)
 open import Function.Base using (_∘_)
-open import Level
+open import Level using (Level)
 
 private
   variable

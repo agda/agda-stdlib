@@ -16,7 +16,7 @@ open import Effect.Applicative as App using (RawApplicative)
 open import Effect.Functor as Fun using (RawFunctor)
 open import Effect.Monad using (RawMonad; module Join; RawMonadT; mkRawMonad)
 import Function.Identity.Effectful as Id
-open import Function.Base
+open import Function.Base using (flip; _∘_)
 open import Level using (Level)
 
 private

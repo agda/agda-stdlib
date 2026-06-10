@@ -8,11 +8,11 @@
 
 module Data.Sum.Effectful.Examples where
 
-open import Level
-open import Data.Sum.Base
-import Data.Sum.Effectful.Left as Sumₗ
-open import Effect.Functor
-open import Effect.Monad
+open import Level using (Level; _⊔_; lift; Lift)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+import Data.Sum.Effectful.Left as Sumₗ using (Sumₗ; functor; monad)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Monad using (RawMonad)
 
 -- Note that these examples are simple unit tests, because the type
 -- checker verifies them.

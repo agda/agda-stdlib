@@ -12,10 +12,10 @@ module Relation.Binary.Bundles where
 
 open import Function.Base using (flip)
 open import Level using (Level; suc; _⊔_)
-open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles.Raw
+open import Relation.Binary.Bundles.Raw using (RawRelation; RawSetoid)
 open import Relation.Binary.Structures -- most of it
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Setoids
@@ -64,7 +64,7 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
     isDecEquivalence : IsDecEquivalence _≈_
 
   open IsDecEquivalence isDecEquivalence public
-    using (_≟_; isEquivalence)
+    using (_≟_; _≈?_; isEquivalence)
 
   setoid : Setoid c ℓ
   setoid = record
@@ -140,7 +140,7 @@ record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DPO = IsDecPreorder isDecPreorder
 
   open DPO public
-    using (_≟_; _≲?_; isPreorder)
+    using (_≟_; _≈?_; _≲?_; isPreorder)
 
   preorder : Preorder c ℓ₁ ℓ₂
   preorder = record
@@ -203,7 +203,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DPO = IsDecPartialOrder isDecPartialOrder
 
   open DPO public
-    using (_≟_; _≤?_; isPartialOrder; isDecPreorder)
+    using (_≟_; _≈?_; _≤?_; isPartialOrder; isDecPreorder)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
@@ -258,7 +258,7 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
   private module DSPO = IsDecStrictPartialOrder isDecStrictPartialOrder
 
   open DSPO public
-    using (_<?_; _≟_; isStrictPartialOrder)
+    using (_≟_; _≈?_; _<?_; isStrictPartialOrder)
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
   strictPartialOrder = record
@@ -318,7 +318,7 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DTO = IsDecTotalOrder isDecTotalOrder
 
   open DTO public
-    using (_≟_; _≤?_; isTotalOrder; isDecPartialOrder)
+    using (_≟_; _≈?_; _≤?_; isTotalOrder; isDecPartialOrder)
 
   totalOrder : TotalOrder c ℓ₁ ℓ₂
   totalOrder = record
@@ -352,7 +352,7 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
 
   open IsStrictTotalOrder isStrictTotalOrder public
     using
-    ( _≟_; _<?_; compare; isStrictPartialOrder
+    ( _≟_; _≈?_; _<?_; compare; isStrictPartialOrder
     ; isDecStrictPartialOrder; isDecEquivalence
     )
 

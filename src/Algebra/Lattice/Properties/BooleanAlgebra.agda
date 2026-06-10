@@ -6,30 +6,31 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice.Bundles
+open import Algebra.Lattice.Bundles using (BooleanAlgebra)
 
 module Algebra.Lattice.Properties.BooleanAlgebra
-  {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
+  {c ℓ} (booleanAlgebra : BooleanAlgebra c ℓ)
   where
 
-open BooleanAlgebra B
+open import Algebra.Bundles
+  using (CommutativeSemiring; CommutativeRing; BooleanRing)
+open import Algebra.Core using (Op₂)
+open import Data.Product.Base using (_,_)
+open import Function.Base using (id; _$_; _⟨_⟩_)
+open import Function.Bundles using (_⇔_; module Equivalence)
 
-import Algebra.Lattice.Properties.DistributiveLattice as DistribLatticeProperties
-open import Algebra.Core
+open BooleanAlgebra booleanAlgebra
 open import Algebra.Structures _≈_
 open import Algebra.Definitions _≈_
 open import Algebra.Consequences.Setoid setoid
-open import Algebra.Bundles
 open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Function.Base using (id; _$_; _⟨_⟩_)
-open import Function.Bundles using (_⇔_; module Equivalence)
-open import Data.Product.Base using (_,_)
+
 
 ------------------------------------------------------------------------
 -- Export properties from distributive lattices
 
-open DistribLatticeProperties distributiveLattice public
+open import Algebra.Lattice.Properties.DistributiveLattice distributiveLattice public
 
 ------------------------------------------------------------------------
 -- The dual construction is also a boolean algebra
@@ -192,11 +193,11 @@ private
     ⊤ ∧ y              ≈⟨  ∧-identityˡ _ ⟩
     y                  ∎
 
-⊥≉⊤ : ¬ ⊥ ≈ ⊤
-⊥≉⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
+¬⊥≈⊤ : ¬ ⊥ ≈ ⊤
+¬⊥≈⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
 
-⊤≉⊥ : ¬ ⊤ ≈ ⊥
-⊤≉⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
+¬⊤≈⊥ : ¬ ⊤ ≈ ⊥
+¬⊤≈⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
 
 ¬-involutive : Involutive ¬_
 ¬-involutive x = lemma (¬ x) x (∧-complementˡ _) (∨-complementˡ _)
@@ -308,7 +309,7 @@ module XorRing
   ⊕-identityˡ x = begin
     ⊥ ⊕ x                ≈⟨ ⊕-def _ _ ⟩
     (⊥ ∨ x) ∧ ¬ (⊥ ∧ x)  ≈⟨ helper (∨-identityˡ _) (∧-zeroˡ _) ⟩
-    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ⊥≉⊤ ⟩
+    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ¬⊥≈⊤ ⟩
     x ∧ ⊤                ≈⟨ ∧-identityʳ _ ⟩
     x                    ∎
 
@@ -529,6 +530,12 @@ module XorRing
     { isCommutativeRing = ⊕-∧-isCommutativeRing
     }
 
+  ⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
+  ⊕-∧-isBooleanRing = record
+    { isCommutativeRing = ⊕-∧-isCommutativeRing ; *-idem = ∧-idem }
+
+  ⊕-∧-booleanRing : BooleanRing _ _
+  ⊕-∧-booleanRing = record { isBooleanRing = ⊕-∧-isBooleanRing }
 
 infixl 6 _⊕_
 
@@ -536,3 +543,23 @@ _⊕_ : Op₂ Carrier
 x ⊕ y = (x ∨ y) ∧ ¬ (x ∧ y)
 
 module DefaultXorRing = XorRing _⊕_ (λ _ _ → refl)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+⊥≉⊤ = ¬⊥≈⊤
+{-# WARNING_ON_USAGE ⊥≉⊤
+"Warning: ⊥≉⊤ was deprecated in v2.3.
+Please use ¬⊥≈⊤ instead."
+#-}
+⊤≉⊥ = ¬⊤≈⊥
+{-# WARNING_ON_USAGE ⊤≉⊥
+"Warning: ⊤≉⊥ was deprecated in v2.3.
+Please use ¬⊤≈⊥ instead."
+#-}

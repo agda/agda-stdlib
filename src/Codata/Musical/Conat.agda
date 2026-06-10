@@ -8,7 +8,7 @@
 
 module Codata.Musical.Conat where
 
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
 open import Relation.Binary.Bundles using (Setoid)

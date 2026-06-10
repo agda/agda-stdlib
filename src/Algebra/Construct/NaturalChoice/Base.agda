@@ -7,7 +7,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Core
+open import Algebra.Core using (Op₂)
 open import Level as L hiding (_⊔_)
 open import Function.Base using (flip)
 open import Relation.Binary.Bundles using (TotalPreorder)

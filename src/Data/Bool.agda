@@ -17,4 +17,4 @@ open import Data.Bool.Base public
 -- Publicly re-export queries
 
 open import Data.Bool.Properties public
-  using (T?; _≟_; _≤?_; _<?_)
+  using (T?; _≟_; _≡?_; _≤?_; _<?_)

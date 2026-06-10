@@ -9,11 +9,11 @@
 
 module Data.Container.Related where
 
-open import Level using (_⊔_)
-open import Data.Container.Core
+open import Data.Container.Core using (Container; ⟦_⟧)
+open import Data.Container.Membership using (_∈_)
 import Function.Related.Propositional as Related
+open import Level using (_⊔_)
 open import Relation.Binary.Bundles using (Preorder; Setoid)
-open import Data.Container.Membership
 
 open Related public
   using (Kind; SymmetricKind)

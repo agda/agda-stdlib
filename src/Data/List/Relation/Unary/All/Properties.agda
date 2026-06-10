@@ -41,7 +41,7 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_; ¬[x≢x])
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
@@ -163,7 +163,7 @@ updateAt-minimal : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                    pxs              [ i ]= px →
                    updateAt j f pxs [ i ]= px
 updateAt-minimal (here .refl) (here refl) (px ∷ pxs) i≢j here        =
-  contradiction refl (i≢j refl)
+  ¬[x≢x] (i≢j refl)
 updateAt-minimal (here .refl) (there j)   (px ∷ pxs) i≢j here        = here
 updateAt-minimal (there i)    (here refl) (px ∷ pxs) i≢j (there val) = there val
 updateAt-minimal (there i)    (there j)   (px ∷ pxs) i≢j (there val) =
@@ -256,7 +256,7 @@ updateAt-commutes : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                     i ≢∈ j →
                     updateAt {P = P} i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
 updateAt-commutes (here refl) (here refl) i≢j (px ∷ pxs) =
-  contradiction refl (i≢j refl)
+  ¬[x≢x] (i≢j refl)
 updateAt-commutes (here refl) (there j)   i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (here refl) i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (there j)   i≢j (px ∷ pxs) =

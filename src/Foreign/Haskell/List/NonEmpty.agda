@@ -8,7 +8,7 @@
 
 module Foreign.Haskell.List.NonEmpty where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.List.NonEmpty.Base as Data using (_∷_)
 open import Data.List using (List)
 

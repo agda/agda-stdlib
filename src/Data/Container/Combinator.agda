@@ -8,15 +8,14 @@
 
 module Data.Container.Combinator where
 
-open import Level using (Level; _⊔_; lower)
+open import Data.Container.Core using (Container; Shape; Position; ⟦_⟧)
+open import Data.Container.Relation.Unary.Any using (◇; any)
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base as Product using (_,_; <_,_>; proj₁; proj₂; ∃)
 open import Data.Sum.Base as Sum using ([_,_]′)
 open import Data.Unit.Polymorphic.Base using (⊤)
 import Function.Base as F
-
-open import Data.Container.Core
-open import Data.Container.Relation.Unary.Any
+open import Level using (Level; _⊔_; lower)
 
 ------------------------------------------------------------------------
 -- Combinators

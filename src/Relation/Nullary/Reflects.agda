@@ -13,6 +13,8 @@ open import Agda.Builtin.Equality
 open import Data.Bool.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Data.Empty.Polymorphic using (⊥)
 open import Level using (Level)
 open import Function.Base using (_$_; _∘_; const; id)
 open import Relation.Nullary.Negation.Core
@@ -66,21 +68,25 @@ recompute-constant : ∀ {b} (r : Reflects A b) (p q : A) →
 recompute-constant = Recomputable.recompute-constant ∘ recompute
 
 ------------------------------------------------------------------------
--- Interaction with negation, product, sums etc.
+-- Interaction with true, false, negation, product, sums etc.
 
 infixr 1 _⊎-reflects_
 infixr 2 _×-reflects_ _→-reflects_
+
+⊥-reflects : Reflects (⊥ {a}) false
+⊥-reflects = of λ()
+
+⊤-reflects : Reflects (⊤ {a}) true
+⊤-reflects = of _
 
 T-reflects : ∀ b → Reflects (T b) b
 T-reflects true  = of _
 T-reflects false = of id
 
--- If we can decide A, then we can decide its negation.
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
 ¬-reflects (ofʸ  a) = of (_$ a)
 ¬-reflects (ofⁿ ¬a) = of ¬a
 
--- If we can decide A and Q then we can decide their product
 _×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A × B) (a ∧ b)
 ofʸ  a ×-reflects ofʸ  b = of (a , b)

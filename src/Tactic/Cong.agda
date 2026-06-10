@@ -26,21 +26,18 @@
 
 module Tactic.Cong where
 
-open import Function.Base using (_$_)
-
-open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
-open import Data.Char.Base   as Char  using (toℕ)
-open import Data.Float.Base  as Float using (_≡ᵇ_)
-open import Data.List.Base   as List  using ([]; _∷_)
-open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
-open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
-open import Data.Unit.Base            using (⊤)
-open import Data.Word64.Base   as Word64  using (toℕ)
-open import Data.Product.Base         using (_×_; map₁; _,_)
-open import Function                  using (flip; case_of_)
-
+open import Data.Bool.Base using (true; false; if_then_else_; _∧_)
+open import Data.Char.Base as Char using (toℕ)
+open import Data.Float.Base as Float using (_≡ᵇ_)
+open import Data.List.Base as List using ([]; _∷_)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _≡ᵇ_; _+_)
+open import Data.Unit.Base using (⊤)
+open import Data.Word64.Base as Word64  using (toℕ)
+open import Data.Product.Base using (_×_; map₁; _,_)
+open import Function.Base using (_$_; flip; case_of_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Nullary.Decidable.Core            using (yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the
 -- builtin for maximum speed.
@@ -111,7 +108,7 @@ private
     term' ← term
     symTerm' ← symTerm
     -- Don't show the same term twice.
-    let symErr = case term' Term.≟ symTerm' of λ where
+    let symErr = case term' Term.≡? symTerm' of λ where
       (yes _) → []
       (no _) → strErr "\n" ∷ termErr symTerm' ∷ []
     typeError (strErr "cong! failed, tried:\n" ∷ termErr term' ∷ symErr)

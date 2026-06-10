@@ -12,9 +12,11 @@ open import Algebra.Bundles
 open import Data.Nat.Base as ℕ using (zero; suc; parity)
 open import Data.Parity.Base as ℙ using (Parity; 0ℙ; 1ℙ; _⁻¹; toSign; fromSign)
 open import Data.Product.Base using (_,_)
-import Data.Sign.Base as 𝕊
+open import Data.Sign.Base as 𝕊
+  using (Sign; +; -; _*_; opposite; *-rawMagma; *-1-rawMonoid; *-1-rawGroup)
 open import Function.Base using (_$_; id)
 open import Function.Definitions
+  using (Injective; Surjective; Inverseʳ; Inverseˡ)
 open import Function.Consequences.Propositional
   using (inverseʳ⇒injective; inverseˡ⇒surjective)
 open import Level using (0ℓ)
@@ -24,7 +26,7 @@ open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; cong; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; setoid; isEquivalence; decSetoid; isDecEquivalence)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 
 open import Algebra.Structures {A = Parity} _≡_
@@ -36,22 +38,22 @@ open import Algebra.Morphism.Structures
 ------------------------------------------------------------------------
 -- Equality
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality Parity
-1ℙ ≟ 1ℙ = yes refl
-1ℙ ≟ 0ℙ = no λ()
-0ℙ ≟ 1ℙ = no λ()
-0ℙ ≟ 0ℙ = yes refl
+_≡?_ : DecidableEquality Parity
+1ℙ ≡? 1ℙ = yes refl
+1ℙ ≡? 0ℙ = no λ()
+0ℙ ≡? 1ℙ = no λ()
+0ℙ ≡? 0ℙ = yes refl
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid Parity
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ≡-isDecEquivalence : IsDecEquivalence _≡_
-≡-isDecEquivalence = isDecEquivalence _≟_
+≡-isDecEquivalence = isDecEquivalence _≡?_
 
 ------------------------------------------------------------------------
 -- _⁻¹
@@ -552,3 +554,19 @@ parity-isSemiringHomomorphism = record
   { isNearSemiringHomomorphism = parity-isNearSemiringHomomorphism
   ; 1#-homo = refl
   }
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

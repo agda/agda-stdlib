@@ -6,8 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice.Bundles
-open import Algebra.Construct.NaturalChoice.Base
+open import Algebra.Construct.NaturalChoice.Base using (MinOperator; MaxOperator)
 open import Relation.Binary.Bundles using (TotalPreorder)
 
 module Algebra.Lattice.Construct.NaturalChoice.MinMaxOp
@@ -22,6 +21,7 @@ open MaxOperator maxOp
 
 open import Algebra.Lattice.Structures _≈_
 open import Algebra.Construct.NaturalChoice.MinMaxOp minOp maxOp
+open import Algebra.Lattice.Bundles using (Lattice; DistributiveLattice)
 open import Relation.Binary.Reasoning.Preorder preorder
 
 ------------------------------------------------------------------------

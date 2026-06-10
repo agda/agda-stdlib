@@ -88,7 +88,7 @@ toℕ-homo-∸ 2[1+ x ] 1+[2 y ] with x <? y
 ... | no  x≮y  = begin
   ℕ.suc (2 ℕ.* toℕ (x ∸ y))                     ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_)) (toℕ-homo-∸ x y) ⟩
   ℕ.suc (2 ℕ.* (toℕ x ℕ.∸ toℕ y))               ≡⟨ cong ℕ.suc (ℕ.*-distribˡ-∸ 2 (toℕ x) (toℕ y)) ⟩
-  ℕ.suc (2 ℕ.* toℕ x ℕ.∸ 2 ℕ.* toℕ y)           ≡⟨ sym (ℕ.+-∸-assoc 1 (ℕ.*-monoʳ-≤ 2 (toℕ-mono-≤ (≮⇒≥ x≮y)))) ⟩
+  ℕ.suc (2 ℕ.* toℕ x ℕ.∸ 2 ℕ.* toℕ y)           ≡⟨ sym (ℕ.∸-suc (ℕ.*-monoʳ-≤ 2 (toℕ-mono-≤ (≮⇒≥ x≮y)))) ⟩
   ℕ.suc (2 ℕ.* toℕ x) ℕ.∸ 2 ℕ.* toℕ y           ≡⟨ sym (cong (ℕ._∸ 2 ℕ.* toℕ y) (ℕ.+-suc (toℕ x) (1 ℕ.* toℕ x))) ⟩
   2 ℕ.* (ℕ.suc (toℕ x)) ℕ.∸ ℕ.suc (2 ℕ.* toℕ y) ∎
   where open ≡-Reasoning

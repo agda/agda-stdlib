@@ -7,13 +7,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Definitions using (Transitive; Reflexive)
 
 module Relation.Unary.Closure.Base {a b} {A : Set a} (R : Rel A b) where
 
-open import Level
+open import Level using (_⊔_)
 open import Data.Product.Base using (Σ-syntax; _×_; _,_; -,_)
 open import Function.Base using (flip)
+open import Relation.Binary.Definitions using (Reflexive; Transitive)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------

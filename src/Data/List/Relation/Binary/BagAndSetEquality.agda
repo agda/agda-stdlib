@@ -12,7 +12,7 @@ open import Algebra.Bundles using (CommutativeMonoid)
 open import Algebra.Definitions using (Idempotent)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Effect.Monad using (RawMonad)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base
   using (List; []; _∷_; map; _++_; concat; [_]; lookup; length)
@@ -53,7 +53,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
 open import Relation.Binary.Reasoning.Syntax
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
   variable
@@ -485,7 +485,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
         g″ : ∀ {a b} →
              f (inj₂ b) ≡ inj₁ a → ∃ (f (inj₁ a) ≡_) → C
         g″ _   (inj₂ c , _)   = c
-        g″ eq₁ (inj₁ _ , eq₂) = ⊥-elim $ hyp eq₁ eq₂
+        g″ eq₁ (inj₁ _ , eq₂) = contradiction eq₂ (hyp eq₁)
 
     g∘g : ∀ {b c} {B : Set b} {C : Set c}
           (f : (A ⊎ B) ↔ (A ⊎ C)) →
@@ -509,7 +509,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
         inj₂ b             ∎
       ... | ()
       g∘g′ | inj₁ a , eq₁ with inspect (to f (inj₁ a))
-      g∘g′ | inj₁ a , eq₁ | inj₁ a′ , eq₂ = ⊥-elim $ to-hyp eq₁ eq₂
+      g∘g′ | inj₁ a , eq₁ | inj₁ a′ , eq₂ = contradiction eq₂ (to-hyp eq₁)
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ with inspect (from f (inj₂ c))
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₂ b′ , eq₃ with
         inj₁ a             ≡⟨ ≡.sym (to-from f eq₂) ⟩
@@ -517,7 +517,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
         inj₂ b′            ∎
       ... | ()
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ with inspect (from f $ inj₁ a′)
-      g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₁ a″ , eq₄ = ⊥-elim $ from-hyp eq₃ eq₄
+      g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₁ a″ , eq₄ = contradiction eq₄ (from-hyp eq₃)
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₂ b′ , eq₄ = inj₂-injective (
         let lemma =
               inj₁ a′            ≡⟨ ≡.sym eq₃ ⟩

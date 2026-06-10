@@ -8,12 +8,12 @@
 
 module Reflection.AST.Universe where
 
-open import Data.List.Base             using (List)
-open import Data.String.Base           using (String)
-open import Data.Product.Base          using (_×_)
-open import Reflection.AST.Argument    using (Arg)
+open import Data.List.Base using (List)
+open import Data.String.Base using (String)
+open import Data.Product.Base using (_×_)
+open import Reflection.AST.Argument using (Arg)
 open import Reflection.AST.Abstraction using (Abs)
-open import Reflection.AST.Term        using (Term; Pattern; Sort; Clause)
+open import Reflection.AST.Term using (Term; Pattern; Sort; Clause)
 
 data Univ : Set where
   ⟨term⟩   : Univ

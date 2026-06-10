@@ -8,7 +8,7 @@
 
 module Codata.Sized.Covec.Instances where
 
-open import Codata.Sized.Covec.Effectful
+open import Codata.Sized.Covec.Effectful using (functor; applicative)
 
 instance
   covecFunctor = functor

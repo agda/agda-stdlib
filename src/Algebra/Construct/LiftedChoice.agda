@@ -10,7 +10,7 @@ open import Algebra
 
 module Algebra.Construct.LiftedChoice where
 
-open import Algebra.Consequences.Base
+open import Algebra.Consequences.Base using (sel⇒idem)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Product.Base using (_×_; _,_)
 open import Function.Base using (const; _$_)

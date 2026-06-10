@@ -19,7 +19,7 @@ import Relation.Binary.Definitions as B
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
-open import Relation.Nullary.Decidable as Dec using (yes; no; _×-dec_; map′)
+open import Relation.Nullary.Decidable as Dec using (yes; no; _×?_; map′)
 
 private
   variable
@@ -81,7 +81,7 @@ linked? : B.Decidable R → U.Decidable (Linked R {n})
 linked? R? []           = yes []
 linked? R? (x ∷ [])     = yes [-]
 linked? R? (x ∷ y ∷ xs) =
-  map′ (uncurry _∷_) < head , tail > (R? x y ×-dec linked? R? (y ∷ xs))
+  map′ (uncurry _∷_) < head , tail > (R? x y ×? linked? R? (y ∷ xs))
 
 irrelevant : B.Irrelevant R → U.Irrelevant (Linked R {n})
 irrelevant irr []           []           = refl
