@@ -161,7 +161,9 @@ record KleeneAlgebraHomomorphism
   semiringHomomorphism = record { isSemiringHomomorphism = isSemiringHomomorphism }
 
   open SemiringHomomorphism semiringHomomorphism public
-    hiding (*-isMagmaHomomorphism; *-isMonoidHomomorphism)
+    using ( nearSemiringHomomorphism
+          ; *-monoidHomomorphism; *-magmaHomomorphism
+          ; +-monoidHomomorphism; +-magmaHomomorphism)
 
 ------------------------------------------------------------------------
 -- Morphisms between RingWithoutOnes

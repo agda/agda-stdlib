@@ -25,6 +25,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* [Issue #2548](https://github.com/agda/agda-stdlib/issues/2458) Consistent with other names (such as `∙-cong`, `ε-homo` etc.) in `Algebra.*`, the field name of the basic homomorphism property in `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed from `homo` to `∙-homo`.
+
 Minor improvements
 ------------------
 
@@ -33,6 +35,11 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Morphism.Structures`:
+  ```agda
+  homo  ↦  ∙-homo
+  ```
 
 * In `Data.Fin.Properties`:
   ```agda
