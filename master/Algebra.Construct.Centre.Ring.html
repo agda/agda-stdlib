@@ -14,7 +14,7 @@
 
 <a id="420" class="Keyword">open</a> <a id="425" class="Keyword">import</a> <a id="432" href="Algebra.Core.html" class="Module">Algebra.Core</a> <a id="445" class="Keyword">using</a> <a id="451" class="Symbol">(</a><a id="452" href="Algebra.Core.html#484" class="Function">Op₁</a><a id="455" class="Symbol">;</a> <a id="457" href="Algebra.Core.html#527" class="Function">Op₂</a><a id="460" class="Symbol">)</a>
 <a id="462" class="Keyword">open</a> <a id="467" class="Keyword">import</a> <a id="474" href="Algebra.Consequences.Setoid.html" class="Module">Algebra.Consequences.Setoid</a> <a id="502" class="Keyword">using</a> <a id="508" class="Symbol">(</a><a id="509" href="Algebra.Consequences.Setoid.html#6500" class="Function">zero⇒central</a><a id="521" class="Symbol">)</a>
-<a id="523" class="Keyword">open</a> <a id="528" class="Keyword">import</a> <a id="535" href="Algebra.Morphism.Structures.html" class="Module">Algebra.Morphism.Structures</a> <a id="563" class="Keyword">using</a> <a id="569" class="Symbol">(</a><a id="570" href="Algebra.Morphism.Structures.html#18436" class="Record">IsRingMonomorphism</a><a id="588" class="Symbol">)</a>
+<a id="523" class="Keyword">open</a> <a id="528" class="Keyword">import</a> <a id="535" href="Algebra.Morphism.Structures.html" class="Module">Algebra.Morphism.Structures</a> <a id="563" class="Keyword">using</a> <a id="569" class="Symbol">(</a><a id="570" href="Algebra.Morphism.Structures.html#18566" class="Record">IsRingMonomorphism</a><a id="588" class="Symbol">)</a>
 <a id="590" class="Keyword">open</a> <a id="595" class="Keyword">import</a> <a id="602" href="Algebra.Morphism.RingMonomorphism.html" class="Module">Algebra.Morphism.RingMonomorphism</a> <a id="636" class="Keyword">using</a> <a id="642" class="Symbol">(</a><a id="643" href="Algebra.Morphism.RingMonomorphism.html#5769" class="Function">isRing</a><a id="649" class="Symbol">)</a>
 <a id="651" class="Keyword">open</a> <a id="656" class="Keyword">import</a> <a id="663" href="Function.Base.html" class="Module">Function.Base</a> <a id="677" class="Keyword">using</a> <a id="683" class="Symbol">(</a><a id="684" href="Function.Base.html#704" class="Function">id</a><a id="686" class="Symbol">)</a>
 
@@ -71,67 +71,67 @@
     <a id="1959" class="Symbol">;</a> <a id="1961" href="Algebra.Construct.Centre.Centre.html#789" class="Field">central</a> <a id="1969" class="Symbol">=</a> <a id="1971" href="Algebra.Consequences.Setoid.html#6500" class="Function">zero⇒central</a> <a id="1984" href="Algebra.Structures.html#1928" class="Function">X.setoid</a> <a id="1993" class="Symbol">{</a><a id="1994" class="Argument">_∙_</a> <a id="1998" class="Symbol">=</a> <a id="2000" href="Algebra.Bundles.html#30165" class="Field Operator">X._*_</a><a id="2005" class="Symbol">}</a> <a id="2007" href="Algebra.Structures.html#23183" class="Function">X.zero</a>
     <a id="2018" class="Symbol">}</a>
 
-<a id="isRingMonomorphism"></a><a id="2021" href="Algebra.Construct.Centre.Ring.html#2021" class="Function">isRingMonomorphism</a> <a id="2040" class="Symbol">:</a> <a id="2042" href="Algebra.Morphism.Structures.html#18436" class="Record">IsRingMonomorphism</a> <a id="2061" href="Algebra.Construct.Centre.Ring.html#1136" class="Function">domain</a> <a id="2068" href="Algebra.Bundles.html#31204" class="Function">X.rawRing</a> <a id="2078" href="Algebra.Construct.Centre.Centre.html#767" class="Field">ι</a>
+<a id="isRingMonomorphism"></a><a id="2021" href="Algebra.Construct.Centre.Ring.html#2021" class="Function">isRingMonomorphism</a> <a id="2040" class="Symbol">:</a> <a id="2042" href="Algebra.Morphism.Structures.html#18566" class="Record">IsRingMonomorphism</a> <a id="2061" href="Algebra.Construct.Centre.Ring.html#1136" class="Function">domain</a> <a id="2068" href="Algebra.Bundles.html#31204" class="Function">X.rawRing</a> <a id="2078" href="Algebra.Construct.Centre.Centre.html#767" class="Field">ι</a>
 <a id="2080" href="Algebra.Construct.Centre.Ring.html#2021" class="Function">isRingMonomorphism</a> <a id="2099" class="Symbol">=</a> <a id="2101" class="Keyword">record</a>
-  <a id="2110" class="Symbol">{</a> <a id="2112" href="Algebra.Morphism.Structures.html#18511" class="Field">isRingHomomorphism</a> <a id="2131" class="Symbol">=</a> <a id="2133" class="Keyword">record</a>
-    <a id="2144" class="Symbol">{</a> <a id="2146" href="Algebra.Morphism.Structures.html#17893" class="Field">isSemiringHomomorphism</a> <a id="2169" class="Symbol">=</a> <a id="2171" class="Keyword">record</a>
-      <a id="2184" class="Symbol">{</a> <a id="2186" href="Algebra.Morphism.Structures.html#11476" class="Field">isNearSemiringHomomorphism</a> <a id="2213" class="Symbol">=</a> <a id="2215" class="Keyword">record</a>
-        <a id="2230" class="Symbol">{</a> <a id="2232" href="Algebra.Morphism.Structures.html#8577" class="Field">+-isMonoidHomomorphism</a> <a id="2255" class="Symbol">=</a> <a id="2257" class="Keyword">record</a>
-          <a id="2274" class="Symbol">{</a> <a id="2276" href="Algebra.Morphism.Structures.html#4549" class="Field">isMagmaHomomorphism</a> <a id="2296" class="Symbol">=</a> <a id="2298" class="Keyword">record</a>
+  <a id="2110" class="Symbol">{</a> <a id="2112" href="Algebra.Morphism.Structures.html#18641" class="Field">isRingHomomorphism</a> <a id="2131" class="Symbol">=</a> <a id="2133" class="Keyword">record</a>
+    <a id="2144" class="Symbol">{</a> <a id="2146" href="Algebra.Morphism.Structures.html#18023" class="Field">isSemiringHomomorphism</a> <a id="2169" class="Symbol">=</a> <a id="2171" class="Keyword">record</a>
+      <a id="2184" class="Symbol">{</a> <a id="2186" href="Algebra.Morphism.Structures.html#11606" class="Field">isNearSemiringHomomorphism</a> <a id="2213" class="Symbol">=</a> <a id="2215" class="Keyword">record</a>
+        <a id="2230" class="Symbol">{</a> <a id="2232" href="Algebra.Morphism.Structures.html#8697" class="Field">+-isMonoidHomomorphism</a> <a id="2255" class="Symbol">=</a> <a id="2257" class="Keyword">record</a>
+          <a id="2274" class="Symbol">{</a> <a id="2276" href="Algebra.Morphism.Structures.html#4701" class="Field">isMagmaHomomorphism</a> <a id="2296" class="Symbol">=</a> <a id="2298" class="Keyword">record</a>
             <a id="2317" class="Symbol">{</a> <a id="2319" href="Algebra.Morphism.Structures.html#2912" class="Field">isRelHomomorphism</a> <a id="2337" class="Symbol">=</a> <a id="2339" class="Keyword">record</a> <a id="2346" class="Symbol">{</a> <a id="2348" href="Relation.Binary.Morphism.Structures.html#926" class="Field">cong</a> <a id="2353" class="Symbol">=</a> <a id="2355" href="Function.Base.html#704" class="Function">id</a> <a id="2358" class="Symbol">}</a>
-            <a id="2372" class="Symbol">;</a> <a id="2374" href="Algebra.Morphism.Structures.html#2970" class="Field">homo</a> <a id="2379" class="Symbol">=</a> <a id="2381" class="Symbol">λ</a> <a id="2383" href="Algebra.Construct.Centre.Ring.html#2383" class="Bound">_</a> <a id="2385" href="Algebra.Construct.Centre.Ring.html#2385" class="Bound">_</a> <a id="2387" class="Symbol">→</a> <a id="2389" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
-            <a id="2408" class="Symbol">}</a>
-          <a id="2420" class="Symbol">;</a> <a id="2422" href="Algebra.Morphism.Structures.html#4601" class="Field">ε-homo</a> <a id="2429" class="Symbol">=</a> <a id="2431" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
-          <a id="2448" class="Symbol">}</a>
-        <a id="2458" class="Symbol">;</a> <a id="2460" href="Algebra.Morphism.Structures.html#8635" class="Field">*-homo</a> <a id="2467" class="Symbol">=</a> <a id="2469" class="Symbol">λ</a> <a id="2471" href="Algebra.Construct.Centre.Ring.html#2471" class="Bound">_</a> <a id="2473" href="Algebra.Construct.Centre.Ring.html#2473" class="Bound">_</a> <a id="2475" class="Symbol">→</a> <a id="2477" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
-        <a id="2492" class="Symbol">}</a>
-      <a id="2500" class="Symbol">;</a> <a id="2502" href="Algebra.Morphism.Structures.html#11542" class="Field">1#-homo</a> <a id="2510" class="Symbol">=</a> <a id="2512" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
-      <a id="2525" class="Symbol">}</a>
-    <a id="2531" class="Symbol">;</a> <a id="2533" href="Algebra.Morphism.Structures.html#17951" class="Field">-‿homo</a> <a id="2540" class="Symbol">=</a> <a id="2542" class="Symbol">λ</a> <a id="2544" href="Algebra.Construct.Centre.Ring.html#2544" class="Bound">_</a> <a id="2546" class="Symbol">→</a> <a id="2548" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
-    <a id="2559" class="Symbol">}</a>
-    <a id="2565" class="Symbol">;</a> <a id="2567" href="Algebra.Morphism.Structures.html#18561" class="Field">injective</a> <a id="2577" class="Symbol">=</a> <a id="2579" href="Function.Base.html#704" class="Function">id</a>
-  <a id="2584" class="Symbol">}</a>
+            <a id="2372" class="Symbol">;</a> <a id="2374" href="Algebra.Morphism.Structures.html#2970" class="Field">∙-homo</a> <a id="2381" class="Symbol">=</a> <a id="2383" class="Symbol">λ</a> <a id="2385" href="Algebra.Construct.Centre.Ring.html#2385" class="Bound">_</a> <a id="2387" href="Algebra.Construct.Centre.Ring.html#2387" class="Bound">_</a> <a id="2389" class="Symbol">→</a> <a id="2391" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
+            <a id="2410" class="Symbol">}</a>
+          <a id="2422" class="Symbol">;</a> <a id="2424" href="Algebra.Morphism.Structures.html#4753" class="Field">ε-homo</a> <a id="2431" class="Symbol">=</a> <a id="2433" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
+          <a id="2450" class="Symbol">}</a>
+        <a id="2460" class="Symbol">;</a> <a id="2462" href="Algebra.Morphism.Structures.html#8755" class="Field">*-homo</a> <a id="2469" class="Symbol">=</a> <a id="2471" class="Symbol">λ</a> <a id="2473" href="Algebra.Construct.Centre.Ring.html#2473" class="Bound">_</a> <a id="2475" href="Algebra.Construct.Centre.Ring.html#2475" class="Bound">_</a> <a id="2477" class="Symbol">→</a> <a id="2479" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
+        <a id="2494" class="Symbol">}</a>
+      <a id="2502" class="Symbol">;</a> <a id="2504" href="Algebra.Morphism.Structures.html#11672" class="Field">1#-homo</a> <a id="2512" class="Symbol">=</a> <a id="2514" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
+      <a id="2527" class="Symbol">}</a>
+    <a id="2533" class="Symbol">;</a> <a id="2535" href="Algebra.Morphism.Structures.html#18081" class="Field">-‿homo</a> <a id="2542" class="Symbol">=</a> <a id="2544" class="Symbol">λ</a> <a id="2546" href="Algebra.Construct.Centre.Ring.html#2546" class="Bound">_</a> <a id="2548" class="Symbol">→</a> <a id="2550" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
+    <a id="2561" class="Symbol">}</a>
+    <a id="2567" class="Symbol">;</a> <a id="2569" href="Algebra.Morphism.Structures.html#18691" class="Field">injective</a> <a id="2579" class="Symbol">=</a> <a id="2581" href="Function.Base.html#704" class="Function">id</a>
+  <a id="2586" class="Symbol">}</a>
 
-<a id="2587" class="Comment">-- Public export of the sub-X-homomorphisms</a>
+<a id="2589" class="Comment">-- Public export of the sub-X-homomorphisms</a>
 
-<a id="2632" class="Keyword">open</a> <a id="2637" href="Algebra.Morphism.Structures.html#18436" class="Module">IsRingMonomorphism</a> <a id="2656" href="Algebra.Construct.Centre.Ring.html#2021" class="Function">isRingMonomorphism</a> <a id="2675" class="Keyword">public</a>
-  <a id="2684" class="Keyword">using</a> <a id="2690" class="Symbol">(</a><a id="2691" href="Algebra.Morphism.Structures.html#18511" class="Field">isRingHomomorphism</a>
-        <a id="2718" class="Symbol">;</a> <a id="2720" href="Algebra.Morphism.Structures.html#17893" class="Function">isSemiringHomomorphism</a>
-        <a id="2751" class="Symbol">;</a> <a id="2753" href="Algebra.Morphism.Structures.html#11476" class="Function">isNearSemiringHomomorphism</a>
-        <a id="2788" class="Symbol">;</a> <a id="2790" href="Algebra.Morphism.Structures.html#8577" class="Function">+-isMonoidHomomorphism</a>
-        <a id="2821" class="Symbol">;</a> <a id="2823" href="Algebra.Morphism.Structures.html#8808" class="Function">+-isMagmaHomomorphism</a>
-        <a id="2853" class="Symbol">;</a> <a id="2855" href="Algebra.Morphism.Structures.html#11653" class="Function">*-isMonoidHomomorphism</a>
-        <a id="2886" class="Symbol">;</a> <a id="2888" href="Algebra.Morphism.Structures.html#8836" class="Function">*-isMagmaHomomorphism</a>
-        <a id="2918" class="Symbol">)</a>
+<a id="2634" class="Keyword">open</a> <a id="2639" href="Algebra.Morphism.Structures.html#18566" class="Module">IsRingMonomorphism</a> <a id="2658" href="Algebra.Construct.Centre.Ring.html#2021" class="Function">isRingMonomorphism</a> <a id="2677" class="Keyword">public</a>
+  <a id="2686" class="Keyword">using</a> <a id="2692" class="Symbol">(</a><a id="2693" href="Algebra.Morphism.Structures.html#18641" class="Field">isRingHomomorphism</a>
+        <a id="2720" class="Symbol">;</a> <a id="2722" href="Algebra.Morphism.Structures.html#18023" class="Function">isSemiringHomomorphism</a>
+        <a id="2753" class="Symbol">;</a> <a id="2755" href="Algebra.Morphism.Structures.html#11606" class="Function">isNearSemiringHomomorphism</a>
+        <a id="2790" class="Symbol">;</a> <a id="2792" href="Algebra.Morphism.Structures.html#8697" class="Function">+-isMonoidHomomorphism</a>
+        <a id="2823" class="Symbol">;</a> <a id="2825" href="Algebra.Morphism.Structures.html#8928" class="Function">+-isMagmaHomomorphism</a>
+        <a id="2855" class="Symbol">;</a> <a id="2857" href="Algebra.Morphism.Structures.html#11783" class="Function">*-isMonoidHomomorphism</a>
+        <a id="2888" class="Symbol">;</a> <a id="2890" href="Algebra.Morphism.Structures.html#8956" class="Function">*-isMagmaHomomorphism</a>
+        <a id="2920" class="Symbol">)</a>
 
-<a id="2921" class="Comment">-- And hence a CommutativeRing</a>
+<a id="2923" class="Comment">-- And hence a CommutativeRing</a>
 
-<a id="commutativeRing"></a><a id="2953" href="Algebra.Construct.Centre.Ring.html#2953" class="Function">commutativeRing</a> <a id="2969" class="Symbol">:</a> <a id="2971" href="Algebra.Bundles.html#31426" class="Record">CommutativeRing</a> <a id="2987" class="Symbol">_</a> <a id="2989" class="Symbol">_</a>
-<a id="2991" href="Algebra.Construct.Centre.Ring.html#2953" class="Function">commutativeRing</a> <a id="3007" class="Symbol">=</a> <a id="3009" class="Keyword">record</a>
-  <a id="3018" class="Symbol">{</a> <a id="3020" href="Algebra.Bundles.html#31783" class="Field">isCommutativeRing</a> <a id="3038" class="Symbol">=</a> <a id="3040" class="Keyword">record</a>
-    <a id="3051" class="Symbol">{</a> <a id="3053" href="Algebra.Structures.html#27732" class="Field">isRing</a> <a id="3060" class="Symbol">=</a> <a id="3062" href="Algebra.Morphism.RingMonomorphism.html#5769" class="Function">isRing</a> <a id="3069" href="Algebra.Construct.Centre.Ring.html#2021" class="Function">isRingMonomorphism</a> <a id="3088" href="Algebra.Bundles.html#30261" class="Field">X.isRing</a>
-    <a id="3101" class="Symbol">;</a> <a id="3103" href="Algebra.Structures.html#27764" class="Field">*-comm</a> <a id="3110" class="Symbol">=</a> <a id="3112" href="Algebra.Construct.Centre.Centre.html#846" class="Function">∙-comm</a>
-    <a id="3123" class="Symbol">}</a>
-  <a id="3127" class="Symbol">}</a>
+<a id="commutativeRing"></a><a id="2955" href="Algebra.Construct.Centre.Ring.html#2955" class="Function">commutativeRing</a> <a id="2971" class="Symbol">:</a> <a id="2973" href="Algebra.Bundles.html#31426" class="Record">CommutativeRing</a> <a id="2989" class="Symbol">_</a> <a id="2991" class="Symbol">_</a>
+<a id="2993" href="Algebra.Construct.Centre.Ring.html#2955" class="Function">commutativeRing</a> <a id="3009" class="Symbol">=</a> <a id="3011" class="Keyword">record</a>
+  <a id="3020" class="Symbol">{</a> <a id="3022" href="Algebra.Bundles.html#31783" class="Field">isCommutativeRing</a> <a id="3040" class="Symbol">=</a> <a id="3042" class="Keyword">record</a>
+    <a id="3053" class="Symbol">{</a> <a id="3055" href="Algebra.Structures.html#27732" class="Field">isRing</a> <a id="3062" class="Symbol">=</a> <a id="3064" href="Algebra.Morphism.RingMonomorphism.html#5769" class="Function">isRing</a> <a id="3071" href="Algebra.Construct.Centre.Ring.html#2021" class="Function">isRingMonomorphism</a> <a id="3090" href="Algebra.Bundles.html#30261" class="Field">X.isRing</a>
+    <a id="3103" class="Symbol">;</a> <a id="3105" href="Algebra.Structures.html#27764" class="Field">*-comm</a> <a id="3112" class="Symbol">=</a> <a id="3114" href="Algebra.Construct.Centre.Centre.html#846" class="Function">∙-comm</a>
+    <a id="3125" class="Symbol">}</a>
+  <a id="3129" class="Symbol">}</a>
 
-<a id="3130" class="Comment">-- Public export of the sub-X-structures/bundles</a>
+<a id="3132" class="Comment">-- Public export of the sub-X-structures/bundles</a>
 
-<a id="3180" class="Keyword">open</a> <a id="3185" href="Algebra.Bundles.html#31426" class="Module">CommutativeRing</a> <a id="3201" href="Algebra.Construct.Centre.Ring.html#2953" class="Function">commutativeRing</a> <a id="3217" class="Keyword">public</a>
-  <a id="3226" class="Keyword">using</a> <a id="3232" class="Symbol">(</a><a id="3233" href="Algebra.Bundles.html#31783" class="Field">isCommutativeRing</a><a id="3250" class="Symbol">;</a> <a id="3252" href="Algebra.Structures.html#27732" class="Function">isRing</a>
-        <a id="3267" class="Symbol">;</a> <a id="3269" href="Algebra.Bundles.html#17873" class="Function">+-rawMagma</a><a id="3279" class="Symbol">;</a> <a id="3281" href="Algebra.Bundles.html#17914" class="Function">+-magma</a><a id="3288" class="Symbol">;</a> <a id="3290" href="Algebra.Bundles.html#17952" class="Function">+-unitalMagma</a><a id="3303" class="Symbol">;</a> <a id="3305" href="Algebra.Bundles.html#17996" class="Function">+-commutativeMagma</a>
-        <a id="3332" class="Symbol">;</a> <a id="3334" href="Algebra.Bundles.html#31132" class="Function">+-invertibleMagma</a><a id="3351" class="Symbol">;</a> <a id="3353" href="Algebra.Bundles.html#31176" class="Function">+-invertibleUnitalMagma</a>
-        <a id="3385" class="Symbol">;</a> <a id="3387" href="Algebra.Bundles.html#18140" class="Function">+-rawMonoid</a><a id="3398" class="Symbol">;</a> <a id="3400" href="Algebra.Bundles.html#18182" class="Function">+-monoid</a><a id="3408" class="Symbol">;</a> <a id="3410" href="Algebra.Bundles.html#17638" class="Function">+-commutativeMonoid</a>
-        <a id="3438" class="Symbol">;</a> <a id="3440" href="Algebra.Bundles.html#31104" class="Function">+-group</a><a id="3447" class="Symbol">;</a> <a id="3449" href="Algebra.Bundles.html#30331" class="Function">+-abelianGroup</a>
-        <a id="3472" class="Symbol">;</a> <a id="3474" href="Algebra.Bundles.html#18045" class="Function">+-semigroup</a><a id="3485" class="Symbol">;</a> <a id="3487" href="Algebra.Bundles.html#18087" class="Function">+-commutativeSemigroup</a>
-        <a id="3518" class="Symbol">;</a> <a id="3520" href="Algebra.Bundles.html#18340" class="Function">*-rawMagma</a><a id="3530" class="Symbol">;</a> <a id="3532" href="Algebra.Bundles.html#18370" class="Function">*-magma</a><a id="3539" class="Symbol">;</a> <a id="3541" href="Algebra.Bundles.html#20720" class="Function">*-commutativeMagma</a>
-        <a id="3568" class="Symbol">;</a> <a id="3570" href="Algebra.Bundles.html#18397" class="Function">*-semigroup</a><a id="3581" class="Symbol">;</a> <a id="3583" href="Algebra.Bundles.html#20769" class="Function">*-commutativeSemigroup</a>
-        <a id="3614" class="Symbol">;</a> <a id="3616" href="Algebra.Bundles.html#18428" class="Function">*-rawMonoid</a><a id="3627" class="Symbol">;</a> <a id="3629" href="Algebra.Bundles.html#18200" class="Function">*-monoid</a><a id="3637" class="Symbol">;</a> <a id="3639" href="Algebra.Bundles.html#20484" class="Function">*-commutativeMonoid</a>
-        <a id="3667" class="Symbol">;</a> <a id="3669" href="Algebra.Bundles.html#15075" class="Function">nearSemiring</a>
-        <a id="3690" class="Symbol">;</a> <a id="3692" href="Algebra.Bundles.html#19367" class="Function">semiringWithoutOne</a><a id="3710" class="Symbol">;</a> <a id="3712" href="Algebra.Bundles.html#20801" class="Function">commutativeSemiringWithoutOne</a>
-        <a id="3750" class="Symbol">;</a> <a id="3752" href="Algebra.Bundles.html#18795" class="Function">semiringWithoutAnnihilatingZero</a><a id="3783" class="Symbol">;</a> <a id="3785" href="Algebra.Bundles.html#20041" class="Function">semiring</a>
-        <a id="3802" class="Symbol">)</a>
+<a id="3182" class="Keyword">open</a> <a id="3187" href="Algebra.Bundles.html#31426" class="Module">CommutativeRing</a> <a id="3203" href="Algebra.Construct.Centre.Ring.html#2955" class="Function">commutativeRing</a> <a id="3219" class="Keyword">public</a>
+  <a id="3228" class="Keyword">using</a> <a id="3234" class="Symbol">(</a><a id="3235" href="Algebra.Bundles.html#31783" class="Field">isCommutativeRing</a><a id="3252" class="Symbol">;</a> <a id="3254" href="Algebra.Structures.html#27732" class="Function">isRing</a>
+        <a id="3269" class="Symbol">;</a> <a id="3271" href="Algebra.Bundles.html#17873" class="Function">+-rawMagma</a><a id="3281" class="Symbol">;</a> <a id="3283" href="Algebra.Bundles.html#17914" class="Function">+-magma</a><a id="3290" class="Symbol">;</a> <a id="3292" href="Algebra.Bundles.html#17952" class="Function">+-unitalMagma</a><a id="3305" class="Symbol">;</a> <a id="3307" href="Algebra.Bundles.html#17996" class="Function">+-commutativeMagma</a>
+        <a id="3334" class="Symbol">;</a> <a id="3336" href="Algebra.Bundles.html#31132" class="Function">+-invertibleMagma</a><a id="3353" class="Symbol">;</a> <a id="3355" href="Algebra.Bundles.html#31176" class="Function">+-invertibleUnitalMagma</a>
+        <a id="3387" class="Symbol">;</a> <a id="3389" href="Algebra.Bundles.html#18140" class="Function">+-rawMonoid</a><a id="3400" class="Symbol">;</a> <a id="3402" href="Algebra.Bundles.html#18182" class="Function">+-monoid</a><a id="3410" class="Symbol">;</a> <a id="3412" href="Algebra.Bundles.html#17638" class="Function">+-commutativeMonoid</a>
+        <a id="3440" class="Symbol">;</a> <a id="3442" href="Algebra.Bundles.html#31104" class="Function">+-group</a><a id="3449" class="Symbol">;</a> <a id="3451" href="Algebra.Bundles.html#30331" class="Function">+-abelianGroup</a>
+        <a id="3474" class="Symbol">;</a> <a id="3476" href="Algebra.Bundles.html#18045" class="Function">+-semigroup</a><a id="3487" class="Symbol">;</a> <a id="3489" href="Algebra.Bundles.html#18087" class="Function">+-commutativeSemigroup</a>
+        <a id="3520" class="Symbol">;</a> <a id="3522" href="Algebra.Bundles.html#18340" class="Function">*-rawMagma</a><a id="3532" class="Symbol">;</a> <a id="3534" href="Algebra.Bundles.html#18370" class="Function">*-magma</a><a id="3541" class="Symbol">;</a> <a id="3543" href="Algebra.Bundles.html#20720" class="Function">*-commutativeMagma</a>
+        <a id="3570" class="Symbol">;</a> <a id="3572" href="Algebra.Bundles.html#18397" class="Function">*-semigroup</a><a id="3583" class="Symbol">;</a> <a id="3585" href="Algebra.Bundles.html#20769" class="Function">*-commutativeSemigroup</a>
+        <a id="3616" class="Symbol">;</a> <a id="3618" href="Algebra.Bundles.html#18428" class="Function">*-rawMonoid</a><a id="3629" class="Symbol">;</a> <a id="3631" href="Algebra.Bundles.html#18200" class="Function">*-monoid</a><a id="3639" class="Symbol">;</a> <a id="3641" href="Algebra.Bundles.html#20484" class="Function">*-commutativeMonoid</a>
+        <a id="3669" class="Symbol">;</a> <a id="3671" href="Algebra.Bundles.html#15075" class="Function">nearSemiring</a>
+        <a id="3692" class="Symbol">;</a> <a id="3694" href="Algebra.Bundles.html#19367" class="Function">semiringWithoutOne</a><a id="3712" class="Symbol">;</a> <a id="3714" href="Algebra.Bundles.html#20801" class="Function">commutativeSemiringWithoutOne</a>
+        <a id="3752" class="Symbol">;</a> <a id="3754" href="Algebra.Bundles.html#18795" class="Function">semiringWithoutAnnihilatingZero</a><a id="3785" class="Symbol">;</a> <a id="3787" href="Algebra.Bundles.html#20041" class="Function">semiring</a>
+        <a id="3804" class="Symbol">)</a>
 
-<a id="3805" class="Comment">-- Public export of the bundle</a>
+<a id="3807" class="Comment">-- Public export of the bundle</a>
 
-<a id="Z[_]"></a><a id="3837" href="Algebra.Construct.Centre.Ring.html#3837" class="Function Operator">Z[_]</a> <a id="3842" class="Symbol">=</a> <a id="3844" href="Algebra.Construct.Centre.Ring.html#2953" class="Function">commutativeRing</a>
+<a id="Z[_]"></a><a id="3839" href="Algebra.Construct.Centre.Ring.html#3839" class="Function Operator">Z[_]</a> <a id="3844" class="Symbol">=</a> <a id="3846" href="Algebra.Construct.Centre.Ring.html#2955" class="Function">commutativeRing</a>
 </pre></body></html>
