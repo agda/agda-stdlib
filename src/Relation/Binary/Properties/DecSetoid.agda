@@ -37,7 +37,7 @@ open SetoidProperties setoid using (≉-sym; ≉-irrefl)
   }
 
 ≉-tight : Tight _≈_ _≉_
-≉-tight x y = decidable-stable (x ≟ y)
+≉-tight x y = decidable-stable (x ≈? y)
 
 ≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _≉_
 ≉-isTightApartnessRelation = record
