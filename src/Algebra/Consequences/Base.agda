@@ -13,7 +13,7 @@ module Algebra.Consequences.Base
   {a} {A : Set a} where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Algebra.Definitions as Definitions
+open import Algebra.Definitions
   using (Congruent₂; LeftCongruent; RightCongruent
         ; Selective; Idempotent; SelfInverse; Involutive)
 open import Data.Sum.Base using (reduce)
@@ -32,14 +32,14 @@ private
 ------------------------------------------------------------------------
 -- Congruence
 
-module Congruence (_≈_ : Rel A ℓ) (open Definitions _≈_)
-                  (cong : Congruent₂ _∙_) (refl : Reflexive _≈_)
+module Congruence (_≈_ : Rel A ℓ)
+                  (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
   where
 
-  ∙-congˡ : LeftCongruent _∙_
+  ∙-congˡ : LeftCongruent _≈_ _∙_
   ∙-congˡ {x} = mono₂⇒monoˡ _ _≈_ _≈_ (refl {x = x}) cong x
 
-  ∙-congʳ : RightCongruent _∙_
+  ∙-congʳ : RightCongruent _≈_ _∙_
   ∙-congʳ {x} = mono₂⇒monoʳ _≈_ _ _≈_ (refl {x = x}) cong x
 
 ------------------------------------------------------------------------
