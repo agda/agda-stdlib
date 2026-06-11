@@ -79,9 +79,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
 
   total∧dec⇒dec : _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
                   Total _≤_ → Decidable _≈_ → Decidable _≤_
-  total∧dec⇒dec refl antisym total _≟_ x y with total x y
+  total∧dec⇒dec refl antisym total _≈?_ x y with total x y
   ... | inj₁ x≤y = yes x≤y
-  ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≟ y)
+  ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≈? y)
 
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃} {≤₂ : Rel B ℓ₄} where
 

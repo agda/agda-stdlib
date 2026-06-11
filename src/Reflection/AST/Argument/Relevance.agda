@@ -21,10 +21,27 @@ open Relevance public
 ------------------------------------------------------------------------
 -- Decidable equality
 
+infix 4 _≡?_
+
+_≡?_ : DecidableEquality Relevance
+relevant   ≡? relevant   = yes refl
+irrelevant ≡? irrelevant = yes refl
+relevant   ≡? irrelevant = no λ()
+irrelevant ≡? relevant   = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
 infix 4 _≟_
 
-_≟_ : DecidableEquality Relevance
-relevant   ≟ relevant   = yes refl
-irrelevant ≟ irrelevant = yes refl
-relevant   ≟ irrelevant = no λ()
-irrelevant ≟ relevant   = no λ()
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
