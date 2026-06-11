@@ -34,12 +34,3 @@ open import Relation.Nullary.Recomputable public
 irrelevant-recompute : Recomputable (Irrelevant A)
 irrelevant (irrelevant-recompute a) = irrelevant a
 
--- Corollary: so too is ⊥
-
-⊥-recompute : Recomputable ⊥
-⊥-recompute = irrelevant-recompute
-
--- Corollary: negations are Recomputable
-
-¬-recompute : Recomputable (¬ A)
-¬-recompute {A = A} = A →-recompute ⊥-recompute
