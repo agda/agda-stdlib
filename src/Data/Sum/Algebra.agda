@@ -14,11 +14,11 @@ open import Algebra.Definitions
   using (Associative; LeftIdentity; RightIdentity; Identity)
 open import Algebra.Structures
   using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid)
-open import Data.Empty.Polymorphic using (⊥)
+open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; map; [_,_]; swap; assocʳ; assocˡ)
 open import Data.Sum.Properties using (swap-involutive)
-open import Data.Unit.Polymorphic.Base using (⊤; tt)
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Function.Base using (id; _∘_)
 open import Function.Properties.Inverse using (↔-isEquivalence)
 open import Function.Bundles using (_↔_; Inverse; mk↔ₛ′)
@@ -35,9 +35,6 @@ private
   variable
     a b c d : Level
     A B C D : Set a
-
-  ♯ : {B : ⊥ {a} → Set b} → (w : ⊥) → B w
-  ♯ ()
 
 ------------------------------------------------------------------------
 -- Algebraic properties
@@ -62,10 +59,10 @@ module _ (ℓ : Level) where
 
   -- ⊥ is an identity for ⊎
   ⊎-identityˡ : LeftIdentity {ℓ = ℓ} _↔_ ⊥ _⊎_
-  ⊎-identityˡ A = mk↔ₛ′ [ ♯ , id ] inj₂ cong′ [ ♯ , cong′ ]
+  ⊎-identityˡ A = mk↔ₛ′ [ ⊥-elim , id ] inj₂ cong′ [ ⊥-elim , cong′ ]
 
   ⊎-identityʳ : RightIdentity {ℓ = ℓ} _↔_ ⊥ _⊎_
-  ⊎-identityʳ _ = mk↔ₛ′ [ id , ♯ ] inj₁ cong′ [ cong′ , ♯ ]
+  ⊎-identityʳ _ = mk↔ₛ′ [ id , ⊥-elim ] inj₁ cong′ [ cong′ , ⊥-elim ]
 
   ⊎-identity : Identity _↔_ ⊥ _⊎_
   ⊎-identity = ⊎-identityˡ , ⊎-identityʳ

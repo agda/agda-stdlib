@@ -39,7 +39,6 @@ open import Algebra.Module.Definitions
 open import Function.Base using (flip)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Nullary    using (¬_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private

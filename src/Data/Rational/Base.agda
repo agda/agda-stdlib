@@ -27,7 +27,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl)
+  using (_≡_; _≢_; refl; ¬[x≢x])
 
 ------------------------------------------------------------------------
 -- Rational numbers in reduced form. Note that there is exactly one
@@ -103,12 +103,15 @@ _≯_ : Rel ℚ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
--- Boolean ordering
+-- Boolean orderings, non-strict and strict
 
-infix 4 _≤ᵇ_
+infix 4 _≤ᵇ_ _<ᵇ_
 
 _≤ᵇ_ : ℚ → ℚ → Bool
 p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
+
+_<ᵇ_ : ℚ → ℚ → Bool
+p <ᵇ q = (↥ p ℤ.* ↧ q) ℤ.<ᵇ (↥ q ℤ.* ↧ p)
 
 ------------------------------------------------------------------------
 -- Negation
@@ -192,7 +195,7 @@ open ℤ public
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
 ≢-nonZero {mkℚ -[1+ _ ] _         _} _   = _
 ≢-nonZero {mkℚ +[1+ _ ] _         _} _   = _
-≢-nonZero {mkℚ +0       zero      _} p≢0 = contradiction refl p≢0
+≢-nonZero {mkℚ +0       zero      _} p≢0 = ¬[x≢x] p≢0
 ≢-nonZero {mkℚ +0       d@(suc m) c} p≢0 =
   contradiction (λ {d} → ℕ.recompute c {d}) (¬0-coprimeTo-2+ {{ℕ.nonTrivial {m}}})
 

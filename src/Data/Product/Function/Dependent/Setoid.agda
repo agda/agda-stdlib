@@ -20,6 +20,7 @@ open import Function.Properties.Injection using (mkInjection)
 open import Function.Properties.Surjection using (mkSurjection; ↠⇒⇔)
 open import Function.Properties.Equivalence using (mkEquivalence; ⇔⇒⟶; ⇔⇒⟵)
 open import Function.Properties.RightInverse using (mkRightInverse)
+import Function.Construct.Symmetry as Sym
 open import Relation.Binary.Core using (_=[_]⇒_)
 open import Relation.Binary.Bundles as B
 open import Relation.Binary.Indexed.Heterogeneous
@@ -182,17 +183,17 @@ module _ where
     surj = strictlySurjective⇒surjective (I ×ₛ A) (J ×ₛ B) (Func.cong func) strictlySurj
 
 ------------------------------------------------------------------------
--- LeftInverse
+-- RightInverse
 
 module _ where
   open RightInverse
   open Setoid
 
-  left-inverse :
+  rightInverse :
     (I↪J : I ↪ J) →
     (∀ {j} → RightInverse (A atₛ (from I↪J j)) (B atₛ j)) →
     RightInverse (I ×ₛ A) (J ×ₛ B)
-  left-inverse {I = I} {J = J} {A = A} {B = B} I↪J A↪B =
+  rightInverse {I = I} {J = J} {A = A} {B = B} I↪J A↪B =
     mkRightInverse equiv invʳ
     where
     equiv : Equivalence (I ×ₛ A) (J ×ₛ B)
@@ -204,6 +205,19 @@ module _ where
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) (Equivalence.to equiv) (Equivalence.from equiv)
     invʳ = strictlyInverseʳ⇒inverseʳ (I ×ₛ A) (J ×ₛ B) (Equivalence.from-cong equiv) strictlyInvʳ
 
+------------------------------------------------------------------------
+-- LeftInverse
+
+module _ where
+  open LeftInverse
+  open Setoid
+
+  leftInverse :
+    (I↩J : I ↩ J) →
+    (∀ {i} → LeftInverse (A atₛ i) (B atₛ (to I↩J i))) →
+    LeftInverse (I ×ₛ A) (J ×ₛ B)
+  leftInverse {I = I} {J = J} {A = A} {B = B} I↩J A↩B =
+    Sym.leftInverse (rightInverse (Sym.rightInverse I↩J) (Sym.rightInverse A↩B))
 
 ------------------------------------------------------------------------
 -- Inverses
@@ -255,3 +269,17 @@ module _ where
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′ from′
     invʳ = strictlyInverseʳ⇒inverseʳ (I ×ₛ A) (J ×ₛ B) from′-cong strictlyInvʳ
 
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.3
+
+left-inverse = rightInverse
+{-# WARNING_ON_USAGE left-inverse
+"Warning: left-inverse was deprecated in v2.3.
+Please use rightInverse or leftInverse instead."
+#-}

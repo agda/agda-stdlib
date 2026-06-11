@@ -17,8 +17,7 @@ module Algebra.Morphism.Construct.Initial {c ℓ : Level} where
 open import Algebra.Bundles.Raw using (RawMagma)
 open import Algebra.Morphism.Structures
   using (IsMagmaHomomorphism; IsMagmaMonomorphism)
-open import Function.Definitions using (Injective)
-import Relation.Binary.Morphism.Definitions as Rel
+open import Function.Definitions using (Congruent; Injective)
 open import Relation.Binary.Core using (Rel)
 
 open import Algebra.Construct.Initial {c} {ℓ}
@@ -27,7 +26,7 @@ private
   variable
     a m ℓm : Level
     A : Set a
-    ≈ : Rel A ℓm
+
 
 ------------------------------------------------------------------------
 -- The unique morphism
@@ -38,25 +37,29 @@ zero ()
 ------------------------------------------------------------------------
 -- Basic properties
 
-cong : (≈ : Rel A ℓm) → Rel.Homomorphic₂ ℤero.Carrier A ℤero._≈_ ≈ zero
-cong _ {x = ()}
+module _ (≈ : Rel A ℓm) where
 
-injective : (≈ : Rel A ℓm) → Injective ℤero._≈_ ≈ zero
-injective _ {x = ()}
+  cong : Congruent ℤero._≈_ ≈ zero
+  cong {x = ()}
+
+  injective : Injective ℤero._≈_ ≈ zero
+  injective {x = ()}
 
 ------------------------------------------------------------------------
 -- Morphism structures
 
-isMagmaHomomorphism : (M : RawMagma m ℓm) →
-                      IsMagmaHomomorphism rawMagma M zero
-isMagmaHomomorphism M = record
-  { isRelHomomorphism = record { cong = cong (RawMagma._≈_ M) }
-  ; homo = λ()
-  }
+module _ (M : RawMagma m ℓm) where
 
-isMagmaMonomorphism : (M : RawMagma m ℓm) →
-                      IsMagmaMonomorphism rawMagma M zero
-isMagmaMonomorphism M = record
-  { isMagmaHomomorphism = isMagmaHomomorphism M
-  ; injective = injective (RawMagma._≈_ M)
-  }
+  open RawMagma M using (_≈_)
+
+  isMagmaHomomorphism : IsMagmaHomomorphism rawMagma M zero
+  isMagmaHomomorphism = record
+    { isRelHomomorphism = record { cong = cong _≈_ }
+    ; homo = λ()
+    }
+
+  isMagmaMonomorphism : IsMagmaMonomorphism rawMagma M zero
+  isMagmaMonomorphism = record
+    { isMagmaHomomorphism = isMagmaHomomorphism
+    ; injective = injective _≈_
+    }

@@ -18,7 +18,7 @@ module Algebra.Solver.Ring.NaturalCoefficients.Default
 
 import Algebra.Properties.Semiring.Mult as SemiringMultiplication using (_×_)
 open import Data.Maybe.Base using (Maybe; map)
-open import Data.Nat using (_≟_)
+open import Data.Nat using (_≡?_)
 open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 import Relation.Binary.PropositionalEquality.Core as ≡ using (refl; cong)
 
@@ -27,6 +27,6 @@ open SemiringMultiplication semiring
 
 private
   dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)
-  dec m n = map (λ { ≡.refl → refl }) (dec⇒weaklyDec _≟_ m n)
+  dec m n = map (λ { ≡.refl → refl }) (dec⇒weaklyDec _≡?_ m n)
 
 open import Algebra.Solver.Ring.NaturalCoefficients R dec public

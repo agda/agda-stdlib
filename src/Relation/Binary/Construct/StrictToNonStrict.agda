@@ -28,7 +28,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable
         ; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
-open import Relation.Nullary.Decidable.Core using (_⊎-dec_; yes; no)
+open import Relation.Nullary.Decidable.Core using (_⊎?_; yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 
 ------------------------------------------------------------------------
@@ -101,7 +101,7 @@ total <-tri x y with <-tri x y
 ... | tri> x≮y x≉y x>y = inj₂ (inj₁ x>y)
 
 decidable : Decidable _≈_ → Decidable _<_ → Decidable _≤_
-decidable ≈-dec <-dec x y = <-dec x y ⊎-dec ≈-dec x y
+decidable ≈-dec <-dec x y = <-dec x y ⊎? ≈-dec x y
 
 decidable′ : Trichotomous _≈_ _<_ → Decidable _≤_
 decidable′ compare x y with compare x y
@@ -145,7 +145,7 @@ isTotalOrder STO = record
 isDecTotalOrder : IsStrictTotalOrder _≈_ _<_ → IsDecTotalOrder _≈_ _≤_
 isDecTotalOrder STO = record
   { isTotalOrder = isTotalOrder STO
-  ; _≟_          = S._≟_
+  ; _≟_          = S._≈?_
   ; _≤?_         = decidable′ S.compare
   }
   where module S = IsStrictTotalOrder STO

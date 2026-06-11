@@ -65,7 +65,7 @@ isEquivalence eq = record
 isDecEquivalence : IsDecEquivalence R → IsDecEquivalence (Pointwise R)
 isDecEquivalence eq = record
   { isEquivalence = isEquivalence DE.isEquivalence
-  ; _≟_           = decidable     DE._≟_
+  ; _≟_           = decidable     DE._≈?_
   } where module DE = IsDecEquivalence eq
 
 isPreorder : IsPreorder R S → IsPreorder (Pointwise R) (Pointwise S)
@@ -130,13 +130,6 @@ AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
 
 ------------------------------------------------------------------------
 -- Relationship to functions over lists
-------------------------------------------------------------------------
--- length
-
-Pointwise-length : Pointwise R xs ys → length xs ≡ length ys
-Pointwise-length []            = ≡.refl
-Pointwise-length (x∼y ∷ xs∼ys) = ≡.cong ℕ.suc (Pointwise-length xs∼ys)
-
 ------------------------------------------------------------------------
 -- tabulate
 

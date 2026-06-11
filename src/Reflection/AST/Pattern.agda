@@ -24,6 +24,6 @@ open import Reflection.AST.Term public
            ; pat-con-injective  to con-injective
            ; pat-var-injective  to var-injective
            ; pat-lit-injective  to lit-injective
-           ; _≟-Patterns_       to _≟s_
-           ; _≟-Pattern_        to _≟_
+           ; _≡?-Patterns_      to _≟s_
+           ; _≡?-Pattern_       to _≡?_
            )

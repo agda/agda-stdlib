@@ -283,7 +283,7 @@ mkGCD m n = gcd m n , gcd-GCD m n
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
 gcd? m n d =
   Dec.map′ (λ { ≡.refl → gcd-GCD m n }) (GCD.unique (gcd-GCD m n))
-           (gcd m n ≟ d)
+           (gcd m n ≡? d)
 
 GCD-* : ∀ {m n d c} .{{_ : NonZero c}} → GCD (m * c) (n * c) (d * c) → GCD m n d
 GCD-* {c = suc _} (GCD.is (dc∣nc , dc∣mc) dc-greatest) =
