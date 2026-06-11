@@ -51,7 +51,7 @@ xy≈z⇒y∣ʳz x y xy≈z = x , xy≈z
 ∣ˡ-respˡ-≈ x≈z (q , xq≈y) = q , trans (∙-congʳ (sym x≈z)) xq≈y
 
 ∣ˡ-resp-≈ : _∣ˡ_ Respects₂ _≈_
-∣ˡ-resp-≈ = ∣ˡ-respʳ-≈ , ∣ˡ-respˡ-≈
+∣ˡ-resp-≈ = ∣ˡ-respˡ-≈ , ∣ˡ-respʳ-≈
 
 x∣ˡxy : ∀ x y → x ∣ˡ x ∙ y
 x∣ˡxy x y = y , refl
