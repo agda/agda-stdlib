@@ -8,15 +8,16 @@
 
 module Data.Maybe.Relation.Unary.All.Properties where
 
-open import Data.Maybe.Base
+open import Data.Maybe.Base using (Maybe; just; nothing; map; _<∣>_)
 open import Data.Maybe.Relation.Unary.All as All
   using (All; nothing; just)
 open import Data.Maybe.Relation.Binary.Connected
+  using (Connected; just-nothing; nothing-just; nothing; just)
 open import Data.Product.Base using (_×_; _,_)
 open import Function.Base using (_∘_)
-open import Level
-open import Relation.Unary
-open import Relation.Binary.Core
+open import Level using (Level)
+open import Relation.Unary using (Pred; _⊆_)
+open import Relation.Binary.Core using (Rel)
 
 private
   variable

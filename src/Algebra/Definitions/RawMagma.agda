@@ -25,6 +25,7 @@ open RawMagma M renaming (Carrier to A)
 ------------------------------------------------------------------------
 -- Divisibility
 
+infixr 4 _,_
 infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_ _∥_ _∦_
 
 -- Divisibility from the left.

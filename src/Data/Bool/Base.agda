@@ -9,7 +9,7 @@
 module Data.Bool.Base where
 
 open import Data.Unit.Base using (⊤)
-open import Data.Empty
+open import Data.Empty using (⊥)
 open import Level using (Level)
 
 private

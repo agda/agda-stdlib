@@ -37,11 +37,13 @@ open import Algebra.Module.Bundles using (Bimodule)
 module Algebra.Module.Construct.Idealization
   {r ℓr m ℓm} (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
-open import Algebra.Core
-import Algebra.Consequences.Setoid as Consequences
+open import Algebra.Core using (Op₂)
+import Algebra.Consequences.Setoid as Consequences using (comm∧assoc⇒middleFour)
 import Algebra.Definitions as Definitions
-import Algebra.Module.Construct.DirectProduct as DirectProduct
-import Algebra.Module.Construct.TensorUnit as TensorUnit
+  using (Congruent₂; _DistributesOverˡ_; _DistributesOverʳ_; _DistributesOver_
+        ; LeftIdentity; RightIdentity; Identity; Associative)
+import Algebra.Module.Construct.DirectProduct as DirectProduct using (bimodule)
+import Algebra.Module.Construct.TensorUnit as TensorUnit using (bimodule)
 open import Algebra.Structures using (IsAbelianGroup; IsRing)
 open import Data.Product.Base using (_,_; ∃-syntax)
 open import Level using (Level; _⊔_)

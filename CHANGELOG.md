@@ -1,10 +1,23 @@
-Version 2.3-dev
-===============
+Version 3.0
+===========
 
-The library has been tested using Agda 2.7.0 and 2.7.0.1.
+The library has been tested using Agda 2.8.0.
 
 Highlights
 ----------
+
+* The notation for `Decidable` relations has been (partially) standardised: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the general `IsDecEquivalence`
+
+  At present, the old fieldname `_≟_` has been retained, in order to avoid
+  a non-backwards compatible/breaking change of fieldname, which will plan
+  to do in Version 3.0, with accompanying deprecation of that name, against
+  its eventual removal in subsequent versions.
+
+  The change leads to a number of (trivial) renamings/deprecations, others more
+  substantive in `Data.{Nat|Fin}.Properties` for the concrete datatypes, which
+  are summarised below, but are not each documented for all affected modules.
 
 Bug-fixes
 ---------
@@ -15,11 +28,6 @@ Bug-fixes
 
 Non-backwards compatible changes
 --------------------------------
-
-* The implementation of `≤-total` in `Data.Nat.Properties` has been altered
-  to use operations backed by primitives, rather than recursion, making it
-  significantly faster. However, its reduction behaviour on open terms may have
-  changed.
 
 * The definitions of `Algebra.Structures.IsHeyting*` and
   `Algebra.Structures.IsHeyting*` have been refactored, together
@@ -50,66 +58,42 @@ Deprecated names
   #-sym  ↦   Algebra.Apartness.Structures.IsHeytingCommutativeRing.#-sym
   ```
 
-* In `Algebra.Definitions.RawMagma`:
+* In `Data.Fin.Properties`:
   ```agda
-  _∣∣_   ↦  _∥_
-  _∤∤_    ↦  _∦_
+  _≟_      ↦  _≡?_
+  inj⇒≟    ↦  inj⇒≡?
+  ≟-≡      ↦  ≡?-≡
+  ≟-≡-refl ↦  ≡?-≡-refl
+  ≟-≢     ↦  ≡?-≢
   ```
 
-* In `Algebra.Module.Consequences`
+* In `Data.Nat.Properties`:
   ```agda
-  *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
-  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
-  *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
-  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  _≟_       ↦   _≡?_
+  ≟-diag    ↦   ≡?-≡
+  ≟-≡       ↦   ≡?-≢
+  ≟?-≡-refl ↦ ≡?-≡-refl
   ```
 
-* In `Algebra.Properties.Magma.Divisibility`:
+* In `Effect.Monad.Partiality`:
   ```agda
-  ∣∣-sym       ↦  ∥-sym
-  ∣∣-respˡ-≈   ↦  ∥-respˡ-≈
-  ∣∣-respʳ-≈   ↦  ∥-respʳ-≈
-  ∣∣-resp-≈    ↦  ∥-resp-≈
-  ∤∤-sym  -≈    ↦  ∦-sym
-  ∤∤-respˡ-≈    ↦  ∦-respˡ-≈
-  ∤∤-respʳ-≈    ↦  ∦-respʳ-≈
-  ∤∤-resp-≈     ↦  ∦-resp-≈
+  _≟-Kind_     ↦   _≡?-Kind_
   ```
 
-* In `Algebra.Properties.Monoid.Divisibility`:
+* In `Reflection.AST.AlphaEquality`:
   ```agda
-  ∣∣-refl            ↦  ∥-refl
-  ∣∣-reflexive       ↦  ∥-reflexive
-  ∣∣-isEquivalence   ↦  ∥-isEquivalence
+  ≟⇒α     ↦   ≡?⇒α
   ```
 
-* In `Algebra.Properties.Semigroup.Divisibility`:
+* In `Relation.Binary.PropositionalEquality`:
   ```agda
-  ∣∣-trans   ↦  ∥-trans
+  ≡-≟-identity     ↦   ≡-≡?-identity
+  ≢-≟-identity     ↦   ≢-≡?-identity
   ```
 
-* In `Data.List.Base`:
+* In `Relation.Nary`:
   ```agda
-  and       ↦  Data.Bool.ListAction.and
-  or        ↦  Data.Bool.ListAction.or
-  any       ↦  Data.Bool.ListAction.any
-  all       ↦  Data.Bool.ListAction.all
-  sum       ↦  Data.Nat.ListAction.sum
-  product   ↦  Data.Nat.ListAction.product
-  ```
-
-* In `Data.List.Properties`:
-  ```agda
-  sum-++       ↦  Data.Nat.ListAction.Properties.sum-++
-  ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
-  product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
-  ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
-  ```
-
-* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
-  ```agda
-  sum-↭       ↦  Data.Nat.ListAction.Properties.sum-↭
-  product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
+  ≟-mapₙ     ↦   ≡?-mapₙ
   ```
 
 New modules
@@ -117,10 +101,6 @@ New modules
 
 * `Algebra.Apartness.Properties.HeytingField`, refactoring the existing
   `Algebra.Apartness.Properties.HeytingCommutativeRing`.
-
-* `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
-
-* `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
 
 Additions to existing modules
 -----------------------------
@@ -135,35 +115,6 @@ Additions to existing modules
   IsTightApartnessRelation _≈_ _#_ : Set _
   ```
 
-* In `Algebra.Construct.Pointwise`:
-  ```agda
-  isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
-                                    IsNearSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
-  isSemiringWithoutOne            : IsSemiringWithoutOne _≈_ _+_ _*_ 0# →
-                                    IsSemiringWithoutOne (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
-  isCommutativeSemiringWithoutOne : IsCommutativeSemiringWithoutOne _≈_ _+_ _*_ 0# →
-                                    IsCommutativeSemiringWithoutOne (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
-  isCommutativeSemiring           : IsCommutativeSemiring _≈_ _+_ _*_ 0# 1# →
-                                    IsCommutativeSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isIdempotentSemiring            : IsIdempotentSemiring _≈_ _+_ _*_ 0# 1# →
-                                    IsIdempotentSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isKleeneAlgebra                 : IsKleeneAlgebra _≈_ _+_ _*_ _⋆ 0# 1# →
-                                    IsKleeneAlgebra (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ _⋆) (lift₀ 0#) (lift₀ 1#)
-  isQuasiring                     : IsQuasiring _≈_ _+_ _*_ 0# 1# →
-                                    IsQuasiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isCommutativeRing               : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1# →
-                                    IsCommutativeRing (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ -_) (lift₀ 0#) (lift₀ 1#)
-  commutativeMonoid               : CommutativeMonoid c ℓ → CommutativeMonoid (a ⊔ c) (a ⊔ ℓ)
-  nearSemiring                    : NearSemiring c ℓ → NearSemiring (a ⊔ c) (a ⊔ ℓ)
-  semiringWithoutOne              : SemiringWithoutOne c ℓ → SemiringWithoutOne (a ⊔ c) (a ⊔ ℓ)
-  commutativeSemiringWithoutOne   : CommutativeSemiringWithoutOne c ℓ → CommutativeSemiringWithoutOne (a ⊔ c) (a ⊔ ℓ)
-  commutativeSemiring             : CommutativeSemiring c ℓ → CommutativeSemiring (a ⊔ c) (a ⊔ ℓ)
-  idempotentSemiring              : IdempotentSemiring c ℓ → IdempotentSemiring (a ⊔ c) (a ⊔ ℓ)
-  kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
-  quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
-  commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
-  ```
-
 * In `Algebra.Properties.AbelianGroup`:
   ```agda
   x-ε≈x : RightIdentity ε _-_
@@ -172,19 +123,6 @@ Additions to existing modules
 * In `Algebra.Properties.RingWithoutOne`:
   ```agda
   x-0#≈x : RightIdentity 0# _-_
-  ```
-
-* In `Data.List.Properties`:
-  ```agda
-  map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
-  map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
-  map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
-  map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
-  ```
-
-* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
-  ```agda
-  filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:

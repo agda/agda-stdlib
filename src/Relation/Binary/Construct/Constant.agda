@@ -8,7 +8,7 @@
 
 module Relation.Binary.Construct.Constant where
 
-open import Level
+open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)

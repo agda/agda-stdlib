@@ -12,8 +12,8 @@ open import Function.Base using (id; _∘_)
 open import Function.Bundles using (Inverse; _↔_; mk↔ₛ′)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; sym; trans; trans-reflʳ; cong-≡id; cong-∘; naturality;
-         cong-id; trans-assoc; trans-symˡ; module ≡-Reasoning)
+  using (_≡_; refl; cong; sym; trans; trans-reflʳ; cong-≡id; cong-∘; naturality
+        ; cong-id; trans-assoc; trans-symˡ; module ≡-Reasoning)
 
 private
   variable

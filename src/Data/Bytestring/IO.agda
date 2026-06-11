@@ -8,7 +8,7 @@
 
 module Data.Bytestring.IO where
 
-open import Agda.Builtin.String
+open import Agda.Builtin.String using (String)
 open import IO using (IO; lift)
 open import Data.Bytestring.Base using (Bytestring)
 open import Data.Unit.Base using (⊤)

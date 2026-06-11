@@ -13,10 +13,10 @@ open import Function.Base using (const)
 open import Level using (Level; suc)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
-
-open import Function.Metric.Nat.Core
-open import Function.Metric.Nat.Definitions
+open import Function.Metric.Nat.Core using (DistanceFunction)
 import Function.Metric.Structures as Base
+  using (IsGeneralMetric; IsProtoMetric; IsPreMetric; IsQuasiSemiMetric
+        ; IsSemiMetric)
 
 private
   variable

@@ -9,13 +9,12 @@
 
 module Data.Bytestring.Base where
 
-open import Data.Nat.Base using (ℕ; _+_; _*_; _^_)
 open import Agda.Builtin.String using (String)
+open import Data.Nat.Base using (ℕ; _+_; _*_; _^_)
 import Data.Fin.Base as Fin
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Word8.Base as Word8 using (Word8)
 open import Data.Word64.Base as Word64 using (Word64)
-
 open import Function.Base using (const; _$_)
 
 ------------------------------------------------------------------------------

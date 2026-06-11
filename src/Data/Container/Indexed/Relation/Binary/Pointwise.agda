@@ -9,12 +9,11 @@
 module Data.Container.Indexed.Relation.Binary.Pointwise where
 
 open import Data.Product.Base using (_,_; Σ-syntax)
+open import Data.Container.Indexed.Core using (Container; Subtrees; ⟦_⟧)
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary using (REL; _⇒_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-
-open import Data.Container.Indexed.Core using (Container; Subtrees; ⟦_⟧)
 
 private variable
   ℓᵉ ℓᵉ′ ℓᵖ ℓˢ ℓˣ ℓʸ : Level

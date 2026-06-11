@@ -15,7 +15,7 @@ module Data.List.Relation.Binary.Equality.Setoid.Properties
 open import Algebra.Bundles using (Magma; Semigroup; Monoid)
 import Algebra.Structures as Structures
 open import Data.List.Base using (List; []; _++_)
-import Data.List.Properties as List
+import Data.List.Properties as List using (++-assoc; ++-identityʳ)
 import Data.List.Relation.Binary.Equality.Setoid as ≋
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_)

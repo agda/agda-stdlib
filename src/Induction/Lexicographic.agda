@@ -9,8 +9,8 @@
 module Induction.Lexicographic where
 
 open import Data.Product.Base using (Σ; _,_; _×_)
-open import Induction
-open import Level
+open import Induction using (RecStruct; RecursorBuilder; build)
+open import Level using (Level; _⊔_)
 
 -- The structure of lexicographic induction.
 

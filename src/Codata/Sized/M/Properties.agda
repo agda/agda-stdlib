@@ -8,19 +8,18 @@
 
 module Codata.Sized.M.Properties where
 
-open import Level
-open import Size
+open import Level using (_⊔_)
+open import Size using (Size; ∞)
 open import Codata.Sized.Thunk using (Thunk; force)
-open import Codata.Sized.M
-open import Codata.Sized.M.Bisimilarity
+open import Codata.Sized.M using (M; inf; map; unfold)
+open import Codata.Sized.M.Bisimilarity using (Bisim; inf)
 open import Data.Container.Core as C hiding (map)
-import Data.Container.Morphism as Mp
+import Data.Container.Morphism as Mp using (id; _∘_)
 open import Data.Product.Base as Product using (_,_)
 open import Data.Product.Properties hiding (map-cong)
 open import Function.Base using (_$′_; _∘′_)
-import Relation.Binary.PropositionalEquality.Core as ≡
-import Relation.Binary.PropositionalEquality.Properties as ≡
-
+import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; subst)
+import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 open import Data.Container.Relation.Binary.Pointwise using (_,_)
 import Data.Container.Relation.Binary.Equality.Setoid as EqSetoid
 

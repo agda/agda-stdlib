@@ -8,11 +8,11 @@
 
 module Codata.Sized.M.Bisimilarity where
 
-open import Level
-open import Size
-open import Codata.Sized.Thunk
-open import Codata.Sized.M
-open import Data.Container.Core
+open import Level using (_⊔_)
+open import Size using (Size; ∞)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Codata.Sized.M using (M; inf)
+open import Data.Container.Core using (Container)
 open import Data.Container.Relation.Binary.Pointwise using (Pointwise; _,_)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_)

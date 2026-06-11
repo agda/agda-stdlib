@@ -8,19 +8,24 @@
 
 module Data.Product.Algebra where
 
-open import Algebra
+open import Algebra.Bundles
+  using (Magma; Semigroup; Monoid; CommutativeMonoid; CommutativeSemiring)
+open import Algebra.Definitions
+open import Algebra.Structures
+  using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid
+        ; IsSemiringWithoutAnnihilatingZero; IsSemiring; IsCommutativeSemiring)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base
 open import Data.Product.Properties
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Sum.Algebra
+open import Data.Sum.Algebra using (⊎-isCommutativeMonoid)
 open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (_∘′_)
 open import Function.Bundles using (_↔_; Inverse; mk↔ₛ′)
 open import Function.Properties.Inverse using (↔-isEquivalence)
 open import Level using (Level; suc)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong′; cong₂)
 
 import Function.Definitions as FuncDef
 

@@ -22,51 +22,54 @@ module Relation.Binary.Reasoning.Base.Partial
 ------------------------------------------------------------------------
 -- Definition of "related to"
 
--- This seemingly unnecessary type is used to make it possible to
--- infer arguments even if the underlying equality evaluates.
+-- This type allows us to track whether reasoning steps
+-- include _∼_ or not.
 
 infix  4 _IsRelatedTo_
 
 data _IsRelatedTo_ : A → A → Set (a ⊔ ℓ) where
-  singleStep : ∀ x → x IsRelatedTo x
-  multiStep  : ∀ {x y} (x∼y : x ∼ y) → x IsRelatedTo y
+  reflexive : ∀ {x y} → x ≡ y → x IsRelatedTo y
+  relTo     : ∀ {x y} (x∼y : x ∼ y) → x IsRelatedTo y
+
+≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
+≡-go x≡y (reflexive y≡z) = reflexive (case x≡y of λ where ≡.refl → y≡z)
+≡-go x≡y (relTo y∼z)     = relTo (case x≡y of λ where ≡.refl → y∼z)
 
 ∼-go : Trans _∼_ _IsRelatedTo_ _IsRelatedTo_
-∼-go x∼y (singleStep y) = multiStep x∼y
-∼-go x∼y (multiStep y∼z) = multiStep (trans x∼y y∼z)
+∼-go x∼y (reflexive y≡z) = relTo (case y≡z of λ where ≡.refl → x∼y)
+∼-go x∼y (relTo y∼z)     = relTo (trans x∼y y∼z)
 
 stop : Reflexive _IsRelatedTo_
-stop = singleStep _
+stop = reflexive ≡.refl
 
 ------------------------------------------------------------------------
 -- Types that are used to ensure that the final relation proved by the
 -- chain of reasoning can be converted into the required relation.
 
-data IsMultiStep {x y} : x IsRelatedTo y → Set (a ⊔ ℓ) where
-  isMultiStep : ∀ x∼y → IsMultiStep (multiStep x∼y)
+data IsRelTo {x y} : x IsRelatedTo y → Set (a ⊔ ℓ) where
+  isRelTo : ∀ x∼y → IsRelTo (relTo x∼y)
 
-IsMultiStep? : ∀ {x y} (x∼y : x IsRelatedTo y) → Dec (IsMultiStep x∼y)
-IsMultiStep? (multiStep x<y) = yes (isMultiStep x<y)
-IsMultiStep? (singleStep _)  = no λ()
+IsRelTo? : ∀ {x y} (x∼y : x IsRelatedTo y) → Dec (IsRelTo x∼y)
+IsRelTo? (relTo x∼y)   = yes (isRelTo x∼y)
+IsRelTo? (reflexive _) = no λ()
 
-extractMultiStep : ∀ {x y} {x∼y : x IsRelatedTo y} → IsMultiStep x∼y → x ∼ y
-extractMultiStep (isMultiStep x≈y) = x≈y
+extractRelTo : ∀ {x y} {x∼y : x IsRelatedTo y} → IsRelTo x∼y → x ∼ y
+extractRelTo (isRelTo x∼y) = x∼y
 
-multiStepSubRelation : SubRelation _IsRelatedTo_ _ _
-multiStepSubRelation = record
-  { IsS = IsMultiStep
-  ; IsS? = IsMultiStep?
-  ; extract = extractMultiStep
+relToSubRelation : SubRelation _IsRelatedTo_ _ _
+relToSubRelation = record
+  { IsS = IsRelTo
+  ; IsS? = IsRelTo?
+  ; extract = extractRelTo
   }
 
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
-open begin-subrelation-syntax _IsRelatedTo_ multiStepSubRelation public
-open ≡-noncomputing-syntax _IsRelatedTo_ public
+open begin-subrelation-syntax _IsRelatedTo_ relToSubRelation public
+open ≡-syntax _IsRelatedTo_ ≡-go public
 open ∼-syntax _IsRelatedTo_ _IsRelatedTo_ ∼-go public
 open end-syntax _IsRelatedTo_ stop public
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -79,7 +82,7 @@ open end-syntax _IsRelatedTo_ stop public
 infix  3 _∎⟨_⟩
 
 _∎⟨_⟩ : ∀ x → x ∼ x → x IsRelatedTo x
-_ ∎⟨ x∼x ⟩ = multiStep x∼x
+_ ∎⟨ x∼x ⟩ = relTo x∼x
 {-# WARNING_ON_USAGE _∎⟨_⟩
 "Warning: _∎⟨_⟩ was deprecated in v1.6.
 Please use _∎ instead if used in a chain, otherwise simply provide
