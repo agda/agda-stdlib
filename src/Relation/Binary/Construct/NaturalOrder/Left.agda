@@ -91,7 +91,7 @@ resp₂ : IsMagma _∙_ →  _≤_ Respects₂ _≈_
 resp₂ magma = respʳ magma , respˡ magma
 
 dec : Decidable _≈_ → Decidable _≤_
-dec _≟_ x y = x ≟ (x ∙ y)
+dec _≈?_ x y = x ≈? (x ∙ y)
 
 module _ (semi : IsSemilattice _∙_) where
 
@@ -141,10 +141,10 @@ isPartialOrder semilattice = record
 
 isDecPartialOrder : IsSemilattice _∙_ → Decidable _≈_ →
                     IsDecPartialOrder _≈_ _≤_
-isDecPartialOrder semilattice _≟_ = record
+isDecPartialOrder semilattice _≈?_ = record
   { isPartialOrder = isPartialOrder semilattice
-  ; _≟_            = _≟_
-  ; _≤?_           = dec _≟_
+  ; _≟_            = _≈?_
+  ; _≤?_           = dec _≈?_
   }
 
 isTotalOrder : IsSemilattice _∙_ → Selective _∙_ → IsTotalOrder _≈_ _≤_
@@ -156,10 +156,10 @@ isTotalOrder latt sel  = record
 
 isDecTotalOrder : IsSemilattice _∙_ → Selective _∙_ →
                   Decidable _≈_ → IsDecTotalOrder _≈_ _≤_
-isDecTotalOrder latt sel _≟_ = record
+isDecTotalOrder latt sel _≈?_ = record
   { isTotalOrder = isTotalOrder latt sel
-  ; _≟_          = _≟_
-  ; _≤?_         = dec _≟_
+  ; _≟_          = _≈?_
+  ; _≤?_         = dec _≈?_
   }
 
 ------------------------------------------------------------------------

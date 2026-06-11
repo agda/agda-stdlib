@@ -83,12 +83,12 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
     <-compare : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ →
                 Total _≼_ → Trichotomous _≋_ _<_
-    <-compare sym _≟_ antisym tot =
-      Strict.<-compare sym (Conv.<-trichotomous _ _ sym _≟_ antisym tot)
+    <-compare sym _≈?_ antisym tot =
+      Strict.<-compare sym (Conv.<-trichotomous _ _ sym _≈?_ antisym tot)
 
     <-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _<_
-    <-decidable _≟_ _≼?_ =
-      Core.decidable (no id) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
+    <-decidable _≈?_ _≼?_ =
+      Core.decidable (no id) _≈?_ (Conv.<-decidable _ _ _≈?_ _≼?_)
 
     <-isStrictPartialOrder : IsPartialOrder _≈_ _≼_ →
                              IsStrictPartialOrder _≋_ _<_
@@ -111,7 +111,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 <-strictTotalOrder : ∀ {a ℓ₁ ℓ₂} → DecTotalOrder a ℓ₁ ℓ₂ →
                      StrictTotalOrder _ _ _
 <-strictTotalOrder dtot = record
-  { isStrictTotalOrder = <-isStrictTotalOrder _≟_ isTotalOrder
+  { isStrictTotalOrder = <-isStrictTotalOrder _≈?_ isTotalOrder
   } where open DecTotalOrder dtot
 
 ------------------------------------------------------------------------
@@ -150,8 +150,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ≤-resp₂ eq resp = Core.respects₂ eq (Conv.<-resp-≈ _ _ eq resp)
 
     ≤-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _≤_
-    ≤-decidable _≟_ _≼?_ =
-      Core.decidable (yes tt) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
+    ≤-decidable _≈?_ _≼?_ =
+      Core.decidable (yes tt) _≈?_ (Conv.<-decidable _ _ _≈?_ _≼?_)
 
     ≤-total : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ →
               Total _≼_ → Total _≤_

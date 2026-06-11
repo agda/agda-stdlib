@@ -50,10 +50,10 @@ module _ {xs ys : Vector A (suc n)} where
   ∷-injective eq = eq zero , eq ∘ suc
 
 ≗-dec : DecidableEquality A → Decidable {A = Vector A n} _≗_
-≗-dec {n = zero}  _≟_ xs ys = yes λ ()
-≗-dec {n = suc n} _≟_ xs ys =
+≗-dec {n = zero}  _≡?_ xs ys = yes λ()
+≗-dec {n = suc n} _≡?_ xs ys =
   map′ (Product.uncurry ∷-cong) ∷-injective
-       (head xs ≟ head ys ×? ≗-dec _≟_ (tail xs) (tail ys))
+       (head xs ≡? head ys ×? ≗-dec _≡?_ (tail xs) (tail ys))
 
 ------------------------------------------------------------------------
 -- updateAt

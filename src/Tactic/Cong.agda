@@ -108,7 +108,7 @@ private
     term' ← term
     symTerm' ← symTerm
     -- Don't show the same term twice.
-    let symErr = case term' Term.≟ symTerm' of λ where
+    let symErr = case term' Term.≡? symTerm' of λ where
       (yes _) → []
       (no _) → strErr "\n" ∷ termErr symTerm' ∷ []
     typeError (strErr "cong! failed, tried:\n" ∷ termErr term' ∷ symErr)

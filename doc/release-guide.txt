@@ -6,11 +6,8 @@ procedure should be followed:
 * Update `doc/README.agda` by replacing 'development version' by 'version X.Y' in the title.
 
 * Update the version to `X.Y` in:
-  - `agda-stdlib-utils.cabal`
-  - `standard-library.agda-lib`
   - `CITATION.cff`
   - `CHANGELOG.md`
-  - `README.md`
   - `doc/installation-guide.md`
 
 * Update the copyright year range in the LICENCE file, if necessary.
@@ -92,4 +89,6 @@ procedure should be followed:
 
 * Create new CHANGELOG.md file
 
-* Update `standard-library.agda-lib` to the new version/milestone on `master`
+* Update the following files to the new version/milestone on `master`
+  - `agda-stdlib-utils.cabal`
+  - `standard-library.agda-lib`
