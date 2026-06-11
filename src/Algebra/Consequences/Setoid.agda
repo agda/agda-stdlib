@@ -33,6 +33,7 @@ private
     f _⁻¹ : Op₁ A
     _∙_ _◦_ _+_ _*_ : Op₂ A
 
+
 ------------------------------------------------------------------------
 -- Re-exports
 
@@ -43,17 +44,15 @@ open Base public
 
 -- Export congruence lemmas using reflexivity
 
-module Congruence {_∙_ : Op₂ A} (cong : Congruent₂ _∙_) where
+module Congruence (cong : Congruent₂ _∙_) where
 
   open Base.Congruence _≈_ cong refl public
 
 ------------------------------------------------------------------------
 -- Selectivity
 
-module _ {_∙_ : Op₂ A} where
-
-  sel⇒idem : Selective _∙_ → Idempotent _∙_
-  sel⇒idem = Base.sel⇒idem _≈_
+sel⇒idem : Selective _∙_ → Idempotent _∙_
+sel⇒idem = Base.sel⇒idem _≈_
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
@@ -235,7 +234,7 @@ module _ (cong : Congruent₂ _∙_) where
   assoc∧id∧invʳ⇒invˡ-unique : Associative _∙_ →
                               Identity e _∙_ → RightInverse e _⁻¹ _∙_ →
                               ∀ x y → (x ∙ y) ≈ e → x ≈ (y ⁻¹)
-  assoc∧id∧invʳ⇒invˡ-unique assoc (idˡ , idʳ) invʳ x y eq = begin
+  assoc∧id∧invʳ⇒invˡ-unique {e = e} {_⁻¹ = _⁻¹} assoc (idˡ , idʳ) invʳ x y eq = begin
     x                ≈⟨ idʳ x ⟨
     x ∙ e            ≈⟨ ∙-congˡ (invʳ y) ⟨
     x ∙ (y ∙ (y ⁻¹)) ≈⟨ assoc x y (y ⁻¹) ⟨
@@ -246,7 +245,7 @@ module _ (cong : Congruent₂ _∙_) where
   assoc∧id∧invˡ⇒invʳ-unique : Associative _∙_ →
                               Identity e _∙_ → LeftInverse e _⁻¹ _∙_ →
                               ∀ x y → (x ∙ y) ≈ e → y ≈ (x ⁻¹)
-  assoc∧id∧invˡ⇒invʳ-unique assoc (idˡ , idʳ) invˡ x y eq = begin
+  assoc∧id∧invˡ⇒invʳ-unique {e = e} {_⁻¹ = _⁻¹} assoc (idˡ , idʳ) invˡ x y eq = begin
     y                ≈⟨ idˡ y ⟨
     e ∙ y            ≈⟨ ∙-congʳ (invˡ x) ⟨
     ((x ⁻¹) ∙ x) ∙ y ≈⟨ assoc (x ⁻¹) x y ⟩
@@ -336,7 +335,7 @@ module _ (+-cong : Congruent₂ _+_) (*-cong : Congruent₂ _*_) where
   assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ : Associative _+_ → _*_ DistributesOverʳ _+_ →
                                 RightIdentity 0# _+_ → RightInverse 0# _⁻¹ _+_ →
                                 LeftZero 0# _*_
-  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ +-assoc distribʳ idʳ invʳ  x = begin
+  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ {0# = 0#} {_⁻¹ = _⁻¹} +-assoc distribʳ idʳ invʳ  x = begin
     0# * x                                 ≈⟨ idʳ _ ⟨
     (0# * x) + 0#                          ≈⟨ +-congˡ (invʳ _) ⟨
     (0# * x) + ((0# * x)  + ((0# * x)⁻¹))  ≈⟨ +-assoc _ _ _ ⟨
@@ -348,7 +347,7 @@ module _ (+-cong : Congruent₂ _+_) (*-cong : Congruent₂ _*_) where
   assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ : Associative _+_ → _*_ DistributesOverˡ _+_ →
                                 RightIdentity 0# _+_ → RightInverse 0# _⁻¹ _+_ →
                                 RightZero 0# _*_
-  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ +-assoc distribˡ idʳ invʳ  x = begin
+  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ {0# = 0#} {_⁻¹ = _⁻¹} +-assoc distribˡ idʳ invʳ  x = begin
      x * 0#                                ≈⟨ idʳ _ ⟨
      (x * 0#) + 0#                         ≈⟨ +-congˡ (invʳ _) ⟨
      (x * 0#) + ((x * 0#) + ((x * 0#)⁻¹))  ≈⟨ +-assoc _ _ _ ⟨

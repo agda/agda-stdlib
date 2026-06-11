@@ -68,12 +68,12 @@ open SetoidConsequences public
 assoc∧id∧invʳ⇒invˡ-unique : Associative _∙_ → Identity ε _∙_ →
                             RightInverse ε _⁻¹ _∙_ →
                             ∀ x y → (x ∙ y) ≡ ε → x ≡ (y ⁻¹)
-assoc∧id∧invʳ⇒invˡ-unique = Base.assoc∧id∧invʳ⇒invˡ-unique (cong₂ _)
+assoc∧id∧invʳ⇒invˡ-unique = SetoidConsequences.assoc∧id∧invʳ⇒invˡ-unique (cong₂ _)
 
 assoc∧id∧invˡ⇒invʳ-unique : Associative _∙_ → Identity ε _∙_ →
                             LeftInverse ε _⁻¹ _∙_ →
                             ∀ x y → (x ∙ y) ≡ ε → y ≡ (x ⁻¹)
-assoc∧id∧invˡ⇒invʳ-unique = Base.assoc∧id∧invˡ⇒invʳ-unique (cong₂ _)
+assoc∧id∧invˡ⇒invʳ-unique = SetoidConsequences.assoc∧id∧invˡ⇒invʳ-unique (cong₂ _)
 
 ------------------------------------------------------------------------
 -- Ring-like structures
@@ -82,13 +82,13 @@ assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ : Associative _+_ → _*_ DistributesOve
                               RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
                               LeftZero 0# _*_
 assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ {_+_ = _+_} {_*_ = _*_} =
-  Base.assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ (cong₂ _+_) (cong₂ _*_)
+  SetoidConsequences.assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ (cong₂ _+_) (cong₂ _*_)
 
 assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ : Associative _+_ → _*_ DistributesOverˡ _+_ →
                               RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
                               RightZero 0# _*_
 assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ {_+_ = _+_} {_*_ = _*_} =
-  Base.assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ (cong₂ _+_) (cong₂ _*_)
+  SetoidConsequences.assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ (cong₂ _+_) (cong₂ _*_)
 
 ------------------------------------------------------------------------
 -- Bisemigroup-like structures
@@ -102,7 +102,7 @@ module _ (∙-comm : Commutative _∙_) where
   comm∧distrʳ⇒distrˡ = SetoidConsequences.comm∧distrʳ⇒distrˡ (cong₂ _) ∙-comm
 
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y ∙ z)) ≡ ((x ◦ y) ∙ (x ◦ z)))
-  comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _) ∙-comm
+  comm⇒sym[distribˡ] = SetoidConsequences.comm⇒sym[distribˡ] (cong₂ _) ∙-comm
 
 module _ {_∙_ _◦_ : Op₂ A}
          (∙-assoc : Associative _∙_)
@@ -118,17 +118,17 @@ module _ {_∙_ _◦_ : Op₂ A}
 
 comm∧assoc⇒middleFour : Commutative _∙_ → Associative _∙_ →
                         _∙_ MiddleFourExchange _∙_
-comm∧assoc⇒middleFour = Base.comm∧assoc⇒middleFour (cong₂ _)
+comm∧assoc⇒middleFour = SetoidConsequences.comm∧assoc⇒middleFour (cong₂ _)
 
 identity∧middleFour⇒assoc : Identity e _∙_ →
                             _∙_ MiddleFourExchange _∙_ →
                             Associative _∙_
-identity∧middleFour⇒assoc {_∙_ = _∙_} = Base.identity∧middleFour⇒assoc (cong₂ _∙_)
+identity∧middleFour⇒assoc {_∙_ = _∙_} = SetoidConsequences.identity∧middleFour⇒assoc (cong₂ _∙_)
 
 identity∧middleFour⇒comm : Identity e _+_ →
                            _∙_ MiddleFourExchange _+_ →
                            Commutative _∙_
-identity∧middleFour⇒comm = Base.identity∧middleFour⇒comm (cong₂ _)
+identity∧middleFour⇒comm = SetoidConsequences.identity∧middleFour⇒comm (cong₂ _)
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality
@@ -136,12 +136,12 @@ identity∧middleFour⇒comm = Base.identity∧middleFour⇒comm (cong₂ _)
 module _ {p} {P : Pred A p} (∙-comm : Commutative _∙_) where
 
   subst∧comm⇒sym : Symmetric (λ a b → P (a ∙ b))
-  subst∧comm⇒sym = Base.subst∧comm⇒sym {P = P} subst ∙-comm
+  subst∧comm⇒sym = SetoidConsequences.subst∧comm⇒sym {P = P} subst ∙-comm
 
   wlog : ∀ {r} {_R_ : Rel _ r} → Total _R_ →
          (∀ a b → a R b → P (a ∙ b)) →
          ∀ a b → P (a ∙ b)
-  wlog = Base.wlog {P = P} subst ∙-comm
+  wlog = SetoidConsequences.wlog {P = P} subst ∙-comm
 
 
 ------------------------------------------------------------------------
