@@ -10,11 +10,12 @@
 
 module Algebra.Morphism.Bundles where
 
-open import Algebra.Bundles.Raw
+open import Algebra.Bundles.Raw using
+  ( RawMagma; RawMonoid; RawGroup; RawQuasigroup; RawLoop
+  ; RawSemiring; RawNearSemiring; RawKleeneAlgebra
+  ; RawRingWithoutOne; RawRing)
 open import Algebra.Morphism.Structures
 open import Level using (Level; suc; _⊔_)
---open import Relation.Binary.Morphism using (IsRelHomomorphism)
---open import Relation.Binary.Morphism.Bundles using (SetoidHomomorphism)
 
 private
   variable

@@ -9,11 +9,10 @@
 module Codata.Guarded.Stream.Relation.Unary.Any where
 
 open import Codata.Guarded.Stream as Stream using (Stream)
-open import Data.Empty
 open import Data.Nat.Base hiding (_⊔_)
 open import Level hiding (zero; suc)
-open import Relation.Nullary
-open import Relation.Unary
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Unary using (Pred; _⊆_)
 
 private
   variable
@@ -28,10 +27,10 @@ data Any {A : Set a} (P : Pred A p) : Stream A → Set (a ⊔ p) where
 
 head : ¬ Any P (Stream.tail xs) → Any P xs → P (Stream.head xs)
 head ¬t (here h) = h
-head ¬t (there t) = ⊥-elim (¬t t)
+head ¬t (there t) = contradiction t ¬t
 
 tail : ¬ P (Stream.head xs) → Any P xs → Any P (Stream.tail xs)
-tail ¬h (here h) = ⊥-elim (¬h h)
+tail ¬h (here h) = contradiction h ¬h
 tail ¬h (there t) = t
 
 map : P ⊆ Q → Any P ⊆ Any Q
@@ -44,3 +43,4 @@ index (there pxs) = suc (index pxs)
 
 lookup : {P : Pred A p} → Any P xs → A
 lookup {xs = xs} p = Stream.lookup xs (index p)
+

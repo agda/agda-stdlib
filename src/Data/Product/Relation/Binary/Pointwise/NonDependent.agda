@@ -13,7 +13,7 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
 open import Function.Base using (id)
 open import Function.Bundles using (Inverse)
-open import Relation.Nullary.Decidable using (_×-dec_)
+open import Relation.Nullary.Decidable using (_×?_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; Poset; StrictPartialOrder)
@@ -88,7 +88,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ... | inj₂ y₁∼x₁ | inj₁ x₂∼y₂ = inj₁ (sym₁ y₁∼x₁ , x₂∼y₂)
 
 ×-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
-×-decidable _≟₁_ _≟₂_ (x₁ , x₂) (y₁ , y₂) = (x₁ ≟₁ y₁) ×-dec (x₂ ≟₂ y₂)
+×-decidable _≟₁_ _≟₂_ (x₁ , x₂) (y₁ , y₂) = (x₁ ≟₁ y₁) ×? (x₂ ≟₂ y₂)
 
 ------------------------------------------------------------------------
 -- Structures can also be combined.
@@ -108,7 +108,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ×-isDecEquivalence eq₁ eq₂ = record
   { isEquivalence = ×-isEquivalence
                       (isEquivalence eq₁) (isEquivalence eq₂)
-  ; _≟_           = ×-decidable (_≟_ eq₁) (_≟_ eq₂)
+  ; _≟_           = ×-decidable (_≈?_ eq₁) (_≈?_ eq₂)
   } where open IsDecEquivalence
 
 ×-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →

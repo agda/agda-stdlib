@@ -100,6 +100,7 @@ updateAt {n = suc n} xs (suc i) f (suc j) = updateAt (tail xs) i f j
 
 map : (A → B) → ∀ {n} → Vector A n → Vector B n
 map f xs = f ∘ xs
+{-# INLINE map #-}
 
 _++_ : Vector A m → Vector A n → Vector A (m ℕ.+ n)
 _++_ {m = m} xs ys i = [ xs , ys ] (splitAt m i)

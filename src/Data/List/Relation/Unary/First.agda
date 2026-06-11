@@ -10,7 +10,6 @@
 module Data.List.Relation.Unary.First {a} {A : Set a} where
 
 open import Level using (_⊔_)
-open import Data.Empty
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -19,7 +18,7 @@ open import Data.Product.Base using (∃; -,_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (id; _∘′_)
 open import Relation.Unary
-open import Relation.Nullary
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 ------------------------------------------------------------------------
 -- Basic type.
@@ -68,7 +67,7 @@ module _ {p q} {P : Pred A p} {Q : Pred A q} where
   empty ()
 
   tail : ∀ {x xs} → ¬ Q x → First P Q (x ∷ xs) → First P Q xs
-  tail ¬qx [ qx ]      = ⊥-elim (¬qx qx)
+  tail ¬qx [ qx ]      = contradiction qx ¬qx
   tail ¬qx (px ∷ pqxs) = pqxs
 
   index : First P Q ⊆ (Fin ∘′ List.length)

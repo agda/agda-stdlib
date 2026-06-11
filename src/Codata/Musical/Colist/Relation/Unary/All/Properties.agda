@@ -8,9 +8,8 @@
 
 module Codata.Musical.Colist.Relation.Unary.All.Properties where
 
-open import Codata.Musical.Colist.Base
-open import Codata.Musical.Colist.Relation.Unary.All
-open import Codata.Musical.Notation
+open import Codata.Musical.Colist.Base using (Colist; _∷_)
+open import Codata.Musical.Colist.Relation.Unary.All using (All; []; _∷_)
 open import Function.Base using (_∋_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)

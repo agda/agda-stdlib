@@ -10,12 +10,12 @@ module Data.Sum.Relation.Binary.Pointwise where
 
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Sum.Properties
+open import Induction.WellFounded
 open import Level using (Level; _⊔_)
 open import Function.Base using (const; _∘_; id)
 open import Function.Bundles using (Inverse; mk↔)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core as Dec using (yes; no; map′)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -79,10 +79,10 @@ drop-inj₂ (inj₂ x) = x
 ⊎-substitutive subst₁ subst₂ P (inj₂ x) = subst₂ (P ∘ inj₂) x
 
 ⊎-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
-⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x ≟₁ y)
-⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
-⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
-⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
+⊎-decidable _R?_ _S?_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x R? y)
+⊎-decidable _R?_ _S?_ (inj₁ x) (inj₂ y) = no λ()
+⊎-decidable _R?_ _S?_ (inj₂ x) (inj₁ y) = no λ()
+⊎-decidable _R?_ _S?_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x S? y)
 
 ⊎-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S →
               (Pointwise ≈₁ ≈₂) ⇒ (Pointwise R S)
@@ -93,6 +93,19 @@ drop-inj₂ (inj₂ x) = x
                 Irreflexive (Pointwise ≈₁ ≈₂) (Pointwise R S)
 ⊎-irreflexive irrefl₁ irrefl₂ (inj₁ x) (inj₁ y) = irrefl₁ x y
 ⊎-irreflexive irrefl₁ irrefl₂ (inj₂ x) (inj₂ y) = irrefl₂ x y
+
+⊎-wellFounded : WellFounded ≈₁ → WellFounded ≈₂ → WellFounded (Pointwise ≈₁ ≈₂)
+⊎-wellFounded {≈₁ = ≈₁} {≈₂ = ≈₂} wf₁ wf₂ x = acc (⊎-acc x)
+  where
+  ⊎-acc₁ : ∀ {x} → Acc ≈₁ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) (inj₁ x)
+  ⊎-acc₁ (acc rec) (inj₁ x≈₁y) = acc (⊎-acc₁ (rec x≈₁y))
+
+  ⊎-acc₂ : ∀ {x} → Acc ≈₂ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) (inj₂ x)
+  ⊎-acc₂ (acc rec) (inj₂ x≈₂y) = acc (⊎-acc₂ (rec x≈₂y))
+
+  ⊎-acc  : ∀ x → WfRec (Pointwise ≈₁ ≈₂) (Acc (Pointwise ≈₁ ≈₂)) x
+  ⊎-acc (inj₁ x) = ⊎-acc₁ (wf₁ x)
+  ⊎-acc (inj₂ x) = ⊎-acc₂ (wf₂ x)
 
 ⊎-antisymmetric : Antisymmetric ≈₁ R → Antisymmetric ≈₂ S →
                   Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise R S)
@@ -129,7 +142,7 @@ drop-inj₂ (inj₂ x) = x
 ⊎-isDecEquivalence eq₁ eq₂ = record
   { isEquivalence =
       ⊎-isEquivalence (isEquivalence eq₁) (isEquivalence eq₂)
-  ; _≟_           = ⊎-decidable (_≟_ eq₁) (_≟_ eq₂)
+  ; _≟_           = ⊎-decidable (_≈?_ eq₁) (_≈?_ eq₂)
   } where open IsDecEquivalence
 
 ⊎-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →

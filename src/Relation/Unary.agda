@@ -202,12 +202,12 @@ Decidable P = ∀ x → Dec (P x)
 -- Operations on sets
 
 infix 10 ⋃ ⋂
-infixr 9 _⊢_
+infixr 9 _⊢_ ⟨_⟩⊢_ [_]⊢_
 infixr 8 _⇒_
 infixr 7 _∩_
 infixr 6 _∪_
 infixr 6 _∖_
-infix 4 _≬_
+infix 4 _≬_ _⊥_ _⊥′_
 
 -- Complement.
 
@@ -253,10 +253,44 @@ syntax ⋂ I (λ i → P) = ⋂[ i ∶ I ] P
 _≬_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ≬ Q = ∃ λ x → x ∈ P × x ∈ Q
 
--- Update.
+-- Disjoint
+
+_⊥_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥ Q = P ∩ Q ⊆ ∅
+
+_⊥′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊥′ Q = P ∩ Q ⊆′ ∅
+
+-- Update/preimage/inverse image/functorial change-of-base
+--
+-- The notation, which elsewhere might be rendered
+-- * `f⁻¹ P`, for preimage/inverse image
+-- * `f* P`, for change-of-base/pullback along `f`
+-- captures the Martin-Löf tradition of only mentioning updates to
+-- the ambient context when describing a context-indexed family P:
+-- e.g. (_, σ) ⊢ Tm τ is
+-- "a term of type τ in the ambient context extended with a fresh σ".
 
 _⊢_ : (A → B) → Pred B ℓ → Pred A ℓ
 f ⊢ P = λ x → P (f x)
+
+-- Change-of-base has left- and right- adjoints (Lawvere).
+--
+-- We borrow the 'diamond'/'box' notation from modal logic, cf.
+-- `Relation.Unary.Closure.Base`, rather than Lawvere's ∃f, ∀f.
+-- In some settings (eg statistics/probability), the left adjoint
+-- is called 'image' or 'pushforward', but the right adjoint
+-- doesn't seem to have a non-symbolic name.
+
+-- Diamond
+
+⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
+⟨ f ⟩⊢ P = λ y → ∃ λ x → f x ≡ y × P x
+
+-- Box
+
+[_]⊢_ : (A → B) → Pred A ℓ → Pred B _
+[ f ]⊢ P = λ y → ∀ {x} → f x ≡ y → P x
 
 ------------------------------------------------------------------------
 -- Predicate combinators

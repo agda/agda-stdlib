@@ -26,4 +26,4 @@ open import Data.Vec.Membership.Setoid setoid public
 infix 4 _∈?_
 
 _∈?_ : ∀ x {n} (xs : Vec A n) → Dec (x ∈ xs)
-x ∈? xs = any? (x ≟_) xs
+x ∈? xs = any? (x ≈?_) xs

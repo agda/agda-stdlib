@@ -8,10 +8,10 @@
 
 module Data.W.Indexed where
 
-open import Level
-open import Data.Container.Indexed.Core
+open import Level using (Level; _⊔_)
+open import Data.Container.Indexed.Core using (Container; ⟦_⟧; □)
 open import Data.Product.Base using (_,_; Σ)
-open import Relation.Unary
+open import Relation.Unary using (Pred; _⊆_; _∩_; _∪_)
 
 -- The family of indexed W-types.
 

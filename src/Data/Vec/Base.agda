@@ -289,14 +289,14 @@ uncons (x ∷ xs) = x , xs
 -- Operations involving ≤
 
 -- Take the first 'm' elements of a vector.
-truncate : ∀ {m n} → m ≤ n → Vec A n → Vec A m
-truncate {m = zero} _ _    = []
-truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
+truncate : .(m ≤ n) → Vec A n → Vec A m
+truncate {m = zero}  _  _        = []
+truncate {m = suc _} le (x ∷ xs) = x ∷ (truncate (s≤s⁻¹ le) xs)
 
 -- Pad out a vector with extra elements.
-padRight : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
-padRight z≤n      a xs       = replicate _ a
-padRight (s≤s le) a (x ∷ xs) = x ∷ padRight le a xs
+padRight : .(m ≤ n) → A → Vec A m → Vec A n
+padRight {n = n}     _  a []       = replicate n a
+padRight {n = suc _} le a (x ∷ xs) = x ∷ padRight (s≤s⁻¹ le) a xs
 
 ------------------------------------------------------------------------
 -- Operations for converting between lists

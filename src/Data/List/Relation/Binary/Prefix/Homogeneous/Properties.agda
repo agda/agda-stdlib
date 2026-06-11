@@ -18,6 +18,7 @@ open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous
 open import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
 
+
 private
   variable
     a b r s : Level
@@ -42,6 +43,6 @@ isPartialOrder po = record
 isDecPartialOrder : IsDecPartialOrder R S → IsDecPartialOrder (Pointwise R) (Prefix S)
 isDecPartialOrder dpo = record
   { isPartialOrder = isPartialOrder DPO.isPartialOrder
-  ; _≟_            = Pointwise.decidable DPO._≟_
+  ; _≟_            = Pointwise.decidable DPO._≈?_
   ; _≤?_           = prefix? DPO._≤?_
   } where module DPO = IsDecPartialOrder dpo

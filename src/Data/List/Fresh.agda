@@ -22,17 +22,22 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘′_; flip; id; _on_)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions as Binary using (Reflexive)
+open import Relation.Nary using (_⇒_; ∀[_])
 open import Relation.Nullary using (does)
-open import Relation.Unary as U using (Pred)
-open import Relation.Binary.Core using (Rel)
-import Relation.Binary.Definitions as B
-open import Relation.Nary
+open import Relation.Unary as Unary using (Pred; Decidable)
+
 
 private
   variable
     a b p r s : Level
     A : Set a
     B : Set b
+    R : Rel A r
+    S : Rel A s
+    x y : A
+
 
 ------------------------------------------------------------------------
 -- Basic type
@@ -40,14 +45,14 @@ private
 -- If we pick an R such that (R a b) means that a is different from b
 -- then we have a list of distinct values.
 
-module _ {a} (A : Set a) (R : Rel A r) where
+module _ (A : Set a) (R : Rel A r) where
 
   data List# : Set (a ⊔ r)
-  fresh : (a : A) (as : List#) → Set r
+  fresh : REL A List# r
 
   data List# where
     []   : List#
-    cons : (a : A) (as : List#) → fresh a as → List#
+    cons : (x : A) (xs : List#) → fresh x xs → List#
 
   -- Whenever R can be reconstructed by η-expansion (e.g. because it is
   -- the erasure ⌊_⌋ of a decidable predicate, cf. Relation.Nary) or we
@@ -61,31 +66,35 @@ module _ {a} (A : Set a) (R : Rel A r) where
   fresh a []        = ⊤
   fresh a (x ∷# xs) = R a x × fresh a xs
 
--- Convenient notation for freshness making A and R implicit parameters
-infix 5 _#_
-_#_ : {R : Rel A r} (a : A) (as : List# A R) → Set r
-_#_ = fresh _ _
+-- Convenient notation for freshness making A (and R) implicit
+infix 5 _#[_]_ _#_
+
+_#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+x #[ R ] xs = fresh _ R x xs
+
+_#_ : REL A (List# A R) _
+x # xs = x #[ _ ] xs
 
 ------------------------------------------------------------------------
 -- Operations for modifying fresh lists
 
-module _ {R : Rel A r} {S : Rel B s} (f : A → B) (R⇒S : ∀[ R ⇒ (S on f) ]) where
+module _ (f : A → B) (R⇒S : ∀[ R ⇒ (S on f) ]) where
 
   map   : List# A R → List# B S
-  map-# : ∀ {a} as → a # as → f a # map as
+  map-# : ∀ xs → x # xs → f x # map xs
 
   map []             = []
-  map (cons a as ps) = cons (f a) (map as) (map-# as ps)
+  map (cons x xs ps) = cons (f x) (map xs) (map-# xs ps)
 
   map-# []        _        = _
-  map-# (a ∷# as) (p , ps) = R⇒S p , map-# as ps
+  map-# (x ∷# xs) (p , ps) = R⇒S p , map-# xs ps
 
-module _ {R : Rel B r} (f : A → B) where
+module _ (f : A → B) where
 
   map₁ : List# A (R on f) → List# B R
   map₁ = map f id
 
-module _ {R : Rel A r} {S : Rel A s} (R⇒S : ∀[ R ⇒ S ]) where
+module _ {S : Rel A s} (R⇒S : ∀[ R ⇒ S ]) where
 
   map₂ : List# A R → List# A S
   map₂ = map id R⇒S
@@ -93,115 +102,115 @@ module _ {R : Rel A r} {S : Rel A s} (R⇒S : ∀[ R ⇒ S ]) where
 ------------------------------------------------------------------------
 -- Views
 
-data Empty {A : Set a} {R : Rel A r} : List# A R → Set (a ⊔ r) where
+data Empty {A : Set a} {R : Rel A r} : Pred (List# A R) (a ⊔ r) where
   [] : Empty []
 
-data NonEmpty {A : Set a} {R : Rel A r} : List# A R → Set (a ⊔ r) where
+data NonEmpty {A : Set a} {R : Rel A r} : Pred (List# A R) (a ⊔ r) where
   cons : ∀ x xs pr → NonEmpty (cons x xs pr)
 
 ------------------------------------------------------------------------
 -- Operations for reducing fresh lists
 
-length : {R : Rel A r} → List# A R → ℕ
+length : List# A R → ℕ
 length []        = 0
 length (_ ∷# xs) = suc (length xs)
 
 ------------------------------------------------------------------------
 -- Operations for constructing fresh lists
 
-pattern [_] a = a ∷# []
+pattern [_] x = x ∷# []
 
-fromMaybe : {R : Rel A r} → Maybe A → List# A R
+fromMaybe : Maybe A → List# A R
 fromMaybe nothing  = []
-fromMaybe (just a) = [ a ]
+fromMaybe (just x) = [ x ]
 
-module _ {R : Rel A r} (R-refl : B.Reflexive R) where
+module _ (refl : Reflexive {A = A} R) where
 
   replicate   : ℕ → A → List# A R
-  replicate-# : (n : ℕ) (a : A) → a # replicate n a
+  replicate-# : ∀ n x → x # replicate n x
 
-  replicate zero    a = []
-  replicate (suc n) a = cons a (replicate n a) (replicate-# n a)
+  replicate zero    x = []
+  replicate (suc n) x = cons x (replicate n x) (replicate-# n x)
 
-  replicate-# zero    a = _
-  replicate-# (suc n) a = R-refl , replicate-# n a
+  replicate-# zero    x = _
+  replicate-# (suc n) x = refl , replicate-# n x
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing fresh lists
 
-uncons : {R : Rel A r} → List# A R → Maybe (A × List# A R)
+uncons : List# A R → Maybe (A × List# A R)
 uncons []        = nothing
-uncons (a ∷# as) = just (a , as)
+uncons (x ∷# xs) = just (x , xs)
 
-head : {R : Rel A r} → List# A R → Maybe A
+head : List# A R → Maybe A
 head = Maybe.map proj₁ ∘′ uncons
 
-tail : {R : Rel A r} → List# A R → Maybe (List# A R)
+tail : List# A R → Maybe (List# A R)
 tail = Maybe.map proj₂ ∘′ uncons
 
-take   : {R : Rel A r} → ℕ → List# A R → List# A R
-take-# : {R : Rel A r} → ∀ n a (as : List# A R) → a # as → a # take n as
+take   : ℕ → List# A R → List# A R
+take-# : ∀ n y xs → y # xs → y # take {R = R} n xs
 
 take zero    xs             = []
 take (suc n) []             = []
-take (suc n) (cons a as ps) = cons a (take n as) (take-# n a as ps)
+take (suc n) (cons x xs ps) = cons x (take n xs) (take-# n x xs ps)
 
-take-# zero    a xs        _        = _
-take-# (suc n) a []        ps       = _
-take-# (suc n) a (x ∷# xs) (p , ps) = p , take-# n a xs ps
+take-# zero    y xs        _        = _
+take-# (suc n) y []        ps       = _
+take-# (suc n) y (x ∷# xs) (p , ps) = p , take-# n y xs ps
 
-drop : {R : Rel A r} → ℕ → List# A R → List# A R
-drop zero    as        = as
+drop : ℕ → List# A R → List# A R
+drop zero    xs        = xs
 drop (suc n) []        = []
-drop (suc n) (a ∷# as) = drop n as
+drop (suc n) (x ∷# xs) = drop n xs
 
-module _ {P : Pred A p} (P? : U.Decidable P) where
+module _ {P : Pred A p} (P? : Decidable P) where
 
-  takeWhile   : {R : Rel A r} → List# A R → List# A R
-  takeWhile-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # takeWhile as
+  takeWhile   : List# A R → List# A R
+  takeWhile-# : ∀ y xs → y # xs → y # takeWhile {R = R} xs
 
   takeWhile []             = []
-  takeWhile (cons a as ps) =
-    if does (P? a) then cons a (takeWhile as) (takeWhile-# a as ps) else []
+  takeWhile (cons x xs ps) =
+    if does (P? x) then cons x (takeWhile xs) (takeWhile-# x xs ps) else []
 
   -- this 'with' is needed to cause reduction in the type of 'takeWhile (a ∷# as)'
-  takeWhile-# a []        _        = _
-  takeWhile-# a (x ∷# xs) (p , ps) with does (P? x)
-  ... | true  = p , takeWhile-# a xs ps
+  takeWhile-# y []        _        = _
+  takeWhile-# y (x ∷# xs) (p , ps) with does (P? x)
+  ... | true  = p , takeWhile-# y xs ps
   ... | false = _
 
-  dropWhile : {R : Rel A r} → List# A R → List# A R
+  dropWhile : List# A R → List# A R
   dropWhile []            = []
-  dropWhile aas@(a ∷# as)  = if does (P? a) then dropWhile as else aas
+  dropWhile xxs@(x ∷# xs)  = if does (P? x) then dropWhile xs else xxs
 
-  filter   : {R : Rel A r} → List# A R → List# A R
-  filter-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # filter as
+  filter   : List# A R → List# A R
+  filter-# : ∀ y xs → y # xs → y # filter {R = R} xs
 
   filter []             = []
-  filter (cons a as ps) =
-    let l = filter as in
-    if does (P? a) then cons a l (filter-# a as ps) else l
+  filter (cons x xs ps) =
+    let l = filter xs in
+    if does (P? x) then cons x l (filter-# x xs ps) else l
 
-  -- this 'with' is needed to cause reduction in the type of 'filter-# a (x ∷# xs)'
-  filter-# a []        _        = _
-  filter-# a (x ∷# xs) (p , ps) with does (P? x)
-  ... | true  = p , filter-# a xs ps
-  ... | false = filter-# a xs ps
+  -- this 'with' is needed to cause reduction in the type of 'filter-# y (x ∷# xs)'
+  filter-# y []        _        = _
+  filter-# y (x ∷# xs) (p , ps) with does (P? x)
+  ... | true  = p , filter-# y xs ps
+  ... | false = filter-# y xs ps
 
 ------------------------------------------------------------------------
 -- Relationship to List and AllPairs
 
-toList : {R : Rel A r} → List# A R → ∃ (AllPairs R)
-toAll  : ∀ {R : Rel A r} {a} as → fresh A R a as → All (R a) (proj₁ (toList as))
+toList : List# A R → ∃ (AllPairs R)
+toAll  : ∀ xs → x #[ R ] xs → All (R x) (proj₁ (toList xs))
 
 toList []             = -, []
 toList (cons x xs ps) = -, toAll xs ps ∷ proj₂ (toList xs)
 
 toAll []        ps       = []
-toAll (a ∷# as) (p , ps) = p ∷ toAll as ps
+toAll (x ∷# xs) (p , ps) = p ∷ toAll xs ps
 
-fromList   : ∀ {R : Rel A r} {xs} → AllPairs R xs → List# A R
-fromList-# : ∀ {R : Rel A r} {x xs} (ps : AllPairs R xs) →
+fromList   : ∀ {xs} → AllPairs R xs → List# A R
+fromList-# : ∀ {xs} (ps : AllPairs R xs) →
              All (R x) xs → x # fromList ps
 
 fromList []       = []

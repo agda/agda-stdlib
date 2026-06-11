@@ -8,10 +8,9 @@
 
 module Data.Refinement.Relation.Unary.All where
 
-open import Level
-open import Data.Refinement
-open import Function.Base
-open import Relation.Unary
+open import Data.Refinement using (Refinement; _,_)
+open import Level using (Level; _⊔_)
+open import Function.Base using (const)
 
 private
   variable

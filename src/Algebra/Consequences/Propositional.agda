@@ -22,7 +22,7 @@ open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Unary using (Pred)
 
 open import Algebra.Definitions {A = A} _≡_
-import Algebra.Consequences.Setoid (setoid A) as Base
+import Algebra.Consequences.Setoid (setoid A) as SetoidConsequences
 
 private
   variable
@@ -34,7 +34,7 @@ private
 ------------------------------------------------------------------------
 -- Re-export all proofs that don't require congruence or substitutivity
 
-open Base public
+open SetoidConsequences public
   hiding
   ( comm∧assoc⇒middleFour
   ; identity∧middleFour⇒assoc
@@ -48,7 +48,7 @@ open Base public
   ; comm⇒sym[distribˡ]
   ; subst∧comm⇒sym
   ; wlog
-  ; sel⇒idem
+  ; binomial-expansion
 -- plus all the deprecated versions of the above
   ; comm+assoc⇒middleFour
   ; identity+middleFour⇒assoc
@@ -96,21 +96,22 @@ assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ {_+_ = _+_} {_*_ = _*_} =
 module _ (∙-comm : Commutative _∙_) where
 
   comm∧distrˡ⇒distrʳ : _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOverʳ _◦_
-  comm∧distrˡ⇒distrʳ = Base.comm+distrˡ⇒distrʳ (cong₂ _) ∙-comm
+  comm∧distrˡ⇒distrʳ = SetoidConsequences.comm+distrˡ⇒distrʳ (cong₂ _) ∙-comm
 
   comm∧distrʳ⇒distrˡ : _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOverˡ _◦_
-  comm∧distrʳ⇒distrˡ = Base.comm∧distrʳ⇒distrˡ (cong₂ _) ∙-comm
+  comm∧distrʳ⇒distrˡ = SetoidConsequences.comm∧distrʳ⇒distrˡ (cong₂ _) ∙-comm
 
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y ∙ z)) ≡ ((x ◦ y) ∙ (x ◦ z)))
   comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _) ∙-comm
 
-------------------------------------------------------------------------
--- Selectivity
+module _ {_∙_ _◦_ : Op₂ A}
+         (∙-assoc : Associative _∙_)
+         (distrib : _◦_ DistributesOver _∙_)
+         where
 
-module _ {_∙_ : Op₂ A} where
-
-  sel⇒idem : Selective _∙_ → Idempotent _∙_
-  sel⇒idem = Base.sel⇒idem _≡_
+  binomial-expansion : ∀ w x y z →
+             ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  binomial-expansion = SetoidConsequences.binomial-expansion {_∙_} {_◦_} (cong₂ _) ∙-assoc distrib
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange

@@ -8,8 +8,8 @@
 
 module Function.Properties.Bijection where
 
-open import Function.Bundles using (Bijection; Inverse; Equivalence;
-  _⤖_; _↔_; _⇔_)
+open import Function.Bundles
+  using (Bijection; Inverse; Equivalence; _⤖_; _↔_; _⇔_)
 open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)

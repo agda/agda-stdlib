@@ -14,9 +14,12 @@ module Algebra.Consequences.Base
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions
-  using (Selective; Idempotent; SelfInverse; Involutive)
+  using (Congruent₂; LeftCongruent; RightCongruent
+        ; Selective; Idempotent; SelfInverse; Involutive)
 open import Data.Sum.Base using (reduce)
 open import Level using (Level)
+open import Relation.Binary.Consequences
+  using (mono₂⇒monoˡ; mono₂⇒monoʳ)
 open import Relation.Binary.Definitions using (Reflexive)
 
 private
@@ -25,6 +28,19 @@ private
     f : Op₁ A
     _∙_ : Op₂ A
 
+
+------------------------------------------------------------------------
+-- Congruence
+
+module Congruence (_≈_ : Rel A ℓ) (open Definitions _≈_)
+                  (cong : Congruent₂ _∙_) (refl : Reflexive _≈_)
+  where
+
+  ∙-congˡ : LeftCongruent _∙_
+  ∙-congˡ {x} = mono₂⇒monoˡ _ _≈_ _≈_ (refl {x = x}) cong x
+
+  ∙-congʳ : RightCongruent _∙_
+  ∙-congʳ {x} = mono₂⇒monoʳ _≈_ _ _≈_ (refl {x = x}) cong x
 
 ------------------------------------------------------------------------
 -- Selective

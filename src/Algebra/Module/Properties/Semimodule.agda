@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra                using (CommutativeSemiring)
+open import Algebra.Bundles        using (CommutativeSemiring)
 open import Algebra.Module.Bundles using (Semimodule)
 open import Level                  using (Level)
 
@@ -18,8 +18,8 @@ module Algebra.Module.Properties.Semimodule
 
 open CommutativeSemiring semiring
 open Semimodule          semimod
-open import Relation.Nullary.Negation using (contraposition)
 open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
+open import Relation.Nullary.Negation using (contraposition)
 
 x≈0⇒x*y≈0 : ∀ {x y} → x ≈ 0# → x *ₗ y ≈ᴹ 0ᴹ
 x≈0⇒x*y≈0 {x} {y} x≈0 = begin
