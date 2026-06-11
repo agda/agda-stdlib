@@ -8,8 +8,8 @@
 
 module Codata.Sized.Thunk where
 
-open import Size
-open import Relation.Unary.Sized
+open import Size using (Size; ∞; Size<_; SizedSet)
+open import Relation.Unary.Sized using (_⇒_; ∀[_])
 
 ------------------------------------------------------------------------
 -- Basic types.

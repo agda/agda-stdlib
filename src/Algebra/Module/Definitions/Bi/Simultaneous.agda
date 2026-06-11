@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Module.Definitions.Bi.Simultaneous
   {a b ℓb} (A : Set a) {B : Set b} (_≈_ : Rel B ℓb)

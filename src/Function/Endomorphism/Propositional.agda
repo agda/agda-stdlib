@@ -15,7 +15,6 @@ Use Function.Endo.Propositional instead."
 
 open import Algebra
 open import Algebra.Morphism; open Definitions
-
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)

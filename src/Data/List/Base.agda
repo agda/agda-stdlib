@@ -576,7 +576,7 @@ Please use Data.Bool.ListAction.and instead."
 #-}
 {-# WARNING_ON_USAGE all
 "Warning: all was deprecated in v2.3.
-Please use Data.Nat.ListAction.all instead."
+Please use Data.Bool.ListAction.all instead."
 #-}
 
 or : List Bool → Bool

@@ -8,8 +8,8 @@
 
 module Codata.Musical.M where
 
-open import Codata.Musical.Notation
-open import Level
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
+open import Level using (Level; _⊔_)
 open import Data.Product.Base hiding (map)
 open import Data.Container.Core as C hiding (map)
 

@@ -11,14 +11,16 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Lattice.Properties.BoundedJoinSemilattice
   {c ℓ₁ ℓ₂} (J : BoundedJoinSemilattice c ℓ₁ ℓ₂) where
 
+open import Data.Product.Base using (_,_)
+open import Function.Base using (_∘_; flip)
+
 open BoundedJoinSemilattice J
 
 open import Algebra.Definitions _≈_
-open import Data.Product.Base using (_,_)
-open import Function.Base using (_∘_; flip)
+  using (LeftIdentity; RightIdentity; Identity)
 open import Relation.Binary.Properties.Poset poset
-open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
-  using (∨-comm)
+  using (≥-isPartialOrder)
+
 
 -- Bottom is an identity of the meet operation.
 

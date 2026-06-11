@@ -15,8 +15,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -26,27 +25,35 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
+open import Relation.Binary.Definitions using (Monotonic₁; Monotonic₂)
+open import Relation.Nullary.Negation.Core using (¬_)
+
 
 ------------------------------------------------------------------------
 -- Properties of operations
 
 Congruent₁ : Op₁ A → Set _
-Congruent₁ f = f Preserves _≈_ ⟶ _≈_
+Congruent₁ = Monotonic₁ _≈_ _≈_
 
 Congruent₂ : Op₂ A → Set _
-Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+Congruent₂ = Monotonic₂ _≈_ _≈_ _≈_
 
 LeftCongruent : Op₂ A → Set _
-LeftCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+LeftCongruent _∙_ = ∀ {x} → Congruent₁ (x ∙_)
 
 RightCongruent : Op₂ A → Set _
-RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+RightCongruent _∙_ = ∀ {x} → Congruent₁ (_∙ x)
 
 Associative : Op₂ A → Set _
 Associative _∙_ = ∀ x y z → ((x ∙ y) ∙ z) ≈ (x ∙ (y ∙ z))
 
 Commutative : Op₂ A → Set _
 Commutative _∙_ = ∀ x y → (x ∙ y) ≈ (y ∙ x)
+
+-- An element is called `Central` for a binary operation
+-- if it commutes with all other elements.
+Central : Op₂ A → A → Set _
+Central _∙_ x = ∀ y → (x ∙ y) ≈ (y ∙ x)
 
 LeftIdentity : A → Op₂ A → Set _
 LeftIdentity e _∙_ = ∀ x → (e ∙ x) ≈ x
@@ -210,7 +217,7 @@ Flexible : Op₂ A → Set _
 Flexible _∙_ = ∀ x y → ((x ∙ y) ∙ x) ≈ (x ∙ (y ∙ x))
 
 Medial : Op₂ A → Set _
-Medial _∙_ = ∀ x y u z → ((x ∙ y) ∙ (u ∙ z)) ≈ ((x ∙ u) ∙ (y ∙ z))
+Medial _∙_ = Interchangable _∙_ _∙_
 
 LeftSemimedial : Op₂ A → Set _
 LeftSemimedial _∙_ = ∀ x y z → ((x ∙ x) ∙ (y ∙ z)) ≈ ((x ∙ y) ∙ (x ∙ z))

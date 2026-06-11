@@ -18,7 +18,7 @@ module Function.Consequences.Setoid
 open import Function.Definitions
 open import Relation.Binary.Definitions
   using (HalfLeftAdjoint; HalfRightAdjoint; Adjoint)
-open import Relation.Nullary.Negation.Core
+open import Relation.Nullary.Negation.Core using (¬_)
 
 import Function.Consequences as C
 

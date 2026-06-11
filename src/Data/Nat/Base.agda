@@ -18,8 +18,8 @@ open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl; cong)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+  using (_≡_; _≢_; refl; cong; ¬[x≢x])
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -126,7 +126,7 @@ instance
 -- Constructors
 
 ≢-nonZero : ∀ {n} → n ≢ 0 → NonZero n
-≢-nonZero {zero}  0≢0 = contradiction refl 0≢0
+≢-nonZero {zero}  0≢0 = ¬[x≢x] 0≢0
 ≢-nonZero {suc n} n≢0 = _
 
 >-nonZero : ∀ {n} → n > 0 → NonZero n

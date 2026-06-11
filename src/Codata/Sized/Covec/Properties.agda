@@ -8,13 +8,13 @@
 
 module Codata.Sized.Covec.Properties where
 
-open import Size
+open import Size using (Size; ∞)
 open import Codata.Sized.Thunk using (Thunk; force)
-open import Codata.Sized.Conat
-open import Codata.Sized.Covec
+open import Codata.Sized.Conat using (zero; suc)
+open import Codata.Sized.Covec using (Covec; _∷_; []; map)
 open import Codata.Sized.Covec.Bisimilarity
 open import Function.Base using (id; _∘_)
-open import Relation.Binary.PropositionalEquality.Core as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 -- Functor laws
 

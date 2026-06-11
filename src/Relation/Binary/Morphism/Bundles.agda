@@ -6,17 +6,20 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level
-open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.Bundles
-open import Relation.Binary.Morphism.Structures
-open import Relation.Binary.Consequences using (mono⇒cong)
-
 module Relation.Binary.Morphism.Bundles where
+
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
+open import Relation.Binary.Consequences using (mono⇒cong)
+open import Relation.Binary.Definitions using (Monotonic₁)
+open import Relation.Binary.Morphism.Structures
+  using (IsRelHomomorphism; IsRelMonomorphism; IsRelIsomorphism
+        ; IsOrderHomomorphism; IsOrderMonomorphism; IsOrderIsomorphism)
 
 private
   variable
     ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅ ℓ₆ : Level
+
 
 ------------------------------------------------------------------------
 -- Setoids
@@ -94,7 +97,7 @@ module _ (P : Poset ℓ₁ ℓ₂ ℓ₃) (Q : Poset ℓ₄ ℓ₅ ℓ₆) where
 
   -- Smart constructor that automatically constructs the congruence
   -- proof from the monotonicity proof
-  mkPosetHomo : ∀ f → f Preserves P._≤_ ⟶ Q._≤_ → PosetHomomorphism
+  mkPosetHomo : ∀ f → Monotonic₁ P._≤_ Q._≤_ f → PosetHomomorphism
   mkPosetHomo f mono = record
     { ⟦_⟧ = f
     ; isOrderHomomorphism = record

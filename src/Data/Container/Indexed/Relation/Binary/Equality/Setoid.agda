@@ -14,10 +14,10 @@ module Data.Container.Indexed.Relation.Binary.Equality.Setoid
 
 open import Function
 open import Level using (Level; _⊔_; suc)
-open import Relation.Binary
-
-open import Data.Container.Indexed.Core
-open import Data.Container.Indexed.Relation.Binary.Pointwise
+open import Relation.Binary using (Reflexive; Symmetric; Transitive; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Data.Container.Indexed.Core using (Container; ⟦_⟧)
+open import Data.Container.Indexed.Relation.Binary.Pointwise using (Pointwise)
 import Data.Container.Indexed.Relation.Binary.Pointwise.Properties
   as Pointwise
 

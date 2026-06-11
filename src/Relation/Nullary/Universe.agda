@@ -8,25 +8,26 @@
 
 module Relation.Nullary.Universe where
 
-open import Relation.Nullary
-open import Relation.Nullary.Negation
-open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (Setoid)
-import Relation.Binary.Construct.Always as Always
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-import Relation.Binary.PropositionalEquality.Properties as PropEq
-import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
-  as Trivial
 open import Data.Sum.Base as Sum  hiding (map)
 open import Data.Sum.Relation.Binary.Pointwise using (_⊎ₛ_; inj₁; inj₂)
 open import Data.Product.Base as Product hiding (map)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
+open import Data.Empty using (⊥)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
 open import Function.Base using (_∘_; id)
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
-open import Data.Empty
-open import Effect.Applicative
-open import Effect.Monad
-open import Level
+open import Level using (Level; _⊔_; suc; Lift; lift; lower)
+open import Relation.Nullary.Negation
+  using  (¬_; contradiction; ¬¬-Monad; ¬¬-map; negated-stable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+import Relation.Binary.Construct.Always as Always using (setoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
+  using (setoid)
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
+  as Trivial using (indexedSetoid)
 
 infix  5 ¬¬_
 infixr 4 _⇒_
@@ -122,7 +123,7 @@ private
           ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P
 ¬¬-pull = sequence rawApplicative
                    (λ f → f lower)
-                   (λ f g → g (λ x → ⊥-elim (f x (λ y → g (λ _ → y)))))
+                   (λ f g → g (λ x → contradiction (λ y → g (λ _ → y)) (f x)))
 
 ¬¬-remove : ∀ {p} (F : PropF p) {P} →
             ¬ ¬ ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P

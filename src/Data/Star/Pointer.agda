@@ -10,12 +10,13 @@ module Data.Star.Pointer {ℓ} {I : Set ℓ} where
 
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Star.Decoration
-open import Data.Unit.Base
+open import Data.Unit.Base using (tt)
 open import Function.Base using (const; case_of_)
-open import Level
+open import Level using (Level; _⊔_; lift)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (NonEmpty; nonEmpty)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+      using (Star; ε; _◅_; gmap; map; _◅◅_; _▻▻_; _⋆)
 
 private
   variable

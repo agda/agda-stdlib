@@ -8,7 +8,7 @@
 
 module Relation.Binary.Construct.Constant.Core where
 
-open import Level
+open import Level using (Level)
 open import Relation.Binary.Core using (REL)
 
 private

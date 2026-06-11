@@ -8,10 +8,10 @@
 
 module Codata.Sized.Stream.Bisimilarity where
 
-open import Size
-open import Codata.Sized.Thunk
-open import Codata.Sized.Stream
-open import Level
+open import Size using (Size; ∞)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Codata.Sized.Stream using (Stream; _∷_; _++_; _⁺++_)
+open import Level using (Level; _⊔_)
 open import Data.List.NonEmpty as List⁺ using (_∷_)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Relation.Binary.Core using (Rel; REL)

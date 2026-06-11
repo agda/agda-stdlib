@@ -12,10 +12,11 @@ module Effect.Monad.Writer.Indexed (a : Level) where
 
 open import Algebra using (RawMonoid)
 open import Data.Product.Base using (_×_; _,_; map₁)
-open import Data.Unit.Polymorphic
+open import Data.Unit.Polymorphic using (⊤; tt)
 open import Effect.Applicative.Indexed
-open import Effect.Monad
+  using (IFun; RawIApplicative; RawIApplicativeZero; RawIAlternative)
 open import Effect.Monad.Indexed
+  using (RawIMonad; RawIMonadZero; RawIMonadPlus)
 open import Function.Base using (_∘′_)
 open import Function.Identity.Effectful as Id using (Identity)
 
