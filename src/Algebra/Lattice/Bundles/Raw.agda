@@ -8,7 +8,7 @@
 
 module Algebra.Lattice.Bundles.Raw where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₂)
 open import Algebra.Bundles.Raw using (RawMagma)
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (Rel)

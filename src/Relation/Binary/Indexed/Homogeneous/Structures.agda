@@ -22,9 +22,13 @@ open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_)
 import Relation.Binary.Definitions as B
-import Relation.Binary.Structures as B
+  using (Reflexive; Symmetric; Transitive; Antisymmetric
+        ;_Respectsˡ_; _Respectsʳ_; _Respects₂_)
+import Relation.Binary.Structures as B using (IsEquivalence; IsPreorder; IsPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Indexed.Homogeneous.Definitions
+import Relation.Binary.Structures as B
+  using (IsEquivalence; IsPreorder; IsPartialOrder)
 
 ------------------------------------------------------------------------
 -- Equivalences
@@ -65,12 +69,18 @@ record IsIndexedEquivalence : Set (i ⊔ a ⊔ ℓ) where
 
 
 record IsIndexedDecEquivalence : Set (i ⊔ a ⊔ ℓ) where
-  infix 4 _≟ᵢ_
+  infix 4 _≟ᵢ_ _≈ᵢ?_
   field
-    _≟ᵢ_           : Decidable A _≈ᵢ_
+    _≈ᵢ?_          : Decidable A _≈ᵢ_
     isEquivalenceᵢ : IsIndexedEquivalence
 
   open IsIndexedEquivalence isEquivalenceᵢ public
+
+  _≟ᵢ_ = _≈ᵢ?_
+  {-# WARNING_ON_USAGE _≟ᵢ_
+  "Warning: _≟ᵢ_ was deprecated in v2.4.
+  Please use _≈ᵢ?_ instead."
+  #-}
 
 
 ------------------------------------------------------------------------

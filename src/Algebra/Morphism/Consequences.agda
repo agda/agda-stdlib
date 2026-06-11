@@ -9,10 +9,11 @@
 module Algebra.Morphism.Consequences where
 
 open import Algebra using (Magma)
-open import Algebra.Morphism.Definitions
+open import Algebra.Morphism.Definitions using (Homomorphic₂)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_)
 open import Function.Definitions
+  using (Injective; Congruent; Inverseᵇ; Inverseˡ)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------

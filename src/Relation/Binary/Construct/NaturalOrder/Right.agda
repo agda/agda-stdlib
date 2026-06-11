@@ -14,9 +14,11 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder
+        ; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Decidable)
+  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_
+        ; _Respectsˡ_; _Respects₂_; Decidable)
 
 open import Relation.Nullary.Negation using (¬_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -89,7 +91,7 @@ resp₂ : IsMagma _∙_ →  _≤_ Respects₂ _≈_
 resp₂ magma = respˡ magma , respʳ magma
 
 dec : Decidable _≈_ → Decidable _≤_
-dec _≟_ x y = x ≟ (y ∙ x)
+dec _≈?_ x y = x ≈? (y ∙ x)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -111,10 +113,10 @@ isPartialOrder semilattice = record
 
 isDecPartialOrder : IsSemilattice _∙_ → Decidable _≈_ →
                     IsDecPartialOrder _≈_ _≤_
-isDecPartialOrder semilattice _≟_ = record
+isDecPartialOrder semilattice _≈?_ = record
   { isPartialOrder = isPartialOrder semilattice
-  ; _≟_            = _≟_
-  ; _≤?_           = dec _≟_
+  ; _≟_            = _≈?_
+  ; _≤?_           = dec _≈?_
   }
 
 isTotalOrder : IsSemilattice _∙_ → Selective _∙_ → IsTotalOrder _≈_ _≤_
@@ -126,10 +128,10 @@ isTotalOrder latt sel  = record
 
 isDecTotalOrder : IsSemilattice _∙_ → Selective _∙_ →
                   Decidable _≈_ → IsDecTotalOrder _≈_ _≤_
-isDecTotalOrder latt sel _≟_ = record
+isDecTotalOrder latt sel _≈?_ = record
   { isTotalOrder = isTotalOrder latt sel
-  ; _≟_          = _≟_
-  ; _≤?_         = dec _≟_
+  ; _≟_          = _≈?_
+  ; _≤?_         = dec _≈?_
   }
 
 ------------------------------------------------------------------------

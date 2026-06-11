@@ -9,28 +9,38 @@
 module Data.Char.Properties where
 
 open import Data.Bool.Base using (Bool)
-open import Data.Char.Base
-import Data.Nat.Base as ℕ
+open import Data.Char.Base using (Char; _≈_; _≉_; _<_; _≤_; toℕ)
+import Data.Nat.Base as ℕ using (ℕ; _<_; _≤_)
 import Data.Nat.Properties as ℕ
+  using (_<?_; <-cmp; <-isStrictPartialOrder; <-isStrictTotalOrder
+        ; <-strictPartialOrder; <-strictTotalOrder; <-irrefl; <-trans; <-asym
+        ; _≡?_)
 open import Data.Product.Base using (_,_)
-
-open import Function.Base
+open import Function.Base using (const; _∘′_)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; DecPoset)
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder
+        ; Poset; DecPoset)
 open import Relation.Binary.Structures
-  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsEquivalence)
+  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder
+        ; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsEquivalence)
 open import Relation.Binary.Definitions
-  using (Decidable; DecidableEquality; Trichotomous; Irreflexive; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive; Reflexive; tri<; tri≈; tri>)
+  using (Decidable; DecidableEquality; Trichotomous; Irreflexive
+        ; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive
+        ; Reflexive; tri<; tri≈; tri>)
 import Relation.Binary.Construct.On as On
-import Relation.Binary.Construct.Subst.Equality as Subst
+  using (decidable; transitive; asymmetric; isStrictPartialOrder
+        ; isStrictTotalOrder; strictPartialOrder; strictTotalOrder)
 import Relation.Binary.Construct.Closure.Reflexive as Refl
+  using (Refl; reflexive)
 import Relation.Binary.Construct.Closure.Reflexive.Properties as Refl
+  using (trans; antisym; decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; cong; sym; trans; subst)
-import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Binary.PropositionalEquality.Properties as ≡ using
+  (isDecEquivalence; setoid; decSetoid; isEquivalence)
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -54,40 +64,40 @@ open import Agda.Builtin.Char.Properties
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
-_≟_ : DecidableEquality Char
-x ≟ y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≟ toℕ y)
+infix 4 _≡?_
+_≡?_ : DecidableEquality Char
+x ≡? y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≡? toℕ y)
 
 setoid : Setoid _ _
 setoid = ≡.setoid Char
 
 decSetoid : DecSetoid _ _
-decSetoid = ≡.decSetoid _≟_
+decSetoid = ≡.decSetoid _≡?_
 
 isDecEquivalence : IsDecEquivalence _≡_
-isDecEquivalence = ≡.isDecEquivalence _≟_
+isDecEquivalence = ≡.isDecEquivalence _≡?_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
 --
--- Why is the definition _==_ = primCharEquality not used? One reason
+-- Why is the definition _≡ᵇ_ = primCharEquality not used? One reason
 -- is that the present definition can sometimes improve type
 -- inference, at least with the version of Agda that is current at the
 -- time of writing: see unit-test below.
 
-infix 4 _==_
-_==_ : Char → Char → Bool
-c₁ == c₂ = isYes (c₁ ≟ c₂)
+infix 4 _≡ᵇ_
+_≡ᵇ_ : Char → Char → Bool
+c₁ ≡ᵇ c₂ = isYes (c₁ ≡? c₂)
 
 private
 
   -- The following unit test does not type-check (at the time of
-  -- writing) if _==_ is replaced by primCharEquality.
+  -- writing) if _≡ᵇ_ is replaced by primCharEquality.
 
   data P : (Char → Bool) → Set where
-    MkP : (c : Char) → P (c ==_)
+    MkP : (c : Char) → P (c ≡ᵇ_)
 
-  unit-test : P ('x' ==_)
+  unit-test : P ('x' ≡ᵇ_)
   unit-test = MkP _
 
 ------------------------------------------------------------------------
@@ -169,7 +179,7 @@ _≤?_ = Refl.decidable <-cmp
 ≤-isDecPartialOrder : IsDecPartialOrder _≡_ _≤_
 ≤-isDecPartialOrder = record
   { isPartialOrder = ≤-isPartialOrder
-  ; _≟_            = _≟_
+  ; _≟_            = _≡?_
   ; _≤?_           = _≤?_
   }
 
@@ -220,7 +230,7 @@ Please use Propositional Equality's subst instead."
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕ.≟ toℕ y
+x ≈? y = toℕ x ℕ.≡? toℕ y
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -235,7 +245,7 @@ x ≈? y = toℕ x ℕ.≟ toℕ y
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≟_           = _≈?_
+  ; _≟_            = _≈?_
   }
 ≈-decSetoid : DecSetoid _ _
 ≈-decSetoid = record
@@ -243,7 +253,7 @@ x ≈? y = toℕ x ℕ.≟ toℕ y
   }
 {-# WARNING_ON_USAGE _≈?_
 "Warning: _≈?_ was deprecated in v1.5.
-Please use _≟_ instead."
+Please use _≡?_ instead."
 #-}
 {-# WARNING_ON_USAGE ≈-isEquivalence
 "Warning: ≈-isEquivalence was deprecated in v1.5.
@@ -302,4 +312,20 @@ Please use <-strictPartialOrder instead."
 {-# WARNING_ON_USAGE <-strictTotalOrder-≈
 "Warning: <-strictTotalOrder-≈ was deprecated in v1.5.
 Please use <-strictTotalOrder instead."
+#-}
+
+-- Version 2.4
+
+infix 4 _≟_ _==_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
+
+_==_ : Char → Char → Bool
+_==_ = _≡ᵇ_
+{-# WARNING_ON_USAGE _==_
+"Warning: _==_ was deprecated in v2.4.
+Please use _≡ᵇ_ instead."
 #-}

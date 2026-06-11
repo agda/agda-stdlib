@@ -15,11 +15,11 @@ module Data.Fin.Substitution.Example where
 Please see README.Data.Fin.Substitution.UntypedLambda instead."
 #-}
 
-open import Data.Fin.Substitution
-open import Data.Fin.Substitution.Lemmas
+open import Data.Fin.Substitution using (Lift; Sub; Subs; Application; TermSubst)
+open import Data.Fin.Substitution.Lemmas using (TermLemmas)
 open import Data.Nat.Base hiding (_/_)
 open import Data.Fin.Base using (Fin)
-open import Data.Vec.Base
+open import Data.Vec.Base using (Vec; _∷_; []; lookup)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
 open ≡-Reasoning

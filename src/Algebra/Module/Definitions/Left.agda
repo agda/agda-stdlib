@@ -19,8 +19,8 @@ module Algebra.Module.Definitions.Left
 ------------------------------------------------------------------------
 -- Binary operations
 
-open import Algebra.Core
-open import Algebra.Module.Core
+open import Algebra.Core using (Op₂)
+open import Algebra.Module.Core using (Opₗ)
 
 ------------------------------------------------------------------------
 -- Properties of operations

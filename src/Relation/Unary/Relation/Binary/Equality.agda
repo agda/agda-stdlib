@@ -13,6 +13,7 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Unary using (Pred; _≐_; _≐′_)
 open import Relation.Unary.Properties
+  using (≐-refl; ≐-sym; ≐-trans; ≐′-refl; ≐′-sym; ≐′-trans)
 
 private
   variable

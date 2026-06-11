@@ -14,11 +14,15 @@ open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
-  using (Preorder; Setoid; DecSetoid; Poset; DecPoset; StrictPartialOrder; TotalOrder; DecTotalOrder; StrictTotalOrder)
+  using (Preorder; Setoid; DecSetoid; Poset; DecPoset; StrictPartialOrder
+        ; TotalOrder; DecTotalOrder; StrictTotalOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsStrictPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictTotalOrder)
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder
+        ; IsDecPartialOrder; IsStrictPartialOrder; IsTotalOrder
+        ; IsDecTotalOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Irreflexive; Symmetric; Transitive; Antisymmetric; Asymmetric; Decidable; Total; Trichotomous; _Respects_; _Respects₂_)
+  using (Reflexive; Irreflexive; Symmetric; Transitive; Antisymmetric
+        ; Asymmetric; Decidable; Total; Trichotomous; _Respects_; _Respects₂_)
 
 private
   variable
@@ -96,7 +100,7 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} where
                      IsDecEquivalence (≈ on f)
   isDecEquivalence dec = record
     { isEquivalence = isEquivalence Dec.isEquivalence
-    ; _≟_           = decidable f ≈ Dec._≟_
+    ; _≟_           = decidable f ≈ Dec._≈?_
     } where module Dec = IsDecEquivalence dec
 
 module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
@@ -119,7 +123,7 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
                       IsDecPartialOrder (≈ on f) (∼ on f)
   isDecPartialOrder dpo = record
     { isPartialOrder = isPartialOrder DPO.isPartialOrder
-    ; _≟_            = decidable f _ DPO._≟_
+    ; _≟_            = decidable f _ DPO._≈?_
     ; _≤?_           = decidable f _ DPO._≤?_
     } where module DPO = IsDecPartialOrder dpo
 
@@ -143,7 +147,7 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
                     IsDecTotalOrder (≈ on f) (∼ on f)
   isDecTotalOrder dec = record
     { isTotalOrder = isTotalOrder Dec.isTotalOrder
-    ; _≟_          = decidable f ≈ Dec._≟_
+    ; _≟_          = decidable f ≈ Dec._≈?_
     ; _≤?_         = decidable f ∼ Dec._≤?_
     } where module Dec = IsDecTotalOrder dec
 

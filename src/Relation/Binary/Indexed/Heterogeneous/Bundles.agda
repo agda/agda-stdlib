@@ -12,8 +12,9 @@
 module Relation.Binary.Indexed.Heterogeneous.Bundles where
 
 open import Level using (suc; _⊔_)
-open import Relation.Binary.Indexed.Heterogeneous.Core
+open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
 open import Relation.Binary.Indexed.Heterogeneous.Structures
+  using (IsIndexedEquivalence; IsIndexedPreorder)
 
 ------------------------------------------------------------------------
 -- Definitions

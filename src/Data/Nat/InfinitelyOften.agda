@@ -8,18 +8,18 @@
 
 module Data.Nat.InfinitelyOften where
 
-open import Effect.Monad using (RawMonad)
-open import Level using (Level; 0ℓ)
-open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base using (ℕ; _≤_; _⊔_; _+_; suc; zero; s≤s)
 open import Data.Nat.Properties
 open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base using (inj₁; inj₂; _⊎_)
+open import Effect.Monad using (RawMonad)
 open import Function.Base using (_∘_; id)
+open import Level using (Level; 0ℓ)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
-open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open RawMonad (¬¬-Monad {a = 0ℓ})
 
@@ -62,7 +62,7 @@ _∪-Fin_ {P = P} {Q} (i , ¬p) (j , ¬q) = (i ⊔ j , helper)
 commutes-with-∪ : ∀ {P Q} → Inf (P ∪ Q) → ¬ ¬ (Inf P ⊎ Inf Q)
 commutes-with-∪ p∪q =
   call/cc λ ¬[p⊎q] →
-  (λ ¬p ¬q → ⊥-elim (p∪q (¬p ∪-Fin ¬q)))
+  (λ ¬p ¬q → contradiction (¬p ∪-Fin ¬q) p∪q)
     <$> ¬[p⊎q] ∘ inj₁ ⊛ ¬[p⊎q] ∘ inj₂
 
 -- Inf is functorial.

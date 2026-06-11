@@ -11,7 +11,7 @@
 
 module Data.Vec.Relation.Binary.Lex.NonStrict where
 
-open import Data.Empty
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Data.Nat.Base using (ℕ)
@@ -23,13 +23,17 @@ open import Function.Base using (id)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles
-  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
+  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder
+        ; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder; IsPreorder; IsTotalOrder)
+  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder
+        ; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder
+        ; IsPreorder; IsTotalOrder)
 open import Relation.Binary.Definitions
-  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous)
+  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Trans
+        ; Decidable; Total; Trichotomous)
 import Relation.Binary.Construct.NonStrictToStrict as Conv
-open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 
 private
   variable
@@ -96,12 +100,12 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
 
   <-cmp : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ → Total _≼_ →
           ∀ {n} → Trichotomous (_≋_ {n} {n}) _<_
-  <-cmp ≈-sym _≟_ ≼-antisym ≼-total = Strict.<-cmp ≈-sym
-    (Conv.<-trichotomous _ _ ≈-sym _≟_ ≼-antisym ≼-total)
+  <-cmp ≈-sym _≈?_ ≼-antisym ≼-total = Strict.<-cmp ≈-sym
+    (Conv.<-trichotomous _ _ ≈-sym _≈?_ ≼-antisym ≼-total)
 
   <-dec : Decidable _≈_ → Decidable _≼_ → ∀ {m n} → Decidable (_<_ {m} {n})
-  <-dec _≟_ _≼?_ = Core.decidable (no id) _≟_
-    (Conv.<-decidable _ _ _≟_ _≼?_)
+  <-dec _≈?_ _≼?_ = Core.decidable (no id) _≈?_
+    (Conv.<-decidable _ _ _≈?_ _≼?_)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -182,13 +186,13 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
 
   ≤-total : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ → Total _≼_ →
             ∀ {n} → Total (_≤_ {n})
-  ≤-total ≈-sym _≟_ ≼-antisym ≼-total = Strict.≤-total ≈-sym
-    (Conv.<-trichotomous _ _ ≈-sym _≟_ ≼-antisym ≼-total)
+  ≤-total ≈-sym _≈?_ ≼-antisym ≼-total = Strict.≤-total ≈-sym
+    (Conv.<-trichotomous _ _ ≈-sym _≈?_ ≼-antisym ≼-total)
 
   ≤-dec : Decidable _≈_ → Decidable _≼_ →
           ∀ {m n} → Decidable (_≤_ {m} {n})
-  ≤-dec _≟_ _≼?_ = Core.decidable (yes tt) _≟_
-    (Conv.<-decidable _ _ _≟_ _≼?_)
+  ≤-dec _≈?_ _≼?_ = Core.decidable (yes tt) _≈?_
+    (Conv.<-decidable _ _ _≈?_ _≼?_)
 
   ≤-resp₂ : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ →
             ∀ {n} → _Respects₂_ (_≤_ {n} {n}) _≋_
@@ -214,7 +218,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
 
   ≤-isTotalOrder : Decidable _≈_ → IsTotalOrder _≈_ _≼_ →
                    ∀ {n} → IsTotalOrder (_≋_ {n} {n}) _≤_
-  ≤-isTotalOrder _≟_ ≼-isTotalOrder = Strict.≤-isTotalOrder (Conv.<-isStrictTotalOrder₁ _ _ _≟_ ≼-isTotalOrder)
+  ≤-isTotalOrder _≈?_ ≼-isTotalOrder = Strict.≤-isTotalOrder (Conv.<-isStrictTotalOrder₁ _ _ _≈?_ ≼-isTotalOrder)
 
   ≤-isDecTotalOrder : IsDecTotalOrder _≈_ _≼_ →
                       ∀ {n} → IsDecTotalOrder (_≋_ {n} {n}) _≤_
@@ -239,8 +243,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
   } where open DecPoset ≼-dpo
 
 ≤-totalOrder : (≼-dto : TotalOrder a ℓ₁ ℓ₂) → Decidable (TotalOrder._≈_ ≼-dto) → ℕ → TotalOrder _ _ _
-≤-totalOrder ≼-dto _≟_ n = record
-  { isTotalOrder = ≤-isTotalOrder _≟_ isTotalOrder {n = n}
+≤-totalOrder ≼-dto _≈?_ n = record
+  { isTotalOrder = ≤-isTotalOrder _≈?_ isTotalOrder {n = n}
   } where open TotalOrder ≼-dto
 
 ≤-decTotalOrder : DecTotalOrder a ℓ₁ ℓ₂ → ℕ → DecTotalOrder _ _ _

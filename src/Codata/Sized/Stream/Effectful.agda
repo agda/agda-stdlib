@@ -9,11 +9,12 @@
 module Codata.Sized.Stream.Effectful where
 
 open import Data.Product.Base using (<_,_>)
-open import Codata.Sized.Stream
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Comonad
-open import Function.Base
+open import Codata.Sized.Stream using
+  (Stream; _∷_; _++_; _⁺++_; map; repeat; ap; head; unfold; tail)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Comonad using (RawComonad)
+open import Function.Base using (_∘′_)
 
 functor : ∀ {ℓ i} → RawFunctor {ℓ} (λ A → Stream A i)
 functor = record { _<$>_ = λ f → map f }

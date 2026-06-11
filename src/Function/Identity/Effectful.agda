@@ -8,12 +8,12 @@
 
 module Function.Identity.Effectful where
 
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import Effect.Comonad
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
+open import Effect.Comonad using (RawComonad)
 open import Function.Base using (id; _∘′_; _|>′_; _$′_; flip)
-open import Level
+open import Level using (Level; _⊔_)
 
 private
   variable

@@ -8,17 +8,17 @@
 
 module Data.Container.Indexed.FreeMonad where
 
-open import Level
+open import Level using (Level; _⊔_; lower)
 open import Function.Base hiding (const)
-open import Effect.Monad.Predicate
-open import Data.Container.Indexed
+open import Effect.Monad.Predicate using (RawPMonad)
+open import Data.Container.Indexed using (Container; Command; Response; next; ⟦_⟧; μ)
 open import Data.Container.Indexed.Combinator hiding (id; _∘_)
-open import Data.Empty
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product.Base using (_,_)
-open import Data.W.Indexed
-open import Relation.Unary
-open import Relation.Unary.PredicateTransformer
+open import Data.W.Indexed using (sup)
+open import Relation.Unary using (Pred; _⊆_; ⋃; _∈_; ｛_｝)
+open import Relation.Unary.PredicateTransformer using (Pt)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 ------------------------------------------------------------------------

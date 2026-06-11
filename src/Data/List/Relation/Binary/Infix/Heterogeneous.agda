@@ -8,13 +8,13 @@
 
 module Data.List.Relation.Binary.Infix.Heterogeneous where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise)
-open import Data.List.Relation.Binary.Prefix.Heterogeneous
-  as Prefix using (Prefix; []; _∷_; _++ᵖ_)
+open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
+  using (Prefix; []; _∷_; _++ᵖ_)
 
 private
   variable

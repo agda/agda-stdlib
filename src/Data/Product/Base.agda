@@ -44,8 +44,11 @@ module Σ = Agda.Builtin.Sigma.Σ
 ------------------------------------------------------------------------
 -- Syntaxes
 
--- The syntax declaration below is attached to Σ-syntax, to make it
--- easy to import Σ without the special syntax.
+-- The syntax declaration below is attached to Σ-syntax, because Agda
+-- does not allow attaching syntax to Σ directly, being defined in
+-- another module (Agda.Builtin.Sigma).
+--
+-- To import Σ with the special syntax, one needs to import Σ-syntax.
 
 infix 2 Σ-syntax
 

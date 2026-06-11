@@ -15,7 +15,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Effect.Foldable using (RawFoldableWithDefaults; RawFoldable)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
-import Relation.Binary.PropositionalEquality.Core as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; cong)
 
 private
   variable

@@ -11,12 +11,12 @@ open import Effect.Applicative using (RawApplicative)
 module Reflection.AST.Traversal
   {F : Set → Set} (AppF : RawApplicative F) where
 
-open import Data.Nat.Base     using (ℕ; zero; suc; _+_)
-open import Data.List.Base    using (List; []; _∷_; _++_; reverse; length)
-open import Data.String.Base  using (String)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
+open import Data.List.Base using (List; []; _∷_; _++_; reverse; length)
+open import Data.String.Base using (String)
 open import Data.Product.Base using (_×_; _,_)
-open import Function.Base     using (_∘_)
-open import Reflection        hiding (pure)
+open import Function.Base using (_∘_)
+open import Reflection hiding (pure)
 
 open RawApplicative AppF
 

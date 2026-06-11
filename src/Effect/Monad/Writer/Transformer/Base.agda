@@ -11,10 +11,9 @@ module Effect.Monad.Writer.Transformer.Base where
 open import Algebra using (RawMonoid)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Unit.Polymorphic using (⊤; tt)
+open import Effect.Functor using (RawFunctor)
 open import Function.Base using (id; _∘′_)
 open import Level using (Level; suc; _⊔_)
-
-open import Effect.Functor using (RawFunctor)
 
 private
   variable
