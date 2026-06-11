@@ -84,7 +84,7 @@ Fin′ i = Fin (toℕ i)
 cast : .(m ≡ n) → Fin m → Fin n
 cast {m = m} {n = n} eq
   = Refinement.map id
-  $ subst (_ ℕ.<_) (recompute (m ℕₚ.≟ n) eq)
+  $ subst (_ ℕ.<_) (recompute (m ℕₚ.≡? n) eq)
 
 -- Tests showing that cast does compute on constructors
 

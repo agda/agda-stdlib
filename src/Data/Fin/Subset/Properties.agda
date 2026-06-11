@@ -140,7 +140,7 @@ nonempty? p = any? (_∈? p)
 -- ∣_∣
 
 ∣p∣≤n : ∀ (p : Subset n) → ∣ p ∣ ≤ n
-∣p∣≤n = count≤n (_≟ inside)
+∣p∣≤n = count≤n (_≡? inside)
 
 ∣p∣≤∣x∷p∣ : ∀ x (p : Subset n)  → ∣ p ∣ ≤ ∣ x ∷ p ∣
 ∣p∣≤∣x∷p∣ outside p = ℕ.≤-refl
@@ -317,7 +317,7 @@ module _ (n : ℕ) where
   ⊂-isDecStrictPartialOrder : IsDecStrictPartialOrder {A = Subset n} _≡_ _⊂_
   ⊂-isDecStrictPartialOrder = record
     { isStrictPartialOrder = ⊂-isStrictPartialOrder
-    ; _≟_ = ≡-dec _≟_
+    ; _≟_  = ≡-dec _≡?_
     ; _<?_ = _⊂?_
     }
 
