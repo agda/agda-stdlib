@@ -25,12 +25,16 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-* [issue #2471](https://github.com/agda/agda-stdlib/issues/2471) In
-  `Relation.Binary.Definitions`, the left/right order of the components of
+* [issue #2471](https://github.com/agda/agda-stdlib/issues/2471)
+  In `Relation.Binary.Definitions`, the left/right order of the components of
   `_Respects₂_` have been swapped. Previously the position of the `_Respectsˡ_`
   (respects left) component was placed on the *right* hand side of the pair and
   `_Respectsʳ_` (respects right) was placed on the *left* hand side of the pair.
   By switching them the names are now consistent with their location.
+
+* [issue #2547](https://github.com/agda/agda-stdlib/issues/2547) The names of the *implicit* binders in the following definitions have been rectified to be consistent with those in the rest of `Relation.Binary.Definitions`: `Transitive`, `Antisym`, and `Antisymmetric`.
+
+* [Issue #2548](https://github.com/agda/agda-stdlib/issues/2458) Consistent with other names (such as `∙-cong`, `ε-homo` etc.) in `Algebra.*`, the field name of the basic homomorphism property in `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed from `homo` to `∙-homo`.
 
 Minor improvements
 ------------------
@@ -40,6 +44,11 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Morphism.Structures`:
+  ```agda
+  homo  ↦  ∙-homo
+  ```
 
 * In `Data.Fin.Properties`:
   ```agda

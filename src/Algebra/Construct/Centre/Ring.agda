@@ -78,7 +78,7 @@ isRingMonomorphism = record
         { +-isMonoidHomomorphism = record
           { isMagmaHomomorphism = record
             { isRelHomomorphism = record { cong = id }
-            ; homo = λ _ _ → X.refl
+            ; ∙-homo = λ _ _ → X.refl
             }
           ; ε-homo = X.refl
           }
