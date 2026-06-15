@@ -28,12 +28,6 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
-* In `Data.Vec.Properties`:
-  ```agda
-  lookup-head : ∀ (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
-  lookup-tail : ∀ (xs : Vec A (suc n)) {i} → lookup xs (suc i) ≡ lookup (tail xs) i
-  ```
-
 Deprecated modules
 ------------------
 
@@ -83,3 +77,9 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Data.Vec.Properties`:
+  ```agda
+  lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
+  lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
+  ```
