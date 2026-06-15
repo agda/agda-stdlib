@@ -398,6 +398,11 @@ Additions to existing modules
   ≡%-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
   ```
 
+* In `Data.Nat.GCD`:
+  ```agda
+  gcd[n,n]≡n : ∀ n → gcd n n ≡ n
+  ```
+
 * In `Data.Nat.Logarithm`
   ```agda
   2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n

@@ -421,13 +421,7 @@ n/n≡1 n {{nz}} = mkℚ+-cong n/gcd[n,n]≡1 n/gcd[n,n]≡1
   where
   instance g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 n n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
            n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n n {{gcd≢0 = g≢0}})
-
-  gcd[n,n]≡n : ∀ n → ℕ.gcd n n ≡ n
-  gcd[n,n]≡n n rewrite sym (ℕ.*-identityʳ n)
-    = sym (ℕ.c*gcd[m,n]≡gcd[cm,cn] n 1 1)
-
-  n/gcd[n,n]≡1
-    = trans (ℕ./-congʳ {ℕ.gcd n n} (gcd[n,n]≡n n)) (ℕ.n/n≡1 n {{nz}})
+  n/gcd[n,n]≡1 = trans (ℕ./-congʳ {ℕ.gcd n n} (ℕ.gcd[n,n]≡n n)) (ℕ.n/n≡1 n {{nz}})
 
 -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
               ℤ.- i / n ≡ - (i / n)
@@ -1407,6 +1401,8 @@ module _ where
               (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
 *-cancelˡ-/ p {q} {r} = proof q
   where
+  open ≡-Reasoning
+
   *-cancelˡ-/-helper : ∀ qₙ → normalize (p ℕ.* qₙ) (p ℕ.* r) ≡ + qₙ / r
   *-cancelˡ-/-helper qₙ = mkℚ+-cong (lemma qₙ) (lemma r)
     where
@@ -1420,20 +1416,45 @@ module _ where
       p*g≢0  = ℕ.m*n≢0 p (ℕ.gcd qₙ r)
 
     lemma : ∀ n → (p ℕ.* n) ℕ./ ℕ.gcd (p ℕ.* qₙ) (p ℕ.* r) ≡ n ℕ./ ℕ.gcd qₙ r
-    lemma n = trans (ℕ./-congʳ $ sym $ ℕ.c*gcd[m,n]≡gcd[cm,cn] p qₙ r)
-                    (ℕ.m*n/m*o≡n/o p n $ ℕ.gcd qₙ r)
+    lemma n = begin
+      p ℕ.* n ℕ./ ℕ.gcd (p ℕ.* qₙ) (p ℕ.* r)
+        ≡⟨ ℕ./-congʳ $ sym $ ℕ.c*gcd[m,n]≡gcd[cm,cn] p qₙ r ⟩
+      p ℕ.* n ℕ./ (p ℕ.* ℕ.gcd qₙ r)
+        ≡⟨ ℕ.m*n/m*o≡n/o p n $ ℕ.gcd qₙ r ⟩
+      n ℕ./ ℕ.gcd qₙ r
+        ∎
 
   proof : ∀ q → (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
-  proof (+ qₙ)    rewrite sym (ℤ.pos-* p qₙ) = *-cancelˡ-/-helper qₙ
-  proof -[1+ qₙ ] rewrite sym (ℤ.neg-distribʳ-* (+ p) +[1+ qₙ ])
-                           | sym (ℤ.pos-* p (suc qₙ))
-                           = trans (-i/n≡-[i/n] (+ (p ℕ.* suc qₙ)) (p ℕ.* r))
-                               (cong (-_) $ *-cancelˡ-/-helper $ suc qₙ)
+  proof (+ qₙ) = begin
+    + p ℤ.* + qₙ / (p ℕ.* r) ≡⟨ /-cong (sym (ℤ.pos-* p qₙ)) refl ⟩
+    + (p ℕ.* qₙ) / (p ℕ.* r) ≡⟨ *-cancelˡ-/-helper qₙ ⟩
+    + qₙ / r                 ∎
+  proof -[1+ qₙ ] = begin
+    + p ℤ.* -[1+ qₙ ] / (p ℕ.* r)
+      ≡⟨ /-cong (sym (ℤ.neg-distribʳ-* (+ p) +[1+ qₙ ])) refl ⟩
+    ℤ.- (Sign.+ ℤ.◃ p ℕ.* suc qₙ) / (p ℕ.* r)
+      ≡⟨ /-cong (cong (ℤ.-_) (sym (ℤ.pos-* p (suc qₙ)))) refl ⟩
+    ℤ.- + (p ℕ.* suc qₙ) / (p ℕ.* r)
+      ≡⟨ -i/n≡-[i/n] (+ (p ℕ.* suc qₙ)) (p ℕ.* r) ⟩
+    - (+ (p ℕ.* suc qₙ) / (p ℕ.* r))
+      ≡⟨ cong (-_) $ *-cancelˡ-/-helper $ suc qₙ ⟩
+    -[1+ qₙ ] / r
+      ∎
 
 *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
               (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
-*-cancelʳ-/ p {q} {r}
-  rewrite ℕ.*-comm r p | ℤ.*-comm q (ℤ.+ p) = *-cancelˡ-/ p
+*-cancelʳ-/ p {q} {r} = begin
+   q ℤ.* + p / (r ℕ.* p) ≡⟨ /-cong {q ℤ.* + p} refl (ℕ.*-comm r p) ⟩
+   q ℤ.* + p / (p ℕ.* r) ≡⟨ /-cong (ℤ.*-comm q (+ p)) refl ⟩
+   + p ℤ.* q / (p ℕ.* r) ≡⟨ *-cancelˡ-/ p ⟩
+   q / r                 ∎
+   where
+   open ≡-Reasoning
+   instance
+     p≢0 : ℕ.NonZero p
+     p≢0 = ℕ.m*n≢0⇒n≢0 r
+     p*r≢0 : ℕ.NonZero (p ℕ.* r)
+     p*r≢0 = ℕ.m*n≢0 p r
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
@@ -1923,8 +1944,31 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 
 i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                   i / n + j / n ≡ (i ℤ.+ j) / n
-i/n+j/n≡[i+j]/n i j n = proof
+i/n+j/n≡[i+j]/n i j n = begin
+  i / n + j / n
+    ≡⟨ +-def ⟩
+  (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) / (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ)
+    ≡⟨ sym
+     $ *-cancelʳ-/ gcd[j,n]ₙ
+                   {↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ}
+                   { ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ }
+     ⟩
+  (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n]
+    / (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ)
+    ≡⟨ sym
+     $ *-cancelʳ-/ gcd[i,n]ₙ
+                   { (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n] }
+                   { ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ }
+     ⟩
+  (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n] ℤ.* gcd[i,n]
+    / (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ ℕ.* gcd[i,n]ₙ)
+    ≡⟨ /-cong ↥≡ ↧≡ ⟩
+  (i ℤ.+ j) ℤ.* + n / (n ℕ.* n)
+    ≡⟨ *-cancelʳ-/ n {i ℤ.+ j} {n} ⟩
+  (i ℤ.+ j) / n
+    ∎
   where
+  open ≡-Reasoning
   pᵢ = i / n
   qⱼ = j / n
   gcd[i,n]ₙ = ℕ.gcd ℤ.∣ i ∣ n
@@ -1933,54 +1977,134 @@ i/n+j/n≡[i+j]/n i j n = proof
   gcd[j,n]  = + gcd[j,n]ₙ
 
   instance
-   _ = ℕ.≢-nonZero $ ℕ.gcd[m,n]≢0 ℤ.∣ i ∣ n $ inj₂ $ ℕ.≢-nonZero⁻¹ n
-   _ = ℕ.≢-nonZero $ ℕ.gcd[m,n]≢0 ℤ.∣ j ∣ n $ inj₂ $ ℕ.≢-nonZero⁻¹ n
-   _ = ℕ.m*n≢0 (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ) gcd[j,n]ₙ
-   _ = ℕ.m*n≢0 (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ) gcd[i,n]ₙ
-   _ = ℕ.m*n≢0 n n
+    _ = ℕ.≢-nonZero $ ℕ.gcd[m,n]≢0 ℤ.∣ i ∣ n $ inj₂ $ ℕ.≢-nonZero⁻¹ n
+    _ = ℕ.≢-nonZero $ ℕ.gcd[m,n]≢0 ℤ.∣ j ∣ n $ inj₂ $ ℕ.≢-nonZero⁻¹ n
+    _ = ℕ.m*n≢0 (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ) gcd[j,n]ₙ
+    _ = ℕ.m*n≢0 (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ) gcd[i,n]ₙ
+    _ = ℕ.m*n≢0 n n
 
   +-def : pᵢ + qⱼ ≡ (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) / (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ)
   +-def with record{} ← pᵢ with record{} ← qⱼ = refl
 
   ↥≡ : (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n] ℤ.* gcd[i,n]
      ≡ (i ℤ.+ j) ℤ.* + n
-  ↥≡ rewrite ℤ.*-distribʳ-+ gcd[j,n] (↥ pᵢ ℤ.* ↧ qⱼ) (↥ qⱼ ℤ.* ↧ pᵢ)
-           | ℤ.*-distribʳ-+ gcd[i,n] (↥ pᵢ ℤ.* ↧ qⱼ ℤ.* gcd[j,n])
-                                     (↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n])
-           | ℤ.*-assoc (↥ pᵢ) (↧ qⱼ) gcd[j,n]
-           | cong (↥ pᵢ ℤ.*_) (↧-/ j n)
-           | ℤ.*-assoc (↥ qⱼ) (↧ pᵢ) gcd[j,n]
-           | ℤ.*-comm (↧ pᵢ) gcd[j,n]
-           | sym (ℤ.*-assoc (↥ qⱼ) gcd[j,n] (↧ pᵢ))
-           | cong (ℤ._* ↧ pᵢ) (↥-/ j n)
-           | ℤ.*-assoc j (↧ pᵢ) gcd[i,n]
-           | cong (j ℤ.*_) (↧-/ i n)
-           | ℤ.*-comm (↥ pᵢ) (+ n)
-           | ℤ.*-assoc (+ n) (↥ pᵢ) gcd[i,n]
-           | cong (+ n ℤ.*_) (↥-/ i n)
-           | ℤ.*-comm (+ n) i
-           | sym (ℤ.*-distribʳ-+ (+ n) i j)
-           = refl
+  ↥≡ = begin
+    (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n] ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._* gcd[i,n])
+       $ ℤ.*-distribʳ-+ gcd[j,n]
+           (↥ pᵢ ℤ.* ↧ qⱼ)
+           (↥ qⱼ ℤ.* ↧ pᵢ)
+       ⟩
+    (↥ pᵢ ℤ.* ↧ qⱼ ℤ.* gcd[j,n] ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n]) ℤ.* gcd[i,n]
+      ≡⟨ ℤ.*-distribʳ-+ gcd[i,n]
+           (↥ pᵢ ℤ.* ↧ qⱼ ℤ.* gcd[j,n])
+           (↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n])
+       ⟩
+    ↥ pᵢ ℤ.* ↧ qⱼ ℤ.* gcd[j,n] ℤ.* gcd[i,n] ℤ.+
+    ↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n] ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._+ ↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n] ℤ.* gcd[i,n])
+       $ cong (ℤ._* gcd[i,n])
+       $ ℤ.*-assoc (↥ pᵢ) (↧ qⱼ) gcd[j,n]
+       ⟩
+    ↥ pᵢ ℤ.* (↧ qⱼ ℤ.* gcd[j,n]) ℤ.* gcd[i,n] ℤ.+
+    ↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n] ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._+ (↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n] ℤ.* gcd[i,n]))
+       $ cong (ℤ._* gcd[i,n])
+       $ cong (↥ pᵢ ℤ.*_)
+       $ ↧-/ j n
+       ⟩
+    ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+
+    ↥ qⱼ ℤ.* ↧ pᵢ ℤ.* gcd[j,n] ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
+       $ cong (ℤ._* gcd[i,n])
+       $ ℤ.*-assoc (↥ qⱼ) (↧ pᵢ) gcd[j,n]
+       ⟩
+    ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+
+    ↥ qⱼ ℤ.* (↧ pᵢ ℤ.* gcd[j,n]) ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
+       $ cong (ℤ._* gcd[i,n])
+       $ cong (↥ qⱼ ℤ.*_)
+       $ ℤ.*-comm (↧ pᵢ) gcd[j,n]
+       ⟩
+    ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+
+    ↥ qⱼ ℤ.* (gcd[j,n] ℤ.* ↧ pᵢ) ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
+       $ cong (ℤ._* gcd[i,n])
+       $ sym (ℤ.*-assoc (↥ qⱼ) gcd[j,n] (↧ pᵢ))
+       ⟩
+    ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+
+    ↥ qⱼ ℤ.* gcd[j,n] ℤ.* ↧ pᵢ ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
+       $ cong (ℤ._* gcd[i,n])
+       $ cong (ℤ._* ↧ pᵢ)
+       $ ↥-/ j n
+       ⟩
+    ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+ j ℤ.* ↧ pᵢ ℤ.* gcd[i,n]
+      ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
+       $ ℤ.*-assoc j (↧ pᵢ) gcd[i,n]
+       ⟩
+    ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+ j ℤ.* (↧ pᵢ ℤ.* gcd[i,n])
+      ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
+       $ cong (j ℤ.*_)
+       $ ↧-/ i n
+       ⟩
+    ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+ j ℤ.* + n
+      ≡⟨ cong (ℤ._+ j ℤ.* + n)
+       $ cong (ℤ._* gcd[i,n])
+       $ ℤ.*-comm (↥ pᵢ) (+ n)
+       ⟩
+    + n ℤ.* ↥ pᵢ ℤ.* gcd[i,n] ℤ.+ j ℤ.* + n
+      ≡⟨ cong (ℤ._+ j ℤ.* + n)
+       $ ℤ.*-assoc (+ n) (↥ pᵢ) gcd[i,n]
+       ⟩
+    + n ℤ.* (↥ pᵢ ℤ.* gcd[i,n]) ℤ.+ j ℤ.* + n
+      ≡⟨ cong (ℤ._+ j ℤ.* + n)
+       $ cong (+ n ℤ.*_)
+       $ ↥-/ i n
+       ⟩
+    + n ℤ.* i ℤ.+ j ℤ.* + n
+      ≡⟨ cong (ℤ._+ j ℤ.* + n)
+       $ ℤ.*-comm (+ n) i
+       ⟩
+    i ℤ.* + n ℤ.+ j ℤ.* + n
+      ≡⟨ sym (ℤ.*-distribʳ-+ (+ n) i j) ⟩
+    (i ℤ.+ j) ℤ.* + n
+      ∎
 
   ↧≡ : ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ ℕ.* gcd[i,n]ₙ ≡ n ℕ.* n
-  ↧≡ rewrite ℕ.*-assoc (↧ₙ pᵢ) (↧ₙ qⱼ) gcd[j,n]ₙ
-           | sym (ℤ.abs-* (↧ qⱼ) (gcd j (+ n)))
-           | cong ℤ.∣_∣ (↧-/ j n)
-           | ℕ.*-comm (↧ₙ pᵢ) n
-           | ℕ.*-assoc n (↧ₙ pᵢ) gcd[i,n]ₙ
-           | sym (ℤ.abs-* (↧ pᵢ) (gcd i (+ n)))
-           | cong ℤ.∣_∣ (↧-/ i n)
-           = refl
-
-  proof : i / n + j / n ≡ (i ℤ.+ j) / n
-  proof rewrite +-def
-              | sym (*-cancelʳ-/ gcd[j,n]ₙ
-                  {↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ} { ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ })
-              | sym (*-cancelʳ-/ gcd[i,n]ₙ
-                  { (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n] }
-                  { ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ })
-              | sym (*-cancelʳ-/ n {i ℤ.+ j} {n})
-              = /-cong ↥≡ ↧≡
+  ↧≡ = begin
+    ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ ℕ.* gcd[i,n]ₙ
+      ≡⟨ cong (ℕ._* gcd[i,n]ₙ)
+       $ ℕ.*-assoc (↧ₙ pᵢ) (↧ₙ qⱼ) gcd[j,n]ₙ
+       ⟩
+    ↧ₙ pᵢ ℕ.* (↧ₙ qⱼ ℕ.* gcd[j,n]ₙ) ℕ.* gcd[i,n]ₙ
+      ≡⟨ cong (ℕ._* gcd[i,n]ₙ)
+       $ cong (↧ₙ pᵢ ℕ.*_)
+       $ sym (ℤ.abs-* (↧ qⱼ) (gcd j (+ n)))
+       ⟩
+    ↧ₙ pᵢ ℕ.* ℤ.∣ (+ ↧ₙ qⱼ) ℤ.* gcd j (+ n) ∣ ℕ.* gcd[i,n]ₙ
+      ≡⟨ cong (ℕ._* gcd[i,n]ₙ)
+       $ cong (↧ₙ pᵢ ℕ.*_)
+       $ cong ℤ.∣_∣
+       $ ↧-/ j n
+       ⟩
+    ↧ₙ pᵢ ℕ.* n ℕ.* gcd[i,n]ₙ
+      ≡⟨ cong (ℕ._* gcd[i,n]ₙ)
+       $ ℕ.*-comm (↧ₙ pᵢ) n
+       ⟩
+    n ℕ.* ↧ₙ pᵢ ℕ.* gcd[i,n]ₙ
+      ≡⟨ ℕ.*-assoc n (↧ₙ pᵢ) gcd[i,n]ₙ ⟩
+    n ℕ.* (↧ₙ pᵢ ℕ.* gcd[i,n]ₙ)
+      ≡⟨ cong (n ℕ.*_)
+       $ sym (ℤ.abs-* (↧ pᵢ) (gcd i (+ n)))
+       ⟩
+    n ℕ.* ℤ.∣ + ↧ₙ pᵢ ℤ.* gcd i (+ n) ∣
+      ≡⟨ cong (n ℕ.*_)
+       $ cong ℤ.∣_∣
+       $ ↧-/ i n
+       ⟩
+    n ℕ.* n
+      ∎
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -205,6 +205,16 @@ m/gcd[m,n]≢0 : ∀ m n .{{_ : NonZero m}} .{{gcd≢0 : NonZero (gcd m n)}} →
                m / gcd m n ≢ 0
 m/gcd[m,n]≢0 m n rewrite gcd-comm m n = n/gcd[m,n]≢0 n m
 
+gcd[n,n]≡n : ∀ n → gcd n n ≡ n
+gcd[n,n]≡n n = begin
+  gcd n n             ≡⟨ ≡.cong₂ gcd n≢n*1 n≢n*1 ⟩
+  gcd (n * 1) (n * 1) ≡⟨ ≡.sym (c*gcd[m,n]≡gcd[cm,cn] n 1 1) ⟩
+  n * gcd 1 1         ≡⟨ *-identityʳ n ⟩
+  n                   ∎
+  where
+  open ≡-Reasoning
+  n≢n*1 = ≡.sym (*-identityʳ n)
+
 ------------------------------------------------------------------------
 -- A formal specification of GCD
 
