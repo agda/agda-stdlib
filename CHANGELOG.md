@@ -111,6 +111,9 @@ New modules
 * `Algebra.Apartness.Properties.HeytingField`, refactoring the existing
   `Algebra.Apartness.Properties.HeytingCommutativeRing`.
 
+* `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
+  of consecutive elements of a stream are related.
+
 Additions to existing modules
 -----------------------------
 
