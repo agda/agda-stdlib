@@ -396,16 +396,17 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
 
 ↥[i/1]≡i : (i : ℤ) → ↥ (i / 1) ≡ i
 ↥[i/1]≡i i = begin
-    (↥ (i / 1))              ≡⟨ sym $ ℤ.*-identityʳ (↥ (i / 1)) ⟩
-    (↥ (i / 1)) ℤ.* 1ℤ       ≡⟨ cong (↥ (i / 1) ℤ.*_) $ sym $ gcd-zeroʳ i ⟩
-    (↥ (i / 1)) ℤ.* gcd i 1ℤ ≡⟨ ↥-/ i 1 ⟩
-    i                        ∎
+    ↥ (i / 1)              ≡⟨ ℤ.*-identityʳ (↥ (i / 1)) ⟨
+    ↥ (i / 1) ℤ.* 1ℤ       ≡⟨ cong (↥ (i / 1) ℤ.*_) $ gcd-zeroʳ i ⟨
+    ↥ (i / 1) ℤ.* gcd i 1ℤ ≡⟨ ↥-/ i 1 ⟩
+    i                      ∎
   where open ≡-Reasoning
+
 
 ↧ₙ[i/1]≡1 : (i : ℤ) → ↧ₙ (i / 1) ≡ 1
 ↧ₙ[i/1]≡1 i = ℤ.+-injective $ begin
-    ↧ (i / 1)               ≡⟨ sym $ ℤ.*-identityʳ (↧ (i / 1)) ⟩
-    ↧ (i / 1) ℤ.* 1ℤ        ≡⟨ cong (↧ (i / 1) ℤ.*_) $ sym $ gcd-zeroʳ i ⟩
+    ↧ (i / 1)               ≡⟨ ℤ.*-identityʳ (↧ (i / 1)) ⟨
+    ↧ (i / 1) ℤ.* 1ℤ        ≡⟨ cong (↧ (i / 1) ℤ.*_) $ gcd-zeroʳ i ⟨
     ↧ (i / 1) ℤ.* gcd i 1ℤ  ≡⟨ ↧-/ i 1 ⟩
     1ℤ                      ∎
   where open ≡-Reasoning
@@ -1418,7 +1419,7 @@ module _ where
     lemma : ∀ n → (p ℕ.* n) ℕ./ ℕ.gcd (p ℕ.* qₙ) (p ℕ.* r) ≡ n ℕ./ ℕ.gcd qₙ r
     lemma n = begin
       p ℕ.* n ℕ./ ℕ.gcd (p ℕ.* qₙ) (p ℕ.* r)
-        ≡⟨ ℕ./-congʳ $ sym $ ℕ.c*gcd[m,n]≡gcd[cm,cn] p qₙ r ⟩
+        ≡⟨ ℕ./-congʳ $ ℕ.c*gcd[m,n]≡gcd[cm,cn] p qₙ r ⟨
       p ℕ.* n ℕ./ (p ℕ.* ℕ.gcd qₙ r)
         ≡⟨ ℕ.m*n/m*o≡n/o p n $ ℕ.gcd qₙ r ⟩
       n ℕ./ ℕ.gcd qₙ r
@@ -1426,14 +1427,14 @@ module _ where
 
   proof : ∀ q → (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
   proof (+ qₙ) = begin
-    + p ℤ.* + qₙ / (p ℕ.* r) ≡⟨ /-cong (sym (ℤ.pos-* p qₙ)) refl ⟩
+    + p ℤ.* + qₙ / (p ℕ.* r) ≡⟨ /-cong (ℤ.pos-* p qₙ) refl ⟨
     + (p ℕ.* qₙ) / (p ℕ.* r) ≡⟨ *-cancelˡ-/-helper qₙ ⟩
     + qₙ / r                 ∎
   proof -[1+ qₙ ] = begin
     + p ℤ.* -[1+ qₙ ] / (p ℕ.* r)
-      ≡⟨ /-cong (sym (ℤ.neg-distribʳ-* (+ p) +[1+ qₙ ])) refl ⟩
+      ≡⟨ /-cong (ℤ.neg-distribʳ-* (+ p) +[1+ qₙ ]) refl ⟨
     ℤ.- (Sign.+ ℤ.◃ p ℕ.* suc qₙ) / (p ℕ.* r)
-      ≡⟨ /-cong (cong (ℤ.-_) (sym (ℤ.pos-* p (suc qₙ)))) refl ⟩
+      ≡⟨ /-cong (cong (ℤ.-_) (ℤ.pos-* p (suc qₙ))) refl ⟨
     ℤ.- + (p ℕ.* suc qₙ) / (p ℕ.* r)
       ≡⟨ -i/n≡-[i/n] (+ (p ℕ.* suc qₙ)) (p ℕ.* r) ⟩
     - (+ (p ℕ.* suc qₙ) / (p ℕ.* r))
@@ -1948,18 +1949,16 @@ i/n+j/n≡[i+j]/n i j n = begin
   i / n + j / n
     ≡⟨ +-def ⟩
   (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) / (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ)
-    ≡⟨ sym
-     $ *-cancelʳ-/ gcd[j,n]ₙ
+    ≡⟨ *-cancelʳ-/ gcd[j,n]ₙ
                    {↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ}
                    { ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ }
-     ⟩
+     ⟨
   (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n]
     / (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ)
-    ≡⟨ sym
-     $ *-cancelʳ-/ gcd[i,n]ₙ
+    ≡⟨ *-cancelʳ-/ gcd[i,n]ₙ
                    { (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n] }
                    { ↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ }
-     ⟩
+     ⟨
   (↥ pᵢ ℤ.* ↧ qⱼ ℤ.+ ↥ qⱼ ℤ.* ↧ pᵢ) ℤ.* gcd[j,n] ℤ.* gcd[i,n]
     / (↧ₙ pᵢ ℕ.* ↧ₙ qⱼ ℕ.* gcd[j,n]ₙ ℕ.* gcd[i,n]ₙ)
     ≡⟨ /-cong ↥≡ ↧≡ ⟩
@@ -1969,6 +1968,7 @@ i/n+j/n≡[i+j]/n i j n = begin
     ∎
   where
   open ≡-Reasoning
+
   pᵢ = i / n
   qⱼ = j / n
   gcd[i,n]ₙ = ℕ.gcd ℤ.∣ i ∣ n
@@ -2030,8 +2030,8 @@ i/n+j/n≡[i+j]/n i j n = begin
     ↥ qⱼ ℤ.* (gcd[j,n] ℤ.* ↧ pᵢ) ℤ.* gcd[i,n]
       ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
        $ cong (ℤ._* gcd[i,n])
-       $ sym (ℤ.*-assoc (↥ qⱼ) gcd[j,n] (↧ pᵢ))
-       ⟩
+       $ ℤ.*-assoc (↥ qⱼ) gcd[j,n] (↧ pᵢ)
+       ⟨
     ↥ pᵢ ℤ.* + n ℤ.* gcd[i,n] ℤ.+
     ↥ qⱼ ℤ.* gcd[j,n] ℤ.* ↧ pᵢ ℤ.* gcd[i,n]
       ≡⟨ cong (ℤ._+_ (↥ pᵢ ℤ.* + n ℤ.* gcd[i,n]))
@@ -2067,7 +2067,7 @@ i/n+j/n≡[i+j]/n i j n = begin
        $ ℤ.*-comm (+ n) i
        ⟩
     i ℤ.* + n ℤ.+ j ℤ.* + n
-      ≡⟨ sym (ℤ.*-distribʳ-+ (+ n) i j) ⟩
+      ≡⟨ ℤ.*-distribʳ-+ (+ n) i j ⟨
     (i ℤ.+ j) ℤ.* + n
       ∎
 
@@ -2080,8 +2080,8 @@ i/n+j/n≡[i+j]/n i j n = begin
     ↧ₙ pᵢ ℕ.* (↧ₙ qⱼ ℕ.* gcd[j,n]ₙ) ℕ.* gcd[i,n]ₙ
       ≡⟨ cong (ℕ._* gcd[i,n]ₙ)
        $ cong (↧ₙ pᵢ ℕ.*_)
-       $ sym (ℤ.abs-* (↧ qⱼ) (gcd j (+ n)))
-       ⟩
+       $ ℤ.abs-* (↧ qⱼ) (gcd j (+ n))
+       ⟨
     ↧ₙ pᵢ ℕ.* ℤ.∣ (+ ↧ₙ qⱼ) ℤ.* gcd j (+ n) ∣ ℕ.* gcd[i,n]ₙ
       ≡⟨ cong (ℕ._* gcd[i,n]ₙ)
        $ cong (↧ₙ pᵢ ℕ.*_)
@@ -2096,8 +2096,8 @@ i/n+j/n≡[i+j]/n i j n = begin
       ≡⟨ ℕ.*-assoc n (↧ₙ pᵢ) gcd[i,n]ₙ ⟩
     n ℕ.* (↧ₙ pᵢ ℕ.* gcd[i,n]ₙ)
       ≡⟨ cong (n ℕ.*_)
-       $ sym (ℤ.abs-* (↧ pᵢ) (gcd i (+ n)))
-       ⟩
+       $ ℤ.abs-* (↧ pᵢ) (gcd i (+ n))
+       ⟨
     n ℕ.* ℤ.∣ + ↧ₙ pᵢ ℤ.* gcd i (+ n) ∣
       ≡⟨ cong (n ℕ.*_)
        $ cong ℤ.∣_∣

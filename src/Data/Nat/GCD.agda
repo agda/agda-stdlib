@@ -23,7 +23,7 @@ open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary.Definitions using (tri<; tri>; tri≈; Symmetric)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; subst; cong)
+  using (_≡_; _≢_; subst; cong; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable.Core using (Dec)
@@ -207,13 +207,13 @@ m/gcd[m,n]≢0 m n rewrite gcd-comm m n = n/gcd[m,n]≢0 n m
 
 gcd[n,n]≡n : ∀ n → gcd n n ≡ n
 gcd[n,n]≡n n = begin
-  gcd n n             ≡⟨ ≡.cong₂ gcd n≢n*1 n≢n*1 ⟩
-  gcd (n * 1) (n * 1) ≡⟨ ≡.sym (c*gcd[m,n]≡gcd[cm,cn] n 1 1) ⟩
-  n * gcd 1 1         ≡⟨ *-identityʳ n ⟩
+  gcd n n             ≡⟨ cong₂ gcd n*1≡n n*1≡n ⟨
+  gcd (n * 1) (n * 1) ≡⟨ c*gcd[m,n]≡gcd[cm,cn] n 1 1 ⟨
+  n * gcd 1 1         ≡⟨ n*1≡n ⟩
   n                   ∎
   where
   open ≡-Reasoning
-  n≢n*1 = ≡.sym (*-identityʳ n)
+  n*1≡n = *-identityʳ n
 
 ------------------------------------------------------------------------
 -- A formal specification of GCD
