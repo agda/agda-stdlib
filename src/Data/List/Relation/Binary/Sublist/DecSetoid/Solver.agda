@@ -12,5 +12,5 @@ module Data.List.Relation.Binary.Sublist.DecSetoid.Solver {c ℓ} (S : DecSetoid
 
 open DecSetoid S
 
-open import Data.List.Relation.Binary.Sublist.Heterogeneous.Solver _≈_ refl _≟_
+open import Data.List.Relation.Binary.Sublist.Heterogeneous.Solver _≈_ refl _≈?_
   using (Item; module Item; TList; module TList; prove) public

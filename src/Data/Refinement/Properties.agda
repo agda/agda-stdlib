@@ -28,8 +28,24 @@ private
 value-injective : value v ≡ value w → v ≡ w
 value-injective refl = refl
 
-module _ (eq? : DecidableEquality A) where
+module _ (_≈?_ : DecidableEquality A) where
 
-  infix 4 _≟_
-  _≟_ : DecidableEquality [ x ∈ A ∣ P x ]
-  v ≟ w = Dec.map′ value-injective (cong value) (eq? (value v) (value w))
+  infix 4 _≡?_
+  _≡?_ : DecidableEquality [ x ∈ A ∣ P x ]
+  v ≡? w = Dec.map′ value-injective (cong value) (value v ≈? value w)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

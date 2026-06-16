@@ -11,21 +11,21 @@ module Reflection.AST.Term where
 open import Data.List.Base as List hiding (_++_)
 open import Data.List.Properties using (∷-dec)
 open import Data.Nat.Base using (ℕ; zero; suc)
-import Data.Nat.Properties as ℕ using (_≟_)
+import Data.Nat.Properties as ℕ using (_≡?_)
 open import Data.Product.Base using (_×_; _,_; <_,_>; uncurry; map₁)
 open import Data.Product.Properties using (,-injective)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.String.Base using (String)
-open import Data.String.Properties as String hiding (_≟_)
+open import Data.String.Properties as String hiding (_≟_; _≡?_)
 open import Relation.Nullary.Decidable using (map′; _×?_; yes; no)
 open import Relation.Binary.Definitions using (Decidable; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 open import Reflection.AST.Abstraction using (Abs; abs; unAbs-dec)
 open import Reflection.AST.Argument as Arg
 open import Reflection.AST.Argument.Information using (visibility)
-open import Reflection.AST.Argument.Visibility as Visibility hiding (_≟_)
-import Reflection.AST.Literal as Literal using (Literal; _≟_)
-import Reflection.AST.Meta as Meta using (Meta; _≟_)
+open import Reflection.AST.Argument.Visibility as Visibility hiding (_≟_; _≡?_)
+import Reflection.AST.Literal as Literal using (Literal; _≡?_)
+import Reflection.AST.Meta as Meta using (Meta; _≡?_)
 open import Reflection.AST.Name as Name using (Name)
 
 ------------------------------------------------------------------------
@@ -127,60 +127,60 @@ absurd-clause-injective₂ refl = refl
 absurd-clause-injective : ∀ {tel tel′ ps ps′} → absurd-clause tel ps ≡ absurd-clause tel′ ps′ → tel ≡ tel′ × ps ≡ ps′
 absurd-clause-injective = < absurd-clause-injective₁ , absurd-clause-injective₂ >
 
-infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
-        _≟-Clause_ _≟-Clauses_ _≟_
-        _≟-Sort_ _≟-Pattern_ _≟-Patterns_ _≟-Telescope_
+infix 4 _≡?-AbsTerm_ _≡?-AbsType_ _≡?-ArgTerm_ _≡?-ArgType_ _≡?-Args_
+        _≡?-Clause_ _≡?-Clauses_ _≡?_
+        _≡?-Sort_ _≡?-Pattern_ _≡?-Patterns_ _≡?-Telescope_
 
-_≟-AbsTerm_  : DecidableEquality (Abs Term)
-_≟-AbsType_  : DecidableEquality (Abs Type)
-_≟-ArgTerm_  : DecidableEquality (Arg Term)
-_≟-ArgType_  : DecidableEquality (Arg Type)
-_≟-Args_     : DecidableEquality (Args Term)
-_≟-Clause_   : DecidableEquality Clause
-_≟-Clauses_  : DecidableEquality Clauses
-_≟_          : DecidableEquality Term
-_≟-Sort_     : DecidableEquality Sort
-_≟-Patterns_ : DecidableEquality (Args Pattern)
-_≟-Pattern_  : DecidableEquality Pattern
+_≡?-AbsTerm_  : DecidableEquality (Abs Term)
+_≡?-AbsType_  : DecidableEquality (Abs Type)
+_≡?-ArgTerm_  : DecidableEquality (Arg Term)
+_≡?-ArgType_  : DecidableEquality (Arg Type)
+_≡?-Args_     : DecidableEquality (Args Term)
+_≡?-Clause_   : DecidableEquality Clause
+_≡?-Clauses_  : DecidableEquality Clauses
+_≡?_          : DecidableEquality Term
+_≡?-Sort_     : DecidableEquality Sort
+_≡?-Patterns_ : DecidableEquality (Args Pattern)
+_≡?-Pattern_  : DecidableEquality Pattern
 
 -- Decidable equality 'transformers'
 -- We need to inline these because the terms are not sized so
 -- termination would not obvious if we were to use higher-order
 -- functions such as Data.List.Properties' ≡-dec
 
-abs s a ≟-AbsTerm abs s′ a′ = unAbs-dec (a ≟ a′)
-abs s a ≟-AbsType abs s′ a′ = unAbs-dec (a ≟ a′)
-arg i a ≟-ArgTerm arg i′ a′ = unArg-dec (a ≟ a′)
-arg i a ≟-ArgType arg i′ a′ = unArg-dec (a ≟ a′)
+abs s a ≡?-AbsTerm abs s′ a′ = unAbs-dec (a ≡? a′)
+abs s a ≡?-AbsType abs s′ a′ = unAbs-dec (a ≡? a′)
+arg i a ≡?-ArgTerm arg i′ a′ = unArg-dec (a ≡? a′)
+arg i a ≡?-ArgType arg i′ a′ = unArg-dec (a ≡? a′)
 
-[]       ≟-Args []       = yes refl
-(x ∷ xs) ≟-Args (y ∷ ys) = ∷-dec (x ≟-ArgTerm y) (xs ≟-Args ys)
-[]       ≟-Args (_ ∷ _)  = no λ()
-(_ ∷ _)  ≟-Args []       = no λ()
+[]       ≡?-Args []       = yes refl
+(x ∷ xs) ≡?-Args (y ∷ ys) = ∷-dec (x ≡?-ArgTerm y) (xs ≡?-Args ys)
+[]       ≡?-Args (_ ∷ _)  = no λ()
+(_ ∷ _)  ≡?-Args []       = no λ()
 
-[]       ≟-Clauses []       = yes refl
-(x ∷ xs) ≟-Clauses (y ∷ ys) = ∷-dec (x ≟-Clause y) (xs ≟-Clauses ys)
-[]       ≟-Clauses (_ ∷ _)  = no λ()
-(_ ∷ _)  ≟-Clauses []       = no λ()
+[]       ≡?-Clauses []       = yes refl
+(x ∷ xs) ≡?-Clauses (y ∷ ys) = ∷-dec (x ≡?-Clause y) (xs ≡?-Clauses ys)
+[]       ≡?-Clauses (_ ∷ _)  = no λ()
+(_ ∷ _)  ≡?-Clauses []       = no λ()
 
-_≟-Telescope_ : DecidableEquality Telescope
-[] ≟-Telescope [] = yes refl
-((x , t) ∷ tel) ≟-Telescope ((x′ , t′) ∷ tel′) = ∷-dec
-  (map′ (uncurry (cong₂ _,_)) ,-injective ((x String.≟ x′) ×? (t ≟-ArgTerm t′)))
-  (tel ≟-Telescope tel′)
-[] ≟-Telescope (_ ∷ _) = no λ ()
-(_ ∷ _) ≟-Telescope [] = no λ ()
+_≡?-Telescope_ : DecidableEquality Telescope
+[] ≡?-Telescope [] = yes refl
+((x , t) ∷ tel) ≡?-Telescope ((x′ , t′) ∷ tel′) = ∷-dec
+  (map′ (uncurry (cong₂ _,_)) ,-injective ((x String.≡? x′) ×? (t ≡?-ArgTerm t′)))
+  (tel ≡?-Telescope tel′)
+[] ≡?-Telescope (_ ∷ _) = no λ ()
+(_ ∷ _) ≡?-Telescope [] = no λ ()
 
-clause tel ps b ≟-Clause clause tel′ ps′ b′ =
+clause tel ps b ≡?-Clause clause tel′ ps′ b′ =
   map′ (λ (tel≡tel′ , ps≡ps′ , b≡b′) → cong₂ (uncurry clause) (cong₂ _,_ tel≡tel′ ps≡ps′) b≡b′)
            clause-injective
-           (tel ≟-Telescope tel′ ×? ps ≟-Patterns ps′ ×? b ≟ b′)
-absurd-clause tel ps ≟-Clause absurd-clause tel′ ps′ =
+           (tel ≡?-Telescope tel′ ×? ps ≡?-Patterns ps′ ×? b ≡? b′)
+absurd-clause tel ps ≡?-Clause absurd-clause tel′ ps′ =
   map′ (uncurry (cong₂ absurd-clause))
            absurd-clause-injective
-           (tel ≟-Telescope tel′ ×? ps ≟-Patterns ps′)
-clause _ _ _      ≟-Clause absurd-clause _ _ = no λ()
-absurd-clause _ _ ≟-Clause clause _ _ _      = no λ()
+           (tel ≡?-Telescope tel′ ×? ps ≡?-Patterns ps′)
+clause _ _ _      ≡?-Clause absurd-clause _ _ = no λ()
+absurd-clause _ _ ≡?-Clause clause _ _ _      = no λ()
 
 var-injective₁ : ∀ {x x′ args args′} → Term.var x args ≡ var x′ args′ → x ≡ x′
 var-injective₁ refl = refl
@@ -266,151 +266,151 @@ propLit-injective refl = refl
 inf-injective : ∀ {x y} → inf x ≡ inf y → x ≡ y
 inf-injective refl = refl
 
-var x args ≟ var x′ args′ =
-  map′ (uncurry (cong₂ var)) var-injective (x ℕ.≟ x′ ×? args ≟-Args args′)
-con c args ≟ con c′ args′ =
-  map′ (uncurry (cong₂ con)) con-injective (c Name.≟ c′ ×? args ≟-Args args′)
-def f args ≟ def f′ args′ =
-  map′ (uncurry (cong₂ def)) def-injective (f Name.≟ f′ ×? args ≟-Args args′)
-meta x args ≟ meta x′ args′ =
-  map′ (uncurry (cong₂ meta)) meta-injective (x Meta.≟ x′   ×? args ≟-Args args′)
-lam v t    ≟ lam v′ t′    =
-  map′ (uncurry (cong₂ lam)) lam-injective (v Visibility.≟ v′ ×? t ≟-AbsTerm t′)
-pat-lam cs args ≟ pat-lam cs′ args′ =
-  map′ (uncurry (cong₂ pat-lam)) pat-lam-injective (cs ≟-Clauses cs′ ×? args ≟-Args args′)
-pi t₁ t₂   ≟ pi t₁′ t₂′   =
-  map′ (uncurry (cong₂ pi))  pi-injective (t₁ ≟-ArgType t₁′  ×? t₂ ≟-AbsType t₂′)
-sort s     ≟ sort s′      = map′ (cong sort)  sort-injective (s ≟-Sort s′)
-lit l      ≟ lit l′       = map′ (cong lit)   lit-injective (l Literal.≟ l′)
-unknown    ≟ unknown      = yes refl
+var x args ≡? var x′ args′ =
+  map′ (uncurry (cong₂ var)) var-injective (x ℕ.≡? x′ ×? args ≡?-Args args′)
+con c args ≡? con c′ args′ =
+  map′ (uncurry (cong₂ con)) con-injective (c Name.≡? c′ ×? args ≡?-Args args′)
+def f args ≡? def f′ args′ =
+  map′ (uncurry (cong₂ def)) def-injective (f Name.≡? f′ ×? args ≡?-Args args′)
+meta x args ≡? meta x′ args′ =
+  map′ (uncurry (cong₂ meta)) meta-injective (x Meta.≡? x′   ×? args ≡?-Args args′)
+lam v t    ≡? lam v′ t′    =
+  map′ (uncurry (cong₂ lam)) lam-injective (v Visibility.≡? v′ ×? t ≡?-AbsTerm t′)
+pat-lam cs args ≡? pat-lam cs′ args′ =
+  map′ (uncurry (cong₂ pat-lam)) pat-lam-injective (cs ≡?-Clauses cs′ ×? args ≡?-Args args′)
+pi t₁ t₂   ≡? pi t₁′ t₂′   =
+  map′ (uncurry (cong₂ pi))  pi-injective (t₁ ≡?-ArgType t₁′  ×? t₂ ≡?-AbsType t₂′)
+sort s     ≡? sort s′      = map′ (cong sort)  sort-injective (s ≡?-Sort s′)
+lit l      ≡? lit l′       = map′ (cong lit)   lit-injective (l Literal.≡? l′)
+unknown    ≡? unknown      = yes refl
 
-var x args ≟ con c args′ = no λ()
-var x args ≟ def f args′ = no λ()
-var x args ≟ lam v t     = no λ()
-var x args ≟ pi t₁ t₂    = no λ()
-var x args ≟ sort _      = no λ()
-var x args ≟ lit _      = no λ()
-var x args ≟ meta _ _    = no λ()
-var x args ≟ unknown     = no λ()
-con c args ≟ var x args′ = no λ()
-con c args ≟ def f args′ = no λ()
-con c args ≟ lam v t     = no λ()
-con c args ≟ pi t₁ t₂    = no λ()
-con c args ≟ sort _      = no λ()
-con c args ≟ lit _      = no λ()
-con c args ≟ meta _ _    = no λ()
-con c args ≟ unknown     = no λ()
-def f args ≟ var x args′ = no λ()
-def f args ≟ con c args′ = no λ()
-def f args ≟ lam v t     = no λ()
-def f args ≟ pi t₁ t₂    = no λ()
-def f args ≟ sort _      = no λ()
-def f args ≟ lit _      = no λ()
-def f args ≟ meta _ _    = no λ()
-def f args ≟ unknown     = no λ()
-lam v t    ≟ var x args  = no λ()
-lam v t    ≟ con c args  = no λ()
-lam v t    ≟ def f args  = no λ()
-lam v t    ≟ pi t₁ t₂    = no λ()
-lam v t    ≟ sort _      = no λ()
-lam v t    ≟ lit _      = no λ()
-lam v t    ≟ meta _ _    = no λ()
-lam v t    ≟ unknown     = no λ()
-pi t₁ t₂   ≟ var x args  = no λ()
-pi t₁ t₂   ≟ con c args  = no λ()
-pi t₁ t₂   ≟ def f args  = no λ()
-pi t₁ t₂   ≟ lam v t     = no λ()
-pi t₁ t₂   ≟ sort _      = no λ()
-pi t₁ t₂   ≟ lit _      = no λ()
-pi t₁ t₂   ≟ meta _ _    = no λ()
-pi t₁ t₂   ≟ unknown     = no λ()
-sort _     ≟ var x args  = no λ()
-sort _     ≟ con c args  = no λ()
-sort _     ≟ def f args  = no λ()
-sort _     ≟ lam v t     = no λ()
-sort _     ≟ pi t₁ t₂    = no λ()
-sort _     ≟ lit _       = no λ()
-sort _     ≟ meta _ _    = no λ()
-sort _     ≟ unknown     = no λ()
-lit _     ≟ var x args  = no λ()
-lit _     ≟ con c args  = no λ()
-lit _     ≟ def f args  = no λ()
-lit _     ≟ lam v t     = no λ()
-lit _     ≟ pi t₁ t₂    = no λ()
-lit _     ≟ sort _      = no λ()
-lit _     ≟ meta _ _    = no λ()
-lit _     ≟ unknown     = no λ()
-meta _ _   ≟ var x args  = no λ()
-meta _ _   ≟ con c args  = no λ()
-meta _ _   ≟ def f args  = no λ()
-meta _ _   ≟ lam v t     = no λ()
-meta _ _   ≟ pi t₁ t₂    = no λ()
-meta _ _   ≟ sort _      = no λ()
-meta _ _   ≟ lit _       = no λ()
-meta _ _   ≟ unknown     = no λ()
-unknown    ≟ var x args  = no λ()
-unknown    ≟ con c args  = no λ()
-unknown    ≟ def f args  = no λ()
-unknown    ≟ lam v t     = no λ()
-unknown    ≟ pi t₁ t₂    = no λ()
-unknown    ≟ sort _      = no λ()
-unknown    ≟ lit _       = no λ()
-unknown    ≟ meta _ _    = no λ()
-pat-lam _ _ ≟ var x args  = no λ()
-pat-lam _ _ ≟ con c args  = no λ()
-pat-lam _ _ ≟ def f args  = no λ()
-pat-lam _ _ ≟ lam v t     = no λ()
-pat-lam _ _ ≟ pi t₁ t₂    = no λ()
-pat-lam _ _ ≟ sort _      = no λ()
-pat-lam _ _ ≟ lit _       = no λ()
-pat-lam _ _ ≟ meta _ _    = no λ()
-pat-lam _ _ ≟ unknown     = no λ()
-var x args  ≟ pat-lam _ _ = no λ()
-con c args  ≟ pat-lam _ _ = no λ()
-def f args  ≟ pat-lam _ _ = no λ()
-lam v t     ≟ pat-lam _ _ = no λ()
-pi t₁ t₂    ≟ pat-lam _ _ = no λ()
-sort _      ≟ pat-lam _ _ = no λ()
-lit _       ≟ pat-lam _ _ = no λ()
-meta _ _    ≟ pat-lam _ _ = no λ()
-unknown     ≟ pat-lam _ _ = no λ()
+var x args ≡? con c args′ = no λ()
+var x args ≡? def f args′ = no λ()
+var x args ≡? lam v t     = no λ()
+var x args ≡? pi t₁ t₂    = no λ()
+var x args ≡? sort _      = no λ()
+var x args ≡? lit _      = no λ()
+var x args ≡? meta _ _    = no λ()
+var x args ≡? unknown     = no λ()
+con c args ≡? var x args′ = no λ()
+con c args ≡? def f args′ = no λ()
+con c args ≡? lam v t     = no λ()
+con c args ≡? pi t₁ t₂    = no λ()
+con c args ≡? sort _      = no λ()
+con c args ≡? lit _      = no λ()
+con c args ≡? meta _ _    = no λ()
+con c args ≡? unknown     = no λ()
+def f args ≡? var x args′ = no λ()
+def f args ≡? con c args′ = no λ()
+def f args ≡? lam v t     = no λ()
+def f args ≡? pi t₁ t₂    = no λ()
+def f args ≡? sort _      = no λ()
+def f args ≡? lit _      = no λ()
+def f args ≡? meta _ _    = no λ()
+def f args ≡? unknown     = no λ()
+lam v t    ≡? var x args  = no λ()
+lam v t    ≡? con c args  = no λ()
+lam v t    ≡? def f args  = no λ()
+lam v t    ≡? pi t₁ t₂    = no λ()
+lam v t    ≡? sort _      = no λ()
+lam v t    ≡? lit _      = no λ()
+lam v t    ≡? meta _ _    = no λ()
+lam v t    ≡? unknown     = no λ()
+pi t₁ t₂   ≡? var x args  = no λ()
+pi t₁ t₂   ≡? con c args  = no λ()
+pi t₁ t₂   ≡? def f args  = no λ()
+pi t₁ t₂   ≡? lam v t     = no λ()
+pi t₁ t₂   ≡? sort _      = no λ()
+pi t₁ t₂   ≡? lit _      = no λ()
+pi t₁ t₂   ≡? meta _ _    = no λ()
+pi t₁ t₂   ≡? unknown     = no λ()
+sort _     ≡? var x args  = no λ()
+sort _     ≡? con c args  = no λ()
+sort _     ≡? def f args  = no λ()
+sort _     ≡? lam v t     = no λ()
+sort _     ≡? pi t₁ t₂    = no λ()
+sort _     ≡? lit _       = no λ()
+sort _     ≡? meta _ _    = no λ()
+sort _     ≡? unknown     = no λ()
+lit _     ≡? var x args  = no λ()
+lit _     ≡? con c args  = no λ()
+lit _     ≡? def f args  = no λ()
+lit _     ≡? lam v t     = no λ()
+lit _     ≡? pi t₁ t₂    = no λ()
+lit _     ≡? sort _      = no λ()
+lit _     ≡? meta _ _    = no λ()
+lit _     ≡? unknown     = no λ()
+meta _ _   ≡? var x args  = no λ()
+meta _ _   ≡? con c args  = no λ()
+meta _ _   ≡? def f args  = no λ()
+meta _ _   ≡? lam v t     = no λ()
+meta _ _   ≡? pi t₁ t₂    = no λ()
+meta _ _   ≡? sort _      = no λ()
+meta _ _   ≡? lit _       = no λ()
+meta _ _   ≡? unknown     = no λ()
+unknown    ≡? var x args  = no λ()
+unknown    ≡? con c args  = no λ()
+unknown    ≡? def f args  = no λ()
+unknown    ≡? lam v t     = no λ()
+unknown    ≡? pi t₁ t₂    = no λ()
+unknown    ≡? sort _      = no λ()
+unknown    ≡? lit _       = no λ()
+unknown    ≡? meta _ _    = no λ()
+pat-lam _ _ ≡? var x args  = no λ()
+pat-lam _ _ ≡? con c args  = no λ()
+pat-lam _ _ ≡? def f args  = no λ()
+pat-lam _ _ ≡? lam v t     = no λ()
+pat-lam _ _ ≡? pi t₁ t₂    = no λ()
+pat-lam _ _ ≡? sort _      = no λ()
+pat-lam _ _ ≡? lit _       = no λ()
+pat-lam _ _ ≡? meta _ _    = no λ()
+pat-lam _ _ ≡? unknown     = no λ()
+var x args  ≡? pat-lam _ _ = no λ()
+con c args  ≡? pat-lam _ _ = no λ()
+def f args  ≡? pat-lam _ _ = no λ()
+lam v t     ≡? pat-lam _ _ = no λ()
+pi t₁ t₂    ≡? pat-lam _ _ = no λ()
+sort _      ≡? pat-lam _ _ = no λ()
+lit _       ≡? pat-lam _ _ = no λ()
+meta _ _    ≡? pat-lam _ _ = no λ()
+unknown     ≡? pat-lam _ _ = no λ()
 
-set t   ≟-Sort set t′  = map′ (cong set) set-injective (t ≟ t′)
-lit n   ≟-Sort lit n′  = map′ (cong lit) slit-injective (n ℕ.≟ n′)
-prop t   ≟-Sort prop t′  = map′ (cong prop) prop-injective (t ≟ t′)
-propLit n   ≟-Sort propLit n′  = map′ (cong propLit) propLit-injective (n ℕ.≟ n′)
-inf n   ≟-Sort inf n′  = map′ (cong inf) inf-injective (n ℕ.≟ n′)
-unknown ≟-Sort unknown = yes refl
-set _   ≟-Sort lit _   = no λ()
-set _   ≟-Sort prop _   = no λ()
-set _   ≟-Sort propLit _   = no λ()
-set _   ≟-Sort inf _   = no λ()
-set _   ≟-Sort unknown = no λ()
-lit _   ≟-Sort set _   = no λ()
-lit _   ≟-Sort prop _   = no λ()
-lit _   ≟-Sort propLit _   = no λ()
-lit _   ≟-Sort inf _   = no λ()
-lit _   ≟-Sort unknown = no λ()
-prop _  ≟-Sort set _   = no λ()
-prop _  ≟-Sort lit _   = no λ()
-prop _  ≟-Sort propLit _   = no λ()
-prop _  ≟-Sort inf _   = no λ()
-prop _  ≟-Sort unknown   = no λ()
-propLit _  ≟-Sort set _   = no λ()
-propLit _  ≟-Sort lit _   = no λ()
-propLit _  ≟-Sort prop _   = no λ()
-propLit _  ≟-Sort inf _   = no λ()
-propLit _  ≟-Sort unknown   = no λ()
-inf _  ≟-Sort set _   = no λ()
-inf _  ≟-Sort lit _   = no λ()
-inf _  ≟-Sort prop _   = no λ()
-inf _  ≟-Sort propLit _   = no λ()
-inf _  ≟-Sort unknown   = no λ()
-unknown ≟-Sort set _   = no λ()
-unknown ≟-Sort lit _   = no λ()
-unknown ≟-Sort prop _   = no λ()
-unknown ≟-Sort propLit _   = no λ()
-unknown ≟-Sort inf _   = no λ()
+set t   ≡?-Sort set t′  = map′ (cong set) set-injective (t ≡? t′)
+lit n   ≡?-Sort lit n′  = map′ (cong lit) slit-injective (n ℕ.≡? n′)
+prop t   ≡?-Sort prop t′  = map′ (cong prop) prop-injective (t ≡? t′)
+propLit n   ≡?-Sort propLit n′  = map′ (cong propLit) propLit-injective (n ℕ.≡? n′)
+inf n   ≡?-Sort inf n′  = map′ (cong inf) inf-injective (n ℕ.≡? n′)
+unknown ≡?-Sort unknown = yes refl
+set _   ≡?-Sort lit _   = no λ()
+set _   ≡?-Sort prop _   = no λ()
+set _   ≡?-Sort propLit _   = no λ()
+set _   ≡?-Sort inf _   = no λ()
+set _   ≡?-Sort unknown = no λ()
+lit _   ≡?-Sort set _   = no λ()
+lit _   ≡?-Sort prop _   = no λ()
+lit _   ≡?-Sort propLit _   = no λ()
+lit _   ≡?-Sort inf _   = no λ()
+lit _   ≡?-Sort unknown = no λ()
+prop _  ≡?-Sort set _   = no λ()
+prop _  ≡?-Sort lit _   = no λ()
+prop _  ≡?-Sort propLit _   = no λ()
+prop _  ≡?-Sort inf _   = no λ()
+prop _  ≡?-Sort unknown   = no λ()
+propLit _  ≡?-Sort set _   = no λ()
+propLit _  ≡?-Sort lit _   = no λ()
+propLit _  ≡?-Sort prop _   = no λ()
+propLit _  ≡?-Sort inf _   = no λ()
+propLit _  ≡?-Sort unknown   = no λ()
+inf _  ≡?-Sort set _   = no λ()
+inf _  ≡?-Sort lit _   = no λ()
+inf _  ≡?-Sort prop _   = no λ()
+inf _  ≡?-Sort propLit _   = no λ()
+inf _  ≡?-Sort unknown   = no λ()
+unknown ≡?-Sort set _   = no λ()
+unknown ≡?-Sort lit _   = no λ()
+unknown ≡?-Sort prop _   = no λ()
+unknown ≡?-Sort propLit _   = no λ()
+unknown ≡?-Sort inf _   = no λ()
 
 
 pat-con-injective₁ : ∀ {c c′ args args′} → Pattern.con c args ≡ con c′ args′ → c ≡ c′
@@ -437,46 +437,120 @@ dot-injective refl = refl
 absurd-injective : ∀ {x y} → absurd x ≡ absurd y → x ≡ y
 absurd-injective refl = refl
 
-con c ps ≟-Pattern con c′ ps′ = map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≟ c′ ×? ps ≟-Patterns ps′)
-var x    ≟-Pattern var x′     = map′ (cong var) pat-var-injective (x ℕ.≟ x′)
-lit l    ≟-Pattern lit l′     = map′ (cong lit) pat-lit-injective (l Literal.≟ l′)
-proj a   ≟-Pattern proj a′    = map′ (cong proj) proj-injective (a Name.≟ a′)
-dot t    ≟-Pattern dot t′     = map′ (cong dot) dot-injective (t ≟ t′)
-absurd x ≟-Pattern absurd x′  = map′ (cong absurd) absurd-injective (x ℕ.≟ x′)
+con c ps ≡?-Pattern con c′ ps′ = map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≡? c′ ×? ps ≡?-Patterns ps′)
+var x    ≡?-Pattern var x′     = map′ (cong var) pat-var-injective (x ℕ.≡? x′)
+lit l    ≡?-Pattern lit l′     = map′ (cong lit) pat-lit-injective (l Literal.≡? l′)
+proj a   ≡?-Pattern proj a′    = map′ (cong proj) proj-injective (a Name.≡? a′)
+dot t    ≡?-Pattern dot t′     = map′ (cong dot) dot-injective (t ≡? t′)
+absurd x ≡?-Pattern absurd x′  = map′ (cong absurd) absurd-injective (x ℕ.≡? x′)
 
-con x x₁ ≟-Pattern dot x₂ = no (λ ())
-con x x₁ ≟-Pattern var x₂ = no (λ ())
-con x x₁ ≟-Pattern lit x₂ = no (λ ())
-con x x₁ ≟-Pattern proj x₂ = no (λ ())
-con x x₁ ≟-Pattern absurd x₂ = no (λ ())
-dot x ≟-Pattern con x₁ x₂ = no (λ ())
-dot x ≟-Pattern var x₁ = no (λ ())
-dot x ≟-Pattern lit x₁ = no (λ ())
-dot x ≟-Pattern proj x₁ = no (λ ())
-dot x ≟-Pattern absurd x₁ = no (λ ())
-var s ≟-Pattern con x x₁ = no (λ ())
-var s ≟-Pattern dot x = no (λ ())
-var s ≟-Pattern lit x = no (λ ())
-var s ≟-Pattern proj x = no (λ ())
-var s ≟-Pattern absurd x = no (λ ())
-lit x ≟-Pattern con x₁ x₂ = no (λ ())
-lit x ≟-Pattern dot x₁ = no (λ ())
-lit x ≟-Pattern var _ = no (λ ())
-lit x ≟-Pattern proj x₁ = no (λ ())
-lit x ≟-Pattern absurd x₁ = no (λ ())
-proj x ≟-Pattern con x₁ x₂ = no (λ ())
-proj x ≟-Pattern dot x₁ = no (λ ())
-proj x ≟-Pattern var _ = no (λ ())
-proj x ≟-Pattern lit x₁ = no (λ ())
-proj x ≟-Pattern absurd x₁ = no (λ ())
-absurd x ≟-Pattern con x₁ x₂ = no (λ ())
-absurd x ≟-Pattern dot x₁ = no (λ ())
-absurd x ≟-Pattern var _ = no (λ ())
-absurd x ≟-Pattern lit x₁ = no (λ ())
-absurd x ≟-Pattern proj x₁ = no (λ ())
+con x x₁ ≡?-Pattern dot x₂ = no (λ ())
+con x x₁ ≡?-Pattern var x₂ = no (λ ())
+con x x₁ ≡?-Pattern lit x₂ = no (λ ())
+con x x₁ ≡?-Pattern proj x₂ = no (λ ())
+con x x₁ ≡?-Pattern absurd x₂ = no (λ ())
+dot x ≡?-Pattern con x₁ x₂ = no (λ ())
+dot x ≡?-Pattern var x₁ = no (λ ())
+dot x ≡?-Pattern lit x₁ = no (λ ())
+dot x ≡?-Pattern proj x₁ = no (λ ())
+dot x ≡?-Pattern absurd x₁ = no (λ ())
+var s ≡?-Pattern con x x₁ = no (λ ())
+var s ≡?-Pattern dot x = no (λ ())
+var s ≡?-Pattern lit x = no (λ ())
+var s ≡?-Pattern proj x = no (λ ())
+var s ≡?-Pattern absurd x = no (λ ())
+lit x ≡?-Pattern con x₁ x₂ = no (λ ())
+lit x ≡?-Pattern dot x₁ = no (λ ())
+lit x ≡?-Pattern var _ = no (λ ())
+lit x ≡?-Pattern proj x₁ = no (λ ())
+lit x ≡?-Pattern absurd x₁ = no (λ ())
+proj x ≡?-Pattern con x₁ x₂ = no (λ ())
+proj x ≡?-Pattern dot x₁ = no (λ ())
+proj x ≡?-Pattern var _ = no (λ ())
+proj x ≡?-Pattern lit x₁ = no (λ ())
+proj x ≡?-Pattern absurd x₁ = no (λ ())
+absurd x ≡?-Pattern con x₁ x₂ = no (λ ())
+absurd x ≡?-Pattern dot x₁ = no (λ ())
+absurd x ≡?-Pattern var _ = no (λ ())
+absurd x ≡?-Pattern lit x₁ = no (λ ())
+absurd x ≡?-Pattern proj x₁ = no (λ ())
 
-[]             ≟-Patterns []             = yes refl
-(arg i p ∷ xs) ≟-Patterns (arg j q ∷ ys) = ∷-dec (unArg-dec (p ≟-Pattern q)) (xs ≟-Patterns ys)
+[]             ≡?-Patterns []             = yes refl
+(arg i p ∷ xs) ≡?-Patterns (arg j q ∷ ys) = ∷-dec (unArg-dec (p ≡?-Pattern q)) (xs ≡?-Patterns ys)
 
-[]      ≟-Patterns (_ ∷ _) = no λ()
-(_ ∷ _) ≟-Patterns []      = no λ()
+[]      ≡?-Patterns (_ ∷ _) = no λ()
+(_ ∷ _) ≡?-Patterns []      = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
+        _≟-Clause_ _≟-Clauses_ _≟_
+        _≟-Sort_ _≟-Pattern_ _≟-Patterns_ _≟-Telescope_
+
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
+_≟-AbsTerm_ = _≡?-AbsTerm_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟-AbsTerm_ was deprecated in v2.4.
+Please use _≡?-AbsTerm_ instead."
+#-}
+_≟-AbsType_ = _≡?-AbsType_
+{-# WARNING_ON_USAGE _≟-AbsType_
+"Warning: _≟-AbsType_ was deprecated in v2.4.
+Please use _≡?-AbsType_ instead."
+#-}
+_≟-ArgTerm_ = _≡?-ArgTerm_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟-ArgTerm_ was deprecated in v2.4.
+Please use _≡?-ArgTerm_ instead."
+#-}
+_≟-ArgType_ = _≡?-ArgType_
+{-# WARNING_ON_USAGE _≟-ArgType_
+"Warning: _≟-ArgType_ was deprecated in v2.4.
+Please use _≡?-ArgType_ instead."
+#-}
+_≟-Args_ = _≡?-Args_
+{-# WARNING_ON_USAGE _≟-Args_
+"Warning: _≟-Args_ was deprecated in v2.4.
+Please use _≡?-Args_ instead."
+#-}
+_≟-Clause_ = _≡?-Clause_
+{-# WARNING_ON_USAGE _≟-Clause_
+"Warning: _≟-Clause_ was deprecated in v2.4.
+Please use _≡?-Clause_ instead."
+#-}
+_≟-Clauses_ = _≡?-Clauses_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟-Clauses_ was deprecated in v2.4.
+Please use _≡?-Clauses_ instead."
+#-}
+_≟-Sort_ = _≡?-Sort_
+{-# WARNING_ON_USAGE _≟-Sort_
+"Warning: _≟-Sort_ was deprecated in v2.4.
+Please use _≡?-Sort_ instead."
+#-}
+_≟-Pattern_ = _≡?-Pattern_
+{-# WARNING_ON_USAGE _≟-Pattern_
+"Warning: _≟-Pattern_ was deprecated in v2.4.
+Please use _≡?-Pattern_ instead."
+#-}
+_≟-Patterns_ = _≡?-Patterns_
+{-# WARNING_ON_USAGE _≟-Patterns_
+"Warning: _≟-Patterns_ was deprecated in v2.4.
+Please use _≡?-Patterns_ instead."
+#-}
+_≟-Telescope_ = _≡?-Telescope_
+{-# WARNING_ON_USAGE _≟-Telescope_
+"Warning: _≟-Telescope_ was deprecated in v2.4.
+Please use _≡?-Telescope_ instead."
+#-}

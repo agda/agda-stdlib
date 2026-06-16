@@ -36,8 +36,9 @@ open ≡.≡-Reasoning
 
 private
   open module D = DecSetoid D
-    hiding (refl) renaming (Carrier to Elem)
-  open import Data.List.Membership.Setoid D.setoid
+    using (_≈_; sym; trans; _≈?_; setoid) renaming (Carrier to Elem)
+  open import Data.List.Membership.DecSetoid D
+    using (_∈_; _∉_; _∈?_)
 
 ------------------------------------------------------------------------
 -- Helper functions
@@ -48,7 +49,7 @@ private
 
   first-occurrence : ∀ {xs} x → x ∈ xs → x ∈ xs
   first-occurrence x (here x≈y)           = here x≈y
-  first-occurrence x (there {x = y} x∈xs) with x ≟ y
+  first-occurrence x (there {x = y} x∈xs) with x ≈? y
   ... | true  because [x≈y] = here (invert [x≈y])
   ... | false because   _   = there $ first-occurrence x x∈xs
 
@@ -67,12 +68,12 @@ private
              first-index x₁ x₁∈xs ≡ first-index x₂ x₂∈xs
     helper (here x₁≈x) (here x₂≈x)           = refl
     helper (here x₁≈x) (there {x = x} x₂∈xs)
-      with x₂ ≟ x | dec-true (x₂ ≟ x) (trans (sym x₁≈x₂) x₁≈x)
+      with x₂ ≈? x | dec-true (x₂ ≈? x) (trans (sym x₁≈x₂) x₁≈x)
     ... | _ | refl = refl
     helper (there {x = x} x₁∈xs) (here x₂≈x)
-      with x₁ ≟ x | dec-true (x₁ ≟ x) (trans x₁≈x₂ x₂≈x)
+      with x₁ ≈? x | dec-true (x₁ ≈? x) (trans x₁≈x₂ x₂≈x)
     ... | _ | refl = refl
-    helper (there {x = x} x₁∈xs) (there x₂∈xs) with x₁ ≟ x | x₂ ≟ x
+    helper (there {x = x} x₁∈xs) (there x₂∈xs) with x₁ ≈? x | x₂ ≈? x
     ... | true  because _ | true  because _ = refl
     ... | false because _ | false because _ = cong suc $ helper x₁∈xs x₂∈xs
     ... | yes x₁≈x | no  x₂≉x = contradiction (trans (sym x₁≈x₂) x₁≈x) x₂≉x
@@ -88,13 +89,13 @@ private
     helper : ∀ {xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
              first-index x₁ x₁∈xs ≡ first-index x₂ x₂∈xs → x₁ ≈ x₂
     helper (here x₁≈x) (here x₂≈x)             _  = trans x₁≈x (sym x₂≈x)
-    helper (here x₁≈x) (there {x = x} x₂∈xs)   _  with x₂ ≟ x
+    helper (here x₁≈x) (there {x = x} x₂∈xs)   _  with x₂ ≈? x
     helper (here x₁≈x) (there {x = x} x₂∈xs)   _  | yes x₂≈x = trans x₁≈x (sym x₂≈x)
     helper (here x₁≈x) (there {x = x} x₂∈xs)   () | no  x₂≉x
-    helper (there {x = x} x₁∈xs) (here x₂≈x)   _  with x₁ ≟ x
+    helper (there {x = x} x₁∈xs) (here x₂≈x)   _  with x₁ ≈? x
     helper (there {x = x} x₁∈xs) (here x₂≈x)   _  | yes x₁≈x = trans x₁≈x (sym x₂≈x)
     helper (there {x = x} x₁∈xs) (here x₂≈x)   () | no  x₁≉x
-    helper (there {x = x} x₁∈xs) (there x₂∈xs) _  with x₁ ≟ x | x₂ ≟ x
+    helper (there {x = x} x₁∈xs) (there x₂∈xs) _  with x₁ ≈? x | x₂ ≈? x
     helper (there {x = x} x₁∈xs) (there x₂∈xs) _  | yes x₁≈x | yes x₂≈x = trans x₁≈x (sym x₂≈x)
     helper (there {x = x} x₁∈xs) (there x₂∈xs) () | yes x₁≈x | no  x₂≉x
     helper (there {x = x} x₁∈xs) (there x₂∈xs) () | no  x₁≉x | yes x₂≈x
@@ -124,7 +125,7 @@ record _⊕_ (counted : List Elem) (n : ℕ) : Set where
 
 -- A countdown can be initialised by proving that Elem is finite.
 
-empty : ∀ {n} → Injection D.setoid (≡.setoid (Fin n)) → [] ⊕ n
+empty : ∀ {n} → Injection setoid (≡.setoid (Fin n)) → [] ⊕ n
 empty inj =
   record { kind      = inj₂ ∘ to
          ; injective = λ {x} {y} {i} eq₁ eq₂ → injective (begin
@@ -147,7 +148,7 @@ emptyFromList counted complete = empty record
 -- Finds out if an element has been counted yet.
 
 lookup : ∀ {counted n} → counted ⊕ n → ∀ x → Dec (x ∈ counted)
-lookup {counted} _ x = Any.any? (_≟_ x) counted
+lookup {counted} _ x = x ∈? counted
 
 -- When no element remains to be counted all elements have been
 -- counted.
@@ -181,7 +182,7 @@ insert {counted} {n} counted⊕1+n x x∉counted =
   helper _ _ _ eq₁ eq₂ refl = injective eq₁ eq₂
 
   kind′ : ∀ y → y ∈ x ∷ counted ⊎ Fin n
-  kind′  y with y ≟ x | kind x | kind y | helper x y
+  kind′  y with y ≈? x | kind x | kind y | helper x y
   kind′  y | yes y≈x | _              | _              | _   = inj₁ (here y≈x)
   kind′  y | _       | inj₁ x∈counted | _              | _   = contradiction x∈counted x∉counted
   kind′  y | _       | _              | inj₁ y∈counted | _   = inj₁ (there y∈counted)
@@ -189,7 +190,7 @@ insert {counted} {n} counted⊕1+n x x∉counted =
     inj₂ (punchOut (y≉x ∘ sym ∘ hlp _ refl refl))
 
   inj : ∀ {y z i} → kind′ y ≡ inj₂ i → kind′ z ≡ inj₂ i → y ≈ z
-  inj {y} {z} eq₁ eq₂ with y ≟ x | z ≟ x | kind x | kind y | kind z
+  inj {y} {z} eq₁ eq₂ with y ≈? x | z ≈? x | kind x | kind y | kind z
                          | helper x y | helper x z | helper y z
   inj ()  _   | yes _ | _     | _              | _      | _      | _ | _ | _
   inj _   ()  | _     | yes _ | _              | _      | _      | _ | _ | _

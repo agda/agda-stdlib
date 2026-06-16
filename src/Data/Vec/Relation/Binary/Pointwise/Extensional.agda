@@ -132,7 +132,7 @@ isDecEquivalence : ∀ {_∼_ : Rel A ℓ} {n} →
                    IsDecEquivalence (Pointwise _∼_ {n = n})
 isDecEquivalence decEquiv = record
   { isEquivalence = isEquivalence DecEq.isEquivalence
-  ; _≟_           = decidable DecEq._≟_
+  ; _≟_           = decidable DecEq._≈?_
   } where module DecEq = IsDecEquivalence decEquiv
 
 ------------------------------------------------------------------------
