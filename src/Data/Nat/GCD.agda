@@ -23,7 +23,7 @@ open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary.Definitions using (tri<; tri>; tri≈; Symmetric)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; subst; cong; cong₂)
+  using (_≡_; _≢_; subst; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable.Core using (Dec)
