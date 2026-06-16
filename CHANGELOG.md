@@ -52,6 +52,11 @@ Deprecated names
   ≟-≢     ↦  ≡?-≢
   ```
 
+* In `Data.Integer.GCD`:
+  ```agda
+  gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[0,0]≡0 ↦ gcd[n,n]≡n
@@ -94,6 +99,11 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Data.Integer.GCD`:
+  ```agda
+  gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
+  ```
 
 * In `Data.Nat.GCD`:
   ```agda
