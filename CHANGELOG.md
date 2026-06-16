@@ -137,6 +137,21 @@ Additions to existing modules
   x-0#≈x : RightIdentity 0# _-_
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
+  ↧ₙ[i/1]≡1 : (i : ℤ) → ↧ₙ (i / 1) ≡ 1
+  n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
+  -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
+                ℤ.- i / n ≡ - (i / n)
+  *-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
+                (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
+  *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
+                (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
+  i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
+                    i / n + j / n ≡ (i ℤ.+ j) / n
+  ```
+
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
   ≄-apartnessRelation        : ApartnessRelation _ _ _
