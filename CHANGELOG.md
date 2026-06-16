@@ -22,6 +22,11 @@ Highlights
 Bug-fixes
 ---------
 
+* Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
+
+Non-backwards compatible changes
+--------------------------------
+
 * A major overhaul of the `Function` hierarchy sees the systematic development
   and use of the theory of the left inverse `from` to a given `Surjective` function
   `to`, as a consequence of which we can achieve full symmetry of `Bijection`, in
@@ -34,9 +39,6 @@ Bug-fixes
   - `Function.Construct.Symmetry.isBijection-≡` is now redundant, as an instance of the above lemma, so has been deleted.
   - Similarly, `Function.Construct.Symmetry.bijection` no longer requires a `Congruent` hypothesis, and `Function.Construct.Symmetry.bijection-≡` is now redundant/deleted.
   - `Function.Properties.Bijection.sym-≡` is now redundant as an instance of a fully general symmetry property `Function.Properties.Bijection.sym`, hence also deleted.
-
-Non-backwards compatible changes
---------------------------------
 
 * [issue #2547](https://github.com/agda/agda-stdlib/issues/2547) The names of the *implicit* binders in the following definitions have been rectified to be consistent with those in the rest of `Relation.Binary.Definitions`: `Transitive`, `Antisym`, and `Antisymmetric`.
 
@@ -112,6 +114,13 @@ New modules
 
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
   of consecutive elements of a stream are related.
+
+* A new type of lists that grow on the right.
+  This is typically useful to model contexts of typing rules
+  or type accumulators that need to be reversed in the base case.
+  ```
+  Data.SnocList.Base
+  ```
 
 Additions to existing modules
 -----------------------------
