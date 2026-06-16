@@ -47,7 +47,7 @@ module _ {S : Setoid a ℓ₁} {T : Setoid b ℓ₂} (injection : Injection S T)
   open Injection injection
 
   via-injection : Decidable Eq₂._≈_ → Decidable Eq₁._≈_
-  via-injection _≟_ x y = map′ injective cong (to x ≟ to y)
+  via-injection _≈?_ x y = map′ injective cong (to x ≈? to y)
 
 ------------------------------------------------------------------------
 -- A lemma relating True and Dec

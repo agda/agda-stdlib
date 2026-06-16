@@ -22,7 +22,7 @@ open import Relation.Nullary.Decidable using (does)
 -- The module is parametrised by the type of labels, which should come
 -- with decidable equality.
 
-module Data.Record {ℓ} (Label : Set ℓ) (_≟_ : DecidableEquality Label) where
+module Data.Record {ℓ} (Label : Set ℓ) (_≡?_ : DecidableEquality Label) where
 
 ------------------------------------------------------------------------
 -- A Σ-type with a manifest field
@@ -89,7 +89,7 @@ infix 4 _∈_
 
 _∈_ : ∀ {s} → Label → Signature s → Set
 ℓ ∈ Sig =
-  foldr (λ ℓ′ → if does (ℓ ≟ ℓ′) then (λ _ → ⊤) else id) ⊥ (labels Sig)
+  foldr (λ ℓ′ → if does (ℓ ≡? ℓ′) then (λ _ → ⊤) else id) ⊥ (labels Sig)
 
 ------------------------------------------------------------------------
 -- Projections
@@ -100,10 +100,10 @@ _∈_ : ∀ {s} → Label → Signature s → Set
 Restrict : ∀ {s} (Sig : Signature s) (ℓ : Label) → ℓ ∈ Sig →
            Signature s
 Restrict ∅              ℓ ()
-Restrict (Sig , ℓ′ ∶ A) ℓ ℓ∈ with does (ℓ ≟ ℓ′)
+Restrict (Sig , ℓ′ ∶ A) ℓ ℓ∈ with does (ℓ ≡? ℓ′)
 ... | true  = Sig
 ... | false = Restrict Sig ℓ ℓ∈
-Restrict (Sig , ℓ′ ≔ a) ℓ ℓ∈ with does (ℓ ≟ ℓ′)
+Restrict (Sig , ℓ′ ≔ a) ℓ ℓ∈ with does (ℓ ≡? ℓ′)
 ... | true  = Sig
 ... | false = Restrict Sig ℓ ℓ∈
 
@@ -113,10 +113,10 @@ Restricted Sig ℓ ℓ∈ = Record (Restrict Sig ℓ ℓ∈)
 Proj : ∀ {s} (Sig : Signature s) (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} →
        Restricted Sig ℓ ℓ∈ → Set s
 Proj ∅              ℓ {}
-Proj (Sig , ℓ′ ∶ A) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+Proj (Sig , ℓ′ ∶ A) ℓ {ℓ∈} with does (ℓ ≡? ℓ′)
 ... | true  = A
 ... | false = Proj Sig ℓ {ℓ∈}
-Proj (_,_≔_ Sig ℓ′ {A = A} a) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+Proj (_,_≔_ Sig ℓ′ {A = A} a) ℓ {ℓ∈} with does (ℓ ≡? ℓ′)
 ... | true  = A
 ... | false = Proj Sig ℓ {ℓ∈}
 
@@ -127,10 +127,10 @@ infixl 5 _∣_
 _∣_ : ∀ {s} {Sig : Signature s} → Record Sig →
       (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} → Restricted Sig ℓ ℓ∈
 _∣_ {Sig = ∅}            r       ℓ {}
-_∣_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+_∣_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with does (ℓ ≡? ℓ′)
 ... | true  = Σ.proj₁ r
 ... | false = _∣_ (Σ.proj₁ r) ℓ {ℓ∈}
-_∣_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+_∣_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with does (ℓ ≡? ℓ′)
 ... | true  = Manifest-Σ.proj₁ r
 ... | false = _∣_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
 
@@ -140,10 +140,10 @@ _·_ : ∀ {s} {Sig : Signature s} (r : Record Sig)
       (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} →
       Proj Sig ℓ {ℓ∈} (r ∣ ℓ)
 _·_ {Sig = ∅}            r       ℓ {}
-_·_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+_·_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with does (ℓ ≡? ℓ′)
 ... | true  = Σ.proj₂ r
 ... | false = _·_ (Σ.proj₁ r) ℓ {ℓ∈}
-_·_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with does (ℓ ≟ ℓ′)
+_·_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with does (ℓ ≡? ℓ′)
 ... | true  = Manifest-Σ.proj₂ r
 ... | false = _·_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
 
@@ -159,10 +159,10 @@ mutual
   _With_≔_ : ∀ {s} (Sig : Signature s) (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} →
              ((r : Restricted Sig ℓ ℓ∈) → Proj Sig ℓ r) → Signature s
   _With_≔_ ∅ ℓ {} a
-  _With_≔_ (Sig , ℓ′ ∶ A)   ℓ {ℓ∈} a with does (ℓ ≟ ℓ′)
+  _With_≔_ (Sig , ℓ′ ∶ A)   ℓ {ℓ∈} a with does (ℓ ≡? ℓ′)
   ... | true  = Sig                   , ℓ′ ≔ a
   ... | false = _With_≔_ Sig ℓ {ℓ∈} a , ℓ′ ∶ A ∘ drop-With
-  _With_≔_  (Sig , ℓ′ ≔ a′) ℓ {ℓ∈} a with does (ℓ ≟ ℓ′)
+  _With_≔_  (Sig , ℓ′ ≔ a′) ℓ {ℓ∈} a with does (ℓ ≡? ℓ′)
   ... | true  = Sig                   , ℓ′ ≔ a
   ... | false = _With_≔_ Sig ℓ {ℓ∈} a , ℓ′ ≔ a′ ∘ drop-With
 
@@ -170,9 +170,9 @@ mutual
               {a : (r : Restricted Sig ℓ ℓ∈) → Proj Sig ℓ r} →
               Record (_With_≔_ Sig ℓ {ℓ∈} a) → Record Sig
   drop-With {Sig = ∅} {ℓ∈ = ()}      r
-  drop-With {Sig = Sig , ℓ′ ∶ A} {ℓ} (rec r) with does (ℓ ≟ ℓ′)
+  drop-With {Sig = Sig , ℓ′ ∶ A} {ℓ} (rec r) with does (ℓ ≡? ℓ′)
   ... | true  = rec (Manifest-Σ.proj₁ r , Manifest-Σ.proj₂ r)
   ... | false = rec (drop-With (Σ.proj₁ r) , Σ.proj₂ r)
-  drop-With {Sig = Sig , ℓ′ ≔ a} {ℓ} (rec r) with does (ℓ ≟ ℓ′)
+  drop-With {Sig = Sig , ℓ′ ≔ a} {ℓ} (rec r) with does (ℓ ≡? ℓ′)
   ... | true  = rec (Manifest-Σ.proj₁ r ,)
   ... | false = rec (drop-With (Manifest-Σ.proj₁ r) ,)
