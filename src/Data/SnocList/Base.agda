@@ -40,13 +40,12 @@ private
 -- Standard lists grow on the left and are know as `forwards' lists
 -- because their elements are traversed left-to-right. For didactic
 -- reasons we rename the type and its constructors in this module so
--- that the type constructor (List>) and the data constructors ([>]
--- and _:>_) all explicitly mention the forwards direction.
+-- that the type constructor (List>) and the cons constructor (_:>_)
+-- all explicitly mention the forwards direction.
 
 open import Data.List.Base as List>
-  using ()
+  using ([])
   renaming ( List to List>
-           ; [] to [>]
            ; _∷_ to _:>_
            )
   public
@@ -62,7 +61,7 @@ open import Data.List.Base as List>
 infixl 5 _<:_
 
 data List< (A : Set a) : Set a where
-  [<] : List< A
+  [] : List< A
   _<:_ : List< A → A → List< A
 
 ------------------------------------------------------------------------
@@ -100,29 +99,29 @@ data List< (A : Set a) : Set a where
 -- Fish
 infixl 5 _<><_
 _<><_ : List< A → List> A → List< A
-sx <>< [>]      = sx
+sx <>< []        = sx
 sx <>< (x :> xs) = (sx <: x) <>< xs
 
 -- Chips (is Fish's best friend)
 infixr 6 _<>>_
 _<>>_ : List< A → List> A → List> A
-[<]       <>> xs = xs
+[]        <>> xs = xs
 (sx <: x) <>> xs = sx <>> (x :> xs)
 
 -- Some examples showing that these operations are order-preserving.
 private
 
   [<1,2] : List< ℕ
-  [<1,2] = [<] <: 1 <: 2
+  [<1,2] = [] <: 1 <: 2
 
   [>3,4] : List> ℕ
-  [>3,4] = 3 :> 4 :> [>]
+  [>3,4] = 3 :> 4 :> []
 
   [<1,2,3,4] : List< ℕ
-  [<1,2,3,4] = [<] <: 1 <: 2 <: 3 <: 4
+  [<1,2,3,4] = [] <: 1 <: 2 <: 3 <: 4
 
   [>1,2,3,4] : List> ℕ
-  [>1,2,3,4] = 1 :> 2 :> 3 :> 4 :> [>]
+  [>1,2,3,4] = 1 :> 2 :> 3 :> 4 :> []
 
   -- Order-preserving combination producing a backwards list
   _ : [<1,2] <>< [>3,4] ≡ [<1,2,3,4]
@@ -133,35 +132,35 @@ private
   _ = refl
 
 toList> : List< A → List> A
-toList> = _<>> [>]
+toList> = _<>> []
 
 fromList> : List> A → List< A
-fromList> = [<] <><_
+fromList> = [] <><_
 
 ------------------------------------------------------------------------
 -- Operations to transform snoc lists
 
 map : (A → B) → List< A → List< B
-map f [<]      = [<]
+map f []        = []
 map f (sx <: x) = map f sx <: f x
 
 infixl 5 _++_
 _++_ : List< A → List< A → List< A
-sx ++ [<] = sx
+sx ++ []        = sx
 sx ++ (sy <: x) = (sx ++ sy) <: x
 
 intersperse : A → List< A → List< A
-intersperse x [<]       = [<]
-intersperse x sx@([<] <: _) = sx
-intersperse x (sy <: y) = intersperse x sy <: x <: y
+intersperse x []           = []
+intersperse x sx@([] <: _) = sx
+intersperse x (sy <: y)    = intersperse x sy <: x <: y
 
 intercalate : List< A → List< (List< A) → List< A
-intercalate sx [<]         = [<]
-intercalate sx ([<] <: sy) = sy
+intercalate sx []          = []
+intercalate sx ([] <: sy)  = sy
 intercalate sx (sys <: sy) = intercalate sx sys ++ sx ++ sy
 
 cartesianProductWith : (A → B → C) → List< A → List< B → List< C
-cartesianProductWith f [<]       _  = [<]
+cartesianProductWith f []        _  = []
 cartesianProductWith f (sx <: x) sy = cartesianProductWith f sx sy ++ map (f x) sy
 
 cartesianProduct : List< A → List< B → List< (A × B)
@@ -171,23 +170,23 @@ cartesianProduct = cartesianProductWith _,_
 -- Aligning and zipping
 
 alignWith : (These A B → C) → List< A → List< B → List< C
-alignWith f [<]       bs        = map (f ∘′ that) bs
-alignWith f as        [<]       = map (f ∘′ this) as
+alignWith f []        bs        = map (f ∘′ that) bs
+alignWith f as        []        = map (f ∘′ this) as
 alignWith f (as <: a) (bs <: b) = alignWith f as bs <: f (these a b)
 
 zipWith : (A → B → C) → List< A → List< B → List< C
 zipWith f (sx <: x) (sy <: y) = zipWith f sx sy <: f x y
-zipWith f _        _          = [<]
+zipWith f _         _         = []
 
 unalignWith : (A → These B C) → List< A → List< B × List< C
-unalignWith f [<]       = [<] , [<]
+unalignWith f []        = [] , []
 unalignWith f (as <: a) with f a
 ... | this b    = Product.map₁ (_<: b) (unalignWith f as)
 ... | that c    = Product.map₂ (_<: c) (unalignWith f as)
 ... | these b c = Product.map (_<: b) (_<: c) (unalignWith f as)
 
 unzipWith : (A → B × C) → List< A → List< B × List< C
-unzipWith f [<]         = [<] , [<]
+unzipWith f []          = [] , []
 unzipWith f (xsy <: xy) = Product.zip _<:_ _<:_ (unzipWith f xsy) (f xy)
 
 partitionSumsWith : (A → B ⊎ C) → List< A → List< B × List< C
@@ -209,8 +208,8 @@ partitionSums : List< (A ⊎ B) → List< A × List< B
 partitionSums = partitionSumsWith id
 
 merge : {R : Rel A ℓ} → B.Decidable R → List< A → List< A → List< A
-merge R? [<]           sy            = sy
-merge R? sx            [<]           = sx
+merge R? []            sy            = sy
+merge R? sx            []            = sx
 merge R? sxx@(sx <: x) syy@(sy <: y) = if does (R? x y)
   then merge R? sx  syy <: x
   else merge R? sxx sy  <: y
@@ -219,34 +218,34 @@ merge R? sxx@(sx <: x) syy@(sy <: y) = if does (R? x y)
 -- Operations for reducing lists
 
 foldr : (A → B → B) → B → List< A → B
-foldr c n [<]       = n
+foldr c n []        = n
 foldr c n (sx <: x) = foldr c (c x n) sx
 
 foldl : (A → B → A) → A → List< B → A
-foldl c n [<]       = n
+foldl c n []        = n
 foldl c n (sx <: x) = c (foldl c n sx) x
 
 concat : List< (List< A) → List< A
-concat = foldl _++_ [<]
+concat = foldl _++_ []
 
-_ : concat ([<] <: [<1,2] <: (fromList> [>3,4])) ≡ [<1,2,3,4]
+_ : concat ([] <: [<1,2] <: (fromList> [>3,4])) ≡ [<1,2,3,4]
 _ = refl
 
 concatMap : (A → List< B) → List< A → List< B
 concatMap f = concat ∘′ map f
 
 -- Both List>.concatMap & List<.concatMap behave the same
-_ :      (concatMap (λ n → [<] <: n <: suc n) [<1,2,3,4]) <>> [>]
-  ≡ List>.concatMap (λ n → n :> suc n :> [>]) ([<1,2,3,4] <>> [>])
+_ :      (concatMap (λ n → [] <: n <: suc n) [<1,2,3,4]) <>> []
+  ≡ List>.concatMap (λ n → n :> suc n :> []) ([<1,2,3,4] <>> [])
 _ = refl
 
 ap : List< (A → B) → List< A → List< B
 ap fs as = concatMap (flip map as) fs
 
 catMaybes : List< (Maybe A) → List< A
-catMaybes = foldl (flip $′ maybe′ (flip _<:_) id) [<]
+catMaybes = foldl (flip $′ maybe′ (flip _<:_) id) []
 
-_ : let trash = [<] <: nothing in
+_ : let trash = [] <: nothing in
     catMaybes (trash ++ map just [<1,2,3,4] ++ trash) ≡ [<1,2,3,4]
 _ = refl
 
@@ -254,7 +253,7 @@ mapMaybe : (A → Maybe B) → List< A → List< B
 mapMaybe p = catMaybes ∘′ map p
 
 null : List< A → Bool
-null [<]      = true
+null []       = true
 null (_ <: _) = false
 
 length : List< A → ℕ
@@ -264,29 +263,29 @@ length = foldl (flip $′ const suc) 0
 -- Operations for constructing lists
 
 fromMaybe : Maybe A → List< A
-fromMaybe (just x) = [<] <: x
-fromMaybe nothing  = [<]
+fromMaybe (just x) = [] <: x
+fromMaybe nothing  = []
 
 replicate : ℕ → A → List< A
-replicate zero    x = [<]
+replicate zero    x = []
 replicate (suc n) x = replicate n x <: x
 
 iterate : (A → A) → A → ℕ → List< A
-iterate f e zero    = [<]
+iterate f e zero    = []
 iterate f e (suc n) = iterate f (f e) n <: e
 
 inits : List< A → List< (List< A)
-inits {A = A} sx = tail sx <: [<]
+inits {A = A} sx = tail sx <: []
   module Inits where
     tail : List< A → List< (List< A)
-    tail [<]       = [<]
-    tail (sx <: x) = map (_<: x) (tail sx) <: ([<] <: x)
+    tail []        = []
+    tail (sx <: x) = map (_<: x) (tail sx) <: ([] <: x)
 
 tails : List< A → List< (List< A)
 tails {A = A} sx = tail sx <: sx
   module Tails where
     tail : List< A → List< (List< A)
-    tail [<]       = [<]
+    tail []        = []
     tail (sx <: _) = tail sx <: sx
 
 insertAt : (sx : List< A) → Fin (suc (length sx)) → A → List< A
@@ -304,15 +303,15 @@ lookup (sx <: x) (suc i) = lookup sx i
 -- Tabulation
 
 applyUpTo : (ℕ → A) → ℕ → List< A
-applyUpTo f zero    = [<]
+applyUpTo f zero    = []
 applyUpTo f (suc n) = applyUpTo (f ∘′ suc) n <: f zero
 
 applyDownFrom : (ℕ → A) → ℕ → List< A
-applyDownFrom f zero    = [<]
+applyDownFrom f zero    = []
 applyDownFrom f (suc n) = applyDownFrom f n <: f n
 
 tabulate : ∀ {n} (f : Fin n → A) → List< A
-tabulate {n = zero}  f = [<]
+tabulate {n = zero}  f = []
 tabulate {n = suc n} f = tabulate (f ∘′ suc) <: f zero
 
 -- Numerical
@@ -329,8 +328,8 @@ allFin n = tabulate id
 unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List< A
-unfold P f {n = zero}  s = [<]
-unfold P f {n = suc n} s = maybe′ (λ (x , s′) → unfold P f s′ <: x) [<] (f s)
+unfold P f {n = zero}  s = []
+unfold P f {n = suc n} s = maybe′ (λ (x , s′) → unfold P f s′ <: x) [] (f s)
 
 ------------------------------------------------------------------------
 -- Operations for reversing lists
@@ -339,7 +338,7 @@ reverseAcc : List< A → List< A → List< A
 reverseAcc = foldr (flip _<:_)
 
 reverse : List< A → List< A
-reverse = reverseAcc [<]
+reverse = reverseAcc []
 
 _ : toList> (reverse [<1,2,3,4]) ≡ List>.reverse (toList> [<1,2,3,4])
 _ = refl
@@ -360,20 +359,20 @@ _ = refl
 infixr 6 _ˡ∷_
 
 _ˡ∷_ : A → List< A → List< A
-x ˡ∷ sx = ([<] <: x) ++ sx
+x ˡ∷ sx = ([] <: x) ++ sx
 
 -- Backwards initialisation
 
 infixr 5 _ˡ∷′_
 
 data InitLast {A : Set a} : List< A → Set a where
-  []    : InitLast [<]
+  []    : InitLast []
   _ˡ∷′_ : (x : A) (sx : List< A) → InitLast (x ˡ∷ sx)
 
 initLast : (sx : List< A) → InitLast sx
-initLast [<]       = []
+initLast []        = []
 initLast (sx <: x) with initLast sx
-... | []       = x ˡ∷′ [<]
+... | []       = x ˡ∷′ []
 ... | y ˡ∷′ sy = y ˡ∷′ (sy <: x)
 
 -- unsnoc, but from the left
@@ -391,35 +390,35 @@ uncons as with initLast as
 -- have a refined type.
 
 unsnoc : List< A → Maybe (List< A × A)
-unsnoc [<]       = nothing
+unsnoc []        = nothing
 unsnoc (sx <: x) = just (sx , x)
 
 head : List< A → Maybe A
-head [<]      = nothing
+head []       = nothing
 head (_ <: x) = just x
 
 tail : List< A → Maybe (List< A)
-tail [<]       = nothing
+tail []        = nothing
 tail (sx <: _) = just sx
 
 last : List< A → Maybe A
-last [<]        = nothing
-last ([<] <: x) = just x
-last (sx <: _)  = last sx
+last []        = nothing
+last ([] <: x) = just x
+last (sx <: _) = last sx
 
 take : ℕ → List< A → List< A
-take zero    sx        = [<]
-take (suc n) [<]       = [<]
+take zero    sx        = []
+take (suc n) []        = []
 take (suc n) (sx <: x) = take n sx <: x
 
 drop : ℕ → List< A → List< A
 drop zero    sx        = sx
-drop (suc n) [<]       = [<]
+drop (suc n) []        = []
 drop (suc n) (sx <: x) = drop n sx
 
 splitAt : ℕ → List< A → List< A × List< A
-splitAt zero    sx        = (sx , [<])
-splitAt (suc n) [<]       = ([<] , [<])
+splitAt zero    sx        = (sx , [])
+splitAt (suc n) []        = ([] , [])
 splitAt (suc n) (sx <: x) = Product.map₂ (_<: x) (splitAt n sx)
 
 removeAt : (sx : List< A) → Fin (length sx) → List< A
@@ -448,15 +447,15 @@ removeAt (sx <: x) (suc i)  = removeAt sx i <: x
 -- rather than `takeWhileᵇ (_≤ᵇ 10) sx`.
 
 takeWhile : ∀ {P : Pred A p} → U.Decidable P → List< A → List< A
-takeWhile P? [<]       = [<]
+takeWhile P? []        = []
 takeWhile P? (sx <: x) =
- if does (P? x) then takeWhile P? sx <: x else [<]
+ if does (P? x) then takeWhile P? sx <: x else []
 
 takeWhileᵇ : (A → Bool) → List< A → List< A
 takeWhileᵇ p = takeWhile (T? ∘ p)
 
 dropWhile : ∀ {P : Pred A p} → U.Decidable P → List< A → List< A
-dropWhile P? [<]           = [<]
+dropWhile P? []            = []
 dropWhile P? sxx@(sx <: x) =
   if does (P? x) then dropWhile P? sx else sxx
 
@@ -464,7 +463,7 @@ dropWhileᵇ : (A → Bool) → List< A → List< A
 dropWhileᵇ p = dropWhile (T? ∘ p)
 
 filter : ∀ {P : Pred A p} → U.Decidable P → List< A → List< A
-filter P? [<]       = [<]
+filter P? []        = []
 filter P? (sx <: x) =
   let ih = filter P? sx in
   if does (P? x) then ih <: x else ih
@@ -473,7 +472,7 @@ filterᵇ : (A → Bool) → List< A → List< A
 filterᵇ p = filter (T? ∘ p)
 
 partition : ∀ {P : Pred A p} → U.Decidable P → List< A → (List< A × List< A)
-partition P? [<]       = ([<] , [<])
+partition P? []        = ([] , [])
 partition P? (sx <: x) with does (P? x) | partition P? sx
 ... | true  | (sy , sz) = (sy <: x , sz)
 ... | false | (sy , sz) = (sy , sz <: x)
@@ -482,10 +481,10 @@ partitionᵇ : (A → Bool) → List< A → List< A × List< A
 partitionᵇ p = partition (T? ∘ p)
 
 span : ∀ {P : Pred A p} → U.Decidable P → List< A → (List< A × List< A)
-span P? [<]           = ([<] , [<])
+span P? []            = ([] , [])
 span P? sxx@(sx <: x) with does (P? x)
 ... | true  = Product.map₂ (_<: x) (span P? sx)
-... | false = (sxx , [<])
+... | false = (sxx , [])
 
 spanᵇ : (A → Bool) → List< A → List< A × List< A
 spanᵇ p = span (T? ∘ p)
@@ -501,23 +500,23 @@ breakᵇ p = break (T? ∘ p)
 -- Some lines may be empty if the input contains at least two
 -- consecutive newline characters.
 linesBy : ∀ {P : Pred A p} → U.Decidable P → List< A → List< (List< A)
-linesBy {A = A} P? cs = go cs [>] where
+linesBy {A = A} P? cs = go cs [] where
 
   go : List< A → List> A → List< (List< A)
-  go [<]       l = [<] <: fromList> l
+  go []        l = [] <: fromList> l
   go (cs <: c) l = if does (P? c)
-    then go cs [>] <: fromList> l
+    then go cs [] <: fromList> l
     else go cs (c :> l)
 
 linesByᵇ : (A → Bool) → List< A → List< (List< A)
 linesByᵇ p = linesBy (T? ∘ p)
 
-_ : linesByᵇ (ℕ._≤ᵇ 0) ([<] <: 0 <: 1 <: 2 <: 0 <: 3 <: 0 <: 0 <: 4) ≡
-   [<] <: [<] <: ([<] <: 1 <: 2) <: ([<] <: 3) <: [<] <: ([<] <: 4)
+_ : linesByᵇ (ℕ._≤ᵇ 0) ([] <: 0 <: 1 <: 2 <: 0 <: 3 <: 0 <: 0 <: 4) ≡
+   [] <: [] <: ([] <: 1 <: 2) <: ([] <: 3) <: [] <: ([] <: 4)
 _ = refl
 
-_ : linesByᵇ (ℕ._≤ᵇ 0) ([<] <: 1 <: 2 <: 0 <: 3 <: 0 <: 0 <: 4) ≡
-   [<] <: ([<] <: 1 <: 2) <: ([<] <: 3) <: [<] <: ([<] <: 4)
+_ : linesByᵇ (ℕ._≤ᵇ 0) ([] <: 1 <: 2 <: 0 <: 3 <: 0 <: 0 <: 4) ≡
+   [] <: ([] <: 1 <: 2) <: ([] <: 3) <: [] <: ([] <: 4)
 _ = refl
 
 -- The predicate `P` represents the notion of space character for the
@@ -525,16 +524,16 @@ _ = refl
 -- All the words are non empty and the output does not contain any space
 -- characters.
 wordsBy : ∀ {P : Pred A p} → U.Decidable P → List< A → List< (List< A)
-wordsBy {A = A} P? cs = go cs [>] where
+wordsBy {A = A} P? cs = go cs [] where
 
   snoc : List< (List< A) → List> A → List< (List< A)
-  snoc sas [>] = sas
-  snoc sas as  = sas <: fromList> as
+  snoc sas [] = sas
+  snoc sas as = sas <: fromList> as
 
   go : List< A → List> A → List< (List< A)
-  go [<]       w = snoc [<] w
+  go []        w = snoc [] w
   go (cs <: c) w = if does (P? c)
-    then snoc (go cs [>]) w
+    then snoc (go cs []) w
     else go cs (c :> w)
     -- notice that the order cs - c - w in go's LHS
     -- stays the same in the recursive call
@@ -543,8 +542,8 @@ wordsByᵇ : (A → Bool) → List< A → List< (List< A)
 wordsByᵇ p = wordsBy (T? ∘ p)
 
 derun : ∀ {R : Rel A p} → B.Decidable R → List< A → List< A
-derun R? [<] = [<]
-derun R? sx@([<] <: x) = sx
+derun R? []                 = []
+derun R? sx@([] <: x)       = sx
 derun R? (sx@(_ <: y) <: x) with does (R? x y) | derun R? sx
 ... | true  | sy = sy
 ... | false | sy = sy <: x
@@ -553,7 +552,7 @@ derunᵇ : (A → A → Bool) → List< A → List< A
 derunᵇ r = derun (T? ∘₂ r)
 
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List< A → List< A
-deduplicate R? [<] = [<]
+deduplicate R? []        = []
 deduplicate R? (sx <: x) = filter (¬? ∘ R? x) (deduplicate R? sx) <: x
 
 deduplicateᵇ : (A → A → Bool) → List< A → List< A
@@ -561,7 +560,7 @@ deduplicateᵇ r = deduplicate (T? ∘₂ r)
 
 -- Finds the first element satisfying the boolean predicate
 find : ∀ {P : Pred A p} → U.Decidable P → List< A → Maybe A
-find P? [<]       = nothing
+find P? []        = nothing
 find P? (sx <: x) = if does (P? x) then just x else find P? sx
 
 findᵇ : (A → Bool) → List< A → Maybe A
@@ -569,7 +568,7 @@ findᵇ p = find (T? ∘ p)
 
 -- Finds the index of the first element satisfying the boolean predicate
 findIndex : ∀ {P : Pred A p} → U.Decidable P → (sx : List< A) → Maybe (Fin (length sx))
-findIndex P? [<]       = nothing
+findIndex P? []        = nothing
 findIndex P? (sx <: x) = if does (P? x)
   then just zero
   else Maybe.map suc (findIndex P? sx)
@@ -579,7 +578,7 @@ findIndexᵇ p = findIndex (T? ∘ p)
 
 -- Finds indices of all the elements satisfying the boolean predicate
 findIndices : ∀ {P : Pred A p} → U.Decidable P → (sx : List< A) → List< (Fin (length sx))
-findIndices P? [<]       = [<]
+findIndices P? []        = []
 findIndices P? (sx <: x) = if does (P? x)
   then indices <: zero
   else indices
@@ -630,5 +629,5 @@ module _ (A : Set a) where
     { Carrier = List< A
     ; _≈_ = _≡_
     ; _∙_ = _++_
-    ; ε = [<]
+    ; ε = []
     }
