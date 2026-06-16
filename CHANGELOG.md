@@ -90,8 +90,26 @@ Deprecated names
 New modules
 -----------
 
+* `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
+  of consecutive elements of a stream are related.
+
 Additions to existing modules
 -----------------------------
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
+  ↧ₙ[i/1]≡1 : (i : ℤ) → ↧ₙ (i / 1) ≡ 1
+  n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
+  -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
+                ℤ.- i / n ≡ - (i / n)
+  *-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
+                (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
+  *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
+                (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
+  i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
+                    i / n + j / n ≡ (i ℤ.+ j) / n
+  ```
 
 * In `Function.Consequences`:
   ```agda
@@ -125,4 +143,3 @@ Additions to existing modules
   HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
   HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y)
   ```
-
