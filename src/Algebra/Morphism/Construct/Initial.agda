@@ -55,7 +55,7 @@ module _ (M : RawMagma m ℓm) where
   isMagmaHomomorphism : IsMagmaHomomorphism rawMagma M zero
   isMagmaHomomorphism = record
     { isRelHomomorphism = record { cong = cong _≈_ }
-    ; homo = λ()
+    ; ∙-homo = λ()
     }
 
   isMagmaMonomorphism : IsMagmaMonomorphism rawMagma M zero

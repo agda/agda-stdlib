@@ -38,6 +38,10 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* [issue #2547](https://github.com/agda/agda-stdlib/issues/2547) The names of the *implicit* binders in the following definitions have been rectified to be consistent with those in the rest of `Relation.Binary.Definitions`: `Transitive`, `Antisym`, and `Antisymmetric`.
+
+* [Issue #2548](https://github.com/agda/agda-stdlib/issues/2458) Consistent with other names (such as `∙-cong`, `ε-homo` etc.) in `Algebra.*`, the field name of the basic homomorphism property in `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed from `homo` to `∙-homo`.
+
 Minor improvements
 ------------------
 
@@ -48,6 +52,11 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Morphism.Structures`:
+  ```agda
+  homo  ↦  ∙-homo
+  ```
 
 * In `Data.Fin.Properties`:
   ```agda
@@ -101,8 +110,26 @@ Deprecated names
 New modules
 -----------
 
+* `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
+  of consecutive elements of a stream are related.
+
 Additions to existing modules
 -----------------------------
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
+  ↧ₙ[i/1]≡1 : (i : ℤ) → ↧ₙ (i / 1) ≡ 1
+  n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
+  -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
+                ℤ.- i / n ≡ - (i / n)
+  *-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
+                (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
+  *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
+                (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
+  i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
+                    i / n + j / n ≡ (i ℤ.+ j) / n
+  ```
 
 * In `Function.Bundles.Bijection`:
   ```agda
@@ -174,4 +201,3 @@ Additions to existing modules
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   from-injective   : Injective _≈₂_ _≈₁_ from
-  ```
