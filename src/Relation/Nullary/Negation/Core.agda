@@ -4,7 +4,7 @@
 -- Core properties related to negation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Negation.Core where
 

@@ -5,7 +5,7 @@
 -- `Codata.Sized.Stream.Effectful` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Stream.Categorical where
 

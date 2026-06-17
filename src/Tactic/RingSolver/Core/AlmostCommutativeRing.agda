@@ -4,7 +4,7 @@
 -- Almost commutative rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Tactic.RingSolver.Core.AlmostCommutativeRing where
 

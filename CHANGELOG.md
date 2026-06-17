@@ -6,6 +6,8 @@ The library has been tested using Agda 2.8.0.
 Highlights
 ----------
 
+* Modules that previously used `--cubical-compatible` once again use `--without-K`.
+
 * The notation for `Decidable` relations has been (partially) standardised: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
   - `_≈?_` (ditto.) for the general `IsDecEquivalence`
@@ -52,6 +54,16 @@ Deprecated names
   ≟-≡      ↦  ≡?-≡
   ≟-≡-refl ↦  ≡?-≡-refl
   ≟-≢     ↦  ≡?-≢
+  ```
+
+* In `Data.Integer.GCD`:
+  ```agda
+  gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
+  ```
+
+* In `Data.Nat.GCD`:
+  ```agda
+  gcd[0,0]≡0 ↦ gcd[n,n]≡n
   ```
 
 * In `Data.Nat.Properties`:
@@ -101,6 +113,16 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Data.Integer.GCD`:
+  ```agda
+  gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
+  ```
+
+* In `Data.Nat.GCD`:
+  ```agda
+  gcd[n,n]≡n : ∀ n → gcd n n ≡ n
+  ```
 
 * In `Data.Rational.Properties`:
   ```agda

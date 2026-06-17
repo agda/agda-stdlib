@@ -22,7 +22,7 @@
 -- Please see README.Tactic.Cong for more details.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Tactic.Cong where
 

@@ -4,7 +4,7 @@
 -- Endomorphisms on a Set
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Endo.Propositional {a} (A : Set a) where
 

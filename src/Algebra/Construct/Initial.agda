@@ -8,7 +8,7 @@
 -- object is *also* the initial object in the relevant category.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level)
 

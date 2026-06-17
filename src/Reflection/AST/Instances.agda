@@ -4,7 +4,7 @@
 -- Instances for reflected syntax
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.Instances where
 

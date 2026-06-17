@@ -9,7 +9,7 @@
 -- See README.Data.List.Fresh and README.Data.Trie.NonDependent for
 -- examples of how to use fresh lists.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Fresh where
 
