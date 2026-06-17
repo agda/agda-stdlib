@@ -4,7 +4,7 @@
 -- Many properties which hold for `_∼_` also hold for `_∼_ on f`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.On where
 

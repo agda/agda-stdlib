@@ -4,7 +4,7 @@
 -- Properties of a monomorphism between bimodules
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Module.Bundles.Raw using (RawBimodule)
 open import Algebra.Module.Morphism.Structures using (IsBimoduleMonomorphism)

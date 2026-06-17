@@ -4,7 +4,7 @@
 -- Vectors where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Unary.Any {a} {A : Set a} where
 

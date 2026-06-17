@@ -8,7 +8,7 @@
 -- See `Data.Nat.Properties` or `Relation.Binary.Reasoning.PartialOrder`
 -- for examples of how to instantiate this module.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 
 open import Relation.Binary.Core using (Rel; _⇒_)

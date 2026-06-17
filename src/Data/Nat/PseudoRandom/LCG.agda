@@ -5,7 +5,7 @@
 -- /!\ NB: LCGs must not be used for cryptographic applications
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.PseudoRandom.LCG where
 

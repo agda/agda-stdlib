@@ -6,7 +6,7 @@
 -- flips both the relation and the underlying equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Flip.Ord where
 
