@@ -38,8 +38,8 @@ gcd[i,j]∣j i j = ℕ.gcd[m,n]∣n ∣ i ∣ ∣ j ∣
 gcd-greatest : ∀ {i j c} → c ∣ i → c ∣ j → c ∣ gcd i j
 gcd-greatest c∣i c∣j = ℕ.gcd-greatest c∣i c∣j
 
-gcd[0,0]≡0 : gcd 0ℤ 0ℤ ≡ 0ℤ
-gcd[0,0]≡0 = cong (+_) ℕ.gcd[0,0]≡0
+gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣ i ∣
+gcd[i,i]≡∣i∣ i = cong (+_) (ℕ.gcd[n,n]≡n ∣ i ∣)
 
 gcd[i,j]≡0⇒i≡0 : ∀ i j → gcd i j ≡ 0ℤ → i ≡ 0ℤ
 gcd[i,j]≡0⇒i≡0 i j eq = ∣i∣≡0⇒i≡0 (ℕ.gcd[m,n]≡0⇒m≡0 (+-injective eq))
@@ -61,3 +61,20 @@ gcd-zeroʳ i = cong (+_) (ℕ.gcd-zeroʳ ∣ i ∣)
 
 gcd-zero : Zero 1ℤ gcd
 gcd-zero = gcd-zeroˡ , gcd-zeroʳ
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+gcd[0,0]≡0 : gcd 0ℤ 0ℤ ≡ 0ℤ
+gcd[0,0]≡0 = gcd[i,i]≡∣i∣ 0ℤ
+{-# WARNING_ON_USAGE gcd[0,0]≡0
+"Warning: gcd[0,0]≡0 was deprecated in v3.0.
+Please use gcd[i,i]≡∣i∣ instead."
+#-}
+
