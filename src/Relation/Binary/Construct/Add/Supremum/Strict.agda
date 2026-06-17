@@ -191,4 +191,3 @@ module _ {e} {_≈_ : Rel A e} where
     { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
     ; compare              = <⁺-cmp compare
     } where open IsStrictTotalOrder strictot
-

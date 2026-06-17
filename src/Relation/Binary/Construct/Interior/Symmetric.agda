@@ -123,4 +123,3 @@ module _ {R : Rel A ℓ} (refl : Reflexive R) (trans : Transitive R) where
 
     isDecEquivalence : IsDecEquivalence (SymInterior R)
     isDecEquivalence = DecPoset.Eq.isDecEquivalence decPoset
-

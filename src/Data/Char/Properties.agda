@@ -323,6 +323,7 @@ _≟_ = _≡?_
 Please use _≡?_ instead."
 #-}
 
+_==_ : Char → Char → Bool
 _==_ = _≡ᵇ_
 {-# WARNING_ON_USAGE _==_
 "Warning: _==_ was deprecated in v2.4.

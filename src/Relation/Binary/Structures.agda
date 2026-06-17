@@ -75,7 +75,6 @@ record IsDecEquivalence : Set (a ⊔ ℓ) where
   Please use _≈?_ instead. "
   #-}
 
-
 ------------------------------------------------------------------------
 -- Preorders
 ------------------------------------------------------------------------
@@ -144,6 +143,9 @@ record IsDecPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
       }
 
     open IsDecEquivalence isDecEquivalence public
+      hiding (_≈?_)
+
+  open Eq public using (_≟_)
 
 
 ------------------------------------------------------------------------

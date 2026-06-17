@@ -347,4 +347,3 @@ module ≤-Reasoning
     (<-transˡ Eq.isPartialEquivalence <-resp-≈ trans)
     (<-transʳ Eq.isPartialEquivalence <-resp-≈ trans)
     public
-

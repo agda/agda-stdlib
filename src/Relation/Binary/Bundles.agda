@@ -423,4 +423,3 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
   open RawRelation rawRelation public
     renaming (_≁_ to _¬#_; _∼ᵒ_ to _#ᵒ_; _≁ᵒ_ to _¬#ᵒ_)
     hiding (Carrier; _≈_ ; _∼_)
-

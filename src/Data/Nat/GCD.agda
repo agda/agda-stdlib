@@ -94,8 +94,8 @@ gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
 -- Note that all other properties of `gcd` should be inferable from the
 -- 3 core properties above.
 
-gcd[0,0]≡0 : gcd 0 0 ≡ 0
-gcd[0,0]≡0 = ∣-antisym (gcd 0 0 ∣0) (gcd-greatest (0 ∣0) (0 ∣0))
+gcd[n,n]≡n : ∀ n → gcd n n ≡ n
+gcd[n,n]≡n n = ∣-antisym (gcd[m,n]∣m n n) (gcd-greatest ∣-refl ∣-refl)
 
 gcd[m,n]≢0 : ∀ m n → m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
 gcd[m,n]≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[m,n]∣m m n)))
@@ -187,9 +187,9 @@ gcd[cm,cn]/c≡gcd[m,n] c m n = gcd-universality forwards backwards
       *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣n (c * m) _))
 
 c*gcd[m,n]≡gcd[cm,cn] : ∀ c m n → c * gcd m n ≡ gcd (c * m) (c * n)
-c*gcd[m,n]≡gcd[cm,cn] zero      m n = ≡.sym gcd[0,0]≡0
+c*gcd[m,n]≡gcd[cm,cn] zero      m n = ≡.sym (gcd[n,n]≡n 0)
 c*gcd[m,n]≡gcd[cm,cn] c@(suc _) m n = begin
-  c * gcd m n                   ≡⟨ cong (c *_) (≡.sym (gcd[cm,cn]/c≡gcd[m,n] c m n)) ⟩
+  c * gcd m n                   ≡⟨ cong (c *_) (gcd[cm,cn]/c≡gcd[m,n] c m n) ⟨
   c * (gcd (c * m) (c * n) / c) ≡⟨ m*[n/m]≡n (gcd-greatest (m∣m*n m) (m∣m*n n)) ⟩
   gcd (c * m) (c * n)           ∎
   where open ≡-Reasoning
@@ -402,3 +402,20 @@ module Bézout where
 
   identity : ∀ {m n d} → GCD m n d → Identity d m n
   identity {m} {n} g with result d g′ b ← lemma m n rewrite GCD.unique g g′ = b
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+gcd[0,0]≡0 : gcd 0 0 ≡ 0
+gcd[0,0]≡0 = gcd[n,n]≡n 0
+{-# WARNING_ON_USAGE gcd[0,0]≡0
+"Warning: gcd[0,0]≡0 was deprecated in v3.0.
+Please use gcd[n,n]≡n instead."
+#-}
+
