@@ -94,5 +94,5 @@ open TotalOrderProperties public
   )
 
 ≮⇒≥ : ∀ {x y} → x ≮ y → y ≤ x
-≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≟_ reflexive total
+≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≈?_ reflexive total
 

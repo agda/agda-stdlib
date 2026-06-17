@@ -125,7 +125,7 @@ private
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
-solveI (var k) (var l) = Maybe.map var $ dec⇒weaklyDec Fin._≟_ k  l
+solveI (var k) (var l) = Maybe.map var $ dec⇒weaklyDec Fin._≡?_ k  l
 solveI (val a) (val b) = Maybe.map val $ dec⇒weaklyDec R? a b
 solveI _ _ = nothing
 

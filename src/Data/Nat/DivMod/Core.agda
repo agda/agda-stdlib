@@ -172,7 +172,7 @@ private
   -- (suc , suc) cases
   divₕ-offsetEq d (suc n) (suc j) (suc k) j≤d k≤d (inj₁ (eq , s≤s j≤k , 1+k<mod)) =
     divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₁ (eq , j≤k , k<1+a[modₕ]n⇒k≤a[modₕ]n 0 (suc k) n d 1+k<mod))
-  divₕ-offsetEq d (suc n) (suc j) (suc k) j≤d k≤d (inj₂′ (eq , mod≤1+j , (s≤s j≤k))) with modₕ 0 d (suc n) d ≟ 0
+  divₕ-offsetEq d (suc n) (suc j) (suc k) j≤d k≤d (inj₂′ (eq , mod≤1+j , (s≤s j≤k))) with modₕ 0 d (suc n) d ≡? 0
   ... | yes mod≡0 = divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₁ (eq , j≤k , subst (k <_) (sym (a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 d n mod≡0)) k≤d))
   ... | no  mod≢0 = divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₂′ (eq , 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 j n d (n≢0⇒n>0 mod≢0) mod≤1+j , j≤k))
   divₕ-offsetEq d (suc n) (suc j) (suc k) j≤d k≤d (inj₃  (eq , k<mod , mod≤1+j)) =

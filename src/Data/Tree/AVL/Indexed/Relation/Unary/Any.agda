@@ -20,7 +20,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Nullary.Decidable.Core using (Dec; no; map′; _⊎?_)
 open import Relation.Unary using (Pred; _⊆_; Satisfiable; Decidable)
 
-open StrictTotalOrder strictTotalOrder using () renaming (Carrier to Key)
+open StrictTotalOrder strictTotalOrder using (_≉_) renaming (Carrier to Key)
 open import Data.Tree.AVL.Indexed strictTotalOrder
   using (Tree; Value; Key⁺; [_]; _<⁺_; K&_; _,_; key; _∼_⊔_; ∼0; leaf; node)
 
@@ -79,6 +79,15 @@ lookup (right p)          = lookup p
 
 lookupKey : Any P t → Key
 lookupKey = key ∘′ lookup
+
+-- Freshness of a given k : Key wrt a position p : Any P t
+infix 5 _#[_]_ _#_
+
+_#[_]_ : (k : Key) (P : Pred (K& V) p) → Pred (Any P t) ℓ₁
+k #[ P ] p = lookupKey p ≉ k
+
+_#_ : Key → Pred (Any P t) ℓ₁
+_#_ {P = P} k p = k #[ P ] p
 
 -- If any element satisfies P, then P is satisfiable.
 

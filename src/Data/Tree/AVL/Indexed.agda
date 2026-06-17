@@ -233,7 +233,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
   insertWith : ∀ k → (Maybe (Val k) → Val k) →  -- Maybe old → result.
                Tree V l u h → l < k < u → Tree⁺ V l u h
-  insertWith k f (leaf l<u) l<k<u = 1# , singleton k (f nothing) l<k<u
+  insertWith k f (leaf _) l<k<u = 1# , singleton k (f nothing) l<k<u
   insertWith k f (node kv@(k′ , v) lk ku bal) (l<k , k<u) with compare k k′
   ... | tri< k<k′ _ _ = joinˡ⁺ kv (insertWith k f lk (l<k , [ k<k′ ]ᴿ)) ku bal
   ... | tri> _ _ k′<k = joinʳ⁺ kv lk (insertWith k f ku ([ k′<k ]ᴿ , k<u)) bal
@@ -252,21 +252,21 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
   -- comparisons).
 
   delete : ∀ k → Tree V l u h → l < k < u → Tree⁻ V l u h
-  delete k (leaf l<u) l<k<u = 0# , leaf l<u
+  delete k t@(leaf _) _ = 0# , t
   delete k (node kv@(k′ , v) lk ku bal) (l<k , k<u) with compare k′ k
   ... | tri< k′<k _ _ = joinʳ⁻ _ kv lk (delete k ku ([ k′<k ]ᴿ , k<u)) bal
   ... | tri> _ _ k′>k = joinˡ⁻ _ kv (delete k lk (l<k , [ k′>k ]ᴿ)) ku bal
-  ... | tri≈ _ k′≡k _ = join lk ku bal
+  ... | tri≈ _ k′≈k _ = join lk ku bal
 
   -- Looks up a key. Logarithmic in the size of the tree (assuming
   -- constant-time comparisons).
 
   lookup : Tree V l u h → ∀ k → l < k < u → Maybe (Val k)
-  lookup (leaf _)                  k l<k<u       = nothing
+  lookup (leaf _)                _ _           = nothing
   lookup (node (k′ , v) lk ku _) k (l<k , k<u) with compare k′ k
   ... | tri< k′<k _ _ = lookup ku k ([ k′<k ]ᴿ , k<u)
   ... | tri> _ _ k′>k = lookup lk k (l<k , [ k′>k ]ᴿ)
-  ... | tri≈ _ k′≡k _ = just (respects k′≡k v)
+  ... | tri≈ _ k′≈k _ = just (respects k′≈k v)
 
   -- Converts the tree to an ordered list. Linear in the size of the
   -- tree.
