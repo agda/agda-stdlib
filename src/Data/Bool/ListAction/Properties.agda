@@ -4,7 +4,7 @@
 -- Booleans: properties of conjunction and disjunction of lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.ListAction.Properties where
 
