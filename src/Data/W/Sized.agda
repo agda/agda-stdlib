@@ -4,7 +4,7 @@
 -- Sized W-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Data.W.Sized where
 

@@ -4,7 +4,7 @@
 -- Lists where every consecutative pair of elements is related.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Linked {a} {A : Set a} where
 

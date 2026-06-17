@@ -6,7 +6,7 @@
 
 -- Note that these proofs use all "almost commutative ring" properties.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (RawRing)
 open import Algebra.Solver.Ring.AlmostCommutativeRing using (AlmostCommutativeRing; _-Raw-AlmostCommutative⟶_)

@@ -4,7 +4,7 @@
 -- Vectors, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Base where
 

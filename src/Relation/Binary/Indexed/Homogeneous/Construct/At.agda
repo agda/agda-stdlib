@@ -4,7 +4,7 @@
 -- Instantiating homogeneously indexed bundles at a particular index
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous.Construct.At where
 

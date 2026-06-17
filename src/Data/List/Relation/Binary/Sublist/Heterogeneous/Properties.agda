@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous sublist relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 

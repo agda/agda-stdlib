@@ -4,7 +4,7 @@
 -- Basic properties of ℕᵇ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Properties where
 

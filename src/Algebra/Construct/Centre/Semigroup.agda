@@ -4,7 +4,7 @@
 -- Definition of the centre of an Semigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Bundles
   using (Semigroup; CommutativeSemigroup; RawMagma)

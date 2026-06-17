@@ -8,7 +8,7 @@
 -- NB the module is parametrised only wrt `A`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Construct.Pointwise {a} (A : Set a) where
 

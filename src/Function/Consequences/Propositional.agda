@@ -5,7 +5,7 @@
 -- over both the domain and codomain is assumed to be _≡_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Consequences.Propositional
   {a b} {A : Set a} {B : Set b}

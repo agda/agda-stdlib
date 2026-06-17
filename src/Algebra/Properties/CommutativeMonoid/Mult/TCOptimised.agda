@@ -5,7 +5,7 @@
 -- type checking.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
