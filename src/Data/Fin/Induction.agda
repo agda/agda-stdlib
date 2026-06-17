@@ -4,7 +4,7 @@
 -- Induction over Fin
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 module Data.Fin.Induction where
