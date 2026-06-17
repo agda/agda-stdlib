@@ -157,8 +157,8 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
     { isTotalOrder = ×-isTotalOrder (_≟_ to₁)
                                     (isTotalOrder to₁)
                                     (isTotalOrder to₂)
-    ; _≟_          = Pointwise.×-decidable (_≟_ to₁) (_≟_ to₂)
-    ; _≤?_         = ×-decidable (_≟_ to₁) (_≤?_ to₁) (_≤?_ to₂)
+    ; _≟_          = Pointwise.×-decidable (_≈?_ to₁) (_≈?_ to₂)
+    ; _≤?_         = ×-decidable (_≈?_ to₁) (_≤?_ to₁) (_≤?_ to₂)
     }
     where open IsDecTotalOrder
 
@@ -174,7 +174,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
                TotalOrder b ℓ₃ ℓ₄ →
                TotalOrder _ _ _
 ×-totalOrder t₁ t₂ = record
-  { isTotalOrder = ×-isTotalOrder T₁._≟_ T₁.isTotalOrder T₂.isTotalOrder
+  { isTotalOrder = ×-isTotalOrder T₁._≈?_ T₁.isTotalOrder T₂.isTotalOrder
   } where module T₁ = DecTotalOrder t₁; module T₂ = TotalOrder t₂
 
 ×-decTotalOrder : DecTotalOrder a ℓ₁ ℓ₂ →

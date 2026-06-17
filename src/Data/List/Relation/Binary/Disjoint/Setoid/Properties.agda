@@ -22,7 +22,7 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Symmetric; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 module _ {c ℓ} (S : Setoid c ℓ) where
 
@@ -56,9 +56,9 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ... | inj₂ v∈xss = concat⁺ʳ vs#xss (v∈vs , v∈xss)
 
   -- deduplicate
-  module _ (_≟_ : DecidableEquality A) where
+  module _ (_≡?_ : DecidableEquality A) where
 
     deduplicate⁺ : ∀ {xs ys} → Disjoint S xs ys →
-                   Disjoint S (deduplicate _≟_ xs) (deduplicate _≟_ ys)
-    deduplicate⁺ = let ∈-dedup⁻ = Mem.∈-deduplicate⁻ S _≟_ in
+                   Disjoint S (deduplicate _≡?_ xs) (deduplicate _≡?_ ys)
+    deduplicate⁺ = let ∈-dedup⁻ = Mem.∈-deduplicate⁻ S _≡?_ in
       _∘ Product.map (∈-dedup⁻ _) (∈-dedup⁻ _)

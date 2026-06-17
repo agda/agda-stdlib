@@ -42,7 +42,7 @@ module _ (M : RawMagma c ℓ) (open RawMagma M) (refl : Reflexive _≈_) where
   isMagmaHomomorphism : IsMagmaHomomorphism id
   isMagmaHomomorphism = record
     { isRelHomomorphism = isRelHomomorphism _
-    ; homo              = λ _ _ → refl
+    ; ∙-homo            = λ _ _ → refl
     }
 
   isMagmaMonomorphism : IsMagmaMonomorphism id

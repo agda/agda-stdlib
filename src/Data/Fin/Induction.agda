@@ -97,7 +97,7 @@ private
 >-weakInduction {n = n} P Pₙ Pᵢ₊₁⇒Pᵢ i = induct (>-wellFounded i)
   where
   induct : ∀ {i} → Acc _>_ i → P i
-  induct {i} (acc rec) with n ℕ.≟ toℕ i
+  induct {i} (acc rec) with n ℕ.≡? toℕ i
   ... | yes n≡i = subst P (toℕ-injective (trans (toℕ-fromℕ n) n≡i)) Pₙ
   ... | no  n≢i = subst P (inject₁-lower₁ i n≢i) (Pᵢ₊₁⇒Pᵢ _ Pᵢ₊₁)
     where Pᵢ₊₁ = induct (rec (ℕ.≤-reflexive (cong suc (sym (toℕ-lower₁ i n≢i)))))

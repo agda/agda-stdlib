@@ -48,7 +48,7 @@ open _∣_ using (quotient) public
 
 ∣ᵤ⇒∣ : ∀ {k i} → k Unsigned.∣ i → k ∣ i
 ∣ᵤ⇒∣ {k} {i} (Unsigned.divides 0           eq) = divides +0 (∣i∣≡0⇒i≡0 eq)
-∣ᵤ⇒∣ {k} {i} (Unsigned.divides q@(ℕ.suc _) eq) with k ≟ +0
+∣ᵤ⇒∣ {k} {i} (Unsigned.divides q@(ℕ.suc _) eq) with k ≡? +0
 ... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
 ... | no  neq  = divides s[i*k]◃q (◃-cong sign-eq abs-eq)
   where

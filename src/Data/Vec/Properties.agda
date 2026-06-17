@@ -75,9 +75,9 @@ toList-injective m≡n (x ∷ xs) (y ∷ ys) xs=ys =
 ∷-injective refl = refl , refl
 
 ≡-dec : DecidableEquality A → DecidableEquality (Vec A n)
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) = map′ (uncurry (cong₂ _∷_))
-  ∷-injective (x ≟ y ×? ≡-dec _≟_ xs ys)
+≡-dec _≈?_ []       []       = yes refl
+≡-dec _≈?_ (x ∷ xs) (y ∷ ys) = map′ (uncurry (cong₂ _∷_))
+  ∷-injective (x ≈? y ×? ≡-dec _≈?_ xs ys)
 
 ------------------------------------------------------------------------
 -- _[_]=_

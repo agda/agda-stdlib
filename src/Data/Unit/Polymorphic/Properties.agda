@@ -35,16 +35,16 @@ private
 -- Equality
 ------------------------------------------------------------------------
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality (⊤ {ℓ})
-_ ≟ _ = yes refl
+_≡?_ : DecidableEquality (⊤ {ℓ})
+_ ≡? _ = yes refl
 
 ≡-setoid : ∀ ℓ → Setoid ℓ ℓ
 ≡-setoid _ = setoid ⊤
 
 ≡-decSetoid : ∀ ℓ → DecSetoid ℓ ℓ
-≡-decSetoid _ = decSetoid _≟_
+≡-decSetoid _ = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Ordering
@@ -81,8 +81,8 @@ _ ≟ _ = yes refl
 ≡-isDecTotalOrder : ∀ ℓ → IsDecTotalOrder {ℓ} _≡_ _≡_
 ≡-isDecTotalOrder ℓ = record
   { isTotalOrder = ≡-isTotalOrder ℓ
-  ; _≟_          = _≟_
-  ; _≤?_         = _≟_
+  ; _≟_          = _≡?_
+  ; _≤?_         = _≡?_
   }
 
 ------------------------------------------------------------------------
@@ -110,3 +110,19 @@ _ ≟ _ = yes refl
 
 ⊤↔⊤* : ⊤ {ℓ} ↔ ⊤*
 ⊤↔⊤* = mk↔ ((λ _ → refl) , (λ _ → refl))
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

@@ -59,7 +59,7 @@ private
 -- insert
 
 ∈-insert⁺ : x ∈ s → x ∈ insert y s
-∈-insert⁺ {x = x} {s = s} {y = y} x∈s with x ≟ y
+∈-insert⁺ {x = x} {s = s} {y = y} x∈s with x ≈? y
 ... | yes x≈y = ∈fromMap (Map.∈ₖᵥ-Respectsˡ (Eq.sym x≈y , refl) Map.∈ₖᵥ-insert⁺⁺)
 ... | no x≉y = ∈fromMap (Map.∈ₖᵥ-insert⁺ x≉y (∈toMap x∈s))
 

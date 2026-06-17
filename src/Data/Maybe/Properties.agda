@@ -40,10 +40,10 @@ just-injective : ∀ {x y} → (Maybe A ∋ just x) ≡ just y → x ≡ y
 just-injective refl = refl
 
 ≡-dec : DecidableEquality A → DecidableEquality (Maybe A)
-≡-dec _≟_ nothing  nothing  = yes refl
-≡-dec _≟_ (just x) nothing  = no λ()
-≡-dec _≟_ nothing  (just y) = no λ()
-≡-dec _≟_ (just x) (just y) = map′ (cong just) just-injective (x ≟ y)
+≡-dec _≡?_ nothing  nothing  = yes refl
+≡-dec _≡?_ (just x) nothing  = no λ()
+≡-dec _≡?_ nothing  (just y) = no λ()
+≡-dec _≡?_ (just x) (just y) = map′ (cong just) just-injective (x ≡? y)
 
 ------------------------------------------------------------------------
 -- map

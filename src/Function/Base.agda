@@ -107,6 +107,10 @@ f $- = f _
 λ- f = λ x → f
 {-# INLINE λ- #-}
 
+λ∙ : ∀ {A : Set a} {B : .A → Set b} → (.(x : A) → B x) → ((x : A) → B x)
+λ∙ f = λ x → f x
+{-# INLINE λ∙ #-}
+
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).
 
@@ -267,4 +271,3 @@ case_return_of_ = case_returning_of_
 "case_return_of_ was deprecated in v2.0.
 Please use case_returning_of_ instead."
 #-}
-

@@ -8,9 +8,9 @@
 
 module Data.Word64.Instances where
 
-open import Data.Word64.Properties using (_≟_)
+open import Data.Word64.Properties using (_≡?_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 
 instance
-  Word64-≡-isDecEquivalence = isDecEquivalence _≟_
+  Word64-≡-isDecEquivalence = isDecEquivalence _≡?_

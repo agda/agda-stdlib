@@ -14,7 +14,7 @@ open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
-open import Relation.Binary.TypeClasses using (IsDecEquivalence; _≟_)
+open import Relation.Binary.TypeClasses using (IsDecEquivalence; _≈?_)
 
 private
   variable
@@ -24,4 +24,4 @@ private
 
 instance
   These-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → {{IsDecEquivalence {A = B} _≡_}} → IsDecEquivalence {A = These A B} _≡_
-  These-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_ _≟_)
+  These-≡-isDecEquivalence = isDecEquivalence (≡-dec _≈?_ _≈?_)

@@ -23,8 +23,6 @@ open import Algebra.Morphism.Structures
         ; IsRingHomomorphism)
 open import Data.Product.Base using (_,_)
 open import Function.Definitions using (StrictlySurjective)
-import Relation.Binary.Morphism.Definitions as Rel
-open import Relation.Binary.Morphism.Structures using (IsRelHomomorphism)
 
 open import Algebra.Construct.Terminal {c} {ℓ}
 
@@ -52,7 +50,7 @@ isMagmaHomomorphism : (M : RawMagma a ℓa) →
                       IsMagmaHomomorphism M rawMagma one
 isMagmaHomomorphism M = record
   { isRelHomomorphism = record { cong = _ }
-  ; homo = _
+  ; ∙-homo = _
   }
 
 isMonoidHomomorphism : (M : RawMonoid a ℓa) →

@@ -58,7 +58,7 @@ isIndexedEquivalence {A = A} = record
   { refl = ↭-refl
   ; sym = ↭-sym
   ; trans = λ {n₁ n₂ n₃} {xs : Vector A n₁} {ys : Vector A n₂} {zs : Vector A n₃}
-              xs↭ys ys↭zs → ↭-trans {i = n₁} {i = xs} xs↭ys ys↭zs
+              xs↭ys ys↭zs → ↭-trans {i = n₁} {x = xs} xs↭ys ys↭zs
   }
 
 ------------------------------------------------------------------------

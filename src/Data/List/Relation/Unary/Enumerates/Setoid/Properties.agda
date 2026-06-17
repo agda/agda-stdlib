@@ -78,8 +78,8 @@ module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) where
 module _ (S? : DecSetoid a ℓ₁) where
   open DecSetoid S? renaming (setoid to S)
 
-  deduplicate⁺ : IsEnumeration S xs → IsEnumeration S (deduplicate _≟_ xs)
-  deduplicate⁺ = ∈-deduplicate⁺ S _≟_ (respʳ-flip S) ∘_
+  deduplicate⁺ : IsEnumeration S xs → IsEnumeration S (deduplicate _≈?_ xs)
+  deduplicate⁺ = ∈-deduplicate⁺ S _≈?_ (respʳ-flip S) ∘_
 
 ------------------------------------------------------------------------
 -- lookup

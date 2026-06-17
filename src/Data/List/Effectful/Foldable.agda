@@ -72,7 +72,7 @@ module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record
         { cong = reflexive ∘ ≡.cong h }
-      ; homo = λ xs _ → ++-homo xs
+      ; ∙-homo = λ xs _ → ++-homo xs
       }
     ; ε-homo = []-homo
     }

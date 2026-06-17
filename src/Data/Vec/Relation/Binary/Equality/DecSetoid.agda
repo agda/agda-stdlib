@@ -31,7 +31,7 @@ open Equality setoid public
 infix 4 _≋?_
 
 _≋?_ : ∀ {m n} → Decidable (_≋_ {m} {n})
-_≋?_ = PW.decidable _≟_
+_≋?_ = PW.decidable _≈?_
 
 ≋-isDecEquivalence : ∀ n → IsDecEquivalence (_≋_ {n})
 ≋-isDecEquivalence = PW.isDecEquivalence isDecEquivalence

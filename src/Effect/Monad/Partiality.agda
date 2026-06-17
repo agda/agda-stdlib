@@ -113,22 +113,22 @@ data Kind : Set where
 
 -- Kind equality is decidable.
 
-infix 4 _≟-Kind_
+infix 4 _≡?-Kind_
 
-_≟-Kind_ : DecidableEquality Kind
-_≟-Kind_ strong       strong       = yes ≡.refl
-_≟-Kind_ strong       (other k)    = no λ()
-_≟-Kind_ (other k)    strong       = no λ()
-_≟-Kind_ (other geq)  (other geq)  = yes ≡.refl
-_≟-Kind_ (other geq)  (other weak) = no λ()
-_≟-Kind_ (other weak) (other geq)  = no λ()
-_≟-Kind_ (other weak) (other weak) = yes ≡.refl
+_≡?-Kind_ : DecidableEquality Kind
+_≡?-Kind_ strong       strong       = yes ≡.refl
+_≡?-Kind_ strong       (other k)    = no λ()
+_≡?-Kind_ (other k)    strong       = no λ()
+_≡?-Kind_ (other geq)  (other geq)  = yes ≡.refl
+_≡?-Kind_ (other geq)  (other weak) = no λ()
+_≡?-Kind_ (other weak) (other geq)  = no λ()
+_≡?-Kind_ (other weak) (other weak) = yes ≡.refl
 
 -- A predicate which is satisfied only for equalities. Note that, for
 -- concrete inputs, this predicate evaluates to ⊤ or ⊥.
 
 Equality : Kind → Set
-Equality k = False (k ≟-Kind other geq)
+Equality k = False (k ≡?-Kind other geq)
 
 ------------------------------------------------------------------------
 -- Equality/ordering
@@ -933,3 +933,18 @@ idempotent {A = A} B x f = sound (idem x)
                                                      laterˡ (refl (Setoid.refl B))) ⟩
     (♭ x >>= λ y′ →     ♭ x >>= λ y″ → f y′ y″)  ≳⟨ idem (♭ x) ⟩≅
     (♭ x >>= λ y′ → f y′ y′)                     ∎))
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+_≟-Kind_ = _≡?-Kind_
+{-# WARNING_ON_USAGE _≟-Kind_
+"Warning: _≟-Kind_ was deprecated in v2.4.
+Please use _≡?-Kind_ instead."
+#-}

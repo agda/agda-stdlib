@@ -42,10 +42,10 @@ data Grouped {A : Set a} (_≈_ : Rel A ℓ) : Pred (List A) (a ⊔ ℓ) where
 module _ {_≈_ : Rel A ℓ} where
 
   grouped? : B.Decidable _≈_ → U.Decidable (Grouped _≈_)
-  grouped? _≟_ [] = yes []
-  grouped? _≟_ (x ∷ []) = yes ([] ∷≉ [])
-  grouped? _≟_ (x ∷ y ∷ xs) =
-    Dec.map′ from to ((x ≟ y ⊎? all? (λ z → ¬? (x ≟ z)) (y ∷ xs)) ×? (grouped? _≟_ (y ∷ xs)))
+  grouped? _≈?_ [] = yes []
+  grouped? _≈?_ (x ∷ []) = yes ([] ∷≉ [])
+  grouped? _≈?_ (x ∷ y ∷ xs) =
+    Dec.map′ from to ((x ≈? y ⊎? all? (λ z → ¬? (x ≈? z)) (y ∷ xs)) ×? (grouped? _≈?_ (y ∷ xs)))
     where
     from : ((x ≈ y) ⊎ All (λ z → ¬ (x ≈ z)) (y ∷ xs)) × Grouped _≈_ (y ∷ xs) → Grouped _≈_ (x ∷ y ∷ xs)
     from (inj₁ x≈y          , grouped[y∷xs]) = x≈y          ∷≈ grouped[y∷xs]

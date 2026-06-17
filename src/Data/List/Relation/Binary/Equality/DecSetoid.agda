@@ -23,7 +23,7 @@ open DecSetoid DS using (setoid)
 
 open DecSetoid ≋-decSetoid public
   using ()
-  renaming (isDecEquivalence to ≋-isDecEquivalence; _≟_ to _≋?_)
+  renaming (isDecEquivalence to ≋-isDecEquivalence; _≈?_ to _≋?_)
 
 ------------------------------------------------------------------------
 -- Make all definitions from setoid equality available

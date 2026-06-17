@@ -14,12 +14,12 @@ open import Data.List.Relation.Unary.Any using (any?)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (¬?)
 
-open DecSetoid DS
+open DecSetoid DS using (_≈?_; setoid)
 
 ------------------------------------------------------------------------
 -- Re-export contents of propositional membership
 
-open import Data.List.Membership.Setoid (DecSetoid.setoid DS) public
+open import Data.List.Membership.Setoid setoid public
 
 ------------------------------------------------------------------------
 -- Other operations
@@ -27,7 +27,7 @@ open import Data.List.Membership.Setoid (DecSetoid.setoid DS) public
 infix 4 _∈?_ _∉?_
 
 _∈?_ : Decidable _∈_
-x ∈? xs = any? (x ≟_) xs
+x ∈? xs = any? (x ≈?_) xs
 
 _∉?_ : Decidable _∉_
 x ∉? xs = ¬? (x ∈? xs)

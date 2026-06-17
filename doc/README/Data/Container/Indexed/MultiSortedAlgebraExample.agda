@@ -335,7 +335,7 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
                                             {x = t} {y = t'} (sound e)
     sound (trans  {t₁ = t₁} {t₂ = t₂}
                   {t₃ = t₃} e e')        =  isEquiv {M = M} .IsEquivalence.trans
-                                            {i = t₁} {j = t₂} {k = t₃} (sound e) (sound e')
+                                            {x = t₁} {y = t₂} {z = t₃} (sound e) (sound e')
 
 
 ------------------------------------------------------------------------

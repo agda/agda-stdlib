@@ -66,14 +66,14 @@ module Constant⇒UIP
 -- function over proofs of equality which is constant: it returns the
 -- proof produced by the decision procedure.
 
-module Decidable⇒UIP (_≟_ : DecidableEquality A)
+module Decidable⇒UIP (_≡?_ : DecidableEquality A)
   where
 
   ≡-normalise : _≡_ {A = A} ⇒ _≡_
-  ≡-normalise {x} {y} x≡y = recompute (x ≟ y) x≡y
+  ≡-normalise {x} {y} x≡y = recompute (x ≡? y) x≡y
 
   ≡-normalise-constant : (p q : x ≡ y) → ≡-normalise p ≡ ≡-normalise q
-  ≡-normalise-constant {x = x} {y = y} = recompute-constant (x ≟ y)
+  ≡-normalise-constant {x = x} {y = y} = recompute-constant (x ≡? y)
 
   ≡-irrelevant : UIP A
   ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant

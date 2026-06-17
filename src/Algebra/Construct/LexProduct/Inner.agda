@@ -21,7 +21,7 @@ import Algebra.Construct.LexProduct.Base as Base
 
 module Algebra.Construct.LexProduct.Inner
   {ℓ₁ ℓ₂ ℓ₃ ℓ₄} (M : Magma ℓ₁ ℓ₂) (N : Magma ℓ₃ ℓ₄)
-  (_≟₁_ : Decidable (Magma._≈_ M))
+  (_≈₁?_ : Decidable (Magma._≈_ M))
   where
 
 open module M = Magma M
@@ -48,7 +48,7 @@ private
 ------------------------------------------------------------------------
 -- Base definition
 
-open Base _∙_ _◦_ _≟₁_ public
+open Base _∙_ _◦_ _≈₁?_ public
   using (innerLex)
 
 -- Save ourselves some typing in this file
@@ -122,19 +122,19 @@ open SetoidReasoning N.setoid
 open NaturalOrder
 
 case₁ : a ∙ b ≈₁ a → a ∙ b ≉₁ b → lex a b x y ≈₂ x
-case₁ {a} {b} ab≈a ab≉b with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b
+case₁ {a} {b} ab≈a ab≉b with (a ∙ b) ≈₁? a | (a ∙ b) ≈₁? b
 ... | no  ab≉a | _        = contradiction ab≈a ab≉a
 ... | yes _    | yes ab≈b = contradiction ab≈b ab≉b
 ... | yes _    | no  _    = N.refl
 
 case₂ : a ∙ b ≉₁ a → a ∙ b ≈₁ b → lex a b x y ≈₂ y
-case₂ {a} {b} ab≉a ab≈b with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b
+case₂ {a} {b} ab≉a ab≈b with (a ∙ b) ≈₁? a | (a ∙ b) ≈₁? b
 ... | yes ab≈a | _        = contradiction ab≈a ab≉a
 ... | no _     | no  ab≉b = contradiction ab≈b ab≉b
 ... | no _     | yes _    = N.refl
 
 case₃ : a ∙ b ≈₁ a → a ∙ b ≈₁ b → lex a b x y ≈₂ (x ◦ y)
-case₃ {a} {b} ab≈a ab≈b with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b
+case₃ {a} {b} ab≈a ab≈b with (a ∙ b) ≈₁? a | (a ∙ b) ≈₁? b
 ... | no  ab≉a | _        = contradiction ab≈a ab≉a
 ... | yes _    | no  ab≉b = contradiction ab≈b ab≉b
 ... | yes _    | yes _    = N.refl
@@ -144,7 +144,7 @@ case₃ {a} {b} ab≈a ab≈b with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b
 
 cong : a ≈₁ b → c ≈₁ d → w ≈₂ x → y ≈₂ z → lex a c w y ≈₂ lex b d x z
 cong {a} {b} {c} {d} a≈b c≈d w≈x y≈z
-  with (a ∙ c) ≟₁ a | (a ∙ c) ≟₁ c | (b ∙ d) ≟₁ b | (b ∙ d) ≟₁ d
+  with (a ∙ c) ≈₁? a | (a ∙ c) ≈₁? c | (b ∙ d) ≈₁? b | (b ∙ d) ≈₁? d
 ... | yes _    | yes _    | yes _    | yes _    = ◦-cong w≈x y≈z
 ... | yes _    | yes _    | no  _    | no  _    = ◦-cong w≈x y≈z
 ... | no  _    | no  _    | yes _    | yes _    = ◦-cong w≈x y≈z
@@ -172,7 +172,7 @@ assoc : Associative _≈₁_ _∙_ → Commutative _≈₁_ _∙_ →
         Selective _≈₁_ _∙_ → Associative _≈₂_ _◦_ →
         ∀ a b c x y z  → lex (a ∙ b) c (lex a b x y) z  ≈₂ lex a (b ∙ c) x (lex b c y z)
 assoc ∙-assoc ∙-comm ∙-sel ◦-assoc a b c x y z
-  with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b | (b ∙ c) ≟₁ b | (b ∙ c) ≟₁ c
+  with (a ∙ b) ≈₁? a | (a ∙ b) ≈₁? b | (b ∙ c) ≈₁? b | (b ∙ c) ≈₁? c
 ... | _        | _        | no  bc≉b | no  bc≉c = contradiction₂ (∙-sel b c) bc≉b bc≉c
 ... | no  ab≉a | no  ab≉b | _        | _        = contradiction₂ (∙-sel a b) ab≉a ab≉b
 ... | yes ab≈a | no  ab≉b | no  bc≉b | yes bc≈c = cong₁₂ ab≈a (M.sym bc≈c)
@@ -229,7 +229,7 @@ assoc ∙-assoc ∙-comm ∙-sel ◦-assoc a b c x y z
 comm : Commutative _≈₁_ _∙_ → Commutative _≈₂_ _◦_ →
        ∀ a b x y → lex a b x y ≈₂ lex b a y x
 comm ∙-comm ◦-comm a b x y
-  with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b | (b ∙ a) ≟₁ b | (b ∙ a) ≟₁ a
+  with (a ∙ b) ≈₁? a | (a ∙ b) ≈₁? b | (b ∙ a) ≈₁? b | (b ∙ a) ≈₁? a
 ... | yes ab≈a | _        | _        | no  ba≉a = contradiction (M.trans (∙-comm b a) ab≈a) ba≉a
 ... | no  ab≉a | _        | _        | yes ba≈a = contradiction (M.trans (∙-comm a b) ba≈a) ab≉a
 ... | _        | yes ab≈b | no  ba≉b | _        = contradiction (M.trans (∙-comm b a) ab≈b) ba≉b
@@ -240,7 +240,7 @@ comm ∙-comm ◦-comm a b x y
 ... | no  _    | no  _    | no  _    | no  _    = ◦-comm x y
 
 idem : Idempotent _≈₂_ _◦_ → ∀ a b x → lex a b x x ≈₂ x
-idem ◦-idem a b x with does ((a ∙ b) ≟₁ a) | does ((a ∙ b) ≟₁ b)
+idem ◦-idem a b x with does ((a ∙ b) ≈₁? a) | does ((a ∙ b) ≈₁? b)
 ... | false | false = ◦-idem x
 ... | false | true  = N.refl
 ... | true  | false = N.refl
@@ -248,14 +248,14 @@ idem ◦-idem a b x with does ((a ∙ b) ≟₁ a) | does ((a ∙ b) ≟₁ b)
 
 zeroʳ : ∀ {e f} → RightZero _≈₁_ e _∙_ → RightZero _≈₂_ f _◦_ →
         lex a e x f ≈₂ f
-zeroʳ {a} {x} {e} {f} ze₁ ze₂ with (a ∙ e) ≟₁ a | (a ∙ e) ≟₁ e
+zeroʳ {a} {x} {e} {f} ze₁ ze₂ with (a ∙ e) ≈₁? a | (a ∙ e) ≈₁? e
 ... | _     | no  a∙e≉e = contradiction (ze₁ a) a∙e≉e
 ... | no  _ | yes _     = N.refl
 ... | yes _ | yes _     = ze₂ x
 
 identityʳ : ∀ {e f} → RightIdentity _≈₁_ e _∙_ → RightIdentity _≈₂_ f _◦_ →
             lex a e x f ≈₂ x
-identityʳ {a} {x} {e} {f} id₁ id₂ with (a ∙ e) ≟₁ a | (a ∙ e) ≟₁ e
+identityʳ {a} {x} {e} {f} id₁ id₂ with (a ∙ e) ≈₁? a | (a ∙ e) ≈₁? e
 ... | no  a∙e≉a | _     = contradiction (id₁ a) a∙e≉a
 ... | yes _     | no  _ = N.refl
 ... | yes _     | yes _ = id₂ x

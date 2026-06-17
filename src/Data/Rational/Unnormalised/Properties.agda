@@ -120,7 +120,7 @@ drop-*≡* (*≡* eq) = eq
 infix 4 _≃?_
 
 _≃?_ : Decidable _≃_
-p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
+p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≡? ↥ q ℤ.* ↧ p)
 
 0≄1 : 0ℚᵘ ≄ 1ℚᵘ
 0≄1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
@@ -1974,7 +1974,7 @@ Please use *-monoʳ-≤-nonNeg instead."
 *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-pos r@{mkℚᵘ +[1+ _ ] _} _ = *-monoˡ-≤-nonNeg r
 {-# WARNING_ON_USAGE *-monoˡ-≤-pos
-"Warning: *-monoˡ-≤-nonNeg was deprecated in v2.0.
+"Warning: *-monoˡ-≤-pos was deprecated in v2.0.
 Please use *-monoˡ-≤-nonNeg instead."
 #-}
 ≤-steps = p≤q⇒p≤r+q

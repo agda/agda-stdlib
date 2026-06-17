@@ -85,7 +85,7 @@ nP′n≡n! n = begin-equality
 
 k!∣nP′k : ∀ {n k} → k ≤ n → k ! ∣ n P′ k
 k!∣nP′k {n}         {zero}      k≤n = ∣-refl
-k!∣nP′k n@{suc n-1} k@{suc k-1} k≤n@(s≤s k-1≤n-1) with k-1 ≟ n-1
+k!∣nP′k n@{suc n-1} k@{suc k-1} k≤n@(s≤s k-1≤n-1) with k-1 ≡? n-1
 ... | yes refl = ∣-reflexive (sym (nP′n≡n! n))
 ... | no  k≢n  = begin
   k !                           ≡⟨⟩

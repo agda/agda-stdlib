@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Nat.Base using (zero; suc; _<_; z<s; s<s; s≤s)
-open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
+open import Data.Nat.Properties using (_≡?_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product.Base as Product
@@ -522,7 +522,7 @@ applyUpTo⁻ f {suc n} (there p) =
 -- applyDownFrom
 
 applyDownFrom⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyDownFrom f n)
-applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≟ n
+applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≡? n
 ... | yes refl = here p
 ... | no  i≢n  = there (applyDownFrom⁺ f p (≤∧≢⇒< i≤n i≢n))
 

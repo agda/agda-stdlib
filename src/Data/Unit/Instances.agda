@@ -8,10 +8,10 @@
 
 module Data.Unit.Instances where
 
-open import Data.Unit.Properties using (_≟_; ≡-isDecTotalOrder)
+open import Data.Unit.Properties using (_≡?_; ≡-isDecTotalOrder)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 
 instance
-  ⊤-≡-isDecEquivalence = isDecEquivalence _≟_
+  ⊤-≡-isDecEquivalence = isDecEquivalence _≡?_
   ⊤-≤-isDecTotalOrder = ≡-isDecTotalOrder
