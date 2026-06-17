@@ -8,7 +8,7 @@
 
 module Data.Bool.Properties where
 open import Algebra.Bundles
-  using (Magma; Semigroup; Band; CommutativeMonoid
+  using (Magma; Semigroup; Band; Monoid; CommutativeMonoid
         ; IdempotentCommutativeMonoid; CommutativeSemiring; CommutativeRing)
 open import Algebra.Lattice.Bundles
   using (Lattice; DistributiveLattice; BooleanAlgebra; Semilattice)
@@ -348,6 +348,11 @@ true  <? _     = no  (λ())
   ; identity = ∨-identity
   }
 
+∨-monoid : Monoid 0ℓ 0ℓ
+∨-monoid = record
+  { isMonoid = ∨-isMonoid
+  }
+
 ∨-isCommutativeMonoid : IsCommutativeMonoid _∨_ false
 ∨-isCommutativeMonoid = record
   { isMonoid = ∨-isMonoid
@@ -518,6 +523,11 @@ true  <? _     = no  (λ())
 ∧-isMonoid = record
   { isSemigroup = ∧-isSemigroup
   ; identity = ∧-identity
+  }
+
+∧-monoid : Monoid 0ℓ 0ℓ
+∧-monoid = record
+  { isMonoid = ∧-isMonoid
   }
 
 ∧-isCommutativeMonoid : IsCommutativeMonoid _∧_ true
