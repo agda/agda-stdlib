@@ -4,7 +4,7 @@
 -- Relational morphisms, incl. in particular, order morphisms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Morphism.Structures
   {a b} {A : Set a} {B : Set b}

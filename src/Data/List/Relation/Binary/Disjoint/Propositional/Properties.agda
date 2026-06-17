@@ -4,7 +4,7 @@
 -- Properties of disjoint lists (propositional equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Disjoint.Propositional.Properties where
 

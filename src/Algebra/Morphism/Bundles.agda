@@ -6,7 +6,7 @@
 -- NB indexed by Raw bundles, just as IsXHomomorphism is
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Morphism.Bundles where
 
@@ -161,7 +161,9 @@ record KleeneAlgebraHomomorphism
   semiringHomomorphism = record { isSemiringHomomorphism = isSemiringHomomorphism }
 
   open SemiringHomomorphism semiringHomomorphism public
-    hiding (*-isMagmaHomomorphism; *-isMonoidHomomorphism)
+    using ( nearSemiringHomomorphism
+          ; *-monoidHomomorphism; *-magmaHomomorphism
+          ; +-monoidHomomorphism; +-magmaHomomorphism)
 
 ------------------------------------------------------------------------
 -- Morphisms between RingWithoutOnes

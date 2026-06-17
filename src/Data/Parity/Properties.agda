@@ -4,7 +4,7 @@
 -- Some properties about parities
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Parity.Properties where
 
@@ -424,7 +424,7 @@ toSign-isMagmaHomomorphism : IsMagmaHomomorphism ℙ.+-rawMagma 𝕊.*-rawMagma 
 toSign-isMagmaHomomorphism = record
   { isRelHomomorphism = record
     { cong = cong toSign }
-  ; homo = +-homo-*
+  ; ∙-homo = +-homo-*
   }
 
 toSign-isMagmaMonomorphism : IsMagmaMonomorphism ℙ.+-rawMagma 𝕊.*-rawMagma toSign
@@ -534,7 +534,7 @@ parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma p
 parity-isMagmaHomomorphism = record
   { isRelHomomorphism = record
     { cong = cong parity }
-  ; homo = +-homo-+
+  ; ∙-homo = +-homo-+
   }
 
 parity-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid ℙ.+-0-rawMonoid parity

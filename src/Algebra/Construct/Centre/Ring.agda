@@ -4,7 +4,7 @@
 -- Definition of the centre of a Ring
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Bundles
   using (Ring; CommutativeRing; Monoid; RawRing; RawMonoid)
@@ -78,7 +78,7 @@ isRingMonomorphism = record
         { +-isMonoidHomomorphism = record
           { isMagmaHomomorphism = record
             { isRelHomomorphism = record { cong = id }
-            ; homo = λ _ _ → X.refl
+            ; ∙-homo = λ _ _ → X.refl
             }
           ; ε-homo = X.refl
           }

@@ -5,7 +5,7 @@
 -- properties (or other properties not available in Data.Fin)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for deprecated _≺_ and _≻toℕ_ (issue #1726)
 
 module Data.Fin.Properties where
