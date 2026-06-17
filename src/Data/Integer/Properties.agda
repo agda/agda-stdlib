@@ -70,18 +70,18 @@ private
 +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
 +[1+-injective refl = refl
 
-infix 4 _≟_
-_≟_ : DecidableEquality ℤ
-+ m      ≟ + n      = Dec.map′ (cong (+_)) +-injective (m ℕ.≟ n)
-+ m      ≟ -[1+ n ] = no λ()
--[1+ m ] ≟ + n      = no λ()
--[1+ m ] ≟ -[1+ n ] = Dec.map′ (cong -[1+_]) -[1+-injective (m ℕ.≟ n)
+infix 4 _≡?_
+_≡?_ : DecidableEquality ℤ
++ m      ≡? + n      = Dec.map′ (cong (+_)) +-injective (m ℕ.≡? n)
++ m      ≡? -[1+ n ] = no λ()
+-[1+ m ] ≡? + n      = no λ()
+-[1+ m ] ≡? -[1+ n ] = Dec.map′ (cong -[1+_]) -[1+-injective (m ℕ.≡? n)
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℤ
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -162,7 +162,7 @@ _≤?_ : Decidable _≤_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≟_          = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -1660,7 +1660,7 @@ i*j≢0 i j rewrite abs-* i j = ℕ.m*n≢0 ∣ i ∣ ∣ j ∣
 ^-isMagmaHomomorphism : ∀ i → Morphism.IsMagmaHomomorphism ℕ.+-rawMagma *-rawMagma (i ^_)
 ^-isMagmaHomomorphism i = record
   { isRelHomomorphism = record { cong = cong (i ^_) }
-  ; homo              = ^-distribˡ-+-* i
+  ; ∙-homo            = ^-distribˡ-+-* i
   }
 
 ^-isMonoidHomomorphism : ∀ i → Morphism.IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
@@ -2395,3 +2395,13 @@ Please use +-0-isAbelianGroup instead."
 {- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Integer.Base public
   using (*-rawMagma; *-1-rawMonoid)
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
+

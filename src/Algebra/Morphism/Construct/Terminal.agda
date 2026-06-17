@@ -50,7 +50,7 @@ isMagmaHomomorphism : (M : RawMagma a ℓa) →
                       IsMagmaHomomorphism M rawMagma one
 isMagmaHomomorphism M = record
   { isRelHomomorphism = record { cong = _ }
-  ; homo = _
+  ; ∙-homo = _
   }
 
 isMonoidHomomorphism : (M : RawMonoid a ℓa) →

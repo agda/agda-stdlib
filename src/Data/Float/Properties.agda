@@ -12,7 +12,7 @@ open import Data.Bool.Base as Bool using (Bool)
 open import Data.Float.Base using (Float; _≈_; toWord64)
 import Data.Maybe.Base as Maybe using (Maybe; just; nothing; map)
 import Data.Maybe.Properties as Maybe using (map-injective; ≡-dec)
-import Data.Nat.Properties as ℕ using (_≟_)
+import Data.Nat.Properties as ℕ using (_≡?_)
 import Data.Word64.Base as Word64 using (Word64; toℕ)
 import Data.Word64.Properties as Word64 using (≈⇒≡)
 open import Function.Base using (_∘_)
@@ -59,7 +59,7 @@ open import Agda.Builtin.Float.Properties
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-_≈?_ = On.decidable (Maybe.map Word64.toℕ ∘ toWord64) _≡_ (Maybe.≡-dec ℕ._≟_)
+_≈?_ = On.decidable (Maybe.map Word64.toℕ ∘ toWord64) _≡_ (Maybe.≡-dec ℕ._≡?_)
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -86,22 +86,36 @@ _≈?_ = On.decidable (Maybe.map Word64.toℕ ∘ toWord64) _≡_ (Maybe.≡-dec
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
-_≟_ : DecidableEquality Float
-x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
+infix 4 _≡?_
+_≡?_ : DecidableEquality Float
+x ≡? y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _
 ≡-setoid = setoid Float
 
 ≡-decSetoid : DecSetoid _ _
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 
 ------------------------------------------------------------------------
--- DEPRECATIONS
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.1
 
 toWord-injective = toWord64-injective
 {-# WARNING_ON_USAGE toWord-injective
 "Warning: toWord-injective was deprecated in v2.1.
 Please use toWord64-injective instead."
+#-}
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
 #-}

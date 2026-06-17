@@ -52,7 +52,7 @@ isMagmaMonomorphism : IsMagmaMonomorphism domain X.rawMagma ι
 isMagmaMonomorphism = record
   { isMagmaHomomorphism = record
     { isRelHomomorphism = Z.isRelHomomorphism
-    ; homo = λ _ _ → X.refl
+    ; ∙-homo = λ _ _ → X.refl
     }
     ; injective = id
   }

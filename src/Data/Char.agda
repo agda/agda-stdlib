@@ -13,4 +13,4 @@ module Data.Char where
 
 open import Data.Char.Base public
 open import Data.Char.Properties
-  using (_≈?_; _≟_; _<?_; _≤?_; _==_) public
+  using (_≈?_; _≟_; _≡?_; _<?_; _≤?_; _==_) public

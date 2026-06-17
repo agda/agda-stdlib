@@ -14,7 +14,7 @@ import Data.Nat.Base as ℕ using (ℕ; _<_; _≤_)
 import Data.Nat.Properties as ℕ
   using (_<?_; <-cmp; <-isStrictPartialOrder; <-isStrictTotalOrder
         ; <-strictPartialOrder; <-strictTotalOrder; <-irrefl; <-trans; <-asym
-        ; _≟_)
+        ; _≡?_)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (const; _∘′_)
 open import Relation.Nullary using (¬_; yes; no)
@@ -64,18 +64,18 @@ open import Agda.Builtin.Char.Properties
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
-_≟_ : DecidableEquality Char
-x ≟ y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≟ toℕ y)
+infix 4 _≡?_
+_≡?_ : DecidableEquality Char
+x ≡? y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≡? toℕ y)
 
 setoid : Setoid _ _
 setoid = ≡.setoid Char
 
 decSetoid : DecSetoid _ _
-decSetoid = ≡.decSetoid _≟_
+decSetoid = ≡.decSetoid _≡?_
 
 isDecEquivalence : IsDecEquivalence _≡_
-isDecEquivalence = ≡.isDecEquivalence _≟_
+isDecEquivalence = ≡.isDecEquivalence _≡?_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -87,12 +87,12 @@ isDecEquivalence = ≡.isDecEquivalence _≟_
 
 infix 4 _≡ᵇ_
 _≡ᵇ_ : Char → Char → Bool
-c₁ ≡ᵇ c₂ = isYes (c₁ ≟ c₂)
+c₁ ≡ᵇ c₂ = isYes (c₁ ≡? c₂)
 
 private
 
   -- The following unit test does not type-check (at the time of
-  -- writing) if _==_ is replaced by primCharEquality.
+  -- writing) if _≡ᵇ_ is replaced by primCharEquality.
 
   data P : (Char → Bool) → Set where
     MkP : (c : Char) → P (c ≡ᵇ_)
@@ -179,7 +179,7 @@ _≤?_ = Refl.decidable <-cmp
 ≤-isDecPartialOrder : IsDecPartialOrder _≡_ _≤_
 ≤-isDecPartialOrder = record
   { isPartialOrder = ≤-isPartialOrder
-  ; _≟_            = _≟_
+  ; _≟_            = _≡?_
   ; _≤?_           = _≤?_
   }
 
@@ -230,7 +230,7 @@ Please use Propositional Equality's subst instead."
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕ.≟ toℕ y
+x ≈? y = toℕ x ℕ.≡? toℕ y
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -245,7 +245,7 @@ x ≈? y = toℕ x ℕ.≟ toℕ y
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≟_           = _≈?_
+  ; _≟_            = _≈?_
   }
 ≈-decSetoid : DecSetoid _ _
 ≈-decSetoid = record
@@ -253,7 +253,7 @@ x ≈? y = toℕ x ℕ.≟ toℕ y
   }
 {-# WARNING_ON_USAGE _≈?_
 "Warning: _≈?_ was deprecated in v1.5.
-Please use _≟_ instead."
+Please use _≡?_ instead."
 #-}
 {-# WARNING_ON_USAGE ≈-isEquivalence
 "Warning: ≈-isEquivalence was deprecated in v1.5.
@@ -314,8 +314,14 @@ Please use <-strictPartialOrder instead."
 Please use <-strictTotalOrder instead."
 #-}
 
-
 -- Version 2.4
+
+infix 4 _≟_ _==_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}
 
 _==_ : Char → Char → Bool
 _==_ = _≡ᵇ_
