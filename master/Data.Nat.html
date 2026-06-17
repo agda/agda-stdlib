@@ -8,44 +8,44 @@
 <a id="199" class="Comment">-- See README.Data.Nat for examples of how to use and reason about</a>
 <a id="266" class="Comment">-- naturals.</a>
 
-<a id="280" class="Symbol">{-#</a> <a id="284" class="Keyword">OPTIONS</a> <a id="292" class="Pragma">--cubical-compatible</a> <a id="313" class="Pragma">--safe</a> <a id="320" class="Symbol">#-}</a>
+<a id="280" class="Symbol">{-#</a> <a id="284" class="Keyword">OPTIONS</a> <a id="292" class="Pragma">--without-K</a> <a id="304" class="Pragma">--safe</a> <a id="311" class="Symbol">#-}</a>
 
-<a id="325" class="Keyword">module</a> <a id="332" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="341" class="Keyword">where</a>
+<a id="316" class="Keyword">module</a> <a id="323" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="332" class="Keyword">where</a>
 
-<a id="348" class="Comment">------------------------------------------------------------------------</a>
-<a id="421" class="Comment">-- Publicly re-export the contents of the base module</a>
+<a id="339" class="Comment">------------------------------------------------------------------------</a>
+<a id="412" class="Comment">-- Publicly re-export the contents of the base module</a>
 
-<a id="476" class="Keyword">open</a> <a id="481" class="Keyword">import</a> <a id="488" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="502" class="Keyword">public</a>
+<a id="467" class="Keyword">open</a> <a id="472" class="Keyword">import</a> <a id="479" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="493" class="Keyword">public</a>
 
-<a id="510" class="Comment">------------------------------------------------------------------------</a>
-<a id="583" class="Comment">-- Publicly re-export queries</a>
+<a id="501" class="Comment">------------------------------------------------------------------------</a>
+<a id="574" class="Comment">-- Publicly re-export queries</a>
 
-<a id="614" class="Keyword">open</a> <a id="619" class="Keyword">import</a> <a id="626" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="646" class="Keyword">public</a>
-  <a id="655" class="Keyword">using</a>
-  <a id="663" class="Comment">-- key values</a>
-  <a id="679" class="Symbol">(</a> <a id="681" href="Data.Nat.Properties.html#2926" class="Function">nonZero?</a>
-  <a id="692" class="Comment">-- equalities</a>
-  <a id="708" class="Symbol">;</a> <a id="710" href="Data.Nat.Properties.html#78159" class="Function Operator">_≟_</a> <a id="714" class="Symbol">;</a><a id="715" href="Data.Nat.Properties.html#4094" class="Function Operator">_≡?_</a> <a id="720" class="Symbol">;</a> <a id="722" href="Data.Nat.Properties.html#72584" class="Function">eq?</a>
-  <a id="728" class="Comment">-- standard orders &amp; their relationship</a>
-  <a id="770" class="Symbol">;</a> <a id="772" href="Data.Nat.Properties.html#7055" class="Function Operator">_≤?_</a> <a id="777" class="Symbol">;</a> <a id="779" href="Data.Nat.Properties.html#7121" class="Function Operator">_≥?_</a> <a id="784" class="Symbol">;</a> <a id="786" href="Data.Nat.Properties.html#12058" class="Function Operator">_&lt;?_</a> <a id="791" class="Symbol">;</a> <a id="793" href="Data.Nat.Properties.html#12100" class="Function Operator">_&gt;?_</a>
-  <a id="800" class="Symbol">;</a> <a id="802" href="Data.Nat.Properties.html#10632" class="Function">≤-&lt;-connex</a> <a id="813" class="Symbol">;</a> <a id="815" href="Data.Nat.Properties.html#10745" class="Function">≥-&gt;-connex</a> <a id="826" class="Symbol">;</a> <a id="828" href="Data.Nat.Properties.html#10803" class="Function">&lt;-≤-connex</a> <a id="839" class="Symbol">;</a> <a id="841" href="Data.Nat.Properties.html#10868" class="Function">&gt;-≥-connex</a>
-  <a id="854" class="Symbol">;</a> <a id="856" href="Data.Nat.Properties.html#11742" class="Function">&lt;-cmp</a>
-  <a id="864" class="Comment">-- alternative definitions of the orders</a>
-  <a id="907" class="Symbol">;</a> <a id="909" href="Data.Nat.Properties.html#67859" class="Function Operator">_≤′?_</a><a id="914" class="Symbol">;</a> <a id="916" href="Data.Nat.Properties.html#67963" class="Function Operator">_≥′?_</a><a id="921" class="Symbol">;</a> <a id="923" href="Data.Nat.Properties.html#67917" class="Function Operator">_&lt;′?_</a><a id="928" class="Symbol">;</a> <a id="930" href="Data.Nat.Properties.html#68006" class="Function Operator">_&gt;′?_</a>
-  <a id="938" class="Symbol">;</a> <a id="940" href="Data.Nat.Properties.html#70188" class="Function Operator">_≤″?_</a><a id="945" class="Symbol">;</a> <a id="947" href="Data.Nat.Properties.html#70123" class="Function Operator">_&lt;″?_</a><a id="952" class="Symbol">;</a> <a id="954" href="Data.Nat.Properties.html#70263" class="Function Operator">_≥″?_</a><a id="959" class="Symbol">;</a> <a id="961" href="Data.Nat.Properties.html#70306" class="Function Operator">_&gt;″?_</a>
-  <a id="969" class="Symbol">;</a> <a id="971" href="Data.Nat.Properties.html#71380" class="Function Operator">_&lt;‴?_</a><a id="976" class="Symbol">;</a> <a id="978" href="Data.Nat.Properties.html#71445" class="Function Operator">_≤‴?_</a><a id="983" class="Symbol">;</a> <a id="985" href="Data.Nat.Properties.html#71513" class="Function Operator">_≥‴?_</a><a id="990" class="Symbol">;</a> <a id="992" href="Data.Nat.Properties.html#71556" class="Function Operator">_&gt;‴?_</a>
-  <a id="1000" class="Comment">-- bounded predicates</a>
-  <a id="1024" class="Symbol">;</a> <a id="1026" href="Data.Nat.Properties.html#72813" class="Function">anyUpTo?</a> <a id="1035" class="Symbol">;</a> <a id="1037" href="Data.Nat.Properties.html#73293" class="Function">allUpTo?</a>
-  <a id="1048" class="Symbol">)</a>
+<a id="605" class="Keyword">open</a> <a id="610" class="Keyword">import</a> <a id="617" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="637" class="Keyword">public</a>
+  <a id="646" class="Keyword">using</a>
+  <a id="654" class="Comment">-- key values</a>
+  <a id="670" class="Symbol">(</a> <a id="672" href="Data.Nat.Properties.html#2917" class="Function">nonZero?</a>
+  <a id="683" class="Comment">-- equalities</a>
+  <a id="699" class="Symbol">;</a> <a id="701" href="Data.Nat.Properties.html#78150" class="Function Operator">_≟_</a> <a id="705" class="Symbol">;</a><a id="706" href="Data.Nat.Properties.html#4085" class="Function Operator">_≡?_</a> <a id="711" class="Symbol">;</a> <a id="713" href="Data.Nat.Properties.html#72575" class="Function">eq?</a>
+  <a id="719" class="Comment">-- standard orders &amp; their relationship</a>
+  <a id="761" class="Symbol">;</a> <a id="763" href="Data.Nat.Properties.html#7046" class="Function Operator">_≤?_</a> <a id="768" class="Symbol">;</a> <a id="770" href="Data.Nat.Properties.html#7112" class="Function Operator">_≥?_</a> <a id="775" class="Symbol">;</a> <a id="777" href="Data.Nat.Properties.html#12049" class="Function Operator">_&lt;?_</a> <a id="782" class="Symbol">;</a> <a id="784" href="Data.Nat.Properties.html#12091" class="Function Operator">_&gt;?_</a>
+  <a id="791" class="Symbol">;</a> <a id="793" href="Data.Nat.Properties.html#10623" class="Function">≤-&lt;-connex</a> <a id="804" class="Symbol">;</a> <a id="806" href="Data.Nat.Properties.html#10736" class="Function">≥-&gt;-connex</a> <a id="817" class="Symbol">;</a> <a id="819" href="Data.Nat.Properties.html#10794" class="Function">&lt;-≤-connex</a> <a id="830" class="Symbol">;</a> <a id="832" href="Data.Nat.Properties.html#10859" class="Function">&gt;-≥-connex</a>
+  <a id="845" class="Symbol">;</a> <a id="847" href="Data.Nat.Properties.html#11733" class="Function">&lt;-cmp</a>
+  <a id="855" class="Comment">-- alternative definitions of the orders</a>
+  <a id="898" class="Symbol">;</a> <a id="900" href="Data.Nat.Properties.html#67850" class="Function Operator">_≤′?_</a><a id="905" class="Symbol">;</a> <a id="907" href="Data.Nat.Properties.html#67954" class="Function Operator">_≥′?_</a><a id="912" class="Symbol">;</a> <a id="914" href="Data.Nat.Properties.html#67908" class="Function Operator">_&lt;′?_</a><a id="919" class="Symbol">;</a> <a id="921" href="Data.Nat.Properties.html#67997" class="Function Operator">_&gt;′?_</a>
+  <a id="929" class="Symbol">;</a> <a id="931" href="Data.Nat.Properties.html#70179" class="Function Operator">_≤″?_</a><a id="936" class="Symbol">;</a> <a id="938" href="Data.Nat.Properties.html#70114" class="Function Operator">_&lt;″?_</a><a id="943" class="Symbol">;</a> <a id="945" href="Data.Nat.Properties.html#70254" class="Function Operator">_≥″?_</a><a id="950" class="Symbol">;</a> <a id="952" href="Data.Nat.Properties.html#70297" class="Function Operator">_&gt;″?_</a>
+  <a id="960" class="Symbol">;</a> <a id="962" href="Data.Nat.Properties.html#71371" class="Function Operator">_&lt;‴?_</a><a id="967" class="Symbol">;</a> <a id="969" href="Data.Nat.Properties.html#71436" class="Function Operator">_≤‴?_</a><a id="974" class="Symbol">;</a> <a id="976" href="Data.Nat.Properties.html#71504" class="Function Operator">_≥‴?_</a><a id="981" class="Symbol">;</a> <a id="983" href="Data.Nat.Properties.html#71547" class="Function Operator">_&gt;‴?_</a>
+  <a id="991" class="Comment">-- bounded predicates</a>
+  <a id="1015" class="Symbol">;</a> <a id="1017" href="Data.Nat.Properties.html#72804" class="Function">anyUpTo?</a> <a id="1026" class="Symbol">;</a> <a id="1028" href="Data.Nat.Properties.html#73284" class="Function">allUpTo?</a>
+  <a id="1039" class="Symbol">)</a>
 
-<a id="1051" class="Comment">------------------------------------------------------------------------</a>
-<a id="1124" class="Comment">-- Deprecated</a>
+<a id="1042" class="Comment">------------------------------------------------------------------------</a>
+<a id="1115" class="Comment">-- Deprecated</a>
 
-<a id="1139" class="Comment">-- Version 0.17</a>
+<a id="1130" class="Comment">-- Version 0.17</a>
 
-<a id="1156" class="Comment">-- Version 2.0</a>
+<a id="1147" class="Comment">-- Version 2.0</a>
 
-<a id="1172" class="Comment">-- solely for the re-export of this name, formerly in `Data.Nat.Properties.Core`</a>
-<a id="1253" class="Keyword">open</a> <a id="1258" class="Keyword">import</a> <a id="1265" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="1285" class="Keyword">public</a>
-  <a id="1294" class="Keyword">using</a> <a id="1300" class="Symbol">(</a><a id="1301" href="Data.Nat.Properties.html#9033" class="Function">≤-pred</a><a id="1307" class="Symbol">)</a>
+<a id="1163" class="Comment">-- solely for the re-export of this name, formerly in `Data.Nat.Properties.Core`</a>
+<a id="1244" class="Keyword">open</a> <a id="1249" class="Keyword">import</a> <a id="1256" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="1276" class="Keyword">public</a>
+  <a id="1285" class="Keyword">using</a> <a id="1291" class="Symbol">(</a><a id="1292" href="Data.Nat.Properties.html#9024" class="Function">≤-pred</a><a id="1298" class="Symbol">)</a>
 </pre></body></html>

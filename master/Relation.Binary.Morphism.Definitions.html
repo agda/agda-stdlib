@@ -5,23 +5,23 @@
 <a id="106" class="Comment">-- Basic definitions for morphisms between algebraic structures</a>
 <a id="170" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="244" class="Symbol">{-#</a> <a id="248" class="Keyword">OPTIONS</a> <a id="256" class="Pragma">--cubical-compatible</a> <a id="277" class="Pragma">--safe</a> <a id="284" class="Symbol">#-}</a>
+<a id="244" class="Symbol">{-#</a> <a id="248" class="Keyword">OPTIONS</a> <a id="256" class="Pragma">--without-K</a> <a id="268" class="Pragma">--safe</a> <a id="275" class="Symbol">#-}</a>
 
-<a id="289" class="Keyword">module</a> <a id="296" href="Relation.Binary.Morphism.Definitions.html" class="Module">Relation.Binary.Morphism.Definitions</a>
-  <a id="335" class="Symbol">{</a><a id="336" href="Relation.Binary.Morphism.Definitions.html#336" class="Bound">a</a><a id="337" class="Symbol">}</a> <a id="339" class="Symbol">(</a><a id="340" href="Relation.Binary.Morphism.Definitions.html#340" class="Bound">A</a> <a id="342" class="Symbol">:</a> <a id="344" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="348" href="Relation.Binary.Morphism.Definitions.html#336" class="Bound">a</a><a id="349" class="Symbol">)</a>     <a id="355" class="Comment">-- The domain of the morphism</a>
-  <a id="387" class="Symbol">{</a><a id="388" href="Relation.Binary.Morphism.Definitions.html#388" class="Bound">b</a><a id="389" class="Symbol">}</a> <a id="391" class="Symbol">(</a><a id="392" href="Relation.Binary.Morphism.Definitions.html#392" class="Bound">B</a> <a id="394" class="Symbol">:</a> <a id="396" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="400" href="Relation.Binary.Morphism.Definitions.html#388" class="Bound">b</a><a id="401" class="Symbol">)</a>     <a id="407" class="Comment">-- The codomain of the morphism</a>
-  <a id="441" class="Keyword">where</a>
+<a id="280" class="Keyword">module</a> <a id="287" href="Relation.Binary.Morphism.Definitions.html" class="Module">Relation.Binary.Morphism.Definitions</a>
+  <a id="326" class="Symbol">{</a><a id="327" href="Relation.Binary.Morphism.Definitions.html#327" class="Bound">a</a><a id="328" class="Symbol">}</a> <a id="330" class="Symbol">(</a><a id="331" href="Relation.Binary.Morphism.Definitions.html#331" class="Bound">A</a> <a id="333" class="Symbol">:</a> <a id="335" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="339" href="Relation.Binary.Morphism.Definitions.html#327" class="Bound">a</a><a id="340" class="Symbol">)</a>     <a id="346" class="Comment">-- The domain of the morphism</a>
+  <a id="378" class="Symbol">{</a><a id="379" href="Relation.Binary.Morphism.Definitions.html#379" class="Bound">b</a><a id="380" class="Symbol">}</a> <a id="382" class="Symbol">(</a><a id="383" href="Relation.Binary.Morphism.Definitions.html#383" class="Bound">B</a> <a id="385" class="Symbol">:</a> <a id="387" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="391" href="Relation.Binary.Morphism.Definitions.html#379" class="Bound">b</a><a id="392" class="Symbol">)</a>     <a id="398" class="Comment">-- The codomain of the morphism</a>
+  <a id="432" class="Keyword">where</a>
 
-<a id="448" class="Comment">------------------------------------------------------------------------</a>
-<a id="521" class="Comment">-- Morphism definition in Function.Core</a>
+<a id="439" class="Comment">------------------------------------------------------------------------</a>
+<a id="512" class="Comment">-- Morphism definition in Function.Core</a>
 
-<a id="562" class="Keyword">open</a> <a id="567" class="Keyword">import</a> <a id="574" href="Function.Core.html" class="Module">Function.Core</a> <a id="588" class="Keyword">public</a>
-  <a id="597" class="Keyword">using</a> <a id="603" class="Symbol">(</a><a id="604" href="Function.Core.html#654" class="Function">Morphism</a><a id="612" class="Symbol">)</a>
+<a id="553" class="Keyword">open</a> <a id="558" class="Keyword">import</a> <a id="565" href="Function.Core.html" class="Module">Function.Core</a> <a id="579" class="Keyword">public</a>
+  <a id="588" class="Keyword">using</a> <a id="594" class="Symbol">(</a><a id="595" href="Function.Core.html#645" class="Function">Morphism</a><a id="603" class="Symbol">)</a>
 
-<a id="615" class="Comment">------------------------------------------------------------------------</a>
-<a id="688" class="Comment">-- Basic definitions</a>
+<a id="606" class="Comment">------------------------------------------------------------------------</a>
+<a id="679" class="Comment">-- Basic definitions</a>
 
-<a id="710" class="Keyword">open</a> <a id="715" class="Keyword">import</a> <a id="722" href="Function.Definitions.html" class="Module">Function.Definitions</a> <a id="743" class="Keyword">public</a>
-  <a id="752" class="Keyword">using</a> <a id="758" class="Symbol">()</a>
-  <a id="763" class="Keyword">renaming</a> <a id="772" class="Symbol">(</a><a id="773" href="Function.Definitions.html#765" class="Function">Congruent</a> <a id="783" class="Symbol">to</a> <a id="786" class="Function">Homomorphic₂</a><a id="798" class="Symbol">)</a>
+<a id="701" class="Keyword">open</a> <a id="706" class="Keyword">import</a> <a id="713" href="Function.Definitions.html" class="Module">Function.Definitions</a> <a id="734" class="Keyword">public</a>
+  <a id="743" class="Keyword">using</a> <a id="749" class="Symbol">()</a>
+  <a id="754" class="Keyword">renaming</a> <a id="763" class="Symbol">(</a><a id="764" href="Function.Definitions.html#756" class="Function">Congruent</a> <a id="774" class="Symbol">to</a> <a id="777" class="Function">Homomorphic₂</a><a id="789" class="Symbol">)</a>
 </pre></body></html>

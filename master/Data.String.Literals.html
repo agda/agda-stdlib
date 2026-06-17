@@ -5,17 +5,17 @@
 <a id="106" class="Comment">-- String Literals</a>
 <a id="125" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="199" class="Symbol">{-#</a> <a id="203" class="Keyword">OPTIONS</a> <a id="211" class="Pragma">--cubical-compatible</a> <a id="232" class="Pragma">--safe</a> <a id="239" class="Symbol">#-}</a>
+<a id="199" class="Symbol">{-#</a> <a id="203" class="Keyword">OPTIONS</a> <a id="211" class="Pragma">--without-K</a> <a id="223" class="Pragma">--safe</a> <a id="230" class="Symbol">#-}</a>
 
-<a id="244" class="Keyword">module</a> <a id="251" href="Data.String.Literals.html" class="Module">Data.String.Literals</a> <a id="272" class="Keyword">where</a>
+<a id="235" class="Keyword">module</a> <a id="242" href="Data.String.Literals.html" class="Module">Data.String.Literals</a> <a id="263" class="Keyword">where</a>
 
-<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Agda.Builtin.FromString.html" class="Module">Agda.Builtin.FromString</a> <a id="315" class="Keyword">using</a> <a id="321" class="Symbol">(</a><a id="322" href="Agda.Builtin.FromString.html#202" class="Record">IsString</a><a id="330" class="Symbol">)</a>
-<a id="332" class="Keyword">open</a> <a id="337" class="Keyword">import</a> <a id="344" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a> <a id="359" class="Keyword">using</a> <a id="365" class="Symbol">(</a><a id="366" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a><a id="367" class="Symbol">)</a>
-<a id="369" class="Keyword">open</a> <a id="374" class="Keyword">import</a> <a id="381" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="401" class="Keyword">using</a> <a id="407" class="Symbol">(</a><a id="408" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="414" class="Symbol">)</a>
+<a id="270" class="Keyword">open</a> <a id="275" class="Keyword">import</a> <a id="282" href="Agda.Builtin.FromString.html" class="Module">Agda.Builtin.FromString</a> <a id="306" class="Keyword">using</a> <a id="312" class="Symbol">(</a><a id="313" href="Agda.Builtin.FromString.html#202" class="Record">IsString</a><a id="321" class="Symbol">)</a>
+<a id="323" class="Keyword">open</a> <a id="328" class="Keyword">import</a> <a id="335" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a> <a id="350" class="Keyword">using</a> <a id="356" class="Symbol">(</a><a id="357" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a><a id="358" class="Symbol">)</a>
+<a id="360" class="Keyword">open</a> <a id="365" class="Keyword">import</a> <a id="372" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="392" class="Keyword">using</a> <a id="398" class="Symbol">(</a><a id="399" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="405" class="Symbol">)</a>
 
-<a id="isString"></a><a id="417" href="Data.String.Literals.html#417" class="Function">isString</a> <a id="426" class="Symbol">:</a> <a id="428" href="Agda.Builtin.FromString.html#202" class="Record">IsString</a> <a id="437" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
-<a id="444" href="Data.String.Literals.html#417" class="Function">isString</a> <a id="453" class="Symbol">=</a> <a id="455" class="Keyword">record</a>
-  <a id="464" class="Symbol">{</a> <a id="466" href="Agda.Builtin.FromString.html#260" class="Field">Constraint</a> <a id="477" class="Symbol">=</a> <a id="479" class="Symbol">λ</a> <a id="481" href="Data.String.Literals.html#481" class="Bound">_</a> <a id="483" class="Symbol">→</a> <a id="485" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a>
-  <a id="489" class="Symbol">;</a> <a id="491" href="Agda.Builtin.FromString.html#292" class="Field">fromString</a> <a id="502" class="Symbol">=</a> <a id="504" class="Symbol">λ</a> <a id="506" href="Data.String.Literals.html#506" class="Bound">s</a> <a id="508" class="Symbol">→</a> <a id="510" href="Data.String.Literals.html#506" class="Bound">s</a>
-  <a id="514" class="Symbol">}</a>
+<a id="isString"></a><a id="408" href="Data.String.Literals.html#408" class="Function">isString</a> <a id="417" class="Symbol">:</a> <a id="419" href="Agda.Builtin.FromString.html#202" class="Record">IsString</a> <a id="428" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="435" href="Data.String.Literals.html#408" class="Function">isString</a> <a id="444" class="Symbol">=</a> <a id="446" class="Keyword">record</a>
+  <a id="455" class="Symbol">{</a> <a id="457" href="Agda.Builtin.FromString.html#260" class="Field">Constraint</a> <a id="468" class="Symbol">=</a> <a id="470" class="Symbol">λ</a> <a id="472" href="Data.String.Literals.html#472" class="Bound">_</a> <a id="474" class="Symbol">→</a> <a id="476" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a>
+  <a id="480" class="Symbol">;</a> <a id="482" href="Agda.Builtin.FromString.html#292" class="Field">fromString</a> <a id="493" class="Symbol">=</a> <a id="495" class="Symbol">λ</a> <a id="497" href="Data.String.Literals.html#497" class="Bound">s</a> <a id="499" class="Symbol">→</a> <a id="501" href="Data.String.Literals.html#497" class="Bound">s</a>
+  <a id="505" class="Symbol">}</a>
 </pre></body></html>

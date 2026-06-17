@@ -7,18 +7,18 @@
 
 <a id="229" class="Comment">-- See README.Data.Nat for examples of how to use this solver</a>
 
-<a id="292" class="Symbol">{-#</a> <a id="296" class="Keyword">OPTIONS</a> <a id="304" class="Pragma">--cubical-compatible</a> <a id="325" class="Pragma">--safe</a> <a id="332" class="Symbol">#-}</a>
+<a id="292" class="Symbol">{-#</a> <a id="296" class="Keyword">OPTIONS</a> <a id="304" class="Pragma">--without-K</a> <a id="316" class="Pragma">--safe</a> <a id="323" class="Symbol">#-}</a>
 
-<a id="337" class="Keyword">module</a> <a id="344" href="Data.Nat.Solver.html" class="Module">Data.Nat.Solver</a> <a id="360" class="Keyword">where</a>
+<a id="328" class="Keyword">module</a> <a id="335" href="Data.Nat.Solver.html" class="Module">Data.Nat.Solver</a> <a id="351" class="Keyword">where</a>
 
-<a id="367" class="Keyword">import</a> <a id="374" href="Algebra.Solver.Ring.Simple.html" class="Module">Algebra.Solver.Ring.Simple</a> <a id="401" class="Symbol">as</a> <a id="404" class="Module">Solver</a>
-<a id="411" class="Keyword">import</a> <a id="418" href="Algebra.Solver.Ring.AlmostCommutativeRing.html" class="Module">Algebra.Solver.Ring.AlmostCommutativeRing</a> <a id="460" class="Symbol">as</a> <a id="463" class="Module">ACR</a>
-<a id="467" class="Keyword">open</a> <a id="472" class="Keyword">import</a> <a id="479" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a>
+<a id="358" class="Keyword">import</a> <a id="365" href="Algebra.Solver.Ring.Simple.html" class="Module">Algebra.Solver.Ring.Simple</a> <a id="392" class="Symbol">as</a> <a id="395" class="Module">Solver</a>
+<a id="402" class="Keyword">import</a> <a id="409" href="Algebra.Solver.Ring.AlmostCommutativeRing.html" class="Module">Algebra.Solver.Ring.AlmostCommutativeRing</a> <a id="451" class="Symbol">as</a> <a id="454" class="Module">ACR</a>
+<a id="458" class="Keyword">open</a> <a id="463" class="Keyword">import</a> <a id="470" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a>
 
-<a id="500" class="Comment">------------------------------------------------------------------------</a>
-<a id="573" class="Comment">-- A module for automatically solving propositional equivalences</a>
-<a id="638" class="Comment">-- containing _+_ and _*_</a>
+<a id="491" class="Comment">------------------------------------------------------------------------</a>
+<a id="564" class="Comment">-- A module for automatically solving propositional equivalences</a>
+<a id="629" class="Comment">-- containing _+_ and _*_</a>
 
-<a id="665" class="Keyword">module</a> <a id="+-*-Solver"></a><a id="672" href="Data.Nat.Solver.html#672" class="Module">+-*-Solver</a> <a id="683" class="Symbol">=</a>
-  <a id="687" href="Algebra.Solver.Ring.Simple.html" class="Module">Solver</a> <a id="694" class="Symbol">(</a><a id="695" href="Algebra.Solver.Ring.AlmostCommutativeRing.html#4514" class="Function">ACR.fromCommutativeSemiring</a> <a id="723" href="Data.Nat.Properties.html#25627" class="Function">+-*-commutativeSemiring</a><a id="746" class="Symbol">)</a> <a id="748" href="Data.Nat.Properties.html#4094" class="Function Operator">_≡?_</a>
+<a id="656" class="Keyword">module</a> <a id="+-*-Solver"></a><a id="663" href="Data.Nat.Solver.html#663" class="Module">+-*-Solver</a> <a id="674" class="Symbol">=</a>
+  <a id="678" href="Algebra.Solver.Ring.Simple.html" class="Module">Solver</a> <a id="685" class="Symbol">(</a><a id="686" href="Algebra.Solver.Ring.AlmostCommutativeRing.html#4505" class="Function">ACR.fromCommutativeSemiring</a> <a id="714" href="Data.Nat.Properties.html#25618" class="Function">+-*-commutativeSemiring</a><a id="737" class="Symbol">)</a> <a id="739" href="Data.Nat.Properties.html#4085" class="Function Operator">_≡?_</a>
 </pre></body></html>

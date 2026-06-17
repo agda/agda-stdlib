@@ -14,56 +14,56 @@
 <a id="589" class="Comment">-- in favour of those defined in `Algebra.Construct.Terminal`.</a>
 <a id="652" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="726" class="Symbol">{-#</a> <a id="730" class="Keyword">OPTIONS</a> <a id="738" class="Pragma">--cubical-compatible</a> <a id="759" class="Pragma">--safe</a> <a id="766" class="Symbol">#-}</a>
+<a id="726" class="Symbol">{-#</a> <a id="730" class="Keyword">OPTIONS</a> <a id="738" class="Pragma">--without-K</a> <a id="750" class="Pragma">--safe</a> <a id="757" class="Symbol">#-}</a>
 
-<a id="771" class="Keyword">open</a> <a id="776" class="Keyword">import</a> <a id="783" href="Level.html" class="Module">Level</a> <a id="789" class="Keyword">using</a> <a id="795" class="Symbol">(</a><a id="796" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="801" class="Symbol">)</a>
+<a id="762" class="Keyword">open</a> <a id="767" class="Keyword">import</a> <a id="774" href="Level.html" class="Module">Level</a> <a id="780" class="Keyword">using</a> <a id="786" class="Symbol">(</a><a id="787" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="792" class="Symbol">)</a>
 
-<a id="804" class="Keyword">module</a> <a id="811" href="Algebra.Construct.Zero.html" class="Module">Algebra.Construct.Zero</a> <a id="834" class="Symbol">{</a><a id="835" href="Algebra.Construct.Zero.html#835" class="Bound">c</a> <a id="837" href="Algebra.Construct.Zero.html#837" class="Bound">ℓ</a> <a id="839" class="Symbol">:</a> <a id="841" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="846" class="Symbol">}</a> <a id="848" class="Keyword">where</a>
+<a id="795" class="Keyword">module</a> <a id="802" href="Algebra.Construct.Zero.html" class="Module">Algebra.Construct.Zero</a> <a id="825" class="Symbol">{</a><a id="826" href="Algebra.Construct.Zero.html#826" class="Bound">c</a> <a id="828" href="Algebra.Construct.Zero.html#828" class="Bound">ℓ</a> <a id="830" class="Symbol">:</a> <a id="832" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="837" class="Symbol">}</a> <a id="839" class="Keyword">where</a>
 
-<a id="855" class="Keyword">open</a> <a id="860" class="Keyword">import</a> <a id="867" href="Algebra.Bundles.Raw.html" class="Module">Algebra.Bundles.Raw</a> <a id="887" class="Keyword">using</a> <a id="893" class="Symbol">(</a><a id="894" href="Algebra.Bundles.Raw.html#1205" class="Record">RawMagma</a><a id="902" class="Symbol">)</a>
-<a id="904" class="Keyword">open</a> <a id="909" class="Keyword">import</a> <a id="916" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="932" class="Keyword">using</a> <a id="938" class="Symbol">(</a><a id="939" href="Algebra.Bundles.html#1758" class="Record">Magma</a><a id="944" class="Symbol">;</a> <a id="946" href="Algebra.Bundles.html#4756" class="Record">Semigroup</a><a id="955" class="Symbol">;</a> <a id="957" href="Algebra.Bundles.html#5119" class="Record">Band</a><a id="961" class="Symbol">)</a>
+<a id="846" class="Keyword">open</a> <a id="851" class="Keyword">import</a> <a id="858" href="Algebra.Bundles.Raw.html" class="Module">Algebra.Bundles.Raw</a> <a id="878" class="Keyword">using</a> <a id="884" class="Symbol">(</a><a id="885" href="Algebra.Bundles.Raw.html#1196" class="Record">RawMagma</a><a id="893" class="Symbol">)</a>
+<a id="895" class="Keyword">open</a> <a id="900" class="Keyword">import</a> <a id="907" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="923" class="Keyword">using</a> <a id="929" class="Symbol">(</a><a id="930" href="Algebra.Bundles.html#1749" class="Record">Magma</a><a id="935" class="Symbol">;</a> <a id="937" href="Algebra.Bundles.html#4747" class="Record">Semigroup</a><a id="946" class="Symbol">;</a> <a id="948" href="Algebra.Bundles.html#5110" class="Record">Band</a><a id="952" class="Symbol">)</a>
 
-<a id="964" class="Comment">------------------------------------------------------------------------</a>
-<a id="1037" class="Comment">-- Re-export those algebras which are both initial and terminal</a>
+<a id="955" class="Comment">------------------------------------------------------------------------</a>
+<a id="1028" class="Comment">-- Re-export those algebras which are both initial and terminal</a>
 
-<a id="1102" class="Keyword">open</a> <a id="1107" class="Keyword">import</a> <a id="1114" href="Algebra.Construct.Terminal.html" class="Module">Algebra.Construct.Terminal</a> <a id="1141" class="Keyword">public</a>
-  <a id="1150" class="Keyword">hiding</a> <a id="1157" class="Symbol">(</a><a id="1158" href="Algebra.Construct.Terminal.html#1004" class="Function">rawMagma</a><a id="1166" class="Symbol">;</a> <a id="1168" href="Algebra.Construct.Terminal.html#1425" class="Function">magma</a><a id="1173" class="Symbol">;</a> <a id="1175" href="Algebra.Construct.Terminal.html#1467" class="Function">semigroup</a><a id="1184" class="Symbol">;</a> <a id="1186" href="Algebra.Construct.Terminal.html#1521" class="Function">band</a><a id="1190" class="Symbol">)</a>
+<a id="1093" class="Keyword">open</a> <a id="1098" class="Keyword">import</a> <a id="1105" href="Algebra.Construct.Terminal.html" class="Module">Algebra.Construct.Terminal</a> <a id="1132" class="Keyword">public</a>
+  <a id="1141" class="Keyword">hiding</a> <a id="1148" class="Symbol">(</a><a id="1149" href="Algebra.Construct.Terminal.html#995" class="Function">rawMagma</a><a id="1157" class="Symbol">;</a> <a id="1159" href="Algebra.Construct.Terminal.html#1416" class="Function">magma</a><a id="1164" class="Symbol">;</a> <a id="1166" href="Algebra.Construct.Terminal.html#1458" class="Function">semigroup</a><a id="1175" class="Symbol">;</a> <a id="1177" href="Algebra.Construct.Terminal.html#1512" class="Function">band</a><a id="1181" class="Symbol">)</a>
 
-<a id="1193" class="Comment">------------------------------------------------------------------------</a>
-<a id="1266" class="Comment">-- DEPRECATED</a>
-<a id="1280" class="Comment">------------------------------------------------------------------------</a>
-<a id="1353" class="Comment">-- Please use the new definitions re-exported from</a>
-<a id="1404" class="Comment">-- `Algebra.Construct.Terminal` as continuing support for the below is</a>
-<a id="1475" class="Comment">-- not guaranteed.</a>
+<a id="1184" class="Comment">------------------------------------------------------------------------</a>
+<a id="1257" class="Comment">-- DEPRECATED</a>
+<a id="1271" class="Comment">------------------------------------------------------------------------</a>
+<a id="1344" class="Comment">-- Please use the new definitions re-exported from</a>
+<a id="1395" class="Comment">-- `Algebra.Construct.Terminal` as continuing support for the below is</a>
+<a id="1466" class="Comment">-- not guaranteed.</a>
 
-<a id="1495" class="Comment">-- Version 2.0</a>
+<a id="1486" class="Comment">-- Version 2.0</a>
 
-<a id="rawMagma"></a><a id="1511" href="Algebra.Construct.Zero.html#1511" class="Function">rawMagma</a> <a id="1520" class="Symbol">:</a> <a id="1522" href="Algebra.Bundles.Raw.html#1205" class="Record">RawMagma</a> <a id="1531" href="Algebra.Construct.Zero.html#835" class="Bound">c</a> <a id="1533" href="Algebra.Construct.Zero.html#837" class="Bound">ℓ</a>
-<a id="1535" href="Algebra.Construct.Zero.html#1511" class="Function">rawMagma</a> <a id="1544" class="Symbol">=</a> <a id="1546" href="Algebra.Construct.Terminal.html#1004" class="Function">Algebra.Construct.Terminal.rawMagma</a>
+<a id="rawMagma"></a><a id="1502" href="Algebra.Construct.Zero.html#1502" class="Function">rawMagma</a> <a id="1511" class="Symbol">:</a> <a id="1513" href="Algebra.Bundles.Raw.html#1196" class="Record">RawMagma</a> <a id="1522" href="Algebra.Construct.Zero.html#826" class="Bound">c</a> <a id="1524" href="Algebra.Construct.Zero.html#828" class="Bound">ℓ</a>
+<a id="1526" href="Algebra.Construct.Zero.html#1502" class="Function">rawMagma</a> <a id="1535" class="Symbol">=</a> <a id="1537" href="Algebra.Construct.Terminal.html#995" class="Function">Algebra.Construct.Terminal.rawMagma</a>
 
-<a id="1583" class="Symbol">{-#</a> <a id="1587" class="Keyword">WARNING_ON_USAGE</a> <a id="1604" class="Pragma">rawMagma</a>
-<a id="1613" class="String">&quot;Warning: rawMagma was deprecated in v2.0.
+<a id="1574" class="Symbol">{-#</a> <a id="1578" class="Keyword">WARNING_ON_USAGE</a> <a id="1595" class="Pragma">rawMagma</a>
+<a id="1604" class="String">&quot;Warning: rawMagma was deprecated in v2.0.
 Please use Algebra.Construct.Terminal.rawMagma instead.&quot;</a>
-<a id="1713" class="Symbol">#-}</a>
+<a id="1704" class="Symbol">#-}</a>
 
-<a id="magma"></a><a id="1718" href="Algebra.Construct.Zero.html#1718" class="Function">magma</a> <a id="1724" class="Symbol">:</a> <a id="1726" href="Algebra.Bundles.html#1758" class="Record">Magma</a> <a id="1732" href="Algebra.Construct.Zero.html#835" class="Bound">c</a> <a id="1734" href="Algebra.Construct.Zero.html#837" class="Bound">ℓ</a>
-<a id="1736" href="Algebra.Construct.Zero.html#1718" class="Function">magma</a> <a id="1742" class="Symbol">=</a> <a id="1744" href="Algebra.Construct.Terminal.html#1425" class="Function">Algebra.Construct.Terminal.magma</a>
-<a id="1777" class="Symbol">{-#</a> <a id="1781" class="Keyword">WARNING_ON_USAGE</a> <a id="1798" class="Pragma">magma</a>
-<a id="1804" class="String">&quot;Warning: magma was deprecated in v2.0.
+<a id="magma"></a><a id="1709" href="Algebra.Construct.Zero.html#1709" class="Function">magma</a> <a id="1715" class="Symbol">:</a> <a id="1717" href="Algebra.Bundles.html#1749" class="Record">Magma</a> <a id="1723" href="Algebra.Construct.Zero.html#826" class="Bound">c</a> <a id="1725" href="Algebra.Construct.Zero.html#828" class="Bound">ℓ</a>
+<a id="1727" href="Algebra.Construct.Zero.html#1709" class="Function">magma</a> <a id="1733" class="Symbol">=</a> <a id="1735" href="Algebra.Construct.Terminal.html#1416" class="Function">Algebra.Construct.Terminal.magma</a>
+<a id="1768" class="Symbol">{-#</a> <a id="1772" class="Keyword">WARNING_ON_USAGE</a> <a id="1789" class="Pragma">magma</a>
+<a id="1795" class="String">&quot;Warning: magma was deprecated in v2.0.
 Please use Algebra.Construct.Terminal.magma instead.&quot;</a>
-<a id="1898" class="Symbol">#-}</a>
+<a id="1889" class="Symbol">#-}</a>
 
-<a id="semigroup"></a><a id="1903" href="Algebra.Construct.Zero.html#1903" class="Function">semigroup</a> <a id="1913" class="Symbol">:</a> <a id="1915" href="Algebra.Bundles.html#4756" class="Record">Semigroup</a> <a id="1925" href="Algebra.Construct.Zero.html#835" class="Bound">c</a> <a id="1927" href="Algebra.Construct.Zero.html#837" class="Bound">ℓ</a>
-<a id="1929" href="Algebra.Construct.Zero.html#1903" class="Function">semigroup</a> <a id="1939" class="Symbol">=</a> <a id="1941" href="Algebra.Construct.Terminal.html#1467" class="Function">Algebra.Construct.Terminal.semigroup</a>
-<a id="1978" class="Symbol">{-#</a> <a id="1982" class="Keyword">WARNING_ON_USAGE</a> <a id="1999" class="Pragma">semigroup</a>
-<a id="2009" class="String">&quot;Warning: semigroup was deprecated in v2.0.
+<a id="semigroup"></a><a id="1894" href="Algebra.Construct.Zero.html#1894" class="Function">semigroup</a> <a id="1904" class="Symbol">:</a> <a id="1906" href="Algebra.Bundles.html#4747" class="Record">Semigroup</a> <a id="1916" href="Algebra.Construct.Zero.html#826" class="Bound">c</a> <a id="1918" href="Algebra.Construct.Zero.html#828" class="Bound">ℓ</a>
+<a id="1920" href="Algebra.Construct.Zero.html#1894" class="Function">semigroup</a> <a id="1930" class="Symbol">=</a> <a id="1932" href="Algebra.Construct.Terminal.html#1458" class="Function">Algebra.Construct.Terminal.semigroup</a>
+<a id="1969" class="Symbol">{-#</a> <a id="1973" class="Keyword">WARNING_ON_USAGE</a> <a id="1990" class="Pragma">semigroup</a>
+<a id="2000" class="String">&quot;Warning: semigroup was deprecated in v2.0.
 Please use Algebra.Construct.Terminal.semigroup instead.&quot;</a>
-<a id="2111" class="Symbol">#-}</a>
+<a id="2102" class="Symbol">#-}</a>
 
-<a id="band"></a><a id="2116" href="Algebra.Construct.Zero.html#2116" class="Function">band</a> <a id="2121" class="Symbol">:</a> <a id="2123" href="Algebra.Bundles.html#5119" class="Record">Band</a> <a id="2128" href="Algebra.Construct.Zero.html#835" class="Bound">c</a> <a id="2130" href="Algebra.Construct.Zero.html#837" class="Bound">ℓ</a>
-<a id="2132" href="Algebra.Construct.Zero.html#2116" class="Function">band</a> <a id="2137" class="Symbol">=</a> <a id="2139" href="Algebra.Construct.Terminal.html#1521" class="Function">Algebra.Construct.Terminal.band</a>
-<a id="2171" class="Symbol">{-#</a> <a id="2175" class="Keyword">WARNING_ON_USAGE</a> <a id="2192" class="Pragma">semigroup</a>
-<a id="2202" class="String">&quot;Warning: semigroup was deprecated in v2.0.
+<a id="band"></a><a id="2107" href="Algebra.Construct.Zero.html#2107" class="Function">band</a> <a id="2112" class="Symbol">:</a> <a id="2114" href="Algebra.Bundles.html#5110" class="Record">Band</a> <a id="2119" href="Algebra.Construct.Zero.html#826" class="Bound">c</a> <a id="2121" href="Algebra.Construct.Zero.html#828" class="Bound">ℓ</a>
+<a id="2123" href="Algebra.Construct.Zero.html#2107" class="Function">band</a> <a id="2128" class="Symbol">=</a> <a id="2130" href="Algebra.Construct.Terminal.html#1512" class="Function">Algebra.Construct.Terminal.band</a>
+<a id="2162" class="Symbol">{-#</a> <a id="2166" class="Keyword">WARNING_ON_USAGE</a> <a id="2183" class="Pragma">semigroup</a>
+<a id="2193" class="String">&quot;Warning: semigroup was deprecated in v2.0.
 Please use Algebra.Construct.Terminal.semigroup instead.&quot;</a>
-<a id="2304" class="Symbol">#-}</a>
+<a id="2295" class="Symbol">#-}</a>
 </pre></body></html>
