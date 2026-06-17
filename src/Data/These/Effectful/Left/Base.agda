@@ -11,7 +11,7 @@
 -- Product-based similar setting.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level
 

@@ -4,7 +4,7 @@
 -- Properties of divisibility over commutative semigroups
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (CommutativeSemigroup)
 

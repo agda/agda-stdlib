@@ -4,7 +4,7 @@
 -- Properties of unnormalized Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Unnormalised.Properties where

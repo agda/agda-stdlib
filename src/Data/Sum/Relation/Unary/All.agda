@@ -4,7 +4,7 @@
 -- Heterogeneous `All` predicate for disjoint sums
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Unary.All where
 

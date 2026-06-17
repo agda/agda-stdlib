@@ -4,7 +4,7 @@
 -- "Finite" sets indexed on coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible --guardedness #-}
+{-# OPTIONS --safe --without-K --guardedness #-}
 
 module Codata.Musical.Cofin where
 

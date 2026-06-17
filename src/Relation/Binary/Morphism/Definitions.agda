@@ -4,7 +4,7 @@
 -- Basic definitions for morphisms between algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Morphism.Definitions
   {a} (A : Set a)     -- The domain of the morphism

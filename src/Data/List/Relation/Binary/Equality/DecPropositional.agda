@@ -8,7 +8,7 @@
 -- propositional equality can usually be replaced with propositional
 -- equality.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Definitions using (DecidableEquality)
 

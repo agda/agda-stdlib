@@ -4,7 +4,7 @@
 -- Some properties of operations in CancellativeCommutativeSemiring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (CancellativeCommutativeSemiring)
 

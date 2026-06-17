@@ -4,7 +4,7 @@
 -- Properties of permutations using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core
   using (Rel; _⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)

@@ -5,7 +5,7 @@
 -- direct product construction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Algebra.Morphism.Construct.DirectProduct where
 

@@ -4,7 +4,7 @@
 -- Properties of the `Reflects` construct
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Reflects where
 

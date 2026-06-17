@@ -6,6 +6,8 @@ The library has been tested using Agda 2.8.0.
 Highlights
 ----------
 
+* Modules that previously used `--cubical-compatible` once again use `--without-K`.
+
 * The notation for `Decidable` relations has been (partially) standardised: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
   - `_≈?_` (ditto.) for the general `IsDecEquivalence`

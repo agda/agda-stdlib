@@ -4,7 +4,7 @@
 -- Inductive pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Binary.Pointwise.Inductive where
 
