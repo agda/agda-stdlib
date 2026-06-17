@@ -90,7 +90,7 @@ New modules
   of consecutive elements of a stream are related.
 
 * `Data.Bool.ListAction.Properties` for properties of conjunction and
-  disjuntion of lists.
+  disjunction of lists.
 
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
