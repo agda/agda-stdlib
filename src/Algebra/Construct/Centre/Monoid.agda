@@ -4,7 +4,7 @@
 -- Definition of the centre of an Monoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Bundles
   using (Monoid; CommutativeMonoid; RawMagma; RawMonoid)

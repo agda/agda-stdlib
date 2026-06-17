@@ -4,7 +4,7 @@
 -- SnocLists, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.SnocList.Base where
 
