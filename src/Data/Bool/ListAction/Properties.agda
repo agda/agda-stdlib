@@ -17,6 +17,7 @@ open import Data.List.Relation.Binary.Permutation.Propositional using (_↭_; �
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as ↭
 open import Data.List.Relation.Binary.Permutation.Setoid.Properties
 open import Data.List.Relation.Unary.Any using (here; there)
+open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
@@ -78,9 +79,9 @@ or-locate (true ∷ bs) p = here p
 -- all
 
 all-↭ : ∀ {a} {A : Set a} (p : A → Bool) → all p Preserves _↭_ ⟶ _≡_
-all-↭ p xs↭ys = and-↭ (↭.map⁺ p xs↭ys)
+all-↭ p = and-↭ ∘′ ↭.map⁺ p
 
 -- any
 
 any-↭ : ∀ {a} {A : Set a} (p : A → Bool) → any p Preserves _↭_ ⟶ _≡_
-any-↭ p xs↭ys = or-↭ (↭.map⁺ p xs↭ys)
+any-↭ p = or-↭ ∘′ ↭.map⁺ p
