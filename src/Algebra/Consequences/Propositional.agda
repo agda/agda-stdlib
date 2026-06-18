@@ -110,7 +110,7 @@ module _ (∙-assoc : Associative _∙_)
 
   binomial-expansion : ∀ w x y z →
              ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
-  binomial-expansion = SetoidConsequences.binomial-expansion (cong₂ _) ∙-assoc distrib
+  binomial-expansion = SetoidConsequences.binomial-expansion (cong₂ _∙_) ∙-assoc distrib
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
