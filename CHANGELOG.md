@@ -120,6 +120,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.Bool.Properties`:
+  ```agda
+  ∨-monoid : Monoid 0ℓ 0ℓ
+  ∧-monoid : Monoid 0ℓ 0ℓ
+  ```
+
 * In `Data.Integer.GCD`:
   ```agda
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
