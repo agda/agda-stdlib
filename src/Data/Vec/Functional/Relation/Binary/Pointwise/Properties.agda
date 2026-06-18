@@ -4,7 +4,7 @@
 -- Properties related to Pointwise
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 

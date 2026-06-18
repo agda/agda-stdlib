@@ -4,7 +4,7 @@
 -- Properties of lists which contain every element of a given type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Enumerates.Setoid.Properties where
 

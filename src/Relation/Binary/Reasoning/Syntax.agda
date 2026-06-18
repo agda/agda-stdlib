@@ -4,7 +4,7 @@
 -- Syntax for the building blocks of equational reasoning modules
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- List of `Reasoning` modules that do not use this framework and so
 -- need to be updated manually if the syntax changes.

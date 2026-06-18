@@ -4,7 +4,7 @@
 -- Properties of disjoint lists (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Disjoint.Setoid.Properties where
 

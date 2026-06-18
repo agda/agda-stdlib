@@ -5,7 +5,7 @@
 -- Definitions are based on "Term Rewriting Systems" by J.W. Klop
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Rewriting where
 

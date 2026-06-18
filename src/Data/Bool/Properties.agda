@@ -4,7 +4,7 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Properties where
 open import Algebra.Bundles

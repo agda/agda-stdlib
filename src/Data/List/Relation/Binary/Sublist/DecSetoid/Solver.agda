@@ -4,7 +4,7 @@
 -- A solver for proving that one list is a sublist of the other.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid)
 

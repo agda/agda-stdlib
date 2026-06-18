@@ -4,7 +4,7 @@
 -- Greatest common divisor
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.GCD where
 

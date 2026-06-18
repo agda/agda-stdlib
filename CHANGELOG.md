@@ -6,6 +6,8 @@ The library has been tested using Agda 2.8.0.
 Highlights
 ----------
 
+* Modules that previously used `--cubical-compatible` once again use `--without-K`.
+
 * The notation for `Decidable` relations has been (partially) standardised: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
   - `_≈?_` (ditto.) for the general `IsDecEquivalence`
@@ -38,9 +40,15 @@ Non-backwards compatible changes
   `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
   are summarised below, but are not each documented for each affected module.
 
-* [issue #2547](https://github.com/agda/agda-stdlib/issues/2547) The names of the *implicit* binders in the following definitions have been rectified to be consistent with those in the rest of `Relation.Binary.Definitions`: `Transitive`, `Antisym`, and `Antisymmetric`.
+* [issue #2547](https://github.com/agda/agda-stdlib/issues/2547)
+  The names of the *implicit* binders in the following definitions have been
+  rectified to be consistent with the rest of `Relation.Binary.Definitions`:
+  `Transitive`, `Antisym`, and `Antisymmetric`.
 
-* [Issue #2548](https://github.com/agda/agda-stdlib/issues/2458) Consistent with other names (such as `∙-cong`, `ε-homo` etc.) in `Algebra.*`, the field name of the basic homomorphism property in `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed from `homo` to `∙-homo`.
+* [Issue #2548](https://github.com/agda/agda-stdlib/issues/2458)
+  Consistent with other names (such as `∙-cong`, `ε-homo` etc.) in
+  `Algebra.*`, the field name of the basic homomorphism property `homo` in
+  `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
 
 
 Minor improvements
@@ -126,6 +134,9 @@ New modules
 
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
   of consecutive elements of a stream are related.
+
+* `Data.Bool.ListAction.Properties` for properties of conjunction and
+  disjunction of lists.
 
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules

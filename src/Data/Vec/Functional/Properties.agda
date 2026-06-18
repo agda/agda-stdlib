@@ -4,7 +4,7 @@
 -- Some Vector-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Functional.Properties where
 
