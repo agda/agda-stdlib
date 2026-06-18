@@ -79,7 +79,7 @@ _ ≡? _ = yes refl
 ≡-isDecTotalOrder : IsDecTotalOrder _≡_ _≡_
 ≡-isDecTotalOrder = record
   { isTotalOrder = ≡-isTotalOrder
-  ; _≟_          = _≡?_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≡?_
   }
 
@@ -111,4 +111,3 @@ _≟_ = _≡?_
 "Warning: _≟_ was deprecated in v2.4.
 Please use _≡?_ instead."
 #-}
-

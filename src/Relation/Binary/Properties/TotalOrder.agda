@@ -30,7 +30,7 @@ decTotalOrder : Decidable _≈_ → DecTotalOrder _ _ _
 decTotalOrder ≈? = record
   { isDecTotalOrder = record
     { isTotalOrder = isTotalOrder
-    ; _≟_          = ≈?
+    ; _≈?_         = ≈?
     ; _≤?_         = total∧dec⇒dec reflexive antisym total ≈?
     }
   }
