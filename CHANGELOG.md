@@ -216,7 +216,7 @@ New modules
 * `Data.List.Relation.Binary.Permutation.Declarative{.Properties}` for the least congruence on `List` making `_++_` commutative, and its equivalence with the `Setoid` definition.
 
 * Added tactic ring solvers for rational numbers (issue #1879):
-  ```agda
+  ```
   Data.Rational.Tactic.RingSolver
   Data.Rational.Unnormalised.Tactic.RingSolver
   ```
@@ -350,12 +350,12 @@ Additions to existing modules
   ```
 
 * In `Data.Integer.Base`:
-  ```
+  ```agda
   _<ᵇ_ : ℤ → ℤ → Bool
   ```
 
 * In `Data.Integer.Properties`:
-  ```
+  ```agda
   <ᵇ⇒< : T (i <ᵇ j) → i < j
   <⇒<ᵇ : i < j → T (i <ᵇ j)
   ```
@@ -372,12 +372,12 @@ Additions to existing modules
   ```
 
 * In `Data.List.NonEmpty.Relation.Unary.All`:
-  ```
+  ```agda
   map : P ⊆ Q → All P xs → All Q xs
   ```
 
 * In `Data.List.Properties`:
-  ```
+  ```agda
   filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
   filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
   filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
@@ -447,7 +447,7 @@ Additions to existing modules
   ```
 
 * In `Data.Rational.Base`:
-  ```
+  ```agda
   _<ᵇ_ : ℚ → ℚ → Bool
   ```
 
@@ -468,7 +468,7 @@ Additions to existing modules
   ```
 
 * In `Data.Rational.Unnormalised.Base`:
-  ```
+  ```agda
   _<ᵇ_ : ℚᵘ → ℚᵘ → Bool
   ```
 
@@ -531,7 +531,7 @@ Additions to existing modules
   ```
 
 * In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail`:
-  ```
+  ```agda
   headTail⁺ : (t : Tree V l u (1 + h)) →
               let kv , _ , _ , t⁻ = headTail t in
               Any P t → P kv ⊎ Any P t⁻
@@ -543,7 +543,7 @@ Additions to existing modules
   ```
 
 * In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas`:
-  ```
+  ```agda
   joinˡ⁻-here⁺ : (kv : K& V) →
                  (l : Tree⁻ V l [ kv .key ] hˡ) →
                  (r : Tree V [ kv .key ] u hʳ) →
@@ -686,7 +686,7 @@ Additions to existing modules
   ```
 
 * In `Relation.Binary.Construct.Closure.Symmetric`:
-  ```
+  ```agda
   hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
          ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
   on⁺  : ((SymClosure R) on g) ⇒ SymClosure (R on g)
