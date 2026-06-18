@@ -43,8 +43,8 @@ WfRec _<_ P x = ∀ {y} → y < x → P y
 -- The accessibility predicate: x is accessible if everything which is
 -- smaller than x is also accessible (inductively).
 
-data Acc {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
-  acc : (rs : WfRec _<_ (Acc _<_) x) → Acc _<_ x
+data Acc {A : Set a} (_<_ : Rel A ℓ) : (x : A) → Set (a ⊔ ℓ) where
+  acc : ∀ {x} (rs : WfRec _<_ (Acc _<_) x) → Acc _<_ x
 
 -- The accessibility predicate encodes what it means to be
 -- well-founded; if all elements are accessible, then _<_ is
