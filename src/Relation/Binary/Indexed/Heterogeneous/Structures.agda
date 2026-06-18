@@ -7,7 +7,7 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Heterogeneous`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Indexed.Heterogeneous.Core
 
@@ -15,11 +15,12 @@ module Relation.Binary.Indexed.Heterogeneous.Structures
   {i a ℓ} {I : Set i} (A : I → Set a) (_≈_ : IRel A ℓ)
   where
 
-open import Function.Base
+open import Function.Base using (id; _⟨_⟩_)
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Indexed.Heterogeneous.Definitions
+  using (Reflexive; Symmetric; Transitive)
 
 ------------------------------------------------------------------------
 -- Equivalences

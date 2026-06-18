@@ -9,24 +9,24 @@
 -- rings of characteristic 0.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 
 module Algebra.Solver.Ring.NaturalCoefficients.Default
   {r₁ r₂} (R : CommutativeSemiring r₁ r₂) where
 
-import Algebra.Properties.Semiring.Mult as SemiringMultiplication
+import Algebra.Properties.Semiring.Mult as SemiringMultiplication using (_×_)
 open import Data.Maybe.Base using (Maybe; map)
-open import Data.Nat using (_≟_)
+open import Data.Nat using (_≡?_)
 open import Relation.Binary.Consequences using (dec⇒weaklyDec)
-import Relation.Binary.PropositionalEquality.Core as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡ using (refl; cong)
 
 open CommutativeSemiring R
 open SemiringMultiplication semiring
 
 private
   dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)
-  dec m n = map (λ { ≡.refl → refl }) (dec⇒weaklyDec _≟_ m n)
+  dec m n = map (λ { ≡.refl → refl }) (dec⇒weaklyDec _≡?_ m n)
 
 open import Algebra.Solver.Ring.NaturalCoefficients R dec public

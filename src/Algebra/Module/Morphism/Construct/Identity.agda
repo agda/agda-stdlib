@@ -4,7 +4,7 @@
 -- The identity morphism for module-like algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Algebra.Module.Morphism.Construct.Identity where
 
@@ -19,7 +19,7 @@ open import Algebra.Module.Morphism.Structures
         ; module SemimoduleMorphisms
         ; module ModuleMorphisms
         )
-open import Algebra.Morphism.Construct.Identity
+open import Algebra.Morphism.Construct.Identity using ( isMonoidHomomorphism; isGroupHomomorphism)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 import Function.Construct.Identity as Id

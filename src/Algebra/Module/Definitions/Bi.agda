@@ -4,7 +4,7 @@
 -- Properties connecting left-scaling and right-scaling
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
 
@@ -15,7 +15,7 @@ module Algebra.Module.Definitions.Bi
   {a a′ b ℓb} (A : Set a) (A′ : Set a′) {B : Set b} (_≈_ : Rel B ℓb)
   where
 
-  open import Algebra.Module.Core
+  open import Algebra.Module.Core using (Opₗ; Opᵣ)
 
   Associative : Opₗ A B → Opᵣ A′ B → Set _
   Associative _∙ₗ_ _∙ᵣ_ = ∀ x m y → ((x ∙ₗ m) ∙ᵣ y) ≈ (x ∙ₗ (m ∙ᵣ y))

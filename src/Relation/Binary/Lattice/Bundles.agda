@@ -7,11 +7,11 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Lattice`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Lattice.Bundles where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Poset; Setoid)

@@ -4,15 +4,14 @@
 -- Definitions of 'raw' bundles
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Bundles.Raw where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles.Raw using (RawSetoid)
 open import Level using (suc; _⊔_)
-open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Raw bundles with 1 unary operation & 1 element

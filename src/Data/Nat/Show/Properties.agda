@@ -4,7 +4,7 @@
 -- Properties of showing natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Digit.Properties using (toDigits-injective; showDigit-injective)
 import Data.List.Properties as Listₚ
@@ -12,7 +12,7 @@ open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Nat.Show using (charsInBase)
 open import Function.Base using (_∘_)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Nullary.Decidable.Core using (True)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 module Data.Nat.Show.Properties where

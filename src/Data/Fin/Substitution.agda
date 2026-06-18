@@ -11,13 +11,13 @@
 -- of how this module can be used: a definition of substitution for
 -- the untyped λ-calculus.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Substitution where
 
 open import Data.Nat.Base hiding (_⊔_; _/_)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.Vec.Base
+open import Data.Vec.Base using (Vec; []; _∷_; map; lookup)
 open import Function.Base as Fun using (flip)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   as Star using (Star; ε; _◅_)
@@ -104,7 +104,7 @@ record Application (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) : Set (ℓ�
   -- Application of multiple substitutions.
 
   _/✶_ : T₁ m → Subs T₂ m n → T₁ n
-  _/✶_ = Star.gfold Fun.id _ (flip _/_) {k = zero}
+  _/✶_ = Star.gfold Fun.id _ (flip _/_) {z = zero}
 
 -- A combination of the two records above.
 

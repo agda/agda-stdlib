@@ -5,7 +5,7 @@
 -- Data.List.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Kleene.AsList where
 
@@ -18,7 +18,7 @@ private
     B : Set b
     C : Set c
 
-import Data.List.Kleene.Base as Kleene
+import Data.List.Kleene.Base as Kleene using ([])
 
 ------------------------------------------------------------------------
 -- Here we import half of the functions from Data.KleeneList: the half

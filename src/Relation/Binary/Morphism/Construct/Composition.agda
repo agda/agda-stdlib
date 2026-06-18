@@ -4,7 +4,9 @@
 -- The composition of morphisms between binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
+
+module Relation.Binary.Morphism.Construct.Composition where
 
 open import Function.Base using (_∘_)
 open import Function.Construct.Composition using (surjective)
@@ -13,9 +15,11 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
 open import Relation.Binary.Definitions using (Transitive)
 open import Relation.Binary.Morphism.Bundles
+  using (SetoidHomomorphism; SetoidMonomorphism; SetoidIsomorphism
+        ; PreorderHomomorphism; PosetHomomorphism)
 open import Relation.Binary.Morphism.Structures
-
-module Relation.Binary.Morphism.Construct.Composition where
+  using (IsRelHomomorphism; IsRelMonomorphism; IsRelIsomorphism
+        ; IsOrderHomomorphism; IsOrderMonomorphism; IsOrderIsomorphism)
 
 private
   variable

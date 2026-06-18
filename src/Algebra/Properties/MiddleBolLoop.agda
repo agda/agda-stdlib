@@ -4,7 +4,7 @@
 -- Some basic properties of Quasigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (MiddleBolLoop)
 

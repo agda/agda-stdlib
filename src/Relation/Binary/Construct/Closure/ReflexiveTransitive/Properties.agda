@@ -4,7 +4,7 @@
 -- Some properties of reflexive transitive closures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 
@@ -14,6 +14,7 @@ open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions using (Transitive; Reflexive)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+  using (Star; _◅_; _◅◅_; gmap; fold; ε)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; cong; cong₂)
 import Relation.Binary.PropositionalEquality.Properties as ≡

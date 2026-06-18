@@ -4,21 +4,21 @@
 -- Prime factorisation of natural numbers and its properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Primality.Factorisation where
 
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
-  using (_∣?_; quotient; quotient>1; quotient-<; quotient-∣; m∣n⇒n≡m*quotient; _∣_; ∣1⇒≡1;
-        divides)
+  using (_∣?_; quotient; quotient>1; quotient-<; quotient-∣; m∣n⇒n≡m*quotient; _∣_; ∣1⇒≡1
+        ; divides)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec; <-recBuilder)
 open import Data.Nat.ListAction using (product)
 open import Data.Nat.ListAction.Properties using (product-↭)
 open import Data.Nat.Primality
-  using (Prime; _Rough_; rough∧square>⇒prime; ∤⇒rough-suc; rough∧∣⇒rough; rough∧∣⇒prime;
-         2-rough; euclidsLemma; prime⇒irreducible; ¬prime[1]; productOfPrimes≥1; prime⇒nonZero)
+  using (Prime; _Rough_; rough∧square>⇒prime; ∤⇒rough-suc; rough∧∣⇒rough; rough∧∣⇒prime
+        ; 2-rough; euclidsLemma; prime⇒irreducible; ¬prime[1]; productOfPrimes≥1; prime⇒nonZero)
 open import Data.Product.Base using (∃-syntax; _×_; _,_; proj₁; proj₂)
 open import Data.List.Base using (List; []; _∷_; _++_)
 open import Data.List.Membership.Propositional using (_∈_)

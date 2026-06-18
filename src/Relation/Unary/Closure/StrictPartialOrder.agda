@@ -4,15 +4,16 @@
 -- Closures of a unary relation with respect to a strict partial order
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (StrictPartialOrder)
 
 module Relation.Unary.Closure.StrictPartialOrder
        {a r e} (P : StrictPartialOrder a e r) where
 
-open StrictPartialOrder P renaming (_<_ to _∼_)
 open import Relation.Unary using (Pred)
+
+open StrictPartialOrder P renaming (_<_ to _∼_)
 
 -- Specialising the results proven generically in `Base`.
 import Relation.Unary.Closure.Base _∼_ as Base

@@ -6,7 +6,7 @@
 -- element x satisfying P to 'smaller' y also satisfying P
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Induction.InfiniteDescent where
 
@@ -111,8 +111,8 @@ module _ (descent : Descent _<_ P) where
       h<P (suc n)           = g<P n
 
       Π[P∘h] : ∀ n →  P (h n)
-      Π[P∘h] zero rewrite g0≡z = py
-      Π[P∘h] (suc n)           = Π[P∘g] n
+      Π[P∘h] zero    = py
+      Π[P∘h] (suc n) = Π[P∘g] n
 
   descent∧wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent _<_ P
   descent∧wf⇒infiniteDescent wf = descent∧acc⇒infiniteDescentFrom (wf _)

@@ -6,7 +6,7 @@
 -- Adapted from Algebra.Solver.CommutativeMonoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 
@@ -20,9 +20,10 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
+  using (Pointwise; _∷_; []; Pointwise-≡↔≡; decidable)
 open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable       as Dec
+import Relation.Nullary.Decidable as Dec using (map)
 
 open IdempotentCommutativeMonoid M
 open CSProperties commutativeSemigroup using (x∙yz≈xy∙z; x∙yz≈y∙xz)
@@ -55,10 +56,10 @@ Normal n = Vec Bool n
 
 -- We can decide if two normal forms are /syntactically/ equal.
 
-infix 5 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality (Normal n)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable Bool._≟_ nf₁ nf₂)
+_≡?_ : DecidableEquality (Normal n)
+nf₁ ≡? nf₂ = Dec.map Pointwise-≡↔≡ (decidable Bool._≡?_ nf₁ nf₂)
   where open Pointwise using (Pointwise-≡↔≡; decidable)
 
 ------------------------------------------------------------------------
@@ -165,4 +166,13 @@ sg-correct = singleton-correct
 {-# WARNING_ON_USAGE sg-correct
 "Warning: sg-correct was deprecated in v2.2.
 Please use singleton-correct instead."
+#-}
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
 #-}

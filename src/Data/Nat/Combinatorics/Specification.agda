@@ -6,7 +6,7 @@
 -- This module should not be imported directly! Please use
 -- `Data.Nat.Combinatorics` instead.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Combinatorics.Specification where
 
@@ -18,7 +18,7 @@ open import Data.Nat.DivMod using (_/_; n/n≡1; /-congʳ; m*n/m!≡n/[m∸1]!;
 open import Data.Nat.Divisibility using (m≤n⇒m!∣n!; _∣_; ∣-refl;
   ∣-reflexive; module ∣-Reasoning; ∣m∣n⇒∣m+n; *-monoʳ-∣; m∣n/o⇒o*m∣n)
 open import Data.Nat.Properties
-open import Data.Nat.Combinatorics.Base
+open import Data.Nat.Combinatorics.Base using (_P′_; _P_; _C′_; _C_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
@@ -85,7 +85,7 @@ nP′n≡n! n = begin-equality
 
 k!∣nP′k : ∀ {n k} → k ≤ n → k ! ∣ n P′ k
 k!∣nP′k {n}         {zero}      k≤n = ∣-refl
-k!∣nP′k n@{suc n-1} k@{suc k-1} k≤n@(s≤s k-1≤n-1) with k-1 ≟ n-1
+k!∣nP′k n@{suc n-1} k@{suc k-1} k≤n@(s≤s k-1≤n-1) with k-1 ≡? n-1
 ... | yes refl = ∣-reflexive (sym (nP′n≡n! n))
 ... | no  k≢n  = begin
   k !                           ≡⟨⟩

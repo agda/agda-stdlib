@@ -5,7 +5,9 @@
 -- commutativity) that don't require the equality relation to be a setoid.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
+
+open import Relation.Binary.Core using (Rel)
 
 open import Relation.Binary.Core using (Rel)
 
@@ -14,7 +16,12 @@ module Algebra.Consequences.Base
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions _≈_
+  using (Congruent₂; LeftCongruent; RightCongruent
+        ; Selective; Idempotent; SelfInverse; Involutive)
 open import Data.Sum.Base using (reduce)
+open import Level using (Level)
+open import Relation.Binary.Consequences
+  using (mono₂⇒monoˡ; mono₂⇒monoʳ)
 open import Relation.Binary.Definitions using (Reflexive)
 
 private
@@ -23,6 +30,18 @@ private
     _∙_ : Op₂ A
 
 ------------------------------------------------------------------------
+-- Congruence
+
+module Congruence (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
+  where
+
+  ∙-congˡ : LeftCongruent _∙_
+  ∙-congˡ {x} = mono₂⇒monoˡ _ _≈_ _≈_ (refl {x = x}) cong x
+
+  ∙-congʳ : RightCongruent _∙_
+  ∙-congʳ {x} = mono₂⇒monoʳ _≈_ _ _≈_ (refl {x = x}) cong x
+
+-------------------------------------------------------------------------
 -- Selective
 
 sel⇒idem : Selective _∙_ → Idempotent _∙_
@@ -34,6 +53,7 @@ sel⇒idem sel x = reduce (sel x x)
 reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse f →
                                    Involutive f
 reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+
 
 
 ------------------------------------------------------------------------

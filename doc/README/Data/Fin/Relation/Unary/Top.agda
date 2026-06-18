@@ -12,12 +12,12 @@
 -- together with their corresponding properties in `Data.Fin.Properties`.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module README.Data.Fin.Relation.Unary.Top where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _∸_; _≤_)
-open import Data.Nat.Properties using (n∸n≡0; +-∸-assoc; ≤-reflexive)
+open import Data.Nat.Properties using (n∸n≡0; ∸-suc; ≤-reflexive)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁; _>_)
 open import Data.Fin.Properties using (toℕ-fromℕ; toℕ<n; toℕ-inject₁)
 open import Data.Fin.Induction hiding (>-weakInduction)
@@ -76,7 +76,7 @@ opposite-prop {suc n} i with view i
 ... | ‵fromℕ  rewrite toℕ-fromℕ n | n∸n≡0 n = refl
 ... | ‵inject₁ j = begin
   suc (toℕ (opposite j)) ≡⟨ cong suc (opposite-prop j) ⟩
-  suc (n ∸ suc (toℕ j))  ≡⟨ +-∸-assoc 1 (toℕ<n j) ⟨
+  suc (n ∸ suc (toℕ j))  ≡⟨ ∸-suc (toℕ<n j) ⟨
   n ∸ toℕ j              ≡⟨ cong (n ∸_) (toℕ-inject₁ j) ⟨
   n ∸ toℕ (inject₁ j)    ∎ where open ≡-Reasoning
 
@@ -94,7 +94,7 @@ open WF using (Acc; acc)
   induct : ∀ {i} → Acc _>_ i → P i
   induct {i} (acc rec) with view i
   ... | ‵fromℕ = Pₙ
-  ... | ‵inject₁ j = Pᵢ₊₁⇒Pᵢ j (induct (rec _ inject₁[j]+1≤[j+1]))
+  ... | ‵inject₁ j = Pᵢ₊₁⇒Pᵢ j (induct (rec inject₁[j]+1≤[j+1]))
     where
     inject₁[j]+1≤[j+1] : suc (toℕ (inject₁ j)) ≤ toℕ (suc j)
     inject₁[j]+1≤[j+1] = ≤-reflexive (toℕ-inject₁ (suc j))

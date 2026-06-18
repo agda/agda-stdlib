@@ -4,11 +4,11 @@
 -- A universe polymorphic unit type, as a Lift of the Level 0 one.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.Polymorphic.Base where
 
-open import Level
+open import Level using (Level; Lift; lift)
 import Data.Unit.Base as ⊤
 
 ------------------------------------------------------------------------

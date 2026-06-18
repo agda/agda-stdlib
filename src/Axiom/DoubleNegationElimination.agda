@@ -4,12 +4,12 @@
 -- Results concerning double negation elimination.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Axiom.DoubleNegationElimination where
 
-open import Axiom.ExcludedMiddle
-open import Level
+open import Axiom.ExcludedMiddle using (ExcludedMiddle)
+open import Level using (Level; suc)
 open import Relation.Nullary.Decidable.Core
   using (decidable-stable; ¬¬-excluded-middle)
 open import Relation.Nullary.Negation.Core using (Stable)

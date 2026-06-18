@@ -4,12 +4,12 @@
 -- Core definitions for metrics over ℕ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Metric.Nat.Core where
 
 open import Data.Nat.Base using (ℕ)
-import Function.Metric.Core as Base
+import Function.Metric.Core as Base using (DistanceFunction)
 
 ------------------------------------------------------------------------
 -- Definition

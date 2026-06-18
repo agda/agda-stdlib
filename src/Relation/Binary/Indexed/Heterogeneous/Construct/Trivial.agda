@@ -4,7 +4,7 @@
 -- Creates trivially indexed records from their non-indexed counterpart.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   {i} {I : Set i} where
@@ -13,6 +13,8 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
 open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid; IndexedPreorder
+        ; IsIndexedEquivalence; IsIndexedPreorder)
 
 ------------------------------------------------------------------------
 -- Structures

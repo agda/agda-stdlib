@@ -4,14 +4,14 @@
 -- An effectful view of Covec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Covec.Effectful where
 
-open import Codata.Sized.Conat
-open import Codata.Sized.Covec
-open import Effect.Functor
-open import Effect.Applicative
+open import Codata.Sized.Conat using (Conat; zero; suc)
+open import Codata.Sized.Covec using (Covec; _∷_; []; map; replicate; ap)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
 
 functor : ∀ {ℓ i n} → RawFunctor {ℓ} (λ A → Covec A n i)
 functor = record { _<$>_ = map }

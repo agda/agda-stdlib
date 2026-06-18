@@ -4,14 +4,14 @@
 -- Printing Strings During Evaluation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --rewriting #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 -- see README.Debug.Trace for a use-case
 
 module Debug.Trace where
 
-open import Agda.Builtin.String
-open import Agda.Builtin.Equality
+open import Agda.Builtin.String using (String)
+open import Agda.Builtin.Equality using (_≡_)
 
 -- Postulating the `trace` function and explaining how to compile it
 

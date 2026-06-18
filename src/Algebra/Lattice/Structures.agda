@@ -11,9 +11,9 @@
 -- The contents of this module should be accessed via `Algebra.Lattice`,
 -- unless you want to parameterise it via the equality relation.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)

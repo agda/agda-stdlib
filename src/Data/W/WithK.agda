@@ -9,9 +9,9 @@
 module Data.W.WithK where
 
 open import Data.Product.Base using (_,_)
-open import Data.Container.Core
-open import Data.W
-open import Agda.Builtin.Equality
+open import Data.Container.Core using (Container; Shape; Position; _⇒_)
+open import Data.W using (W; sup)
+open import Agda.Builtin.Equality using (_≡_; refl)
 
 module _ {s p} {C : Container s p}
          {s : Shape C} {f : Position C s → W C} where

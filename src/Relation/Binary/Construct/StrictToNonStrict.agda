@@ -8,25 +8,28 @@
 -- relation equivalent to the original one (and similarly for
 -- < → ≤ → <).
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsPartialOrder; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
 
 module Relation.Binary.Construct.StrictToNonStrict
   {a ℓ₁ ℓ₂} {A : Set a}
   (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
   where
 
-open import Data.Product.Base
-open import Data.Sum.Base
-open import Data.Empty
-open import Function.Base
-open import Relation.Binary.Consequences
-open import Relation.Nullary.Decidable using (_⊎-dec_; yes; no)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (inj₁; inj₂; _⊎_; [_,_]; [_,_]′)
+open import Data.Empty using (⊥; ⊥-elim)
+open import Function.Base using (_∘_; flip; _$_)
+open import Relation.Binary.Consequences using (trans∧irr⇒asym)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsPartialOrder
+        ; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable
+        ; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
+open import Relation.Nullary.Decidable.Core using (_⊎?_; yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 ------------------------------------------------------------------------
 -- Conversion
@@ -57,7 +60,7 @@ antisym eq trans irrefl = as
   as (inj₂ x≈y) _          = x≈y
   as (inj₁ _)   (inj₂ y≈x) = Eq.sym y≈x
   as (inj₁ x<y) (inj₁ y<x) =
-    ⊥-elim (trans∧irr⇒asym {_≈_ = _≈_} Eq.refl trans irrefl x<y y<x)
+    contradiction y<x (trans∧irr⇒asym {_≈_ = _≈_} Eq.refl trans irrefl x<y)
 
 trans : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → Transitive _<_ →
         Transitive _≤_
@@ -98,7 +101,7 @@ total <-tri x y with <-tri x y
 ... | tri> x≮y x≉y x>y = inj₂ (inj₁ x>y)
 
 decidable : Decidable _≈_ → Decidable _<_ → Decidable _≤_
-decidable ≈-dec <-dec x y = <-dec x y ⊎-dec ≈-dec x y
+decidable ≈-dec <-dec x y = <-dec x y ⊎? ≈-dec x y
 
 decidable′ : Trichotomous _≈_ _<_ → Decidable _≤_
 decidable′ compare x y with compare x y
@@ -142,7 +145,7 @@ isTotalOrder STO = record
 isDecTotalOrder : IsStrictTotalOrder _≈_ _<_ → IsDecTotalOrder _≈_ _≤_
 isDecTotalOrder STO = record
   { isTotalOrder = isTotalOrder STO
-  ; _≟_          = S._≟_
+  ; _≈?_         = S._≈?_
   ; _≤?_         = decidable′ S.compare
   }
   where module S = IsStrictTotalOrder STO

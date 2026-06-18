@@ -7,14 +7,10 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Function.Base
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
-open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Total; Asymmetric; Decidable)
-open import Relation.Binary.Morphism
+open import Relation.Binary.Morphism using (IsRelMonomorphism)
 
 module Relation.Binary.Morphism.RelMonomorphism
   {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
@@ -22,9 +18,12 @@ module Relation.Binary.Morphism.RelMonomorphism
   {⟦_⟧ : A → B} (isMonomorphism : IsRelMonomorphism _∼₁_ _∼₂_ ⟦_⟧)
   where
 
-open import Data.Sum.Base as Sum
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable
+open import Data.Sum.Base as Sum using (map)
+open import Function.Base using (flip; _∘_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Total; Asymmetric; Decidable)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 
 open IsRelMonomorphism isMonomorphism
 
@@ -62,5 +61,5 @@ isEquivalence isEq = record
 isDecEquivalence : IsDecEquivalence _∼₂_ → IsDecEquivalence _∼₁_
 isDecEquivalence isDecEq = record
   { isEquivalence  = isEquivalence E.isEquivalence
-  ; _≟_            = dec E._≟_
+  ; _≈?_           = dec E._≈?_
   } where module E = IsDecEquivalence isDecEq

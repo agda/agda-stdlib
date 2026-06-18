@@ -1,25 +1,55 @@
-Version 2.3-dev
-===============
+Version 3.0
+===========
 
-The library has been tested using Agda 2.7.0 and 2.7.0.1.
+The library has been tested using Agda 2.8.0.
 
 Highlights
 ----------
 
+* Modules that previously used `--cubical-compatible` once again use `--without-K`.
+
+* The notation for `Decidable` relations has been (partially) standardised: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the general `IsDecEquivalence`
+
+  At present, the old fieldname `_≟_` has been retained, in order to avoid
+  a non-backwards compatible/breaking change of fieldname, which will plan
+  to do in Version 3.0, with accompanying deprecation of that name, against
+  its eventual removal in subsequent versions.
+
+  The change leads to a number of (trivial) renamings/deprecations, others more
+  substantive in `Data.{Nat|Fin}.Properties` for the concrete datatypes, which
+  are summarised below, but are not each documented for all affected modules.
+
 Bug-fixes
 ---------
 
-* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
-  to `#-sym` in order to avoid overloaded projection.
-  `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
+* Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
 
 Non-backwards compatible changes
 --------------------------------
 
-* The implementation of `≤-total` in `Data.Nat.Properties` has been altered
-  to use operations backed by primitives, rather than recursion, making it
-  significantly faster. However, its reduction behaviour on open terms may have
-  changed.
+* The notation for `Decidable` relations has been (partially) standardised: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the fieldname of the general `IsDecEquivalence`
+
+  Despite being non-backwards compatible, because a fieldname has changed, the
+  old notation `_≟_` (which was used for both of the above) has been retained,
+  but deprecated. This leads to a large amount of (trivial) deprecations, in
+  addition to the substantive one under `Relation.Binary.Structures`, and in
+  `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
+  are summarised below, but are not each documented for each affected module.
+
+* [issue #2547](https://github.com/agda/agda-stdlib/issues/2547)
+  The names of the *implicit* binders in the following definitions have been
+  rectified to be consistent with the rest of `Relation.Binary.Definitions`:
+  `Transitive`, `Antisym`, and `Antisymmetric`.
+
+* [Issue #2548](https://github.com/agda/agda-stdlib/issues/2458)
+  Consistent with other names (such as `∙-cong`, `ε-homo` etc.) in
+  `Algebra.*`, the field name of the basic homomorphism property `homo` in
+  `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
+
 
 Minor improvements
 ------------------
@@ -27,7 +57,9 @@ Minor improvements
 * [Issue #2502](https://github.com/agda/agda-stdlib/issues/2502) The module
   `Algebra.Consequences.Base` now takes the underlying equality relation as
   an additional top-level parameter, with slightly improved ergonomics wrt
-  subsequent imports by clients, as well as streamlined internals.
+  subsequent imports by clients, as well as streamlined internals. Moreover,
+  it now has the implicit parameters of its internal modules lifted out as
+  global `variable`s.
 
 Deprecated modules
 ------------------
@@ -35,116 +67,127 @@ Deprecated modules
 Deprecated names
 ----------------
 
-* In `Algebra.Definitions.RawMagma`:
+* In `Algebra.Morphism.Structures`:
   ```agda
-  _∣∣_   ↦  _∥_
-  _∤∤_    ↦  _∦_
+  homo  ↦  ∙-homo
   ```
 
-* In `Algebra.Module.Consequences`
+* In `Data.Fin.Properties`:
   ```agda
-  *ₗ-assoc+comm⇒*ᵣ-assoc      ↦  *ₗ-assoc∧comm⇒*ᵣ-assoc
-  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
-  *ᵣ-assoc+comm⇒*ₗ-assoc      ↦  *ᵣ-assoc∧comm⇒*ₗ-assoc
-  *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc   ↦  *ₗ-assoc∧comm⇒*ₗ-*ᵣ-assoc
+  _≟_      ↦  _≡?_
+  inj⇒≟    ↦  inj⇒≡?
+  ≟-≡      ↦  ≡?-≡
+  ≟-≡-refl ↦  ≡?-≡-refl
+  ≟-≢      ↦  ≡?-≢
   ```
 
-* In `Algebra.Properties.Magma.Divisibility`:
+* In `Data.Integer.GCD`:
   ```agda
-  ∣∣-sym       ↦  ∥-sym
-  ∣∣-respˡ-≈   ↦  ∥-respˡ-≈
-  ∣∣-respʳ-≈   ↦  ∥-respʳ-≈
-  ∣∣-resp-≈    ↦  ∥-resp-≈
-  ∤∤-sym  -≈    ↦  ∦-sym
-  ∤∤-respˡ-≈    ↦  ∦-respˡ-≈
-  ∤∤-respʳ-≈    ↦  ∦-respʳ-≈
-  ∤∤-resp-≈     ↦  ∦-resp-≈
+  gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
   ```
 
-* In `Algebra.Properties.Monoid.Divisibility`:
+* In `Data.Nat.GCD`:
   ```agda
-  ∣∣-refl            ↦  ∥-refl
-  ∣∣-reflexive       ↦  ∥-reflexive
-  ∣∣-isEquivalence   ↦  ∥-isEquivalence
+  gcd[0,0]≡0 ↦ gcd[n,n]≡n
   ```
 
-* In `Algebra.Properties.Semigroup.Divisibility`:
+* In `Data.Nat.Properties`:
   ```agda
-  ∣∣-trans   ↦  ∥-trans
+  _≟_       ↦   _≡?_
+  ≟-diag    ↦   ≡?-≡
+  ≟-≡       ↦   ≡?-≢
+  ≟?-≡-refl ↦ ≡?-≡-refl
   ```
 
-* In `Data.List.Base`:
+* In `Effect.Monad.Partiality`:
   ```agda
-  and       ↦  Data.Bool.ListAction.and
-  or        ↦  Data.Bool.ListAction.or
-  any       ↦  Data.Bool.ListAction.any
-  all       ↦  Data.Bool.ListAction.all
-  sum       ↦  Data.Nat.ListAction.sum
-  product   ↦  Data.Nat.ListAction.product
+  _≟-Kind_     ↦   _≡?-Kind_
   ```
 
-* In `Data.List.Properties`:
+* In `Reflection.AST.AlphaEquality`:
   ```agda
-  sum-++       ↦  Data.Nat.ListAction.Properties.sum-++
-  ∈⇒∣product   ↦  Data.Nat.ListAction.Properties.∈⇒∣product
-  product≢0    ↦  Data.Nat.ListAction.Properties.product≢0
-  ∈⇒≤product   ↦  Data.Nat.ListAction.Properties.∈⇒≤product
+  ≟⇒α     ↦   ≡?⇒α
   ```
 
-* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+* In `Relation.Binary.PropositionalEquality`:
   ```agda
-  sum-↭       ↦  Data.Nat.ListAction.Properties.sum-↭
-  product-↭   ↦  Data.Nat.ListAction.Properties.product-↭
+  ≡-≟-identity     ↦   ≡-≡?-identity
+  ≢-≟-identity     ↦   ≢-≡?-identity
+  ```
+
+* In `Effect.Monad.Partiality`:
+  ```agda
+  _≟-Kind_     ↦   _≡?-Kind_
+  ```
+
+* In `Reflection.AST.AlphaEquality`:
+  ```agda
+  ≟⇒α     ↦   ≡?⇒α
+  ```
+
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-≟-identity     ↦   ≡-≡?-identity
+  ≢-≟-identity     ↦   ≢-≡?-identity
+  ```
+
+* In `Relation.Nary`:
+  ```agda
+  ≟-mapₙ     ↦   ≡?-mapₙ
   ```
 
 New modules
 -----------
 
-* `Data.List.Base.{and|or|any|all}` have been lifted out into `Data.Bool.ListAction`.
+* `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
+  of consecutive elements of a stream are related.
 
-* `Data.List.Base.{sum|product}` and their properties have been lifted out into `Data.Nat.ListAction` and `Data.Nat.ListAction.Properties`.
+* `Data.Bool.ListAction.Properties` for properties of conjunction and
+  disjunction of lists.
+
+* A new type of lists that grow on the right.
+  This is typically useful to model contexts of typing rules
+  or type accumulators that need to be reversed in the base case.
+  ```
+  Data.SnocList.Base
+  ```
 
 Additions to existing modules
 -----------------------------
 
-* In `Algebra.Construct.Pointwise`:
+* In `Data.Bool.Properties`:
   ```agda
-  isNearSemiring                  : IsNearSemiring _≈_ _+_ _*_ 0# →
-                                    IsNearSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
-  isSemiringWithoutOne            : IsSemiringWithoutOne _≈_ _+_ _*_ 0# →
-                                    IsSemiringWithoutOne (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
-  isCommutativeSemiringWithoutOne : IsCommutativeSemiringWithoutOne _≈_ _+_ _*_ 0# →
-                                    IsCommutativeSemiringWithoutOne (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#)
-  isCommutativeSemiring           : IsCommutativeSemiring _≈_ _+_ _*_ 0# 1# →
-                                    IsCommutativeSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isIdempotentSemiring            : IsIdempotentSemiring _≈_ _+_ _*_ 0# 1# →
-                                    IsIdempotentSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isKleeneAlgebra                 : IsKleeneAlgebra _≈_ _+_ _*_ _⋆ 0# 1# →
-                                    IsKleeneAlgebra (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ _⋆) (lift₀ 0#) (lift₀ 1#)
-  isQuasiring                     : IsQuasiring _≈_ _+_ _*_ 0# 1# →
-                                    IsQuasiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isCommutativeRing               : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1# →
-                                    IsCommutativeRing (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ -_) (lift₀ 0#) (lift₀ 1#)
-  commutativeMonoid               : CommutativeMonoid c ℓ → CommutativeMonoid (a ⊔ c) (a ⊔ ℓ)
-  nearSemiring                    : NearSemiring c ℓ → NearSemiring (a ⊔ c) (a ⊔ ℓ)
-  semiringWithoutOne              : SemiringWithoutOne c ℓ → SemiringWithoutOne (a ⊔ c) (a ⊔ ℓ)
-  commutativeSemiringWithoutOne   : CommutativeSemiringWithoutOne c ℓ → CommutativeSemiringWithoutOne (a ⊔ c) (a ⊔ ℓ)
-  commutativeSemiring             : CommutativeSemiring c ℓ → CommutativeSemiring (a ⊔ c) (a ⊔ ℓ)
-  idempotentSemiring              : IdempotentSemiring c ℓ → IdempotentSemiring (a ⊔ c) (a ⊔ ℓ)
-  kleeneAlgebra                   : KleeneAlgebra c ℓ → KleeneAlgebra (a ⊔ c) (a ⊔ ℓ)
-  quasiring                       : Quasiring c ℓ → Quasiring (a ⊔ c) (a ⊔ ℓ)
-  commutativeRing                 : CommutativeRing c ℓ → CommutativeRing (a ⊔ c) (a ⊔ ℓ)
+  ∨-monoid : Monoid 0ℓ 0ℓ
+  ∧-monoid : Monoid 0ℓ 0ℓ
   ```
 
-* In `Data.List.Properties`:
+* In `Data.Integer.GCD`:
   ```agda
-  map-applyUpTo : ∀ (f : ℕ → A) (g : A → B) n → map g (applyUpTo f n) ≡ applyUpTo (g ∘ f) n
-  map-applyDownFrom : ∀ (f : ℕ → A) (g : A → B) n → map g (applyDownFrom f n) ≡ applyDownFrom (g ∘ f) n
-  map-upTo : ∀ (f : ℕ → A) n → map f (upTo n) ≡ applyUpTo f n
-  map-downFrom : ∀ (f : ℕ → A) n → map f (downFrom n) ≡ applyDownFrom f n
+  gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
-* In `Data.List.Relation.Binary.Permutation.PropositionalProperties`:
+* In `Data.Nat.GCD`:
   ```agda
-  filter-↭ : ∀ (P? : Pred.Decidable P) → xs ↭ ys → filter P? xs ↭ filter P? ys
+  gcd[n,n]≡n : ∀ n → gcd n n ≡ n
+  ```
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
+  ↧ₙ[i/1]≡1 : (i : ℤ) → ↧ₙ (i / 1) ≡ 1
+  n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
+  -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
+                ℤ.- i / n ≡ - (i / n)
+  *-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
+                (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
+  *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
+                (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
+  i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
+                    i / n + j / n ≡ (i ℤ.+ j) / n
+  ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
+  lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```

@@ -4,7 +4,7 @@
 -- Definitions of the lexicographic product of two operators.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core using (Op₂)
 open import Data.Bool.Base using (true; false)
@@ -16,7 +16,7 @@ open import Relation.Nullary.Decidable.Core using (does; yes; no)
 module Algebra.Construct.LexProduct.Base
   {a b ℓ} {A : Set a} {B : Set b}
   (_∙_ : Op₂ A) (_◦_ : Op₂ B)
-  {_≈₁_ : Rel A ℓ} (_≟₁_ : Decidable _≈₁_)
+  {_≈₁_ : Rel A ℓ} (_≈₁?_ : Decidable _≈₁_)
   where
 
 ------------------------------------------------------------------------
@@ -27,7 +27,7 @@ module Algebra.Construct.LexProduct.Base
 -- operator that only calculates the second component of product.
 
 innerLex : A → A → B → B → B
-innerLex a b x y with does ((a ∙ b) ≟₁ a) | does ((a ∙ b) ≟₁ b)
+innerLex a b x y with does ((a ∙ b) ≈₁? a) | does ((a ∙ b) ≈₁? b)
 ... | true  | false = x
 ... | false | true  = y
 ... |     _ |     _ = x ◦ y

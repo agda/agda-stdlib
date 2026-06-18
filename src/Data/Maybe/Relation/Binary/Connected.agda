@@ -4,18 +4,18 @@
 -- Lifting a relation such that `nothing` is also related to `just`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.Relation.Binary.Connected where
 
-open import Level
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Bundles using (_⇔_; mk⇔)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions using (Reflexive; Sym; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (yes; no; map)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -65,3 +65,4 @@ connected? R? (just x) (just y) = Dec.map just-equivalence (R? x y)
 connected? R? (just x) nothing  = yes just-nothing
 connected? R? nothing  (just y) = yes nothing-just
 connected? R? nothing  nothing  = yes nothing
+

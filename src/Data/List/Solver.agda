@@ -4,10 +4,10 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- Disabled to prevent warnings from deprecated monoid solver
-{-# OPTIONS --warn=noUserWarning #-}
+{-# OPTIONS --warning=noUserWarning #-}
 
 module Data.List.Solver where
 

@@ -5,7 +5,7 @@
 -- over both the domain and codomain are assumed to be setoids.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -16,7 +16,7 @@ module Function.Consequences.Setoid
   where
 
 open import Function.Definitions
-open import Relation.Nullary.Negation.Core
+open import Relation.Nullary.Negation.Core using (¬_)
 
 import Function.Consequences as C
 

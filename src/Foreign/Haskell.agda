@@ -4,11 +4,11 @@
 -- Type(s) used (only) when calling out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Foreign.Haskell where
 
-open import Level
+open import Level using (Level; _⊔_)
 
 ------------------------------------------------------------------------
 -- Pairs

@@ -8,12 +8,12 @@
 -- `Data.Nat.Divisibility` to avoid a dependency cycle with
 -- `Data.Nat.DivMod`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Divisibility.Core where
 
 open import Data.Nat.Base using (ℕ; _*_; _<_; NonTrivial)
-open import Data.Nat.Properties
+open import Data.Nat.Properties using ([m*n]*[o*p]≡[m*o]*[n*p])
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core

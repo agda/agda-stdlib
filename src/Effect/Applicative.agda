@@ -7,18 +7,16 @@
 -- Note that currently the applicative functor laws are not included
 -- here.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Applicative where
 
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base using (⊤)
-
 open import Effect.Choice using (RawChoice)
 open import Effect.Empty using (RawEmpty)
 open import Effect.Functor as Fun using (RawFunctor)
-
 open import Function.Base using (const; flip; _∘′_)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)

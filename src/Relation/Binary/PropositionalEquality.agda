@@ -4,23 +4,23 @@
 -- Propositional (intensional) equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.PropositionalEquality where
 
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base using (id; _∘_)
-import Function.Dependent.Bundles as Dependent
+import Function.Dependent.Bundles as Dependent using (Func)
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (Irrelevant)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Nullary.Decidable using (yes; no; dec-yes-irr; dec-no)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
-  as Trivial
+  as Trivial using (indexedSetoid)
 
 private
   variable
@@ -82,13 +82,13 @@ cong-≡id {f = f} {x} f≡id = begin
   f≡id (f x)                                     ∎
   where open ≡-Reasoning; fx≡x = f≡id x; f²x≡x = f≡id (f x)
 
-module _ (_≟_ : DecidableEquality A) {x y : A} where
+module _ (_≡?_ : DecidableEquality A) {x y : A} where
 
-  ≡-≟-identity : (eq : x ≡ y) → x ≟ y ≡ yes eq
-  ≡-≟-identity eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
+  ≡-≡?-identity : (eq : x ≡ y) → x ≡? y ≡ yes eq
+  ≡-≡?-identity eq = dec-yes-irr (x ≡? y) (Decidable⇒UIP.≡-irrelevant _≡?_) eq
 
-  ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
-  ≢-≟-identity = dec-no (x ≟ y)
+  ≢-≡?-identity : (x≢y : x ≢ y) → x ≡? y ≡ no x≢y
+  ≢-≡?-identity = dec-no (x ≡? y)
 
 
 ------------------------------------------------------------------------
@@ -130,3 +130,16 @@ isPropositional = Irrelevant
 Please use Relation.Nullary.Irrelevant instead. "
 #-}
 
+-- Version 2.4
+
+≡-≟-identity = ≡-≡?-identity
+{-# WARNING_ON_USAGE ≡-≟-identity
+"Warning: ≡-≟-identity was deprecated in v2.4.
+Please use ≡-≡?-identity instead."
+#-}
+
+≢-≟-identity = ≢-≡?-identity
+{-# WARNING_ON_USAGE ≢-≟-identity
+"Warning: ≢-≟-identity was deprecated in v2.4.
+Please use ≢-≡?-identity instead."
+#-}

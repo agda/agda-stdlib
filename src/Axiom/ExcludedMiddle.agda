@@ -4,11 +4,11 @@
 -- Results concerning the excluded middle axiom.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Axiom.ExcludedMiddle where
 
-open import Level
+open import Level using (Level; suc)
 open import Relation.Nullary.Decidable.Core using (Dec)
 
 ------------------------------------------------------------------------

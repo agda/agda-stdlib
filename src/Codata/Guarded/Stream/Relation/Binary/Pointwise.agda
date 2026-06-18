@@ -4,7 +4,7 @@
 -- Coinductive pointwise lifting of relations to streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible --guardedness #-}
+{-# OPTIONS --safe --without-K --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Binary.Pointwise where
 
@@ -18,7 +18,7 @@ open import Relation.Binary.Definitions
   using (Reflexive; Sym; Trans; Antisym; Symmetric; Transitive)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 
 private
   variable

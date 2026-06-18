@@ -4,14 +4,13 @@
 -- Predicate transformers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.PredicateTransformer where
 
 open import Data.Product.Base using (∃)
 open import Function.Base using (_∘_)
 open import Level hiding (_⊔_)
-open import Relation.Nullary
 open import Relation.Unary
 open import Relation.Binary.Core using (REL)
 

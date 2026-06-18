@@ -4,11 +4,12 @@
 -- Boring lemmas used in Data.Nat.GCD and Data.Nat.Coprimality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.GCD.Lemmas where
 
 open import Data.Nat.Base
+  using (ℕ; suc; zero; _+_; _*_; _∸_; _≤_; s≤s; z≤n; _≤′_)
 open import Data.Nat.Properties
 open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality.Core

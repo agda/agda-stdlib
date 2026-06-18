@@ -4,23 +4,26 @@
 -- Properties of the unit type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.Properties where
 
 open import Data.Sum.Base using (inj₁)
 open import Data.Unit.Base using (⊤)
 open import Level using (0ℓ)
-open import Relation.Nullary using (Irrelevant; yes)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Poset; DecTotalOrder)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions using (DecidableEquality; Total; Antisymmetric)
+open import Relation.Binary.Definitions
+  using (DecidableEquality; Total; Antisymmetric)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; trans)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid; decSetoid; isEquivalence)
+open import Relation.Nullary.Decidable.Core using (yes)
+open import Relation.Nullary.Irrelevant using (Irrelevant)
+
 
 ------------------------------------------------------------------------
 -- Irrelevancy
@@ -31,16 +34,16 @@ open import Relation.Binary.PropositionalEquality.Properties
 ------------------------------------------------------------------------
 -- Equality
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality ⊤
-_ ≟ _ = yes refl
+_≡?_ : DecidableEquality ⊤
+_ ≡? _ = yes refl
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ⊤
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -76,8 +79,8 @@ _ ≟ _ = yes refl
 ≡-isDecTotalOrder : IsDecTotalOrder _≡_ _≡_
 ≡-isDecTotalOrder = record
   { isTotalOrder = ≡-isTotalOrder
-  ; _≟_          = _≟_
-  ; _≤?_         = _≟_
+  ; _≈?_         = _≡?_
+  ; _≤?_         = _≡?_
   }
 
 ------------------------------------------------------------------------
@@ -92,3 +95,19 @@ _ ≟ _ = yes refl
 ≡-decTotalOrder = record
   { isDecTotalOrder = ≡-isDecTotalOrder
   }
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.4
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v2.4.
+Please use _≡?_ instead."
+#-}

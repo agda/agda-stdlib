@@ -7,13 +7,14 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Heterogeneous`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Heterogeneous.Bundles where
 
 open import Level using (suc; _⊔_)
-open import Relation.Binary.Indexed.Heterogeneous.Core
+open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
 open import Relation.Binary.Indexed.Heterogeneous.Structures
+  using (IsIndexedEquivalence; IsIndexedPreorder)
 
 ------------------------------------------------------------------------
 -- Definitions

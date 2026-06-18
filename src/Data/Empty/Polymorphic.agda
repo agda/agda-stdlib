@@ -4,12 +4,12 @@
 -- Level polymorphic Empty type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Empty.Polymorphic where
 
-import Data.Empty as Empty
-open import Level
+import Data.Empty as Empty using (⊥; ⊥-elim)
+open import Level using (Level; Lift; _⊔_)
 
 ⊥ : {ℓ : Level} → Set ℓ
 ⊥ {ℓ} = Lift ℓ Empty.⊥
