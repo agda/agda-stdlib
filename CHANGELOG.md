@@ -42,6 +42,9 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
+* In `Induction.WellFoudned`, the final parameter of `Acc` has been changed to
+  an index.
+
 Deprecated modules
 ------------------
 
