@@ -130,6 +130,11 @@ Additions to existing modules
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
   ```
 
+* In `Data.Nat.ListAction.Properties`:
+  ```agda
+  product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
