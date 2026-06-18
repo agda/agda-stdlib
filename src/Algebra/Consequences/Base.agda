@@ -9,8 +9,6 @@
 
 open import Relation.Binary.Core using (Rel)
 
-open import Relation.Binary.Core using (Rel)
-
 module Algebra.Consequences.Base
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
@@ -29,10 +27,11 @@ private
     f : Op₁ A
     _∙_ : Op₂ A
 
+
 ------------------------------------------------------------------------
 -- Congruence
 
-module Congruence (cong : Congruent₂ _≈_ _∙_) (refl : Reflexive _≈_)
+module Congruence (cong : Congruent₂ _∙_) (refl : Reflexive _≈_)
   where
 
   ∙-congˡ : LeftCongruent _∙_
