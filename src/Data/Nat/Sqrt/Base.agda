@@ -11,7 +11,7 @@
 
 module Data.Nat.Sqrt.Base where
 
-open import Data.Bool.Base usinf (if_then_else_)
+open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base using (ℕ; zero; suc; 2+; _+_; _∸_; _<ᵇ_)
 
 sqrt : ℕ → ℕ
