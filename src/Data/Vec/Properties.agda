@@ -224,6 +224,12 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
+lookup-head : ∀ (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
+lookup-head (_ ∷ _) = refl
+
+lookup-tail : ∀ (xs : Vec A (suc n)) {i} → lookup xs (suc i) ≡ lookup (tail xs) i
+lookup-tail (_ ∷ _) = refl
+
 lookup-truncate : .(m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
                   lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
 lookup-truncate _   (_ ∷ _)  zero    = refl

@@ -29,6 +29,17 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The notation for `Decidable` relations has been (partially) standardised: thus
+  - `_≡?_` (at `infix 4`) for `DecidableEquality`
+  - `_≈?_` (ditto.) for the fieldname of the general `IsDecEquivalence`
+
+  Despite being non-backwards compatible, because a fieldname has changed, the
+  old notation `_≟_` (which was used for both of the above) has been retained,
+  but deprecated. This leads to a large amount of (trivial) deprecations, in
+  addition to the substantive one under `Relation.Binary.Structures`, and in
+  `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
+  are summarised below, but are not each documented for each affected module.
+
 * [issue #2541](https://github.com/agda/agda-stdlib/issues/2541)
   The definition of `Adjoint` in `Relation.Binary.Definitions` has been altered
   to be the conjunction of two universally quantified `Half*Adjoint` properties,
@@ -45,8 +56,12 @@ Non-backwards compatible changes
   `Algebra.*`, the field name of the basic homomorphism property `homo` in
   `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
 
+
 Minor improvements
 ------------------
+
+* The top-level module `Algebra.Consequences.Base` now has the implicit
+  parameters of its internal modules lifted out as `variable`s.
 
 Deprecated modules
 ------------------
@@ -65,7 +80,7 @@ Deprecated names
   inj⇒≟    ↦  inj⇒≡?
   ≟-≡      ↦  ≡?-≡
   ≟-≡-refl ↦  ≡?-≡-refl
-  ≟-≢     ↦  ≡?-≢
+  ≟-≢      ↦  ≡?-≢
   ```
 
 * In `Data.Integer.GCD`:
@@ -84,6 +99,22 @@ Deprecated names
   ≟-diag    ↦   ≡?-≡
   ≟-≡       ↦   ≡?-≢
   ≟?-≡-refl ↦ ≡?-≡-refl
+  ```
+
+* In `Effect.Monad.Partiality`:
+  ```agda
+  _≟-Kind_     ↦   _≡?-Kind_
+  ```
+
+* In `Reflection.AST.AlphaEquality`:
+  ```agda
+  ≟⇒α     ↦   ≡?⇒α
+  ```
+
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-≟-identity     ↦   ≡-≡?-identity
+  ≢-≟-identity     ↦   ≢-≡?-identity
   ```
 
 * In `Effect.Monad.Partiality`:
@@ -126,6 +157,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.Bool.Properties`:
+  ```agda
+  ∨-monoid : Monoid 0ℓ 0ℓ
+  ∧-monoid : Monoid 0ℓ 0ℓ
+  ```
+
 * In `Data.Integer.GCD`:
   ```agda
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
@@ -149,6 +186,12 @@ Additions to existing modules
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
+  ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
+  lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
 * In `Function.Consequences`:
