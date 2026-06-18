@@ -181,3 +181,9 @@ Additions to existing modules
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
   ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
+  lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
+  ```
