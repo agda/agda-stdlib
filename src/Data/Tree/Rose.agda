@@ -1,57 +1,72 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Rose trees
+-- Rose trees, without sized types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Tree.Rose where
 
-open import Level using (Level)
-open import Size
-open import Data.List.Base as List using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_; [_]; _++_)
+open import Data.List.Extrema.Nat using (max)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Data.List.Extrema.Nat
-import Data.Tree.Binary as Bin
-open import Function.Base using (_∘_)
+open import Data.Tree.Binary as Tree using (Tree)
+open import Function.Base using (const; _∘′_; _$_)
+open import Level using (Level)
 
 private
   variable
     a : Level
     A B C : Set a
-    i : Size
+
 
 ------------------------------------------------------------------------
 -- Type and basic constructions
 
-data Rose (A : Set a) : Size → Set a where
-  node : (a : A) (ts : List (Rose A i)) → Rose A (↑ i)
+data Rose (A : Set a) : Set a where
+  node : (a : A) (ts : List (Rose A)) → Rose A
 
-leaf : A → Rose A ∞
-leaf a = node a []
+pattern leaf a = node a []
+
+pure : A → Rose A
+pure = leaf
 
 ------------------------------------------------------------------------
 -- Transforming rose trees
 
-map : (A → B) → Rose A i → Rose B i
-map f (node a ts) = node (f a) (List.map (map f) ts)
+module _ (f : A → B) where
+
+  map : Rose A → Rose B
+  map = λ where (node a ts) → node (f a) (mapList ts)
+    module Map where
+    mapList : List (Rose A) → List (Rose B)
+    mapList []       = []
+    mapList (t ∷ ts) = map t ∷ mapList ts
+
 
 ------------------------------------------------------------------------
 -- Reducing rose trees
 
-foldr : (A → List B → B) → Rose A i → B
-foldr n (node a ts) = n a (List.map (foldr n) ts)
+module _ (n : A → List B → B) where
 
-depth : Rose A i → ℕ
-depth (node a ts) = suc (max 0 (List.map depth ts))
+  foldr : Rose A → B
+  foldr = λ where (node a ts) → n a (foldrList ts)
+    module Foldr where
+    foldrList : List (Rose A) → List B
+    foldrList []       = []
+    foldrList (t ∷ ts) = foldr t ∷ foldrList ts
+
+depth : Rose A → ℕ
+depth = foldr $ const (suc ∘′ max zero)
+
 
 ------------------------------------------------------------------------
 -- Conversion from binary trees
 
 module _ (fromNode : A → C) (fromLeaf : B → C) where
 
-  fromBinary : Bin.Tree A B → Rose C ∞
-  fromBinary (Bin.leaf x)     = node (fromLeaf x) []
-  fromBinary (Bin.node l x r) = node (fromNode x)
-    (fromBinary l ∷ fromBinary r ∷ [])
+  fromBinary : Tree A B → Rose C
+  fromBinary (Tree.leaf x)     = leaf (fromLeaf x)
+  fromBinary (Tree.node l x r) = node (fromNode x) $
+    [ fromBinary l ] ++ [ fromBinary r ]
