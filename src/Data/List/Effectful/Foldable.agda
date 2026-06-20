@@ -30,8 +30,7 @@ module _ (M : RawMonoid c ℓ) where
   open RawMonoid M
 
   foldMap : (A → Carrier) → List A → Carrier
-  foldMap f []       = ε
-  foldMap f (x ∷ xs) = f x ∙ foldMap f xs
+  foldMap = List.foldMap _∙_ ε
 
 ------------------------------------------------------------------------
 -- Basic implementation using supplied defaults
