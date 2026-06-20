@@ -166,6 +166,11 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  foldMap : (B → B → B) → B → (A → B) → List A → B
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
