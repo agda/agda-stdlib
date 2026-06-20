@@ -31,16 +31,16 @@ display t = DList.toList $ goRose [] t DList.[]
   where
   padding : Bool → List Bool → String → String
   padding dir? []       = id
-  padding dir? (b ∷ bs) = padding dir? bs ∘′
+  padding dir? (b ∷ bs) = 
     ((if dir? ∧ List.null bs
      then if b then " ├ " else " └ "
-     else if b then " │ "  else "   ")
-    ++_)
+     else if b then " │ " else "   ")
+    ++_) ∘′ padding dir? bs
 
   nodePrefix : List Bool → List String → DList String
   nodePrefix bs []       = DList.[]
-  nodePrefix bs (s ∷ ss) =
-    padding true bs s DList.∷ DList.fromList (List.map (padding false bs) ss)
+  nodePrefix bs (s ∷ ss) = let bsᵒ = List.reverse bs in 
+    padding true bsᵒ s DList.∷ DList.fromList (List.map (padding false bsᵒ) ss)
 
   childrenPrefixes : List A → List⁺ Bool
   childrenPrefixes []       = false ∷ []
