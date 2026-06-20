@@ -104,14 +104,13 @@ module _ (∙-comm : Commutative _∙_) where
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y ∙ z)) ≡ ((x ◦ y) ∙ (x ◦ z)))
   comm⇒sym[distribˡ] = SetoidConsequences.comm⇒sym[distribˡ] (cong₂ _) ∙-comm
 
-module _ {_∙_ _◦_ : Op₂ A}
-         (∙-assoc : Associative _∙_)
+module _ (∙-assoc : Associative _∙_)
          (distrib : _◦_ DistributesOver _∙_)
          where
 
   binomial-expansion : ∀ w x y z →
              ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
-  binomial-expansion = SetoidConsequences.binomial-expansion {_∙_} {_◦_} (cong₂ _) ∙-assoc distrib
+  binomial-expansion = SetoidConsequences.binomial-expansion (cong₂ _∙_) ∙-assoc distrib
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
