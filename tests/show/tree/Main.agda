@@ -10,23 +10,23 @@ open import IO.Base
 open import IO.Finite
 open import Function.Base using (_$_; id)
 
-dependencies : Rose String _
+dependencies : Rose String
 dependencies = node "standard-library"
   $ agda
   ∷ cabal
   ∷ haskell
   ∷ [] where
 
-  haskell : Rose String _
+  haskell : Rose String
   haskell = node "Haskell"
     $ node "Haskell (bootstrap)" []
     ∷ node "C" []
     ∷ []
 
-  cabal : Rose String _
+  cabal : Rose String
   cabal = node "cabal" (haskell ∷ [])
 
-  agda : Rose String _
+  agda : Rose String
   agda = node "Agda"
     $ haskell
     ∷ cabal
