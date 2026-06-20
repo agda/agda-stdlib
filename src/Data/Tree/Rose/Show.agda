@@ -9,10 +9,12 @@
 module Data.Tree.Rose.Show where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_; _∧_)
-open import Data.DifferenceList as DList renaming (DiffList to DList) using ()
+open import Data.DifferenceList as DList
+   using (_++_; fromList; toList)
+   renaming (DiffList to DList; [] to []ᴰ; _∷_ to _∷ᴰ_)
 open import Data.List.Base as List using (List; []; _∷_; [_])
 open import Data.List.NonEmpty.Base as List⁺ using (List⁺; _∷_; _∷⁺_)
-open import Data.String.Base using (String; _++_)
+open import Data.String.Base as String using (String)
 open import Data.Tree.Rose using (Rose; node; map)
 open import Function.Base using (_∘′_; id; _$_)
 open import Level using (Level)
@@ -27,35 +29,35 @@ private
 -- Main recursive definition
 
 display : Rose (List String) → List String
-display t = DList.toList $ goRose [] t DList.[]
+display t = toList $ goRose [] t []ᴰ
   where
   padding : Bool → List Bool → String → String
   padding dir? []       = id
-  padding dir? (b ∷ bs) = 
+  padding dir? (b ∷ bs) =
     ((if dir? ∧ List.null bs
      then if b then " ├ " else " └ "
      else if b then " │ " else "   ")
-    ++_) ∘′ padding dir? bs
+    String.++_) ∘′ padding dir? bs
 
   nodePrefix : List Bool → List String → DList String
-  nodePrefix bs []       = DList.[]
-  nodePrefix bs (s ∷ ss) = let bsᵒ = List.reverse bs in 
-    padding true bsᵒ s DList.∷ DList.fromList (List.map (padding false bsᵒ) ss)
+  nodePrefix bs []       = []ᴰ
+  nodePrefix bs (s ∷ ss) = let bsᵒ = List.reverse bs in
+    padding true bsᵒ s ∷ᴰ fromList (List.map (padding false bsᵒ) ss)
 
   childrenPrefixes : List A → List⁺ Bool
   childrenPrefixes []       = false ∷ []
   childrenPrefixes (x ∷ xs) = true ∷⁺ childrenPrefixes xs
 
   goRose : List Bool → Rose (List String) → DList String → DList String
-  goRose bs (node ss ts) dl = nodePrefix bs ss DList.++ go ts DList.++ dl
+  goRose bs (node ss ts) dl = nodePrefix bs ss ++ go ts ++ dl
     where
     goZip : List (List Bool) → List (Rose (List String)) → DList String
     goZip (bs ∷ bss) (t ∷ ts) = goRose bs t $ goZip bss ts
-    goZip [] _ = DList.[]
-    goZip _ [] = DList.[]
+    goZip [] _ = []ᴰ
+    goZip _ [] = []ᴰ
 
     go : List (Rose (List String)) → DList String
-    go []       = DList.[]
+    go []       = []ᴰ
     go (t ∷ ts) =
       let bs′ ∷ bss′ = List⁺.map (_∷ bs) (childrenPrefixes ts)
       in goRose bs′ t $ goZip bss′ ts
