@@ -171,6 +171,11 @@ Additions to existing modules
   foldMap : (B → B → B) → B → (A → B) → List A → B
   ```
 
+* In `Data.List.Properties`:
+  ```agda
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr (λ x → f x ∙_) ε
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
