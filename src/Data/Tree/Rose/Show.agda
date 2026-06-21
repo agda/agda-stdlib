@@ -29,7 +29,7 @@ private
 -- Main recursive definition
 
 display : Rose (List String) → List String
-display t = toList $ goRose [] t []ᴰ
+display t = toList $ goTree [] t []ᴰ
   where
   padding : Bool → List Bool → String → String
   padding dir? []       = id
@@ -48,19 +48,19 @@ display t = toList $ goRose [] t []ᴰ
   childrenPrefixes []       = false ∷ []
   childrenPrefixes (x ∷ xs) = true ∷⁺ childrenPrefixes xs
 
-  goRose : List Bool → Rose (List String) → DList String → DList String
-  goRose bs (node ss ts) dl = nodePrefix bs ss ++ go ts ++ dl
+  goTree : List Bool → Rose (List String) → DList String → DList String
+  goTree bs (node ss ts) dl = nodePrefix bs ss ++ goList ts ++ dl
     where
     goZip : List (List Bool) → List (Rose (List String)) → DList String
-    goZip (bs ∷ bss) (t ∷ ts) = goRose bs t $ goZip bss ts
+    goZip (bs ∷ bss) (t ∷ ts) = goTree bs t $ goZip bss ts
     goZip [] _ = []ᴰ
     goZip _ [] = []ᴰ
 
-    go : List (Rose (List String)) → DList String
-    go []       = []ᴰ
-    go (t ∷ ts) =
+    goList : List (Rose (List String)) → DList String
+    goList []       = []ᴰ
+    goList (t ∷ ts) =
       let bs′ ∷ bss′ = List⁺.map (_∷ bs) (childrenPrefixes ts)
-      in goRose bs′ t $ goZip bss′ ts
+      in goTree bs′ t $ goZip bss′ ts
 
 ------------------------------------------------------------------------
 -- Corollaries
