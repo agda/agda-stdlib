@@ -21,10 +21,17 @@ private
     w : ℕ
 
 pretty : Rose (Maybe String) → Doc w
+pretty = foldr $
+ maybe′ (λ where
+             s [] → text s
+             s ds@(_ ∷ _) → parens $ text s <+> sep ds
+        )
+        vcat
+{-
 pretty (node nothing  ts) = vcat (map pretty ts)
 pretty (node (just a) []) = text a
 pretty (node (just a) ts) = parens $ text a <+> sep (map pretty ts)
-
+-}
 SEXP = Rose (Maybe String)
 
 atom : String → SEXP
