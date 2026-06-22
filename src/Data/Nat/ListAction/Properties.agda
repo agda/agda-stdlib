@@ -13,11 +13,11 @@ module Data.Nat.ListAction.Properties where
 
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.List.Base using (List; []; _∷_; _++_; map)
+open import Data.List.Effectful.Foldable
+  using (foldr-commMonoid)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭⇒↭ₛ)
-open import Data.List.Relation.Binary.Permutation.Setoid.Properties
-  using (foldr-commMonoid)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Nat.Base using (ℕ; _+_; _*_; _^_; NonZero; _≤_)
@@ -62,8 +62,7 @@ sum-++ (m ∷ ms) ns = begin
 *-distribʳ-sum m (n ∷ ns) = trans (*-distribʳ-+ m n (sum ns)) (cong (n * m +_) (*-distribʳ-sum m ns))
 
 sum-↭ : sum Preserves _↭_ ⟶ _≡_
-sum-↭ p = foldr-commMonoid ℕ-+-0.setoid ℕ-+-0.isCommutativeMonoid (↭⇒↭ₛ p)
-  where module ℕ-+-0 = CommutativeMonoid +-0-commutativeMonoid
+sum-↭ p = foldr-commMonoid +-0-commutativeMonoid (↭⇒↭ₛ p)
 
 
 -- product
@@ -93,5 +92,4 @@ product≢0 (n≢0 ∷ ns≢0) = m*n≢0 _ _ {{n≢0}} {{product≢0 ns≢0}}
 ^-distribʳ-product m (n ∷ ns) = trans (^-distribʳ-* m n (product ns)) (cong (n ^ m *_) (^-distribʳ-product m ns))
 
 product-↭ : product Preserves _↭_ ⟶ _≡_
-product-↭ p = foldr-commMonoid ℕ-*-1.setoid ℕ-*-1.isCommutativeMonoid (↭⇒↭ₛ p)
-  where module ℕ-*-1 = CommutativeMonoid *-1-commutativeMonoid
+product-↭ p = foldr-commMonoid *-1-commutativeMonoid (↭⇒↭ₛ p)

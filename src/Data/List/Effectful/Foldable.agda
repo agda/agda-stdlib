@@ -8,18 +8,26 @@
 
 module Data.List.Effectful.Foldable where
 
-open import Algebra.Bundles using (Monoid)
+open import Algebra.Bundles using (Monoid; CommutativeMonoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
 open import Algebra.Morphism.Structures using (IsMonoidHomomorphism)
-open import Data.List.Base as List using (List; []; _∷_; _++_)
+open import Data.List.Base as List using (List; []; _∷_; _++_; foldr)
+import Data.List.Relation.Binary.Permutation.Setoid as Permutation
+open import Data.List.Relation.Binary.Pointwise as Pointwise
+  using (Pointwise)
 open import Effect.Foldable using (RawFoldableWithDefaults; RawFoldable)
 open import Function.Base using (_∘_; id)
+open import Function.Bundles using (Func)
+open import Function.Construct.Identity using (function)
 open import Level using (Level)
+open import Relation.Binary.Definitions using (Monotonic₁)
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; cong)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
-    a c ℓ : Level
+    a c r ℓ : Level
     A : Set a
 
 ------------------------------------------------------------------------
@@ -50,7 +58,7 @@ foldable = record
   }
 
 ------------------------------------------------------------------------
--- Properties
+-- foldMap gives rise to a Monoid homomorphism
 
 module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
 
@@ -75,3 +83,26 @@ module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
       }
     ; ε-homo = []-homo
     }
+
+------------------------------------------------------------------------
+-- for Commutative Monoids, foldr respects Permutation
+
+module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
+
+  private
+    open module CM = CommutativeMonoid commutativeMonoid
+      using (_∙_; ε; ∙-cong; ∙-congˡ; ∙-congʳ; assoc; comm)
+    open Permutation CM.setoid
+
+  foldr-commMonoid : Monotonic₁ _↭_ CM._≈_ (foldr _∙_ ε)
+  foldr-commMonoid (refl xs≋ys)        = Pointwise.foldr⁺ ∙-cong CM.refl xs≋ys
+  foldr-commMonoid (prep x≈y xs↭ys)    = ∙-cong x≈y (foldr-commMonoid xs↭ys)
+  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
+    x ∙ (y ∙ foldr _∙_ ε xs)    ≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
+    x ∙ (y ∙ foldr _∙_ ε ys)    ≈⟨ assoc x y (foldr _∙_ ε ys) ⟨
+    (x ∙ y) ∙ foldr _∙_ ε ys    ≈⟨ ∙-congʳ (comm x y) ⟩
+    (y ∙ x) ∙ foldr _∙_ ε ys    ≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
+    (y′ ∙ x′) ∙ foldr _∙_ ε ys  ≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
+    y′ ∙ (x′ ∙ foldr _∙_ ε ys)  ∎
+    where open ≈-Reasoning CM.setoid
+  foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)

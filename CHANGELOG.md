@@ -86,6 +86,11 @@ Deprecated names
   gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  foldr-commMonoid  ↦  Data.List.Effectful.Foldable.foldr-commMonoid
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[0,0]≡0 ↦ gcd[n,n]≡n

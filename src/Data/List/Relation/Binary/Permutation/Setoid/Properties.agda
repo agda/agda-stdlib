@@ -6,10 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary.Core
-  using (Rel; _⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Definitions as B hiding (Decidable)
 
 module Data.List.Relation.Binary.Permutation.Setoid.Properties
   {a ℓ} (S : Setoid a ℓ)
@@ -19,6 +16,7 @@ open import Algebra
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (zero; suc)
 open import Data.List.Base as List hiding (head; tail)
+import Data.List.Effectful.Foldable as Foldable
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; head; tail)
 import Data.List.Relation.Binary.Equality.Setoid as Equality
@@ -37,13 +35,16 @@ open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
 open import Function.Bundles using (Inverse)
 open import Level using (Level; _⊔_)
-open import Relation.Unary using (Pred; Decidable)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.Core
+  using (Rel; _⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (¬_; contradiction; contraposition)
+open import Relation.Unary using (Pred; Decidable)
 
 
 open Setoid S using (_≈_)
@@ -419,29 +420,7 @@ module _ (R? : B.Decidable R) where
     where open PermutationReasoning
 
 ------------------------------------------------------------------------
--- foldr over a Commutative Monoid
-
-module _{_∙_ : Op₂ A} {ε : A}
-        (isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε) where
-
-  private
-    commutativeMonoid : CommutativeMonoid _ _
-    commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
-    open module CM = CommutativeMonoid commutativeMonoid
-      using (∙-cong; ∙-congˡ; ∙-congʳ; assoc; comm)
-
-  foldr-commMonoid : (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
-  foldr-commMonoid (refl xs≋ys)        = Pointwise.foldr⁺ ∙-cong CM.refl xs≋ys
-  foldr-commMonoid (prep x≈y xs↭ys)    = ∙-cong x≈y (foldr-commMonoid xs↭ys)
-  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
-    x ∙ (y ∙ foldr _∙_ ε xs)    ≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
-    x ∙ (y ∙ foldr _∙_ ε ys)    ≈⟨ assoc x y (foldr _∙_ ε ys) ⟨
-    (x ∙ y) ∙ foldr _∙_ ε ys    ≈⟨ ∙-congʳ (comm x y) ⟩
-    (y ∙ x) ∙ foldr _∙_ ε ys    ≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
-    (y′ ∙ x′) ∙ foldr _∙_ ε ys  ≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
-    y′ ∙ (x′ ∙ foldr _∙_ ε ys)  ∎
-    where open ≈-Reasoning CM.setoid
-  foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
+-- onIndices-lookup
 
 onIndices-lookup : ∀ (xs↭ys : xs ↭ ys) →
                ∀ i → lookup xs i ≈ lookup ys (Inverse.to (onIndices xs↭ys) i)
@@ -452,6 +431,7 @@ onIndices-lookup (swap eq _ xs↭ys)   zero          = eq
 onIndices-lookup (swap _ eq xs↭ys)   (suc zero)    = eq
 onIndices-lookup (swap _ _  xs↭ys)   (suc (suc i)) = onIndices-lookup xs↭ys i
 onIndices-lookup (trans xs↭ys ys↭zs) i            = ≈-trans (onIndices-lookup xs↭ys i) (onIndices-lookup ys↭zs _)
+
 
 ------------------------------------------------------------------------
 -- TOWARDS DEPRECATION
@@ -513,4 +493,16 @@ split v as bs xs↭as++[v]++bs
 {-# WARNING_ON_USAGE split
 "Warning: split was deprecated in v2.1.
 Please use the sharper lemma ↭-split instead."
+#-}
+
+-- Version 3.0
+
+foldr-commMonoid : ∀ {_∙_ : Op₂ A} {ε : A} →
+                   (isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε) →
+                   (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
+foldr-commMonoid isCommutativeMonoid = Foldable.foldr-commMonoid
+  record { isCommutativeMonoid = isCommutativeMonoid }
+{-# WARNING_ON_USAGE foldr-commMonoid
+"Warning: foldr-commMonoid was deprecated in v3.0.
+Please use Data.List.Effectful.Foldable.foldr-commMonoid instead."
 #-}
