@@ -13,7 +13,7 @@ open import Data.Bool.Properties
 open import Data.Bool.ListAction
 open import Data.List.Base hiding (and; or; all; any)
 open import Data.List.Effectful.Foldable
-  using (foldr-commMonoid)
+  using (foldr-congruent)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Binary.Permutation.Propositional using (_↭_; ↭⇒↭ₛ)
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as ↭
@@ -46,7 +46,7 @@ and-++ (b ∷ bs) cs = begin
 ∨-distribʳ-and b (c ∷ cs) = trans (∨-distribʳ-∧ b c (and cs)) (cong ((c ∨ b) ∧_) (∨-distribʳ-and b cs))
 
 and-↭ : and Preserves _↭_ ⟶ _≡_
-and-↭ p = foldr-commMonoid ∧-commutativeMonoid (↭⇒↭ₛ p)
+and-↭ p = foldr-congruent ∧-commutativeMonoid (↭⇒↭ₛ p)
 
 and-locate : ∀ bs → and bs ≡ false → false ∈ bs
 and-locate (false ∷ bs) p = here refl
@@ -71,7 +71,7 @@ or-++ (b ∷ bs) cs = begin
 ∧-distribʳ-or b (c ∷ cs) = trans (∧-distribʳ-∨ b c (or cs)) (cong ((c ∧ b) ∨_) (∧-distribʳ-or b cs))
 
 or-↭ : or Preserves _↭_ ⟶ _≡_
-or-↭ p = foldr-commMonoid ∨-commutativeMonoid (↭⇒↭ₛ p)
+or-↭ p = foldr-congruent ∨-commutativeMonoid (↭⇒↭ₛ p)
 
 or-locate : ∀ bs → or bs ≡ true → true ∈ bs
 or-locate (false ∷ bs) p = there (or-locate bs p)

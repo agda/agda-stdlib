@@ -14,7 +14,7 @@ module Data.Nat.ListAction.Properties where
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.List.Base using (List; []; _∷_; _++_; map)
 open import Data.List.Effectful.Foldable
-  using (foldr-commMonoid)
+  using (foldr-congruent)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭⇒↭ₛ)
@@ -62,7 +62,7 @@ sum-++ (m ∷ ms) ns = begin
 *-distribʳ-sum m (n ∷ ns) = trans (*-distribʳ-+ m n (sum ns)) (cong (n * m +_) (*-distribʳ-sum m ns))
 
 sum-↭ : sum Preserves _↭_ ⟶ _≡_
-sum-↭ p = foldr-commMonoid +-0-commutativeMonoid (↭⇒↭ₛ p)
+sum-↭ p = foldr-congruent +-0-commutativeMonoid (↭⇒↭ₛ p)
 
 
 -- product
@@ -92,4 +92,4 @@ product≢0 (n≢0 ∷ ns≢0) = m*n≢0 _ _ {{n≢0}} {{product≢0 ns≢0}}
 ^-distribʳ-product m (n ∷ ns) = trans (^-distribʳ-* m n (product ns)) (cong (n ^ m *_) (^-distribʳ-product m ns))
 
 product-↭ : product Preserves _↭_ ⟶ _≡_
-product-↭ p = foldr-commMonoid *-1-commutativeMonoid (↭⇒↭ₛ p)
+product-↭ p = foldr-congruent *-1-commutativeMonoid (↭⇒↭ₛ p)
