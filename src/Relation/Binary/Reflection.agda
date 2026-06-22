@@ -5,7 +5,7 @@
 -- proof by reflection
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (ℕ)

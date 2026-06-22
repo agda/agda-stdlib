@@ -4,7 +4,7 @@
 -- Bounded Natural numbers (Fin, without the runtime overhead)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Bounded.Base where
 

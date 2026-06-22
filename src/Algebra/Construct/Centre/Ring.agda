@@ -4,7 +4,7 @@
 -- Definition of the centre of a Ring
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Bundles
   using (Ring; CommutativeRing; Monoid; RawRing; RawMonoid)

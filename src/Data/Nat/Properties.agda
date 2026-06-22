@@ -7,7 +7,7 @@
 -- See README.Data.Nat for some examples showing how this module can be
 -- used.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Properties where
 
@@ -123,7 +123,7 @@ m ≡? n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
-  ; _≟_            = _≡?_
+  ; _≈?_           = _≡?_
   }
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
@@ -253,7 +253,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≡?_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -1917,7 +1917,7 @@ m∸n≤∣m-n∣ m n with ≤-total m n
   n ∸ m     ∎
 
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
-*-distribˡ-∣-∣ a = wlog ≤-total (comm⇒sym[distribˡ] {_◦_ = _*_} ∣-∣-comm a)
+*-distribˡ-∣-∣ a = wlog ≤-total (comm⇒sym[distribˡ] ∣-∣-comm {_◦_ = _*_} a)
   $′ λ m n m≤n → begin-equality
     a * ∣ m - n ∣     ≡⟨ cong (a *_) (m≤n⇒∣m-n∣≡n∸m m≤n) ⟩
     a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩

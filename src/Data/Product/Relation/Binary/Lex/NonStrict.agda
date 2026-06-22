@@ -7,7 +7,7 @@
 -- The definition of lexicographic product used here is suitable if
 -- the left-hand relation is a (non-strict) partial order.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Relation.Binary.Lex.NonStrict where
 
@@ -157,7 +157,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
     { isTotalOrder = ×-isTotalOrder (_≟_ to₁)
                                     (isTotalOrder to₁)
                                     (isTotalOrder to₂)
-    ; _≟_          = Pointwise.×-decidable (_≈?_ to₁) (_≈?_ to₂)
+    ; _≈?_         = Pointwise.×-decidable (_≈?_ to₁) (_≈?_ to₂)
     ; _≤?_         = ×-decidable (_≈?_ to₁) (_≤?_ to₁) (_≤?_ to₂)
     }
     where open IsDecTotalOrder

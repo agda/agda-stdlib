@@ -4,7 +4,7 @@
 -- Sum combinators for setoid equality preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Function.Setoid where
 

@@ -7,7 +7,7 @@
 -- This module illustrates how Data.Fin.Substitution.Lemmas.AppLemmas
 -- can be used.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Fin.Substitution.Lemmas using (Lemmas₄; AppLemmas)
 open import Data.Nat.Base using (ℕ)

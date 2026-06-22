@@ -5,7 +5,7 @@
 -- `Relation.Binary.Construct.Flip.Ord` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Flip where
 

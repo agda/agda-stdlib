@@ -4,7 +4,7 @@
 -- Construct monomorphism from a relation and a function via `_on_`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
 

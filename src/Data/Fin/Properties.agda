@@ -5,7 +5,7 @@
 -- properties (or other properties not available in Data.Fin)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for deprecated _≺_ and _≻toℕ_ (issue #1726)
 
 module Data.Fin.Properties where
@@ -123,7 +123,7 @@ suc x ≡? suc y = map′ (cong suc) suc-injective (x ≡? y)
 ≡-isDecEquivalence : IsDecEquivalence {A = Fin n} _≡_
 ≡-isDecEquivalence = record
   { isEquivalence = ≡.isEquivalence
-  ; _≟_           = _≡?_
+  ; _≈?_          = _≡?_
   }
 
 ------------------------------------------------------------------------
@@ -356,7 +356,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 ≤-isDecTotalOrder : IsDecTotalOrder {A = Fin n} _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≡?_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -1198,7 +1198,7 @@ module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
   inj⇒decSetoid = record
     { isDecEquivalence = record
       { isEquivalence = isEquivalence
-      ; _≟_           = inj⇒≡?
+      ; _≈?_           = inj⇒≡?
       }
     }
 

@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Morphism using (IsRelMonomorphism)
@@ -61,5 +61,5 @@ isEquivalence isEq = record
 isDecEquivalence : IsDecEquivalence _∼₂_ → IsDecEquivalence _∼₁_
 isDecEquivalence isDecEq = record
   { isEquivalence  = isEquivalence E.isEquivalence
-  ; _≟_            = dec E._≈?_
+  ; _≈?_           = dec E._≈?_
   } where module E = IsDecEquivalence isDecEq

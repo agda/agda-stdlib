@@ -4,7 +4,7 @@
 -- Properties of operations on floats
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Float.Properties where
 
@@ -76,7 +76,7 @@ _≈?_ = On.decidable (Maybe.map Word64.toℕ ∘ toWord64) _≡_ (Maybe.≡-dec
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≟_           = _≈?_
+  ; _≈?_          = _≈?_
   }
 
 ≈-decSetoid : DecSetoid _ _

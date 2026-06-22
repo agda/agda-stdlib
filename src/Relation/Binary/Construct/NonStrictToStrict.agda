@@ -4,7 +4,7 @@
 -- Conversion of _≤_ to _<_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 
@@ -135,7 +135,7 @@ x < y = x ≤ y × x ≉ y
                             IsDecStrictPartialOrder _≈_ _<_
 <-isDecStrictPartialOrder dpo = record
   { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
-  ; _≟_  = _≈?_
+  ; _≈?_ = _≈?_
   ; _<?_ = <-decidable _≈?_ _≤?_
   } where open IsDecPartialOrder dpo
 

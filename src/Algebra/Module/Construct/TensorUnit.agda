@@ -7,7 +7,7 @@
 -- unit into M are isomorphic to the elements of M.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Module.Construct.TensorUnit where
 

@@ -4,7 +4,7 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Binary.Pointwise where
 
@@ -142,7 +142,7 @@ drop-inj₂ (inj₂ x) = x
 ⊎-isDecEquivalence eq₁ eq₂ = record
   { isEquivalence =
       ⊎-isEquivalence (isEquivalence eq₁) (isEquivalence eq₂)
-  ; _≟_           = ⊎-decidable (_≈?_ eq₁) (_≈?_ eq₂)
+  ; _≈?_          = ⊎-decidable (_≈?_ eq₁) (_≈?_ eq₂)
   } where open IsDecEquivalence
 
 ⊎-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →

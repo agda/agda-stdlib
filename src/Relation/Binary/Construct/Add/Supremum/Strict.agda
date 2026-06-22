@@ -4,7 +4,7 @@
 -- The lifting of a strict order to incorporate a new supremum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
@@ -150,7 +150,7 @@ module _ {e} {_≈_ : Rel A e} where
                                IsDecStrictPartialOrder _≡_ _<⁺_
 <⁺-isDecStrictPartialOrder-≡ dectot = record
   { isStrictPartialOrder = <⁺-isStrictPartialOrder-≡ isStrictPartialOrder
-  ; _≟_                  = ≡-dec _≈?_
+  ; _≈?_                 = ≡-dec _≈?_
   ; _<?_                 = <⁺-dec _<?_
   } where open IsDecStrictPartialOrder dectot
 
@@ -181,7 +181,7 @@ module _ {e} {_≈_ : Rel A e} where
                                IsDecStrictPartialOrder _≈⁺_ _<⁺_
   <⁺-isDecStrictPartialOrder dectot = record
     { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
-    ; _≟_                  = ≈⁺-dec _≈?_
+    ; _≈?_                 = ≈⁺-dec _≈?_
     ; _<?_                 = <⁺-dec _<?_
     } where open IsDecStrictPartialOrder dectot
 
@@ -191,4 +191,3 @@ module _ {e} {_≈_ : Rel A e} where
     { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
     ; compare              = <⁺-cmp compare
     } where open IsStrictTotalOrder strictot
-

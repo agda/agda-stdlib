@@ -4,7 +4,7 @@
 -- Some properties about parities
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Parity.Properties where
 

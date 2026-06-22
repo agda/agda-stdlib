@@ -8,7 +8,7 @@
 -- are ``equality rearrangement'' lemmas.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.PropositionalEquality.Properties where
 
@@ -161,7 +161,7 @@ isEquivalence = record
 isDecEquivalence : DecidableEquality A → IsDecEquivalence _≡_
 isDecEquivalence _≈?_ = record
   { isEquivalence = isEquivalence
-  ; _≟_           = _≈?_
+  ; _≈?_          = _≈?_
   }
 
 setoid : Set a → Setoid _ _
