@@ -4,7 +4,7 @@
 -- Properties of Heyting Fields
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Apartness.Bundles using (HeytingField)
 
