@@ -183,9 +183,18 @@ Additions to existing modules
   foldMap : (B → B → B) → B → (A → B) → List A → B
   ```
 
+* In `Data.List.Effectful.Foldable`:
+  for `CM : CommutativeMonoid`, `S : Setoid`, `F: Func S CM.setoid`,
+  ```agda
+  foldMap-commMonoid : Congruent _↭ₛ_ CM._≈_ (foldMap CM.rawMonoid F.to)
+  foldr-commMonoid   : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
+  ```
+  where `_↭ₛ_` is the `Permutation` relation on `S`, and `_↭ₘ_` the `Permutation`
+  relation on `CM.setoid`.
+
 * In `Data.List.Properties`:
   ```agda
-  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr (λ x → f x ∙_) ε
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr _∙_ ε (map f)
   ```
 
 * In `Data.Nat.GCD`:
