@@ -95,7 +95,7 @@ Deprecated names
 
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
-  foldr-commMonoid  ↦  Data.List.Effectful.Foldable.foldr-commMonoid
+  foldr-commMonoid  ↦  Data.List.Effectful.Foldable.foldr-congruent
   ```
 
 * In `Data.Nat.GCD`:
@@ -186,8 +186,8 @@ Additions to existing modules
 * In `Data.List.Effectful.Foldable`:
   for `CM : CommutativeMonoid`, `S : Setoid`, `F: Func S CM.setoid`,
   ```agda
-  foldMap-commMonoid : Congruent _↭ₛ_ CM._≈_ (foldMap CM.rawMonoid F.to)
-  foldr-commMonoid   : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
+  foldMap-congruent : Congruent _↭ₛ_ CM._≈_ (foldMap CM.rawMonoid F.to)
+  foldr-congruent   : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
   ```
   where `_↭ₛ_` is the `Permutation` relation on `S`, and `_↭ₘ_` the `Permutation`
   relation on `CM.setoid`.

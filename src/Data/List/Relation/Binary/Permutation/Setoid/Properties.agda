@@ -500,9 +500,9 @@ Please use the sharper lemma ↭-split instead."
 foldr-commMonoid : ∀ {_∙_ : Op₂ A} {ε : A} →
                    (isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε) →
                    (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
-foldr-commMonoid isCommutativeMonoid = Foldable.foldr-commMonoid
+foldr-commMonoid isCommutativeMonoid = Foldable.foldr-congruent
   record { isCommutativeMonoid = isCommutativeMonoid }
 {-# WARNING_ON_USAGE foldr-commMonoid
 "Warning: foldr-commMonoid was deprecated in v3.0.
-Please use Data.List.Effectful.Foldable.foldr-commMonoid instead."
+Please use Data.List.Effectful.Foldable.foldr-congruent instead."
 #-}

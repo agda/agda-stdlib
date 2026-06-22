@@ -106,33 +106,33 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
       f = F.to
       h = foldMap CM.rawMonoid f
 
+    foldMap-congruent : Congruent _↭ₛ_ CM._≈_ h
 
-    foldMap-commMonoid : Congruent _↭ₛ_ CM._≈_ h
-
-    foldMap-commMonoid (refl {xs} {ys} xs≋ys)
+    foldMap-congruent (refl {xs} {ys} xs≋ys)
       rewrite foldMap≗foldr∘map _∙_ ε f xs | foldMap≗foldr∘map _∙_ ε f ys
       = Pointwise.foldr⁺ {R = CM._≈_} ∙-cong (CM.refl {x = ε}) $
           (Pointwise.map⁺ f f (Pointwise.map F.cong xs≋ys))
 
-    foldMap-commMonoid (prep x≈y xs↭ys)    = ∙-cong (F.cong x≈y) (foldMap-commMonoid xs↭ys)
-    foldMap-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
-      f x ∙ (f y ∙ h xs)    ≈⟨ ∙-congˡ (∙-congˡ (foldMap-commMonoid xs↭ys)) ⟩
+    foldMap-congruent (prep x≈y xs↭ys)    = ∙-cong (F.cong x≈y) (foldMap-congruent xs↭ys)
+
+    foldMap-congruent (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
+      f x ∙ (f y ∙ h xs)    ≈⟨ ∙-congˡ (∙-congˡ (foldMap-congruent xs↭ys)) ⟩
       f x ∙ (f y ∙ h ys)    ≈⟨ assoc (f x) (f y) (h ys) ⟨
       (f x ∙ f y) ∙ h ys    ≈⟨ ∙-congʳ (comm (f x) (f y)) ⟩
       (f y ∙ f x) ∙ h ys    ≈⟨ ∙-congʳ (∙-cong (F.cong y≈y′) (F.cong x≈x′)) ⟩
       (f y′ ∙ f x′) ∙ h ys  ≈⟨ assoc (f y′) (f x′) (h ys)  ⟩
       f y′ ∙ (f x′ ∙ h ys)  ∎
 
-    foldMap-commMonoid (trans xs↭ys ys↭zs) =
-      CM.trans (foldMap-commMonoid xs↭ys) (foldMap-commMonoid ys↭zs)
+    foldMap-congruent (trans xs↭ys ys↭zs) =
+      CM.trans (foldMap-congruent xs↭ys) (foldMap-congruent ys↭zs)
 
 -- foldr
 
   open Permutation CM.setoid renaming (_↭_ to _↭ₘ_)
 
-  foldr-commMonoid : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
-  foldr-commMonoid {x = xs} {y = ys}
+  foldr-congruent : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
+  foldr-congruent {x = xs} {y = ys}
     rewrite ≡.sym (map-id xs) | ≡.sym (map-id ys)
     rewrite ≡.sym (foldMap≗foldr∘map _∙_ ε id xs) | ≡.sym (foldMap≗foldr∘map _∙_ ε id ys)
     rewrite map-id xs | map-id ys
-    = foldMap-commMonoid $ Identity.function CM.setoid
+    = foldMap-congruent $ Identity.function CM.setoid
