@@ -51,6 +51,16 @@ Non-backwards compatible changes
   `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
 
 
+* [Issue #3022](https://github.com/agda/agda-stdlib/issues/3022)
+  The previous development of rose trees has been refactored to make
+  the definitions `safe` wrt termination checking etc. by avoiding
+  the use of `sized-types`, at the cost of a little extra plumbing.
+  ```
+  Data.Tree.Rose
+  Data.Tree.Rose.Properties
+  Data.Tree.Rose.Show
+  ```
+
 Minor improvements
 ------------------
 
@@ -150,6 +160,21 @@ New modules
   or type accumulators that need to be reversed in the base case.
   ```
   Data.SnocList.Base
+  ```
+
+* A namespace for the (unsafe) use of `sized-types` to define rose trees
+  and their associated operations, previously defined under `Data.Tree`,
+  with the intention of migrating all such uses of sized datatypes here.
+  ```
+  Data.Sized
+  Data.Sized.Tree
+  ```
+  Correspondingly, the previous development of rose trees has been refactored
+  to make the definitions `safe` wrt termination checking etc.
+  ```
+  Data.Tree.Rose
+  Data.Tree.Rose.Properties
+  Data.Tree.Rose.Show
   ```
 
 Additions to existing modules
