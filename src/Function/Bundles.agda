@@ -120,14 +120,14 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     to⁻ : B → A
     to⁻ = from
     {-# WARNING_ON_USAGE to⁻
-    "Warning: to⁻ was deprecated in v2.3.
+    "Warning: to⁻ was deprecated in v3.0.
     Please use Function.Structures.IsSurjection.from instead. "
     #-}
 
     to∘to⁻ : StrictlyInverseˡ _≈₂_ to from
     to∘to⁻ = strictlyInverseˡ
     {-# WARNING_ON_USAGE to∘to⁻
-    "Warning: to∘to⁻ was deprecated in v2.3.
+    "Warning: to∘to⁻ was deprecated in v3.0
     Please use Function.Structures.IsSurjection.strictlyInverseˡ instead. "
     #-}
 

@@ -81,16 +81,16 @@ Non-backwards compatible changes
 Minor improvements
 ------------------
 
-* The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
-  have been streamlined via pattern-matching on `refl`, rather than defined by delegation
-  to `Function.Consequences.Setoid` and the use of `cong`.
-
 * [Issue #2502](https://github.com/agda/agda-stdlib/issues/2502) The module
   `Algebra.Consequences.Base` now takes the underlying equality relation as
   an additional top-level parameter, with slightly improved ergonomics wrt
   subsequent imports by clients, as well as streamlined internals. Moreover,
   it now has the implicit parameters of its internal modules lifted out as
   global `variable`s.
+
+* The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
+  have been streamlined via pattern-matching on `refl`, rather than defined by
+  delegation to `Function.Consequences.Setoid` and the use of `cong`.
 
 Deprecated modules
 ------------------
@@ -151,6 +151,17 @@ Deprecated names
   _≟-Kind_     ↦   _≡?-Kind_
   ```
 
+* In `Function.Bundles.Surjection`:
+  ```agda
+  to⁻      ↦  Function.Structures.IsSurjection.from
+  to∘to⁻   ↦  Function.Structures.IsSurjection.strictlyInverseˡ
+  ```
+
+* In `Function.Properties.Surjection`:
+  ```agda
+  injective⇒to⁻-cong   ↦  Function.Bundles.Bijection.from-cong
+  ```
+
 * In `Reflection.AST.AlphaEquality`:
   ```agda
   ≟⇒α     ↦   ≡?⇒α
@@ -165,17 +176,6 @@ Deprecated names
 * In `Relation.Nary`:
   ```agda
   ≟-mapₙ     ↦   ≡?-mapₙ
-  ```
-
-* In `Function.Bundles.IsSurjection`:
-  ```agda
-  to⁻      ↦  Function.Structures.IsSurjection.from
-  to∘to⁻   ↦  Function.Structures.IsSurjection.strictlyInverseˡ
-  ```
-
-* In `Function.Properties.Surjection`:
-  ```agda
-  injective⇒to⁻-cong   ↦  Function.Bundles.Bijection.from-cong
   ```
 
 New modules
