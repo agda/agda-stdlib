@@ -2506,23 +2506,23 @@ open Data.Nat.Base public
 "Warning: <-transˡ was deprecated in v2.0. Please use <-≤-trans instead. "
 #-}
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}
 
 ≟-diag = ≡?-≡
 {-# WARNING_ON_USAGE ≟-diag
-"Warning: ≟-diag was deprecated in v2.4.
+"Warning: ≟-diag was deprecated in v3.0.
 Please use ≡?-≡ instead."
 #-}
 
 ≟-≡ = ≡?-≢
 {-# WARNING_ON_USAGE ≟-≡
-"Warning: ≟-≡ was deprecated in v2.4.
+"Warning: ≟-≡ was deprecated in v3.0.
 Please use ≡?-≢ instead."
 #-}

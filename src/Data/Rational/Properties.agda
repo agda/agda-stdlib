@@ -2181,9 +2181,11 @@ nonPos*nonPos⇒nonPos = nonPos*nonPos⇒nonNeg
 Please use nonPos*nonPos⇒nonNeg instead."
 #-}
 
+-- Version 3.0
+
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}

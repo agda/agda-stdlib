@@ -488,7 +488,7 @@ absurd x ≡?-Pattern proj x₁ = no (λ ())
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
         _≟-Clause_ _≟-Clauses_ _≟_
@@ -496,61 +496,61 @@ infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
 
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}
 _≟-AbsTerm_ = _≡?-AbsTerm_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟-AbsTerm_ was deprecated in v2.4.
+"Warning: _≟-AbsTerm_ was deprecated in v3.0.
 Please use _≡?-AbsTerm_ instead."
 #-}
 _≟-AbsType_ = _≡?-AbsType_
 {-# WARNING_ON_USAGE _≟-AbsType_
-"Warning: _≟-AbsType_ was deprecated in v2.4.
+"Warning: _≟-AbsType_ was deprecated in v3.0.
 Please use _≡?-AbsType_ instead."
 #-}
 _≟-ArgTerm_ = _≡?-ArgTerm_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟-ArgTerm_ was deprecated in v2.4.
+"Warning: _≟-ArgTerm_ was deprecated in v3.0.
 Please use _≡?-ArgTerm_ instead."
 #-}
 _≟-ArgType_ = _≡?-ArgType_
 {-# WARNING_ON_USAGE _≟-ArgType_
-"Warning: _≟-ArgType_ was deprecated in v2.4.
+"Warning: _≟-ArgType_ was deprecated in v3.0.
 Please use _≡?-ArgType_ instead."
 #-}
 _≟-Args_ = _≡?-Args_
 {-# WARNING_ON_USAGE _≟-Args_
-"Warning: _≟-Args_ was deprecated in v2.4.
+"Warning: _≟-Args_ was deprecated in v3.0.
 Please use _≡?-Args_ instead."
 #-}
 _≟-Clause_ = _≡?-Clause_
 {-# WARNING_ON_USAGE _≟-Clause_
-"Warning: _≟-Clause_ was deprecated in v2.4.
+"Warning: _≟-Clause_ was deprecated in v3.0.
 Please use _≡?-Clause_ instead."
 #-}
 _≟-Clauses_ = _≡?-Clauses_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟-Clauses_ was deprecated in v2.4.
+"Warning: _≟-Clauses_ was deprecated in v3.0.
 Please use _≡?-Clauses_ instead."
 #-}
 _≟-Sort_ = _≡?-Sort_
 {-# WARNING_ON_USAGE _≟-Sort_
-"Warning: _≟-Sort_ was deprecated in v2.4.
+"Warning: _≟-Sort_ was deprecated in v3.0.
 Please use _≡?-Sort_ instead."
 #-}
 _≟-Pattern_ = _≡?-Pattern_
 {-# WARNING_ON_USAGE _≟-Pattern_
-"Warning: _≟-Pattern_ was deprecated in v2.4.
+"Warning: _≟-Pattern_ was deprecated in v3.0.
 Please use _≡?-Pattern_ instead."
 #-}
 _≟-Patterns_ = _≡?-Patterns_
 {-# WARNING_ON_USAGE _≟-Patterns_
-"Warning: _≟-Patterns_ was deprecated in v2.4.
+"Warning: _≟-Patterns_ was deprecated in v3.0.
 Please use _≡?-Patterns_ instead."
 #-}
 _≟-Telescope_ = _≡?-Telescope_
 {-# WARNING_ON_USAGE _≟-Telescope_
-"Warning: _≟-Telescope_ was deprecated in v2.4.
+"Warning: _≟-Telescope_ was deprecated in v3.0.
 Please use _≡?-Telescope_ instead."
 #-}
