@@ -61,6 +61,13 @@ Minor improvements
   it now has the implicit parameters of its internal modules lifted out as
   global `variable`s.
 
+* [Issue #3016](https://github.com/agda/agda-stdlib/issues/3016)
+  `Data.List.Relation.Binary.Permutation.Setoid.Properties.foldr-commMonoid`
+  now moves to `Data.List.Effectful.Foldable`, where it better belongs, for
+  the sake both of the dependency graph, and of incorporating the refactoring
+  of that module to make use of the addition of `Data.List.Base.foldMap` and
+  its properties.
+
 Deprecated modules
 ------------------
 
