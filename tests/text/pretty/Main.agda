@@ -3,7 +3,7 @@
 module Main where
 
 open import Data.List.Base
-open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.Maybe.Base using (Maybe; just; nothing; maybe′)
 open import Data.Nat.Base using (ℕ)
 open import Data.String.Base using (String)
 open import Data.Tree.Rose using (Rose; node)
