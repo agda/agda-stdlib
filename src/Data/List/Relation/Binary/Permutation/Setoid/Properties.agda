@@ -36,7 +36,7 @@ open import Function.Base using (_∘_; _⟨_⟩_; flip)
 open import Function.Bundles using (Inverse)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core
-  using (Rel; _⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+  using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Definitions as B hiding (Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡
