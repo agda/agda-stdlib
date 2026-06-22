@@ -98,20 +98,20 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
 -- foldMap
 
   module _ {S : Setoid c r} (F : Func S setoid) where
-    
+
     open Permutation S renaming (_↭_ to _↭ₛ_)
     private
       open module S = Setoid S
       open module F = Func F
       f = F.to
       h = foldMap CM.rawMonoid f
-      
+
 
     foldMap-commMonoid : Congruent _↭ₛ_ CM._≈_ h
 
     foldMap-commMonoid (refl {xs} {ys} xs≋ys)
       rewrite foldMap≗foldr∘map _∙_ ε f xs | foldMap≗foldr∘map _∙_ ε f ys
-      = Pointwise.foldr⁺ {R = CM._≈_} ∙-cong (CM.refl {x = ε}) $ 
+      = Pointwise.foldr⁺ {R = CM._≈_} ∙-cong (CM.refl {x = ε}) $
           (Pointwise.map⁺ f f (Pointwise.map F.cong xs≋ys))
 
     foldMap-commMonoid (prep x≈y xs↭ys)    = ∙-cong (F.cong x≈y) (foldMap-commMonoid xs↭ys)
