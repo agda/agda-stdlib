@@ -646,7 +646,7 @@ foldr-map f g x (y ∷ xs) = cong (f (g y)) (foldr-map f g x xs)
 
 module _ (_∙_ : B → B → B) (ε : B) (f : A → B) where
 
-  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr (λ x → f x ∙_) ε
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr _∙_ ε ∘ List.map f
   foldMap≗foldr∘map []       = refl
   foldMap≗foldr∘map (x ∷ xs) = cong (f x ∙_) (foldMap≗foldr∘map xs)
 
