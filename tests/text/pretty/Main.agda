@@ -3,7 +3,7 @@
 module Main where
 
 open import Data.List.Base
-open import Data.Maybe.Base using (Maybe; just; nothing; maybe′)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ)
 open import Data.String.Base using (String)
 open import Data.Tree.Rose using (Rose; node)
@@ -20,18 +20,17 @@ private
   variable
     w : ℕ
 
+
 pretty : Rose (Maybe String) → Doc w
-pretty = foldr $
- maybe′ (λ where
-             s [] → text s
-             s ds@(_ ∷ _) → parens $ text s <+> sep ds
-        )
-        vcat
-{-
-pretty (node nothing  ts) = vcat (map pretty ts)
+mapPretty : List (Rose (Maybe String)) → List (Doc w)
+
+pretty (node nothing  ts) = vcat (mapPretty ts)
 pretty (node (just a) []) = text a
-pretty (node (just a) ts) = parens $ text a <+> sep (map pretty ts)
--}
+pretty (node (just a) ts) = parens $ text a <+> sep (mapPretty ts)
+
+mapPretty [] = []
+mapPretty (t ∷ ts) = pretty t ∷ mapPretty ts
+
 SEXP = Rose (Maybe String)
 
 atom : String → SEXP
