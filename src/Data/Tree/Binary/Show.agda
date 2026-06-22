@@ -4,10 +4,10 @@
 -- 1 dimensional pretty printing of binary trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level)
-open import Data.List.Base as List using (List; []; [_]; _∷_; _∷ʳ_)
+open import Data.List.Base as List using (List; [_])
 open import Data.String.Base using (String)
 import Data.Tree.Rose as Rose
 import Data.Tree.Rose.Show as Rose
@@ -20,6 +20,7 @@ private
   variable
     a : Level
     N L : Set a
+
 
 display : Tree (List String) (List String) → List String
 display = Rose.display ∘′ Rose.fromBinary id id
