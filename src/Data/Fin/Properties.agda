@@ -1330,27 +1330,29 @@ Please use ¬∀⇒∃¬-smallest instead."
 Please use ¬∀⇒∃¬ instead."
 #-}
 
+-- Version 3.0
+
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}
 
 ≟-≡-refl = ≡?-≡-refl
 {-# WARNING_ON_USAGE ≟-≡-refl
-"Warning: ≟-≡-refl was deprecated in v2.4.
+"Warning: ≟-≡-refl was deprecated in v3.0.
 Please use ≡?-≡-refl instead."
 #-}
 
 ≟-≡ = ≡?-≡
 {-# WARNING_ON_USAGE ≟-≡
-"Warning: ≟-≡ was deprecated in v2.4.
+"Warning: ≟-≡ was deprecated in v3.0.
 Please use ≡?-≡ instead."
 #-}
 
 inj⇒≟ = inj⇒≡?
 {-# WARNING_ON_USAGE inj⇒≟
-"Warning: inj⇒≟ was deprecated in v2.4.
+"Warning: inj⇒≟ was deprecated in v3.0.
 Please use inj⇒≡? instead."
 #-}
