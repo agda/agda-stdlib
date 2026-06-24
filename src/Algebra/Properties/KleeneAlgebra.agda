@@ -64,6 +64,7 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
  x + z ≈⟨ x≤z ⟩
  z ∎
 
+
 {-
 0⋆≈1 : 0# ⋆ ≈ 1#
 0⋆≈1 = begin
