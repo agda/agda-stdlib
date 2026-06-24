@@ -27,8 +27,7 @@ import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Definitions
-  using (module KleeneAlgebra; StarLeftExpansive; StarRightExpansive; StarExpansive
-        ; StarLeftDestructive; StarRightDestructive; StarDestructive)
+  using (module KleeneAlgebra)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 
