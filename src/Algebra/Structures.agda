@@ -170,6 +170,7 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     using (isCommutativeMagma)
 
   -- already definable IsPartialOrder, but used only for IsKleeneAlgebra
+  infix 4 _≤_
   _≤_ : Rel A ℓ
   x ≤ y = ∙ x y ≈ y
 
