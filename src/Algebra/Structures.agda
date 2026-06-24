@@ -27,7 +27,7 @@ import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Definitions
-  using (StarLeftExpansive; StarRightExpansive; StarExpansive
+  using (module KleeneAlgebra; StarLeftExpansive; StarRightExpansive; StarExpansive
         ; StarLeftDestructive; StarRightDestructive; StarDestructive)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
@@ -671,21 +671,25 @@ record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isIdempotentSemiring  : IsIdempotentSemiring + * 0# 1#
-    starExpansive         : StarExpansive _≈_ 1# + * ⋆
-    starDestructive       : StarDestructive _≈_ + * ⋆
+
+  open KleeneAlgebra _≈_
+
+  field
+    starExpansive         : StarExpansive 1# + * ⋆
+    starDestructive       : StarDestructive + * ⋆
 
   open IsIdempotentSemiring isIdempotentSemiring public
 
-  starExpansiveˡ : StarLeftExpansive _≈_ 1# + * ⋆
+  starExpansiveˡ : StarLeftExpansive 1# + * ⋆
   starExpansiveˡ = proj₁ starExpansive
 
-  starExpansiveʳ : StarRightExpansive _≈_ 1# + * ⋆
+  starExpansiveʳ : StarRightExpansive 1# + * ⋆
   starExpansiveʳ = proj₂ starExpansive
 
-  starDestructiveˡ : StarLeftDestructive _≈_ + * ⋆
+  starDestructiveˡ : StarLeftDestructive + * ⋆
   starDestructiveˡ = proj₁ starDestructive
 
-  starDestructiveʳ : StarRightDestructive _≈_ + * ⋆
+  starDestructiveʳ : StarRightDestructive + * ⋆
   starDestructiveʳ = proj₂ starDestructive
 
 

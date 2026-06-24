@@ -180,27 +180,29 @@ Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y 
 
 -- Definitions for the Kleene Algebra ordering
 
-module _ (_≤_ : Rel A ℓ₁) (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
+module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
 
-  StarRightExpansive :  Set _
-  StarRightExpansive = ∀ x → (e + (x * (x ⋆))) ≤ (x ⋆)
+  module _ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
 
-  StarLeftExpansive : Set _
-  StarLeftExpansive = ∀ x →  (e + ((x ⋆) * x)) ≤ (x ⋆)
+    StarRightExpansive :  Set _
+    StarRightExpansive = ∀ x → (e + (x * (x ⋆))) ≤ (x ⋆)
 
-  StarExpansive : Set _
-  StarExpansive = StarLeftExpansive × StarRightExpansive
+    StarLeftExpansive : Set _
+    StarLeftExpansive = ∀ x →  (e + ((x ⋆) * x)) ≤ (x ⋆)
 
-module _ (_≤_ : Rel A ℓ₁) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
+    StarExpansive : Set _
+    StarExpansive = StarLeftExpansive × StarRightExpansive
 
-  StarLeftDestructive : Set _
-  StarLeftDestructive = ∀ a b x → (b + (a * x)) ≤ x → ((a ⋆) * b) ≤ x
+  module _ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
 
-  StarRightDestructive : Set _
-  StarRightDestructive = ∀ a b x → (b + (x * a)) ≤ x → (b * (a ⋆)) ≤ x
+    StarLeftDestructive : Set _
+    StarLeftDestructive = ∀ a b x → (b + (a * x)) ≤ x → ((a ⋆) * b) ≤ x
 
-  StarDestructive : Set _
-  StarDestructive = StarLeftDestructive × StarRightDestructive
+    StarRightDestructive : Set _
+    StarRightDestructive = ∀ a b x → (b + (x * a)) ≤ x → (b * (a ⋆)) ≤ x
+
+    StarDestructive : Set _
+    StarDestructive = StarLeftDestructive × StarRightDestructive
 
 -- Unary relations respecting a binary relation.
 
