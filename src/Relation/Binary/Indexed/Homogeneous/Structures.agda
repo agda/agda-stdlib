@@ -78,7 +78,7 @@ record IsIndexedDecEquivalence : Set (i ⊔ a ⊔ ℓ) where
 
   _≟ᵢ_ = _≈ᵢ?_
   {-# WARNING_ON_USAGE _≟ᵢ_
-  "Warning: _≟ᵢ_ was deprecated in v2.4.
+  "Warning: _≟ᵢ_ was deprecated in v3.0.
   Please use _≈ᵢ?_ instead."
   #-}
 
