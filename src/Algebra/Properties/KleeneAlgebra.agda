@@ -46,20 +46,20 @@ private
 ------------------------------------------------------------------------
 -- x + y is a coproduct/least upper bound
 
-x≤x+y : ∀ x y → x ≤ (x + y)
+x≤x+y : ∀ x y → x ≤ x + y
 x≤x+y x y = begin-equality
  x + (x + y) ≈⟨ +-assoc x x y ⟨
  (x + x) + y ≈⟨ +-congʳ (+-idem x) ⟩
  x + y       ∎
 
-y≤x+y : ∀ x y → y ≤ (x + y)
+y≤x+y : ∀ x y → y ≤ x + y
 y≤x+y x y = begin-equality
  y + (x + y) ≈⟨ +-congˡ (+-comm x y) ⟩
  y + (y + x) ≈⟨ x≤x+y y x ⟩
  y + x ≈⟨ +-comm x y ⟨
  x + y ∎
 
-x≤z∧y≤z⇒[x+y]≤z : x ≤ z → y ≤ z → (x + y) ≤ z
+x≤z∧y≤z⇒[x+y]≤z : x ≤ z → y ≤ z → x + y ≤ z
 x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
  (x + y) + z ≈⟨ +-assoc x y z ⟩
  x + (y + z) ≈⟨ +-congˡ y≤z ⟩
@@ -68,6 +68,12 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
 
 ------------------------------------------------------------------------
 -- _⋆
+
+1≤[_]⋆ : ∀ x → 1# ≤ x ⋆
+1≤[ x ]⋆ = begin
+    1#           ≤⟨ x≤x+y 1# _ ⟩
+    1# + x ⋆ * x ≤⟨ starExpansiveˡ x ⟩
+    x ⋆ ∎
 
 0⋆≈1 : 0# ⋆ ≈ 1#
 0⋆≈1 = ≤-antisym
@@ -80,27 +86,24 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
                          1#      ∎
                       ) ⟩
     1#             ∎)
+  1≤[ 0# ]⋆
+
+1⋆*[_]≈1 : ∀ x → 1# ⋆ * x ≤ x
+1⋆*[ x ]≈1 = starDestructiveˡ _ _ _ $
+               x≤z∧y≤z⇒[x+y]≤z ≤-refl (≤-reflexive (*-identityˡ _))
+
+1⋆≈1 : 1# ⋆ ≈ 1#
+1⋆≈1 = ≤-antisym
   (begin
-    1#             ≤⟨ x≤x+y 1# _ ⟩
-    1# + 0# ⋆ * 0# ≤⟨ starExpansiveˡ 0# ⟩
-    0# ⋆ ∎)
+    (1# ⋆)    ≈⟨ *-identityʳ _ ⟨
+    1# ⋆ * 1# ≤⟨ 1⋆*[ 1# ]≈1 ⟩
+    1#        ∎)
+  1≤[ 1# ]⋆
 
-{-
-begin
-  0# ⋆           ≈⟨ starExpansiveˡ 0# ⟨
-  1# + 0# ⋆ * 0# ≈⟨ +-congˡ ( zeroʳ (0# ⋆)) ⟩
-  1# + 0#        ≈⟨ +-identityʳ 1# ⟩
-  1#             ∎
--}
-{-
 1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
-1+x⋆≈x⋆ x = sym (begin
-  x ⋆                   ≈⟨ starExpansiveʳ x ⟨
-  1# + x * x ⋆          ≈⟨ +-congʳ (+-idem 1#) ⟨
-  1# + 1# + x * x ⋆     ≈⟨ +-assoc 1# 1# ((x * x ⋆ )) ⟩
-  1# + (1# + x * x ⋆)   ≈⟨ +-congˡ (starExpansiveʳ x) ⟩
-  1# + x ⋆              ∎)
+1+x⋆≈x⋆ x = ≤-antisym (x≤z∧y≤z⇒[x+y]≤z 1≤[ x ]⋆ ≤-refl) (y≤x+y _ _)
 
+{-
 x⋆+xx⋆≈x⋆ : ∀ x → x ⋆ + x * x ⋆ ≈ x ⋆
 x⋆+xx⋆≈x⋆ x = begin
   x ⋆ + x * x ⋆         ≈⟨ +-congʳ (1+x⋆≈x⋆ x) ⟨
@@ -159,18 +162,6 @@ x⋆⋆≈x⋆ x = begin
   (x ⋆) ⋆        ≈⟨ *-identityʳ ((x ⋆) ⋆) ⟨
   (x ⋆) ⋆ * 1#   ≈⟨ starDestructiveˡ (x ⋆) 1# (x ⋆) (1+x⋆x⋆≈x⋆ x) ⟩
   x ⋆            ∎
-
-1+11≈1 : 1# + 1# * 1# ≈ 1#
-1+11≈1 = begin
-  1# + 1# * 1#  ≈⟨ +-congˡ ( *-identityʳ 1#) ⟩
-  1# + 1#       ≈⟨ +-idem 1# ⟩
-  1#            ∎
-
-1⋆≈1 : 1# ⋆ ≈ 1#
-1⋆≈1 = begin
-  1# ⋆       ≈⟨ *-identityʳ (1# ⋆) ⟨
-  1# ⋆ * 1#  ≈⟨ starDestructiveˡ 1# 1# 1# 1+11≈1 ⟩
-  1#         ∎
 
 x≈y⇒1+xy⋆≈y⋆ : ∀ x y → x ≈  y → 1# + x * y ⋆ ≈ y ⋆
 x≈y⇒1+xy⋆≈y⋆ x y eq = begin
