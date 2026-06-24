@@ -48,6 +48,7 @@ open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Structures
 open import Relation.Binary.Structures.Biased
+open import Relation.Binary.Morphism.Construct.PropositionalEquality
 open import Relation.Nullary.Decidable
   using (True; via-injection; map′; recompute; no; yes; Dec; _because_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
@@ -1083,15 +1084,15 @@ m<n⇒m<o*n = m≤n⇒m≤o*n
   (n * o) * (n ^ m * o ^ m) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] n o (n ^ m) (o ^ m) ⟩
   n ^ suc m * o ^ suc m     ∎
 
-^-semigroup-morphism : ∀ {n} → (n ^_) Is +-semigroup -Semigroup⟶ *-semigroup
+^-semigroup-morphism : ∀ {n} → IsMagmaHomomorphism +-rawMagma *-rawMagma (n ^_) -- (∀ {n} → (n ^_))
 ^-semigroup-morphism = record
-  { ⟦⟧-cong = cong (_ ^_)
-  ; ∙-homo  = ^-distribˡ-+-* _
+  { isRelHomomorphism = cong-IsRelHomomorphism (_ ^_)
+  ; ∙-homo = ^-distribˡ-+-* _
   }
 
-^-monoid-morphism : ∀ {n} → (n ^_) Is +-0-monoid -Monoid⟶ *-1-monoid
+^-monoid-morphism : ∀ {n} →  IsMonoidHomomorphism +-0-rawMonoid *-1-rawMonoid (n ^_)
 ^-monoid-morphism = record
-  { sm-homo = ^-semigroup-morphism
+  { isMagmaHomomorphism = ^-semigroup-morphism
   ; ε-homo  = refl
   }
 
@@ -2367,96 +2368,6 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.3
-
-∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n⇒m≢o]⇒o<n = ∀[m≤n⇒m≢o]⇒n<o
-{-# WARNING_ON_USAGE ∀[m≤n⇒m≢o]⇒o<n
-"Warning: ∀[m≤n⇒m≢o]⇒o<n was deprecated in v1.3.
-Please use ∀[m≤n⇒m≢o]⇒n<o instead."
-#-}
-∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
-∀[m<n⇒m≢o]⇒o≤n = ∀[m<n⇒m≢o]⇒n≤o
-{-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
-"Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
-Please use ∀[m<n⇒m≢o]⇒n≤o instead."
-#-}
-
--- Version 1.4
-
-*-+-isSemiring = +-*-isSemiring
-{-# WARNING_ON_USAGE *-+-isSemiring
-"Warning: *-+-isSemiring was deprecated in v1.4.
-Please use +-*-isSemiring instead."
-#-}
-*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
-{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
-"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
-Please use +-*-isCommutativeSemiring instead."
-#-}
-*-+-semiring = +-*-semiring
-{-# WARNING_ON_USAGE *-+-semiring
-"Warning: *-+-semiring was deprecated in v1.4.
-Please use +-*-semiring instead."
-#-}
-*-+-commutativeSemiring = +-*-commutativeSemiring
-{-# WARNING_ON_USAGE *-+-commutativeSemiring
-"Warning: *-+-commutativeSemiring was deprecated in v1.4.
-Please use +-*-commutativeSemiring instead."
-#-}
-
--- Version 1.6
-
-∣m+n-m+o∣≡∣n-o| = ∣m+n-m+o∣≡∣n-o∣
-{-# WARNING_ON_USAGE ∣m+n-m+o∣≡∣n-o|
-"Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
-Please use ∣m+n-m+o∣≡∣n-o∣ instead. Note the final is a \\| rather than a |"
-#-}
-m≤n⇒n⊔m≡n = m≥n⇒m⊔n≡m
-{-# WARNING_ON_USAGE m≤n⇒n⊔m≡n
-"Warning: m≤n⇒n⊔m≡n was deprecated in v1.6. Please use m≥n⇒m⊔n≡m instead."
-#-}
-m≤n⇒n⊓m≡m = m≥n⇒m⊓n≡n
-{-# WARNING_ON_USAGE m≤n⇒n⊓m≡m
-"Warning: m≤n⇒n⊓m≡m was deprecated in v1.6. Please use m≥n⇒m⊓n≡n instead."
-#-}
-n⊔m≡m⇒n≤m = m⊔n≡n⇒m≤n
-{-# WARNING_ON_USAGE n⊔m≡m⇒n≤m
-"Warning: n⊔m≡m⇒n≤m was deprecated in v1.6. Please use m⊔n≡n⇒m≤n instead."
-#-}
-n⊔m≡n⇒m≤n = m⊔n≡m⇒n≤m
-{-# WARNING_ON_USAGE n⊔m≡n⇒m≤n
-"Warning: n⊔m≡n⇒m≤n was deprecated in v1.6. Please use m⊔n≡m⇒n≤m instead."
-#-}
-n≤m⊔n = m≤n⊔m
-{-# WARNING_ON_USAGE n≤m⊔n
-"Warning: n≤m⊔n was deprecated in v1.6. Please use m≤n⊔m instead."
-#-}
-⊔-least = ⊔-lub
-{-# WARNING_ON_USAGE ⊔-least
-"Warning: ⊔-least was deprecated in v1.6. Please use ⊔-lub instead."
-#-}
-⊓-greatest = ⊓-glb
-{-# WARNING_ON_USAGE ⊓-greatest
-"Warning: ⊓-greatest was deprecated in v1.6. Please use ⊓-glb instead."
-#-}
-⊔-pres-≤m = ⊔-lub
-{-# WARNING_ON_USAGE ⊔-pres-≤m
-"Warning: ⊔-pres-≤m was deprecated in v1.6. Please use ⊔-lub instead."
-#-}
-⊓-pres-m≤ = ⊓-glb
-{-# WARNING_ON_USAGE ⊓-pres-m≤
-"Warning: ⊓-pres-m≤ was deprecated in v1.6. Please use ⊓-glb instead."
-#-}
-⊔-abs-⊓ = ⊔-absorbs-⊓
-{-# WARNING_ON_USAGE ⊔-abs-⊓
-"Warning: ⊔-abs-⊓ was deprecated in v1.6. Please use ⊔-absorbs-⊓ instead."
-#-}
-⊓-abs-⊔ = ⊓-absorbs-⊔
-{-# WARNING_ON_USAGE ⊓-abs-⊔
-"Warning: ⊓-abs-⊔ was deprecated in v1.6. Please use ⊓-absorbs-⊔ instead."
-#-}
 
 -- Version 2.0
 

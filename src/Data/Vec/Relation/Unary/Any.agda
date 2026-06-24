@@ -80,9 +80,3 @@ any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎? any? P? xs)
 satisfiable : Satisfiable P → ∀ {n} → Satisfiable (Any P {suc n})
 satisfiable (x , p) {zero}  = x ∷ [] , here p
 satisfiable (x , p) {suc n} = Product.map (x ∷_) there (satisfiable (x , p))
-
-any = any?
-{-# WARNING_ON_USAGE any
-"Warning: any was deprecated in v1.4.
-Please use any? instead."
-#-}

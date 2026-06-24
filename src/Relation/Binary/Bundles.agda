@@ -372,16 +372,6 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
   open DecStrictPartialOrder decStrictPartialOrder public
     using (module Eq)
 
-  decSetoid : DecSetoid c ℓ₁
-  decSetoid = record
-    { isDecEquivalence = Eq.isDecEquivalence
-    }
-  {-# WARNING_ON_USAGE decSetoid
-  "Warning: decSetoid was deprecated in v1.3.
-  Please use Eq.decSetoid instead."
-  #-}
-
-
 record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
   field

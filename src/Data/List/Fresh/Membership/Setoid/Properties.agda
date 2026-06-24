@@ -158,18 +158,3 @@ All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
 All[x≉]-∉ [] ()
 All[x≉]-∉ (p ∷ ps) (here x≈y)   = p x≈y
 All[x≉]-∉ (p ∷ ps) (there x∈ys) = All[x≉]-∉ ps x∈ys
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.4
-
-≈-subst-∈ = ∈-resp-≈
-{-# WARNING_ON_USAGE ≈-subst-∈
-"Warning: ≈-subst-∈ was deprecated in v1.4.
-Please use ∈-resp-≈ instead."
-#-}
