@@ -27,7 +27,7 @@ import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Definitions
-  using (Transitive; Antisymmetric; module KleeneAlgebra)
+  using (Reflexive; Transitive; Antisymmetric; module KleeneAlgebra)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsPreorder; IsPartialOrder)
@@ -180,6 +180,9 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     ∙ x y ≈⟨ ∙-congʳ x≈y ⟩
     ∙ y y ≈⟨ idem _ ⟩
     y     ∎
+
+  ≤-refl : Reflexive _≤_
+  ≤-refl = ≤-reflexive refl
 
   ≤-trans : Transitive _≤_
   ≤-trans {x = x} {y = y} {z = z} x∙y≈y y∙z≈z = begin
@@ -716,7 +719,7 @@ record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ 
   open IsIdempotentSemiring isIdempotentSemiring public
 
   open IsCommutativeBand +-isCommutativeBand public
-    using (_≤_; ≤-antisym; isPartialOrder)
+    using (_≤_; ≤-refl; ≤-antisym; isPartialOrder)
 
   open KleeneAlgebra _≤_
 

@@ -10,18 +10,20 @@ open import Algebra.Bundles using (KleeneAlgebra)
 
 module Algebra.Properties.KleeneAlgebra {k₁ k₂} (K : KleeneAlgebra k₁ k₂) where
 
+open import Function.Base using (_$_)
+open import Relation.Binary.Definitions
+  using (Monotonic₁; Monotonic₂)
+
 open KleeneAlgebra K renaming (Carrier to A)
 open import Algebra.Definitions _≈_
 open import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
   using (medial)
-open import Relation.Binary.Definitions
-  using (Monotonic₁; Monotonic₂)
 open import Relation.Binary.Reasoning.PartialOrder poset as ≤-Reasoning
-
 
 private
   variable
     x y z : A
+
 
 ------------------------------------------------------------------------
 -- _+_ is monotonic in both arguments
@@ -64,15 +66,33 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
  x + z ≈⟨ x≤z ⟩
  z ∎
 
+------------------------------------------------------------------------
+-- _⋆
+
+0⋆≈1 : 0# ⋆ ≈ 1#
+0⋆≈1 = ≤-antisym
+  (begin
+    0# ⋆           ≈⟨ *-identityʳ _ ⟨
+    0# ⋆ * 1#      ≤⟨ starDestructiveˡ _ _ _ $
+                      (x≤z∧y≤z⇒[x+y]≤z ≤-refl $ begin
+                         0# * 1# ≈⟨ zeroˡ 1# ⟩
+                         0#      ≤⟨ 0≤1 ⟩
+                         1#      ∎
+                      ) ⟩
+    1#             ∎)
+  (begin
+    1#             ≤⟨ x≤x+y 1# _ ⟩
+    1# + 0# ⋆ * 0# ≤⟨ starExpansiveˡ 0# ⟩
+    0# ⋆ ∎)
 
 {-
-0⋆≈1 : 0# ⋆ ≈ 1#
-0⋆≈1 = begin
+begin
   0# ⋆           ≈⟨ starExpansiveˡ 0# ⟨
   1# + 0# ⋆ * 0# ≈⟨ +-congˡ ( zeroʳ (0# ⋆)) ⟩
   1# + 0#        ≈⟨ +-identityʳ 1# ⟩
   1#             ∎
-
+-}
+{-
 1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
 1+x⋆≈x⋆ x = sym (begin
   x ⋆                   ≈⟨ starExpansiveʳ x ⟨

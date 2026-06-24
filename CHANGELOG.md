@@ -33,7 +33,7 @@ Bug-fixes
   now refer to the partial order relation `_≤_`, which is definable from the
   `+-isCommutativeBand` substructure. As a further knock-on consequence, module
   `Algebra.Properties.KleeneAlgebra` has been completely superseded in order to
-  accommodate the new axiomatisation. 
+  accommodate the new axiomatisation.
 
 Non-backwards compatible changes
 --------------------------------
@@ -203,6 +203,7 @@ Additions to existing modules
   ```agda
   _≤_            : Rel A _
   ≤-reflexive    : _≈_ ⇒ _≤_
+  ≤-refl         : Reflexive _≤_
   ≤-trans        : Transitive _≤_
   ≤-antisym      : Antisymmetric _≈_ _≤_
   isPreorder     : IsPreorder _≈_ _≤_
@@ -212,6 +213,8 @@ Additions to existing modules
 * In `Algebra.Structures.KleeneAlgebra`:
   ```agda
   _≤_            : Rel A _
+  ≤-refl         : Reflexive _≤_
+  ≤-antisym      : Antisymmetric _≈_ _≤_
   isPartialOrder : IsPartialOrder _≈_ _≤_
   ```
 
