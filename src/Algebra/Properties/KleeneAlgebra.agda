@@ -10,9 +10,59 @@ open import Algebra.Bundles using (KleeneAlgebra)
 
 module Algebra.Properties.KleeneAlgebra {k₁ k₂} (K : KleeneAlgebra k₁ k₂) where
 
-open KleeneAlgebra K
+open KleeneAlgebra K renaming (Carrier to A)
 open import Algebra.Definitions _≈_
+open import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
+  using (medial)
+open import Relation.Binary.Definitions
+  using (Monotonic₁; Monotonic₂)
 open import Relation.Binary.Reasoning.PartialOrder poset as ≤-Reasoning
+
+
+private
+  variable
+    x y z : A
+
+------------------------------------------------------------------------
+-- _+_ is monotonic in both arguments
+
++-mono : Monotonic₂ _≤_ _≤_ _≤_ _+_
++-mono {x = x} {y = y} {u = u} {v = v} x≤y u≤v = begin-equality
+ (x + u) + (y + v) ≈⟨ medial x u y v ⟩
+ (x + y) + (u + v) ≈⟨ +-cong x≤y u≤v ⟩
+ y + v       ∎
+
+------------------------------------------------------------------------
+-- 0# is initial
+
+0≤x : ∀ x → 0# ≤ x
+0≤x = +-identityˡ
+
+0≤1 : 0# ≤ 1#
+0≤1 = 0≤x 1#
+
+------------------------------------------------------------------------
+-- x + y is a coproduct/least upper bound
+
+x≤x+y : ∀ x y → x ≤ (x + y)
+x≤x+y x y = begin-equality
+ x + (x + y) ≈⟨ +-assoc x x y ⟨
+ (x + x) + y ≈⟨ +-congʳ (+-idem x) ⟩
+ x + y       ∎
+
+y≤x+y : ∀ x y → y ≤ (x + y)
+y≤x+y x y = begin-equality
+ y + (x + y) ≈⟨ +-congˡ (+-comm x y) ⟩
+ y + (y + x) ≈⟨ x≤x+y y x ⟩
+ y + x ≈⟨ +-comm x y ⟨
+ x + y ∎
+
+x≤z∧y≤z⇒[x+y]≤z : x ≤ z → y ≤ z → (x + y) ≤ z
+x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
+ (x + y) + z ≈⟨ +-assoc x y z ⟩
+ x + (y + z) ≈⟨ +-congˡ y≤z ⟩
+ x + z ≈⟨ x≤z ⟩
+ z ∎
 
 {-
 0⋆≈1 : 0# ⋆ ≈ 1#
