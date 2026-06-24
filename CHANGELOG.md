@@ -27,9 +27,13 @@ Bug-fixes
 * Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
 
 * [issue #3003](https://github.com/agda/agda-stdlib/issues/3003)
-  The axiomatisaiton of `Algebra.Structures.IsKleeneAlgebra` has been corrected
-  so that fields `starExpansive` and `starDestructive` now refer to the partial
-  order relation `_≤_` definable from the `+-isCommutativeBand` substructure.
+  Uncorrected, the existing axiomatisation of `Algebra.Structures.IsKleeneAlgebra`
+  meant that it was possible to prove that `0# ⋆ ≈ 1#`. As a consequence, the
+  axioms have been corrected so that fields `starExpansive` and `starDestructive`
+  now refer to the partial order relation `_≤_`, which is definable from the
+  `+-isCommutativeBand` substructure. As a further knock-on consequence, module
+  `Algebra.Properties.KleeneAlgebra` has been completely superseded in order to
+  accommodate the new axiomatisation. 
 
 Non-backwards compatible changes
 --------------------------------
@@ -63,7 +67,7 @@ Non-backwards compatible changes
   ```
   Data.Tree.Rose
   Data.Tree.Rose.Properties
-  Data.Tree.Rose.Show
+`  Data.Tree.Rose.Show
   ```
 
 Minor improvements
