@@ -15,6 +15,7 @@ import Algebra.Bundles.Raw as Raw
 open import Algebra.Core
 open import Algebra.Structures
 open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Level
 
 ------------------------------------------------------------------------
@@ -254,6 +255,12 @@ record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsCommutativeBand isCommutativeBand public
 
+  preorder : Preorder _ _ _
+  preorder = record { isPreorder = isPreorder }
+  
+  poset : Poset _ _ _
+  poset = record { isPartialOrder = isPartialOrder }
+  
   band : Band _ _
   band = record { isBand = isBand }
 
@@ -864,7 +871,7 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   open IdempotentSemiring idempotentSemiring public
     using
     ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
-    ; +-semigroup; +-commutativeSemigroup
+    ; +-semigroup; +-commutativeSemigroup; +-commutativeBand
     ; *-rawMagma; *-magma; *-semigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; *-rawMonoid; *-monoid
@@ -872,6 +879,9 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero
     ; rawSemiring; semiring
     )
+
+  open CommutativeBand +-commutativeBand public
+    using (preorder; poset)
 
   rawKleeneAlgebra : RawKleeneAlgebra _ _
   rawKleeneAlgebra = record
