@@ -14,7 +14,7 @@ open KleeneAlgebra K
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.PartialOrder poset as ≤-Reasoning
 
-
+{-
 0⋆≈1 : 0# ⋆ ≈ 1#
 0⋆≈1 = begin
   0# ⋆           ≈⟨ starExpansiveˡ 0# ⟨
@@ -128,3 +128,4 @@ ax≈xb⇒a⋆x≈xb⋆ x a b eq = starDestructiveˡ a x ((x * b ⋆)) (ax≈xb�
 
 [xy]⋆x≈x[yx]⋆ : ∀ x y → (x * y) ⋆ * x ≈ x * (y * x) ⋆
 [xy]⋆x≈x[yx]⋆ x y = ax≈xb⇒a⋆x≈xb⋆ x (x * y) (y * x) (*-assoc x y x)
+-}
