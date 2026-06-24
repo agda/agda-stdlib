@@ -77,6 +77,16 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Definitions`:
+  ```agda
+  StarLeftExpansive     ↦  Relation.Binary.Definitions.StarLeftExpansive
+  StarRightExpansive    ↦  Relation.Binary.Definitions.StarRightExpansive
+  StarExpansive         ↦  Relation.Binary.Definitions.StarExpansive
+  StarLeftDestructive   ↦  Relation.Binary.Definitions.StarLeftDestructive
+  StarRightDestructive  ↦  Relation.Binary.Definitions.StarRightDestructive
+  StarDestructive       ↦  Relation.Binary.Definitions.StarDestructive
+  ```
+
 * In `Algebra.Morphism.Structures`:
   ```agda
   homo  ↦  ∙-homo
@@ -216,3 +226,17 @@ Additions to existing modules
   lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
+
+* In `Relation.Binary.Definitions`:
+  ```agda
+  StarLeftExpansive     : ∀ (_≤_ : Rel A ℓ₁) (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) →
+                          Set _
+  StarRightExpansive    : ∀ (_≤_ : Rel A ℓ₁) (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) →
+                          Set _
+  StarExpansive         : ∀ (_≤_ : Rel A ℓ₁) (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) →
+                          Set _
+  StarLeftDestructive   : ∀ (_≤_ : Rel A ℓ₁) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  StarRightDestructive  : ∀ (_≤_ : Rel A ℓ₁) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  StarDestructive       : ∀ (_≤_ : Rel A ℓ₁) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  ```
+
