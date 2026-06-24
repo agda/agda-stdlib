@@ -84,12 +84,12 @@ Deprecated names
 
 * In `Algebra.Definitions`:
   ```agda
-  StarLeftExpansive     ↦  Relation.Binary.Definitions.StarLeftExpansive
-  StarRightExpansive    ↦  Relation.Binary.Definitions.StarRightExpansive
-  StarExpansive         ↦  Relation.Binary.Definitions.StarExpansive
-  StarLeftDestructive   ↦  Relation.Binary.Definitions.StarLeftDestructive
-  StarRightDestructive  ↦  Relation.Binary.Definitions.StarRightDestructive
-  StarDestructive       ↦  Relation.Binary.Definitions.StarDestructive
+  StarLeftExpansive     ↦  Relation.Binary.Definitions.KleeneAlgebra.StarLeftExpansive
+  StarRightExpansive    ↦  Relation.Binary.Definitions.KleeneAlgebra.StarRightExpansive
+  StarExpansive         ↦  Relation.Binary.Definitions.KleeneAlgebra.StarExpansive
+  StarLeftDestructive   ↦  Relation.Binary.Definitions.KleeneAlgebra.StarLeftDestructive
+  StarRightDestructive  ↦  Relation.Binary.Definitions.KleeneAlgebra.StarRightDestructive
+  StarDestructive       ↦  Relation.Binary.Definitions.KleeneAlgebra.StarDestructive
   ```
 
 * In `Algebra.Morphism.Structures`:
@@ -250,14 +250,12 @@ Additions to existing modules
 
 * In `Relation.Binary.Definitions`:
   ```agda
-  StarLeftExpansive     : ∀ (_≤_ : Rel A ℓ₁) (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) →
-                          Set _
-  StarRightExpansive    : ∀ (_≤_ : Rel A ℓ₁) (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) →
-                          Set _
-  StarExpansive         : ∀ (_≤_ : Rel A ℓ₁) (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) →
-                          Set _
-  StarLeftDestructive   : ∀ (_≤_ : Rel A ℓ₁) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
-  StarRightDestructive  : ∀ (_≤_ : Rel A ℓ₁) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
-  StarDestructive       : ∀ (_≤_ : Rel A ℓ₁) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
+    StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarExpansive         : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarLeftDestructive   : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
 
