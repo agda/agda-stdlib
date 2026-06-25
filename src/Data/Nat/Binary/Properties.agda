@@ -1507,34 +1507,6 @@ pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 = begin
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.4
-
-*-+-isSemiringWithoutAnnihilatingZero = +-*-isSemiringWithoutAnnihilatingZero
-{-# WARNING_ON_USAGE *-+-isSemiringWithoutAnnihilatingZero
-"Warning: *-+-isSemiringWithoutAnnihilatingZero was deprecated in v1.4.
-Please use +-*-isSemiringWithoutAnnihilatingZero instead."
-#-}
-*-+-isSemiring = +-*-isSemiring
-{-# WARNING_ON_USAGE *-+-isSemiring
-"Warning: *-+-isSemiring was deprecated in v1.4.
-Please use +-*-isSemiring instead."
-#-}
-*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
-{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
-"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
-Please use +-*-isCommutativeSemiring instead."
-#-}
-*-+-semiring = +-*-semiring
-{-# WARNING_ON_USAGE *-+-semiring
-"Warning: *-+-semiring was deprecated in v1.4.
-Please use +-*-semiring instead."
-#-}
-*-+-commutativeSemiring = +-*-commutativeSemiring
-{-# WARNING_ON_USAGE *-+-commutativeSemiring
-"Warning: *-+-commutativeSemiring was deprecated in v1.4.
-Please use +-*-commutativeSemiring instead."
-#-}
-
 -- Version 2.0
 
 {- issue1858/issue1755: raw bundles have moved to `Data.X.Base` -}
