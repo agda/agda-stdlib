@@ -104,6 +104,18 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
   1# + x ⋆ * x ≤⟨ starExpansiveˡ _ ⟩
   x ⋆ ∎
 
+x≤xy⋆ : ∀ x y → x ≤ x * y ⋆
+x≤xy⋆ x y = begin
+  x       ≈⟨ *-identityʳ _ ⟨
+  x * 1#  ≤⟨ *-monoˡ _ 1≤[ _ ]⋆ ⟩
+  x * y ⋆ ∎
+
+x≤y⋆x : ∀ x y → x ≤ y ⋆ * x
+x≤y⋆x x y = begin
+  x       ≈⟨ *-identityˡ _ ⟨
+  1# * x  ≤⟨ *-monoʳ _ 1≤[ _ ]⋆ ⟩
+  y ⋆ * x ∎
+
 x≤y⇒xy⋆≤y⋆ : x ≤ y → x * y ⋆ ≤ y ⋆
 x≤y⇒xy⋆≤y⋆ {x = x} {y = y} x≤y = begin
   x * y ⋆       ≤⟨ y≤x+y _ _ ⟩
@@ -134,15 +146,15 @@ x≤x⋆ x = begin
 -- streamlined elimination rules
 
 ⋆-elimˡ : 1# ≤ x → y * x ≤ x → y ⋆ ≤ x
-⋆-elimˡ {x = x} {y = y} 1≤x y*x≤x = begin
+⋆-elimˡ {x = x} {y = y} 1≤x yx≤x = begin
   y ⋆       ≈⟨ *-identityʳ _ ⟨
-  y ⋆ * 1#  ≤⟨ starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤x y*x≤x) ⟩
+  y ⋆ * 1#  ≤⟨ starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤x yx≤x) ⟩
   x         ∎
 
 ⋆-elimʳ : 1# ≤ x → x * y ≤ x → y ⋆ ≤ x
-⋆-elimʳ {x = x} {y = y} 1≤x x*y≤x = begin
+⋆-elimʳ {x = x} {y = y} 1≤x xy≤x = begin
   y ⋆       ≈⟨ *-identityˡ _ ⟨
-  1# * y ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤x x*y≤x) ⟩
+  1# * y ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤x xy≤x) ⟩
   x         ∎
 
 -- special cases for 0# and 1#
@@ -182,33 +194,39 @@ x⋆≤x⋆⋆ = ⋆-mono ∘ x≤x⋆
 x⋆⋆≈x⋆ : ∀ x → (x ⋆) ⋆ ≈ x ⋆
 x⋆⋆≈x⋆ x = ≤-antisym (x⋆⋆≤x⋆ x) (x⋆≤x⋆⋆ x)
 
-{-
--- old proofs removed from consideration!
--- most of these seem eliminable in favour of the simpler combinations of the
--- above with the coproduct characterisation and the definition of the ordering
--- see also Conway's axiomatisation
+-- commutation
 
--- eg
-1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
-1+x⋆≈x⋆ x = 1≤[ x ]⋆
+xy≤yz⇒x⋆y≤yz⋆ : x * y ≤ y * z → x ⋆ * y ≤ y * z ⋆
+xy≤yz⇒x⋆y≤yz⋆ {x = x} {y = y} {z = z} xy≤yz = starDestructiveˡ _ _ _ $
+  x≤z∧y≤z⇒[x+y]≤z (x≤xy⋆ _ _) $ begin
+    x * (y * z ⋆)  ≈⟨ *-assoc _ _ _ ⟨
+    (x * y) * z ⋆  ≤⟨ *-monoʳ _ xy≤yz ⟩
+    (y * z) * z ⋆  ≈⟨ *-assoc _ _ _ ⟩
+    y * (z * z ⋆)  ≤⟨ *-monoˡ _ (xx⋆≤x⋆ _) ⟩
+    y * z ⋆        ∎
 
--- just leaving
-ax≈xb⇒x+axb⋆≈xb⋆ : ∀ x a b → a * x ≈ x * b → x + a * (x * b ⋆) ≈ x * b ⋆
-ax≈xb⇒x+axb⋆≈xb⋆ x a b eq = begin
-  x + a * (x * b ⋆)       ≈⟨ +-congˡ (*-assoc a x (b ⋆)) ⟨
-  x + a * x * b ⋆         ≈⟨ +-congʳ (*-identityʳ x) ⟨
-  x * 1# + a * x * b ⋆    ≈⟨ +-congˡ (*-congʳ (eq)) ⟩
-  x * 1# + x * b * b ⋆    ≈⟨ +-congˡ (*-assoc x b (b ⋆) ) ⟩
-  x * 1# + x * (b * b ⋆)  ≈⟨ distribˡ x 1# (b * b ⋆) ⟨
-  x * (1# + b * b ⋆)      ≈⟨ *-congˡ (starExpansiveʳ b) ⟩
-  x * b ⋆                 ∎
+yx≤zy⇒yx⋆≤z⋆y : y * x ≤ z * y → y * x ⋆ ≤ z ⋆ * y
+yx≤zy⇒yx⋆≤z⋆y {y = y}{x = x} {z = z} yx≤zy = starDestructiveʳ _ _ _ $
+  x≤z∧y≤z⇒[x+y]≤z (x≤y⋆x _ _) $ begin
+    (z ⋆ * y) * x  ≈⟨ *-assoc _ _ _ ⟩
+    z ⋆ * (y * x)  ≤⟨ *-monoˡ _ yx≤zy ⟩
+    z ⋆ * (z * y)  ≈⟨ *-assoc _ _ _ ⟨
+    (z ⋆ * z) * y  ≤⟨ *-monoʳ _ (x⋆x≤x⋆ _) ⟩
+    z ⋆ * y        ∎
 
-ax≈xb⇒a⋆x≈xb⋆ : ∀ x a b → a * x ≈ x * b → a ⋆ * x ≈ x * b ⋆
-ax≈xb⇒a⋆x≈xb⋆ x a b eq = starDestructiveˡ a x ((x * b ⋆)) (ax≈xb⇒x+axb⋆≈xb⋆ x a b eq)
+xy≈yz⇒x⋆y≈yz⋆ : x * y ≈ y * z → x ⋆ * y ≈ y * z ⋆
+xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
+  (xy≤yz⇒x⋆y≤yz⋆ (≤-reflexive xy≈yz))
+  (yx≤zy⇒yx⋆≤z⋆y (≤-reflexive (sym xy≈yz)))
 
 -- Conway C17
 [xy]⋆x≈x[yx]⋆ : ∀ x y → (x * y) ⋆ * x ≈ x * (y * x) ⋆
-[xy]⋆x≈x[yx]⋆ x y = ax≈xb⇒a⋆x≈xb⋆ x (x * y) (y * x) (*-assoc x y x)
+[xy]⋆x≈x[yx]⋆ x y = xy≈yz⇒x⋆y≈yz⋆ (*-assoc x y x)
+
+{-
+-- old proofs have been refactored in favour of the simpler combinations of the
+-- above with the coproduct characterisation and the definition of the ordering
+-- see also Conway's axiomatisation
 
 -- Conway C11
 [x+y]⋆≈[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≈ (x * y ⋆) ⋆ * x ⋆
