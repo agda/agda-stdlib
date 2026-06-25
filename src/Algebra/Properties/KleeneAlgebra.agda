@@ -10,11 +10,12 @@ open import Algebra.Bundles using (KleeneAlgebra)
 
 module Algebra.Properties.KleeneAlgebra {k₁ k₂} (K : KleeneAlgebra k₁ k₂) where
 
-open import Function.Base using (_$_)
+open import Function.Base using (_∘_; _$_)
+open import Function.Definitions using (Congruent)
 open import Relation.Binary.Consequences
-  using (mono₂⇒monoˡ; mono₂⇒monoʳ; monoˡ∧monoʳ⇒mono₂)
+  using (mono₂⇒monoˡ; mono₂⇒monoʳ; monoˡ∧monoʳ⇒mono₂; mono⇒cong)
 open import Relation.Binary.Definitions
-  using (LeftMonotonic; RightMonotonic; Monotonic₂)
+  using (LeftMonotonic; RightMonotonic; Monotonic₁; Monotonic₂)
 
 open KleeneAlgebra K renaming (Carrier to A)
 open import Algebra.Definitions _≈_
@@ -95,48 +96,66 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
 ------------------------------------------------------------------------
 -- _⋆
 
-⋆-elimˡ : ∀ x → 1# ≤ y → x * y ≤ y → x ⋆ ≤ y
-⋆-elimˡ {y = y} x 1≤y x*y≤y = begin
-    x ⋆       ≈⟨ *-identityʳ _ ⟨
-    x ⋆ * 1#  ≤⟨ starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y x*y≤y) ⟩
-    y         ∎
-
-⋆-elimʳ : ∀ x → 1# ≤ y → y * x ≤ y → x ⋆ ≤ y
-⋆-elimʳ {y = y} x 1≤y y*x≤y = begin
-    x ⋆       ≈⟨ *-identityˡ _ ⟨
-    1# * x ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y y*x≤y) ⟩
-    y         ∎
+-- streamlined introduction rules
 
 1≤[_]⋆ : ∀ x → 1# ≤ x ⋆
 1≤[ x ]⋆ = begin
-    1#           ≤⟨ x≤x+y 1# _ ⟩
-    1# + x ⋆ * x ≤⟨ starExpansiveˡ x ⟩
-    x ⋆ ∎
+  1#           ≤⟨ x≤x+y 1# _ ⟩
+  1# + x ⋆ * x ≤⟨ starExpansiveˡ x ⟩
+  x ⋆ ∎
+
+x≤y⇒xy⋆≤y⋆ : x ≤ y → x * y ⋆ ≤ y ⋆
+x≤y⇒xy⋆≤y⋆ {x = x} {y = y} x≤y = begin
+  x * y ⋆       ≤⟨ y≤x+y _ _ ⟩
+  1# + x * y ⋆  ≤⟨ +-monoˡ _ (*-monoʳ _ x≤y) ⟩
+  1# + y * y ⋆  ≤⟨ starExpansiveʳ y ⟩
+  y ⋆           ∎
+
+x≤y⇒y⋆x≤y⋆ : x ≤ y → y ⋆ * x ≤ y ⋆
+x≤y⇒y⋆x≤y⋆ {x = x} {y = y} x≤y = begin
+  y ⋆ * x       ≤⟨ y≤x+y _ _ ⟩
+  1# + y ⋆ * x  ≤⟨ +-monoˡ _ (*-monoˡ _ x≤y) ⟩
+  1# + y ⋆ * y  ≤⟨ starExpansiveˡ y ⟩
+  y ⋆           ∎
+
+-- streamlined elimination rules
+
+⋆-elimˡ : ∀ x → 1# ≤ y → x * y ≤ y → x ⋆ ≤ y
+⋆-elimˡ {y = y} x 1≤y x*y≤y = begin
+  x ⋆       ≈⟨ *-identityʳ _ ⟨
+  x ⋆ * 1#  ≤⟨ starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y x*y≤y) ⟩
+  y         ∎
+
+⋆-elimʳ : ∀ x → 1# ≤ y → y * x ≤ y → x ⋆ ≤ y
+⋆-elimʳ {y = y} x 1≤y y*x≤y = begin
+  x ⋆       ≈⟨ *-identityˡ _ ⟨
+  1# * x ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y y*x≤y) ⟩
+  y         ∎
+
+-- special cases for 0# and 1#
+
+0⋆≤1 : 0# ⋆ ≤ 1#
+0⋆≤1 = ⋆-elimˡ 0# ≤-refl $ begin
+  0# * 1# ≈⟨ zeroˡ 1# ⟩
+  0#      ≤⟨ 0≤1 ⟩
+  1#      ∎
 
 0⋆≈1 : 0# ⋆ ≈ 1#
-0⋆≈1 = ≤-antisym
-  (begin
-    0# ⋆           ≈⟨ *-identityʳ _ ⟨
-    0# ⋆ * 1#      ≤⟨ starDestructiveˡ _ _ _ $
-                      (x≤z∧y≤z⇒[x+y]≤z ≤-refl $ begin
-                         0# * 1# ≈⟨ zeroˡ 1# ⟩
-                         0#      ≤⟨ 0≤1 ⟩
-                         1#      ∎
-                      ) ⟩
-    1#             ∎)
-  1≤[ 0# ]⋆
+0⋆≈1 = ≤-antisym 0⋆≤1 1≤[ 0# ]⋆
 
-1⋆*[_]≤id : ∀ x → 1# ⋆ * x ≤ x
-1⋆*[ x ]≤id = starDestructiveˡ _ _ _ $
-               x≤z∧y≤z⇒[x+y]≤z ≤-refl (≤-reflexive (*-identityˡ _))
+1⋆≤1 : 1# ⋆ ≤ 1#
+1⋆≤1 = ⋆-elimˡ 1# ≤-refl (≤-reflexive (*-identityˡ _))
 
 1⋆≈1 : 1# ⋆ ≈ 1#
-1⋆≈1 = ≤-antisym
-  (begin
-    (1# ⋆)    ≈⟨ *-identityʳ _ ⟨
-    1# ⋆ * 1# ≤⟨ 1⋆*[ 1# ]≤id ⟩
-    1#        ∎)
-  1≤[ 1# ]⋆
+1⋆≈1 = ≤-antisym 1⋆≤1 1≤[ 1# ]⋆
+
+-- _⋆ is monotonic and hence congruent
+
+⋆-mono : Monotonic₁ _≤_ _≤_ _⋆
+⋆-mono = ⋆-elimˡ _ 1≤[ _ ]⋆ ∘ x≤y⇒xy⋆≤y⋆
+
+⋆-cong : Congruent _≈_ _≈_ _⋆
+⋆-cong = mono⇒cong _≈_ _≈_ sym ≤-reflexive ≤-antisym ⋆-mono
 
 {-
 -- removed from consideration!
@@ -205,18 +224,6 @@ x⋆⋆≈x⋆ x = begin
   (x ⋆) ⋆        ≈⟨ *-identityʳ ((x ⋆) ⋆) ⟨
   (x ⋆) ⋆ * 1#   ≈⟨ starDestructiveˡ (x ⋆) 1# (x ⋆) (1+x⋆x⋆≈x⋆ x) ⟩
   x ⋆            ∎
-
-x≈y⇒1+xy⋆≈y⋆ : ∀ x y → x ≈  y → 1# + x * y ⋆ ≈ y ⋆
-x≈y⇒1+xy⋆≈y⋆ x y eq = begin
-  1# + x * y ⋆  ≈⟨ +-congˡ (*-congʳ (eq)) ⟩
-  1# + y * y ⋆  ≈⟨ starExpansiveʳ y ⟩
-  y ⋆           ∎
-
-x≈y⇒x⋆≈y⋆ : ∀ x y → x ≈ y → x ⋆ ≈ y ⋆
-x≈y⇒x⋆≈y⋆ x y eq = begin
-  x ⋆       ≈⟨ *-identityʳ (x ⋆) ⟨
-  x ⋆ * 1#  ≈⟨ (starDestructiveˡ x 1# (y ⋆) (x≈y⇒1+xy⋆≈y⋆ x y eq)) ⟩
-  y ⋆       ∎
 
 ax≈xb⇒x+axb⋆≈xb⋆ : ∀ x a b → a * x ≈ x * b → x + a * (x * b ⋆) ≈ x * b ⋆
 ax≈xb⇒x+axb⋆≈xb⋆ x a b eq = begin
