@@ -78,6 +78,23 @@ record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsMagma isMagma public
 
+  -- already definable reflexive ordering relation
+  -- exported up to IsKleeneAlgebra
+  infix 4 _≤_
+  _≤_ : Rel A ℓ
+  x ≤ y = ∙ x y ≈ y
+
+  open ≈-Reasoning setoid
+
+  ≤-reflexive : _≈_ ⇒ _≤_
+  ≤-reflexive {x = x} {y = y} x≈y = begin
+    ∙ x y ≈⟨ ∙-congʳ x≈y ⟩
+    ∙ y y ≈⟨ idem _ ⟩
+    y     ∎
+
+  ≤-refl : Reflexive _≤_
+  ≤-refl = ≤-reflexive refl
+
 record IsAlternativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isMagma  : IsMagma ∙
@@ -141,6 +158,30 @@ record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsSemigroup isSemigroup public
 
+  isIdempotentMagma : IsIdempotentMagma ∙
+  isIdempotentMagma = record
+    { isMagma = isMagma
+    ; idem = idem
+    }
+
+  open IsIdempotentMagma isIdempotentMagma public
+    using (_≤_; ≤-reflexive; ≤-refl)
+
+  ≤-trans : Transitive _≤_
+  ≤-trans {x = x} {y = y} {z = z} x∙y≈y y∙z≈z = begin
+    ∙ x z        ≈⟨ ∙-congˡ y∙z≈z ⟨
+    ∙ x (∙ y z)  ≈⟨ assoc _ _ _ ⟨
+    ∙ (∙ x y) z  ≈⟨ ∙-congʳ x∙y≈y ⟩
+    ∙ y z        ≈⟨ y∙z≈z ⟩
+    z ∎
+    where open ≈-Reasoning setoid
+
+  isPreorder : IsPreorder _≈_ _≤_
+  isPreorder = record
+    { isEquivalence = isEquivalence
+    ; reflexive = ≤-reflexive
+    ; trans = ≤-trans
+    }
 
 record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -164,34 +205,13 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   open IsBand isBand public
 
   isCommutativeSemigroup : IsCommutativeSemigroup ∙
-  isCommutativeSemigroup = record { isSemigroup = isSemigroup ; comm = comm }
+  isCommutativeSemigroup = record
+    { isSemigroup = isSemigroup
+    ; comm = comm
+    }
 
   open IsCommutativeSemigroup isCommutativeSemigroup public
     using (isCommutativeMagma)
-
-  -- already definable IsPartialOrder, but used only for IsKleeneAlgebra
-  infix 4 _≤_
-  _≤_ : Rel A ℓ
-  x ≤ y = ∙ x y ≈ y
-
-  open ≈-Reasoning setoid
-
-  ≤-reflexive : _≈_ ⇒ _≤_
-  ≤-reflexive {x = x} {y = y} x≈y = begin
-    ∙ x y ≈⟨ ∙-congʳ x≈y ⟩
-    ∙ y y ≈⟨ idem _ ⟩
-    y     ∎
-
-  ≤-refl : Reflexive _≤_
-  ≤-refl = ≤-reflexive refl
-
-  ≤-trans : Transitive _≤_
-  ≤-trans {x = x} {y = y} {z = z} x∙y≈y y∙z≈z = begin
-    ∙ x z        ≈⟨ ∙-congˡ y∙z≈z ⟨
-    ∙ x (∙ y z)  ≈⟨ assoc _ _ _ ⟨
-    ∙ (∙ x y) z  ≈⟨ ∙-congʳ x∙y≈y ⟩
-    ∙ y z        ≈⟨ y∙z≈z ⟩
-    z ∎
 
   ≤-antisym : Antisymmetric _≈_ _≤_
   ≤-antisym {x = x} {y = y} x∙y≈y y∙x≈x = begin
@@ -199,13 +219,7 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     ∙ y x ≈⟨ comm y x ⟩
     ∙ x y ≈⟨ x∙y≈y ⟩
     y     ∎
-
-  isPreorder : IsPreorder _≈_ _≤_
-  isPreorder = record
-    { isEquivalence = isEquivalence
-    ; reflexive = ≤-reflexive
-    ; trans = ≤-trans
-    }
+    where open ≈-Reasoning setoid
 
   isPartialOrder : IsPartialOrder _≈_ _≤_
   isPartialOrder = record

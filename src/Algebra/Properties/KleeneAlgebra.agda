@@ -11,7 +11,6 @@ open import Algebra.Bundles using (KleeneAlgebra)
 module Algebra.Properties.KleeneAlgebra {k₁ k₂} (K : KleeneAlgebra k₁ k₂) where
 
 open import Function.Base using (_∘_; _$_)
-open import Function.Definitions using (Congruent)
 open import Relation.Binary.Consequences
   using (mono₂⇒monoˡ; mono₂⇒monoʳ; monoˡ∧monoʳ⇒mono₂; mono⇒cong)
 open import Relation.Binary.Definitions
@@ -179,7 +178,7 @@ x≤x⋆ x = begin
 ⋆-mono : Monotonic₁ _≤_ _≤_ _⋆
 ⋆-mono = ⋆-elimˡ 1≤[ _ ]⋆ ∘ x≤y⇒xy⋆≤y⋆
 
-⋆-cong : Congruent _≈_ _≈_ _⋆
+⋆-cong : Congruent₁ _⋆
 ⋆-cong = mono⇒cong _≈_ _≈_ sym ≤-reflexive ≤-antisym ⋆-mono
 
 -- _⋆ is idempotent
