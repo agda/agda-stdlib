@@ -224,16 +224,31 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
 [xy]⋆x≈x[yx]⋆ x y = xy≈yz⇒x⋆y≈yz⋆ (*-assoc x y x)
 
 {-
+
 -- old proofs have been refactored in favour of the simpler combinations of the
 -- above with the coproduct characterisation and the definition of the ordering
 -- see also Conway's axiomatisation
 
 -- Conway C11
+[x+y]⋆≤[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≤ (x * y ⋆) ⋆ * x ⋆
+[x+y]⋆≤[xy⋆]⋆*x⋆ x y = {!!}
+
+[xy⋆]⋆*x⋆≤[x+y]⋆ : ∀ x y → (x * y ⋆) ⋆ * x ⋆ ≤ (x + y) ⋆
+[xy⋆]⋆*x⋆≤[x+y]⋆ x y = {!!}
+
 [x+y]⋆≈[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≈ (x * y ⋆) ⋆ * x ⋆
-[x+y]⋆≈[xy⋆]⋆*x⋆ x y = ?
+[x+y]⋆≈[xy⋆]⋆*x⋆ x y =
+  ≤-antisym ([x+y]⋆≤[xy⋆]⋆*x⋆ x y) ([xy⋆]⋆*x⋆≤[x+y]⋆ x y)
 
 -- Conway C12
+[x*y]⋆≤1+x*[y*x]⋆*y : ∀ x y → (x * y) ⋆ ≤ 1# + x * (y * x) ⋆ * y
+[x*y]⋆≤1+x*[y*x]⋆*y x y = {!!}
+
+1+x*[y*x]⋆*y≤[x*y]⋆ : ∀ x y → 1# + x * (y * x) ⋆ * y ≤  (x * y) ⋆
+1+x*[y*x]⋆*y≤[x*y]⋆ x y = {!!}
+
 [x*y]⋆≈1+x*[y*x]⋆*y : ∀ x y → (x * y) ⋆ ≈ 1# + x * (y * x) ⋆ * y
-[x*y]⋆≈1+x*[y*x]⋆*y x y = ?
+[x*y]⋆≈1+x*[y*x]⋆*y x y =
+  ≤-antisym ([x*y]⋆≤1+x*[y*x]⋆*y x y) (1+x*[y*x]⋆*y≤[x*y]⋆ x y)
 
 -}
