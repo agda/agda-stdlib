@@ -198,6 +198,16 @@ _≤?_ = Refl.decidable <-cmp
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 1.5
+
+infix 4 _≈?_
+_≈?_ : Decidable _≈_
+x ≈? y = toℕ x ℕ.≡? toℕ y
+{-# WARNING_ON_USAGE _≈?_
+"Warning: _≈?_ was deprecated in v1.5.
+Please use _≡?_ instead."
+#-}
+
 -- Version 3.0
 
 infix 4 _≟_ _==_
