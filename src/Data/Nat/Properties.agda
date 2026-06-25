@@ -1083,7 +1083,7 @@ m<n⇒m<o*n = m≤n⇒m≤o*n
   (n * o) * (n ^ m * o ^ m) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] n o (n ^ m) (o ^ m) ⟩
   n ^ suc m * o ^ suc m     ∎
 
-^-semigroup-morphism : ∀ {n} → IsMagmaHomomorphism +-rawMagma *-rawMagma (n ^_) -- (∀ {n} → (n ^_))
+^-semigroup-morphism : ∀ {n} → IsMagmaHomomorphism +-rawMagma *-rawMagma (n ^_)
 ^-semigroup-morphism = record
   { isRelHomomorphism = record { cong = cong (_ ^_) }
   ; ∙-homo = ^-distribˡ-+-* _
