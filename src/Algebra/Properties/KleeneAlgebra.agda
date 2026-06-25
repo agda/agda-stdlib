@@ -68,7 +68,7 @@ private
 0≤x = +-identityˡ
 
 0≤1 : 0# ≤ 1#
-0≤1 = 0≤x 1#
+0≤1 = 0≤x _
 
 ------------------------------------------------------------------------
 -- x + y is a coproduct/least upper bound
@@ -100,22 +100,22 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
 
 1≤[_]⋆ : ∀ x → 1# ≤ x ⋆
 1≤[ x ]⋆ = begin
-  1#           ≤⟨ x≤x+y 1# _ ⟩
-  1# + x ⋆ * x ≤⟨ starExpansiveˡ x ⟩
+  1#           ≤⟨ x≤x+y _ _ ⟩
+  1# + x ⋆ * x ≤⟨ starExpansiveˡ _ ⟩
   x ⋆ ∎
 
 x≤y⇒xy⋆≤y⋆ : x ≤ y → x * y ⋆ ≤ y ⋆
 x≤y⇒xy⋆≤y⋆ {x = x} {y = y} x≤y = begin
   x * y ⋆       ≤⟨ y≤x+y _ _ ⟩
   1# + x * y ⋆  ≤⟨ +-monoˡ _ (*-monoʳ _ x≤y) ⟩
-  1# + y * y ⋆  ≤⟨ starExpansiveʳ y ⟩
+  1# + y * y ⋆  ≤⟨ starExpansiveʳ _ ⟩
   y ⋆           ∎
 
 x≤y⇒y⋆x≤y⋆ : x ≤ y → y ⋆ * x ≤ y ⋆
 x≤y⇒y⋆x≤y⋆ {x = x} {y = y} x≤y = begin
   y ⋆ * x       ≤⟨ y≤x+y _ _ ⟩
   1# + y ⋆ * x  ≤⟨ +-monoˡ _ (*-monoˡ _ x≤y) ⟩
-  1# + y ⋆ * y  ≤⟨ starExpansiveˡ y ⟩
+  1# + y ⋆ * y  ≤⟨ starExpansiveˡ _ ⟩
   y ⋆           ∎
 
 xx⋆≤x⋆ : ∀ x → x * x ⋆ ≤ x ⋆
@@ -127,45 +127,45 @@ x⋆x≤x⋆ x = x≤y⇒y⋆x≤y⋆ ≤-refl
 x≤x⋆ : ∀ x → x ≤ x ⋆
 x≤x⋆ x = begin
   x       ≈⟨ *-identityʳ _ ⟨
-  x * 1#  ≤⟨ *-monoˡ x 1≤[ x ]⋆ ⟩
-  x * x ⋆ ≤⟨ xx⋆≤x⋆ x ⟩
+  x * 1#  ≤⟨ *-monoˡ _ 1≤[ _ ]⋆ ⟩
+  x * x ⋆ ≤⟨ xx⋆≤x⋆ _ ⟩
   x ⋆     ∎ 
 
 -- streamlined elimination rules
 
-⋆-elimˡ : ∀ x → 1# ≤ y → x * y ≤ y → x ⋆ ≤ y
-⋆-elimˡ {y = y} x 1≤y x*y≤y = begin
-  x ⋆       ≈⟨ *-identityʳ _ ⟨
-  x ⋆ * 1#  ≤⟨ starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y x*y≤y) ⟩
-  y         ∎
+⋆-elimˡ : 1# ≤ x → y * x ≤ x → y ⋆ ≤ x
+⋆-elimˡ {x = x} {y = y} 1≤x y*x≤x = begin
+  y ⋆       ≈⟨ *-identityʳ _ ⟨
+  y ⋆ * 1#  ≤⟨ starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤x y*x≤x) ⟩
+  x         ∎
 
-⋆-elimʳ : ∀ x → 1# ≤ y → y * x ≤ y → x ⋆ ≤ y
-⋆-elimʳ {y = y} x 1≤y y*x≤y = begin
-  x ⋆       ≈⟨ *-identityˡ _ ⟨
-  1# * x ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y y*x≤y) ⟩
-  y         ∎
+⋆-elimʳ : 1# ≤ x → x * y ≤ x → y ⋆ ≤ x
+⋆-elimʳ {x = x} {y = y} 1≤x x*y≤x = begin
+  y ⋆       ≈⟨ *-identityˡ _ ⟨
+  1# * y ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤x x*y≤x) ⟩
+  x         ∎
 
 -- special cases for 0# and 1#
 
 0⋆≤1 : 0# ⋆ ≤ 1#
-0⋆≤1 = ⋆-elimˡ 0# ≤-refl $ begin
-  0# * 1# ≈⟨ zeroˡ 1# ⟩
+0⋆≤1 = ⋆-elimˡ ≤-refl $ begin
+  0# * 1# ≈⟨ zeroˡ _ ⟩
   0#      ≤⟨ 0≤1 ⟩
   1#      ∎
 
 0⋆≈1 : 0# ⋆ ≈ 1#
-0⋆≈1 = ≤-antisym 0⋆≤1 1≤[ 0# ]⋆
+0⋆≈1 = ≤-antisym 0⋆≤1 1≤[ _ ]⋆
 
 1⋆≤1 : 1# ⋆ ≤ 1#
-1⋆≤1 = ⋆-elimˡ 1# ≤-refl (≤-reflexive (*-identityˡ _))
+1⋆≤1 = ⋆-elimˡ ≤-refl $ ≤-reflexive (*-identityˡ _)
 
 1⋆≈1 : 1# ⋆ ≈ 1#
-1⋆≈1 = ≤-antisym 1⋆≤1 1≤[ 1# ]⋆
+1⋆≈1 = ≤-antisym 1⋆≤1 1≤[ _ ]⋆
 
 -- _⋆ is monotonic and hence congruent
 
 ⋆-mono : Monotonic₁ _≤_ _≤_ _⋆
-⋆-mono = ⋆-elimˡ _ 1≤[ _ ]⋆ ∘ x≤y⇒xy⋆≤y⋆
+⋆-mono = ⋆-elimˡ 1≤[ _ ]⋆ ∘ x≤y⇒xy⋆≤y⋆
 
 ⋆-cong : Congruent _≈_ _≈_ _⋆
 ⋆-cong = mono⇒cong _≈_ _≈_ sym ≤-reflexive ≤-antisym ⋆-mono
@@ -173,7 +173,7 @@ x≤x⋆ x = begin
 -- _⋆ is idempotent
 
 x⋆⋆≤x⋆ : ∀ x → (x ⋆) ⋆ ≤ x ⋆
-x⋆⋆≤x⋆ x = ⋆-elimˡ (x ⋆) 1≤[ _ ]⋆ $ 
+x⋆⋆≤x⋆ x = ⋆-elimˡ 1≤[ _ ]⋆ $ 
   starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z ≤-refl (xx⋆≤x⋆ _))
 
 x⋆≤x⋆⋆ : ∀ x → x ⋆ ≤ (x ⋆) ⋆
@@ -183,7 +183,7 @@ x⋆⋆≈x⋆ : ∀ x → (x ⋆) ⋆ ≈ x ⋆
 x⋆⋆≈x⋆ x = ≤-antisym (x⋆⋆≤x⋆ x) (x⋆≤x⋆⋆ x)
 
 {-
--- removed from consideration!
+-- old proofs removed from consideration!
 -- most of these seem eliminable in favour of the simpler combinations of
 -- above of the coproduct characterisation and the definition of the ordering
 -- see also Conway's axiomatisation
@@ -192,6 +192,7 @@ x⋆⋆≈x⋆ x = ≤-antisym (x⋆⋆≤x⋆ x) (x⋆≤x⋆⋆ x)
 1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
 1+x⋆≈x⋆ x = 1≤[ x ]⋆
 
+-- just leaving
 ax≈xb⇒x+axb⋆≈xb⋆ : ∀ x a b → a * x ≈ x * b → x + a * (x * b ⋆) ≈ x * b ⋆
 ax≈xb⇒x+axb⋆≈xb⋆ x a b eq = begin
   x + a * (x * b ⋆)       ≈⟨ +-congˡ (*-assoc a x (b ⋆)) ⟨
@@ -205,6 +206,16 @@ ax≈xb⇒x+axb⋆≈xb⋆ x a b eq = begin
 ax≈xb⇒a⋆x≈xb⋆ : ∀ x a b → a * x ≈ x * b → a ⋆ * x ≈ x * b ⋆
 ax≈xb⇒a⋆x≈xb⋆ x a b eq = starDestructiveˡ a x ((x * b ⋆)) (ax≈xb⇒x+axb⋆≈xb⋆ x a b eq)
 
+-- Conway C17
 [xy]⋆x≈x[yx]⋆ : ∀ x y → (x * y) ⋆ * x ≈ x * (y * x) ⋆
 [xy]⋆x≈x[yx]⋆ x y = ax≈xb⇒a⋆x≈xb⋆ x (x * y) (y * x) (*-assoc x y x)
+
+-- Conway C11
+[x+y]⋆≈[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≈ (x * y ⋆) ⋆ * x ⋆
+[x+y]⋆≈[xy⋆]⋆*x⋆ x y = ?
+
+-- Conway C12
+[x*y]⋆≈1+x*[y*x]⋆*y : ∀ x y → (x * y) ⋆ ≈ 1# + x * (y * x) ⋆ * y
+[x*y]⋆≈1+x*[y*x]⋆*y x y = ?
+
 -}
