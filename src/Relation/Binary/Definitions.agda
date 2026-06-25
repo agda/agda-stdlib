@@ -139,6 +139,11 @@ Min R = Max (flip R)
 Minimum : Rel A ℓ → A → Set _
 Minimum = Min
 
+-- Directed families
+
+SemiDirected : Rel A ℓ → (B → A) → Set _
+SemiDirected _≤_ f = ∀ i j → ∃[ k ] (f i ≤ f k × f j ≤ f k)
+
 -- Definitions for apartness relations
 
 -- Note that Cotransitive's arguments are permuted with respect to Transitive's.
