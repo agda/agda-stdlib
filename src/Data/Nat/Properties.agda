@@ -1086,7 +1086,7 @@ m<n⇒m<o*n = m≤n⇒m≤o*n
 
 ^-semigroup-morphism : ∀ {n} → IsMagmaHomomorphism +-rawMagma *-rawMagma (n ^_) -- (∀ {n} → (n ^_))
 ^-semigroup-morphism = record
-  { isRelHomomorphism = cong-IsRelHomomorphism (_ ^_)
+  { isRelHomomorphism = record { cong = cong (_ ^_) }
   ; ∙-homo = ^-distribˡ-+-* _
   }
 
