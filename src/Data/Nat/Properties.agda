@@ -48,7 +48,6 @@ open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Structures
 open import Relation.Binary.Structures.Biased
-open import Relation.Binary.Morphism.Construct.PropositionalEquality
 open import Relation.Nullary.Decidable
   using (True; via-injection; map′; recompute; no; yes; Dec; _because_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
