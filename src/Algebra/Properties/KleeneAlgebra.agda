@@ -95,6 +95,18 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
 ------------------------------------------------------------------------
 -- _⋆
 
+⋆-elimˡ : ∀ x → 1# ≤ y → x * y ≤ y → x ⋆ ≤ y
+⋆-elimˡ {y = y} x 1≤y x*y≤y = begin
+    x ⋆       ≈⟨ *-identityʳ _ ⟨
+    x ⋆ * 1#  ≤⟨ starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y x*y≤y) ⟩
+    y         ∎
+
+⋆-elimʳ : ∀ x → 1# ≤ y → y * x ≤ y → x ⋆ ≤ y
+⋆-elimʳ {y = y} x 1≤y y*x≤y = begin
+    x ⋆       ≈⟨ *-identityˡ _ ⟨
+    1# * x ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤y y*x≤y) ⟩
+    y         ∎
+
 1≤[_]⋆ : ∀ x → 1# ≤ x ⋆
 1≤[ x ]⋆ = begin
     1#           ≤⟨ x≤x+y 1# _ ⟩
