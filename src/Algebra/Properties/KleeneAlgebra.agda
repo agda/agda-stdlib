@@ -11,8 +11,10 @@ open import Algebra.Bundles using (KleeneAlgebra)
 module Algebra.Properties.KleeneAlgebra {k₁ k₂} (K : KleeneAlgebra k₁ k₂) where
 
 open import Function.Base using (_$_)
+open import Relation.Binary.Consequences
+  using (mono₂⇒monoˡ; mono₂⇒monoʳ; monoˡ∧monoʳ⇒mono₂)
 open import Relation.Binary.Definitions
-  using (Monotonic₁; Monotonic₂)
+  using (LeftMonotonic; RightMonotonic; Monotonic₂)
 
 open KleeneAlgebra K renaming (Carrier to A)
 open import Algebra.Definitions _≈_
@@ -33,6 +35,30 @@ private
  (x + u) + (y + v) ≈⟨ medial x u y v ⟩
  (x + y) + (u + v) ≈⟨ +-cong x≤y u≤v ⟩
  y + v       ∎
+
++-monoˡ : LeftMonotonic _≤_ _≤_ _+_
++-monoˡ = mono₂⇒monoˡ _≤_ _≤_ _≤_ ≤-refl +-mono
+
++-monoʳ : RightMonotonic _≤_ _≤_ _+_
++-monoʳ = mono₂⇒monoʳ _≤_ _≤_ _≤_ ≤-refl +-mono
+
+------------------------------------------------------------------------
+-- _*_ is monotonic in both arguments
+
+*-monoˡ : LeftMonotonic _≤_ _≤_ _*_
+*-monoˡ z {x = x} {y = y} x≤y = begin-equality
+  z * x + z * y ≈⟨ distribˡ z x y ⟨
+  z * (x + y)   ≈⟨ *-congˡ x≤y ⟩
+  z * y ∎
+
+*-monoʳ : RightMonotonic _≤_ _≤_ _*_
+*-monoʳ z {x = x} {y = y} x≤y = begin-equality
+  x * z + y * z ≈⟨ distribʳ z x y ⟨
+  (x + y) * z   ≈⟨ *-congʳ x≤y ⟩
+  y * z ∎
+
+*-mono : Monotonic₂ _≤_ _≤_ _≤_ _*_
+*-mono = monoˡ∧monoʳ⇒mono₂ _≤_ _≤_ _≤_ ≤-trans *-monoˡ *-monoʳ
 
 ------------------------------------------------------------------------
 -- 0# is initial
@@ -88,22 +114,27 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
     1#             ∎)
   1≤[ 0# ]⋆
 
-1⋆*[_]≈1 : ∀ x → 1# ⋆ * x ≤ x
-1⋆*[ x ]≈1 = starDestructiveˡ _ _ _ $
+1⋆*[_]≤id : ∀ x → 1# ⋆ * x ≤ x
+1⋆*[ x ]≤id = starDestructiveˡ _ _ _ $
                x≤z∧y≤z⇒[x+y]≤z ≤-refl (≤-reflexive (*-identityˡ _))
 
 1⋆≈1 : 1# ⋆ ≈ 1#
 1⋆≈1 = ≤-antisym
   (begin
     (1# ⋆)    ≈⟨ *-identityʳ _ ⟨
-    1# ⋆ * 1# ≤⟨ 1⋆*[ 1# ]≈1 ⟩
+    1# ⋆ * 1# ≤⟨ 1⋆*[ 1# ]≤id ⟩
     1#        ∎)
   1≤[ 1# ]⋆
 
-1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
-1+x⋆≈x⋆ x = ≤-antisym (x≤z∧y≤z⇒[x+y]≤z 1≤[ x ]⋆ ≤-refl) (y≤x+y _ _)
-
 {-
+-- removed from consideration!
+-- most of these seem eliminable in favour of simpler combinations of
+-- the coproduct characterisation and the definition of the ordering
+-- see also Conway's axiomatisation
+
+1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
+1+x⋆≈x⋆ x = 1≤[ x ]⋆
+
 x⋆+xx⋆≈x⋆ : ∀ x → x ⋆ + x * x ⋆ ≈ x ⋆
 x⋆+xx⋆≈x⋆ x = begin
   x ⋆ + x * x ⋆         ≈⟨ +-congʳ (1+x⋆≈x⋆ x) ⟨
@@ -133,7 +164,7 @@ x+x⋆≈x⋆ x = begin
   1# + x * (1# + x ⋆)      ≈⟨ +-congˡ (*-congˡ (1+x⋆≈x⋆ x)) ⟩
   1# + x * x ⋆             ≈⟨ (starExpansiveʳ x) ⟩
   x ⋆                      ∎
-
+x
 1+x+x⋆≈x⋆ : ∀ x → 1# + x + x ⋆ ≈ x ⋆
 1+x+x⋆≈x⋆ x = begin
   1# + x + x ⋆    ≈⟨ +-assoc 1# x (x ⋆) ⟩

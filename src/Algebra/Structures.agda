@@ -720,7 +720,7 @@ record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ 
   open IsIdempotentSemiring isIdempotentSemiring public
 
   open IsCommutativeBand +-isCommutativeBand public
-    using (_≤_; ≤-refl; ≤-antisym; isPartialOrder)
+    using (_≤_; ≤-reflexive; ≤-refl; ≤-trans; ≤-antisym; isPartialOrder)
 
   open KleeneAlgebra _≤_
 
