@@ -129,7 +129,7 @@ x≤x⋆ x = begin
   x       ≈⟨ *-identityʳ _ ⟨
   x * 1#  ≤⟨ *-monoˡ _ 1≤[ _ ]⋆ ⟩
   x * x ⋆ ≤⟨ xx⋆≤x⋆ _ ⟩
-  x ⋆     ∎ 
+  x ⋆     ∎
 
 -- streamlined elimination rules
 
@@ -173,7 +173,7 @@ x≤x⋆ x = begin
 -- _⋆ is idempotent
 
 x⋆⋆≤x⋆ : ∀ x → (x ⋆) ⋆ ≤ x ⋆
-x⋆⋆≤x⋆ x = ⋆-elimˡ 1≤[ _ ]⋆ $ 
+x⋆⋆≤x⋆ x = ⋆-elimˡ 1≤[ _ ]⋆ $
   starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z ≤-refl (xx⋆≤x⋆ _))
 
 x⋆≤x⋆⋆ : ∀ x → x ⋆ ≤ (x ⋆) ⋆
@@ -184,8 +184,8 @@ x⋆⋆≈x⋆ x = ≤-antisym (x⋆⋆≤x⋆ x) (x⋆≤x⋆⋆ x)
 
 {-
 -- old proofs removed from consideration!
--- most of these seem eliminable in favour of the simpler combinations of
--- above of the coproduct characterisation and the definition of the ordering
+-- most of these seem eliminable in favour of the simpler combinations of the
+-- above with the coproduct characterisation and the definition of the ordering
 -- see also Conway's axiomatisation
 
 -- eg
