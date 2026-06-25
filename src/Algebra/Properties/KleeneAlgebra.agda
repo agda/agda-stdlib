@@ -118,6 +118,19 @@ x≤y⇒y⋆x≤y⋆ {x = x} {y = y} x≤y = begin
   1# + y ⋆ * y  ≤⟨ starExpansiveˡ y ⟩
   y ⋆           ∎
 
+xx⋆≤x⋆ : ∀ x → x * x ⋆ ≤ x ⋆
+xx⋆≤x⋆ x = x≤y⇒xy⋆≤y⋆ ≤-refl
+
+x⋆x≤x⋆ : ∀ x → x ⋆ * x ≤ x ⋆
+x⋆x≤x⋆ x = x≤y⇒y⋆x≤y⋆ ≤-refl
+
+x≤x⋆ : ∀ x → x ≤ x ⋆
+x≤x⋆ x = begin
+  x       ≈⟨ *-identityʳ _ ⟨
+  x * 1#  ≤⟨ *-monoˡ x 1≤[ x ]⋆ ⟩
+  x * x ⋆ ≤⟨ xx⋆≤x⋆ x ⟩
+  x ⋆     ∎ 
+
 -- streamlined elimination rules
 
 ⋆-elimˡ : ∀ x → 1# ≤ y → x * y ≤ y → x ⋆ ≤ y
@@ -157,73 +170,27 @@ x≤y⇒y⋆x≤y⋆ {x = x} {y = y} x≤y = begin
 ⋆-cong : Congruent _≈_ _≈_ _⋆
 ⋆-cong = mono⇒cong _≈_ _≈_ sym ≤-reflexive ≤-antisym ⋆-mono
 
-{-
--- removed from consideration!
--- most of these seem eliminable in favour of simpler combinations of
--- the coproduct characterisation and the definition of the ordering
--- see also Conway's axiomatisation
+-- _⋆ is idempotent
 
-1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
-1+x⋆≈x⋆ x = 1≤[ x ]⋆
+x⋆⋆≤x⋆ : ∀ x → (x ⋆) ⋆ ≤ x ⋆
+x⋆⋆≤x⋆ x = ⋆-elimˡ (x ⋆) 1≤[ _ ]⋆ $ 
+  starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z ≤-refl (xx⋆≤x⋆ _))
 
-x⋆+xx⋆≈x⋆ : ∀ x → x ⋆ + x * x ⋆ ≈ x ⋆
-x⋆+xx⋆≈x⋆ x = begin
-  x ⋆ + x * x ⋆         ≈⟨ +-congʳ (1+x⋆≈x⋆ x) ⟨
-  1# + x ⋆ + x * x ⋆    ≈⟨ +-congʳ (+-comm 1# ((x ⋆))) ⟩
-  x ⋆ + 1# + x * x ⋆    ≈⟨ +-assoc ((x ⋆)) 1# ((x * x ⋆ )) ⟩
-  x ⋆ + (1# + x * x ⋆)  ≈⟨ +-congˡ (starExpansiveʳ x) ⟩
-  x ⋆ + x ⋆             ≈⟨ +-idem (x ⋆) ⟩
-  x ⋆                   ∎
-
-x⋆+x⋆x≈x⋆ : ∀ x → x ⋆ + x ⋆ * x ≈ x ⋆
-x⋆+x⋆x≈x⋆ x = begin
-  x ⋆ + x ⋆ * x         ≈⟨ +-congʳ (1+x⋆≈x⋆ x) ⟨
-  1# + x ⋆ + x ⋆ * x    ≈⟨ +-congʳ (+-comm 1# (x ⋆)) ⟩
-  x ⋆ + 1# + x ⋆ * x    ≈⟨ +-assoc (x ⋆) 1# (x ⋆ * x) ⟩
-  x ⋆ + (1# + x ⋆ * x)  ≈⟨ +-congˡ (starExpansiveˡ x) ⟩
-  x ⋆ + x ⋆             ≈⟨ +-idem (x ⋆) ⟩
-  x ⋆                   ∎
-
-x+x⋆≈x⋆ : ∀ x → x + x ⋆ ≈ x ⋆
-x+x⋆≈x⋆ x = begin
-  x + x ⋆                  ≈⟨ +-congˡ (starExpansiveʳ x) ⟨
-  x + (1# + x * x ⋆)       ≈⟨ +-congʳ (*-identityʳ x) ⟨
-  x * 1# + (1# + x * x ⋆)  ≈⟨ +-assoc (x * 1#) 1# (x * x ⋆) ⟨
-  x * 1# + 1# + x * x ⋆    ≈⟨ +-congʳ (+-comm (x * 1#) 1#) ⟩
-  1# + x * 1# + x * x ⋆    ≈⟨ +-assoc 1# (x * 1#) (x * x ⋆) ⟩
-  1# + (x * 1# + x * x ⋆)  ≈⟨ +-congˡ (distribˡ x 1# ((x ⋆))) ⟨
-  1# + x * (1# + x ⋆)      ≈⟨ +-congˡ (*-congˡ (1+x⋆≈x⋆ x)) ⟩
-  1# + x * x ⋆             ≈⟨ (starExpansiveʳ x) ⟩
-  x ⋆                      ∎
-x
-1+x+x⋆≈x⋆ : ∀ x → 1# + x + x ⋆ ≈ x ⋆
-1+x+x⋆≈x⋆ x = begin
-  1# + x + x ⋆    ≈⟨ +-assoc 1# x (x ⋆) ⟩
-  1# + (x + x ⋆)  ≈⟨ +-congˡ (x+x⋆≈x⋆ x) ⟩
-  1# + x ⋆        ≈⟨ 1+x⋆≈x⋆ x ⟩
-  x ⋆             ∎
-
-0+x+x⋆≈x⋆ : ∀ x → 0# + x + x ⋆ ≈ x ⋆
-0+x+x⋆≈x⋆ x = begin
-  0# + x + x ⋆    ≈⟨ +-assoc 0# x (x ⋆) ⟩
-  0# + (x + x ⋆)  ≈⟨ +-identityˡ ((x + x ⋆)) ⟩
-  (x + x ⋆)       ≈⟨ x+x⋆≈x⋆ x ⟩
-  x ⋆             ∎
-
-x⋆x⋆≈x⋆ : ∀ x → x ⋆ * x ⋆ ≈ x ⋆
-x⋆x⋆≈x⋆ x = starDestructiveˡ x (x ⋆) (x ⋆) (x⋆+xx⋆≈x⋆ x)
-
-1+x⋆x⋆≈x⋆ : ∀ x → 1# + x ⋆ * x ⋆ ≈ x ⋆
-1+x⋆x⋆≈x⋆ x = begin
-  1# + x ⋆ * x ⋆  ≈⟨ +-congˡ (x⋆x⋆≈x⋆ x) ⟩
-  1# + x ⋆        ≈⟨ 1+x⋆≈x⋆ x ⟩
-  x ⋆             ∎
+x⋆≤x⋆⋆ : ∀ x → x ⋆ ≤ (x ⋆) ⋆
+x⋆≤x⋆⋆ = ⋆-mono ∘ x≤x⋆
 
 x⋆⋆≈x⋆ : ∀ x → (x ⋆) ⋆ ≈ x ⋆
-x⋆⋆≈x⋆ x = begin
-  (x ⋆) ⋆        ≈⟨ *-identityʳ ((x ⋆) ⋆) ⟨
-  (x ⋆) ⋆ * 1#   ≈⟨ starDestructiveˡ (x ⋆) 1# (x ⋆) (1+x⋆x⋆≈x⋆ x) ⟩
-  x ⋆            ∎
+x⋆⋆≈x⋆ x = ≤-antisym (x⋆⋆≤x⋆ x) (x⋆≤x⋆⋆ x)
+
+{-
+-- removed from consideration!
+-- most of these seem eliminable in favour of the simpler combinations of
+-- above of the coproduct characterisation and the definition of the ordering
+-- see also Conway's axiomatisation
+
+-- eg
+1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
+1+x⋆≈x⋆ x = 1≤[ x ]⋆
 
 ax≈xb⇒x+axb⋆≈xb⋆ : ∀ x a b → a * x ≈ x * b → x + a * (x * b ⋆) ≈ x * b ⋆
 ax≈xb⇒x+axb⋆≈xb⋆ x a b eq = begin
