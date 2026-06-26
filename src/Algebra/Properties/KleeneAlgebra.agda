@@ -225,6 +225,23 @@ x≤x⋆ x = begin
 ⋆-*-elimʳ : y * x ≤ y → y * x ⋆ ≤ y
 ⋆-*-elimʳ = starDestructiveʳ _ _ _ ∘ x≤z∧y≤z⇒[x+y]≤z ≤-refl
 
+1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
+1+x⋆≈x⋆ x = ≤-antisym (x≤z∧y≤z⇒[x+y]≤z 1≤[ _ ]⋆ ≤-refl) (y≤x+y _ _)
+
+x⋆≈1+xx⋆ : ∀ x → x ⋆ ≈ 1# + x * x ⋆
+x⋆≈1+xx⋆ x = ≤-antisym (⋆-elimˡ (x≤x+y _ _) $ begin
+  x * (1# + x * x ⋆)     ≤⟨ *-monoˡ _ $ +-monoˡ _ $ xx⋆≤x⋆ _ ⟩
+  x * (1# + x ⋆)         ≈⟨ *-congˡ (1+x⋆≈x⋆ _) ⟩
+  x * x ⋆                ≤⟨ y≤x+y _ _ ⟩
+  1# + x * x ⋆           ∎) $ starExpansiveʳ _
+
+x⋆≈1+x⋆x : ∀ x → x ⋆ ≈ 1# + x ⋆ * x
+x⋆≈1+x⋆x x = ≤-antisym (⋆-elimʳ (x≤x+y _ _) $ begin
+  (1# + x ⋆ * x) * x     ≤⟨ *-monoʳ _ $ +-monoˡ _ $ x⋆x≤x⋆ _ ⟩
+  (1# + x ⋆) * x         ≈⟨ *-congʳ (1+x⋆≈x⋆ _) ⟩
+  x ⋆ * x                ≤⟨ y≤x+y _ _ ⟩
+  1# + x ⋆ * x           ∎) $ starExpansiveˡ _
+
 -- special cases for 0# and 1#
 
 0⋆≤1 : 0# ⋆ ≤ 1#
@@ -294,8 +311,21 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
 [xy]⋆x≈x[yx]⋆ : ∀ x y → (x * y) ⋆ * x ≈ x * (y * x) ⋆
 [xy]⋆x≈x[yx]⋆ x y = xy≈yz⇒x⋆y≈yz⋆ (*-assoc x y x)
 
-{-
+-- Conway C12
 
+[xy]⋆xy≈x[yx]⋆y : ∀ x y → (x * y) ⋆ * (x * y) ≈ x * (y * x) ⋆ * y
+[xy]⋆xy≈x[yx]⋆y x y = begin-equality
+  (x * y) ⋆ * (x * y) ≈⟨ *-assoc _ _ _ ⟨
+  (x * y) ⋆ * x * y   ≈⟨ *-congʳ $ [xy]⋆x≈x[yx]⋆ _ _ ⟩
+  x * (y * x) ⋆ * y   ∎
+
+[xy]⋆≈1+x[yx]⋆y : ∀ x y → (x * y) ⋆ ≈ 1# + x * (y * x) ⋆ * y
+[xy]⋆≈1+x[yx]⋆y x y = begin-equality
+  (x * y) ⋆                ≈⟨ x⋆≈1+x⋆x _ ⟩
+  1# + (x * y) ⋆ * (x * y) ≈⟨ +-congˡ ([xy]⋆xy≈x[yx]⋆y _ _) ⟩
+  1# + x * (y * x) ⋆ * y   ∎
+
+{-
 -- old proofs have been refactored in favour of the simpler combinations of the
 -- above with the coproduct characterisation and the definition of the ordering
 -- see also Conway's axiomatisation
@@ -311,15 +341,5 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
 [x+y]⋆≈[xy⋆]⋆*x⋆ x y =
   ≤-antisym ([x+y]⋆≤[xy⋆]⋆*x⋆ x y) ([xy⋆]⋆*x⋆≤[x+y]⋆ x y)
 
--- Conway C12
-[x*y]⋆≤1+x*[y*x]⋆*y : ∀ x y → (x * y) ⋆ ≤ 1# + x * (y * x) ⋆ * y
-[x*y]⋆≤1+x*[y*x]⋆*y x y = {!!}
-
-1+x*[y*x]⋆*y≤[x*y]⋆ : ∀ x y → 1# + x * (y * x) ⋆ * y ≤  (x * y) ⋆
-1+x*[y*x]⋆*y≤[x*y]⋆ x y = {!!}
-
-[x*y]⋆≈1+x*[y*x]⋆*y : ∀ x y → (x * y) ⋆ ≈ 1# + x * (y * x) ⋆ * y
-[x*y]⋆≈1+x*[y*x]⋆*y x y =
-  ≤-antisym ([x*y]⋆≤1+x*[y*x]⋆*y x y) (1+x*[y*x]⋆*y≤[x*y]⋆ x y)
 
 -}
