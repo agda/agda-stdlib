@@ -1,7 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some derivable properties
+-- Some derivable properties of Kleene Algebra based on Kozen
+--
+-- Old proofs in the library have been heavily refactored in favour
+-- of simpler combinations of admissible introduction and elimination
+-- rules, together with the coproduct characterisation of _+_ and the
+-- equational definition of the ordering x ≤ y = x + y ≈ y
+--
+-- For comparison with earlier approaches, see also Conway's axiomatisation
+-- in "Regular Algebra and Finite Machines" (Chapman and Hall, 1971)
+
+
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -158,13 +168,19 @@ module _ where
 
 open ≤-Reasoning poset
 
--- streamlined introduction rules
+-- streamlined introduction rules and their corollaries
 
 1≤[_]⋆ : ∀ x → 1# ≤ x ⋆
 1≤[ x ]⋆ = begin
   1#           ≤⟨ x≤x+y _ _ ⟩
   1# + x ⋆ * x ≤⟨ starExpansiveˡ _ ⟩
   x ⋆          ∎
+
+1≤[_]⋆[_]⋆ : ∀ x y → 1# ≤ x ⋆ * y ⋆
+1≤[ x ]⋆[ y ]⋆ = begin
+  1#           ≈⟨ *-identityˡ _ ⟨
+  1# * 1#      ≤⟨ *-mono 1≤[ _ ]⋆ 1≤[ _ ]⋆ ⟩
+  x ⋆ * y ⋆    ∎
 
 x≤xy⋆ : ∀ x y → x ≤ x * y ⋆
 x≤xy⋆ x y = begin
@@ -325,23 +341,65 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
     (x * y) ⋆ * x * y   ≈⟨ *-congʳ $ [xy]⋆x≈x[yx]⋆ _ _ ⟩
     x * (y * x) ⋆ * y   ∎
 
-
-
-{-
--- old proofs have been refactored in favour of the simpler combinations of the
--- above with the coproduct characterisation and the definition of the ordering
--- see also Conway's axiomatisation
-
 -- Conway C11
+{-
 [x+y]⋆≤[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≤ (x * y ⋆) ⋆ * x ⋆
 [x+y]⋆≤[xy⋆]⋆*x⋆ x y = {!!}
+   where
+   xy⋆ = x * y ⋆
+   [xy⋆]⋆ = xy⋆ ⋆
+   RHS = [xy⋆]⋆ * x ⋆
+   x*RHS≤RHS : x * RHS ≤ RHS
+   x*RHS≤RHS = begin
+     x * RHS            ≤⟨ *-monoʳ _ $ x≤xy⋆ _ _ ⟩
+     xy⋆ * RHS          ≈⟨ *-assoc _ _ _ ⟨
+     xy⋆ * [xy⋆]⋆ * x ⋆ ≤⟨ *-monoʳ _ $ xx⋆≤x⋆ _ ⟩
+     RHS ∎
+   y*RHS≤RHS : y * RHS ≤ RHS
+   y*RHS≤RHS = begin
+{-
+   y*RHS≤RHS : y * RHS ≤ RHS
+   y*RHS≤RHS = begin
+     y * RHS           ≈⟨ *-assoc _ _ _ ⟨
+     y * [xy⋆]⋆ * x ⋆  ≤⟨ *-monoʳ _ $ yx≤zy⇒yx⋆≤z⋆y {!!} ⟩
+     {!!} * x ⋆ ≤⟨ {!!} ⟩
+     
+{-
+     y * RHS            ≈⟨ *-assoc _ _ _ ⟨
+     (y * [xy⋆]⋆) * x ⋆ ≈⟨ *-congʳ $ starDestructiveʳ _ _ _ $ {!!} ⟨
+     {!!} * x ⋆ ≤⟨ {!!} ⟩
+-}
+     RHS ∎
+-}
+     y * RHS           ≈⟨ {!!} ⟩
+     
+     RHS ∎
 
+{-
+⋆-elimˡ 1≤[ _ ]⋆[ _ ]⋆ $ begin
+   (x + y) * RHS      ≈⟨ distribʳ _ _ _ ⟩
+   x * RHS + y * RHS  ≤⟨ x≤z∧y≤z⇒[x+y]≤z x*RHS≤RHS y*RHS≤RHS ⟩
+   (x * y ⋆) ⋆ * x ⋆  ∎
+-}
+-}
 [xy⋆]⋆*x⋆≤[x+y]⋆ : ∀ x y → (x * y ⋆) ⋆ * x ⋆ ≤ (x + y) ⋆
-[xy⋆]⋆*x⋆≤[x+y]⋆ x y = {!!}
-
+[xy⋆]⋆*x⋆≤[x+y]⋆ x y = begin
+   LHS ≤⟨ *-monoˡ _ $ ⋆-mono (x≤x+y _ _) ⟩
+   [xy⋆]⋆ * RHS ≤⟨ [xy⋆]⋆RHS≤RHS ⟩
+   RHS ∎
+   where
+   xy⋆ = x * y ⋆
+   [xy⋆]⋆ = xy⋆ ⋆
+   LHS = [xy⋆]⋆ * x ⋆
+   RHS = (x + y) ⋆
+   [xy⋆]⋆RHS≤RHS : [xy⋆]⋆ * RHS ≤ RHS
+   [xy⋆]⋆RHS≤RHS = ⋆-*-elimˡ $ begin
+     xy⋆ * RHS            ≤⟨ *-monoʳ _ $ *-mono (x≤x+y _ _) $ ⋆-mono (y≤x+y _ _) ⟩
+     (x + y) * RHS * RHS  ≤⟨ *-monoʳ _ (xx⋆≤x⋆ _) ⟩
+     RHS * RHS            ≤⟨ x⋆x⋆≤x⋆ _ ⟩
+     RHS ∎
+{-
 [x+y]⋆≈[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≈ (x * y ⋆) ⋆ * x ⋆
 [x+y]⋆≈[xy⋆]⋆*x⋆ x y =
   ≤-antisym ([x+y]⋆≤[xy⋆]⋆*x⋆ x y) ([xy⋆]⋆*x⋆≤[x+y]⋆ x y)
-
-
 -}
