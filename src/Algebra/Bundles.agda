@@ -255,12 +255,6 @@ record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsCommutativeBand isCommutativeBand public
 
-  preorder : Preorder _ _ _
-  preorder = record { isPreorder = isPreorder }
-
-  poset : Poset _ _ _
-  poset = record { isPartialOrder = isPartialOrder }
-
   band : Band _ _
   band = record { isBand = isBand }
 
@@ -880,8 +874,11 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring; semiring
     )
 
-  open CommutativeBand +-commutativeBand public
-    using (preorder; poset)
+  preorder : Preorder _ _ _
+  preorder = record { isPreorder = isPreorder }
+
+  poset : Poset _ _ _
+  poset = record { isPartialOrder = isPartialOrder }
 
   rawKleeneAlgebra : RawKleeneAlgebra _ _
   rawKleeneAlgebra = record
