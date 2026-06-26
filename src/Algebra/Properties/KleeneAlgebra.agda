@@ -313,17 +313,19 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
 
 -- Conway C12
 
-[xy]⋆xy≈x[yx]⋆y : ∀ x y → (x * y) ⋆ * (x * y) ≈ x * (y * x) ⋆ * y
-[xy]⋆xy≈x[yx]⋆y x y = begin-equality
-  (x * y) ⋆ * (x * y) ≈⟨ *-assoc _ _ _ ⟨
-  (x * y) ⋆ * x * y   ≈⟨ *-congʳ $ [xy]⋆x≈x[yx]⋆ _ _ ⟩
-  x * (y * x) ⋆ * y   ∎
-
 [xy]⋆≈1+x[yx]⋆y : ∀ x y → (x * y) ⋆ ≈ 1# + x * (y * x) ⋆ * y
 [xy]⋆≈1+x[yx]⋆y x y = begin-equality
   (x * y) ⋆                ≈⟨ x⋆≈1+x⋆x _ ⟩
   1# + (x * y) ⋆ * (x * y) ≈⟨ +-congˡ ([xy]⋆xy≈x[yx]⋆y _ _) ⟩
   1# + x * (y * x) ⋆ * y   ∎
+  where
+  [xy]⋆xy≈x[yx]⋆y : ∀ x y → (x * y) ⋆ * (x * y) ≈ x * (y * x) ⋆ * y
+  [xy]⋆xy≈x[yx]⋆y x y = begin-equality
+    (x * y) ⋆ * (x * y) ≈⟨ *-assoc _ _ _ ⟨
+    (x * y) ⋆ * x * y   ≈⟨ *-congʳ $ [xy]⋆x≈x[yx]⋆ _ _ ⟩
+    x * (y * x) ⋆ * y   ∎
+
+
 
 {-
 -- old proofs have been refactored in favour of the simpler combinations of the
