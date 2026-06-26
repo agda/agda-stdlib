@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Structures
   {a ℓ} {A : Set a}  -- The underlying set
@@ -27,10 +27,9 @@ import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Definitions
-  using (Reflexive; Transitive; Antisymmetric; module KleeneAlgebra)
+  using (module KleeneAlgebra)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsPreorder; IsPartialOrder)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
@@ -680,45 +679,6 @@ record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ 
   infix 4 _≤_
   _≤_ : Rel A ℓ
   x ≤ y = + x y ≈ y
-
-  open ≈-Reasoning setoid
-
-  ≤-reflexive : _≈_ ⇒ _≤_
-  ≤-reflexive {x = x} {y = y} x≈y = begin
-    + x y ≈⟨ +-congʳ x≈y ⟩
-    + y y ≈⟨ +-idem _ ⟩
-    y     ∎
-
-  ≤-refl : Reflexive _≤_
-  ≤-refl = ≤-reflexive refl
-
-  ≤-trans : Transitive _≤_
-  ≤-trans {x = x} {y = y} {z = z} x+y≈y y+z≈z = begin
-    + x z        ≈⟨ +-congˡ y+z≈z ⟨
-    + x (+ y z)  ≈⟨ +-assoc _ _ _ ⟨
-    + (+ x y) z  ≈⟨ +-congʳ x+y≈y ⟩
-    + y z        ≈⟨ y+z≈z ⟩
-    z ∎
-
-  ≤-antisym : Antisymmetric _≈_ _≤_
-  ≤-antisym {x = x} {y = y} x+y≈y y+x≈x = begin
-    x     ≈⟨ y+x≈x ⟨
-    + y x ≈⟨ +-comm y x ⟩
-    + x y ≈⟨ x+y≈y ⟩
-    y     ∎
-
-  isPreorder : IsPreorder _≈_ _≤_
-  isPreorder = record
-    { isEquivalence = isEquivalence
-    ; reflexive = ≤-reflexive
-    ; trans = ≤-trans
-    }
-
-  isPartialOrder : IsPartialOrder _≈_ _≤_
-  isPartialOrder = record
-    { isPreorder = isPreorder
-    ; antisym = ≤-antisym
-    }
 
   open KleeneAlgebra _≤_
 

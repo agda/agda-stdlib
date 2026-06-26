@@ -8,19 +8,24 @@
 
 open import Algebra.Bundles using (KleeneAlgebra)
 
-module Algebra.Properties.KleeneAlgebra {k₁ k₂} (K : KleeneAlgebra k₁ k₂) where
+module Algebra.Properties.KleeneAlgebra {c ℓ} (K : KleeneAlgebra c ℓ) where
 
 open import Function.Base using (_∘_; _$_)
+open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Consequences
   using (mono₂⇒monoˡ; mono₂⇒monoʳ; monoˡ∧monoʳ⇒mono₂; mono⇒cong)
+open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Definitions
-  using (LeftMonotonic; RightMonotonic; Monotonic₁; Monotonic₂)
+  using (Reflexive; Transitive; Antisymmetric
+        ; LeftMonotonic; RightMonotonic; Monotonic₁; Monotonic₂)
+import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
 
 open KleeneAlgebra K renaming (Carrier to A)
 open import Algebra.Definitions _≈_
 open import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
   using (medial)
-open import Relation.Binary.Reasoning.PartialOrder poset as ≤-Reasoning
 
 private
   variable
@@ -28,72 +33,130 @@ private
 
 
 ------------------------------------------------------------------------
+-- Basic properties of the _≤_ Kleene ordering
+--
+-- 1. That it does admit an IsPartialOrder structure/Poset bundle
+-- 2. That the algebraic operations are monotone for the ordering
+-- 3. That (0, _+_) define finite coproduct structure on _≤_
+
+module _ where
+
+  open ≈-Reasoning setoid
+
+  ≤-reflexive : _≈_ ⇒ _≤_
+  ≤-reflexive {x = x} {y = y} x≈y = begin
+    x + y ≈⟨ +-congʳ x≈y ⟩
+    y + y ≈⟨ +-idem _ ⟩
+    y     ∎
+
+  ≤-refl : Reflexive _≤_
+  ≤-refl = ≤-reflexive refl
+
+  ≤-trans : Transitive _≤_
+  ≤-trans {x = x} {y = y} {z = z} x+y≈y y+z≈z = begin
+    x + z        ≈⟨ +-congˡ y+z≈z ⟨
+    x + (y + z)  ≈⟨ +-assoc _ _ _ ⟨
+    (x + y) + z  ≈⟨ +-congʳ x+y≈y ⟩
+    y + z        ≈⟨ y+z≈z ⟩
+    z ∎
+
+  ≤-antisym : Antisymmetric _≈_ _≤_
+  ≤-antisym {x = x} {y = y} x+y≈y y+x≈x = begin
+    x     ≈⟨ y+x≈x ⟨
+    y + x ≈⟨ +-comm y x ⟩
+    x + y ≈⟨ x+y≈y ⟩
+    y     ∎
+
+  isPreorder : IsPreorder _≈_ _≤_
+  isPreorder = record
+    { isEquivalence = isEquivalence
+    ; reflexive = ≤-reflexive
+    ; trans = ≤-trans
+    }
+
+  isPartialOrder : IsPartialOrder _≈_ _≤_
+  isPartialOrder = record
+    { isPreorder = isPreorder
+    ; antisym = ≤-antisym
+    }
+
+  preorder : Preorder _ _ _
+  preorder = record { isPreorder = isPreorder }
+
+  poset : Poset _ _ _
+  poset = record { isPartialOrder = isPartialOrder }
+
+------------------------------------------------------------------------
 -- _+_ is monotonic in both arguments
 
-+-mono : Monotonic₂ _≤_ _≤_ _≤_ _+_
-+-mono {x = x} {y = y} {u = u} {v = v} x≤y u≤v = begin-equality
- (x + u) + (y + v) ≈⟨ medial x u y v ⟩
- (x + y) + (u + v) ≈⟨ +-cong x≤y u≤v ⟩
- y + v       ∎
+  +-mono : Monotonic₂ _≤_ _≤_ _≤_ _+_
+  +-mono {x = x} {y = y} {u = u} {v = v} x≤y u≤v = begin
+   (x + u) + (y + v) ≈⟨ medial x u y v ⟩
+   (x + y) + (u + v) ≈⟨ +-cong x≤y u≤v ⟩
+   y + v       ∎
 
-+-monoˡ : LeftMonotonic _≤_ _≤_ _+_
-+-monoˡ = mono₂⇒monoˡ _≤_ _≤_ _≤_ ≤-refl +-mono
+  +-monoˡ : LeftMonotonic _≤_ _≤_ _+_
+  +-monoˡ = mono₂⇒monoˡ _≤_ _≤_ _≤_ ≤-refl +-mono
 
-+-monoʳ : RightMonotonic _≤_ _≤_ _+_
-+-monoʳ = mono₂⇒monoʳ _≤_ _≤_ _≤_ ≤-refl +-mono
+  +-monoʳ : RightMonotonic _≤_ _≤_ _+_
+  +-monoʳ = mono₂⇒monoʳ _≤_ _≤_ _≤_ ≤-refl +-mono
 
 ------------------------------------------------------------------------
 -- _*_ is monotonic in both arguments
 
-*-monoˡ : LeftMonotonic _≤_ _≤_ _*_
-*-monoˡ z {x = x} {y = y} x≤y = begin-equality
-  z * x + z * y ≈⟨ distribˡ z x y ⟨
-  z * (x + y)   ≈⟨ *-congˡ x≤y ⟩
-  z * y ∎
+  *-monoˡ : LeftMonotonic _≤_ _≤_ _*_
+  *-monoˡ z {x = x} {y = y} x≤y = begin
+    z * x + z * y ≈⟨ distribˡ z x y ⟨
+    z * (x + y)   ≈⟨ *-congˡ x≤y ⟩
+    z * y ∎
 
-*-monoʳ : RightMonotonic _≤_ _≤_ _*_
-*-monoʳ z {x = x} {y = y} x≤y = begin-equality
-  x * z + y * z ≈⟨ distribʳ z x y ⟨
-  (x + y) * z   ≈⟨ *-congʳ x≤y ⟩
-  y * z ∎
+  *-monoʳ : RightMonotonic _≤_ _≤_ _*_
+  *-monoʳ z {x = x} {y = y} x≤y = begin
+    x * z + y * z ≈⟨ distribʳ z x y ⟨
+    (x + y) * z   ≈⟨ *-congʳ x≤y ⟩
+    y * z ∎
 
-*-mono : Monotonic₂ _≤_ _≤_ _≤_ _*_
-*-mono = monoˡ∧monoʳ⇒mono₂ _≤_ _≤_ _≤_ ≤-trans *-monoˡ *-monoʳ
+  *-mono : Monotonic₂ _≤_ _≤_ _≤_ _*_
+  *-mono = monoˡ∧monoʳ⇒mono₂ _≤_ _≤_ _≤_ ≤-trans *-monoˡ *-monoʳ
 
 ------------------------------------------------------------------------
 -- 0# is initial
 
-0≤x : ∀ x → 0# ≤ x
-0≤x = +-identityˡ
+  0≤x : ∀ x → 0# ≤ x
+  0≤x = +-identityˡ
 
-0≤1 : 0# ≤ 1#
-0≤1 = 0≤x _
+  0≤1 : 0# ≤ 1#
+  0≤1 = 0≤x _
 
 ------------------------------------------------------------------------
 -- x + y is a coproduct/least upper bound
 
-x≤x+y : ∀ x y → x ≤ x + y
-x≤x+y x y = begin-equality
- x + (x + y) ≈⟨ +-assoc x x y ⟨
- (x + x) + y ≈⟨ +-congʳ (+-idem x) ⟩
- x + y       ∎
+  x≤x+y : ∀ x y → x ≤ x + y
+  x≤x+y x y = begin
+   x + (x + y) ≈⟨ +-assoc x x y ⟨
+   (x + x) + y ≈⟨ +-congʳ (+-idem x) ⟩
+   x + y       ∎
 
-y≤x+y : ∀ x y → y ≤ x + y
-y≤x+y x y = begin-equality
- y + (x + y) ≈⟨ +-congˡ (+-comm x y) ⟩
- y + (y + x) ≈⟨ x≤x+y y x ⟩
- y + x ≈⟨ +-comm x y ⟨
- x + y ∎
+  y≤x+y : ∀ x y → y ≤ x + y
+  y≤x+y x y = begin
+   y + (x + y) ≈⟨ +-congˡ (+-comm x y) ⟩
+   y + (y + x) ≈⟨ x≤x+y y x ⟩
+   y + x       ≈⟨ +-comm x y ⟨
+   x + y       ∎
 
-x≤z∧y≤z⇒[x+y]≤z : x ≤ z → y ≤ z → x + y ≤ z
-x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
- (x + y) + z ≈⟨ +-assoc x y z ⟩
- x + (y + z) ≈⟨ +-congˡ y≤z ⟩
- x + z ≈⟨ x≤z ⟩
- z ∎
+  x≤z∧y≤z⇒[x+y]≤z : x ≤ z → y ≤ z → x + y ≤ z
+  x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin
+   (x + y) + z ≈⟨ +-assoc x y z ⟩
+   x + (y + z) ≈⟨ +-congˡ y≤z ⟩
+   x + z       ≈⟨ x≤z ⟩
+   z           ∎
 
 ------------------------------------------------------------------------
 -- _⋆
+
+-- Now, work relative to ≤-Reasoning
+
+open ≤-Reasoning poset
 
 -- streamlined introduction rules
 
@@ -101,7 +164,7 @@ x≤z∧y≤z⇒[x+y]≤z {x = x} {z = z} {y = y} x≤z y≤z = begin-equality
 1≤[ x ]⋆ = begin
   1#           ≤⟨ x≤x+y _ _ ⟩
   1# + x ⋆ * x ≤⟨ starExpansiveˡ _ ⟩
-  x ⋆ ∎
+  x ⋆          ∎
 
 x≤xy⋆ : ∀ x y → x ≤ x * y ⋆
 x≤xy⋆ x y = begin
@@ -156,6 +219,12 @@ x≤x⋆ x = begin
   1# * y ⋆  ≤⟨ starDestructiveʳ _ _ _ (x≤z∧y≤z⇒[x+y]≤z 1≤x xy≤x) ⟩
   x         ∎
 
+⋆-*-elimˡ : x * y ≤ y → x ⋆ * y ≤ y
+⋆-*-elimˡ = starDestructiveˡ _ _ _ ∘ x≤z∧y≤z⇒[x+y]≤z ≤-refl
+
+⋆-*-elimʳ : y * x ≤ y → y * x ⋆ ≤ y
+⋆-*-elimʳ = starDestructiveʳ _ _ _ ∘ x≤z∧y≤z⇒[x+y]≤z ≤-refl
+
 -- special cases for 0# and 1#
 
 0⋆≤1 : 0# ⋆ ≤ 1#
@@ -168,12 +237,12 @@ x≤x⋆ x = begin
 0⋆≈1 = ≤-antisym 0⋆≤1 1≤[ _ ]⋆
 
 1⋆≤1 : 1# ⋆ ≤ 1#
-1⋆≤1 = ⋆-elimˡ ≤-refl $ ≤-reflexive (*-identityˡ _)
+1⋆≤1 = ⋆-elimˡ ≤-refl $ ≤-reflexive $ *-identityˡ _
 
 1⋆≈1 : 1# ⋆ ≈ 1#
 1⋆≈1 = ≤-antisym 1⋆≤1 1≤[ _ ]⋆
 
--- _⋆ is monotonic and hence congruent
+-- _⋆ is monotonic, and hence congruent for _≈_
 
 ⋆-mono : Monotonic₁ _≤_ _≤_ _⋆
 ⋆-mono = ⋆-elimˡ 1≤[ _ ]⋆ ∘ x≤y⇒xy⋆≤y⋆
@@ -183,9 +252,11 @@ x≤x⋆ x = begin
 
 -- _⋆ is idempotent
 
+x⋆x⋆≤x⋆ : ∀ x → x ⋆ * x ⋆ ≤ x ⋆
+x⋆x⋆≤x⋆ = ⋆-*-elimˡ ∘ xx⋆≤x⋆
+
 x⋆⋆≤x⋆ : ∀ x → (x ⋆) ⋆ ≤ x ⋆
-x⋆⋆≤x⋆ x = ⋆-elimˡ 1≤[ _ ]⋆ $
-  starDestructiveˡ _ _ _ (x≤z∧y≤z⇒[x+y]≤z ≤-refl (xx⋆≤x⋆ _))
+x⋆⋆≤x⋆ = ⋆-elimˡ 1≤[ _ ]⋆ ∘ x⋆x⋆≤x⋆
 
 x⋆≤x⋆⋆ : ∀ x → x ⋆ ≤ (x ⋆) ⋆
 x⋆≤x⋆⋆ = ⋆-mono ∘ x≤x⋆
@@ -193,7 +264,7 @@ x⋆≤x⋆⋆ = ⋆-mono ∘ x≤x⋆
 x⋆⋆≈x⋆ : ∀ x → (x ⋆) ⋆ ≈ x ⋆
 x⋆⋆≈x⋆ x = ≤-antisym (x⋆⋆≤x⋆ x) (x⋆≤x⋆⋆ x)
 
--- commutation
+-- distributive laws
 
 xy≤yz⇒x⋆y≤yz⋆ : x * y ≤ y * z → x ⋆ * y ≤ y * z ⋆
 xy≤yz⇒x⋆y≤yz⋆ {x = x} {y = y} {z = z} xy≤yz = starDestructiveˡ _ _ _ $
@@ -219,6 +290,7 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
   (yx≤zy⇒yx⋆≤z⋆y (≤-reflexive (sym xy≈yz)))
 
 -- Conway C17
+
 [xy]⋆x≈x[yx]⋆ : ∀ x y → (x * y) ⋆ * x ≈ x * (y * x) ⋆
 [xy]⋆x≈x[yx]⋆ x y = xy≈yz⇒x⋆y≈yz⋆ (*-assoc x y x)
 

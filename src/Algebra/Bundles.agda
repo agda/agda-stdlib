@@ -15,7 +15,6 @@ import Algebra.Bundles.Raw as Raw
 open import Algebra.Core
 open import Algebra.Structures
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Level
 
 ------------------------------------------------------------------------
@@ -873,12 +872,6 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero
     ; rawSemiring; semiring
     )
-
-  preorder : Preorder _ _ _
-  preorder = record { isPreorder = isPreorder }
-
-  poset : Poset _ _ _
-  poset = record { isPartialOrder = isPartialOrder }
 
   rawKleeneAlgebra : RawKleeneAlgebra _ _
   rawKleeneAlgebra = record

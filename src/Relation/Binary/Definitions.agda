@@ -196,10 +196,10 @@ module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
   module _ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
 
     StarLeftDestructive : Set _
-    StarLeftDestructive = ∀ a b x → (b + (a * x)) ≤ x → ((a ⋆) * b) ≤ x
+    StarLeftDestructive = ∀ x y z → (y + (x * z)) ≤ z → ((x ⋆) * y) ≤ z
 
     StarRightDestructive : Set _
-    StarRightDestructive = ∀ a b x → (b + (x * a)) ≤ x → (b * (a ⋆)) ≤ x
+    StarRightDestructive = ∀ x y z → (y + (z * x)) ≤ z → (y * (x ⋆)) ≤ z
 
     StarDestructive : Set _
     StarDestructive = StarLeftDestructive × StarRightDestructive
