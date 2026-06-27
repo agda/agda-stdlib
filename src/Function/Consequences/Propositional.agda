@@ -11,20 +11,19 @@ module Function.Consequences.Propositional
   {a b} {A : Set a} {B : Set b}
   where
 
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; cong)
+open import Data.Product.Base using (_,_)
+open import Function.Definitions
+  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ
+        ; Surjective; Inverseˡ; Inverseʳ)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
-open import Function.Definitions
-  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ; Inverseˡ
-        ; Inverseʳ; Surjective)
-open import Relation.Nullary.Negation.Core using (contraposition)
 
-import Function.Consequences.Setoid (setoid A) (setoid B) as Setoid
 
 ------------------------------------------------------------------------
 -- Re-export setoid properties
 
-open Setoid public
+open import Function.Consequences.Setoid (setoid A) (setoid B) public
   hiding
   ( strictlySurjective⇒surjective
   ; strictlyInverseˡ⇒inverseˡ
@@ -41,15 +40,14 @@ private
 
 strictlySurjective⇒surjective : StrictlySurjective _≡_ f →
                                  Surjective _≡_ _≡_ f
-strictlySurjective⇒surjective =
- Setoid.strictlySurjective⇒surjective (cong _)
+strictlySurjective⇒surjective surj y =
+  let x , fx≡y = surj y in x , λ where refl → fx≡y
 
 strictlyInverseˡ⇒inverseˡ : ∀ f → StrictlyInverseˡ _≡_ f f⁻¹ →
                             Inverseˡ _≡_ _≡_ f f⁻¹
-strictlyInverseˡ⇒inverseˡ f =
-  Setoid.strictlyInverseˡ⇒inverseˡ (cong _)
+strictlyInverseˡ⇒inverseˡ _ inv refl = inv _
 
 strictlyInverseʳ⇒inverseʳ : ∀ f → StrictlyInverseʳ _≡_ f f⁻¹ →
                             Inverseʳ _≡_ _≡_ f f⁻¹
-strictlyInverseʳ⇒inverseʳ f =
-  Setoid.strictlyInverseʳ⇒inverseʳ (cong _)
+strictlyInverseʳ⇒inverseʳ _ inv refl = inv _
+
