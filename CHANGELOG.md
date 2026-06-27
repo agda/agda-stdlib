@@ -68,7 +68,7 @@ Non-backwards compatible changes
   ```
   Data.Tree.Rose
   Data.Tree.Rose.Properties
-`  Data.Tree.Rose.Show
+  Data.Tree.Rose.Show
   ```
 
 Minor improvements
