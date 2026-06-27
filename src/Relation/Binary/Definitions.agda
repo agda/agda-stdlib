@@ -14,6 +14,7 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
+open import Function.Core using (Fun₁; Fun₂)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core
 open import Relation.Nullary as Nullary using (¬_; Dec)
@@ -176,6 +177,32 @@ Antitonic₂ _≤_ _⊑_ = Monotonic₂ (flip _≤_) (flip _⊑_)
 
 Adjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
 Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
+
+-- Definitions for the Kleene Algebra ordering
+
+module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
+
+  module _ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
+
+    StarRightExpansive :  Set _
+    StarRightExpansive = ∀ x → (e + (x * (x ⋆))) ≤ (x ⋆)
+
+    StarLeftExpansive : Set _
+    StarLeftExpansive = ∀ x →  (e + ((x ⋆) * x)) ≤ (x ⋆)
+
+    StarExpansive : Set _
+    StarExpansive = StarLeftExpansive × StarRightExpansive
+
+  module _ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
+
+    StarLeftDestructive : Set _
+    StarLeftDestructive = ∀ a b x → (b + (a * x)) ≤ x → ((a ⋆) * b) ≤ x
+
+    StarRightDestructive : Set _
+    StarRightDestructive = ∀ a b x → (b + (x * a)) ≤ x → (b * (a ⋆)) ≤ x
+
+    StarDestructive : Set _
+    StarDestructive = StarLeftDestructive × StarRightDestructive
 
 -- Unary relations respecting a binary relation.
 
