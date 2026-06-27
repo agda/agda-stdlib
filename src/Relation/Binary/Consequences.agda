@@ -36,7 +36,7 @@ module _ {_∼_ : Rel A ℓ} (R : Rel A p) where
   subst⇒respʳ subst {x} y′∼y Pxy′ = subst (R x) y′∼y Pxy′
 
   subst⇒resp₂ : Substitutive _∼_ p → R Respects₂ _∼_
-  subst⇒resp₂ subst = subst⇒respʳ subst , subst⇒respˡ subst
+  subst⇒resp₂ subst = subst⇒respˡ subst , subst⇒respʳ subst
 
 module _ {_∼_ : Rel A ℓ} {P : Pred A p} where
 
@@ -72,7 +72,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
 
   total⇒refl : _≤_ Respects₂ _≈_ → Symmetric _≈_ →
                Total _≤_ → _≈_ ⇒ _≤_
-  total⇒refl (respʳ , respˡ) sym total {x} {y} x≈y with total x y
+  total⇒refl (respˡ , respʳ) sym total {x} {y} x≈y with total x y
   ... | inj₁ x∼y = x∼y
   ... | inj₂ y∼x = respʳ x≈y (respˡ (sym x≈y) y∼x)
 
@@ -138,7 +138,7 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
 
   asym⇒irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
              Asymmetric _<_ → Irreflexive _≈_ _<_
-  asym⇒irr (respʳ , respˡ) sym asym {x} {y} x≈y x<y =
+  asym⇒irr (respˡ , respʳ) sym asym {x} {y} x≈y x<y =
     asym x<y (respʳ (sym x≈y) (respˡ x≈y x<y))
 
   tri⇒asym : Trichotomous _≈_ _<_ → Asymmetric _<_
@@ -185,8 +185,8 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
                    Transitive _<_ → Trichotomous _≈_ _<_ →
                    _<_ Respects₂ _≈_
   trans∧tri⇒resp sym ≈-tr <-tr tri =
-    trans∧tri⇒respʳ sym ≈-tr <-tr tri ,
-    trans∧tri⇒respˡ ≈-tr <-tr tri
+    trans∧tri⇒respˡ ≈-tr <-tr tri ,
+    trans∧tri⇒respʳ sym ≈-tr <-tr tri
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality
