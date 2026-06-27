@@ -10,8 +10,6 @@
 --
 -- For comparison with earlier approaches, see also Conway's axiomatisation
 -- in "Regular Algebra and Finite Machines" (Chapman and Hall, 1971)
-
-
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -36,6 +34,8 @@ open KleeneAlgebra K renaming (Carrier to A)
 open import Algebra.Definitions _≈_
 open import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
   using (medial)
+open import Algebra.Properties.Semigroup *-semigroup
+  using (x∙yz≈xy∙z)
 
 private
   variable
@@ -175,12 +175,6 @@ open ≤-Reasoning poset
   1#           ≤⟨ x≤x+y _ _ ⟩
   1# + x ⋆ * x ≤⟨ starExpansiveˡ _ ⟩
   x ⋆          ∎
-
-1≤[_]⋆[_]⋆ : ∀ x y → 1# ≤ x ⋆ * y ⋆
-1≤[ x ]⋆[ y ]⋆ = begin
-  1#           ≈⟨ *-identityˡ _ ⟨
-  1# * 1#      ≤⟨ *-mono 1≤[ _ ]⋆ 1≤[ _ ]⋆ ⟩
-  x ⋆ * y ⋆    ∎
 
 x≤xy⋆ : ∀ x y → x ≤ x * y ⋆
 x≤xy⋆ x y = begin
@@ -322,6 +316,20 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
   (xy≤yz⇒x⋆y≤yz⋆ (≤-reflexive xy≈yz))
   (yx≤zy⇒yx⋆≤z⋆y (≤-reflexive (sym xy≈yz)))
 
+-- a useful absorption property
+
+xy≤y∧xz≤z⇒xy⋆z≤y⋆z : x * y ≤ y → x * z ≤ z → x * y ⋆ * z ≤ y ⋆ * z
+xy≤y∧xz≤z⇒xy⋆z≤y⋆z {x = x} {y = y} {z = z} xy≤y xz≤z = begin
+  x * y ⋆ * z ≈⟨ *-congʳ $ *-congˡ $ x⋆≈1+xx⋆ _ ⟩
+  x * (1# + y * y ⋆) * z       ≈⟨ *-congʳ $ distribˡ _ _ _ ⟩
+  (x * 1# + x * (y * y ⋆)) * z ≈⟨ *-congʳ $ +-cong (*-identityʳ _) (x∙yz≈xy∙z _ _ _) ⟩
+  (x + x * y * y ⋆) * z        ≈⟨ distribʳ _ _ _ ⟩
+  x * z + x * y * y ⋆ * z      ≤⟨ +-mono xz≤z (*-monoʳ _ $  *-monoʳ _ xy≤y) ⟩
+  z + y * y ⋆ * z              ≈⟨ +-congʳ $ *-identityˡ _ ⟨
+  1# * z + y * y ⋆ * z         ≈⟨ distribʳ _ _ _ ⟨
+  (1# + y * y ⋆) * z           ≈⟨ *-congʳ $ x⋆≈1+xx⋆ _ ⟨
+  y ⋆ * z ∎
+
 -- Conway C17
 
 [xy]⋆x≈x[yx]⋆ : ∀ x y → (x * y) ⋆ * x ≈ x * (y * x) ⋆
@@ -342,64 +350,53 @@ xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
     x * (y * x) ⋆ * y   ∎
 
 -- Conway C11
-{-
-[x+y]⋆≤[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≤ (x * y ⋆) ⋆ * x ⋆
-[x+y]⋆≤[xy⋆]⋆*x⋆ x y = {!!}
-   where
-   xy⋆ = x * y ⋆
-   [xy⋆]⋆ = xy⋆ ⋆
-   RHS = [xy⋆]⋆ * x ⋆
-   x*RHS≤RHS : x * RHS ≤ RHS
-   x*RHS≤RHS = begin
-     x * RHS            ≤⟨ *-monoʳ _ $ x≤xy⋆ _ _ ⟩
-     xy⋆ * RHS          ≈⟨ *-assoc _ _ _ ⟨
-     xy⋆ * [xy⋆]⋆ * x ⋆ ≤⟨ *-monoʳ _ $ xx⋆≤x⋆ _ ⟩
-     RHS ∎
-   y*RHS≤RHS : y * RHS ≤ RHS
-   y*RHS≤RHS = begin
-{-
-   y*RHS≤RHS : y * RHS ≤ RHS
-   y*RHS≤RHS = begin
-     y * RHS           ≈⟨ *-assoc _ _ _ ⟨
-     y * [xy⋆]⋆ * x ⋆  ≤⟨ *-monoʳ _ $ yx≤zy⇒yx⋆≤z⋆y {!!} ⟩
-     {!!} * x ⋆ ≤⟨ {!!} ⟩
-     
-{-
-     y * RHS            ≈⟨ *-assoc _ _ _ ⟨
-     (y * [xy⋆]⋆) * x ⋆ ≈⟨ *-congʳ $ starDestructiveʳ _ _ _ $ {!!} ⟨
-     {!!} * x ⋆ ≤⟨ {!!} ⟩
--}
-     RHS ∎
--}
-     y * RHS           ≈⟨ {!!} ⟩
-     
-     RHS ∎
 
-{-
-⋆-elimˡ 1≤[ _ ]⋆[ _ ]⋆ $ begin
-   (x + y) * RHS      ≈⟨ distribʳ _ _ _ ⟩
-   x * RHS + y * RHS  ≤⟨ x≤z∧y≤z⇒[x+y]≤z x*RHS≤RHS y*RHS≤RHS ⟩
-   (x * y ⋆) ⋆ * x ⋆  ∎
--}
--}
-[xy⋆]⋆*x⋆≤[x+y]⋆ : ∀ x y → (x * y ⋆) ⋆ * x ⋆ ≤ (x + y) ⋆
-[xy⋆]⋆*x⋆≤[x+y]⋆ x y = begin
-   LHS ≤⟨ *-monoˡ _ $ ⋆-mono (x≤x+y _ _) ⟩
-   [xy⋆]⋆ * RHS ≤⟨ [xy⋆]⋆RHS≤RHS ⟩
-   RHS ∎
-   where
-   xy⋆ = x * y ⋆
-   [xy⋆]⋆ = xy⋆ ⋆
-   LHS = [xy⋆]⋆ * x ⋆
-   RHS = (x + y) ⋆
-   [xy⋆]⋆RHS≤RHS : [xy⋆]⋆ * RHS ≤ RHS
-   [xy⋆]⋆RHS≤RHS = ⋆-*-elimˡ $ begin
-     xy⋆ * RHS            ≤⟨ *-monoʳ _ $ *-mono (x≤x+y _ _) $ ⋆-mono (y≤x+y _ _) ⟩
-     (x + y) * RHS * RHS  ≤⟨ *-monoʳ _ (xx⋆≤x⋆ _) ⟩
-     RHS * RHS            ≤⟨ x⋆x⋆≤x⋆ _ ⟩
-     RHS ∎
-{-
-[x+y]⋆≈[xy⋆]⋆*x⋆ : ∀ x y → (x + y) ⋆ ≈ (x * y ⋆) ⋆ * x ⋆
-[x+y]⋆≈[xy⋆]⋆*x⋆ x y =
-  ≤-antisym ([x+y]⋆≤[xy⋆]⋆*x⋆ x y) ([xy⋆]⋆*x⋆≤[x+y]⋆ x y)
--}
+module ConwayC11 x y where
+
+  private
+    LHS    = (x + y) ⋆
+    x⋆y    = x ⋆ * y
+    [x⋆y]⋆ = x⋆y ⋆
+    RHS    = [x⋆y]⋆ * x ⋆
+    1≤RHS : 1# ≤ RHS
+    1≤RHS = begin
+      1#       ≈⟨ *-identityˡ _ ⟨
+      1# * 1#  ≤⟨ *-mono 1≤[ _ ]⋆ 1≤[ _ ]⋆ ⟩
+      RHS      ∎
+    x[x⋆y]≤x⋆y : x * x⋆y ≤ x⋆y
+    x[x⋆y]≤x⋆y = begin
+      x * x⋆y      ≈⟨ *-assoc _ _ _ ⟨
+      x * x ⋆ * y  ≤⟨ *-monoʳ _ (xx⋆≤x⋆ _) ⟩
+      x⋆y ∎
+    x[x⋆y]⋆x⋆≤RHS : x * [x⋆y]⋆ * x ⋆ ≤ RHS
+    x[x⋆y]⋆x⋆≤RHS = xy≤y∧xz≤z⇒xy⋆z≤y⋆z x[x⋆y]≤x⋆y (xx⋆≤x⋆ _)
+    y[x⋆y]⋆x⋆≤RHS : y * [x⋆y]⋆ * x ⋆ ≤ RHS
+    y[x⋆y]⋆x⋆≤RHS = begin
+      y * [x⋆y]⋆ * x ⋆    ≤⟨ *-monoʳ _ $ *-monoʳ _ $ x≤y⋆x _ _ ⟩
+      x⋆y * [x⋆y]⋆ * x ⋆  ≤⟨ *-monoʳ _ $ xx⋆≤x⋆ _ ⟩
+      RHS                 ∎
+    [x⋆y]LHS≤LHS : x⋆y * LHS ≤ LHS
+    [x⋆y]LHS≤LHS = begin
+     x⋆y * LHS        ≤⟨ *-monoʳ _ $ *-monoʳ _ $ ⋆-mono (x≤x+y _ _) ⟩
+     (LHS * y) * LHS  ≤⟨ *-monoʳ _ $ *-monoˡ _ $ y≤x+y _ _ ⟩
+     (LHS * _) * LHS  ≤⟨ *-monoʳ _ $ x⋆x≤x⋆ _ ⟩
+     LHS * LHS        ≤⟨ x⋆x⋆≤x⋆ _ ⟩
+     LHS ∎
+
+  [x+y]⋆≤[x⋆y]⋆x⋆ : LHS ≤ RHS
+  [x+y]⋆≤[x⋆y]⋆x⋆ = ⋆-elimˡ 1≤RHS $ begin
+    (x + y) * RHS                       ≈⟨ *-assoc _ _ _ ⟨
+    (x + y) * [x⋆y]⋆ * x ⋆              ≈⟨ *-congʳ $ distribʳ _ _ _ ⟩
+    (x * [x⋆y]⋆ + y * [x⋆y]⋆) * x ⋆     ≈⟨ distribʳ _ _ _ ⟩
+    x * [x⋆y]⋆ * x ⋆ + y * [x⋆y]⋆ * x ⋆ ≤⟨ x≤z∧y≤z⇒[x+y]≤z x[x⋆y]⋆x⋆≤RHS y[x⋆y]⋆x⋆≤RHS ⟩
+    RHS                                 ∎
+  [x⋆y]⋆x⋆≤[x+y]⋆ : RHS ≤ LHS
+  [x⋆y]⋆x⋆≤[x+y]⋆ = begin
+    RHS          ≤⟨ *-monoˡ _ $ ⋆-mono (x≤x+y _ _) ⟩
+    [x⋆y]⋆ * LHS ≤⟨ ⋆-*-elimˡ $ [x⋆y]LHS≤LHS ⟩
+    LHS          ∎
+
+[x+y]⋆≈[x⋆y]⋆x⋆ : ∀ x y → (x + y) ⋆ ≈ (x ⋆ * y) ⋆ * x ⋆
+[x+y]⋆≈[x⋆y]⋆x⋆ x y = ≤-antisym [x+y]⋆≤[x⋆y]⋆x⋆ [x⋆y]⋆x⋆≤[x+y]⋆
+  where open ConwayC11 x y
+
