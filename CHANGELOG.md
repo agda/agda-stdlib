@@ -210,6 +210,8 @@ Additions to existing modules
   ≤-antisym      : Antisymmetric _≈_ _≤_
   isPreorder     : IsPreorder _≈_ _≤_
   isPartialOrder : IsPartialOrder _≈_ _≤_
+  preorder       : Preorder _ _
+  poset          : Poset _ _
   ```
 
 * In `Algebra.Structures.IsKleeneAlgebra`:
