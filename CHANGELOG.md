@@ -202,15 +202,19 @@ New modules
 Additions to existing modules
 -----------------------------
 
-* In `Algebra.Structures.IsKleeneAlgebra`:
+* In `Algebra.Properties.KleeneAlgebra`:
   ```agda
-  _≤_            : Rel A _
   ≤-reflexive    : _≈_ ⇒ _≤_
   ≤-refl         : Reflexive _≤_
   ≤-trans        : Transitive _≤_
   ≤-antisym      : Antisymmetric _≈_ _≤_
   isPreorder     : IsPreorder _≈_ _≤_
   isPartialOrder : IsPartialOrder _≈_ _≤_
+  ```
+
+* In `Algebra.Structures.IsKleeneAlgebra`:
+  ```agda
+  _≤_            : Rel A _
   ```
 
 * In `Data.Bool.Properties`:
