@@ -10,8 +10,6 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Structures
   {a ℓ} {A : Set a}  -- The underlying set
@@ -23,9 +21,16 @@ module Algebra.Structures
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions _≈_
+  hiding (StarLeftExpansive; StarRightExpansive; StarExpansive
+         ; StarLeftDestructive; StarRightDestructive; StarDestructive)
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
+open import Relation.Binary.Definitions
+  using (module KleeneAlgebra)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
@@ -162,6 +167,7 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsCommutativeSemigroup isCommutativeSemigroup public
     using (isCommutativeMagma)
+
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
@@ -665,10 +671,20 @@ record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isIdempotentSemiring  : IsIdempotentSemiring + * 0# 1#
-    starExpansive         : StarExpansive 1# + * ⋆
-    starDestructive       : StarDestructive + * ⋆
 
   open IsIdempotentSemiring isIdempotentSemiring public
+
+  -- Kleene algebra ordering
+  -- NB. this clashes with `Relation.Binary.Construct.NaturalOrder.{Left|Right}`
+  infix 4 _≤_
+  _≤_ : Rel A ℓ
+  x ≤ y = + x y ≈ y
+
+  open KleeneAlgebra _≤_
+
+  field
+    starExpansive         : StarExpansive 1# + * ⋆
+    starDestructive       : StarDestructive + * ⋆
 
   starExpansiveˡ : StarLeftExpansive 1# + * ⋆
   starExpansiveˡ = proj₁ starExpansive
@@ -681,6 +697,7 @@ record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ 
 
   starDestructiveʳ : StarRightDestructive + * ⋆
   starDestructiveʳ = proj₂ starDestructive
+
 
 record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
