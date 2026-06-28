@@ -28,7 +28,8 @@ open import Data.Nat.Properties
         ; +-0-commutativeMonoid; *-1-commutativeMonoid
         ; *-zeroˡ; *-zeroʳ; *-distribˡ-+; *-distribʳ-+
         ; ^-zeroˡ; ^-distribʳ-*; m*n≡0⇒m≡0∨n≡0)
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base using ([_,_]′)
+open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym; trans; cong)
@@ -83,7 +84,7 @@ product-++ (m ∷ ms) ns = begin
 
 product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
 product-locate (n ∷ ns) =
-  [ here ∘ sym , there ∘ product-locate ns ]′ ∘ m*n≡0⇒m≡0∨n≡0 n
+  [ here ∘′ sym , there ∘′ product-locate ns ]′ ∘′ m*n≡0⇒m≡0∨n≡0 n
 
 
 product≢0 : All NonZero ns → NonZero (product ns)
