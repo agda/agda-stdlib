@@ -82,9 +82,9 @@ product-++ (m ∷ ms) ns = begin
 ∈⇒∣product {ns = m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 
 product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
-product-locate (n ∷ ns) p with m*n≡0⇒m≡0∨n≡0 n p
-... | inj₁ n≡0 = here (sym n≡0)
-... | inj₂ Πns≡0 = there (product-locate ns Πns≡0)
+product-locate (n ∷ ns) =
+  [ here ∘ sym , there ∘ product-locate ns ]′ ∘ m*n≡0⇒m≡0∨n≡0 n
+
 
 product≢0 : All NonZero ns → NonZero (product ns)
 product≢0 []           = _
