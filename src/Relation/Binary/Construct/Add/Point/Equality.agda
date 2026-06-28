@@ -4,7 +4,7 @@
 -- A pointwise lifting of a relation to incorporate an additional point.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Point
@@ -79,5 +79,5 @@ data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
 ≈∙-isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence _≈∙_
 ≈∙-isDecEquivalence ≈-isDecEquivalence = record
   { isEquivalence = ≈∙-isEquivalence isEquivalence
-  ; _≟_           = ≈∙-dec _≈?_
+  ; _≈?_          = ≈∙-dec _≈?_
   } where open IsDecEquivalence ≈-isDecEquivalence

@@ -6,7 +6,7 @@
 -- /!\ NB: LCGs must not be used for cryptographic applications
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 open import Codata.Sized.Stream using (Stream; iterate)
 open import Data.Nat.PseudoRandom.LCG using (Generator; step)

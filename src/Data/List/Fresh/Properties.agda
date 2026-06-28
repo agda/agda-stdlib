@@ -4,7 +4,7 @@
 -- Properties of fresh lists and functions acting on them
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Fresh.Properties where
 

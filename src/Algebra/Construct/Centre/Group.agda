@@ -4,7 +4,7 @@
 -- Definition of the centre of a Group
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Bundles
   using (Group; AbelianGroup; RawMonoid; RawGroup)

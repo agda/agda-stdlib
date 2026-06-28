@@ -4,7 +4,7 @@
 -- Properties related to Pointwise
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 
@@ -68,7 +68,7 @@ module _ {R : Rel A ℓ} where
                      ∀ n → IsDecEquivalence (Pointwise R {n})
   isDecEquivalence isDecEq n = record
     { isEquivalence = isEquivalence Eq.isEquivalence n
-    ; _≟_           = decidable Eq._≈?_
+    ; _≈?_          = decidable Eq._≈?_
     } where module Eq = IsDecEquivalence isDecEq
 
 ------------------------------------------------------------------------

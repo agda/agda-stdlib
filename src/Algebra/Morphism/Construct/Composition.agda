@@ -4,7 +4,7 @@
 -- The composition of morphisms between algebraic structures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Algebra.Morphism.Construct.Composition where
 
@@ -40,7 +40,7 @@ module _ {M₁ : RawMagma a ℓ₁}
     → IsMagmaHomomorphism M₁ M₃ (g ∘ f)
   isMagmaHomomorphism f-homo g-homo = record
     { isRelHomomorphism = isRelHomomorphism F.isRelHomomorphism G.isRelHomomorphism
-    ; homo              = λ x y → ≈₃-trans (G.⟦⟧-cong (F.homo x y)) (G.homo (f x) (f y))
+    ; ∙-homo            = λ x y → ≈₃-trans (G.⟦⟧-cong (F.homo x y)) (G.homo (f x) (f y))
     } where module F = IsMagmaHomomorphism f-homo; module G = IsMagmaHomomorphism g-homo
 
   isMagmaMonomorphism

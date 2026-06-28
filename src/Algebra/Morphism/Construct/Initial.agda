@@ -8,7 +8,7 @@
 -- define the morphism on the underlying `RawMagma`.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level)
 
@@ -55,7 +55,7 @@ module _ (M : RawMagma m ℓm) where
   isMagmaHomomorphism : IsMagmaHomomorphism rawMagma M zero
   isMagmaHomomorphism = record
     { isRelHomomorphism = record { cong = cong _≈_ }
-    ; homo = λ()
+    ; ∙-homo = λ()
     }
 
   isMagmaMonomorphism : IsMagmaMonomorphism rawMagma M zero

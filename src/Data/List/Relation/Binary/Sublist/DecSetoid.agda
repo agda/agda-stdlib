@@ -6,7 +6,7 @@
 -- commonly known as Order Preserving Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid; DecPoset)
 open import Relation.Binary.Structures
@@ -41,7 +41,7 @@ _⊆?_ = HeterogeneousProperties.sublist? _≈?_
 ⊆-isDecPartialOrder : IsDecPartialOrder _≋_ _⊆_
 ⊆-isDecPartialOrder = record
   { isPartialOrder = ⊆-isPartialOrder
-  ; _≟_            = _≋?_
+  ; _≈?_           = _≋?_
   ; _≤?_           = _⊆?_
   }
 

@@ -4,7 +4,7 @@
 -- Pointwise lifting of a predicate to a binary tree
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Tree.Binary.Relation.Unary.All where
 

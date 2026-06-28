@@ -4,7 +4,7 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Properties where
 
@@ -162,7 +162,7 @@ _≤?_ : Decidable _≤_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≡?_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -1660,7 +1660,7 @@ i*j≢0 i j rewrite abs-* i j = ℕ.m*n≢0 ∣ i ∣ ∣ j ∣
 ^-isMagmaHomomorphism : ∀ i → Morphism.IsMagmaHomomorphism ℕ.+-rawMagma *-rawMagma (i ^_)
 ^-isMagmaHomomorphism i = record
   { isRelHomomorphism = record { cong = cong (i ^_) }
-  ; homo              = ^-distribˡ-+-* i
+  ; ∙-homo            = ^-distribˡ-+-* i
   }
 
 ^-isMonoidHomomorphism : ∀ i → Morphism.IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
@@ -2396,12 +2396,11 @@ Please use +-0-isAbelianGroup instead."
 open Data.Integer.Base public
   using (*-rawMagma; *-1-rawMonoid)
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}
-

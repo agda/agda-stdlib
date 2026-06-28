@@ -32,6 +32,7 @@ showTests : TestPool
 showTests = mkTestPool "Show instances"
   $ "num"
   ∷ "reflection"
+  ∷ "sizedtree"
   ∷ "tree"
   ∷ []
 

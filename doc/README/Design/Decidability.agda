@@ -4,7 +4,7 @@
 -- Examples of decision procedures and how to use them
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module README.Design.Decidability where
 

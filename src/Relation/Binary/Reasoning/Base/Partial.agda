@@ -4,7 +4,7 @@
 -- The basic code for equational reasoning with a non-reflexive relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Function.Base using (case_of_)
 open import Level using (_⊔_)

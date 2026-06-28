@@ -4,7 +4,7 @@
 -- The core definition of a sorting algorithm
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (TotalOrder)
 

@@ -4,7 +4,7 @@
 -- Some properties about subsets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Subset.Properties where
 
@@ -218,8 +218,8 @@ x∉⁅y⁆⇒x≢y x∉⁅x⁆ refl = x∉⁅x⁆ (x∈⁅x⁆ _)
 ⊆-trans p⊆q q⊆r x∈p = q⊆r (p⊆q x∈p)
 
 ⊆-antisym : Antisymmetric {A = Subset n} _≡_ _⊆_
-⊆-antisym {i = []}     {[]}     p⊆q q⊆p = refl
-⊆-antisym {i = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
+⊆-antisym {x = []}     {[]}     p⊆q q⊆p = refl
+⊆-antisym {x = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
 ... | inside  | inside  = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
 ... | inside  | outside = contradiction (p⊆q here) λ()
 ... | outside | inside  = contradiction (q⊆p here) λ()
@@ -317,7 +317,7 @@ module _ (n : ℕ) where
   ⊂-isDecStrictPartialOrder : IsDecStrictPartialOrder {A = Subset n} _≡_ _⊂_
   ⊂-isDecStrictPartialOrder = record
     { isStrictPartialOrder = ⊂-isStrictPartialOrder
-    ; _≟_  = ≡-dec _≡?_
+    ; _≈?_ = ≡-dec _≡?_
     ; _<?_ = _⊂?_
     }
 

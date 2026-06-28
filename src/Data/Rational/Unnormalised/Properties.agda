@@ -4,7 +4,7 @@
 -- Properties of unnormalized Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Unnormalised.Properties where
@@ -147,7 +147,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≡? ↥ q ℤ.* �
 ≃-isDecEquivalence : IsDecEquivalence _≃_
 ≃-isDecEquivalence = record
   { isEquivalence = ≃-isEquivalence
-  ; _≟_           = _≃?_
+  ; _≈?_          = _≃?_
   }
 
 ≄-isApartnessRelation : IsApartnessRelation _≃_ _≄_
@@ -326,7 +326,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≃_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≃?_
+  ; _≈?_         = _≃?_
   ; _≤?_         = _≤?_
   }
 

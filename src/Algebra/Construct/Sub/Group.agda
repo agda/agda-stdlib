@@ -4,7 +4,7 @@
 -- Definition of subgroups
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Bundles using (Group; RawGroup)
 

@@ -8,7 +8,7 @@
 -- relation equivalent to the original one (and similarly for
 -- < → ≤ → <).
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 
@@ -145,7 +145,7 @@ isTotalOrder STO = record
 isDecTotalOrder : IsStrictTotalOrder _≈_ _<_ → IsDecTotalOrder _≈_ _≤_
 isDecTotalOrder STO = record
   { isTotalOrder = isTotalOrder STO
-  ; _≟_          = S._≈?_
+  ; _≈?_         = S._≈?_
   ; _≤?_         = decidable′ S.compare
   }
   where module S = IsStrictTotalOrder STO

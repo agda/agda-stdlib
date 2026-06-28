@@ -4,7 +4,7 @@
 -- Existential lifting of predicates over Vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.Any where
 

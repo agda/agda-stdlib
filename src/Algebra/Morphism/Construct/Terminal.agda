@@ -9,7 +9,7 @@
 -- define the morphism on the underlying `RawMonoid`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level)
 
@@ -50,7 +50,7 @@ isMagmaHomomorphism : (M : RawMagma a ℓa) →
                       IsMagmaHomomorphism M rawMagma one
 isMagmaHomomorphism M = record
   { isRelHomomorphism = record { cong = _ }
-  ; homo = _
+  ; ∙-homo = _
   }
 
 isMonoidHomomorphism : (M : RawMonoid a ℓa) →

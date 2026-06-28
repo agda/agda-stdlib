@@ -4,7 +4,7 @@
 -- Properties of constructions over unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.Properties where
 
@@ -270,11 +270,11 @@ module _ {P : Pred A ℓ₁} {Q : Pred B ℓ₂} (f : A → B) where
 module _ {P : Pred A ℓ₁} {Q : Pred A ℓ₂} (f : A → B) where
 
   map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
-  map-⟨_⟩⊢_ P⊆Q = ⟨ f ⟩⊢⁺ ⊆-trans {k = f ⊢ ⟨f⟩⊢Q} P⊆Q (⟨ f ⟩⊢⁻ ⊆-refl {x = ⟨f⟩⊢Q})
+  map-⟨_⟩⊢_ P⊆Q = ⟨ f ⟩⊢⁺ ⊆-trans {z = f ⊢ ⟨f⟩⊢Q} P⊆Q (⟨ f ⟩⊢⁻ ⊆-refl {x = ⟨f⟩⊢Q})
     where ⟨f⟩⊢Q = ⟨ f ⟩⊢ Q
 
   map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
-  map-[_]⊢_ P⊆Q = [ f ]⊢⁺ ⊆-trans {i = f ⊢ [f]⊢P} ([ f ]⊢⁻ ⊆-refl {x = [f]⊢P}) P⊆Q
+  map-[_]⊢_ P⊆Q = [ f ]⊢⁺ ⊆-trans {x = f ⊢ [f]⊢P} ([ f ]⊢⁻ ⊆-refl {x = [f]⊢P}) P⊆Q
     where [f]⊢P = [ f ]⊢ P
 
 
