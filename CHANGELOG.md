@@ -191,6 +191,12 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
+  ```agda
+  assoc← : ∃[ ys ] Appending bs cs ys × Appending as ys ds →
+           ∃[ xs ] Appending as bs xs × Appending xs cs ds
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
