@@ -7,38 +7,38 @@
 
 <a id="209" class="Symbol">{-#</a> <a id="213" class="Keyword">OPTIONS</a> <a id="221" class="Pragma">--without-K</a> <a id="233" class="Pragma">--safe</a> <a id="240" class="Symbol">#-}</a>
 
-<a id="245" class="Keyword">open</a> <a id="250" class="Keyword">import</a> <a id="257" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="273" class="Keyword">using</a> <a id="279" class="Symbol">(</a><a id="280" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a><a id="297" class="Symbol">)</a>
+<a id="245" class="Keyword">open</a> <a id="250" class="Keyword">import</a> <a id="257" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="273" class="Keyword">using</a> <a id="279" class="Symbol">(</a><a id="280" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a><a id="297" class="Symbol">)</a>
 
 <a id="300" class="Keyword">module</a> <a id="307" href="Algebra.Properties.CommutativeMonoid.html" class="Module">Algebra.Properties.CommutativeMonoid</a>
-  <a id="346" class="Symbol">{</a><a id="347" href="Algebra.Properties.CommutativeMonoid.html#347" class="Bound">c</a> <a id="349" href="Algebra.Properties.CommutativeMonoid.html#349" class="Bound">ℓ</a><a id="350" class="Symbol">}</a> <a id="352" class="Symbol">(</a><a id="353" href="Algebra.Properties.CommutativeMonoid.html#353" class="Bound">commutativeMonoid</a> <a id="371" class="Symbol">:</a> <a id="373" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a> <a id="391" href="Algebra.Properties.CommutativeMonoid.html#347" class="Bound">c</a> <a id="393" href="Algebra.Properties.CommutativeMonoid.html#349" class="Bound">ℓ</a><a id="394" class="Symbol">)</a>
+  <a id="346" class="Symbol">{</a><a id="347" href="Algebra.Properties.CommutativeMonoid.html#347" class="Bound">c</a> <a id="349" href="Algebra.Properties.CommutativeMonoid.html#349" class="Bound">ℓ</a><a id="350" class="Symbol">}</a> <a id="352" class="Symbol">(</a><a id="353" href="Algebra.Properties.CommutativeMonoid.html#353" class="Bound">commutativeMonoid</a> <a id="371" class="Symbol">:</a> <a id="373" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a> <a id="391" href="Algebra.Properties.CommutativeMonoid.html#347" class="Bound">c</a> <a id="393" href="Algebra.Properties.CommutativeMonoid.html#349" class="Bound">ℓ</a><a id="394" class="Symbol">)</a>
   <a id="398" class="Keyword">where</a>
 
 <a id="405" class="Keyword">open</a> <a id="410" class="Keyword">import</a> <a id="417" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="435" class="Keyword">using</a> <a id="441" class="Symbol">(</a><a id="442" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">_,_</a><a id="445" class="Symbol">;</a> <a id="447" href="Data.Product.Base.html#641" class="Field">proj₂</a><a id="452" class="Symbol">)</a>
 
-<a id="455" class="Keyword">open</a> <a id="460" href="Algebra.Bundles.html#7877" class="Module">CommutativeMonoid</a> <a id="478" href="Algebra.Properties.CommutativeMonoid.html#353" class="Bound">commutativeMonoid</a>
+<a id="455" class="Keyword">open</a> <a id="460" href="Algebra.Bundles.html#7879" class="Module">CommutativeMonoid</a> <a id="478" href="Algebra.Properties.CommutativeMonoid.html#353" class="Bound">commutativeMonoid</a>
   <a id="498" class="Keyword">renaming</a>
-  <a id="509" class="Symbol">(</a> <a id="511" href="Algebra.Bundles.html#8077" class="Field">ε</a>         <a id="521" class="Symbol">to</a> <a id="524" class="Field">0#</a>
-  <a id="529" class="Symbol">;</a> <a id="531" href="Algebra.Bundles.html#8039" class="Field Operator">_∙_</a>       <a id="541" class="Symbol">to</a> <a id="544" class="Field Operator">_+_</a>
-  <a id="550" class="Symbol">;</a> <a id="552" href="Algebra.Structures.html#1844" class="Function">∙-cong</a>    <a id="562" class="Symbol">to</a> <a id="565" class="Function">+-cong</a>
+  <a id="509" class="Symbol">(</a> <a id="511" href="Algebra.Bundles.html#8079" class="Field">ε</a>         <a id="521" class="Symbol">to</a> <a id="524" class="Field">0#</a>
+  <a id="529" class="Symbol">;</a> <a id="531" href="Algebra.Bundles.html#8041" class="Field Operator">_∙_</a>       <a id="541" class="Symbol">to</a> <a id="544" class="Field Operator">_+_</a>
+  <a id="550" class="Symbol">;</a> <a id="552" href="Algebra.Structures.html#1845" class="Function">∙-cong</a>    <a id="562" class="Symbol">to</a> <a id="565" class="Function">+-cong</a>
   <a id="574" class="Symbol">;</a> <a id="576" href="Algebra.Consequences.Base.html#1091" class="Function">∙-congˡ</a>   <a id="586" class="Symbol">to</a> <a id="589" class="Function">+-congˡ</a>
   <a id="599" class="Symbol">;</a> <a id="601" href="Algebra.Consequences.Base.html#1182" class="Function">∙-congʳ</a>   <a id="611" class="Symbol">to</a> <a id="614" class="Function">+-congʳ</a>
-  <a id="624" class="Symbol">;</a> <a id="626" href="Algebra.Structures.html#4962" class="Function">identityˡ</a> <a id="636" class="Symbol">to</a> <a id="639" class="Function">+-identityˡ</a>
-  <a id="653" class="Symbol">;</a> <a id="655" href="Algebra.Structures.html#5023" class="Function">identityʳ</a> <a id="665" class="Symbol">to</a> <a id="668" class="Function">+-identityʳ</a>
-  <a id="682" class="Symbol">;</a> <a id="684" href="Algebra.Structures.html#3435" class="Function">assoc</a>     <a id="694" class="Symbol">to</a> <a id="697" class="Function">+-assoc</a>
-  <a id="707" class="Symbol">;</a> <a id="709" href="Algebra.Structures.html#5310" class="Function">comm</a>      <a id="719" class="Symbol">to</a> <a id="722" class="Function">+-comm</a>
+  <a id="624" class="Symbol">;</a> <a id="626" href="Algebra.Structures.html#4964" class="Function">identityˡ</a> <a id="636" class="Symbol">to</a> <a id="639" class="Function">+-identityˡ</a>
+  <a id="653" class="Symbol">;</a> <a id="655" href="Algebra.Structures.html#5025" class="Function">identityʳ</a> <a id="665" class="Symbol">to</a> <a id="668" class="Function">+-identityʳ</a>
+  <a id="682" class="Symbol">;</a> <a id="684" href="Algebra.Structures.html#3436" class="Function">assoc</a>     <a id="694" class="Symbol">to</a> <a id="697" class="Function">+-assoc</a>
+  <a id="707" class="Symbol">;</a> <a id="709" href="Algebra.Structures.html#5312" class="Function">comm</a>      <a id="719" class="Symbol">to</a> <a id="722" class="Function">+-comm</a>
   <a id="731" class="Symbol">)</a>
 
-<a id="734" class="Keyword">open</a> <a id="739" class="Keyword">import</a> <a id="746" href="Algebra.Definitions.html" class="Module">Algebra.Definitions</a> <a id="766" href="Algebra.Bundles.html#7999" class="Field Operator">_≈_</a>
+<a id="734" class="Keyword">open</a> <a id="739" class="Keyword">import</a> <a id="746" href="Algebra.Definitions.html" class="Module">Algebra.Definitions</a> <a id="766" href="Algebra.Bundles.html#8001" class="Field Operator">_≈_</a>
   <a id="772" class="Keyword">using</a> <a id="778" class="Symbol">(</a><a id="779" href="Algebra.Definitions.html#2663" class="Function">LeftInvertible</a><a id="793" class="Symbol">;</a> <a id="795" href="Algebra.Definitions.html#2751" class="Function">RightInvertible</a><a id="810" class="Symbol">;</a> <a id="812" href="Algebra.Definitions.html#2981" class="Function">Invertible</a><a id="822" class="Symbol">)</a>
 
 <a id="825" class="Keyword">private</a> <a id="833" class="Keyword">variable</a>
-  <a id="844" href="Algebra.Properties.CommutativeMonoid.html#844" class="Generalizable">x</a> <a id="846" class="Symbol">:</a> <a id="848" href="Algebra.Bundles.html#7967" class="Field">Carrier</a>
+  <a id="844" href="Algebra.Properties.CommutativeMonoid.html#844" class="Generalizable">x</a> <a id="846" class="Symbol">:</a> <a id="848" href="Algebra.Bundles.html#7969" class="Field">Carrier</a>
 
 
 <a id="858" class="Comment">------------------------------------------------------------------------</a>
 <a id="931" class="Comment">-- Re-export properties of commutative semigroups</a>
 
-<a id="982" class="Keyword">open</a> <a id="987" class="Keyword">import</a> <a id="994" href="Algebra.Properties.CommutativeSemigroup.html" class="Module">Algebra.Properties.CommutativeSemigroup</a> <a id="1034" href="Algebra.Bundles.html#8383" class="Function">commutativeSemigroup</a> <a id="1055" class="Keyword">public</a>
+<a id="982" class="Keyword">open</a> <a id="987" class="Keyword">import</a> <a id="994" href="Algebra.Properties.CommutativeSemigroup.html" class="Module">Algebra.Properties.CommutativeSemigroup</a> <a id="1034" href="Algebra.Bundles.html#8385" class="Function">commutativeSemigroup</a> <a id="1055" class="Keyword">public</a>
 
 <a id="1063" class="Comment">------------------------------------------------------------------------</a>
 <a id="1136" class="Comment">-- Additional properties</a>

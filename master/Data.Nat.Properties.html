@@ -14,8 +14,8 @@
 
 <a id="389" class="Keyword">open</a> <a id="394" class="Keyword">import</a> <a id="401" href="Axiom.UniquenessOfIdentityProofs.html" class="Module">Axiom.UniquenessOfIdentityProofs</a> <a id="434" class="Keyword">using</a> <a id="440" class="Symbol">(</a><a id="441" class="Keyword">module</a> <a id="448" href="Axiom.UniquenessOfIdentityProofs.html#2311" class="Module">Decidable⇒UIP</a><a id="461" class="Symbol">)</a>
 <a id="463" class="Keyword">open</a> <a id="468" class="Keyword">import</a> <a id="475" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>
-  <a id="493" class="Keyword">using</a> <a id="499" class="Symbol">(</a><a id="500" href="Algebra.Bundles.html#1749" class="Record">Magma</a><a id="505" class="Symbol">;</a> <a id="507" href="Algebra.Bundles.html#4747" class="Record">Semigroup</a><a id="516" class="Symbol">;</a> <a id="518" href="Algebra.Bundles.html#5472" class="Record">CommutativeSemigroup</a><a id="538" class="Symbol">;</a> <a id="540" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a><a id="557" class="Symbol">;</a> <a id="559" href="Algebra.Bundles.html#7306" class="Record">Monoid</a>
-        <a id="574" class="Symbol">;</a> <a id="576" href="Algebra.Bundles.html#18446" class="Record">Semiring</a><a id="584" class="Symbol">;</a> <a id="586" href="Algebra.Bundles.html#19571" class="Record">CommutativeSemiring</a><a id="605" class="Symbol">;</a> <a id="607" href="Algebra.Bundles.html#15676" class="Record">CommutativeSemiringWithoutOne</a><a id="636" class="Symbol">)</a>
+  <a id="493" class="Keyword">using</a> <a id="499" class="Symbol">(</a><a id="500" href="Algebra.Bundles.html#1750" class="Record">Magma</a><a id="505" class="Symbol">;</a> <a id="507" href="Algebra.Bundles.html#4748" class="Record">Semigroup</a><a id="516" class="Symbol">;</a> <a id="518" href="Algebra.Bundles.html#5473" class="Record">CommutativeSemigroup</a><a id="538" class="Symbol">;</a> <a id="540" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a><a id="557" class="Symbol">;</a> <a id="559" href="Algebra.Bundles.html#7308" class="Record">Monoid</a>
+        <a id="574" class="Symbol">;</a> <a id="576" href="Algebra.Bundles.html#18451" class="Record">Semiring</a><a id="584" class="Symbol">;</a> <a id="586" href="Algebra.Bundles.html#19576" class="Record">CommutativeSemiring</a><a id="605" class="Symbol">;</a> <a id="607" href="Algebra.Bundles.html#15680" class="Record">CommutativeSemiringWithoutOne</a><a id="636" class="Symbol">)</a>
 <a id="638" class="Keyword">open</a> <a id="643" class="Keyword">import</a> <a id="650" href="Algebra.Definitions.RawMagma.html" class="Module">Algebra.Definitions.RawMagma</a> <a id="679" class="Keyword">using</a> <a id="685" class="Symbol">(</a><a id="686" href="Algebra.Definitions.RawMagma.html#1418" class="InductiveConstructor Operator">_,_</a><a id="689" class="Symbol">)</a>
 <a id="691" class="Keyword">open</a> <a id="696" class="Keyword">import</a> <a id="703" href="Algebra.Morphism.html" class="Module">Algebra.Morphism</a>
 <a id="720" class="Keyword">open</a> <a id="725" class="Keyword">import</a> <a id="732" href="Algebra.Consequences.Propositional.html" class="Module">Algebra.Consequences.Propositional</a>
@@ -586,65 +586,65 @@
 <a id="16550" class="Comment">------------------------------------------------------------------------</a>
 <a id="16623" class="Comment">-- Structures</a>
 
-<a id="+-isMagma"></a><a id="16638" href="Data.Nat.Properties.html#16638" class="Function">+-isMagma</a> <a id="16648" class="Symbol">:</a> <a id="16650" href="Algebra.Structures.html#1754" class="Record">IsMagma</a> <a id="16658" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
+<a id="+-isMagma"></a><a id="16638" href="Data.Nat.Properties.html#16638" class="Function">+-isMagma</a> <a id="16648" class="Symbol">:</a> <a id="16650" href="Algebra.Structures.html#1755" class="Record">IsMagma</a> <a id="16658" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
 <a id="16662" href="Data.Nat.Properties.html#16638" class="Function">+-isMagma</a> <a id="16672" class="Symbol">=</a> <a id="16674" class="Keyword">record</a>
-  <a id="16683" class="Symbol">{</a> <a id="16685" href="Algebra.Structures.html#1806" class="Field">isEquivalence</a> <a id="16699" class="Symbol">=</a> <a id="16701" href="Relation.Binary.PropositionalEquality.Properties.html#5521" class="Function">isEquivalence</a>
-  <a id="16717" class="Symbol">;</a> <a id="16719" href="Algebra.Structures.html#1844" class="Field">∙-cong</a>        <a id="16733" class="Symbol">=</a> <a id="16735" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="16741" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
+  <a id="16683" class="Symbol">{</a> <a id="16685" href="Algebra.Structures.html#1807" class="Field">isEquivalence</a> <a id="16699" class="Symbol">=</a> <a id="16701" href="Relation.Binary.PropositionalEquality.Properties.html#5521" class="Function">isEquivalence</a>
+  <a id="16717" class="Symbol">;</a> <a id="16719" href="Algebra.Structures.html#1845" class="Field">∙-cong</a>        <a id="16733" class="Symbol">=</a> <a id="16735" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="16741" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
   <a id="16747" class="Symbol">}</a>
 
-<a id="+-isSemigroup"></a><a id="16750" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a> <a id="16764" class="Symbol">:</a> <a id="16766" href="Algebra.Structures.html#3355" class="Record">IsSemigroup</a> <a id="16778" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
+<a id="+-isSemigroup"></a><a id="16750" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a> <a id="16764" class="Symbol">:</a> <a id="16766" href="Algebra.Structures.html#3356" class="Record">IsSemigroup</a> <a id="16778" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
 <a id="16782" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a> <a id="16796" class="Symbol">=</a> <a id="16798" class="Keyword">record</a>
-  <a id="16807" class="Symbol">{</a> <a id="16809" href="Algebra.Structures.html#3411" class="Field">isMagma</a> <a id="16817" class="Symbol">=</a> <a id="16819" href="Data.Nat.Properties.html#16638" class="Function">+-isMagma</a>
-  <a id="16831" class="Symbol">;</a> <a id="16833" href="Algebra.Structures.html#3435" class="Field">assoc</a>   <a id="16841" class="Symbol">=</a> <a id="16843" href="Data.Nat.Properties.html#15705" class="Function">+-assoc</a>
+  <a id="16807" class="Symbol">{</a> <a id="16809" href="Algebra.Structures.html#3412" class="Field">isMagma</a> <a id="16817" class="Symbol">=</a> <a id="16819" href="Data.Nat.Properties.html#16638" class="Function">+-isMagma</a>
+  <a id="16831" class="Symbol">;</a> <a id="16833" href="Algebra.Structures.html#3436" class="Field">assoc</a>   <a id="16841" class="Symbol">=</a> <a id="16843" href="Data.Nat.Properties.html#15705" class="Function">+-assoc</a>
   <a id="16853" class="Symbol">}</a>
 
-<a id="+-isCommutativeSemigroup"></a><a id="16856" href="Data.Nat.Properties.html#16856" class="Function">+-isCommutativeSemigroup</a> <a id="16881" class="Symbol">:</a> <a id="16883" href="Algebra.Structures.html#3657" class="Record">IsCommutativeSemigroup</a> <a id="16906" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
+<a id="+-isCommutativeSemigroup"></a><a id="16856" href="Data.Nat.Properties.html#16856" class="Function">+-isCommutativeSemigroup</a> <a id="16881" class="Symbol">:</a> <a id="16883" href="Algebra.Structures.html#3658" class="Record">IsCommutativeSemigroup</a> <a id="16906" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a>
 <a id="16910" href="Data.Nat.Properties.html#16856" class="Function">+-isCommutativeSemigroup</a> <a id="16935" class="Symbol">=</a> <a id="16937" class="Keyword">record</a>
-  <a id="16946" class="Symbol">{</a> <a id="16948" href="Algebra.Structures.html#3724" class="Field">isSemigroup</a> <a id="16960" class="Symbol">=</a> <a id="16962" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a>
-  <a id="16978" class="Symbol">;</a> <a id="16980" href="Algebra.Structures.html#3756" class="Field">comm</a>        <a id="16992" class="Symbol">=</a> <a id="16994" href="Data.Nat.Properties.html#16038" class="Function">+-comm</a>
+  <a id="16946" class="Symbol">{</a> <a id="16948" href="Algebra.Structures.html#3725" class="Field">isSemigroup</a> <a id="16960" class="Symbol">=</a> <a id="16962" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a>
+  <a id="16978" class="Symbol">;</a> <a id="16980" href="Algebra.Structures.html#3757" class="Field">comm</a>        <a id="16992" class="Symbol">=</a> <a id="16994" href="Data.Nat.Properties.html#16038" class="Function">+-comm</a>
   <a id="17003" class="Symbol">}</a>
 
-<a id="+-0-isMonoid"></a><a id="17006" href="Data.Nat.Properties.html#17006" class="Function">+-0-isMonoid</a> <a id="17019" class="Symbol">:</a> <a id="17021" href="Algebra.Structures.html#4800" class="Record">IsMonoid</a> <a id="17030" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="17034" class="Number">0</a>
+<a id="+-0-isMonoid"></a><a id="17006" href="Data.Nat.Properties.html#17006" class="Function">+-0-isMonoid</a> <a id="17019" class="Symbol">:</a> <a id="17021" href="Algebra.Structures.html#4802" class="Record">IsMonoid</a> <a id="17030" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="17034" class="Number">0</a>
 <a id="17036" href="Data.Nat.Properties.html#17006" class="Function">+-0-isMonoid</a> <a id="17049" class="Symbol">=</a> <a id="17051" class="Keyword">record</a>
-  <a id="17060" class="Symbol">{</a> <a id="17062" href="Algebra.Structures.html#4861" class="Field">isSemigroup</a> <a id="17074" class="Symbol">=</a> <a id="17076" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a>
-  <a id="17092" class="Symbol">;</a> <a id="17094" href="Algebra.Structures.html#4893" class="Field">identity</a>    <a id="17106" class="Symbol">=</a> <a id="17108" href="Data.Nat.Properties.html#15970" class="Function">+-identity</a>
+  <a id="17060" class="Symbol">{</a> <a id="17062" href="Algebra.Structures.html#4863" class="Field">isSemigroup</a> <a id="17074" class="Symbol">=</a> <a id="17076" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a>
+  <a id="17092" class="Symbol">;</a> <a id="17094" href="Algebra.Structures.html#4895" class="Field">identity</a>    <a id="17106" class="Symbol">=</a> <a id="17108" href="Data.Nat.Properties.html#15970" class="Function">+-identity</a>
   <a id="17121" class="Symbol">}</a>
 
-<a id="+-0-isCommutativeMonoid"></a><a id="17124" href="Data.Nat.Properties.html#17124" class="Function">+-0-isCommutativeMonoid</a> <a id="17148" class="Symbol">:</a> <a id="17150" href="Algebra.Structures.html#5210" class="Record">IsCommutativeMonoid</a> <a id="17170" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="17174" class="Number">0</a>
+<a id="+-0-isCommutativeMonoid"></a><a id="17124" href="Data.Nat.Properties.html#17124" class="Function">+-0-isCommutativeMonoid</a> <a id="17148" class="Symbol">:</a> <a id="17150" href="Algebra.Structures.html#5212" class="Record">IsCommutativeMonoid</a> <a id="17170" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="17174" class="Number">0</a>
 <a id="17176" href="Data.Nat.Properties.html#17124" class="Function">+-0-isCommutativeMonoid</a> <a id="17200" class="Symbol">=</a> <a id="17202" class="Keyword">record</a>
-  <a id="17211" class="Symbol">{</a> <a id="17213" href="Algebra.Structures.html#5282" class="Field">isMonoid</a> <a id="17222" class="Symbol">=</a> <a id="17224" href="Data.Nat.Properties.html#17006" class="Function">+-0-isMonoid</a>
-  <a id="17239" class="Symbol">;</a> <a id="17241" href="Algebra.Structures.html#5310" class="Field">comm</a>     <a id="17250" class="Symbol">=</a> <a id="17252" href="Data.Nat.Properties.html#16038" class="Function">+-comm</a>
+  <a id="17211" class="Symbol">{</a> <a id="17213" href="Algebra.Structures.html#5284" class="Field">isMonoid</a> <a id="17222" class="Symbol">=</a> <a id="17224" href="Data.Nat.Properties.html#17006" class="Function">+-0-isMonoid</a>
+  <a id="17239" class="Symbol">;</a> <a id="17241" href="Algebra.Structures.html#5312" class="Field">comm</a>     <a id="17250" class="Symbol">=</a> <a id="17252" href="Data.Nat.Properties.html#16038" class="Function">+-comm</a>
   <a id="17261" class="Symbol">}</a>
 
 <a id="17264" class="Comment">------------------------------------------------------------------------</a>
 <a id="17337" class="Comment">-- Bundles</a>
 
-<a id="+-magma"></a><a id="17349" href="Data.Nat.Properties.html#17349" class="Function">+-magma</a> <a id="17357" class="Symbol">:</a> <a id="17359" href="Algebra.Bundles.html#1749" class="Record">Magma</a> <a id="17365" href="Level.html#512" class="Function">0ℓ</a> <a id="17368" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-magma"></a><a id="17349" href="Data.Nat.Properties.html#17349" class="Function">+-magma</a> <a id="17357" class="Symbol">:</a> <a id="17359" href="Algebra.Bundles.html#1750" class="Record">Magma</a> <a id="17365" href="Level.html#512" class="Function">0ℓ</a> <a id="17368" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17371" href="Data.Nat.Properties.html#17349" class="Function">+-magma</a> <a id="17379" class="Symbol">=</a> <a id="17381" class="Keyword">record</a>
-  <a id="17390" class="Symbol">{</a> <a id="17392" href="Algebra.Bundles.html#1901" class="Field">isMagma</a> <a id="17400" class="Symbol">=</a> <a id="17402" href="Data.Nat.Properties.html#16638" class="Function">+-isMagma</a>
+  <a id="17390" class="Symbol">{</a> <a id="17392" href="Algebra.Bundles.html#1902" class="Field">isMagma</a> <a id="17400" class="Symbol">=</a> <a id="17402" href="Data.Nat.Properties.html#16638" class="Function">+-isMagma</a>
   <a id="17414" class="Symbol">}</a>
 
-<a id="+-semigroup"></a><a id="17417" href="Data.Nat.Properties.html#17417" class="Function">+-semigroup</a> <a id="17429" class="Symbol">:</a> <a id="17431" href="Algebra.Bundles.html#4747" class="Record">Semigroup</a> <a id="17441" href="Level.html#512" class="Function">0ℓ</a> <a id="17444" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-semigroup"></a><a id="17417" href="Data.Nat.Properties.html#17417" class="Function">+-semigroup</a> <a id="17429" class="Symbol">:</a> <a id="17431" href="Algebra.Bundles.html#4748" class="Record">Semigroup</a> <a id="17441" href="Level.html#512" class="Function">0ℓ</a> <a id="17444" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17447" href="Data.Nat.Properties.html#17417" class="Function">+-semigroup</a> <a id="17459" class="Symbol">=</a> <a id="17461" class="Keyword">record</a>
-  <a id="17470" class="Symbol">{</a> <a id="17472" href="Algebra.Bundles.html#4915" class="Field">isSemigroup</a> <a id="17484" class="Symbol">=</a> <a id="17486" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a>
+  <a id="17470" class="Symbol">{</a> <a id="17472" href="Algebra.Bundles.html#4916" class="Field">isSemigroup</a> <a id="17484" class="Symbol">=</a> <a id="17486" href="Data.Nat.Properties.html#16750" class="Function">+-isSemigroup</a>
   <a id="17502" class="Symbol">}</a>
 
-<a id="+-commutativeSemigroup"></a><a id="17505" href="Data.Nat.Properties.html#17505" class="Function">+-commutativeSemigroup</a> <a id="17528" class="Symbol">:</a> <a id="17530" href="Algebra.Bundles.html#5472" class="Record">CommutativeSemigroup</a> <a id="17551" href="Level.html#512" class="Function">0ℓ</a> <a id="17554" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-commutativeSemigroup"></a><a id="17505" href="Data.Nat.Properties.html#17505" class="Function">+-commutativeSemigroup</a> <a id="17528" class="Symbol">:</a> <a id="17530" href="Algebra.Bundles.html#5473" class="Record">CommutativeSemigroup</a> <a id="17551" href="Level.html#512" class="Function">0ℓ</a> <a id="17554" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17557" href="Data.Nat.Properties.html#17505" class="Function">+-commutativeSemigroup</a> <a id="17580" class="Symbol">=</a> <a id="17582" class="Keyword">record</a>
-  <a id="17591" class="Symbol">{</a> <a id="17593" href="Algebra.Bundles.html#5687" class="Field">isCommutativeSemigroup</a> <a id="17616" class="Symbol">=</a> <a id="17618" href="Data.Nat.Properties.html#16856" class="Function">+-isCommutativeSemigroup</a>
+  <a id="17591" class="Symbol">{</a> <a id="17593" href="Algebra.Bundles.html#5688" class="Field">isCommutativeSemigroup</a> <a id="17616" class="Symbol">=</a> <a id="17618" href="Data.Nat.Properties.html#16856" class="Function">+-isCommutativeSemigroup</a>
   <a id="17645" class="Symbol">}</a>
 
-<a id="+-0-monoid"></a><a id="17648" href="Data.Nat.Properties.html#17648" class="Function">+-0-monoid</a> <a id="17659" class="Symbol">:</a> <a id="17661" href="Algebra.Bundles.html#7306" class="Record">Monoid</a> <a id="17668" href="Level.html#512" class="Function">0ℓ</a> <a id="17671" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-0-monoid"></a><a id="17648" href="Data.Nat.Properties.html#17648" class="Function">+-0-monoid</a> <a id="17659" class="Symbol">:</a> <a id="17661" href="Algebra.Bundles.html#7308" class="Record">Monoid</a> <a id="17668" href="Level.html#512" class="Function">0ℓ</a> <a id="17671" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17674" href="Data.Nat.Properties.html#17648" class="Function">+-0-monoid</a> <a id="17685" class="Symbol">=</a> <a id="17687" class="Keyword">record</a>
-  <a id="17696" class="Symbol">{</a> <a id="17698" href="Algebra.Bundles.html#7485" class="Field">isMonoid</a> <a id="17707" class="Symbol">=</a> <a id="17709" href="Data.Nat.Properties.html#17006" class="Function">+-0-isMonoid</a>
+  <a id="17696" class="Symbol">{</a> <a id="17698" href="Algebra.Bundles.html#7487" class="Field">isMonoid</a> <a id="17707" class="Symbol">=</a> <a id="17709" href="Data.Nat.Properties.html#17006" class="Function">+-0-isMonoid</a>
   <a id="17724" class="Symbol">}</a>
 
-<a id="+-0-commutativeMonoid"></a><a id="17727" href="Data.Nat.Properties.html#17727" class="Function">+-0-commutativeMonoid</a> <a id="17749" class="Symbol">:</a> <a id="17751" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a> <a id="17769" href="Level.html#512" class="Function">0ℓ</a> <a id="17772" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-0-commutativeMonoid"></a><a id="17727" href="Data.Nat.Properties.html#17727" class="Function">+-0-commutativeMonoid</a> <a id="17749" class="Symbol">:</a> <a id="17751" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a> <a id="17769" href="Level.html#512" class="Function">0ℓ</a> <a id="17772" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17775" href="Data.Nat.Properties.html#17727" class="Function">+-0-commutativeMonoid</a> <a id="17797" class="Symbol">=</a> <a id="17799" class="Keyword">record</a>
-  <a id="17808" class="Symbol">{</a> <a id="17810" href="Algebra.Bundles.html#8111" class="Field">isCommutativeMonoid</a> <a id="17830" class="Symbol">=</a> <a id="17832" href="Data.Nat.Properties.html#17124" class="Function">+-0-isCommutativeMonoid</a>
+  <a id="17808" class="Symbol">{</a> <a id="17810" href="Algebra.Bundles.html#8113" class="Field">isCommutativeMonoid</a> <a id="17830" class="Symbol">=</a> <a id="17832" href="Data.Nat.Properties.html#17124" class="Function">+-0-isCommutativeMonoid</a>
   <a id="17858" class="Symbol">}</a>
 
-<a id="∸-magma"></a><a id="17861" href="Data.Nat.Properties.html#17861" class="Function">∸-magma</a> <a id="17869" class="Symbol">:</a> <a id="17871" href="Algebra.Bundles.html#1749" class="Record">Magma</a> <a id="17877" href="Level.html#512" class="Function">0ℓ</a> <a id="17880" href="Level.html#512" class="Function">0ℓ</a>
+<a id="∸-magma"></a><a id="17861" href="Data.Nat.Properties.html#17861" class="Function">∸-magma</a> <a id="17869" class="Symbol">:</a> <a id="17871" href="Algebra.Bundles.html#1750" class="Record">Magma</a> <a id="17877" href="Level.html#512" class="Function">0ℓ</a> <a id="17880" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17883" href="Data.Nat.Properties.html#17861" class="Function">∸-magma</a> <a id="17891" class="Symbol">=</a> <a id="17893" href="Relation.Binary.PropositionalEquality.Algebra.html#949" class="Function">magma</a> <a id="17899" href="Data.Nat.Base.html#4434" class="Primitive Operator">_∸_</a>
 
 
@@ -842,90 +842,90 @@
 <a id="23705" class="Comment">------------------------------------------------------------------------</a>
 <a id="23778" class="Comment">-- Structures</a>
 
-<a id="*-isMagma"></a><a id="23793" href="Data.Nat.Properties.html#23793" class="Function">*-isMagma</a> <a id="23803" class="Symbol">:</a> <a id="23805" href="Algebra.Structures.html#1754" class="Record">IsMagma</a> <a id="23813" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
+<a id="*-isMagma"></a><a id="23793" href="Data.Nat.Properties.html#23793" class="Function">*-isMagma</a> <a id="23803" class="Symbol">:</a> <a id="23805" href="Algebra.Structures.html#1755" class="Record">IsMagma</a> <a id="23813" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
 <a id="23817" href="Data.Nat.Properties.html#23793" class="Function">*-isMagma</a> <a id="23827" class="Symbol">=</a> <a id="23829" class="Keyword">record</a>
-  <a id="23838" class="Symbol">{</a> <a id="23840" href="Algebra.Structures.html#1806" class="Field">isEquivalence</a> <a id="23854" class="Symbol">=</a> <a id="23856" href="Relation.Binary.PropositionalEquality.Properties.html#5521" class="Function">isEquivalence</a>
-  <a id="23872" class="Symbol">;</a> <a id="23874" href="Algebra.Structures.html#1844" class="Field">∙-cong</a>        <a id="23888" class="Symbol">=</a> <a id="23890" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="23896" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
+  <a id="23838" class="Symbol">{</a> <a id="23840" href="Algebra.Structures.html#1807" class="Field">isEquivalence</a> <a id="23854" class="Symbol">=</a> <a id="23856" href="Relation.Binary.PropositionalEquality.Properties.html#5521" class="Function">isEquivalence</a>
+  <a id="23872" class="Symbol">;</a> <a id="23874" href="Algebra.Structures.html#1845" class="Field">∙-cong</a>        <a id="23888" class="Symbol">=</a> <a id="23890" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="23896" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
   <a id="23902" class="Symbol">}</a>
 
-<a id="*-isSemigroup"></a><a id="23905" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a> <a id="23919" class="Symbol">:</a> <a id="23921" href="Algebra.Structures.html#3355" class="Record">IsSemigroup</a> <a id="23933" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
+<a id="*-isSemigroup"></a><a id="23905" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a> <a id="23919" class="Symbol">:</a> <a id="23921" href="Algebra.Structures.html#3356" class="Record">IsSemigroup</a> <a id="23933" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
 <a id="23937" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a> <a id="23951" class="Symbol">=</a> <a id="23953" class="Keyword">record</a>
-  <a id="23962" class="Symbol">{</a> <a id="23964" href="Algebra.Structures.html#3411" class="Field">isMagma</a> <a id="23972" class="Symbol">=</a> <a id="23974" href="Data.Nat.Properties.html#23793" class="Function">*-isMagma</a>
-  <a id="23986" class="Symbol">;</a> <a id="23988" href="Algebra.Structures.html#3435" class="Field">assoc</a>   <a id="23996" class="Symbol">=</a> <a id="23998" href="Data.Nat.Properties.html#23427" class="Function">*-assoc</a>
+  <a id="23962" class="Symbol">{</a> <a id="23964" href="Algebra.Structures.html#3412" class="Field">isMagma</a> <a id="23972" class="Symbol">=</a> <a id="23974" href="Data.Nat.Properties.html#23793" class="Function">*-isMagma</a>
+  <a id="23986" class="Symbol">;</a> <a id="23988" href="Algebra.Structures.html#3436" class="Field">assoc</a>   <a id="23996" class="Symbol">=</a> <a id="23998" href="Data.Nat.Properties.html#23427" class="Function">*-assoc</a>
   <a id="24008" class="Symbol">}</a>
 
-<a id="*-isCommutativeSemigroup"></a><a id="24011" href="Data.Nat.Properties.html#24011" class="Function">*-isCommutativeSemigroup</a> <a id="24036" class="Symbol">:</a> <a id="24038" href="Algebra.Structures.html#3657" class="Record">IsCommutativeSemigroup</a> <a id="24061" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
+<a id="*-isCommutativeSemigroup"></a><a id="24011" href="Data.Nat.Properties.html#24011" class="Function">*-isCommutativeSemigroup</a> <a id="24036" class="Symbol">:</a> <a id="24038" href="Algebra.Structures.html#3658" class="Record">IsCommutativeSemigroup</a> <a id="24061" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
 <a id="24065" href="Data.Nat.Properties.html#24011" class="Function">*-isCommutativeSemigroup</a> <a id="24090" class="Symbol">=</a> <a id="24092" class="Keyword">record</a>
-  <a id="24101" class="Symbol">{</a> <a id="24103" href="Algebra.Structures.html#3724" class="Field">isSemigroup</a> <a id="24115" class="Symbol">=</a> <a id="24117" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a>
-  <a id="24133" class="Symbol">;</a> <a id="24135" href="Algebra.Structures.html#3756" class="Field">comm</a>        <a id="24147" class="Symbol">=</a> <a id="24149" href="Data.Nat.Properties.html#22737" class="Function">*-comm</a>
+  <a id="24101" class="Symbol">{</a> <a id="24103" href="Algebra.Structures.html#3725" class="Field">isSemigroup</a> <a id="24115" class="Symbol">=</a> <a id="24117" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a>
+  <a id="24133" class="Symbol">;</a> <a id="24135" href="Algebra.Structures.html#3757" class="Field">comm</a>        <a id="24147" class="Symbol">=</a> <a id="24149" href="Data.Nat.Properties.html#22737" class="Function">*-comm</a>
   <a id="24158" class="Symbol">}</a>
 
-<a id="*-1-isMonoid"></a><a id="24161" href="Data.Nat.Properties.html#24161" class="Function">*-1-isMonoid</a> <a id="24174" class="Symbol">:</a> <a id="24176" href="Algebra.Structures.html#4800" class="Record">IsMonoid</a> <a id="24185" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24189" class="Number">1</a>
+<a id="*-1-isMonoid"></a><a id="24161" href="Data.Nat.Properties.html#24161" class="Function">*-1-isMonoid</a> <a id="24174" class="Symbol">:</a> <a id="24176" href="Algebra.Structures.html#4802" class="Record">IsMonoid</a> <a id="24185" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24189" class="Number">1</a>
 <a id="24191" href="Data.Nat.Properties.html#24161" class="Function">*-1-isMonoid</a> <a id="24204" class="Symbol">=</a> <a id="24206" class="Keyword">record</a>
-  <a id="24215" class="Symbol">{</a> <a id="24217" href="Algebra.Structures.html#4861" class="Field">isSemigroup</a> <a id="24229" class="Symbol">=</a> <a id="24231" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a>
-  <a id="24247" class="Symbol">;</a> <a id="24249" href="Algebra.Structures.html#4893" class="Field">identity</a>    <a id="24261" class="Symbol">=</a> <a id="24263" href="Data.Nat.Properties.html#22500" class="Function">*-identity</a>
+  <a id="24215" class="Symbol">{</a> <a id="24217" href="Algebra.Structures.html#4863" class="Field">isSemigroup</a> <a id="24229" class="Symbol">=</a> <a id="24231" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a>
+  <a id="24247" class="Symbol">;</a> <a id="24249" href="Algebra.Structures.html#4895" class="Field">identity</a>    <a id="24261" class="Symbol">=</a> <a id="24263" href="Data.Nat.Properties.html#22500" class="Function">*-identity</a>
   <a id="24276" class="Symbol">}</a>
 
-<a id="*-1-isCommutativeMonoid"></a><a id="24279" href="Data.Nat.Properties.html#24279" class="Function">*-1-isCommutativeMonoid</a> <a id="24303" class="Symbol">:</a> <a id="24305" href="Algebra.Structures.html#5210" class="Record">IsCommutativeMonoid</a> <a id="24325" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24329" class="Number">1</a>
+<a id="*-1-isCommutativeMonoid"></a><a id="24279" href="Data.Nat.Properties.html#24279" class="Function">*-1-isCommutativeMonoid</a> <a id="24303" class="Symbol">:</a> <a id="24305" href="Algebra.Structures.html#5212" class="Record">IsCommutativeMonoid</a> <a id="24325" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24329" class="Number">1</a>
 <a id="24331" href="Data.Nat.Properties.html#24279" class="Function">*-1-isCommutativeMonoid</a> <a id="24355" class="Symbol">=</a> <a id="24357" class="Keyword">record</a>
-  <a id="24366" class="Symbol">{</a> <a id="24368" href="Algebra.Structures.html#5282" class="Field">isMonoid</a> <a id="24377" class="Symbol">=</a> <a id="24379" href="Data.Nat.Properties.html#24161" class="Function">*-1-isMonoid</a>
-  <a id="24394" class="Symbol">;</a> <a id="24396" href="Algebra.Structures.html#5310" class="Field">comm</a>     <a id="24405" class="Symbol">=</a> <a id="24407" href="Data.Nat.Properties.html#22737" class="Function">*-comm</a>
+  <a id="24366" class="Symbol">{</a> <a id="24368" href="Algebra.Structures.html#5284" class="Field">isMonoid</a> <a id="24377" class="Symbol">=</a> <a id="24379" href="Data.Nat.Properties.html#24161" class="Function">*-1-isMonoid</a>
+  <a id="24394" class="Symbol">;</a> <a id="24396" href="Algebra.Structures.html#5312" class="Field">comm</a>     <a id="24405" class="Symbol">=</a> <a id="24407" href="Data.Nat.Properties.html#22737" class="Function">*-comm</a>
   <a id="24416" class="Symbol">}</a>
 
-<a id="+-*-isSemiring"></a><a id="24419" href="Data.Nat.Properties.html#24419" class="Function">+-*-isSemiring</a> <a id="24434" class="Symbol">:</a> <a id="24436" href="Algebra.Structures.html#15990" class="Record">IsSemiring</a> <a id="24447" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="24451" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24455" class="Number">0</a> <a id="24457" class="Number">1</a>
+<a id="+-*-isSemiring"></a><a id="24419" href="Data.Nat.Properties.html#24419" class="Function">+-*-isSemiring</a> <a id="24434" class="Symbol">:</a> <a id="24436" href="Algebra.Structures.html#15995" class="Record">IsSemiring</a> <a id="24447" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="24451" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24455" class="Number">0</a> <a id="24457" class="Number">1</a>
 <a id="24459" href="Data.Nat.Properties.html#24419" class="Function">+-*-isSemiring</a> <a id="24474" class="Symbol">=</a> <a id="24476" class="Keyword">record</a>
-  <a id="24485" class="Symbol">{</a> <a id="24487" href="Algebra.Structures.html#16059" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="24521" class="Symbol">=</a> <a id="24523" class="Keyword">record</a>
-    <a id="24534" class="Symbol">{</a> <a id="24536" href="Algebra.Structures.html#14396" class="Field">+-isCommutativeMonoid</a> <a id="24558" class="Symbol">=</a> <a id="24560" href="Data.Nat.Properties.html#17124" class="Function">+-0-isCommutativeMonoid</a>
-    <a id="24588" class="Symbol">;</a> <a id="24590" href="Algebra.Structures.html#14449" class="Field">*-cong</a>                <a id="24612" class="Symbol">=</a> <a id="24614" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="24620" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
-    <a id="24628" class="Symbol">;</a> <a id="24630" href="Algebra.Structures.html#14490" class="Field">*-assoc</a>               <a id="24652" class="Symbol">=</a> <a id="24654" href="Data.Nat.Properties.html#23427" class="Function">*-assoc</a>
-    <a id="24666" class="Symbol">;</a> <a id="24668" href="Algebra.Structures.html#14532" class="Field">*-identity</a>            <a id="24690" class="Symbol">=</a> <a id="24692" href="Data.Nat.Properties.html#22500" class="Function">*-identity</a>
-    <a id="24707" class="Symbol">;</a> <a id="24709" href="Algebra.Structures.html#14574" class="Field">distrib</a>               <a id="24731" class="Symbol">=</a> <a id="24733" href="Data.Nat.Properties.html#23346" class="Function">*-distrib-+</a>
+  <a id="24485" class="Symbol">{</a> <a id="24487" href="Algebra.Structures.html#16064" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="24521" class="Symbol">=</a> <a id="24523" class="Keyword">record</a>
+    <a id="24534" class="Symbol">{</a> <a id="24536" href="Algebra.Structures.html#14401" class="Field">+-isCommutativeMonoid</a> <a id="24558" class="Symbol">=</a> <a id="24560" href="Data.Nat.Properties.html#17124" class="Function">+-0-isCommutativeMonoid</a>
+    <a id="24588" class="Symbol">;</a> <a id="24590" href="Algebra.Structures.html#14454" class="Field">*-cong</a>                <a id="24612" class="Symbol">=</a> <a id="24614" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="24620" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a>
+    <a id="24628" class="Symbol">;</a> <a id="24630" href="Algebra.Structures.html#14495" class="Field">*-assoc</a>               <a id="24652" class="Symbol">=</a> <a id="24654" href="Data.Nat.Properties.html#23427" class="Function">*-assoc</a>
+    <a id="24666" class="Symbol">;</a> <a id="24668" href="Algebra.Structures.html#14537" class="Field">*-identity</a>            <a id="24690" class="Symbol">=</a> <a id="24692" href="Data.Nat.Properties.html#22500" class="Function">*-identity</a>
+    <a id="24707" class="Symbol">;</a> <a id="24709" href="Algebra.Structures.html#14579" class="Field">distrib</a>               <a id="24731" class="Symbol">=</a> <a id="24733" href="Data.Nat.Properties.html#23346" class="Function">*-distrib-+</a>
     <a id="24749" class="Symbol">}</a>
-  <a id="24753" class="Symbol">;</a> <a id="24755" href="Algebra.Structures.html#16149" class="Field">zero</a> <a id="24760" class="Symbol">=</a> <a id="24762" href="Data.Nat.Properties.html#22689" class="Function">*-zero</a>
+  <a id="24753" class="Symbol">;</a> <a id="24755" href="Algebra.Structures.html#16154" class="Field">zero</a> <a id="24760" class="Symbol">=</a> <a id="24762" href="Data.Nat.Properties.html#22689" class="Function">*-zero</a>
   <a id="24771" class="Symbol">}</a>
 
-<a id="+-*-isCommutativeSemiring"></a><a id="24774" href="Data.Nat.Properties.html#24774" class="Function">+-*-isCommutativeSemiring</a> <a id="24800" class="Symbol">:</a> <a id="24802" href="Algebra.Structures.html#16677" class="Record">IsCommutativeSemiring</a> <a id="24824" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="24828" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24832" class="Number">0</a> <a id="24834" class="Number">1</a>
+<a id="+-*-isCommutativeSemiring"></a><a id="24774" href="Data.Nat.Properties.html#24774" class="Function">+-*-isCommutativeSemiring</a> <a id="24800" class="Symbol">:</a> <a id="24802" href="Algebra.Structures.html#16682" class="Record">IsCommutativeSemiring</a> <a id="24824" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a> <a id="24828" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a> <a id="24832" class="Number">0</a> <a id="24834" class="Number">1</a>
 <a id="24836" href="Data.Nat.Properties.html#24774" class="Function">+-*-isCommutativeSemiring</a> <a id="24862" class="Symbol">=</a> <a id="24864" class="Keyword">record</a>
-  <a id="24873" class="Symbol">{</a> <a id="24875" href="Algebra.Structures.html#16757" class="Field">isSemiring</a> <a id="24886" class="Symbol">=</a> <a id="24888" href="Data.Nat.Properties.html#24419" class="Function">+-*-isSemiring</a>
-  <a id="24905" class="Symbol">;</a> <a id="24907" href="Algebra.Structures.html#16795" class="Field">*-comm</a>     <a id="24918" class="Symbol">=</a> <a id="24920" href="Data.Nat.Properties.html#22737" class="Function">*-comm</a>
+  <a id="24873" class="Symbol">{</a> <a id="24875" href="Algebra.Structures.html#16762" class="Field">isSemiring</a> <a id="24886" class="Symbol">=</a> <a id="24888" href="Data.Nat.Properties.html#24419" class="Function">+-*-isSemiring</a>
+  <a id="24905" class="Symbol">;</a> <a id="24907" href="Algebra.Structures.html#16800" class="Field">*-comm</a>     <a id="24918" class="Symbol">=</a> <a id="24920" href="Data.Nat.Properties.html#22737" class="Function">*-comm</a>
   <a id="24929" class="Symbol">}</a>
 
 <a id="24932" class="Comment">------------------------------------------------------------------------</a>
 <a id="25005" class="Comment">-- Bundles</a>
 
-<a id="*-magma"></a><a id="25017" href="Data.Nat.Properties.html#25017" class="Function">*-magma</a> <a id="25025" class="Symbol">:</a> <a id="25027" href="Algebra.Bundles.html#1749" class="Record">Magma</a> <a id="25033" href="Level.html#512" class="Function">0ℓ</a> <a id="25036" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-magma"></a><a id="25017" href="Data.Nat.Properties.html#25017" class="Function">*-magma</a> <a id="25025" class="Symbol">:</a> <a id="25027" href="Algebra.Bundles.html#1750" class="Record">Magma</a> <a id="25033" href="Level.html#512" class="Function">0ℓ</a> <a id="25036" href="Level.html#512" class="Function">0ℓ</a>
 <a id="25039" href="Data.Nat.Properties.html#25017" class="Function">*-magma</a> <a id="25047" class="Symbol">=</a> <a id="25049" class="Keyword">record</a>
-  <a id="25058" class="Symbol">{</a> <a id="25060" href="Algebra.Bundles.html#1901" class="Field">isMagma</a> <a id="25068" class="Symbol">=</a> <a id="25070" href="Data.Nat.Properties.html#23793" class="Function">*-isMagma</a>
+  <a id="25058" class="Symbol">{</a> <a id="25060" href="Algebra.Bundles.html#1902" class="Field">isMagma</a> <a id="25068" class="Symbol">=</a> <a id="25070" href="Data.Nat.Properties.html#23793" class="Function">*-isMagma</a>
   <a id="25082" class="Symbol">}</a>
 
-<a id="*-semigroup"></a><a id="25085" href="Data.Nat.Properties.html#25085" class="Function">*-semigroup</a> <a id="25097" class="Symbol">:</a> <a id="25099" href="Algebra.Bundles.html#4747" class="Record">Semigroup</a> <a id="25109" href="Level.html#512" class="Function">0ℓ</a> <a id="25112" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-semigroup"></a><a id="25085" href="Data.Nat.Properties.html#25085" class="Function">*-semigroup</a> <a id="25097" class="Symbol">:</a> <a id="25099" href="Algebra.Bundles.html#4748" class="Record">Semigroup</a> <a id="25109" href="Level.html#512" class="Function">0ℓ</a> <a id="25112" href="Level.html#512" class="Function">0ℓ</a>
 <a id="25115" href="Data.Nat.Properties.html#25085" class="Function">*-semigroup</a> <a id="25127" class="Symbol">=</a> <a id="25129" class="Keyword">record</a>
-  <a id="25138" class="Symbol">{</a> <a id="25140" href="Algebra.Bundles.html#4915" class="Field">isSemigroup</a> <a id="25152" class="Symbol">=</a> <a id="25154" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a>
+  <a id="25138" class="Symbol">{</a> <a id="25140" href="Algebra.Bundles.html#4916" class="Field">isSemigroup</a> <a id="25152" class="Symbol">=</a> <a id="25154" href="Data.Nat.Properties.html#23905" class="Function">*-isSemigroup</a>
   <a id="25170" class="Symbol">}</a>
 
-<a id="*-commutativeSemigroup"></a><a id="25173" href="Data.Nat.Properties.html#25173" class="Function">*-commutativeSemigroup</a> <a id="25196" class="Symbol">:</a> <a id="25198" href="Algebra.Bundles.html#5472" class="Record">CommutativeSemigroup</a> <a id="25219" href="Level.html#512" class="Function">0ℓ</a> <a id="25222" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-commutativeSemigroup"></a><a id="25173" href="Data.Nat.Properties.html#25173" class="Function">*-commutativeSemigroup</a> <a id="25196" class="Symbol">:</a> <a id="25198" href="Algebra.Bundles.html#5473" class="Record">CommutativeSemigroup</a> <a id="25219" href="Level.html#512" class="Function">0ℓ</a> <a id="25222" href="Level.html#512" class="Function">0ℓ</a>
 <a id="25225" href="Data.Nat.Properties.html#25173" class="Function">*-commutativeSemigroup</a> <a id="25248" class="Symbol">=</a> <a id="25250" class="Keyword">record</a>
-  <a id="25259" class="Symbol">{</a> <a id="25261" href="Algebra.Bundles.html#5687" class="Field">isCommutativeSemigroup</a> <a id="25284" class="Symbol">=</a> <a id="25286" href="Data.Nat.Properties.html#24011" class="Function">*-isCommutativeSemigroup</a>
+  <a id="25259" class="Symbol">{</a> <a id="25261" href="Algebra.Bundles.html#5688" class="Field">isCommutativeSemigroup</a> <a id="25284" class="Symbol">=</a> <a id="25286" href="Data.Nat.Properties.html#24011" class="Function">*-isCommutativeSemigroup</a>
   <a id="25313" class="Symbol">}</a>
 
-<a id="*-1-monoid"></a><a id="25316" href="Data.Nat.Properties.html#25316" class="Function">*-1-monoid</a> <a id="25327" class="Symbol">:</a> <a id="25329" href="Algebra.Bundles.html#7306" class="Record">Monoid</a> <a id="25336" href="Level.html#512" class="Function">0ℓ</a> <a id="25339" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-1-monoid"></a><a id="25316" href="Data.Nat.Properties.html#25316" class="Function">*-1-monoid</a> <a id="25327" class="Symbol">:</a> <a id="25329" href="Algebra.Bundles.html#7308" class="Record">Monoid</a> <a id="25336" href="Level.html#512" class="Function">0ℓ</a> <a id="25339" href="Level.html#512" class="Function">0ℓ</a>
 <a id="25342" href="Data.Nat.Properties.html#25316" class="Function">*-1-monoid</a> <a id="25353" class="Symbol">=</a> <a id="25355" class="Keyword">record</a>
-  <a id="25364" class="Symbol">{</a> <a id="25366" href="Algebra.Bundles.html#7485" class="Field">isMonoid</a> <a id="25375" class="Symbol">=</a> <a id="25377" href="Data.Nat.Properties.html#24161" class="Function">*-1-isMonoid</a>
+  <a id="25364" class="Symbol">{</a> <a id="25366" href="Algebra.Bundles.html#7487" class="Field">isMonoid</a> <a id="25375" class="Symbol">=</a> <a id="25377" href="Data.Nat.Properties.html#24161" class="Function">*-1-isMonoid</a>
   <a id="25392" class="Symbol">}</a>
 
-<a id="*-1-commutativeMonoid"></a><a id="25395" href="Data.Nat.Properties.html#25395" class="Function">*-1-commutativeMonoid</a> <a id="25417" class="Symbol">:</a> <a id="25419" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a> <a id="25437" href="Level.html#512" class="Function">0ℓ</a> <a id="25440" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-1-commutativeMonoid"></a><a id="25395" href="Data.Nat.Properties.html#25395" class="Function">*-1-commutativeMonoid</a> <a id="25417" class="Symbol">:</a> <a id="25419" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a> <a id="25437" href="Level.html#512" class="Function">0ℓ</a> <a id="25440" href="Level.html#512" class="Function">0ℓ</a>
 <a id="25443" href="Data.Nat.Properties.html#25395" class="Function">*-1-commutativeMonoid</a> <a id="25465" class="Symbol">=</a> <a id="25467" class="Keyword">record</a>
-  <a id="25476" class="Symbol">{</a> <a id="25478" href="Algebra.Bundles.html#8111" class="Field">isCommutativeMonoid</a> <a id="25498" class="Symbol">=</a> <a id="25500" href="Data.Nat.Properties.html#24279" class="Function">*-1-isCommutativeMonoid</a>
+  <a id="25476" class="Symbol">{</a> <a id="25478" href="Algebra.Bundles.html#8113" class="Field">isCommutativeMonoid</a> <a id="25498" class="Symbol">=</a> <a id="25500" href="Data.Nat.Properties.html#24279" class="Function">*-1-isCommutativeMonoid</a>
   <a id="25526" class="Symbol">}</a>
 
-<a id="+-*-semiring"></a><a id="25529" href="Data.Nat.Properties.html#25529" class="Function">+-*-semiring</a> <a id="25542" class="Symbol">:</a> <a id="25544" href="Algebra.Bundles.html#18446" class="Record">Semiring</a> <a id="25553" href="Level.html#512" class="Function">0ℓ</a> <a id="25556" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-*-semiring"></a><a id="25529" href="Data.Nat.Properties.html#25529" class="Function">+-*-semiring</a> <a id="25542" class="Symbol">:</a> <a id="25544" href="Algebra.Bundles.html#18451" class="Record">Semiring</a> <a id="25553" href="Level.html#512" class="Function">0ℓ</a> <a id="25556" href="Level.html#512" class="Function">0ℓ</a>
 <a id="25559" href="Data.Nat.Properties.html#25529" class="Function">+-*-semiring</a> <a id="25572" class="Symbol">=</a> <a id="25574" class="Keyword">record</a>
-  <a id="25583" class="Symbol">{</a> <a id="25585" href="Algebra.Bundles.html#18704" class="Field">isSemiring</a> <a id="25596" class="Symbol">=</a> <a id="25598" href="Data.Nat.Properties.html#24419" class="Function">+-*-isSemiring</a>
+  <a id="25583" class="Symbol">{</a> <a id="25585" href="Algebra.Bundles.html#18709" class="Field">isSemiring</a> <a id="25596" class="Symbol">=</a> <a id="25598" href="Data.Nat.Properties.html#24419" class="Function">+-*-isSemiring</a>
   <a id="25615" class="Symbol">}</a>
 
-<a id="+-*-commutativeSemiring"></a><a id="25618" href="Data.Nat.Properties.html#25618" class="Function">+-*-commutativeSemiring</a> <a id="25642" class="Symbol">:</a> <a id="25644" href="Algebra.Bundles.html#19571" class="Record">CommutativeSemiring</a> <a id="25664" href="Level.html#512" class="Function">0ℓ</a> <a id="25667" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-*-commutativeSemiring"></a><a id="25618" href="Data.Nat.Properties.html#25618" class="Function">+-*-commutativeSemiring</a> <a id="25642" class="Symbol">:</a> <a id="25644" href="Algebra.Bundles.html#19576" class="Record">CommutativeSemiring</a> <a id="25664" href="Level.html#512" class="Function">0ℓ</a> <a id="25667" href="Level.html#512" class="Function">0ℓ</a>
 <a id="25670" href="Data.Nat.Properties.html#25618" class="Function">+-*-commutativeSemiring</a> <a id="25694" class="Symbol">=</a> <a id="25696" class="Keyword">record</a>
-  <a id="25705" class="Symbol">{</a> <a id="25707" href="Algebra.Bundles.html#19906" class="Field">isCommutativeSemiring</a> <a id="25729" class="Symbol">=</a> <a id="25731" href="Data.Nat.Properties.html#24774" class="Function">+-*-isCommutativeSemiring</a>
+  <a id="25705" class="Symbol">{</a> <a id="25707" href="Algebra.Bundles.html#19911" class="Field">isCommutativeSemiring</a> <a id="25729" class="Symbol">=</a> <a id="25731" href="Data.Nat.Properties.html#24774" class="Function">+-*-isCommutativeSemiring</a>
   <a id="25759" class="Symbol">}</a>
 
 <a id="25762" class="Comment">------------------------------------------------------------------------</a>
@@ -1302,29 +1302,29 @@
 <a id="39877" class="Comment">------------------------------------------------------------------------</a>
 <a id="39950" class="Comment">-- Structures</a>
 
-<a id="⊔-0-isMonoid"></a><a id="39965" href="Data.Nat.Properties.html#39965" class="Function">⊔-0-isMonoid</a> <a id="39978" class="Symbol">:</a> <a id="39980" href="Algebra.Structures.html#4800" class="Record">IsMonoid</a> <a id="39989" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="39993" class="Number">0</a>
+<a id="⊔-0-isMonoid"></a><a id="39965" href="Data.Nat.Properties.html#39965" class="Function">⊔-0-isMonoid</a> <a id="39978" class="Symbol">:</a> <a id="39980" href="Algebra.Structures.html#4802" class="Record">IsMonoid</a> <a id="39989" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="39993" class="Number">0</a>
 <a id="39995" href="Data.Nat.Properties.html#39965" class="Function">⊔-0-isMonoid</a> <a id="40008" class="Symbol">=</a> <a id="40010" class="Keyword">record</a>
-  <a id="40019" class="Symbol">{</a> <a id="40021" href="Algebra.Structures.html#4861" class="Field">isSemigroup</a> <a id="40033" class="Symbol">=</a> <a id="40035" href="Algebra.Construct.NaturalChoice.MaxOp.html#1511" class="Function">⊔-isSemigroup</a>
-  <a id="40051" class="Symbol">;</a> <a id="40053" href="Algebra.Structures.html#4893" class="Field">identity</a>    <a id="40065" class="Symbol">=</a> <a id="40067" href="Data.Nat.Properties.html#39809" class="Function">⊔-identity</a>
+  <a id="40019" class="Symbol">{</a> <a id="40021" href="Algebra.Structures.html#4863" class="Field">isSemigroup</a> <a id="40033" class="Symbol">=</a> <a id="40035" href="Algebra.Construct.NaturalChoice.MaxOp.html#1511" class="Function">⊔-isSemigroup</a>
+  <a id="40051" class="Symbol">;</a> <a id="40053" href="Algebra.Structures.html#4895" class="Field">identity</a>    <a id="40065" class="Symbol">=</a> <a id="40067" href="Data.Nat.Properties.html#39809" class="Function">⊔-identity</a>
   <a id="40080" class="Symbol">}</a>
 
-<a id="⊔-0-isCommutativeMonoid"></a><a id="40083" href="Data.Nat.Properties.html#40083" class="Function">⊔-0-isCommutativeMonoid</a> <a id="40107" class="Symbol">:</a> <a id="40109" href="Algebra.Structures.html#5210" class="Record">IsCommutativeMonoid</a> <a id="40129" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="40133" class="Number">0</a>
+<a id="⊔-0-isCommutativeMonoid"></a><a id="40083" href="Data.Nat.Properties.html#40083" class="Function">⊔-0-isCommutativeMonoid</a> <a id="40107" class="Symbol">:</a> <a id="40109" href="Algebra.Structures.html#5212" class="Record">IsCommutativeMonoid</a> <a id="40129" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="40133" class="Number">0</a>
 <a id="40135" href="Data.Nat.Properties.html#40083" class="Function">⊔-0-isCommutativeMonoid</a> <a id="40159" class="Symbol">=</a> <a id="40161" class="Keyword">record</a>
-  <a id="40170" class="Symbol">{</a> <a id="40172" href="Algebra.Structures.html#5282" class="Field">isMonoid</a> <a id="40181" class="Symbol">=</a> <a id="40183" href="Data.Nat.Properties.html#39965" class="Function">⊔-0-isMonoid</a>
-  <a id="40198" class="Symbol">;</a> <a id="40200" href="Algebra.Structures.html#5310" class="Field">comm</a>     <a id="40209" class="Symbol">=</a> <a id="40211" href="Algebra.Construct.NaturalChoice.MaxOp.html#1240" class="Function">⊔-comm</a>
+  <a id="40170" class="Symbol">{</a> <a id="40172" href="Algebra.Structures.html#5284" class="Field">isMonoid</a> <a id="40181" class="Symbol">=</a> <a id="40183" href="Data.Nat.Properties.html#39965" class="Function">⊔-0-isMonoid</a>
+  <a id="40198" class="Symbol">;</a> <a id="40200" href="Algebra.Structures.html#5312" class="Field">comm</a>     <a id="40209" class="Symbol">=</a> <a id="40211" href="Algebra.Construct.NaturalChoice.MaxOp.html#1240" class="Function">⊔-comm</a>
   <a id="40220" class="Symbol">}</a>
 
 <a id="40223" class="Comment">------------------------------------------------------------------------</a>
 <a id="40296" class="Comment">-- Bundles</a>
 
-<a id="⊔-0-monoid"></a><a id="40308" href="Data.Nat.Properties.html#40308" class="Function">⊔-0-monoid</a> <a id="40319" class="Symbol">:</a> <a id="40321" href="Algebra.Bundles.html#7306" class="Record">Monoid</a> <a id="40328" href="Level.html#512" class="Function">0ℓ</a> <a id="40331" href="Level.html#512" class="Function">0ℓ</a>
+<a id="⊔-0-monoid"></a><a id="40308" href="Data.Nat.Properties.html#40308" class="Function">⊔-0-monoid</a> <a id="40319" class="Symbol">:</a> <a id="40321" href="Algebra.Bundles.html#7308" class="Record">Monoid</a> <a id="40328" href="Level.html#512" class="Function">0ℓ</a> <a id="40331" href="Level.html#512" class="Function">0ℓ</a>
 <a id="40334" href="Data.Nat.Properties.html#40308" class="Function">⊔-0-monoid</a> <a id="40345" class="Symbol">=</a> <a id="40347" class="Keyword">record</a>
-  <a id="40356" class="Symbol">{</a> <a id="40358" href="Algebra.Bundles.html#7485" class="Field">isMonoid</a> <a id="40367" class="Symbol">=</a> <a id="40369" href="Data.Nat.Properties.html#39965" class="Function">⊔-0-isMonoid</a>
+  <a id="40356" class="Symbol">{</a> <a id="40358" href="Algebra.Bundles.html#7487" class="Field">isMonoid</a> <a id="40367" class="Symbol">=</a> <a id="40369" href="Data.Nat.Properties.html#39965" class="Function">⊔-0-isMonoid</a>
   <a id="40384" class="Symbol">}</a>
 
-<a id="⊔-0-commutativeMonoid"></a><a id="40387" href="Data.Nat.Properties.html#40387" class="Function">⊔-0-commutativeMonoid</a> <a id="40409" class="Symbol">:</a> <a id="40411" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a> <a id="40429" href="Level.html#512" class="Function">0ℓ</a> <a id="40432" href="Level.html#512" class="Function">0ℓ</a>
+<a id="⊔-0-commutativeMonoid"></a><a id="40387" href="Data.Nat.Properties.html#40387" class="Function">⊔-0-commutativeMonoid</a> <a id="40409" class="Symbol">:</a> <a id="40411" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a> <a id="40429" href="Level.html#512" class="Function">0ℓ</a> <a id="40432" href="Level.html#512" class="Function">0ℓ</a>
 <a id="40435" href="Data.Nat.Properties.html#40387" class="Function">⊔-0-commutativeMonoid</a> <a id="40457" class="Symbol">=</a> <a id="40459" class="Keyword">record</a>
-  <a id="40468" class="Symbol">{</a> <a id="40470" href="Algebra.Bundles.html#8111" class="Field">isCommutativeMonoid</a> <a id="40490" class="Symbol">=</a> <a id="40492" href="Data.Nat.Properties.html#40083" class="Function">⊔-0-isCommutativeMonoid</a>
+  <a id="40468" class="Symbol">{</a> <a id="40470" href="Algebra.Bundles.html#8113" class="Field">isCommutativeMonoid</a> <a id="40490" class="Symbol">=</a> <a id="40492" href="Data.Nat.Properties.html#40083" class="Function">⊔-0-isCommutativeMonoid</a>
   <a id="40518" class="Symbol">}</a>
 
 <a id="40521" class="Comment">------------------------------------------------------------------------</a>
@@ -1426,28 +1426,28 @@
 <a id="43773" class="Comment">------------------------------------------------------------------------</a>
 <a id="43846" class="Comment">-- Structures</a>
 
-<a id="⊔-⊓-isSemiringWithoutOne"></a><a id="43861" href="Data.Nat.Properties.html#43861" class="Function">⊔-⊓-isSemiringWithoutOne</a> <a id="43886" class="Symbol">:</a> <a id="43888" href="Algebra.Structures.html#11664" class="Record">IsSemiringWithoutOne</a> <a id="43909" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="43913" href="Data.Nat.Base.html#5823" class="Function Operator">_⊓_</a> <a id="43917" class="Number">0</a>
+<a id="⊔-⊓-isSemiringWithoutOne"></a><a id="43861" href="Data.Nat.Properties.html#43861" class="Function">⊔-⊓-isSemiringWithoutOne</a> <a id="43886" class="Symbol">:</a> <a id="43888" href="Algebra.Structures.html#11668" class="Record">IsSemiringWithoutOne</a> <a id="43909" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="43913" href="Data.Nat.Base.html#5823" class="Function Operator">_⊓_</a> <a id="43917" class="Number">0</a>
 <a id="43919" href="Data.Nat.Properties.html#43861" class="Function">⊔-⊓-isSemiringWithoutOne</a> <a id="43944" class="Symbol">=</a> <a id="43946" class="Keyword">record</a>
-  <a id="43955" class="Symbol">{</a> <a id="43957" href="Algebra.Structures.html#11740" class="Field">+-isCommutativeMonoid</a> <a id="43979" class="Symbol">=</a> <a id="43981" href="Data.Nat.Properties.html#40083" class="Function">⊔-0-isCommutativeMonoid</a>
-  <a id="44007" class="Symbol">;</a> <a id="44009" href="Algebra.Structures.html#11793" class="Field">*-cong</a>                <a id="44031" class="Symbol">=</a> <a id="44033" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="44039" href="Data.Nat.Base.html#5823" class="Function Operator">_⊓_</a>
-  <a id="44045" class="Symbol">;</a> <a id="44047" href="Algebra.Structures.html#11834" class="Field">*-assoc</a>               <a id="44069" class="Symbol">=</a> <a id="44071" href="Algebra.Construct.NaturalChoice.MinOp.html#2588" class="Function">⊓-assoc</a>
-  <a id="44081" class="Symbol">;</a> <a id="44083" href="Algebra.Structures.html#11876" class="Field">distrib</a>               <a id="44105" class="Symbol">=</a> <a id="44107" href="Algebra.Construct.NaturalChoice.MinMaxOp.html#2013" class="Function">⊓-distrib-⊔</a>
-  <a id="44121" class="Symbol">;</a> <a id="44123" href="Algebra.Structures.html#11924" class="Field">zero</a>                  <a id="44145" class="Symbol">=</a> <a id="44147" href="Data.Nat.Properties.html#43725" class="Function">⊓-zero</a>
+  <a id="43955" class="Symbol">{</a> <a id="43957" href="Algebra.Structures.html#11744" class="Field">+-isCommutativeMonoid</a> <a id="43979" class="Symbol">=</a> <a id="43981" href="Data.Nat.Properties.html#40083" class="Function">⊔-0-isCommutativeMonoid</a>
+  <a id="44007" class="Symbol">;</a> <a id="44009" href="Algebra.Structures.html#11797" class="Field">*-cong</a>                <a id="44031" class="Symbol">=</a> <a id="44033" href="Relation.Binary.PropositionalEquality.Core.html#1773" class="Function">cong₂</a> <a id="44039" href="Data.Nat.Base.html#5823" class="Function Operator">_⊓_</a>
+  <a id="44045" class="Symbol">;</a> <a id="44047" href="Algebra.Structures.html#11838" class="Field">*-assoc</a>               <a id="44069" class="Symbol">=</a> <a id="44071" href="Algebra.Construct.NaturalChoice.MinOp.html#2588" class="Function">⊓-assoc</a>
+  <a id="44081" class="Symbol">;</a> <a id="44083" href="Algebra.Structures.html#11880" class="Field">distrib</a>               <a id="44105" class="Symbol">=</a> <a id="44107" href="Algebra.Construct.NaturalChoice.MinMaxOp.html#2013" class="Function">⊓-distrib-⊔</a>
+  <a id="44121" class="Symbol">;</a> <a id="44123" href="Algebra.Structures.html#11928" class="Field">zero</a>                  <a id="44145" class="Symbol">=</a> <a id="44147" href="Data.Nat.Properties.html#43725" class="Function">⊓-zero</a>
   <a id="44156" class="Symbol">}</a>
 
 <a id="⊔-⊓-isCommutativeSemiringWithoutOne"></a><a id="44159" href="Data.Nat.Properties.html#44159" class="Function">⊔-⊓-isCommutativeSemiringWithoutOne</a>
-  <a id="44197" class="Symbol">:</a> <a id="44199" href="Algebra.Structures.html#13394" class="Record">IsCommutativeSemiringWithoutOne</a> <a id="44231" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="44235" href="Data.Nat.Base.html#5823" class="Function Operator">_⊓_</a> <a id="44239" class="Number">0</a>
+  <a id="44197" class="Symbol">:</a> <a id="44199" href="Algebra.Structures.html#13398" class="Record">IsCommutativeSemiringWithoutOne</a> <a id="44231" href="Data.Nat.Base.html#5457" class="Function Operator">_⊔_</a> <a id="44235" href="Data.Nat.Base.html#5823" class="Function Operator">_⊓_</a> <a id="44239" class="Number">0</a>
 <a id="44241" href="Data.Nat.Properties.html#44159" class="Function">⊔-⊓-isCommutativeSemiringWithoutOne</a> <a id="44277" class="Symbol">=</a> <a id="44279" class="Keyword">record</a>
-  <a id="44288" class="Symbol">{</a> <a id="44290" href="Algebra.Structures.html#13490" class="Field">isSemiringWithoutOne</a> <a id="44311" class="Symbol">=</a> <a id="44313" href="Data.Nat.Properties.html#43861" class="Function">⊔-⊓-isSemiringWithoutOne</a>
-  <a id="44340" class="Symbol">;</a> <a id="44342" href="Algebra.Structures.html#13545" class="Field">*-comm</a>               <a id="44363" class="Symbol">=</a> <a id="44365" href="Algebra.Construct.NaturalChoice.MinOp.html#1789" class="Function">⊓-comm</a>
+  <a id="44288" class="Symbol">{</a> <a id="44290" href="Algebra.Structures.html#13494" class="Field">isSemiringWithoutOne</a> <a id="44311" class="Symbol">=</a> <a id="44313" href="Data.Nat.Properties.html#43861" class="Function">⊔-⊓-isSemiringWithoutOne</a>
+  <a id="44340" class="Symbol">;</a> <a id="44342" href="Algebra.Structures.html#13549" class="Field">*-comm</a>               <a id="44363" class="Symbol">=</a> <a id="44365" href="Algebra.Construct.NaturalChoice.MinOp.html#1789" class="Function">⊓-comm</a>
   <a id="44374" class="Symbol">}</a>
 
 <a id="44377" class="Comment">------------------------------------------------------------------------</a>
 <a id="44450" class="Comment">-- Bundles</a>
 
-<a id="⊔-⊓-commutativeSemiringWithoutOne"></a><a id="44462" href="Data.Nat.Properties.html#44462" class="Function">⊔-⊓-commutativeSemiringWithoutOne</a> <a id="44496" class="Symbol">:</a> <a id="44498" href="Algebra.Bundles.html#15676" class="Record">CommutativeSemiringWithoutOne</a> <a id="44528" href="Level.html#512" class="Function">0ℓ</a> <a id="44531" href="Level.html#512" class="Function">0ℓ</a>
+<a id="⊔-⊓-commutativeSemiringWithoutOne"></a><a id="44462" href="Data.Nat.Properties.html#44462" class="Function">⊔-⊓-commutativeSemiringWithoutOne</a> <a id="44496" class="Symbol">:</a> <a id="44498" href="Algebra.Bundles.html#15680" class="Record">CommutativeSemiringWithoutOne</a> <a id="44528" href="Level.html#512" class="Function">0ℓ</a> <a id="44531" href="Level.html#512" class="Function">0ℓ</a>
 <a id="44534" href="Data.Nat.Properties.html#44462" class="Function">⊔-⊓-commutativeSemiringWithoutOne</a> <a id="44568" class="Symbol">=</a> <a id="44570" class="Keyword">record</a>
-  <a id="44579" class="Symbol">{</a> <a id="44581" href="Algebra.Bundles.html#16035" class="Field">isCommutativeSemiringWithoutOne</a> <a id="44613" class="Symbol">=</a>
+  <a id="44579" class="Symbol">{</a> <a id="44581" href="Algebra.Bundles.html#16039" class="Field">isCommutativeSemiringWithoutOne</a> <a id="44613" class="Symbol">=</a>
       <a id="44621" href="Data.Nat.Properties.html#44159" class="Function">⊔-⊓-isCommutativeSemiringWithoutOne</a>
   <a id="44659" class="Symbol">}</a>
 

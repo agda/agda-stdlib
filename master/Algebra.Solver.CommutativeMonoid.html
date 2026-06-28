@@ -9,14 +9,14 @@
 
 <a id="268" class="Symbol">{-#</a> <a id="272" class="Keyword">OPTIONS</a> <a id="280" class="Pragma">--without-K</a> <a id="292" class="Pragma">--safe</a> <a id="299" class="Symbol">#-}</a>
 
-<a id="304" class="Keyword">open</a> <a id="309" class="Keyword">import</a> <a id="316" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="332" class="Keyword">using</a> <a id="338" class="Symbol">(</a><a id="339" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a><a id="356" class="Symbol">)</a>
+<a id="304" class="Keyword">open</a> <a id="309" class="Keyword">import</a> <a id="316" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="332" class="Keyword">using</a> <a id="338" class="Symbol">(</a><a id="339" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a><a id="356" class="Symbol">)</a>
 
-<a id="359" class="Keyword">module</a> <a id="366" href="Algebra.Solver.CommutativeMonoid.html" class="Module">Algebra.Solver.CommutativeMonoid</a> <a id="399" class="Symbol">{</a><a id="400" href="Algebra.Solver.CommutativeMonoid.html#400" class="Bound">c</a> <a id="402" href="Algebra.Solver.CommutativeMonoid.html#402" class="Bound">ℓ</a><a id="403" class="Symbol">}</a> <a id="405" class="Symbol">(</a><a id="406" href="Algebra.Solver.CommutativeMonoid.html#406" class="Bound">M</a> <a id="408" class="Symbol">:</a> <a id="410" href="Algebra.Bundles.html#7877" class="Record">CommutativeMonoid</a> <a id="428" href="Algebra.Solver.CommutativeMonoid.html#400" class="Bound">c</a> <a id="430" href="Algebra.Solver.CommutativeMonoid.html#402" class="Bound">ℓ</a><a id="431" class="Symbol">)</a> <a id="433" class="Keyword">where</a>
+<a id="359" class="Keyword">module</a> <a id="366" href="Algebra.Solver.CommutativeMonoid.html" class="Module">Algebra.Solver.CommutativeMonoid</a> <a id="399" class="Symbol">{</a><a id="400" href="Algebra.Solver.CommutativeMonoid.html#400" class="Bound">c</a> <a id="402" href="Algebra.Solver.CommutativeMonoid.html#402" class="Bound">ℓ</a><a id="403" class="Symbol">}</a> <a id="405" class="Symbol">(</a><a id="406" href="Algebra.Solver.CommutativeMonoid.html#406" class="Bound">M</a> <a id="408" class="Symbol">:</a> <a id="410" href="Algebra.Bundles.html#7879" class="Record">CommutativeMonoid</a> <a id="428" href="Algebra.Solver.CommutativeMonoid.html#400" class="Bound">c</a> <a id="430" href="Algebra.Solver.CommutativeMonoid.html#402" class="Bound">ℓ</a><a id="431" class="Symbol">)</a> <a id="433" class="Keyword">where</a>
 
 <a id="440" class="Keyword">import</a> <a id="447" href="Algebra.Solver.CommutativeMonoid.Normal.html" class="Module">Algebra.Solver.CommutativeMonoid.Normal</a> <a id="487" class="Symbol">as</a> <a id="490" class="Module">Normal</a>
 <a id="497" class="Keyword">import</a> <a id="504" href="Algebra.Solver.Monoid.Solver.html" class="Module">Algebra.Solver.Monoid.Solver</a> <a id="533" class="Symbol">as</a> <a id="536" class="Module">Solver</a>
 
-<a id="544" class="Keyword">open</a> <a id="549" href="Algebra.Bundles.html#7877" class="Module">CommutativeMonoid</a> <a id="567" href="Algebra.Solver.CommutativeMonoid.html#406" class="Bound">M</a> <a id="569" class="Keyword">using</a> <a id="575" class="Symbol">(</a><a id="576" href="Algebra.Bundles.html#8221" class="Function">monoid</a><a id="582" class="Symbol">)</a>
+<a id="544" class="Keyword">open</a> <a id="549" href="Algebra.Bundles.html#7879" class="Module">CommutativeMonoid</a> <a id="567" href="Algebra.Solver.CommutativeMonoid.html#406" class="Bound">M</a> <a id="569" class="Keyword">using</a> <a id="575" class="Symbol">(</a><a id="576" href="Algebra.Bundles.html#8223" class="Function">monoid</a><a id="582" class="Symbol">)</a>
 
 <a id="585" class="Keyword">private</a>
   <a id="595" class="Keyword">module</a> <a id="N"></a><a id="602" href="Algebra.Solver.CommutativeMonoid.html#602" class="Module">N</a> <a id="604" class="Symbol">=</a> <a id="606" href="Algebra.Solver.CommutativeMonoid.Normal.html" class="Module">Normal</a> <a id="613" href="Algebra.Solver.CommutativeMonoid.html#406" class="Bound">M</a>
@@ -31,7 +31,7 @@
 <a id="764" class="Comment">------------------------------------------------------------------------</a>
 <a id="837" class="Comment">-- Proof procedures</a>
 
-<a id="858" class="Keyword">open</a> <a id="863" href="Algebra.Solver.Monoid.Solver.html" class="Module">Solver</a> <a id="870" href="Algebra.Bundles.html#8221" class="Function">monoid</a> <a id="877" class="Symbol">(</a><a id="878" class="Keyword">record</a> <a id="885" class="Symbol">{</a> <a id="887" href="Algebra.Solver.CommutativeMonoid.html#602" class="Module">N</a> <a id="889" class="Symbol">})</a> <a id="892" class="Keyword">public</a>
+<a id="858" class="Keyword">open</a> <a id="863" href="Algebra.Solver.Monoid.Solver.html" class="Module">Solver</a> <a id="870" href="Algebra.Bundles.html#8223" class="Function">monoid</a> <a id="877" class="Symbol">(</a><a id="878" class="Keyword">record</a> <a id="885" class="Symbol">{</a> <a id="887" href="Algebra.Solver.CommutativeMonoid.html#602" class="Module">N</a> <a id="889" class="Symbol">})</a> <a id="892" class="Keyword">public</a>
 
 
 <a id="901" class="Comment">------------------------------------------------------------------------</a>
