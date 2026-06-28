@@ -29,7 +29,7 @@ open import Level using (_⊔_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
--- Structures with 1 unary operation & 1 element
+-- Structures with 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set (a ⊔ ℓ) where
@@ -164,7 +164,7 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     using (isCommutativeMagma)
 
 ------------------------------------------------------------------------
--- Structures with 1 binary operation & 1 element
+-- Structures with 1 binary operation & 1 constant
 ------------------------------------------------------------------------
 
 record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
@@ -247,7 +247,7 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
   isCommutativeBand = record { isBand = isBand ; comm = comm }
 
 ------------------------------------------------------------------------
--- Structures with 1 binary operation, 1 unary operation & 1 element
+-- Structures with 1 binary operation, 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
@@ -365,7 +365,7 @@ record IsAbelianGroup (∙ : Op₂ A)
 
 
 ------------------------------------------------------------------------
--- Structures with 2 binary operations & 1 element
+-- Structures with 2 binary operations & 1 constant
 ------------------------------------------------------------------------
 
 -- In what follows, for all the `IsXRing` structures, there is a
@@ -511,7 +511,7 @@ record IsCommutativeSemiringWithoutOne
     using () renaming (isCommutativeMagma to *-isCommutativeMagma)
 
 ------------------------------------------------------------------------
--- Structures with 2 binary operations & 2 elements
+-- Structures with 2 binary operations & 2 constants
 ------------------------------------------------------------------------
 
 record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
@@ -772,7 +772,7 @@ record IsBooleanSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
 
 ------------------------------------------------------------------------
--- Structures with 2 binary operations, 1 unary operation & 1 element
+-- Structures with 2 binary operations, 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
@@ -838,7 +838,7 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
     using (*-isMagma; *-isSemigroup; *-congˡ; *-congʳ)
 
 ------------------------------------------------------------------------
--- Structures with 2 binary operations, 1 unary operation & 2 elements
+-- Structures with 2 binary operations, 1 unary operation & 2 constants
 ------------------------------------------------------------------------
 
 record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
