@@ -43,6 +43,7 @@ Highlights
   - `Relation.Binary.OrderMorphism`
   - `Text.Tree.Linear`
   - `Strict`
+  
   Several Definitions from other modules have also been removed.
 
 * `^-isSemigroupMorphism` and `^-isMonoidMorphism` from `Function.Endomorphism.Setoid` has been removed
