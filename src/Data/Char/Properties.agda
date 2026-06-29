@@ -4,7 +4,7 @@
 -- Properties of operations on characters
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Char.Properties where
 
@@ -190,7 +190,7 @@ _≤?_ = Refl.decidable <-cmp
 ≤-isDecPartialOrder : IsDecPartialOrder _≡_ _≤_
 ≤-isDecPartialOrder = record
   { isPartialOrder = ≤-isPartialOrder
-  ; _≟_            = _≡?_
+  ; _≈?_           = _≡?_
   ; _≤?_           = _≤?_
   }
 
@@ -256,7 +256,7 @@ x ≈? y = toℕ x ℕ.≡? toℕ y
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≟_            = _≈?_
+  ; _≈?_           = _≈?_
   }
 ≈-decSetoid : DecSetoid _ _
 ≈-decSetoid = record
@@ -325,18 +325,18 @@ Please use <-strictPartialOrder instead."
 Please use <-strictTotalOrder instead."
 #-}
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_ _==_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}
 
 _==_ : Char → Char → Bool
 _==_ = _≡ᵇ_
 {-# WARNING_ON_USAGE _==_
-"Warning: _==_ was deprecated in v2.4.
+"Warning: _==_ was deprecated in v3.0.
 Please use _≡ᵇ_ instead."
 #-}

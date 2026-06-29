@@ -4,7 +4,7 @@
 -- Algebraic properties of products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Algebra where
 

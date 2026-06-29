@@ -5,7 +5,7 @@
 -- `Function.Identity.Effectful` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Identity.Categorical where
 

@@ -5,7 +5,7 @@
 -- Defines Decidable Equality and Decidable Ordering as well
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.Polymorphic.Properties where
 
@@ -81,7 +81,7 @@ _ ≡? _ = yes refl
 ≡-isDecTotalOrder : ∀ ℓ → IsDecTotalOrder {ℓ} _≡_ _≡_
 ≡-isDecTotalOrder ℓ = record
   { isTotalOrder = ≡-isTotalOrder ℓ
-  ; _≟_          = _≡?_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≡?_
   }
 
@@ -118,11 +118,11 @@ _ ≡? _ = yes refl
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}

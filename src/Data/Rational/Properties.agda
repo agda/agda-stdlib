@@ -4,7 +4,7 @@
 -- Properties of Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Properties where
@@ -600,7 +600,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≡?_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -2181,9 +2181,11 @@ nonPos*nonPos⇒nonPos = nonPos*nonPos⇒nonNeg
 Please use nonPos*nonPos⇒nonNeg instead."
 #-}
 
+-- Version 3.0
+
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}

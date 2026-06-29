@@ -4,7 +4,7 @@
 -- Basic properties of ℕᵇ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Properties where
 
@@ -584,7 +584,7 @@ x ≤? y with <-cmp x y
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≡?_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -1541,11 +1541,11 @@ Please use +-*-commutativeSemiring instead."
 open Data.Nat.Binary.Base public
   using (+-rawMagma; +-0-rawMonoid; *-rawMagma; *-1-rawMonoid)
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}

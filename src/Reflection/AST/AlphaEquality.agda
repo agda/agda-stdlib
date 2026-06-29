@@ -4,7 +4,7 @@
 -- Alpha equality over terms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.AlphaEquality where
 
@@ -352,10 +352,10 @@ instance
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.4
+-- Version 3.0
 
 ≟⇒α = ≡?⇒α
 {-# WARNING_ON_USAGE ≟⇒α
-"Warning: ≟⇒α was deprecated in v2.4.
+"Warning: ≟⇒α was deprecated in v3.0.
 Please use ≡?⇒α instead."
 #-}

@@ -1,8 +1,6 @@
-{-# OPTIONS --guardedness --sized-types #-}
+{-# OPTIONS --guardedness #-}
 
 module Main where
-
-open import Size
 
 open import Data.List.Base
 open import Data.Maybe.Base using (Maybe; just; nothing)
@@ -20,15 +18,20 @@ open module Pretty {w} = Text.Pretty w hiding (Doc; render)
 
 private
   variable
-    i : Size
     w : ℕ
 
-pretty : Rose (Maybe String) i → Doc w
-pretty (node nothing  ts) = vcat (map pretty ts)
-pretty (node (just a) []) = text a
-pretty (node (just a) ts) = parens $ text a <+> sep (map pretty ts)
 
-SEXP = Rose (Maybe String) _
+pretty : Rose (Maybe String) → Doc w
+mapPretty : List (Rose (Maybe String)) → List (Doc w)
+
+pretty (node nothing  ts) = vcat (mapPretty ts)
+pretty (node (just a) []) = text a
+pretty (node (just a) ts) = parens $ text a <+> sep (mapPretty ts)
+
+mapPretty [] = []
+mapPretty (t ∷ ts) = pretty t ∷ mapPretty ts
+
+SEXP = Rose (Maybe String)
 
 atom : String → SEXP
 atom a = node (just a) []

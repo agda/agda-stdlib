@@ -8,7 +8,7 @@
 -- module. See `Function.Strict` for strict versions of these
 -- combinators.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Base where
 

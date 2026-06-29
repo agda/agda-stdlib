@@ -4,7 +4,7 @@
 -- Properties of operations on strings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.String.Properties where
 
@@ -78,7 +78,7 @@ x ≈? y = Pointwise.decidable Char._≡?_ (toList x) (toList y)
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≟_           = _≈?_
+  ; _≈?_          = _≈?_
   }
 
 ≈-decSetoid : DecSetoid _ _
@@ -185,12 +185,12 @@ private
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}
 

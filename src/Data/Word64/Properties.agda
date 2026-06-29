@@ -4,7 +4,7 @@
 -- Properties of operations on machine words
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Word64.Properties where
 
@@ -70,7 +70,7 @@ x ≈? y = toℕ x ℕ.≡? toℕ y
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≟_           = _≈?_
+  ; _≈?_          = _≈?_
   }
 
 ≈-decSetoid : DecSetoid _ _
@@ -113,11 +113,11 @@ _<?_ = On.decidable toℕ ℕ._<_ ℕ._<?_
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}

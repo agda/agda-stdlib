@@ -4,7 +4,7 @@
 -- Propositional membership over non-empty lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.NonEmpty.Membership.Propositional {a} {A : Set a} where
 

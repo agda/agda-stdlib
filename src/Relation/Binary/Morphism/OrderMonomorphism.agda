@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Morphism using (IsOrderMonomorphism)
@@ -92,7 +92,7 @@ isTotalOrder O = record
 isDecTotalOrder : IsDecTotalOrder _≈₂_ _≲₂_ → IsDecTotalOrder _≈₁_ _≲₁_
 isDecTotalOrder O = record
   { isTotalOrder = isTotalOrder O.isTotalOrder
-  ; _≟_          = EqM.dec O._≈?_
+  ; _≈?_         = EqM.dec O._≈?_
   ; _≤?_         = dec O._≤?_
   } where module O = IsDecTotalOrder O
 

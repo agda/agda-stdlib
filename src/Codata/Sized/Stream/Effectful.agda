@@ -4,7 +4,7 @@
 -- An effectful view of Stream
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Stream.Effectful where
 

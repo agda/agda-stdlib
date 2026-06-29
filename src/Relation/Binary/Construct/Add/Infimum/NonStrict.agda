@@ -4,7 +4,7 @@
 -- The lifting of a non-strict order to incorporate a new infimum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Infimum
@@ -134,7 +134,7 @@ module _ {e} {_≈_ : Rel A e} where
 ≤₋-isDecPartialOrder-≡ : IsDecPartialOrder _≡_ _≤_ → IsDecPartialOrder _≡_ _≤₋_
 ≤₋-isDecPartialOrder-≡ ≤-isDecPartialOrder = record
   { isPartialOrder = ≤₋-isPartialOrder-≡ isPartialOrder
-  ; _≟_            = ≡-dec _≈?_
+  ; _≈?_           = ≡-dec _≈?_
   ; _≤?_           = ≤₋-dec _≤?_
   } where open IsDecPartialOrder ≤-isDecPartialOrder
 
@@ -147,7 +147,7 @@ module _ {e} {_≈_ : Rel A e} where
 ≤₋-isDecTotalOrder-≡ : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤₋_
 ≤₋-isDecTotalOrder-≡ ≤-isDecTotalOrder = record
   { isTotalOrder = ≤₋-isTotalOrder-≡ isTotalOrder
-  ; _≟_          = ≡-dec _≈?_
+  ; _≈?_         = ≡-dec _≈?_
   ; _≤?_         = ≤₋-dec _≤?_
   } where open IsDecTotalOrder ≤-isDecTotalOrder
 
@@ -174,7 +174,7 @@ module _ {e} {_≈_ : Rel A e} where
   ≤₋-isDecPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecPartialOrder _≈₋_ _≤₋_
   ≤₋-isDecPartialOrder ≤-isDecPartialOrder = record
     { isPartialOrder = ≤₋-isPartialOrder isPartialOrder
-    ; _≟_            = ≈₋-dec _≈?_
+    ; _≈?_           = ≈₋-dec _≈?_
     ; _≤?_           = ≤₋-dec _≤?_
     } where open IsDecPartialOrder ≤-isDecPartialOrder
 
@@ -187,6 +187,6 @@ module _ {e} {_≈_ : Rel A e} where
   ≤₋-isDecTotalOrder : IsDecTotalOrder _≈_ _≤_ → IsDecTotalOrder _≈₋_ _≤₋_
   ≤₋-isDecTotalOrder ≤-isDecTotalOrder = record
     { isTotalOrder = ≤₋-isTotalOrder isTotalOrder
-    ; _≟_          = ≈₋-dec _≈?_
+    ; _≈?_         = ≈₋-dec _≈?_
     ; _≤?_         = ≤₋-dec _≤?_
     } where open IsDecTotalOrder ≤-isDecTotalOrder

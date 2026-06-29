@@ -4,7 +4,7 @@
 -- Some properties about subsets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Subset.Properties where
 
@@ -317,7 +317,7 @@ module _ (n : ℕ) where
   ⊂-isDecStrictPartialOrder : IsDecStrictPartialOrder {A = Subset n} _≡_ _⊂_
   ⊂-isDecStrictPartialOrder = record
     { isStrictPartialOrder = ⊂-isStrictPartialOrder
-    ; _≟_  = ≡-dec _≡?_
+    ; _≈?_ = ≡-dec _≡?_
     ; _<?_ = _⊂?_
     }
 

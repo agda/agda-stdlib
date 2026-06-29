@@ -7,7 +7,7 @@
 
 -- The contents of this module should be accessed via `Algebra`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Bundles where
 
@@ -27,7 +27,7 @@ open Raw public
         ; RawQuasigroup; RawLoop; RawKleeneAlgebra)
 
 ------------------------------------------------------------------------
--- Bundles with 1 unary operation & 1 element
+-- Bundles with 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -268,7 +268,7 @@ record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- Bundles with 1 binary operation & 1 element
+-- Bundles with 1 binary operation & 1 constant
 ------------------------------------------------------------------------
 
 record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -403,7 +403,7 @@ module BoundedLattice {c ℓ} (idemCommMonoid : IdempotentCommutativeMonoid c �
 
 
 ------------------------------------------------------------------------
--- Bundles with 1 binary operation, 1 unary operation & 1 element
+-- Bundles with 1 binary operation, 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -509,7 +509,7 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (commutativeMagma; commutativeSemigroup)
 
 ------------------------------------------------------------------------
--- Bundles with 2 binary operations & 1 element
+-- Bundles with 2 binary operations & 1 constant
 ------------------------------------------------------------------------
 
 record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -620,7 +620,7 @@ record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
 ------------------------------------------------------------------------
--- Bundles with 2 binary operations & 2 elements
+-- Bundles with 2 binary operations & 2 constants
 ------------------------------------------------------------------------
 
 record SemiringWithoutAnnihilatingZero c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -957,7 +957,7 @@ record BooleanSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- Bundles with 2 binary operations, 1 unary operation & 1 element
+-- Bundles with 2 binary operations, 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -1005,7 +1005,7 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- Bundles with 2 binary operations, 1 unary operation & 2 elements
+-- Bundles with 2 binary operations, 1 unary operation & 2 constants
 ------------------------------------------------------------------------
 
 record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ)) where

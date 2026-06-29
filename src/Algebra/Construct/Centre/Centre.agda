@@ -4,7 +4,7 @@
 -- Definition of the centre as a subtype of (the carrier of) a raw magma
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import Algebra.Core using (Op₂)
 open import Relation.Binary.Core using (Rel)

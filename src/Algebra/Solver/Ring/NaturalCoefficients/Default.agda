@@ -9,7 +9,7 @@
 -- rings of characteristic 0.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 

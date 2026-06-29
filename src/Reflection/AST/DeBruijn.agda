@@ -4,7 +4,7 @@
 -- Weakening, strengthening and free variable check for reflected terms.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.DeBruijn where
 
