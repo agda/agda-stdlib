@@ -87,38 +87,27 @@ module _ (RST-trans : Trans R S T) where
   compose : Edit R xs ys k → Edit S ys zs l →
     ∃ λ m → Edit T xs zs m × m ≤ k + l
   compose done done = 0 , done , z≤n
-  compose dlm (delR dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose dlm (delR dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , delR dlr , ≤-trans (s≤s m≤) (≤-reflexive (sym (+-suc _ _)))
-  compose (delL dlm) dmr =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (delL dlm) dmr with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , delL dlr , s≤s m≤
-  compose (delR dlm) (delL dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (delR dlm) (delL dmr) with (m , dlr , m≤) ← compose dlm dmr =
     m , dlr , ≤-trans m≤ (≤-trans (n≤1+n _) (s≤s (+-monoʳ-≤ _ (n≤1+n _))))
-  compose (delR dlm) (skip x∼y dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (delR dlm) (skip x∼y dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , delR dlr , s≤s m≤
-  compose (delR dlm) (swap dmr) =
-    let (m , dlr , m≤ ) = compose dlm dmr in
+  compose (delR dlm) (swap dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , delR dlr , s≤s (≤-trans m≤ (+-monoʳ-≤ _ (n≤1+n _)))
-  compose (skip x∼y dlm) (delL dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (skip x∼y dlm) (delL dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , delL dlr , ≤-trans (s≤s m≤) (≤-reflexive (sym (+-suc _ _)))
-  compose (skip x∼y dlm) (skip y∼z dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (skip x∼y dlm) (skip y∼z dmr) with (m , dlr , m≤) ← compose dlm dmr =
     m , skip (RST-trans x∼y y∼z) dlr , m≤
-  compose (skip x∼y dlm) (swap dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (skip x∼y dlm) (swap dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , swap dlr , ≤-trans (s≤s m≤) (≤-reflexive (sym (+-suc _ _)))
-  compose (swap dlm) (delL dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (swap dlm) (delL dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , delL dlr , s≤s (≤-trans (≤-trans m≤ (n≤1+n _)) (≤-reflexive (sym (+-suc _ _))))
-  compose (swap dlm) (skip x∼y dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (swap dlm) (skip x∼y dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , swap dlr , s≤s m≤
-  compose (swap {k = k₁} dlm) (swap dmr) =
-    let (m , dlr , m≤) = compose dlm dmr in
+  compose (swap {k = k₁} dlm) (swap dmr) with (m , dlr , m≤) ← compose dlm dmr =
     1 + m , swap dlr , s≤s (≤-trans m≤ (+-monoʳ-≤ k₁ (n≤1+n _)))
 
 -- Edit to the empty list
