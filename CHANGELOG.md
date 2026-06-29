@@ -20,7 +20,7 @@ Highlights
   The change leads to a number of (trivial) renamings/deprecations, others more
   substantive in `Data.{Nat|Fin}.Properties` for the concrete datatypes, which
   are summarised below, but are not each documented for all affected modules.
-  
+
 * Any v1.x deprecation has been removed entirely.
   This involves the removal of modules:
   - `Algebra.FunctionProperties.Consequences.Core`
@@ -43,10 +43,10 @@ Highlights
   - `Relation.Binary.OrderMorphism`
   - `Text.Tree.Linear`
   - `Strict`
-  
+
   Several Definitions from other modules have also been removed.
 
-* `^-isSemigroupMorphism` and `^-isMonoidMorphism` from `Function.Endomorphism.Setoid` has been removed
+* `^-isSemigroupMorphism` and `^-isMonoidMorphism` from `Function.Endomorphism.Setoid` have been removed
 
 Bug-fixes
 ---------
@@ -87,7 +87,7 @@ Non-backwards compatible changes
   Data.Tree.Rose.Properties
   Data.Tree.Rose.Show
   ```
-  
+
 * `^-semigroup-morphism` and `^-monoid-morphism` in `Data.Nat.Properties` have had their definitions and signatures updated to use `IsMagmaHomomorphism` and `IsMonoidHomomorphism` respectively, inline with the removal of 1.x deprecations.
 
 Minor improvements
