@@ -12,9 +12,8 @@ module Data.List.Relation.Binary.Distance.Levenshtein.Calc.DecPropositional
   {a} {A : Set a} (_≡?_ : DecidableEquality A) where
 
 open import Data.List.Base
-  as List>
-  using ([])
-  renaming (List to List>; _∷_ to _:>_)
+  using ()
+  renaming (List to List>)
 open import Data.Product.Base using (∃)
 
 open import Relation.Binary.PropositionalEquality using (setoid; decSetoid)

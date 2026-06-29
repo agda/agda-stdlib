@@ -99,6 +99,21 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Data.Char.Base`:
+  ```agda
+  _≉ᵇ_ : (c d : Char) → Bool
+  case-insensitive : Rel Char ℓ → Rel Char ℓ
+  _≈ᵢ_ : Rel Char zero
+  _≉ᵢ_ : Rel Char zero
+  _<ᵇ_ : (c d : Char) → Bool
+  ```
+
+* In `Data.Char.Properties`:
+  ```agda
+  ≈ᵢ-setoid : Setoid _ _
+  ≈ᵢ-decSetoid : DecSetoid _ _
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
