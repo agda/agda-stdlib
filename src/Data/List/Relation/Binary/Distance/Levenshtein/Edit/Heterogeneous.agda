@@ -4,7 +4,7 @@
 -- Levenshtein distance: the Edit relation and its properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 
 module Data.List.Relation.Binary.Distance.Levenshtein.Edit.Heterogeneous where

@@ -5,7 +5,7 @@
 -- We include both the case sensitive and insensitive versions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Text.Distance.Levenshtein where
 

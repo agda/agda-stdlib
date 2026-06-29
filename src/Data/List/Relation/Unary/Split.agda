@@ -4,7 +4,7 @@
 -- List split: identifiying a position inside of a list
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Split where
 
