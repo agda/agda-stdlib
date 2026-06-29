@@ -49,19 +49,26 @@ record Dist (xs ys : List A) (cost : ℕ) : Set (c ⊔ ℓ) where
   constructor _,_
   field
     edit : Edit xs ys cost
-    mini : ∀ cost' → Edit xs ys cost' → cost ≤ cost'
+    minimal : ∀ cost' → Edit xs ys cost' → cost ≤ cost'
+
+  dist : ℕ
+  dist = cost
+
+  source : List A
+  source = xs
+
+  target : List A
+  target = ys
+
 open Dist public
 
-dist : Dist xs ys k → ℕ
-dist {k = k} _ = k
-
 reflexive : Dist xs xs 0
-edit reflexive = Edit.reflexive
-mini reflexive = λ _ _ → z≤n
+reflexive .edit = Edit.reflexive
+reflexive .minimal = λ _ _ → z≤n
 
 symmetric : Dist xs ys k → Dist ys xs k
-edit (symmetric (d , m)) = Edit.symmetric d
-mini (symmetric (d , m)) = λ c d′ → m c (Edit.symmetric d′)
+symmetric (d , m) .edit = Edit.symmetric d
+symmetric (d , m) .minimal = λ c d′ → m c (Edit.symmetric d′)
 
 -- The relation is indeed unique
 unique : Unique {A = List A} Dist
@@ -123,9 +130,9 @@ m⊓′n⊓′o≤o m n o = begin
 -- Our edits to the empty list were already minimal
 
 dist-[]ˡ : Dist [] ys (length ys)
-edit dist-[]ˡ = Edit.edit-[]ˡ
-mini dist-[]ˡ cost' done        = z≤n
-mini dist-[]ˡ cost' (delR edit) = s≤s (mini dist-[]ˡ _ edit)
+dist-[]ˡ .edit = Edit.edit-[]ˡ
+dist-[]ˡ .minimal cost' done        = z≤n
+dist-[]ˡ .minimal cost' (delR edit) = s≤s (dist-[]ˡ .minimal _ edit)
 
 dist-[]ʳ : Dist xs [] (length xs)
 dist-[]ʳ = symmetric dist-[]ˡ
@@ -138,7 +145,7 @@ delR-invert {xs = xs} {ys = ys} {k = k}  {x = x} {c = c} dxx ec =
       e1 = delL Edit.reflexive in
   let (kc , ekc , kc≤c+1) = Edit.compose ec e1 in
   let open ≤-Reasoning in begin
-  k     ≤⟨ mini dxx kc ekc ⟩
+  k     ≤⟨ dxx .minimal kc ekc ⟩
   kc    ≤⟨ kc≤c+1 ⟩
   c + 1 ≡⟨ +-comm c 1 ⟩
   1 + c ∎
@@ -174,23 +181,23 @@ module Step
   miniStep : (x≈?y : Dec (x ≈ y)) → ∀ c → Edit (x ∷ xs) (y ∷ ys) c → costStep x≈?y ≤ c
   miniStep x≈?y@(yes x≈y) c (delL edit) = delR-invert dxy edit
   miniStep x≈?y@(yes x≈y) c (delR edit) = delL-invert dxy edit
-  miniStep x≈?y@(yes x≈y) c (skip r edit) = mini dxy c edit
+  miniStep x≈?y@(yes x≈y) c (skip r edit) = dxy .minimal c edit
   miniStep x≈?y@(yes x≈y) (.suc c) (swap edit) = begin
-    costStep x≈?y ≤⟨ mini dxy c edit ⟩
+    costStep x≈?y ≤⟨ dxy .minimal c edit ⟩
     c             ≤⟨ n≤1+n c ⟩
     suc c         ∎
   miniStep (no x≉y) c (skip x≈y x) = contradiction x≈y x≉y
   miniStep x≈?y@(no x≉y) c (delL edit) = begin
     costStep x≈?y ≤⟨ s≤s (m⊓′n⊓′o≤n k l m) ⟩
-    1 + l         ≤⟨ s≤s (mini dx _ edit) ⟩
+    1 + l         ≤⟨ s≤s (dx .minimal _ edit) ⟩
     c             ∎
   miniStep x≈?y@(no x≉y) c (delR edit) = begin
     costStep x≈?y ≤⟨ s≤s (m⊓′n⊓′o≤o k l m) ⟩
-    1 + m         ≤⟨ s≤s (mini dy _ edit) ⟩
+    1 + m         ≤⟨ s≤s (dy .minimal _ edit) ⟩
     c             ∎
   miniStep x≈?y@(no x≉y) c (swap edit) = begin
     costStep x≈?y ≤⟨ s≤s (m⊓′n⊓′o≤m k l m) ⟩
-    suc k         ≤⟨ s≤s (mini dxy _ edit) ⟩
+    suc k         ≤⟨ s≤s (dxy .minimal _ edit) ⟩
     c             ∎
 
   step : Dec (x ≈ y) → ∃ (Dist (x ∷ xs) (y ∷ ys))
