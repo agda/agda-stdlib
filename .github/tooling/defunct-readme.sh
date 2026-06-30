@@ -3,7 +3,7 @@
 # This script searches through any READMEs which have
 # been removed (or renamed) from the current branch 
 # (via a diff with master) and scans for references
-# for them in existing READMEs
+# for them in all files within the curretn working directory
 #
 # If a reference to a now deleted/renamed README is 
 # found, an error is raised (exit code 1)
