@@ -12,7 +12,13 @@ module Data.List.Relation.Binary.Distance.Levenshtein.Dist.Setoid {c ℓ} (S : S
 
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base using (List; []; _∷_; length)
+open import Data.List.Membership.Propositional using (_∈_)
+open import Data.List.Relation.Unary.Any using (here; there)
+
 open import Data.Nat.Base using (ℕ; suc; _+_; _≤_; z≤n; s≤s; _<ᵇ_; _⊓′_; _⊓_)
+open import Data.Nat.ListAction using (minimum)
+open import Data.Nat.ListAction.Properties using (minimum-selective; minimum-≤)
+
 open import Data.Nat.Properties
   using (≤-antisym; ≤-trans; module ≤-Reasoning; +-comm; n≤1+n; m⊓n≤m; ⊓≡⊓′; m⊓n≤n)
 open import Data.Product.Base using (∃; _,_)
@@ -80,50 +86,6 @@ triangle _ _ _ _ _ _ (dlm , _) (dmr , _) (dlr , mlr)
   = let (m , dlr′ , m≤) = Edit.compose dlm dmr in
   ≤-trans (mlr m dlr′) m≤
 
-
--- This should surely go somewhere else
-
-data Min3 (k l m : ℕ) : Set where
-  first  : k ⊓′ l ⊓′ m ≡ k → Min3 k l m
-  second : k ⊓′ l ⊓′ m ≡ l → Min3 k l m
-  third  : k ⊓′ l ⊓′ m ≡ m → Min3 k l m
-
-min3 : (k l m : ℕ) → Min3 k l m
-min3 k l m with first {k} {l} {m} | second {k} {l} {m} | third {k} {l} {m}
-... | f | s | t with k <ᵇ l
-min3 k l m | f | s | t | false with l <ᵇ m
-... | true  = s refl
-... | false = t refl
-min3 k l m | f | s | t | true with k <ᵇ m
-... | true = f refl
-... | false = t refl
-
-m⊓′n⊓′o≤m : ∀ m n o → m ⊓′ n ⊓′ o ≤ m
-m⊓′n⊓′o≤m m n o = begin
-  m ⊓′ n ⊓′ o ≡⟨ ⊓≡⊓′ (m ⊓′ n) o ⟨
-  m ⊓′ n ⊓ o  ≤⟨ m⊓n≤m (m ⊓′ n) o ⟩
-  m ⊓′ n      ≡⟨ ⊓≡⊓′ m n ⟨
-  m ⊓ n       ≤⟨ m⊓n≤m m n ⟩
-  m           ∎
-  where open ≤-Reasoning
-
-m⊓′n⊓′o≤n : ∀ m n o → m ⊓′ n ⊓′ o ≤ n
-m⊓′n⊓′o≤n m n o = begin
-  m ⊓′ n ⊓′ o ≡⟨ ⊓≡⊓′ (m ⊓′ n) o ⟨
-  m ⊓′ n ⊓ o  ≤⟨ m⊓n≤m (m ⊓′ n) o ⟩
-  m ⊓′ n      ≡⟨ ⊓≡⊓′ m n ⟨
-  m ⊓ n       ≤⟨ m⊓n≤n m n ⟩
-  n           ∎
-  where open ≤-Reasoning
-
-m⊓′n⊓′o≤o : ∀ m n o → m ⊓′ n ⊓′ o ≤ o
-m⊓′n⊓′o≤o m n o = begin
-  m ⊓′ n ⊓′ o ≡⟨ ⊓≡⊓′ (m ⊓′ n) o ⟨
-  m ⊓′ n ⊓ o  ≤⟨ m⊓n≤n (m ⊓′ n) o ⟩
-  o           ∎
-  where open ≤-Reasoning
-
-
 ------------------------------------------------------------------------
 -- Known distances
 
@@ -165,16 +127,32 @@ module Step
   ((m , dy)  : ∃ (Dist (x ∷ xs)      ys))
   where
 
+
+  private
+    min : ℕ
+    min = minimum k (l ∷ m ∷ [])
+
+    min3 : min ∈ (k ∷ l ∷ m ∷ [])
+    min3 = minimum-selective k (l ∷ m ∷ [])
+
+    pattern first eq = here eq
+    pattern second eq = there (here eq)
+    pattern third eq = there (there (here eq))
+
+    min3-≤ : ∀ {x} → x ∈ (k ∷ l ∷ m ∷ []) → min ≤ x
+    min3-≤ = minimum-≤ k (l ∷ m ∷ [])
+
+
   costStep : (x≈?y : Dec (x ≈ y)) → ℕ
   costStep (yes _) = k
-  costStep (no _) = 1 + (dist dxy ⊓′ dist dx ⊓′ dist dy)
+  costStep (no _) = 1 + min
 
   editStep : (x≈?y : Dec (x ≈ y)) → Edit (x ∷ xs) (y ∷ ys) (costStep x≈?y)
   editStep (yes x≈y) = skip x≈y (edit dxy)
-  editStep (no _) with min3 (dist dxy) (dist dx) (dist dy)
+  editStep (no _) with min3
   ... | first eq  = Edit.cast (cong suc (sym eq)) (swap (edit dxy))
   ... | second eq = Edit.cast (cong suc (sym eq)) (delL (edit dx))
-  ... | third  eq = Edit.cast (cong suc (sym eq)) (delR (edit dy))
+  ... | third eq  = Edit.cast (cong suc (sym eq)) (delR (edit dy))
 
   open ≤-Reasoning
 
@@ -188,15 +166,15 @@ module Step
     suc c         ∎
   miniStep (no x≉y) c (skip x≈y x) = contradiction x≈y x≉y
   miniStep x≈?y@(no x≉y) c (delL edit) = begin
-    costStep x≈?y ≤⟨ s≤s (m⊓′n⊓′o≤n k l m) ⟩
+    costStep x≈?y ≤⟨ s≤s (min3-≤ (second refl)) ⟩
     1 + l         ≤⟨ s≤s (dx .minimal _ edit) ⟩
     c             ∎
   miniStep x≈?y@(no x≉y) c (delR edit) = begin
-    costStep x≈?y ≤⟨ s≤s (m⊓′n⊓′o≤o k l m) ⟩
+    costStep x≈?y ≤⟨ s≤s (min3-≤ (third refl)) ⟩
     1 + m         ≤⟨ s≤s (dy .minimal _ edit) ⟩
     c             ∎
   miniStep x≈?y@(no x≉y) c (swap edit) = begin
-    costStep x≈?y ≤⟨ s≤s (m⊓′n⊓′o≤m k l m) ⟩
+    costStep x≈?y ≤⟨ s≤s (min3-≤ (first refl)) ⟩
     suc k         ≤⟨ s≤s (dxy .minimal _ edit) ⟩
     c             ∎
 
