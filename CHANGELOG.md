@@ -207,6 +207,13 @@ Additions to existing modules
   product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
   ```
 
+* In `Data.Nat.Properties`:
+  ```agda
+  nonZero+n⇒nonZero : ∀ m .{{_ : NonZero m}} n → NonZero (m + n)
+  n+nonZero⇒nonZero : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
+  nonZero+nonZero⇒nonZero : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
