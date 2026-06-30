@@ -87,7 +87,9 @@ Non-backwards compatible changes
   Data.Tree.Rose.Show
   ```
 
-* `^-semigroup-morphism` and `^-monoid-morphism` in `Data.Nat.Properties` have had their definitions and signatures updated to use `IsMagmaHomomorphism` and `IsMonoidHomomorphism` respectively, inline with the removal of 1.x deprecations.
+* `^-semigroup-morphism` and `^-monoid-morphism` in `Data.Nat.Properties`, deprecated below
+   as part of removing v1.x-era deprecations, have moreover had their definitions and signatures
+   updated to use `IsMagmaHomomorphism` and `IsMonoidHomomorphism` respectively
 
 Minor improvements
 ------------------
