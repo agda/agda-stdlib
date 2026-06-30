@@ -199,7 +199,7 @@ Additions to existing modules
 
 * In `Data.Nat.DivMod`:
   ```agda
-  suc[m/n]*n>m : ∀ m n → suc (m / n) * n > m
+  m<suc[m/n]*n : ∀ m n → m < suc (m / n) * n
   ```
 
 * In `Data.Nat.GCD`:

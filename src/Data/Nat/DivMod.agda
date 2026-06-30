@@ -203,8 +203,8 @@ m/n*n≤m m n = begin
   m % n + (m / n) * n  ≡⟨ m≡m%n+[m/n]*n m n ⟨
   m                    ∎
 
-suc[m/n]*n>m : ∀ m n .{{_ : NonZero n}} → suc (m / n) * n > m
-suc[m/n]*n>m m n = begin-strict
+m<suc[m/n]*n : ∀ m n .{{_ : NonZero n}} → m < suc (m / n) * n
+m<suc[m/n]*n m n = begin-strict
   m                 ≡⟨ m≡m%n+[m/n]*n m n ⟩
   m % n + m / n * n <⟨ +-monoˡ-< (m / n * n) (m%n<n m n) ⟩
   n + m / n * n     ∎
