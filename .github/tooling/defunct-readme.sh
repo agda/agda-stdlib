@@ -39,6 +39,10 @@ git diff --diff-filter DR --name-status master \
         echo "ERROR: file referenced: $ref" >&2
         exit 1
     done
+
+    if [[ $? == 1 ]]; then
+        exit 1
+    fi
 done
 
 exit
