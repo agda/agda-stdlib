@@ -197,6 +197,11 @@ Additions to existing modules
            ∃[ xs ] Appending as bs xs × Appending xs cs ds
   ```
 
+* In `Data.Nat.DivMod`:
+  ```agda
+  suc[m/n]*n>m : ∀ m n → suc (m / n) * n > m
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
