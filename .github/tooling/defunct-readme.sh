@@ -9,6 +9,6 @@
 echo "Searching for deleted READMEs"
 
 git diff --diff-filter D --name-only master | grep '^doc/README/' | while read file; do
-    echo "$p was deleted, scanning for references"
+    echo "$file was deleted, scanning for references"
 done
 
