@@ -46,7 +46,6 @@ Highlights
 
   Several Definitions from other modules have also been removed.
 
-* `^-isSemigroupMorphism` and `^-isMonoidMorphism` from both `Function.Endomorphism.Setoid` and `Function.Endomorphism.Propositional` have been removed
 
 Bug-fixes
 ---------
