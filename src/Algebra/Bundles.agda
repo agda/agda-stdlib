@@ -976,11 +976,11 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsRingWithoutOne isRingWithoutOne public
 
-  nearSemiring : NearSemiring _ _
-  nearSemiring = record { isNearSemiring = isNearSemiring }
+  semiringWithoutOne : SemiringWithoutOne _ _
+  semiringWithoutOne = record { isSemiringWithoutOne = isSemiringWithoutOne }
 
-  open NearSemiring nearSemiring public
-    using (*-semigroup; *-magma)
+  open SemiringWithoutOne semiringWithoutOne public
+    using (nearSemiring; *-semigroup; *-magma)
 
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
