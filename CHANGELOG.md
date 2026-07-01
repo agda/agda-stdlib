@@ -155,6 +155,10 @@ New modules
 * `Data.Bool.ListAction.Properties` for properties of conjunction and
   disjunction of lists.
 
+* `Data.Nat.Sqrt.Base` defines the square root of `n` as the greatest
+  natural number whose square is less than or equal to `n`, using a
+  primtive recursive definition originally due to Goodstein (1957).
+
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
   or type accumulators that need to be reversed in the base case.
