@@ -50,6 +50,10 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
+  to `#-sym` in order to avoid overloaded projection. The field names
+  `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
+
 * Removed unnecessary parameter `zero : Zero 0# *` from
   `Algebra.Structures.IsNonAssociativeRing`.
 
@@ -67,6 +71,20 @@ Bug-fixes
 
 Non-backwards compatible changes
 --------------------------------
+
+* The definitions of `Algebra.Structures.IsHeyting*` and
+  `Algebra.Bundles.Heyting*` have been refactored, together
+  with that of `Relation.Binary.Definitions.Tight` on which they depend.
+  Specifically:
+  - `Tight _≈_ _#_` has been redefined as `∀ x y → ¬ x # y → x ≈ y`,
+    dropping the redundant second conjunct, because it is equivalent to
+    `Irreflexive _≈_ _#_`.
+  - new definitions: `(Is)TightApartnessRelation` structure/bundle, exploiting
+    the above redefinition.
+  - the definition of `HeytingCommutativeRing` now drops the properties of
+    invertibility, in favour of moving them to `HeytingField`.
+  - both `Heyting*` algebraic structure/bundles have been redefined to base
+    off an underlying `TightApartnessRelation`.
 
 * The notation for `Decidable` relations has been (partially) standardised: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
@@ -120,6 +138,12 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Apartness.Properties.HeytingCommutativeRing`:
+  ```agda
+  x-0≈x  ↦   Algebra.Properties.Ring.x-0#≈x
+  #-sym  ↦   Algebra.Apartness.Structures.IsHeytingCommutativeRing.#-sym
+  ```
 
 * In `Algebra.Definitions`:
   ```agda
@@ -205,6 +229,9 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Apartness.Properties.HeytingField`, refactoring the existing
+  `Algebra.Apartness.Properties.HeytingCommutativeRing`.
+
 * `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
 
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
@@ -238,6 +265,31 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Apartness.Bundles.HeytingCommutativeRing`:
+  ```agda
+  TightApartnessRelation c ℓ₁ ℓ₂ : Set _
+  ```
+
+* In `Algebra.Apartness.Structures.IsHeytingCommutativeRing`:
+  ```agda
+  IsTightApartnessRelation _≈_ _#_ : Set _
+  ```
+
+* In `Algebra.Properties.AbelianGroup`:
+  ```agda
+  x-ε≈x : RightIdentity ε _-_
+  ```
+
+* In `Algebra.Properties.RingWithoutOne`:
+  ```agda
+  x-0#≈x : RightIdentity 0# _-_
+  ```
+
+* In `Algebra.Structures.IsKleeneAlgebra`:
+  ```agda
+  _≤_            : Rel A _
+  ```
+
 * In `Algebra.Properties.KleeneAlgebra`:
   ```agda
   ≤-reflexive    : _≈_ ⇒ _≤_
@@ -248,11 +300,6 @@ Additions to existing modules
   isPartialOrder : IsPartialOrder _≈_ _≤_
   preorder       : Preorder _ _
   poset          : Poset _ _
-  ```
-
-* In `Algebra.Structures.IsKleeneAlgebra`:
-  ```agda
-  _≤_            : Rel A _
   ```
 
 * In `Data.Bool.Properties`:
@@ -302,6 +349,13 @@ Additions to existing modules
                     i / n + j / n ≡ (i ℤ.+ j) / n
   ```
 
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  ≄-apartnessRelation        : ApartnessRelation _ _ _
+  ≄-isTightApartnessRelation : IsTightApartnessRelation _≃_ _≄_
+  ≄-tightApartnessRelation   : TightApartnessRelation _ _ _
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
@@ -319,3 +373,13 @@ Additions to existing modules
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
 
+* In `Relation.Binary.Properties.DecSetoid`:
+  ```agda
+  ≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
+  ≉-tightApartnessRelation   : TightApartnessRelation _ _ _
+  ```
+  Additionally,
+  ```agda
+  ≉-tight : Tight _≈_ _≉_
+  ```
+  has been redefined to reflect the change in the definition of `Tight`.
