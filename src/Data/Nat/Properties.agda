@@ -1083,15 +1083,15 @@ m<n⇒m<o*n = m≤n⇒m≤o*n
   (n * o) * (n ^ m * o ^ m) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] n o (n ^ m) (o ^ m) ⟩
   n ^ suc m * o ^ suc m     ∎
 
-^-semigroup-morphism : ∀ {n} → IsMagmaHomomorphism +-rawMagma *-rawMagma (n ^_)
-^-semigroup-morphism = record
+^-isMagmaHomomorphism : ∀ {n} → IsMagmaHomomorphism +-rawMagma *-rawMagma (n ^_)
+^-isMagmaHomomorphism = record
   { isRelHomomorphism = record { cong = cong (_ ^_) }
   ; ∙-homo = ^-distribˡ-+-* _
   }
 
-^-monoid-morphism : ∀ {n} →  IsMonoidHomomorphism +-0-rawMonoid *-1-rawMonoid (n ^_)
-^-monoid-morphism = record
-  { isMagmaHomomorphism = ^-semigroup-morphism
+^-isMonoidHomomorphism : ∀ {n} →  IsMonoidHomomorphism +-0-rawMonoid *-1-rawMonoid (n ^_)
+^-isMonoidHomomorphism = record
+  { isMagmaHomomorphism = ^-isMagmaHomomorphism
   ; ε-homo  = refl
   }
 
@@ -2435,4 +2435,17 @@ Please use ≡?-≡ instead."
 {-# WARNING_ON_USAGE ≟-≡
 "Warning: ≟-≡ was deprecated in v3.0.
 Please use ≡?-≢ instead."
+#-}
+
+
+^-semigroup-morphism = ^-isMagmaHomomorphism
+{-# WARNING_ON_USAGE ^-semigroup-morphism
+"Warning: ^-semigroup-morphism was deprecated in v3.0.
+Please use ^-isMagmaHomomorphism instead."
+#-}
+
+^-monoid-morphism = ^-isMonoidHomomorphism
+{-# WARNING_ON_USAGE ^-monoid-morphism
+"Warning: ^-monoid-morphism was deprecated in v3.0.
+Please use ^-isMonoidHomomorphism instead."
 #-}
