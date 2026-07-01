@@ -79,6 +79,13 @@ Non-backwards compatible changes
   `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
   are summarised below, but are not each documented for each affected module.
 
+* [issue #2471](https://github.com/agda/agda-stdlib/issues/2471)
+  In `Relation.Binary.Definitions`, the left/right order of the components of
+  `_Respects₂_` have been swapped. Previously the position of the `_Respectsˡ_`
+  (respects left) component was placed on the *right* hand side of the pair and
+  `_Respectsʳ_` (respects right) was placed on the *left* hand side of the pair.
+  By switching them the names are now consistent with their location.
+
 * [issue #2547](https://github.com/agda/agda-stdlib/issues/2547)
   The names of the *implicit* binders in the following definitions have been
   rectified to be consistent with the rest of `Relation.Binary.Definitions`:
