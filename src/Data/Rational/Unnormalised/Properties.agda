@@ -1945,14 +1945,6 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.5
-
-neg-mono-<-> = neg-mono-<
-{-# WARNING_ON_USAGE neg-mono-<->
-"Warning: neg-mono-<-> was deprecated in v1.5.
-Please use neg-mono-< instead."
-#-}
-
 -- Version 2.0
 
 ↥[p/q]≡p = ↥[n/d]≡n

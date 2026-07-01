@@ -21,6 +21,32 @@ Highlights
   substantive in `Data.{Nat|Fin}.Properties` for the concrete datatypes, which
   are summarised below, but are not each documented for all affected modules.
 
+* Any v1.x deprecation has been removed entirely.
+  This involves the removal of modules:
+  - `Algebra.FunctionProperties.Consequences.Core`
+  - `Algebra.FunctionProperties.Consequences.Propositional`
+  - `Algebra.FunctionProperties.Consequences`
+  - `Algebra.Operations.CommutativeMonoid`
+  - `Algebra.Operations.Ring`
+  - `Algebra.Operations.Semiring`
+  - `Data.AVL.Indexed.WithK`
+  - `Data.AVL.NonEmpty.Propositional`
+  - `Data.AVL.Height`
+  - `Data.AVL.Indexed`
+  - `Data.AVL.IndexedMap`
+  - `Data.AVL.Key`
+  - `Data.AVL.Map`
+  - `Data.AVL.NonEmpty`
+  - `Data.AVL.Value`
+  - `Data.AVL`
+  - `Foreign.Haskell.Maybe`
+  - `Relation.Binary.OrderMorphism`
+  - `Text.Tree.Linear`
+  - `Strict`
+
+  Several Definitions from other modules have also been removed.
+
+
 Bug-fixes
 ---------
 
@@ -74,6 +100,11 @@ Non-backwards compatible changes
   Data.Tree.Rose.Show
   ```
 
+* `^-semigroup-morphism` and `^-monoid-morphism` in `Data.Nat.Properties`
+  deprecated below as part of removing v1.x-era deprecations, have moreover had
+  their definitions and signatures updated to use `IsMagmaHomomorphism` and
+  `IsMonoidHomomorphism` respectively
+
 Minor improvements
 ------------------
 
@@ -126,10 +157,12 @@ Deprecated names
 
 * In `Data.Nat.Properties`:
   ```agda
-  _≟_       ↦   _≡?_
-  ≟-diag    ↦   ≡?-≡
-  ≟-≡       ↦   ≡?-≢
-  ≟?-≡-refl ↦ ≡?-≡-refl
+  _≟_                  ↦   _≡?_
+  ≟-diag               ↦   ≡?-≡
+  ≟-≡                  ↦   ≡?-≢
+  ≟?-≡-refl            ↦   ≡?-≡-refl
+  ^-semigroup-morphism ↦   ^-isMagmaHomomorphism
+  ^-monoid-morphism    ↦   ^-isMonoidHomomorphism
   ```
 
 * In `Effect.Monad.Partiality`:

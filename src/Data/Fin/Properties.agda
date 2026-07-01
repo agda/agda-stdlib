@@ -1238,14 +1238,6 @@ opposite-suc {n} i = begin
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.5
-
-inject+-raise-splitAt = join-splitAt
-{-# WARNING_ON_USAGE inject+-raise-splitAt
-"Warning: inject+-raise-splitAt was deprecated in v1.5.
-Please use join-splitAt instead."
-#-}
-
 -- Version 2.0
 
 toℕ-raise = toℕ-↑ʳ

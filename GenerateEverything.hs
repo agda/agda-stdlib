@@ -64,7 +64,6 @@ unsafeModules = map modToFile
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"
-  , "Foreign.Haskell.Maybe"
   , "Foreign.Haskell.List.NonEmpty"
   , "Foreign.Haskell.Pair"
   , "IO"
@@ -183,7 +182,6 @@ sizedTypesModules = map modToFile
   , "Data.Trie.NonEmpty"
   , "Relation.Unary.Sized"
   , "Size"
-  , "Text.Tree.Linear"
   ]
 
 isSizedTypesModule :: FilePath -> Bool
