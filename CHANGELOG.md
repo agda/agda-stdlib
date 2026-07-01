@@ -24,6 +24,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Removed unnecessary parameter `zero : Zero 0# *` from
+  `Algebra.Structures.IsNonAssociativeRing`.
+
 * Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
 
 Non-backwards compatible changes
