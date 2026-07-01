@@ -256,14 +256,6 @@ _*_ on f = f -⟨ _*_ ⟩- f
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.4
-
-_-[_]-_ = _-⟪_⟫-_
-{-# WARNING_ON_USAGE _-[_]-_
-"Warning: Function._-[_]-_ was deprecated in v1.4.
-Please use _-⟪_⟫-_ instead."
-#-}
-
 -- Version 2.0
 
 case_return_of_ = case_returning_of_

@@ -21,10 +21,49 @@ Highlights
   substantive in `Data.{Nat|Fin}.Properties` for the concrete datatypes, which
   are summarised below, but are not each documented for all affected modules.
 
+* Any v1.x deprecation has been removed entirely.
+  This involves the removal of modules:
+  - `Algebra.FunctionProperties.Consequences.Core`
+  - `Algebra.FunctionProperties.Consequences.Propositional`
+  - `Algebra.FunctionProperties.Consequences`
+  - `Algebra.Operations.CommutativeMonoid`
+  - `Algebra.Operations.Ring`
+  - `Algebra.Operations.Semiring`
+  - `Data.AVL.Indexed.WithK`
+  - `Data.AVL.NonEmpty.Propositional`
+  - `Data.AVL.Height`
+  - `Data.AVL.Indexed`
+  - `Data.AVL.IndexedMap`
+  - `Data.AVL.Key`
+  - `Data.AVL.Map`
+  - `Data.AVL.NonEmpty`
+  - `Data.AVL.Value`
+  - `Data.AVL`
+  - `Foreign.Haskell.Maybe`
+  - `Relation.Binary.OrderMorphism`
+  - `Text.Tree.Linear`
+  - `Strict`
+
+  Several Definitions from other modules have also been removed.
+
+
 Bug-fixes
 ---------
 
+* Removed unnecessary parameter `zero : Zero 0# *` from
+  `Algebra.Structures.IsNonAssociativeRing`.
+
 * Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
+
+* [issue #3003](https://github.com/agda/agda-stdlib/issues/3003)
+  Uncorrected, the existing axiomatisation of `Algebra.Structures.IsKleeneAlgebra`
+  meant that it was possible to prove that `0# ⋆ ≈ 1#`. As a consequence, the
+  axioms have been corrected so that fields `starExpansive` and `starDestructive`
+  now refer to the partial order relation `_≤_`, which is defined in-place, but
+  only depends on the `+-isCommutativeBand` substructure.
+
+  As a further knock-on consequence, module `Algebra.Properties.KleeneAlgebra`
+  has been completely rewritten in order to accommodate the new axiomatisation.
 
 Non-backwards compatible changes
 --------------------------------
@@ -78,6 +117,11 @@ Non-backwards compatible changes
   Data.Tree.Rose.Show
   ```
 
+* `^-semigroup-morphism` and `^-monoid-morphism` in `Data.Nat.Properties`
+  deprecated below as part of removing v1.x-era deprecations, have moreover had
+  their definitions and signatures updated to use `IsMagmaHomomorphism` and
+  `IsMonoidHomomorphism` respectively
+
 Minor improvements
 ------------------
 
@@ -97,6 +141,16 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Definitions`:
+  ```agda
+  StarLeftExpansive     ↦  Relation.Binary.Definitions.KleeneAlgebra.StarLeftExpansive
+  StarRightExpansive    ↦  Relation.Binary.Definitions.KleeneAlgebra.StarRightExpansive
+  StarExpansive         ↦  Relation.Binary.Definitions.KleeneAlgebra.StarExpansive
+  StarLeftDestructive   ↦  Relation.Binary.Definitions.KleeneAlgebra.StarLeftDestructive
+  StarRightDestructive  ↦  Relation.Binary.Definitions.KleeneAlgebra.StarRightDestructive
+  StarDestructive       ↦  Relation.Binary.Definitions.KleeneAlgebra.StarDestructive
+  ```
 
 * In `Algebra.Morphism.Structures`:
   ```agda
@@ -124,10 +178,12 @@ Deprecated names
 
 * In `Data.Nat.Properties`:
   ```agda
-  _≟_       ↦   _≡?_
-  ≟-diag    ↦   ≡?-≡
-  ≟-≡       ↦   ≡?-≢
-  ≟?-≡-refl ↦ ≡?-≡-refl
+  _≟_                  ↦   _≡?_
+  ≟-diag               ↦   ≡?-≡
+  ≟-≡                  ↦   ≡?-≢
+  ≟?-≡-refl            ↦   ≡?-≡-refl
+  ^-semigroup-morphism ↦   ^-isMagmaHomomorphism
+  ^-monoid-morphism    ↦   ^-isMonoidHomomorphism
   ```
 
 * In `Effect.Monad.Partiality`:
@@ -181,6 +237,8 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
+
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
   of consecutive elements of a stream are related.
 
@@ -212,6 +270,23 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Properties.KleeneAlgebra`:
+  ```agda
+  ≤-reflexive    : _≈_ ⇒ _≤_
+  ≤-refl         : Reflexive _≤_
+  ≤-trans        : Transitive _≤_
+  ≤-antisym      : Antisymmetric _≈_ _≤_
+  isPreorder     : IsPreorder _≈_ _≤_
+  isPartialOrder : IsPartialOrder _≈_ _≤_
+  preorder       : Preorder _ _
+  poset          : Poset _ _
+  ```
+
+* In `Algebra.Structures.IsKleeneAlgebra`:
+  ```agda
+  _≤_            : Rel A _
+  ```
+
 * In `Data.Bool.Properties`:
   ```agda
   ∨-monoid : Monoid 0ℓ 0ℓ
@@ -223,9 +298,25 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
+  ```agda
+  assoc← : ∃[ ys ] Appending bs cs ys × Appending as ys ds →
+           ∃[ xs ] Appending as bs xs × Appending xs cs ds
+  ```
+
+* In `Data.Nat.DivMod`:
+  ```agda
+  m<suc[m/n]*n : ∀ m n → m < suc (m / n) * n
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
+  ```
+
+* In `Data.Nat.ListAction.Properties`:
+  ```agda
+  product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
   ```
 
 * In `Data.Rational.Properties`:
@@ -320,3 +411,15 @@ Additions to existing modules
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   from-injective   : Injective _≈₂_ _≈₁_ from
   ```
+
+* In `Relation.Binary.Definitions`:
+  ```agda
+  module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
+    StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarExpansive         : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarLeftDestructive   : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+    StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  ```
+

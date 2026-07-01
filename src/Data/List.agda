@@ -8,7 +8,6 @@
 -- lists.
 
 {-# OPTIONS --without-K --safe #-}
-{-# OPTIONS --warning=noUserWarning #-} -- for deprecated scans
 
 module Data.List where
 
