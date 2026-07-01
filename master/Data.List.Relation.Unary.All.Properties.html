@@ -14,7 +14,7 @@
 <a id="425" class="Keyword">open</a> <a id="430" class="Keyword">import</a> <a id="437" href="Data.Bool.ListAction.html" class="Module">Data.Bool.ListAction</a> <a id="458" class="Keyword">using</a> <a id="464" class="Symbol">(</a><a id="465" href="Data.Bool.ListAction.html#918" class="Function">all</a><a id="468" class="Symbol">)</a>
 <a id="470" class="Keyword">open</a> <a id="475" class="Keyword">import</a> <a id="482" href="Data.Bool.Properties.html" class="Module">Data.Bool.Properties</a> <a id="503" class="Keyword">using</a> <a id="509" class="Symbol">(</a><a id="510" href="Data.Bool.Properties.html#21700" class="Function">T-∧</a><a id="513" class="Symbol">)</a>
 <a id="515" class="Keyword">open</a> <a id="520" class="Keyword">import</a> <a id="527" href="Data.Fin.Base.html" class="Module">Data.Fin.Base</a> <a id="541" class="Keyword">using</a> <a id="547" class="Symbol">(</a><a id="548" href="Data.Fin.Base.html#1118" class="Datatype">Fin</a><a id="551" class="Symbol">;</a> <a id="553" href="Data.Fin.Base.html#1140" class="InductiveConstructor">zero</a><a id="557" class="Symbol">;</a> <a id="559" href="Data.Fin.Base.html#1161" class="InductiveConstructor">suc</a><a id="562" class="Symbol">)</a>
-<a id="564" class="Keyword">open</a> <a id="569" class="Keyword">import</a> <a id="576" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="591" class="Symbol">as</a> <a id="594" class="Module">List</a> <a id="599" class="Keyword">hiding</a> <a id="606" class="Symbol">(</a><a id="607" href="Data.List.Base.html#6254" class="Function">lookup</a><a id="613" class="Symbol">;</a> <a id="615" href="Data.List.Base.html#5734" class="Function">updateAt</a><a id="623" class="Symbol">;</a> <a id="625" href="Data.List.Base.html#16685" class="Function">and</a><a id="628" class="Symbol">;</a> <a id="630" href="Data.List.Base.html#17010" class="Function">or</a><a id="632" class="Symbol">;</a> <a id="634" href="Data.List.Base.html#16730" class="Function">all</a><a id="637" class="Symbol">;</a> <a id="639" href="Data.List.Base.html#17054" class="Function">any</a><a id="642" class="Symbol">)</a>
+<a id="564" class="Keyword">open</a> <a id="569" class="Keyword">import</a> <a id="576" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="591" class="Symbol">as</a> <a id="594" class="Module">List</a> <a id="599" class="Keyword">hiding</a> <a id="606" class="Symbol">(</a><a id="607" href="Data.List.Base.html#6254" class="Function">lookup</a><a id="613" class="Symbol">;</a> <a id="615" href="Data.List.Base.html#5734" class="Function">updateAt</a><a id="623" class="Symbol">;</a> <a id="625" href="Data.List.Base.html#16435" class="Function">and</a><a id="628" class="Symbol">;</a> <a id="630" href="Data.List.Base.html#16760" class="Function">or</a><a id="632" class="Symbol">;</a> <a id="634" href="Data.List.Base.html#16480" class="Function">all</a><a id="637" class="Symbol">;</a> <a id="639" href="Data.List.Base.html#16804" class="Function">any</a><a id="642" class="Symbol">)</a>
 <a id="644" class="Keyword">open</a> <a id="649" class="Keyword">import</a> <a id="656" href="Data.List.Membership.Propositional.html" class="Module">Data.List.Membership.Propositional</a> <a id="691" class="Keyword">using</a> <a id="697" class="Symbol">(</a><a id="698" href="Data.List.Membership.Setoid.html#916" class="Function Operator">_∈_</a><a id="701" class="Symbol">;</a> <a id="703" href="Data.List.Membership.Propositional.html#939" class="Function Operator">_≢∈_</a><a id="707" class="Symbol">)</a>
 <a id="709" class="Keyword">open</a> <a id="714" class="Keyword">import</a> <a id="721" href="Data.List.Membership.Propositional.Properties.html" class="Module">Data.List.Membership.Propositional.Properties</a>
   <a id="769" class="Keyword">using</a> <a id="775" class="Symbol">(</a><a id="776" href="Data.List.Membership.Propositional.Properties.html#15223" class="Function">there-injective-≢∈</a><a id="794" class="Symbol">;</a> <a id="796" href="Data.List.Membership.Propositional.Properties.html#9638" class="Function">∈-filter⁻</a><a id="805" class="Symbol">)</a>
@@ -706,60 +706,52 @@
 <a id="26102" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="26173" class="Comment">-- not guaranteed.</a>
 
-<a id="26193" class="Comment">-- Version 1.3</a>
+<a id="26193" class="Comment">-- Version 2.0</a>
 
-<a id="Any¬→¬All"></a><a id="26209" href="Data.List.Relation.Unary.All.Properties.html#26209" class="Function">Any¬→¬All</a> <a id="26219" class="Symbol">=</a> <a id="26221" href="Data.List.Relation.Unary.All.Properties.Core.html#1952" class="Function">Any¬⇒¬All</a>
-<a id="26231" class="Symbol">{-#</a> <a id="26235" class="Keyword">WARNING_ON_USAGE</a> <a id="26252" class="Pragma">Any¬→¬All</a>
-<a id="26262" class="String">&quot;Warning: Any¬→¬All was deprecated in v1.3.
-Please use Any¬⇒¬All instead.&quot;</a>
-<a id="26337" class="Symbol">#-}</a>
-
-<a id="26342" class="Comment">-- Version 2.0</a>
-
-<a id="updateAt-id-relative"></a><a id="26358" href="Data.List.Relation.Unary.All.Properties.html#26358" class="Function">updateAt-id-relative</a> <a id="26379" class="Symbol">=</a> <a id="26381" href="Data.List.Relation.Unary.All.Properties.html#7900" class="Function">updateAt-id-local</a>
-<a id="26399" class="Symbol">{-#</a> <a id="26403" class="Keyword">WARNING_ON_USAGE</a> <a id="26420" class="Pragma">updateAt-id-relative</a>
-<a id="26441" class="String">&quot;Warning: updateAt-id-relative was deprecated in v2.0.
+<a id="updateAt-id-relative"></a><a id="26209" href="Data.List.Relation.Unary.All.Properties.html#26209" class="Function">updateAt-id-relative</a> <a id="26230" class="Symbol">=</a> <a id="26232" href="Data.List.Relation.Unary.All.Properties.html#7900" class="Function">updateAt-id-local</a>
+<a id="26250" class="Symbol">{-#</a> <a id="26254" class="Keyword">WARNING_ON_USAGE</a> <a id="26271" class="Pragma">updateAt-id-relative</a>
+<a id="26292" class="String">&quot;Warning: updateAt-id-relative was deprecated in v2.0.
 Please use updateAt-id-local instead.&quot;</a>
-<a id="26535" class="Symbol">#-}</a>
+<a id="26386" class="Symbol">#-}</a>
 
-<a id="updateAt-compose-relative"></a><a id="26540" href="Data.List.Relation.Unary.All.Properties.html#26540" class="Function">updateAt-compose-relative</a> <a id="26566" class="Symbol">=</a> <a id="26568" href="Data.List.Relation.Unary.All.Properties.html#8514" class="Function">updateAt-∘-local</a>
-<a id="26585" class="Symbol">{-#</a> <a id="26589" class="Keyword">WARNING_ON_USAGE</a> <a id="26606" class="Pragma">updateAt-compose-relative</a>
-<a id="26632" class="String">&quot;Warning: updateAt-compose-relative was deprecated in v2.0.
+<a id="updateAt-compose-relative"></a><a id="26391" href="Data.List.Relation.Unary.All.Properties.html#26391" class="Function">updateAt-compose-relative</a> <a id="26417" class="Symbol">=</a> <a id="26419" href="Data.List.Relation.Unary.All.Properties.html#8514" class="Function">updateAt-∘-local</a>
+<a id="26436" class="Symbol">{-#</a> <a id="26440" class="Keyword">WARNING_ON_USAGE</a> <a id="26457" class="Pragma">updateAt-compose-relative</a>
+<a id="26483" class="String">&quot;Warning: updateAt-compose-relative was deprecated in v2.0.
 Please use updateAt-∘-local instead.&quot;</a>
-<a id="26730" class="Symbol">#-}</a>
+<a id="26581" class="Symbol">#-}</a>
 
-<a id="updateAt-compose"></a><a id="26735" href="Data.List.Relation.Unary.All.Properties.html#26735" class="Function">updateAt-compose</a> <a id="26752" class="Symbol">=</a> <a id="26754" href="Data.List.Relation.Unary.All.Properties.html#8946" class="Function">updateAt-∘</a>
-<a id="26765" class="Symbol">{-#</a> <a id="26769" class="Keyword">WARNING_ON_USAGE</a> <a id="26786" class="Pragma">updateAt-compose</a>
-<a id="26803" class="String">&quot;Warning: updateAt-compose was deprecated in v2.0.
+<a id="updateAt-compose"></a><a id="26586" href="Data.List.Relation.Unary.All.Properties.html#26586" class="Function">updateAt-compose</a> <a id="26603" class="Symbol">=</a> <a id="26605" href="Data.List.Relation.Unary.All.Properties.html#8946" class="Function">updateAt-∘</a>
+<a id="26616" class="Symbol">{-#</a> <a id="26620" class="Keyword">WARNING_ON_USAGE</a> <a id="26637" class="Pragma">updateAt-compose</a>
+<a id="26654" class="String">&quot;Warning: updateAt-compose was deprecated in v2.0.
 Please use updateAt-∘ instead.&quot;</a>
-<a id="26886" class="Symbol">#-}</a>
+<a id="26737" class="Symbol">#-}</a>
 
-<a id="updateAt-cong-relative"></a><a id="26891" href="Data.List.Relation.Unary.All.Properties.html#26891" class="Function">updateAt-cong-relative</a> <a id="26914" class="Symbol">=</a> <a id="26916" href="Data.List.Relation.Unary.All.Properties.html#9273" class="Function">updateAt-cong-local</a>
-<a id="26936" class="Symbol">{-#</a> <a id="26940" class="Keyword">WARNING_ON_USAGE</a> <a id="26957" class="Pragma">updateAt-cong-relative</a>
-<a id="26980" class="String">&quot;Warning: updateAt-cong-relative was deprecated in v2.0.
+<a id="updateAt-cong-relative"></a><a id="26742" href="Data.List.Relation.Unary.All.Properties.html#26742" class="Function">updateAt-cong-relative</a> <a id="26765" class="Symbol">=</a> <a id="26767" href="Data.List.Relation.Unary.All.Properties.html#9273" class="Function">updateAt-cong-local</a>
+<a id="26787" class="Symbol">{-#</a> <a id="26791" class="Keyword">WARNING_ON_USAGE</a> <a id="26808" class="Pragma">updateAt-cong-relative</a>
+<a id="26831" class="String">&quot;Warning: updateAt-cong-relative was deprecated in v2.0.
 Please use updateAt-cong-local instead.&quot;</a>
-<a id="27078" class="Symbol">#-}</a>
+<a id="26929" class="Symbol">#-}</a>
 
-<a id="gmap"></a><a id="27083" href="Data.List.Relation.Unary.All.Properties.html#27083" class="Function">gmap</a> <a id="27088" class="Symbol">=</a> <a id="27090" href="Data.List.Relation.Unary.All.Properties.html#12180" class="Function">gmap⁺</a>
-<a id="27096" class="Symbol">{-#</a> <a id="27100" class="Keyword">WARNING_ON_USAGE</a> <a id="27117" class="Pragma">gmap</a>
-<a id="27122" class="String">&quot;Warning: gmap was deprecated in v2.0.
+<a id="gmap"></a><a id="26934" href="Data.List.Relation.Unary.All.Properties.html#26934" class="Function">gmap</a> <a id="26939" class="Symbol">=</a> <a id="26941" href="Data.List.Relation.Unary.All.Properties.html#12180" class="Function">gmap⁺</a>
+<a id="26947" class="Symbol">{-#</a> <a id="26951" class="Keyword">WARNING_ON_USAGE</a> <a id="26968" class="Pragma">gmap</a>
+<a id="26973" class="String">&quot;Warning: gmap was deprecated in v2.0.
 Please use gmap⁺ instead.&quot;</a>
-<a id="27188" class="Symbol">#-}</a>
+<a id="27039" class="Symbol">#-}</a>
 
-<a id="27193" class="Comment">-- Version 2.1</a>
+<a id="27044" class="Comment">-- Version 2.1</a>
 
-<a id="map-compose"></a><a id="27209" href="Data.List.Relation.Unary.All.Properties.html#27209" class="Function">map-compose</a> <a id="27221" class="Symbol">=</a> <a id="27223" href="Data.List.Relation.Unary.All.Properties.html#5008" class="Function">map-∘</a>
-<a id="27229" class="Symbol">{-#</a> <a id="27233" class="Keyword">WARNING_ON_USAGE</a> <a id="27250" class="Pragma">map-compose</a>
-<a id="27262" class="String">&quot;Warning: map-compose was deprecated in v2.1.
+<a id="map-compose"></a><a id="27060" href="Data.List.Relation.Unary.All.Properties.html#27060" class="Function">map-compose</a> <a id="27072" class="Symbol">=</a> <a id="27074" href="Data.List.Relation.Unary.All.Properties.html#5008" class="Function">map-∘</a>
+<a id="27080" class="Symbol">{-#</a> <a id="27084" class="Keyword">WARNING_ON_USAGE</a> <a id="27101" class="Pragma">map-compose</a>
+<a id="27113" class="String">&quot;Warning: map-compose was deprecated in v2.1.
 Please use map-∘ instead.&quot;</a>
-<a id="27335" class="Symbol">#-}</a>
+<a id="27186" class="Symbol">#-}</a>
 
-<a id="27340" class="Comment">-- Version 2.2</a>
+<a id="27191" class="Comment">-- Version 2.2</a>
 
-<a id="takeWhile⁻"></a><a id="27356" href="Data.List.Relation.Unary.All.Properties.html#27356" class="Function">takeWhile⁻</a> <a id="27367" class="Symbol">:</a> <a id="27369" class="Symbol">(</a><a id="27370" href="Data.List.Relation.Unary.All.Properties.html#27370" class="Bound">P?</a> <a id="27373" class="Symbol">:</a> <a id="27375" href="Relation.Unary.html#4534" class="Function">Decidable</a> <a id="27385" href="Data.List.Relation.Unary.All.Properties.html#2590" class="Generalizable">P</a><a id="27386" class="Symbol">)</a> <a id="27388" class="Symbol">→</a> <a id="27390" href="Data.List.Base.html#9868" class="Function">takeWhile</a> <a id="27400" href="Data.List.Relation.Unary.All.Properties.html#27370" class="Bound">P?</a> <a id="27403" href="Data.List.Relation.Unary.All.Properties.html#2653" class="Generalizable">xs</a> <a id="27406" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="27408" href="Data.List.Relation.Unary.All.Properties.html#2653" class="Generalizable">xs</a> <a id="27411" class="Symbol">→</a> <a id="27413" href="Data.List.Relation.Unary.All.html#1626" class="Datatype">All</a> <a id="27417" href="Data.List.Relation.Unary.All.Properties.html#2590" class="Generalizable">P</a> <a id="27419" href="Data.List.Relation.Unary.All.Properties.html#2653" class="Generalizable">xs</a>
-<a id="27422" href="Data.List.Relation.Unary.All.Properties.html#27356" class="Function">takeWhile⁻</a> <a id="27433" class="Symbol">{</a><a id="27434" class="Argument">xs</a> <a id="27437" class="Symbol">=</a> <a id="27439" href="Data.List.Relation.Unary.All.Properties.html#27439" class="Bound">xs</a><a id="27441" class="Symbol">}</a> <a id="27443" href="Data.List.Relation.Unary.All.Properties.html#27443" class="Bound">P?</a> <a id="27446" href="Data.List.Relation.Unary.All.Properties.html#27446" class="Bound">eq</a> <a id="27449" class="Keyword">rewrite</a> <a id="27457" href="Relation.Binary.PropositionalEquality.Core.html#2090" class="Function">sym</a> <a id="27461" href="Data.List.Relation.Unary.All.Properties.html#27446" class="Bound">eq</a> <a id="27464" class="Symbol">=</a> <a id="27466" href="Data.List.Relation.Unary.All.Properties.html#17576" class="Function">all-takeWhile</a> <a id="27480" href="Data.List.Relation.Unary.All.Properties.html#27443" class="Bound">P?</a> <a id="27483" href="Data.List.Relation.Unary.All.Properties.html#27439" class="Bound">xs</a>
-<a id="27486" class="Symbol">{-#</a> <a id="27490" class="Keyword">WARNING_ON_USAGE</a> <a id="27507" class="Pragma">takeWhile⁻</a>
-<a id="27518" class="String">&quot;Warning: takeWhile⁻ was deprecated in v2.2.
+<a id="takeWhile⁻"></a><a id="27207" href="Data.List.Relation.Unary.All.Properties.html#27207" class="Function">takeWhile⁻</a> <a id="27218" class="Symbol">:</a> <a id="27220" class="Symbol">(</a><a id="27221" href="Data.List.Relation.Unary.All.Properties.html#27221" class="Bound">P?</a> <a id="27224" class="Symbol">:</a> <a id="27226" href="Relation.Unary.html#4534" class="Function">Decidable</a> <a id="27236" href="Data.List.Relation.Unary.All.Properties.html#2590" class="Generalizable">P</a><a id="27237" class="Symbol">)</a> <a id="27239" class="Symbol">→</a> <a id="27241" href="Data.List.Base.html#9868" class="Function">takeWhile</a> <a id="27251" href="Data.List.Relation.Unary.All.Properties.html#27221" class="Bound">P?</a> <a id="27254" href="Data.List.Relation.Unary.All.Properties.html#2653" class="Generalizable">xs</a> <a id="27257" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="27259" href="Data.List.Relation.Unary.All.Properties.html#2653" class="Generalizable">xs</a> <a id="27262" class="Symbol">→</a> <a id="27264" href="Data.List.Relation.Unary.All.html#1626" class="Datatype">All</a> <a id="27268" href="Data.List.Relation.Unary.All.Properties.html#2590" class="Generalizable">P</a> <a id="27270" href="Data.List.Relation.Unary.All.Properties.html#2653" class="Generalizable">xs</a>
+<a id="27273" href="Data.List.Relation.Unary.All.Properties.html#27207" class="Function">takeWhile⁻</a> <a id="27284" class="Symbol">{</a><a id="27285" class="Argument">xs</a> <a id="27288" class="Symbol">=</a> <a id="27290" href="Data.List.Relation.Unary.All.Properties.html#27290" class="Bound">xs</a><a id="27292" class="Symbol">}</a> <a id="27294" href="Data.List.Relation.Unary.All.Properties.html#27294" class="Bound">P?</a> <a id="27297" href="Data.List.Relation.Unary.All.Properties.html#27297" class="Bound">eq</a> <a id="27300" class="Keyword">rewrite</a> <a id="27308" href="Relation.Binary.PropositionalEquality.Core.html#2090" class="Function">sym</a> <a id="27312" href="Data.List.Relation.Unary.All.Properties.html#27297" class="Bound">eq</a> <a id="27315" class="Symbol">=</a> <a id="27317" href="Data.List.Relation.Unary.All.Properties.html#17576" class="Function">all-takeWhile</a> <a id="27331" href="Data.List.Relation.Unary.All.Properties.html#27294" class="Bound">P?</a> <a id="27334" href="Data.List.Relation.Unary.All.Properties.html#27290" class="Bound">xs</a>
+<a id="27337" class="Symbol">{-#</a> <a id="27341" class="Keyword">WARNING_ON_USAGE</a> <a id="27358" class="Pragma">takeWhile⁻</a>
+<a id="27369" class="String">&quot;Warning: takeWhile⁻ was deprecated in v2.2.
 Please use all-takeWhile instead.&quot;</a>
-<a id="27598" class="Symbol">#-}</a>
+<a id="27449" class="Symbol">#-}</a>
 </pre></body></html>
