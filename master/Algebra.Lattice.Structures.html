@@ -63,11 +63,11 @@
 
 <a id="2039" class="Comment">-- A bounded semi-lattice is the same thing as an idempotent commutative</a>
 <a id="2112" class="Comment">-- monoid.</a>
-<a id="IsBoundedSemilattice"></a><a id="2123" href="Algebra.Lattice.Structures.html#2123" class="Function">IsBoundedSemilattice</a> <a id="2144" class="Symbol">=</a> <a id="2146" href="Algebra.Structures.html#6075" class="Record">IsIdempotentCommutativeMonoid</a>
+<a id="IsBoundedSemilattice"></a><a id="2123" href="Algebra.Lattice.Structures.html#2123" class="Function">IsBoundedSemilattice</a> <a id="2144" class="Symbol">=</a> <a id="2146" href="Algebra.Structures.html#6076" class="Record">IsIdempotentCommutativeMonoid</a>
 <a id="2176" class="Keyword">module</a> <a id="IsBoundedSemilattice"></a><a id="2183" href="Algebra.Lattice.Structures.html#2183" class="Module">IsBoundedSemilattice</a> <a id="2204" class="Symbol">{</a><a id="2205" href="Algebra.Lattice.Structures.html#2205" class="Bound">∙</a> <a id="2207" href="Algebra.Lattice.Structures.html#2207" class="Bound">ε</a><a id="2208" class="Symbol">}</a> <a id="2210" class="Symbol">(</a><a id="2211" href="Algebra.Lattice.Structures.html#2211" class="Bound">L</a> <a id="2213" class="Symbol">:</a> <a id="2215" href="Algebra.Lattice.Structures.html#2123" class="Function">IsBoundedSemilattice</a> <a id="2236" href="Algebra.Lattice.Structures.html#2205" class="Bound">∙</a> <a id="2238" href="Algebra.Lattice.Structures.html#2207" class="Bound">ε</a><a id="2239" class="Symbol">)</a> <a id="2241" class="Keyword">where</a>
 
-  <a id="2250" class="Keyword">open</a> <a id="2255" href="Algebra.Structures.html#6075" class="Module">IsIdempotentCommutativeMonoid</a> <a id="2285" href="Algebra.Lattice.Structures.html#2211" class="Bound">L</a> <a id="2287" class="Keyword">public</a>
-    <a id="2298" class="Keyword">renaming</a> <a id="2307" class="Symbol">(</a><a id="2308" href="Algebra.Structures.html#6524" class="Function">isCommutativeBand</a> <a id="2326" class="Symbol">to</a> <a id="2329" class="Function">isSemilattice</a><a id="2342" class="Symbol">)</a>
+  <a id="2250" class="Keyword">open</a> <a id="2255" href="Algebra.Structures.html#6076" class="Module">IsIdempotentCommutativeMonoid</a> <a id="2285" href="Algebra.Lattice.Structures.html#2211" class="Bound">L</a> <a id="2287" class="Keyword">public</a>
+    <a id="2298" class="Keyword">renaming</a> <a id="2307" class="Symbol">(</a><a id="2308" href="Algebra.Structures.html#6525" class="Function">isCommutativeBand</a> <a id="2326" class="Symbol">to</a> <a id="2329" class="Function">isSemilattice</a><a id="2342" class="Symbol">)</a>
 
 
 <a id="2346" class="Comment">-- Used to bring names appropriate for a bounded meet semilattice</a>
@@ -77,7 +77,7 @@
   <a id="2550" class="Keyword">where</a>
 
   <a id="2559" class="Keyword">open</a> <a id="2564" href="Algebra.Lattice.Structures.html#2183" class="Module">IsBoundedSemilattice</a> <a id="2585" href="Algebra.Lattice.Structures.html#2514" class="Bound">L</a> <a id="2587" class="Keyword">public</a>
-    <a id="2598" class="Keyword">using</a> <a id="2604" class="Symbol">(</a><a id="2605" href="Algebra.Structures.html#5101" class="Function">identity</a><a id="2613" class="Symbol">;</a> <a id="2615" href="Algebra.Structures.html#5170" class="Function">identityˡ</a><a id="2624" class="Symbol">;</a> <a id="2626" href="Algebra.Structures.html#5231" class="Function">identityʳ</a><a id="2635" class="Symbol">)</a>
+    <a id="2598" class="Keyword">using</a> <a id="2604" class="Symbol">(</a><a id="2605" href="Algebra.Structures.html#5102" class="Function">identity</a><a id="2613" class="Symbol">;</a> <a id="2615" href="Algebra.Structures.html#5171" class="Function">identityˡ</a><a id="2624" class="Symbol">;</a> <a id="2626" href="Algebra.Structures.html#5232" class="Function">identityʳ</a><a id="2635" class="Symbol">)</a>
     <a id="2641" class="Keyword">renaming</a> <a id="2650" class="Symbol">(</a><a id="2651" href="Algebra.Lattice.Structures.html#2329" class="Function">isSemilattice</a> <a id="2665" class="Symbol">to</a> <a id="2668" class="Function">isMeetSemilattice</a><a id="2685" class="Symbol">)</a>
 
   <a id="2690" class="Keyword">open</a> <a id="2695" href="Algebra.Lattice.Structures.html#1447" class="Module">IsMeetSemilattice</a> <a id="2713" href="Algebra.Lattice.Structures.html#2668" class="Function">isMeetSemilattice</a> <a id="2731" class="Keyword">public</a>
@@ -90,7 +90,7 @@
   <a id="2944" class="Keyword">where</a>
 
   <a id="2953" class="Keyword">open</a> <a id="2958" href="Algebra.Lattice.Structures.html#2183" class="Module">IsBoundedSemilattice</a> <a id="2979" href="Algebra.Lattice.Structures.html#2908" class="Bound">L</a> <a id="2981" class="Keyword">public</a>
-    <a id="2992" class="Keyword">using</a> <a id="2998" class="Symbol">(</a><a id="2999" href="Algebra.Structures.html#5101" class="Function">identity</a><a id="3007" class="Symbol">;</a> <a id="3009" href="Algebra.Structures.html#5170" class="Function">identityˡ</a><a id="3018" class="Symbol">;</a> <a id="3020" href="Algebra.Structures.html#5231" class="Function">identityʳ</a><a id="3029" class="Symbol">)</a>
+    <a id="2992" class="Keyword">using</a> <a id="2998" class="Symbol">(</a><a id="2999" href="Algebra.Structures.html#5102" class="Function">identity</a><a id="3007" class="Symbol">;</a> <a id="3009" href="Algebra.Structures.html#5171" class="Function">identityˡ</a><a id="3018" class="Symbol">;</a> <a id="3020" href="Algebra.Structures.html#5232" class="Function">identityʳ</a><a id="3029" class="Symbol">)</a>
     <a id="3035" class="Keyword">renaming</a> <a id="3044" class="Symbol">(</a><a id="3045" href="Algebra.Lattice.Structures.html#2329" class="Function">isSemilattice</a> <a id="3059" class="Symbol">to</a> <a id="3062" class="Function">isJoinSemilattice</a><a id="3079" class="Symbol">)</a>
 
   <a id="3084" class="Keyword">open</a> <a id="3089" href="Algebra.Lattice.Structures.html#1736" class="Module">IsJoinSemilattice</a> <a id="3107" href="Algebra.Lattice.Structures.html#3062" class="Function">isJoinSemilattice</a> <a id="3125" class="Keyword">public</a>
