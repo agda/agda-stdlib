@@ -941,10 +941,10 @@ idempotent {A = A} B x f = sound (idem x)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.4
+-- Version 3.0
 
 _≟-Kind_ = _≡?-Kind_
 {-# WARNING_ON_USAGE _≟-Kind_
-"Warning: _≟-Kind_ was deprecated in v2.4.
+"Warning: _≟-Kind_ was deprecated in v3.0.
 Please use _≡?-Kind_ instead."
 #-}

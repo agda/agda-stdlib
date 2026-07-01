@@ -230,9 +230,25 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
+  ```agda
+  assoc← : ∃[ ys ] Appending bs cs ys × Appending as ys ds →
+           ∃[ xs ] Appending as bs xs × Appending xs cs ds
+  ```
+
+* In `Data.Nat.DivMod`:
+  ```agda
+  m<suc[m/n]*n : ∀ m n → m < suc (m / n) * n
+  ```
+
 * In `Data.Nat.GCD`:
   ```agda
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
+  ```
+
+* In `Data.Nat.ListAction.Properties`:
+  ```agda
+  product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
   ```
 
 * In `Data.Rational.Properties`:
