@@ -14,7 +14,7 @@ open import Algebra  using
 open import Algebra.Structures using (IsCommutativeSemiring)
 open import Algebra.Definitions using (Congruent₁; Congruent₂)
 import Algebra.Morphism.Definitions as MorphismDefinitions using
-  (Homomorphic₀; Homomorphic₁; Homomorphic₂; Morphism)
+  (Homomorphic₀; Homomorphic₁; Homomorphic₂)
 open import Function.Base using (id)
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (Rel)
@@ -88,7 +88,7 @@ record _-Raw-AlmostCommutative⟶_
     module T = AlmostCommutativeRing To
   open MorphismDefinitions F.Carrier T.Carrier T._≈_
   field
-    ⟦_⟧    : Morphism
+    ⟦_⟧    : F.Carrier → T.Carrier
     +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
     *-homo : Homomorphic₂ ⟦_⟧ F._*_ T._*_
     -‿homo : Homomorphic₁ ⟦_⟧ F.-_  T.-_

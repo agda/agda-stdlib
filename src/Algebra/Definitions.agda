@@ -25,7 +25,8 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
-open import Relation.Binary.Definitions using (Monotonic₁; Monotonic₂)
+open import Relation.Binary.Definitions
+  using (Monotonic₁; Monotonic₂; module KleeneAlgebra)
 open import Relation.Nullary.Negation.Core using (¬_)
 
 
@@ -186,24 +187,6 @@ LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
 RightDivides : Op₂ A → Op₂ A → Set _
 RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)
 
-StarRightExpansive : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarRightExpansive e _+_ _∙_ _* = ∀ x → (e + (x ∙ (x *))) ≈ (x *)
-
-StarLeftExpansive : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarLeftExpansive e _+_ _∙_ _* = ∀ x →  (e + ((x *) ∙ x)) ≈ (x *)
-
-StarExpansive : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarExpansive e _+_ _∙_ _* = (StarLeftExpansive e _+_ _∙_ _*) × (StarRightExpansive e _+_ _∙_ _*)
-
-StarLeftDestructive : Op₂ A → Op₂ A → Op₁ A → Set _
-StarLeftDestructive _+_ _∙_ _* = ∀ a b x → (b + (a ∙ x)) ≈ x → ((a *) ∙ b) ≈ x
-
-StarRightDestructive : Op₂ A → Op₂ A → Op₁ A → Set _
-StarRightDestructive _+_ _∙_ _* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b ∙ (a *)) ≈ x
-
-StarDestructive : Op₂ A → Op₂ A → Op₁ A → Set _
-StarDestructive _+_ _∙_ _* = (StarLeftDestructive _+_ _∙_ _*) × (StarRightDestructive _+_ _∙_ _*)
-
 LeftAlternative : Op₂ A → Set _
 LeftAlternative _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (x ∙ y))
 
@@ -239,3 +222,38 @@ MiddleBol _∙_ _\\_ _//_ = ∀ x y z → (x ∙ ((y ∙ z) \\ x)) ≈ ((x // z)
 
 Identical : Op₂ A → Set _
 Identical _∙_ = ∀ x y z → ((z ∙ x) ∙ (y ∙ z)) ≈ (z ∙ ((x ∙ y) ∙ z))
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+open KleeneAlgebra _≈_ public
+{-# WARNING_ON_USAGE StarLeftExpansive
+"Warning: StarLeftExpansive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarLeftExpansive instead."
+#-}
+{-# WARNING_ON_USAGE StarRightExpansive
+"Warning: StarRightExpansive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarRightExpansive instead."
+#-}
+{-# WARNING_ON_USAGE StarExpansive
+"Warning: StarExpansive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarExpansive instead."
+#-}
+{-# WARNING_ON_USAGE StarLeftDestructive
+"Warning: StarLeftDestructive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarLeftDestructive instead."
+#-}
+{-# WARNING_ON_USAGE StarRightDestructive
+"Warning: StarRightDestructive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarRightDestructive instead."
+#-}
+{-# WARNING_ON_USAGE StarDestructive
+"Warning: StarDestructive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarDestructive instead."
+#-}

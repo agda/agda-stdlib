@@ -80,18 +80,3 @@ f ^ suc n = f ∘ (f ^ n)
 
 ∘-id-monoid : Monoid _ _
 ∘-id-monoid = record { isMonoid = ∘-id-isMonoid }
-
-------------------------------------------------------------------------
--- Homomorphism
-
-^-isSemigroupMorphism : ∀ f → IsSemigroupMorphism +-semigroup ∘-semigroup (f ^_)
-^-isSemigroupMorphism f = record
-  { ⟦⟧-cong = ^-cong₂ f
-  ; ∙-homo  = ^-homo f
-  }
-
-^-isMonoidMorphism : ∀ f → IsMonoidMorphism +-0-monoid ∘-id-monoid (f ^_)
-^-isMonoidMorphism f = record
-  { sm-homo = ^-isSemigroupMorphism f
-  ; ε-homo  = λ x≈y → x≈y
-  }

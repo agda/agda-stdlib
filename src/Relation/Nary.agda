@@ -214,10 +214,10 @@ toWitness {suc n} R R? = toWitness (R _) (R? _)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.4
+-- Version 3.0
 
 ≟-mapₙ = ≡?-mapₙ
 {-# WARNING_ON_USAGE ≟-mapₙ
-"Warning: ≟-mapₙ was deprecated in v2.4.
+"Warning: ≟-mapₙ was deprecated in v3.0.
 Please use ≡?-mapₙ instead."
 #-}

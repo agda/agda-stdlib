@@ -58,7 +58,7 @@ module IsJoinSemilattice {∨} (L : IsJoinSemilattice ∨) where
     )
 
 ------------------------------------------------------------------------
--- Structures with 1 binary operation & 1 element
+-- Structures with 1 binary operation & 1 constant
 
 -- A bounded semi-lattice is the same thing as an idempotent commutative
 -- monoid.
@@ -166,7 +166,7 @@ record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   ∧-distribʳ-∨ = proj₂ ∧-distrib-∨
 
 ------------------------------------------------------------------------
--- Structures with 2 binary ops, 1 unary op and 2 elements.
+-- Structures with 2 binary ops, 1 unary op and 2 constants.
 
 record IsBooleanAlgebra (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (a ⊔ ℓ)
   where

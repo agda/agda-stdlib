@@ -1507,45 +1507,17 @@ pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 = begin
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.4
-
-*-+-isSemiringWithoutAnnihilatingZero = +-*-isSemiringWithoutAnnihilatingZero
-{-# WARNING_ON_USAGE *-+-isSemiringWithoutAnnihilatingZero
-"Warning: *-+-isSemiringWithoutAnnihilatingZero was deprecated in v1.4.
-Please use +-*-isSemiringWithoutAnnihilatingZero instead."
-#-}
-*-+-isSemiring = +-*-isSemiring
-{-# WARNING_ON_USAGE *-+-isSemiring
-"Warning: *-+-isSemiring was deprecated in v1.4.
-Please use +-*-isSemiring instead."
-#-}
-*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
-{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
-"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
-Please use +-*-isCommutativeSemiring instead."
-#-}
-*-+-semiring = +-*-semiring
-{-# WARNING_ON_USAGE *-+-semiring
-"Warning: *-+-semiring was deprecated in v1.4.
-Please use +-*-semiring instead."
-#-}
-*-+-commutativeSemiring = +-*-commutativeSemiring
-{-# WARNING_ON_USAGE *-+-commutativeSemiring
-"Warning: *-+-commutativeSemiring was deprecated in v1.4.
-Please use +-*-commutativeSemiring instead."
-#-}
-
 -- Version 2.0
 
 {- issue1858/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Nat.Binary.Base public
   using (+-rawMagma; +-0-rawMonoid; *-rawMagma; *-1-rawMonoid)
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}

@@ -11,7 +11,6 @@ open import Relation.Binary.Bundles using (Setoid)
 
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
-import Algebra.Consequences.Base as Base
 open import Algebra.Core
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product.Base using (_,_)
@@ -39,20 +38,15 @@ private
 
 -- Export base lemmas that don't require the setoid
 
-open Base public
-  hiding (module Congruence; sel⇒idem)
+open import Algebra.Consequences.Base _≈_ as Base public
+  hiding (module Congruence)
 
--- Export congruence lemmas using reflexivity
+------------------------------------------------------------------------
+-- Congruence
 
 module Congruence (cong : Congruent₂ _∙_) where
 
-  open Base.Congruence _≈_ cong refl public
-
-------------------------------------------------------------------------
--- Selectivity
-
-sel⇒idem : Selective _∙_ → Idempotent _∙_
-sel⇒idem = Base.sel⇒idem _≈_
+  open Base.Congruence cong refl public
 
 ------------------------------------------------------------------------
 -- MiddleFourExchange
@@ -73,7 +67,7 @@ module _ (cong : Congruent₂ _∙_) where
 
   identity∧middleFour⇒assoc : Identity e _∙_ → _∙_ MiddleFourExchange _∙_ →
                               Associative _∙_
-  identity∧middleFour⇒assoc {e} (identityˡ , identityʳ) middleFour x y z = begin
+  identity∧middleFour⇒assoc {e = e} (identityˡ , identityʳ) middleFour x y z = begin
     (x ∙ y) ∙ z       ≈⟨ ∙-congˡ (identityˡ z) ⟨
     (x ∙ y) ∙ (e ∙ z) ≈⟨ middleFour x y e z ⟩
     (x ∙ e) ∙ (y ∙ z) ≈⟨ ∙-congʳ (identityʳ x) ⟩
@@ -94,7 +88,7 @@ module _ (cong : Congruent₂ _∙_) where
 module _ (self : SelfInverse f) where
 
   selfInverse⇒involutive : Involutive f
-  selfInverse⇒involutive = reflexive∧selfInverse⇒involutive _≈_ refl self
+  selfInverse⇒involutive = reflexive∧selfInverse⇒involutive refl self
 
   selfInverse⇒congruent : Congruent₁ f
   selfInverse⇒congruent {x} {y} x≈y = sym (self (begin
