@@ -10,7 +10,6 @@ module Data.DifferenceList.Base where
 
 open import Level using (Level)
 open import Data.List.Base as List using (List)
-open import Function.Base using (_⟨_⟩_)
 open import Data.Nat.Base using (ℕ)
 
 private
@@ -59,7 +58,7 @@ toList xs = xs List.[]
 -- fromList xs is linear in the length of xs.
 
 fromList : List A → DiffList A
-fromList xs = λ k → xs List.++ k
+fromList = List._++_
 
 ------------------------------------------------------------------------
 -- Transforming difference lists
@@ -68,7 +67,7 @@ fromList xs = λ k → xs List.++ k
 -- the list anyway.
 
 map : (A → B) → DiffList A → DiffList B
-map f xs = λ k → List.map f (toList xs) ⟨ List._++_ ⟩ k
+map f xs = List.map f (toList xs) List.++_
 
 -- concat is linear in the length of the outer list.
 
