@@ -168,6 +168,7 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   open IsCommutativeSemigroup isCommutativeSemigroup public
     using (isCommutativeMagma)
 
+
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 constant
 ------------------------------------------------------------------------
@@ -671,13 +672,19 @@ record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ 
   field
     isIdempotentSemiring  : IsIdempotentSemiring + * 0# 1#
 
-  open KleeneAlgebra _≈_
+  open IsIdempotentSemiring isIdempotentSemiring public
+
+  -- Kleene algebra ordering
+  -- NB. this clashes with `Relation.Binary.Construct.NaturalOrder.{Left|Right}`
+  infix 4 _≤_
+  _≤_ : Rel A ℓ
+  x ≤ y = + x y ≈ y
+
+  open KleeneAlgebra _≤_
 
   field
     starExpansive         : StarExpansive 1# + * ⋆
     starDestructive       : StarDestructive + * ⋆
-
-  open IsIdempotentSemiring isIdempotentSemiring public
 
   starExpansiveˡ : StarLeftExpansive 1# + * ⋆
   starExpansiveˡ = proj₁ starExpansive

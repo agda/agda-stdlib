@@ -29,6 +29,16 @@ Bug-fixes
 
 * Fix a bug in `Data.List.Base`'s `linesBy` (the last empty line would be dropped).
 
+* [issue #3003](https://github.com/agda/agda-stdlib/issues/3003)
+  Uncorrected, the existing axiomatisation of `Algebra.Structures.IsKleeneAlgebra`
+  meant that it was possible to prove that `0# ⋆ ≈ 1#`. As a consequence, the
+  axioms have been corrected so that fields `starExpansive` and `starDestructive`
+  now refer to the partial order relation `_≤_`, which is defined in-place, but
+  only depends on the `+-isCommutativeBand` substructure.
+
+  As a further knock-on consequence, module `Algebra.Properties.KleeneAlgebra`
+  has been completely rewritten in order to accommodate the new axiomatisation.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -162,6 +172,8 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
+
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
   of consecutive elements of a stream are related.
 
@@ -192,6 +204,23 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Properties.KleeneAlgebra`:
+  ```agda
+  ≤-reflexive    : _≈_ ⇒ _≤_
+  ≤-refl         : Reflexive _≤_
+  ≤-trans        : Transitive _≤_
+  ≤-antisym      : Antisymmetric _≈_ _≤_
+  isPreorder     : IsPreorder _≈_ _≤_
+  isPartialOrder : IsPartialOrder _≈_ _≤_
+  preorder       : Preorder _ _
+  poset          : Poset _ _
+  ```
+
+* In `Algebra.Structures.IsKleeneAlgebra`:
+  ```agda
+  _≤_            : Rel A _
+  ```
 
 * In `Data.Bool.Properties`:
   ```agda
