@@ -51,9 +51,6 @@ toList⁺ {xs = xs} {ys} xs∼ys = begin
   ys List.[]          ≡⟨⟩
   toList ys           ∎
 
-fromList⁺ : xs ∼ ys → (k : List A) → fromList xs k ≡ ys k
-fromList⁺ = id
-
 ------------------------------------------------------------------------
 -- Properties of operations that preserve _∼_
 

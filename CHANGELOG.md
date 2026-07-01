@@ -82,6 +82,11 @@ Deprecated names
   homo  ↦  ∙-homo
   ```
 
+* In `Data.DifferenceList.Base`:
+  ```agda
+  lift ↦ _++_
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   _≟_      ↦  _≡?_
