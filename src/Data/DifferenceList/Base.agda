@@ -59,7 +59,7 @@ toList xs = xs List.[]
 -- fromList xs is linear in the length of xs.
 
 fromList : List A → DiffList A
-fromList xs = λ k → xs ⟨ List._++_ ⟩ k
+fromList xs = λ k → xs List.++ k
 
 ------------------------------------------------------------------------
 -- Transforming difference lists
