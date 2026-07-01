@@ -6,11 +6,11 @@
 
 -- Note that currently the monad laws are not included here.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Comonad where
 
-open import Level
+open import Level using (Level; suc)
 open import Function.Base using (id; _∘′_; flip)
 
 private

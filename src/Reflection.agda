@@ -4,7 +4,7 @@
 -- Support for reflection
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection where
 
@@ -48,46 +48,46 @@ Please use Reflection.AST.Argument.Information's ArgInfo instead."
 infix 4 _≟-Lit_ _≟-Name_ _≟-Meta_ _≟-Visibility_ _≟-Relevance_ _≟-Arg-info_
         _≟-Pattern_ _≟-ArgPatterns_
 
-_≟-Lit_ = Literal._≟_
+_≟-Lit_ = Literal._≡?_
 {-# WARNING_ON_USAGE _≟-Lit_
 "Warning: _≟-Lit_ was deprecated in v1.3.
-Please use Reflection.AST.Literal's _≟_ instead."
+Please use Reflection.AST.Literal's _≡?_ instead."
 #-}
 
-_≟-Name_ = Name._≟_
+_≟-Name_ = Name._≡?_
 {-# WARNING_ON_USAGE _≟-Name_
 "Warning: _≟-Name_ was deprecated in v1.3.
-Please use Reflection.AST.Name's _≟_ instead."
+Please use Reflection.AST.Name's _≡?_ instead."
 #-}
 
-_≟-Meta_ = Meta._≟_
+_≟-Meta_ = Meta._≡?_
 {-# WARNING_ON_USAGE _≟-Meta_
 "Warning: _≟-Meta_ was deprecated in v1.3.
-Please use Reflection.AST.Meta's _≟_ instead."
+Please use Reflection.AST.Meta's _≡?_ instead."
 #-}
 
-_≟-Visibility_ = Visibility._≟_
+_≟-Visibility_ = Visibility._≡?_
 {-# WARNING_ON_USAGE _≟-Visibility_
 "Warning: _≟-Visibility_ was deprecated in v1.3.
-Please use Reflection.AST.Argument.Visibility's _≟_ instead."
+Please use Reflection.AST.Argument.Visibility's _≡?_ instead."
 #-}
 
-_≟-Relevance_ = Relevance._≟_
+_≟-Relevance_ = Relevance._≡?_
 {-# WARNING_ON_USAGE _≟-Relevance_
 "Warning: _≟-Relevance_ was deprecated in v1.3.
-Please use Reflection.AST.Argument.Relevance's _≟_ instead."
+Please use Reflection.AST.Argument.Relevance's _≡?_ instead."
 #-}
 
-_≟-Arg-info_ = Information._≟_
+_≟-Arg-info_ = Information._≡?_
 {-# WARNING_ON_USAGE _≟-Arg-info_
 "Warning: _≟-Arg-info_ was deprecated in v1.3.
-Please use Reflection.AST.Argument.Information's _≟_ instead."
+Please use Reflection.AST.Argument.Information's _≡?_ instead."
 #-}
 
-_≟-Pattern_ = Pattern._≟_
+_≟-Pattern_ = Pattern._≡?_
 {-# WARNING_ON_USAGE _≟-Pattern_
 "Warning: _≟-Pattern_ was deprecated in v1.3.
-Please use Reflection.AST.Pattern's _≟_ instead."
+Please use Reflection.AST.Pattern's _≡?_ instead."
 #-}
 
 _≟-ArgPatterns_ = Pattern._≟s_
@@ -130,56 +130,56 @@ infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
         _≟-Clause_ _≟-Clauses_ _≟_
         _≟-Sort_
 
-_≟-AbsTerm_ = Term._≟-AbsTerm_
+_≟-AbsTerm_ = Term._≡?-AbsTerm_
 {-# WARNING_ON_USAGE _≟-AbsTerm_
 "Warning: _≟-AbsTerm_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-AbsTerm_ instead."
+Please use Reflection.AST.Term's _≡?-AbsTerm_ instead."
 #-}
 
-_≟-AbsType_ = Term._≟-AbsType_
+_≟-AbsType_ = Term._≡?-AbsType_
 {-# WARNING_ON_USAGE _≟-AbsType_
 "Warning: _≟-AbsType_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-AbsType_ instead."
+Please use Reflection.AST.Term's _≡?-AbsType_ instead."
 #-}
 
-_≟-ArgTerm_ = Term._≟-ArgTerm_
+_≟-ArgTerm_ = Term._≡?-ArgTerm_
 {-# WARNING_ON_USAGE _≟-ArgTerm_
 "Warning: _≟-ArgTerm_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-ArgTerm_ instead."
+Please use Reflection.AST.Term's _≡?-ArgTerm_ instead."
 #-}
 
-_≟-ArgType_ = Term._≟-ArgType_
+_≟-ArgType_ = Term._≡?-ArgType_
 {-# WARNING_ON_USAGE _≟-ArgType_
 "Warning: _≟-ArgType_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-ArgType_ instead."
+Please use Reflection.AST.Term's _≡?-ArgType_ instead."
 #-}
 
-_≟-Args_    = Term._≟-Args_
+_≟-Args_    = Term._≡?-Args_
 {-# WARNING_ON_USAGE _≟-Args_
 "Warning: _≟-Args_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-Args_ instead."
+Please use Reflection.AST.Term's _≡?-Args_ instead."
 #-}
 
-_≟-Clause_  = Term._≟-Clause_
+_≟-Clause_  = Term._≡?-Clause_
 {-# WARNING_ON_USAGE _≟-Clause_
 "Warning: _≟-Clause_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-Clause_ instead."
+Please use Reflection.AST.Term's _≡?-Clause_ instead."
 #-}
 
-_≟-Clauses_ = Term._≟-Clauses_
+_≟-Clauses_ = Term._≡?-Clauses_
 {-# WARNING_ON_USAGE _≟-Clauses_
 "Warning: _≟-Clauses_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-Clauses_ instead."
+Please use Reflection.AST.Term's _≡?-Clauses_ instead."
 #-}
 
-_≟_         = Term._≟_
+_≟_         = Term._≡?_
 {-# WARNING_ON_USAGE _≟_
 "Warning: _≟_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟_ instead."
+Please use Reflection.AST.Term's _≡?_ instead."
 #-}
 
-_≟-Sort_    = Term._≟-Sort_
+_≟-Sort_    = Term._≡?-Sort_
 {-# WARNING_ON_USAGE _≟-Sort_
 "Warning: _≟-Sort_ was deprecated in v1.3.
-Please use Reflection.AST.Term's _≟-Sort_ instead."
+Please use Reflection.AST.Term's _≡?-Sort_ instead."
 #-}

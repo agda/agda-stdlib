@@ -4,9 +4,9 @@
 -- Exponentiation defined over a commutative semiring as repeated multiplication
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Bundles using (CommutativeSemiring)
 
 module Algebra.Properties.CommutativeSemiring.Exp
   {a ℓ} (S : CommutativeSemiring a ℓ) where

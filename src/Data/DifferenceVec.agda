@@ -4,14 +4,14 @@
 -- Vectors with fast append
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.DifferenceVec where
 
-open import Data.DifferenceNat
+open import Data.DifferenceNat using (Diffℕ; 0#; 1#; _+_; toℕ; fromℕ; suc)
 open import Data.Vec.Base as Vec using (Vec)
 open import Function.Base using (_⟨_⟩_)
-import Data.Nat.Base as ℕ
+import Data.Nat.Base as ℕ using (ℕ; suc; _+_; zero)
 
 infixr 5 _∷_ _++_
 

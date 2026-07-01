@@ -8,7 +8,7 @@
 -- section on Reflection in the Agda user manual for more details.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --allow-exec #-}
+{-# OPTIONS --without-K --allow-exec #-}
 
 module README.Reflection.External where
 

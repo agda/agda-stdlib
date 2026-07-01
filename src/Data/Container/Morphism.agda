@@ -4,12 +4,12 @@
 -- Container Morphisms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Morphism where
 
-open import Data.Container.Core
-import Function.Base as F
+open import Data.Container.Core using (Container; ⟦_⟧; _⇒_; shape; position)
+import Function.Base as F using (id; _∘′_)
 
 module _ {s p} (C : Container s p) where
 

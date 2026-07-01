@@ -5,28 +5,55 @@
 -- commutativity) that don't require the equality relation to be a setoid.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
+
+open import Relation.Binary.Core using (Rel)
 
 module Algebra.Consequences.Base
-  {a} {A : Set a} where
+  {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
-open import Algebra.Core
-open import Algebra.Definitions
-open import Data.Sum.Base
-open import Relation.Binary.Core
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Definitions _≈_
+  using (Congruent₂; LeftCongruent; RightCongruent
+        ; Selective; Idempotent; SelfInverse; Involutive)
+open import Data.Sum.Base using (reduce)
+open import Level using (Level)
+open import Relation.Binary.Consequences
+  using (mono₂⇒monoˡ; mono₂⇒monoʳ)
 open import Relation.Binary.Definitions using (Reflexive)
 
-module _ {ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) where
+private
+  variable
+    f : Op₁ A
+    _∙_ : Op₂ A
 
-  sel⇒idem : Selective _≈_ _•_ → Idempotent _≈_ _•_
-  sel⇒idem sel x = reduce (sel x x)
 
-module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
+------------------------------------------------------------------------
+-- Congruence
 
-  reflexive∧selfInverse⇒involutive : Reflexive _≈_ →
-                                     SelfInverse _≈_ f →
-                                     Involutive _≈_ f
-  reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+module Congruence (cong : Congruent₂ _∙_) (refl : Reflexive _≈_)
+  where
+
+  ∙-congˡ : LeftCongruent _∙_
+  ∙-congˡ {x} = mono₂⇒monoˡ _ _≈_ _≈_ (refl {x = x}) cong x
+
+  ∙-congʳ : RightCongruent _∙_
+  ∙-congʳ {x} = mono₂⇒monoʳ _≈_ _ _≈_ (refl {x = x}) cong x
+
+-------------------------------------------------------------------------
+-- Selective
+
+sel⇒idem : Selective _∙_ → Idempotent _∙_
+sel⇒idem sel x = reduce (sel x x)
+
+------------------------------------------------------------------------
+-- SelfInverse
+
+reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse f →
+                                   Involutive f
+reflexive∧selfInverse⇒involutive refl inv _ = inv refl
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

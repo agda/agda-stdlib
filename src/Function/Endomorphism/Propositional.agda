@@ -4,7 +4,7 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Endomorphism.Propositional {a} (A : Set a) where
 
@@ -15,7 +15,6 @@ Use Function.Endo.Propositional instead."
 
 open import Algebra
 open import Algebra.Morphism; open Definitions
-
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)

@@ -4,11 +4,11 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- Disabled to prevent warnings from deprecated
 -- Algebra.Operations.CommutativeMonoid
-{-# OPTIONS --warn=noUserWarning #-}
+{-# OPTIONS --warning=noUserWarning #-}
 
 open import Algebra
 import Algebra.Operations.CommutativeMonoid as MonoidOperations

@@ -5,13 +5,13 @@
 -- instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.OrderMorphism where
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.OrderMorphism was deprecated in v1.5.
-Use Relation.Binary.Reasoning.Morphism instead."
+Use Relation.Binary.Morphism.Bundles instead."
 #-}
 
 open import Relation.Binary.Core using (_=[_]⇒_)

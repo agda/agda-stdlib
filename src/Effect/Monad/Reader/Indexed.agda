@@ -4,7 +4,7 @@
 -- The indexed reader monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level; _⊔_; suc; Lift; lift)
 
@@ -14,8 +14,8 @@ open import Function.Base using (const; flip; _∘_)
 open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Applicative.Indexed
   using (IFun; RawIApplicative; RawIApplicativeZero; RawIAlternative)
-open import Effect.Monad.Indexed using (RawIMonad; RawIMonadZero;
-  RawIMonadPlus)
+open import Effect.Monad.Indexed
+  using (RawIMonad; RawIMonadZero; RawIMonadPlus)
 
 private
   variable

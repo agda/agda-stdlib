@@ -4,19 +4,18 @@
 -- Morphisms between algebraic lattice structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
-
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Morphism
-open import Algebra.Lattice.Bundles
-import Algebra.Morphism.Definitions as MorphismDefinitions
-open import Level using (Level; _⊔_)
-open import Function.Definitions
-open import Relation.Binary.Morphism.Structures
-open import Relation.Binary.Core
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Lattice.Morphism.Structures where
+
+open import Algebra.Core using (Op₂)
+open import Algebra.Morphism using (module MagmaMorphisms)
+open import Algebra.Lattice.Bundles using (RawLattice)
+import Algebra.Morphism.Definitions as MorphismDefinitions
+open import Level using (Level; _⊔_)
+open import Function.Definitions using (Injective; Surjective)
+open import Relation.Binary.Morphism.Structures using (IsRelHomomorphism)
+open import Relation.Binary.Core using (Rel)
 
 private
   variable
@@ -58,13 +57,13 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
     ∧-isMagmaHomomorphism : ∧.IsMagmaHomomorphism ⟦_⟧
     ∧-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
-      ; homo = ∧-homo
+      ; ∙-homo = ∧-homo
       }
 
     ∨-isMagmaHomomorphism : ∨.IsMagmaHomomorphism ⟦_⟧
     ∨-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
-      ; homo = ∨-homo
+      ; ∙-homo = ∨-homo
       }
 
   record IsLatticeMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where

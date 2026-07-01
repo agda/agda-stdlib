@@ -4,24 +4,25 @@
 -- Primality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Primality where
 
-open import Data.List.Base using ([]; _∷_; product)
-open import Data.List.Properties using (product≢0)
+open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
+open import Data.Nat.ListAction using (product)
+open import Data.Nat.ListAction.Properties using (product≢0)
 open import Data.Nat.Properties
 open import Data.Product.Base using (∃-syntax; _×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Nullary.Decidable as Dec
-  using (yes; no; from-yes; from-no; ¬?; _×-dec_; _⊎-dec_; _→-dec_; decidable-stable)
-open import Relation.Nullary.Negation using (¬_; contradiction; contradiction₂)
+  using (yes; no; from-yes; from-no; ¬?; _×?_; _⊎?_; _→?_; decidable-stable)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contradiction₂)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -193,7 +194,7 @@ composite? n = Dec.map CompositeUpTo⇔Composite (compositeUpTo? n)
 
   -- Proof of decidability
   compositeUpTo? : Decidable CompositeUpTo
-  compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
+  compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×? d ∣? n) n
 
 ------------------------------------------------------------------------
 -- Primality
@@ -210,10 +211,10 @@ prime[2] : Prime 2
 prime[2] = prime 2-rough
 
 prime⇒nonZero : Prime p → NonZero p
-prime⇒nonZero _ = nonTrivial⇒nonZero _
+prime⇒nonZero record{} = nonTrivial⇒nonZero _
 
 prime⇒nonTrivial : Prime p → NonTrivial p
-prime⇒nonTrivial _ = recompute-nonTrivial
+prime⇒nonTrivial record{} = recompute-nonTrivial
 
 prime? : Decidable Prime
 prime? 0        = no ¬prime[0]
@@ -238,7 +239,7 @@ prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
 
   -- Proof of decidability
   primeUpTo? : Decidable PrimeUpTo
-  primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
+  primeUpTo? n = allUpTo? (λ d → nonTrivial? d →? ¬? (d ∣? n)) n
 
 -- Euclid's lemma - for p prime, if p ∣ m * n, then either p ∣ m or p ∣ n.
 --
@@ -285,7 +286,7 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
 
   -- if the GCD of m and p is greater than one, then it must be p and
   -- hence p ∣ m.
-  ... | Bézout.result d@(2+ _) g _ with d ≟ p
+  ... | Bézout.result d@(2+ _) g _ with d ≡? p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
   ...   | no  d≢p = contradiction (composite-≢ d d≢p (GCD.gcd∣n g)) pr
 
@@ -373,7 +374,7 @@ irreducible? n@(suc _) =
   -- Decidability
   irreducibleUpTo? : Decidable IrreducibleUpTo
   irreducibleUpTo? n = allUpTo?
-    (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
+    (λ m → (m ∣? n) →? (m ≡? 1 ⊎? m ≡? n)) n
 
 -- Relationship between primality and irreducibility.
 prime⇒irreducible : Prime p → Irreducible p

@@ -7,15 +7,15 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Lattice`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Lattice.Definitions where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; _,_)
 open import Function.Base using (flip)
-open import Relation.Binary.Core using (Rel)
 open import Level using (Level)
+open import Relation.Binary.Core using (Rel)
 
 private
   variable

@@ -4,14 +4,13 @@
 -- Results concerning function extensionality for propositional equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Axiom.Extensionality.Propositional where
 
 open import Function.Base
 open import Level using (Level; _⊔_; suc; lift)
-open import Relation.Binary.Core
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Function extensionality states that if two functions are

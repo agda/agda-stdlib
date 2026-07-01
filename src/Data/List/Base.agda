@@ -7,7 +7,7 @@
 -- See README.Data.List for examples of how to use and reason about
 -- lists.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Base where
 
@@ -16,7 +16,7 @@ open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -149,12 +149,6 @@ mapMaybe p = catMaybes ∘ map p
 null : List A → Bool
 null []       = true
 null (x ∷ xs) = false
-
-sum : List ℕ → ℕ
-sum = foldr _+_ 0
-
-product : List ℕ → ℕ
-product = foldr _*_ 1
 
 length : List A → ℕ
 length = foldr (const suc) 0
@@ -401,14 +395,16 @@ breakᵇ p = break (T? ∘ p)
 -- Some lines may be empty if the input contains at least two
 -- consecutive newline characters.
 linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
-linesBy {A = A} P? = go nothing where
+linesBy {A = A} P? = go [] where
 
-  go : Maybe (List A) → List A → List (List A)
-  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  -- ideally this should use a snoclist for the accumulator
+  -- but unfortunately this is in the dependency graph of
+  -- Data.SnocList.Base
+  go : List A → List A → List (List A)
+  go acc []       = [ reverse acc ]
   go acc (c ∷ cs) = if does (P? c)
-    then reverse acc′ ∷ go nothing cs
-    else go (just (c ∷ acc′)) cs
-    where acc′ = Maybe.fromMaybe [] acc
+    then reverse acc ∷ go [] cs
+    else go (c ∷ acc) cs
 
 linesByᵇ : (A → Bool) → List A → List (List A)
 linesByᵇ p = linesBy (T? ∘ p)
@@ -582,7 +578,7 @@ Please use Data.Bool.ListAction.and instead."
 #-}
 {-# WARNING_ON_USAGE all
 "Warning: all was deprecated in v2.3.
-Please use Data.Nat.ListAction.all instead."
+Please use Data.Bool.ListAction.all instead."
 #-}
 
 or : List Bool → Bool
@@ -597,4 +593,18 @@ Please use Data.Bool.ListAction.or instead."
 {-# WARNING_ON_USAGE any
 "Warning: any was deprecated in v2.3.
 Please use Data.Bool.ListAction.any instead."
+#-}
+
+sum : List ℕ → ℕ
+sum = foldr ℕ._+_ 0
+{-# WARNING_ON_USAGE sum
+"Warning: sum was deprecated in v2.3.
+Please use Data.Nat.ListAction.sum instead."
+#-}
+
+product : List ℕ → ℕ
+product = foldr ℕ._*_ 1
+{-# WARNING_ON_USAGE product
+"Warning: product was deprecated in v2.3.
+Please use Data.Nat.ListAction.product instead."
 #-}

@@ -4,7 +4,7 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles
 
@@ -14,7 +14,7 @@ import Algebra.Properties.Loop as LoopProperties
 import Algebra.Properties.Quasigroup as QuasigroupProperties
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_)
-open import Function.Definitions
+open import Function.Definitions using (Injective)
 
 open Group G
 open import Algebra.Consequences.Setoid setoid

@@ -4,11 +4,11 @@
 -- Fin Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Literals where
 
-open import Agda.Builtin.FromNat
+open import Agda.Builtin.FromNat using (Number)
 open import Data.Nat using (suc; _≤?_)
 open import Data.Fin using (Fin ; #_)
 open import Relation.Nullary.Decidable using (True)

@@ -4,26 +4,28 @@
 -- Properties of operations on strings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.String.Properties where
 
 open import Data.Bool.Base using (Bool)
 import Data.Char.Properties as Char
-import Data.List.Properties as List
 import Data.List.Relation.Binary.Pointwise as Pointwise
 import Data.List.Relation.Binary.Lex.Strict as StrictLex
 open import Data.String.Base
-open import Function.Base
+open import Function.Base using (_∘_; _$_)
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; DecTotalOrder; DecPoset)
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder
+        ; DecTotalOrder; DecPoset)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsDecPartialOrder; IsDecTotalOrder)
+  using (IsEquivalence; IsDecEquivalence; IsStrictPartialOrder
+        ; IsStrictTotalOrder; IsDecPartialOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable; DecidableEquality)
+  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable
+        ; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality.Properties as PropEq
@@ -59,7 +61,7 @@ open import Agda.Builtin.String.Properties public
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = Pointwise.decidable Char._≟_ (toList x) (toList y)
+x ≈? y = Pointwise.decidable Char._≡?_ (toList x) (toList y)
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -76,7 +78,7 @@ x ≈? y = Pointwise.decidable Char._≟_ (toList x) (toList y)
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
-  ; _≟_           = _≈?_
+  ; _≈?_          = _≈?_
   }
 
 ≈-decSetoid : DecSetoid _ _
@@ -87,23 +89,23 @@ x ≈? y = Pointwise.decidable Char._≟_ (toList x) (toList y)
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality String
-x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
+_≡?_ : DecidableEquality String
+x ≡? y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
 
 ≡-setoid : Setoid _ _
 ≡-setoid = PropEq.setoid String
 
 ≡-decSetoid : DecSetoid _ _
-≡-decSetoid = PropEq.decSetoid _≟_
+≡-decSetoid = PropEq.decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Properties of _<_
 
 infix 4 _<?_
 _<?_ : Decidable _<_
-x <? y = StrictLex.<-decidable Char._≟_ Char._<?_ (toList x) (toList y)
+x <? y = StrictLex.<-decidable Char._≡?_ Char._<?_ (toList x) (toList y)
 
 <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
 <-isStrictPartialOrder-≈ =
@@ -163,7 +165,7 @@ x <? y = StrictLex.<-decidable Char._≟_ Char._<?_ (toList x) (toList y)
 
 infix 4 _==_
 _==_ : String → String → Bool
-s₁ == s₂ = isYes (s₁ ≟ s₂)
+s₁ == s₂ = isYes (s₁ ≡? s₂)
 
 private
 
@@ -175,3 +177,20 @@ private
 
   unit-test : P (_==_ "")
   unit-test = p _
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}
+

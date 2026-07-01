@@ -4,13 +4,12 @@
 -- Morphisms between algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Morphism where
 
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Algebra
-import Algebra.Properties.Group as GroupP
 open import Function.Base
 open import Level
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)

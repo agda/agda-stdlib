@@ -59,6 +59,8 @@ unsafeModules = map modToFile
   , "Debug.Trace"
   , "Effect.Monad.IO"
   , "Effect.Monad.IO.Instances"
+  , "Effect.Monad.Random"
+  , "Effect.Monad.Random.Instances"
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"
@@ -174,10 +176,9 @@ sizedTypesModules = map modToFile
   , "Data.Container.Fixpoints.Sized"
   , "Data.W.Sized"
   , "Data.Nat.PseudoRandom.LCG.Unsafe"
-  , "Data.Tree.Binary.Show"
-  , "Data.Tree.Rose"
-  , "Data.Tree.Rose.Properties"
-  , "Data.Tree.Rose.Show"
+  , "Data.Sized.Tree.Rose"
+  , "Data.Sized.Tree.Rose.Properties"
+  , "Data.Sized.Tree.Rose.Show"
   , "Data.Trie"
   , "Data.Trie.NonEmpty"
   , "Relation.Unary.Sized"
@@ -253,9 +254,9 @@ classify fp hd ls
   -- We start with sanity checks
   | isUnsafe && safe          = throwError $ fp ++ contradiction "unsafe" "safe"
   | not (isUnsafe || safe)    = throwError $ fp ++ uncategorized "unsafe" "safe"
-  | isWithK && cubicalC       = throwError $ fp ++ contradiction "as relying on K" "cubical-compatible"
+  | isWithK && withoutK       = throwError $ fp ++ contradiction "as relying on K" "without-K"
   | isWithK && not withK      = throwError $ fp ++ missingWithK
-  | not (isWithK || cubicalC) = throwError $ fp ++ uncategorized "as relying on K" "cubical-compatible"
+  | not (isWithK || withoutK) = throwError $ fp ++ uncategorized "as relying on K" "without-K"
   -- And then perform the actual classification
   | otherwise = do
       let safety = if | safe -> Safe
@@ -271,9 +272,9 @@ classify fp hd ls
     isUnsafe = isUnsafeModule fp
 
     -- based on detected OPTIONS
-    safe        = option "--safe"
-    withK       = option "--with-K"
-    cubicalC    = option "--cubical-compatible"
+    safe     = option "--safe"
+    withK    = option "--with-K"
+    withoutK = option "--without-K"
 
     -- based on detected comment in header
     deprecated  = let detect = List.isSubsequenceOf "This module is DEPRECATED."

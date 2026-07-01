@@ -4,17 +4,18 @@
 -- Subsets of finite sets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Subset where
 
 open import Algebra.Core using (Op₁; Op₂)
-open import Data.Bool using (not; _∧_; _∨_; _≟_)
+open import Data.Bool using (not; _∧_; _∨_; _≡?_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (∃; _×_)
 open import Data.Vec.Base hiding (foldr; foldl)
+open import Function.Base using (flip)
 open import Relation.Nullary
 
 private
@@ -77,6 +78,18 @@ p ⊂ q = p ⊆ q × ∃ (λ x → x ∈ q × x ∉ p)
 _⊄_ : Subset n → Subset n → Set
 p ⊄ q = ¬ (p ⊂ q)
 
+_⊇_ : Subset n → Subset n → Set
+_⊇_ = flip _⊆_
+
+_⊉_ : Subset n → Subset n → Set
+_⊉_ = flip _⊈_
+
+_⊃_ : Subset n → Subset n → Set
+_⊃_ = flip _⊂_
+
+_⊅_ : Subset n → Subset n → Set
+_⊅_ = flip _⊄_
+
 ------------------------------------------------------------------------
 -- Set operations
 
@@ -118,7 +131,7 @@ p - x = p ─ ⁅ x ⁆
 
 -- Size
 ∣_∣ : Subset n → ℕ
-∣ p ∣ = count (_≟ inside) p
+∣ p ∣ = count (_≡? inside) p
 
 ------------------------------------------------------------------------
 -- Properties

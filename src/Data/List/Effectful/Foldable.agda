@@ -4,7 +4,7 @@
 -- List is Foldable
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Effectful.Foldable where
 
@@ -15,7 +15,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Effect.Foldable using (RawFoldableWithDefaults; RawFoldable)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
-import Relation.Binary.PropositionalEquality.Core as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; cong)
 
 private
   variable
@@ -72,7 +72,7 @@ module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record
         { cong = reflexive ∘ ≡.cong h }
-      ; homo = λ xs _ → ++-homo xs
+      ; ∙-homo = λ xs _ → ++-homo xs
       }
     ; ε-homo = []-homo
     }

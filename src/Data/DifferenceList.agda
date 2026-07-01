@@ -4,14 +4,14 @@
 -- Lists with fast append
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.DifferenceList where
 
 open import Level using (Level)
 open import Data.List.Base as List using (List)
 open import Function.Base using (_⟨_⟩_)
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ)
 
 private
   variable

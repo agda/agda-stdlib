@@ -4,9 +4,9 @@
 -- Properties of digits and digit expansions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Data.Digit
+open import Data.Digit using (digitChars; Digit; showDigit; toDigits)
 import Data.Char.Properties as Char
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
@@ -22,7 +22,7 @@ open import Function.Base using (_∘_)
 module Data.Digit.Properties where
 
 digitCharsUnique : Unique digitChars
-digitCharsUnique = from-yes (allPairs? (λ x y → ¬? (x Char.≟ y)) digitChars)
+digitCharsUnique = from-yes (allPairs? (λ x y → ¬? (x Char.≡? y)) digitChars)
 
 module _ (base : ℕ) where
   module _ {base≥2 base≥2′ : True (2 ≤? base)} where

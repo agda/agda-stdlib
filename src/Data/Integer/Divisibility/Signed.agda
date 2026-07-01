@@ -4,7 +4,7 @@
 -- Alternative definition of divisibility without using modulus.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Divisibility.Signed where
 
@@ -13,10 +13,9 @@ open import Data.Integer.Base using (ℤ; _*_; +0; sign; _◃_; ≢-nonZero;
   ∣_∣; 0ℤ; +_; _+_; _-_; -_; NonZero)
 open import Data.Integer.Properties
 import Data.Integer.Divisibility as Unsigned
-import Data.Nat.Base as ℕ
+import Data.Nat.Base as ℕ using (ℕ; suc; _*_)
 import Data.Nat.Divisibility as ℕ
-import Data.Nat.Coprimality as ℕ
-import Data.Nat.Properties as ℕ
+import Data.Nat.Properties as ℕ using (*-zeroʳ ; <-cmp; module ≤-Reasoning)
 import Data.Sign.Base as Sign
 import Data.Sign.Properties as Sign
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
@@ -49,7 +48,7 @@ open _∣_ using (quotient) public
 
 ∣ᵤ⇒∣ : ∀ {k i} → k Unsigned.∣ i → k ∣ i
 ∣ᵤ⇒∣ {k} {i} (Unsigned.divides 0           eq) = divides +0 (∣i∣≡0⇒i≡0 eq)
-∣ᵤ⇒∣ {k} {i} (Unsigned.divides q@(ℕ.suc _) eq) with k ≟ +0
+∣ᵤ⇒∣ {k} {i} (Unsigned.divides q@(ℕ.suc _) eq) with k ≡? +0
 ... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
 ... | no  neq  = divides s[i*k]◃q (◃-cong sign-eq abs-eq)
   where

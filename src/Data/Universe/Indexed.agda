@@ -4,14 +4,14 @@
 -- Indexed universes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Universe.Indexed where
 
 open import Data.Product.Base using (∃; proj₂)
-open import Data.Universe
+open import Data.Universe using (Universe)
 open import Function.Base using (_∘_)
-open import Level
+open import Level using (Level; _⊔_; suc)
 
 ------------------------------------------------------------------------
 -- Definitions

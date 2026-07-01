@@ -4,7 +4,7 @@
 -- An effectful view of the identity function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Monad.Identity where
 

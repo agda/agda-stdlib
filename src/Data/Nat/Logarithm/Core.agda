@@ -4,12 +4,13 @@
 -- Logarithm base 2 core definitions and properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Logarithm.Core where
 
-open import Data.Nat.Base using (ℕ; _<_; zero; suc; _+_; ⌊_/2⌋; ⌈_/2⌉;
-  _≤_; z≤n; s≤s; _∸_; NonZero; _*_; _^_)
+open import Data.Nat.Base
+  using (ℕ; _<_; zero; suc; _+_; ⌊_/2⌋; ⌈_/2⌉
+        ; _≤_; z≤n; s≤s; _∸_; NonZero; _*_; _^_)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-wellFounded)
 open import Induction.WellFounded using (Acc; acc)
@@ -80,6 +81,18 @@ open import Relation.Binary.PropositionalEquality.Properties
   suc n                                 ∎
   where open ≡-Reasoning
 
+2^⌊log2n⌋≤n : ∀ n .{{_ : NonZero n}} → (acc : Acc _<_ n) → 2 ^ (⌊log2⌋ n acc) ≤ n
+2^⌊log2n⌋≤n (suc zero)     _       = ≤-refl
+2^⌊log2n⌋≤n (suc (suc n)) (acc rs) = begin
+  2 ^ (⌊log2⌋ (suc (suc n)) (acc rs)) ≡⟨⟩
+  2 * 2 ^ (⌊log2⌋ (suc ⌊ n /2⌋) _)    ≤⟨ *-monoʳ-≤ 2 (2^⌊log2n⌋≤n _ _) ⟩
+  2 * (suc ⌊ n /2⌋)                   ≡⟨ 2*suc[n]≡2+n+n _ ⟩
+  2 + (⌊ n /2⌋ + ⌊ n /2⌋)             ≤⟨ +-monoʳ-≤ (2 + ⌊ n /2⌋) (⌊n/2⌋≤⌈n/2⌉ _)  ⟩
+  2 + (⌊ n /2⌋ + ⌈ n /2⌉)             ≡⟨ cong (2 +_) (⌊n/2⌋+⌈n/2⌉≡n _) ⟩
+  2 + n
+  ∎
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of ⌈log2⌉
 
@@ -123,3 +136,17 @@ open import Relation.Binary.PropositionalEquality.Properties
   1 + ⌈log2⌉ (2 ^ n) (<-wellFounded _)  ≡⟨ cong suc (⌈log2⌉2^n≡n n) ⟩
   suc n                                 ∎
   where open ≡-Reasoning
+
+n≤2^⌈log2n⌉ : ∀ n → (acc : Acc _<_ n) → n ≤ 2 ^ (⌈log2⌉ n acc)
+n≤2^⌈log2n⌉ zero _ = z≤n
+n≤2^⌈log2n⌉ (suc zero) _ = s≤s z≤n
+n≤2^⌈log2n⌉ (suc (suc n)) (acc rs) =
+  begin
+  2 + n                                ≡⟨ cong (2 +_) (⌊n/2⌋+⌈n/2⌉≡n _) ⟨
+  2 + (⌊ n /2⌋ + ⌈ n /2⌉)              ≤⟨ +-monoʳ-≤ 2 (+-monoˡ-≤ _ (⌊n/2⌋≤⌈n/2⌉ n)) ⟩
+  2 + (⌈ n /2⌉ + ⌈ n /2⌉)              ≡⟨ 2*suc[n]≡2+n+n _ ⟨
+  2 * (suc ⌊ suc n /2⌋)                ≤⟨ *-monoʳ-≤ 2 (n≤2^⌈log2n⌉ (suc ⌊ suc n /2⌋) _) ⟩
+  2 * 2 ^ (⌈log2⌉ (suc ⌊ suc n /2⌋) _) ≡⟨⟩
+  2 ^ (⌈log2⌉ (2 + n) (acc rs))
+  ∎
+  where open ≤-Reasoning

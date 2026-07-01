@@ -4,15 +4,16 @@
 -- Zippers for Binary Trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Tree.Binary.Zipper where
 
 open import Level using (Level; _⊔_)
 open import Data.Tree.Binary as BT using (Tree; node; leaf)
-open import Data.List.Base as List using (List; []; _∷_; sum; _++_; [_])
+open import Data.List.Base as List using (List; []; _∷_; _++_; [_])
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; suc; _+_)
+open import Data.Nat.ListAction using (sum)
 open import Function.Base using (_$_; _∘_)
 
 private

@@ -5,16 +5,18 @@
 -- decidable equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Solver.Ring.AlmostCommutativeRing
+open import Algebra.Solver.Ring.AlmostCommutativeRing using
+  (AlmostCommutativeRing; -raw-almostCommutative⟶)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 
 module Algebra.Solver.Ring.Simple
   {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂)
   (_≟_ : Decidable (AlmostCommutativeRing._≈_ R))
   where
+
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 
 open AlmostCommutativeRing R
 import Algebra.Solver.Ring as RS

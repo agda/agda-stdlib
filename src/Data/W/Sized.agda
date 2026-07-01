@@ -4,12 +4,12 @@
 -- Sized W-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Data.W.Sized where
 
-open import Level
-open import Size
+open import Level using (Level; _⊔_)
+open import Size using (Size; ↑_; ∞)
 open import Function.Base using (_$_; _∘_; const)
 open import Data.Product.Base using (_,_; -,_; proj₂)
 open import Data.Container.Core as Container using (Container; ⟦_⟧; Shape; Position; _⇒_; ⟪_⟫)

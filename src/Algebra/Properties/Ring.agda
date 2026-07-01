@@ -4,23 +4,19 @@
 -- Some basic properties of Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (Ring)
 
-module Algebra.Properties.Ring {r₁ r₂} (R : Ring r₁ r₂) where
+module Algebra.Properties.Ring {c ℓ} (ring : Ring c ℓ) where
 
-open Ring R
-
-import Algebra.Properties.RingWithoutOne as RingWithoutOneProperties
-open import Function.Base using (_$_)
+open Ring ring
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Algebra.Definitions _≈_
 
 ------------------------------------------------------------------------
 -- Export properties of rings without a 1#.
 
-open RingWithoutOneProperties ringWithoutOne public
+open import Algebra.Properties.RingWithoutOne ringWithoutOne public
 
 ------------------------------------------------------------------------
 -- Extra properties of 1#

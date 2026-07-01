@@ -4,10 +4,9 @@
 -- The Binomial Theorem for Commutative Semirings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Bundles
-  using (CommutativeSemiring)
+open import Algebra.Bundles using (CommutativeSemiring)
 
 module Algebra.Properties.CommutativeSemiring.Binomial {a ℓ} (S : CommutativeSemiring a ℓ) where
 

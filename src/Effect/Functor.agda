@@ -6,14 +6,13 @@
 
 -- Note that currently the functor laws are not included here.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Functor where
 
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Function.Base using (const; flip)
-open import Level
-
+open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private

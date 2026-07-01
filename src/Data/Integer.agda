@@ -7,7 +7,7 @@
 -- See README.Data.Integer for examples of how to use and reason about
 -- integers.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer where
 
@@ -16,7 +16,7 @@ module Data.Integer where
 
 open import Data.Integer.Base public
 open import Data.Integer.Properties public
-  using (_≟_; _≤?_; _<?_)
+  using (_≡?_; _≤?_; _<?_)
 
 ------------------------------------------------------------------------
 -- Deprecated

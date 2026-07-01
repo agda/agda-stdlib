@@ -4,14 +4,14 @@
 -- Basic properties of the function type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Function.Base using (flip; _∘_)
 open import Function.Bundles using (_↔_; mk↔ₛ′; Inverse)
-open import Level
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
   using (trans; cong; cong′)
 

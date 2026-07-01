@@ -4,14 +4,14 @@
 -- Bisimilarity for Conats
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Conat.Bisimilarity where
 
 open import Level using (0ℓ)
-open import Size
-open import Codata.Sized.Thunk
-open import Codata.Sized.Conat
+open import Size using (Size; ∞)
+open import Codata.Sized.Thunk using (Thunk; Thunk^R; force)
+open import Codata.Sized.Conat using (Conat; zero; suc)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 

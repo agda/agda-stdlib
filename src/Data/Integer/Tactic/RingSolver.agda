@@ -6,7 +6,7 @@
 
 -- See README.Tactic.RingSolver for examples of how to use this solver
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Tactic.RingSolver where
 
@@ -18,8 +18,9 @@ open import Data.Integer.Properties using (+-*-commutativeRing)
 open import Level using (0ℓ)
 open import Data.Unit.Base using (⊤)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
-import Tactic.RingSolver as Solver
+import Tactic.RingSolver as Solver using (solve-∀-macro; solve-macro)
 import Tactic.RingSolver.Core.AlmostCommutativeRing as ACR
+  using (AlmostCommutativeRing; fromCommutativeRing)
 
 ------------------------------------------------------------------------
 -- A module for automatically solving propositional equivalences

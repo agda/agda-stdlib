@@ -4,27 +4,28 @@
 -- Lexicographic ordering of lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Lex where
 
-open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base
+   using (Pointwise; []; _∷_; head; tail)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_; flip; id)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (_⊔_)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable as Dec
-  using (Dec; yes; no; _×-dec_; _⊎-dec_)
+  using (Dec; yes; no; _×?_; _⊎?_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Irreflexive; Asymmetric; Antisymmetric; Decidable; _Respects₂_; _Respects_)
-open import Data.List.Relation.Binary.Pointwise.Base
-   using (Pointwise; []; _∷_; head; tail)
+  using (Symmetric; Transitive; Irreflexive; Asymmetric; Antisymmetric
+        ; Decidable; _Respects₂_; _Respects_)
+
 
 ------------------------------------------------------------------------
 -- Re-exporting the core definitions and properties
@@ -57,9 +58,9 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     where
     as : Antisymmetric _≋_ _<_
     as (base _)         (base _)         = []
-    as (this x≺y)       (this y≺x)       = ⊥-elim (asym x≺y y≺x)
-    as (this x≺y)       (next y≈x ys<xs) = ⊥-elim (ir (sym y≈x) x≺y)
-    as (next x≈y xs<ys) (this y≺x)       = ⊥-elim (ir (sym x≈y) y≺x)
+    as (this x≺y)       (this y≺x)       = contradiction y≺x (asym x≺y)
+    as (this x≺y)       (next y≈x ys<xs) = contradiction x≺y (ir (sym y≈x))
+    as (next x≈y xs<ys) (this y≺x)       = contradiction y≺x (ir (sym x≈y))
     as (next x≈y xs<ys) (next y≈x ys<xs) = x≈y ∷ as xs<ys ys<xs
 
   toSum : ∀ {x y xs ys} → (x ∷ xs) < (y ∷ ys) → (x ≺ y ⊎ (x ≈ y × xs < ys))
@@ -115,4 +116,4 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     decidable []       (y ∷ ys) = yes halt
     decidable (x ∷ xs) []       = no λ()
     decidable (x ∷ xs) (y ∷ ys) =
-      Dec.map ∷<∷-⇔ (dec-≺ x y ⊎-dec (dec-≈ x y ×-dec decidable xs ys))
+      Dec.map ∷<∷-⇔ (dec-≺ x y ⊎? (dec-≈ x y ×? decidable xs ys))

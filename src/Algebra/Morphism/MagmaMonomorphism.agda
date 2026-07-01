@@ -7,12 +7,10 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
-open import Relation.Binary.Core
+open import Algebra.Bundles using (RawMagma)
+open import Algebra.Morphism.Structures using (IsMagmaMonomorphism)
 
 module Algebra.Morphism.MagmaMonomorphism
   {a b ℓ₁ ℓ₂} {M₁ : RawMagma a ℓ₁} {M₂ : RawMagma b ℓ₂} {⟦_⟧}
@@ -24,11 +22,15 @@ open RawMagma M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_)
 open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
 
 open import Algebra.Structures
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma)
 open import Algebra.Definitions
+  using (Congruent₂; Associative; Commutative; Idempotent ; Selective
+        ; LeftCancellative; RightCancellative; Cancellative)
 open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism
+open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------
 -- Properties
@@ -40,56 +42,56 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   cong : Congruent₂ _≈₁_ _∙_
   cong {x} {y} {u} {v} x≈y u≈v = injective (begin
-    ⟦ x ∙ u ⟧      ≈⟨  homo x u ⟩
-    ⟦ x ⟧ ◦ ⟦ u ⟧  ≈⟨  ◦-cong (⟦⟧-cong x≈y) (⟦⟧-cong u≈v) ⟩
-    ⟦ y ⟧ ◦ ⟦ v ⟧  ≈⟨ homo y v ⟨
+    ⟦ x ∙ u ⟧      ≈⟨ ∙-homo x u ⟩
+    ⟦ x ⟧ ◦ ⟦ u ⟧  ≈⟨ ◦-cong (⟦⟧-cong x≈y) (⟦⟧-cong u≈v) ⟩
+    ⟦ y ⟧ ◦ ⟦ v ⟧  ≈⟨ ∙-homo y v ⟨
     ⟦ y ∙ v ⟧      ∎)
 
   assoc : Associative _≈₂_ _◦_ → Associative _≈₁_ _∙_
   assoc assoc x y z = injective (begin
-    ⟦ (x ∙ y) ∙ z ⟧          ≈⟨  homo (x ∙ y) z ⟩
-    ⟦ x ∙ y ⟧ ◦ ⟦ z ⟧        ≈⟨  ◦-cong (homo x y) refl ⟩
-    (⟦ x ⟧ ◦ ⟦ y ⟧) ◦ ⟦ z ⟧  ≈⟨  assoc ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈⟨ ◦-cong refl (homo y z) ⟨
-    ⟦ x ⟧ ◦ ⟦ y ∙ z ⟧        ≈⟨ homo x (y ∙ z) ⟨
+    ⟦ (x ∙ y) ∙ z ⟧          ≈⟨ ∙-homo (x ∙ y) z ⟩
+    ⟦ x ∙ y ⟧ ◦ ⟦ z ⟧        ≈⟨ ◦-cong (∙-homo x y) refl ⟩
+    (⟦ x ⟧ ◦ ⟦ y ⟧) ◦ ⟦ z ⟧  ≈⟨ assoc ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
+    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈⟨ ◦-cong refl (∙-homo y z) ⟨
+    ⟦ x ⟧ ◦ ⟦ y ∙ z ⟧        ≈⟨ ∙-homo x (y ∙ z) ⟨
     ⟦ x ∙ (y ∙ z) ⟧          ∎)
 
   comm : Commutative _≈₂_ _◦_ → Commutative _≈₁_ _∙_
   comm comm x y = injective (begin
-    ⟦ x ∙ y ⟧      ≈⟨  homo x y ⟩
-    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨  comm ⟦ x ⟧ ⟦ y ⟧ ⟩
-    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ homo y x ⟨
+    ⟦ x ∙ y ⟧      ≈⟨ ∙-homo x y ⟩
+    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ comm ⟦ x ⟧ ⟦ y ⟧ ⟩
+    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ ∙-homo y x ⟨
     ⟦ y ∙ x ⟧      ∎)
 
   idem : Idempotent _≈₂_ _◦_ → Idempotent _≈₁_ _∙_
   idem idem x = injective (begin
-    ⟦ x ∙ x ⟧     ≈⟨ homo x x ⟩
+    ⟦ x ∙ x ⟧     ≈⟨ ∙-homo x x ⟩
     ⟦ x ⟧ ◦ ⟦ x ⟧ ≈⟨ idem ⟦ x ⟧ ⟩
     ⟦ x ⟧         ∎)
 
   sel : Selective _≈₂_ _◦_ → Selective _≈₁_ _∙_
   sel sel x y with sel ⟦ x ⟧ ⟦ y ⟧
   ... | inj₁ x◦y≈x = inj₁ (injective (begin
-    ⟦ x ∙ y ⟧      ≈⟨ homo x y ⟩
+    ⟦ x ∙ y ⟧      ≈⟨ ∙-homo x y ⟩
     ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ x◦y≈x ⟩
     ⟦ x ⟧          ∎))
   ... | inj₂ x◦y≈y = inj₂ (injective (begin
-    ⟦ x ∙ y ⟧      ≈⟨ homo x y ⟩
+    ⟦ x ∙ y ⟧      ≈⟨ ∙-homo x y ⟩
     ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ x◦y≈y ⟩
     ⟦ y ⟧          ∎))
 
   cancelˡ : LeftCancellative _≈₂_ _◦_ → LeftCancellative _≈₁_ _∙_
   cancelˡ cancelˡ x y z x∙y≈x∙z = injective (cancelˡ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
-    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ homo x y ⟨
-    ⟦ x ∙ y ⟧      ≈⟨  ⟦⟧-cong x∙y≈x∙z ⟩
-    ⟦ x ∙ z ⟧      ≈⟨  homo x z ⟩
+    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ ∙-homo x y ⟨
+    ⟦ x ∙ y ⟧      ≈⟨ ⟦⟧-cong x∙y≈x∙z ⟩
+    ⟦ x ∙ z ⟧      ≈⟨ ∙-homo x z ⟩
     ⟦ x ⟧ ◦ ⟦ z ⟧  ∎))
 
   cancelʳ : RightCancellative _≈₂_ _◦_ → RightCancellative _≈₁_ _∙_
   cancelʳ cancelʳ x y z y∙x≈z∙x = injective (cancelʳ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
-    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ homo y x ⟨
-    ⟦ y ∙ x ⟧      ≈⟨  ⟦⟧-cong y∙x≈z∙x ⟩
-    ⟦ z ∙ x ⟧      ≈⟨  homo z x ⟩
+    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ ∙-homo y x ⟨
+    ⟦ y ∙ x ⟧      ≈⟨ ⟦⟧-cong y∙x≈z∙x ⟩
+    ⟦ z ∙ x ⟧      ≈⟨ ∙-homo z x ⟩
     ⟦ z ⟧ ◦ ⟦ x ⟧  ∎))
 
   cancel : Cancellative _≈₂_ _◦_ → Cancellative _≈₁_ _∙_

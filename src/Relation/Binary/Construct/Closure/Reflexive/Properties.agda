@@ -4,21 +4,26 @@
 -- Some properties of reflexive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
-open import Data.Product.Base as Product
-open import Data.Sum.Base as Sum
+open import Data.Product.Base as Product using (_,_; map)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Function.Base using (id)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; REL; _=[_]⇒_)
 open import Relation.Binary.Structures
-  using (IsPreorder; IsStrictPartialOrder; IsPartialOrder; IsDecStrictPartialOrder; IsDecPartialOrder; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
+  using (IsPreorder; IsStrictPartialOrder; IsPartialOrder
+        ; IsDecStrictPartialOrder; IsDecPartialOrder; IsStrictTotalOrder
+        ; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Reflexive; Asymmetric; Antisymmetric; Trichotomous; Total; Decidable; DecidableEquality; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects_; _Respects₂_)
+  using (Symmetric; Transitive; Reflexive; Asymmetric; Antisymmetric
+        ; Trichotomous; Total; Decidable; DecidableEquality; tri<; tri≈; tri>
+        ; _Respectsˡ_; _Respectsʳ_; _Respects_; _Respects₂_)
 open import Relation.Binary.Construct.Closure.Reflexive
+  using (ReflClosure; [_]; refl)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary.Negation.Core using (contradiction)
@@ -79,7 +84,7 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri> _ _    c = inj₂ [ c ]
 
   dec : DecidableEquality A → Decidable _~_ → Decidable _~ᵒ_
-  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b Dec.⊎-dec ~-dec a b)
+  dec ≡? ~? a b = Dec.map ⊎⇔Refl (≡? a b Dec.⊎? ~? a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable _~ᵒ_
   decidable ~-tri a b with ~-tri a b
@@ -129,8 +134,8 @@ module _ {_~_ : Rel A ℓ} where
   isDecPartialOrder : IsDecStrictPartialOrder _≡_ _~_ → IsDecPartialOrder _≡_ _~ᵒ_
   isDecPartialOrder O = record
     { isPartialOrder = isPartialOrder O.isStrictPartialOrder
-    ; _≟_            = O._≟_
-    ; _≤?_           = dec O._≟_ O._<?_
+    ; _≈?_           = O._≈?_
+    ; _≤?_           = dec O._≈?_ O._<?_
     } where module O = IsDecStrictPartialOrder O
 
   isTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsTotalOrder _≡_ _~ᵒ_
@@ -142,6 +147,6 @@ module _ {_~_ : Rel A ℓ} where
   isDecTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsDecTotalOrder _≡_ _~ᵒ_
   isDecTotalOrder O = record
     { isTotalOrder = isTotalOrder O
-    ; _≟_          = _≟_
-    ; _≤?_         = dec _≟_ _<?_
+    ; _≈?_         = _≈?_
+    ; _≤?_         = dec _≈?_ _<?_
     } where open IsStrictTotalOrder O
