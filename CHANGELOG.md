@@ -133,10 +133,12 @@ Deprecated names
 
 * In `Data.Nat.Properties`:
   ```agda
-  _≟_       ↦   _≡?_
-  ≟-diag    ↦   ≡?-≡
-  ≟-≡       ↦   ≡?-≢
-  ≟?-≡-refl ↦ ≡?-≡-refl
+  _≟_                  ↦   _≡?_
+  ≟-diag               ↦   ≡?-≡
+  ≟-≡                  ↦   ≡?-≢
+  ≟?-≡-refl            ↦ ≡?-≡-refl
+  ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
+  ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
   ```
 
 * In `Effect.Monad.Partiality`:
