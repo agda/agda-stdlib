@@ -71,7 +71,7 @@ record IsDecEquivalence : Set (a ⊔ ℓ) where
 
   _≟_ = _≈?_
   {-# WARNING_ON_USAGE _≟_
-  "Warning: _≟_ was deprecated in v2.4.
+  "Warning: _≟_ was deprecated in v3.0.
   Please use _≈?_ instead. "
   #-}
 

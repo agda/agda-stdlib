@@ -131,10 +131,3 @@ decide p∪q [] = inj₁ []
 decide p∪q (x ∷ xs) with p∪q x
 ... | inj₂ qx = inj₂ (here qx)
 ... | inj₁ px = Sum.map (px ∷_) there (decide p∪q xs)
-
-
-all = all?
-{-# WARNING_ON_USAGE all
-"Warning: all was deprecated in v1.4.
-Please use all? instead."
-#-}

@@ -70,21 +70,3 @@ open begin-subrelation-syntax _IsRelatedTo_ relToSubRelation public
 open ≡-syntax _IsRelatedTo_ ≡-go public
 open ∼-syntax _IsRelatedTo_ _IsRelatedTo_ ∼-go public
 open end-syntax _IsRelatedTo_ stop public
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.6
-
-infix  3 _∎⟨_⟩
-
-_∎⟨_⟩ : ∀ x → x ∼ x → x IsRelatedTo x
-_ ∎⟨ x∼x ⟩ = relTo x∼x
-{-# WARNING_ON_USAGE _∎⟨_⟩
-"Warning: _∎⟨_⟩ was deprecated in v1.6.
-Please use _∎ instead if used in a chain, otherwise simply provide
-the proof of reflexivity directly without using these combinators."
-#-}

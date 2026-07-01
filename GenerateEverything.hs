@@ -64,7 +64,6 @@ unsafeModules = map modToFile
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"
-  , "Foreign.Haskell.Maybe"
   , "Foreign.Haskell.List.NonEmpty"
   , "Foreign.Haskell.Pair"
   , "IO"
@@ -176,15 +175,13 @@ sizedTypesModules = map modToFile
   , "Data.Container.Fixpoints.Sized"
   , "Data.W.Sized"
   , "Data.Nat.PseudoRandom.LCG.Unsafe"
-  , "Data.Tree.Binary.Show"
-  , "Data.Tree.Rose"
-  , "Data.Tree.Rose.Properties"
-  , "Data.Tree.Rose.Show"
+  , "Data.Sized.Tree.Rose"
+  , "Data.Sized.Tree.Rose.Properties"
+  , "Data.Sized.Tree.Rose.Show"
   , "Data.Trie"
   , "Data.Trie.NonEmpty"
   , "Relation.Unary.Sized"
   , "Size"
-  , "Text.Tree.Linear"
   ]
 
 isSizedTypesModule :: FilePath -> Bool
