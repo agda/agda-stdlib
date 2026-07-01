@@ -8,9 +8,10 @@
 
 module Data.DifferenceList.Base where
 
-open import Level using (Level)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base using (ℕ)
+open import Function using (_∘′_; id)
+open import Level using (Level)
 
 private
   variable
@@ -25,29 +26,26 @@ private
 DiffList : Set a → Set a
 DiffList A = List A → List A
 
-lift : (List A → List A) → (DiffList A → DiffList A)
-lift f xs = λ k → f (xs k)
-
 ------------------------------------------------------------------------
 -- Building difference lists
 
 infixr 5 _∷_ _++_
 
 [] : DiffList A
-[] = λ k → k
-
-_∷_ : A → DiffList A → DiffList A
-_∷_ x = lift (x List.∷_)
+[] = id
 
 [_] : A → DiffList A
-[ x ] = x ∷ []
+[ x ] = x List.∷_
 
 _++_ : DiffList A → DiffList A → DiffList A
-xs ++ ys = λ k → xs (ys k)
+_++_ = _∘′_
+
+_∷_ : A → DiffList A → DiffList A
+x ∷ xs = [ x ] ++ xs
 
 infixl 6 _∷ʳ_
 _∷ʳ_ : DiffList A → A → DiffList A
-xs ∷ʳ x = λ k → xs (x List.∷ k)
+xs ∷ʳ x = xs ++ [ x ]
 
 ------------------------------------------------------------------------
 -- Conversion back and forth with List
@@ -67,18 +65,30 @@ fromList = List._++_
 -- the list anyway.
 
 map : (A → B) → DiffList A → DiffList B
-map f xs = List.map f (toList xs) List.++_
+map f = fromList ∘′ List.map f ∘′ toList
 
 -- concat is linear in the length of the outer list.
 
 concat : DiffList (DiffList A) → DiffList A
-concat xs = concat′ (toList xs)
-  where
-  concat′ : List (DiffList A) → DiffList A
-  concat′ = List.foldr _++_ []
+concat = List.foldr _++_ [] ∘′ toList
 
 take : ℕ → DiffList A → DiffList A
-take n = lift (List.take n)
+take n = List.take n ++_
 
 drop : ℕ → DiffList A → DiffList A
-drop n = lift (List.drop n)
+drop n = List.drop n ++_
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+lift : DiffList A → DiffList A → DiffList A
+lift = _++_
+{-# WARNING_ON_USAGE lift
+"Warning: lift was deprecated in v3.0.
+Please use _++_ instead."
+#-}

@@ -9,13 +9,13 @@
 module Data.DifferenceList.Properties where
 
 open import Data.DifferenceList.Base
-  using (DiffList; fromList; toList; lift; []; _∷_; [_]; _++_; _∷ʳ_; map)
+  using (DiffList; fromList; toList; []; _∷_; [_]; _++_; _∷ʳ_; map)
 open import Data.List as List using (List)
 open import Data.List.Properties using (++-assoc; ++-identityʳ)
 open import Function using (id)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; sym; module ≡-Reasoning)
+  using (_≡_; refl; cong; sym; _≗_; module ≡-Reasoning)
 
 open ≡-Reasoning
 
@@ -32,8 +32,8 @@ private
 -- Relation between Lists and equivalent DiffLists
 
 infix 4 _∼_
-_∼_ : {A : Set a} → List A → DiffList A → Set a
-_∼_ {A = A} xs ys = (k : List A) → fromList xs k ≡ ys k
+_∼_ : List A → DiffList A → Set _
+xs ∼ ys = fromList xs ≗ ys
 
 ------------------------------------------------------------------------
 -- Properties of fromList and toList
@@ -57,23 +57,8 @@ fromList⁺ = id
 ------------------------------------------------------------------------
 -- Properties of operations that preserve _∼_
 
--- `lift` preserves `∼` when `f` is a prepend
-lift⁺ : (f : List A → List A) →
-        (∀ xs′ → f xs′ ≡ f List.[] List.++ xs′) →
-        xs ∼ ys → f xs ∼ lift f ys
-lift⁺ {xs = xs} {ys = ys} f prepend xs∼ys k = begin
-  f xs List.++ k                    ≡⟨ cong (List._++ k) (prepend xs) ⟩
-  (f List.[] List.++ xs) List.++ k  ≡⟨ ++-assoc (f List.[]) xs k ⟩
-  f List.[] List.++ (xs List.++ k)  ≡⟨ sym (prepend (xs List.++ k)) ⟩
-  f (xs List.++ k)                  ≡⟨ cong f (xs∼ys k) ⟩
-  f (ys k)                          ≡⟨⟩
-  lift f ys k                       ∎
-
 []⁺ : List.[] {A = A} ∼ []
 []⁺ _ = refl
-
-∷⁺ : (x : A) → xs ∼ ys → x List.∷ xs ∼ x ∷ ys
-∷⁺ x = lift⁺ (x List.∷_) (λ _ → refl)
 
 [_]⁺ : (x : A) → List.[ x ] ∼ [ x ]
 [_]⁺ _ _ = refl
@@ -86,6 +71,9 @@ lift⁺ {xs = xs} {ys = ys} f prepend xs∼ys k = begin
   xs₁ List.++ ys₂ k            ≡⟨ xs₁∼ys₁ (ys₂ k) ⟩
   ys₁ (ys₂ k)                  ≡⟨⟩
   (ys₁ ++ ys₂) k               ∎
+
+∷⁺ : (x : A) → xs ∼ ys → x List.∷ xs ∼ x ∷ ys
+∷⁺ {xs = xs} {ys} x xs~ys k = cong (x List.∷_) (xs~ys k)
 
 ++-∷⁺ : (x : A) → xs₁ ∼ ys₁ → xs₂ ∼ ys₂ →
         xs₁ List.++ x List.∷ xs₂ ∼ ys₁ ++ x ∷ ys₂
