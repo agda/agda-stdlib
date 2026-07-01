@@ -2437,7 +2437,6 @@ Please use ≡?-≡ instead."
 Please use ≡?-≢ instead."
 #-}
 
-
 ^-semigroup-morphism = ^-isMagmaHomomorphism
 {-# WARNING_ON_USAGE ^-semigroup-morphism
 "Warning: ^-semigroup-morphism was deprecated in v3.0.
