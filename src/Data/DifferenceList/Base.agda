@@ -68,7 +68,7 @@ fromList xs = λ k → xs List.++ k
 -- the list anyway.
 
 map : (A → B) → DiffList A → DiffList B
-map f xs = λ k → List.map f (toList xs) ⟨ List._++_ ⟩ k
+map = fromList ∘′ List.map f ∘′ toList
 
 -- concat is linear in the length of the outer list.
 
