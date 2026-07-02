@@ -8,6 +8,7 @@ runs:
   ########################################################################
   steps:
     - name: Initialise variables
+      shell: bash
       run: |
         if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
             || '${{ github.base_ref }}' == 'experimental' ]]; then
@@ -35,6 +36,7 @@ runs:
     # i.e. if we change either the version of Agda, ghc, or cabal that we want
     # to use for the build.
     - name: Cache ~/.cabal directories
+      shell: bash
       uses: actions/cache@v4
       id: cache-cabal
       with:
@@ -50,6 +52,7 @@ runs:
     ########################################################################
 
     - name: Install ghc & cabal
+      shell: bash
       uses: haskell-actions/setup@v2
       with:
         ghc-version: ${{ env.GHC_VERSION }}
@@ -57,9 +60,11 @@ runs:
         cabal-update: true
 
     - name: Put cabal programs in PATH
+      shell: bash
       run: echo ~/.cabal/bin >> "${GITHUB_PATH}"
 
     - name: Install alex & happy
+      shell: bash
       if: steps.cache-cabal.outputs.cache-hit != 'true'
       run: |
         ${{ env.CABAL_INSTALL }} alex
@@ -68,6 +73,7 @@ runs:
         # Since we only need the executable, it is fine to use v2-install here.
 
     - name: Download and install Agda from github
+      shell: bash
       if: steps.cache-cabal.outputs.cache-hit != 'true'
       run: |
         git clone https://github.com/agda/agda
