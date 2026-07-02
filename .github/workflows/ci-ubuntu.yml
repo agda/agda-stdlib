@@ -214,6 +214,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-agdai
+          include-hidden-files: true
           path: ./*.agdai
 
   test-stdlib-golden:
