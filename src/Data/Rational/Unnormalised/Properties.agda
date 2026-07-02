@@ -282,7 +282,7 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
 ≤-respʳ-≃ x≈y z≤x = ≤-trans z≤x (≤-reflexive x≈y)
 
 ≤-resp₂-≃ : _≤_ Respects₂ _≃_
-≤-resp₂-≃ = ≤-respʳ-≃ , ≤-respˡ-≃
+≤-resp₂-≃ = ≤-respˡ-≃ , ≤-respʳ-≃
 
 infix 4 _≤?_ _≥?_
 
@@ -566,7 +566,7 @@ _>?_ = flip _<?_
   $ neg-mono-< (<-respʳ-≃ (-‿cong q≃r) (neg-mono-< q<p))
 
 <-resp-≃ : _<_ Respects₂ _≃_
-<-resp-≃ = <-respʳ-≃ , <-respˡ-≃
+<-resp-≃ = <-respˡ-≃ , <-respʳ-≃
 
 ------------------------------------------------------------------------
 -- Structures
@@ -576,7 +576,7 @@ _>?_ = flip _<?_
   { isEquivalence = isEquivalence
   ; irrefl        = <-irrefl-≡
   ; trans         = <-trans
-  ; <-resp-≈      = subst (_ <_) , subst (_< _)
+  ; <-resp-≈      = subst (_< _) , subst (_ <_)
   }
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≃_ _<_
