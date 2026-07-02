@@ -76,7 +76,7 @@ jobs:
       AGDA_COMMIT: ${{ steps.init_vars.outputs.AGDA_COMMIT }}
       AGDA_HTML_DIR: ${{ steps.init_vars.outputs.AGDA_HTML_DIR }}
       AGDA_DEPLOY: ${{ steps.init_vars.outputs.AGDA_DEPLOY }}
-      PATH: ${{ steps.path.outputs.PATH }}
+      BIN_PATH: ${{ steps.path.outputs.BIN_PATH }}
       GHC_PATH: ${{ steps.install-ghc-cabal.outputs.ghc-path }}
     steps:
       - name: Initialise variables
@@ -136,7 +136,7 @@ jobs:
           echo ${{ steps.install-ghc-cabal.outputs.ghc-path }} >> "${GITHUB_PATH}"
           
       - name: Output PATH
-        run: echo "PATH=$PATH" >> "${GITHUB_OUTPUT}"
+        run: echo "BIN_PATH=$PATH" >> "${GITHUB_OUTPUT}"
 
       - name: Install alex & happy
         if: steps.cache-cabal.outputs.cache-hit != 'true'
@@ -195,7 +195,7 @@ jobs:
           path: ${{ needs.init.outputs.GHC_PATH }}
             
       - name: Set PATH
-        run: ${{ needs.init.outputs.PATH }} >> ${GITHUB_PATH}
+        run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
 
       - name: Test stdlib
         run: |
@@ -235,7 +235,7 @@ jobs:
           name: ubuntu-agdai
             
       - name: Set PATH
-        run: ${{ needs.init.outputs.PATH }} >> ${GITHUB_PATH}
+        run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
 
       - name: Golden testing
         run: |
@@ -265,7 +265,7 @@ jobs:
           path: ${{ needs.init.outputs.GHC_PATH }}
 
       - name: Set PATH
-        run: ${{ needs.init.outputs.PATH }} >> ${GITHUB_PATH}
+        run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
 
       - name: Prepare HTML index
         run: |
