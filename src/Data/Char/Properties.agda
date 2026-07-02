@@ -61,12 +61,16 @@ open import Agda.Builtin.Char.Properties
 ≈-reflexive : _≡_ ⇒ _≈_
 ≈-reflexive = cong toℕ
 
+infix 4 _≈?_
+_≈?_ : Decidable _≈_
+x ≈? y = toℕ x ℕ.≡? toℕ y
+
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
 infix 4 _≡?_
 _≡?_ : DecidableEquality Char
-x ≡? y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≡? toℕ y)
+x ≡? y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 setoid : Setoid _ _
 setoid = ≡.setoid Char
@@ -197,16 +201,6 @@ _≤?_ = Refl.decidable <-cmp
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.5
-
-infix 4 _≈?_
-_≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕ.≡? toℕ y
-{-# WARNING_ON_USAGE _≈?_
-"Warning: _≈?_ was deprecated in v1.5.
-Please use _≡?_ instead."
-#-}
 
 -- Version 3.0
 
