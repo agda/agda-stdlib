@@ -941,7 +941,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   lemma (suc m) (suc n) eq = cong suc (lemma m n (+-cancelˡ-≡ o (m * o) (n * o) eq))
 
 *-cancelʳ-≡ : ∀ m n o .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
-*-cancelʳ-≡ m n o = almost⇒exceptʳ _ *-almostCancelʳ-≡ o m n {{≢-nonZero⁻¹ _}}
+*-cancelʳ-≡ m n o = almost⇒exceptʳ *-almostCancelʳ-≡ _ _ _  {{≢-nonZero⁻¹ _}}
 
 *-cancelˡ-≡ : ∀ m n o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
 *-cancelˡ-≡ m n o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n o
