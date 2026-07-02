@@ -130,16 +130,16 @@ isPropositional = Irrelevant
 Please use Relation.Nullary.Irrelevant instead. "
 #-}
 
--- Version 2.4
+-- Version 3.0
 
 ≡-≟-identity = ≡-≡?-identity
 {-# WARNING_ON_USAGE ≡-≟-identity
-"Warning: ≡-≟-identity was deprecated in v2.4.
+"Warning: ≡-≟-identity was deprecated in v3.0.
 Please use ≡-≡?-identity instead."
 #-}
 
 ≢-≟-identity = ≢-≡?-identity
 {-# WARNING_ON_USAGE ≢-≟-identity
-"Warning: ≢-≟-identity was deprecated in v2.4.
+"Warning: ≢-≟-identity was deprecated in v3.0.
 Please use ≢-≡?-identity instead."
 #-}

@@ -533,16 +533,6 @@ module _ (A : Set a) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.4
-
-infixl 5 _∷ʳ'_
-_∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
-_∷ʳ'_ = InitLast._∷ʳ′_
-{-# WARNING_ON_USAGE _∷ʳ'_
-"Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
-Please use _∷ʳ′_ (ending in a prime) instead."
-#-}
-
 -- Version 2.0
 
 infixl 5 _─_

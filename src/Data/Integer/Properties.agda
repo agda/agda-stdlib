@@ -2068,107 +2068,6 @@ neg-distrib-⊓-⊔ = antimono-<-distrib-⊓ -_ neg-mono-<
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.5
-
-neg-mono-<-> = neg-mono-<
-{-# WARNING_ON_USAGE neg-mono-<->
-"Warning: neg-mono-<-> was deprecated in v1.5.
-Please use neg-mono-< instead."
-#-}
-
-neg-mono-≤-≥ = neg-mono-≤
-{-# WARNING_ON_USAGE neg-mono-≤-≥
-"Warning: neg-mono-≤-≥ was deprecated in v1.5.
-Please use neg-mono-≤ instead."
-#-}
-
-*-monoʳ-≤-non-neg = *-monoʳ-≤-nonNeg
-{-# WARNING_ON_USAGE *-monoʳ-≤-non-neg
-"Warning: *-monoʳ-≤-non-neg was deprecated in v1.5.
-Please use *-monoʳ-≤-nonNeg instead."
-#-}
-
-*-monoˡ-≤-non-neg = *-monoˡ-≤-nonNeg
-{-# WARNING_ON_USAGE *-monoˡ-≤-non-neg
-"Warning: *-monoˡ-≤-non-neg deprecated in v1.5.
-Please use *-monoˡ-≤-nonNeg instead."
-#-}
-
-*-cancelˡ-<-non-neg = *-cancelˡ-<-nonNeg
-{-# WARNING_ON_USAGE *-cancelˡ-<-non-neg
-"Warning: *-cancelˡ-<-non-neg was deprecated in v1.5.
-Please use *-cancelˡ-<-nonNeg instead."
-#-}
-
-*-cancelʳ-<-non-neg = *-cancelʳ-<-nonNeg
-{-# WARNING_ON_USAGE *-cancelʳ-<-non-neg
-"Warning: *-cancelʳ-<-non-neg was deprecated in v1.5.
-Please use *-cancelʳ-<-nonNeg instead."
-#-}
-
--- Version 1.6
-
-m≤n⇒m⊓n≡m = i≤j⇒i⊓j≡i
-{-# WARNING_ON_USAGE m≤n⇒m⊓n≡m
-"Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
-Please use i≤j⇒i⊓j≡i instead."
-#-}
-m⊓n≡m⇒m≤n = i⊓j≡i⇒i≤j
-{-# WARNING_ON_USAGE m⊓n≡m⇒m≤n
-"Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
-Please use i⊓j≡i⇒i≤j instead."
-#-}
-m≥n⇒m⊓n≡n = i≥j⇒i⊓j≡j
-{-# WARNING_ON_USAGE m≥n⇒m⊓n≡n
-"Warning: m≥n⇒m⊓n≡n was deprecated in v1.6
-Please use i≥j⇒i⊓j≡j instead."
-#-}
-m⊓n≡n⇒m≥n = i⊓j≡j⇒j≤i
-{-# WARNING_ON_USAGE m⊓n≡n⇒m≥n
-"Warning: m⊓n≡n⇒m≥n was deprecated in v1.6
-Please use i⊓j≡j⇒j≤i instead."
-#-}
-m⊓n≤n = i⊓j≤j
-{-# WARNING_ON_USAGE m⊓n≤n
-"Warning: m⊓n≤n was deprecated in v1.6
-Please use i⊓j≤j instead."
-#-}
-m⊓n≤m = i⊓j≤i
-{-# WARNING_ON_USAGE m⊓n≤m
-"Warning: m⊓n≤m was deprecated in v1.6
-Please use i⊓j≤i instead."
-#-}
-m≤n⇒m⊔n≡n = i≤j⇒i⊔j≡j
-{-# WARNING_ON_USAGE m≤n⇒m⊔n≡n
-"Warning: m≤n⇒m⊔n≡n was deprecated in v1.6
-Please use i≤j⇒i⊔j≡j instead."
-#-}
-m⊔n≡n⇒m≤n = i⊔j≡j⇒i≤j
-{-# WARNING_ON_USAGE m⊔n≡n⇒m≤n
-"Warning: m⊔n≡n⇒m≤n was deprecated in v1.6
-Please use i⊔j≡j⇒i≤j instead."
-#-}
-m≥n⇒m⊔n≡m = i≥j⇒i⊔j≡i
-{-# WARNING_ON_USAGE m≥n⇒m⊔n≡m
-"Warning: m≥n⇒m⊔n≡m was deprecated in v1.6
-Please use i≥j⇒i⊔j≡i instead."
-#-}
-m⊔n≡m⇒m≥n = i⊔j≡i⇒j≤i
-{-# WARNING_ON_USAGE m⊔n≡m⇒m≥n
-"Warning: m⊔n≡m⇒m≥n was deprecated in v1.6
-Please use i⊔j≡i⇒j≤i instead."
-#-}
-m≤m⊔n = i≤i⊔j
-{-# WARNING_ON_USAGE m≤m⊔n
-"Warning: m≤m⊔n was deprecated in v1.6
-Please use i≤i⊔j instead."
-#-}
-n≤m⊔n = i≤j⊔i
-{-# WARNING_ON_USAGE n≤m⊔n
-"Warning: n≤m⊔n was deprecated in v1.6
-Please use i≤j⊔i instead."
-#-}
-
 -- Version 2.0
 
 +-pos-monoʳ-≤ : ∀ n → (_+_ (+ n)) Preserves _≤_ ⟶ _≤_
@@ -2396,11 +2295,11 @@ Please use +-0-isAbelianGroup instead."
 open Data.Integer.Base public
   using (*-rawMagma; *-1-rawMonoid)
 
--- Version 2.4
+-- Version 3.0
 
 infix 4 _≟_
 _≟_ = _≡?_
 {-# WARNING_ON_USAGE _≟_
-"Warning: _≟_ was deprecated in v2.4.
+"Warning: _≟_ was deprecated in v3.0.
 Please use _≡?_ instead."
 #-}

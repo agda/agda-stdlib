@@ -27,26 +27,3 @@ Use Algebra.Lattice.Properties.DistributiveLattice instead."
 open DistributiveLattice DL
 open import Algebra.Lattice.Properties.DistributiveLattice DL public
 import Algebra.Properties.Lattice as LatticeProperties
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.4
-
-replace-equality : {_≈′_ : Rel Carrier ℓ₂} →
-                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
-                   DistributiveLattice _ _
-replace-equality {_≈′_} ≈⇔≈′ = record
-  { isDistributiveLattice = isDistributiveLatticeʳʲᵐ (record
-    { isLattice    = Lattice.isLattice
-                       (LatticeProperties.replace-equality lattice ≈⇔≈′)
-    ; ∨-distribʳ-∧ = λ x y z → to (∨-distribʳ-∧ x y z)
-    })
-  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
-{-# WARNING_ON_USAGE replace-equality
-"Warning: replace-equality was deprecated in v1.4.
-Please use isDistributiveLattice from `Algebra.Construct.Subst.Equality` instead."
-#-}
