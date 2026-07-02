@@ -77,7 +77,7 @@ open import Algebra.Properties.CommutativeMonoid (+-commutativeMonoid) public
     ; semimedial to +-semimedial
 
     ; ε-unique to 0#-unique
-    
+
     ; elimʳ to +-elimʳ
     ; elimˡ to +-elimˡ
     ; introʳ to +-introʳ
