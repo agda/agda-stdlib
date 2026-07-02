@@ -22,7 +22,7 @@ private
     x y : A
 
 
-module _ (_≟_ : Decidable _≈_) where
+module _ (_≈?_ : Decidable _≈_) where
 
   xy≈0⇒x≈0∨y≈0 : x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
   xy≈0⇒x≈0∨y≈0 {x} {y} xy≈0 =
@@ -42,6 +42,6 @@ module _ (_≟_ : Decidable _≈_) where
 
 *-almostCancelʳ = *-cancelʳ-nonZero
 {-# WARNING_ON_USAGE *-almostCancelʳ
-"Warning: *-almostCancelʳ was deprecated in v2.3.
+"Warning: *-almostCancelʳ was deprecated in v3.0.
 Please use Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero instead."
 #-}
