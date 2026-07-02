@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -eu
 # This script searches through any READMEs which have
 # been removed (or renamed) from the current branch 
 # (via a diff with master) and scans for references
