@@ -4,7 +4,7 @@
 -- Some basic properties of Semirings without a multiplicative identity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (SemiringWithoutOne)
 
