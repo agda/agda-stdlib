@@ -165,7 +165,7 @@ jobs:
           path: ~/.cabal/
       
       - name: Upload GHC directory
-        uses: actions/upload-artificat@v4
+        uses: actions/upload-artifact@v4
         with:
           include-hidden-files: true
           name: ubuntu-ghc-dir
