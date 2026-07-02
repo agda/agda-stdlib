@@ -18,7 +18,8 @@ open import Algebra.Definitions _≈_
         ; Selective; Idempotent; SelfInverse; Involutive
         ; _AlmostLeftCancellative′_; Except_LeftCancellative_
         ; _AlmostRightCancellative′_; Except_RightCancellative_)
-open import Data.Sum.Base using (reduce)
+open import Data.Sum.Base using (inj₁; inj₂; [_,_]′; reduce)
+open import Function.Base using (flip)
 open import Level using (Level)
 open import Relation.Binary.Consequences
   using (mono₂⇒monoˡ; mono₂⇒monoʳ)
@@ -60,35 +61,32 @@ reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse f →
                                    Involutive f
 reflexive∧selfInverse⇒involutive refl inv _ = inv refl
 
-module _ {p ℓ} {_•_ : Op₂ A} {P : Pred A p} where
+module _ {p} {P : Pred A p} where
 
-  almost⇒exceptˡ : _AlmostLeftCancellative′_ P _•_ →
-                   Except_LeftCancellative_ P _•_
+  almost⇒exceptˡ : _AlmostLeftCancellative′_ P _∙_ →
+                   Except_LeftCancellative_ P _∙_
   almost⇒exceptˡ cancel x y z {{¬px}} =
     [ flip contradiction (¬-recompute ¬px) , (λ cancel → cancel y z) ]′ (cancel x)
 
-  almost⇒exceptʳ : _AlmostRightCancellative′_ P _•_ →
-                   Except_RightCancellative_ P _•_
+  almost⇒exceptʳ : _AlmostRightCancellative′_ P _∙_ →
+                   Except_RightCancellative_ P _∙_
   almost⇒exceptʳ cancel x y z {{¬px}} =
     [ flip contradiction (¬-recompute ¬px) , (λ cancel → cancel y z) ]′ (cancel x)
 
-module _ {p ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ)
+module _ {p} {_∙_ : Op₂ A} (_≈_ : Rel A ℓ)
          {P : Pred A p} (dec : Decidable P) where
 
-  except⇒almostˡ : Except_LeftCancellative_ P _•_ →
-                   _AlmostLeftCancellative′_ P _•_
+  except⇒almostˡ : Except_LeftCancellative_ P _∙_ →
+                   _AlmostLeftCancellative′_ P _∙_
   except⇒almostˡ cancel x with dec x
   ... | yes px = inj₁ px
   ... | no ¬px = inj₂ (λ y z → cancel x y z {{¬px}})
 
-  except⇒almostʳ : Except_RightCancellative_ P _•_ →
-                   _AlmostRightCancellative′_ P _•_
+  except⇒almostʳ : Except_RightCancellative_ P _∙_ →
+                   _AlmostRightCancellative′_ P _∙_
   except⇒almostʳ cancel x with dec x
   ... | yes px = inj₁ px
   ... | no ¬px = inj₂ λ y z → cancel x y z {{¬px}}
-
-module _ {f : Op₁ A} where
-
 
 
 ------------------------------------------------------------------------
