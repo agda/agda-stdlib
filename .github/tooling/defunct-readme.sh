@@ -10,9 +10,17 @@ set -eu
 #
 # Silas Hayes-Williams, 2026
 
+if [[ "$1" =~ ^(-h|--help)$ ]]; then
+    printf "usage: defunct-readme [-h | --help] <branch>\n\n"
+    printf "Scan for all README files deleted or renamed on the
+current branch (compared to <branch>) and check for references in
+remaining files. An error is thrown if any reference is found.\n"
+    exit
+fi
+
 echo "Searching for deleted READMEs..."
 
-git diff --diff-filter DR --name-status master \
+git diff --diff-filter DR --name-status $1 \
     | awk '{print $2}' \
     | grep '^doc/README/' \
     | while read -r file; do
@@ -44,5 +52,3 @@ git diff --diff-filter DR --name-status master \
         exit 1
     fi
 done
-
-exit
