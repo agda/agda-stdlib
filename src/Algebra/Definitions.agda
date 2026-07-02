@@ -13,7 +13,7 @@
 -- library defines most of its concrete operators (e.g. in
 -- `Data.Nat.Base`) as being left-biased.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 
@@ -25,16 +25,20 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
+open import Relation.Binary.Definitions
+  using (Monotonic₁; Monotonic₂; module KleeneAlgebra)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary using (Pred; ∁)
+
 
 ------------------------------------------------------------------------
 -- Properties of operations
 
 Congruent₁ : Op₁ A → Set _
-Congruent₁ f = f Preserves _≈_ ⟶ _≈_
+Congruent₁ = Monotonic₁ _≈_ _≈_
 
 Congruent₂ : Op₂ A → Set _
-Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+Congruent₂ = Monotonic₂ _≈_ _≈_ _≈_
 
 LeftCongruent : Op₂ A → Set _
 LeftCongruent _∙_ = ∀ {x} → Congruent₁ (x ∙_)
@@ -47,6 +51,11 @@ Associative _∙_ = ∀ x y z → ((x ∙ y) ∙ z) ≈ (x ∙ (y ∙ z))
 
 Commutative : Op₂ A → Set _
 Commutative _∙_ = ∀ x y → (x ∙ y) ≈ (y ∙ x)
+
+-- An element is called `Central` for a binary operation
+-- if it commutes with all other elements.
+Central : Op₂ A → A → Set _
+Central _∙_ x = ∀ y → (x ∙ y) ≈ (y ∙ x)
 
 LeftIdentity : A → Op₂ A → Set _
 LeftIdentity e _∙_ = ∀ x → (e ∙ x) ≈ x
@@ -204,24 +213,6 @@ LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
 RightDivides : Op₂ A → Op₂ A → Set _
 RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)
 
-StarRightExpansive : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarRightExpansive e _+_ _∙_ _* = ∀ x → (e + (x ∙ (x *))) ≈ (x *)
-
-StarLeftExpansive : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarLeftExpansive e _+_ _∙_ _* = ∀ x →  (e + ((x *) ∙ x)) ≈ (x *)
-
-StarExpansive : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarExpansive e _+_ _∙_ _* = (StarLeftExpansive e _+_ _∙_ _*) × (StarRightExpansive e _+_ _∙_ _*)
-
-StarLeftDestructive : Op₂ A → Op₂ A → Op₁ A → Set _
-StarLeftDestructive _+_ _∙_ _* = ∀ a b x → (b + (a ∙ x)) ≈ x → ((a *) ∙ b) ≈ x
-
-StarRightDestructive : Op₂ A → Op₂ A → Op₁ A → Set _
-StarRightDestructive _+_ _∙_ _* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b ∙ (a *)) ≈ x
-
-StarDestructive : Op₂ A → Op₂ A → Op₁ A → Set _
-StarDestructive _+_ _∙_ _* = (StarLeftDestructive _+_ _∙_ _*) × (StarRightDestructive _+_ _∙_ _*)
-
 LeftAlternative : Op₂ A → Set _
 LeftAlternative _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (x ∙ y))
 
@@ -235,7 +226,7 @@ Flexible : Op₂ A → Set _
 Flexible _∙_ = ∀ x y → ((x ∙ y) ∙ x) ≈ (x ∙ (y ∙ x))
 
 Medial : Op₂ A → Set _
-Medial _∙_ = ∀ x y u z → ((x ∙ y) ∙ (u ∙ z)) ≈ ((x ∙ u) ∙ (y ∙ z))
+Medial _∙_ = Interchangable _∙_ _∙_
 
 LeftSemimedial : Op₂ A → Set _
 LeftSemimedial _∙_ = ∀ x y z → ((x ∙ x) ∙ (y ∙ z)) ≈ ((x ∙ y) ∙ (x ∙ z))
@@ -257,3 +248,38 @@ MiddleBol _∙_ _\\_ _//_ = ∀ x y z → (x ∙ ((y ∙ z) \\ x)) ≈ ((x // z)
 
 Identical : Op₂ A → Set _
 Identical _∙_ = ∀ x y z → ((z ∙ x) ∙ (y ∙ z)) ≈ (z ∙ ((x ∙ y) ∙ z))
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+open KleeneAlgebra _≈_ public
+{-# WARNING_ON_USAGE StarLeftExpansive
+"Warning: StarLeftExpansive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarLeftExpansive instead."
+#-}
+{-# WARNING_ON_USAGE StarRightExpansive
+"Warning: StarRightExpansive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarRightExpansive instead."
+#-}
+{-# WARNING_ON_USAGE StarExpansive
+"Warning: StarExpansive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarExpansive instead."
+#-}
+{-# WARNING_ON_USAGE StarLeftDestructive
+"Warning: StarLeftDestructive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarLeftDestructive instead."
+#-}
+{-# WARNING_ON_USAGE StarRightDestructive
+"Warning: StarRightDestructive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarRightDestructive instead."
+#-}
+{-# WARNING_ON_USAGE StarDestructive
+"Warning: StarDestructive was deprecated in v3.0.
+Please use Relation.Binary.Definitions.KleeneAlgebra.StarDestructive instead."
+#-}

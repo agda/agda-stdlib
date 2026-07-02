@@ -4,7 +4,7 @@
 -- Some properties of operations in CancellativeCommutativeSemiring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (CancellativeCommutativeSemiring)
 
@@ -38,7 +38,7 @@ module _ (_≟_ : Decidable _≈_) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.3
+-- Version 3.0
 
 *-almostCancelʳ = *-cancelʳ-nonZero
 {-# WARNING_ON_USAGE *-almostCancelʳ

@@ -7,8 +7,8 @@
 -- Note that the lemmas below could be generalised to work with other
 -- equalities than _≡_.
 
-{-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans
+{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --warning=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
 
@@ -28,7 +28,7 @@ open import Data.Maybe.Relation.Unary.Any using (just) renaming (Any to MAny)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product.Base as Product
-  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
+  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; swap; <_,_>)
 import Data.Product.Relation.Unary.All as Product using (All)
 open import Data.Sum using (_⊎_; inj₁; inj₂; isInj₁; isInj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -47,7 +47,7 @@ open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
 open import Relation.Nullary.Decidable as Decidable
   using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
 open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
-open import Relation.Unary.Properties using (∁?)
+open import Relation.Unary.Properties using (∁?; _∩?_)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
 open ≡-Reasoning
@@ -76,13 +76,13 @@ private
 ∷-injectiveʳ refl = refl
 
 ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y List.∷ ys)
-∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+∷-dec x≡?y xs≡?ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≡?y ×-dec xs≡?ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) []       = no λ()
-≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≟ y) (≡-dec _≟_ xs ys)
+≡-dec _≈?_ []       []       = yes refl
+≡-dec _≈?_ (x ∷ xs) []       = no λ()
+≡-dec _≈?_ []       (y ∷ ys) = no λ()
+≡-dec _≈?_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≈? y) (≡-dec _≈?_ xs ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -134,7 +134,6 @@ length-++ (x ∷ xs) = cong suc (length-++ xs)
 module _ {A : Set a} where
 
   open AlgebraicDefinitions {A = List A} _≡_
-  open AlgebraicStructures  {A = List A} _≡_
 
   ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
@@ -190,6 +189,47 @@ module _ {A : Set a} where
   ++-conical : Conical [] _++_
   ++-conical = ++-conicalˡ , ++-conicalʳ
 
+length-++-sucˡ : ∀ (x : A) (xs ys : List A) →
+                 length (x ∷ xs ++ ys) ≡ suc (length (xs ++ ys))
+length-++-sucˡ _ _ _ = refl
+
+length-++-sucʳ : ∀ (xs : List A) (y : A) (ys : List A) →
+                 length (xs ++ y ∷ ys) ≡ suc (length (xs ++ ys))
+length-++-sucʳ []       _ _  = refl
+length-++-sucʳ (_ ∷ xs) y ys = cong suc (length-++-sucʳ xs y ys)
+
+length-++-comm : ∀ (xs ys : List A) →
+                 length (xs ++ ys) ≡ length (ys ++ xs)
+length-++-comm xs       []       = cong length (++-identityʳ xs)
+length-++-comm []       (y ∷ ys) = sym (cong length (++-identityʳ (y ∷ ys)))
+length-++-comm (x ∷ xs) (y ∷ ys) =
+  begin
+    length (x ∷ xs ++ y ∷ ys)
+  ≡⟨⟩
+    suc (length (xs ++ y ∷ ys))
+  ≡⟨ cong suc (length-++-sucʳ xs y ys) ⟩
+    suc (suc (length (xs ++ ys)))
+  ≡⟨ cong suc (cong suc (length-++-comm xs ys)) ⟩
+    suc (suc (length (ys ++ xs)))
+  ≡⟨ cong suc (length-++-sucʳ ys x xs) ⟨
+    suc (length (ys ++ x ∷ xs))
+  ≡⟨⟩
+    length (y ∷ ys ++ x ∷ xs)
+  ∎
+
+length-++-≤ˡ : ∀ (xs : List A) {ys} →
+              length xs ≤ length (xs ++ ys)
+length-++-≤ˡ []       = z≤n
+length-++-≤ˡ (x ∷ xs) = s≤s (length-++-≤ˡ xs)
+
+length-++-≤ʳ : ∀ (ys : List A) {xs} →
+              length ys ≤ length (xs ++ ys)
+length-++-≤ʳ ys {xs} = ≤-trans (length-++-≤ˡ ys) (≤-reflexive (length-++-comm ys xs))
+
+module _ {A : Set a} where
+
+  open AlgebraicStructures  {A = List A} _≡_
+
   ++-isMagma : IsMagma _++_
   ++-isMagma = record
     { isEquivalence = isEquivalence
@@ -229,7 +269,7 @@ module _ (A : Set a) where
     { isRelHomomorphism = record
       { cong = cong length
       }
-    ; homo = λ xs ys → length-++ xs {ys}
+    ; ∙-homo = λ xs ys → length-++ xs {ys}
     }
 
   length-isMonoidHomomorphism : IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
@@ -1218,6 +1258,12 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | true  = cong (x ∷_) ih
   ... | false = ih
 
+  filter-map : (f : B → A) → filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-map f [] = refl
+  filter-map f (x ∷ xs) with ih ← filter-map f xs | does (P? (f x))
+  ... | true  = cong (f x ∷_) ih
+  ... | false = ih
+
 module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
 
   filter-≐ : P ≐ Q → filter P? ≗ filter Q?
@@ -1225,6 +1271,25 @@ module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) whe
   filter-≐ P≐Q (x ∷ xs) with P? x
   ... | yes P[x] = trans (cong (x ∷_) (filter-≐ P≐Q xs)) (sym (filter-accept Q? (proj₁ P≐Q P[x])))
   ... | no ¬P[x] = trans (filter-≐ P≐Q xs) (sym (filter-reject Q? (¬P[x] ∘ proj₂ P≐Q)))
+
+  filter-∩ : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-∩ [] = refl
+  filter-∩ (x ∷ xs) with ih ← filter-∩ xs | P? x | Q? x
+  ... | yes P[x] | yes _  = trans (cong (x ∷_) ih) (sym (filter-accept P? P[x]))
+  ... | no ¬P[x] | yes _  = trans ih (sym (filter-reject P? ¬P[x]))
+  ... | yes _    | no  _  = ih
+  ... | no  _    | no  _  = ih
+
+
+module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
+
+  filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  filter-swap xs =  begin
+    filter P? (filter Q? xs)   ≡⟨ filter-∩ P? Q? xs ⟨
+    filter (P? ∩? Q?) xs       ≡⟨ filter-≐ (P? ∩? Q?) (Q? ∩? P?) (swap , swap) xs ⟩
+    filter (Q? ∩? P?) xs       ≡⟨ filter-∩ Q? P? xs ⟩
+    filter Q? (filter P? xs)   ∎
+
 
 ------------------------------------------------------------------------
 -- derun and deduplicate

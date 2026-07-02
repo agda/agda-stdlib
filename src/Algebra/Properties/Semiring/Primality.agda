@@ -4,7 +4,7 @@
 -- Properties of Coprimality and Irreducibility for Semiring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
 
@@ -22,8 +22,7 @@ open import Algebra.Properties.Semiring.Divisibility R
 
 private
   variable
-    x p : A
-
+    x : A
 
 ------------------------------------------------------------------------
 -- Re-export primality definitions
@@ -43,6 +42,6 @@ Coprime-sym coprime = flip coprime
 ------------------------------------------------------------------------
 -- Properties of Irreducible
 
-Irreducible⇒≉0 : 0# ≉ 1# → Irreducible p → p ≉ 0#
+Irreducible⇒≉0 : 0# ≉ 1# → ∀ {p} → Irreducible p → p ≉ 0#
 Irreducible⇒≉0 0≉1 (mkIrred _ chooseInvertible) p≈0 =
   0∤1 0≉1 (reduce (chooseInvertible (trans p≈0 (sym (zeroˡ 0#)))))

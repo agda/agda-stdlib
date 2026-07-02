@@ -6,7 +6,7 @@
 -- Freely adapted from PR #1287 by Maciej Piechotka (@uzytkownik)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
 
@@ -21,7 +21,7 @@ open import Data.Nat.Base as ℕ hiding (_+_; _*_; _^_)
 open import Data.Nat.Combinatorics
   using (_C_; nCn≡1; nC1≡n; nCk+nC[k+1]≡[n+1]C[k+1])
 open import Data.Nat.Properties as ℕ
-  using (<⇒<ᵇ; n<1+n; n∸n≡0; +-∸-assoc)
+  using (<⇒<ᵇ; n<1+n; n∸n≡0; ∸-suc)
 open import Data.Fin.Base as Fin
   using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Patterns using (0F)
@@ -149,7 +149,7 @@ y*lemma x*y≈y*x {n} j = begin
     k≡j = toℕ-inject₁ j
 
     [n-k]≡[n-j] : [n-k] ≡ [n-j]
-    [n-k]≡[n-j] = ≡.trans (cong (n ∸_) k≡j) (+-∸-assoc 1 (toℕ<n j))
+    [n-k]≡[n-j] = ≡.trans (cong (n ∸_) k≡j) (∸-suc (toℕ<n j))
 
 ------------------------------------------------------------------------
 -- Now, a lemma characterising the sum of the term₁ and term₂ expressions

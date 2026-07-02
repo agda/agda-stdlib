@@ -4,7 +4,7 @@
 -- Basic properties of ℕᵇ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Properties where
 
@@ -61,7 +61,7 @@ private
   variable
     x : ℕᵇ
 
-infix 4  _<?_ _≟_ _≤?_
+infix 4  _<?_ _≡?_ _≤?_
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -79,25 +79,25 @@ infix 4  _<?_ _≟_ _≤?_
 1+[2_]-injective : Injective _≡_ _≡_ 1+[2_]
 1+[2_]-injective refl = refl
 
-_≟_ : DecidableEquality ℕᵇ
-zero     ≟ zero     =  yes refl
-zero     ≟ 2[1+ _ ] =  no λ()
-zero     ≟ 1+[2 _ ] =  no λ()
-2[1+ _ ] ≟ zero     =  no λ()
-2[1+ x ] ≟ 2[1+ y ] =  Dec.map′ (cong 2[1+_]) 2[1+_]-injective (x ≟ y)
-2[1+ _ ] ≟ 1+[2 _ ] =  no λ()
-1+[2 _ ] ≟ zero     =  no λ()
-1+[2 _ ] ≟ 2[1+ _ ] =  no λ()
-1+[2 x ] ≟ 1+[2 y ] =  Dec.map′ (cong 1+[2_]) 1+[2_]-injective (x ≟ y)
+_≡?_ : DecidableEquality ℕᵇ
+zero     ≡? zero     =  yes refl
+zero     ≡? 2[1+ _ ] =  no λ()
+zero     ≡? 1+[2 _ ] =  no λ()
+2[1+ _ ] ≡? zero     =  no λ()
+2[1+ x ] ≡? 2[1+ y ] =  Dec.map′ (cong 2[1+_]) 2[1+_]-injective (x ≡? y)
+2[1+ _ ] ≡? 1+[2 _ ] =  no λ()
+1+[2 _ ] ≡? zero     =  no λ()
+1+[2 _ ] ≡? 2[1+ _ ] =  no λ()
+1+[2 x ] ≡? 1+[2 y ] =  Dec.map′ (cong 1+[2_]) 1+[2_]-injective (x ≡? y)
 
 ≡-isDecEquivalence : IsDecEquivalence {A = ℕᵇ} _≡_
-≡-isDecEquivalence = isDecEquivalence _≟_
+≡-isDecEquivalence = isDecEquivalence _≡?_
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℕᵇ
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Properties of toℕ & fromℕ
@@ -327,7 +327,7 @@ toℕ-cancel-< {2[1+ x ]} {2[1+ y ]} x<y =
 toℕ-cancel-< {2[1+ x ]} {1+[2 y ]} x<y
   rewrite ℕ.*-distribˡ-+ 2 1 (toℕ x) =
   even<odd (toℕ-cancel-< (ℕ.*-cancelˡ-< 2 _ _ (ℕ.≤-trans (s≤s (ℕ.n≤1+n _)) (s<s⁻¹ x<y))))
-toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕ.≟ toℕ y
+toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕ.≡? toℕ y
 ... | yes x≡y = odd<even (inj₂ (toℕ-injective x≡y))
 ... | no  x≢y
   rewrite ℕ.+-suc (toℕ y) (toℕ y ℕ.+ 0) =
@@ -584,7 +584,7 @@ x ≤? y with <-cmp x y
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -701,7 +701,7 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
 toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕ.+-rawMagma toℕ
 toℕ-isMagmaHomomorphism-+ = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
-  ; homo              = toℕ-homo-+
+  ; ∙-homo            = toℕ-homo-+
   }
 
 toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕ.+-0-rawMonoid toℕ
@@ -1014,7 +1014,7 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕ.≤-refl
 toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕ.*-rawMagma toℕ
 toℕ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
-  ; homo              = toℕ-homo-*
+  ; ∙-homo            = toℕ-homo-*
   }
 
 toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕ.*-1-rawMonoid toℕ
@@ -1507,36 +1507,17 @@ pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 = begin
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.4
-
-*-+-isSemiringWithoutAnnihilatingZero = +-*-isSemiringWithoutAnnihilatingZero
-{-# WARNING_ON_USAGE *-+-isSemiringWithoutAnnihilatingZero
-"Warning: *-+-isSemiringWithoutAnnihilatingZero was deprecated in v1.4.
-Please use +-*-isSemiringWithoutAnnihilatingZero instead."
-#-}
-*-+-isSemiring = +-*-isSemiring
-{-# WARNING_ON_USAGE *-+-isSemiring
-"Warning: *-+-isSemiring was deprecated in v1.4.
-Please use +-*-isSemiring instead."
-#-}
-*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
-{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
-"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
-Please use +-*-isCommutativeSemiring instead."
-#-}
-*-+-semiring = +-*-semiring
-{-# WARNING_ON_USAGE *-+-semiring
-"Warning: *-+-semiring was deprecated in v1.4.
-Please use +-*-semiring instead."
-#-}
-*-+-commutativeSemiring = +-*-commutativeSemiring
-{-# WARNING_ON_USAGE *-+-commutativeSemiring
-"Warning: *-+-commutativeSemiring was deprecated in v1.4.
-Please use +-*-commutativeSemiring instead."
-#-}
-
 -- Version 2.0
 
 {- issue1858/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Nat.Binary.Base public
   using (+-rawMagma; +-0-rawMonoid; *-rawMagma; *-1-rawMonoid)
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

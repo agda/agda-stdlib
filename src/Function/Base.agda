@@ -8,7 +8,7 @@
 -- module. See `Function.Strict` for strict versions of these
 -- combinators.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Base where
 
@@ -44,7 +44,7 @@ constᵣ _ = id
 infixr 9 _∘_ _∘₂_
 infixl 8 _ˢ_
 infixl 0 _|>_
-infix  0 case_return_of_
+infix  0 case_returning_of_ case_return_of_
 infixr -1 _$_
 
 -- Composition
@@ -106,6 +106,10 @@ f $- = f _
 λ- : ∀ {A : Set a} {B : A → Set b} → ({x : A} → B x) → ((x : A) → B x)
 λ- f = λ x → f
 {-# INLINE λ- #-}
+
+λ∙ : ∀ {A : Set a} {B : .A → Set b} → (.(x : A) → B x) → ((x : A) → B x)
+λ∙ f = λ x → f x
+{-# INLINE λ∙ #-}
 
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).
@@ -252,14 +256,6 @@ _*_ on f = f -⟨ _*_ ⟩- f
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.4
-
-_-[_]-_ = _-⟪_⟫-_
-{-# WARNING_ON_USAGE _-[_]-_
-"Warning: Function._-[_]-_ was deprecated in v1.4.
-Please use _-⟪_⟫-_ instead."
-#-}
-
 -- Version 2.0
 
 case_return_of_ = case_returning_of_
@@ -267,4 +263,3 @@ case_return_of_ = case_returning_of_
 "case_return_of_ was deprecated in v2.0.
 Please use case_returning_of_ instead."
 #-}
-

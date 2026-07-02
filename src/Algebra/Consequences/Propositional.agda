@@ -5,11 +5,12 @@
 -- commutativity (specialised to propositional equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Consequences.Propositional
   {a} {A : Set a} where
 
+open import Algebra.Core using (Op₁; Op₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
@@ -19,15 +20,21 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
 open import Relation.Unary using (Pred)
-open import Algebra.Core using (Op₁; Op₂)
 
 open import Algebra.Definitions {A = A} _≡_
-import Algebra.Consequences.Setoid (setoid A) as Base
+import Algebra.Consequences.Setoid (setoid A) as SetoidConsequences
+
+private
+  variable
+    e ε 0# : A
+    f _⁻¹ -_ : Op₁ A
+    _∙_ _◦_ _+_ _*_ : Op₂ A
+
 
 ------------------------------------------------------------------------
 -- Re-export all proofs that don't require congruence or substitutivity
 
-open Base public
+open SetoidConsequences public
   hiding
   ( comm∧assoc⇒middleFour
   ; identity∧middleFour⇒assoc
@@ -41,7 +48,7 @@ open Base public
   ; comm⇒sym[distribˡ]
   ; subst∧comm⇒sym
   ; wlog
-  ; sel⇒idem
+  ; binomial-expansion
 -- plus all the deprecated versions of the above
   ; comm+assoc⇒middleFour
   ; identity+middleFour⇒assoc
@@ -58,90 +65,82 @@ open Base public
 ------------------------------------------------------------------------
 -- Group-like structures
 
-module _ {_∙_ _⁻¹ ε} where
+assoc∧id∧invʳ⇒invˡ-unique : Associative _∙_ → Identity ε _∙_ →
+                            RightInverse ε _⁻¹ _∙_ →
+                            ∀ x y → (x ∙ y) ≡ ε → x ≡ (y ⁻¹)
+assoc∧id∧invʳ⇒invˡ-unique = SetoidConsequences.assoc∧id∧invʳ⇒invˡ-unique (cong₂ _)
 
-  assoc∧id∧invʳ⇒invˡ-unique : Associative _∙_ → Identity ε _∙_ →
-                              RightInverse ε _⁻¹ _∙_ →
-                              ∀ x y → (x ∙ y) ≡ ε → x ≡ (y ⁻¹)
-  assoc∧id∧invʳ⇒invˡ-unique = Base.assoc∧id∧invʳ⇒invˡ-unique (cong₂ _)
-
-  assoc∧id∧invˡ⇒invʳ-unique : Associative _∙_ → Identity ε _∙_ →
-                              LeftInverse ε _⁻¹ _∙_ →
-                              ∀ x y → (x ∙ y) ≡ ε → y ≡ (x ⁻¹)
-  assoc∧id∧invˡ⇒invʳ-unique = Base.assoc∧id∧invˡ⇒invʳ-unique (cong₂ _)
+assoc∧id∧invˡ⇒invʳ-unique : Associative _∙_ → Identity ε _∙_ →
+                            LeftInverse ε _⁻¹ _∙_ →
+                            ∀ x y → (x ∙ y) ≡ ε → y ≡ (x ⁻¹)
+assoc∧id∧invˡ⇒invʳ-unique = SetoidConsequences.assoc∧id∧invˡ⇒invʳ-unique (cong₂ _)
 
 ------------------------------------------------------------------------
 -- Ring-like structures
 
-module _ {_+_ _*_ -_ 0#} where
+assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ : Associative _+_ → _*_ DistributesOverʳ _+_ →
+                              RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
+                              LeftZero 0# _*_
+assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ {_+_ = _+_} {_*_ = _*_} =
+  SetoidConsequences.assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ (cong₂ _+_) (cong₂ _*_)
 
-  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ : Associative _+_ → _*_ DistributesOverʳ _+_ →
-                                RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
-                                LeftZero 0# _*_
-  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ =
-    Base.assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ (cong₂ _+_) (cong₂ _*_)
-
-  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ : Associative _+_ → _*_ DistributesOverˡ _+_ →
-                                RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
-                                RightZero 0# _*_
-  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ =
-    Base.assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ (cong₂ _+_) (cong₂ _*_)
+assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ : Associative _+_ → _*_ DistributesOverˡ _+_ →
+                              RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
+                              RightZero 0# _*_
+assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ {_+_ = _+_} {_*_ = _*_} =
+  SetoidConsequences.assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ (cong₂ _+_) (cong₂ _*_)
 
 ------------------------------------------------------------------------
 -- Bisemigroup-like structures
 
-module _ {_∙_ _◦_ : Op₂ A} (∙-comm : Commutative _∙_) where
+module _ (∙-comm : Commutative _∙_) where
 
   comm∧distrˡ⇒distrʳ : _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOverʳ _◦_
-  comm∧distrˡ⇒distrʳ = Base.comm+distrˡ⇒distrʳ (cong₂ _) ∙-comm
+  comm∧distrˡ⇒distrʳ = SetoidConsequences.comm+distrˡ⇒distrʳ (cong₂ _) ∙-comm
 
   comm∧distrʳ⇒distrˡ : _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOverˡ _◦_
-  comm∧distrʳ⇒distrˡ = Base.comm∧distrʳ⇒distrˡ (cong₂ _) ∙-comm
+  comm∧distrʳ⇒distrˡ = SetoidConsequences.comm∧distrʳ⇒distrˡ (cong₂ _) ∙-comm
 
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y ∙ z)) ≡ ((x ◦ y) ∙ (x ◦ z)))
-  comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _◦_) ∙-comm
+  comm⇒sym[distribˡ] = SetoidConsequences.comm⇒sym[distribˡ] (cong₂ _) ∙-comm
+
+module _ (∙-assoc : Associative _∙_)
+         (distrib : _◦_ DistributesOver _∙_)
+         where
+
+  binomial-expansion : ∀ w x y z →
+             ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+  binomial-expansion = SetoidConsequences.binomial-expansion (cong₂ _∙_) ∙-assoc distrib
 
 ------------------------------------------------------------------------
--- Selectivity
+-- MiddleFourExchange
 
-module _ {_∙_ : Op₂ A} where
+comm∧assoc⇒middleFour : Commutative _∙_ → Associative _∙_ →
+                        _∙_ MiddleFourExchange _∙_
+comm∧assoc⇒middleFour = SetoidConsequences.comm∧assoc⇒middleFour (cong₂ _)
 
-  sel⇒idem : Selective _∙_ → Idempotent _∙_
-  sel⇒idem = Base.sel⇒idem _≡_
+identity∧middleFour⇒assoc : Identity e _∙_ →
+                            _∙_ MiddleFourExchange _∙_ →
+                            Associative _∙_
+identity∧middleFour⇒assoc {_∙_ = _∙_} = SetoidConsequences.identity∧middleFour⇒assoc (cong₂ _∙_)
 
-------------------------------------------------------------------------
--- Middle-Four Exchange
-
-module _ {_∙_ : Op₂ A} where
-
-  comm∧assoc⇒middleFour : Commutative _∙_ → Associative _∙_ →
-                          _∙_ MiddleFourExchange _∙_
-  comm∧assoc⇒middleFour = Base.comm∧assoc⇒middleFour (cong₂ _∙_)
-
-  identity∧middleFour⇒assoc : {e : A} → Identity e _∙_ →
-                              _∙_ MiddleFourExchange _∙_ →
-                              Associative _∙_
-  identity∧middleFour⇒assoc = Base.identity∧middleFour⇒assoc (cong₂ _∙_)
-
-  identity∧middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
-                             _∙_ MiddleFourExchange _+_ →
-                             Commutative _∙_
-  identity∧middleFour⇒comm = Base.identity∧middleFour⇒comm (cong₂ _∙_)
+identity∧middleFour⇒comm : Identity e _+_ →
+                           _∙_ MiddleFourExchange _+_ →
+                           Commutative _∙_
+identity∧middleFour⇒comm = SetoidConsequences.identity∧middleFour⇒comm (cong₂ _)
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality
 
-module _ {p} {P : Pred A p} where
+module _ {p} {P : Pred A p} (∙-comm : Commutative _∙_) where
 
-  subst∧comm⇒sym : ∀ {f} (f-comm : Commutative f) →
-                   Symmetric (λ a b → P (f a b))
-  subst∧comm⇒sym = Base.subst∧comm⇒sym {P = P} subst
+  subst∧comm⇒sym : Symmetric (λ a b → P (a ∙ b))
+  subst∧comm⇒sym = SetoidConsequences.subst∧comm⇒sym {P = P} subst ∙-comm
 
-  wlog : ∀ {f} (f-comm : Commutative f) →
-         ∀ {r} {_R_ : Rel _ r} → Total _R_ →
-         (∀ a b → a R b → P (f a b)) →
-         ∀ a b → P (f a b)
-  wlog = Base.wlog {P = P} subst
+  wlog : ∀ {r} {_R_ : Rel _ r} → Total _R_ →
+         (∀ a b → a R b → P (a ∙ b)) →
+         ∀ a b → P (a ∙ b)
+  wlog = SetoidConsequences.wlog {P = P} subst ∙-comm
 
 
 ------------------------------------------------------------------------

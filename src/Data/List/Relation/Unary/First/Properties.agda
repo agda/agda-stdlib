@@ -4,7 +4,7 @@
 -- Properties of First
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.First.Properties where
 
@@ -18,7 +18,7 @@ import Data.Sum.Base as Sum
 open import Function.Base using (_∘′_; _∘_; id)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; _≗_)
 open import Relation.Nullary.Decidable.Core as Dec
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬¬-η; contradiction)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary using (Pred; _⊆_; ∁; Irrelevant; Decidable)
 
@@ -54,7 +54,7 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
   All⇒¬First : P ⊆ ∁ Q → All P ⊆ ∁ (First P Q)
-  All⇒¬First p⇒¬q (px ∷ pxs) [ qx ]   = contradiction qx (p⇒¬q px)
+  All⇒¬First p⇒¬q (px ∷ pxs) [ qx ]   = p⇒¬q px qx
   All⇒¬First p⇒¬q (_ ∷ pxs)  (_ ∷ hf) = All⇒¬First p⇒¬q pxs hf
 
   First⇒¬All : Q ⊆ ∁ P → First P Q ⊆ ∁ (All P)
@@ -97,7 +97,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 
   first? : Decidable P → Decidable (First P (∁ P))
   first? P? = Dec.fromSum
-            ∘ Sum.map₂ (All⇒¬First contradiction)
+            ∘ Sum.map₂ (All⇒¬First ¬¬-η)
             ∘ first (Dec.toSum ∘ P?)
 
   cofirst? : Decidable P → Decidable (First (∁ P) P)

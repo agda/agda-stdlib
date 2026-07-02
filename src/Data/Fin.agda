@@ -4,7 +4,7 @@
 -- Finite sets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin where
 
@@ -20,7 +20,7 @@ open import Data.Fin.Base public
 -- Publicly re-export queries
 
 open import Data.Fin.Properties public
-  using (_≟_; _≤?_; _<?_)
+  using (_≟_; _≡?_; _≤?_; _<?_)
 
 -- # m = "m".
 

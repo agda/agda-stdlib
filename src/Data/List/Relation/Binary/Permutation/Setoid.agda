@@ -4,7 +4,7 @@
 -- A definition for the permutation relation using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -31,7 +31,7 @@ open ≋ S using (_≋_; _∷_; ≋-refl; ≋-sym; ≋-trans)
 -- Definition, based on `Homogeneous`
 
 open Homogeneous public
-  using (refl; prep; swap; trans)
+  using (refl; prep; swap; trans; onIndices)
 
 infix 3 _↭_
 

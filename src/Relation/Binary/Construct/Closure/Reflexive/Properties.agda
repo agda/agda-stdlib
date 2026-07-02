@@ -4,7 +4,7 @@
 -- Some properties of reflexive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
@@ -84,7 +84,7 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri> _ _    c = inj₂ [ c ]
 
   dec : DecidableEquality A → Decidable _~_ → Decidable _~ᵒ_
-  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b Dec.⊎-dec ~-dec a b)
+  dec ≡? ~? a b = Dec.map ⊎⇔Refl (≡? a b Dec.⊎? ~? a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable _~ᵒ_
   decidable ~-tri a b with ~-tri a b
@@ -134,8 +134,8 @@ module _ {_~_ : Rel A ℓ} where
   isDecPartialOrder : IsDecStrictPartialOrder _≡_ _~_ → IsDecPartialOrder _≡_ _~ᵒ_
   isDecPartialOrder O = record
     { isPartialOrder = isPartialOrder O.isStrictPartialOrder
-    ; _≟_            = O._≟_
-    ; _≤?_           = dec O._≟_ O._<?_
+    ; _≈?_           = O._≈?_
+    ; _≤?_           = dec O._≈?_ O._<?_
     } where module O = IsDecStrictPartialOrder O
 
   isTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsTotalOrder _≡_ _~ᵒ_
@@ -147,6 +147,6 @@ module _ {_~_ : Rel A ℓ} where
   isDecTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsDecTotalOrder _≡_ _~ᵒ_
   isDecTotalOrder O = record
     { isTotalOrder = isTotalOrder O
-    ; _≟_          = _≟_
-    ; _≤?_         = dec _≟_ _<?_
+    ; _≈?_         = _≈?_
+    ; _≤?_         = dec _≈?_ _<?_
     } where open IsStrictTotalOrder O
