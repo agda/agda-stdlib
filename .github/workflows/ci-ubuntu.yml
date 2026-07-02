@@ -136,6 +136,7 @@ jobs:
           echo ${{ steps.install-ghc-cabal.outputs.ghc-path }} >> "${GITHUB_PATH}"
           
       - name: Output PATH
+        id: path
         run: echo "BIN_PATH=$PATH" >> "${GITHUB_OUTPUT}"
 
       - name: Install alex & happy
