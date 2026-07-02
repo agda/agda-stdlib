@@ -197,8 +197,8 @@ jobs:
 
       - name: Set permissions
         run: |
-          chmod -r +x ~/.cabal/bin/
-          chmod -r +x ${{ needs.init.outputs.GHC_PATH }}
+          chmod -R +x ~/.cabal/bin/
+          chmod -R +x ${{ needs.init.outputs.GHC_PATH }}
             
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
@@ -237,8 +237,8 @@ jobs:
 
       - name: Set permissions
         run: |
-          chmod -r +x ~/.cabal/bin/
-          chmod -r +x ${{ needs.init.outputs.GHC_PATH }}
+          chmod -R +x ~/.cabal/bin/
+          chmod -R +x ${{ needs.init.outputs.GHC_PATH }}
 
       - name: Download agdai files
         uses: actions/download-artifact@v4
@@ -277,8 +277,8 @@ jobs:
 
       - name: Set permissions
         run: |
-          chmod -r +x ~/.cabal/bin/
-          chmod -r +x ${{ needs.init.outputs.GHC_PATH }}
+          chmod -R +x ~/.cabal/bin/
+          chmod -R +x ${{ needs.init.outputs.GHC_PATH }}
 
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
