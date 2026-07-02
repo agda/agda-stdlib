@@ -136,7 +136,7 @@ jobs:
           echo ${{ steps.install-ghc-cabal.outputs.ghc-path }} >> "${GITHUB_PATH}"
           
       - name: Output PATH
-        run: "PATH=${{GITHUB_PATH}}" >> "${GITHUB_OUTPUT}"
+        run: "PATH=${GITHUB_PATH}" >> "${GITHUB_OUTPUT}"
 
       - name: Install alex & happy
         if: steps.cache-cabal.outputs.cache-hit != 'true'
