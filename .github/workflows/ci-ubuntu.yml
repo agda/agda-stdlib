@@ -194,6 +194,11 @@ jobs:
         with:
           name: ubuntu-ghc-dir
           path: ${{ needs.init.outputs.GHC_PATH }}
+
+      - name: Set permissions
+        run: |
+          chmod -r +x ~/.cabal/bin/
+          chmod -r +x ${{ needs.init.outputs.GHC_PATH }}
             
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
@@ -230,6 +235,11 @@ jobs:
           name: ubuntu-ghc-dir
           path: ${{ needs.init.outputs.GHC_PATH }}
 
+      - name: Set permissions
+        run: |
+          chmod -r +x ~/.cabal/bin/
+          chmod -r +x ${{ needs.init.outputs.GHC_PATH }}
+
       - name: Download agdai files
         uses: actions/download-artifact@v4
         with:
@@ -253,17 +263,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Download Cabal Dir
+      - name: Download Cabal directory
         uses: actions/download-artifact@v4
         with:
           name: ubuntu-cabal-dir
           path: ~/.cabal/
 
-      - name: Download GHC Dir
+      - name: Download GHC directory
         uses: actions/download-artifact@v4
         with:
           name: ubuntu-ghc-dir
           path: ${{ needs.init.outputs.GHC_PATH }}
+
+      - name: Set permissions
+        run: |
+          chmod -r +x ~/.cabal/bin/
+          chmod -r +x ${{ needs.init.outputs.GHC_PATH }}
 
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
