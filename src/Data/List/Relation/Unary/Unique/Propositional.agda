@@ -4,7 +4,7 @@
 -- Lists made up entirely of unique elements (propositional equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Unique.Propositional {a} {A : Set a} where
 

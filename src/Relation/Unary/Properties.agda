@@ -4,11 +4,11 @@
 -- Properties of constructions over unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.Properties where
 
-open import Data.Product.Base as Product using (_×_; _,_; swap; proj₁; zip′)
+open import Data.Product.Base as Product using (_×_; _,_; -,_; swap; proj₁; zip′; curry)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (id; _$_; _∘_; _∘₂_)
@@ -18,7 +18,7 @@ open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
 open import Relation.Nullary.Decidable as Dec
-  using (yes; no; _⊎-dec_; _×-dec_; ¬?; map′; does)
+  using (yes; no; ¬?; map′; does)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary
 
@@ -51,6 +51,27 @@ U-Universal = λ _ → _
 
 ∁U-Empty : Empty {A = A} (∁ U)
 ∁U-Empty = λ x x∈∁U → x∈∁U _
+
+------------------------------------------------------------------------
+-- De Morgan's laws
+
+¬∃⟨P⟩⇒Π[∁P] : ∀ {P : Pred A ℓ} → ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
+¬∃⟨P⟩⇒Π[∁P] ¬sat = curry ¬sat
+
+¬∃⟨P⟩⇒∀[∁P] : ∀ {P : Pred A ℓ} → ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
+¬∃⟨P⟩⇒∀[∁P] ¬sat = curry ¬sat _
+
+∃⟨∁P⟩⇒¬Π[P] : ∀ {P : Pred A ℓ} → ∃⟨ ∁ P ⟩ → ¬ Π[ P ]
+∃⟨∁P⟩⇒¬Π[P] (x , ¬Px) ΠP = ¬Px (ΠP x)
+
+∃⟨∁P⟩⇒¬∀[P] : ∀ {P : Pred A ℓ} → ∃⟨ ∁ P ⟩ → ¬ ∀[ P ]
+∃⟨∁P⟩⇒¬∀[P] (_ , ¬Px) ∀P = ¬Px ∀P
+
+Π[∁P]⇒¬∃[P] : ∀ {P : Pred A ℓ} → Π[ ∁ P ] → ¬ ∃⟨ P ⟩
+Π[∁P]⇒¬∃[P] Π∁P (x , Px) = Π∁P x Px
+
+∀[∁P]⇒¬∃[P] : ∀ {P : Pred A ℓ} → ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
+∀[∁P]⇒¬∃[P] ∀∁P (_ , Px) = ∀∁P Px
 
 ------------------------------------------------------------------------
 -- Subset properties
@@ -221,6 +242,43 @@ U-Universal = λ _ → _
 ⊥⇒¬≬ P⊥Q = P⊥Q ∘ Product.proj₂
 
 ------------------------------------------------------------------------
+-- Properties of adjoints to update: functoriality and adjointness
+
+module _ {P : Pred B ℓ₁} {Q : Pred B ℓ₂} where
+
+  _map-⊢_ : (f : A → B) → P ⊆ Q → f ⊢ P ⊆ f ⊢ Q
+  f map-⊢ P⊆Q = P⊆Q
+
+module _ {P : Pred A ℓ₁} {Q : Pred B ℓ₂} (f : A → B) where
+
+-- ⟨ f ⟩⊢_ is left adjoint to f ⊢_ for given f
+
+  ⟨_⟩⊢⁻_ : ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
+  ⟨_⟩⊢⁻_ ⟨f⟩⊢P⊆Q Px = ⟨f⟩⊢P⊆Q (_ , refl , Px)
+
+  ⟨_⟩⊢⁺_ : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
+  ⟨_⟩⊢⁺_ P⊆f⊢Q (_ , refl , Px) = P⊆f⊢Q Px
+
+-- [ f ]⊢_ is right adjoint to f ⊢_ for given f
+
+  [_]⊢⁻_ : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
+  [_]⊢⁻_ Q⊆[f]⊢P Qfx = Q⊆[f]⊢P Qfx refl
+
+  [_]⊢⁺_ : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
+  [_]⊢⁺_ f⊢Q⊆P Qfx refl = f⊢Q⊆P Qfx
+
+module _ {P : Pred A ℓ₁} {Q : Pred A ℓ₂} (f : A → B) where
+
+  map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
+  map-⟨_⟩⊢_ P⊆Q = ⟨ f ⟩⊢⁺ ⊆-trans {z = f ⊢ ⟨f⟩⊢Q} P⊆Q (⟨ f ⟩⊢⁻ ⊆-refl {x = ⟨f⟩⊢Q})
+    where ⟨f⟩⊢Q = ⟨ f ⟩⊢ Q
+
+  map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
+  map-[_]⊢_ P⊆Q = [ f ]⊢⁺ ⊆-trans {x = f ⊢ [f]⊢P} ([ f ]⊢⁻ ⊆-refl {x = [f]⊢P}) P⊆Q
+    where [f]⊢P = [ f ]⊢ P
+
+
+------------------------------------------------------------------------
 -- Decidability properties
 
 map : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
@@ -238,19 +296,19 @@ infixr 6 _∪?_
 
 _∪?_ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ∪ Q)
-_∪?_ P? Q? x = (P? x) ⊎-dec (Q? x)
+_∪?_ P? Q? x = (P? x) Dec.⊎? (Q? x)
 
 _∩?_ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ∩ Q)
-_∩?_ P? Q? x = (P? x) ×-dec (Q? x)
+_∩?_ P? Q? x = (P? x) Dec.×? (Q? x)
 
 _×?_ : {P : Pred A ℓ₁} {Q : Pred B ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
-_×?_ P? Q? (a , b) = (P? a) ×-dec (Q? b)
+_×?_ P? Q? (a , b) = (P? a) Dec.×? (Q? b)
 
 _⊙?_ : {P : Pred A ℓ₁} {Q : Pred B ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
-_⊙?_ P? Q? (a , b) = (P? a) ⊎-dec (Q? b)
+_⊙?_ P? Q? (a , b) = (P? a) Dec.⊎? (Q? b)
 
 _⊎?_ : {P : Pred A ℓ} {Q : Pred B ℓ} →
        Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)

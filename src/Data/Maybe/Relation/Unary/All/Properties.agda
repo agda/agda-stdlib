@@ -4,7 +4,7 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.Relation.Unary.All.Properties where
 

@@ -4,7 +4,7 @@
 -- Properties of the `Algorithmic` definition of the permutation relation.
 -------------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 

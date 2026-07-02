@@ -11,7 +11,7 @@
 -- also the coproduct, making it a biproduct.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Lattice.Construct.DirectProduct where
 

@@ -4,11 +4,11 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Properties where
 open import Algebra.Bundles
-  using (Magma; Semigroup; Band; CommutativeMonoid
+  using (Magma; Semigroup; Band; Monoid; CommutativeMonoid
         ; IdempotentCommutativeMonoid; CommutativeSemiring; CommutativeRing)
 open import Algebra.Lattice.Bundles
   using (Lattice; DistributiveLattice; BooleanAlgebra; Semilattice)
@@ -36,12 +36,12 @@ open import Relation.Binary.Definitions
         ; Minimum; Maximum; Total; Irrelevant ; Irreflexive; Asymmetric; Trans
         ; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; cong₂; subst; trans; _≢_)
+  using (_≡_; refl; sym; cong; cong₂; subst; trans; _≢_; ¬[x≢x])
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
 open import Relation.Nullary.Decidable.Core
   using (True; yes; no; fromWitness ; toWitness)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -59,19 +59,19 @@ private
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality Bool
-true  ≟ true  = yes refl
-false ≟ false = yes refl
-true  ≟ false = no λ()
-false ≟ true  = no λ()
+_≡?_ : DecidableEquality Bool
+true  ≡? true  = yes refl
+false ≡? false = yes refl
+true  ≡? false = no λ()
+false ≡? true  = no λ()
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid Bool
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -139,7 +139,7 @@ true  ≤? true  = yes b≤b
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -348,6 +348,11 @@ true  <? _     = no  (λ())
   ; identity = ∨-identity
   }
 
+∨-monoid : Monoid 0ℓ 0ℓ
+∨-monoid = record
+  { isMonoid = ∨-isMonoid
+  }
+
 ∨-isCommutativeMonoid : IsCommutativeMonoid _∨_ false
 ∨-isCommutativeMonoid = record
   { isMonoid = ∨-isMonoid
@@ -520,6 +525,11 @@ true  <? _     = no  (λ())
   ; identity = ∧-identity
   }
 
+∧-monoid : Monoid 0ℓ 0ℓ
+∧-monoid = record
+  { isMonoid = ∧-isMonoid
+  }
+
 ∧-isCommutativeMonoid : IsCommutativeMonoid _∧_ true
 ∧-isCommutativeMonoid = record
   { isMonoid = ∧-isMonoid
@@ -657,10 +667,10 @@ not-¬ {true}  refl ()
 not-¬ {false} refl ()
 
 ¬-not : ∀ {x y} → x ≢ y → x ≡ not y
-¬-not {true}  {true}  x≢y = contradiction refl x≢y
+¬-not {true}  {true}  x≢y = ¬[x≢x] x≢y
 ¬-not {true}  {false} _   = refl
 ¬-not {false} {true}  _   = refl
-¬-not {false} {false} x≢y = contradiction refl x≢y
+¬-not {false} {false} x≢y = ¬[x≢x] x≢y
 
 ------------------------------------------------------------------------
 -- Properties of _xor_
@@ -835,6 +845,10 @@ if-cong₂ _ refl refl = refl
 
 open Relation.Nullary.Decidable.Core public using (T?)
 
+¬T-≡ : ∀ {x} → (¬ T x) ⇔ x ≡ false
+¬T-≡ {false} = mk⇔ (const refl) (const id)
+¬T-≡ {true}  = mk⇔ (contradiction _) (λ ())
+
 T-≡ : ∀ {x} → T x ⇔ x ≡ true
 T-≡ {false} = mk⇔ (λ ())       (λ ())
 T-≡ {true}  = mk⇔ (const refl) (const _)
@@ -883,4 +897,13 @@ push-function-into-if = if-float
 {-# WARNING_ON_USAGE push-function-into-if
 "Warning: push-function-into-if was deprecated in v2.0.
 Please use if-float instead."
+#-}
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
 #-}

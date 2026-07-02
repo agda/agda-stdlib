@@ -4,7 +4,7 @@
 -- Conversion from naturals to universe levels
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Level.Literals where
 

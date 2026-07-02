@@ -4,7 +4,7 @@
 -- Showing signs
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sign.Show where
 

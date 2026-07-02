@@ -4,7 +4,7 @@
 -- The TC (Type Checking) monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.TCM where
 

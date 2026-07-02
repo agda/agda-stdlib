@@ -4,7 +4,7 @@
 -- Homogeneously-indexed binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous where
 

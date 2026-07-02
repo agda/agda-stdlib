@@ -6,7 +6,7 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Definitions where
 
@@ -14,6 +14,7 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
+open import Function.Core using (Fun₁; Fun₂)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core
 open import Relation.Nullary as Nullary using (¬_; Dec)
@@ -53,7 +54,7 @@ Symmetric _∼_ = Sym _∼_ _∼_
 -- Generalised transitivity.
 
 Trans : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
-Trans P Q R = ∀ {i j k} → P i j → Q j k → R i k
+Trans P Q R = ∀ {x y z} → P x y → Q y z → R x z
 
 RightTrans : REL A B ℓ₁ → REL B B ℓ₂ → Set _
 RightTrans R S = Trans R S R
@@ -64,7 +65,7 @@ LeftTrans S R = Trans S R R
 -- A flipped variant of generalised transitivity.
 
 TransFlip : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
-TransFlip P Q R = ∀ {i j k} → Q j k → P i j → R i k
+TransFlip P Q R = ∀ {x y z} → Q y z → P x y → R x z
 
 -- Transitivity.
 
@@ -74,7 +75,7 @@ Transitive _∼_ = Trans _∼_ _∼_ _∼_
 -- Generalised antisymmetry
 
 Antisym : REL A B ℓ₁ → REL B A ℓ₂ → REL A B ℓ₃ → Set _
-Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+Antisym R S E = ∀ {x y} → R x y → S y x → E x y
 
 -- Antisymmetry.
 
@@ -176,6 +177,32 @@ Antitonic₂ _≤_ _⊑_ = Monotonic₂ (flip _≤_) (flip _⊑_)
 
 Adjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
 Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
+
+-- Definitions for the Kleene Algebra ordering
+
+module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
+
+  module _ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
+
+    StarRightExpansive :  Set _
+    StarRightExpansive = ∀ x → (e + (x * (x ⋆))) ≤ (x ⋆)
+
+    StarLeftExpansive : Set _
+    StarLeftExpansive = ∀ x →  (e + ((x ⋆) * x)) ≤ (x ⋆)
+
+    StarExpansive : Set _
+    StarExpansive = StarLeftExpansive × StarRightExpansive
+
+  module _ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) where
+
+    StarLeftDestructive : Set _
+    StarLeftDestructive = ∀ x y z → (y + (x * z)) ≤ z → ((x ⋆) * y) ≤ z
+
+    StarRightDestructive : Set _
+    StarRightDestructive = ∀ x y z → (y + (z * x)) ≤ z → (y * (x ⋆)) ≤ z
+
+    StarDestructive : Set _
+    StarDestructive = StarLeftDestructive × StarRightDestructive
 
 -- Unary relations respecting a binary relation.
 

@@ -4,7 +4,7 @@
 -- Sums of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Binary.LeftOrder where
 
@@ -203,7 +203,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                         IsDecTotalOrder (Pointwise ≈₁ ≈₂) (∼₁ ⊎-< ∼₂)
   ⊎-<-isDecTotalOrder to₁ to₂ = record
     { isTotalOrder = ⊎-<-isTotalOrder (isTotalOrder to₁) (isTotalOrder to₂)
-    ; _≟_          = PW.⊎-decidable (_≟_  to₁) (_≟_  to₂)
+    ; _≈?_         = PW.⊎-decidable (_≈?_  to₁) (_≈?_  to₂)
     ; _≤?_         = ⊎-<-decidable (_≤?_ to₁) (_≤?_ to₂)
     }
     where open IsDecTotalOrder

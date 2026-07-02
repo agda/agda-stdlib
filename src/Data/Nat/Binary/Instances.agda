@@ -4,13 +4,13 @@
 -- Instances for binary natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Instances where
 
-open import Data.Nat.Binary.Properties
+open import Data.Nat.Binary.Properties using (_≡?_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 
 instance
-  ℕᵇ-≡-isDecEquivalence = isDecEquivalence _≟_
+  ℕᵇ-≡-isDecEquivalence = isDecEquivalence _≡?_
