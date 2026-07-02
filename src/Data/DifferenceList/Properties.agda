@@ -15,7 +15,7 @@ open import Data.List.Properties using (++-assoc; ++-identityʳ)
 open import Function using (id)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; sym; _≗_; module ≡-Reasoning)
+  using (_≡_; refl; cong; _≗_; module ≡-Reasoning)
 
 open ≡-Reasoning
 
@@ -46,7 +46,7 @@ toList∘fromList = ++-identityʳ
 
 toList⁺ : xs ∼ ys → xs ≡ toList ys
 toList⁺ {xs = xs} {ys} xs∼ys = begin
-  xs                  ≡⟨ sym (++-identityʳ xs) ⟩
+  xs                  ≡⟨ (++-identityʳ xs) ⟨
   xs List.++ List.[]  ≡⟨ xs∼ys List.[] ⟩
   ys List.[]          ≡⟨⟩
   toList ys           ∎
@@ -77,12 +77,7 @@ toList⁺ {xs = xs} {ys} xs∼ys = begin
 ++-∷⁺ x xs₁∼ys₁ xs₂∼ys₂ = ++⁺ xs₁∼ys₁ (∷⁺ x xs₂∼ys₂)
 
 ∷ʳ⁺ : (x : A) → xs ∼ ys → xs List.∷ʳ x ∼ ys ∷ʳ x
-∷ʳ⁺ {xs = xs} {ys} x xs∼ys k = begin
-  xs List.∷ʳ x List.++ k             ≡⟨⟩
-  (xs List.++ List.[ x ]) List.++ k  ≡⟨ ++-assoc xs List.[ x ] k ⟩
-  xs List.++ (x List.∷ k)            ≡⟨ xs∼ys (x List.∷ k) ⟩
-  ys (x List.∷ k)                    ≡⟨⟩
-  (ys ∷ʳ x) k                        ∎
+∷ʳ⁺ {xs = xs} {ys} x xs∼ys k = ++⁺ xs∼ys [ x ]⁺ k
 
 map⁺ : (f : A → B) → xs ∼ ys → List.map f xs ∼ map f ys
 map⁺ f xs∼ys k =

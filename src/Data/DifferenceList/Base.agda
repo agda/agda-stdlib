@@ -21,7 +21,7 @@ private
 
 
 ------------------------------------------------------------------------
--- Type definition and list function lifting
+-- Type definition
 
 DiffList : Set a → Set a
 DiffList A = List A → List A
