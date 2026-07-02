@@ -76,6 +76,7 @@ jobs:
     steps:
 
       - name: Init
+        uses: actions/checkout@v5
         uses: ./.github/workflows/ci-ubuntu-init
 
       - name: Test stdlib
@@ -97,6 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Init
+        uses: actions/checkout@v5
         uses: ./.github/workflows/ci-ubuntu-init
 
       - name: Prepare HTML index

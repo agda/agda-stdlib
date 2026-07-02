@@ -7,7 +7,6 @@ runs:
   ## INITIALISATION
   ########################################################################
   steps:
-
     - name: Initialise variables
       run: |
         if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
@@ -78,7 +77,3 @@ runs:
         touch doc/user-manual.pdf
         ${{ env.CABAL_V1_INSTALL }}
         cd ..
-
-    # By default github actions does not pull the repo
-    - name: Checkout stdlib
-      uses: actions/checkout@v5
