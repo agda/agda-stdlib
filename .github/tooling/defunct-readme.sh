@@ -15,7 +15,7 @@ echo "Searching for deleted READMEs..."
 git diff --diff-filter DR --name-status master \
     | awk '{print $2}' \
     | grep '^doc/README/' \
-    | while read file; do
+    | while read -r file; do
     echo "$file was deleted, scanning for references"
    
     # remove 'doc/' and '.agda, replace / with .
@@ -35,7 +35,7 @@ git diff --diff-filter DR --name-status master \
     #         "-- see README.A for some notes. :-)"
     #      or "-- see README.A"
     # but not "-- see README.A.Some.Sub.Module"
-    grep -r -E ".*$module([^\.].*)?$" | while read ref; do
+    grep -r -E ".*$module([^\.].*)?$" | while read -r ref; do
         echo "ERROR: file referenced: $ref" >&2
         exit 1
     done
