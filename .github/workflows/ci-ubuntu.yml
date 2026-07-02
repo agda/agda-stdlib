@@ -54,11 +54,6 @@ env:
   CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
   AGDA: agda -Werror +RTS -M5G -H3.5G -A128M -RTS -i. -isrc -idoc
 
-jobs:
-  test-stdlib:
-    runs-on: ubuntu-latest
-    steps:
-
 ########################################################################
 ## SETTINGS
 ##
@@ -70,6 +65,15 @@ jobs:
 ## The content of the html/ directory will be deployed so we put the
 ## master version at the root and the experimental in a subdirectory.
 ########################################################################
+
+jobs:
+
+  ########################################################################
+  ## INITIALISATION
+  ########################################################################
+  init:
+    runs-on: ubuntu-latest
+    steps:
 
       - name: Initialise variables
         run: |
@@ -89,9 +93,9 @@ jobs:
              echo "AGDA_DEPLOY=true" >> "${GITHUB_ENV}"
           fi
 
-########################################################################
-## CACHING
-########################################################################
+      ########################################################################
+      ## CACHING
+      ########################################################################
 
 
       # This caching step allows us to save a lot of building time by only
@@ -109,9 +113,9 @@ jobs:
             ~/.cabal/share
           key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}-cache
 
-########################################################################
-## INSTALLATION STEPS
-########################################################################
+      ########################################################################
+      ## INSTALLATION STEPS
+      ########################################################################
 
       - name: Install ghc & cabal
         uses: haskell-actions/setup@v2
@@ -142,13 +146,17 @@ jobs:
           ${{ env.CABAL_V1_INSTALL }}
           cd ..
 
-########################################################################
-## TESTING
-########################################################################
-
       # By default github actions do not pull the repo
       - name: Checkout stdlib
         uses: actions/checkout@v5
+
+  ########################################################################
+  ## TESTING
+  ########################################################################
+  test-stdlib:
+    needs: init
+    runs-on: ubuntu-latest
+    steps:
 
       - name: Test stdlib
         run: |
@@ -157,6 +165,18 @@ jobs:
           ${{ env.AGDA }} -WnoUserWarning --safe EverythingSafe.agda
           ${{ env.AGDA }} -WnoUserWarning Everything.agda
 
+      - name: Golden testing
+        run: |
+          make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
+
+
+  ########################################################################
+  ## DOC DEPLOYMENT
+  ########################################################################
+  html:
+    needs: init
+    runs-on: ubuntu-latest
+    steps:
       - name: Prepare HTML index
         run: |
           # Regenerating the Everything files without the deprecated modules
@@ -166,15 +186,6 @@ jobs:
           ${{ env.AGDA }} --safe EverythingSafe.agda
           ${{ env.AGDA }} Everything.agda
           ${{ env.AGDA }} index.agda
-
-      - name: Golden testing
-        run: |
-          make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
-
-
-########################################################################
-## DOC DEPLOYMENT
-########################################################################
 
       # We start by retrieving the currently deployed docs
       # We remove the content that is in the directory we are going to populate
