@@ -9,7 +9,7 @@
 module Data.Char.Properties where
 
 open import Data.Bool.Base using (Bool)
-open import Data.Char.Base using (Char; _≈_; _≉_; _<_; _≤_; toℕ)
+open import Data.Char.Base as Char using (Char; _≈_; _≉_; _<_; _≤_; toℕ)
 import Data.Nat.Base as ℕ using (ℕ; _<_; _≤_)
 import Data.Nat.Properties as ℕ
   using (_<?_; <-cmp; <-isStrictPartialOrder; <-isStrictTotalOrder
@@ -31,7 +31,8 @@ open import Relation.Binary.Definitions
         ; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive
         ; Reflexive; tri<; tri≈; tri>)
 import Relation.Binary.Construct.On as On
-  using (decidable; transitive; asymmetric; isStrictPartialOrder
+  using (setoid; decSetoid
+        ; decidable; transitive; asymmetric; isStrictPartialOrder
         ; isStrictTotalOrder; strictPartialOrder; strictTotalOrder)
 import Relation.Binary.Construct.Closure.Reflexive as Refl
   using (reflexive)
@@ -99,6 +100,16 @@ private
 
   unit-test : P ('x' ≡ᵇ_)
   unit-test = MkP _
+
+
+------------------------------------------------------------------------
+-- Properties of _≈ᵢ_
+
+≈ᵢ-setoid : Setoid _ _
+≈ᵢ-setoid = On.setoid setoid Char.toLower
+
+≈ᵢ-decSetoid : DecSetoid _ _
+≈ᵢ-decSetoid = On.decSetoid decSetoid Char.toLower
 
 ------------------------------------------------------------------------
 -- Properties of _<_

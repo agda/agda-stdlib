@@ -261,9 +261,36 @@ Additions to existing modules
   ∧-monoid : Monoid 0ℓ 0ℓ
   ```
 
+* In `Data.Char.Base`:
+  ```agda
+  _≉ᵇ_ : (c d : Char) → Bool
+  case-insensitive : Rel Char ℓ → Rel Char ℓ
+  _≈ᵢ_ : Rel Char zero
+  _≉ᵢ_ : Rel Char zero
+  _<ᵇ_ : (c d : Char) → Bool
+  ```
+
+* In `Data.Char.Properties`:
+  ```agda
+  ≈ᵢ-setoid : Setoid _ _
+  ≈ᵢ-decSetoid : DecSetoid _ _
+  ```
+
 * In `Data.Integer.GCD`:
   ```agda
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
+  ```
+
+* In `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  foldl-selective : Selective _≡_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≡ e) ⊎ (foldl _•_ e xs ∈ xs)
+  ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  foldl-selective : Selective _≈_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≈ e) ⊎ (foldl _•_ e xs ∈ xs)
   ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
@@ -282,8 +309,20 @@ Additions to existing modules
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
   ```
 
+* In `Data.Nat.ListAction`:
+  ```agda
+  minimum : ℕ → List ℕ → ℕ
+  maximum : ℕ → List ℕ → ℕ
+  ```
+
 * In `Data.Nat.ListAction.Properties`:
   ```agda
+  minimum-spec : ∀ n ms → minimum n ms ≡ foldl ℕ._⊓_ n ms
+  minimum-selective : ∀ n ms → minimum n ms ∈ n ∷ ms
+  minimum-≤ : ∀ n ms {k} → k ∈ (n ∷ ms) → minimum n ms ≤ k
+  maximum-spec : ∀ n ms → maximum n ms ≡ foldl ℕ._⊔_ n ms
+  maximum-selective : ∀ n ms → maximum n ms ∈ n ∷ ms
+  maximum-≥ : ∀ n ms {k} → k ∈ (n ∷ ms) → maximum n ms ≥ k
   product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
   ```
 

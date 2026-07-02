@@ -489,6 +489,23 @@ module _ (S : Setoid c ℓ) {_•_ : Op₂ (Carrier S)} where
   ...   | inj₂ f∈xs = inj₂ (∈-resp-≈ S (sym x•f≈f) (there f∈xs))
 
 ------------------------------------------------------------------------
+-- foldl
+
+module _ (S : Setoid c ℓ) {_•_ : Op₂ (Carrier S)} where
+
+  open Setoid S using (_≈_; refl; sym; trans)
+  open Membership S using (_∈_)
+
+  foldl-selective : Selective _≈_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≈ e) ⊎ (foldl _•_ e xs ∈ xs)
+  foldl-selective •-sel i [] = inj₁ refl
+  foldl-selective •-sel i (x ∷ xs) with foldl-selective •-sel (i • x) xs
+  ... | inj₂ f∈xs = inj₂ (there f∈xs)
+  ... | inj₁ f≈i•x with •-sel i x
+  ...   | inj₁ i•x≈i = inj₁ (trans f≈i•x i•x≈i)
+  ...   | inj₂ i•x≈x = inj₂ (here (trans f≈i•x i•x≈x))
+
+------------------------------------------------------------------------
 -- _∷=_
 
 module _ (S : Setoid c ℓ) where

@@ -10,8 +10,8 @@ module Data.List.NonEmpty.Properties where
 
 import Algebra.Definitions as AlgebraicDefinitions
 open import Effect.Monad using (RawMonad)
-open import Data.Nat.Base using (suc; _+_; _≤_; s≤s)
-open import Data.Nat.Properties using (suc-injective)
+open import Data.Nat.Base as ℕ using (suc; _+_; _≤_; s≤s)
+open import Data.Nat.Properties as ℕₚ using (suc-injective)
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
