@@ -70,89 +70,131 @@ jobs:
   ########################################################################
   ## INITIALISATION
   ########################################################################
-  steps:
-    - name: Initialise variables
-      run: |
-        if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
-            || '${{ github.base_ref }}' == 'experimental' ]]; then
-          # Pick Agda version for experimental
-          echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_ENV}";
-          echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_ENV}"
-        else
-          # Pick Agda version for master
-          echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_ENV}";
-          echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_ENV}"
-        fi
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      AGDA_COMMIT: ${{ steps.init_vars.outputs.AGDA_COMMIT }}
+      AGDA_HTML_DIR: ${{ steps.init_vars.outputs.AGDA_HTML_DIR }}
+      AGDA_DEPLOY: ${{ steps.init_vars.outputs.AGDA_DEPLOY }}
+      PATH: ${{ steps.path.outputs.PATH }}
+      GHC_PATH: ${{ steps.install-ghc-cabal.outputs.ghc-path }}
+    steps:
+      - name: Initialise variables
+        id: init_vars
+        run: |
+          if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
+              || '${{ github.base_ref }}' == 'experimental' ]]; then
+            # Pick Agda version for experimental
+            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_OUTPUT}";
+            echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_OUTPUT}"
+          else
+            # Pick Agda version for master
+            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_OUTPUT}";
+            echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_OUTPUT}"
+          fi
 
-        if [[ '${{ github.ref }}' == 'refs/heads/master' \
-            || '${{ github.ref }}' == 'refs/heads/experimental' ]]; then
-            echo "AGDA_DEPLOY=true" >> "${GITHUB_ENV}"
-        fi
+          if [[ '${{ github.ref }}' == 'refs/heads/master' \
+              || '${{ github.ref }}' == 'refs/heads/experimental' ]]; then
+              echo "AGDA_DEPLOY=true" >> "${GITHUB_OUTPUT}"
+          fi
 
-    ########################################################################
-    ## CACHING
-    ########################################################################
+      ########################################################################
+      ## CACHING
+      ########################################################################
 
 
-    # This caching step allows us to save a lot of building time by only
-    # downloading ghc and cabal and rebuilding Agda if absolutely necessary
-    # i.e. if we change either the version of Agda, ghc, or cabal that we want
-    # to use for the build.
-    - name: Cache ~/.cabal directories
-      shell: bash
-      uses: actions/cache@v4
-      id: cache-cabal
-      with:
-        path: |
-          ~/.cabal/packages
-          ~/.cabal/store
-          ~/.cabal/bin
-          ~/.cabal/share
-        key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}-cache
+      # This caching step allows us to save a lot of building time by only
+      # downloading ghc and cabal and rebuilding Agda if absolutely necessary
+      # i.e. if we change either the version of Agda, ghc, or cabal that we want
+      # to use for the build.
+      - name: Cache ~/.cabal directories
+        uses: actions/cache@v4
+        id: cache-cabal
+        with:
+          path: |
+            ~/.cabal/packages
+            ~/.cabal/store
+            ~/.cabal/bin
+            ~/.cabal/share
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ steps.init_vars.outputs.AGDA_COMMIT }}-cache
 
-    ########################################################################
-    ## INSTALLATION STEPS
-    ########################################################################
+      ########################################################################
+      ## INSTALLATION STEPS
+      ########################################################################
 
-    - name: Install ghc & cabal
-      shell: bash
-      uses: haskell-actions/setup@v2
-      with:
-        ghc-version: ${{ env.GHC_VERSION }}
-        cabal-version: ${{ env.CABAL_VERSION }}
-        cabal-update: true
+      - name: Install ghc & cabal
+        id: install-ghc-cabal
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ env.GHC_VERSION }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: true
 
-    - name: Put cabal programs in PATH
-      run: echo ~/.cabal/bin >> "${GITHUB_PATH}"
+      - name: Put cabal programs in PATH
+        id: path
+        run: |
+          echo ~/.cabal/bin >> "${GITHUB_PATH}"
+          echo ${{ steps.install-ghc-cabal.outputs.ghc-path }} >> "${GITHUB_PATH}"
+          "PATH=${{GITHUB_PATH}}" >> "${GITHUB_OUTPUT}"
 
-    - name: Install alex & happy
-      if: steps.cache-cabal.outputs.cache-hit != 'true'
-      run: |
-        ${{ env.CABAL_INSTALL }} alex
-        ${{ env.CABAL_INSTALL }} happy
-        # happy>=2.0 cannot be v1-installed: https://github.com/haskell/happy/issues/315
-        # Since we only need the executable, it is fine to use v2-install here.
+      - name: Install alex & happy
+        if: steps.cache-cabal.outputs.cache-hit != 'true'
+        run: |
+          ${{ env.CABAL_INSTALL }} alex
+          ${{ env.CABAL_INSTALL }} happy
+          # happy>=2.0 cannot be v1-installed: https://github.com/haskell/happy/issues/315
+          # Since we only need the executable, it is fine to use v2-install here.
 
-    - name: Download and install Agda from github
-      if: steps.cache-cabal.outputs.cache-hit != 'true'
-      run: |
-        git clone https://github.com/agda/agda
-        cd agda
-        git checkout ${{ env.AGDA_COMMIT }}
-        mkdir -p doc
-        touch doc/user-manual.pdf
-        ${{ env.CABAL_V1_INSTALL }}
-        cd ..
+      - name: Download and install Agda from github
+        if: steps.cache-cabal.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/agda/agda
+          cd agda
+          git checkout ${{ steps.init_vars.outputs.AGDA_COMMIT }}
+          mkdir -p doc
+          touch doc/user-manual.pdf
+          ${{ env.CABAL_V1_INSTALL }}
+          cd ..
+
+      - name: Upload Cabal directory
+        uses: actions/upload-artifact@v4
+        with:
+          include-hidden-files: true
+          name: ubuntu-cabal-dir
+          path: ~/.cabal/
+      
+      - name: Upload GHC directory
+        uses: actions/upload-artificat@v4
+        with:
+          include-hidden-files: true
+          name: ubuntu-ghc-dir
+          path: ${{ steps.install-ghc-cabal.outputs.ghc-path }}
+
 
   ########################################################################
   ## TESTING
   ########################################################################
   test-stdlib:
+    needs: init
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - name: Init
-        uses: .github/workflows/ci-ubuntu-init
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download Cabal directory
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-cabal-dir
+          path: ~/.cabal/
+
+      - name: Download GHC directory
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-ghc-dir
+          path: ${{ needs.init.outputs.GHC_PATH }}
+            
+      - name: Set PATH
+        run: ${{ needs.init.outputs.PATH }} >> ${GITHUB_PATH}
 
       - name: Test stdlib
         run: |
@@ -160,6 +202,39 @@ jobs:
           cabal run GenerateEverything -- --include-deprecated
           ${{ env.AGDA }} -WnoUserWarning --safe EverythingSafe.agda
           ${{ env.AGDA }} -WnoUserWarning Everything.agda
+
+      - name: Upload agdai files
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-agdai
+          path: ./*.agdai
+
+  test-stdlib-golden:
+    needs: [init, test-stdlib]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download Cabal directory
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-cabal-dir
+          path: ~/.cabal/
+
+      - name: Download GHC directory
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-ghc-dir
+          path: ${{ needs.init.outputs.GHC_PATH }}
+
+      - name: Download agdai files
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-agdai
+            
+      - name: Set PATH
+        run: ${{ needs.init.outputs.PATH }} >> ${GITHUB_PATH}
 
       - name: Golden testing
         run: |
@@ -170,11 +245,26 @@ jobs:
   ## DOC DEPLOYMENT
   ########################################################################
   html:
+    needs: [init, test-stdlib]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - name: Init
-        uses: .github/workflows/ci-ubuntu-init
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download Cabal Dir
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-cabal-dir
+          path: ~/.cabal/
+
+      - name: Download GHC Dir
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-ghc-dir
+          path: ${{ needs.init.outputs.GHC_PATH }}
+
+      - name: Set PATH
+        run: ${{ needs.init.outputs.PATH }} >> ${GITHUB_PATH}
 
       - name: Prepare HTML index
         run: |
@@ -193,15 +283,15 @@ jobs:
       - name: Generate HTML
         run: |
           git clone --depth 1 --single-branch --branch gh-pages https://github.com/agda/agda-stdlib html
-          rm -f '${{ env.AGDA_HTML_DIR }}'/*.html
-          rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
-          ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
+          rm -f '${{ needs.init.outputs.AGDA_HTML_DIR }}'/*.html
+          rm -f '${{ needs.init.outputs.AGDA_HTML_DIR }}'/*.css
+          ${{ env.AGDA }} --html --html-dir ${{ needs.init.outputs.AGDA_HTML_DIR }} index.agda
           cp .github/tooling/* .
           ./landing.sh
 
       - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@v4
-        if: success() && env.AGDA_DEPLOY
+        if: success() && needs.init.outputs.AGDA_DEPLOY
 
         with:
           branch: gh-pages
