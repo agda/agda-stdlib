@@ -46,7 +46,7 @@ toList∘fromList = ++-identityʳ
 
 toList⁺ : xs ∼ ys → xs ≡ toList ys
 toList⁺ {xs = xs} {ys} xs∼ys = begin
-  xs                  ≡⟨ (++-identityʳ xs) ⟨
+  xs                  ≡⟨ ++-identityʳ xs ⟨
   xs List.++ List.[]  ≡⟨ xs∼ys List.[] ⟩
   ys List.[]          ≡⟨⟩
   toList ys           ∎
