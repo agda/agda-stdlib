@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Silence user warnings because we import an internal module
+{-# OPTIONS --warning=noUserWarning #-}
+
 open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Distance.Levenshtein.Dist.Setoid {c ℓ} (S : Setoid c ℓ) where
@@ -30,7 +33,10 @@ open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 
 open import Data.List.Relation.Binary.Distance.Levenshtein.Edit.Setoid S as Edit
-  using (Edit; done; delL; delR; skip; same; swap; Unique; Triangle)
+  using (Edit; done; delL; delR; skip; same; swap)
+
+open import Data.List.Relation.Binary.Distance.Levenshtein.Internal
+  using (Unique; Triangle)
 
 private module S = Setoid S
 open S

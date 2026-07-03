@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Silence user warnings because we import an internal module
+{-# OPTIONS --warning=noUserWarning #-}
+
 open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Distance.Levenshtein.Edit.Setoid {c ℓ} (S : Setoid c ℓ) where
@@ -77,12 +80,8 @@ compose = Het.compose S.trans
 ------------------------------------------------------------------------
 -- But (provided that A is inhabited) it is not a distance
 
--- These definitions surely need to go somewhere else
-Unique : ∀ {a ℓ} {A : Set a} (dist : A → A → ℕ → Set ℓ) → Set (a ⊔ ℓ)
-Unique dist = ∀ x y k l → dist x y k → dist x y l → k ≡ l
-
-Triangle : ∀ {a ℓ} {A : Set a} (dist : A → A → ℕ → Set ℓ) → Set (a ⊔ ℓ)
-Triangle dist = ∀ x y z k l m → dist x y k → dist y z l → dist x z m → m ≤ k + l
+open import Data.List.Relation.Binary.Distance.Levenshtein.Internal
+  using (Unique; Triangle)
 
 module _ (x : A) where
 
