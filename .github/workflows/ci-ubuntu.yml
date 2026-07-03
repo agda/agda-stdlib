@@ -241,6 +241,9 @@ jobs:
           sudo chmod -R 777 ~/.cabal/bin/
           sudo chmod -R 777 ${{ needs.init.outputs.GHC_PATH }}
 
+      - name: Cabal update
+        run: cabal update
+
       - name: Download agdai files
         uses: actions/download-artifact@v4
         with:
@@ -319,6 +322,9 @@ jobs:
     needs: [init, html-generate, test-stdlib-golden]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
       - name: Download HTML
         uses: actions/download-artifact@v4
         with:
