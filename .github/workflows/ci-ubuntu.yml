@@ -215,7 +215,7 @@ jobs:
         with:
           name: ubuntu-agdai
           include-hidden-files: true
-          path: _build/*.agdai
+          path: _build/
 
   test-stdlib-golden:
     needs: [init, test-stdlib]
