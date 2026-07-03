@@ -413,7 +413,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 <-respʳ-≡ refl x≤y = x≤y
 
 <-resp₂-≡ : (_<_ {n}) Respects₂ _≡_
-<-resp₂-≡ = <-respʳ-≡ , <-respˡ-≡
+<-resp₂-≡ = <-respˡ-≡ , <-respʳ-≡
 
 <-irrelevant : Irrelevant (_<_ {m} {n})
 <-irrelevant = ℕ.<-irrelevant
@@ -1237,14 +1237,6 @@ opposite-suc {n} i = begin
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.5
-
-inject+-raise-splitAt = join-splitAt
-{-# WARNING_ON_USAGE inject+-raise-splitAt
-"Warning: inject+-raise-splitAt was deprecated in v1.5.
-Please use join-splitAt instead."
-#-}
 
 -- Version 2.0
 

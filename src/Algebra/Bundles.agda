@@ -864,7 +864,7 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   open IdempotentSemiring idempotentSemiring public
     using
     ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
-    ; +-semigroup; +-commutativeSemigroup
+    ; +-semigroup; +-commutativeSemigroup; +-commutativeBand
     ; *-rawMagma; *-magma; *-semigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; *-rawMonoid; *-monoid

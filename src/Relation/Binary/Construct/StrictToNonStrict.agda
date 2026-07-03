@@ -64,7 +64,7 @@ antisym eq trans irrefl = as
 
 trans : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → Transitive _<_ →
         Transitive _≤_
-trans eq (respʳ , respˡ) <-trans = tr
+trans eq (respˡ , respʳ) <-trans = tr
   where
   module Eq = IsEquivalence eq
 
@@ -91,7 +91,7 @@ trans eq (respʳ , respˡ) <-trans = tr
 ≤-respˡ-≈ sym trans respˡ x′≈x (inj₂ x′≈y) = inj₂ (trans (sym x′≈x) x′≈y)
 
 ≤-resp-≈ : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → _≤_ Respects₂ _≈_
-≤-resp-≈ eq (respʳ , respˡ) = ≤-respʳ-≈ Eq.trans respʳ , ≤-respˡ-≈ Eq.sym Eq.trans respˡ
+≤-resp-≈ eq (respˡ , respʳ) = ≤-respˡ-≈ Eq.sym Eq.trans respˡ , ≤-respʳ-≈ Eq.trans respʳ
   where module Eq = IsEquivalence eq
 
 total : Trichotomous _≈_ _<_ → Total _≤_
@@ -149,19 +149,3 @@ isDecTotalOrder STO = record
   ; _≤?_         = decidable′ S.compare
   }
   where module S = IsStrictTotalOrder STO
-
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.4
-
-decidable' : Trichotomous _≈_ _<_ → Decidable _≤_
-decidable' = decidable′
-{-# WARNING_ON_USAGE decidable'
-"Warning: decidable' (ending in an apostrophe) was deprecated in v1.4.
-Please use decidable′ (ending in a prime) instead."
-#-}

@@ -124,7 +124,7 @@ drop-inj₂ (inj₂ x) = x
 
 ⊎-respects₂ : R Respects₂ ≈₁ → S Respects₂ ≈₂ →
               (Pointwise R S) Respects₂ (Pointwise ≈₁ ≈₂)
-⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
+⊎-respects₂ (l₁ , r₁) (l₂ , r₂) = ⊎-respectsˡ l₁ l₂ , ⊎-respectsʳ r₁ r₂
 
 ------------------------------------------------------------------------
 -- Structures

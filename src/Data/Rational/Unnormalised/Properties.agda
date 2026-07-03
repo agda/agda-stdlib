@@ -282,7 +282,7 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
 ≤-respʳ-≃ x≈y z≤x = ≤-trans z≤x (≤-reflexive x≈y)
 
 ≤-resp₂-≃ : _≤_ Respects₂ _≃_
-≤-resp₂-≃ = ≤-respʳ-≃ , ≤-respˡ-≃
+≤-resp₂-≃ = ≤-respˡ-≃ , ≤-respʳ-≃
 
 infix 4 _≤?_ _≥?_
 
@@ -566,7 +566,7 @@ _>?_ = flip _<?_
   $ neg-mono-< (<-respʳ-≃ (-‿cong q≃r) (neg-mono-< q<p))
 
 <-resp-≃ : _<_ Respects₂ _≃_
-<-resp-≃ = <-respʳ-≃ , <-respˡ-≃
+<-resp-≃ = <-respˡ-≃ , <-respʳ-≃
 
 ------------------------------------------------------------------------
 -- Structures
@@ -576,7 +576,7 @@ _>?_ = flip _<?_
   { isEquivalence = isEquivalence
   ; irrefl        = <-irrefl-≡
   ; trans         = <-trans
-  ; <-resp-≈      = subst (_ <_) , subst (_< _)
+  ; <-resp-≈      = subst (_< _) , subst (_ <_)
   }
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≃_ _<_
@@ -1944,14 +1944,6 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.5
-
-neg-mono-<-> = neg-mono-<
-{-# WARNING_ON_USAGE neg-mono-<->
-"Warning: neg-mono-<-> was deprecated in v1.5.
-Please use neg-mono-< instead."
-#-}
 
 -- Version 2.0
 
