@@ -9,10 +9,10 @@
 module Data.DifferenceList.Properties where
 
 open import Data.DifferenceList.Base
-  using (DiffList; fromList; toList; []; _∷_; [_]; _++_; _∷ʳ_; map)
+  using (DiffList; fromList; toList; viaList; []; _∷_; [_]; _++_; _∷ʳ_; map)
 open import Data.List as List using (List)
 open import Data.List.Properties using (++-assoc; ++-identityʳ)
-open import Function using (id)
+open import Function using (_∘′_; id; flip)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; _≗_; module ≡-Reasoning)
@@ -51,6 +51,12 @@ toList⁺ {xs = xs} {ys} xs∼ys = begin
   ys List.[]          ≡⟨⟩
   toList ys           ∎
 
+viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
+viaList⁺ {xs = xs} {ys = ys} f xs∼ys k = begin
+  fromList (f xs)          k ≡⟨ cong (flip fromList _ ∘′ f) (toList⁺ xs∼ys) ⟩
+  fromList (f (toList ys)) k ≡⟨⟩
+  viaList f ys             k ∎
+
 ------------------------------------------------------------------------
 -- Properties of operations that preserve _∼_
 
@@ -80,5 +86,4 @@ toList⁺ {xs = xs} {ys} xs∼ys = begin
 ∷ʳ⁺ {xs = xs} {ys} x xs∼ys k = ++⁺ xs∼ys [ x ]⁺ k
 
 map⁺ : (f : A → B) → xs ∼ ys → List.map f xs ∼ map f ys
-map⁺ f xs∼ys k =
-  cong (λ xs → fromList (List.map f xs) k) (toList⁺ xs∼ys)
+map⁺ f = viaList⁺ _

@@ -112,6 +112,11 @@ Non-backwards compatible changes
   their definitions and signatures updated to use `IsMagmaHomomorphism` and
   `IsMonoidHomomorphism` respectively
 
+* In `Data.List.DifferenceList.Base`: `take` and `drop` are deprecated
+  because they do not have a lawful relationship to their `Data.List`
+  counterparts. Consider using `viaList` if you want a lawful lifting
+  of `take` or `drop`.
+
 Minor improvements
 ------------------
 
@@ -282,6 +287,16 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.DifferenceList.Base`:
+  ```agda
+  viaList : (List A → List B) → (DiffList A → DiffList B)
+  ```
+
+* In `Data.DifferenceList.Properties`:
+  ```agda
+  viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
+  ```
+
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
   assoc← : ∃[ ys ] Appending bs cs ys × Appending as ys ds →
@@ -334,4 +349,3 @@ Additions to existing modules
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
-

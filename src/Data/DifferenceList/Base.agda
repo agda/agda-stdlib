@@ -58,25 +58,26 @@ toList xs = xs List.[]
 fromList : List A → DiffList A
 fromList = List._++_
 
+-- Careful: viaList reifies the difference list to apply
+-- the list-base transformation.
+
+viaList : (List A → List B) → (DiffList A → DiffList B)
+viaList f = fromList ∘′ f ∘′ toList
+
 ------------------------------------------------------------------------
 -- Transforming difference lists
 
--- It is OK to use List._++_ here, since map is linear in the length of
+-- It is OK to use viaList here, since map is linear in the length of
 -- the list anyway.
 
 map : (A → B) → DiffList A → DiffList B
-map f = fromList ∘′ List.map f ∘′ toList
+map = viaList ∘′ List.map
 
 -- concat is linear in the length of the outer list.
 
 concat : DiffList (DiffList A) → DiffList A
 concat = List.foldr _++_ [] ∘′ toList
 
-take : ℕ → DiffList A → DiffList A
-take n = List.take n ++_
-
-drop : ℕ → DiffList A → DiffList A
-drop n = List.drop n ++_
 
 
 ------------------------------------------------------------------------
@@ -91,4 +92,18 @@ lift = _++_
 {-# WARNING_ON_USAGE lift
 "Warning: lift was deprecated in v3.0.
 Please use _++_ instead."
+#-}
+
+take : ℕ → DiffList A → DiffList A
+take n = List.take n ++_
+{-# WARNING_ON_USAGE take
+"Warning: take was deprecated in v3.0 as it is not the
+lawful counterpart of List.take"
+#-}
+
+drop : ℕ → DiffList A → DiffList A
+drop n = List.drop n ++_
+{-# WARNING_ON_USAGE drop
+"Warning: drop was deprecated in v3.0 as it is not the
+lawful counterpart of List.drop"
 #-}
