@@ -311,7 +311,7 @@ jobs:
           cp .github/tooling/* .
           ./landing.sh
 
-      - name: Upload agdai files
+      - name: Upload HTML
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-html
