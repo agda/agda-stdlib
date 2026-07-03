@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Levenshtein distance: internal definitions not meant to be imported
--- by users of the standard library.
+-- This module is INTERNAL. Please do not import it.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
