@@ -9,13 +9,13 @@
 open import Algebra.Apartness.Bundles using (HeytingField)
 
 module Algebra.Apartness.Properties.HeytingField
-  {c ℓ₁ ℓ₂} (HF : HeytingField c ℓ₁ ℓ₂) where
+  {c ℓ₁ ℓ₂} (heytingField : HeytingField c ℓ₁ ℓ₂) where
 
 open import Function.Base using (_∘_)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Algebra.Bundles using (CommutativeRing)
 
-open HeytingField HF
+open HeytingField heytingField
 open CommutativeRing commutativeRing using (ring; *-commutativeMonoid)
 
 open import Algebra.Definitions _≈_

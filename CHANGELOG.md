@@ -85,6 +85,7 @@ Non-backwards compatible changes
     invertibility, in favour of moving them to `HeytingField`.
   - both `Heyting*` algebraic structure/bundles have been redefined to base
     off an underlying `TightApartnessRelation`.
+  - both also further require `_+_`/`_*_` to be `StronglyExtensional` wrt `_#_`.
 
 * The notation for `Decidable` relations has been (partially) standardised: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
@@ -273,6 +274,8 @@ Additions to existing modules
 * In `Algebra.Apartness.Structures.IsHeytingCommutativeRing`:
   ```agda
   IsTightApartnessRelation _≈_ _#_ : Set _
+  +-stronglyExtensional : StronglyExtensional _#_ _+_
+  *-stronglyExtensional : StronglyExtensional _#_ _*_
   ```
 
 * In `Algebra.Properties.AbelianGroup`:
@@ -364,6 +367,9 @@ Additions to existing modules
 
 * In `Relation.Binary.Definitions`:
   ```agda
+  LeftStronglyExtensional  : Rel A ℓ → Fun₂ A → Set _
+  RightStronglyExtensional : Rel A ℓ → Fun₂ A → Set _
+  StronglyExtensional      : Rel A ℓ → Fun₂ A → Set _
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
     StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _

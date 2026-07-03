@@ -344,7 +344,7 @@ record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) whe
     sym     : Symmetric _#_
     cotrans : Cotransitive _#_
 
-  _¬#_ : A → A → Set _
+  _¬#_ : Rel A ℓ₂
   x ¬# y = ¬ (x # y)
 
 record IsTightApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
