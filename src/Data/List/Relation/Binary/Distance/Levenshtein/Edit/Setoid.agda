@@ -80,7 +80,7 @@ compose = Het.compose S.trans
 ------------------------------------------------------------------------
 -- But (provided that A is inhabited) it is not a distance
 
-open import Data.List.Relation.Binary.Distance.Levenshtein.Internal
+open import Data.List.Relation.Binary.Distance.Levenshtein.Core
   using (Unique; Triangle)
 
 module _ (x : A) where

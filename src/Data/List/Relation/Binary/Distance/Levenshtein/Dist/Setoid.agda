@@ -35,7 +35,7 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Data.List.Relation.Binary.Distance.Levenshtein.Edit.Setoid S as Edit
   using (Edit; done; delL; delR; skip; same; swap)
 
-open import Data.List.Relation.Binary.Distance.Levenshtein.Internal
+open import Data.List.Relation.Binary.Distance.Levenshtein.Core
   using (Unique; Triangle)
 
 private module S = Setoid S
