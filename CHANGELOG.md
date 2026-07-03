@@ -367,8 +367,6 @@ Additions to existing modules
 
 * In `Relation.Binary.Definitions`:
   ```agda
-  LeftStronglyExtensional  : Rel A ℓ → Fun₂ A → Set _
-  RightStronglyExtensional : Rel A ℓ → Fun₂ A → Set _
   StronglyExtensional      : Rel A ℓ → Fun₂ A → Set _
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
     StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _

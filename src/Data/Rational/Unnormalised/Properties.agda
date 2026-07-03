@@ -1448,6 +1448,8 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-isHeytingCommutativeRing = record
   { isCommutativeRing   = +-*-isCommutativeRing
   ; isTightApartnessRelation = ≄-isTightApartnessRelation
+  ; +-stronglyExtensional = ?
+  ; *-stronglyExtensional = ?
   }
 
 +-*-isHeytingField : IsHeytingField _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ

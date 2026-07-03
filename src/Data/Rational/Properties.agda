@@ -1379,6 +1379,8 @@ module _ where
   isHeytingCommutativeRing = record
     { isCommutativeRing = isCommutativeRing
     ; isTightApartnessRelation = ≉-isTightApartnessRelation
+    ; +-stronglyExtensional = ?
+    ; +-stronglyExtensional = ?
     }
 
   isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ

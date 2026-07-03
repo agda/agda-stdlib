@@ -21,7 +21,7 @@ open import Algebra.Definitions _≈_ using (Invertible)
 open import Algebra.Structures _≈_ using (IsCommutativeRing)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Relation.Binary.Definitions
-  using (LeftStronglyExtensional; RightStronglyExtensional; StronglyExtensional)
+  using (StronglyExtensional)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsApartnessRelation; IsTightApartnessRelation)
 import Relation.Binary.Properties.ApartnessRelation as AR
@@ -44,16 +44,6 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
       ; sym     to #-sym
       ; cotrans to #-cotrans
       )
-
-  +-stronglyExtensionalˡ : LeftStronglyExtensional _#_ _+_
-  +-stronglyExtensionalˡ = +-stronglyExtensional .proj₁
-  +-stronglyExtensionalʳ : RightStronglyExtensional _#_ _+_
-  +-stronglyExtensionalʳ = +-stronglyExtensional .proj₂
-
-  *-stronglyExtensionalˡ : LeftStronglyExtensional _#_ _*_
-  *-stronglyExtensionalˡ = *-stronglyExtensional .proj₁
-  *-stronglyExtensionalʳ : RightStronglyExtensional _#_ _*_
-  *-stronglyExtensionalʳ = *-stronglyExtensional .proj₂
 
   ¬#-isEquivalence : IsEquivalence _¬#_
   ¬#-isEquivalence = AR.¬#-isEquivalence refl isApartnessRelation

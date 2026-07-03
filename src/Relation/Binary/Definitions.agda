@@ -149,16 +149,8 @@ Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
 Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
 Tight _≈_ _#_ = ∀ x y → ¬ x # y → x ≈ y
 
-module _ (_#_ : Rel A ℓ) (_∙_ : Fun₂ A) where
-
-  LeftStronglyExtensional : Set _
-  LeftStronglyExtensional = ∀ {x y w z} → (x ∙ y) # (w ∙ z) → x # w
-
-  RightStronglyExtensional : Set _
-  RightStronglyExtensional = ∀ {x y w z} → (x ∙ y) # (w ∙ z) → y # z
-
-  StronglyExtensional : Set _
-  StronglyExtensional = LeftStronglyExtensional × RightStronglyExtensional
+StronglyExtensional : Rel A ℓ → Fun₂ A → Set _
+StronglyExtensional _#_ _∙_ = ∀ {x y w z} → (x ∙ y) # (w ∙ z) → x # w ⊎ y # z
 
 -- Properties of order morphisms, aka order-preserving maps
 
