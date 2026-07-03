@@ -109,7 +109,9 @@ Non-backwards compatible changes
   have been altered to make the quantification for each argument explicit. The
   definitions of `AlmostLeftCancellative`/`AlmostRightCancellative` have also been
   changed to rephrase them in 'positive' logical terms. These definitions have been
-  propagated through the numeric types `X` in `Data.X.Properties`.
+  propagated through the numeric types `X` in `Data.X.Properties`. As part of this
+  refactoring, lemmas in `Algebra.Properties.CancellativeCommutativeSemiring` no
+  longer require a `Decidable _≈_` hypothesis.
 
 Minor improvements
 ------------------

@@ -13,7 +13,6 @@ module Algebra.Properties.CancellativeCommutativeSemiring
   where
 
 open import Data.Sum.Base using (_⊎_; [_,_]′; map₂)
-open import Relation.Binary.Definitions using (Decidable)
 
 open CancellativeCommutativeSemiring R renaming (Carrier to A)
 
@@ -22,14 +21,12 @@ private
     x y : A
 
 
-module _ (_≈?_ : Decidable _≈_) where
+xy≈0⇒x≈0∨y≈0 : x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
+xy≈0⇒x≈0∨y≈0 {x} {y} xy≈0 =
+  map₂ (λ cancel → cancel _ _ (trans xy≈0 (sym (zeroʳ x)))) (*-cancelˡ-nonZero x)
 
-  xy≈0⇒x≈0∨y≈0 : x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
-  xy≈0⇒x≈0∨y≈0 {x} {y} xy≈0 =
-    map₂ (λ cancel → cancel _ _ (trans xy≈0 (sym (zeroʳ x)))) (*-cancelˡ-nonZero x)
-
-  x≉0∧y≉0⇒xy≉0 : x ≉ 0# → y ≉ 0# → x * y ≉ 0#
-  x≉0∧y≉0⇒xy≉0 x≉0 y≉0 xy≈0 = [ x≉0 , y≉0 ]′ (xy≈0⇒x≈0∨y≈0 xy≈0)
+x≉0∧y≉0⇒xy≉0 : x ≉ 0# → y ≉ 0# → x * y ≉ 0#
+x≉0∧y≉0⇒xy≉0 x≉0 y≉0 xy≈0 = [ x≉0 , y≉0 ]′ (xy≈0⇒x≈0∨y≈0 xy≈0)
 
 
 ------------------------------------------------------------------------
