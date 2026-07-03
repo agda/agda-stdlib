@@ -215,7 +215,7 @@ jobs:
         with:
           name: ubuntu-agdai
           include-hidden-files: true
-          path: ./*.agdai
+          path: _build/*.agdai
 
   test-stdlib-golden:
     needs: [init, test-stdlib]
@@ -245,6 +245,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ubuntu-agdai
+          path: _build/
             
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
