@@ -143,6 +143,11 @@ Deprecated names
   homo  ↦  ∙-homo
   ```
 
+* In `Data.DifferenceList.Base`:
+  ```agda
+  lift ↦ _++_
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   _≟_      ↦  _≡?_
@@ -219,6 +224,10 @@ New modules
 
 * `Data.Bool.ListAction.Properties` for properties of conjunction and
   disjunction of lists.
+
+* `Data.DifferenceList` has been refactored to reexport the contents of two new modules:
+  - `Data.DifferenceList.Base`
+  - `Data.DifferenceList.Properties`
 
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
