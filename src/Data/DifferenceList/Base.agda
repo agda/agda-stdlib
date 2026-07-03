@@ -58,13 +58,16 @@ toList xs = xs List.[]
 fromList : List A → DiffList A
 fromList = List._++_
 
+-- Careful: viaList reifies the difference list to apply
+-- the list-base transformation.
+
 viaList : (List A → List B) → (DiffList A → DiffList B)
 viaList f = fromList ∘′ f ∘′ toList
 
 ------------------------------------------------------------------------
 -- Transforming difference lists
 
--- It is OK to use List._++_ here, since map is linear in the length of
+-- It is OK to use viaList here, since map is linear in the length of
 -- the list anyway.
 
 map : (A → B) → DiffList A → DiffList B
