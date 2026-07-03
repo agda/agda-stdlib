@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Relation.Binary.Distance.Levenshtein.Internal where
+module Data.List.Relation.Binary.Distance.Levenshtein.Core where
 
 {-# WARNING_ON_IMPORT
 "This is an internal module not meant for public consumption.
