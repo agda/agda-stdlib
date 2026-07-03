@@ -258,8 +258,8 @@ jobs:
   ########################################################################
   ## DOC DEPLOYMENT
   ########################################################################
-  html:
-    needs: [init, test-stdlib]
+  html-generate:
+    needs: init
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -307,6 +307,23 @@ jobs:
           ${{ env.AGDA }} --html --html-dir ${{ needs.init.outputs.AGDA_HTML_DIR }} index.agda
           cp .github/tooling/* .
           ./landing.sh
+
+      - name: Upload agdai files
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-html
+          include-hidden-files: true
+          path: ${{ needs.init.outputs.AGDA_HTML_DIR }}
+
+  html-delpoy:
+    needs: [init, html-generate, test-stdlib-golden]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download HTML
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-html
+          path: ${{ needs.init.outputs.AGDA_HTML_DIR }}
 
       - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@v4
