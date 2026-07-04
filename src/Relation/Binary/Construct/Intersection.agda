@@ -78,7 +78,7 @@ module _ (≈ : Rel A ℓ₁) (L : Rel A ℓ₂) (R : Rel A ℓ₃) where
   respectsʳ L-resp R-resp x≈y = map (L-resp x≈y) (R-resp x≈y)
 
   respects₂ : L Respects₂ ≈ → R Respects₂ ≈ → (L ∩ R) Respects₂ ≈
-  respects₂ (Lʳ , Lˡ) (Rʳ , Rˡ) = respectsʳ Lʳ Rʳ , respectsˡ Lˡ Rˡ
+  respects₂ (Lˡ , Lʳ) (Rˡ , Rʳ) = respectsˡ Lˡ Rˡ , respectsʳ Lʳ Rʳ
 
   antisymmetric : Antisymmetric ≈ L ⊎ Antisymmetric ≈ R → Antisymmetric ≈ (L ∩ R)
   antisymmetric (inj₁ L-antisym) (Lxy , _) (Lyx , _) = L-antisym Lxy Lyx

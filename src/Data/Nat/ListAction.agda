@@ -11,8 +11,9 @@
 
 module Data.Nat.ListAction where
 
-open import Data.List.Base using (List; []; _∷_; _++_; foldr)
-open import Data.Nat.Base using (ℕ; _+_; _*_)
+open import Data.List.Base using (List; []; _∷_; _++_; foldr; foldl)
+
+open import Data.Nat.Base using (ℕ; _+_; _*_; _⊔′_; _⊓′_)
 
 
 ------------------------------------------------------------------------
@@ -23,3 +24,9 @@ sum = foldr _+_ 0
 
 product : List ℕ → ℕ
 product = foldr _*_ 1
+
+minimum : ℕ → List ℕ → ℕ
+minimum = foldl _⊓′_
+
+maximum : ℕ → List ℕ → ℕ
+maximum = foldl _⊔′_
