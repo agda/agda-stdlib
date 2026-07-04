@@ -770,6 +770,9 @@ n+nonZero⇒nonZero m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ n) (m≤n+m n m
 nonZero+nonZero⇒nonZero : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
 nonZero+nonZero⇒nonZero m n = >-nonZero (+-mono-< (>-nonZero⁻¹ m) (>-nonZero⁻¹ n))
 
+m+n≢0⇒m≢0∨n≢0 : ∀ m n .{{_ : NonZero (m + n)}} → NonZero m ⊎ NonZero n
+m+n≢0⇒m≢0∨n≢0 zero    (suc _) = inj₂ _
+m+n≢0⇒m≢0∨n≢0 (suc _) _       = inj₁ _
 ------------------------------------------------------------------------
 -- Properties of _*_
 ------------------------------------------------------------------------
