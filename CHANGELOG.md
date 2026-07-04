@@ -112,6 +112,11 @@ Non-backwards compatible changes
   their definitions and signatures updated to use `IsMagmaHomomorphism` and
   `IsMonoidHomomorphism` respectively
 
+* In `Data.List.DifferenceList.Base`: `take` and `drop` are deprecated
+  because they do not have a lawful relationship to their `Data.List`
+  counterparts. Consider using `viaList` if you want a lawful lifting
+  of `take` or `drop`.
+
 Minor improvements
 ------------------
 
@@ -141,6 +146,11 @@ Deprecated names
 * In `Algebra.Morphism.Structures`:
   ```agda
   homo  ↦  ∙-homo
+  ```
+
+* In `Data.DifferenceList.Base`:
+  ```agda
+  lift ↦ _++_
   ```
 
 * In `Data.Fin.Properties`:
@@ -220,6 +230,10 @@ New modules
 * `Data.Bool.ListAction.Properties` for properties of conjunction and
   disjunction of lists.
 
+* `Data.DifferenceList` has been refactored to reexport the contents of two new modules:
+  - `Data.DifferenceList.Base`
+  - `Data.DifferenceList.Properties`
+
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
   or type accumulators that need to be reversed in the base case.
@@ -268,16 +282,49 @@ Additions to existing modules
   ∧-monoid : Monoid 0ℓ 0ℓ
   ```
 
-* In `Data.Char.Properties`: reinstated from an earlier v1.5 deprecation
+* In `Data.Char.Base`:
+  ```agda
+  _≉ᵇ_ : (c d : Char) → Bool
+  case-insensitive : Rel Char ℓ → Rel Char ℓ
+  _≈ᵢ_ : Rel Char zero
+  _≉ᵢ_ : Rel Char zero
+  _<ᵇ_ : (c d : Char) → Bool
+  ```
+
+* In `Data.Char.Properties`: `_≈?_` reinstated from an earlier v1.5 deprecation
   ```agda
   infix 4 _≈?_
   _≈?_ : Decidable _≈_
+  ≈ᵢ-setoid : Setoid _ _
+  ≈ᵢ-decSetoid : DecSetoid _ _
+  ```
+
+* In `Data.DifferenceList.Base`:
+  ```agda
+  viaList : (List A → List B) → (DiffList A → DiffList B)
+  ```
+
+* In `Data.DifferenceList.Properties`:
+  ```agda
+  viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
   ```
 
 * In `Data.Integer.GCD`:
   ```agda
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
+
+* In `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  foldl-selective : Selective _≡_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≡ e) ⊎ (foldl _•_ e xs ∈ xs)
+  ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  foldl-selective : Selective _≈_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≈ e) ⊎ (foldl _•_ e xs ∈ xs)
+   ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
@@ -295,8 +342,20 @@ Additions to existing modules
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
   ```
 
+* In `Data.Nat.ListAction`:
+  ```agda
+  minimum : ℕ → List ℕ → ℕ
+  maximum : ℕ → List ℕ → ℕ
+  ```
+
 * In `Data.Nat.ListAction.Properties`:
   ```agda
+  minimum-spec : ∀ n ms → minimum n ms ≡ foldl ℕ._⊓_ n ms
+  minimum-selective : ∀ n ms → minimum n ms ∈ n ∷ ms
+  minimum-≤ : ∀ n ms {k} → k ∈ (n ∷ ms) → minimum n ms ≤ k
+  maximum-spec : ∀ n ms → maximum n ms ≡ foldl ℕ._⊔_ n ms
+  maximum-selective : ∀ n ms → maximum n ms ∈ n ∷ ms
+  maximum-≥ : ∀ n ms {k} → k ∈ (n ∷ ms) → maximum n ms ≥ k
   product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
   ```
 
@@ -331,4 +390,3 @@ Additions to existing modules
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
-
