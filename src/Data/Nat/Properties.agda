@@ -761,18 +761,19 @@ m+n≮n (suc m) n@(suc _) sm+n<n = m+n≮n m n (m<n⇒m<1+n (s<s⁻¹ sm+n<n))
 m+n≮m : ∀ m n → m + n ≮ m
 m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
-nonZero+n⇒nonZero : ∀ m .{{_ : NonZero m}} n → NonZero (m + n)
-nonZero+n⇒nonZero m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ m) (m≤m+n m n))
+m≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n → NonZero (m + n)
+m≢0⇒m+n≢0 m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ m) (m≤m+n m n))
 
-n+nonZero⇒nonZero : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
-n+nonZero⇒nonZero m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ n) (m≤n+m n m))
+n≢0⇒m+n≢0 : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
+n≢0⇒m+n≢0 m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ n) (m≤n+m n m))
 
-nonZero+nonZero⇒nonZero : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
-nonZero+nonZero⇒nonZero m n = >-nonZero (+-mono-< (>-nonZero⁻¹ m) (>-nonZero⁻¹ n))
+m≢0∧n≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
+m≢0∧n≢0⇒m+n≢0 m n = >-nonZero (+-mono-< (>-nonZero⁻¹ m) (>-nonZero⁻¹ n))
 
 m+n≢0⇒m≢0∨n≢0 : ∀ m n .{{_ : NonZero (m + n)}} → NonZero m ⊎ NonZero n
 m+n≢0⇒m≢0∨n≢0 zero    (suc _) = inj₂ _
 m+n≢0⇒m≢0∨n≢0 (suc _) _       = inj₁ _
+
 ------------------------------------------------------------------------
 -- Properties of _*_
 ------------------------------------------------------------------------
