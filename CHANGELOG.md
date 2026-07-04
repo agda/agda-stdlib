@@ -268,6 +268,12 @@ Additions to existing modules
   ∧-monoid : Monoid 0ℓ 0ℓ
   ```
 
+* In `Data.Char.Properties`: reinstated from an earlier v1.5 deprecation
+  ```agda
+  infix 4 _≈?_
+  _≈?_ : Decidable _≈_
+  ```
+
 * In `Data.Integer.GCD`:
   ```agda
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
