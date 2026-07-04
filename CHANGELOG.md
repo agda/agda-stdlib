@@ -209,9 +209,10 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
-  nonZero+n⇒nonZero : ∀ m .{{_ : NonZero m}} n → NonZero (m + n)
-  n+nonZero⇒nonZero : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
-  nonZero+nonZero⇒nonZero : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
+  m≢0⇒m+n≢0 : ∀ m n .{{_ : NonZero m}} → NonZero (m + n)
+  n≢0⇒m+n≢0 : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
+  m≢0∧n≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
+  m+n≢0⇒m≢0∨n≢0 : ∀ m n .{{_ : NonZero (m + n)} → NonZero m ⊎ NonZero n
   ```
 
 * In `Data.Rational.Properties`:
