@@ -45,7 +45,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 import Relation.Nullary.Decidable as Dec
 
 open import Algebra.Definitions {A = ℤ} _≡_
-open import Algebra.Consequences.Propositional
+open import Algebra.Consequences.Propositional {A = ℤ}
   using (comm∧idˡ⇒idʳ; comm∧invˡ⇒invʳ; comm∧zeˡ⇒zeʳ; comm∧distrʳ⇒distrˡ)
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_

@@ -11,18 +11,17 @@ module Data.Rational.Unnormalised.Properties where
 
 open import Algebra.Definitions
 open import Algebra.Structures
-  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma; IsMonoid
-        ; IsCommutativeMonoid; IsGroup; IsAbelianGroup; IsRing
-        ; IsCommutativeRing)
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma
+        ; IsMonoid; IsCommutativeMonoid; IsGroup; IsAbelianGroup
+        ; IsRing; IsCommutativeRing)
 open import Algebra.Bundles
 open import Algebra.Apartness
   using (IsHeytingCommutativeRing; IsHeytingField
         ; HeytingCommutativeRing; HeytingField)
 open import Algebra.Lattice
-  using (IsLattice; IsDistributiveLattice; IsSemilattice
-        ; Semilattice; Lattice; DistributiveLattice; RawLattice)
+  using (IsSemilattice; IsLattice; IsDistributiveLattice
+        ; RawLattice; Semilattice; Lattice; DistributiveLattice)
 import Algebra.Consequences.Setoid as Consequences
-open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
   using (MaxOperator; MinOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
@@ -63,6 +62,7 @@ import Relation.Binary.Properties.Poset as PosetProperties
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
+open import Algebra.Consequences.Propositional {A = ℚᵘ}
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
 private
@@ -780,7 +780,7 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-identityˡ p = ≃-reflexive (+-identityˡ-≡ p)
 
 +-identityʳ-≡ : RightIdentity _≡_ 0ℚᵘ _+_
-+-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ {e = 0ℚᵘ} +-identityˡ-≡
++-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ +-identityˡ-≡
 
 +-identityʳ : RightIdentity _≃_ 0ℚᵘ _+_
 +-identityʳ p = ≃-reflexive (+-identityʳ-≡ p)
@@ -808,8 +808,8 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-inverse : Inverse _≃_ 0ℚᵘ -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
 
-+-cancelˡ : ∀ {r p q} → r + p ≃ r + q → p ≃ q
-+-cancelˡ {r} {p} {q} r+p≃r+q = begin-equality
++-cancelˡ : LeftCancellative _≃_ _+_
++-cancelˡ r p q r+p≃r+q = begin-equality
   p            ≃⟨ +-identityʳ p ⟨
   p + 0ℚᵘ      ≃⟨ +-congʳ p (+-inverseʳ r) ⟨
   p + (r - r)  ≃⟨ +-assoc p r (- r) ⟨
@@ -821,12 +821,8 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
   q + 0ℚᵘ      ≃⟨ +-identityʳ q ⟩
   q            ∎ where open ≤-Reasoning
 
-+-cancelʳ : ∀ {r p q} → p + r ≃ q + r → p ≃ q
-+-cancelʳ {r} {p} {q} p+r≃q+r = +-cancelˡ {r} $ begin-equality
-  r + p ≃⟨ +-comm r p ⟩
-  p + r ≃⟨ p+r≃q+r ⟩
-  q + r ≃⟨ +-comm q r ⟩
-  r + q ∎ where open ≤-Reasoning
++-cancelʳ : RightCancellative _≃_ _+_
++-cancelʳ = Consequences.comm∧cancelˡ⇒cancelʳ ≃-setoid +-comm +-cancelˡ
 
 p+p≃0⇒p≃0 : ∀ p → p + p ≃ 0ℚᵘ → p ≃ 0ℚᵘ
 p+p≃0⇒p≃0 (mkℚᵘ ℤ.+0 _) (*≡* _) = *≡* refl

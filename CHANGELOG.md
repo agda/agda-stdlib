@@ -79,6 +79,15 @@ Non-backwards compatible changes
   `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
   are summarised below, but are not each documented for each affected module.
 
+* [issue #1436](https://github.com/agda/agda-stdlib/issues/1436)
+  The definitions of `LeftCancellative`/`RightCancellative` in `Algebra.Definitions`
+  have been altered to make the quantification for each argument explicit. The
+  definitions of `AlmostLeftCancellative`/`AlmostRightCancellative` have also been
+  changed to rephrase them in 'positive' logical terms. These definitions have been
+  propagated through the numeric types `X` in `Data.X.Properties`. As part of this
+  refactoring, lemmas in `Algebra.Properties.CancellativeCommutativeSemiring` no
+  longer require a `Decidable _≈_` hypothesis.
+
 * [issue #2471](https://github.com/agda/agda-stdlib/issues/2471)
   In `Relation.Binary.Definitions`, the left/right order of the components of
   `_Respects₂_` have been swapped. Previously the position of the `_Respectsˡ_`
@@ -182,6 +191,11 @@ Deprecated names
   ^-monoid-morphism    ↦   ^-isMonoidHomomorphism
   ```
 
+* In `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
+  ```
+
 * In `Effect.Monad.Partiality`:
   ```agda
   _≟-Kind_     ↦   _≡?-Kind_
@@ -258,6 +272,36 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Consequences.Base`:
+  ```agda
+  almost⇒exceptˡ : _AlmostLeftCancellative′_ _≈_ P _•_ →
+                   Except_LeftCancellative_ _≈_ P _•_
+  almost⇒exceptʳ : _AlmostRightCancellative′_ _≈_ P _•_ →
+                   Except_RightCancellative_ _≈_ P _•_
+  except⇒almostˡ : Decidable P → Except_LeftCancellative_ _≈_ P _•_ →
+                   _AlmostLeftCancellative′_ _≈_ P _•_
+  except⇒almostʳ : Decidable P → Except_RightCancellative_ _≈_ P _•_ →
+                   _AlmostRightCancellative′_ _≈_ P _•_
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  comm∧cancelAtˡ⇒cancelAtʳ : LeftCancellativeAt x _∙_ → RightCancellativeAt x _∙_
+  comm∧cancelAtʳ⇒cancelAtˡ : RightCancellativeAt x _∙_ → LeftCancellativeAt x _∙_
+  ```
+
+* In `Algebra.Definitions`:
+  ```agda
+  LeftCancellativeAt           : A → Op₂ A → Set _
+  RightCancellativeAt          : A → Op₂ A → Set _
+  _AlmostLeftCancellative′_    : (P : Pred A p) → Op₂ A → Set _
+  Provided_LeftCancellative_   : (P : Pred A p) → Op₂ A → Set _
+  Except_LeftCancellative_     : (P : Pred A p) → Op₂ A → Set _
+  _AlmostRightCancellative′_   : (P : Pred A p) → Op₂ A → Set _
+  Provided_RightCancellative_  : (P : Pred A p) → Op₂ A → Set _
+  Except_RightCancellative_    : (P : Pred A p) → Op₂ A → Set _
+  ```
 
 * In `Algebra.Properties.KleeneAlgebra`:
   ```agda
@@ -357,6 +401,11 @@ Additions to existing modules
   maximum-selective : ∀ n ms → maximum n ms ∈ n ∷ ms
   maximum-≥ : ∀ n ms {k} → k ∈ (n ∷ ms) → maximum n ms ≥ k
   product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
 * In `Data.Rational.Properties`:
