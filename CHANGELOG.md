@@ -291,8 +291,10 @@ Additions to existing modules
   _<ᵇ_ : (c d : Char) → Bool
   ```
 
-* In `Data.Char.Properties`:
+* In `Data.Char.Properties`: `_≈?_` reinstated from an earlier v1.5 deprecation
   ```agda
+  infix 4 _≈?_
+  _≈?_ : Decidable _≈_
   ≈ᵢ-setoid : Setoid _ _
   ≈ᵢ-decSetoid : DecSetoid _ _
   ```
