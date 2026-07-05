@@ -17,9 +17,6 @@ open import Algebra.Bundles
         ; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
 open import Algebra.Definitions.RawMagma using (_,_)
 open import Algebra.Morphism
-open import Algebra.Consequences.Propositional
-  using (comm∧cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ
-        ; comm⇒sym[distribˡ])
 open import Algebra.Construct.NaturalChoice.Base
   using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
@@ -54,6 +51,11 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects
   using (fromEquivalence; Reflects; invert)
 
+open import Algebra.Consequences.Propositional {A = ℕ}
+  using ( comm∧cancelˡ⇒cancelʳ
+        ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ
+        ; comm⇒sym[distribˡ]
+        ; almost⇒exceptʳ)
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.Definitions
@@ -420,7 +422,7 @@ _>?_ = flip _<?_
 <-irrelevant = ≤-irrelevant
 
 <-resp₂-≡ : _<_ Respects₂ _≡_
-<-resp₂-≡ = subst (_ <_) , subst (_< _)
+<-resp₂-≡ = subst (_< _) , subst (_ <_)
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -949,10 +951,16 @@ m+n≢0⇒m≢0∨n≢0 (suc _) _       = inj₁ _
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
+*-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
+*-almostCancelʳ-≡ zero    = inj₁ refl
+*-almostCancelʳ-≡ o@(suc _) = inj₂ lemma
+  module *-AlmostRightCancellative where
+  lemma : RightCancellativeAt o _*_
+  lemma zero    zero    _  = refl
+  lemma (suc m) (suc n) eq = cong suc (lemma m n (+-cancelˡ-≡ o (m * o) (n * o) eq))
+
 *-cancelʳ-≡ : ∀ m n o .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
-*-cancelʳ-≡ zero    zero    (suc o) eq = refl
-*-cancelʳ-≡ (suc m) (suc n) (suc o) eq =
-  cong suc (*-cancelʳ-≡ m n (suc o) (+-cancelˡ-≡ (suc o) (m * suc o) (n * suc o) eq))
+*-cancelʳ-≡ m n o = almost⇒exceptʳ *-almostCancelʳ-≡ _ _ _  {{≢-nonZero⁻¹ _}}
 
 *-cancelˡ-≡ : ∀ m n o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
 *-cancelˡ-≡ m n o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n o
@@ -1102,15 +1110,15 @@ m<n⇒m<o*n = m≤n⇒m≤o*n
   (n * o) * (n ^ m * o ^ m) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] n o (n ^ m) (o ^ m) ⟩
   n ^ suc m * o ^ suc m     ∎
 
-^-semigroup-morphism : ∀ {n} → (n ^_) Is +-semigroup -Semigroup⟶ *-semigroup
-^-semigroup-morphism = record
-  { ⟦⟧-cong = cong (_ ^_)
-  ; ∙-homo  = ^-distribˡ-+-* _
+^-isMagmaHomomorphism : ∀ {n} → IsMagmaHomomorphism +-rawMagma *-rawMagma (n ^_)
+^-isMagmaHomomorphism = record
+  { isRelHomomorphism = record { cong = cong (_ ^_) }
+  ; ∙-homo = ^-distribˡ-+-* _
   }
 
-^-monoid-morphism : ∀ {n} → (n ^_) Is +-0-monoid -Monoid⟶ *-1-monoid
-^-monoid-morphism = record
-  { sm-homo = ^-semigroup-morphism
+^-isMonoidHomomorphism : ∀ {n} →  IsMonoidHomomorphism +-0-rawMonoid *-1-rawMonoid (n ^_)
+^-isMonoidHomomorphism = record
+  { isMagmaHomomorphism = ^-isMagmaHomomorphism
   ; ε-homo  = refl
   }
 
@@ -2387,96 +2395,6 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.3
-
-∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n⇒m≢o]⇒o<n = ∀[m≤n⇒m≢o]⇒n<o
-{-# WARNING_ON_USAGE ∀[m≤n⇒m≢o]⇒o<n
-"Warning: ∀[m≤n⇒m≢o]⇒o<n was deprecated in v1.3.
-Please use ∀[m≤n⇒m≢o]⇒n<o instead."
-#-}
-∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
-∀[m<n⇒m≢o]⇒o≤n = ∀[m<n⇒m≢o]⇒n≤o
-{-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
-"Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
-Please use ∀[m<n⇒m≢o]⇒n≤o instead."
-#-}
-
--- Version 1.4
-
-*-+-isSemiring = +-*-isSemiring
-{-# WARNING_ON_USAGE *-+-isSemiring
-"Warning: *-+-isSemiring was deprecated in v1.4.
-Please use +-*-isSemiring instead."
-#-}
-*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
-{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
-"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
-Please use +-*-isCommutativeSemiring instead."
-#-}
-*-+-semiring = +-*-semiring
-{-# WARNING_ON_USAGE *-+-semiring
-"Warning: *-+-semiring was deprecated in v1.4.
-Please use +-*-semiring instead."
-#-}
-*-+-commutativeSemiring = +-*-commutativeSemiring
-{-# WARNING_ON_USAGE *-+-commutativeSemiring
-"Warning: *-+-commutativeSemiring was deprecated in v1.4.
-Please use +-*-commutativeSemiring instead."
-#-}
-
--- Version 1.6
-
-∣m+n-m+o∣≡∣n-o| = ∣m+n-m+o∣≡∣n-o∣
-{-# WARNING_ON_USAGE ∣m+n-m+o∣≡∣n-o|
-"Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
-Please use ∣m+n-m+o∣≡∣n-o∣ instead. Note the final is a \\| rather than a |"
-#-}
-m≤n⇒n⊔m≡n = m≥n⇒m⊔n≡m
-{-# WARNING_ON_USAGE m≤n⇒n⊔m≡n
-"Warning: m≤n⇒n⊔m≡n was deprecated in v1.6. Please use m≥n⇒m⊔n≡m instead."
-#-}
-m≤n⇒n⊓m≡m = m≥n⇒m⊓n≡n
-{-# WARNING_ON_USAGE m≤n⇒n⊓m≡m
-"Warning: m≤n⇒n⊓m≡m was deprecated in v1.6. Please use m≥n⇒m⊓n≡n instead."
-#-}
-n⊔m≡m⇒n≤m = m⊔n≡n⇒m≤n
-{-# WARNING_ON_USAGE n⊔m≡m⇒n≤m
-"Warning: n⊔m≡m⇒n≤m was deprecated in v1.6. Please use m⊔n≡n⇒m≤n instead."
-#-}
-n⊔m≡n⇒m≤n = m⊔n≡m⇒n≤m
-{-# WARNING_ON_USAGE n⊔m≡n⇒m≤n
-"Warning: n⊔m≡n⇒m≤n was deprecated in v1.6. Please use m⊔n≡m⇒n≤m instead."
-#-}
-n≤m⊔n = m≤n⊔m
-{-# WARNING_ON_USAGE n≤m⊔n
-"Warning: n≤m⊔n was deprecated in v1.6. Please use m≤n⊔m instead."
-#-}
-⊔-least = ⊔-lub
-{-# WARNING_ON_USAGE ⊔-least
-"Warning: ⊔-least was deprecated in v1.6. Please use ⊔-lub instead."
-#-}
-⊓-greatest = ⊓-glb
-{-# WARNING_ON_USAGE ⊓-greatest
-"Warning: ⊓-greatest was deprecated in v1.6. Please use ⊓-glb instead."
-#-}
-⊔-pres-≤m = ⊔-lub
-{-# WARNING_ON_USAGE ⊔-pres-≤m
-"Warning: ⊔-pres-≤m was deprecated in v1.6. Please use ⊔-lub instead."
-#-}
-⊓-pres-m≤ = ⊓-glb
-{-# WARNING_ON_USAGE ⊓-pres-m≤
-"Warning: ⊓-pres-m≤ was deprecated in v1.6. Please use ⊓-glb instead."
-#-}
-⊔-abs-⊓ = ⊔-absorbs-⊓
-{-# WARNING_ON_USAGE ⊔-abs-⊓
-"Warning: ⊔-abs-⊓ was deprecated in v1.6. Please use ⊔-absorbs-⊓ instead."
-#-}
-⊓-abs-⊔ = ⊓-absorbs-⊔
-{-# WARNING_ON_USAGE ⊓-abs-⊔
-"Warning: ⊓-abs-⊔ was deprecated in v1.6. Please use ⊓-absorbs-⊔ instead."
-#-}
-
 -- Version 2.0
 
 suc[pred[n]]≡n : n ≢ 0 → suc (pred n) ≡ n
@@ -2544,4 +2462,16 @@ Please use ≡?-≡ instead."
 {-# WARNING_ON_USAGE ≟-≡
 "Warning: ≟-≡ was deprecated in v3.0.
 Please use ≡?-≢ instead."
+#-}
+
+^-semigroup-morphism = ^-isMagmaHomomorphism
+{-# WARNING_ON_USAGE ^-semigroup-morphism
+"Warning: ^-semigroup-morphism was deprecated in v3.0.
+Please use ^-isMagmaHomomorphism instead."
+#-}
+
+^-monoid-morphism = ^-isMonoidHomomorphism
+{-# WARNING_ON_USAGE ^-monoid-morphism
+"Warning: ^-monoid-morphism was deprecated in v3.0.
+Please use ^-isMonoidHomomorphism instead."
 #-}

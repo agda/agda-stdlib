@@ -64,19 +64,3 @@ private
 
     just : A → Maybe A
     just = [_]
-
-
-
-------------------------------------------------------------------------
--- Deprecations
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- v1.5
-
-Refl = ReflClosure
-{-# WARNING_ON_USAGE Refl
-"Warning: Refl was deprecated in v1.5.
-Please use ReflClosure instead."
-#-}
