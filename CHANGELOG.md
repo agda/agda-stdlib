@@ -86,7 +86,7 @@ Non-backwards compatible changes
   `_Respectsʳ_` (respects right) was placed on the *left* hand side of the pair.
   By switching them the names are now consistent with their location.
 
-* [issue #2541](https://github.com/agda/agda-stdlib/issues/2541)
+* [issue #2581](https://github.com/agda/agda-stdlib/issues/2581)
   The definition of `Adjoint` in `Relation.Binary.Definitions` has been altered
   to be the conjunction of two universally quantified `Half*Adjoint` properties,
   rather than to be a universally quantified conjunction, for better compatibility
