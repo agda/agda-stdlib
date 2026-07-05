@@ -765,7 +765,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 -- the following proofs could be simplified by pattern-matching
 -- but are phrased this way for mutual consistency, and to uncouple
--- fromm any left/right bias in the implementation of `_+_`
+-- from any left/right bias in the implementation of `_+_`
 
 m≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n → NonZero (m + n)
 m≢0⇒m+n≢0 m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ m) (m≤m+n m n))
