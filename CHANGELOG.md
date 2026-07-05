@@ -405,6 +405,10 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
+  m≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero m}} → NonZero (m + n)
+  n≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
+  m≢0∧n≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
+  m+n≢0⇒m≢0∨n≢0 : ∀ m n .{{_ : NonZero (m + n)} → NonZero m ⊎ NonZero n
   *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
