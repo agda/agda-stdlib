@@ -86,12 +86,6 @@ Non-backwards compatible changes
   `_Respectsʳ_` (respects right) was placed on the *left* hand side of the pair.
   By switching them the names are now consistent with their location.
 
-* [issue #2581](https://github.com/agda/agda-stdlib/issues/2581)
-  The definition of `Adjoint` in `Relation.Binary.Definitions` has been altered
-  to be the conjunction of two universally quantified `Half*Adjoint` properties,
-  rather than to be a universally quantified conjunction, for better compatibility
-  with `Function.Definitions`.
-
 * [issue #2547](https://github.com/agda/agda-stdlib/issues/2547)
   The names of the *implicit* binders in the following definitions have been
   rectified to be consistent with the rest of `Relation.Binary.Definitions`:
@@ -102,6 +96,11 @@ Non-backwards compatible changes
   `Algebra.*`, the field name of the basic homomorphism property `homo` in
   `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
 
+* [issue #2581](https://github.com/agda/agda-stdlib/issues/2581)
+  The definition of `Adjoint` in `Relation.Binary.Definitions` has been altered
+  to be the conjunction of two universally quantified `Half*Adjoint` properties,
+  rather than to be a universally quantified conjunction, for better compatibility
+  with `Function.Definitions`.
 
 * [Issue #3022](https://github.com/agda/agda-stdlib/issues/3022)
   The previous development of rose trees has been refactored to make
