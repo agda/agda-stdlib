@@ -240,9 +240,26 @@ jobs:
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
 
+        # always restore the cache, cabal will then figure the rest out
+      - name: Restore cache
+        uses: actions/cache/restore@v5
+        id: restore-golden
+        with:
+          path: ./tests/_config/dist-newstyle/
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
+
       - name: Golden testing
         run: |
           make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
+      
+      # cache the files built during golden testing, but only on master to prevent the cache overfilling too quickly
+      - name: Save cache
+        if: github.ref_name == 'master'
+        uses: actions/cache/save@v5
+        id: cache-golden
+        with:
+          path: ./tests/_config/dist-newstyle/
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
 
 
   ########################################################################
