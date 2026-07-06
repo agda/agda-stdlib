@@ -4,13 +4,14 @@
 -- Definitions for types of functions.
 ------------------------------------------------------------------------
 
--- The contents of this file should usually be accessed from `Function`.
+-- The contents of this module should usually be accessed from `Function`,
+-- moreover via qualified import to disambiguate from `Function.Definitions`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
 
-module Function.Definitions.Strict {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
+module Function.Definitions.Strictly {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Data.Product.Base using (∃)
 open import Level using (Level)
@@ -26,12 +27,12 @@ private
 -- These are often easier to use once but much harder to compose and
 -- reason about.
 
-StrictlySurjective : (B → A) → Set _
-StrictlySurjective f = ∀ y → ∃ λ x → f x ≈ y
+Surjective : (B → A) → Set _
+Surjective f = ∀ y → ∃ λ x → f x ≈ y
 
-StrictlyInverseˡ : (B → A) → (A → B) → Set _
-StrictlyInverseˡ f g = ∀ y → f (g y) ≈ y
+Inverseˡ : (B → A) → (A → B) → Set _
+Inverseˡ f g = ∀ y → f (g y) ≈ y
 
-StrictlyInverseʳ : (A → B) → (B → A) → Set _
-StrictlyInverseʳ g f = StrictlyInverseˡ f g
+Inverseʳ : (A → B) → (B → A) → Set _
+Inverseʳ g f = Inverseˡ f g
 
