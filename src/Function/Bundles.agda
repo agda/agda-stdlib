@@ -15,7 +15,7 @@
 -- other library hierarchies, as this would duplicate the equality
 -- axioms.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Bundles where
 
@@ -27,8 +27,7 @@ open import Level using (Level; _⊔_; suc)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Function.Consequences.Propositional
 open Setoid using (isEquivalence)

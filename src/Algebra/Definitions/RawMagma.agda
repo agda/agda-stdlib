@@ -8,7 +8,7 @@
 -- probably want to be importing the appropriate module from
 -- `Algebra.Properties.(Magma/Semigroup/...).Divisibility`
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles.Raw using (RawMagma)
 open import Data.Product.Base using (_×_)
@@ -25,6 +25,7 @@ open RawMagma M renaming (Carrier to A)
 ------------------------------------------------------------------------
 -- Divisibility
 
+infixr 4 _,_
 infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_ _∥_ _∦_
 
 -- Divisibility from the left.

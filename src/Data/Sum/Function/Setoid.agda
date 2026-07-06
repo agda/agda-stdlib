@@ -4,19 +4,24 @@
 -- Sum combinators for setoid equality preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Function.Setoid where
 
 open import Data.Product.Base as Product using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Relation.Binary.Pointwise as Pointwise
-open import Relation.Binary
-open import Function.Base
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Function.Base using (id; _∘_)
 open import Function.Bundles
+  using (Func; Equivalence; Injection; Surjection; Bijection; LeftInverse
+        ; RightInverse; Inverse)
 open import Function.Definitions
+  using (Injective; Surjective; Bijective)
 open import Function.Definitions.Strict
-open import Level
+  using (StrictlySurjective)
+open import Level using (Level; _⊔_)
 
 private
   variable

@@ -7,12 +7,10 @@
 -- The definitions of lexicographic ordering used here are suitable if
 -- the argument order is a strict partial order.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Lex.Strict where
 
-open import Data.Empty using (⊥)
-open import Data.Unit.Base using (⊤; tt)
 open import Function.Base using (_∘_; id)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
@@ -146,7 +144,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
   ≤-reflexive : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
                 Pointwise _≈_ ⇒ Lex-≤ _≈_ _≺_
-  ≤-reflexive _≈_ _≺_ []            = base tt
+  ≤-reflexive _≈_ _≺_ []            = base _
   ≤-reflexive _≈_ _≺_ (x≈y ∷ xs≈ys) =
     next x≈y (≤-reflexive _≈_ _≺_ xs≈ys)
 
@@ -168,7 +166,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     -- the following lemma.
 
     ≤-total : Symmetric _≈_ → Trichotomous _≈_ _≺_ → Total _≤_
-    ≤-total _   _   []       []       = inj₁ (base tt)
+    ≤-total _   _   []       []       = inj₁ (base _)
     ≤-total _   _   []       (x ∷ xs) = inj₁ halt
     ≤-total _   _   (x ∷ xs) []       = inj₂ halt
     ≤-total sym tri (x ∷ xs) (y ∷ ys) with tri x y
@@ -179,7 +177,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ...   | inj₂ ys≲xs = inj₂ (next (sym x≈y) ys≲xs)
 
     ≤-decidable : Decidable _≈_ → Decidable _≺_ → Decidable _≤_
-    ≤-decidable = Core.decidable (yes tt)
+    ≤-decidable = Core.decidable (yes _)
 
     ≤-respects₂ : IsEquivalence _≈_ → _≺_ Respects₂ _≈_ →
                   _≤_ Respects₂ _≋_
@@ -205,8 +203,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
                           IsDecPartialOrder _≋_ _≤_
     ≤-isDecPartialOrder sto = record
       { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
-      ; _≟_            = Pointwise.decidable _≟_
-      ; _≤?_           = ≤-decidable _≟_ _<?_
+      ; _≈?_            = Pointwise.decidable _≈?_
+      ; _≤?_           = ≤-decidable _≈?_ _<?_
       } where open IsStrictTotalOrder sto
 
     ≤-isTotalOrder : IsStrictTotalOrder _≈_ _≺_ → IsTotalOrder _≋_ _≤_
@@ -220,8 +218,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
                         IsDecTotalOrder _≋_ _≤_
     ≤-isDecTotalOrder sto = record
       { isTotalOrder = ≤-isTotalOrder sto
-      ; _≟_          = Pointwise.decidable _≟_
-      ; _≤?_         = ≤-decidable _≟_ _<?_
+      ; _≈?_         = Pointwise.decidable _≈?_
+      ; _≤?_         = ≤-decidable _≈?_ _<?_
       }
       where open IsStrictTotalOrder sto
 

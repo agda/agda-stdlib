@@ -4,7 +4,7 @@
 -- Equality over container extensions parametrised by some setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -15,9 +15,8 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
-
-open import Data.Container.Core
-open import Data.Container.Relation.Binary.Pointwise
+open import Data.Container.Core using (Container; ⟦_⟧)
+open import Data.Container.Relation.Binary.Pointwise using (Pointwise)
 import Data.Container.Relation.Binary.Pointwise.Properties as Pw
 
 private

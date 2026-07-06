@@ -5,7 +5,7 @@
 -- propositional equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
@@ -18,7 +18,6 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using ()
   renaming (Pointwise to _×ᴿ_)
 open import Level using (Level)
-
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary.Negation.Core using (¬_)

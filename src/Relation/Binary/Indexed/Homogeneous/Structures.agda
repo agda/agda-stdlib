@@ -7,7 +7,7 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Homogeneous`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Indexed.Homogeneous.Core
 
@@ -22,9 +22,13 @@ open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_)
 import Relation.Binary.Definitions as B
-import Relation.Binary.Structures as B
+  using (Reflexive; Symmetric; Transitive; Antisymmetric
+        ;_Respectsˡ_; _Respectsʳ_; _Respects₂_)
+import Relation.Binary.Structures as B using (IsEquivalence; IsPreorder; IsPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Indexed.Homogeneous.Definitions
+import Relation.Binary.Structures as B
+  using (IsEquivalence; IsPreorder; IsPartialOrder)
 
 ------------------------------------------------------------------------
 -- Equivalences
@@ -65,12 +69,18 @@ record IsIndexedEquivalence : Set (i ⊔ a ⊔ ℓ) where
 
 
 record IsIndexedDecEquivalence : Set (i ⊔ a ⊔ ℓ) where
-  infix 4 _≟ᵢ_
+  infix 4 _≟ᵢ_ _≈ᵢ?_
   field
-    _≟ᵢ_           : Decidable A _≈ᵢ_
+    _≈ᵢ?_          : Decidable A _≈ᵢ_
     isEquivalenceᵢ : IsIndexedEquivalence
 
   open IsIndexedEquivalence isEquivalenceᵢ public
+
+  _≟ᵢ_ = _≈ᵢ?_
+  {-# WARNING_ON_USAGE _≟ᵢ_
+  "Warning: _≟ᵢ_ was deprecated in v3.0.
+  Please use _≈ᵢ?_ instead."
+  #-}
 
 
 ------------------------------------------------------------------------
@@ -115,7 +125,7 @@ record IsIndexedPreorder {ℓ₂} (_∼ᵢ_ : IRel A ℓ₂)
   ∼-respʳ-≈ x≈y z∼x i = ∼ᵢ-respʳ-≈ᵢ (x≈y i) (z∼x i)
 
   ∼-resp-≈ : (Lift A _∼ᵢ_) B.Respects₂ (Lift A _≈ᵢ_)
-  ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
+  ∼-resp-≈ = ∼-respˡ-≈ , ∼-respʳ-≈
 
   isPreorder : B.IsPreorder (Lift A _≈ᵢ_) (Lift A _∼ᵢ_)
   isPreorder = record

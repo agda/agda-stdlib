@@ -7,11 +7,10 @@
 ------------------------------------------------------------------------
 
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Structures using (IsEquivalence)
+
 
 module Function.Structures.Biased {a b ℓ₁ ℓ₂}
   {A : Set a} (_≈₁_ : Rel A ℓ₁) -- Equality over the domain
@@ -19,12 +18,19 @@ module Function.Structures.Biased {a b ℓ₁ ℓ₂}
   where
 
 open import Data.Product.Base as Product using (∃; _×_; _,_)
-open import Function.Base
-open import Function.Definitions
+open import Function.Base using (_∘_; id)
+open import Function.Definitions using (Congruent)
 open import Function.Definitions.Strict
+  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ)
 open import Function.Structures _≈₁_ _≈₂_
 open import Function.Consequences.Setoid
+  using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ
+        ; strictlyInverseʳ⇒inverseʳ)
 open import Level using (_⊔_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+
+open import Function.Structures _≈₁_ _≈₂_
 
 ------------------------------------------------------------------------
 -- Surjection

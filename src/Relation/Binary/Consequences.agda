@@ -4,18 +4,17 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Consequences where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘_; _∘₂_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable.Core
   using (yes; no; recompute; map′; dec⇒maybe)
 open import Relation.Unary using (∁; Pred)
@@ -23,7 +22,7 @@ open import Relation.Unary using (∁; Pred)
 private
   variable
     a ℓ ℓ₁ ℓ₂ ℓ₃ ℓ₄ p : Level
-    A B : Set a
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Substitutive properties
@@ -37,7 +36,7 @@ module _ {_∼_ : Rel A ℓ} (R : Rel A p) where
   subst⇒respʳ subst {x} y′∼y Pxy′ = subst (R x) y′∼y Pxy′
 
   subst⇒resp₂ : Substitutive _∼_ p → R Respects₂ _∼_
-  subst⇒resp₂ subst = subst⇒respʳ subst , subst⇒respˡ subst
+  subst⇒resp₂ subst = subst⇒respˡ subst , subst⇒respʳ subst
 
 module _ {_∼_ : Rel A ℓ} {P : Pred A p} where
 
@@ -55,8 +54,7 @@ module _ {_∼_ : Rel A ℓ} where
   -- N.B. the implicit arguments to Cotransitive are permuted w.r.t.
   -- those of Transitive
   cotrans⇒¬-trans : Cotransitive _∼_ → Transitive (¬_ ∘₂ _∼_)
-  cotrans⇒¬-trans cotrans {j = z} x≁z z≁y x∼y =
-    [ x≁z , z≁y ]′ (cotrans x∼y z)
+  cotrans⇒¬-trans cotrans x≁z z≁y x∼y = [ x≁z , z≁y ]′ (cotrans x∼y _)
 
 ------------------------------------------------------------------------
 -- Proofs for Irreflexive relations
@@ -74,36 +72,51 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
 
   total⇒refl : _≤_ Respects₂ _≈_ → Symmetric _≈_ →
                Total _≤_ → _≈_ ⇒ _≤_
-  total⇒refl (respʳ , respˡ) sym total {x} {y} x≈y with total x y
+  total⇒refl (respˡ , respʳ) sym total {x} {y} x≈y with total x y
   ... | inj₁ x∼y = x∼y
   ... | inj₂ y∼x = respʳ x≈y (respˡ (sym x≈y) y∼x)
 
   total∧dec⇒dec : _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
                   Total _≤_ → Decidable _≈_ → Decidable _≤_
-  total∧dec⇒dec refl antisym total _≟_ x y with total x y
+  total∧dec⇒dec refl antisym total _≈?_ x y with total x y
   ... | inj₁ x≤y = yes x≤y
-  ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≟ y)
+  ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≈? y)
 
 module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃} {≤₂ : Rel B ℓ₄} where
 
   mono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
-              ∀ {f} → f Preserves ≤₁ ⟶ ≤₂ → f Preserves ≈₁ ⟶ ≈₂
+              ∀ {f} → Monotonic₁ ≤₁ ≤₂ f → Monotonic₁ ≈₁ ≈₂ f
   mono⇒cong sym reflexive antisym mono x≈y = antisym
     (mono (reflexive x≈y))
     (mono (reflexive (sym x≈y)))
 
   antimono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
-                  ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → f Preserves ≈₁ ⟶ ≈₂
+                  ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → Monotonic₁ ≈₁ ≈₂ f
   antimono⇒cong sym reflexive antisym antimono p≈q = antisym
     (antimono (reflexive (sym p≈q)))
     (antimono (reflexive p≈q))
 
-  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
-                f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
-                f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
+  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
+                ∀ {f} → Monotonic₂ ≤₁ ≤₁ ≤₂ f → Monotonic₂ ≈₁ ≈₁ ≈₂ f
   mono₂⇒cong₂ sym reflexive antisym mono x≈y u≈v = antisym
     (mono (reflexive x≈y) (reflexive u≈v))
     (mono (reflexive (sym x≈y)) (reflexive (sym u≈v)))
+
+module _ (≤₁ : Rel A ℓ₁) (≤₂ : Rel B ℓ₂) (≤₃ : Rel C ℓ₂) where
+
+  mono₂⇒monoˡ : ∀ {f} → Reflexive ≤₁ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → LeftMonotonic ≤₂ ≤₃ f
+  mono₂⇒monoˡ refl mono x = mono (refl {x = x})
+
+  mono₂⇒monoʳ : ∀ {f} → Reflexive ≤₂ →
+                Monotonic₂ ≤₁ ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f
+  mono₂⇒monoʳ refl mono y = flip mono (refl {x = y})
+
+  monoˡ∧monoʳ⇒mono₂ : ∀ {f} → Transitive ≤₃ →
+                      LeftMonotonic ≤₂ ≤₃ f → RightMonotonic ≤₁ ≤₃ f →
+                      Monotonic₂ ≤₁ ≤₂ ≤₃ f
+  monoˡ∧monoʳ⇒mono₂ trans monoˡ monoʳ x≤₁y u≤₂v =
+    trans (monoˡ _ u≤₂v) (monoʳ _ x≤₁y)
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders
@@ -121,11 +134,11 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
     irrefl (antisym x<y y<x) x<y
 
   asym⇒antisym : Asymmetric _<_ → Antisymmetric _≈_ _<_
-  asym⇒antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
+  asym⇒antisym asym x<y y<x = contradiction y<x (asym x<y)
 
   asym⇒irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
              Asymmetric _<_ → Irreflexive _≈_ _<_
-  asym⇒irr (respʳ , respˡ) sym asym {x} {y} x≈y x<y =
+  asym⇒irr (respˡ , respʳ) sym asym {x} {y} x≈y x<y =
     asym x<y (respʳ (sym x≈y) (respˡ x≈y x<y))
 
   tri⇒asym : Trichotomous _≈_ _<_ → Asymmetric _<_
@@ -157,23 +170,23 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
                     _<_ Respectsʳ _≈_
   trans∧tri⇒respʳ sym ≈-tr <-tr tri {x} {y} {z} y≈z x<y with tri x z
   ... | tri< x<z _ _ = x<z
-  ... | tri≈ _ x≈z _ = ⊥-elim (tri⇒irr tri (≈-tr x≈z (sym y≈z)) x<y)
-  ... | tri> _ _ z<x = ⊥-elim (tri⇒irr tri (sym y≈z) (<-tr z<x x<y))
+  ... | tri≈ _ x≈z _ = contradiction x<y (tri⇒irr tri (≈-tr x≈z (sym y≈z)))
+  ... | tri> _ _ z<x = contradiction (<-tr z<x x<y) (tri⇒irr tri (sym y≈z))
 
   trans∧tri⇒respˡ : Transitive _≈_ →
                     Transitive _<_ → Trichotomous _≈_ _<_ →
                     _<_ Respectsˡ _≈_
   trans∧tri⇒respˡ ≈-tr <-tr tri {z} {_} {y} x≈y x<z with tri y z
   ... | tri< y<z _ _ = y<z
-  ... | tri≈ _ y≈z _ = ⊥-elim (tri⇒irr tri (≈-tr x≈y y≈z) x<z)
-  ... | tri> _ _ z<y = ⊥-elim (tri⇒irr tri x≈y (<-tr x<z z<y))
+  ... | tri≈ _ y≈z _ = contradiction x<z (tri⇒irr tri (≈-tr x≈y y≈z))
+  ... | tri> _ _ z<y = contradiction (<-tr x<z z<y) (tri⇒irr tri x≈y)
 
   trans∧tri⇒resp : Symmetric _≈_ → Transitive _≈_ →
                    Transitive _<_ → Trichotomous _≈_ _<_ →
                    _<_ Respects₂ _≈_
   trans∧tri⇒resp sym ≈-tr <-tr tri =
-    trans∧tri⇒respʳ sym ≈-tr <-tr tri ,
-    trans∧tri⇒respˡ ≈-tr <-tr tri
+    trans∧tri⇒respˡ ≈-tr <-tr tri ,
+    trans∧tri⇒respʳ sym ≈-tr <-tr tri
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality
@@ -207,109 +220,3 @@ module _ {R : REL A B ℓ₁} {S : REL B A ℓ₂} where
 
   flip-Connex : Connex R S → Connex S R
   flip-Connex f x y = Sum.swap (f y x)
-
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.6
-
-subst⟶respˡ = subst⇒respˡ
-{-# WARNING_ON_USAGE subst⟶respˡ
-"Warning: subst⟶respˡ was deprecated in v1.6.
-Please use subst⇒respˡ instead."
-#-}
-subst⟶respʳ = subst⇒respʳ
-{-# WARNING_ON_USAGE subst⟶respʳ
-"Warning: subst⟶respʳ was deprecated in v1.6.
-Please use subst⇒respʳ instead."
-#-}
-subst⟶resp₂ = subst⇒resp₂
-{-# WARNING_ON_USAGE subst⟶resp₂
-"Warning: subst⟶resp₂ was deprecated in v1.6.
-Please use subst⇒resp₂ instead."
-#-}
-P-resp⟶¬P-resp = resp⇒¬-resp
-{-# WARNING_ON_USAGE P-resp⟶¬P-resp
-"Warning: P-resp⟶¬P-resp was deprecated in v1.6.
-Please use resp⇒¬-resp instead."
-#-}
-total⟶refl = total⇒refl
-{-# WARNING_ON_USAGE total⟶refl
-"Warning: total⟶refl was deprecated in v1.6.
-Please use total⇒refl instead."
-#-}
-total+dec⟶dec = total∧dec⇒dec
-{-# WARNING_ON_USAGE total+dec⟶dec
-"Warning: total+dec⟶dec was deprecated in v1.6.
-Please use total∧dec⇒dec instead."
-#-}
-trans∧irr⟶asym = trans∧irr⇒asym
-{-# WARNING_ON_USAGE trans∧irr⟶asym
-"Warning: trans∧irr⟶asym was deprecated in v1.6.
-Please use trans∧irr⇒asym instead."
-#-}
-irr∧antisym⟶asym = irr∧antisym⇒asym
-{-# WARNING_ON_USAGE irr∧antisym⟶asym
-"Warning: irr∧antisym⟶asym was deprecated in v1.6.
-Please use irr∧antisym⇒asym instead."
-#-}
-asym⟶antisym = asym⇒antisym
-{-# WARNING_ON_USAGE asym⟶antisym
-"Warning: asym⟶antisym was deprecated in v1.6.
-Please use asym⇒antisym instead."
-#-}
-asym⟶irr = asym⇒irr
-{-# WARNING_ON_USAGE asym⟶irr
-"Warning: asym⟶irr was deprecated in v1.6.
-Please use asym⇒irr instead."
-#-}
-tri⟶asym = tri⇒asym
-{-# WARNING_ON_USAGE tri⟶asym
-"Warning: tri⟶asym was deprecated in v1.6.
-Please use tri⇒asym instead."
-#-}
-tri⟶irr = tri⇒irr
-{-# WARNING_ON_USAGE tri⟶irr
-"Warning: tri⟶irr was deprecated in v1.6.
-Please use tri⇒irr instead."
-#-}
-tri⟶dec≈ = tri⇒dec≈
-{-# WARNING_ON_USAGE tri⟶dec≈
-"Warning: tri⟶dec≈ was deprecated in v1.6.
-Please use tri⇒dec≈ instead."
-#-}
-tri⟶dec< = tri⇒dec<
-{-# WARNING_ON_USAGE tri⟶dec<
-"Warning: tri⟶dec< was deprecated in v1.6.
-Please use tri⇒dec< instead."
-#-}
-trans∧tri⟶respʳ≈ = trans∧tri⇒respʳ
-{-# WARNING_ON_USAGE trans∧tri⟶respʳ≈
-"Warning: trans∧tri⟶respʳ≈ was deprecated in v1.6.
-Please use trans∧tri⇒respʳ instead."
-#-}
-trans∧tri⟶respˡ≈ = trans∧tri⇒respˡ
-{-# WARNING_ON_USAGE trans∧tri⟶respˡ≈
-"Warning: trans∧tri⟶respˡ≈ was deprecated in v1.6.
-Please use trans∧tri⇒respˡ instead."
-#-}
-trans∧tri⟶resp≈ = trans∧tri⇒resp
-{-# WARNING_ON_USAGE trans∧tri⟶resp≈
-"Warning: trans∧tri⟶resp≈ was deprecated in v1.6.
-Please use trans∧tri⇒resp instead."
-#-}
-dec⟶weaklyDec = dec⇒weaklyDec
-{-# WARNING_ON_USAGE dec⟶weaklyDec
-"Warning: dec⟶weaklyDec was deprecated in v1.6.
-Please use dec⇒weaklyDec instead."
-#-}
-dec⟶recomputable = dec⇒recomputable
-{-# WARNING_ON_USAGE dec⟶recomputable
-"Warning: dec⟶recomputable was deprecated in v1.6.
-Please use dec⇒recomputable instead."
-#-}

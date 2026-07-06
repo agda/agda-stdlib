@@ -4,7 +4,7 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 
@@ -17,7 +17,7 @@ open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Unary.All
 open import Function.Base using (const; _∘_)
 open import Level using (Level)
-open import Relation.Unary
+open import Relation.Unary using (Pred; _⟨×⟩_)
 
 private
   variable

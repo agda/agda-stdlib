@@ -10,23 +10,29 @@
 -- The contents of this module should be accessed via `Algebra.Lattice`,
 -- unless you want to parameterise it via the equality relation.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
-open import Algebra.Consequences.Setoid
-open import Data.Product.Base using (proj₁; proj₂)
-open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Lattice.Structures.Biased
   {a ℓ} {A : Set a}  -- The underlying set
   (_≈_ : Rel A ℓ)    -- The underlying equality relation
   where
 
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Consequences.Setoid
+  using (comm∧distrʳ⇒distr; distrib∧absorbs⇒distribˡ; comm∧distrˡ⇒distr;
+  comm∧invʳ⇒inv)
+open import Data.Product.Base using (proj₁; proj₂)
+open import Level using (_⊔_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Algebra.Definitions _≈_
+  using (Associative; Commutative; Congruent₁; RightInverse;
+  _DistributesOverʳ_; Absorptive)
 open import Algebra.Lattice.Structures _≈_
+  using (IsJoinSemilattice; IsMeetSemilattice; IsLattice;
+  IsDistributiveLattice; IsBooleanAlgebra)
 
 private
   variable

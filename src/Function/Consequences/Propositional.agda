@@ -5,7 +5,7 @@
 -- over both the domain and codomain is assumed to be _≡_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Consequences.Propositional
   {a b} {A : Set a} {B : Set b}
@@ -15,7 +15,9 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; cong
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
 import Function.Definitions as Definitions
+  using (Inverseˡ; Inverseʳ; Surjective)
 open import Function.Definitions.Strict as Strict
+  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ)
 open import Relation.Nullary.Negation.Core using (contraposition)
 
 import Function.Consequences.Setoid (setoid A) (setoid B) as Setoid

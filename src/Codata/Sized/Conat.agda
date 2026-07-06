@@ -4,15 +4,14 @@
 -- The Conat type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Conat where
 
-open import Size
-open import Codata.Sized.Thunk
-
+open import Size using (Size ; ∞; Size<_)
+open import Codata.Sized.Thunk using (Thunk ; force)
 open import Data.Nat.Base using (ℕ ; zero ; suc)
-open import Relation.Nullary
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Definition and first values

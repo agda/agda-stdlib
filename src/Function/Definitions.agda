@@ -8,7 +8,7 @@
 
 -- The contents of this file should usually be accessed from `Function`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
 

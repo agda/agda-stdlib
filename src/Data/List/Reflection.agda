@@ -4,13 +4,13 @@
 -- Reflection utilities for List
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Reflection where
 
-open import Data.List.Base
-open import Reflection.AST.Term
-open import Reflection.AST.Argument
+open import Data.List.Base using (List; []; _∷_)
+open import Reflection.AST.Term using (Term; def; con; _⋯⟅∷⟆_)
+open import Reflection.AST.Argument using (Arg; _⟨∷⟩_)
 
 ------------------------------------------------------------------------
 -- Type

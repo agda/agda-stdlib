@@ -4,16 +4,16 @@
 -- Some derivable properties of semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Lattice.Bundles using (Semilattice)
-open import Relation.Binary.Bundles using (Poset)
-import Relation.Binary.Lattice as B
-import Relation.Binary.Properties.Poset as PosetProperties
 
 module Algebra.Lattice.Properties.Semilattice
   {c ℓ} (L : Semilattice c ℓ) where
 
+open import Relation.Binary.Bundles using (Poset)
+import Relation.Binary.Lattice as B
+import Relation.Binary.Properties.Poset as PosetProperties
 open Semilattice L renaming (_∙_ to _∧_)
 
 open import Relation.Binary.Reasoning.Setoid setoid

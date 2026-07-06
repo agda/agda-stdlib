@@ -18,11 +18,12 @@ open import Data.Container.Indexed hiding (module PlainMorphism)
 open import Data.Product.Base
   using (_,_; -,_; _×_; ∃; proj₁; proj₂; Σ-syntax)
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 open import Relation.Binary.HeterogeneousEquality as ≅ using (_≅_; refl)
 open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid; Transitive; Symmetric; IREL; IRel)
 
 ------------------------------------------------------------------------
 
@@ -53,7 +54,7 @@ setoid C X = record
   ; isEquivalence = record
     { refl  = refl , refl , λ { r .r refl → X.refl }
     ; sym   = sym
-    ; trans = λ { {_} {i = xs} {ys} {zs} → trans {_} {i = xs} {ys} {zs}  }
+    ; trans = λ { {_} {x = xs} {ys} {zs} → trans {_} {x = xs} {ys} {zs}  }
     }
   }
   where

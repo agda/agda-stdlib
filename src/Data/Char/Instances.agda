@@ -4,11 +4,11 @@
 -- Instances for characters
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Char.Instances where
 
-open import Data.Char.Properties
+open import Data.Char.Properties using (isDecEquivalence)
 
 instance
   Char-≡-isDecEquivalence = isDecEquivalence

@@ -4,14 +4,14 @@
 -- Transitive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Closure.Transitive where
 
-open import Function.Base
+open import Function.Base using (id; _∘_; _∋_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Induction.WellFounded
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
@@ -146,17 +146,3 @@ equivalent {_∼_ = _∼_} = mk⇔ complete sound
   sound : TransClosure _∼_ ⇒ Plus _∼_
   sound [ x∼y ]      = [ x∼y ]
   sound (x∼y ∷ y∼⁺z) = _ ∼⁺⟨ [ x∼y ] ⟩ sound y∼⁺z
-
-------------------------------------------------------------------------
--- Deprecations
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- v1.5
-
-Plus′ = TransClosure
-{-# WARNING_ON_USAGE Plus′
-"Warning: Plus′ was deprecated in v1.5.
-Please use TransClosure instead."
-#-}

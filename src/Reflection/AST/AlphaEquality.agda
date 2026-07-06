@@ -4,25 +4,24 @@
 -- Alpha equality over terms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.AlphaEquality where
 
-open import Data.Bool.Base                   using (Bool; true; false; _∧_)
-open import Data.List.Base                   using ([]; _∷_)
-open import Data.Nat.Base as ℕ               using (ℕ; zero; suc; _≡ᵇ_)
-open import Data.Product.Base                using (_,_)
-open import Relation.Nullary.Decidable.Core  using (⌊_⌋)
-open import Relation.Binary.Definitions      using (DecidableEquality)
-
-open import Reflection.AST.Abstraction
-open import Reflection.AST.Argument
-open import Reflection.AST.Argument.Information as ArgInfo
-open import Reflection.AST.Argument.Modality    as Modality
-open import Reflection.AST.Argument.Visibility  as Visibility
-open import Reflection.AST.Meta                 as Meta
-open import Reflection.AST.Name                 as Name
-open import Reflection.AST.Literal              as Literal
+open import Data.Bool.Base using (Bool; true; false; _∧_)
+open import Data.List.Base using ([]; _∷_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _≡ᵇ_)
+open import Data.Product.Base using (_,_)
+open import Relation.Nullary.Decidable.Core using (⌊_⌋)
+open import Relation.Binary.Definitions using (DecidableEquality)
+open import Reflection.AST.Abstraction using (Abs; abs)
+open import Reflection.AST.Argument using (Arg; arg; Args)
+open import Reflection.AST.Argument.Information as ArgInfo using (ArgInfo)
+open import Reflection.AST.Argument.Modality as Modality using (Modality)
+open import Reflection.AST.Argument.Visibility as Visibility using (Visibility)
+open import Reflection.AST.Meta as Meta using (Meta)
+open import Reflection.AST.Name as Name using (Name)
+open import Reflection.AST.Literal as Literal using (Literal)
 open import Reflection.AST.Term
 open import Level using (Level)
 
@@ -45,8 +44,8 @@ open AlphaEquality {{...}} public
 ------------------------------------------------------------------------
 -- Utilities
 
-≟⇒α : DecidableEquality A → AlphaEquality A
-≟⇒α _≟_ = mkAlphaEquality (λ x y → ⌊ x ≟ y ⌋)
+≡?⇒α : DecidableEquality A → AlphaEquality A
+≡?⇒α _≡?_ = mkAlphaEquality (λ x y → ⌊ x ≡? y ⌋)
 
 ------------------------------------------------------------------------
 -- Propositional cases
@@ -56,22 +55,22 @@ open AlphaEquality {{...}} public
 
 instance
   α-Visibility : AlphaEquality Visibility
-  α-Visibility = ≟⇒α Visibility._≟_
+  α-Visibility = ≡?⇒α Visibility._≡?_
 
   α-Modality : AlphaEquality Modality
-  α-Modality = ≟⇒α Modality._≟_
+  α-Modality = ≡?⇒α Modality._≡?_
 
   α-ArgInfo : AlphaEquality ArgInfo
-  α-ArgInfo = ≟⇒α ArgInfo._≟_
+  α-ArgInfo = ≡?⇒α ArgInfo._≡?_
 
   α-Literal : AlphaEquality Literal
-  α-Literal = ≟⇒α Literal._≟_
+  α-Literal = ≡?⇒α Literal._≡?_
 
   α-Meta : AlphaEquality Meta
-  α-Meta = ≟⇒α Meta._≟_
+  α-Meta = ≡?⇒α Meta._≡?_
 
   α-Name : AlphaEquality Name
-  α-Name = ≟⇒α Name._≟_
+  α-Name = ≡?⇒α Name._≡?_
 
 ------------------------------------------------------------------------
 -- Interesting cases
@@ -345,3 +344,18 @@ instance
 
   α-ArgsPattern : AlphaEquality (Args Pattern)
   α-ArgsPattern = mkAlphaEquality _=α=-ArgsPattern_
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+≟⇒α = ≡?⇒α
+{-# WARNING_ON_USAGE ≟⇒α
+"Warning: ≟⇒α was deprecated in v3.0.
+Please use ≡?⇒α instead."
+#-}

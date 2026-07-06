@@ -4,14 +4,14 @@
 -- Reflection utilities for Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Reflection where
 
-import Data.List.Base as List
-open import Data.Vec.Base
-open import Reflection.AST.Term
-open import Reflection.AST.Argument
+import Data.List.Base as List using (List; [])
+open import Data.Vec.Base as Vec using (Vec; _∷_; [])
+open import Reflection.AST.Term using (Term; def; con; _⋯⟅∷⟆_)
+open import Reflection.AST.Argument using (_⟨∷⟩_)
 
 ------------------------------------------------------------------------
 -- Type

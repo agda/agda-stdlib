@@ -4,7 +4,7 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Endomorphism.Propositional {a} (A : Set a) where
 
@@ -15,7 +15,6 @@ Use Function.Endo.Propositional instead."
 
 open import Algebra
 open import Algebra.Morphism; open Definitions
-
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)
@@ -85,18 +84,3 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ∘-id-monoid : Monoid _ _
 ∘-id-monoid = record { isMonoid = ∘-id-isMonoid }
-
-------------------------------------------------------------------------
--- Homomorphism
-
-^-isSemigroupMorphism : ∀ f → IsSemigroupMorphism +-semigroup ∘-semigroup (f ^_)
-^-isSemigroupMorphism f = record
-  { ⟦⟧-cong = cong (f ^_)
-  ; ∙-homo  = ^-homo f
-  }
-
-^-isMonoidMorphism : ∀ f → IsMonoidMorphism +-0-monoid ∘-id-monoid (f ^_)
-^-isMonoidMorphism f = record
-  { sm-homo = ^-isSemigroupMorphism f
-  ; ε-homo  = refl
-  }

@@ -4,14 +4,15 @@
 -- Properties of the sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
 open import Data.Bool.Base using (Bool; true; false; T)
+open import Data.Bool.ListAction using (any)
 open import Data.List.Base
-  using (List; []; map; _∷_; _++_; concat; concatMap; applyUpTo; any; filter)
+  using (List; []; map; _∷_; _++_; concat; concatMap; applyUpTo; filter)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
@@ -282,69 +283,3 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
     filter⁺′ : P ⋐ Q → ∀ {xs ys} → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
     filter⁺′ = Subset.filter⁺′ (setoid A) P? (resp P) Q? (resp Q)
-
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
-
--- Version 1.5
-
-mono = Any-resp-⊆
-{-# WARNING_ON_USAGE mono
-"Warning: mono was deprecated in v1.5.
-Please use Any-resp-⊆ instead."
-#-}
-map-mono = map⁺
-{-# WARNING_ON_USAGE map-mono
-"Warning: map-mono was deprecated in v1.5.
-Please use map⁺ instead."
-#-}
-infix 4 _++-mono_
-_++-mono_ = ++⁺
-{-# WARNING_ON_USAGE _++-mono_
-"Warning: _++-mono_ was deprecated in v1.5.
-Please use ++⁺ instead."
-#-}
-concat-mono = concat⁺
-{-# WARNING_ON_USAGE concat-mono
-"Warning: concat-mono was deprecated in v1.5.
-Please use concat⁺ instead."
-#-}
->>=-mono = >>=⁺
-{-# WARNING_ON_USAGE >>=-mono
-"Warning: >>=-mono was deprecated in v1.5.
-Please use >>=⁺ instead."
-#-}
-infix 4  _⊛-mono_
-_⊛-mono_ = ⊛⁺
-{-# WARNING_ON_USAGE _⊛-mono_
-"Warning: _⊛-mono_ was deprecated in v1.5.
-Please use ⊛⁺ instead."
-#-}
-infix 4  _⊗-mono_
-_⊗-mono_ = ⊗⁺
-{-# WARNING_ON_USAGE _⊗-mono_
-"Warning: _⊗-mono_ was deprecated in v1.5.
-Please use ⊗⁺ instead."
-#-}
-any-mono = any⁺
-{-# WARNING_ON_USAGE any-mono
-"Warning: any-mono was deprecated in v1.5.
-Please use any⁺ instead."
-#-}
-map-with-∈-mono = mapWith∈⁺
-{-# WARNING_ON_USAGE map-with-∈-mono
-"Warning: map-with-∈-mono was deprecated in v1.5.
-Please use mapWith∈⁺ instead."
-#-}
-map-with-∈⁺ = mapWith∈⁺
-{-# WARNING_ON_USAGE map-with-∈⁺
-"Warning: map-with-∈⁺ was deprecated in v2.0.
-Please use mapWith∈⁺ instead."
-#-}
-filter⁺ = filter-⊆
-{-# WARNING_ON_USAGE filter⁺
-"Warning: filter⁺ was deprecated in v1.5.
-Please use filter-⊆ instead."
-#-}

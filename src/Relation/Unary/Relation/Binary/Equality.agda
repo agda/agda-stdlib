@@ -4,7 +4,7 @@
 -- Equality of unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.Relation.Binary.Equality where
 
@@ -13,6 +13,7 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Unary using (Pred; _≐_; _≐′_)
 open import Relation.Unary.Properties
+  using (≐-refl; ≐-sym; ≐-trans; ≐′-refl; ≐′-sym; ≐′-trans)
 
 private
   variable

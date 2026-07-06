@@ -4,15 +4,17 @@
 -- Instantiating homogeneously indexed bundles at a particular index
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
-
-open import Level
-open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsPreorder)
-open import Relation.Binary.Indexed.Homogeneous
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous.Construct.At where
+
+open import Level using (Level)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
+open import Relation.Binary.Indexed.Homogeneous
+  using (IRel; IsIndexedEquivalence; IsIndexedDecEquivalence; IsIndexedPreorder
+        ; IndexedSetoid; IndexedDecSetoid; IndexedPreorder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder)
 
 private
   variable
@@ -35,7 +37,7 @@ isDecEquivalence : ∀ {_≈_ : IRel Aᵢ ℓ} → IsIndexedDecEquivalence Aᵢ 
                    (index : I) → IsDecEquivalence (_≈_ {index})
 isDecEquivalence isEq index = record
   { isEquivalence = isEquivalence E.isEquivalenceᵢ index
-  ; _≟_           = E._≟ᵢ_
+  ; _≈?_           = E._≈ᵢ?_
   } where module E = IsIndexedDecEquivalence isEq
 
 isPreorder : ∀ {_≈_ : IRel Aᵢ ℓ₁} {_∼_ : IRel Aᵢ ℓ₂} →

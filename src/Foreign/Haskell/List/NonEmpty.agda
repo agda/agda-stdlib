@@ -4,11 +4,11 @@
 -- The NonEmpty type which calls out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Foreign.Haskell.List.NonEmpty where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.List.NonEmpty.Base as Data using (_∷_)
 open import Data.List using (List)
 

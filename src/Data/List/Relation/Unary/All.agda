@@ -4,7 +4,7 @@
 -- Lists where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.All where
 
@@ -19,8 +19,8 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; const)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core as Dec
+  using (_×?_; yes; no; map′)
 open import Relation.Unary hiding (_∈_)
 import Relation.Unary.Properties as Unary
 open import Relation.Binary.Bundles using (Setoid)
@@ -206,7 +206,7 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
 
 all? : Decidable P → Decidable (All P)
 all? p []       = yes []
-all? p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×-dec all? p xs)
+all? p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×? all? p xs)
 
 universal : Universal P → Universal (All P)
 universal u []       = []
@@ -234,17 +234,3 @@ decide p∪q (x ∷ xs) with p∪q x
 
 search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
 search P? = decide (Sum.swap ∘ Dec.toSum ∘ P?)
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.4
-
-all = all?
-{-# WARNING_ON_USAGE all
-"Warning: all was deprecated in v1.4.
-Please use all? instead."
-#-}

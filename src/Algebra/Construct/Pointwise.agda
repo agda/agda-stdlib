@@ -8,7 +8,7 @@
 -- NB the module is parametrised only wrt `A`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Construct.Pointwise {a} (A : Set a) where
 
@@ -17,7 +17,7 @@ open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘′_; const)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)

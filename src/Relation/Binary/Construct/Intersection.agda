@@ -4,20 +4,22 @@
 -- Intersection of two binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Intersection where
 
-open import Data.Product.Base
+open import Data.Product.Base using (_,_; _×_; map; zip; <_,_>)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsStrictPartialOrder)
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder
+        ; IsStrictPartialOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Antisymmetric; Decidable; _Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Minimum; Maximum; Irreflexive)
-open import Relation.Nullary.Decidable using (yes; no; _×-dec_)
+  using (Reflexive; Symmetric; Transitive; Antisymmetric; Decidable; _Respects_
+        ; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Minimum; Maximum; Irreflexive)
+open import Relation.Nullary.Decidable using (yes; no; _×?_)
 
 private
   variable
@@ -76,7 +78,7 @@ module _ (≈ : Rel A ℓ₁) (L : Rel A ℓ₂) (R : Rel A ℓ₃) where
   respectsʳ L-resp R-resp x≈y = map (L-resp x≈y) (R-resp x≈y)
 
   respects₂ : L Respects₂ ≈ → R Respects₂ ≈ → (L ∩ R) Respects₂ ≈
-  respects₂ (Lʳ , Lˡ) (Rʳ , Rˡ) = respectsʳ Lʳ Rʳ , respectsˡ Lˡ Rˡ
+  respects₂ (Lˡ , Lʳ) (Rˡ , Rʳ) = respectsˡ Lˡ Rˡ , respectsʳ Lʳ Rʳ
 
   antisymmetric : Antisymmetric ≈ L ⊎ Antisymmetric ≈ R → Antisymmetric ≈ (L ∩ R)
   antisymmetric (inj₁ L-antisym) (Lxy , _) (Lyx , _) = L-antisym Lxy Lyx
@@ -84,8 +86,10 @@ module _ (≈ : Rel A ℓ₁) (L : Rel A ℓ₂) (R : Rel A ℓ₃) where
 
 module _ {L : REL A B ℓ₁} {R : REL A B ℓ₂} where
 
-  decidable : Decidable L → Decidable R → Decidable (L ∩ R)
-  decidable L? R? x y = L? x y ×-dec R? x y
+  infixl 6 _∩?_
+
+  _∩?_ : Decidable L → Decidable R → Decidable (L ∩ R)
+  _∩?_ L? R? x y = L? x y ×? R? x y
 
 ------------------------------------------------------------------------
 -- Structures
@@ -100,7 +104,7 @@ isEquivalence {L = L} {R = R} eqₗ eqᵣ = record
 isDecEquivalence : IsDecEquivalence L → IsDecEquivalence R → IsDecEquivalence (L ∩ R)
 isDecEquivalence eqₗ eqᵣ = record
   { isEquivalence = isEquivalence L.isEquivalence R.isEquivalence
-  ; _≟_           = decidable L._≟_ R._≟_
+  ; _≈?_           = L._≈?_ ∩? R._≈?_
   } where module L = IsDecEquivalence eqₗ; module R = IsDecEquivalence eqᵣ
 
 isPreorder : IsPreorder ≈ L → IsPreorder ≈ R → IsPreorder ≈ (L ∩ R)
@@ -142,3 +146,18 @@ isStrictPartialOrderʳ {L = L} {≈ = ≈} {R = R} transₗ respₗ Oᵣ = recor
   ; trans         = transitive L R transₗ Oᵣ.trans
   ; <-resp-≈      = respects₂ ≈ L R respₗ Oᵣ.<-resp-≈
   } where module Oᵣ = IsStrictPartialOrder Oᵣ
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- version 2.4
+
+decidable = _∩?_
+{-# WARNING_ON_USAGE decidable
+"Warning: decidable was deprecated in v2.4.
+Please use _∩?_ instead."
+#-}

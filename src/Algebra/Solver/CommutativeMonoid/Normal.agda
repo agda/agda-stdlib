@@ -6,25 +6,28 @@
 -- Adapted from Algebra.Solver.Monoid.Normal
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (CommutativeMonoid)
 
 module Algebra.Solver.CommutativeMonoid.Normal {c ℓ} (M : CommutativeMonoid c ℓ) where
 
 import Algebra.Properties.CommutativeSemigroup as CSProperties
+  using (medial)
 import Algebra.Properties.Monoid.Mult as MultProperties
+  using (_×_; ×-homo-1; ×-homo-+)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate; zipWith)
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
+  using (Pointwise; _∷_; []; Pointwise-≡↔≡; decidable)
 open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-import Relation.Nullary.Decidable as Dec
+import Relation.Nullary.Decidable as Dec using (map)
 
 open CommutativeMonoid M
 open MultProperties monoid using (_×_; ×-homo-1; ×-homo-+)
-open CSProperties commutativeSemigroup using (interchange)
+open CSProperties commutativeSemigroup using (medial)
 open ≈-Reasoning setoid
 
 private
@@ -54,10 +57,10 @@ Normal n = Vec ℕ n
 
 -- We can decide if two normal forms are /syntactically/ equal.
 
-infix 5 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality (Normal n)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
+_≡?_ : DecidableEquality (Normal n)
+nf₁ ≡? nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≡?_ nf₁ nf₂)
   where open Pointwise using (Pointwise-≡↔≡; decidable)
 
 ------------------------------------------------------------------------
@@ -114,7 +117,7 @@ comp-correct [] [] _ =  sym (identityˡ _)
 comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = begin
   ((l + m) × a) ∙ ⟦ v • w ⟧⇓ ρ              ≈⟨ ∙-congʳ  (×-homo-+ a l m) ⟩
   (l × a) ∙ (m × a) ∙ ⟦ v • w ⟧⇓ ρ          ≈⟨ ∙-congˡ  (comp-correct v w ρ) ⟩
-  (l × a) ∙ (m × a) ∙ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ) ≈⟨ interchange _ _ _ _ ⟩
+  (l × a) ∙ (m × a) ∙ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ) ≈⟨ medial _ _ _ _ ⟩
   ⟦ l ∷ v ⟧⇓ (a ∷ ρ) ∙ ⟦ m ∷ w ⟧⇓ (a ∷ ρ)   ∎
 
 ------------------------------------------------------------------------
@@ -158,4 +161,13 @@ sg-correct = singleton-correct
 {-# WARNING_ON_USAGE sg-correct
 "Warning: sg-correct was deprecated in v2.2.
 Please use singleton-correct instead."
+#-}
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
 #-}

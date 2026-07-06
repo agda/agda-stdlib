@@ -5,7 +5,7 @@
 -- be given in terms of others. Re-exported via `Algebra`.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
 open import Algebra.Consequences.Setoid
@@ -214,7 +214,7 @@ open IsRing* public
 
 
 ------------------------------------------------------------------------
--- Deprecated
+-- DEPRECATED NAMES
 ------------------------------------------------------------------------
 
 -- Version 2.0

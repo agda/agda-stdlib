@@ -4,11 +4,11 @@
 -- Typeclass instances for Stream
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Stream.Instances where
 
-open import Codata.Sized.Stream.Effectful
+open import Codata.Sized.Stream.Effectful using (functor; applicative; comonad)
 
 instance
   streamFunctor = functor

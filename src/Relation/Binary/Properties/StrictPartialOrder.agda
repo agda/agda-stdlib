@@ -4,7 +4,7 @@
 -- Properties satisfied by strict partial orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (StrictPartialOrder; Poset)
 
@@ -12,7 +12,8 @@ module Relation.Binary.Properties.StrictPartialOrder
        {s₁ s₂ s₃} (SPO : StrictPartialOrder s₁ s₂ s₃) where
 
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
-import Relation.Binary.Construct.StrictToNonStrict
+  using (strictPartialOrder)
+import Relation.Binary.Construct.StrictToNonStrict using (isPartialOrder)
 
 open StrictPartialOrder SPO
 

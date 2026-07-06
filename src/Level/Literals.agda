@@ -4,13 +4,13 @@
 -- Conversion from naturals to universe levels
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Level.Literals where
 
 open import Agda.Builtin.Nat renaming (Nat to ℕ)
-open import Agda.Builtin.FromNat
-open import Agda.Builtin.Unit
+open import Agda.Builtin.FromNat using (Number)
+open import Agda.Builtin.Unit using (⊤)
 open import Level using (Level; 0ℓ)
 
 -- Increase a Level by a number of sucs.

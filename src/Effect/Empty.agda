@@ -4,11 +4,11 @@
 -- Empty values (e.g. [] for List, nothing for Maybe)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Empty where
 
-open import Level
+open import Level using (Level; suc; _⊔_)
 
 private
   variable

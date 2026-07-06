@@ -4,13 +4,13 @@
 -- Refinement type: a value together with a proof irrelevant witness.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Refinement.Base where
 
-open import Level
 open import Data.Irrelevant as Irrelevant using (Irrelevant)
-open import Function.Base
+open import Function.Base using (id)
+open import Level using (Level; _⊔_)
 open import Relation.Unary using (IUniversal; _⇒_; _⊢_)
 
 private

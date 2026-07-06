@@ -7,8 +7,7 @@
 -- See README.Data.List for examples of how to use and reason about
 -- lists.
 
-{-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List where
 

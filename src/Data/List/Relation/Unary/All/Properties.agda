@@ -4,15 +4,16 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
+open import Data.Bool.ListAction using (all)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (lookup; updateAt)
+open import Data.List.Base as List hiding (lookup; updateAt; and; or; all; any)
 open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
   using (there-injective-≢∈; ∈-filter⁻)
@@ -40,7 +41,7 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_; ¬[x≢x])
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
@@ -162,7 +163,7 @@ updateAt-minimal : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                    pxs              [ i ]= px →
                    updateAt j f pxs [ i ]= px
 updateAt-minimal (here .refl) (here refl) (px ∷ pxs) i≢j here        =
-  contradiction refl (i≢j refl)
+  ¬[x≢x] (i≢j refl)
 updateAt-minimal (here .refl) (there j)   (px ∷ pxs) i≢j here        = here
 updateAt-minimal (there i)    (here refl) (px ∷ pxs) i≢j (there val) = there val
 updateAt-minimal (there i)    (there j)   (px ∷ pxs) i≢j (there val) =
@@ -255,7 +256,7 @@ updateAt-commutes : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                     i ≢∈ j →
                     updateAt {P = P} i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
 updateAt-commutes (here refl) (here refl) i≢j (px ∷ pxs) =
-  contradiction refl (i≢j refl)
+  ¬[x≢x] (i≢j refl)
 updateAt-commutes (here refl) (there j)   i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (here refl) i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (there j)   i≢j (px ∷ pxs) =
@@ -703,14 +704,6 @@ module _ (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.3
-
-Any¬→¬All = Any¬⇒¬All
-{-# WARNING_ON_USAGE Any¬→¬All
-"Warning: Any¬→¬All was deprecated in v1.3.
-Please use Any¬⇒¬All instead."
-#-}
 
 -- Version 2.0
 

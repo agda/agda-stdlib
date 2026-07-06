@@ -4,23 +4,29 @@
 -- Additional properties for setoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Data.Product.Base using (_,_)
-open import Function.Base using (_∘_; id; _$_; flip)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Binary.Core using (_⇒_)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
-open import Relation.Binary.Definitions
-  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Irreflexive)
-open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Binary.Construct.Composition
-  using (_;_; impliesˡ; transitive⇒≈;≈⊆≈)
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 
-open Setoid S
+open import Data.Product.Base using (_,_)
+open import Function.Base using (_∘_; id; _$_; flip)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Construct.Composition
+  using (_;_; impliesˡ; transitive⇒≈;≈⊆≈)
+open import Relation.Binary.Definitions
+  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Irreflexive)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; ¬[x≢x])
+open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
+
+open Setoid S renaming (Carrier to A)
+
+private
+  variable
+    x : A
+    Whatever : Set _
+
 
 ------------------------------------------------------------------------
 -- Every setoid is a preorder and partial order with respect to
@@ -78,10 +84,13 @@ preorder = record
 ≉-respʳ y≈y′ x≉y x≈y′ = x≉y $ trans x≈y′ (sym y≈y′)
 
 ≉-resp₂ : _≉_ Respects₂ _≈_
-≉-resp₂ = ≉-respʳ , ≉-respˡ
+≉-resp₂ = ≉-respˡ , ≉-respʳ
 
 ≉-irrefl : Irreflexive _≈_ _≉_
-≉-irrefl x≈y x≉y = contradiction x≈y x≉y
+≉-irrefl x≈y x≉y = x≉y x≈y
+
+¬[x≉x] : .(x ≉ x) → Whatever
+¬[x≉x] x≉x = ¬[x≢x] (x≉x ∘ reflexive)
 
 ------------------------------------------------------------------------
 -- Equality is closed under composition
@@ -100,3 +109,4 @@ respʳ-flip y≈z x≈z = trans x≈z (sym y≈z)
 
 respˡ-flip : _≈_ Respectsˡ (flip _≈_)
 respˡ-flip = trans
+

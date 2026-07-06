@@ -7,7 +7,7 @@
 -- The definition of lexicographic product used here is suitable if
 -- the left-hand relation is a strict partial order.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Relation.Binary.Lex.Strict where
 
@@ -15,20 +15,22 @@ open import Data.Product.Base
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
-open import Data.Empty
-open import Function.Base
-open import Induction.WellFounded
-open import Level
-open import Relation.Nullary.Decidable
+open import Function.Base using (flip; _on_; _$_; _∘_)
+open import Induction.WellFounded using (Acc; acc; WfRec; WellFounded; Acc-resp-flip-≈)
+open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Preorder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri>; tri≈)
-open import Relation.Binary.Consequences
+  using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable
+        ; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_
+        ; tri<; tri>; tri≈)
+open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Nullary.Decidable.Core using (yes; no; _⊎?_; _×?_)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
   variable
@@ -62,16 +64,16 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
 
   ×-transitive : IsEquivalence _≈₁_ → _<₁_ Respects₂ _≈₁_ → Transitive _<₁_ →
                  Transitive _<₂_ → Transitive _<ₗₑₓ_
-  ×-transitive eq₁ resp₁ trans₁ trans₂ = trans
+  ×-transitive eq₁ resp₁@(respˡ , respʳ) trans₁ trans₂ = trans
     where
     module Eq₁ = IsEquivalence eq₁
 
     trans : Transitive _<ₗₑₓ_
     trans (inj₁ x₁<y₁) (inj₁ y₁<z₁) = inj₁ (trans₁ x₁<y₁ y₁<z₁)
     trans (inj₁ x₁<y₁) (inj₂ y≈≤z)  =
-      inj₁ (proj₁ resp₁ (proj₁ y≈≤z) x₁<y₁)
+      inj₁ (respʳ (proj₁ y≈≤z) x₁<y₁)
     trans (inj₂ x≈≤y)  (inj₁ y₁<z₁) =
-      inj₁ (proj₂ resp₁ (Eq₁.sym $ proj₁ x≈≤y) y₁<z₁)
+      inj₁ (respˡ (Eq₁.sym $ proj₁ x≈≤y) y₁<z₁)
     trans (inj₂ x≈≤y)  (inj₂ y≈≤z)  =
       inj₂ ( Eq₁.trans (proj₁ x≈≤y) (proj₁ y≈≤z)
            , trans₂    (proj₂ x≈≤y) (proj₂ y≈≤z))
@@ -107,12 +109,12 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
 
   ×-decidable : Decidable _≈₁_ → Decidable _<₁_ → Decidable _<₂_ →
                 Decidable _<ₗₑₓ_
-  ×-decidable dec-≈₁ dec-<₁ dec-≤₂ x y =
-    dec-<₁ (proj₁ x) (proj₁ y)
-      ⊎-dec
-    (dec-≈₁ (proj₁ x) (proj₁ y)
-       ×-dec
-     dec-≤₂ (proj₂ x) (proj₂ y))
+  ×-decidable _≈₁?_ _<₁?_ _<₂?_ x y =
+    proj₁ x <₁? proj₁ y
+      ⊎?
+    (proj₁ x ≈₁? proj₁ y
+       ×?
+     proj₂ x <₂? proj₂ y)
 
 module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          {_≈₂_ : Rel B ℓ₃} {_<₂_ : Rel B ℓ₄} where
@@ -132,11 +134,11 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
     where
     antisym : Antisymmetric _≋_ _<ₗₑₓ_
     antisym (inj₁ x₁<y₁) (inj₁ y₁<x₁) =
-      ⊥-elim $ asym₁ x₁<y₁ y₁<x₁
+      contradiction y₁<x₁ (asym₁ x₁<y₁)
     antisym (inj₁ x₁<y₁) (inj₂ y≈≤x)  =
-      ⊥-elim $ irrefl₁ (sym₁ $ proj₁ y≈≤x) x₁<y₁
+      contradiction x₁<y₁ (irrefl₁ (sym₁ $ proj₁ y≈≤x))
     antisym (inj₂ x≈≤y)  (inj₁ y₁<x₁) =
-      ⊥-elim $ irrefl₁ (sym₁ $ proj₁ x≈≤y) y₁<x₁
+      contradiction y₁<x₁ (irrefl₁ (sym₁ $ proj₁ x≈≤y))
     antisym (inj₂ x≈≤y)  (inj₂ y≈≤x)  =
       proj₁ x≈≤y , antisym₂ (proj₂ x≈≤y) (proj₂ y≈≤x)
 
@@ -157,8 +159,8 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
   ×-respects₂ : IsEquivalence _≈₁_ →
                 _<₁_ Respects₂ _≈₁_ → _<₂_ Respects₂ _≈₂_ →
                 _<ₗₑₓ_ Respects₂ _≋_
-  ×-respects₂ eq₁ resp₁ resp₂ = ×-respectsʳ trans (proj₁ resp₁) (proj₁ resp₂)
-                              , ×-respectsˡ sym trans (proj₂ resp₁) (proj₂ resp₂)
+  ×-respects₂ eq₁ resp₁ resp₂ = ×-respectsˡ sym trans (proj₁ resp₁) (proj₁ resp₂)
+                              , ×-respectsʳ trans (proj₂ resp₁) (proj₂ resp₂)
     where open IsEquivalence eq₁
 
   ×-compare : Symmetric _≈₁_ →

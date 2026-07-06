@@ -5,7 +5,7 @@
 -- order-preserving manner
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Ternary.Interleaving where
 

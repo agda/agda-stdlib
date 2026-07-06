@@ -4,7 +4,7 @@
 -- The basic code for equational reasoning with a single relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (_⊔_)
 open import Function.Base using (case_of_)

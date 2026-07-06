@@ -4,18 +4,17 @@
 -- Definitions of 'raw' bundles
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Bundles.Raw where
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles.Raw using (RawSetoid)
 open import Level using (suc; _⊔_)
-open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
--- Raw bundles with 1 unary operation & 1 element
+-- Raw bundles with 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 -- A raw SuccessorSet is a SuccessorSet without any laws.
@@ -52,7 +51,7 @@ record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- Raw bundles with 1 binary operation & 1 element
+-- Raw bundles with 1 binary operation & 1 constant
 ------------------------------------------------------------------------
 
 -- A raw monoid is a monoid without any laws.
@@ -76,7 +75,7 @@ record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_)
 
 ------------------------------------------------------------------------
--- Raw bundles with 1 binary operation, 1 unary operation & 1 element
+-- Raw bundles with 1 binary operation, 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -101,7 +100,7 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; rawMagma)
 
 ------------------------------------------------------------------------
--- Raw bundles with 2 binary operations & 1 element
+-- Raw bundles with 2 binary operations & 1 constant
 ------------------------------------------------------------------------
 
 record RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -132,7 +131,7 @@ record RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
 ------------------------------------------------------------------------
--- Raw bundles with 2 binary operations & 2 elements
+-- Raw bundles with 2 binary operations & 2 constants
 ------------------------------------------------------------------------
 
 record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -166,7 +165,7 @@ record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
 ------------------------------------------------------------------------
--- Raw bundles with 2 binary operations, 1 unary operation & 1 element
+-- Raw bundles with 2 binary operations, 1 unary operation & 1 constant
 ------------------------------------------------------------------------
 
 record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -202,7 +201,7 @@ record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
 ------------------------------------------------------------------------
--- Raw bundles with 2 binary operations, 1 unary operation & 2 elements
+-- Raw bundles with 2 binary operations, 1 unary operation & 2 constants
 ------------------------------------------------------------------------
 
 -- A raw ring is a ring without any laws.
@@ -287,7 +286,7 @@ record RawQuasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_)
 
 ------------------------------------------------------------------------
--- Raw bundles with 3 binary operations & 1 element
+-- Raw bundles with 3 binary operations & 1 constant
 ------------------------------------------------------------------------
 
 record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where

@@ -8,19 +8,13 @@
 -- See `Data.Nat.Properties` or `Relation.Binary.Reasoning.PartialOrder`
 -- for examples of how to instantiate this module.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Data.Product.Base using (proj₁; proj₂)
-open import Level using (_⊔_)
-open import Function.Base using (case_of_)
-open import Relation.Nullary.Decidable.Core
-  using (Dec; yes; no)
+
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
   using (Transitive; _Respects₂_; Reflexive; Trans; Irreflexive; Asymmetric)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Binary.Reasoning.Syntax
 
 module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} {_<_ : Rel A ℓ₃}
@@ -29,6 +23,14 @@ module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a
   (<⇒≤ : _<_ ⇒ _≤_)
   (<-≤-trans : Trans _<_ _≤_ _<_) (≤-<-trans : Trans _≤_ _<_ _<_)
   where
+
+open import Data.Product.Base using (proj₁; proj₂)
+open import Level using (_⊔_)
+open import Function.Base using (case_of_)
+open import Relation.Nullary.Decidable.Core
+  using (Dec; yes; no)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.Reasoning.Syntax
 
 open IsPreorder isPreorder
 
@@ -55,7 +57,7 @@ start (strict x<y) = <⇒≤ x<y
 ≈-go : Trans _≈_ _IsRelatedTo_ _IsRelatedTo_
 ≈-go x≈y (equals y≈z) = equals (Eq.trans x≈y y≈z)
 ≈-go x≈y (nonstrict y≤z) = nonstrict (∼-respˡ-≈ (Eq.sym x≈y) y≤z)
-≈-go x≈y (strict y<z) = strict (proj₂ <-resp-≈ (Eq.sym x≈y) y<z)
+≈-go x≈y (strict y<z) = strict (proj₁ <-resp-≈ (Eq.sym x≈y) y<z)
 
 ≤-go : Trans _≤_ _IsRelatedTo_ _IsRelatedTo_
 ≤-go x≤y (equals y≈z) = nonstrict (∼-respʳ-≈ y≈z x≤y)
@@ -63,7 +65,7 @@ start (strict x<y) = <⇒≤ x<y
 ≤-go x≤y (strict y<z) = strict (≤-<-trans x≤y y<z)
 
 <-go : Trans _<_ _IsRelatedTo_ _IsRelatedTo_
-<-go x<y (equals y≈z) = strict (proj₁ <-resp-≈ y≈z x<y)
+<-go x<y (equals y≈z) = strict (proj₂ <-resp-≈ y≈z x<y)
 <-go x<y (nonstrict y≤z) = strict (<-≤-trans x<y y≤z)
 <-go x<y (strict y<z) = strict (<-trans x<y y<z)
 
