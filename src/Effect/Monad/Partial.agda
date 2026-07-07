@@ -28,8 +28,8 @@ record ↯ (A : Set a) (ℓ : Level) : Set (a ⊔ suc ℓ) where
 
 open ↯
 
-never : ↯ A zero
-never .Dom = ⊥
+never : ↯ A ℓ
+never {ℓ = ℓ} .Dom = ⊥ {ℓ = ℓ}
 never .elt = ⊥-elim
 
 always : A → ↯ A ℓ
