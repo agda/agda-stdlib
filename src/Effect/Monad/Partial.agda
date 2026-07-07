@@ -13,7 +13,7 @@ open import Data.Product using (_×_; Σ; Σ-syntax; _,_)
 open import Data.Empty.Polymorphic using (⊥-elim; ⊥)
 open import Data.Unit.Polymorphic using (⊤)
 
-private  
+private
   variable
     a ℓ ℓ' : Level
     A B : Set a
@@ -47,5 +47,4 @@ always a .elt _ = a
 ↯-ap : ↯ (A → B) ℓ → ↯ A ℓ' → ↯ B (ℓ ⊔ ℓ')
 ↯-ap a→b↯ a↯ .Dom = a→b↯ .Dom × a↯ .Dom
 ↯-ap a→b↯ a↯ .elt (f↓ , a↓) = a→b↯ .elt f↓ (a↯ .elt a↓)
-
 
