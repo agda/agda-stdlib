@@ -32,8 +32,8 @@ never : ↯ A zero
 never .Dom = ⊥
 never .elt = ⊥-elim
 
-always : A → ↯ A zero
-always a .Dom = ⊤
+always : A → ↯ A ℓ
+always {ℓ = ℓ} a .Dom = ⊤ {ℓ = ℓ}
 always a .elt _ = a
 
 ↯-bind : ↯ A ℓ → (A → ↯ B ℓ') → ↯ B (ℓ ⊔ ℓ')
