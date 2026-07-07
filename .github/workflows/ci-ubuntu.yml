@@ -209,7 +209,8 @@ jobs:
           cabal run GenerateEverything -- --include-deprecated
           ${{ env.AGDA }} -WnoUserWarning --safe EverythingSafe.agda
           ${{ env.AGDA }} -WnoUserWarning Everything.agda
-
+      
+      # upload agdai files so they can be re-used by test-stdlib-golden
       - name: Upload agdai files
         uses: actions/upload-artifact@v4
         with:
@@ -217,6 +218,9 @@ jobs:
           name: ubuntu-agdai
           path: _build/
 
+  ########################################################################
+  ## GOLDEN TESTING
+  ########################################################################
   test-stdlib-golden:
     needs: [init, test-stdlib]
     runs-on: ubuntu-latest
@@ -241,7 +245,7 @@ jobs:
         with:
           name: ubuntu-agdai
           path: _build/
-
+      
       - name: Set permissions
         run: |
           sudo chmod -R 777 ~/.cabal/bin/
@@ -263,11 +267,12 @@ jobs:
           restore-keys: | 
             ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
 
+        # compute a hash to be compared against after running golden tests
+        # if dist-newstyle changes, it means that the cache needs to be updated, so we use as hash to make that comparison
       - name: Compute cache hash
         id: cache-hash
         run: |
           { printf "CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_ENV}
-
 
       - name: Golden testing
         run: |
