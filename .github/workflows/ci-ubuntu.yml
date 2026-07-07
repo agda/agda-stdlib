@@ -259,6 +259,7 @@ jobs:
         id: restore-golden
         with:
           path: ./tests/_config/dist-newstyle/
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache-${{ github.sha }}
           restore-keys: | 
             ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
 
