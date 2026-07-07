@@ -1,7 +1,13 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The partial monad
+-- The partial monad cf. https://1lab.dev/Data.Partial.Base.html
+--
+-- Modulo proof-relevance, this defines the free pointed DCPO,
+-- whereas delay-like monads, as in `Effect.Monad.Partiality`,
+-- are aiming to define the free ωCPO.
+-- NB. in each case, there are additional 'up to' considerations
+-- wrt 'appropriate' setoid equality/quotient/bisimilarity.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -17,6 +23,7 @@ private
   variable
     a ℓ ℓ' : Level
     A B : Set a
+
 
 ------------------------------------------------------------------------
 -- Object part: type definition
