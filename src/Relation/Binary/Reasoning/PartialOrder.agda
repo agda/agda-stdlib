@@ -61,3 +61,12 @@ open import Relation.Binary.Reasoning.Base.Triple
   (Strict.<-≤-trans Eq.sym trans antisym ≤-respʳ-≈)
   (Strict.≤-<-trans trans antisym ≤-respˡ-≈)
   public
+
+antisym-step-≈-⟩ : ∀ x {y z} → y IsRelatedTo z → y ≤ x → x ≤ y → x IsRelatedTo z
+antisym-step-≈-⟩ x yRz y≤x x≤y = step-≈-⟩ x yRz (antisym x≤y y≤x)
+
+antisym-step-≈-⟨ : ∀ x {y z} → y IsRelatedTo z → x ≤ y → y ≤ x → x IsRelatedTo z
+antisym-step-≈-⟨ x yRz x≤y y≤x = step-≈-⟩ x yRz (antisym x≤y y≤x)
+
+syntax antisym-step-≈-⟩ x yRz y≤x x≤y = x ≈⟨ y≤x ⟨⟩ x≤y ⟩ yRz
+syntax antisym-step-≈-⟨ x yRz y≤x x≤y = x ≈⟨ x≤y ⟩⟨ y≤x ⟩ yRz

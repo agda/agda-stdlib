@@ -252,6 +252,13 @@ x⋆≈1+x⋆x x = ≤-antisym (⋆-elimʳ (x≤x+y _ _) $ begin
   x ⋆ * x                ≤⟨ y≤x+y _ _ ⟩
   1# + x ⋆ * x           ∎) $ starExpansiveˡ _
 
+{- FAILS: parser falls over
+  begin-equality
+  x ⋆ ≈⟨ {!!} ⟨⟩ ? ⟩
+  {!!} ≈⟨ {!!} ⟩
+  1# + x ⋆ * x ∎
+-}
+
 -- special cases for 0# and 1#
 
 0⋆≤1 : 0# ⋆ ≤ 1#
