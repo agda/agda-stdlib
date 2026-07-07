@@ -322,7 +322,7 @@ jobs:
           include-hidden-files: true
           path: ${{ needs.init.outputs.AGDA_HTML_DIR }}
 
-  html-delpoy:
+  html-deploy:
     needs: [init, html-generate, test-stdlib-golden]
     runs-on: ubuntu-latest
     steps:
@@ -352,11 +352,11 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
-	- name: Delete artifacts
-	  uses: geekyeggo/delete-artifact@v6
-	  with:
-	    failOnError: false
-	    name: |
-	      ubuntu-cabal-dir
-	      ubuntu-ghc-dir
-	      ubuntu-html
+    - name: Delete artifacts
+      uses: geekyeggo/delete-artifact@v6
+      with:
+        failOnError: false
+        name: |
+          ubuntu-cabal-dir
+          ubuntu-ghc-dir
+          ubuntu-html
