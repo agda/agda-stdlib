@@ -10,8 +10,8 @@ module Effect.Monad.Partial where
 
 open import Level using (Level; suc; zero;_⊔_)
 open import Data.Product using (_×_; Σ; Σ-syntax; _,_)
-open import Data.Empty using (⊥-elim; ⊥)
-open import Data.Unit using (⊤)
+open import Data.Empty.Polymorphic using (⊥-elim; ⊥)
+open import Data.Unit.Polymorphic using (⊤)
 
 private  
   variable
