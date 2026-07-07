@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Pointwise where
 
@@ -65,7 +65,7 @@ isEquivalence eq = record
 isDecEquivalence : IsDecEquivalence R → IsDecEquivalence (Pointwise R)
 isDecEquivalence eq = record
   { isEquivalence = isEquivalence DE.isEquivalence
-  ; _≟_           = decidable     DE._≟_
+  ; _≈?_          = decidable     DE._≈?_
   } where module DE = IsDecEquivalence eq
 
 isPreorder : IsPreorder R S → IsPreorder (Pointwise R) (Pointwise S)
@@ -124,8 +124,8 @@ Any-resp-Pointwise resp (x∼y ∷ xs) (there pxs) =
 AllPairs-resp-Pointwise : R Respects₂ S →
                           (AllPairs R) Respects (Pointwise S)
 AllPairs-resp-Pointwise _                    []         []         = []
-AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
-  All-resp-Pointwise respₗ xs (All.map (respᵣ x∼y) px) ∷
+AllPairs-resp-Pointwise resp@(respˡ , respʳ) (x∼y ∷ xs) (px ∷ pxs) =
+  All-resp-Pointwise respʳ xs (All.map (respˡ x∼y) px) ∷
   (AllPairs-resp-Pointwise resp xs pxs)
 
 ------------------------------------------------------------------------

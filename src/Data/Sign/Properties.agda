@@ -4,7 +4,7 @@
 -- Some properties about signs
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sign.Properties where
 
@@ -34,22 +34,22 @@ open import Algebra.Consequences.Propositional
 ------------------------------------------------------------------------
 -- Equality
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality Sign
-- ≟ - = yes refl
-- ≟ + = no λ()
-+ ≟ - = no λ()
-+ ≟ + = yes refl
+_≡?_ : DecidableEquality Sign
+- ≡? - = yes refl
+- ≡? + = no λ()
++ ≡? - = no λ()
++ ≡? + = yes refl
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid Sign
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ≡-isDecEquivalence : IsDecEquivalence _≡_
-≡-isDecEquivalence = isDecEquivalence _≟_
+≡-isDecEquivalence = isDecEquivalence _≡?_
 
 ------------------------------------------------------------------------
 -- opposite
@@ -209,3 +209,19 @@ s*opposite[s]≡- - = refl
 opposite[s]*s≡- : ∀ s → opposite s * s ≡ -
 opposite[s]*s≡- + = refl
 opposite[s]*s≡- - = refl
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

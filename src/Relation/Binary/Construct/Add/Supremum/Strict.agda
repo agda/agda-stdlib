@@ -4,7 +4,7 @@
 -- The lifting of a strict order to incorporate a new supremum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
@@ -101,7 +101,7 @@ module _ {r} {_≤_ : Rel A r} where
 <⁺-respʳ-≡ = subst (_ <⁺_)
 
 <⁺-resp-≡ : _<⁺_ Respects₂ _≡_
-<⁺-resp-≡ = <⁺-respʳ-≡ , <⁺-respˡ-≡
+<⁺-resp-≡ = <⁺-respˡ-≡ , <⁺-respʳ-≡
 
 ------------------------------------------------------------------------
 -- Relational properties + setoid equality
@@ -132,7 +132,7 @@ module _ {e} {_≈_ : Rel A e} where
   <⁺-respʳ-≈⁺ <-respʳ-≈ ⊤⁺≈⊤⁺ q     = q
 
   <⁺-resp-≈⁺ : _<_ Respects₂ _≈_ → _<⁺_ Respects₂ _≈⁺_
-  <⁺-resp-≈⁺ = map <⁺-respʳ-≈⁺ <⁺-respˡ-≈⁺
+  <⁺-resp-≈⁺ = map <⁺-respˡ-≈⁺ <⁺-respʳ-≈⁺
 
 ------------------------------------------------------------------------
 -- Structures + propositional equality
@@ -150,7 +150,7 @@ module _ {e} {_≈_ : Rel A e} where
                                IsDecStrictPartialOrder _≡_ _<⁺_
 <⁺-isDecStrictPartialOrder-≡ dectot = record
   { isStrictPartialOrder = <⁺-isStrictPartialOrder-≡ isStrictPartialOrder
-  ; _≟_                  = ≡-dec _≟_
+  ; _≈?_                 = ≡-dec _≈?_
   ; _<?_                 = <⁺-dec _<?_
   } where open IsDecStrictPartialOrder dectot
 
@@ -181,7 +181,7 @@ module _ {e} {_≈_ : Rel A e} where
                                IsDecStrictPartialOrder _≈⁺_ _<⁺_
   <⁺-isDecStrictPartialOrder dectot = record
     { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
-    ; _≟_                  = ≈⁺-dec _≟_
+    ; _≈?_                 = ≈⁺-dec _≈?_
     ; _<?_                 = <⁺-dec _<?_
     } where open IsDecStrictPartialOrder dectot
 
@@ -191,4 +191,3 @@ module _ {e} {_≈_ : Rel A e} where
     { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
     ; compare              = <⁺-cmp compare
     } where open IsStrictTotalOrder strictot
-

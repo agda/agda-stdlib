@@ -4,7 +4,7 @@
 -- Sums of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Binary.LeftOrder where
 
@@ -14,6 +14,7 @@ open import Data.Sum.Relation.Binary.Pointwise as PW
 open import Data.Product.Base using (_,_)
 open import Data.Empty using (⊥)
 open import Function.Base using (_$_; _∘_)
+open import Induction.WellFounded
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary.Decidable.Core using (yes; no)
@@ -89,6 +90,20 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ⊎-<-decidable dec₁ dec₂ (inj₂ x) (inj₁ y) = no λ()
   ⊎-<-decidable dec₁ dec₂ (inj₂ x) (inj₂ y) = Dec.map′ ₂∼₂ drop-inj₂ (dec₂ x y)
 
+  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
+  ⊎-<-wellFounded wf₁ wf₂ x = acc (⊎-<-acc x)
+    where
+    ⊎-<-acc₁ : ∀ {x} → Acc ∼₁ x → WfRec (∼₁ ⊎-< ∼₂) (Acc (∼₁ ⊎-< ∼₂)) (inj₁ x)
+    ⊎-<-acc₁ (acc rec) (₁∼₁ x∼₁y) = acc (⊎-<-acc₁ (rec x∼₁y))
+
+    ⊎-<-acc₂ : ∀ {x} → Acc ∼₂ x → WfRec (∼₁ ⊎-< ∼₂) (Acc (∼₁ ⊎-< ∼₂)) (inj₂ x)
+    ⊎-<-acc₂ (acc rec) {inj₁ x} ₁∼₂ = acc (⊎-<-acc₁ (wf₁ x))
+    ⊎-<-acc₂ (acc rec) (₂∼₂ x∼₂y) = acc (⊎-<-acc₂ (rec x∼₂y))
+
+    ⊎-<-acc  : ∀ x → WfRec (∼₁ ⊎-< ∼₂) (Acc (∼₁ ⊎-< ∼₂)) x
+    ⊎-<-acc (inj₁ x) = ⊎-<-acc₁ (wf₁ x)
+    ⊎-<-acc (inj₂ x) = ⊎-<-acc₂ (wf₂ x)
+
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}
          {ℓ₃ ℓ₄} {∼₂ : Rel A₂ ℓ₃} {≈₂ : Rel A₂ ℓ₄}
@@ -123,7 +138,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
 
   ⊎-<-respects₂ : ∼₁ Respects₂ ≈₁ → ∼₂ Respects₂ ≈₂ →
                   (∼₁ ⊎-< ∼₂) Respects₂ (Pointwise ≈₁ ≈₂)
-  ⊎-<-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-<-respectsʳ r₁ r₂ , ⊎-<-respectsˡ l₁ l₂
+  ⊎-<-respects₂ (l₁ , r₁) (l₂ , r₂) = ⊎-<-respectsˡ l₁ l₂ , ⊎-<-respectsʳ r₁ r₂
 
   ⊎-<-trichotomous : Trichotomous ≈₁ ∼₁ → Trichotomous ≈₂ ∼₂ →
                      Trichotomous (Pointwise ≈₁ ≈₂) (∼₁ ⊎-< ∼₂)
@@ -188,7 +203,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                         IsDecTotalOrder (Pointwise ≈₁ ≈₂) (∼₁ ⊎-< ∼₂)
   ⊎-<-isDecTotalOrder to₁ to₂ = record
     { isTotalOrder = ⊎-<-isTotalOrder (isTotalOrder to₁) (isTotalOrder to₂)
-    ; _≟_          = PW.⊎-decidable (_≟_  to₁) (_≟_  to₂)
+    ; _≈?_         = PW.⊎-decidable (_≈?_  to₁) (_≈?_  to₂)
     ; _≤?_         = ⊎-<-decidable (_≤?_ to₁) (_≤?_ to₂)
     }
     where open IsDecTotalOrder

@@ -2,7 +2,7 @@
 
 [![Ubuntu build](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml/badge.svg?branch=experimental)](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml)
 
-**Note**: The library is currently tracking Agda 2.8.0 release candidate 3 in preparation for the release of Agda 2.8.0 and version 2.3 of the library. You will need to have the release candidate installed in order to type-check it.
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.09241/status.svg)](https://doi.org/10.21105/joss.09241)
 
 The Agda standard library
 =========================
@@ -32,6 +32,17 @@ in glorious clickable HTML.
 
 ## Installation instructions
 
+### Automated installation (currently experimental)
+
+On Unix-style systems, it should be as simple as running the following command in
+a shell:
+
+```shell
+sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh)"
+```
+
+### Manual installation
+
 See the [installation instructions](https://github.com/agda/agda-stdlib/blob/master/doc/installation-guide.md) for the latest version of the standard library.
 
 #### Old versions of Agda
@@ -58,9 +69,9 @@ Most of the library can be type-checked using the `--safe` flag. Please consult
 [GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L32-L82)
 for a full list of modules that use unsafe features.
 
-#### The `--cubical-compatible` flag
+#### The `--without-K` flag
 
-Most of the library can be type-checked using the `--cubical-compatible` flag, which since Agda v2.6.3 supersedes the former `--without-K` flag. Please consult
+Most of the library can be type-checked using the `--without-K` flag. Please consult
 [GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L91-L111)
 for a full list of modules that use axiom K, requiring the `--with-K` flag.
 

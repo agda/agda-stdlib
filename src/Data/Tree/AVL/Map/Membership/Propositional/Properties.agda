@@ -5,7 +5,7 @@
 -- up to propositional equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
@@ -57,7 +57,7 @@ private
     kx : Key × V
 
 ≈ₖᵥ-trans : Transitive (_≈ₖᵥ_ {V = V})
-≈ₖᵥ-trans {i = i} {k = k} = ×-transitive Eq.trans ≡-trans {i = i} {k = k}
+≈ₖᵥ-trans {x = x} {z = z} = ×-transitive Eq.trans ≡-trans {x = x} {z = z}
 
 ≈ₖᵥ-sym : Symmetric (_≈ₖᵥ_ {V = V})
 ≈ₖᵥ-sym {x = x} {y = y} = ×-symmetric sym ≡-sym {x} {y}
@@ -92,7 +92,7 @@ private
   k′≉key-p k′≈key-p = k≉k′ (Eq.trans (≈-lookup (tree p)) (Eq.sym k′≈key-p))
 
 ∈ₖᵥ-insert⁺⁺ : (k , x) ∈ₖᵥ insert k x m
-∈ₖᵥ-insert⁺⁺ {k = k} {m = tree t} with IAny.any? ((k ≟_) ∘ key) t
+∈ₖᵥ-insert⁺⁺ {k = k} {m = tree t} with IAny.any? ((k ≈?_) ∘ key) t
 ... | yes k∈ = tree (IAnyₚ.Any-insert-just _ _ _ _ (λ k′ → _, ≡-refl) k∈)
 ... | no ¬k∈ = tree (IAnyₚ.Any-insert-nothing _ _ _ _ (refl , ≡-refl) ¬k∈)
 

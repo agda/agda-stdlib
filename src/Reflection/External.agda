@@ -4,7 +4,7 @@
 -- Support for system calls as part of reflection
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.External where
 

@@ -7,7 +7,7 @@
 -- Relation.Nullary.Decidable
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Decidable.Core where
 
@@ -28,7 +28,7 @@ open import Relation.Nullary.Recomputable.Core as Recomputable
 open import Relation.Nullary.Reflects as Reflects
   hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
-  using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
+  using (¬_; ¬¬-η; Stable; negated-stable; contradiction; DoubleNegation)
 
 
 private
@@ -91,8 +91,8 @@ recompute-irrelevant-id = Recomputable.recompute-irrelevant-id ∘ recompute
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
 
-infixr 1 _⊎-dec_
-infixr 2 _×-dec_ _→-dec_
+infixr 1 _⊎?_
+infixr 2 _×?_ _→?_
 
 T? : ∀ x → Dec (T x)
 T? x = x because T-reflects x
@@ -101,25 +101,25 @@ T? x = x because T-reflects x
 does  (¬? a?) = not (does a?)
 proof (¬? a?) = ¬-reflects (proof a?)
 
-⊤-dec : Dec {a} ⊤
-does  ⊤-dec = true
-proof ⊤-dec = ⊤-reflects
+⊤? : Dec {a} ⊤
+does  ⊤? = true
+proof ⊤? = ⊤-reflects
 
-_×-dec_ : Dec A → Dec B → Dec (A × B)
-does  (a? ×-dec b?) = does a? ∧ does b?
-proof (a? ×-dec b?) = proof a? ×-reflects proof b?
+_×?_ : Dec A → Dec B → Dec (A × B)
+does  (a? ×? b?) = does a? ∧ does b?
+proof (a? ×? b?) = proof a? ×-reflects proof b?
 
-⊥-dec : Dec {a} ⊥
-does  ⊥-dec  = false
-proof ⊥-dec  = ⊥-reflects
+⊥? : Dec {a} ⊥
+does  ⊥?  = false
+proof ⊥?  = ⊥-reflects
 
-_⊎-dec_ : Dec A → Dec B → Dec (A ⊎ B)
-does  (a? ⊎-dec b?) = does a? ∨ does b?
-proof (a? ⊎-dec b?) = proof a? ⊎-reflects proof b?
+_⊎?_ : Dec A → Dec B → Dec (A ⊎ B)
+does  (a? ⊎? b?) = does a? ∨ does b?
+proof (a? ⊎? b?) = proof a? ⊎-reflects proof b?
 
-_→-dec_ : Dec A → Dec B → Dec (A → B)
-does  (a? →-dec b?) = not (does a?) ∨ does b?
-proof (a? →-dec b?) = proof a? →-reflects proof b?
+_→?_ : Dec A → Dec B → Dec (A → B)
+does  (a? →? b?) = not (does a?) ∨ does b?
+proof (a? →? b?) = proof a? →-reflects proof b?
 
 ------------------------------------------------------------------------
 -- Relationship with Maybe
@@ -215,7 +215,7 @@ decidable-stable (true  because  [a]) ¬¬a = invert [a]
 decidable-stable (false because [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
-¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
+¬-drop-Dec ¬¬a? = map′ negated-stable ¬¬-η (¬? ¬¬a?)
 
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).
@@ -257,3 +257,35 @@ toDec = fromSum
 "Warning: toDec was deprecated in v2.1.
 Please use Relation.Nullary.Decidable.Core.fromSum instead."
 #-}
+
+-- Version 2.4
+
+infixr 1 _⊎-dec_
+infixr 2 _×-dec_ _→-dec_
+
+⊤-dec = ⊤?
+{-# WARNING_ON_USAGE ⊤-dec
+"Warning: ⊤-dec was deprecated in v2.4.
+Please use Relation.Nullary.Decidable.Core.⊤? instead."
+#-}
+⊥-dec = ⊥?
+{-# WARNING_ON_USAGE ⊥-dec
+"Warning: ⊥-dec was deprecated in v2.4.
+Please use Relation.Nullary.Decidable.Core.⊥? instead."
+#-}
+_×-dec_ = _×?_
+{-# WARNING_ON_USAGE _×-dec_
+"Warning: _×-dec_ was deprecated in v2.4.
+Please use Relation.Nullary.Decidable.Core._×?_ instead."
+#-}
+_⊎-dec_ = _⊎?_
+{-# WARNING_ON_USAGE _⊎-dec_
+"Warning: _⊎-dec_ was deprecated in v2.4.
+Please use Relation.Nullary.Decidable.Core._⊎?_ instead."
+#-}
+_→-dec_ = _→?_
+{-# WARNING_ON_USAGE _→-dec_
+"Warning: _→-dec_ was deprecated in v2.4.
+Please use Relation.Nullary.Decidable.Core._→?_ instead."
+#-}
+

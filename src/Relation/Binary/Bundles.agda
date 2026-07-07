@@ -6,7 +6,7 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Bundles where
 
@@ -64,7 +64,7 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
     isDecEquivalence : IsDecEquivalence _≈_
 
   open IsDecEquivalence isDecEquivalence public
-    using (_≟_; isEquivalence)
+    using (_≈?_; _≟_; isEquivalence)
 
   setoid : Setoid c ℓ
   setoid = record
@@ -140,7 +140,7 @@ record DecPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DPO = IsDecPreorder isDecPreorder
 
   open DPO public
-    using (_≟_; _≲?_; isPreorder)
+    using (_≈?_; _≲?_; isPreorder)
 
   preorder : Preorder c ℓ₁ ℓ₂
   preorder = record
@@ -203,7 +203,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DPO = IsDecPartialOrder isDecPartialOrder
 
   open DPO public
-    using (_≟_; _≤?_; isPartialOrder; isDecPreorder)
+    using (_≈?_; _≤?_; isPartialOrder; isDecPreorder)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
@@ -258,7 +258,7 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
   private module DSPO = IsDecStrictPartialOrder isDecStrictPartialOrder
 
   open DSPO public
-    using (_<?_; _≟_; isStrictPartialOrder)
+    using (_<?_; _≈?_; isStrictPartialOrder)
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
   strictPartialOrder = record
@@ -318,7 +318,7 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   private module DTO = IsDecTotalOrder isDecTotalOrder
 
   open DTO public
-    using (_≟_; _≤?_; isTotalOrder; isDecPartialOrder)
+    using (_≈?_; _≤?_; isTotalOrder; isDecPartialOrder)
 
   totalOrder : TotalOrder c ℓ₁ ℓ₂
   totalOrder = record
@@ -352,7 +352,7 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
 
   open IsStrictTotalOrder isStrictTotalOrder public
     using
-    ( _≟_; _<?_; compare; isStrictPartialOrder
+    ( _≈?_; _<?_; compare; isStrictPartialOrder
     ; isDecStrictPartialOrder; isDecEquivalence
     )
 
@@ -371,16 +371,6 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
 
   open DecStrictPartialOrder decStrictPartialOrder public
     using (module Eq)
-
-  decSetoid : DecSetoid c ℓ₁
-  decSetoid = record
-    { isDecEquivalence = Eq.isDecEquivalence
-    }
-  {-# WARNING_ON_USAGE decSetoid
-  "Warning: decSetoid was deprecated in v1.3.
-  Please use Eq.decSetoid instead."
-  #-}
-
 
 record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
@@ -423,4 +413,3 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
   open RawRelation rawRelation public
     renaming (_≁_ to _¬#_; _∼ᵒ_ to _#ᵒ_; _≁ᵒ_ to _¬#ᵒ_)
     hiding (Carrier; _≈_ ; _∼_)
-

@@ -7,7 +7,7 @@
 -- Relation.Binary.PropositionalEquality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.PropositionalEquality.Core where
 
@@ -16,14 +16,17 @@ open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Substitutive
+  using (Symmetric; Transitive; Substitutive; Irreflexive
         ; _Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction-irr)
 
 private
   variable
     a b ℓ : Level
     A B C : Set a
+    Whatever : Set _
+    x : A
+
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -95,10 +98,16 @@ respʳ : ∀ (∼ : Rel A ℓ) → ∼ Respectsʳ _≡_
 respʳ _∼_ refl x∼y = x∼y
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
-resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
+resp₂ _∼_ = respˡ _∼_ , respʳ _∼_
 
 ------------------------------------------------------------------------
 -- Properties of _≢_
 
 ≢-sym : Symmetric {A = A} _≢_
 ≢-sym x≢y =  x≢y ∘ sym
+
+≢-irrefl : Irreflexive {A = A} _≡_ _≢_
+≢-irrefl x≡y x≢y = x≢y x≡y
+
+¬[x≢x] : .(x ≢ x) → Whatever
+¬[x≢x] = contradiction-irr refl

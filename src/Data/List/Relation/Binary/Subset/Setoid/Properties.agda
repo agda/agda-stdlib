@@ -4,7 +4,7 @@
 -- Properties of the extensional sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
@@ -338,16 +338,3 @@ module _ (S : Setoid a ℓ) where
   applyUpTo⁺ : ∀ (f : ℕ → A) {m n} → m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   applyUpTo⁺ _ (s≤s m≤n) (here  f≡f[0]) = here f≡f[0]
   applyUpTo⁺ _ (s≤s m≤n) (there v∈xs)   = there (applyUpTo⁺ _ m≤n v∈xs)
-
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
-
--- Version 1.5
-
-filter⁺ = filter-⊆
-{-# WARNING_ON_USAGE filter⁺
-"Warning: filter⁺ was deprecated in v1.5.
-Please use filter-⊆ instead."
-#-}

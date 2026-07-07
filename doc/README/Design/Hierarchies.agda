@@ -9,6 +9,7 @@
 module README.Design.Hierarchies where
 
 open import Data.Sum.Base using (_⊎_)
+open import Data.Product.Base using (_×_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_Preserves₂_⟶_⟶_)
 
@@ -120,6 +121,17 @@ LeftIdentity _≈_ e _∙_ = ∀ x → (e ∙ x) ≈ x
 RightIdentity : Rel A ℓ → A → Op₂ A → Set _
 RightIdentity _≈_ e _∙_ = ∀ x → (x ∙ e) ≈ x
 
+Identity : Rel A ℓ → A → Op₂ A → Set _
+Identity _≈_ e ∙ = (LeftIdentity _≈_ e ∙) × (RightIdentity _≈_ e ∙)
+
+LeftZero : Rel A ℓ → A → Op₂ A → Set _
+LeftZero _≈_ z _∙_ = ∀ x → (z ∙ x) ≈ z
+
+DistributesOverʳ : Rel A ℓ → Op₂ A → Op₂ A → Set _
+DistributesOverʳ _≈_ _*_ _+_ =
+    ∀ x y z → ((y + z) * x) ≈ ((y * x) + (z * x))
+
+
 -- Note that the types in `Definitions` modules are not meant to express
 -- the full concept on their own. For example the `Associative` type does
 -- not require the underlying relation to be an equivalence relation.
@@ -164,7 +176,21 @@ record IsSemigroup {A : Set a} (≈ : Rel A ℓ) (∙ : Op₂ A) : Set (a ⊔ �
 -- fields of the `isMagma` record can be accessed directly; this
 -- technique enables the user of an `IsSemigroup` record to use underlying
 -- records without having to manually open an entire record hierarchy.
---
+
+-- Thus, we may incrementally build monoids out of semigroups by adding an
+-- `Identity` for the underlying operation, as follows:
+
+record IsMonoid {A : Set a} (≈ : Rel A ℓ) (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isSemigroup : IsSemigroup ≈ ∙
+    identity    : Identity ≈ ε ∙
+
+  open IsSemigroup isSemigroup public
+
+-- where the `open IsSemigroup isSemigroup public` ensures, transitively,
+-- that both `associative` and (all the subfields of) `isMagma` are brought
+-- into scope.
+
 -- This is not always possible, though. Consider the following definition
 -- of preorders:
 
@@ -184,6 +210,54 @@ record IsPreorder {A : Set a}
 -- `IsPreorder` record. Instead we provide an internal module and the
 -- equality fields can be accessed via `Eq.refl` and `Eq.trans`.
 
+-- More generally, we quickly face the issue of how to model structures
+-- in which there are *two* (or more!) interacting algebraic substructures
+-- which *share* an underlying `IsEquivalence` in terms of which their
+-- respective axiomatisations are expressed.
+
+-- For example, in the family of `IsXRing` structures, there is a
+-- fundamental representation problem, namely how to associate the
+-- multiplicative structure to the additive, in such a way as to avoid
+-- the possibility of ambiguity as to the underlying `IsEquivalence`
+-- substructure which is to be *shared* between the two operations.
+
+-- The simplest instance of this is `IsNearSemiring`, defined as:
+
+record IsNearSemiring
+  {A : Set a} (≈ : Rel A ℓ) (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isMonoid    : IsMonoid ≈ + 0#
+    *-cong        : * Preserves₂ ≈ ⟶ ≈ ⟶ ≈
+    *-assoc       : Associative ≈ *
+    distribʳ      : DistributesOverʳ ≈ * +
+    zeroˡ         : LeftZero ≈ 0# *
+
+-- where a multiplicative `IsSemigroup *` *acts* on the underlying
+-- `+-isMonoid` (whence the distributivity), but is not represented
+-- *directly* as a primitive `*-isSemigroup : IsSemigroup *` field.
+
+-- Rather, the `stdlib` designers have chosen to privilege the underlying
+-- *additive* structure over the multiplicative: thus for structure
+-- `IsNearSemiring` defined here, the additive structure is declared
+-- via a field `+-isMonoid : IsMonoid + 0#`, while the multiplicative
+-- is given 'unbundled' as the *components* of an `IsSemigroup *` structure,
+-- namely as an operation satisfying both `*-cong : Congruent₂ *` and
+-- also `*-assoc : Associative *`, from which the corresponding `IsMagma *`
+-- and `IsSemigroup *` are then immediately derivable:
+
+  open IsMonoid +-isMonoid public using (isEquivalence)
+
+  *-isMagma : IsMagma ≈ *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup ≈ *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; associative   = *-assoc
+    }
 
 ------------------------------------------------------------------------
 -- X.Bundles

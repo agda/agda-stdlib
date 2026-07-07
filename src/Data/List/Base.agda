@@ -7,7 +7,7 @@
 -- See README.Data.List for examples of how to use and reason about
 -- lists.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Base where
 
@@ -395,14 +395,16 @@ breakᵇ p = break (T? ∘ p)
 -- Some lines may be empty if the input contains at least two
 -- consecutive newline characters.
 linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
-linesBy {A = A} P? = go nothing where
+linesBy {A = A} P? = go [] where
 
-  go : Maybe (List A) → List A → List (List A)
-  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  -- ideally this should use a snoclist for the accumulator
+  -- but unfortunately this is in the dependency graph of
+  -- Data.SnocList.Base
+  go : List A → List A → List (List A)
+  go acc []       = [ reverse acc ]
   go acc (c ∷ cs) = if does (P? c)
-    then reverse acc′ ∷ go nothing cs
-    else go (just (c ∷ acc′)) cs
-    where acc′ = Maybe.fromMaybe [] acc
+    then reverse acc ∷ go [] cs
+    else go (c ∷ acc) cs
 
 linesByᵇ : (A → Bool) → List A → List (List A)
 linesByᵇ p = linesBy (T? ∘ p)
@@ -524,16 +526,6 @@ module _ (A : Set a) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.4
-
-infixl 5 _∷ʳ'_
-_∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
-_∷ʳ'_ = InitLast._∷ʳ′_
-{-# WARNING_ON_USAGE _∷ʳ'_
-"Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
-Please use _∷ʳ′_ (ending in a prime) instead."
-#-}
-
 -- Version 2.0
 
 infixl 5 _─_
@@ -576,7 +568,7 @@ Please use Data.Bool.ListAction.and instead."
 #-}
 {-# WARNING_ON_USAGE all
 "Warning: all was deprecated in v2.3.
-Please use Data.Nat.ListAction.all instead."
+Please use Data.Bool.ListAction.all instead."
 #-}
 
 or : List Bool → Bool

@@ -4,7 +4,7 @@
 -- Properties of pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Pointwise.Properties where
 
@@ -16,7 +16,7 @@ open import Level
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary using (yes; no; _×-dec_)
+open import Relation.Nullary using (yes; no; _×?_)
 import Relation.Nullary.Decidable as Dec
 
 open import Data.List.Relation.Binary.Pointwise.Base
@@ -64,14 +64,14 @@ respˡ resp []            []            = []
 respˡ resp (x≈y ∷ xs≈ys) (x∼z ∷ xs∼zs) = resp x≈y x∼z ∷ respˡ resp xs≈ys xs∼zs
 
 respects₂ : R Respects₂ S → (Pointwise R) Respects₂ (Pointwise S)
-respects₂ (rʳ , rˡ) = respʳ rʳ , respˡ rˡ
+respects₂ (rˡ , rʳ) = respˡ rˡ , respʳ rʳ
 
 decidable : Decidable R → Decidable (Pointwise R)
 decidable _  []       []       = yes []
 decidable _  []       (y ∷ ys) = no λ()
 decidable _  (x ∷ xs) []       = no λ()
 decidable R? (x ∷ xs) (y ∷ ys) = Dec.map′ (uncurry _∷_) uncons
-  (R? x y ×-dec decidable R? xs ys)
+  (R? x y ×? decidable R? xs ys)
 
 irrelevant : Irrelevant R → Irrelevant (Pointwise R)
 irrelevant irr []       []         = ≡.refl

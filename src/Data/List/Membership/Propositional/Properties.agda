@@ -4,7 +4,7 @@
 -- Properties related to propositional list membership
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Membership.Propositional.Properties where
 
@@ -363,6 +363,15 @@ module _ {_•_ : Op₂ A} where
   foldr-selective : Selective _≡_ _•_ → ∀ e xs →
                     (foldr _•_ e xs ≡ e) ⊎ (foldr _•_ e xs ∈ xs)
   foldr-selective = Membership.foldr-selective (≡.setoid A)
+
+------------------------------------------------------------------------
+-- foldl
+
+module _ {_•_ : Op₂ A} where
+
+  foldl-selective : Selective _≡_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≡ e) ⊎ (foldl _•_ e xs ∈ xs)
+  foldl-selective = Membership.foldl-selective (≡.setoid A)
 
 ------------------------------------------------------------------------
 -- allFin
