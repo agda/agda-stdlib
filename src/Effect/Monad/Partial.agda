@@ -19,7 +19,7 @@ private
     A B : Set a
 
 ------------------------------------------------------------------------
--- The partial monad
+-- Object part: type definition
 
 record ↯ (A : Set a) (ℓ : Level) : Set (a ⊔ suc ℓ) where
   field
@@ -28,17 +28,8 @@ record ↯ (A : Set a) (ℓ : Level) : Set (a ⊔ suc ℓ) where
 
 open ↯
 
-never : ↯ A ℓ
-never {ℓ = ℓ} .Dom = ⊥ {ℓ = ℓ}
-never .elt = ⊥-elim
-
-always : A → ↯ A ℓ
-always {ℓ = ℓ} a .Dom = ⊤ {ℓ = ℓ}
-always a .elt _ = a
-
-↯-bind : ↯ A ℓ → (A → ↯ B ℓ') → ↯ B (ℓ ⊔ ℓ')
-↯-bind a↯ f .Dom = Σ[ a↓ ∈ a↯ .Dom ] f (a↯ .elt a↓) .Dom
-↯-bind a↯ f .elt (a↓ , fa↓) = f (a↯ .elt a↓) .elt fa↓
+------------------------------------------------------------------------
+-- Arrow part: Functor, Applicative, Monad component definition
 
 ↯-map : (A → B) → ↯ A ℓ → ↯ B ℓ
 ↯-map f a↯ .Dom = a↯ .Dom
@@ -47,4 +38,19 @@ always a .elt _ = a
 ↯-ap : ↯ (A → B) ℓ → ↯ A ℓ' → ↯ B (ℓ ⊔ ℓ')
 ↯-ap a→b↯ a↯ .Dom = a→b↯ .Dom × a↯ .Dom
 ↯-ap a→b↯ a↯ .elt (f↓ , a↓) = a→b↯ .elt f↓ (a↯ .elt a↓)
+
+↯-bind : ↯ A ℓ → (A → ↯ B ℓ') → ↯ B (ℓ ⊔ ℓ')
+↯-bind a↯ f .Dom = Σ[ a↓ ∈ a↯ .Dom ] f (a↯ .elt a↓) .Dom
+↯-bind a↯ f .elt (a↓ , fa↓) = f (a↯ .elt a↓) .elt fa↓
+
+------------------------------------------------------------------------
+-- Specific constructions
+
+never : ↯ A ℓ
+never {ℓ = ℓ} .Dom = ⊥ {ℓ = ℓ}
+never .elt = ⊥-elim
+
+always : A → ↯ A ℓ
+always {ℓ = ℓ} a .Dom = ⊤ {ℓ = ℓ}
+always a .elt _ = a
 
