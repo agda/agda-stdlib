@@ -8,9 +8,9 @@
 #
 # For more information, see https://github.com/haskell-CI/haskell-ci
 #
-# version: 0.19.20260209
+# version: 0.19.20260624
 #
-# REGENDATA ("0.19.20260209",["github","--no-cabal-check","agda-stdlib-utils.cabal"])
+# REGENDATA ("0.19.20260624",["github","--no-cabal-check","agda-stdlib-utils.cabal"])
 #
 name: Haskell-CI
 on:
@@ -70,29 +70,14 @@ jobs:
             compilerVersion: 9.4.8
             setup-method: ghcup
             allow-failure: false
+          - compiler: ghc-9.4.2
+            compilerKind: ghc
+            compilerVersion: 9.4.2
+            setup-method: ghcup
+            allow-failure: false
           - compiler: ghc-9.2.8
             compilerKind: ghc
             compilerVersion: 9.2.8
-            setup-method: ghcup
-            allow-failure: false
-          - compiler: ghc-9.0.2
-            compilerKind: ghc
-            compilerVersion: 9.0.2
-            setup-method: ghcup
-            allow-failure: false
-          - compiler: ghc-8.10.7
-            compilerKind: ghc
-            compilerVersion: 8.10.7
-            setup-method: ghcup
-            allow-failure: false
-          - compiler: ghc-8.8.4
-            compilerKind: ghc
-            compilerVersion: 8.8.4
-            setup-method: ghcup
-            allow-failure: false
-          - compiler: ghc-8.6.5
-            compilerKind: ghc
-            compilerVersion: 8.6.5
             setup-method: ghcup
             allow-failure: false
       fail-fast: false
@@ -185,7 +170,7 @@ jobs:
           chmod a+x $HOME/.cabal/bin/cabal-plan
           cabal-plan --version
       - name: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: source
       - name: initial cabal.project for sdist
@@ -213,8 +198,8 @@ jobs:
           echo "    ghc-options: -Werror=missing-methods -Werror=missing-fields" >> cabal.project
           if [ $((HCNUMVER >= 90400)) -ne 0 ] ; then echo "package agda-stdlib-utils" >> cabal.project ; fi
           if [ $((HCNUMVER >= 90400)) -ne 0 ] ; then echo "    ghc-options: -Werror=unused-packages" >> cabal.project ; fi
-          if [ $((HCNUMVER >= 90000)) -ne 0 ] ; then echo "package agda-stdlib-utils" >> cabal.project ; fi
-          if [ $((HCNUMVER >= 90000)) -ne 0 ] ; then echo "    ghc-options: -Werror=incomplete-patterns -Werror=incomplete-uni-patterns" >> cabal.project ; fi
+          echo "package agda-stdlib-utils" >> cabal.project
+          echo "    ghc-options: -Werror=incomplete-patterns -Werror=incomplete-uni-patterns" >> cabal.project
           cat >> cabal.project <<EOF
           EOF
           $HCPKG list --simple-output --names-only | perl -ne 'for (split /\s+/) { print "constraints: any.$_ installed\n" unless /^(agda-stdlib-utils)$/; }' >> cabal.project.local
@@ -225,7 +210,7 @@ jobs:
           $CABAL v2-build $ARG_COMPILER $ARG_TESTS $ARG_BENCH --dry-run all
           cabal-plan
       - name: restore cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ runner.os }}-${{ matrix.compiler }}-${{ github.sha }}
           path: ~/.cabal/store
@@ -249,7 +234,7 @@ jobs:
           $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks all
       - name: save cache
         if: always()
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           key: ${{ runner.os }}-${{ matrix.compiler }}-${{ github.sha }}
           path: ~/.cabal/store
