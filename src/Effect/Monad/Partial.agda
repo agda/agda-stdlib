@@ -24,7 +24,7 @@ private
 record ↯ (A : Set a) (ℓ : Level) : Set (a ⊔ suc ℓ) where
   field
     Dom : Set ℓ
-    elt : Dom → A
+    dom : Dom → A
 
 open ↯
 
@@ -33,24 +33,24 @@ open ↯
 
 ↯-map : (A → B) → ↯ A ℓ → ↯ B ℓ
 ↯-map f a↯ .Dom = a↯ .Dom
-↯-map f a↯ .elt d = f (a↯ .elt d)
+↯-map f a↯ .dom d = f (a↯ .dom d)
 
 ↯-ap : ↯ (A → B) ℓ → ↯ A ℓ' → ↯ B (ℓ ⊔ ℓ')
 ↯-ap a→b↯ a↯ .Dom = a→b↯ .Dom × a↯ .Dom
-↯-ap a→b↯ a↯ .elt (f↓ , a↓) = a→b↯ .elt f↓ (a↯ .elt a↓)
+↯-ap a→b↯ a↯ .dom (f↓ , a↓) = a→b↯ .dom f↓ (a↯ .dom a↓)
 
 ↯-bind : ↯ A ℓ → (A → ↯ B ℓ') → ↯ B (ℓ ⊔ ℓ')
-↯-bind a↯ f .Dom = Σ[ a↓ ∈ a↯ .Dom ] f (a↯ .elt a↓) .Dom
-↯-bind a↯ f .elt (a↓ , fa↓) = f (a↯ .elt a↓) .elt fa↓
+↯-bind a↯ f .Dom = Σ[ a↓ ∈ a↯ .Dom ] f (a↯ .dom a↓) .Dom
+↯-bind a↯ f .dom (a↓ , fa↓) = f (a↯ .dom a↓) .dom fa↓
 
 ------------------------------------------------------------------------
 -- Specific constructions
 
 never : ↯ A ℓ
 never {ℓ = ℓ} .Dom = ⊥ {ℓ = ℓ}
-never .elt = ⊥-elim
+never .dom = ⊥-elim
 
 always : A → ↯ A ℓ
 always {ℓ = ℓ} a .Dom = ⊤ {ℓ = ℓ}
-always a .elt _ = a
+always a .dom _ = a
 
