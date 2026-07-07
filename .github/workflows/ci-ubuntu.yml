@@ -259,20 +259,32 @@ jobs:
         id: restore-golden
         with:
           path: ./tests/_config/dist-newstyle/
-          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
+          restore-keys: | 
+            ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
+
+      - name: Compute cache hash
+        id: cache-hash
+        run: |
+          { printf "CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_ENV}
+
 
       - name: Golden testing
         run: |
           make testsuite INTERACTIVE='' AGDA_EXEC='agda' GHC_EXEC='ghc'
+
+      - name: Compute new cache hash
+        id: new-cache-hash
+        run: |
+          { printf "NEW_CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_ENV}
       
-      # cache the files built during golden testing, but only on master to prevent the cache overfilling too quickly
+      # cache the files built during golden testing, but only on master and if dist-newstyle has changed to prevent the cache overfilling too quickly
       - name: Save cache
-        if: github.ref_name == 'master'
+        if: github.ref_name == 'master' && steps.cache-hash.outputs.CACHE_HASH != steps.new-cache-hash.outputs.NEW_CACHE_HASH
         uses: actions/cache/save@v5
         id: cache-golden
         with:
           path: ./tests/_config/dist-newstyle/
-          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache-${{ github.sha }}
 
 
   ########################################################################
