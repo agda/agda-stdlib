@@ -343,3 +343,20 @@ jobs:
           branch: gh-pages
           folder: html
           git-config-name: Github Actions
+
+  ########################################################################
+  ## CLEANUP
+  ########################################################################
+  cleanup:
+    needs: [html-deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+	- name: Delete artifacts
+	  uses: geekyeggo/delete-artifact@v6
+	  with:
+	    failOnError: false
+	    name: |
+	      ubuntu-cabal-dir
+	      ubuntu-ghc-dir
+	      ubuntu-html
