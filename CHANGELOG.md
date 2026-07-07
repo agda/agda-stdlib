@@ -35,6 +35,8 @@ Deprecated names
 New modules
 -----------
 
+* `Effect.Monad.Partial` based on domain `Dom` and injection `dom`.
+
 Additions to existing modules
 -----------------------------
 
