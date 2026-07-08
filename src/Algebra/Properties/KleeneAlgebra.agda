@@ -246,18 +246,16 @@ x⋆≈1+xx⋆ x = ≤-antisym (⋆-elimˡ (x≤x+y _ _) $ begin
   1# + x * x ⋆           ∎) $ starExpansiveʳ _
 
 x⋆≈1+x⋆x : ∀ x → x ⋆ ≈ 1# + x ⋆ * x
-x⋆≈1+x⋆x x = ≤-antisym (⋆-elimʳ (x≤x+y _ _) $ begin
-  (1# + x ⋆ * x) * x     ≤⟨ *-monoʳ _ $ +-monoˡ _ $ x⋆x≤x⋆ _ ⟩
-  (1# + x ⋆) * x         ≈⟨ *-congʳ (1+x⋆≈x⋆ _) ⟩
-  x ⋆ * x                ≤⟨ y≤x+y _ _ ⟩
-  1# + x ⋆ * x           ∎) $ starExpansiveˡ _
-
-{- FAILS: parser falls over
-  begin-equality
-  x ⋆ ≈⟨ {!!} ⟨⟩ ? ⟩
-  {!!} ≈⟨ {!!} ⟩
+x⋆≈1+x⋆x x =   begin-equality
+  x ⋆ ≈⟨ ⋆-elimʳ (x≤x+y _ _) lemma ⟨⟩ starExpansiveˡ _ ⟩
   1# + x ⋆ * x ∎
--}
+  where
+  lemma : (1# + x ⋆ * x) * x ≤ 1# + x ⋆ * x
+  lemma = begin
+    (1# + x ⋆ * x) * x     ≤⟨ *-monoʳ _ $ +-monoˡ _ $ x⋆x≤x⋆ _ ⟩
+    (1# + x ⋆) * x         ≈⟨ *-congʳ (1+x⋆≈x⋆ _) ⟩
+    x ⋆ * x                ≤⟨ y≤x+y _ _ ⟩
+    1# + x ⋆ * x           ∎
 
 -- special cases for 0# and 1#
 
