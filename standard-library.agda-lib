@@ -1,2 +1,3 @@
 name: standard-library-3.0
 include: src
+flags: -WnoUnguardedEtaRecord -WnoUselessPatternDeclarationForRecord

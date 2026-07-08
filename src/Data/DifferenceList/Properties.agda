@@ -10,12 +10,12 @@ module Data.DifferenceList.Properties where
 
 open import Data.DifferenceList.Base
   using (DiffList; fromList; toList; viaList; []; _∷_; [_]; _++_; _∷ʳ_; map)
-open import Data.List as List using (List)
+open import Data.List.Base as List using (List)
 open import Data.List.Properties using (++-assoc; ++-identityʳ)
-open import Function using (_∘′_; id; flip)
+open import Function.Base using (_∘′_; id; flip)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; _≗_; module ≡-Reasoning)
+  using (_≡_; refl; subst; cong; _≗_; module ≡-Reasoning)
 
 open ≡-Reasoning
 
@@ -51,6 +51,18 @@ toList⁺ {xs = xs} {ys} xs∼ys = begin
   ys List.[]          ≡⟨⟩
   toList ys           ∎
 
+toList-refl : xs ∼ ys → toList ys ∼ ys
+toList-refl {xs = xs} {ys} xs∼ys k =
+  subst (λ xs → fromList xs k ≡ ys k) (toList⁺ xs∼ys) (xs∼ys k)
+
+toList-++ : xs₁ ∼ ys₁ → (ys₂ : DiffList A) →
+            xs₁ List.++ toList ys₂ ≡ toList (ys₁ ++ ys₂)
+toList-++ {xs₁ = xs₁} {ys₁} xs₁∼ys₁ ys₂ = begin
+  xs₁ List.++ toList ys₂     ≡⟨⟩
+  fromList xs₁ (toList ys₂)  ≡⟨ xs₁∼ys₁ (toList ys₂) ⟩
+  ys₁ (toList ys₂)           ≡⟨⟩
+  toList (ys₁ ++ ys₂)        ∎
+
 viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
 viaList⁺ {xs = xs} {ys = ys} f xs∼ys k = begin
   fromList (f xs)          k ≡⟨ cong (flip fromList _ ∘′ f) (toList⁺ xs∼ys) ⟩
@@ -76,7 +88,7 @@ viaList⁺ {xs = xs} {ys = ys} f xs∼ys k = begin
   (ys₁ ++ ys₂) k               ∎
 
 ∷⁺ : (x : A) → xs ∼ ys → x List.∷ xs ∼ x ∷ ys
-∷⁺ {xs = xs} {ys} x xs~ys k = cong (x List.∷_) (xs~ys k)
+∷⁺ {xs = xs} {ys} x xs∼ys k = cong (x List.∷_) (xs∼ys k)
 
 ++-∷⁺ : (x : A) → xs₁ ∼ ys₁ → xs₂ ∼ ys₂ →
         xs₁ List.++ x List.∷ xs₂ ∼ ys₁ ++ x ∷ ys₂
