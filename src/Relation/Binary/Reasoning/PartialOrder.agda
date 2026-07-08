@@ -40,7 +40,6 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Poset)
---open import Relation.Binary.Structures using (IsPartialOrder)
 
 module Relation.Binary.Reasoning.PartialOrder
   {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
