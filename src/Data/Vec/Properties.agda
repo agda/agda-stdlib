@@ -4,7 +4,7 @@
 -- Some Vec-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Properties where
 
@@ -75,9 +75,9 @@ toList-injective m≡n (x ∷ xs) (y ∷ ys) xs=ys =
 ∷-injective refl = refl , refl
 
 ≡-dec : DecidableEquality A → DecidableEquality (Vec A n)
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) = map′ (uncurry (cong₂ _∷_))
-  ∷-injective (x ≟ y ×? ≡-dec _≟_ xs ys)
+≡-dec _≈?_ []       []       = yes refl
+≡-dec _≈?_ (x ∷ xs) (y ∷ ys) = map′ (uncurry (cong₂ _∷_))
+  ∷-injective (x ≈? y ×? ≡-dec _≈?_ xs ys)
 
 ------------------------------------------------------------------------
 -- _[_]=_
@@ -223,6 +223,12 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
                           []=⇒lookup (lookup⇒[]= i xs p) ≡ p
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
+
+lookup-head : ∀ (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
+lookup-head (_ ∷ _) = refl
+
+lookup-tail : ∀ (xs : Vec A (suc n)) {i} → lookup xs (suc i) ≡ lookup (tail xs) i
+lookup-tail (_ ∷ _) = refl
 
 lookup-truncate : .(m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
                   lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)

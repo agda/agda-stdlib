@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous infix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Infix.Heterogeneous.Properties where
 
@@ -99,17 +99,17 @@ module _ {c t} {C : Set c} {T : REL A C t} where
 
   antisym : Antisym R S T → Antisym (Infix R) (Infix S) (Pointwise T)
   antisym asym (here p) (here q) = Prefix.antisym asym p q
-  antisym asym {i = a ∷ as} {j = bs} p@(here _) (there q)
-    = contradiction (begin-strict
+  antisym asym {x = a ∷ as} {y = bs} p@(here _) (there q)
+   = contradiction (begin-strict
       length as <⟨ length-mono p ⟩
       length bs ≤⟨ length-mono q ⟩
       length as ∎) (ℕ.<-irrefl refl) where open ℕ.≤-Reasoning
-  antisym asym {i = as} {j = b ∷ bs} (there p) q@(here _)
+  antisym asym {x = as} {y = b ∷ bs} (there p) q@(here _)
     = contradiction (begin-strict
       length bs <⟨ length-mono q ⟩
       length as ≤⟨ length-mono p ⟩
       length bs ∎) (ℕ.<-irrefl refl) where open ℕ.≤-Reasoning
-  antisym asym {i = a ∷ as} {j = b ∷ bs} (there p) (there q)
+  antisym asym {x = a ∷ as} {y = b ∷ bs} (there p) (there q)
     = contradiction (begin-strict
       length as <⟨ length-mono p ⟩
       length bs <⟨ length-mono q ⟩

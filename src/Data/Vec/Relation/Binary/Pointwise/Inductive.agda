@@ -4,7 +4,7 @@
 -- Inductive pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Binary.Pointwise.Inductive where
 
@@ -139,7 +139,7 @@ module _ {_∼_ : Rel A ℓ} where
                      IsDecEquivalence (Pointwise _∼_ {n})
   isDecEquivalence decEquiv n = record
     { isEquivalence = isEquivalence Eq.isEquivalence n
-    ; _≟_           = decidable Eq._≟_
+    ; _≈?_          = decidable Eq._≈?_
     } where module Eq = IsDecEquivalence decEquiv
 
 ------------------------------------------------------------------------

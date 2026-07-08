@@ -4,7 +4,7 @@
 -- Additional properties for setoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
 
@@ -19,7 +19,6 @@ open import Relation.Binary.Definitions
   using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Irreflexive)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; ¬[x≢x])
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 open Setoid S renaming (Carrier to A)
 
@@ -85,7 +84,7 @@ preorder = record
 ≉-respʳ y≈y′ x≉y x≈y′ = x≉y $ trans x≈y′ (sym y≈y′)
 
 ≉-resp₂ : _≉_ Respects₂ _≈_
-≉-resp₂ = ≉-respʳ , ≉-respˡ
+≉-resp₂ = ≉-respˡ , ≉-respʳ
 
 ≉-irrefl : Irreflexive _≈_ _≉_
 ≉-irrefl x≈y x≉y = x≉y x≈y

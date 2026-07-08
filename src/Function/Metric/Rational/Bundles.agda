@@ -8,7 +8,7 @@
 -- general metric spaces cannot be reused as it is impossible to
 -- constrain the image set to ℚ.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Metric.Rational.Bundles where
 

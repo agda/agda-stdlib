@@ -5,14 +5,14 @@
 -- types which enjoy decidable equalities.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Definitions using (DecidableEquality)
 
 module Data.List.Relation.Binary.Sublist.DecPropositional.Solver
-       {a} {A : Set a} (_≟_ : DecidableEquality A)
+       {a} {A : Set a} (_≡?_ : DecidableEquality A)
        where
 
 open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
-open import Data.List.Relation.Binary.Sublist.DecSetoid.Solver (decSetoid _≟_) public
+open import Data.List.Relation.Binary.Sublist.DecSetoid.Solver (decSetoid _≡?_) public

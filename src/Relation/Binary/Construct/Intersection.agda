@@ -4,7 +4,7 @@
 -- Intersection of two binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Intersection where
 
@@ -78,7 +78,7 @@ module _ (≈ : Rel A ℓ₁) (L : Rel A ℓ₂) (R : Rel A ℓ₃) where
   respectsʳ L-resp R-resp x≈y = map (L-resp x≈y) (R-resp x≈y)
 
   respects₂ : L Respects₂ ≈ → R Respects₂ ≈ → (L ∩ R) Respects₂ ≈
-  respects₂ (Lʳ , Lˡ) (Rʳ , Rˡ) = respectsʳ Lʳ Rʳ , respectsˡ Lˡ Rˡ
+  respects₂ (Lˡ , Lʳ) (Rˡ , Rʳ) = respectsˡ Lˡ Rˡ , respectsʳ Lʳ Rʳ
 
   antisymmetric : Antisymmetric ≈ L ⊎ Antisymmetric ≈ R → Antisymmetric ≈ (L ∩ R)
   antisymmetric (inj₁ L-antisym) (Lxy , _) (Lyx , _) = L-antisym Lxy Lyx
@@ -104,7 +104,7 @@ isEquivalence {L = L} {R = R} eqₗ eqᵣ = record
 isDecEquivalence : IsDecEquivalence L → IsDecEquivalence R → IsDecEquivalence (L ∩ R)
 isDecEquivalence eqₗ eqᵣ = record
   { isEquivalence = isEquivalence L.isEquivalence R.isEquivalence
-  ; _≟_           = L._≟_ ∩? R._≟_
+  ; _≈?_           = L._≈?_ ∩? R._≈?_
   } where module L = IsDecEquivalence eqₗ; module R = IsDecEquivalence eqᵣ
 
 isPreorder : IsPreorder ≈ L → IsPreorder ≈ R → IsPreorder ≈ (L ∩ R)

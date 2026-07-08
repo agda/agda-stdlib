@@ -4,7 +4,7 @@
 -- Conversion of _≤_ to _<_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 
@@ -64,7 +64,7 @@ x < y = x ≤ y × x ≉ y
 
 ≮⇒≥ : Symmetric _≈_ → Decidable _≈_ → _≈_ ⇒ _≤_ → Total _≤_ →
       ∀ {x y} → ¬ (x < y) → y ≤ x
-≮⇒≥ sym _≟_ ≤-refl _≤?_ {x} {y} x≮y with x ≟ y | y ≤? x
+≮⇒≥ sym _≈?_ ≤-refl _≤?_ {x} {y} x≮y with x ≈? y | y ≤? x
 ... | yes x≈y  | _        = ≤-refl (sym x≈y)
 ... | _        | inj₁ y≤x = y≤x
 ... | no  x≉y  | inj₂ x≤y = contradiction (x≤y , x≉y) x≮y
@@ -103,21 +103,21 @@ x < y = x ≤ y × x ≉ y
   (respʳ y≈z x≤y) , λ x≈z → x≉y (trans x≈z (sym y≈z))
 
 <-resp-≈ : IsEquivalence _≈_ → _≤_ Respects₂ _≈_ → _<_ Respects₂ _≈_
-<-resp-≈ eq (respʳ , respˡ) =
-  <-respʳ-≈ sym trans respʳ , <-respˡ-≈ trans respˡ
+<-resp-≈ eq (respˡ , respʳ) =
+  <-respˡ-≈ trans respˡ , <-respʳ-≈ sym trans respʳ
   where open IsEquivalence eq
 
 <-trichotomous : Symmetric _≈_ → Decidable _≈_ →
                  Antisymmetric _≈_ _≤_ → Total _≤_ →
                  Trichotomous _≈_ _<_
-<-trichotomous ≈-sym _≟_ antisym total x y with x ≟ y
+<-trichotomous ≈-sym _≈?_ antisym total x y with x ≈? y
 ... | yes x≈y = tri≈ (<-irrefl x≈y) x≈y (<-irrefl (≈-sym x≈y))
 ... | no  x≉y with total x y
 ...   | inj₁ x≤y = tri< (x≤y , x≉y) x≉y (x≉y ∘ antisym x≤y ∘ proj₁)
 ...   | inj₂ y≤x = tri> (x≉y ∘ flip antisym y≤x ∘ proj₁) x≉y (y≤x , x≉y ∘ ≈-sym)
 
 <-decidable : Decidable _≈_ → Decidable _≤_ → Decidable _<_
-<-decidable _≟_ _≤?_ x y = x ≤? y ×? ¬? (x ≟ y)
+<-decidable _≈?_ _≤?_ x y = x ≤? y ×? ¬? (x ≈? y)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -135,18 +135,18 @@ x < y = x ≤ y × x ≉ y
                             IsDecStrictPartialOrder _≈_ _<_
 <-isDecStrictPartialOrder dpo = record
   { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
-  ; _≟_ = _≟_
-  ; _<?_ = <-decidable _≟_ _≤?_
+  ; _≈?_ = _≈?_
+  ; _<?_ = <-decidable _≈?_ _≤?_
   } where open IsDecPartialOrder dpo
 
 <-isStrictTotalOrder₁ : Decidable _≈_ → IsTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_
-<-isStrictTotalOrder₁ ≟ tot = record
+<-isStrictTotalOrder₁ ≈? tot = record
   { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
-  ; compare              = <-trichotomous Eq.sym ≟ antisym total
+  ; compare              = <-trichotomous Eq.sym ≈? antisym total
   } where open IsTotalOrder tot
 
 <-isStrictTotalOrder₂ : IsDecTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_
-<-isStrictTotalOrder₂ dtot = <-isStrictTotalOrder₁ _≟_ isTotalOrder
+<-isStrictTotalOrder₂ dtot = <-isStrictTotalOrder₁ _≈?_ isTotalOrder
   where open IsDecTotalOrder dtot

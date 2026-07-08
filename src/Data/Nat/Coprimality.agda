@@ -4,7 +4,7 @@
 -- Coprimality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Coprimality where
 
@@ -67,7 +67,7 @@ sym : Symmetric Coprime
 sym c = c ∘ swap
 
 coprime? : Decidable Coprime
-coprime? m n = map′ gcd≡1⇒coprime coprime⇒gcd≡1 (gcd m n ≟ 1)
+coprime? m n = map′ gcd≡1⇒coprime coprime⇒gcd≡1 (gcd m n ≡? 1)
 
 ------------------------------------------------------------------------
 -- Other basic properties

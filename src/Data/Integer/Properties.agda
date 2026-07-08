@@ -4,7 +4,7 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Properties where
 
@@ -45,7 +45,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 import Relation.Nullary.Decidable as Dec
 
 open import Algebra.Definitions {A = ℤ} _≡_
-open import Algebra.Consequences.Propositional
+open import Algebra.Consequences.Propositional {A = ℤ}
   using (comm∧idˡ⇒idʳ; comm∧invˡ⇒invʳ; comm∧zeˡ⇒zeʳ; comm∧distrʳ⇒distrˡ)
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
@@ -70,18 +70,18 @@ private
 +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
 +[1+-injective refl = refl
 
-infix 4 _≟_
-_≟_ : DecidableEquality ℤ
-+ m      ≟ + n      = Dec.map′ (cong (+_)) +-injective (m ℕ.≟ n)
-+ m      ≟ -[1+ n ] = no λ()
--[1+ m ] ≟ + n      = no λ()
--[1+ m ] ≟ -[1+ n ] = Dec.map′ (cong -[1+_]) -[1+-injective (m ℕ.≟ n)
+infix 4 _≡?_
+_≡?_ : DecidableEquality ℤ
++ m      ≡? + n      = Dec.map′ (cong (+_)) +-injective (m ℕ.≡? n)
++ m      ≡? -[1+ n ] = no λ()
+-[1+ m ] ≡? + n      = no λ()
+-[1+ m ] ≡? -[1+ n ] = Dec.map′ (cong -[1+_]) -[1+-injective (m ℕ.≡? n)
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℤ
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -162,7 +162,7 @@ _≤?_ : Decidable _≤_
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
+  ; _≈?_         = _≡?_
   ; _≤?_         = _≤?_
   }
 
@@ -344,7 +344,7 @@ _<?_ : Decidable _<_
   { isEquivalence = isEquivalence
   ; irrefl        = <-irrefl
   ; trans         = <-trans
-  ; <-resp-≈      = subst (_ <_) , subst (_< _)
+  ; <-resp-≈      = subst (_< _) , subst (_ <_)
   }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
@@ -1660,7 +1660,7 @@ i*j≢0 i j rewrite abs-* i j = ℕ.m*n≢0 ∣ i ∣ ∣ j ∣
 ^-isMagmaHomomorphism : ∀ i → Morphism.IsMagmaHomomorphism ℕ.+-rawMagma *-rawMagma (i ^_)
 ^-isMagmaHomomorphism i = record
   { isRelHomomorphism = record { cong = cong (i ^_) }
-  ; homo              = ^-distribˡ-+-* i
+  ; ∙-homo            = ^-distribˡ-+-* i
   }
 
 ^-isMonoidHomomorphism : ∀ i → Morphism.IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
@@ -2068,107 +2068,6 @@ neg-distrib-⊓-⊔ = antimono-<-distrib-⊓ -_ neg-mono-<
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.5
-
-neg-mono-<-> = neg-mono-<
-{-# WARNING_ON_USAGE neg-mono-<->
-"Warning: neg-mono-<-> was deprecated in v1.5.
-Please use neg-mono-< instead."
-#-}
-
-neg-mono-≤-≥ = neg-mono-≤
-{-# WARNING_ON_USAGE neg-mono-≤-≥
-"Warning: neg-mono-≤-≥ was deprecated in v1.5.
-Please use neg-mono-≤ instead."
-#-}
-
-*-monoʳ-≤-non-neg = *-monoʳ-≤-nonNeg
-{-# WARNING_ON_USAGE *-monoʳ-≤-non-neg
-"Warning: *-monoʳ-≤-non-neg was deprecated in v1.5.
-Please use *-monoʳ-≤-nonNeg instead."
-#-}
-
-*-monoˡ-≤-non-neg = *-monoˡ-≤-nonNeg
-{-# WARNING_ON_USAGE *-monoˡ-≤-non-neg
-"Warning: *-monoˡ-≤-non-neg deprecated in v1.5.
-Please use *-monoˡ-≤-nonNeg instead."
-#-}
-
-*-cancelˡ-<-non-neg = *-cancelˡ-<-nonNeg
-{-# WARNING_ON_USAGE *-cancelˡ-<-non-neg
-"Warning: *-cancelˡ-<-non-neg was deprecated in v1.5.
-Please use *-cancelˡ-<-nonNeg instead."
-#-}
-
-*-cancelʳ-<-non-neg = *-cancelʳ-<-nonNeg
-{-# WARNING_ON_USAGE *-cancelʳ-<-non-neg
-"Warning: *-cancelʳ-<-non-neg was deprecated in v1.5.
-Please use *-cancelʳ-<-nonNeg instead."
-#-}
-
--- Version 1.6
-
-m≤n⇒m⊓n≡m = i≤j⇒i⊓j≡i
-{-# WARNING_ON_USAGE m≤n⇒m⊓n≡m
-"Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
-Please use i≤j⇒i⊓j≡i instead."
-#-}
-m⊓n≡m⇒m≤n = i⊓j≡i⇒i≤j
-{-# WARNING_ON_USAGE m⊓n≡m⇒m≤n
-"Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
-Please use i⊓j≡i⇒i≤j instead."
-#-}
-m≥n⇒m⊓n≡n = i≥j⇒i⊓j≡j
-{-# WARNING_ON_USAGE m≥n⇒m⊓n≡n
-"Warning: m≥n⇒m⊓n≡n was deprecated in v1.6
-Please use i≥j⇒i⊓j≡j instead."
-#-}
-m⊓n≡n⇒m≥n = i⊓j≡j⇒j≤i
-{-# WARNING_ON_USAGE m⊓n≡n⇒m≥n
-"Warning: m⊓n≡n⇒m≥n was deprecated in v1.6
-Please use i⊓j≡j⇒j≤i instead."
-#-}
-m⊓n≤n = i⊓j≤j
-{-# WARNING_ON_USAGE m⊓n≤n
-"Warning: m⊓n≤n was deprecated in v1.6
-Please use i⊓j≤j instead."
-#-}
-m⊓n≤m = i⊓j≤i
-{-# WARNING_ON_USAGE m⊓n≤m
-"Warning: m⊓n≤m was deprecated in v1.6
-Please use i⊓j≤i instead."
-#-}
-m≤n⇒m⊔n≡n = i≤j⇒i⊔j≡j
-{-# WARNING_ON_USAGE m≤n⇒m⊔n≡n
-"Warning: m≤n⇒m⊔n≡n was deprecated in v1.6
-Please use i≤j⇒i⊔j≡j instead."
-#-}
-m⊔n≡n⇒m≤n = i⊔j≡j⇒i≤j
-{-# WARNING_ON_USAGE m⊔n≡n⇒m≤n
-"Warning: m⊔n≡n⇒m≤n was deprecated in v1.6
-Please use i⊔j≡j⇒i≤j instead."
-#-}
-m≥n⇒m⊔n≡m = i≥j⇒i⊔j≡i
-{-# WARNING_ON_USAGE m≥n⇒m⊔n≡m
-"Warning: m≥n⇒m⊔n≡m was deprecated in v1.6
-Please use i≥j⇒i⊔j≡i instead."
-#-}
-m⊔n≡m⇒m≥n = i⊔j≡i⇒j≤i
-{-# WARNING_ON_USAGE m⊔n≡m⇒m≥n
-"Warning: m⊔n≡m⇒m≥n was deprecated in v1.6
-Please use i⊔j≡i⇒j≤i instead."
-#-}
-m≤m⊔n = i≤i⊔j
-{-# WARNING_ON_USAGE m≤m⊔n
-"Warning: m≤m⊔n was deprecated in v1.6
-Please use i≤i⊔j instead."
-#-}
-n≤m⊔n = i≤j⊔i
-{-# WARNING_ON_USAGE n≤m⊔n
-"Warning: n≤m⊔n was deprecated in v1.6
-Please use i≤j⊔i instead."
-#-}
-
 -- Version 2.0
 
 +-pos-monoʳ-≤ : ∀ n → (_+_ (+ n)) Preserves _≤_ ⟶ _≤_
@@ -2395,3 +2294,12 @@ Please use +-0-isAbelianGroup instead."
 {- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Integer.Base public
   using (*-rawMagma; *-1-rawMonoid)
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

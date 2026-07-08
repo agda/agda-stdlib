@@ -7,7 +7,7 @@
 -- Note that the lemmas below could be generalised to work with other
 -- equalities than _≡_.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
@@ -76,13 +76,13 @@ private
 ∷-injectiveʳ refl = refl
 
 ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y List.∷ ys)
-∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+∷-dec x≡?y xs≡?ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≡?y ×-dec xs≡?ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) []       = no λ()
-≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≟ y) (≡-dec _≟_ xs ys)
+≡-dec _≈?_ []       []       = yes refl
+≡-dec _≈?_ (x ∷ xs) []       = no λ()
+≡-dec _≈?_ []       (y ∷ ys) = no λ()
+≡-dec _≈?_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≈? y) (≡-dec _≈?_ xs ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -269,7 +269,7 @@ module _ (A : Set a) where
     { isRelHomomorphism = record
       { cong = cong length
       }
-    ; homo = λ xs ys → length-++ xs {ys}
+    ; ∙-homo = λ xs ys → length-++ xs {ys}
     }
 
   length-isMonoidHomomorphism : IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length

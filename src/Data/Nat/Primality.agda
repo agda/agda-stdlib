@@ -4,7 +4,7 @@
 -- Primality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Primality where
 
@@ -286,7 +286,7 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
 
   -- if the GCD of m and p is greater than one, then it must be p and
   -- hence p ∣ m.
-  ... | Bézout.result d@(2+ _) g _ with d ≟ p
+  ... | Bézout.result d@(2+ _) g _ with d ≡? p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
   ...   | no  d≢p = contradiction (composite-≢ d d≢p (GCD.gcd∣n g)) pr
 
@@ -374,7 +374,7 @@ irreducible? n@(suc _) =
   -- Decidability
   irreducibleUpTo? : Decidable IrreducibleUpTo
   irreducibleUpTo? n = allUpTo?
-    (λ m → (m ∣? n) →? (m ≟ 1 ⊎? m ≟ n)) n
+    (λ m → (m ∣? n) →? (m ≡? 1 ⊎? m ≡? n)) n
 
 -- Relationship between primality and irreducibility.
 prime⇒irreducible : Prime p → Irreducible p

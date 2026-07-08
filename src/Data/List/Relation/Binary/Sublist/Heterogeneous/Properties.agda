@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous sublist relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 
@@ -448,7 +448,7 @@ module _ {E : Rel A e} {R : Rel A r} where
                       IsDecPartialOrder (Pointwise E) (Sublist R)
   isDecPartialOrder ER-isDecPartialOrder = record
     { isPartialOrder = isPartialOrder ER.isPartialOrder
-    ; _≟_            = Pw.decidable   ER._≟_
+    ; _≈?_           = Pw.decidable   ER._≈?_
     ; _≤?_           = sublist?       ER._≤?_
     } where module ER = IsDecPartialOrder ER-isDecPartialOrder
 

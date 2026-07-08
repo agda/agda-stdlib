@@ -4,7 +4,7 @@
 -- The composition of morphisms between binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Morphism.Construct.Composition where
 

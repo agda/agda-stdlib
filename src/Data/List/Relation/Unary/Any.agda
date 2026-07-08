@@ -4,7 +4,7 @@
 -- Lists where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Any where
 
@@ -92,18 +92,3 @@ any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎? any? P? xs)
 
 satisfiable : Satisfiable P → Satisfiable (Any P)
 satisfiable (x , Px) = [ x ] , here Px
-
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.4
-
-any = any?
-{-# WARNING_ON_USAGE any
-"Warning: any was deprecated in v1.4.
-Please use any? instead."
-#-}

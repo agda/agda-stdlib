@@ -7,7 +7,7 @@
 -- For more general transformations between algebraic lattice structures
 -- see `Algebra.Lattice.Morphisms`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Product.Base using (_,_)
 open import Relation.Binary.Core using (Rel ; _⇔_)
