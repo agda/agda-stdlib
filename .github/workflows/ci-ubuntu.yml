@@ -272,7 +272,6 @@ jobs:
       
       # cache the files built during golden testing, but only on master and if dist-newstyle has changed to prevent the cache overfilling too quickly
       - name: Save cache
-        if: github.ref_name == 'master' && steps.cache-hash.outputs.CACHE_HASH != steps.new-cache-hash.outputs.NEW_CACHE_HASH
         uses: actions/cache/save@v5
         id: cache-golden
         with:
