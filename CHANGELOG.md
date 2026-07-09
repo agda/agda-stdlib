@@ -157,6 +157,11 @@ Deprecated names
   homo  ↦  ∙-homo
   ```
 
+* In `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
+  ```
+
 * In `Data.DifferenceList.Base`:
   ```agda
   lift ↦ _++_
@@ -189,27 +194,6 @@ Deprecated names
   ≟?-≡-refl            ↦   ≡?-≡-refl
   ^-semigroup-morphism ↦   ^-isMagmaHomomorphism
   ^-monoid-morphism    ↦   ^-isMonoidHomomorphism
-  ```
-
-* In `Algebra.Properties.CancellativeCommutativeSemiring`:
-  ```agda
-  *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
-  ```
-
-* In `Effect.Monad.Partiality`:
-  ```agda
-  _≟-Kind_     ↦   _≡?-Kind_
-  ```
-
-* In `Reflection.AST.AlphaEquality`:
-  ```agda
-  ≟⇒α     ↦   ≡?⇒α
-  ```
-
-* In `Relation.Binary.PropositionalEquality`:
-  ```agda
-  ≡-≟-identity     ↦   ≡-≡?-identity
-  ≢-≟-identity     ↦   ≢-≡?-identity
   ```
 
 * In `Effect.Monad.Partiality`:
