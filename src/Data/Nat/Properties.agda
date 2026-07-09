@@ -17,9 +17,6 @@ open import Algebra.Bundles
         ; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
 open import Algebra.Definitions.RawMagma using (_,_)
 open import Algebra.Morphism
-open import Algebra.Consequences.Propositional
-  using (comm∧cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ
-        ; comm⇒sym[distribˡ])
 open import Algebra.Construct.NaturalChoice.Base
   using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
@@ -54,6 +51,11 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects
   using (fromEquivalence; Reflects; invert)
 
+open import Algebra.Consequences.Propositional {A = ℕ}
+  using ( comm∧cancelˡ⇒cancelʳ
+        ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ
+        ; comm⇒sym[distribˡ]
+        ; almost⇒exceptʳ)
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.Definitions
@@ -420,7 +422,7 @@ _>?_ = flip _<?_
 <-irrelevant = ≤-irrelevant
 
 <-resp₂-≡ : _<_ Respects₂ _≡_
-<-resp₂-≡ = subst (_ <_) , subst (_< _)
+<-resp₂-≡ = subst (_< _) , subst (_ <_)
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -761,6 +763,25 @@ m+n≮n (suc m) n@(suc _) sm+n<n = m+n≮n m n (m<n⇒m<1+n (s<s⁻¹ sm+n<n))
 m+n≮m : ∀ m n → m + n ≮ m
 m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
+-- the following proofs could be simplified by pattern-matching
+-- but are phrased this way for mutual consistency, and to uncouple
+-- from any left/right bias in the implementation of `_+_`
+
+m≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n → NonZero (m + n)
+m≢0⇒m+n≢0 m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ m) (m≤m+n m n))
+
+n≢0⇒m+n≢0 : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
+n≢0⇒m+n≢0 m n = >-nonZero (<-≤-trans (>-nonZero⁻¹ n) (m≤n+m n m))
+
+m≢0∧n≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
+m≢0∧n≢0⇒m+n≢0 m n = >-nonZero (+-mono-< (>-nonZero⁻¹ m) (>-nonZero⁻¹ n))
+
+-- whereas this seems most simply expressed using pattern-matching
+
+m+n≢0⇒m≢0∨n≢0 : ∀ m n .{{_ : NonZero (m + n)}} → NonZero m ⊎ NonZero n
+m+n≢0⇒m≢0∨n≢0 zero    (suc _) = inj₂ _
+m+n≢0⇒m≢0∨n≢0 (suc _) _       = inj₁ _
+
 ------------------------------------------------------------------------
 -- Properties of _*_
 ------------------------------------------------------------------------
@@ -930,10 +951,16 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
+*-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
+*-almostCancelʳ-≡ zero    = inj₁ refl
+*-almostCancelʳ-≡ o@(suc _) = inj₂ lemma
+  module *-AlmostRightCancellative where
+  lemma : RightCancellativeAt o _*_
+  lemma zero    zero    _  = refl
+  lemma (suc m) (suc n) eq = cong suc (lemma m n (+-cancelˡ-≡ o (m * o) (n * o) eq))
+
 *-cancelʳ-≡ : ∀ m n o .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
-*-cancelʳ-≡ zero    zero    (suc o) eq = refl
-*-cancelʳ-≡ (suc m) (suc n) (suc o) eq =
-  cong suc (*-cancelʳ-≡ m n (suc o) (+-cancelˡ-≡ (suc o) (m * suc o) (n * suc o) eq))
+*-cancelʳ-≡ m n o = almost⇒exceptʳ *-almostCancelʳ-≡ _ _ _  {{≢-nonZero⁻¹ _}}
 
 *-cancelˡ-≡ : ∀ m n o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
 *-cancelˡ-≡ m n o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n o

@@ -365,6 +365,15 @@ module _ {_•_ : Op₂ A} where
   foldr-selective = Membership.foldr-selective (≡.setoid A)
 
 ------------------------------------------------------------------------
+-- foldl
+
+module _ {_•_ : Op₂ A} where
+
+  foldl-selective : Selective _≡_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≡ e) ⊎ (foldl _•_ e xs ∈ xs)
+  foldl-selective = Membership.foldl-selective (≡.setoid A)
+
+------------------------------------------------------------------------
 -- allFin
 
 ∈-allFin : ∀ {n} (k : Fin n) → k ∈ allFin n

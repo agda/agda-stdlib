@@ -12,27 +12,31 @@
 module Data.Nat.ListAction.Properties where
 
 open import Algebra.Bundles using (CommutativeMonoid)
-open import Data.List.Base using (List; []; _∷_; _++_; map)
+open import Data.List.Base using (List; []; _∷_; _++_; map; foldl)
 open import Data.List.Effectful.Foldable
   using (foldr-congruent)
 open import Data.List.Membership.Propositional using (_∈_)
+import Data.List.Properties as Listₚ
+import Data.List.Membership.Propositional.Properties as ∈ₚ
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭⇒↭ₛ)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
-open import Data.List.Relation.Unary.Any using (here; there)
-open import Data.Nat.Base using (ℕ; _+_; _*_; _^_; NonZero; _≤_)
+open import Data.List.Relation.Unary.Any as Any using (here; there)
+
+open import Data.Nat.Base as ℕ using (ℕ; _+_; _*_; _^_; NonZero; _≤_; _≥_)
 open import Data.Nat.Divisibility using (_∣_; m∣m*n; ∣n⇒∣m*n)
-open import Data.Nat.ListAction using (sum; product)
-open import Data.Nat.Properties
+open import Data.Nat.ListAction using (sum; product; minimum; maximum)
+open import Data.Nat.Properties as ℕₚ
   using (+-assoc; *-assoc; *-identityˡ; m*n≢0; m≤m*n; m≤n⇒m≤o*n
         ; +-0-commutativeMonoid; *-1-commutativeMonoid
         ; *-zeroˡ; *-zeroʳ; *-distribˡ-+; *-distribʳ-+
         ; ^-zeroˡ; ^-distribʳ-*; m*n≡0⇒m≡0∨n≡0)
-open import Data.Sum.Base using ([_,_]′)
+
+open import Data.Sum.Base using (inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; trans; cong)
+  using (_≡_; refl; sym; trans; cong; subst)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 
@@ -100,3 +104,64 @@ product≢0 (n≢0 ∷ ns≢0) = m*n≢0 _ _ {{n≢0}} {{product≢0 ns≢0}}
 
 product-↭ : product Preserves _↭_ ⟶ _≡_
 product-↭ p = foldr-congruent *-1-commutativeMonoid (↭⇒↭ₛ p)
+
+-- minimum
+
+minimum-spec : ∀ n ms → minimum n ms ≡ foldl ℕ._⊓_ n ms
+minimum-spec = Listₚ.foldl-cong (λ m n → sym (ℕₚ.⊓≡⊓′ m n))
+
+minimum-selective : ∀ n ms → minimum n ms ∈ n ∷ ms
+minimum-selective n ms =
+  [ here ∘′ trans (minimum-spec n ms)
+  , there ∘′ subst (_∈ _) (sym (minimum-spec n ms))
+  ]′ (∈ₚ.foldl-selective ℕₚ.⊓-sel n ms)
+
+minimum-≤ : ∀ n ms {k} → k ∈ (n ∷ ms) → minimum n ms ≤ k
+minimum-≤ n []           (here refl) = ℕₚ.≤-refl
+minimum-≤ n mms@(m ∷ ms) (here refl) = let open ℕₚ.≤-Reasoning in begin
+  minimum n mms         ≡⟨⟩
+  minimum (n ℕ.⊓′ m) ms ≤⟨ minimum-≤ (n ℕ.⊓′ m) ms (here refl) ⟩
+  n ℕ.⊓′ m              ≡⟨ ℕₚ.⊓≡⊓′ n m ⟨
+  n ℕ.⊓ m               ≤⟨ ℕₚ.m⊓n≤m n m ⟩
+  n                     ∎
+minimum-≤ n mms@(m ∷ ms) (there (here refl)) = let open ℕₚ.≤-Reasoning in begin
+  minimum n mms         ≡⟨⟩
+  minimum (n ℕ.⊓′ m) ms ≤⟨ minimum-≤ (n ℕ.⊓′ m) ms (here refl) ⟩
+  n ℕ.⊓′ m              ≡⟨ ℕₚ.⊓≡⊓′ n m ⟨
+  n ℕ.⊓ m               ≤⟨ ℕₚ.m⊓n≤n n m ⟩
+  m                     ∎
+minimum-≤ n mms@(m ∷ ms) (there (there k∈)) = let open ℕₚ.≤-Reasoning in begin
+  minimum n mms         ≡⟨⟩
+  minimum (n ℕ.⊓′ m) ms ≤⟨ minimum-≤ (n ℕ.⊓′ m) ms (there k∈) ⟩
+  _                     ∎
+
+
+-- maximum
+
+maximum-spec : ∀ n ms → maximum n ms ≡ foldl ℕ._⊔_ n ms
+maximum-spec = Listₚ.foldl-cong (λ m n → sym (ℕₚ.⊔≡⊔′ m n))
+
+maximum-selective : ∀ n ms → maximum n ms ∈ n ∷ ms
+maximum-selective n ms =
+  [ here ∘′ trans (maximum-spec n ms)
+  , there ∘′ subst (_∈ _) (sym (maximum-spec n ms))
+  ]′ (∈ₚ.foldl-selective ℕₚ.⊔-sel n ms)
+
+maximum-≥ : ∀ n ms {k} → k ∈ (n ∷ ms) → maximum n ms ≥ k
+maximum-≥ n []           (here refl) = ℕₚ.≤-refl
+maximum-≥ n mms@(m ∷ ms) (here refl) = let open ℕₚ.≤-Reasoning in begin
+  n                     ≤⟨ ℕₚ.m≤m⊔n n m ⟩
+  n ℕ.⊔ m               ≡⟨ ℕₚ.⊔≡⊔′ n m ⟩
+  n ℕ.⊔′ m              ≤⟨ maximum-≥ (n ℕ.⊔′ m) ms (here refl) ⟩
+  maximum (n ℕ.⊔′ m) ms ≡⟨⟩
+  maximum n mms         ∎
+maximum-≥ n mms@(m ∷ ms) (there (here refl)) = let open ℕₚ.≤-Reasoning in begin
+  m                     ≤⟨ ℕₚ.m≤n⊔m n m ⟩
+  n ℕ.⊔ m               ≡⟨ ℕₚ.⊔≡⊔′ n m ⟩
+  n ℕ.⊔′ m              ≤⟨ maximum-≥ (n ℕ.⊔′ m) ms (here refl) ⟩
+  maximum (n ℕ.⊔′ m) ms ≡⟨⟩
+  maximum n mms         ∎
+maximum-≥ n mms@(m ∷ ms) (there (there k∈)) = let open ℕₚ.≤-Reasoning in begin
+  _                     ≤⟨ maximum-≥ (n ℕ.⊔′ m) ms (there k∈) ⟩
+  maximum n mms         ≡⟨⟩
+  maximum (n ℕ.⊔′ m) ms ∎
