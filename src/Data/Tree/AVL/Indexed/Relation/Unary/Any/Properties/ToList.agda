@@ -12,13 +12,15 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
+open import Data.DifferenceList.Properties using ()
 open import Data.DifferenceList.Base using (_∷_)
 open import Data.DifferenceList.Properties
-  using (_∼_; []⁺; ++-∷⁺; toList-refl; toList-++)
+  using (ListLike; []⁺; ∷⁺; ++⁺; toList-++)
 import Data.List.Base as List
 import Data.List.Relation.Unary.Any as List
 import Data.List.Relation.Unary.Any.Properties as List
 open import Data.Nat.Base using (ℕ)
+open import Data.Product using (_,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
@@ -39,12 +41,13 @@ private
     h : ℕ
     t : Tree V l u h
 
-
-toList∼toDiffList : (t : Tree V l u h) →
-                    toList t ∼ toDiffList t
-toList∼toDiffList (leaf l<u) = []⁺
-toList∼toDiffList (node k l r bal) =
-  toList-refl (++-∷⁺ k (toList∼toDiffList l) (toList∼toDiffList r))
+listLike : (t : Tree V l u h) → ListLike (toDiffList t)
+listLike (leaf l<u) = List.[] , []⁺
+listLike (node k l r bal) =
+  let (ls , l∼) = listLike l
+      (rs , r∼) = listLike r
+  in ls List.++ k List.∷ rs ,
+     (++⁺ l∼ (∷⁺ k r∼))
 
 toList⁺ : Any P t → List.Any P (toList t)
 toList⁺ {P = P} {t = node k l r bal} p =
@@ -57,7 +60,7 @@ toList⁺ {P = P} {t = node k l r bal} p =
   path-++-∷ (right p) = List.++⁺ʳ (toList l) (List.there (toList⁺ p))
   toList-node : toList l List.++ k List.∷ toList r ≡
                 toList (node k l r bal)
-  toList-node = toList-++ (toList∼toDiffList l) (k ∷ toDiffList r)
+  toList-node = toList-++ (listLike l) (k ∷ toDiffList r)
 
 toList⁻ : List.Any P (toList t) → Any P t
 toList⁻ {P = P} {t = node k l r bal} p =
@@ -71,4 +74,4 @@ toList⁻ {P = P} {t = node k l r bal} p =
   path-++-∷ (inj₂ (List.there p)) = right (toList⁻ p)
   toList-node : toList l List.++ k List.∷ toList r ≡
                 toList (node k l r bal)
-  toList-node = toList-++ (toList∼toDiffList l) (k ∷ toDiffList r)
+  toList-node = toList-++ (listLike l) (k ∷ toDiffList r)

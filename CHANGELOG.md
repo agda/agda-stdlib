@@ -353,10 +353,9 @@ Additions to existing modules
 
 * In `Data.DifferenceList.Properties`:
   ```agda
-  toList-refl : xs ∼ ys → toList ys ∼ ys
-  toList-++ : xs₁ ∼ ys₁ → (ys₂ : DiffList A) →
-              xs₁ List.++ toList ys₂ ≡ toList (ys₁ ++ ys₂)
-  viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
+  toList-++ : ListLike dxs → (dys : DiffList A) →
+              toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+  viaList⁺ : (f : List A → List B) → xs ∼ dxs → f xs ∼ viaList f dxs
   ```
 
 * In `Data.Integer.GCD`:
