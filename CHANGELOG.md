@@ -433,6 +433,16 @@ Additions to existing modules
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
+* In `Function.Properties`: the `_→_` (pseudo-)type constructor defines a `PartialOrder`,
+  with `Level`-polymorphic and monomorphic versions
+  ```agda
+  →-refl   : Reflexive {A = Set a} _→_
+  →-trans  : Trans {A = Set a} {B = Set b} {C = Set c} _→_ _→_ _→_
+  →-refl′  : Reflexive {A = Set a} _→_
+  →-trans′ : Transitive {A = Set a} _→_
+  →-poset  : Poset (suc a) _ _
+  ```
+
 * In `Relation.Binary.Definitions`:
   ```agda
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
