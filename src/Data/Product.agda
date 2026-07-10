@@ -10,6 +10,7 @@ module Data.Product where
 
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Unary using (UniqueSuchThat)
 
 private
   variable
@@ -50,8 +51,8 @@ zipWith _∙_ _∘_ _*_ (a , p) (b , q) = (a ∙ b) * (p ∘ q)
 
 -- Unique existence (parametrised by an underlying equality).
 
-∃! : {A : Set a} → (A → A → Set ℓ) → (A → Set b) → Set (a ⊔ b ⊔ ℓ)
-∃! _≈_ B = ∃ λ x → B x × (∀ {y} → B y → x ≈ y)
+∃! : ∀ {A : Set a} → (A → A → Set ℓ) → (A → Set p) → Set (a ⊔ p ⊔ ℓ)
+∃! _≈_ P = ∃ (UniqueSuchThat _≈_ P)
 
 -- Syntax
 

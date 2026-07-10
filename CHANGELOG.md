@@ -427,3 +427,9 @@ Additions to existing modules
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
+
+* In `Relation.Unary`:
+  ```agda
+  Unique         : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
+  UniqueSuchThat : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
+  ```

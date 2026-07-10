@@ -198,6 +198,16 @@ Decidable P = ∀ x → Dec (P x)
 ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
 ⌊ P? ⌋ a = Lift _ (True (P? a))
 
+-- Uniqueness
+
+module _ (_≈_ : A → A → Set ℓ₁) (P : Pred A ℓ₂) where
+
+  Unique : Pred A _
+  Unique x = ∀ {z} → P z → z ≈ x
+
+  UniqueSuchThat : Pred A _
+  UniqueSuchThat x = P x × Unique x
+
 ------------------------------------------------------------------------
 -- Operations on sets
 
