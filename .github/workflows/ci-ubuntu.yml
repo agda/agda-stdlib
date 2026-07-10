@@ -272,7 +272,7 @@ jobs:
 
       - name: Report hashes
         run: | 
-          if [ ${{ steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH }} ]; then 
+          if ${{ steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH }}; then 
             echo "Hashes are equal"
           else 
             echo "Hashes are not equal"
