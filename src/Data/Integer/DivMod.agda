@@ -22,7 +22,7 @@ open import Data.Sign.Base using (opposite)
 open import Function.Base using (_∘′_)
 open import Relation.Binary.Definitions using (Monotonic₁)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; cong; sym; subst; trans)
+  using (_≡_; cong; sym; subst; trans; refl)
 open import Relation.Nullary.Negation.Core using (contradiction)
 
 open ≤-Reasoning
@@ -101,14 +101,19 @@ div-neg-is-neg-/ℕ n (ℕ.suc d) = -1*i≡-i (n /ℕ ℕ.suc d)
   rewrite div-pos-is-/ℕ n d {{d≢0}}
         = 0≤n⇒0≤n/ℕd n d 0≤n
 
+sn%d≡0⇒-[1+n]/ℕd≡-[1+n/d] : ∀ n d .{{_ : ℕ.NonZero d}} →
+                            ℕ.suc n ℕ.% d ≡ 0 → -[1+ n ] /ℕ d ≡ -[1+ n ℕ./ d ]
+sn%d≡0⇒-[1+n]/ℕd≡-[1+n/d] n d _ with ℕ.zero ← ℕ.suc n ℕ.% d in sn%d≡0 =
+  cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d sn%d≡0)
+
 n<0⇒n/ℕd<0 : ∀ n d .{{_ : ℕ.NonZero d}} → n < 0ℤ → (n /ℕ d) < 0ℤ
 n<0⇒n/ℕd<0 -[1+ n ] d -<+
-  with ℕ.suc n ℕ.% d in sn%d
-... | ℕ.zero  = begin-strict
-  - (+ (ℕ.suc n ℕ./ d))   ≡⟨ cong (-_ ∘′ +_) (ℕ.sn%d≡0⇒sn/d≡s[n/d] n d sn%d) ⟩
-  - (+ (ℕ.suc (n ℕ./ d))) <⟨ -<+ ⟩
-  + 0                     ∎
-... | ℕ.suc _ = -<+
+  with ℕ.suc n ℕ.% d | sn%d≡0⇒-[1+n]/ℕd≡-[1+n/d] n d
+... | ℕ.zero  | eq = begin-strict
+  - (+ (ℕ.suc n ℕ./ d)) ≡⟨ eq refl ⟩
+  -[1+ n ℕ./ d ]        <⟨ -<+ ⟩
+  + 0 ∎
+... | ℕ.suc _ | _ = -<+
 
 [n/d]*d≤n : ∀ n d .{{_ : NonZero d}} → (n / d) * d ≤ n
 [n/d]*d≤n n (+ d) = begin
@@ -166,13 +171,6 @@ n/ℕd≡0⇒∣n∣<d (-[1+ n ]) d n/ℕd≡0 with ℕ.zero ← ℕ.suc n ℕ.%
     | ℕ.suc n ℕ./ d in n/d
 ... | ℕ.zero  = ℕ.m/n≡0⇒m<n n/d
 ... | ℕ.suc _ = contradiction n/ℕd≡0 λ ()
-
-n/d≡0⇒∣n∣<∣d∣ : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → ∣ n ∣ ℕ.< ∣ d ∣
-n/d≡0⇒∣n∣<∣d∣ n (+ d) n/d≡0ℤ =
-              n/ℕd≡0⇒∣n∣<d n d (trans (sym (div-pos-is-/ℕ n d)) n/d≡0ℤ)
-n/d≡0⇒∣n∣<∣d∣ n -[1+ d ] n/d≡0ℤ =
-              n/ℕd≡0⇒∣n∣<d n (ℕ.suc d) (neg-injective {_} {+ 0}
-                (trans (sym (div-neg-is-neg-/ℕ n (ℕ.suc d))) n/d≡0ℤ))
 
 n/d≡0⇒n<∣d∣ : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → n < + ∣ d ∣
 n/d≡0⇒n<∣d∣ n d@(+ d') n/d≡0ℤ = begin-strict
