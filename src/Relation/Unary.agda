@@ -205,6 +205,9 @@ module _ (_≈_ : A → A → Set ℓ₁) (P : Pred A ℓ₂) where
   Unique : Pred A _
   Unique x = ∀ {z} → P z → z ≈ x
 
+  UniqueGivenThat : Pred A _
+  UniqueGivenThat x = P x → Unique x
+
   UniqueSuchThat : Pred A _
   UniqueSuchThat x = P x × Unique x
 
