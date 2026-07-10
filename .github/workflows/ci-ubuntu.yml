@@ -259,7 +259,7 @@ jobs:
       - name: Compute cache hash
         id: cache-hash
         run: |
-          { printf "CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_OUT}
+          { printf "CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_OUTPUT}
 
       - name: Golden testing
         run: |
@@ -268,7 +268,7 @@ jobs:
       - name: Compute new cache hash
         id: new-cache-hash
         run: |
-          { printf "NEW_CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_OUT}
+          { printf "NEW_CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_OUTPUT}
 
       - name: Dummy echo not equal
         if: steps.cache-hash.outputs.CACHE_HASH != steps.new-cache-hash.outputs.NEW_CACHE_HASH
