@@ -49,24 +49,27 @@ toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList∘fromList = ++-identityʳ
 
 toList⁺ : xs ∼ dxs → xs ≡ toList dxs
-toList⁺ {xs = xs} {dxs} x∼ = begin
-  xs                  ≡⟨ ++-identityʳ xs ⟨
-  xs List.++ List.[]  ≡⟨ x∼ List.[] ⟩
-  dxs List.[]         ≡⟨⟩
-  toList dxs          ∎
+toList⁺ {xs = xs} {dxs} xs∼dxs = begin
+  xs                    ≡⟨ toList∘fromList xs ⟨
+  toList (fromList xs)  ≡⟨ xs∼dxs List.[] ⟩
+  toList dxs            ∎
 
-toList-++ : ListLike dxs → (dys : DiffList A) →
-            toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
-toList-++ {dxs = dxs} (xs , x∼) dys = begin
-  toList dxs List.++ toList dys  ≡⟨ cong (List._++ toList dys) (toList⁺ x∼) ⟨
+fromList-++-homo : (xs ys : List A) →
+                   fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
+fromList-++-homo = ++-assoc
+
+toList-++-homo : ListLike dxs → (dys : DiffList A) →
+                 toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+toList-++-homo {dxs = dxs} (xs , xs∼dxs) dys = begin
+  toList dxs List.++ toList dys  ≡⟨ cong (List._++ toList dys) (toList⁺ xs∼dxs) ⟨
   xs List.++ toList dys          ≡⟨⟩
-  fromList xs (toList dys)       ≡⟨ x∼ (toList dys) ⟩
+  fromList xs (toList dys)       ≡⟨ xs∼dxs (toList dys) ⟩
   dxs (toList dys)               ≡⟨⟩
   toList (dxs ++ dys)            ∎
 
 viaList⁺ : (f : List A → List B) → xs ∼ dxs → f xs ∼ viaList f dxs
-viaList⁺ {xs = xs} {dxs = dxs} f x∼ k = begin
-  fromList (f xs)           k  ≡⟨ cong (flip fromList _ ∘′ f) (toList⁺ x∼) ⟩
+viaList⁺ {xs = xs} {dxs = dxs} f xs∼dxs k = begin
+  fromList (f xs)           k  ≡⟨ cong (flip fromList _ ∘′ f) (toList⁺ xs∼dxs) ⟩
   fromList (f (toList dxs)) k  ≡⟨⟩
   viaList f dxs             k  ∎
 
@@ -80,18 +83,19 @@ viaList⁺ {xs = xs} {dxs = dxs} f x∼ k = begin
 [_]⁺ _ _ = refl
 
 ++⁺ : xs ∼ dxs → ys ∼ dys → xs List.++ ys ∼ dxs ++ dys
-++⁺ {xs = xs} {dxs = dxs} {ys = ys} {dys = dys} x∼ y∼ k = begin
-  (xs List.++ ys) List.++ k  ≡⟨ ++-assoc xs ys k ⟩
-  xs List.++ (ys List.++ k)  ≡⟨ cong (xs List.++_) (y∼ k) ⟩
-  xs List.++ dys k           ≡⟨ x∼ (dys k) ⟩
-  dxs (dys k)                ≡⟨⟩
-  (dxs ++ dys) k             ∎
+++⁺ {xs = xs} {dxs = dxs} {ys = ys} {dys = dys} xs∼dxs ys∼dys k = begin
+  fromList (xs List.++ ys) k      ≡⟨ fromList-++-homo xs ys k ⟩
+  (fromList xs ++ fromList ys) k  ≡⟨⟩
+  fromList xs (fromList ys k)     ≡⟨ cong (fromList xs) (ys∼dys k) ⟩
+  fromList xs (dys k)             ≡⟨ xs∼dxs (dys k) ⟩
+  dxs (dys k)                     ≡⟨⟩
+  (dxs ++ dys) k                  ∎
 
 ∷⁺ : (x : A) → xs ∼ dxs → x List.∷ xs ∼ x ∷ dxs
-∷⁺ x x∼ k = cong (x List.∷_) (x∼ k)
+∷⁺ x xs∼dxs k = cong (x List.∷_) (xs∼dxs k)
 
 ∷ʳ⁺ : (x : A) → xs ∼ dxs → xs List.∷ʳ x ∼ dxs ∷ʳ x
-∷ʳ⁺ x x∼ k = ++⁺ x∼ [ x ]⁺ k
+∷ʳ⁺ x xs∼dxs = ++⁺ xs∼dxs [ x ]⁺
 
 map⁺ : (f : A → B) → xs ∼ dxs → List.map f xs ∼ map f dxs
 map⁺ f = viaList⁺ _

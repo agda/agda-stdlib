@@ -353,8 +353,9 @@ Additions to existing modules
 
 * In `Data.DifferenceList.Properties`:
   ```agda
-  toList-++ : ListLike dxs → (dys : DiffList A) →
-              toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+  fromList-++-homo : ∀ xs ys → fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
+  toList-++-homo : ListLike dxs → (dys : DiffList A) →
+                   toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
   viaList⁺ : (f : List A → List B) → xs ∼ dxs → f xs ∼ viaList f dxs
   ```
 
