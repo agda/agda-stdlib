@@ -10,7 +10,8 @@ module Data.Integer.DivMod where
 
 open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; ∣_∣; _+_; _*_; -_;
   _-_; suc; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _≥_; _<_; +≤+; -≤-; -≤+; +<+; -<+;
-  NonZero; NonNegative; NonPositive; Negative; Positive; sign)
+  NonZero; NonNegative; NonPositive; Negative; Positive; sign;
+  nonNegative)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ using (≤-reflexive; m∸n≤m; m<n⇒0<n)
@@ -166,16 +167,36 @@ n/ℕd≡0⇒∣n∣<d (-[1+ n ]) d n/ℕd≡0 with ℕ.zero ← ℕ.suc n ℕ.%
 ... | ℕ.zero  = ℕ.m/n≡0⇒m<n n/d
 ... | ℕ.suc _ = contradiction n/ℕd≡0 λ ()
 
-0≤n<d⇒n/ℕd≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : ℕ.NonZero d}} →
-                n < + d → n /ℕ d ≡ 0ℤ
-0≤n<d⇒n/ℕd≡0 (+ n) d (+<+ n<d) = cong (+_) (ℕ.m<n⇒m/n≡0 n<d)
-
 n/d≡0⇒∣n∣<∣d∣ : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → ∣ n ∣ ℕ.< ∣ d ∣
 n/d≡0⇒∣n∣<∣d∣ n (+ d) n/d≡0ℤ =
               n/ℕd≡0⇒∣n∣<d n d (trans (sym (div-pos-is-/ℕ n d)) n/d≡0ℤ)
 n/d≡0⇒∣n∣<∣d∣ n -[1+ d ] n/d≡0ℤ =
               n/ℕd≡0⇒∣n∣<d n (ℕ.suc d) (neg-injective {_} {+ 0}
                 (trans (sym (div-neg-is-neg-/ℕ n (ℕ.suc d))) n/d≡0ℤ))
+
+n/d≡0⇒n<∣d∣ : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → n < + ∣ d ∣
+n/d≡0⇒n<∣d∣ n d@(+ d') n/d≡0ℤ = begin-strict
+  n ≤⟨ i≤∣i∣ n ⟩
+  + ∣ n ∣ <⟨ +<+ (n/ℕd≡0⇒∣n∣<d n d' n/ℕ∣d∣≡0) ⟩
+  + ∣ d ∣ ∎
+  where n/ℕ∣d∣≡0 = trans (sym (div-pos-is-/ℕ n d')) n/d≡0ℤ
+n/d≡0⇒n<∣d∣ n d@(-[1+ d' ]) n/d≡0ℤ = begin-strict
+  n ≤⟨ i≤∣i∣ n ⟩
+  + ∣ n ∣ <⟨ +<+ (n/ℕd≡0⇒∣n∣<d n (ℕ.suc d') n/ℕ∣d∣≡0) ⟩
+  + ∣ d ∣ ∎
+  where n/ℕ∣d∣≡0 = neg-injective (trans (sym (div-neg-is-neg-/ℕ n (ℕ.suc d'))) n/d≡0ℤ)
+
+n/d≡0⇒nonNeg-n : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → NonNegative n
+n/d≡0⇒nonNeg-n n d n/d≡0ℤ = nonNegative (begin
+  0ℤ ≡⟨ *-zeroˡ d ⟨
+  0ℤ * d ≡⟨ cong (_* d) n/d≡0ℤ ⟨
+  (n / d) * d ≤⟨ [n/d]*d≤n n d ⟩
+  n ∎)
+
+0≤n<d⇒n/ℕd≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : ℕ.NonZero d}} →
+                n < + d → n /ℕ d ≡ 0ℤ
+0≤n<d⇒n/ℕd≡0 (+ n) d (+<+ n<d) = cong (+_) (ℕ.m<n⇒m/n≡0 n<d)
+
 
 0≤n<∣d∣⇒n/d≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : NonZero d}} →
                 n < + ∣ d ∣ → n / d ≡ 0ℤ
