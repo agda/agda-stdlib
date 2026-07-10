@@ -272,11 +272,17 @@ jobs:
 
       - name: Dummy echo not equal
         if: steps.cache-hash.outputs.CACHE_HASH != steps.new-cache-hash.outputs.NEW_CACHE_HASH
-        run: echo "not equal"
+        run: | 
+          echo "not equal"
+          echo ${{ steps.cache-hash.outputs.CACHE_HASH }}
+          echo ${{ steps.new-cache-hash.outputs.NEW_CACHE_HASH }}
 
       - name: Dummy echo equal
         if: steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH
-        run: echo "equal"
+        run: | 
+          echo "equal"
+          echo ${{ steps.cache-hash.outputs.CACHE_HASH }}
+          echo ${{ steps.new-cache-hash.outputs.NEW_CACHE_HASH }}
       
       # cache the files built during golden testing, but only on master and if dist-newstyle has changed to prevent the cache overfilling too quickly
       - name: Save cache
