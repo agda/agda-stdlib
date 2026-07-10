@@ -259,7 +259,7 @@ jobs:
       - name: Compute cache hash
         id: cache-hash
         run: |
-          { printf "CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_ENV}
+          { printf "CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_OUT}
 
       - name: Golden testing
         run: |
@@ -268,7 +268,15 @@ jobs:
       - name: Compute new cache hash
         id: new-cache-hash
         run: |
-          { printf "NEW_CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_ENV}
+          { printf "NEW_CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_OUT}
+
+      - name: Dummy echo not equal
+        if: steps.cache-hash.outputs.CACHE_HASH != steps.new-cache-hash.outputs.NEW_CACHE_HASH
+        run: echo "not equal"
+
+      - name: Dummy echo equal
+        if: steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH
+        run: echo "equal"
       
       # cache the files built during golden testing, but only on master and if dist-newstyle has changed to prevent the cache overfilling too quickly
       - name: Save cache
