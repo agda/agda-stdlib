@@ -19,7 +19,7 @@ import Data.List.Base as List
 import Data.List.Relation.Unary.Any as List
 import Data.List.Relation.Unary.Any.Properties as List
 open import Data.Nat.Base using (ℕ)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
@@ -32,13 +32,13 @@ open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto
 
 private
   variable
-    v : Level
+    v p : Level
     V : Value v
-    p : Level
     P : Pred (K& V) p
     l u : Key⁺
     hˡ hʳ h : ℕ
     t : Tree V l u h
+
 
 listLike : (t : Tree V l u h) → ListLike (toDiffList t)
 listLike (leaf l<u) = List.[] , []⁺

@@ -12,7 +12,7 @@ open import Data.DifferenceList.Base
   using (DiffList; fromList; toList; viaList; []; _∷_; [_]; _++_; _∷ʳ_; map)
 open import Data.List.Base as List using (List)
 open import Data.List.Properties using (++-assoc; ++-identityʳ)
-open import Data.Product using (Σ; _,_)
+open import Data.Product.Base using (Σ; _,_)
 open import Function.Base using (_∘′_; id; flip)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
