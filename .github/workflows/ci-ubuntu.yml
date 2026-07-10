@@ -270,18 +270,18 @@ jobs:
         run: |
           { printf "NEW_CACHE_HASH=" && find tests/_config/dist-newstyle/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum ; } >> ${GITHUB_OUTPUT}
 
-      - name: Dummy echo not equal
-        if: steps.cache-hash.outputs.CACHE_HASH != steps.new-cache-hash.outputs.NEW_CACHE_HASH
+      - name: Report hashes
         run: | 
-          echo "not equal"
-          echo ${{ steps.cache-hash.outputs.CACHE_HASH }}
-          echo ${{ steps.new-cache-hash.outputs.NEW_CACHE_HASH }}
+          if [ ${{ steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH }} ]; then 
+            echo "Hashes are equal"
+          else 
+            echo "Hashes are not equal"
+          fi
 
-      - name: Dummy echo equal
-        if: steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH
-        run: | 
-          echo "equal"
+          printf "Old hash: "
           echo ${{ steps.cache-hash.outputs.CACHE_HASH }}
+
+          printf "New hash: "
           echo ${{ steps.new-cache-hash.outputs.NEW_CACHE_HASH }}
       
       # cache the files built during golden testing, but only on master and if dist-newstyle has changed to prevent the cache overfilling too quickly
