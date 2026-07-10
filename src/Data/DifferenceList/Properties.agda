@@ -92,7 +92,7 @@ viaList⁺ {xs = xs} {dxs = dxs} f xs∼dxs k = begin
   (dxs ++ dys) k                  ∎
 
 ∷⁺ : (x : A) → xs ∼ dxs → x List.∷ xs ∼ x ∷ dxs
-∷⁺ x xs∼dxs k = cong (x List.∷_) (xs∼dxs k)
+∷⁺ x = ++⁺ [ x ]⁺
 
 ∷ʳ⁺ : (x : A) → xs ∼ dxs → xs List.∷ʳ x ∼ dxs ∷ʳ x
 ∷ʳ⁺ x xs∼dxs = ++⁺ xs∼dxs [ x ]⁺
