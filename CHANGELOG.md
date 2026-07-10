@@ -430,6 +430,7 @@ Additions to existing modules
 
 * In `Relation.Unary`:
   ```agda
-  Unique         : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
-  UniqueSuchThat : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
+  Unique          : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
+  UniqueGivenThat : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
+  UniqueSuchThat  : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
   ```
