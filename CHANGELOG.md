@@ -105,6 +105,11 @@ Non-backwards compatible changes
   `Algebra.*`, the field name of the basic homomorphism property `homo` in
   `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
 
+* [issue #2581](https://github.com/agda/agda-stdlib/issues/2581)
+  The definition of `Adjoint` in `Relation.Binary.Definitions` has been altered
+  to be the conjunction of two universally quantified `Half*Adjoint` properties,
+  rather than to be a universally quantified conjunction, for better compatibility
+  with `Function.Definitions`.
 
 * [Issue #3022](https://github.com/agda/agda-stdlib/issues/3022)
   The previous development of rose trees has been refactored to make
@@ -417,8 +422,37 @@ Additions to existing modules
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
+* In `Function.Consequences`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : Symmetric ≈₁ → Symmetric ≈₂ →
+                              HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+  ```
+
+* In `Function.Consequences.Setoid`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+  ```
+
 * In `Relation.Binary.Definitions`:
   ```agda
+  HalfLeftAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+  HalfLeftAdjoint _≤_ _⊑_ f g = ∀ {x y} → (x ≤ g y → f x ⊑ y)
+
+  HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+  HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y)
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
     StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
