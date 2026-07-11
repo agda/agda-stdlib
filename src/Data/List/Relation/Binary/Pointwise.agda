@@ -214,10 +214,10 @@ map⁻ {xs = _ ∷ _} {_ ∷ _} f g (r ∷ rs) = r ∷ map⁻ f g rs
 ------------------------------------------------------------------------
 -- foldr
 
-foldr⁺ : ∀ {_•_ : Op₂ A} {_◦_ : Op₂ B} →
-         (∀ {w x y z} → R w x → R y z → R (w • y) (x ◦ z)) →
+foldr⁺ : ∀ {_∙_ : Op₂ A} {_◦_ : Op₂ B} →
+         (∀ {w x y z} → R w x → R y z → R (w ∙ y) (x ◦ z)) →
          ∀ {e f} → R e f → Pointwise R xs ys →
-         R (foldr _•_ e xs) (foldr _◦_ f ys)
+         R (foldr _∙_ e xs) (foldr _◦_ f ys)
 foldr⁺ _    e~f []            = e~f
 foldr⁺ pres e~f (x~y ∷ xs~ys) = pres x~y (foldr⁺ pres e~f xs~ys)
 

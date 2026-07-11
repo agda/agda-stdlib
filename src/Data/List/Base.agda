@@ -123,6 +123,13 @@ merge R? x∷xs@(x ∷ xs) y∷ys@(y ∷ ys) = if does (R? x y)
 ------------------------------------------------------------------------
 -- Operations for reducing lists
 
+foldMap : (B → B → B) → B → (A → B) → List A → B
+foldMap _∙_ ε f = go
+  module FoldMap where
+  go : List _ → _
+  go []       = ε
+  go (x ∷ xs) = (f x) ∙ (go xs)
+
 foldr : (A → B → B) → B → List A → B
 foldr c n []       = n
 foldr c n (x ∷ xs) = c x (foldr c n xs)
