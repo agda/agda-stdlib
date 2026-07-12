@@ -434,3 +434,8 @@ Additions to existing modules
   UniqueGivenThat : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
   UniqueSuchThat  : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
   ```
+
+* In `Relation.Unary.Properties`:
+  ```agda
+  unique-given-suchthat : P ∩ UniqueGivenThat _≈_ P ≐ P ∩ UniqueSuchThat _≈_ P
+  ```

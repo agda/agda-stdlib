@@ -8,7 +8,8 @@
 
 module Relation.Unary.Properties where
 
-open import Data.Product.Base as Product using (_×_; _,_; -,_; swap; proj₁; zip′; curry)
+open import Data.Product.Base as Product
+  using (_×_; _,_; -,_; swap; proj₁; zip′; curry)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (id; _$_; _∘_; _∘₂_)
@@ -335,3 +336,12 @@ U-irrelevant a b = refl
 
 ∁-irrelevant : (P : Pred A ℓ) → Irrelevant (∁ P)
 ∁-irrelevant P a b = refl
+
+------------------------------------------------------------------------
+-- Uniqueness properties
+
+unique-given-suchthat : {_≈_ : Rel A ℓ₁} {P : Pred A ℓ₂} →
+                        P ∩ UniqueGivenThat _≈_ P ≐ P ∩ UniqueSuchThat _≈_ P
+unique-given-suchthat =
+  (λ (Px , !Px) → Px , Px , (!Px Px)) , Product.map₂ λ (_ , !Px) → λ _ → !Px
+-- Product.map₂ (λ !Px → {!!} , !Px _)
