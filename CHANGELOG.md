@@ -396,6 +396,11 @@ Additions to existing modules
   *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
+* In `Data.Product`:
+  ```agda
+  ∃!-≐ : P ≐ Q → ∃! _≈_ P → ∃! _≈_ Q
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
