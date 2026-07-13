@@ -259,7 +259,7 @@ jobs:
       - name: Compute cache hash
         id: cache-hash
         run: |
-          { printf "CACHE_HASH=" && hashFiles(tests/_config/dist-newstyle/**) ; } >> ${GITHUB_OUTPUT}
+          { printf "CACHE_HASH=" && echo ${{ hashFiles('tests/_config/dist-newstyle/**') }} ; } >> ${GITHUB_OUTPUT}
 
       - name: Golden testing
         run: |
@@ -268,7 +268,7 @@ jobs:
       - name: Compute new cache hash
         id: new-cache-hash
         run: |
-          { printf "NEW_CACHE_HASH=" && hashFiles(tests/_config/dist-newstyle/**) ; } >> ${GITHUB_OUTPUT}
+          { printf "NEW_CACHE_HASH=" && echo ${{ hashFiles('tests/_config/dist-newstyle/**') }} ; } >> ${GITHUB_OUTPUT}
 
       - name: Report hashes
         run: | 
