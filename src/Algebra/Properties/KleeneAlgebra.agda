@@ -236,21 +236,31 @@ x≤x⋆ x = begin
 ⋆-*-elimʳ = starDestructiveʳ _ _ _ ∘ x≤z∧y≤z⇒[x+y]≤z ≤-refl
 
 1+x⋆≈x⋆ : ∀ x → 1# + x ⋆ ≈ x ⋆
-1+x⋆≈x⋆ x = ≤-antisym (x≤z∧y≤z⇒[x+y]≤z 1≤[ _ ]⋆ ≤-refl) (y≤x+y _ _)
+1+x⋆≈x⋆ x = x≤z∧y≤z⇒[x+y]≤z 1≤[ _ ]⋆ ≤-refl ⟨⟩ y≤x+y _ _
 
 x⋆≈1+xx⋆ : ∀ x → x ⋆ ≈ 1# + x * x ⋆
-x⋆≈1+xx⋆ x = ≤-antisym (⋆-elimˡ (x≤x+y _ _) $ begin
-  x * (1# + x * x ⋆)     ≤⟨ *-monoˡ _ $ +-monoˡ _ $ xx⋆≤x⋆ _ ⟩
-  x * (1# + x ⋆)         ≈⟨ *-congˡ (1+x⋆≈x⋆ _) ⟩
-  x * x ⋆                ≤⟨ y≤x+y _ _ ⟩
-  1# + x * x ⋆           ∎) $ starExpansiveʳ _
+x⋆≈1+xx⋆ x = begin-equality
+  x ⋆          ≈⟨ ⋆-elimˡ (x≤x+y _ _) lemma ⟨⟩ starExpansiveʳ _ ⟩
+  1# + x * x ⋆ ∎
+  where
+  lemma : x * (1# + x * x ⋆) ≤ 1# + x * x ⋆
+  lemma = begin
+    x * (1# + x * x ⋆)     ≤⟨ *-monoˡ _ $ +-monoˡ _ $ xx⋆≤x⋆ _ ⟩
+    x * (1# + x ⋆)         ≈⟨ *-congˡ (1+x⋆≈x⋆ _) ⟩
+    x * x ⋆                ≤⟨ y≤x+y _ _ ⟩
+    1# + x * x ⋆           ∎
 
 x⋆≈1+x⋆x : ∀ x → x ⋆ ≈ 1# + x ⋆ * x
-x⋆≈1+x⋆x x = ≤-antisym (⋆-elimʳ (x≤x+y _ _) $ begin
-  (1# + x ⋆ * x) * x     ≤⟨ *-monoʳ _ $ +-monoˡ _ $ x⋆x≤x⋆ _ ⟩
-  (1# + x ⋆) * x         ≈⟨ *-congʳ (1+x⋆≈x⋆ _) ⟩
-  x ⋆ * x                ≤⟨ y≤x+y _ _ ⟩
-  1# + x ⋆ * x           ∎) $ starExpansiveˡ _
+x⋆≈1+x⋆x x = begin-equality
+  x ⋆          ≈⟨ ⋆-elimʳ (x≤x+y _ _) lemma ⟨⟩ starExpansiveˡ _ ⟩
+  1# + x ⋆ * x ∎
+  where
+  lemma : (1# + x ⋆ * x) * x ≤ 1# + x ⋆ * x
+  lemma = begin
+    (1# + x ⋆ * x) * x     ≤⟨ *-monoʳ _ $ +-monoˡ _ $ x⋆x≤x⋆ _ ⟩
+    (1# + x ⋆) * x         ≈⟨ *-congʳ $ 1+x⋆≈x⋆ _ ⟩
+    x ⋆ * x                ≤⟨ y≤x+y _ _ ⟩
+    1# + x ⋆ * x           ∎
 
 -- special cases for 0# and 1#
 
@@ -261,13 +271,13 @@ x⋆≈1+x⋆x x = ≤-antisym (⋆-elimʳ (x≤x+y _ _) $ begin
   1#      ∎
 
 0⋆≈1 : 0# ⋆ ≈ 1#
-0⋆≈1 = ≤-antisym 0⋆≤1 1≤[ _ ]⋆
+0⋆≈1 = 0⋆≤1 ⟨⟩ 1≤[ _ ]⋆
 
 1⋆≤1 : 1# ⋆ ≤ 1#
 1⋆≤1 = ⋆-elimˡ ≤-refl $ ≤-reflexive $ *-identityˡ _
 
 1⋆≈1 : 1# ⋆ ≈ 1#
-1⋆≈1 = ≤-antisym 1⋆≤1 1≤[ _ ]⋆
+1⋆≈1 = 1⋆≤1 ⟨⟩ 1≤[ _ ]⋆
 
 -- _⋆ is monotonic, and hence congruent for _≈_
 
@@ -289,7 +299,7 @@ x⋆≤x⋆⋆ : ∀ x → x ⋆ ≤ (x ⋆) ⋆
 x⋆≤x⋆⋆ = ⋆-mono ∘ x≤x⋆
 
 x⋆⋆≈x⋆ : ∀ x → (x ⋆) ⋆ ≈ x ⋆
-x⋆⋆≈x⋆ x = ≤-antisym (x⋆⋆≤x⋆ x) (x⋆≤x⋆⋆ x)
+x⋆⋆≈x⋆ x = x⋆⋆≤x⋆ x ⟨⟩ x⋆≤x⋆⋆ x
 
 -- distributive laws
 
@@ -312,9 +322,10 @@ yx≤zy⇒yx⋆≤z⋆y {y = y}{x = x} {z = z} yx≤zy = starDestructiveʳ _ _ _
     z ⋆ * y        ∎
 
 xy≈yz⇒x⋆y≈yz⋆ : x * y ≈ y * z → x ⋆ * y ≈ y * z ⋆
-xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz = ≤-antisym
-  (xy≤yz⇒x⋆y≤yz⋆ (≤-reflexive xy≈yz))
-  (yx≤zy⇒yx⋆≤z⋆y (≤-reflexive (sym xy≈yz)))
+xy≈yz⇒x⋆y≈yz⋆ {x = x} {y = y} {z = z} xy≈yz =
+  xy≤yz⇒x⋆y≤yz⋆ (begin x * y ≈⟨ xy≈yz ⟩ y * z ∎)
+  ⟨⟩
+  yx≤zy⇒yx⋆≤z⋆y (begin y * z ≈⟨ xy≈yz ⟨ x * y ∎)
 
 -- a useful absorption property
 

@@ -49,6 +49,9 @@ open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_
   as Strict
   using (_<_)
 
+antisym-syntax = antisym
+syntax antisym-syntax x≤y y≤x = x≤y ⟨⟩ y≤x
+
 ------------------------------------------------------------------------
 -- Re-export contents of base module
 

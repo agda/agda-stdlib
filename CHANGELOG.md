@@ -570,3 +570,9 @@ Additions to existing modules
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
+
+* In `Relation.Binary.Reasoning.PartialOrder`:
+  ```agda
+  antisym-syntax = antisym
+  syntax antisym-syntax x≤y y≤x = x≤y ⟨⟩ y≤x
+  ```
