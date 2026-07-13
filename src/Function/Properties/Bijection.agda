@@ -73,3 +73,18 @@ Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
 
 ⤖⇒⇔ : A ⤖ B → A ⇔ B
 ⤖⇒⇔ = Bijection⇒Equivalence
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+sym-≡ = sym
+{-# WARNING_ON_USAGE sym-≡
+"Warning: sym-≡ was deprecated in v3.0.
+Please use sym instead. "
+#-}

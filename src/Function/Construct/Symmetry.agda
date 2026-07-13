@@ -8,8 +8,9 @@
 
 module Function.Construct.Symmetry where
 
-open import Data.Product.Base using (_,_; swap)
+open import Data.Product.Base using (_,_; proj₁; swap)
 open import Function.Base using (_∘_; id)
+import Function.Consequences as Consequences
 open import Function.Definitions
   using (Bijective; Injective; Surjective; Inverseˡ; Inverseʳ; Inverseᵇ
         ; Congruent)
@@ -195,4 +196,22 @@ sym-↔ = ↔-sym
 {-# WARNING_ON_USAGE sym-↔
 "Warning: sym-↔ was deprecated in v2.0.
 Please use ↔-sym instead."
+#-}
+
+-- Version 3.0
+
+module _ {≈₁ : Rel A ℓ₁} {f : A → B} (isBij : IsBijection ≈₁ _≡_ f) where
+  isBijection-≡ : IsBijection _≡_ ≈₁ _
+  isBijection-≡ = isBijection isBij
+{-# WARNING_ON_USAGE isBijection-≡
+"Warning: isBijection-≡ was deprecated in v3.0.
+Please use isBijection instead, with a sharper type."
+#-}
+
+bijection-≡ : {R : Setoid a ℓ₁} {B : Set b} →
+              Bijection R (setoid B) → Bijection (setoid B) R
+bijection-≡ = bijection
+{-# WARNING_ON_USAGE bijection-≡
+"Warning: bijection-≡ was deprecated in v3.0.
+Please use bijection instead, with a sharper type."
 #-}

@@ -233,6 +233,11 @@ Deprecated names
   to∘to⁻   ↦  Function.Structures.IsSurjection.strictlyInverseˡ
   ```
 
+* In `Function.Properties.Bijection`:
+  ```agda
+  sym-≡   ↦  sym
+  ```
+
 * In `Function.Properties.Surjection`:
   ```agda
   injective⇒to⁻-cong   ↦  Function.Bundles.Bijection.from-cong
