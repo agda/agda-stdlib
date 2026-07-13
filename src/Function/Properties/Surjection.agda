@@ -27,6 +27,7 @@ private
     A B : Set a
     T S : Setoid a ℓ
 
+
 ------------------------------------------------------------------------
 -- Constructors
 
@@ -70,7 +71,7 @@ trans = Compose.surjection
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.3
+-- Version 3.0
 
 module _ (surjection : Surjection S T) where
 
@@ -83,6 +84,6 @@ module _ (surjection : Surjection S T) where
     S⤖T : Bijection S T
     S⤖T = record { cong = cong ; bijective = injective , surjective }
 {-# WARNING_ON_USAGE injective⇒to⁻-cong
-"Warning: injective⇒to⁻-cong was deprecated in v2.3.
+"Warning: injective⇒to⁻-cong was deprecated in v3.0.
 Please use Function.Bundles.Bijection.from-cong instead. "
 #-}

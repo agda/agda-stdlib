@@ -38,6 +38,7 @@ private
     f : A → B
     f⁻¹ : B → A
 
+
 strictlySurjective⇒surjective : StrictlySurjective _≡_ f →
                                  Surjective _≡_ _≡_ f
 strictlySurjective⇒surjective surj y =
