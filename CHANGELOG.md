@@ -473,7 +473,6 @@ Additions to existing modules
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
-<<<<<<< surjective-section-v3.0
 * In `Function.Bundles.Bijection`:
   ```agda
   from             : B → A
@@ -501,6 +500,30 @@ Additions to existing modules
   from             : B → A
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  ```
+
+* In `Function.Consequences`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : Symmetric ≈₁ → Symmetric ≈₂ →
+                              HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+  ```
+
+  * In `Function.Consequences.Setoid`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
   ```
 
 * In `Function.Construct.Symmetry`:
@@ -544,30 +567,6 @@ Additions to existing modules
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   from-injective   : Injective _≈₂_ _≈₁_ from
-=======
-* In `Function.Consequences`:
-  ```agda
-  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
-  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
-  inverseʳ⇒halfRightAdjoint : Symmetric ≈₁ → Symmetric ≈₂ →
-                              Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
-  halfRightAdjoint⇒inverseʳ : Symmetric ≈₁ → Symmetric ≈₂ →
-                              HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
-  inverseᵇ⇒adjoint          : Symmetric ≈₁ → Symmetric ≈₂ →
-                              Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
-  adjoint⇒inverseᵇ          : Symmetric ≈₁ → Symmetric ≈₂ →
-                              Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
-  ```
-
-* In `Function.Consequences.Setoid`:
-  ```agda
-  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
-  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
-  inverseʳ⇒halfRightAdjoint : Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
-  halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
-  inverseᵇ⇒adjoint          : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
-  adjoint⇒inverseᵇ          : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
->>>>>>> master
   ```
 
 * In `Relation.Binary.Definitions`:
