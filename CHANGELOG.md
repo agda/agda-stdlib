@@ -227,23 +227,6 @@ Deprecated names
   _≟-Kind_     ↦   _≡?-Kind_
   ```
 
-* In `Reflection.AST.AlphaEquality`:
-  ```agda
-  ≟⇒α     ↦   ≡?⇒α
-  ```
-
-* In `Relation.Binary.PropositionalEquality`:
-  ```agda
-  ≡-≟-identity     ↦   ≡-≡?-identity
-  ≢-≟-identity     ↦   ≢-≡?-identity
-  ```
-
-<<<<<<< surjective-section-v3.0
-* In `Effect.Monad.Partiality`:
-  ```agda
-  _≟-Kind_     ↦   _≡?-Kind_
-  ```
-
 * In `Function.Bundles.Surjection`:
   ```agda
   to⁻      ↦  Function.Structures.IsSurjection.from
@@ -266,8 +249,6 @@ Deprecated names
   ≢-≟-identity     ↦   ≢-≡?-identity
   ```
 
-=======
->>>>>>> master
 * In `Relation.Nary`:
   ```agda
   ≟-mapₙ     ↦   ≡?-mapₙ
