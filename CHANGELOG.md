@@ -96,6 +96,22 @@ Non-backwards compatible changes
   `Data.{Nat|Fin}.Properties` for the concrete datatypes. These deprecations
   are summarised below, but are not each documented for each affected module.
 
+* [issue #1436](https://github.com/agda/agda-stdlib/issues/1436)
+  The definitions of `LeftCancellative`/`RightCancellative` in `Algebra.Definitions`
+  have been altered to make the quantification for each argument explicit. The
+  definitions of `AlmostLeftCancellative`/`AlmostRightCancellative` have also been
+  changed to rephrase them in 'positive' logical terms. These definitions have been
+  propagated through the numeric types `X` in `Data.X.Properties`. As part of this
+  refactoring, lemmas in `Algebra.Properties.CancellativeCommutativeSemiring` no
+  longer require a `Decidable _≈_` hypothesis.
+
+* [issue #2471](https://github.com/agda/agda-stdlib/issues/2471)
+  In `Relation.Binary.Definitions`, the left/right order of the components of
+  `_Respects₂_` have been swapped. Previously the position of the `_Respectsˡ_`
+  (respects left) component was placed on the *right* hand side of the pair and
+  `_Respectsʳ_` (respects right) was placed on the *left* hand side of the pair.
+  By switching them the names are now consistent with their location.
+
 * [issue #2547](https://github.com/agda/agda-stdlib/issues/2547)
   The names of the *implicit* binders in the following definitions have been
   rectified to be consistent with the rest of `Relation.Binary.Definitions`:
@@ -106,6 +122,11 @@ Non-backwards compatible changes
   `Algebra.*`, the field name of the basic homomorphism property `homo` in
   `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
 
+* [issue #2581](https://github.com/agda/agda-stdlib/issues/2581)
+  The definition of `Adjoint` in `Relation.Binary.Definitions` has been altered
+  to be the conjunction of two universally quantified `Half*Adjoint` properties,
+  rather than to be a universally quantified conjunction, for better compatibility
+  with `Function.Definitions`.
 
 * [Issue #3022](https://github.com/agda/agda-stdlib/issues/3022)
   The previous development of rose trees has been refactored to make
@@ -121,6 +142,11 @@ Non-backwards compatible changes
   deprecated below as part of removing v1.x-era deprecations, have moreover had
   their definitions and signatures updated to use `IsMagmaHomomorphism` and
   `IsMonoidHomomorphism` respectively
+
+* In `Data.List.DifferenceList.Base`: `take` and `drop` are deprecated
+  because they do not have a lawful relationship to their `Data.List`
+  counterparts. Consider using `viaList` if you want a lawful lifting
+  of `take` or `drop`.
 
 Minor improvements
 ------------------
@@ -155,6 +181,16 @@ Deprecated names
 * In `Algebra.Morphism.Structures`:
   ```agda
   homo  ↦  ∙-homo
+  ```
+
+* In `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  *-almostCancelʳ  ↦  Algebra.Structures.IsCancellativeCommutativeSemiring.*-cancelʳ-nonZero
+  ```
+
+* In `Data.DifferenceList.Base`:
+  ```agda
+  lift ↦ _++_
   ```
 
 * In `Data.Fin.Properties`:
@@ -202,6 +238,7 @@ Deprecated names
   ≢-≟-identity     ↦   ≢-≡?-identity
   ```
 
+<<<<<<< surjective-section-v3.0
 * In `Effect.Monad.Partiality`:
   ```agda
   _≟-Kind_     ↦   _≡?-Kind_
@@ -229,6 +266,8 @@ Deprecated names
   ≢-≟-identity     ↦   ≢-≡?-identity
   ```
 
+=======
+>>>>>>> master
 * In `Relation.Nary`:
   ```agda
   ≟-mapₙ     ↦   ≡?-mapₙ
@@ -244,6 +283,10 @@ New modules
 
 * `Data.Bool.ListAction.Properties` for properties of conjunction and
   disjunction of lists.
+
+* `Data.DifferenceList` has been refactored to reexport the contents of two new modules:
+  - `Data.DifferenceList.Base`
+  - `Data.DifferenceList.Properties`
 
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
@@ -270,6 +313,36 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Consequences.Base`:
+  ```agda
+  almost⇒exceptˡ : _AlmostLeftCancellative′_ _≈_ P _•_ →
+                   Except_LeftCancellative_ _≈_ P _•_
+  almost⇒exceptʳ : _AlmostRightCancellative′_ _≈_ P _•_ →
+                   Except_RightCancellative_ _≈_ P _•_
+  except⇒almostˡ : Decidable P → Except_LeftCancellative_ _≈_ P _•_ →
+                   _AlmostLeftCancellative′_ _≈_ P _•_
+  except⇒almostʳ : Decidable P → Except_RightCancellative_ _≈_ P _•_ →
+                   _AlmostRightCancellative′_ _≈_ P _•_
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  comm∧cancelAtˡ⇒cancelAtʳ : LeftCancellativeAt x _∙_ → RightCancellativeAt x _∙_
+  comm∧cancelAtʳ⇒cancelAtˡ : RightCancellativeAt x _∙_ → LeftCancellativeAt x _∙_
+  ```
+
+* In `Algebra.Definitions`:
+  ```agda
+  LeftCancellativeAt           : A → Op₂ A → Set _
+  RightCancellativeAt          : A → Op₂ A → Set _
+  _AlmostLeftCancellative′_    : (P : Pred A p) → Op₂ A → Set _
+  Provided_LeftCancellative_   : (P : Pred A p) → Op₂ A → Set _
+  Except_LeftCancellative_     : (P : Pred A p) → Op₂ A → Set _
+  _AlmostRightCancellative′_   : (P : Pred A p) → Op₂ A → Set _
+  Provided_RightCancellative_  : (P : Pred A p) → Op₂ A → Set _
+  Except_RightCancellative_    : (P : Pred A p) → Op₂ A → Set _
+  ```
+
 * In `Algebra.Properties.KleeneAlgebra`:
   ```agda
   ≤-reflexive    : _≈_ ⇒ _≤_
@@ -293,10 +366,49 @@ Additions to existing modules
   ∧-monoid : Monoid 0ℓ 0ℓ
   ```
 
+* In `Data.Char.Base`:
+  ```agda
+  _≉ᵇ_ : (c d : Char) → Bool
+  case-insensitive : Rel Char ℓ → Rel Char ℓ
+  _≈ᵢ_ : Rel Char zero
+  _≉ᵢ_ : Rel Char zero
+  _<ᵇ_ : (c d : Char) → Bool
+  ```
+
+* In `Data.Char.Properties`: `_≈?_` reinstated from an earlier v1.5 deprecation
+  ```agda
+  infix 4 _≈?_
+  _≈?_ : Decidable _≈_
+  ≈ᵢ-setoid : Setoid _ _
+  ≈ᵢ-decSetoid : DecSetoid _ _
+  ```
+
+* In `Data.DifferenceList.Base`:
+  ```agda
+  viaList : (List A → List B) → (DiffList A → DiffList B)
+  ```
+
+* In `Data.DifferenceList.Properties`:
+  ```agda
+  viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
+  ```
+
 * In `Data.Integer.GCD`:
   ```agda
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
+
+* In `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  foldl-selective : Selective _≡_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≡ e) ⊎ (foldl _•_ e xs ∈ xs)
+  ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  foldl-selective : Selective _≈_ _•_ → ∀ e xs →
+                    (foldl _•_ e xs ≈ e) ⊎ (foldl _•_ e xs ∈ xs)
+   ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
@@ -314,9 +426,30 @@ Additions to existing modules
   gcd[n,n]≡n : ∀ n → gcd n n ≡ n
   ```
 
+* In `Data.Nat.ListAction`:
+  ```agda
+  minimum : ℕ → List ℕ → ℕ
+  maximum : ℕ → List ℕ → ℕ
+  ```
+
 * In `Data.Nat.ListAction.Properties`:
   ```agda
+  minimum-spec : ∀ n ms → minimum n ms ≡ foldl ℕ._⊓_ n ms
+  minimum-selective : ∀ n ms → minimum n ms ∈ n ∷ ms
+  minimum-≤ : ∀ n ms {k} → k ∈ (n ∷ ms) → minimum n ms ≤ k
+  maximum-spec : ∀ n ms → maximum n ms ≡ foldl ℕ._⊔_ n ms
+  maximum-selective : ∀ n ms → maximum n ms ∈ n ∷ ms
+  maximum-≥ : ∀ n ms {k} → k ∈ (n ∷ ms) → maximum n ms ≥ k
   product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  m≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero m}} → NonZero (m + n)
+  n≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
+  m≢0∧n≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
+  m+n≢0⇒m≢0∨n≢0 : ∀ m n .{{_ : NonZero (m + n)} → NonZero m ⊎ NonZero n
+  *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
 * In `Data.Rational.Properties`:
@@ -340,6 +473,7 @@ Additions to existing modules
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
+<<<<<<< surjective-section-v3.0
 * In `Function.Bundles.Bijection`:
   ```agda
   from             : B → A
@@ -410,10 +544,39 @@ Additions to existing modules
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   from-injective   : Injective _≈₂_ _≈₁_ from
+=======
+* In `Function.Consequences`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : Symmetric ≈₁ → Symmetric ≈₂ →
+                              HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+  ```
+
+* In `Function.Consequences.Setoid`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+>>>>>>> master
   ```
 
 * In `Relation.Binary.Definitions`:
   ```agda
+  HalfLeftAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+  HalfLeftAdjoint _≤_ _⊑_ f g = ∀ {x y} → (x ≤ g y → f x ⊑ y)
+
+  HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+  HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y)
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
     StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
@@ -422,4 +585,3 @@ Additions to existing modules
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
-

@@ -16,7 +16,8 @@ open import Function.Definitions
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; HalfLeftAdjoint; HalfRightAdjoint; Adjoint)
 open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 
 private
@@ -42,6 +43,16 @@ inverseˡ⇒surjective : ∀ (≈₂ : Rel B ℓ₂) →
                       Surjective ≈₁ ≈₂ f
 inverseˡ⇒surjective ≈₂ invˡ _ = (_ , invˡ)
 
+inverseˡ⇒halfLeftAdjoint : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                           Inverseˡ ≈₁ ≈₂ f f⁻¹ →
+                           HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+inverseˡ⇒halfLeftAdjoint _ _ inv = inv
+
+halfLeftAdjoint⇒inverseˡ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                           HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ →
+                           Inverseˡ ≈₁ ≈₂ f f⁻¹
+halfLeftAdjoint⇒inverseˡ _ _ adj = adj
+
 ------------------------------------------------------------------------
 -- Inverseʳ
 
@@ -52,6 +63,18 @@ inverseʳ⇒injective : ∀ (≈₂ : Rel B ℓ₂) f →
                      Inverseʳ ≈₁ ≈₂ f f⁻¹ →
                      Injective ≈₁ ≈₂ f
 inverseʳ⇒injective ≈₂ f refl sym trans invʳ = trans (sym (invʳ refl)) ∘ invʳ
+
+inverseʳ⇒halfRightAdjoint : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                            Symmetric ≈₁ → Symmetric ≈₂ →
+                            Inverseʳ ≈₁ ≈₂ f f⁻¹ →
+                            HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+inverseʳ⇒halfRightAdjoint _ _ sym₁ sym₂ inv = sym₁ ∘ inv ∘ sym₂
+
+halfRightAdjoint⇒inverseʳ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                            Symmetric ≈₁ → Symmetric ≈₂ →
+                            HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ →
+                            Inverseʳ ≈₁ ≈₂ f f⁻¹
+halfRightAdjoint⇒inverseʳ _ _ sym₁ sym₂ adj = sym₁ ∘ adj ∘ sym₂
 
 ------------------------------------------------------------------------
 -- Inverseᵇ
@@ -64,6 +87,16 @@ inverseᵇ⇒bijective : ∀ (≈₂ : Rel B ℓ₂) →
                      Bijective ≈₁ ≈₂ f
 inverseᵇ⇒bijective {f = f} ≈₂ refl sym trans (invˡ , invʳ) =
   (inverseʳ⇒injective ≈₂ f refl sym trans invʳ , inverseˡ⇒surjective ≈₂ invˡ)
+
+inverseᵇ⇒adjoint : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                   Symmetric ≈₁ → Symmetric ≈₂ →
+                   Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+inverseᵇ⇒adjoint _ _ sym₁ sym₂ (invˡ , invʳ) = invˡ , sym₁ ∘ invʳ ∘ sym₂
+
+adjoint⇒inverseᵇ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                   Symmetric ≈₁ → Symmetric ≈₂ →
+                   Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+adjoint⇒inverseᵇ _ _ sym₁ sym₂ (adjˡ , adjʳ) = adjˡ , sym₁ ∘ adjʳ ∘ sym₂
 
 ------------------------------------------------------------------------
 -- StrictlySurjective

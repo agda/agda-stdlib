@@ -12,7 +12,7 @@ open import Relation.Binary.Bundles using (Setoid)
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open import Algebra.Core
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂; map₂)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id; _∘_)
 open import Function.Definitions
@@ -116,19 +116,27 @@ module _ (self : SelfInverse f) where
 
 module _ (comm : Commutative _∙_) where
 
-  comm∧cancelˡ⇒cancelʳ : LeftCancellative _∙_ → RightCancellative _∙_
-  comm∧cancelˡ⇒cancelʳ cancelˡ x y z eq = cancelˡ x y z $ begin
+  comm∧cancelAtˡ⇒cancelAtʳ : ∀ {x} → LeftCancellativeAt x _∙_ →
+                             RightCancellativeAt x _∙_
+  comm∧cancelAtˡ⇒cancelAtʳ {x = x} cancel y z eq = cancel y z $ begin
     x ∙ y ≈⟨ comm x y ⟩
     y ∙ x ≈⟨ eq ⟩
     z ∙ x ≈⟨ comm z x ⟩
     x ∙ z ∎
 
-  comm∧cancelʳ⇒cancelˡ : RightCancellative _∙_ → LeftCancellative _∙_
-  comm∧cancelʳ⇒cancelˡ cancelʳ x y z eq = cancelʳ x y z $ begin
+  comm∧cancelˡ⇒cancelʳ : LeftCancellative _∙_ → RightCancellative _∙_
+  comm∧cancelˡ⇒cancelʳ cancel = comm∧cancelAtˡ⇒cancelAtʳ ∘ cancel
+
+  comm∧cancelAtʳ⇒cancelAtˡ : ∀ {x} → RightCancellativeAt x _∙_ →
+                             LeftCancellativeAt x _∙_
+  comm∧cancelAtʳ⇒cancelAtˡ {x = x} cancel y z eq = cancel y z $ begin
     y ∙ x ≈⟨ comm y x ⟩
     x ∙ y ≈⟨ eq ⟩
     x ∙ z ≈⟨ comm x z ⟩
     z ∙ x ∎
+
+  comm∧cancelʳ⇒cancelˡ : RightCancellative _∙_ → LeftCancellative _∙_
+  comm∧cancelʳ⇒cancelˡ cancel = comm∧cancelAtʳ⇒cancelAtˡ ∘ cancel
 
 ------------------------------------------------------------------------
 -- Monoid-like structures
@@ -173,21 +181,13 @@ module _ (comm : Commutative _∙_) where
 
   comm∧almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _∙_ →
                                      AlmostRightCancellative e _∙_
-  comm∧almostCancelˡ⇒almostCancelʳ {e = e} cancelˡ-nonZero x y z x≉e yx≈zx =
-    cancelˡ-nonZero x y z x≉e $ begin
-      x ∙ y ≈⟨ comm x y ⟩
-      y ∙ x ≈⟨ yx≈zx ⟩
-      z ∙ x ≈⟨ comm z x ⟩
-      x ∙ z ∎
+  comm∧almostCancelˡ⇒almostCancelʳ cancel =
+    map₂ (comm∧cancelAtˡ⇒cancelAtʳ comm) ∘ cancel
 
   comm∧almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _∙_ →
                                      AlmostLeftCancellative e _∙_
-  comm∧almostCancelʳ⇒almostCancelˡ {e = e} cancelʳ-nonZero x y z x≉e xy≈xz =
-    cancelʳ-nonZero x y z x≉e $ begin
-      y ∙ x ≈⟨ comm y x ⟩
-      x ∙ y ≈⟨ xy≈xz ⟩
-      x ∙ z ≈⟨ comm x z ⟩
-      z ∙ x ∎
+  comm∧almostCancelʳ⇒almostCancelˡ cancel  =
+    map₂ (comm∧cancelAtʳ⇒cancelAtˡ comm) ∘ cancel
 
 module _ {_∙_ : Op₂ A} {e : A} where
 
