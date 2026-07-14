@@ -23,8 +23,8 @@ open import Function.Base using (_∘_)
 open import Function.Consequences.Propositional
   using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
 open import Function.Definitions
-open import Function.Definitions.Strict
-import Function.Structures as FunctionStructures
+import Function.Definitions.Strictly as Strictly
+import Function.Structures as Structures
 open import Level using (Level; _⊔_; suc)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Relation.Binary.Bundles using (Setoid)
@@ -45,7 +45,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
   open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
-  open FunctionStructures _≈₁_ _≈₂_
+  open Structures _≈₁_ _≈₂_
 
 ------------------------------------------------------------------------
 -- Bundles with one element
@@ -126,7 +126,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     Please use Function.Structures.IsSurjection.from instead. "
     #-}
 
-    to∘to⁻ : StrictlyInverseˡ _≈₂_ to from
+    to∘to⁻ : Strictly.Inverseˡ _≈₂_ to from
     to∘to⁻ = strictlyInverseˡ
     {-# WARNING_ON_USAGE to∘to⁻
     "Warning: to∘to⁻ was deprecated in v3.0
@@ -188,7 +188,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
   open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
-  open FunctionStructures _≈₁_ _≈₂_
+  open Structures _≈₁_ _≈₂_
 
   record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -559,14 +559,14 @@ module _ {A : Set a} {B : Set b} where
 
 
   -- Strict variant of the above.
-  mk↠ₛ : ∀ {to : A → B} → StrictlySurjective _≡_ to → A ↠ B
+  mk↠ₛ : ∀ {to : A → B} → Strictly.Surjective _≡_ to → A ↠ B
   mk↠ₛ = mk↠ ∘ strictlySurjective⇒surjective
 
   mk↔ₛ′ : ∀ (to : A → B) (from : B → A) →
-          StrictlyInverseˡ _≡_ to from →
-          StrictlyInverseʳ _≡_ to from →
+          Strictly.Inverseˡ _≡_ to from →
+          Strictly.Inverseʳ _≡_ to from →
           A ↔ B
-  mk↔ₛ′ to from invˡ invʳ = mk↔ {to} {from}
+  mk↔ₛ′ to from invˡ invʳ = mk↔
     ( strictlyInverseˡ⇒inverseˡ to invˡ
     , strictlyInverseʳ⇒inverseʳ to invʳ
     )
