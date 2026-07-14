@@ -59,7 +59,7 @@ RightInverse⇒Surjection : RightInverse S T → Surjection T S
 RightInverse⇒Surjection I = record
   { to         = from
   ; cong       = from-cong
-  ; surjective = inverseˡ⇒surjective {≈₂ = Eq₁._≈_} inverseʳ
+  ; surjective = inverseˡ⇒surjective Eq₁._≈_ inverseʳ
   } where open RightInverse I
 
 ↪⇒↠ : B ↪ A → A ↠ B
