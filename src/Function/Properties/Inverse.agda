@@ -170,4 +170,3 @@ Please use Inverse.toFunction, directly exported from the bundle, instead."
 Please use Inverse.fromFunction, directly exported from the bundle, instead."
 #-}
 
-
