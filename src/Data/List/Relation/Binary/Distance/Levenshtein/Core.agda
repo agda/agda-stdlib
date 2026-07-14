@@ -16,11 +16,12 @@ There are no backwards compatibility guarantees whatsoever on its content."
 open import Data.Nat.Base using (ℕ; _≤_; _+_)
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
-open import Relation.Unary using (UniqueGivenThat)
+open import Relation.Unary as Unary using (_⇒_)
 
 -- These definitions surely need to go somewhere else
 Unique : ∀ {a ℓ} {A : Set a} (dist : A → A → ℕ → Set ℓ) → Set (a ⊔ ℓ)
-Unique dist = ∀ x y k → UniqueGivenThat _≡_ (dist x y) k
+Unique dist = ∀ x y → let D = dist x y in
+              ∀ k → (D ⇒ Unary.Unique _≡_ D) k
 
 Triangle : ∀ {a ℓ} {A : Set a} (dist : A → A → ℕ → Set ℓ) → Set (a ⊔ ℓ)
 Triangle dist = ∀ x y z k l m → dist x y k → dist y z l → dist x z m → m ≤ k + l

@@ -14,6 +14,7 @@ open import Data.Product.Base using (_×_; _,_; Σ-syntax; ∃; uncurry; swap)
 open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base using (_∘_; _|>_)
 open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary as Nullary using (¬_; Dec; True)
 
@@ -200,16 +201,8 @@ Decidable P = ∀ x → Dec (P x)
 
 -- Uniqueness
 
-module _ (_≈_ : A → A → Set ℓ₁) (P : Pred A ℓ₂) where
-
-  Unique : Pred A _
-  Unique x = ∀ {z} → P z → z ≈ x
-
-  UniqueGivenThat : Pred A _
-  UniqueGivenThat x = P x → Unique x
-
-  UniqueSuchThat : Pred A _
-  UniqueSuchThat x = P x × Unique x
+Unique : Rel A ℓ₁ → Pred A ℓ₂ → Pred A _
+Unique _≈_ P x = ∀ {z} → P z → z ≈ x
 
 ------------------------------------------------------------------------
 -- Operations on sets

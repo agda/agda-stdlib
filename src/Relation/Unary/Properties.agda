@@ -14,7 +14,7 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (id; _$_; _∘_; _∘₂_)
 open import Level using (Level)
-open import Relation.Binary.Core as Binary
+open import Relation.Binary.Core as Binary using (Rel)
 open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
@@ -336,11 +336,3 @@ U-irrelevant a b = refl
 
 ∁-irrelevant : (P : Pred A ℓ) → Irrelevant (∁ P)
 ∁-irrelevant P a b = refl
-
-------------------------------------------------------------------------
--- Uniqueness properties
-
-unique-given-suchthat : {_≈_ : Rel A ℓ₁} {P : Pred A ℓ₂} →
-                        P ∩ UniqueGivenThat _≈_ P ≐ P ∩ UniqueSuchThat _≈_ P
-unique-given-suchthat =
-  (λ (Px , !Px) → Px , Px , (!Px Px)) , Product.map₂ λ (_ , !Px) → λ _ → !Px
