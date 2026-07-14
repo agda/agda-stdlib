@@ -15,13 +15,13 @@ module Function.Consequences.Setoid
   (T : Setoid b ℓ₂)
   where
 
+import Function.Consequences as C
 import Function.Definitions as Definitions
 import Function.Definitions.Strictly as Strictly
 open import Relation.Binary.Definitions
   using (HalfLeftAdjoint; HalfRightAdjoint; Adjoint)
 open import Relation.Nullary.Negation.Core using (¬_)
 
-import Function.Consequences as C
 
 private
   open module S = Setoid S using () renaming (Carrier to A; _≈_ to ≈₁; sym to sym₁)
@@ -30,6 +30,9 @@ private
   variable
     f : A → B
     f⁻¹ : B → A
+    x y : A
+
+
 
 open Definitions ≈₁ ≈₂
 
@@ -78,7 +81,7 @@ adjoint⇒inverseᵇ : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ f f⁻¹
 adjoint⇒inverseᵇ = C.adjoint⇒inverseᵇ ≈₁ ≈₂ sym₁ sym₂
 
 ------------------------------------------------------------------------
--- StrictlySurjective
+-- Strictly.Surjective
 
 surjective⇒strictlySurjective : Surjective f → Strictly.Surjective ≈₂ f
 surjective⇒strictlySurjective =
@@ -90,7 +93,7 @@ strictlySurjective⇒surjective =
   C.strictlySurjective⇒surjective ≈₂ T.trans
 
 ------------------------------------------------------------------------
--- StrictlyInverseˡ
+-- Strictly.Inverseˡ
 
 inverseˡ⇒strictlyInverseˡ : Inverseˡ f f⁻¹ →
                             Strictly.Inverseˡ ≈₂ f f⁻¹
@@ -101,7 +104,7 @@ strictlyInverseˡ⇒inverseˡ : Congruent f →
 strictlyInverseˡ⇒inverseˡ = C.strictlyInverseˡ⇒inverseˡ T.trans
 
 ------------------------------------------------------------------------
--- StrictlyInverseʳ
+-- Strictly.Inverseʳ
 
 inverseʳ⇒strictlyInverseʳ : Inverseʳ f f⁻¹ →
                             Strictly.Inverseʳ ≈₁ f f⁻¹

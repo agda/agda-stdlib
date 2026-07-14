@@ -25,10 +25,11 @@ private
   variable
     a b ℓ₁ ℓ₂ : Level
     A B : Set a
-    ≈₁ ≈₂ : Rel A ℓ₁
+    ≈₁ : Rel A ℓ₁
+    ≈₂ : Rel B ℓ₂
     f : A → B
     f⁻¹ : B → A
-
+    x y : A
 
 
 ------------------------------------------------------------------------
@@ -127,6 +128,14 @@ module _ {≈₁ : Rel A ℓ₁} {f} (≈₂ : Rel B ℓ₂) where
                                   Strictly.Surjective ≈₂ f → Surjective f
   strictlySurjective⇒surjective trans cong surj x =
     Product.map₂ (λ fy≈x z≈y → trans (cong z≈y) fy≈x) (surj x)
+
+strictlySurjective⇒strictlyInverseˡ : (surj : Strictly.Surjective ≈₂ f) →
+                                      Strictly.Inverseˡ ≈₂ f (proj₁ ∘ surj)
+strictlySurjective⇒strictlyInverseˡ surj = proj₂ ∘ surj
+
+strictlyInverseˡ⇒strictlySurjective : Strictly.Inverseˡ ≈₂ f f⁻¹ →
+                                      Strictly.Surjective ≈₂ f
+strictlyInverseˡ⇒strictlySurjective sinv _ = _ , sinv _
 
 ------------------------------------------------------------------------
 -- StrictlyInverseˡ

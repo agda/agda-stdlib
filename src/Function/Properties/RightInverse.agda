@@ -59,7 +59,7 @@ RightInverse⇒Surjection : RightInverse S T → Surjection T S
 RightInverse⇒Surjection I = record
   { to         = from
   ; cong       = from-cong
-  ; surjective = inverseˡ⇒surjective Eq₁._≈_ inverseʳ
+  ; surjective = inverseˡ⇒surjective {≈₂ = Eq₁._≈_} inverseʳ
   } where open RightInverse I
 
 ↪⇒↠ : B ↪ A → A ↠ B
@@ -78,4 +78,4 @@ module _ (R : RightInverse S T) where
   open RightInverse R
 
   to-from : ∀ {x y} → to x Eq₂.≈ y → from y Eq₁.≈ x
-  to-from eq = Eq₁.trans (from-cong (Eq₂.sym eq)) (strictlyInverseʳ _)
+  to-from = inverseʳ ∘ Eq₂.sym

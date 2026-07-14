@@ -80,7 +80,7 @@ Inverse⇒Injection : Inverse S T → Injection S T
 Inverse⇒Injection {S = S} {T = T} I = record
   { to = to
   ; cong = to-cong
-  ; injective = inverseʳ⇒injective to inverseʳ
+  ; injective = inverseʳ⇒injective inverseʳ
   } where open Inverse I; open Consequences S T
 
 Inverse⇒Surjection : Inverse S T → Surjection S T

@@ -35,12 +35,13 @@ open import Function.Consequences.Setoid (setoid A) (setoid B) public
 ------------------------------------------------------------------------
 -- Properties that rely on congruence
 
+open Definitions (_≡_ {A = A}) (_≡_ {A = B})
+
 private
   variable
     f : A → B
     f⁻¹ : B → A
 
-open Definitions (_≡_ {A = A}) (_≡_ {A = B})
 
 strictlySurjective⇒surjective : Strictly.Surjective _≡_ f →
                                 Surjective f
@@ -54,4 +55,3 @@ strictlyInverseˡ⇒inverseˡ _ inv refl = inv _
 strictlyInverseʳ⇒inverseʳ : ∀ f → Strictly.Inverseʳ _≡_ f f⁻¹ →
                             Inverseʳ f f⁻¹
 strictlyInverseʳ⇒inverseʳ _ inv refl = inv _
-

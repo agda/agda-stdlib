@@ -22,7 +22,7 @@ module Function.Bundles where
 open import Function.Base using (_∘_)
 open import Function.Consequences.Propositional
   using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
-open import Function.Definitions
+import Function.Definitions as Definitions
 import Function.Definitions.Strictly as Strictly
 import Function.Structures as Structures
 open import Level using (Level; _⊔_; suc)
@@ -45,6 +45,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
   open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
+  open Definitions _≈₁_ _≈₂_
   open Structures _≈₁_ _≈₂_
 
 ------------------------------------------------------------------------
@@ -55,7 +56,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   record Func : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to   : A → B
-      cong : Congruent _≈₁_ _≈₂_ to
+      cong : Congruent to
 
     isCongruent : IsCongruent to
     isCongruent = record
@@ -71,8 +72,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to          : A → B
-      cong        : Congruent _≈₁_ _≈₂_ to
-      injective   : Injective _≈₁_ _≈₂_ to
+      cong        : Congruent to
+      injective   : Injective to
 
     function : Func
     function = record
@@ -93,8 +94,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   record Surjection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to         : A → B
-      cong       : Congruent _≈₁_ _≈₂_ to
-      surjective : Surjective _≈₁_ _≈₂_ to
+      cong       : Congruent to
+      surjective : Surjective to
 
     function : Func
     function = record
@@ -137,13 +138,13 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to        : A → B
-      cong      : Congruent _≈₁_ _≈₂_ to
-      bijective : Bijective _≈₁_ _≈₂_ to
+      cong      : Congruent to
+      bijective : Bijective to
 
-    injective : Injective _≈₁_ _≈₂_ to
+    injective : Injective to
     injective = proj₁ bijective
 
-    surjective : Surjective _≈₁_ _≈₂_ to
+    surjective : Surjective to
     surjective = proj₂ bijective
 
     injection : Injection
@@ -188,14 +189,16 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
   open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
+
+  open Definitions _≈₁_ _≈₂_
   open Structures _≈₁_ _≈₂_
 
   record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to        : A → B
       from      : B → A
-      to-cong   : Congruent _≈₁_ _≈₂_ to
-      from-cong : Congruent _≈₂_ _≈₁_ from
+      to-cong   : Congruent to
+      from-cong : Definitions.Congruent _≈₂_ _≈₁_ from
 
     toFunction : Func From To
     toFunction = record
@@ -222,9 +225,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     field
       to        : A → B
       from      : B → A
-      to-cong   : Congruent _≈₁_ _≈₂_ to
-      from-cong : Congruent _≈₂_ _≈₁_ from
-      inverseˡ  : Inverseˡ _≈₁_ _≈₂_ to from
+      to-cong   : Congruent to
+      from-cong : Definitions.Congruent _≈₂_ _≈₁_ from
+      inverseˡ  : Inverseˡ to from
 
     isCongruent : IsCongruent to
     isCongruent = record
@@ -270,9 +273,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     field
       to        : A → B
       from      : B → A
-      to-cong   : Congruent _≈₁_ _≈₂_ to
-      from-cong : Congruent _≈₂_ _≈₁_ from
-      inverseʳ  : Inverseʳ _≈₁_ _≈₂_ to from
+      to-cong   : Congruent to
+      from-cong : Definitions.Congruent _≈₂_ _≈₁_ from
+      inverseʳ  : Inverseʳ to from
 
     isCongruent : IsCongruent to
     isCongruent = record
@@ -311,14 +314,14 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     field
       to        : A → B
       from      : B → A
-      to-cong   : Congruent _≈₁_ _≈₂_ to
-      from-cong : Congruent _≈₂_ _≈₁_ from
-      inverse   : Inverseᵇ _≈₁_ _≈₂_ to from
+      to-cong   : Congruent to
+      from-cong : Definitions.Congruent _≈₂_ _≈₁_ from
+      inverse   : Inverseᵇ to from
 
-    inverseˡ : Inverseˡ _≈₁_ _≈₂_ to from
+    inverseˡ : Inverseˡ to from
     inverseˡ = proj₁ inverse
 
-    inverseʳ : Inverseʳ _≈₁_ _≈₂_ to from
+    inverseʳ : Inverseʳ to from
     inverseʳ = proj₂ inverse
 
     leftInverse : LeftInverse
@@ -355,9 +358,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       to         : A → B
       from₁      : B → A
       from₂      : B → A
-      to-cong    : Congruent _≈₁_ _≈₂_ to
-      from₁-cong : Congruent _≈₂_ _≈₁_ from₁
-      from₂-cong : Congruent _≈₂_ _≈₁_ from₂
+      to-cong    : Congruent to
+      from₁-cong : Definitions.Congruent _≈₂_ _≈₁_ from₁
+      from₂-cong : Definitions.Congruent _≈₂_ _≈₁_ from₂
 
 
   record BiInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -365,11 +368,11 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       to          : A → B
       from₁       : B → A
       from₂       : B → A
-      to-cong     : Congruent _≈₁_ _≈₂_ to
-      from₁-cong  : Congruent _≈₂_ _≈₁_ from₁
-      from₂-cong  : Congruent _≈₂_ _≈₁_ from₂
-      inverseˡ  : Inverseˡ _≈₁_ _≈₂_ to from₁
-      inverseʳ  : Inverseʳ _≈₁_ _≈₂_ to from₂
+      to-cong     : Congruent to
+      from₁-cong  : Definitions.Congruent _≈₂_ _≈₁_ from₁
+      from₂-cong  : Definitions.Congruent _≈₂_ _≈₁_ from₂
+      inverseˡ  : Inverseˡ to from₁
+      inverseʳ  : Inverseʳ to from₂
 
     to-isCongruent : IsCongruent to
     to-isCongruent = record
@@ -482,27 +485,29 @@ A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
 
 module _ {A : Set a} {B : Set b} where
 
+  open Definitions (_≡_ {A = A}) (_≡_ {A = B})
+
   mk⟶ : (A → B) → A ⟶ B
   mk⟶ to = record
     { to        = to
     ; cong      = ≡.cong to
     }
 
-  mk↣ : ∀ {to : A → B} → Injective _≡_ _≡_ to → A ↣ B
+  mk↣ : ∀ {to : A → B} → Injective to → A ↣ B
   mk↣ {to} inj = record
     { to         = to
     ; cong      = ≡.cong to
     ; injective = inj
     }
 
-  mk↠ : ∀ {to : A → B} → Surjective _≡_ _≡_ to → A ↠ B
+  mk↠ : ∀ {to : A → B} → Surjective to → A ↠ B
   mk↠ {to} surj = record
     { to         = to
     ; cong       = ≡.cong to
     ; surjective = surj
     }
 
-  mk⤖ : ∀ {to : A → B} → Bijective _≡_ _≡_ to → A ⤖ B
+  mk⤖ : ∀ {to : A → B} → Bijective to → A ⤖ B
   mk⤖ {to} bij = record
     { to        = to
     ; cong      = ≡.cong to
@@ -517,7 +522,7 @@ module _ {A : Set a} {B : Set b} where
     ; from-cong = ≡.cong from
     }
 
-  mk↩ : ∀ {to : A → B} {from : B → A} → Inverseˡ _≡_ _≡_ to from → A ↩ B
+  mk↩ : ∀ {to : A → B} {from : B → A} → Inverseˡ to from → A ↩ B
   mk↩ {to} {from} invˡ = record
     { to        = to
     ; from      = from
@@ -526,7 +531,7 @@ module _ {A : Set a} {B : Set b} where
     ; inverseˡ  = invˡ
     }
 
-  mk↪ : ∀ {to : A → B} {from : B → A} → Inverseʳ _≡_ _≡_ to from → A ↪ B
+  mk↪ : ∀ {to : A → B} {from : B → A} → Inverseʳ to from → A ↪ B
   mk↪ {to} {from} invʳ = record
     { to        = to
     ; from      = from
@@ -536,7 +541,7 @@ module _ {A : Set a} {B : Set b} where
     }
 
   mk↩↪ : ∀ {to : A → B} {from₁ : B → A} {from₂ : B → A} →
-         Inverseˡ _≡_ _≡_ to from₁ → Inverseʳ _≡_ _≡_ to from₂ → A ↩↪ B
+         Inverseˡ to from₁ → Inverseʳ to from₂ → A ↩↪ B
   mk↩↪ {to} {from₁} {from₂} invˡ invʳ = record
     { to         = to
     ; from₁      = from₁
@@ -548,7 +553,7 @@ module _ {A : Set a} {B : Set b} where
     ; inverseʳ   = invʳ
     }
 
-  mk↔ : ∀ {to : A → B} {from : B → A} → Inverseᵇ _≡_ _≡_ to from → A ↔ B
+  mk↔ : ∀ {to : A → B} {from : B → A} → Inverseᵇ to from → A ↔ B
   mk↔ {to} {from} inv = record
     { to        = to
     ; from      = from
