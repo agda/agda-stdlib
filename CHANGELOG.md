@@ -438,6 +438,12 @@ Additions to existing modules
   *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
+* In `Data.Product`:
+  ```agda
+  ∃!-≐ : P ≐ Q → ∃! _≈_ P → ∃! _≈_ Q
+  ∃!-⇔ : P ≐ Q → ∃! _≈_ P ⇔ ∃! _≈_ Q
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
@@ -569,4 +575,10 @@ Additions to existing modules
     StarLeftDestructive   : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  ```
+
+* In `Relation.Unary`:
+  ```agda
+  Unique         : Rel A ℓ₁ → Pred A ℓ₂ → Pred A _
+  Unique _≈_ P x = ∀ {z} → P z → z ≈ x
   ```

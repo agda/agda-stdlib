@@ -86,14 +86,14 @@ open import Data.List.Relation.Binary.Distance.Levenshtein.Core
 module _ (x : A) where
 
   -- the "distance" defined by the relation is not unique
-  not-unique : ¬ Unique {A = List A} Edit
+  not-unique : ¬ Unique Edit
   not-unique unique =
     let xs = x ∷ []
-        hyp = unique xs xs 0 1 reflexive (swap done)
-    in 0≢1+n hyp
+        hyp = unique xs xs 0 reflexive (swap done)
+    in 0≢1+n (sym hyp)
 
   -- the relation does not satisfy the triangle inequality
-  not-triangle : ¬ (Triangle {A = List A} Edit)
+  not-triangle : ¬ Triangle Edit
   not-triangle triangle =
       let xs = x ∷ []
           hyp = triangle xs xs xs 0 0 1 reflexive reflexive (swap done)
