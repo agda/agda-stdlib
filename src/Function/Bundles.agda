@@ -302,16 +302,16 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; injective = injective
       }
 
-
-     equivalence : Equivalence
-     equivalence = record
+    equivalence : Equivalence
+    equivalence = record
       { to-cong   = to-cong
       ; from-cong = from-cong
       }
 
     open Equivalence equivalence public
       using (toFunction; fromFunction)
-    
+
+
   record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to        : A → B
