@@ -9,11 +9,12 @@
 module Data.Product where
 
 open import Function.Base using (_∘_)
-open import Function.Bundles using (_↔_; mk↔ₛ′)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Unary using (Pred; _≐_; _∩_; Unique)
+open import Relation.Unary.Properties using (≐-sym)
 
 private
   variable
@@ -72,3 +73,6 @@ module _ (_≈_ : Rel A ℓ) where
 
   ∃!-≐ : {P : Pred A p} {Q : Pred A q} → P ≐ Q → ∃! P → ∃! Q
   ∃!-≐ (P⊆Q , Q⊆P) = map₂ (map P⊆Q (_∘ Q⊆P))
+
+  ∃!-⇔ : {P : Pred A p} {Q : Pred A q} → P ≐ Q → ∃! P ⇔ ∃! Q
+  ∃!-⇔ P≐Q = mk⇔ (∃!-≐ P≐Q) (∃!-≐ (≐-sym P≐Q))

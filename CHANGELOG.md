@@ -399,6 +399,7 @@ Additions to existing modules
 * In `Data.Product`:
   ```agda
   ∃!-≐ : P ≐ Q → ∃! _≈_ P → ∃! _≈_ Q
+  ∃!-⇔ : P ≐ Q → ∃! _≈_ P ⇔ ∃! _≈_ Q
   ```
 
 * In `Data.Rational.Properties`:
