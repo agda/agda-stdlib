@@ -55,11 +55,11 @@ toList⁺ {xs = xs} {dxs} xs∼dxs = begin
   toList dxs            ∎
 
 fromList-++ : (xs ys : List A) →
-                   fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
+              fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
 fromList-++ = ++-assoc
 
 toList-++ : ListLike dxs → (dys : DiffList A) →
-                 toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+            toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
 toList-++ {dxs = dxs} (xs , xs∼dxs) dys = begin
   toList dxs List.++ toList dys  ≡⟨ cong (List._++ toList dys) (toList⁺ xs∼dxs) ⟨
   xs List.++ toList dys          ≡⟨⟩
