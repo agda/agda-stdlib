@@ -68,48 +68,37 @@ isEquivalence = record
 ------------------------------------------------------------------------
 -- Conversion functions
 
-toFunction : Inverse S T → Func S T
-toFunction I = record { to = to ; cong = to-cong }
-  where open Inverse I
+module _ (I : Inverse S T) where
 
-fromFunction : Inverse S T → Func T S
-fromFunction I = record { to = from ; cong = from-cong }
-  where open Inverse I
+  open Inverse I
+  open Consequences S T
 
-Inverse⇒Injection : Inverse S T → Injection S T
-Inverse⇒Injection {S = S} {T = T} I = record
-  { to = to
-  ; cong = to-cong
-  ; injective = inverseʳ⇒injective to inverseʳ
-  } where open Inverse I; open Consequences S T
+  Inverse⇒Injection : Injection S T
+  Inverse⇒Injection = record
+    { Func toFunction
+    ; injective = inverseʳ⇒injective to inverseʳ
+    }
 
-Inverse⇒Surjection : Inverse S T → Surjection S T
-Inverse⇒Surjection {S = S} {T = T} I = record
-  { to = to
-  ; cong = to-cong
-  ; surjective = inverseˡ⇒surjective inverseˡ
-  } where open Inverse I; open Consequences S T
+  Inverse⇒Surjection : Surjection S T
+  Inverse⇒Surjection = record
+    { Func toFunction
+    ; surjective = inverseˡ⇒surjective inverseˡ
+    }
 
-Inverse⇒Bijection : Inverse S T → Bijection S T
-Inverse⇒Bijection {S = S} {T = T} I = record
-  { to        = to
-  ; cong      = to-cong
-  ; bijective = inverseᵇ⇒bijective inverse
-  } where open Inverse I; open Consequences S T
+  Inverse⇒Bijection : Bijection S T
+  Inverse⇒Bijection = record
+    { Func toFunction
+    ; bijective = inverseᵇ⇒bijective inverse
+    }
 
-Inverse⇒Equivalence : Inverse S T → Equivalence S T
-Inverse⇒Equivalence I = record
-  { to        = to
-  ; from      = from
-  ; to-cong   = to-cong
-  ; from-cong = from-cong
-  } where open Inverse I
+  Inverse⇒Equivalence : Equivalence S T
+  Inverse⇒Equivalence = equivalence
 
 ↔⇒⟶ : A ↔ B → A ⟶ B
-↔⇒⟶ = toFunction
+↔⇒⟶ = Inverse.toFunction
 
 ↔⇒⟵ : A ↔ B → B ⟶ A
-↔⇒⟵ = fromFunction
+↔⇒⟵ = Inverse.fromFunction
 
 ↔⇒↣ : A ↔ B → A ↣ B
 ↔⇒↣ = Inverse⇒Injection
@@ -121,7 +110,7 @@ Inverse⇒Equivalence I = record
 ↔⇒⤖ = Inverse⇒Bijection
 
 ↔⇒⇔ : A ↔ B → A ⇔ B
-↔⇒⇔ = Inverse⇒Equivalence
+↔⇒⇔ = Inverse.equivalence
 
 ↔⇒↩ : A ↔ B → A ↩ B
 ↔⇒↩ = Inverse.leftInverse
@@ -157,3 +146,27 @@ module _ (I : Inverse S T) where
 
   to-from : ∀ {x y} → to x Eq₂.≈ y → from y Eq₁.≈ x
   to-from = RightInverse.to-from rightInverse
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+module _ (I : Inverse S T) where
+  open Inverse I public
+    using (toFunction; fromFunction)
+
+{-# WARNING_ON_USAGE toFunction
+"Warning: toFunction was deprecated in v3.0.
+Please use Inverse.toFunction, directly exported from the bundle, instead."
+#-}
+{-# WARNING_ON_USAGE fromFunction
+"Warning: fromFunction was deprecated in v3.0.
+Please use Inverse.fromFunction, directly exported from the bundle, instead."
+#-}
+
+

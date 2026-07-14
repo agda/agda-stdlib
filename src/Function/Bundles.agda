@@ -341,7 +341,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
     open LeftInverse leftInverse   public
-      using (isLeftInverse; strictlyInverseˡ; toFunction; fromFunction)
+      using (isLeftInverse; strictlyInverseˡ
+            ; equivalence; toFunction; fromFunction)
     open RightInverse rightInverse public
       using (isRightInverse; strictlyInverseʳ)
 
