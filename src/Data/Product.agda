@@ -71,4 +71,4 @@ module _ (_≈_ : Rel A ℓ) where
   ∃! P = ∃ (UniqueSuchThat _≈_ P)
 
   ∃!-≐ : {P : Pred A p} {Q : Pred A q} → P ≐ Q → ∃! P → ∃! Q
-  ∃!-≐ (P⊆Q , Q⊆P) = map₂ (map P⊆Q λ !P → !P ∘ Q⊆P)
+  ∃!-≐ (P⊆Q , Q⊆P) = map₂ (map P⊆Q (_∘ Q⊆P))

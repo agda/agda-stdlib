@@ -344,4 +344,3 @@ unique-given-suchthat : {_≈_ : Rel A ℓ₁} {P : Pred A ℓ₂} →
                         P ∩ UniqueGivenThat _≈_ P ≐ P ∩ UniqueSuchThat _≈_ P
 unique-given-suchthat =
   (λ (Px , !Px) → Px , Px , (!Px Px)) , Product.map₂ λ (_ , !Px) → λ _ → !Px
--- Product.map₂ (λ !Px → {!!} , !Px _)

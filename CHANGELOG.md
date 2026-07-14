@@ -433,11 +433,12 @@ Additions to existing modules
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
 
-* In `Relation.Unary`:
+* In `Relation.Unary`: for `_≈_ : A → A → Set ℓ₁`, `P : Pred A ℓ₂`,
   ```agda
-  Unique          : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
-  UniqueGivenThat : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
-  UniqueSuchThat  : (A → A → Set ℓ₁) (P : Pred A ℓ₂) → Pred A _
+  Unique          : Pred A _
+  Unique x        = ∀ {z} → P z → z ≈ x
+  UniqueGivenThat : Pred A _
+  UniqueSuchThat  : Pred A _
   ```
 
 * In `Relation.Unary.Properties`:
