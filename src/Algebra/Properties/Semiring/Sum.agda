@@ -4,14 +4,15 @@
 -- Finite summations over a semiring
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
 
 module Algebra.Properties.Semiring.Sum {c} {ℓ} (R : Semiring c ℓ) where
 
 open import Data.Nat.Base using (zero; suc)
-open import Data.Vec.Functional
+open import Data.Vec.Functional using (Vector; head; tail; map)
+
 open Semiring R
 
 ------------------------------------------------------------------------

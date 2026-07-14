@@ -4,12 +4,12 @@
 -- Coinductive lists where at least one element satisfies a predicate
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Colist.Relation.Unary.Any where
 
 open import Codata.Musical.Colist.Base
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
 open import Level using (Level; _⊔_)

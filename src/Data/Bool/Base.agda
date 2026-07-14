@@ -4,12 +4,12 @@
 -- The type for booleans and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Base where
 
 open import Data.Unit.Base using (⊤)
-open import Data.Empty
+open import Data.Empty using (⊥)
 open import Level using (Level)
 
 private

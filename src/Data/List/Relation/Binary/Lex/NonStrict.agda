@@ -7,25 +7,27 @@
 -- The definitions of lexicographic orderings used here is suitable if
 -- the argument order is a (non-strict) partial order.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Lex.NonStrict where
 
 open import Data.Empty using (⊥)
-open import Function.Base
 open import Data.Unit.Base using (⊤; tt)
-open import Data.List.Base
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; [])
+open import Function.Base using (const; id)
 import Data.List.Relation.Binary.Lex.Strict as Strict
-open import Level
-open import Relation.Nullary
+open import Level using (Level; _⊔_)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary using (yes; no)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles
-  using (Poset; StrictPartialOrder; DecTotalOrder; StrictTotalOrder; Preorder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsTotalOrder; IsStrictTotalOrder; IsPreorder; IsDecTotalOrder)
+  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsTotalOrder
+        ; IsStrictTotalOrder; IsPreorder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Transitive; Decidable; Total; Trichotomous)
+  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric
+        ; Transitive; Decidable; Total; Trichotomous)
 import Relation.Binary.Construct.NonStrictToStrict as Conv
 
 import Data.List.Relation.Binary.Lex as Core
@@ -81,12 +83,12 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
     <-compare : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ →
                 Total _≼_ → Trichotomous _≋_ _<_
-    <-compare sym _≟_ antisym tot =
-      Strict.<-compare sym (Conv.<-trichotomous _ _ sym _≟_ antisym tot)
+    <-compare sym _≈?_ antisym tot =
+      Strict.<-compare sym (Conv.<-trichotomous _ _ sym _≈?_ antisym tot)
 
     <-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _<_
-    <-decidable _≟_ _≼?_ =
-      Core.decidable (no id) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
+    <-decidable _≈?_ _≼?_ =
+      Core.decidable (no id) _≈?_ (Conv.<-decidable _ _ _≈?_ _≼?_)
 
     <-isStrictPartialOrder : IsPartialOrder _≈_ _≼_ →
                              IsStrictPartialOrder _≋_ _<_
@@ -109,7 +111,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 <-strictTotalOrder : ∀ {a ℓ₁ ℓ₂} → DecTotalOrder a ℓ₁ ℓ₂ →
                      StrictTotalOrder _ _ _
 <-strictTotalOrder dtot = record
-  { isStrictTotalOrder = <-isStrictTotalOrder _≟_ isTotalOrder
+  { isStrictTotalOrder = <-isStrictTotalOrder _≈?_ isTotalOrder
   } where open DecTotalOrder dtot
 
 ------------------------------------------------------------------------
@@ -148,8 +150,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ≤-resp₂ eq resp = Core.respects₂ eq (Conv.<-resp-≈ _ _ eq resp)
 
     ≤-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _≤_
-    ≤-decidable _≟_ _≼?_ =
-      Core.decidable (yes tt) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
+    ≤-decidable _≈?_ _≼?_ =
+      Core.decidable (yes tt) _≈?_ (Conv.<-decidable _ _ _≈?_ _≼?_)
 
     ≤-total : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ →
               Total _≼_ → Total _≤_

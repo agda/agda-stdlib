@@ -4,11 +4,11 @@
 -- The Pair type which calls out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Foreign.Haskell.Pair where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Product.Base using (_×_; _,_)
 
 private

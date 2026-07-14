@@ -5,17 +5,18 @@
 -- commutative rings), used by the ring solver
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Solver.Ring.AlmostCommutativeRing where
 
-open import Algebra
-open import Algebra.Structures
-open import Algebra.Definitions
-import Algebra.Morphism as Morphism
-import Algebra.Morphism.Definitions as MorphismDefinitions
+open import Algebra  using
+  (Op₁; Op₂; CommutativeSemiring; RawRing; CommutativeRing)
+open import Algebra.Structures using (IsCommutativeSemiring)
+open import Algebra.Definitions using (Congruent₁; Congruent₂)
+import Algebra.Morphism.Definitions as MorphismDefinitions using
+  (Homomorphic₀; Homomorphic₁; Homomorphic₂)
 open import Function.Base using (id)
-open import Level
+open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (Rel)
 
 
@@ -87,7 +88,7 @@ record _-Raw-AlmostCommutative⟶_
     module T = AlmostCommutativeRing To
   open MorphismDefinitions F.Carrier T.Carrier T._≈_
   field
-    ⟦_⟧    : Morphism
+    ⟦_⟧    : F.Carrier → T.Carrier
     +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
     *-homo : Homomorphic₂ ⟦_⟧ F._*_ T._*_
     -‿homo : Homomorphic₁ ⟦_⟧ F.-_  T.-_

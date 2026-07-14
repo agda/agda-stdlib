@@ -4,14 +4,13 @@
 -- Properties of infinite streams defined as coinductive records
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible --guardedness #-}
+{-# OPTIONS --safe --without-K --guardedness #-}
 
 module Codata.Guarded.Stream.Properties where
 
 open import Codata.Guarded.Stream
 open import Codata.Guarded.Stream.Relation.Binary.Pointwise
   as B using (_≈_; head; tail; module ≈-Reasoning)
-
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)

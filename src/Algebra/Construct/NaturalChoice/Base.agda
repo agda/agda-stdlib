@@ -5,9 +5,9 @@
 -- with respect to a total preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
+open import Algebra.Core using (Op₂)
 open import Level as L hiding (_⊔_)
 open import Function.Base using (flip)
 open import Relation.Binary.Bundles using (TotalPreorder)

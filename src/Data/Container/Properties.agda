@@ -4,15 +4,14 @@
 -- Properties of operations on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Properties where
 
-import Function.Base as F
+open import Data.Container.Core using (Container; map)
+open import Data.Container.Relation.Binary.Equality.Setoid using (Eq; refl)
+import Function.Base as F using (id; _∘′_)
 open import Relation.Binary.Bundles using (Setoid)
-
-open import Data.Container.Core
-open import Data.Container.Relation.Binary.Equality.Setoid
 
 module _ {s p} {C : Container s p} where
 

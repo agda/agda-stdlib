@@ -4,12 +4,12 @@
 -- Coinductive lists: base type and functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Colist.Base where
 
 open import Level using (Level)
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Codata.Musical.Conat.Base using (Coℕ; zero; suc)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base using (List; []; _∷_)

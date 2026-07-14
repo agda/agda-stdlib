@@ -11,16 +11,15 @@
 -- also the coproduct, making it a biproduct.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
-
-open import Algebra
-open import Algebra.Lattice
-import Algebra.Construct.DirectProduct as DirectProduct
-open import Data.Product.Base using (_,_; _<*>_)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Level using (Level; _⊔_)
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Lattice.Construct.DirectProduct where
+
+open import Algebra using (Band)
+open import Algebra.Lattice using (Semilattice)
+import Algebra.Construct.DirectProduct as DirectProduct
+open import Data.Product.Base using (_,_; _<*>_)
+open import Level using (Level; _⊔_)
 
 private
   variable

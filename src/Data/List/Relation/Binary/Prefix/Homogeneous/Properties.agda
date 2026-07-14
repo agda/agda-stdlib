@@ -4,7 +4,7 @@
 -- Properties of the homogeneous prefix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Prefix.Homogeneous.Properties where
 
@@ -17,6 +17,7 @@ open import Relation.Binary.Structures
 open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous
 open import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
+
 
 private
   variable
@@ -42,6 +43,6 @@ isPartialOrder po = record
 isDecPartialOrder : IsDecPartialOrder R S → IsDecPartialOrder (Pointwise R) (Prefix S)
 isDecPartialOrder dpo = record
   { isPartialOrder = isPartialOrder DPO.isPartialOrder
-  ; _≟_            = Pointwise.decidable DPO._≟_
+  ; _≈?_           = Pointwise.decidable DPO._≈?_
   ; _≤?_           = prefix? DPO._≤?_
   } where module DPO = IsDecPartialOrder dpo

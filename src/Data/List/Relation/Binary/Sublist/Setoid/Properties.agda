@@ -4,7 +4,7 @@
 -- Properties of the setoid sublist relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
 open import Relation.Binary.Bundles using (Setoid)
@@ -13,7 +13,9 @@ module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
 open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Properties using (++-identityʳ)
 open import Data.List.Relation.Unary.Any using (Any)
+open import Data.List.Relation.Unary.All using (All; tabulateₛ)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (ℕ; _≤_; _≥_)
 import Data.Nat.Properties as ℕ
@@ -22,28 +24,36 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
+import Relation.Binary.Properties.Setoid as SetoidProperties
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; refl; sym; cong; cong₂)
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Binary.Reasoning.Syntax
 open import Relation.Binary.Structures using (IsDecTotalOrder)
-open import Relation.Unary using (Pred; Decidable; Irrelevant)
+open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable using (¬?; yes; no)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
+import Data.List.Relation.Binary.Sublist.Heterogeneous
+  as Hetero
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
 
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
-open SetoidEquality S using (_≋_; ≋-refl)
+open SetoidEquality S using (_≋_; ≋-refl; ≋-reflexive; ≋-setoid)
 open SetoidSublist S hiding (map)
-open SetoidMembership S using (_∈_)
+open SetoidProperties S using (≈-preorder)
+
 
 private
   variable
     p q r s t : Level
     a b x y : A
     as bs cs ds xs ys : List A
+    xss yss : List (List A)
     P : Pred A p
     Q : Pred A q
     m n : ℕ
@@ -95,6 +105,12 @@ module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) �
   ⊆-trans-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-trans-assoc ps qs rs)
   ⊆-trans-assoc [] [] [] = refl
 
+
+------------------------------------------------------------------------
+-- Reasoning over sublists
+------------------------------------------------------------------------
+
+module ⊆-Reasoning = HeteroProperties.⊆-Reasoning ≈-preorder
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
@@ -174,6 +190,30 @@ module _ where
 
   ++⁻ : length as ≡ length bs → as ++ cs ⊆ bs ++ ds → cs ⊆ ds
   ++⁻ = HeteroProperties.++⁻
+
+------------------------------------------------------------------------
+-- concat
+
+module _ where
+
+  concat⁺ : Hetero.Sublist _⊆_ xss yss →
+            concat xss ⊆ concat yss
+  concat⁺ = HeteroProperties.concat⁺
+
+  open SetoidMembership ≋-setoid using (_∈_)
+  open SetoidSublist ≋-setoid
+    using ()
+    renaming (map to map-≋; from∈ to from∈-≋)
+
+  xs∈xss⇒xs⊆concat[xss] : xs ∈ xss → xs ⊆ concat xss
+  xs∈xss⇒xs⊆concat[xss] {xs = xs} {xss = xss} xs∈xss = begin
+    xs ≈⟨ ≋-reflexive (++-identityʳ xs) ⟨
+    xs ++ [] ⊆⟨ concat⁺ (map-≋ ⊆-reflexive (from∈-≋ xs∈xss)) ⟩
+    concat xss ∎
+    where open ⊆-Reasoning
+
+  all⊆concat : (xss : List (List A)) → All (_⊆ concat xss) xss
+  all⊆concat _ = tabulateₛ ≋-setoid xs∈xss⇒xs⊆concat[xss]
 
 ------------------------------------------------------------------------
 -- take
@@ -293,7 +333,10 @@ module _ where
   to-≋ = HeteroProperties.toPointwise
 
 ------------------------------------------------------------------------
--- Irrelevant special case
+-- Empty special case
+
+  []⊆-universal : Universal ([] ⊆_)
+  []⊆-universal = HeteroProperties.Sublist-[]-universal
 
   []⊆-irrelevant : Irrelevant ([] ⊆_)
   []⊆-irrelevant = HeteroProperties.Sublist-[]-irrelevant
@@ -302,6 +345,8 @@ module _ where
 -- (to/from)∈ is a bijection
 
 module _ where
+
+  open SetoidMembership S using (_∈_)
 
   to∈-injective : ∀ {p q : [ x ] ⊆ xs} → to∈ p ≡ to∈ q → p ≡ q
   to∈-injective = HeteroProperties.toAny-injective

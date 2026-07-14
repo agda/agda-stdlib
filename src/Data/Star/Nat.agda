@@ -4,7 +4,7 @@
 -- Natural numbers defined using the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Star.Nat where
 
@@ -12,6 +12,7 @@ open import Data.Unit.Base using (tt)
 open import Function.Base using (const)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+    using (Star; ε; _◅_; gmap; map; _◅◅_; _▻▻_; _⋆)
 open import Relation.Binary.Construct.Always using (Always)
 
 -- Natural numbers.

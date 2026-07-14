@@ -4,7 +4,7 @@
 -- AVL trees where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
@@ -15,8 +15,7 @@ module Data.Tree.AVL.Map.Relation.Unary.Any
 open import Data.Product.Base as Product using (_×_; ∃; _,_)
 open import Function.Base using (_∘_; _∘′_; id)
 open import Level using (Level; _⊔_)
-
-open import Relation.Unary
+open import Relation.Unary using (Pred; Decidable; Satisfiable; _⊆_; _∪_)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 open import Data.Tree.AVL.Map strictTotalOrder using (Map)

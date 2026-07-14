@@ -4,12 +4,12 @@
 -- The Thunk wrappers for sized codata, copredicates and corelations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Thunk where
 
-open import Size
-open import Relation.Unary.Sized
+open import Size using (Size; ∞; Size<_; SizedSet)
+open import Relation.Unary.Sized using (_⇒_; ∀[_])
 
 ------------------------------------------------------------------------
 -- Basic types.

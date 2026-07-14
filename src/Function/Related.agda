@@ -4,8 +4,8 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --warn=noUserWarning #-}
+{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --warning=noUserWarning #-}
 
 module Function.Related where
 

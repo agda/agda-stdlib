@@ -5,24 +5,27 @@
 -- natural order.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
-open import Data.Product.Base using (_,_; _×_)
-open import Data.Sum.Base using (inj₁; inj₂; map)
+open import Algebra.Core using (Op₂)
 open import Relation.Binary.Core using (Rel; _⇒_)
-open import Relation.Binary.Bundles
-  using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Decidable)
-open import Relation.Nullary.Negation using (¬_)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Relation.Binary.Lattice using (Infimum)
 
 module Relation.Binary.Construct.NaturalOrder.Left
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) (_∙_ : Op₂ A) where
+
+open import Data.Product.Base using (_,_; _×_)
+open import Data.Sum.Base using (inj₁; inj₂; map)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder
+        ; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_
+        ; _Respectsˡ_; _Respects₂_; Decidable)
+open import Relation.Nullary.Negation using (¬_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.Lattice using (Infimum)
 
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
@@ -85,10 +88,10 @@ respˡ magma {x} {y} {z} y≈z y≤x = begin
   where open module M = IsMagma magma; open ≈-Reasoning M.setoid
 
 resp₂ : IsMagma _∙_ →  _≤_ Respects₂ _≈_
-resp₂ magma = respʳ magma , respˡ magma
+resp₂ magma = respˡ magma , respʳ magma
 
 dec : Decidable _≈_ → Decidable _≤_
-dec _≟_ x y = x ≟ (x ∙ y)
+dec _≈?_ x y = x ≈? (x ∙ y)
 
 module _ (semi : IsSemilattice _∙_) where
 
@@ -138,10 +141,10 @@ isPartialOrder semilattice = record
 
 isDecPartialOrder : IsSemilattice _∙_ → Decidable _≈_ →
                     IsDecPartialOrder _≈_ _≤_
-isDecPartialOrder semilattice _≟_ = record
+isDecPartialOrder semilattice _≈?_ = record
   { isPartialOrder = isPartialOrder semilattice
-  ; _≟_            = _≟_
-  ; _≤?_           = dec _≟_
+  ; _≈?_           = _≈?_
+  ; _≤?_           = dec _≈?_
   }
 
 isTotalOrder : IsSemilattice _∙_ → Selective _∙_ → IsTotalOrder _≈_ _≤_
@@ -153,10 +156,10 @@ isTotalOrder latt sel  = record
 
 isDecTotalOrder : IsSemilattice _∙_ → Selective _∙_ →
                   Decidable _≈_ → IsDecTotalOrder _≈_ _≤_
-isDecTotalOrder latt sel _≟_ = record
+isDecTotalOrder latt sel _≈?_ = record
   { isTotalOrder = isTotalOrder latt sel
-  ; _≟_          = _≟_
-  ; _≤?_         = dec _≟_
+  ; _≈?_         = _≈?_
+  ; _≤?_         = dec _≈?_
   }
 
 ------------------------------------------------------------------------

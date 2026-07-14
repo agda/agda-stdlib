@@ -4,14 +4,15 @@
 -- Closure of a unary relation with respect to a preorder
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Preorder)
 
 module Relation.Unary.Closure.Preorder {a r e} (P : Preorder a e r) where
 
-open Preorder P
 open import Relation.Unary using (Pred)
+
+open Preorder P
 
 -- Specialising the results proven generically in `Base`.
 import Relation.Unary.Closure.Base _∼_ as Base

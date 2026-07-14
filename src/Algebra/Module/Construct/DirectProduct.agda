@@ -7,16 +7,17 @@
 -- product and a coproduct in the category of R-modules.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Module.Construct.DirectProduct where
 
 open import Algebra.Bundles
-open import Algebra.Construct.DirectProduct
+open import Algebra.Construct.DirectProduct using (commutativeMonoid)
 open import Algebra.Module.Bundles
 open import Data.Product.Base using (map; zip; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Level
+  using (Pointwise)
+open import Level using (Level; _⊔_)
 
 private
   variable

@@ -4,11 +4,11 @@
 -- Some unit types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.NonEta where
 
-open import Level
+open import Level using (_⊔_; Level)
 
 ------------------------------------------------------------------------
 -- A unit type defined as a data-type

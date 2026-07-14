@@ -4,15 +4,16 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
+open import Data.Bool.ListAction using (all)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (lookup; updateAt)
+open import Data.List.Base as List hiding (lookup; updateAt; and; or; all; any)
 open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
   using (there-injective-≢∈; ∈-filter⁻)
@@ -20,7 +21,7 @@ import Data.List.Membership.Setoid as SetoidMembership
 import Data.List.Properties as List
 import Data.List.Relation.Binary.Equality.Setoid as ≋
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
-open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
+import Data.List.Relation.Binary.Subset.Propositional as Subset
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
   ; _[_]=_; here; there
@@ -40,13 +41,13 @@ open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_; ¬[x≢x])
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
-  using (Dec; does; yes; no; _because_; ¬?; decidable-stable)
+  using (Dec; does; yes; no; _because_; ¬?; decidable-stable; dec-true)
 open import Relation.Unary
-  using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
 
 private
@@ -162,7 +163,7 @@ updateAt-minimal : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                    pxs              [ i ]= px →
                    updateAt j f pxs [ i ]= px
 updateAt-minimal (here .refl) (here refl) (px ∷ pxs) i≢j here        =
-  contradiction refl (i≢j refl)
+  ¬[x≢x] (i≢j refl)
 updateAt-minimal (here .refl) (there j)   (px ∷ pxs) i≢j here        = here
 updateAt-minimal (there i)    (here refl) (px ∷ pxs) i≢j (there val) = there val
 updateAt-minimal (there i)    (there j)   (px ∷ pxs) i≢j (there val) =
@@ -255,7 +256,7 @@ updateAt-commutes : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                     i ≢∈ j →
                     updateAt {P = P} i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
 updateAt-commutes (here refl) (here refl) i≢j (px ∷ pxs) =
-  contradiction refl (i≢j refl)
+  ¬[x≢x] (i≢j refl)
 updateAt-commutes (here refl) (there j)   i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (here refl) i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (there j)   i≢j (px ∷ pxs) =
@@ -436,9 +437,9 @@ drop⁺ (suc n) (px ∷ pxs) = drop⁺ n pxs
 
 dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
 dropWhile⁺               Q? []         = []
-dropWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
+dropWhile⁺ {xs = x ∷ xs} Q? px∷pxs@(_ ∷ pxs) with does (Q? x)
 ... | true  = dropWhile⁺ Q? pxs
-... | false = px ∷ pxs
+... | false = px∷pxs
 
 dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
 dropWhile⁻ {xs = []}     P? eq = []
@@ -453,6 +454,11 @@ all-head-dropWhile P? (x ∷ xs) with P? x
 ... | yes px = all-head-dropWhile P? xs
 ... | no ¬px = just ¬px
 
+all⇒dropWhile≡[] : (P? : Decidable P) → All P xs → dropWhile P? xs ≡ []
+all⇒dropWhile≡[] P? [] = refl
+all⇒dropWhile≡[] P? (px ∷ pxs) rewrite dec-true (P? _) px
+  = all⇒dropWhile≡[] P? pxs
+
 take⁺ : ∀ n → All P xs → All P (take n xs)
 take⁺ zero    pxs        = []
 take⁺ (suc n) []         = []
@@ -464,17 +470,16 @@ takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 ... | true  = px ∷ takeWhile⁺ Q? pxs
 ... | false = []
 
-takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
-takeWhile⁻ {xs = []}     P? eq = []
-takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
-... | yes px = px ∷ takeWhile⁻ P? (List.∷-injectiveʳ eq)
-... | no ¬px = case eq of λ ()
-
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
 all-takeWhile P? []       = []
 all-takeWhile P? (x ∷ xs) with P? x
 ... | yes px = px ∷ all-takeWhile P? xs
 ... | no ¬px = []
+
+all⇒takeWhile≗id : (P? : Decidable P) → All P xs → takeWhile P? xs ≡ xs
+all⇒takeWhile≗id P? [] = refl
+all⇒takeWhile≗id P? (px ∷ pxs) rewrite dec-true (P? _) px
+  = cong (_ ∷_) (all⇒takeWhile≗id P? pxs)
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -675,10 +680,10 @@ module _ (p : A → Bool) where
 ------------------------------------------------------------------------
 -- All is anti-monotone.
 
-anti-mono : xs ⊆ ys → All P ys → All P xs
+anti-mono : xs Subset.⊆ ys → All P ys → All P xs
 anti-mono xs⊆ys pys = All.tabulate (lookup pys ∘ xs⊆ys)
 
-all-anti-mono : ∀ (p : A → Bool) → xs ⊆ ys → T (all p ys) → T (all p xs)
+all-anti-mono : ∀ (p : A → Bool) → xs Subset.⊆ ys → T (all p ys) → T (all p xs)
 all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
 
 ------------------------------------------------------------------------
@@ -699,14 +704,6 @@ module _ (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.3
-
-Any¬→¬All = Any¬⇒¬All
-{-# WARNING_ON_USAGE Any¬→¬All
-"Warning: Any¬→¬All was deprecated in v1.3.
-Please use Any¬⇒¬All instead."
-#-}
 
 -- Version 2.0
 
@@ -746,4 +743,13 @@ map-compose = map-∘
 {-# WARNING_ON_USAGE map-compose
 "Warning: map-compose was deprecated in v2.1.
 Please use map-∘ instead."
+#-}
+
+-- Version 2.2
+
+takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+takeWhile⁻ {xs = xs} P? eq rewrite sym eq = all-takeWhile P? xs
+{-# WARNING_ON_USAGE takeWhile⁻
+"Warning: takeWhile⁻ was deprecated in v2.2.
+Please use all-takeWhile instead."
 #-}

@@ -4,11 +4,11 @@
 -- Coinductive "natural" numbers: base type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible --guardedness #-}
+{-# OPTIONS --safe --without-K --guardedness #-}
 
 module Codata.Musical.Conat.Base where
 
-open import Codata.Musical.Notation
+open import Codata.Musical.Notation using (♭; ∞; ♯_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
 

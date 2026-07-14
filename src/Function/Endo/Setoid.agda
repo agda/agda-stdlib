@@ -4,14 +4,13 @@
 -- Endomorphisms on a Setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
 module Function.Endo.Setoid {c e} (S : Setoid c e) where
 
 open import Agda.Builtin.Equality using (_≡_)
-
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
 import Algebra.Definitions.RawMonoid as RawMonoidDefinitions
 import Algebra.Properties.Monoid.Mult as MonoidMultProperties
@@ -106,7 +105,7 @@ module _ (f : Endo) where
   ^-isMagmaHomomorphism : IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
   ^-isMagmaHomomorphism = record
     { isRelHomomorphism = record { cong = ^-cong₂ }
-    ; homo = ^-homo
+    ; ∙-homo = ^-homo
     }
 
   ^-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)

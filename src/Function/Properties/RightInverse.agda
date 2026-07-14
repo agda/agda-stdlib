@@ -4,12 +4,12 @@
 -- Properties of right inverses
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Properties.RightInverse where
 
-open import Function.Base
-open import Function.Definitions
+open import Function.Base using (id; _∘_)
+open import Function.Definitions using (Inverseˡ; Inverseʳ)
 open import Function.Bundles
 open import Function.Consequences using (inverseˡ⇒surjective)
 open import Level using (Level)

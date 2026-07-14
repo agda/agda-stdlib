@@ -4,17 +4,17 @@
 -- An effectful view of Vec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Effectful.Transformer where
 
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import Function.Base
-open import Level
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad  using (RawMonad; RawMonadT)
+open import Function.Base using (_∘′_; _$_ )
+open import Level using (Level)
 
 import Data.Vec.Effectful as Vec
 

@@ -4,11 +4,11 @@
 -- Reflection utilities for ℕ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Reflection where
 
-open import Data.Nat.Base as ℕ
+open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
 import Data.Fin.Base as Fin
 open import Data.List.Base using ([])
 open import Reflection.AST.Term

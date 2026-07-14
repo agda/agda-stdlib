@@ -4,11 +4,11 @@
 -- An effectful view of vectors defined by recursion
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Recursive.Effectful where
 
-open import Agda.Builtin.Nat
+open import Agda.Builtin.Nat using (suc; zero)
 open import Data.Product.Base hiding (map)
 open import Data.Vec.Recursive
 open import Effect.Functor

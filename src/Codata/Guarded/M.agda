@@ -4,13 +4,13 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe --guardedness #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Codata.Guarded.M where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Container.Core hiding (map; Shape; Position)
-open import Function.Base
+open import Function.Base using (_∘_)
 open import Data.Product.Base hiding (map)
 
 -- The family of M-types

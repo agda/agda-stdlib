@@ -5,7 +5,7 @@
 -- up to propositional equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (StrictTotalOrder)
 
@@ -15,31 +15,37 @@ module Data.Tree.AVL.Map.Membership.Propositional.Properties
 
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe.Base using (just; nothing; is-just)
-open import Data.Product.Base as Product using (_×_; ∃-syntax; _,_; proj₁; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent renaming (Pointwise to _×ᴿ_)
+open import Data.Product.Base as Product
+  using (_×_; ∃-syntax; _,_; proj₁; proj₂)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent
+  renaming (Pointwise to _×ᴿ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_)
 open import Level using (Level)
-
-open import Relation.Binary.Definitions using (Transitive; Symmetric; _Respectsˡ_)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; _Respectsˡ_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Intersection using (_∩_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong) renaming (refl to ≡-refl; sym to ≡-sym; trans to ≡-trans)
-open import Relation.Nullary using (Reflects; ¬_; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Reflects using (Reflects)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key) hiding (trans)
-open Eq using (_≉_; refl; sym; trans)
+open Eq using (refl; sym; trans)
 open import Data.Tree.AVL strictTotalOrder using (tree)
 open import Data.Tree.AVL.Indexed strictTotalOrder using (key)
 import Data.Tree.AVL.Indexed.Relation.Unary.Any strictTotalOrder as IAny
 import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties strictTotalOrder as IAnyₚ
 open import Data.Tree.AVL.Key strictTotalOrder using (⊥⁺<[_]<⊤⁺)
 open import Data.Tree.AVL.Map strictTotalOrder
-open import Data.Tree.AVL.Map.Relation.Unary.Any strictTotalOrder as Map using (Any)
+  using (Map; empty; insert; lookup; member; singleton)
+open import Data.Tree.AVL.Map.Relation.Unary.Any strictTotalOrder as Map
+  using (Any)
 open import Data.Tree.AVL.Map.Membership.Propositional strictTotalOrder
-open import Data.Tree.AVL.Relation.Unary.Any strictTotalOrder as Any using (tree)
+open import Data.Tree.AVL.Relation.Unary.Any strictTotalOrder as Any
+  using (tree)
 
 private
   variable
@@ -51,7 +57,7 @@ private
     kx : Key × V
 
 ≈ₖᵥ-trans : Transitive (_≈ₖᵥ_ {V = V})
-≈ₖᵥ-trans {i = i} {k = k} = ×-transitive Eq.trans ≡-trans {i = i} {k = k}
+≈ₖᵥ-trans {x = x} {z = z} = ×-transitive Eq.trans ≡-trans {x = x} {z = z}
 
 ≈ₖᵥ-sym : Symmetric (_≈ₖᵥ_ {V = V})
 ≈ₖᵥ-sym {x = x} {y = y} = ×-symmetric sym ≡-sym {x} {y}
@@ -86,7 +92,7 @@ private
   k′≉key-p k′≈key-p = k≉k′ (Eq.trans (≈-lookup (tree p)) (Eq.sym k′≈key-p))
 
 ∈ₖᵥ-insert⁺⁺ : (k , x) ∈ₖᵥ insert k x m
-∈ₖᵥ-insert⁺⁺ {k = k} {m = tree t} with IAny.any? ((k ≟_) ∘ key) t
+∈ₖᵥ-insert⁺⁺ {k = k} {m = tree t} with IAny.any? ((k ≈?_) ∘ key) t
 ... | yes k∈ = tree (IAnyₚ.Any-insert-just _ _ _ _ (λ k′ → _, ≡-refl) k∈)
 ... | no ¬k∈ = tree (IAnyₚ.Any-insert-nothing _ _ _ _ (refl , ≡-refl) ¬k∈)
 

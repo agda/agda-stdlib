@@ -6,21 +6,25 @@
 -- flips both the relation and the underlying equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
-
-open import Relation.Binary.Core using (Rel; REL; _⇒_)
-open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; Preorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
-open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Asymmetric; Total; _Respects_; _Respects₂_; Minimum; Maximum; Irreflexive; Antisymmetric; Trichotomous; Decidable)
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Flip.Ord where
 
 open import Data.Product.Base using (_,_)
 open import Function.Base using (flip; _∘_)
 open import Level using (Level)
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset; TotalOrder; DecTotalOrder
+        ; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder
+        ; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder
+        ; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Asymmetric; Total; _Respects_
+        ; _Respects₂_; Minimum; Maximum; Irreflexive; Antisymmetric
+        ; Trichotomous; Decidable)
 
 private
   variable
@@ -97,7 +101,7 @@ isEquivalence {≈ = ≈} eq = record
 isDecEquivalence : IsDecEquivalence ≈ → IsDecEquivalence (flip ≈)
 isDecEquivalence {≈ = ≈} dec = record
   { isEquivalence = isEquivalence Dec.isEquivalence
-  ; _≟_           = decidable ≈ Dec._≟_
+  ; _≈?_          = decidable ≈ Dec._≈?_
   } where module Dec = IsDecEquivalence dec
 
 isPreorder : IsPreorder ≈ ∼ → IsPreorder (flip ≈) (flip ∼)
@@ -123,7 +127,7 @@ isTotalOrder {≈ = ≈} {≤ = ≤} O = record
 isDecTotalOrder : IsDecTotalOrder ≈ ≤ → IsDecTotalOrder (flip ≈) (flip ≤)
 isDecTotalOrder {≈ = ≈} {≤ = ≤} O = record
   { isTotalOrder = isTotalOrder O.isTotalOrder
-  ; _≟_          = decidable ≈ O._≟_
+  ; _≈?_         = decidable ≈ O._≈?_
   ; _≤?_         = decidable ≤ O._≤?_
   } where module O = IsDecTotalOrder O
 

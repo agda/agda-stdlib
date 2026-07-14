@@ -4,15 +4,16 @@
 -- Properties related to Any
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Any.Properties where
 
 open import Data.Bool.Base using (Bool; false; true; T)
+open import Data.Bool.ListAction using (any)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (find)
+open import Data.List.Base as List hiding (find; and; or; all; any)
 open import Data.List.Effectful as List using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
@@ -21,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Nat.Base using (zero; suc; _<_; z<s; s<s; s≤s)
-open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
+open import Data.Nat.Properties using (_≡?_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product.Base as Product
@@ -462,6 +463,17 @@ module _ {P : A → Set p} where
   concat↔ {xss} = mk↔ₛ′ concat⁺ (concat⁻ xss) (concat⁺∘concat⁻ xss) concat⁻∘concat⁺
 
 ------------------------------------------------------------------------
+-- concatMap
+
+module _ (f : A → List B) {p} {P : Pred B p} where
+
+  concatMap⁺ : Any (Any P ∘ f) xs → Any P (concatMap f xs)
+  concatMap⁺ = concat⁺ ∘ map⁺
+
+  concatMap⁻ : Any P (concatMap f xs) → Any (Any P ∘ f) xs
+  concatMap⁻ = map⁻ ∘ concat⁻ _
+
+------------------------------------------------------------------------
 -- cartesianProductWith
 
 module _ (f : A → B → C) where
@@ -510,7 +522,7 @@ applyUpTo⁻ f {suc n} (there p) =
 -- applyDownFrom
 
 applyDownFrom⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyDownFrom f n)
-applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≟ n
+applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≡? n
 ... | yes refl = here p
 ... | no  i≢n  = there (applyDownFrom⁺ f p (≤∧≢⇒< i≤n i≢n))
 

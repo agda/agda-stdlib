@@ -4,17 +4,18 @@
 -- Composition of two binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Composition where
 
 open import Data.Product.Base using (∃; _×_; _,_)
-open import Function.Base
-open import Level
+open import Function.Base using (_∘_)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
-  using (_Respects_; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Reflexive; Transitive)
+  using (_Respects_; _Respectsʳ_; _Respectsˡ_; _Respects₂_
+        ; Reflexive; Transitive)
 
 private
   variable
@@ -57,7 +58,7 @@ module _ {≈ : Rel C ℓ} (L : REL A B ℓ₁) (R : REL B C ℓ₂) where
 module _ {≈ : Rel A ℓ} (L : REL A B ℓ₁) (R : REL B A ℓ₂) where
 
   respects₂ :  L Respectsˡ ≈ → R Respectsʳ ≈ → (L ; R) Respects₂ ≈
-  respects₂ Lˡ Rʳ = respectsʳ L R Rʳ , respectsˡ L R Lˡ
+  respects₂ Lˡ Rʳ = respectsˡ L R Lˡ , respectsʳ L R Rʳ
 
 module _ {≈ : REL A B ℓ} (L : REL A B ℓ₁) (R : Rel B ℓ₂) where
 

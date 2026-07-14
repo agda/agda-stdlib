@@ -5,7 +5,7 @@
 -- preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Function.Dependent.Propositional where
 
@@ -17,7 +17,7 @@ open import Function.Related.Propositional
          implication; reverseImplication; equivalence; injection;
          reverseInjection; leftInverse; surjection; bijection)
 open import Function.Base using (_$_; _∘_; _∘′_)
-open import Function.Properties.Inverse using (↔⇒↠; ↔⇒⟶; ↔⇒⟵; ↔-sym; ↔⇒↩)
+open import Function.Properties.Inverse using (↔⇒↠; ↔⇒⟶; ↔⇒⟵; ↔-sym; ↔⇒↩; refl)
 open import Function.Properties.RightInverse using (↩⇒↪; ↪⇒↩)
 open import Function.Properties.Inverse.HalfAdjointEquivalence
   using (↔⇒≃; _≃_; ≃⇒↔)
@@ -28,6 +28,7 @@ open import Function.Bundles
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties as ≡
   using (module ≡-Reasoning)
+open import Function.Construct.Symmetry using (↩-sym; ↪-sym)
 
 private
   variable
@@ -57,7 +58,7 @@ module _ where
          Σ I A ⇔ Σ J B
   Σ-⇔ {B = B} I↠J A⇔B = mk⇔
     (map (to  I↠J) (Equivalence.to A⇔B))
-    (map (to⁻ I↠J) (Equivalence.from A⇔B ∘ ≡.subst B (≡.sym (proj₂ (surjective I↠J _) ≡.refl))))
+    (map (from I↠J) (Equivalence.from A⇔B ∘ ≡.subst B (≡.sym (proj₂ (surjective I↠J _) ≡.refl))))
 
   -- See also Data.Product.Relation.Binary.Pointwise.Dependent.WithK.↣.
 
@@ -193,18 +194,22 @@ module _ where
     to′ : Σ I A → Σ J B
     to′ = map (to I↠J) (to A↠B)
 
-    backcast : ∀ {i} → B i → B (to I↠J (to⁻ I↠J i))
-    backcast = ≡.subst B (≡.sym (to∘to⁻ I↠J _))
+    backcast : ∀ {i} → B i → B (to I↠J (from I↠J i))
+    backcast = ≡.subst B (≡.sym (strictlyInverseˡ I↠J _))
 
-    to⁻′ : Σ J B → Σ I A
-    to⁻′ = map (to⁻ I↠J) (Surjection.to⁻ A↠B ∘ backcast)
+    from′ : Σ J B → Σ I A
+    from′ = map (from I↠J) (from A↠B ∘ backcast)
 
     strictlySurjective′ : StrictlySurjective _≡_ to′
-    strictlySurjective′ (x , y) = to⁻′ (x , y) , Σ-≡,≡→≡
-      ( to∘to⁻ I↠J x
-      , (≡.subst B (to∘to⁻ I↠J x) (to A↠B (to⁻ A↠B (backcast y))) ≡⟨ ≡.cong (≡.subst B _) (to∘to⁻ A↠B _) ⟩
-         ≡.subst B (to∘to⁻ I↠J x) (backcast y)                      ≡⟨ ≡.subst-subst-sym (to∘to⁻ I↠J x) ⟩
-         y                                                          ∎)
+    strictlySurjective′ (x , y) = from′ (x , y) , Σ-≡,≡→≡
+      ( strictlyInverseˡ I↠J x
+      , (begin
+           ≡.subst B (strictlyInverseˡ I↠J x) (to A↠B (from A↠B (backcast y)))
+             ≡⟨ ≡.cong (≡.subst B _) (strictlyInverseˡ A↠B _) ⟩
+           ≡.subst B (strictlyInverseˡ I↠J x) (backcast y)
+             ≡⟨ ≡.subst-subst-sym (strictlyInverseˡ I↠J x) ⟩
+           y
+             ∎)
       ) where open ≡.≡-Reasoning
 
 
@@ -238,6 +243,14 @@ module _ where
 ------------------------------------------------------------------------
 -- Right inverses
 
+module _ where
+  open RightInverse
+
+  -- the dual to Σ-↩, taking advantage of the proof above by threading
+  -- relevant symmetry proofs through it.
+  Σ-↪ : (I↪J : I ↪ J) → (∀ {j} → A (from I↪J j) ↪ B j) → Σ I A ↪ Σ J B
+  Σ-↪ I↪J A↪B = ↩-sym (Σ-↩ (↪-sym I↪J) (↪-sym A↪B))
+
 ------------------------------------------------------------------------
 -- Inverses
 
@@ -249,8 +262,8 @@ module _ where
       Σ I A ↔ Σ J B
   Σ-↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ₛ′
     (Surjection.to surjection′)
-    (Surjection.to⁻ surjection′)
-    (Surjection.to∘to⁻ surjection′)
+    (Surjection.from surjection′)
+    (Surjection.strictlyInverseˡ surjection′)
     left-inverse-of
     where
     open ≡.≡-Reasoning
@@ -260,7 +273,7 @@ module _ where
     surjection′ : Σ I A ↠ Σ J B
     surjection′ = Σ-↠ (↔⇒↠ (≃⇒↔ I≃J)) (↔⇒↠ A↔B)
 
-    left-inverse-of : ∀ p → Surjection.to⁻ surjection′ (Surjection.to surjection′ p) ≡ p
+    left-inverse-of : ∀ p → Surjection.from surjection′ (Surjection.to surjection′ p) ≡ p
     left-inverse-of (x , y) = to Σ-≡,≡↔≡
       ( _≃_.left-inverse-of I≃J x
       , (≡.subst A (_≃_.left-inverse-of I≃J x)
@@ -316,3 +329,6 @@ cong {B = B} {k = reverseInjection}   I↔J A↢B = Σ-↣ (↔-sym I↔J) (swap
 cong {B = B} {k = leftInverse}        I↔J A↩B = ↩⇒↪ (Σ-↩ (↔⇒↩ (↔-sym I↔J)) (↪⇒↩ (swap-coercions {k = leftInverse} B I↔J A↩B)))
 cong {k = surjection}                 I↔J A↠B = Σ-↠ (↔⇒↠ I↔J) A↠B
 cong {k = bijection}                  I↔J A↔B = Σ-↔ I↔J A↔B
+
+congˡ : ∀ {k} → (∀ {x} → A x ∼[ k ] B x) → Σ I A ∼[ k ] Σ I B
+congˡ = cong (refl _)

@@ -4,7 +4,7 @@
 -- Properties of left-scaling
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core
   using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
@@ -19,8 +19,8 @@ module Algebra.Module.Definitions.Left
 ------------------------------------------------------------------------
 -- Binary operations
 
-open import Algebra.Core
-open import Algebra.Module.Core
+open import Algebra.Core using (Op₂)
+open import Algebra.Module.Core using (Opₗ)
 
 ------------------------------------------------------------------------
 -- Properties of operations

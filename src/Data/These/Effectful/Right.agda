@@ -17,19 +17,19 @@
 -- It is a good alternative to Data.Product.Effectful when the notion
 -- of warnings does not have a neutral element (e.g. List⁺).
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Level
-open import Algebra
+open import Level using (Level; _⊔_)
+open import Algebra.Bundles using (Semigroup)
 
 module Data.These.Effectful.Right (a : Level) {c ℓ} (W : Semigroup c ℓ) where
 
+open import Data.These.Base using (These; this; that; these; map₁; map₂; map)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
+
 open Semigroup W
 open import Data.These.Effectful.Right.Base a Carrier public
-
-open import Data.These.Base
-open import Effect.Applicative
-open import Effect.Monad
 
 module _ {a b} {A : Set a} {B : Set b} where
 

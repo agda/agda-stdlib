@@ -4,7 +4,9 @@
 -- The identity morphism for binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
+
+module Relation.Binary.Morphism.Construct.Identity where
 
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
@@ -14,9 +16,11 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
 open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.Morphism.Structures
+  using (IsRelHomomorphism; IsRelMonomorphism; IsRelIsomorphism
+        ; IsOrderHomomorphism; IsOrderMonomorphism; IsOrderIsomorphism)
 open import Relation.Binary.Morphism.Bundles
-
-module Relation.Binary.Morphism.Construct.Identity where
+  using (SetoidHomomorphism; SetoidMonomorphism; SetoidIsomorphism
+        ; PreorderHomomorphism; PosetHomomorphism)
 
 private
   variable

@@ -4,14 +4,16 @@
 -- Properties of unique lists (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
 open import Data.List.Base
+import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
 open import Data.List.Relation.Binary.Disjoint.Setoid
 open import Data.List.Relation.Binary.Disjoint.Setoid.Properties
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties using (All¬⇒¬Any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
@@ -22,17 +24,18 @@ import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (_<_)
 open import Function.Base using (_∘_; id)
+open import Function.Definitions using (Congruent; Injective)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contraposition)
 
 private
   variable
     a b c p ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
@@ -44,9 +47,13 @@ module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
   open Setoid S renaming (_≈_ to _≈₁_)
   open Setoid R renaming (_≈_ to _≈₂_)
 
-  map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
+  map⁺ : ∀ {f} → Injective _≈₁_ _≈₂_ f →
          ∀ {xs} → Unique S xs → Unique R (map f xs)
   map⁺ inj xs! = AllPairs.map⁺ (AllPairs.map (contraposition inj) xs!)
+
+  map⁻ : ∀ {f} → Congruent _≈₁_ _≈₂_ f →
+         ∀ {xs} → Unique R (map f xs) → Unique S xs
+  map⁻ cong fxs! = AllPairs.map (contraposition cong) (AllPairs.map⁻ fxs!)
 
 ------------------------------------------------------------------------
 -- ++
@@ -156,3 +163,21 @@ module _ (S : Setoid a ℓ) {P : Pred _ p} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → Unique S xs → Unique S (filter P? xs)
   filter⁺ = AllPairs.filter⁺ P?
+
+------------------------------------------------------------------------
+-- ∷
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S renaming (Carrier to A)
+  open Membership S using (_∉_)
+
+  private
+    variable
+      x y : A
+      xs : List A
+
+  Unique[x∷xs]⇒x∉xs : Unique S (x ∷ xs) → x ∉ xs
+  Unique[x∷xs]⇒x∉xs ((x≉ ∷ x∉) ∷ _ ∷ uniq) = λ where
+    (here x≈)  → x≉ x≈
+    (there x∈) → Unique[x∷xs]⇒x∉xs (x∉ AllPairs.∷ uniq) x∈

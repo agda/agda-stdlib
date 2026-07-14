@@ -6,10 +6,10 @@
 
 -- Note that these proofs use all "almost commutative ring" properties.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
-open import Algebra
-open import Algebra.Solver.Ring.AlmostCommutativeRing
+open import Algebra using (RawRing)
+open import Algebra.Solver.Ring.AlmostCommutativeRing using (AlmostCommutativeRing; _-Raw-AlmostCommutative⟶_)
 
 module Algebra.Solver.Ring.Lemmas
   {r₁ r₂ r₃ r₄}

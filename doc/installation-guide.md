@@ -3,44 +3,61 @@ Installation instructions
 
 Note: the full story on installing Agda libraries can be found at [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
 
-Use version v2.1.1 of the standard library with Agda 2.7.0. You can find the correct version of the library to use for different Agda versions on the [Agda Wiki](https://wiki.portal.chalmers.se/agda/Libraries/StandardLibrary).
+
+## Automated installation on Unix-style systems
+
+Running the following command in a terminal will download the
+[installation script](../stdlib-install.sh) and run it. It will
+ask you some questions about your setup and automatically install
+a version of the standard library compatible with your installed
+version of Agda.
+
+```shell
+sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/agda/agda-stdlib/refs/heads/master/stdlib-install.sh)"
+```
+
+## Manual installation
+
+Use version v2.4 of the standard library with Agda v2.8.0. You can find the correct version of the library to use for different Agda versions on the [Agda Wiki](https://wiki.portal.chalmers.se/agda/Libraries/StandardLibrary).
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where
    you would like to install the library.
 
-2. Download the tarball of v2.1.1 of the standard library. This can either be
+2. Download the tarball of v2.4 of the standard library. This can either be
    done manually by visiting the Github repository for the library, or via the
    command line as follows:
    ```
-   wget -O agda-stdlib.tar https://github.com/agda/agda-stdlib/archive/v2.1.1.tar.gz
+   wget -O agda-stdlib.tar.gz https://github.com/agda/agda-stdlib/archive/v2.4.tar.gz
    ```
    Note that you can replace `wget` with other popular tools such as `curl` and that
-   you can replace `2.1.1` with any other version of the library you desire.
+   you can replace `2.4` with any other version of the library you desire.
 
 3. Extract the standard library from the tarball. Again this can either be
    done manually or via the command line as follows:
    ```
-   tar -zxvf agda-stdlib.tar
+   tar -zxvf agda-stdlib.tar.gz
    ```
 
 4. [ OPTIONAL ] If using [cabal](https://www.haskell.org/cabal/) then run
    the commands to install via cabal:
    ```
-   cd agda-stdlib-2.1.1
+   cd agda-stdlib-2.4
    cabal install
    ```
 
-5. Locate the file `$HOME/.agda/libraries` where `$HOME` on Ubuntu/MacOS
-   is an environment variable that points to your home directory. The
-   value of the environment variable can be found by running `echo $HOME`.
+5. Locate the file `$AGDA_DIR/libraries` where `$AGDA_DIR` on Ubuntu/MacOS
+   can be found by running `agda --print-agda-app-dir`.
 
-   Note that the `.agda` directory and the `libraries` file within it,
+   Full details, including the various possible locations that `$AGDA_DIR`
+   might map to, may be found in [the online documentation](https://agda.readthedocs.io/en/latest/tools/package-system.html#installing-libraries).
+
+   Note that the `$AGDA_DIR` directory and the `libraries` file within it,
    may not exist and you may have to create them.
 
 6. Register the standard library with Agda's package system by adding
-   the following line to `$HOME/.agda/libraries`:
+   the following line to `$AGDA_DIR/libraries`:
    ```
-   $HERE/agda-stdlib-2.1.1/standard-library.agda-lib
+   $HERE/agda-stdlib-2.4/standard-library.agda-lib
    ```
 
 Now, the standard library is ready to be used either:
@@ -55,7 +72,7 @@ Now, the standard library is ready to be used either:
   searches for modules, for instance `.` (just the project's root).
 
 - in all your projects, by adding the following line to
-  `$HOME/.agda/defaults`
+  `$AGDA_DIR/defaults`
   ```
   standard-library
   ```

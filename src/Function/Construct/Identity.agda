@@ -4,7 +4,7 @@
 -- The identity function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Construct.Identity where
 
@@ -12,7 +12,11 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 open import Function.Bundles
 import Function.Definitions as Definitions
+  using (Congruent; Injective; Surjective; Bijective; Inverseʳ; Inverseˡ
+        ; Inverseᵇ)
 import Function.Structures as Structures
+  using (IsCongruent; IsInjection; IsSurjection; IsBijection; IsLeftInverse
+        ; IsRightInverse; IsInverse)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
@@ -25,6 +29,7 @@ private
   variable
     a ℓ : Level
     A : Set a
+
 
 ------------------------------------------------------------------------
 -- Properties

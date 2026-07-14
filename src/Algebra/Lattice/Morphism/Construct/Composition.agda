@@ -4,16 +4,18 @@
 -- The composition of morphisms between algebraic lattice structures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Algebra.Lattice.Morphism.Construct.Composition where
 
-open import Algebra.Lattice.Bundles
+open import Algebra.Lattice.Bundles using (RawLattice)
 open import Algebra.Lattice.Morphism.Structures
+  using (IsLatticeHomomorphism; IsLatticeIsomorphism; IsLatticeMonomorphism)
 open import Function.Base using (_∘_)
 import Function.Construct.Composition as Func
 open import Level using (Level)
 open import Relation.Binary.Morphism.Construct.Composition
+  using (isRelHomomorphism)
 open import Relation.Binary.Definitions using (Transitive)
 
 private

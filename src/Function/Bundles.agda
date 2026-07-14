@@ -15,26 +15,26 @@
 -- other library hierarchies, as this would duplicate the equality
 -- axioms.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Bundles where
 
 open import Function.Base using (_∘_)
+open import Function.Consequences.Propositional
+  using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
 open import Function.Definitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Function.Consequences.Propositional
 open Setoid using (isEquivalence)
 
 private
   variable
     a b ℓ₁ ℓ₂ : Level
+
 
 ------------------------------------------------------------------------
 -- Setoid bundles
@@ -113,13 +113,24 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsSurjection isSurjection public
       using
       ( strictlySurjective
+      ; from
+      ; inverseˡ
+      ; strictlyInverseˡ
       )
 
     to⁻ : B → A
-    to⁻ = proj₁ ∘ surjective
+    to⁻ = from
+    {-# WARNING_ON_USAGE to⁻
+    "Warning: to⁻ was deprecated in v3.0.
+    Please use Function.Structures.IsSurjection.from instead. "
+    #-}
 
-    to∘to⁻ : ∀ x → to (to⁻ x) ≈₂ x
-    to∘to⁻ = proj₂ ∘ strictlySurjective
+    to∘to⁻ : StrictlyInverseˡ _≈₂_ to from
+    to∘to⁻ = strictlyInverseˡ
+    {-# WARNING_ON_USAGE to∘to⁻
+    "Warning: to∘to⁻ was deprecated in v3.0
+    Please use Function.Structures.IsSurjection.strictlyInverseˡ instead. "
+    #-}
 
 
   record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -146,8 +157,15 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective = surjective
       }
 
-    open Injection  injection  public using (isInjection)
-    open Surjection surjection public using (isSurjection; to⁻;  strictlySurjective)
+    open Injection  injection  public
+      using (isInjection)
+    open Surjection surjection public
+      using (isSurjection
+            ; strictlySurjective
+            ; from
+            ; inverseˡ
+            ; strictlyInverseˡ
+            )
 
     isBijection : IsBijection to
     isBijection = record
@@ -155,7 +173,11 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective  = surjective
       }
 
-    open IsBijection isBijection public using (module Eq₁; module Eq₂)
+    open IsBijection isBijection public
+      using (module Eq₁; module Eq₂
+            ; inverseʳ; strictlyInverseʳ
+            ; from-cong; from-injective; from-surjective; from-bijective
+            )
 
 
 ------------------------------------------------------------------------
@@ -220,6 +242,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsLeftInverse isLeftInverse public
       using (module Eq₁; module Eq₂; strictlyInverseˡ; isSurjection)
 
+    open IsSurjection isSurjection public using (surjective)
+
     equivalence : Equivalence
     equivalence = record
       { to-cong   = to-cong
@@ -239,7 +263,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     surjection = record
       { to = to
       ; cong = to-cong
-      ; surjective = λ y → from y , inverseˡ
+      ; surjective = surjective
       }
 
 
@@ -249,7 +273,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       to        : A → B
       from      : B → A
       to-cong   : Congruent _≈₁_ _≈₂_ to
-      from-cong : from Preserves _≈₂_ ⟶ _≈₁_
+      from-cong : Congruent _≈₂_ _≈₁_ from
       inverseʳ  : Inverseʳ _≈₁_ _≈₂_ to from
 
     isCongruent : IsCongruent to
@@ -267,18 +291,27 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
     open IsRightInverse isRightInverse public
-      using (module Eq₁; module Eq₂; strictlyInverseʳ)
+      using (module Eq₁; module Eq₂; strictlyInverseʳ; isInjection)
 
-    equivalence : Equivalence
-    equivalence = record
+    open IsInjection isInjection public using (injective)
+
+    injection : Injection From To
+    injection = record
+      { to = to
+      ; cong = to-cong
+      ; injective = injective
+      }
+
+
+     equivalence : Equivalence
+     equivalence = record
       { to-cong   = to-cong
       ; from-cong = from-cong
       }
 
     open Equivalence equivalence public
       using (toFunction; fromFunction)
-
-
+    
   record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to        : A → B
@@ -378,7 +411,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   -- function for elements `x₁` and `x₂` are equal if `x₁ ≈ x₂` .
   --
   -- The difference is the `from-cong` law --- generally, the section
-  -- (called `Surjection.to⁻` or `SplitSurjection.from`) of a surjection
+  -- (called `Surjection.from` or `SplitSurjection.from`) of a surjection
   -- need not respect equality, whereas it must in a split surjection.
   --
   -- The two notions coincide when the equivalence relation on `B` is

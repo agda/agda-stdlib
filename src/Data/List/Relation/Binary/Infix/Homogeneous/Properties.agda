@@ -4,19 +4,19 @@
 -- Properties of the homogeneous infix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Infix.Homogeneous.Properties where
 
-open import Level
+open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Infix.Heterogeneous using (Infix)
+open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties
+  using (fromPointwise; infix?; trans; antisym)
 open import Function.Base using (_∘′_)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
-
-open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
-open import Data.List.Relation.Binary.Infix.Heterogeneous
-open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties
 
 private
   variable
@@ -42,6 +42,6 @@ isPartialOrder po = record
 isDecPartialOrder : IsDecPartialOrder R S → IsDecPartialOrder (Pointwise R) (Infix S)
 isDecPartialOrder dpo = record
   { isPartialOrder = isPartialOrder DPO.isPartialOrder
-  ; _≟_            = Pointwise.decidable DPO._≟_
+  ; _≈?_           = Pointwise.decidable DPO._≈?_
   ; _≤?_           = infix? DPO._≤?_
   } where module DPO = IsDecPartialOrder dpo

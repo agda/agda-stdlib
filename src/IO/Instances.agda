@@ -4,15 +4,15 @@
 -- Typeclass instances for IO
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module IO.Instances where
 
-open import IO.Base
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import IO.Effectful
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad)
+open import IO.Base using (IO)
+open import IO.Effectful using (functor; applicative; monad)
 
 instance
   ioFunctor = functor
