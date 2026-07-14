@@ -14,7 +14,7 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList
 
 open import Data.DifferenceList.Base using (_∷_)
 open import Data.DifferenceList.Properties
-  using (ListLike; []⁺; ∷⁺; ++⁺; toList-++-homo)
+  using (ListLike; []⁺; ∷⁺; ++⁺; toList-++)
 import Data.List.Base as List
 import Data.List.Relation.Unary.Any as List
 import Data.List.Relation.Unary.Any.Properties as List
@@ -42,11 +42,10 @@ private
 
 listLike : (t : Tree V l u h) → ListLike (toDiffList t)
 listLike (leaf l<u) = List.[] , []⁺
-listLike (node k l r bal) =
-  let (ls , ls∼dls) = listLike l
-      (rs , rs∼drs) = listLike r
-  in ls List.++ k List.∷ rs ,
-     (++⁺ ls∼dls (∷⁺ k rs∼drs))
+listLike (node k l r bal)
+  with (ls , ls∼dls) ← listLike l
+  with (rs , rs∼drs) ← listLike r
+  = ls List.++ k List.∷ rs , (++⁺ ls∼dls (∷⁺ k rs∼drs))
 
 ++≡node : (kv : K& V) →
           (lk : Tree V l [ kv .key ] hˡ) →
@@ -55,7 +54,7 @@ listLike (node k l r bal) =
           toList lk List.++ kv List.∷ toList ku ≡
             toList (node kv lk ku bal)
 ++≡node kv lk ku _ =
-  toList-++-homo (listLike lk) (kv ∷ toDiffList ku)
+  toList-++ (listLike lk) (kv ∷ toDiffList ku)
 
 toList⁺ : Any P t → List.Any P (toList t)
 toList⁺-node : {kv : K& V} →

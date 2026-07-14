@@ -54,13 +54,13 @@ toList⁺ {xs = xs} {dxs} xs∼dxs = begin
   toList (fromList xs)  ≡⟨ xs∼dxs List.[] ⟩
   toList dxs            ∎
 
-fromList-++-homo : (xs ys : List A) →
+fromList-++ : (xs ys : List A) →
                    fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
-fromList-++-homo = ++-assoc
+fromList-++ = ++-assoc
 
-toList-++-homo : ListLike dxs → (dys : DiffList A) →
+toList-++ : ListLike dxs → (dys : DiffList A) →
                  toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
-toList-++-homo {dxs = dxs} (xs , xs∼dxs) dys = begin
+toList-++ {dxs = dxs} (xs , xs∼dxs) dys = begin
   toList dxs List.++ toList dys  ≡⟨ cong (List._++ toList dys) (toList⁺ xs∼dxs) ⟨
   xs List.++ toList dys          ≡⟨⟩
   fromList xs (toList dys)       ≡⟨ xs∼dxs (toList dys) ⟩
@@ -84,7 +84,7 @@ viaList⁺ {xs = xs} {dxs = dxs} f xs∼dxs k = begin
 
 ++⁺ : xs ∼ dxs → ys ∼ dys → xs List.++ ys ∼ dxs ++ dys
 ++⁺ {xs = xs} {dxs = dxs} {ys = ys} {dys = dys} xs∼dxs ys∼dys k = begin
-  fromList (xs List.++ ys) k      ≡⟨ fromList-++-homo xs ys k ⟩
+  fromList (xs List.++ ys) k      ≡⟨ fromList-++ xs ys k ⟩
   (fromList xs ++ fromList ys) k  ≡⟨⟩
   fromList xs (fromList ys k)     ≡⟨ cong (fromList xs) (ys∼dys k) ⟩
   fromList xs (dys k)             ≡⟨ xs∼dxs (dys k) ⟩
