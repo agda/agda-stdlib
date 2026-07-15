@@ -142,6 +142,7 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
   strictlyInverseˡ : Strictly.Inverseˡ _≈₂_ to from
   strictlyInverseˡ x = inverseˡ Eq₁.refl
 
+  surjective : Surjective to
   surjective = inverseˡ⇒surjective Eq₁.setoid Eq₂.setoid inverseˡ
 
   isSurjection : IsSurjection to
