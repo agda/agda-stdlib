@@ -16,7 +16,7 @@ open import Data.Product.Base using (Σ; _,_)
 open import Function.Base using (_∘′_; id; flip)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; subst; cong; _≗_; module ≡-Reasoning)
+  using (_≡_; refl; cong; _≗_; module ≡-Reasoning)
 
 open ≡-Reasoning
 
