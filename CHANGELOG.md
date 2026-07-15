@@ -311,6 +311,9 @@ New modules
   Data.Tree.Rose.Show
   ```
 
+* `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
+  the AVL's operator `toList`: `toList⁺` and `toList⁻`.
+
 Additions to existing modules
 -----------------------------
 
@@ -391,7 +394,10 @@ Additions to existing modules
 
 * In `Data.DifferenceList.Properties`:
   ```agda
-  viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
+  fromList-++ : ∀ xs ys → fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
+  toList-++ : ListLike dxs → (dys : DiffList A) →
+              toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+  viaList⁺ : (f : List A → List B) → xs ∼ dxs → f xs ∼ viaList f dxs
   ```
 
 * In `Data.Integer.GCD`:
