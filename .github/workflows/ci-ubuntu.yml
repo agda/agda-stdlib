@@ -365,7 +365,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ubuntu-html
-          path: ${{ needs.init.outputs.AGDA_HTML_DIR }}
+          path: ./html/
 
       - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@v4
