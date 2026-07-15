@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.String</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Strings</a>
+<a id="117" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="191" class="Symbol">{-#</a> <a id="195" class="Keyword">OPTIONS</a> <a id="203" class="Pragma">--without-K</a> <a id="215" class="Pragma">--safe</a> <a id="222" class="Symbol">#-}</a>
+
+<a id="227" class="Keyword">module</a> <a id="234" href="Data.String.html" class="Module">Data.String</a> <a id="246" class="Keyword">where</a>
+
+<a id="253" class="Keyword">open</a> <a id="258" class="Keyword">import</a> <a id="265" href="Data.Vec.Base.html" class="Module">Data.Vec.Base</a> <a id="279" class="Symbol">as</a> <a id="282" class="Module">Vec</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Data.Vec.Base.html#959" class="Datatype">Vec</a><a id="296" class="Symbol">)</a>
+<a id="298" class="Keyword">open</a> <a id="303" class="Keyword">import</a> <a id="310" href="Data.Char.html" class="Module">Data.Char</a> <a id="320" class="Symbol">as</a> <a id="323" class="Module">Char</a> <a id="328" class="Keyword">using</a> <a id="334" class="Symbol">(</a><a id="335" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a><a id="339" class="Symbol">)</a>
+<a id="341" class="Keyword">open</a> <a id="346" class="Keyword">import</a> <a id="353" href="Function.Base.html" class="Module">Function.Base</a>
+
+<a id="368" class="Comment">------------------------------------------------------------------------</a>
+<a id="441" class="Comment">-- Re-export contents of base, and decidability of equality</a>
+
+<a id="502" class="Keyword">open</a> <a id="507" class="Keyword">import</a> <a id="514" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="531" class="Keyword">public</a>
+<a id="538" class="Keyword">open</a> <a id="543" class="Keyword">import</a> <a id="550" href="Data.String.Properties.html" class="Module">Data.String.Properties</a> <a id="573" class="Keyword">using</a> <a id="579" class="Symbol">(</a><a id="580" href="Data.String.Properties.html#1728" class="Function Operator">_≈?_</a><a id="584" class="Symbol">;</a> <a id="586" href="Data.String.Properties.html#2409" class="Function Operator">_≟_</a><a id="589" class="Symbol">;</a> <a id="591" href="Data.String.Properties.html#2695" class="Function Operator">_&lt;?_</a><a id="595" class="Symbol">;</a> <a id="597" href="Data.String.Properties.html#3877" class="Function Operator">_==_</a><a id="601" class="Symbol">)</a> <a id="603" class="Keyword">public</a>
+
+<a id="611" class="Comment">------------------------------------------------------------------------</a>
+<a id="684" class="Comment">-- Operations</a>
+
+<a id="toVec"></a><a id="699" href="Data.String.html#699" class="Function">toVec</a> <a id="705" class="Symbol">:</a> <a id="707" class="Symbol">(</a><a id="708" href="Data.String.html#708" class="Bound">s</a> <a id="710" class="Symbol">:</a> <a id="712" href="Agda.Builtin.String.html#274" class="Postulate">String</a><a id="718" class="Symbol">)</a> <a id="720" class="Symbol">→</a> <a id="722" href="Data.Vec.Base.html#959" class="Datatype">Vec</a> <a id="726" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="731" class="Symbol">(</a><a id="732" href="Data.String.Base.html#2141" class="Function">length</a> <a id="739" href="Data.String.html#708" class="Bound">s</a><a id="740" class="Symbol">)</a>
+<a id="742" href="Data.String.html#699" class="Function">toVec</a> <a id="748" href="Data.String.html#748" class="Bound">s</a> <a id="750" class="Symbol">=</a> <a id="752" href="Data.Vec.Base.html#7501" class="Function">Vec.fromList</a> <a id="765" class="Symbol">(</a><a id="766" href="Data.String.Base.html#1413" class="Primitive">toList</a> <a id="773" href="Data.String.html#748" class="Bound">s</a><a id="774" class="Symbol">)</a>
+
+<a id="fromVec"></a><a id="777" href="Data.String.html#777" class="Function">fromVec</a> <a id="785" class="Symbol">:</a> <a id="787" class="Symbol">∀</a> <a id="789" class="Symbol">{</a><a id="790" href="Data.String.html#790" class="Bound">n</a><a id="791" class="Symbol">}</a> <a id="793" class="Symbol">→</a> <a id="795" href="Data.Vec.Base.html#959" class="Datatype">Vec</a> <a id="799" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="804" href="Data.String.html#790" class="Bound">n</a> <a id="806" class="Symbol">→</a> <a id="808" href="Agda.Builtin.String.html#274" class="Postulate">String</a>
+<a id="815" href="Data.String.html#777" class="Function">fromVec</a> <a id="823" class="Symbol">=</a> <a id="825" href="Data.String.Base.html#1446" class="Primitive">fromList</a> <a id="834" href="Function.Base.html#992" class="Function Operator">∘</a> <a id="836" href="Data.Vec.Base.html#7399" class="Function">Vec.toList</a>
+</pre></body></html>

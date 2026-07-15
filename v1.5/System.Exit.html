@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>System.Exit</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Exiting the program.</a>
+<a id="130" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="204" class="Symbol">{-#</a> <a id="208" class="Keyword">OPTIONS</a> <a id="216" class="Pragma">--without-K</a> <a id="228" class="Symbol">#-}</a>
+
+<a id="233" class="Keyword">module</a> <a id="240" href="System.Exit.html" class="Module">System.Exit</a> <a id="252" class="Keyword">where</a>
+
+<a id="259" class="Keyword">open</a> <a id="264" class="Keyword">import</a> <a id="271" href="Level.html" class="Module">Level</a> <a id="277" class="Keyword">using</a> <a id="283" class="Symbol">(</a><a id="284" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="289" class="Symbol">)</a>
+<a id="291" class="Keyword">open</a> <a id="296" class="Keyword">import</a> <a id="303" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="317" class="Keyword">using</a> <a id="323" class="Symbol">(</a><a id="324" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="325" class="Symbol">)</a>
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="356" class="Keyword">using</a> <a id="362" class="Symbol">(</a><a id="363" href="Agda.Builtin.String.html#274" class="Postulate">String</a><a id="369" class="Symbol">)</a>
+<a id="371" class="Keyword">open</a> <a id="376" class="Keyword">import</a> <a id="383" href="Function.Base.html" class="Module">Function.Base</a> <a id="397" class="Keyword">using</a> <a id="403" class="Symbol">(</a><a id="404" href="Function.Base.html#1919" class="Function Operator">_$_</a><a id="407" class="Symbol">)</a>
+<a id="409" class="Keyword">open</a> <a id="414" class="Keyword">import</a> <a id="421" href="IO.html" class="Module">IO</a> <a id="424" class="Keyword">using</a> <a id="430" class="Symbol">(</a><a id="431" href="IO.html#959" class="Datatype">IO</a><a id="433" class="Symbol">;</a> <a id="435" href="IO.html#996" class="InductiveConstructor">lift</a><a id="439" class="Symbol">;</a> <a id="441" href="IO.html#1531" class="Function Operator">_&gt;&gt;_</a><a id="445" class="Symbol">;</a> <a id="447" href="IO.html#4913" class="Function">putStrLn</a><a id="455" class="Symbol">)</a>
+
+<a id="458" class="Comment">------------------------------------------------------------------------</a>
+<a id="531" class="Comment">-- Re-exporting the ExitCode data structure</a>
+
+<a id="576" class="Keyword">open</a> <a id="581" class="Keyword">import</a> <a id="588" href="System.Exit.Primitive.html" class="Module">System.Exit.Primitive</a> <a id="610" class="Symbol">as</a> <a id="613" class="Module">Prim</a>
+  <a id="620" class="Keyword">using</a> <a id="626" class="Symbol">(</a> <a id="628" href="System.Exit.Primitive.html#385" class="Datatype">ExitCode</a>
+        <a id="645" class="Symbol">;</a> <a id="647" href="System.Exit.Primitive.html#408" class="InductiveConstructor">ExitSuccess</a>
+        <a id="667" class="Symbol">;</a> <a id="669" href="System.Exit.Primitive.html#433" class="InductiveConstructor">ExitFailure</a>
+        <a id="689" class="Symbol">)</a>
+  <a id="693" class="Keyword">public</a>
+
+<a id="701" class="Comment">------------------------------------------------------------------------</a>
+<a id="774" class="Comment">-- Various exiting function</a>
+
+<a id="803" class="Keyword">private</a>
+  <a id="813" class="Keyword">variable</a>
+    <a id="826" href="System.Exit.html#826" class="Generalizable">a</a> <a id="828" class="Symbol">:</a> <a id="830" href="Agda.Primitive.html#423" class="Postulate">Level</a>
+    <a id="840" href="System.Exit.html#840" class="Generalizable">A</a> <a id="842" class="Symbol">:</a> <a id="844" class="PrimitiveType">Set</a> <a id="848" href="System.Exit.html#826" class="Generalizable">a</a>
+
+<a id="exitWith"></a><a id="851" href="System.Exit.html#851" class="Function">exitWith</a> <a id="860" class="Symbol">:</a> <a id="862" href="System.Exit.Primitive.html#385" class="Datatype">ExitCode</a> <a id="871" class="Symbol">→</a> <a id="873" href="IO.html#959" class="Datatype">IO</a> <a id="876" href="System.Exit.html#840" class="Generalizable">A</a>
+<a id="878" href="System.Exit.html#851" class="Function">exitWith</a> <a id="887" href="System.Exit.html#887" class="Bound">c</a> <a id="889" class="Symbol">=</a> <a id="891" href="IO.html#996" class="InductiveConstructor">lift</a> <a id="896" class="Symbol">(</a><a id="897" href="System.Exit.Primitive.html#869" class="Postulate">Prim.exitWith</a> <a id="911" href="System.Exit.html#887" class="Bound">c</a><a id="912" class="Symbol">)</a>
+
+<a id="exitFailure"></a><a id="915" href="System.Exit.html#915" class="Function">exitFailure</a> <a id="927" class="Symbol">:</a> <a id="929" href="IO.html#959" class="Datatype">IO</a> <a id="932" href="System.Exit.html#840" class="Generalizable">A</a>
+<a id="934" href="System.Exit.html#915" class="Function">exitFailure</a> <a id="946" class="Symbol">=</a> <a id="948" href="System.Exit.html#851" class="Function">exitWith</a> <a id="957" class="Symbol">(</a><a id="958" href="System.Exit.Primitive.html#433" class="InductiveConstructor">ExitFailure</a> <a id="970" class="Number">1</a><a id="971" class="Symbol">)</a>
+
+<a id="exitSuccess"></a><a id="974" href="System.Exit.html#974" class="Function">exitSuccess</a> <a id="986" class="Symbol">:</a> <a id="988" href="IO.html#959" class="Datatype">IO</a> <a id="991" href="System.Exit.html#840" class="Generalizable">A</a>
+<a id="993" href="System.Exit.html#974" class="Function">exitSuccess</a> <a id="1005" class="Symbol">=</a> <a id="1007" href="System.Exit.html#851" class="Function">exitWith</a> <a id="1016" href="System.Exit.Primitive.html#408" class="InductiveConstructor">ExitSuccess</a>
+
+<a id="die"></a><a id="1029" href="System.Exit.html#1029" class="Function">die</a> <a id="1033" class="Symbol">:</a> <a id="1035" href="Agda.Builtin.String.html#274" class="Postulate">String</a> <a id="1042" class="Symbol">→</a> <a id="1044" href="IO.html#959" class="Datatype">IO</a> <a id="1047" href="System.Exit.html#840" class="Generalizable">A</a>
+<a id="1049" href="System.Exit.html#1029" class="Function">die</a> <a id="1053" href="System.Exit.html#1053" class="Bound">str</a> <a id="1057" class="Symbol">=</a> <a id="1059" class="Keyword">do</a>
+  <a id="1064" href="IO.html#4913" class="Function">putStrLn</a> <a id="1073" href="System.Exit.html#1053" class="Bound">str</a>
+  <a id="1079" href="System.Exit.html#915" class="Function">exitFailure</a>
+</pre></body></html>

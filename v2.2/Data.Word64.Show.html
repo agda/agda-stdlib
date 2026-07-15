@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Word64.Show</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Bytes: showing bit patterns</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--cubical-compatible</a> <a id="244" class="Symbol">#-}</a>
+
+<a id="249" class="Keyword">module</a> <a id="256" href="Data.Word64.Show.html" class="Module">Data.Word64.Show</a> <a id="273" class="Keyword">where</a>
+
+<a id="280" class="Keyword">open</a> <a id="285" class="Keyword">import</a> <a id="292" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="312" class="Keyword">using</a> <a id="318" class="Symbol">(</a><a id="319" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="325" class="Symbol">)</a>
+
+<a id="328" class="Keyword">open</a> <a id="333" class="Keyword">import</a> <a id="340" href="Data.Bool.Show.html" class="Module">Data.Bool.Show</a> <a id="355" class="Keyword">using</a> <a id="361" class="Symbol">(</a><a id="362" href="Data.Bool.Show.html#475" class="Function">showBit</a><a id="369" class="Symbol">)</a>
+<a id="371" class="Keyword">open</a> <a id="376" class="Keyword">import</a> <a id="383" href="Data.Fin.Base.html" class="Module">Data.Fin.Base</a> <a id="397" class="Symbol">as</a> <a id="400" class="Module">Fin</a> <a id="404" class="Keyword">using</a> <a id="410" class="Symbol">(</a><a id="411" href="Data.Fin.Base.html#1159" class="Datatype">Fin</a><a id="414" class="Symbol">)</a>
+<a id="416" class="Keyword">import</a> <a id="423" href="Data.Nat.Show.html" class="Module">Data.Nat.Show</a> <a id="437" class="Symbol">as</a> <a id="440" class="Module">ℕ</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Data.String.html" class="Module">Data.String</a> <a id="466" class="Keyword">using</a> <a id="472" class="Symbol">(</a><a id="473" href="Data.String.Base.html#2425" class="Function Operator">_++_</a><a id="477" class="Symbol">;</a> <a id="479" href="Data.String.html#1247" class="Function">fromVec</a><a id="486" class="Symbol">;</a> <a id="488" href="Data.String.Base.html#3710" class="Function">padLeft</a><a id="495" class="Symbol">)</a>
+<a id="497" class="Keyword">open</a> <a id="502" class="Keyword">import</a> <a id="509" href="Data.Vec.Base.html" class="Module">Data.Vec.Base</a> <a id="523" class="Symbol">as</a> <a id="526" class="Module">Vec</a> <a id="530" class="Keyword">using</a> <a id="536" class="Symbol">(</a><a id="537" href="Data.Vec.Base.html#1119" class="Datatype">Vec</a><a id="540" class="Symbol">;</a> <a id="542" href="Data.Vec.Base.html#1155" class="InductiveConstructor">[]</a><a id="544" class="Symbol">;</a> <a id="546" href="Data.Vec.Base.html#1174" class="InductiveConstructor Operator">_∷_</a><a id="549" class="Symbol">)</a>
+
+<a id="552" class="Keyword">open</a> <a id="557" class="Keyword">import</a> <a id="564" href="Data.Word64.Base.html" class="Module">Data.Word64.Base</a>
+<a id="581" class="Keyword">open</a> <a id="586" class="Keyword">import</a> <a id="593" href="Data.Word64.Unsafe.html" class="Module">Data.Word64.Unsafe</a>
+
+<a id="613" class="Keyword">open</a> <a id="618" class="Keyword">import</a> <a id="625" href="Function.Base.html" class="Module">Function.Base</a> <a id="639" class="Keyword">using</a> <a id="645" class="Symbol">(</a><a id="646" href="Function.Base.html#1974" class="Function Operator">_$_</a><a id="649" class="Symbol">)</a>
+
+<a id="showBits"></a><a id="652" href="Data.Word64.Show.html#652" class="Function">showBits</a> <a id="661" class="Symbol">:</a> <a id="663" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a> <a id="670" class="Symbol">→</a> <a id="672" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="679" href="Data.Word64.Show.html#652" class="Function">showBits</a> <a id="688" href="Data.Word64.Show.html#688" class="Bound">w</a>
+  <a id="692" class="Symbol">=</a> <a id="694" class="String">&quot;0b&quot;</a> <a id="699" href="Data.String.Base.html#2425" class="Function Operator">++_</a>
+  <a id="705" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="707" href="Data.String.html#1247" class="Function">fromVec</a>
+  <a id="717" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="719" href="Data.Vec.Base.html#8862" class="Function">Vec.reverse</a>
+  <a id="733" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="735" href="Data.Vec.Base.html#2955" class="Function">Vec.map</a> <a id="743" href="Data.Bool.Show.html#475" class="Function">showBit</a>
+  <a id="753" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="755" href="Data.Word64.Unsafe.html#1097" class="Function">toBits</a> <a id="762" href="Data.Word64.Show.html#688" class="Bound">w</a>
+
+<a id="showHexa"></a><a id="765" href="Data.Word64.Show.html#765" class="Function">showHexa</a> <a id="774" class="Symbol">:</a> <a id="776" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a> <a id="783" class="Symbol">→</a> <a id="785" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="792" href="Data.Word64.Show.html#765" class="Function">showHexa</a> <a id="801" href="Data.Word64.Show.html#801" class="Bound">w</a>
+  <a id="805" class="Symbol">=</a> <a id="807" class="String">&quot;0x&quot;</a> <a id="812" href="Data.String.Base.html#2425" class="Function Operator">++_</a>
+  <a id="818" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="820" href="Data.String.Base.html#3710" class="Function">padLeft</a> <a id="828" class="String">&#39;0&#39;</a> <a id="832" class="Number">8</a>
+  <a id="836" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="838" href="Data.Nat.Show.html#2547" class="Function">ℕ.showInBase</a> <a id="851" class="Number">16</a> <a id="854" class="Symbol">(</a><a id="855" href="Data.Word64.Base.html#774" class="Primitive">toℕ</a> <a id="859" href="Data.Word64.Show.html#801" class="Bound">w</a><a id="860" class="Symbol">)</a>
+</pre></body></html>

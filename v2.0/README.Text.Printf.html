@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Text.Printf</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Examples of format strings and printf</a>
+<a id="147" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="221" class="Symbol">{-#</a> <a id="225" class="Keyword">OPTIONS</a> <a id="233" class="Pragma">--safe</a> <a id="240" class="Pragma">--cubical-compatible</a> <a id="261" class="Symbol">#-}</a>
+
+<a id="266" class="Keyword">module</a> <a id="273" href="README.Text.Printf.html" class="Module">README.Text.Printf</a> <a id="292" class="Keyword">where</a>
+
+<a id="299" class="Keyword">open</a> <a id="304" class="Keyword">import</a> <a id="311" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Data.Char.Base.html" class="Module">Data.Char.Base</a>
+<a id="352" class="Keyword">open</a> <a id="357" class="Keyword">import</a> <a id="364" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Data.String.Base.html" class="Module">Data.String.Base</a>
+<a id="408" class="Keyword">open</a> <a id="413" class="Keyword">import</a> <a id="420" href="Data.Sum.Base.html" class="Module">Data.Sum.Base</a>
+
+<a id="435" class="Keyword">open</a> <a id="440" class="Keyword">import</a> <a id="447" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="486" class="Comment">------------------------------------------------------------------------</a>
+<a id="559" class="Comment">-- Format strings</a>
+
+<a id="578" class="Keyword">open</a> <a id="583" class="Keyword">import</a> <a id="590" href="Text.Format.html" class="Module">Text.Format</a>
+
+<a id="603" class="Comment">-- We can specify a format by writing a string which will get interpreted</a>
+<a id="677" class="Comment">-- by a lexer into a list of formatting directives.</a>
+
+<a id="730" class="Comment">-- The specification types are always started with a &#39;%&#39; character:</a>
+
+<a id="799" class="Comment">-- Integers (%d or %i)</a>
+<a id="822" class="Comment">-- Naturals (%u)</a>
+<a id="839" class="Comment">-- Floats   (%f)</a>
+<a id="856" class="Comment">-- Chars    (%c)</a>
+<a id="873" class="Comment">-- Strings  (%s)</a>
+
+<a id="891" class="Comment">-- Anything which is not a type specification is a raw string to be spliced</a>
+<a id="967" class="Comment">-- in the output of printf.</a>
+
+<a id="996" class="Comment">-- For instance the following format alternates types and raw strings</a>
+
+<a id="1067" href="README.Text.Printf.html#1067" class="Function">_</a> <a id="1069" class="Symbol">:</a> <a id="1071" href="Text.Format.Generic.html#2615" class="Function">lexer</a> <a id="1077" class="String">&quot;%s: %u + %u ≡ %u&quot;</a>
+  <a id="1098" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="1100" href="Data.Sum.Base.html#700" class="InductiveConstructor">inj₂</a> <a id="1105" class="Symbol">(</a><a id="1106" href="Text.Format.html#1423" class="InductiveConstructor">`String</a> <a id="1114" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1116" href="Text.Format.Generic.html#1693" class="InductiveConstructor">Raw</a> <a id="1120" class="String">&quot;: &quot;</a> <a id="1125" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1127" href="Text.Format.html#1308" class="InductiveConstructor">`ℕ</a> <a id="1130" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1132" href="Text.Format.Generic.html#1693" class="InductiveConstructor">Raw</a> <a id="1136" class="String">&quot; + &quot;</a> <a id="1142" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1144" href="Text.Format.html#1308" class="InductiveConstructor">`ℕ</a> <a id="1147" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1149" href="Text.Format.Generic.html#1693" class="InductiveConstructor">Raw</a> <a id="1153" class="String">&quot; ≡ &quot;</a> <a id="1159" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1161" href="Text.Format.html#1308" class="InductiveConstructor">`ℕ</a> <a id="1164" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1166" class="InductiveConstructor">[]</a><a id="1168" class="Symbol">)</a>
+<a id="1170" class="Symbol">_</a> <a id="1172" class="Symbol">=</a> <a id="1174" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="1180" class="Comment">-- Lexing can fail. There are two possible errors:</a>
+
+<a id="1232" class="Comment">-- If we start a specification type with a &#39;%&#39; but the string ends then</a>
+<a id="1304" class="Comment">-- we get an UnexpectedEndOfString error</a>
+
+<a id="1346" href="README.Text.Printf.html#1346" class="Function">_</a> <a id="1348" class="Symbol">:</a> <a id="1350" href="Text.Format.Generic.html#2615" class="Function">lexer</a> <a id="1356" class="String">&quot;%s: %u + %u ≡ %&quot;</a>
+  <a id="1376" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="1378" href="Data.Sum.Base.html#675" class="InductiveConstructor">inj₁</a> <a id="1383" class="Symbol">(</a><a id="1384" href="Text.Format.Generic.html#2355" class="InductiveConstructor">UnexpectedEndOfString</a> <a id="1406" class="String">&quot;%s: %u + %u ≡ %&quot;</a><a id="1423" class="Symbol">)</a>
+<a id="1425" class="Symbol">_</a> <a id="1427" class="Symbol">=</a> <a id="1429" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="1435" class="Comment">-- If we start a specification type with a &#39;%&#39; and the following character</a>
+<a id="1510" class="Comment">-- does not correspond to an existing type, we get an InvalidType error</a>
+<a id="1582" class="Comment">-- together with a focus highlighting the position of the problematic type.</a>
+
+<a id="1659" href="README.Text.Printf.html#1659" class="Function">_</a> <a id="1661" class="Symbol">:</a> <a id="1663" href="Text.Format.Generic.html#2615" class="Function">lexer</a> <a id="1669" class="String">&quot;%s: %u + %a ≡ %u&quot;</a>
+  <a id="1690" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="1692" href="Data.Sum.Base.html#675" class="InductiveConstructor">inj₁</a> <a id="1697" class="Symbol">(</a><a id="1698" href="Text.Format.Generic.html#2458" class="InductiveConstructor">InvalidType</a> <a id="1710" class="String">&quot;%s: %u + %&quot;</a> <a id="1723" class="String">&#39;a&#39;</a> <a id="1727" class="String">&quot; ≡ %u&quot;</a><a id="1734" class="Symbol">)</a>
+<a id="1736" class="Symbol">_</a> <a id="1738" class="Symbol">=</a> <a id="1740" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="1746" class="Comment">------------------------------------------------------------------------</a>
+<a id="1819" class="Comment">-- Printf</a>
+
+<a id="1830" class="Keyword">open</a> <a id="1835" class="Keyword">import</a> <a id="1842" href="Text.Printf.html" class="Module">Text.Printf</a>
+
+<a id="1855" class="Comment">-- printf is a function which takes a format string as an argument and</a>
+<a id="1926" class="Comment">-- returns a function expecting a value for each type specification present</a>
+<a id="2002" class="Comment">-- in the format and returns a string splicing in these values into the</a>
+<a id="2074" class="Comment">-- format string.</a>
+
+<a id="2093" class="Comment">-- For instance `printf &quot;%s: %u + %u ≡ %u&quot;` is a</a>
+<a id="2142" class="Comment">-- `String → ℕ → ℕ → ℕ → String` function.</a>
+
+<a id="2186" href="README.Text.Printf.html#2186" class="Function">_</a> <a id="2188" class="Symbol">:</a> <a id="2190" href="Agda.Builtin.String.html#335" class="Postulate">String</a> <a id="2197" class="Symbol">→</a> <a id="2199" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="2201" class="Symbol">→</a> <a id="2203" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="2205" class="Symbol">→</a> <a id="2207" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="2209" class="Symbol">→</a> <a id="2211" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="2218" class="Symbol">_</a> <a id="2220" class="Symbol">=</a> <a id="2222" href="Text.Printf.html#1058" class="Function">printf</a> <a id="2229" class="String">&quot;%s: %u + %u ≡ %u&quot;</a>
+
+<a id="2249" href="README.Text.Printf.html#2249" class="Function">_</a> <a id="2251" class="Symbol">:</a> <a id="2253" href="Text.Printf.html#1058" class="Function">printf</a> <a id="2260" class="String">&quot;%s: %u + %u ≡ %u&quot;</a> <a id="2279" class="String">&quot;example&quot;</a> <a id="2289" class="Number">3</a> <a id="2291" class="Number">2</a> <a id="2293" class="Number">5</a>
+  <a id="2297" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="2299" class="String">&quot;example: 3 + 2 ≡ 5&quot;</a>
+<a id="2320" class="Symbol">_</a> <a id="2322" class="Symbol">=</a> <a id="2324" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="2330" class="Comment">-- If the format string str is invalid then `printf str` will have type</a>
+<a id="2402" class="Comment">-- `Error e` where `e` is the lexing error.</a>
+
+<a id="2447" href="README.Text.Printf.html#2447" class="Function">_</a> <a id="2449" class="Symbol">:</a> <a id="2451" href="Text.Printf.Generic.html#1284" class="Record">Text.Printf.Error</a> <a id="2469" class="Symbol">(</a><a id="2470" href="Text.Format.Generic.html#2355" class="InductiveConstructor">UnexpectedEndOfString</a> <a id="2492" class="String">&quot;%s: %u + %u ≡ %&quot;</a><a id="2509" class="Symbol">)</a>
+<a id="2511" class="Symbol">_</a> <a id="2513" class="Symbol">=</a> <a id="2515" href="Text.Printf.html#1058" class="Function">printf</a> <a id="2522" class="String">&quot;%s: %u + %u ≡ %&quot;</a>
+
+<a id="2541" href="README.Text.Printf.html#2541" class="Function">_</a> <a id="2543" class="Symbol">:</a> <a id="2545" href="Text.Printf.Generic.html#1284" class="Record">Text.Printf.Error</a> <a id="2563" class="Symbol">(</a><a id="2564" href="Text.Format.Generic.html#2458" class="InductiveConstructor">InvalidType</a> <a id="2576" class="String">&quot;%s: %u + %&quot;</a> <a id="2589" class="String">&#39;a&#39;</a> <a id="2593" class="String">&quot; ≡ %u&quot;</a><a id="2600" class="Symbol">)</a>
+<a id="2602" class="Symbol">_</a> <a id="2604" class="Symbol">=</a> <a id="2606" href="Text.Printf.html#1058" class="Function">printf</a> <a id="2613" class="String">&quot;%s: %u + %a ≡ %u&quot;</a>
+
+<a id="2633" class="Comment">-- Trying to pass arguments to such an ̀Error` type will lead to a</a>
+<a id="2700" class="Comment">-- unification error which hopefully makes the problem clear e.g.</a>
+<a id="2766" class="Comment">-- `printf &quot;%s: %u + %a ≡ %u&quot; &quot;example&quot; 3 2 5` fails with the error:</a>
+
+<a id="2836" class="Comment">-- Text.Printf.Error (InvalidType &quot;%s: %u + %&quot; &#39;a&#39; &quot; ≡ %u&quot;) should be</a>
+<a id="2906" class="Comment">-- a function type, but it isn&#39;t</a>
+<a id="2939" class="Comment">-- when checking that &quot;example&quot; 3 2 5 are valid arguments to a</a>
+<a id="3002" class="Comment">-- function of type Text.Printf.Printf (lexer &quot;%s: %u + %a ≡ %u&quot;)</a>
+</pre></body></html>

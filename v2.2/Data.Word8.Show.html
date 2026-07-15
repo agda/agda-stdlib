@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Word8.Show</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Bytes: showing bit patterns</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--cubical-compatible</a> <a id="244" class="Symbol">#-}</a>
+
+<a id="249" class="Keyword">module</a> <a id="256" href="Data.Word8.Show.html" class="Module">Data.Word8.Show</a> <a id="272" class="Keyword">where</a>
+
+<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="311" class="Keyword">using</a> <a id="317" class="Symbol">(</a><a id="318" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="324" class="Symbol">)</a>
+
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Data.Bool.Show.html" class="Module">Data.Bool.Show</a> <a id="354" class="Keyword">using</a> <a id="360" class="Symbol">(</a><a id="361" href="Data.Bool.Show.html#475" class="Function">showBit</a><a id="368" class="Symbol">)</a>
+<a id="370" class="Keyword">open</a> <a id="375" class="Keyword">import</a> <a id="382" href="Data.Fin.Base.html" class="Module">Data.Fin.Base</a> <a id="396" class="Symbol">as</a> <a id="399" class="Module">Fin</a> <a id="403" class="Keyword">using</a> <a id="409" class="Symbol">(</a><a id="410" href="Data.Fin.Base.html#1159" class="Datatype">Fin</a><a id="413" class="Symbol">)</a>
+<a id="415" class="Keyword">import</a> <a id="422" href="Data.Nat.Show.html" class="Module">Data.Nat.Show</a> <a id="436" class="Symbol">as</a> <a id="439" class="Module">ℕ</a>
+<a id="441" class="Keyword">open</a> <a id="446" class="Keyword">import</a> <a id="453" href="Data.String.html" class="Module">Data.String</a> <a id="465" class="Keyword">using</a> <a id="471" class="Symbol">(</a><a id="472" href="Data.String.Base.html#2425" class="Function Operator">_++_</a><a id="476" class="Symbol">;</a> <a id="478" href="Data.String.html#1247" class="Function">fromVec</a><a id="485" class="Symbol">;</a> <a id="487" href="Data.String.Base.html#3710" class="Function">padLeft</a><a id="494" class="Symbol">)</a>
+<a id="496" class="Keyword">open</a> <a id="501" class="Keyword">import</a> <a id="508" href="Data.Vec.Base.html" class="Module">Data.Vec.Base</a> <a id="522" class="Symbol">as</a> <a id="525" class="Module">Vec</a> <a id="529" class="Keyword">using</a> <a id="535" class="Symbol">(</a><a id="536" href="Data.Vec.Base.html#1119" class="Datatype">Vec</a><a id="539" class="Symbol">;</a> <a id="541" href="Data.Vec.Base.html#1155" class="InductiveConstructor">[]</a><a id="543" class="Symbol">;</a> <a id="545" href="Data.Vec.Base.html#1174" class="InductiveConstructor Operator">_∷_</a><a id="548" class="Symbol">)</a>
+<a id="550" class="Keyword">open</a> <a id="555" class="Keyword">import</a> <a id="562" href="Data.Word8.Base.html" class="Module">Data.Word8.Base</a>
+<a id="578" class="Keyword">open</a> <a id="583" class="Keyword">import</a> <a id="590" href="Function.Base.html" class="Module">Function.Base</a> <a id="604" class="Keyword">using</a> <a id="610" class="Symbol">(</a><a id="611" href="Function.Base.html#1974" class="Function Operator">_$_</a><a id="614" class="Symbol">)</a>
+
+<a id="showBits"></a><a id="617" href="Data.Word8.Show.html#617" class="Function">showBits</a> <a id="626" class="Symbol">:</a> <a id="628" href="Data.Word8.Primitive.html#454" class="Postulate">Word8</a> <a id="634" class="Symbol">→</a> <a id="636" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="643" href="Data.Word8.Show.html#617" class="Function">showBits</a> <a id="652" href="Data.Word8.Show.html#652" class="Bound">w</a>
+  <a id="656" class="Symbol">=</a> <a id="658" class="String">&quot;0b&quot;</a> <a id="663" href="Data.String.Base.html#2425" class="Function Operator">++_</a>
+  <a id="669" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="671" href="Data.String.html#1247" class="Function">fromVec</a>
+  <a id="681" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="683" href="Data.Vec.Base.html#8862" class="Function">Vec.reverse</a>
+  <a id="697" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="699" href="Data.Vec.Base.html#2955" class="Function">Vec.map</a> <a id="707" href="Data.Bool.Show.html#475" class="Function">showBit</a>
+  <a id="717" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="719" href="Data.Word8.Base.html#1199" class="Function">toBits</a> <a id="726" href="Data.Word8.Show.html#652" class="Bound">w</a>
+
+<a id="showHexa"></a><a id="729" href="Data.Word8.Show.html#729" class="Function">showHexa</a> <a id="738" class="Symbol">:</a> <a id="740" href="Data.Word8.Primitive.html#454" class="Postulate">Word8</a> <a id="746" class="Symbol">→</a> <a id="748" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="755" href="Data.Word8.Show.html#729" class="Function">showHexa</a> <a id="764" href="Data.Word8.Show.html#764" class="Bound">w</a>
+  <a id="768" class="Symbol">=</a> <a id="770" class="String">&quot;0x&quot;</a> <a id="775" href="Data.String.Base.html#2425" class="Function Operator">++_</a>
+  <a id="781" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="783" href="Data.String.Base.html#3710" class="Function">padLeft</a> <a id="791" class="String">&#39;0&#39;</a> <a id="795" class="Number">2</a>
+  <a id="799" href="Function.Base.html#1974" class="Function Operator">$</a> <a id="801" href="Data.Nat.Show.html#2547" class="Function">ℕ.showInBase</a> <a id="814" class="Number">16</a> <a id="817" class="Symbol">(</a><a id="818" href="Data.Word8.Base.html#882" class="Postulate">toℕ</a> <a id="822" href="Data.Word8.Show.html#764" class="Bound">w</a><a id="823" class="Symbol">)</a>
+</pre></body></html>

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Text.Tabular</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Examples of printing list and vec-based tables</a>
+<a id="156" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="230" class="Symbol">{-#</a> <a id="234" class="Keyword">OPTIONS</a> <a id="242" class="Pragma">--safe</a> <a id="249" class="Pragma">--cubical-compatible</a> <a id="270" class="Symbol">#-}</a>
+
+<a id="275" class="Keyword">module</a> <a id="282" href="README.Text.Tabular.html" class="Module">README.Text.Tabular</a> <a id="302" class="Keyword">where</a>
+
+<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Function.Base.html" class="Module">Function.Base</a>
+<a id="335" class="Keyword">open</a> <a id="340" class="Keyword">import</a> <a id="347" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="386" class="Keyword">open</a> <a id="391" class="Keyword">import</a> <a id="398" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+<a id="413" class="Keyword">open</a> <a id="418" class="Keyword">import</a> <a id="425" href="Data.String.Base.html" class="Module">Data.String.Base</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Data.Vec.Base.html" class="Module">Data.Vec.Base</a>
+
+<a id="469" class="Keyword">open</a> <a id="474" class="Keyword">import</a> <a id="481" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
+<a id="499" class="Keyword">import</a> <a id="506" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a> <a id="524" class="Symbol">as</a> <a id="527" class="Module">Tabularˡ</a>
+<a id="536" class="Keyword">import</a> <a id="543" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>  <a id="561" class="Symbol">as</a> <a id="564" class="Module">Tabularᵛ</a>
+
+<a id="574" class="Comment">------------------------------------------------------------------------</a>
+<a id="647" class="Comment">-- VEC</a>
+<a id="654" class="Comment">--</a>
+<a id="657" class="Comment">-- If you have a matrix of strings, you simply need to:</a>
+<a id="713" class="Comment">--   * pick a configuration (see below)</a>
+<a id="753" class="Comment">--   * pick an alignment for each column</a>
+<a id="794" class="Comment">--   * pass the matrix</a>
+<a id="817" class="Comment">--</a>
+<a id="820" class="Comment">-- The display function will then pad each string on the left, right,</a>
+<a id="890" class="Comment">-- or both to respect the alignment constraints.</a>
+<a id="939" class="Comment">-- It will return a list of strings corresponding to each line in the</a>
+<a id="1009" class="Comment">-- table. You may then:</a>
+<a id="1033" class="Comment">---  * use Data.String.Base&#39;s unlines to produce a String</a>
+<a id="1091" class="Comment">--   * use Text.Pretty&#39;s text and vcat to produce a Doc (i.e. indentable!)</a>
+<a id="1166" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="1240" href="README.Text.Tabular.html#1240" class="Function">_</a> <a id="1242" class="Symbol">:</a> <a id="1244" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="1252" class="Symbol">(</a><a id="1253" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="1270" href="Text.Tabular.Base.html#1351" class="Function">unicode</a>
+            <a id="1290" class="Symbol">(</a><a id="1291" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="1297" class="InductiveConstructor Operator">∷</a> <a id="1299" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="1304" class="InductiveConstructor Operator">∷</a> <a id="1306" href="Data.String.Base.html#4229" class="InductiveConstructor">Center</a> <a id="1313" class="InductiveConstructor Operator">∷</a> <a id="1315" class="InductiveConstructor">[]</a><a id="1317" class="Symbol">)</a>
+          <a id="1329" class="Symbol">(</a> <a id="1331" class="Symbol">(</a><a id="1332" class="String">&quot;foo&quot;</a> <a id="1338" class="InductiveConstructor Operator">∷</a> <a id="1340" class="String">&quot;bar&quot;</a> <a id="1346" class="InductiveConstructor Operator">∷</a> <a id="1348" class="String">&quot;baz&quot;</a> <a id="1354" class="InductiveConstructor Operator">∷</a> <a id="1356" class="InductiveConstructor">[]</a><a id="1358" class="Symbol">)</a>
+          <a id="1370" class="InductiveConstructor Operator">∷</a> <a id="1372" class="Symbol">(</a><a id="1373" class="String">&quot;1&quot;</a>   <a id="1379" class="InductiveConstructor Operator">∷</a> <a id="1381" class="String">&quot;2&quot;</a>   <a id="1387" class="InductiveConstructor Operator">∷</a> <a id="1389" class="String">&quot;3&quot;</a> <a id="1393" class="InductiveConstructor Operator">∷</a> <a id="1395" class="InductiveConstructor">[]</a><a id="1397" class="Symbol">)</a>
+          <a id="1409" class="InductiveConstructor Operator">∷</a> <a id="1411" class="Symbol">(</a><a id="1412" class="String">&quot;6&quot;</a>   <a id="1418" class="InductiveConstructor Operator">∷</a> <a id="1420" class="String">&quot;5&quot;</a>   <a id="1426" class="InductiveConstructor Operator">∷</a> <a id="1428" class="String">&quot;4&quot;</a> <a id="1432" class="InductiveConstructor Operator">∷</a> <a id="1434" class="InductiveConstructor">[]</a><a id="1436" class="Symbol">)</a>
+          <a id="1448" class="InductiveConstructor Operator">∷</a> <a id="1450" class="InductiveConstructor">[]</a><a id="1452" class="Symbol">))</a>
+  <a id="1457" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="1459" class="String">&quot;┌───┬───┬───┐
+\   \│foo│bar│baz│
+\   \├───┼───┼───┤
+\   \│  1│2  │ 3 │
+\   \├───┼───┼───┤
+\   \│  6│5  │ 4 │
+\   \└───┴───┴───┘&quot;</a>
+<a id="1589" class="Symbol">_</a> <a id="1591" class="Symbol">=</a> <a id="1593" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="1599" class="Comment">------------------------------------------------------------------------</a>
+<a id="1672" class="Comment">-- CONFIG</a>
+<a id="1682" class="Comment">--</a>
+<a id="1685" class="Comment">-- Configurations allow you to change the way the table is displayed.</a>
+<a id="1755" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="1829" class="Comment">-- We will use the same example throughout</a>
+
+<a id="foobar"></a><a id="1873" href="README.Text.Tabular.html#1873" class="Function">foobar</a> <a id="1880" class="Symbol">:</a> <a id="1882" href="Data.Vec.Base.html#1111" class="Datatype">Vec</a> <a id="1886" class="Symbol">(</a><a id="1887" href="Data.Vec.Base.html#1111" class="Datatype">Vec</a> <a id="1891" href="Agda.Builtin.String.html#335" class="Postulate">String</a> <a id="1898" class="Number">2</a><a id="1899" class="Symbol">)</a> <a id="1901" class="Number">3</a>
+<a id="1903" href="README.Text.Tabular.html#1873" class="Function">foobar</a> <a id="1910" class="Symbol">=</a> <a id="1912" class="Symbol">(</a><a id="1913" class="String">&quot;foo&quot;</a> <a id="1919" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1921" class="String">&quot;bar&quot;</a> <a id="1927" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1929" href="Data.Vec.Base.html#1147" class="InductiveConstructor">[]</a><a id="1931" class="Symbol">)</a>
+       <a id="1940" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1942" class="Symbol">(</a><a id="1943" class="String">&quot;1&quot;</a>   <a id="1949" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1951" class="String">&quot;2&quot;</a>   <a id="1957" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1959" href="Data.Vec.Base.html#1147" class="InductiveConstructor">[]</a><a id="1961" class="Symbol">)</a>
+       <a id="1970" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1972" class="Symbol">(</a><a id="1973" class="String">&quot;4&quot;</a>   <a id="1979" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1981" class="String">&quot;3&quot;</a>   <a id="1987" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="1989" href="Data.Vec.Base.html#1147" class="InductiveConstructor">[]</a><a id="1991" class="Symbol">)</a>
+       <a id="2000" href="Data.Vec.Base.html#1166" class="InductiveConstructor Operator">∷</a> <a id="2002" href="Data.Vec.Base.html#1147" class="InductiveConstructor">[]</a>
+
+<a id="2006" class="Comment">------------------------------------------------------------------------</a>
+<a id="2079" class="Comment">-- Basic configurations: unicode, ascii, whitespace</a>
+
+<a id="2132" class="Comment">-- unicode</a>
+
+<a id="2144" href="README.Text.Tabular.html#2144" class="Function">_</a> <a id="2146" class="Symbol">:</a> <a id="2148" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="2156" class="Symbol">(</a><a id="2157" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="2174" href="Text.Tabular.Base.html#1351" class="Function">unicode</a>
+            <a id="2194" class="Symbol">(</a><a id="2195" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="2201" class="InductiveConstructor Operator">∷</a> <a id="2203" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="2208" class="InductiveConstructor Operator">∷</a> <a id="2210" class="InductiveConstructor">[]</a><a id="2212" class="Symbol">)</a>
+            <a id="2226" href="README.Text.Tabular.html#1873" class="Function">foobar</a><a id="2232" class="Symbol">)</a>
+  <a id="2236" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="2238" class="String">&quot;┌───┬───┐
+\   \│foo│bar│
+\   \├───┼───┤
+\   \│  1│2  │
+\   \├───┼───┤
+\   \│  4│3  │
+\   \└───┴───┘&quot;</a>
+<a id="2340" class="Symbol">_</a> <a id="2342" class="Symbol">=</a> <a id="2344" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="2350" class="Comment">-- ascii</a>
+
+<a id="2360" href="README.Text.Tabular.html#2360" class="Function">_</a> <a id="2362" class="Symbol">:</a> <a id="2364" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="2372" class="Symbol">(</a><a id="2373" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="2390" href="Text.Tabular.Base.html#1782" class="Function">ascii</a>
+            <a id="2408" class="Symbol">(</a><a id="2409" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="2415" class="InductiveConstructor Operator">∷</a> <a id="2417" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="2422" class="InductiveConstructor Operator">∷</a> <a id="2424" class="InductiveConstructor">[]</a><a id="2426" class="Symbol">)</a>
+            <a id="2440" href="README.Text.Tabular.html#1873" class="Function">foobar</a><a id="2446" class="Symbol">)</a>
+  <a id="2450" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="2452" class="String">&quot;+-------+
+\   \|foo|bar|
+\   \|---+---|
+\   \|  1|2  |
+\   \|---+---|
+\   \|  4|3  |
+\   \+-------+&quot;</a>
+<a id="2554" class="Symbol">_</a> <a id="2556" class="Symbol">=</a> <a id="2558" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="2564" class="Comment">-- whitespace</a>
+
+<a id="2579" href="README.Text.Tabular.html#2579" class="Function">_</a> <a id="2581" class="Symbol">:</a> <a id="2583" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="2591" class="Symbol">(</a><a id="2592" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="2609" href="Text.Tabular.Base.html#3057" class="Function">whitespace</a>
+            <a id="2632" class="Symbol">(</a><a id="2633" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="2639" class="InductiveConstructor Operator">∷</a> <a id="2641" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="2646" class="InductiveConstructor Operator">∷</a> <a id="2648" class="InductiveConstructor">[]</a><a id="2650" class="Symbol">)</a>
+            <a id="2664" href="README.Text.Tabular.html#1873" class="Function">foobar</a><a id="2670" class="Symbol">)</a>
+  <a id="2674" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="2676" class="String">&quot;foo bar
+\   \  1 2  
+\   \  4 3  &quot;</a>
+<a id="2712" class="Symbol">_</a> <a id="2714" class="Symbol">=</a> <a id="2716" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="2722" class="Comment">------------------------------------------------------------------------</a>
+<a id="2795" class="Comment">-- Modifiers: altering existing configurations</a>
+
+<a id="2843" class="Comment">-- In these examples we will be using unicode as the base configuration.</a>
+<a id="2916" class="Comment">-- However these modifiers apply to all configurations (and can even be</a>
+<a id="2988" class="Comment">-- combined)</a>
+
+<a id="3002" class="Comment">-- compact: drop the horizontal line between each row</a>
+
+<a id="3057" href="README.Text.Tabular.html#3057" class="Function">_</a> <a id="3059" class="Symbol">:</a> <a id="3061" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="3069" class="Symbol">(</a><a id="3070" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="3087" class="Symbol">(</a><a id="3088" href="Text.Tabular.Base.html#2203" class="Function">compact</a> <a id="3096" href="Text.Tabular.Base.html#1351" class="Function">unicode</a><a id="3103" class="Symbol">)</a>
+            <a id="3117" class="Symbol">(</a><a id="3118" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="3124" class="InductiveConstructor Operator">∷</a> <a id="3126" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="3131" class="InductiveConstructor Operator">∷</a> <a id="3133" class="InductiveConstructor">[]</a><a id="3135" class="Symbol">)</a>
+            <a id="3149" href="README.Text.Tabular.html#1873" class="Function">foobar</a><a id="3155" class="Symbol">)</a>
+  <a id="3159" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="3161" class="String">&quot;┌───┬───┐
+\   \│foo│bar│
+\   \│  1│2  │
+\   \│  4│3  │
+\   \└───┴───┘&quot;</a>
+<a id="3233" class="Symbol">_</a> <a id="3235" class="Symbol">=</a> <a id="3237" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="3243" class="Comment">-- noBorder: drop the outside borders</a>
+
+<a id="3282" href="README.Text.Tabular.html#3282" class="Function">_</a> <a id="3284" class="Symbol">:</a> <a id="3286" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="3294" class="Symbol">(</a><a id="3295" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="3312" class="Symbol">(</a><a id="3313" href="Text.Tabular.Base.html#2395" class="Function">noBorder</a> <a id="3322" href="Text.Tabular.Base.html#1351" class="Function">unicode</a><a id="3329" class="Symbol">)</a>
+            <a id="3343" class="Symbol">(</a><a id="3344" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="3350" class="InductiveConstructor Operator">∷</a> <a id="3352" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="3357" class="InductiveConstructor Operator">∷</a> <a id="3359" class="InductiveConstructor">[]</a><a id="3361" class="Symbol">)</a>
+            <a id="3375" href="README.Text.Tabular.html#1873" class="Function">foobar</a><a id="3381" class="Symbol">)</a>
+  <a id="3385" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="3387" class="String">&quot;foo│bar
+\   \───┼───
+\   \  1│2  
+\   \───┼───
+\   \  4│3  &quot;</a>
+<a id="3449" class="Symbol">_</a> <a id="3451" class="Symbol">=</a> <a id="3453" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="3459" class="Comment">-- addSpace : add whitespace space inside cells</a>
+
+<a id="3508" href="README.Text.Tabular.html#3508" class="Function">_</a> <a id="3510" class="Symbol">:</a> <a id="3512" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="3520" class="Symbol">(</a><a id="3521" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="3538" class="Symbol">(</a><a id="3539" href="Text.Tabular.Base.html#2853" class="Function">addSpace</a> <a id="3548" href="Text.Tabular.Base.html#1351" class="Function">unicode</a><a id="3555" class="Symbol">)</a>
+            <a id="3569" class="Symbol">(</a><a id="3570" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="3576" class="InductiveConstructor Operator">∷</a> <a id="3578" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="3583" class="InductiveConstructor Operator">∷</a> <a id="3585" class="InductiveConstructor">[]</a><a id="3587" class="Symbol">)</a>
+            <a id="3601" href="README.Text.Tabular.html#1873" class="Function">foobar</a><a id="3607" class="Symbol">)</a>
+  <a id="3611" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="3613" class="String">&quot;┌─────┬─────┐
+\   \│ foo │ bar │
+\   \├─────┼─────┤
+\   \│   1 │ 2   │
+\   \├─────┼─────┤
+\   \│   4 │ 3   │
+\   \└─────┴─────┘&quot;</a>
+<a id="3743" class="Symbol">_</a> <a id="3745" class="Symbol">=</a> <a id="3747" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="3753" class="Comment">-- compact together with addSpace</a>
+
+<a id="3788" href="README.Text.Tabular.html#3788" class="Function">_</a> <a id="3790" class="Symbol">:</a> <a id="3792" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="3800" class="Symbol">(</a><a id="3801" href="Text.Tabular.Vec.html#547" class="Function">Tabularᵛ.display</a> <a id="3818" class="Symbol">(</a><a id="3819" href="Text.Tabular.Base.html#2203" class="Function">compact</a> <a id="3827" class="Symbol">(</a><a id="3828" href="Text.Tabular.Base.html#2853" class="Function">addSpace</a> <a id="3837" href="Text.Tabular.Base.html#1351" class="Function">unicode</a><a id="3844" class="Symbol">))</a>
+            <a id="3859" class="Symbol">(</a><a id="3860" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="3866" class="InductiveConstructor Operator">∷</a> <a id="3868" href="Data.String.Base.html#4224" class="InductiveConstructor">Left</a> <a id="3873" class="InductiveConstructor Operator">∷</a> <a id="3875" class="InductiveConstructor">[]</a><a id="3877" class="Symbol">)</a>
+            <a id="3891" href="README.Text.Tabular.html#1873" class="Function">foobar</a><a id="3897" class="Symbol">)</a>
+  <a id="3901" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="3903" class="String">&quot;┌─────┬─────┐
+\   \│ foo │ bar │
+\   \│   1 │ 2   │
+\   \│   4 │ 3   │
+\   \└─────┴─────┘&quot;</a>
+<a id="3995" class="Symbol">_</a> <a id="3997" class="Symbol">=</a> <a id="3999" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+
+<a id="4006" class="Comment">------------------------------------------------------------------------</a>
+<a id="4079" class="Comment">-- LIST</a>
+<a id="4087" class="Comment">--</a>
+<a id="4090" class="Comment">-- Same thing as for vectors except that if the list of lists is not</a>
+<a id="4159" class="Comment">-- rectangular, it is padded with empty strings to make it so. If there</a>
+<a id="4231" class="Comment">-- are not enough alignment directives, we arbitrarily pick Left.</a>
+<a id="4297" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="4371" href="README.Text.Tabular.html#4371" class="Function">_</a> <a id="4373" class="Symbol">:</a> <a id="4375" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="4383" class="Symbol">(</a><a id="4384" href="Text.Tabular.List.html#649" class="Function">Tabularˡ.display</a> <a id="4401" href="Text.Tabular.Base.html#1351" class="Function">unicode</a>
+          <a id="4419" class="Symbol">(</a><a id="4420" href="Data.String.Base.html#4229" class="InductiveConstructor">Center</a> <a id="4427" class="InductiveConstructor Operator">∷</a> <a id="4429" href="Data.String.Base.html#4236" class="InductiveConstructor">Right</a> <a id="4435" class="InductiveConstructor Operator">∷</a> <a id="4437" class="InductiveConstructor">[]</a><a id="4439" class="Symbol">)</a>
+          <a id="4451" class="Symbol">(</a> <a id="4453" class="Symbol">(</a><a id="4454" class="String">&quot;foo&quot;</a> <a id="4460" class="InductiveConstructor Operator">∷</a> <a id="4462" class="String">&quot;bar&quot;</a> <a id="4468" class="InductiveConstructor Operator">∷</a> <a id="4470" class="InductiveConstructor">[]</a><a id="4472" class="Symbol">)</a>
+          <a id="4484" class="InductiveConstructor Operator">∷</a> <a id="4486" class="Symbol">(</a><a id="4487" class="String">&quot;partial&quot;</a> <a id="4497" class="InductiveConstructor Operator">∷</a> <a id="4499" class="String">&quot;rows&quot;</a> <a id="4506" class="InductiveConstructor Operator">∷</a> <a id="4508" class="String">&quot;are&quot;</a> <a id="4514" class="InductiveConstructor Operator">∷</a> <a id="4516" class="String">&quot;ok&quot;</a> <a id="4521" class="InductiveConstructor Operator">∷</a> <a id="4523" class="InductiveConstructor">[]</a><a id="4525" class="Symbol">)</a>
+          <a id="4537" class="InductiveConstructor Operator">∷</a> <a id="4539" class="Symbol">(</a><a id="4540" class="String">&quot;3&quot;</a> <a id="4544" class="InductiveConstructor Operator">∷</a> <a id="4546" class="String">&quot;2&quot;</a> <a id="4550" class="InductiveConstructor Operator">∷</a> <a id="4552" class="String">&quot;1&quot;</a> <a id="4556" class="InductiveConstructor Operator">∷</a> <a id="4558" class="String">&quot;...&quot;</a> <a id="4564" class="InductiveConstructor Operator">∷</a> <a id="4566" class="String">&quot;surprise!&quot;</a> <a id="4578" class="InductiveConstructor Operator">∷</a> <a id="4580" class="InductiveConstructor">[]</a><a id="4582" class="Symbol">)</a>
+          <a id="4594" class="InductiveConstructor Operator">∷</a> <a id="4596" class="InductiveConstructor">[]</a><a id="4598" class="Symbol">))</a>
+  <a id="4603" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="4605" class="String">&quot;┌───────┬────┬───┬───┬─────────┐
+\   \│  foo  │ bar│   │   │         │
+\   \├───────┼────┼───┼───┼─────────┤
+\   \│partial│rows│are│ok │         │
+\   \├───────┼────┼───┼───┼─────────┤
+\   \│   3   │   2│1  │...│surprise!│
+\   \└───────┴────┴───┴───┴─────────┘&quot;</a>
+<a id="4868" class="Symbol">_</a> <a id="4870" class="Symbol">=</a> <a id="4872" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+
+<a id="4878" class="Comment">------------------------------------------------------------------------</a>
+<a id="4951" class="Comment">-- LIST (UNSAFE)</a>
+<a id="4968" class="Comment">--</a>
+<a id="4971" class="Comment">-- If you know *for sure* that your data is already perfectly rectangular</a>
+<a id="5045" class="Comment">-- i.e. all the rows of the list of lists have the same length</a>
+<a id="5108" class="Comment">--      in each column, all the strings have the same width</a>
+<a id="5168" class="Comment">-- then you can use the unsafeDisplay function defined Text.Tabular.Base.</a>
+<a id="5242" class="Comment">--</a>
+<a id="5245" class="Comment">-- This is what gets used internally by `Text.Tabular.Vec` and</a>
+<a id="5308" class="Comment">-- `Text.Tabular.List` once the potentially unsafe data has been</a>
+<a id="5373" class="Comment">-- processed.</a>
+<a id="5387" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="5461" href="README.Text.Tabular.html#5461" class="Function">_</a> <a id="5463" class="Symbol">:</a> <a id="5465" href="Data.String.Base.html#2805" class="Function">unlines</a> <a id="5473" class="Symbol">(</a><a id="5474" href="Text.Tabular.Base.html#3484" class="Function">unsafeDisplay</a> <a id="5488" class="Symbol">(</a><a id="5489" href="Text.Tabular.Base.html#2203" class="Function">compact</a> <a id="5497" href="Text.Tabular.Base.html#1351" class="Function">unicode</a><a id="5504" class="Symbol">)</a>
+          <a id="5516" class="Symbol">(</a> <a id="5518" class="Symbol">(</a><a id="5519" class="String">&quot;foo&quot;</a> <a id="5525" class="InductiveConstructor Operator">∷</a> <a id="5527" class="String">&quot;bar&quot;</a> <a id="5533" class="InductiveConstructor Operator">∷</a> <a id="5535" class="InductiveConstructor">[]</a><a id="5537" class="Symbol">)</a>
+          <a id="5549" class="InductiveConstructor Operator">∷</a> <a id="5551" class="Symbol">(</a><a id="5552" class="String">&quot;  1&quot;</a> <a id="5558" class="InductiveConstructor Operator">∷</a> <a id="5560" class="String">&quot;  2&quot;</a> <a id="5566" class="InductiveConstructor Operator">∷</a> <a id="5568" class="InductiveConstructor">[]</a><a id="5570" class="Symbol">)</a>
+          <a id="5582" class="InductiveConstructor Operator">∷</a> <a id="5584" class="Symbol">(</a><a id="5585" class="String">&quot;  4&quot;</a> <a id="5591" class="InductiveConstructor Operator">∷</a> <a id="5593" class="String">&quot;  3&quot;</a> <a id="5599" class="InductiveConstructor Operator">∷</a> <a id="5601" class="InductiveConstructor">[]</a><a id="5603" class="Symbol">)</a>
+          <a id="5615" class="InductiveConstructor Operator">∷</a> <a id="5617" class="InductiveConstructor">[]</a><a id="5619" class="Symbol">))</a>
+  <a id="5624" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="5626" class="String">&quot;┌───┬───┐
+\   \│foo│bar│
+\   \│  1│  2│
+\   \│  4│  3│
+\   \└───┴───┘&quot;</a>
+<a id="5698" class="Symbol">_</a> <a id="5700" class="Symbol">=</a> <a id="5702" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+</pre></body></html>

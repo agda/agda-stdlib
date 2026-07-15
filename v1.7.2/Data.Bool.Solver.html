@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Bool.Solver</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Automatic solvers for equations over booleans</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Comment">-- See README.Nat for examples of how to use similar solvers</a>
+
+<a id="291" class="Symbol">{-#</a> <a id="295" class="Keyword">OPTIONS</a> <a id="303" class="Pragma">--cubical-compatible</a> <a id="324" class="Pragma">--safe</a> <a id="331" class="Symbol">#-}</a>
+
+<a id="336" class="Keyword">module</a> <a id="343" href="Data.Bool.Solver.html" class="Module">Data.Bool.Solver</a> <a id="360" class="Keyword">where</a>
+
+<a id="367" class="Keyword">import</a> <a id="374" href="Algebra.Solver.Ring.Simple.html" class="Module">Algebra.Solver.Ring.Simple</a> <a id="401" class="Symbol">as</a> <a id="404" class="Module">Solver</a>
+<a id="411" class="Keyword">import</a> <a id="418" href="Algebra.Solver.Ring.AlmostCommutativeRing.html" class="Module">Algebra.Solver.Ring.AlmostCommutativeRing</a> <a id="460" class="Symbol">as</a> <a id="463" class="Module">ACR</a>
+<a id="467" class="Keyword">open</a> <a id="472" class="Keyword">import</a> <a id="479" href="Data.Bool.Properties.html" class="Module">Data.Bool.Properties</a>
+
+<a id="501" class="Comment">------------------------------------------------------------------------</a>
+<a id="574" class="Comment">-- A module for automatically solving propositional equivalences</a>
+<a id="639" class="Comment">-- containing _∨_ and _∧_</a>
+
+<a id="666" class="Keyword">module</a> <a id="∨-∧-Solver"></a><a id="673" href="Data.Bool.Solver.html#673" class="Module">∨-∧-Solver</a> <a id="684" class="Symbol">=</a>
+  <a id="688" href="Algebra.Solver.Ring.Simple.html" class="Module">Solver</a> <a id="695" class="Symbol">(</a><a id="696" href="Algebra.Solver.Ring.AlmostCommutativeRing.html#4276" class="Function">ACR.fromCommutativeSemiring</a> <a id="724" href="Data.Bool.Properties.html#11303" class="Function">∨-∧-commutativeSemiring</a><a id="747" class="Symbol">)</a> <a id="749" href="Data.Bool.Properties.html#1135" class="Function Operator">_≟_</a>
+
+<a id="754" class="Comment">------------------------------------------------------------------------</a>
+<a id="827" class="Comment">-- A module for automatically solving propositional equivalences</a>
+<a id="892" class="Comment">-- containing _xor_ and _∧_</a>
+
+<a id="921" class="Keyword">module</a> <a id="xor-∧-Solver"></a><a id="928" href="Data.Bool.Solver.html#928" class="Module">xor-∧-Solver</a> <a id="941" class="Symbol">=</a>
+  <a id="945" href="Algebra.Solver.Ring.Simple.html" class="Module">Solver</a> <a id="952" class="Symbol">(</a><a id="953" href="Algebra.Solver.Ring.AlmostCommutativeRing.html#3675" class="Function">ACR.fromCommutativeRing</a> <a id="977" href="Data.Bool.Properties.html#13542" class="Function">xor-∧-commutativeRing</a><a id="998" class="Symbol">)</a> <a id="1000" href="Data.Bool.Properties.html#1135" class="Function Operator">_≟_</a>
+</pre></body></html>

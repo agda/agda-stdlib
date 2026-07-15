@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.List.Relation.Binary.Equality</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Documentation for pointwise equality over `List`s</a>
+<a id="159" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="233" class="Symbol">{-#</a> <a id="237" class="Keyword">OPTIONS</a> <a id="245" class="Pragma">--allow-unsolved-metas</a> <a id="268" class="Symbol">#-}</a>
+
+<a id="273" class="Keyword">module</a> <a id="280" href="README.Data.List.Relation.Binary.Equality.html" class="Module">README.Data.List.Relation.Binary.Equality</a> <a id="322" class="Keyword">where</a>
+
+<a id="329" class="Keyword">open</a> <a id="334" class="Keyword">import</a> <a id="341" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="350" class="Keyword">using</a> <a id="356" class="Symbol">(</a><a id="357" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="358" class="Symbol">;</a> <a id="360" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">_+_</a><a id="363" class="Symbol">;</a> <a id="365" href="Data.Nat.Base.html#1645" class="Function Operator">_&lt;_</a><a id="368" class="Symbol">;</a> <a id="370" href="Data.Nat.Base.html#1600" class="InductiveConstructor">s≤s</a><a id="373" class="Symbol">;</a> <a id="375" href="Data.Nat.Base.html#1558" class="InductiveConstructor">z≤n</a><a id="378" class="Symbol">;</a> <a id="380" href="Agda.Builtin.Nat.html#528" class="Primitive Operator">_*_</a><a id="383" class="Symbol">;</a> <a id="385" href="Data.Nat.Base.html#2874" class="Primitive Operator">_∸_</a><a id="388" class="Symbol">;</a> <a id="390" href="Data.Nat.Base.html#1535" class="Datatype Operator">_≤_</a><a id="393" class="Symbol">)</a>
+<a id="395" class="Keyword">open</a> <a id="400" class="Keyword">import</a> <a id="407" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="427" class="Symbol">as</a> <a id="430" class="Module">NatProp</a>
+<a id="438" class="Keyword">open</a> <a id="443" class="Keyword">import</a> <a id="450" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+<a id="465" class="Keyword">open</a> <a id="470" class="Keyword">import</a> <a id="477" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+  <a id="517" class="Keyword">using</a> <a id="523" class="Symbol">(</a><a id="524" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="527" class="Symbol">;</a> <a id="529" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="533" class="Symbol">;</a> <a id="535" href="Relation.Binary.PropositionalEquality.Core.html#1684" class="Function">sym</a><a id="538" class="Symbol">;</a> <a id="540" href="Relation.Binary.PropositionalEquality.Core.html#1130" class="Function">cong</a><a id="544" class="Symbol">;</a> <a id="546" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a><a id="552" class="Symbol">)</a>
+
+<a id="555" class="Comment">------------------------------------------------------------------------</a>
+<a id="628" class="Comment">-- Pointwise equality</a>
+
+<a id="651" class="Comment">-- There are many different options for what it means for two</a>
+<a id="713" class="Comment">-- different lists of type `List A` to be &quot;equal&quot;. Here we will</a>
+<a id="777" class="Comment">-- consider &quot;pointwise&quot; equality that requires the lists to be the</a>
+<a id="844" class="Comment">-- same length and every pair of elements to be &quot;equal&quot;.</a>
+
+<a id="902" class="Comment">-- The most basic option is simply to use propositional equality</a>
+<a id="967" class="Comment">-- `_≡_` over lists:</a>
+
+<a id="989" class="Keyword">open</a> <a id="994" class="Keyword">import</a> <a id="1001" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+  <a id="1041" class="Keyword">using</a> <a id="1047" class="Symbol">(</a><a id="1048" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="1051" class="Symbol">;</a> <a id="1053" href="Relation.Binary.PropositionalEquality.Core.html#1684" class="Function">sym</a><a id="1056" class="Symbol">;</a> <a id="1058" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="1062" class="Symbol">)</a>
+
+<a id="lem₁"></a><a id="1065" href="README.Data.List.Relation.Binary.Equality.html#1065" class="Function">lem₁</a> <a id="1070" class="Symbol">:</a> <a id="1072" class="Number">1</a> <a id="1074" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1076" class="Number">2</a> <a id="1078" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1080" class="Number">3</a> <a id="1082" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1084" class="InductiveConstructor">[]</a> <a id="1087" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1089" class="Number">1</a> <a id="1091" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1093" class="Number">2</a> <a id="1095" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1097" class="Number">3</a> <a id="1099" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1101" class="InductiveConstructor">[]</a>
+<a id="1104" href="README.Data.List.Relation.Binary.Equality.html#1065" class="Function">lem₁</a> <a id="1109" class="Symbol">=</a> <a id="1111" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="1117" class="Comment">-- However propositional equality is only suitable when we want to</a>
+<a id="1184" class="Comment">-- use propositional equality to compare the individual elements.</a>
+<a id="1250" class="Comment">-- Although a contrived example, consider trying to prove the</a>
+<a id="1312" class="Comment">-- equality of two lists of the type `List (ℕ → ℕ)`:</a>
+
+<a id="lem₂"></a><a id="1366" href="README.Data.List.Relation.Binary.Equality.html#1366" class="Function">lem₂</a> <a id="1371" class="Symbol">:</a> <a id="1373" class="Symbol">(λ</a> <a id="1376" href="README.Data.List.Relation.Binary.Equality.html#1376" class="Bound">x</a> <a id="1378" class="Symbol">→</a> <a id="1380" class="Number">2</a> <a id="1382" href="Agda.Builtin.Nat.html#528" class="Primitive Operator">*</a> <a id="1384" href="README.Data.List.Relation.Binary.Equality.html#1376" class="Bound">x</a> <a id="1386" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="1388" class="Number">2</a><a id="1389" class="Symbol">)</a> <a id="1391" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1393" class="InductiveConstructor">[]</a> <a id="1396" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1398" class="Symbol">(λ</a> <a id="1401" href="README.Data.List.Relation.Binary.Equality.html#1401" class="Bound">x</a> <a id="1403" class="Symbol">→</a> <a id="1405" class="Number">2</a> <a id="1407" href="Agda.Builtin.Nat.html#528" class="Primitive Operator">*</a> <a id="1409" class="Symbol">(</a><a id="1410" href="README.Data.List.Relation.Binary.Equality.html#1401" class="Bound">x</a> <a id="1412" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="1414" class="Number">1</a><a id="1415" class="Symbol">))</a> <a id="1418" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1420" class="InductiveConstructor">[]</a>
+<a id="1423" href="README.Data.List.Relation.Binary.Equality.html#1366" class="Function">lem₂</a> <a id="1428" class="Symbol">=</a> <a id="1430" class="Hole">{!!}</a>
+
+<a id="1436" class="Comment">-- In such a case it is impossible to prove the two lists equal with</a>
+<a id="1505" class="Comment">-- refl as the two functions are not propositionally equal. In the</a>
+<a id="1572" class="Comment">-- absence of postulating function extensionality (see README.Axioms),</a>
+<a id="1643" class="Comment">-- the most common definition of function equality is to say that two</a>
+<a id="1713" class="Comment">-- functions are equal if their outputs are always propositionally</a>
+<a id="1780" class="Comment">-- equal for any input. This notion of function equality `_≗_` is</a>
+<a id="1846" class="Comment">-- found in:</a>
+
+<a id="1860" class="Keyword">open</a> <a id="1865" class="Keyword">import</a> <a id="1872" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="1910" class="Keyword">using</a> <a id="1916" class="Symbol">(</a><a id="1917" href="Relation.Binary.PropositionalEquality.html#1471" class="Function Operator">_≗_</a><a id="1920" class="Symbol">)</a>
+
+<a id="1923" class="Comment">-- We now want to use the `Pointwise` relation to say that the two</a>
+<a id="1990" class="Comment">-- lists are equal if their elements are pointwise equal with resepct</a>
+<a id="2060" class="Comment">-- to `_≗_`. However instead of using the pointwise module directly</a>
+<a id="2128" class="Comment">-- to write:</a>
+
+<a id="2142" class="Keyword">open</a> <a id="2147" class="Keyword">import</a> <a id="2154" href="Data.List.Relation.Binary.Pointwise.html" class="Module">Data.List.Relation.Binary.Pointwise</a> <a id="2190" class="Keyword">using</a> <a id="2196" class="Symbol">(</a><a id="2197" href="Data.List.Relation.Binary.Pointwise.Base.html#775" class="Datatype">Pointwise</a><a id="2206" class="Symbol">)</a>
+
+<a id="lem₃"></a><a id="2209" href="README.Data.List.Relation.Binary.Equality.html#2209" class="Function">lem₃</a> <a id="2214" class="Symbol">:</a> <a id="2216" href="Data.List.Relation.Binary.Pointwise.Base.html#775" class="Datatype">Pointwise</a> <a id="2226" href="Relation.Binary.PropositionalEquality.html#1471" class="Function Operator">_≗_</a> <a id="2230" class="Symbol">((λ</a> <a id="2234" href="README.Data.List.Relation.Binary.Equality.html#2234" class="Bound">x</a> <a id="2236" class="Symbol">→</a> <a id="2238" href="README.Data.List.Relation.Binary.Equality.html#2234" class="Bound">x</a> <a id="2240" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="2242" class="Number">1</a><a id="2243" class="Symbol">)</a> <a id="2245" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="2247" class="InductiveConstructor">[]</a><a id="2249" class="Symbol">)</a> <a id="2251" class="Symbol">((λ</a> <a id="2255" href="README.Data.List.Relation.Binary.Equality.html#2255" class="Bound">x</a> <a id="2257" class="Symbol">→</a> <a id="2259" href="README.Data.List.Relation.Binary.Equality.html#2255" class="Bound">x</a> <a id="2261" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="2263" class="Number">2</a> <a id="2265" href="Data.Nat.Base.html#2874" class="Primitive Operator">∸</a> <a id="2267" class="Number">1</a><a id="2268" class="Symbol">)</a> <a id="2270" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="2272" class="InductiveConstructor">[]</a><a id="2274" class="Symbol">)</a>
+<a id="2276" href="README.Data.List.Relation.Binary.Equality.html#2209" class="Function">lem₃</a> <a id="2281" class="Symbol">=</a> <a id="2283" class="Hole">{!!}</a>
+
+<a id="2289" class="Comment">-- the library provides some nicer wrappers and infix notation in the</a>
+<a id="2359" class="Comment">-- folder &quot;Data.List.Relation.Binary.Equality&quot;.</a>
+
+<a id="2408" class="Comment">-- Within this folder there are four different modules.</a>
+
+<a id="2465" class="Keyword">import</a> <a id="2472" href="Data.List.Relation.Binary.Equality.Setoid.html" class="Module">Data.List.Relation.Binary.Equality.Setoid</a>           <a id="2524" class="Symbol">as</a> <a id="2527" class="Module">SetoidEq</a>
+<a id="2536" class="Keyword">import</a> <a id="2543" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">Data.List.Relation.Binary.Equality.DecSetoid</a>        <a id="2595" class="Symbol">as</a> <a id="2598" class="Module">DecSetoidEq</a>
+<a id="2610" class="Keyword">import</a> <a id="2617" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">Data.List.Relation.Binary.Equality.Propositional</a>    <a id="2669" class="Symbol">as</a> <a id="2672" class="Module">PropEq</a>
+<a id="2679" class="Keyword">import</a> <a id="2686" href="Data.List.Relation.Binary.Equality.DecPropositional.html" class="Module">Data.List.Relation.Binary.Equality.DecPropositional</a> <a id="2738" class="Symbol">as</a> <a id="2741" class="Module">DecPropEq</a>
+
+<a id="2752" class="Comment">-- Which one should be used depends on whether the underlying equality</a>
+<a id="2823" class="Comment">-- over &quot;A&quot; is:</a>
+<a id="2839" class="Comment">--   i)  propositional or setoid-based</a>
+<a id="2878" class="Comment">--   ii) decidable.</a>
+
+<a id="2899" class="Comment">-- Each of the modules except `PropEq` are designed to be opened with a</a>
+<a id="2971" class="Comment">-- module parameter. This is to avoid having to specify the underlying</a>
+<a id="3042" class="Comment">-- equality relation or the decidability proofs every time you use the</a>
+<a id="3113" class="Comment">-- list equality.</a>
+
+<a id="3132" class="Comment">-- In our example function equality is not decidable and not propositional</a>
+<a id="3207" class="Comment">-- and so we want to use the `SetoidEq` module. This requires a proof that</a>
+<a id="3282" class="Comment">-- the `_≗_` relation forms a setoid over functions of the type `ℕ → ℕ`.</a>
+<a id="3355" class="Comment">-- This is found in:</a>
+
+<a id="3377" class="Keyword">open</a> <a id="3382" class="Keyword">import</a> <a id="3389" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="3427" class="Keyword">using</a> <a id="3433" class="Symbol">(</a><a id="3434" href="Relation.Binary.PropositionalEquality.html#1357" class="Function Operator">_→-setoid_</a><a id="3444" class="Symbol">)</a>
+
+<a id="3447" class="Comment">-- The `SetoidEq` module should therefore be opened as follows:</a>
+
+<a id="3512" class="Keyword">open</a> <a id="3517" href="Data.List.Relation.Binary.Equality.Setoid.html" class="Module">SetoidEq</a> <a id="3526" class="Symbol">(</a><a id="3527" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a> <a id="3529" href="Relation.Binary.PropositionalEquality.html#1357" class="Function Operator">→-setoid</a> <a id="3538" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="3539" class="Symbol">)</a>
+
+<a id="3542" class="Comment">-- All four equality modules provide an infix operator `_≋_` for the</a>
+<a id="3611" class="Comment">-- new equality relation over lists. The type of `lem₃` can therefore</a>
+<a id="3681" class="Comment">-- be rewritten as:</a>
+
+<a id="lem₄"></a><a id="3702" href="README.Data.List.Relation.Binary.Equality.html#3702" class="Function">lem₄</a> <a id="3707" class="Symbol">:</a> <a id="3709" class="Symbol">(λ</a> <a id="3712" href="README.Data.List.Relation.Binary.Equality.html#3712" class="Bound">x</a> <a id="3714" class="Symbol">→</a> <a id="3716" href="README.Data.List.Relation.Binary.Equality.html#3712" class="Bound">x</a> <a id="3718" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="3720" class="Number">1</a><a id="3721" class="Symbol">)</a> <a id="3723" class="InductiveConstructor Operator">∷</a> <a id="3725" class="InductiveConstructor">[]</a> <a id="3728" href="Data.List.Relation.Binary.Equality.Setoid.html#1173" class="Function Operator">≋</a> <a id="3730" class="Symbol">(λ</a> <a id="3733" href="README.Data.List.Relation.Binary.Equality.html#3733" class="Bound">x</a> <a id="3735" class="Symbol">→</a> <a id="3737" href="README.Data.List.Relation.Binary.Equality.html#3733" class="Bound">x</a> <a id="3739" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="3741" class="Number">2</a> <a id="3743" href="Data.Nat.Base.html#2874" class="Primitive Operator">∸</a> <a id="3745" class="Number">1</a><a id="3746" class="Symbol">)</a> <a id="3748" class="InductiveConstructor Operator">∷</a> <a id="3750" class="InductiveConstructor">[]</a>
+<a id="3753" href="README.Data.List.Relation.Binary.Equality.html#3702" class="Function">lem₄</a> <a id="3758" class="Symbol">=</a> <a id="3760" href="README.Data.List.Relation.Binary.Equality.html#3787" class="Function">2x+2≗2[x+1]</a> <a id="3772" href="Data.List.Relation.Binary.Pointwise.Base.html#910" class="InductiveConstructor Operator">∷</a> <a id="3774" href="Data.List.Relation.Binary.Pointwise.Base.html#884" class="InductiveConstructor">[]</a>
+  <a id="3779" class="Keyword">where</a>
+  <a id="3787" href="README.Data.List.Relation.Binary.Equality.html#3787" class="Function">2x+2≗2[x+1]</a> <a id="3799" class="Symbol">:</a> <a id="3801" class="Symbol">(λ</a> <a id="3804" href="README.Data.List.Relation.Binary.Equality.html#3804" class="Bound">x</a> <a id="3806" class="Symbol">→</a> <a id="3808" href="README.Data.List.Relation.Binary.Equality.html#3804" class="Bound">x</a> <a id="3810" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="3812" class="Number">1</a><a id="3813" class="Symbol">)</a> <a id="3815" href="Relation.Binary.PropositionalEquality.html#1471" class="Function Operator">≗</a> <a id="3817" class="Symbol">(λ</a> <a id="3820" href="README.Data.List.Relation.Binary.Equality.html#3820" class="Bound">x</a> <a id="3822" class="Symbol">→</a> <a id="3824" href="README.Data.List.Relation.Binary.Equality.html#3820" class="Bound">x</a> <a id="3826" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="3828" class="Number">2</a> <a id="3830" href="Data.Nat.Base.html#2874" class="Primitive Operator">∸</a> <a id="3832" class="Number">1</a><a id="3833" class="Symbol">)</a>
+  <a id="3837" href="README.Data.List.Relation.Binary.Equality.html#3787" class="Function">2x+2≗2[x+1]</a> <a id="3849" href="README.Data.List.Relation.Binary.Equality.html#3849" class="Bound">x</a> <a id="3851" class="Symbol">=</a> <a id="3853" href="Relation.Binary.PropositionalEquality.Core.html#1684" class="Function">sym</a> <a id="3857" class="Symbol">(</a><a id="3858" href="Data.Nat.Properties.html#45738" class="Function">+-∸-assoc</a> <a id="3868" href="README.Data.List.Relation.Binary.Equality.html#3849" class="Bound">x</a> <a id="3870" class="Symbol">(</a><a id="3871" href="Data.Nat.Base.html#1600" class="InductiveConstructor">s≤s</a> <a id="3875" href="Data.Nat.Base.html#1558" class="InductiveConstructor">z≤n</a><a id="3878" class="Symbol">))</a>
+
+<a id="3882" class="Comment">-- The modules also provide proofs that the `_≋_` relation is a</a>
+<a id="3946" class="Comment">-- setoid in its own right and therefore is reflexive, symmetric,</a>
+<a id="4012" class="Comment">-- transitive:</a>
+
+<a id="lem₅"></a><a id="4028" href="README.Data.List.Relation.Binary.Equality.html#4028" class="Function">lem₅</a> <a id="4033" class="Symbol">:</a> <a id="4035" class="Symbol">(λ</a> <a id="4038" href="README.Data.List.Relation.Binary.Equality.html#4038" class="Bound">x</a> <a id="4040" class="Symbol">→</a> <a id="4042" class="Number">2</a> <a id="4044" href="Agda.Builtin.Nat.html#528" class="Primitive Operator">*</a> <a id="4046" href="README.Data.List.Relation.Binary.Equality.html#4038" class="Bound">x</a> <a id="4048" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="4050" class="Number">2</a><a id="4051" class="Symbol">)</a> <a id="4053" class="InductiveConstructor Operator">∷</a> <a id="4055" class="InductiveConstructor">[]</a> <a id="4058" href="Data.List.Relation.Binary.Equality.Setoid.html#1173" class="Function Operator">≋</a> <a id="4060" class="Symbol">(λ</a> <a id="4063" href="README.Data.List.Relation.Binary.Equality.html#4063" class="Bound">x</a> <a id="4065" class="Symbol">→</a> <a id="4067" class="Number">2</a> <a id="4069" href="Agda.Builtin.Nat.html#528" class="Primitive Operator">*</a> <a id="4071" href="README.Data.List.Relation.Binary.Equality.html#4063" class="Bound">x</a> <a id="4073" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="4075" class="Number">2</a><a id="4076" class="Symbol">)</a> <a id="4078" class="InductiveConstructor Operator">∷</a> <a id="4080" class="InductiveConstructor">[]</a>
+<a id="4083" href="README.Data.List.Relation.Binary.Equality.html#4028" class="Function">lem₅</a> <a id="4088" class="Symbol">=</a> <a id="4090" href="Data.List.Relation.Binary.Equality.Setoid.html#1428" class="Function">≋-refl</a>
+
+<a id="4098" class="Comment">-- If we could prove that `_≗_` forms a `DecSetoid` then we could use</a>
+<a id="4168" class="Comment">-- the module `DecSetoidEq` instead. This exports everything from</a>
+<a id="4234" class="Comment">-- `SetoidEq` as well as the additional proof `_≋?_` that the list</a>
+<a id="4301" class="Comment">-- equality is decidable.</a>
+
+<a id="4328" class="Comment">-- This pattern of four modules for each of the four different types</a>
+<a id="4397" class="Comment">-- of equality is repeated throughout the library (e.g. see the</a>
+<a id="4461" class="Comment">-- `Membership`). Note that in this case the modules `PropEq` and</a>
+<a id="4527" class="Comment">-- `DecPropEq` are not very useful as if two lists are pointwise</a>
+<a id="4592" class="Comment">-- propositionally equal they are necessarily propositionally equal</a>
+<a id="4660" class="Comment">-- (and vice-versa). There are proofs of this fact exported by</a>
+<a id="4723" class="Comment">-- `PropEq` and `DecPropEq`. Although, these two types of list equality</a>
+<a id="4795" class="Comment">-- are not very useful in practice, they are included for completeness&#39;s</a>
+<a id="4868" class="Comment">-- sake.</a>
+</pre></body></html>

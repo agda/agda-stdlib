@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Container.Indexed.Fixpoints.Guarded</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Greatest fixpoint for indexed containers - using guardedness</a>
+<a id="170" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="244" class="Symbol">{-#</a> <a id="248" class="Keyword">OPTIONS</a> <a id="256" class="Pragma">--safe</a> <a id="263" class="Pragma">--without-K</a> <a id="275" class="Pragma">--guardedness</a> <a id="289" class="Symbol">#-}</a>
+
+<a id="294" class="Keyword">module</a> <a id="301" href="Data.Container.Indexed.Fixpoints.Guarded.html" class="Module">Data.Container.Indexed.Fixpoints.Guarded</a> <a id="342" class="Keyword">where</a>
+
+<a id="349" class="Keyword">open</a> <a id="354" class="Keyword">import</a> <a id="361" href="Level.html" class="Module">Level</a> <a id="367" class="Keyword">using</a> <a id="373" class="Symbol">(</a><a id="374" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="379" class="Symbol">;</a> <a id="381" href="Agda.Primitive.html#810" class="Primitive Operator">_⊔_</a><a id="384" class="Symbol">)</a>
+<a id="386" class="Keyword">open</a> <a id="391" class="Keyword">import</a> <a id="398" href="Codata.Musical.M.Indexed.html" class="Module">Codata.Musical.M.Indexed</a> <a id="423" class="Keyword">using</a> <a id="429" class="Symbol">(</a><a id="430" href="Codata.Musical.M.Indexed.html#618" class="Datatype">M</a><a id="431" class="Symbol">)</a>
+<a id="433" class="Keyword">open</a> <a id="438" class="Keyword">import</a> <a id="445" href="Data.Container.Indexed.html" class="Module">Data.Container.Indexed</a> <a id="468" class="Keyword">using</a> <a id="474" class="Symbol">(</a><a id="475" href="Data.Container.Indexed.Core.html#378" class="Record">Container</a><a id="484" class="Symbol">)</a>
+<a id="486" class="Keyword">open</a> <a id="491" class="Keyword">import</a> <a id="498" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="513" class="Keyword">using</a> <a id="519" class="Symbol">(</a><a id="520" href="Relation.Unary.html#1101" class="Function">Pred</a><a id="524" class="Symbol">)</a>
+
+<a id="527" class="Keyword">private</a>
+  <a id="537" class="Keyword">variable</a>
+    <a id="550" href="Data.Container.Indexed.Fixpoints.Guarded.html#550" class="Generalizable">o</a> <a id="552" href="Data.Container.Indexed.Fixpoints.Guarded.html#552" class="Generalizable">c</a> <a id="554" href="Data.Container.Indexed.Fixpoints.Guarded.html#554" class="Generalizable">r</a> <a id="556" class="Symbol">:</a> <a id="558" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="568" href="Data.Container.Indexed.Fixpoints.Guarded.html#568" class="Generalizable">O</a> <a id="570" class="Symbol">:</a> <a id="572" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="576" href="Data.Container.Indexed.Fixpoints.Guarded.html#550" class="Generalizable">o</a>
+
+
+<a id="580" class="Comment">-- The least fixpoint can be found in `Data.Container`</a>
+
+<a id="636" class="Keyword">open</a> <a id="641" href="Data.Container.Indexed.html" class="Module">Data.Container.Indexed</a> <a id="664" class="Keyword">public</a>
+  <a id="673" class="Keyword">using</a> <a id="679" class="Symbol">(</a><a id="680" href="Data.Container.Indexed.html#1243" class="Function">μ</a><a id="681" class="Symbol">)</a>
+
+<a id="684" class="Comment">-- This lives in its own module due to its use of guardedness.</a>
+
+<a id="ν"></a><a id="748" href="Data.Container.Indexed.Fixpoints.Guarded.html#748" class="Function">ν</a> <a id="750" class="Symbol">:</a> <a id="752" href="Data.Container.Indexed.Core.html#378" class="Record">Container</a> <a id="762" href="Data.Container.Indexed.Fixpoints.Guarded.html#568" class="Generalizable">O</a> <a id="764" href="Data.Container.Indexed.Fixpoints.Guarded.html#568" class="Generalizable">O</a> <a id="766" href="Data.Container.Indexed.Fixpoints.Guarded.html#552" class="Generalizable">c</a> <a id="768" href="Data.Container.Indexed.Fixpoints.Guarded.html#554" class="Generalizable">r</a> <a id="770" class="Symbol">→</a> <a id="772" href="Relation.Unary.html#1101" class="Function">Pred</a> <a id="777" href="Data.Container.Indexed.Fixpoints.Guarded.html#568" class="Generalizable">O</a> <a id="779" class="Symbol">_</a>
+<a id="781" href="Data.Container.Indexed.Fixpoints.Guarded.html#748" class="Function">ν</a> <a id="783" class="Symbol">=</a> <a id="785" href="Codata.Musical.M.Indexed.html#618" class="Datatype">M</a>
+</pre></body></html>

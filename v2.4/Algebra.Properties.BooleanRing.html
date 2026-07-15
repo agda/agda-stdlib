@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Properties.BooleanRing</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Some basic properties of Boolean Rings</a>
+<a id="148" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="222" class="Symbol">{-#</a> <a id="226" class="Keyword">OPTIONS</a> <a id="234" class="Pragma">--cubical-compatible</a> <a id="255" class="Pragma">--safe</a> <a id="262" class="Symbol">#-}</a>
+
+<a id="267" class="Keyword">open</a> <a id="272" class="Keyword">import</a> <a id="279" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>
+  <a id="297" class="Keyword">using</a> <a id="303" class="Symbol">(</a><a id="304" href="Algebra.Bundles.html#31426" class="Record">CommutativeRing</a><a id="319" class="Symbol">;</a> <a id="321" href="Algebra.Bundles.html#25642" class="Record">BooleanSemiring</a><a id="336" class="Symbol">;</a> <a id="338" href="Algebra.Bundles.html#32710" class="Record">BooleanRing</a><a id="349" class="Symbol">)</a>
+
+<a id="352" class="Keyword">module</a> <a id="359" href="Algebra.Properties.BooleanRing.html" class="Module">Algebra.Properties.BooleanRing</a>
+  <a id="392" class="Symbol">{</a><a id="393" href="Algebra.Properties.BooleanRing.html#393" class="Bound">c</a> <a id="395" href="Algebra.Properties.BooleanRing.html#395" class="Bound">ℓ</a><a id="396" class="Symbol">}</a> <a id="398" class="Symbol">(</a><a id="399" href="Algebra.Properties.BooleanRing.html#399" class="Bound">booleanRing</a> <a id="411" class="Symbol">:</a> <a id="413" href="Algebra.Bundles.html#32710" class="Record">BooleanRing</a> <a id="425" href="Algebra.Properties.BooleanRing.html#393" class="Bound">c</a> <a id="427" href="Algebra.Properties.BooleanRing.html#395" class="Bound">ℓ</a><a id="428" class="Symbol">)</a> <a id="430" class="Keyword">where</a>
+
+<a id="437" class="Keyword">open</a> <a id="442" class="Keyword">import</a> <a id="449" href="Function.Base.html" class="Module">Function.Base</a> <a id="463" class="Keyword">using</a> <a id="469" class="Symbol">(</a><a id="470" href="Function.Base.html#1134" class="Function Operator">_∘_</a><a id="473" class="Symbol">)</a>
+<a id="475" class="Keyword">open</a> <a id="480" class="Keyword">import</a> <a id="487" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="505" class="Keyword">using</a> <a id="511" class="Symbol">(</a><a id="512" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">_,_</a><a id="515" class="Symbol">)</a>
+
+<a id="518" class="Keyword">open</a> <a id="523" href="Algebra.Bundles.html#32710" class="Module">BooleanRing</a> <a id="535" href="Algebra.Properties.BooleanRing.html#399" class="Bound">booleanRing</a>
+<a id="547" class="Keyword">open</a> <a id="552" class="Keyword">import</a> <a id="559" href="Algebra.Structures.html" class="Module">Algebra.Structures</a> <a id="578" href="Algebra.Bundles.html#32849" class="Field Operator">_≈_</a>
+  <a id="584" class="Keyword">using</a> <a id="590" class="Symbol">(</a><a id="591" href="Algebra.Structures.html#20667" class="Record">IsBooleanSemiring</a><a id="608" class="Symbol">)</a>
+<a id="610" class="Keyword">open</a> <a id="615" class="Keyword">import</a> <a id="622" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="655" href="Algebra.Structures.html#1928" class="Function">setoid</a>
+
+<a id="663" class="Comment">------------------------------------------------------------------------</a>
+<a id="736" class="Comment">-- Re-export properties of Commutative Rings</a>
+
+<a id="782" class="Keyword">open</a> <a id="787" class="Keyword">import</a> <a id="794" href="Algebra.Properties.CommutativeRing.html" class="Module">Algebra.Properties.CommutativeRing</a> <a id="829" href="Algebra.Bundles.html#33221" class="Function">commutativeRing</a> <a id="845" class="Keyword">public</a>
+
+<a id="853" class="Comment">------------------------------------------------------------------------</a>
+<a id="926" class="Comment">-- Structures</a>
+
+<a id="isBooleanSemiring"></a><a id="941" href="Algebra.Properties.BooleanRing.html#941" class="Function">isBooleanSemiring</a> <a id="959" class="Symbol">:</a> <a id="961" href="Algebra.Structures.html#20667" class="Record">IsBooleanSemiring</a> <a id="979" href="Algebra.Bundles.html#32883" class="Field Operator">_+_</a> <a id="983" href="Algebra.Bundles.html#32915" class="Field Operator">_*_</a> <a id="987" href="Algebra.Bundles.html#32979" class="Field">0#</a> <a id="990" href="Algebra.Bundles.html#33007" class="Field">1#</a>
+<a id="993" href="Algebra.Properties.BooleanRing.html#941" class="Function">isBooleanSemiring</a> <a id="1011" class="Symbol">=</a> <a id="1013" class="Keyword">record</a>
+  <a id="1022" class="Symbol">{</a> <a id="1024" href="Algebra.Structures.html#20743" class="Field">isSemiring</a> <a id="1035" class="Symbol">=</a> <a id="1037" href="Algebra.Structures.html#27392" class="Function">isSemiring</a>
+  <a id="1050" class="Symbol">;</a> <a id="1052" href="Algebra.Structures.html#20781" class="Field">+-cancel</a> <a id="1061" class="Symbol">=</a> <a id="1063" href="Algebra.Properties.RingWithoutOne.html#891" class="Function">+-cancel</a>
+  <a id="1074" class="Symbol">;</a> <a id="1076" href="Algebra.Structures.html#20813" class="Field">*-idem</a> <a id="1083" class="Symbol">=</a> <a id="1085" href="Algebra.Structures.html#28321" class="Function">*-idem</a>
+  <a id="1094" class="Symbol">}</a>
+
+<a id="1097" class="Keyword">open</a> <a id="1102" href="Algebra.Structures.html#20667" class="Module">IsBooleanSemiring</a> <a id="1120" href="Algebra.Properties.BooleanRing.html#941" class="Function">isBooleanSemiring</a> <a id="1138" class="Keyword">public</a>
+  <a id="1147" class="Keyword">using</a> <a id="1153" class="Symbol">(</a><a id="1154" href="Algebra.Structures.html#21006" class="Function">*-isIdempotentMonoid</a><a id="1174" class="Symbol">)</a>
+
+<a id="1177" class="Comment">------------------------------------------------------------------------</a>
+<a id="1250" class="Comment">-- Bundles</a>
+
+<a id="booleanSemiring"></a><a id="1262" href="Algebra.Properties.BooleanRing.html#1262" class="Function">booleanSemiring</a> <a id="1278" class="Symbol">:</a> <a id="1280" href="Algebra.Bundles.html#25642" class="Record">BooleanSemiring</a> <a id="1296" class="Symbol">_</a> <a id="1298" class="Symbol">_</a>
+<a id="1300" href="Algebra.Properties.BooleanRing.html#1262" class="Function">booleanSemiring</a> <a id="1316" class="Symbol">=</a> <a id="1318" class="Keyword">record</a> <a id="1325" class="Symbol">{</a> <a id="1327" href="Algebra.Bundles.html#25949" class="Field">isBooleanSemiring</a> <a id="1345" class="Symbol">=</a> <a id="1347" href="Algebra.Properties.BooleanRing.html#941" class="Function">isBooleanSemiring</a> <a id="1365" class="Symbol">}</a>
+
+<a id="1368" class="Keyword">open</a> <a id="1373" href="Algebra.Bundles.html#25642" class="Module">BooleanSemiring</a> <a id="1389" href="Algebra.Properties.BooleanRing.html#1262" class="Function">booleanSemiring</a> <a id="1405" class="Keyword">public</a>
+  <a id="1414" class="Keyword">using</a> <a id="1420" class="Symbol">(</a><a id="1421" href="Algebra.Bundles.html#26513" class="Function">*-idempotentMonoid</a><a id="1439" class="Symbol">)</a>
+
+<a id="1442" class="Comment">------------------------------------------------------------------------</a>
+<a id="1515" class="Comment">-- Export properties of Boolean semirings</a>
+
+<a id="1558" class="Keyword">open</a> <a id="1563" class="Keyword">import</a> <a id="1570" href="Algebra.Properties.BooleanSemiring.html" class="Module">Algebra.Properties.BooleanSemiring</a> <a id="1605" href="Algebra.Properties.BooleanRing.html#1262" class="Function">booleanSemiring</a> <a id="1621" class="Keyword">public</a>
+  <a id="1630" class="Keyword">hiding</a> <a id="1637" class="Symbol">(</a><a id="1638" href="Algebra.Properties.BooleanSemiring.html#4201" class="Function">isBooleanRing</a><a id="1651" class="Symbol">;</a> <a id="1653" href="Algebra.Properties.BooleanSemiring.html#5020" class="Function">booleanRing</a><a id="1664" class="Symbol">)</a>
+
+<a id="1667" class="Comment">------------------------------------------------------------------------</a>
+<a id="1740" class="Comment">-- Further consequences</a>
+
+<a id="-x≈x"></a><a id="1765" href="Algebra.Properties.BooleanRing.html#1765" class="Function">-x≈x</a> <a id="1770" class="Symbol">:</a> <a id="1772" class="Symbol">∀</a> <a id="1774" href="Algebra.Properties.BooleanRing.html#1774" class="Bound">x</a> <a id="1776" class="Symbol">→</a> <a id="1778" href="Algebra.Bundles.html#32947" class="Field Operator">-</a> <a id="1780" href="Algebra.Properties.BooleanRing.html#1774" class="Bound">x</a> <a id="1782" href="Algebra.Bundles.html#32849" class="Field Operator">≈</a> <a id="1784" href="Algebra.Properties.BooleanRing.html#1774" class="Bound">x</a>
+<a id="1786" href="Algebra.Properties.BooleanRing.html#1765" class="Function">-x≈x</a> <a id="1791" class="Symbol">=</a> <a id="1793" href="Algebra.Properties.BooleanSemiring.html#2813" class="Function">x+y≈0⇒y≈x</a> <a id="1803" href="Function.Base.html#1134" class="Function Operator">∘</a> <a id="1805" href="Algebra.Structures.html#22171" class="Function">-‿inverseʳ</a>
+
+</pre></body></html>

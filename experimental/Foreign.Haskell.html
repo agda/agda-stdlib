@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foreign.Haskell</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Type(s) used (only) when calling out to Haskell via the FFI</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Pragma">--cubical-compatible</a> <a id="276" class="Symbol">#-}</a>
+
+<a id="281" class="Keyword">module</a> <a id="288" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="304" class="Keyword">where</a>
+
+<a id="311" class="Keyword">open</a> <a id="316" class="Keyword">import</a> <a id="323" href="Level.html" class="Module">Level</a> <a id="329" class="Keyword">using</a> <a id="335" class="Symbol">(</a><a id="336" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="341" class="Symbol">;</a> <a id="343" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="346" class="Symbol">)</a>
+
+<a id="349" class="Comment">------------------------------------------------------------------------</a>
+<a id="422" class="Comment">-- Pairs</a>
+
+<a id="432" class="Keyword">open</a> <a id="437" class="Keyword">import</a> <a id="444" href="Foreign.Haskell.Pair.html" class="Module">Foreign.Haskell.Pair</a> <a id="465" class="Keyword">public</a>
+  <a id="474" class="Keyword">renaming</a>
+  <a id="485" class="Symbol">(</a> <a id="487" href="Foreign.Haskell.Pair.html#909" class="Function">toForeign</a>   <a id="499" class="Symbol">to</a> <a id="502" class="Function">toForeignPair</a>
+  <a id="518" class="Symbol">;</a> <a id="520" href="Foreign.Haskell.Pair.html#1096" class="Function">fromForeign</a> <a id="532" class="Symbol">to</a> <a id="535" class="Function">fromForeignPair</a>
+  <a id="553" class="Symbol">)</a>
+
+<a id="556" class="Comment">------------------------------------------------------------------------</a>
+<a id="629" class="Comment">-- Sums</a>
+
+<a id="638" class="Keyword">open</a> <a id="643" class="Keyword">import</a> <a id="650" href="Foreign.Haskell.Either.html" class="Module">Foreign.Haskell.Either</a> <a id="673" class="Keyword">public</a>
+  <a id="682" class="Keyword">renaming</a>
+  <a id="693" class="Symbol">(</a> <a id="695" href="Foreign.Haskell.Either.html#904" class="Function">toForeign</a>   <a id="707" class="Symbol">to</a> <a id="710" class="Function">toForeignEither</a>
+  <a id="728" class="Symbol">;</a> <a id="730" href="Foreign.Haskell.Either.html#1122" class="Function">fromForeign</a> <a id="742" class="Symbol">to</a> <a id="745" class="Function">fromForeignEither</a>
+  <a id="765" class="Symbol">)</a>
+</pre></body></html>

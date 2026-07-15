@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for Vec</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--without-K</a> <a id="235" class="Pragma">--safe</a> <a id="242" class="Symbol">#-}</a>
+
+<a id="247" class="Keyword">module</a> <a id="254" href="Data.Vec.Instances.html" class="Module">Data.Vec.Instances</a> <a id="273" class="Keyword">where</a>
+
+<a id="280" class="Keyword">open</a> <a id="285" class="Keyword">import</a> <a id="292" href="Data.Vec.Categorical.html" class="Module">Data.Vec.Categorical</a>
+
+<a id="314" class="Keyword">instance</a>
+  <a id="vecFunctor"></a><a id="325" href="Data.Vec.Instances.html#325" class="Function">vecFunctor</a> <a id="336" class="Symbol">=</a> <a id="338" href="Data.Vec.Categorical.html#799" class="Function">functor</a>
+  <a id="vecApplicative"></a><a id="348" href="Data.Vec.Instances.html#348" class="Function">vecApplicative</a> <a id="363" class="Symbol">=</a> <a id="365" href="Data.Vec.Categorical.html#884" class="Function">applicative</a>
+</pre></body></html>

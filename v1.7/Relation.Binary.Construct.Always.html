@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Construct.Always</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The universal binary relation</a>
+<a id="139" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="213" class="Symbol">{-#</a> <a id="217" class="Keyword">OPTIONS</a> <a id="225" class="Pragma">--without-K</a> <a id="237" class="Pragma">--safe</a> <a id="244" class="Symbol">#-}</a>
+
+<a id="249" class="Keyword">module</a> <a id="256" href="Relation.Binary.Construct.Always.html" class="Module">Relation.Binary.Construct.Always</a> <a id="289" class="Keyword">where</a>
+
+<a id="296" class="Keyword">open</a> <a id="301" class="Keyword">import</a> <a id="308" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="324" class="Keyword">open</a> <a id="329" class="Keyword">import</a> <a id="336" href="Relation.Binary.Construct.Constant.html" class="Module">Relation.Binary.Construct.Constant</a> <a id="371" class="Keyword">using</a> <a id="377" class="Symbol">(</a><a id="378" href="Relation.Binary.Construct.Constant.Core.html#533" class="Function">Const</a><a id="383" class="Symbol">)</a>
+<a id="385" class="Keyword">open</a> <a id="390" class="Keyword">import</a> <a id="397" href="Data.Unit.Polymorphic.html" class="Module">Data.Unit.Polymorphic</a> <a id="419" class="Keyword">using</a> <a id="425" class="Symbol">(</a><a id="426" href="Data.Unit.Polymorphic.Base.html#480" class="Function">⊤</a><a id="427" class="Symbol">;</a> <a id="429" href="Data.Unit.Polymorphic.Base.html#524" class="Function">tt</a><a id="431" class="Symbol">)</a>
+
+<a id="434" class="Comment">------------------------------------------------------------------------</a>
+<a id="507" class="Comment">-- Definition</a>
+
+<a id="Always"></a><a id="522" href="Relation.Binary.Construct.Always.html#522" class="Function">Always</a> <a id="529" class="Symbol">:</a> <a id="531" class="Symbol">∀</a> <a id="533" class="Symbol">{</a><a id="534" href="Relation.Binary.Construct.Always.html#534" class="Bound">a</a> <a id="536" href="Relation.Binary.Construct.Always.html#536" class="Bound">ℓ</a><a id="537" class="Symbol">}</a> <a id="539" class="Symbol">{</a><a id="540" href="Relation.Binary.Construct.Always.html#540" class="Bound">A</a> <a id="542" class="Symbol">:</a> <a id="544" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="548" href="Relation.Binary.Construct.Always.html#534" class="Bound">a</a><a id="549" class="Symbol">}</a> <a id="551" class="Symbol">→</a> <a id="553" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="557" href="Relation.Binary.Construct.Always.html#540" class="Bound">A</a> <a id="559" href="Relation.Binary.Construct.Always.html#536" class="Bound">ℓ</a>
+<a id="561" href="Relation.Binary.Construct.Always.html#522" class="Function">Always</a> <a id="568" class="Symbol">=</a> <a id="570" href="Relation.Binary.Construct.Constant.Core.html#533" class="Function">Const</a> <a id="576" href="Data.Unit.Polymorphic.Base.html#480" class="Function">⊤</a>
+
+<a id="579" class="Comment">------------------------------------------------------------------------</a>
+<a id="652" class="Comment">-- Properties</a>
+
+<a id="667" class="Keyword">module</a> <a id="674" href="Relation.Binary.Construct.Always.html#674" class="Module">_</a> <a id="676" class="Symbol">{</a><a id="677" href="Relation.Binary.Construct.Always.html#677" class="Bound">a</a><a id="678" class="Symbol">}</a> <a id="680" class="Symbol">(</a><a id="681" href="Relation.Binary.Construct.Always.html#681" class="Bound">A</a> <a id="683" class="Symbol">:</a> <a id="685" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="689" href="Relation.Binary.Construct.Always.html#677" class="Bound">a</a><a id="690" class="Symbol">)</a> <a id="692" href="Relation.Binary.Construct.Always.html#692" class="Bound">ℓ</a> <a id="694" class="Keyword">where</a>
+
+  <a id="703" href="Relation.Binary.Construct.Always.html#703" class="Function">refl</a> <a id="708" class="Symbol">:</a> <a id="710" href="Relation.Binary.Definitions.html#1339" class="Function">Reflexive</a> <a id="720" class="Symbol">{</a><a id="721" class="Argument">A</a> <a id="723" class="Symbol">=</a> <a id="725" href="Relation.Binary.Construct.Always.html#681" class="Bound">A</a><a id="726" class="Symbol">}</a> <a id="728" class="Symbol">{</a><a id="729" class="Argument">ℓ</a> <a id="731" class="Symbol">=</a> <a id="733" href="Relation.Binary.Construct.Always.html#692" class="Bound">ℓ</a><a id="734" class="Symbol">}</a> <a id="736" href="Relation.Binary.Construct.Always.html#522" class="Function">Always</a>
+  <a id="745" href="Relation.Binary.Construct.Always.html#703" class="Function">refl</a> <a id="750" class="Symbol">=</a> <a id="752" class="Symbol">_</a>
+
+  <a id="757" href="Relation.Binary.Construct.Always.html#757" class="Function">sym</a> <a id="761" class="Symbol">:</a> <a id="763" href="Relation.Binary.Definitions.html#1498" class="Function">Symmetric</a> <a id="773" class="Symbol">{</a><a id="774" class="Argument">A</a> <a id="776" class="Symbol">=</a> <a id="778" href="Relation.Binary.Construct.Always.html#681" class="Bound">A</a><a id="779" class="Symbol">}</a> <a id="781" class="Symbol">{</a><a id="782" class="Argument">ℓ</a> <a id="784" class="Symbol">=</a> <a id="786" href="Relation.Binary.Construct.Always.html#692" class="Bound">ℓ</a><a id="787" class="Symbol">}</a> <a id="789" href="Relation.Binary.Construct.Always.html#522" class="Function">Always</a>
+  <a id="798" href="Relation.Binary.Construct.Always.html#757" class="Function">sym</a> <a id="802" class="Symbol">_</a> <a id="804" class="Symbol">=</a> <a id="806" class="Symbol">_</a>
+
+  <a id="811" href="Relation.Binary.Construct.Always.html#811" class="Function">trans</a> <a id="817" class="Symbol">:</a> <a id="819" href="Relation.Binary.Definitions.html#1866" class="Function">Transitive</a> <a id="830" class="Symbol">{</a><a id="831" class="Argument">A</a> <a id="833" class="Symbol">=</a> <a id="835" href="Relation.Binary.Construct.Always.html#681" class="Bound">A</a><a id="836" class="Symbol">}</a> <a id="838" class="Symbol">{</a><a id="839" class="Argument">ℓ</a> <a id="841" class="Symbol">=</a> <a id="843" href="Relation.Binary.Construct.Always.html#692" class="Bound">ℓ</a><a id="844" class="Symbol">}</a> <a id="846" href="Relation.Binary.Construct.Always.html#522" class="Function">Always</a>
+  <a id="855" href="Relation.Binary.Construct.Always.html#811" class="Function">trans</a> <a id="861" class="Symbol">_</a> <a id="863" class="Symbol">_</a> <a id="865" class="Symbol">=</a> <a id="867" class="Symbol">_</a>
+
+  <a id="872" href="Relation.Binary.Construct.Always.html#872" class="Function">isEquivalence</a> <a id="886" class="Symbol">:</a> <a id="888" href="Relation.Binary.Structures.html#1522" class="Record">IsEquivalence</a> <a id="902" class="Symbol">{</a><a id="903" class="Argument">ℓ</a> <a id="905" class="Symbol">=</a> <a id="907" href="Relation.Binary.Construct.Always.html#692" class="Bound">ℓ</a><a id="908" class="Symbol">}</a> <a id="910" class="Symbol">{</a><a id="911" href="Relation.Binary.Construct.Always.html#681" class="Bound">A</a><a id="912" class="Symbol">}</a> <a id="914" href="Relation.Binary.Construct.Always.html#522" class="Function">Always</a>
+  <a id="923" href="Relation.Binary.Construct.Always.html#872" class="Function">isEquivalence</a> <a id="937" class="Symbol">=</a> <a id="939" class="Keyword">record</a> <a id="946" class="Symbol">{}</a>
+
+  <a id="952" href="Relation.Binary.Construct.Always.html#952" class="Function">setoid</a> <a id="959" class="Symbol">:</a> <a id="961" href="Relation.Binary.Bundles.html#1009" class="Record">Setoid</a> <a id="968" href="Relation.Binary.Construct.Always.html#677" class="Bound">a</a> <a id="970" href="Relation.Binary.Construct.Always.html#692" class="Bound">ℓ</a>
+  <a id="974" href="Relation.Binary.Construct.Always.html#952" class="Function">setoid</a> <a id="981" class="Symbol">=</a> <a id="983" class="Keyword">record</a>
+    <a id="994" class="Symbol">{</a> <a id="996" href="Relation.Binary.Bundles.html#1132" class="Field">isEquivalence</a> <a id="1010" class="Symbol">=</a> <a id="1012" href="Relation.Binary.Construct.Always.html#872" class="Function">isEquivalence</a>
+    <a id="1030" class="Symbol">}</a>
+
+<a id="1033" class="Comment">------------------------------------------------------------------------</a>
+<a id="1106" class="Comment">-- DEPRECATED NAMES</a>
+<a id="1126" class="Comment">------------------------------------------------------------------------</a>
+<a id="1199" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="1270" class="Comment">-- not guaranteed.</a>
+
+<a id="1290" class="Comment">-- Version 0.17</a>
+
+<a id="Always-setoid"></a><a id="1307" href="Relation.Binary.Construct.Always.html#1307" class="Function">Always-setoid</a> <a id="1321" class="Symbol">=</a> <a id="1323" href="Relation.Binary.Construct.Always.html#952" class="Function">setoid</a>
+<a id="1330" class="Symbol">{-#</a> <a id="1334" class="Keyword">WARNING_ON_USAGE</a> <a id="1351" class="Pragma">Always-setoid</a>
+<a id="1365" class="String">&quot;Warning: Always-setoid was deprecated in v0.14.
+Please use setoid instead.&quot;</a>
+<a id="1442" class="Symbol">#-}</a>
+</pre></body></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.Interleaving</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Examples showing how the notion of Interleaving can be used</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Pragma">--without-K</a> <a id="267" class="Pragma">--safe</a> <a id="274" class="Symbol">#-}</a>
+
+<a id="279" class="Keyword">module</a> <a id="286" href="README.Data.Interleaving.html" class="Module">README.Data.Interleaving</a> <a id="311" class="Keyword">where</a>
+
+<a id="318" class="Keyword">open</a> <a id="323" class="Keyword">import</a> <a id="330" href="Level.html" class="Module">Level</a>
+<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="363" class="Keyword">hiding</a> <a id="370" class="Symbol">(</a><a id="371" href="Data.List.Base.html#7229" class="Function">filter</a><a id="377" class="Symbol">)</a>
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Data.List.Relation.Unary.All.html" class="Module">Data.List.Relation.Unary.All</a>
+<a id="420" class="Keyword">open</a> <a id="425" class="Keyword">import</a> <a id="432" href="Function.html" class="Module">Function</a>
+<a id="441" class="Keyword">open</a> <a id="446" class="Keyword">import</a> <a id="453" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="470" class="Keyword">open</a> <a id="475" class="Keyword">import</a> <a id="482" href="Relation.Unary.html" class="Module">Relation.Unary</a>
+
+<a id="498" class="Comment">-- In its most general form, `Interleaving` is parametrised by two relations</a>
+<a id="575" class="Comment">-- `L` (for Left) and `R` (for Right). Given three lists, `xs`, `ys` and `zs`,</a>
+<a id="654" class="Comment">-- a proof of `Interleaving xs ys zs` is essentially a diagram explaining how</a>
+<a id="732" class="Comment">-- `zs` can be pulled apart into `xs` and `ys` in a way compatible with `L`</a>
+<a id="808" class="Comment">-- and `R`. For instance:</a>
+
+<a id="835" class="Comment">-- xs               zs               ys</a>
+<a id="875" class="Comment">--</a>
+<a id="878" class="Comment">-- x₁ -- L x₁ z₁ -- z₁</a>
+<a id="901" class="Comment">-- x₂ -- L x₂ z₂ -- z₂</a>
+<a id="924" class="Comment">--                  z₃ -- R z₃ z₁ -- y₁</a>
+<a id="964" class="Comment">-- x₃ -- L x₃ z₄ -- z₄</a>
+<a id="987" class="Comment">--                  z₅ -- R z₅ y₂ -- y₂</a>
+
+<a id="1028" class="Keyword">open</a> <a id="1033" class="Keyword">import</a> <a id="1040" href="Data.List.Relation.Ternary.Interleaving.Propositional.html" class="Module">Data.List.Relation.Ternary.Interleaving.Propositional</a>
+
+<a id="1095" class="Comment">-- The special case we will focus on here is the propositional case: both</a>
+<a id="1169" class="Comment">-- `L` and ̀R` are propositional equality. Rethinking our previous example,</a>
+<a id="1245" class="Comment">-- this gives us the proof that [z₁, ⋯, z₅] can be partitioned into</a>
+<a id="1313" class="Comment">-- [z₁, z₂, z₄] on the one hand and [z₃, z₅] in the other.</a>
+
+<a id="1373" class="Comment">-- One possible use case for such a relation is the definition of a very</a>
+<a id="1446" class="Comment">-- precise filter function. Provided a decidable predicate `P`, it will</a>
+<a id="1518" class="Comment">-- prove not only that the retained values satisfy `P` but that the ones</a>
+<a id="1591" class="Comment">-- that didn&#39;t make the cut satisfy the negation of P.</a>
+
+<a id="1647" class="Comment">-- We can make this formal by defining the following record type:</a>
+
+<a id="1714" class="Keyword">infix</a> <a id="1720" class="Number">3</a> <a id="1722" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">_≡_⊎_</a>
+<a id="1728" class="Keyword">record</a> <a id="Filter"></a><a id="1735" href="README.Data.Interleaving.html#1735" class="Record">Filter</a> <a id="1742" class="Symbol">{</a><a id="1743" href="README.Data.Interleaving.html#1743" class="Bound">a</a> <a id="1745" href="README.Data.Interleaving.html#1745" class="Bound">p</a><a id="1746" class="Symbol">}</a> <a id="1748" class="Symbol">{</a><a id="1749" href="README.Data.Interleaving.html#1749" class="Bound">A</a> <a id="1751" class="Symbol">:</a> <a id="1753" class="PrimitiveType">Set</a> <a id="1757" href="README.Data.Interleaving.html#1743" class="Bound">a</a><a id="1758" class="Symbol">}</a> <a id="1760" class="Symbol">(</a><a id="1761" href="README.Data.Interleaving.html#1761" class="Bound">P</a> <a id="1763" class="Symbol">:</a> <a id="1765" href="Relation.Unary.html#1039" class="Function">Pred</a> <a id="1770" href="README.Data.Interleaving.html#1749" class="Bound">A</a> <a id="1772" href="README.Data.Interleaving.html#1745" class="Bound">p</a><a id="1773" class="Symbol">)</a> <a id="1775" class="Symbol">(</a><a id="1776" href="README.Data.Interleaving.html#1776" class="Bound">xs</a> <a id="1779" class="Symbol">:</a> <a id="1781" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="1786" href="README.Data.Interleaving.html#1749" class="Bound">A</a><a id="1787" class="Symbol">)</a> <a id="1789" class="Symbol">:</a> <a id="1791" class="PrimitiveType">Set</a> <a id="1795" class="Symbol">(</a><a id="1796" href="README.Data.Interleaving.html#1743" class="Bound">a</a> <a id="1798" href="Agda.Primitive.html#621" class="Primitive Operator">⊔</a> <a id="1800" href="README.Data.Interleaving.html#1745" class="Bound">p</a><a id="1801" class="Symbol">)</a> <a id="1803" class="Keyword">where</a>
+  <a id="1811" class="Keyword">constructor</a> <a id="Filter._≡_⊎_"></a><a id="1823" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">_≡_⊎_</a>
+  <a id="1831" class="Keyword">field</a>
+    <a id="1841" class="Comment">-- The result of running filter is two lists:</a>
+    <a id="1891" class="Comment">-- * the elements we have kept</a>
+    <a id="1926" class="Comment">-- * and the ones we have thrown away</a>
+    <a id="1968" class="Comment">-- We leave these implicit: they can be inferred from the rest</a>
+    <a id="2035" class="Symbol">{</a><a id="Filter.kept"></a><a id="2036" href="README.Data.Interleaving.html#2036" class="Field">kept</a><a id="2040" class="Symbol">}</a>   <a id="2044" class="Symbol">:</a> <a id="2046" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="2051" href="README.Data.Interleaving.html#1749" class="Bound">A</a>
+    <a id="2057" class="Symbol">{</a><a id="Filter.thrown"></a><a id="2058" href="README.Data.Interleaving.html#2058" class="Field">thrown</a><a id="2064" class="Symbol">}</a> <a id="2066" class="Symbol">:</a> <a id="2068" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="2073" href="README.Data.Interleaving.html#1749" class="Bound">A</a>
+    <a id="2079" class="Comment">-- There is a way for us to recover the original</a>
+    <a id="2132" class="Comment">-- input by interleaving the two lists</a>
+    <a id="Filter.cover"></a><a id="2175" href="README.Data.Interleaving.html#2175" class="Field">cover</a>    <a id="2184" class="Symbol">:</a> <a id="2186" href="Data.List.Relation.Ternary.Interleaving.Propositional.html#1191" class="Function">Interleaving</a> <a id="2199" href="README.Data.Interleaving.html#2036" class="Field">kept</a> <a id="2204" href="README.Data.Interleaving.html#2058" class="Field">thrown</a> <a id="2211" href="README.Data.Interleaving.html#1776" class="Bound">xs</a>
+    <a id="2218" class="Comment">-- Finally, the partition was made according to the predicate</a>
+    <a id="Filter.allP"></a><a id="2284" href="README.Data.Interleaving.html#2284" class="Field">allP</a>     <a id="2293" class="Symbol">:</a> <a id="2295" href="Data.List.Relation.Unary.All.html#1176" class="Datatype">All</a> <a id="2299" href="README.Data.Interleaving.html#1761" class="Bound">P</a> <a id="2301" href="README.Data.Interleaving.html#2036" class="Field">kept</a>
+    <a id="Filter.all¬P"></a><a id="2310" href="README.Data.Interleaving.html#2310" class="Field">all¬P</a>    <a id="2319" class="Symbol">:</a> <a id="2321" href="Data.List.Relation.Unary.All.html#1176" class="Datatype">All</a> <a id="2325" class="Symbol">(</a><a id="2326" href="Relation.Unary.html#4043" class="Function">∁</a> <a id="2328" href="README.Data.Interleaving.html#1761" class="Bound">P</a><a id="2329" class="Symbol">)</a> <a id="2331" href="README.Data.Interleaving.html#2058" class="Field">thrown</a>
+
+<a id="2339" class="Comment">-- Once we have this type written down, we can write the function.</a>
+<a id="2406" class="Comment">-- We use an anonymous module to clean up the function&#39;s type.</a>
+
+<a id="2470" class="Keyword">module</a> <a id="2477" href="README.Data.Interleaving.html#2477" class="Module">_</a> <a id="2479" class="Symbol">{</a><a id="2480" href="README.Data.Interleaving.html#2480" class="Bound">a</a> <a id="2482" href="README.Data.Interleaving.html#2482" class="Bound">p</a><a id="2483" class="Symbol">}</a> <a id="2485" class="Symbol">{</a><a id="2486" href="README.Data.Interleaving.html#2486" class="Bound">A</a> <a id="2488" class="Symbol">:</a> <a id="2490" class="PrimitiveType">Set</a> <a id="2494" href="README.Data.Interleaving.html#2480" class="Bound">a</a><a id="2495" class="Symbol">}</a> <a id="2497" class="Symbol">{</a><a id="2498" href="README.Data.Interleaving.html#2498" class="Bound">P</a> <a id="2500" class="Symbol">:</a> <a id="2502" href="Relation.Unary.html#1039" class="Function">Pred</a> <a id="2507" href="README.Data.Interleaving.html#2486" class="Bound">A</a> <a id="2509" href="README.Data.Interleaving.html#2482" class="Bound">p</a><a id="2510" class="Symbol">}</a> <a id="2512" class="Symbol">(</a><a id="2513" href="README.Data.Interleaving.html#2513" class="Bound">P?</a> <a id="2516" class="Symbol">:</a> <a id="2518" href="Relation.Unary.html#3474" class="Function">Decidable</a> <a id="2528" href="README.Data.Interleaving.html#2498" class="Bound">P</a><a id="2529" class="Symbol">)</a> <a id="2531" class="Keyword">where</a>
+
+  <a id="2540" href="README.Data.Interleaving.html#2540" class="Function">filter</a> <a id="2547" class="Symbol">:</a> <a id="2549" class="Symbol">∀</a> <a id="2551" href="README.Data.Interleaving.html#2551" class="Bound">xs</a> <a id="2554" class="Symbol">→</a> <a id="2556" href="README.Data.Interleaving.html#1735" class="Record">Filter</a> <a id="2563" href="README.Data.Interleaving.html#2498" class="Bound">P</a> <a id="2565" href="README.Data.Interleaving.html#2551" class="Bound">xs</a>
+  <a id="2570" class="Comment">-- If the list is empty, we are done.</a>
+  <a id="2610" href="README.Data.Interleaving.html#2540" class="Function">filter</a> <a id="2617" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a>       <a id="2626" class="Symbol">=</a> <a id="2628" href="Data.List.Relation.Ternary.Interleaving.html#1032" class="InductiveConstructor">[]</a> <a id="2631" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">≡</a> <a id="2633" href="Data.List.Relation.Unary.All.html#1239" class="InductiveConstructor">[]</a> <a id="2636" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">⊎</a> <a id="2638" href="Data.List.Relation.Unary.All.html#1239" class="InductiveConstructor">[]</a>
+  <a id="2643" href="README.Data.Interleaving.html#2540" class="Function">filter</a> <a id="2650" class="Symbol">(</a><a id="2651" href="README.Data.Interleaving.html#2651" class="Bound">x</a> <a id="2653" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="2655" href="README.Data.Interleaving.html#2655" class="Bound">xs</a><a id="2657" class="Symbol">)</a> <a id="2659" class="Symbol">=</a>
+    <a id="2665" class="Comment">-- otherwise we start by running filter on the tail</a>
+    <a id="2721" class="Keyword">let</a> <a id="2725" href="README.Data.Interleaving.html#2725" class="Bound">xs&#39;</a> <a id="2729" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">≡</a> <a id="2731" href="README.Data.Interleaving.html#2731" class="Bound">ps</a> <a id="2734" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">⊎</a> <a id="2736" href="README.Data.Interleaving.html#2736" class="Bound">¬ps</a> <a id="2740" class="Symbol">=</a> <a id="2742" href="README.Data.Interleaving.html#2540" class="Function">filter</a> <a id="2749" href="README.Data.Interleaving.html#2655" class="Bound">xs</a> <a id="2752" class="Keyword">in</a>
+    <a id="2759" class="Comment">-- And depending on whether `P` holds of the head,</a>
+    <a id="2814" class="Comment">-- we cons it to the `kept` or `thrown` list.</a>
+    <a id="2864" href="Function.html#3662" class="Function Operator">case</a> <a id="2869" href="README.Data.Interleaving.html#2513" class="Bound">P?</a> <a id="2872" href="README.Data.Interleaving.html#2651" class="Bound">x</a> <a id="2874" href="Function.html#3662" class="Function Operator">of</a> <a id="2877" class="Symbol">λ</a> <a id="2879" class="Keyword">where</a> <a id="2885" class="Comment">-- [1]</a>
+      <a id="2898" class="Symbol">(</a><a id="2899" href="Relation.Nullary.html#641" class="InductiveConstructor">yes</a> <a id="2903" href="README.Data.Interleaving.html#2903" class="Bound">p</a><a id="2904" class="Symbol">)</a> <a id="2906" class="Symbol">→</a> <a id="2908" href="Data.List.Relation.Ternary.Interleaving.Propositional.html#1295" class="InductiveConstructor">consˡ</a> <a id="2914" href="README.Data.Interleaving.html#2725" class="Bound">xs&#39;</a> <a id="2918" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">≡</a> <a id="2920" href="README.Data.Interleaving.html#2903" class="Bound">p</a> <a id="2922" href="Data.List.Relation.Unary.All.html#1256" class="InductiveConstructor Operator">∷</a> <a id="2924" href="README.Data.Interleaving.html#2731" class="Bound">ps</a> <a id="2927" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">⊎</a>      <a id="2934" href="README.Data.Interleaving.html#2736" class="Bound">¬ps</a>
+      <a id="2944" class="Symbol">(</a><a id="2945" href="Relation.Nullary.html#668" class="InductiveConstructor">no</a> <a id="2948" href="README.Data.Interleaving.html#2948" class="Bound">¬p</a><a id="2950" class="Symbol">)</a> <a id="2952" class="Symbol">→</a> <a id="2954" href="Data.List.Relation.Ternary.Interleaving.Propositional.html#1325" class="InductiveConstructor">consʳ</a> <a id="2960" href="README.Data.Interleaving.html#2725" class="Bound">xs&#39;</a> <a id="2964" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">≡</a>     <a id="2970" href="README.Data.Interleaving.html#2731" class="Bound">ps</a> <a id="2973" href="README.Data.Interleaving.html#1823" class="InductiveConstructor Operator">⊎</a> <a id="2975" href="README.Data.Interleaving.html#2948" class="Bound">¬p</a> <a id="2978" href="Data.List.Relation.Unary.All.html#1256" class="InductiveConstructor Operator">∷</a> <a id="2980" href="README.Data.Interleaving.html#2736" class="Bound">¬ps</a>
+
+
+
+<a id="2987" class="Comment">-- [1] See the following module for explanations of `case_of_` and</a>
+<a id="3054" class="Comment">--     pattern-matching lambdas</a>
+<a id="3086" class="Keyword">import</a> <a id="3093" href="README.Case.html" class="Module">README.Case</a>
+</pre></body></html>

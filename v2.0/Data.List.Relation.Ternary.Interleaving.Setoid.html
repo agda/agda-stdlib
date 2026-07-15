@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Ternary.Interleaving.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Interleavings of lists using setoid equality</a>
+<a id="154" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="228" class="Symbol">{-#</a> <a id="232" class="Keyword">OPTIONS</a> <a id="240" class="Pragma">--cubical-compatible</a> <a id="261" class="Pragma">--safe</a> <a id="268" class="Symbol">#-}</a>
+
+<a id="273" class="Keyword">open</a> <a id="278" class="Keyword">import</a> <a id="285" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="309" class="Keyword">using</a> <a id="315" class="Symbol">(</a><a id="316" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a><a id="322" class="Symbol">)</a>
+
+<a id="325" class="Keyword">module</a> <a id="332" href="Data.List.Relation.Ternary.Interleaving.Setoid.html" class="Module">Data.List.Relation.Ternary.Interleaving.Setoid</a> <a id="379" class="Symbol">{</a><a id="380" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#380" class="Bound">c</a> <a id="382" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#382" class="Bound">ℓ</a><a id="383" class="Symbol">}</a> <a id="385" class="Symbol">(</a><a id="386" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#386" class="Bound">S</a> <a id="388" class="Symbol">:</a> <a id="390" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a> <a id="397" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#380" class="Bound">c</a> <a id="399" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#382" class="Bound">ℓ</a><a id="400" class="Symbol">)</a> <a id="402" class="Keyword">where</a>
+
+<a id="409" class="Keyword">open</a> <a id="414" class="Keyword">import</a> <a id="421" href="Level.html" class="Module">Level</a> <a id="427" class="Keyword">using</a> <a id="433" class="Symbol">(</a><a id="434" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="437" class="Symbol">)</a>
+<a id="439" class="Keyword">open</a> <a id="444" class="Keyword">import</a> <a id="451" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="466" class="Symbol">as</a> <a id="469" class="Module">List</a> <a id="474" class="Keyword">using</a> <a id="480" class="Symbol">(</a><a id="481" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="485" class="Symbol">)</a>
+<a id="487" class="Keyword">import</a> <a id="494" href="Data.List.Relation.Ternary.Interleaving.html" class="Module">Data.List.Relation.Ternary.Interleaving</a> <a id="534" class="Symbol">as</a> <a id="537" class="Module">General</a>
+<a id="545" class="Keyword">open</a> <a id="550" href="Relation.Binary.Bundles.html#1080" class="Module">Setoid</a> <a id="557" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#386" class="Bound">S</a> <a id="559" class="Keyword">renaming</a> <a id="568" class="Symbol">(</a><a id="569" href="Relation.Binary.Bundles.html#1143" class="Field">Carrier</a> <a id="577" class="Symbol">to</a> <a id="580" class="Field">A</a><a id="581" class="Symbol">)</a>
+
+<a id="584" class="Comment">------------------------------------------------------------------------</a>
+<a id="657" class="Comment">-- Definition</a>
+
+<a id="Interleaving"></a><a id="672" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#672" class="Function">Interleaving</a> <a id="685" class="Symbol">:</a> <a id="687" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="692" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#580" class="Field">A</a> <a id="694" class="Symbol">→</a> <a id="696" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="701" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#580" class="Field">A</a> <a id="703" class="Symbol">→</a> <a id="705" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="710" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#580" class="Field">A</a> <a id="712" class="Symbol">→</a> <a id="714" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="718" class="Symbol">(</a><a id="719" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#380" class="Bound">c</a> <a id="721" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="723" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#382" class="Bound">ℓ</a><a id="724" class="Symbol">)</a>
+<a id="726" href="Data.List.Relation.Ternary.Interleaving.Setoid.html#672" class="Function">Interleaving</a> <a id="739" class="Symbol">=</a> <a id="741" href="Data.List.Relation.Ternary.Interleaving.html#1034" class="Datatype">General.Interleaving</a> <a id="762" href="Relation.Binary.Bundles.html#1169" class="Field Operator">_≈_</a> <a id="766" href="Relation.Binary.Bundles.html#1169" class="Field Operator">_≈_</a>
+
+<a id="771" class="Comment">------------------------------------------------------------------------</a>
+<a id="844" class="Comment">-- Re-export the basic combinators</a>
+
+<a id="880" class="Keyword">open</a> <a id="885" href="Data.List.Relation.Ternary.Interleaving.html" class="Module">General</a> <a id="893" class="Keyword">hiding</a> <a id="900" class="Symbol">(</a><a id="901" href="Data.List.Relation.Ternary.Interleaving.html#1034" class="Datatype">Interleaving</a><a id="913" class="Symbol">)</a> <a id="915" class="Keyword">public</a>
+</pre></body></html>

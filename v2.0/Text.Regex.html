@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Text.Regex</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Regular expressions</a>
+<a id="129" class="Comment">--</a>
+<a id="132" class="Comment">-- The content of this module (and others in the Regex subdirectory) is</a>
+<a id="204" class="Comment">-- based on Alexandre Agular and Bassel Mannaa&#39;s 2009 technical report:</a>
+<a id="276" class="Comment">-- Regular Expressions in Agda</a>
+<a id="307" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="381" class="Symbol">{-#</a> <a id="385" class="Keyword">OPTIONS</a> <a id="393" class="Pragma">--cubical-compatible</a> <a id="414" class="Pragma">--safe</a> <a id="421" class="Symbol">#-}</a>
+
+<a id="426" class="Keyword">open</a> <a id="431" class="Keyword">import</a> <a id="438" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="462" class="Keyword">using</a> <a id="468" class="Symbol">(</a><a id="469" href="Relation.Binary.Bundles.html#4140" class="Record">DecPoset</a><a id="477" class="Symbol">)</a>
+
+<a id="480" class="Keyword">module</a> <a id="487" href="Text.Regex.html" class="Module">Text.Regex</a> <a id="498" class="Symbol">{</a><a id="499" href="Text.Regex.html#499" class="Bound">a</a> <a id="501" href="Text.Regex.html#501" class="Bound">e</a> <a id="503" href="Text.Regex.html#503" class="Bound">r</a><a id="504" class="Symbol">}</a> <a id="506" class="Symbol">(</a><a id="507" href="Text.Regex.html#507" class="Bound">decPoset</a> <a id="516" class="Symbol">:</a> <a id="518" href="Relation.Binary.Bundles.html#4140" class="Record">DecPoset</a> <a id="527" href="Text.Regex.html#499" class="Bound">a</a> <a id="529" href="Text.Regex.html#501" class="Bound">e</a> <a id="531" href="Text.Regex.html#503" class="Bound">r</a><a id="532" class="Symbol">)</a> <a id="534" class="Keyword">where</a>
+
+
+<a id="542" class="Keyword">private</a>
+  <a id="preorder"></a><a id="552" href="Text.Regex.html#552" class="Function">preorder</a> <a id="561" class="Symbol">=</a> <a id="563" href="Relation.Binary.Bundles.html#3825" class="Function">DecPoset.preorder</a> <a id="581" href="Text.Regex.html#507" class="Bound">decPoset</a>
+
+<a id="591" class="Keyword">import</a> <a id="598" href="Text.Regex.Base.html" class="Module">Text.Regex.Base</a>                  <a id="631" href="Text.Regex.html#552" class="Function">preorder</a> as <a id="Regex"></a><a id="643" href="Text.Regex.html#643" class="Module">Regex</a>
+<a id="649" class="Keyword">import</a> <a id="656" href="Text.Regex.SmartConstructors.html" class="Module">Text.Regex.SmartConstructors</a>     <a id="689" href="Text.Regex.html#552" class="Function">preorder</a> as <a id="Smart"></a><a id="701" href="Text.Regex.html#701" class="Module">Smart</a>
+<a id="707" class="Keyword">import</a> <a id="714" href="Text.Regex.Derivative.Brzozowski.html" class="Module">Text.Regex.Derivative.Brzozowski</a> <a id="747" href="Text.Regex.html#507" class="Bound">decPoset</a> as <a id="Eat"></a><a id="759" href="Text.Regex.html#759" class="Module">Eat</a>
+<a id="763" class="Keyword">import</a> <a id="770" href="Text.Regex.Search.html" class="Module">Text.Regex.Search</a>                <a id="803" href="Text.Regex.html#507" class="Bound">decPoset</a> as <a id="Search"></a><a id="815" href="Text.Regex.html#815" class="Module">Search</a>
+
+<a id="823" class="Comment">------------------------------------------------------------------------</a>
+<a id="896" class="Comment">-- Re-exporting basic definition and semantics</a>
+
+<a id="944" class="Keyword">open</a> <a id="949" href="Text.Regex.html#643" class="Module">Regex</a> <a id="955" class="Keyword">public</a>
+  <a id="964" class="Keyword">using</a> <a id="970" class="Symbol">(</a> <a id="972" href="Text.Regex.Base.html#986" class="Datatype">Range</a><a id="977" class="Symbol">;</a> <a id="979" class="Keyword">module</a> <a id="986" href="Text.Regex.Base.html#986" class="Module">Range</a>
+        <a id="1000" class="Symbol">;</a> <a id="1002" href="Text.Regex.Base.html#1008" class="InductiveConstructor Operator">[_]</a><a id="1005" class="Symbol">;</a> <a id="1007" href="Text.Regex.Base.html#1036" class="InductiveConstructor Operator">_─_</a>
+        <a id="1019" class="Symbol">;</a> <a id="1021" href="Text.Regex.Base.html#1457" class="Record">Regex</a><a id="1026" class="Symbol">;</a> <a id="1028" class="Keyword">module</a> <a id="1035" href="Text.Regex.Base.html#1457" class="Module">Regex</a><a id="1040" class="Symbol">;</a> <a id="1042" href="Text.Regex.Base.html#1121" class="Datatype">Exp</a><a id="1045" class="Symbol">;</a> <a id="1047" class="Keyword">module</a> <a id="1054" href="Text.Regex.Base.html#1121" class="Module">Exp</a>
+        <a id="1066" class="Symbol">;</a> <a id="1068" href="Text.Regex.Base.html#1141" class="InductiveConstructor">ε</a><a id="1069" class="Symbol">;</a> <a id="1071" href="Text.Regex.Base.html#1187" class="InductiveConstructor Operator">[^_]</a><a id="1075" class="Symbol">;</a> <a id="1077" href="Text.Regex.Base.html#1792" class="InductiveConstructor">∅</a><a id="1078" class="Symbol">;</a> <a id="1080" href="Text.Regex.Base.html#1816" class="InductiveConstructor">·</a><a id="1081" class="Symbol">;</a> <a id="1083" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a>
+        <a id="1101" class="Symbol">;</a> <a id="1103" href="Text.Regex.Base.html#2004" class="Datatype Operator">_∈ᴿ_</a><a id="1107" class="Symbol">;</a> <a id="1109" href="Text.Regex.Base.html#2154" class="Function Operator">_∉ᴿ_</a>
+        <a id="1122" class="Symbol">;</a> <a id="1124" href="Text.Regex.Base.html#2231" class="Datatype Operator">_∈_</a><a id="1127" class="Symbol">;</a> <a id="1129" href="Text.Regex.Base.html#2752" class="Function Operator">_∉_</a><a id="1132" class="Symbol">;</a> <a id="1134" href="Text.Regex.Base.html#2512" class="InductiveConstructor">sum</a><a id="1137" class="Symbol">;</a> <a id="1139" href="Text.Regex.Base.html#2593" class="InductiveConstructor">prod</a><a id="1143" class="Symbol">;</a> <a id="1145" href="Text.Regex.Base.html#2674" class="InductiveConstructor">star</a>
+        <a id="1158" class="Symbol">)</a>
+
+<a id="1161" class="Comment">------------------------------------------------------------------------</a>
+<a id="1234" class="Comment">-- Re-exporting smart constructors</a>
+
+<a id="1270" class="Keyword">open</a> <a id="1275" href="Text.Regex.html#701" class="Module">Smart</a> <a id="1281" class="Keyword">public</a>
+  <a id="1290" class="Keyword">using</a> <a id="1296" class="Symbol">(</a><a id="1297" href="Text.Regex.SmartConstructors.html#1123" class="Function Operator">_∣_</a><a id="1300" class="Symbol">;</a> <a id="1302" href="Text.Regex.SmartConstructors.html#1784" class="Function Operator">_∙_</a><a id="1305" class="Symbol">;</a> <a id="1307" href="Text.Regex.SmartConstructors.html#2973" class="Function Operator">_⋆</a><a id="1309" class="Symbol">;</a> <a id="1311" href="Text.Regex.SmartConstructors.html#3612" class="Function Operator">_+</a><a id="1313" class="Symbol">;</a> <a id="1315" href="Text.Regex.SmartConstructors.html#3642" class="Function Operator">_⁇</a><a id="1317" class="Symbol">)</a>
+
+<a id="1320" class="Comment">------------------------------------------------------------------------</a>
+<a id="1393" class="Comment">-- Re-exporting semantics decidability</a>
+
+<a id="1433" class="Keyword">open</a> <a id="1438" href="Text.Regex.html#759" class="Module">Eat</a> <a id="1442" class="Keyword">public</a>
+  <a id="1451" class="Keyword">using</a> <a id="1457" class="Symbol">(</a><a id="1458" href="Text.Regex.Derivative.Brzozowski.html#4569" class="Function Operator">_∈?_</a><a id="1462" class="Symbol">;</a> <a id="1464" href="Text.Regex.Derivative.Brzozowski.html#4686" class="Function Operator">_∉?_</a><a id="1468" class="Symbol">)</a>
+
+<a id="1471" class="Comment">------------------------------------------------------------------------</a>
+<a id="1544" class="Comment">-- Re-exporting search algorithms</a>
+
+<a id="1579" class="Keyword">open</a> <a id="1584" href="Text.Regex.html#815" class="Module">Search</a> <a id="1591" class="Keyword">public</a>
+  <a id="1600" class="Keyword">using</a> <a id="1606" class="Symbol">(</a><a id="1607" href="Text.Regex.Search.html#1923" class="Function">Span</a><a id="1611" class="Symbol">;</a> <a id="1613" href="Text.Regex.Search.html#2202" class="Function">toInfix</a><a id="1620" class="Symbol">;</a> <a id="1622" href="Text.Regex.Search.html#2562" class="Record">Match</a><a id="1627" class="Symbol">;</a> <a id="1629" href="Text.Regex.Search.html#2668" class="InductiveConstructor">mkMatch</a><a id="1636" class="Symbol">;</a> <a id="1638" href="Text.Regex.Search.html#9374" class="Function">search</a><a id="1644" class="Symbol">)</a>
+</pre></body></html>

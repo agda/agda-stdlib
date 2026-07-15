@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Text.Regex</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Examples of regular expressions and matching</a>
+<a id="154" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="228" class="Symbol">{-#</a> <a id="232" class="Keyword">OPTIONS</a> <a id="240" class="Pragma">--with-K</a> <a id="249" class="Symbol">#-}</a>
+
+<a id="254" class="Keyword">module</a> <a id="261" href="README.Text.Regex.html" class="Module">README.Text.Regex</a> <a id="279" class="Keyword">where</a>
+
+<a id="286" class="Keyword">open</a> <a id="291" class="Keyword">import</a> <a id="298" href="Data.Bool.html" class="Module">Data.Bool</a> <a id="308" class="Keyword">using</a> <a id="314" class="Symbol">(</a><a id="315" href="Agda.Builtin.Bool.html#198" class="InductiveConstructor">true</a><a id="319" class="Symbol">;</a> <a id="321" href="Agda.Builtin.Bool.html#192" class="InductiveConstructor">false</a><a id="326" class="Symbol">)</a>
+<a id="328" class="Keyword">open</a> <a id="333" class="Keyword">import</a> <a id="340" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="355" class="Keyword">using</a> <a id="361" class="Symbol">(</a><a id="362" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">_∷_</a><a id="365" class="Symbol">;</a> <a id="367" href="Data.List.Base.html#7793" class="InductiveConstructor">[]</a><a id="369" class="Symbol">)</a>
+<a id="371" class="Keyword">open</a> <a id="376" class="Keyword">import</a> <a id="383" href="Data.String.html" class="Module">Data.String</a>
+<a id="395" class="Keyword">open</a> <a id="400" class="Keyword">import</a> <a id="407" href="Function.Base.html" class="Module">Function.Base</a> <a id="421" class="Keyword">using</a> <a id="427" class="Symbol">()</a> <a id="430" class="Keyword">renaming</a> <a id="439" class="Symbol">(</a><a id="440" href="Function.Base.html#3839" class="Function Operator">_$′_</a> <a id="445" class="Symbol">to</a> <a id="448" class="Function Operator">_$_</a><a id="451" class="Symbol">)</a>
+<a id="453" class="Keyword">open</a> <a id="458" class="Keyword">import</a> <a id="465" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="492" class="Keyword">using</a> <a id="498" class="Symbol">(</a><a id="499" href="Relation.Nullary.Decidable.Core.html#1618" class="InductiveConstructor">yes</a><a id="502" class="Symbol">)</a>
+<a id="504" class="Keyword">open</a> <a id="509" class="Keyword">import</a> <a id="516" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="543" class="Keyword">using</a> <a id="549" class="Symbol">(</a><a id="550" href="Relation.Nullary.Decidable.Core.html#3468" class="Function">True</a><a id="554" class="Symbol">;</a> <a id="556" href="Relation.Nullary.Decidable.Core.html#3505" class="Function">False</a><a id="561" class="Symbol">;</a> <a id="563" href="Relation.Nullary.Decidable.Core.html#4504" class="Function">from-yes</a><a id="571" class="Symbol">)</a>
+
+<a id="574" class="Comment">-- Our library available via the Text.Regex module is safe but it works on</a>
+<a id="649" class="Comment">-- lists of characters.</a>
+
+<a id="674" class="Comment">-- To use it on strings we have to rely on unsafe theorems about the</a>
+<a id="743" class="Comment">-- conversions between strings and lists of characters being inverses.</a>
+<a id="814" class="Comment">-- For convenience we use the following unsafe module for this README.</a>
+<a id="885" class="Keyword">open</a> <a id="890" class="Keyword">import</a> <a id="897" href="Text.Regex.String.Unsafe.html" class="Module">Text.Regex.String.Unsafe</a>
+
+<a id="923" class="Comment">------------------------------------------------------------------------</a>
+<a id="996" class="Comment">-- Defining regular expressions</a>
+
+<a id="1029" class="Comment">-- The type of regular expressions is Exp.</a>
+
+<a id="1073" class="Comment">-- Some examples of regular expressions using:</a>
+
+<a id="1121" class="Comment">-- [_]        for the union of ranges it contains</a>
+<a id="1171" class="Comment">-- _─_        for a range</a>
+<a id="1197" class="Comment">-- singleton  for an exact character</a>
+<a id="1234" class="Comment">-- _∙_        for the concatenation of two regular expressions</a>
+<a id="1297" class="Comment">-- _∣_        for the sum of two regular expressions</a>
+<a id="1350" class="Comment">-- _⋆         for the Kleene star (zero or more matches of the regular expression)</a>
+<a id="1433" class="Comment">-- _⁇         for an optional regular expression</a>
+
+<a id="ℕ*"></a><a id="1483" href="README.Text.Regex.html#1483" class="Function">ℕ*</a> <a id="1486" class="Symbol">:</a> <a id="1488" href="Text.Regex.Base.html#1121" class="Datatype">Exp</a>
+<a id="1492" href="README.Text.Regex.html#1483" class="Function">ℕ*</a> <a id="1495" class="Symbol">=</a> <a id="1497" href="Text.Regex.Base.html#1154" class="InductiveConstructor Operator">[</a> <a id="1499" class="String">&#39;1&#39;</a> <a id="1503" href="Text.Regex.Base.html#1036" class="InductiveConstructor Operator">─</a> <a id="1505" class="String">&#39;9&#39;</a> <a id="1509" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1511" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a> <a id="1514" href="Text.Regex.Base.html#1154" class="InductiveConstructor Operator">]</a>   <a id="1518" class="Comment">-- a non-zero digit</a>
+   <a id="1541" href="Text.Regex.SmartConstructors.html#1784" class="Function Operator">∙</a> <a id="1543" href="Text.Regex.Base.html#1154" class="InductiveConstructor Operator">[</a> <a id="1545" class="String">&#39;0&#39;</a> <a id="1549" href="Text.Regex.Base.html#1036" class="InductiveConstructor Operator">─</a> <a id="1551" class="String">&#39;9&#39;</a> <a id="1555" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1557" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a> <a id="1560" href="Text.Regex.Base.html#1154" class="InductiveConstructor Operator">]</a> <a id="1562" href="Text.Regex.SmartConstructors.html#2973" class="Function Operator">⋆</a> <a id="1564" class="Comment">-- followed by zero or more digits</a>
+
+<a id="ℕ"></a><a id="1600" href="README.Text.Regex.html#1600" class="Function">ℕ</a> <a id="1602" class="Symbol">:</a> <a id="1604" href="Text.Regex.Base.html#1121" class="Datatype">Exp</a>
+<a id="1608" href="README.Text.Regex.html#1600" class="Function">ℕ</a> <a id="1610" class="Symbol">=</a> <a id="1612" href="README.Text.Regex.html#1483" class="Function">ℕ*</a> <a id="1615" href="Text.Regex.SmartConstructors.html#1123" class="Function Operator">∣</a> <a id="1617" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="1627" class="String">&#39;0&#39;</a> <a id="1631" class="Comment">-- ℕ* or exactly 0</a>
+
+<a id="ℤ"></a><a id="1651" href="README.Text.Regex.html#1651" class="Function">ℤ</a> <a id="1653" class="Symbol">:</a> <a id="1655" href="Text.Regex.Base.html#1121" class="Datatype">Exp</a>
+<a id="1659" href="README.Text.Regex.html#1651" class="Function">ℤ</a> <a id="1661" class="Symbol">=</a> <a id="1663" class="Symbol">((</a><a id="1665" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="1675" class="String">&#39;-&#39;</a><a id="1678" class="Symbol">)</a> <a id="1680" href="Text.Regex.SmartConstructors.html#3642" class="Function Operator">⁇</a> <a id="1682" href="Text.Regex.SmartConstructors.html#1784" class="Function Operator">∙</a> <a id="1684" href="README.Text.Regex.html#1483" class="Function">ℕ*</a><a id="1686" class="Symbol">)</a> <a id="1688" class="Comment">-- an optional minus sign followed by a ℕ*</a>
+  <a id="1733" href="Text.Regex.SmartConstructors.html#1123" class="Function Operator">∣</a> <a id="1735" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="1745" class="String">&#39;0&#39;</a>            <a id="1760" class="Comment">-- or exactly 0</a>
+
+<a id="1777" class="Comment">------------------------------------------------------------------------</a>
+<a id="1850" class="Comment">-- An expression&#39;s semantics</a>
+
+<a id="1880" class="Comment">-- The semantics of these regular expression is defined in terms of the</a>
+<a id="1952" class="Comment">-- lists of characters they match. The type (str ∈ e) states that the</a>
+<a id="2022" class="Comment">-- string str matches the expression e.</a>
+
+<a id="2063" class="Comment">-- It is decidable, and the proof is called _∈?_.</a>
+<a id="2113" class="Comment">-- We can run it on a few examples to check that it matches our intuition:</a>
+
+<a id="2189" class="Comment">-- Valid: starts with a non-zero digit, followed by 3 digits</a>
+<a id="2250" href="README.Text.Regex.html#2250" class="Function">_</a> <a id="2252" class="Symbol">:</a> <a id="2254" href="Relation.Nullary.Decidable.Core.html#3468" class="Function">True</a> <a id="2259" class="Symbol">(</a><a id="2260" class="String">&quot;1848&quot;</a> <a id="2267" href="Text.Regex.String.Unsafe.html#1164" class="Function Operator">∈?</a> <a id="2270" href="README.Text.Regex.html#1483" class="Function">ℕ*</a><a id="2272" class="Symbol">)</a>
+<a id="2274" class="Symbol">_</a> <a id="2276" class="Symbol">=</a> <a id="2278" class="Symbol">_</a>
+
+<a id="2281" class="Comment">-- Valid: exactly 0</a>
+<a id="2301" href="README.Text.Regex.html#2301" class="Function">_</a> <a id="2303" class="Symbol">:</a> <a id="2305" href="Relation.Nullary.Decidable.Core.html#3468" class="Function">True</a> <a id="2310" class="Symbol">(</a><a id="2311" class="String">&quot;0&quot;</a> <a id="2315" href="Text.Regex.String.Unsafe.html#1164" class="Function Operator">∈?</a> <a id="2318" href="README.Text.Regex.html#1600" class="Function">ℕ</a><a id="2319" class="Symbol">)</a>
+<a id="2321" class="Symbol">_</a> <a id="2323" class="Symbol">=</a> <a id="2325" class="Symbol">_</a>
+
+<a id="2328" class="Comment">-- Invalid: starts with a leading 0</a>
+<a id="2364" href="README.Text.Regex.html#2364" class="Function">_</a> <a id="2366" class="Symbol">:</a> <a id="2368" href="Relation.Nullary.Decidable.Core.html#3505" class="Function">False</a> <a id="2374" class="Symbol">(</a><a id="2375" class="String">&quot;007&quot;</a> <a id="2381" href="Text.Regex.String.Unsafe.html#1164" class="Function Operator">∈?</a> <a id="2384" href="README.Text.Regex.html#1600" class="Function">ℕ</a><a id="2385" class="Symbol">)</a>
+<a id="2387" class="Symbol">_</a> <a id="2389" class="Symbol">=</a> <a id="2391" class="Symbol">_</a>
+
+<a id="2394" class="Comment">-- Invalid: no negative ℕ number</a>
+<a id="2427" href="README.Text.Regex.html#2427" class="Function">_</a> <a id="2429" class="Symbol">:</a> <a id="2431" href="Relation.Nullary.Decidable.Core.html#3505" class="Function">False</a> <a id="2437" class="Symbol">(</a><a id="2438" class="String">&quot;-666&quot;</a> <a id="2445" href="Text.Regex.String.Unsafe.html#1164" class="Function Operator">∈?</a> <a id="2448" href="README.Text.Regex.html#1600" class="Function">ℕ</a><a id="2449" class="Symbol">)</a>
+<a id="2451" class="Symbol">_</a> <a id="2453" class="Symbol">=</a> <a id="2455" class="Symbol">_</a>
+
+<a id="2458" class="Comment">-- Valid: a negative integer</a>
+<a id="2487" href="README.Text.Regex.html#2487" class="Function">_</a> <a id="2489" class="Symbol">:</a> <a id="2491" href="Relation.Nullary.Decidable.Core.html#3468" class="Function">True</a> <a id="2496" class="Symbol">(</a><a id="2497" class="String">&quot;-666&quot;</a> <a id="2504" href="Text.Regex.String.Unsafe.html#1164" class="Function Operator">∈?</a> <a id="2507" href="README.Text.Regex.html#1651" class="Function">ℤ</a><a id="2508" class="Symbol">)</a>
+<a id="2510" class="Symbol">_</a> <a id="2512" class="Symbol">=</a> <a id="2514" class="Symbol">_</a>
+
+<a id="2517" class="Comment">-- Invalid: no negative 0</a>
+<a id="2543" href="README.Text.Regex.html#2543" class="Function">_</a> <a id="2545" class="Symbol">:</a> <a id="2547" href="Relation.Nullary.Decidable.Core.html#3505" class="Function">False</a> <a id="2553" class="Symbol">(</a><a id="2554" class="String">&quot;-0&quot;</a> <a id="2559" href="Text.Regex.String.Unsafe.html#1164" class="Function Operator">∈?</a> <a id="2562" href="README.Text.Regex.html#1651" class="Function">ℤ</a><a id="2563" class="Symbol">)</a>
+<a id="2565" class="Symbol">_</a> <a id="2567" class="Symbol">=</a> <a id="2569" class="Symbol">_</a>
+
+<a id="2572" class="Comment">------------------------------------------------------------------------</a>
+<a id="2645" class="Comment">-- Matching algorithms</a>
+
+<a id="2669" class="Comment">-- The proof that _∈_ is decidable gives us the ability to check whether</a>
+<a id="2742" class="Comment">-- a whole string matches a regular expression. But we may want to use</a>
+<a id="2813" class="Comment">-- other matching algorithms detecting a prefix, infix, or suffix of the</a>
+<a id="2886" class="Comment">-- input string that matches the regular expression.</a>
+
+<a id="2940" class="Comment">-- This is what the Regex type gives us.</a>
+
+<a id="2982" class="Comment">-- For instance, the following value corresponds to finding an infix</a>
+<a id="3051" class="Comment">-- substring matching the string &quot;agda&quot; or &quot;agdai&quot;</a>
+
+<a id="agda"></a><a id="3103" href="README.Text.Regex.html#3103" class="Function">agda</a> <a id="3108" class="Symbol">:</a> <a id="3110" href="Text.Regex.Base.html#1121" class="Datatype">Exp</a>
+<a id="3114" href="README.Text.Regex.html#3103" class="Function">agda</a> <a id="3119" class="Symbol">=</a> <a id="3121" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="3131" class="String">&#39;a&#39;</a>
+     <a id="3140" href="Text.Regex.SmartConstructors.html#1784" class="Function Operator">∙</a> <a id="3142" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="3152" class="String">&#39;g&#39;</a>
+     <a id="3161" href="Text.Regex.SmartConstructors.html#1784" class="Function Operator">∙</a> <a id="3163" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="3173" class="String">&#39;d&#39;</a>
+     <a id="3182" href="Text.Regex.SmartConstructors.html#1784" class="Function Operator">∙</a> <a id="3184" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="3194" class="String">&#39;a&#39;</a>
+     <a id="3203" href="Text.Regex.SmartConstructors.html#1784" class="Function Operator">∙</a> <a id="3205" class="Symbol">(</a><a id="3206" href="Text.Regex.Base.html#1842" class="InductiveConstructor">singleton</a> <a id="3216" class="String">&#39;i&#39;</a> <a id="3220" href="Text.Regex.SmartConstructors.html#3642" class="Function Operator">⁇</a><a id="3221" class="Symbol">)</a>
+
+<a id="infixAgda"></a><a id="3224" href="README.Text.Regex.html#3224" class="Function">infixAgda</a> <a id="3234" class="Symbol">:</a> <a id="3236" href="Text.Regex.Base.html#1457" class="Record">Regex</a>
+<a id="3242" href="README.Text.Regex.html#3224" class="Function">infixAgda</a> <a id="3252" class="Symbol">=</a> <a id="3254" class="Keyword">record</a>
+  <a id="3263" class="Symbol">{</a> <a id="3265" href="Text.Regex.Base.html#1489" class="Field">fromStart</a>  <a id="3276" class="Symbol">=</a> <a id="3278" href="Agda.Builtin.Bool.html#192" class="InductiveConstructor">false</a>
+  <a id="3286" class="Symbol">;</a> <a id="3288" href="Text.Regex.Base.html#1511" class="Field">tillEnd</a>    <a id="3299" class="Symbol">=</a> <a id="3301" href="Agda.Builtin.Bool.html#192" class="InductiveConstructor">false</a>
+  <a id="3309" class="Symbol">;</a> <a id="3311" href="Text.Regex.Base.html#1533" class="Field">expression</a> <a id="3322" class="Symbol">=</a> <a id="3324" href="README.Text.Regex.html#3103" class="Function">agda</a>
+  <a id="3331" class="Symbol">}</a>
+
+<a id="3334" class="Comment">-- The search function gives us the ability to look for matches</a>
+
+<a id="3399" class="Comment">-- Valid: agda in the middle</a>
+<a id="3428" href="README.Text.Regex.html#3428" class="Function">_</a> <a id="3430" class="Symbol">:</a> <a id="3432" href="Relation.Nullary.Decidable.Core.html#3468" class="Function">True</a> <a id="3437" class="Symbol">(</a><a id="3438" href="Text.Regex.String.Unsafe.html#1661" class="Function">search</a> <a id="3445" class="String">&quot;Maria Magdalena&quot;</a> <a id="3463" href="README.Text.Regex.html#3224" class="Function">infixAgda</a><a id="3472" class="Symbol">)</a>
+<a id="3474" class="Symbol">_</a> <a id="3476" class="Symbol">=</a> <a id="3478" class="Symbol">_</a>
+
+<a id="3481" class="Comment">-- By changing the value of fromStart and tillEnd we can control where the</a>
+<a id="3556" class="Comment">-- substring should be. We can insist on the match being at the end of the</a>
+<a id="3631" class="Comment">-- input for instance:</a>
+
+<a id="suffixAgda"></a><a id="3655" href="README.Text.Regex.html#3655" class="Function">suffixAgda</a> <a id="3666" class="Symbol">:</a> <a id="3668" href="Text.Regex.Base.html#1457" class="Record">Regex</a>
+<a id="3674" href="README.Text.Regex.html#3655" class="Function">suffixAgda</a> <a id="3685" class="Symbol">=</a> <a id="3687" class="Keyword">record</a>
+  <a id="3696" class="Symbol">{</a> <a id="3698" href="Text.Regex.Base.html#1489" class="Field">fromStart</a>  <a id="3709" class="Symbol">=</a> <a id="3711" href="Agda.Builtin.Bool.html#192" class="InductiveConstructor">false</a>
+  <a id="3719" class="Symbol">;</a> <a id="3721" href="Text.Regex.Base.html#1511" class="Field">tillEnd</a>    <a id="3732" class="Symbol">=</a> <a id="3734" href="Agda.Builtin.Bool.html#198" class="InductiveConstructor">true</a>
+  <a id="3741" class="Symbol">;</a> <a id="3743" href="Text.Regex.Base.html#1533" class="Field">expression</a> <a id="3754" class="Symbol">=</a> <a id="3756" href="README.Text.Regex.html#3103" class="Function">agda</a>
+  <a id="3763" class="Symbol">}</a>
+
+<a id="3766" class="Comment">-- Invalid: agda is in the middle</a>
+<a id="3800" href="README.Text.Regex.html#3800" class="Function">_</a> <a id="3802" class="Symbol">:</a> <a id="3804" href="Relation.Nullary.Decidable.Core.html#3505" class="Function">False</a> <a id="3810" class="Symbol">(</a><a id="3811" href="Text.Regex.String.Unsafe.html#1661" class="Function">search</a> <a id="3818" class="String">&quot;Maria Magdalena&quot;</a> <a id="3836" href="README.Text.Regex.html#3655" class="Function">suffixAgda</a><a id="3846" class="Symbol">)</a>
+<a id="3848" class="Symbol">_</a> <a id="3850" class="Symbol">=</a> <a id="3852" class="Symbol">_</a>
+
+<a id="3855" class="Comment">-- Valid: agda as a suffix</a>
+<a id="3882" href="README.Text.Regex.html#3882" class="Function">_</a> <a id="3884" class="Symbol">:</a> <a id="3886" href="Relation.Nullary.Decidable.Core.html#3468" class="Function">True</a> <a id="3891" class="Symbol">(</a><a id="3892" href="Text.Regex.String.Unsafe.html#1661" class="Function">search</a> <a id="3899" class="String">&quot;README.agda&quot;</a> <a id="3913" href="README.Text.Regex.html#3655" class="Function">suffixAgda</a><a id="3923" class="Symbol">)</a>
+<a id="3925" class="Symbol">_</a> <a id="3927" class="Symbol">=</a> <a id="3929" class="Symbol">_</a>
+
+<a id="3932" class="Comment">-- Valid: agdai as a suffix</a>
+<a id="3960" href="README.Text.Regex.html#3960" class="Function">_</a> <a id="3962" class="Symbol">:</a> <a id="3964" href="Relation.Nullary.Decidable.Core.html#3468" class="Function">True</a> <a id="3969" class="Symbol">(</a><a id="3970" href="Text.Regex.String.Unsafe.html#1661" class="Function">search</a> <a id="3977" class="String">&quot;README.agdai&quot;</a> <a id="3992" href="README.Text.Regex.html#3655" class="Function">suffixAgda</a><a id="4002" class="Symbol">)</a>
+<a id="4004" class="Symbol">_</a> <a id="4006" class="Symbol">=</a> <a id="4008" class="Symbol">_</a>
+
+
+<a id="4012" class="Comment">------------------------------------------------------------------------</a>
+<a id="4085" class="Comment">-- Advanced uses</a>
+
+<a id="4103" class="Comment">-- Search does not just return a boolean, it returns an informative answer.</a>
+<a id="4179" class="Comment">-- Infix matches are for instance represented using the `Infix` relation on</a>
+<a id="4255" class="Comment">-- list. Such a proof pinpoints the exact position of the match:</a>
+
+<a id="4321" class="Keyword">open</a> <a id="4326" class="Keyword">import</a> <a id="4333" href="Data.List.Relation.Binary.Infix.Heterogeneous.html" class="Module">Data.List.Relation.Binary.Infix.Heterogeneous</a>
+<a id="4379" class="Keyword">open</a> <a id="4384" class="Keyword">import</a> <a id="4391" href="Data.List.Relation.Binary.Infix.Heterogeneous.Properties.html" class="Module">Data.List.Relation.Binary.Infix.Heterogeneous.Properties</a>
+<a id="4448" class="Keyword">open</a> <a id="4453" class="Keyword">import</a> <a id="4460" href="Data.List.Relation.Binary.Pointwise.html" class="Module">Data.List.Relation.Binary.Pointwise</a> <a id="4496" class="Keyword">using</a> <a id="4502" class="Symbol">(</a><a id="4503" href="Data.List.Relation.Binary.Pointwise.html#10237" class="Function">≡⇒Pointwise-≡</a><a id="4516" class="Symbol">)</a>
+<a id="4518" class="Keyword">open</a> <a id="4523" class="Keyword">import</a> <a id="4530" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="4569" class="Comment">-- Here is an example of a match: it gives back the substring, the inductive</a>
+<a id="4646" class="Comment">-- proof that it is accepted by the regular expression and its precise location</a>
+<a id="4726" class="Comment">-- inside the input string</a>
+<a id="mariamAGDAlena"></a><a id="4753" href="README.Text.Regex.html#4753" class="Function">mariamAGDAlena</a> <a id="4768" class="Symbol">:</a> <a id="4770" href="Text.Regex.String.Unsafe.html#1472" class="Record">Match</a> <a id="4776" class="String">&quot;Maria Magdalena&quot;</a> <a id="4794" href="README.Text.Regex.html#3224" class="Function">infixAgda</a>
+<a id="4804" href="README.Text.Regex.html#4753" class="Function">mariamAGDAlena</a> <a id="4819" class="Symbol">=</a> <a id="4821" class="Keyword">record</a>
+  <a id="4830" class="Symbol">{</a> <a id="4832" href="Text.Regex.String.Unsafe.html#1551" class="Field">string</a>  <a id="4840" class="Symbol">=</a> <a id="4842" class="String">&quot;agda&quot;</a>                     <a id="4869" class="Comment">-- we have found &quot;agda&quot;</a>
+  <a id="4895" class="Symbol">;</a> <a id="4897" href="Text.Regex.String.Unsafe.html#1572" class="Field">match</a>   <a id="4905" class="Symbol">=</a> <a id="4907" href="Relation.Nullary.Decidable.Core.html#4504" class="Function">from-yes</a> <a id="4916" class="Symbol">(</a><a id="4917" class="String">&quot;agda&quot;</a> <a id="4924" href="Text.Regex.String.Unsafe.html#1164" class="Function Operator">∈?</a> <a id="4927" href="README.Text.Regex.html#3103" class="Function">agda</a><a id="4931" class="Symbol">)</a>  <a id="4934" class="Comment">-- a proof of the match</a>
+  <a id="4960" class="Symbol">;</a> <a id="4962" href="Text.Regex.String.Unsafe.html#1614" class="Field">related</a> <a id="4970" class="Symbol">=</a> <a id="4972" href="README.Text.Regex.html#5037" class="Function">proof</a>                      <a id="4999" class="Comment">-- and its location</a>
+  <a id="5021" class="Symbol">}</a>
+
+  <a id="5026" class="Keyword">where</a>
+
+    <a id="5037" href="README.Text.Regex.html#5037" class="Function">proof</a> <a id="5043" class="Symbol">:</a> <a id="5045" href="Data.List.Relation.Binary.Infix.Heterogeneous.html#817" class="Datatype">Infix</a> <a id="5051" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a> <a id="5055" class="Symbol">(</a><a id="5056" href="Data.String.Base.html#1537" class="Primitive">toList</a> <a id="5063" class="String">&quot;agda&quot;</a><a id="5069" class="Symbol">)</a> <a id="5071" class="Symbol">(</a><a id="5072" href="Data.String.Base.html#1537" class="Primitive">toList</a> <a id="5079" class="String">&quot;Maria Magdalena&quot;</a><a id="5096" class="Symbol">)</a>
+    <a id="5102" href="README.Text.Regex.html#5037" class="Function">proof</a> <a id="5108" class="Symbol">=</a> <a id="5110" href="Data.String.Base.html#1537" class="Primitive">toList</a> <a id="5117" class="String">&quot;Maria M&quot;</a>
+        <a id="5135" href="Data.List.Relation.Binary.Infix.Heterogeneous.html#1171" class="Function Operator">++ⁱ</a> <a id="5139" href="Data.List.Relation.Binary.Infix.Heterogeneous.Properties.html#1731" class="Function">fromPointwise</a> <a id="5153" class="Symbol">(</a><a id="5154" href="Data.List.Relation.Binary.Pointwise.html#10237" class="Function">≡⇒Pointwise-≡</a> <a id="5168" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a><a id="5172" class="Symbol">)</a>
+        <a id="5182" href="Data.List.Relation.Binary.Infix.Heterogeneous.html#1290" class="Function Operator">ⁱ++</a> <a id="5186" href="Data.String.Base.html#1537" class="Primitive">toList</a> <a id="5193" class="String">&quot;lena&quot;</a>
+
+
+<a id="5202" class="Comment">-- And here is the proof that search returns such an object</a>
+<a id="5262" href="README.Text.Regex.html#5262" class="Function">_</a> <a id="5264" class="Symbol">:</a> <a id="5266" href="Text.Regex.String.Unsafe.html#1661" class="Function">search</a> <a id="5273" class="String">&quot;Maria Magdalena&quot;</a> <a id="5291" href="README.Text.Regex.html#3224" class="Function">infixAgda</a> <a id="5301" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="5303" href="Relation.Nullary.Decidable.Core.html#1618" class="InductiveConstructor">yes</a> <a id="5307" href="README.Text.Regex.html#4753" class="Function">mariamAGDAlena</a>
+<a id="5322" class="Symbol">_</a> <a id="5324" class="Symbol">=</a> <a id="5326" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
+</pre></body></html>

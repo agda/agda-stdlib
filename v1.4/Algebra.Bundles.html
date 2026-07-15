@@ -1,0 +1,748 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Bundles</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Definitions of algebraic structures like monoids and rings</a>
+<a id="168" class="Comment">-- (packed in records together with sets, operations, etc.)</a>
+<a id="228" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="302" class="Comment">-- The contents of this module should be accessed via `Algebra`.</a>
+
+<a id="368" class="Symbol">{-#</a> <a id="372" class="Keyword">OPTIONS</a> <a id="380" class="Pragma">--without-K</a> <a id="392" class="Pragma">--safe</a> <a id="399" class="Symbol">#-}</a>
+
+<a id="404" class="Keyword">module</a> <a id="411" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="427" class="Keyword">where</a>
+
+<a id="434" class="Keyword">open</a> <a id="439" class="Keyword">import</a> <a id="446" href="Algebra.Core.html" class="Module">Algebra.Core</a>
+<a id="459" class="Keyword">open</a> <a id="464" class="Keyword">import</a> <a id="471" href="Algebra.Structures.html" class="Module">Algebra.Structures</a>
+<a id="490" class="Keyword">open</a> <a id="495" class="Keyword">import</a> <a id="502" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="518" class="Keyword">open</a> <a id="523" class="Keyword">import</a> <a id="530" href="Function.Base.html" class="Module">Function.Base</a>
+<a id="544" class="Keyword">open</a> <a id="549" class="Keyword">import</a> <a id="556" href="Level.html" class="Module">Level</a>
+
+<a id="563" class="Comment">------------------------------------------------------------------------</a>
+<a id="636" class="Comment">-- Bundles with 1 binary operation</a>
+<a id="671" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="745" class="Keyword">record</a> <a id="RawMagma"></a><a id="752" href="Algebra.Bundles.html#752" class="Record">RawMagma</a> <a id="761" href="Algebra.Bundles.html#761" class="Bound">c</a> <a id="763" href="Algebra.Bundles.html#763" class="Bound">ℓ</a> <a id="765" class="Symbol">:</a> <a id="767" class="PrimitiveType">Set</a> <a id="771" class="Symbol">(</a><a id="772" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="776" class="Symbol">(</a><a id="777" href="Algebra.Bundles.html#761" class="Bound">c</a> <a id="779" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="781" href="Algebra.Bundles.html#763" class="Bound">ℓ</a><a id="782" class="Symbol">))</a> <a id="785" class="Keyword">where</a>
+  <a id="793" class="Keyword">infixl</a> <a id="800" class="Number">7</a> <a id="802" href="Algebra.Bundles.html#881" class="Field Operator">_∙_</a>
+  <a id="808" class="Keyword">infix</a>  <a id="815" class="Number">4</a> <a id="817" href="Algebra.Bundles.html#853" class="Field Operator">_≈_</a>
+  <a id="823" class="Keyword">field</a>
+    <a id="RawMagma.Carrier"></a><a id="833" href="Algebra.Bundles.html#833" class="Field">Carrier</a> <a id="841" class="Symbol">:</a> <a id="843" class="PrimitiveType">Set</a> <a id="847" href="Algebra.Bundles.html#761" class="Bound">c</a>
+    <a id="RawMagma._≈_"></a><a id="853" href="Algebra.Bundles.html#853" class="Field Operator">_≈_</a>     <a id="861" class="Symbol">:</a> <a id="863" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="867" href="Algebra.Bundles.html#833" class="Field">Carrier</a> <a id="875" href="Algebra.Bundles.html#763" class="Bound">ℓ</a>
+    <a id="RawMagma._∙_"></a><a id="881" href="Algebra.Bundles.html#881" class="Field Operator">_∙_</a>     <a id="889" class="Symbol">:</a> <a id="891" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="895" href="Algebra.Bundles.html#833" class="Field">Carrier</a>
+
+
+<a id="905" class="Keyword">record</a> <a id="Magma"></a><a id="912" href="Algebra.Bundles.html#912" class="Record">Magma</a> <a id="918" href="Algebra.Bundles.html#918" class="Bound">c</a> <a id="920" href="Algebra.Bundles.html#920" class="Bound">ℓ</a> <a id="922" class="Symbol">:</a> <a id="924" class="PrimitiveType">Set</a> <a id="928" class="Symbol">(</a><a id="929" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="933" class="Symbol">(</a><a id="934" href="Algebra.Bundles.html#918" class="Bound">c</a> <a id="936" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="938" href="Algebra.Bundles.html#920" class="Bound">ℓ</a><a id="939" class="Symbol">))</a> <a id="942" class="Keyword">where</a>
+  <a id="950" class="Keyword">infixl</a> <a id="957" class="Number">7</a> <a id="959" href="Algebra.Bundles.html#1038" class="Field Operator">_∙_</a>
+  <a id="965" class="Keyword">infix</a>  <a id="972" class="Number">4</a> <a id="974" href="Algebra.Bundles.html#1010" class="Field Operator">_≈_</a>
+  <a id="980" class="Keyword">field</a>
+    <a id="Magma.Carrier"></a><a id="990" href="Algebra.Bundles.html#990" class="Field">Carrier</a> <a id="998" class="Symbol">:</a> <a id="1000" class="PrimitiveType">Set</a> <a id="1004" href="Algebra.Bundles.html#918" class="Bound">c</a>
+    <a id="Magma._≈_"></a><a id="1010" href="Algebra.Bundles.html#1010" class="Field Operator">_≈_</a>     <a id="1018" class="Symbol">:</a> <a id="1020" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="1024" href="Algebra.Bundles.html#990" class="Field">Carrier</a> <a id="1032" href="Algebra.Bundles.html#920" class="Bound">ℓ</a>
+    <a id="Magma._∙_"></a><a id="1038" href="Algebra.Bundles.html#1038" class="Field Operator">_∙_</a>     <a id="1046" class="Symbol">:</a> <a id="1048" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="1052" href="Algebra.Bundles.html#990" class="Field">Carrier</a>
+    <a id="Magma.isMagma"></a><a id="1064" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="1072" class="Symbol">:</a> <a id="1074" href="Algebra.Structures.html#1120" class="Record">IsMagma</a> <a id="1082" href="Algebra.Bundles.html#1010" class="Field Operator">_≈_</a> <a id="1086" href="Algebra.Bundles.html#1038" class="Field Operator">_∙_</a>
+
+  <a id="1093" class="Keyword">open</a> <a id="1098" href="Algebra.Structures.html#1120" class="Module">IsMagma</a> <a id="1106" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="1114" class="Keyword">public</a>
+
+  <a id="Magma.rawMagma"></a><a id="1124" href="Algebra.Bundles.html#1124" class="Function">rawMagma</a> <a id="1133" class="Symbol">:</a> <a id="1135" href="Algebra.Bundles.html#752" class="Record">RawMagma</a> <a id="1144" class="Symbol">_</a> <a id="1146" class="Symbol">_</a>
+  <a id="1150" href="Algebra.Bundles.html#1124" class="Function">rawMagma</a> <a id="1159" class="Symbol">=</a> <a id="1161" class="Keyword">record</a> <a id="1168" class="Symbol">{</a> <a id="1170" href="Algebra.Bundles.html#853" class="Field Operator">_≈_</a> <a id="1174" class="Symbol">=</a> <a id="1176" href="Algebra.Bundles.html#1010" class="Field Operator">_≈_</a><a id="1179" class="Symbol">;</a> <a id="1181" href="Algebra.Bundles.html#881" class="Field Operator">_∙_</a> <a id="1185" class="Symbol">=</a> <a id="1187" href="Algebra.Bundles.html#1038" class="Field Operator">_∙_</a> <a id="1191" class="Symbol">}</a>
+
+
+<a id="1195" class="Keyword">record</a> <a id="Semigroup"></a><a id="1202" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="1212" href="Algebra.Bundles.html#1212" class="Bound">c</a> <a id="1214" href="Algebra.Bundles.html#1214" class="Bound">ℓ</a> <a id="1216" class="Symbol">:</a> <a id="1218" class="PrimitiveType">Set</a> <a id="1222" class="Symbol">(</a><a id="1223" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="1227" class="Symbol">(</a><a id="1228" href="Algebra.Bundles.html#1212" class="Bound">c</a> <a id="1230" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="1232" href="Algebra.Bundles.html#1214" class="Bound">ℓ</a><a id="1233" class="Symbol">))</a> <a id="1236" class="Keyword">where</a>
+  <a id="1244" class="Keyword">infixl</a> <a id="1251" class="Number">7</a> <a id="1253" href="Algebra.Bundles.html#1340" class="Field Operator">_∙_</a>
+  <a id="1259" class="Keyword">infix</a>  <a id="1266" class="Number">4</a> <a id="1268" href="Algebra.Bundles.html#1308" class="Field Operator">_≈_</a>
+  <a id="1274" class="Keyword">field</a>
+    <a id="Semigroup.Carrier"></a><a id="1284" href="Algebra.Bundles.html#1284" class="Field">Carrier</a>     <a id="1296" class="Symbol">:</a> <a id="1298" class="PrimitiveType">Set</a> <a id="1302" href="Algebra.Bundles.html#1212" class="Bound">c</a>
+    <a id="Semigroup._≈_"></a><a id="1308" href="Algebra.Bundles.html#1308" class="Field Operator">_≈_</a>         <a id="1320" class="Symbol">:</a> <a id="1322" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="1326" href="Algebra.Bundles.html#1284" class="Field">Carrier</a> <a id="1334" href="Algebra.Bundles.html#1214" class="Bound">ℓ</a>
+    <a id="Semigroup._∙_"></a><a id="1340" href="Algebra.Bundles.html#1340" class="Field Operator">_∙_</a>         <a id="1352" class="Symbol">:</a> <a id="1354" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="1358" href="Algebra.Bundles.html#1284" class="Field">Carrier</a>
+    <a id="Semigroup.isSemigroup"></a><a id="1370" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="1382" class="Symbol">:</a> <a id="1384" href="Algebra.Structures.html#1489" class="Record">IsSemigroup</a> <a id="1396" href="Algebra.Bundles.html#1308" class="Field Operator">_≈_</a> <a id="1400" href="Algebra.Bundles.html#1340" class="Field Operator">_∙_</a>
+
+  <a id="1407" class="Keyword">open</a> <a id="1412" href="Algebra.Structures.html#1489" class="Module">IsSemigroup</a> <a id="1424" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="1436" class="Keyword">public</a>
+
+  <a id="Semigroup.magma"></a><a id="1446" href="Algebra.Bundles.html#1446" class="Function">magma</a> <a id="1452" class="Symbol">:</a> <a id="1454" href="Algebra.Bundles.html#912" class="Record">Magma</a> <a id="1460" href="Algebra.Bundles.html#1212" class="Bound">c</a> <a id="1462" href="Algebra.Bundles.html#1214" class="Bound">ℓ</a>
+  <a id="1466" href="Algebra.Bundles.html#1446" class="Function">magma</a> <a id="1472" class="Symbol">=</a> <a id="1474" class="Keyword">record</a> <a id="1481" class="Symbol">{</a> <a id="1483" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="1491" class="Symbol">=</a> <a id="1493" href="Algebra.Structures.html#1545" class="Function">isMagma</a> <a id="1501" class="Symbol">}</a>
+
+  <a id="1506" class="Keyword">open</a> <a id="1511" href="Algebra.Bundles.html#912" class="Module">Magma</a> <a id="1517" href="Algebra.Bundles.html#1446" class="Function">magma</a> <a id="1523" class="Keyword">public</a> <a id="1530" class="Keyword">using</a> <a id="1536" class="Symbol">(</a>rawMagma<a id="1545" class="Symbol">)</a>
+
+
+<a id="1549" class="Keyword">record</a> <a id="Band"></a><a id="1556" href="Algebra.Bundles.html#1556" class="Record">Band</a> <a id="1561" href="Algebra.Bundles.html#1561" class="Bound">c</a> <a id="1563" href="Algebra.Bundles.html#1563" class="Bound">ℓ</a> <a id="1565" class="Symbol">:</a> <a id="1567" class="PrimitiveType">Set</a> <a id="1571" class="Symbol">(</a><a id="1572" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="1576" class="Symbol">(</a><a id="1577" href="Algebra.Bundles.html#1561" class="Bound">c</a> <a id="1579" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="1581" href="Algebra.Bundles.html#1563" class="Bound">ℓ</a><a id="1582" class="Symbol">))</a> <a id="1585" class="Keyword">where</a>
+  <a id="1593" class="Keyword">infixl</a> <a id="1600" class="Number">7</a> <a id="1602" href="Algebra.Bundles.html#1681" class="Field Operator">_∙_</a>
+  <a id="1608" class="Keyword">infix</a>  <a id="1615" class="Number">4</a> <a id="1617" href="Algebra.Bundles.html#1653" class="Field Operator">_≈_</a>
+  <a id="1623" class="Keyword">field</a>
+    <a id="Band.Carrier"></a><a id="1633" href="Algebra.Bundles.html#1633" class="Field">Carrier</a> <a id="1641" class="Symbol">:</a> <a id="1643" class="PrimitiveType">Set</a> <a id="1647" href="Algebra.Bundles.html#1561" class="Bound">c</a>
+    <a id="Band._≈_"></a><a id="1653" href="Algebra.Bundles.html#1653" class="Field Operator">_≈_</a>     <a id="1661" class="Symbol">:</a> <a id="1663" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="1667" href="Algebra.Bundles.html#1633" class="Field">Carrier</a> <a id="1675" href="Algebra.Bundles.html#1563" class="Bound">ℓ</a>
+    <a id="Band._∙_"></a><a id="1681" href="Algebra.Bundles.html#1681" class="Field Operator">_∙_</a>     <a id="1689" class="Symbol">:</a> <a id="1691" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="1695" href="Algebra.Bundles.html#1633" class="Field">Carrier</a>
+    <a id="Band.isBand"></a><a id="1707" href="Algebra.Bundles.html#1707" class="Field">isBand</a>  <a id="1715" class="Symbol">:</a> <a id="1717" href="Algebra.Structures.html#1633" class="Record">IsBand</a> <a id="1724" href="Algebra.Bundles.html#1653" class="Field Operator">_≈_</a> <a id="1728" href="Algebra.Bundles.html#1681" class="Field Operator">_∙_</a>
+
+  <a id="1735" class="Keyword">open</a> <a id="1740" href="Algebra.Structures.html#1633" class="Module">IsBand</a> <a id="1747" href="Algebra.Bundles.html#1707" class="Field">isBand</a> <a id="1754" class="Keyword">public</a>
+
+  <a id="Band.semigroup"></a><a id="1764" href="Algebra.Bundles.html#1764" class="Function">semigroup</a> <a id="1774" class="Symbol">:</a> <a id="1776" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="1786" href="Algebra.Bundles.html#1561" class="Bound">c</a> <a id="1788" href="Algebra.Bundles.html#1563" class="Bound">ℓ</a>
+  <a id="1792" href="Algebra.Bundles.html#1764" class="Function">semigroup</a> <a id="1802" class="Symbol">=</a> <a id="1804" class="Keyword">record</a> <a id="1811" class="Symbol">{</a> <a id="1813" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="1825" class="Symbol">=</a> <a id="1827" href="Algebra.Structures.html#1684" class="Function">isSemigroup</a> <a id="1839" class="Symbol">}</a>
+
+  <a id="1844" class="Keyword">open</a> <a id="1849" href="Algebra.Bundles.html#1202" class="Module">Semigroup</a> <a id="1859" href="Algebra.Bundles.html#1764" class="Function">semigroup</a> <a id="1869" class="Keyword">public</a> <a id="1876" class="Keyword">using</a> <a id="1882" class="Symbol">(</a>magma<a id="1888" class="Symbol">;</a> rawMagma<a id="1898" class="Symbol">)</a>
+
+
+<a id="1902" class="Keyword">record</a> <a id="CommutativeSemigroup"></a><a id="1909" href="Algebra.Bundles.html#1909" class="Record">CommutativeSemigroup</a> <a id="1930" href="Algebra.Bundles.html#1930" class="Bound">c</a> <a id="1932" href="Algebra.Bundles.html#1932" class="Bound">ℓ</a> <a id="1934" class="Symbol">:</a> <a id="1936" class="PrimitiveType">Set</a> <a id="1940" class="Symbol">(</a><a id="1941" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="1945" class="Symbol">(</a><a id="1946" href="Algebra.Bundles.html#1930" class="Bound">c</a> <a id="1948" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="1950" href="Algebra.Bundles.html#1932" class="Bound">ℓ</a><a id="1951" class="Symbol">))</a> <a id="1954" class="Keyword">where</a>
+  <a id="1962" class="Keyword">infixl</a> <a id="1969" class="Number">7</a> <a id="1971" href="Algebra.Bundles.html#2082" class="Field Operator">_∙_</a>
+  <a id="1977" class="Keyword">infix</a>  <a id="1984" class="Number">4</a> <a id="1986" href="Algebra.Bundles.html#2038" class="Field Operator">_≈_</a>
+  <a id="1992" class="Keyword">field</a>
+    <a id="CommutativeSemigroup.Carrier"></a><a id="2002" href="Algebra.Bundles.html#2002" class="Field">Carrier</a>                 <a id="2026" class="Symbol">:</a> <a id="2028" class="PrimitiveType">Set</a> <a id="2032" href="Algebra.Bundles.html#1930" class="Bound">c</a>
+    <a id="CommutativeSemigroup._≈_"></a><a id="2038" href="Algebra.Bundles.html#2038" class="Field Operator">_≈_</a>                     <a id="2062" class="Symbol">:</a> <a id="2064" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="2068" href="Algebra.Bundles.html#2002" class="Field">Carrier</a> <a id="2076" href="Algebra.Bundles.html#1932" class="Bound">ℓ</a>
+    <a id="CommutativeSemigroup._∙_"></a><a id="2082" href="Algebra.Bundles.html#2082" class="Field Operator">_∙_</a>                     <a id="2106" class="Symbol">:</a> <a id="2108" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="2112" href="Algebra.Bundles.html#2002" class="Field">Carrier</a>
+    <a id="CommutativeSemigroup.isCommutativeSemigroup"></a><a id="2124" href="Algebra.Bundles.html#2124" class="Field">isCommutativeSemigroup</a>  <a id="2148" class="Symbol">:</a> <a id="2150" href="Algebra.Structures.html#1791" class="Record">IsCommutativeSemigroup</a> <a id="2173" href="Algebra.Bundles.html#2038" class="Field Operator">_≈_</a> <a id="2177" href="Algebra.Bundles.html#2082" class="Field Operator">_∙_</a>
+
+  <a id="2184" class="Keyword">open</a> <a id="2189" href="Algebra.Structures.html#1791" class="Module">IsCommutativeSemigroup</a> <a id="2212" href="Algebra.Bundles.html#2124" class="Field">isCommutativeSemigroup</a> <a id="2235" class="Keyword">public</a>
+
+  <a id="CommutativeSemigroup.semigroup"></a><a id="2245" href="Algebra.Bundles.html#2245" class="Function">semigroup</a> <a id="2255" class="Symbol">:</a> <a id="2257" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="2267" href="Algebra.Bundles.html#1930" class="Bound">c</a> <a id="2269" href="Algebra.Bundles.html#1932" class="Bound">ℓ</a>
+  <a id="2273" href="Algebra.Bundles.html#2245" class="Function">semigroup</a> <a id="2283" class="Symbol">=</a> <a id="2285" class="Keyword">record</a> <a id="2292" class="Symbol">{</a> <a id="2294" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="2306" class="Symbol">=</a> <a id="2308" href="Algebra.Structures.html#1858" class="Function">isSemigroup</a> <a id="2320" class="Symbol">}</a>
+
+  <a id="2325" class="Keyword">open</a> <a id="2330" href="Algebra.Bundles.html#1202" class="Module">Semigroup</a> <a id="2340" href="Algebra.Bundles.html#2245" class="Function">semigroup</a> <a id="2350" class="Keyword">public</a> <a id="2357" class="Keyword">using</a> <a id="2363" class="Symbol">(</a>magma<a id="2369" class="Symbol">;</a> rawMagma<a id="2379" class="Symbol">)</a>
+
+
+<a id="2383" class="Keyword">record</a> <a id="Semilattice"></a><a id="2390" href="Algebra.Bundles.html#2390" class="Record">Semilattice</a> <a id="2402" href="Algebra.Bundles.html#2402" class="Bound">c</a> <a id="2404" href="Algebra.Bundles.html#2404" class="Bound">ℓ</a> <a id="2406" class="Symbol">:</a> <a id="2408" class="PrimitiveType">Set</a> <a id="2412" class="Symbol">(</a><a id="2413" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="2417" class="Symbol">(</a><a id="2418" href="Algebra.Bundles.html#2402" class="Bound">c</a> <a id="2420" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="2422" href="Algebra.Bundles.html#2404" class="Bound">ℓ</a><a id="2423" class="Symbol">))</a> <a id="2426" class="Keyword">where</a>
+  <a id="2434" class="Keyword">infixr</a> <a id="2441" class="Number">7</a> <a id="2443" href="Algebra.Bundles.html#2534" class="Field Operator">_∧_</a>
+  <a id="2449" class="Keyword">infix</a>  <a id="2456" class="Number">4</a> <a id="2458" href="Algebra.Bundles.html#2500" class="Field Operator">_≈_</a>
+  <a id="2464" class="Keyword">field</a>
+    <a id="Semilattice.Carrier"></a><a id="2474" href="Algebra.Bundles.html#2474" class="Field">Carrier</a>       <a id="2488" class="Symbol">:</a> <a id="2490" class="PrimitiveType">Set</a> <a id="2494" href="Algebra.Bundles.html#2402" class="Bound">c</a>
+    <a id="Semilattice._≈_"></a><a id="2500" href="Algebra.Bundles.html#2500" class="Field Operator">_≈_</a>           <a id="2514" class="Symbol">:</a> <a id="2516" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="2520" href="Algebra.Bundles.html#2474" class="Field">Carrier</a> <a id="2528" href="Algebra.Bundles.html#2404" class="Bound">ℓ</a>
+    <a id="Semilattice._∧_"></a><a id="2534" href="Algebra.Bundles.html#2534" class="Field Operator">_∧_</a>           <a id="2548" class="Symbol">:</a> <a id="2550" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="2554" href="Algebra.Bundles.html#2474" class="Field">Carrier</a>
+    <a id="Semilattice.isSemilattice"></a><a id="2566" href="Algebra.Bundles.html#2566" class="Field">isSemilattice</a> <a id="2580" class="Symbol">:</a> <a id="2582" href="Algebra.Structures.html#1966" class="Record">IsSemilattice</a> <a id="2596" href="Algebra.Bundles.html#2500" class="Field Operator">_≈_</a> <a id="2600" href="Algebra.Bundles.html#2534" class="Field Operator">_∧_</a>
+
+  <a id="2607" class="Keyword">open</a> <a id="2612" href="Algebra.Structures.html#1966" class="Module">IsSemilattice</a> <a id="2626" href="Algebra.Bundles.html#2566" class="Field">isSemilattice</a> <a id="2640" class="Keyword">public</a>
+
+  <a id="Semilattice.band"></a><a id="2650" href="Algebra.Bundles.html#2650" class="Function">band</a> <a id="2655" class="Symbol">:</a> <a id="2657" href="Algebra.Bundles.html#1556" class="Record">Band</a> <a id="2662" href="Algebra.Bundles.html#2402" class="Bound">c</a> <a id="2664" href="Algebra.Bundles.html#2404" class="Bound">ℓ</a>
+  <a id="2668" href="Algebra.Bundles.html#2650" class="Function">band</a> <a id="2673" class="Symbol">=</a> <a id="2675" class="Keyword">record</a> <a id="2682" class="Symbol">{</a> <a id="2684" href="Algebra.Bundles.html#1707" class="Field">isBand</a> <a id="2691" class="Symbol">=</a> <a id="2693" href="Algebra.Structures.html#2024" class="Function">isBand</a> <a id="2700" class="Symbol">}</a>
+
+  <a id="2705" class="Keyword">open</a> <a id="2710" href="Algebra.Bundles.html#1556" class="Module">Band</a> <a id="2715" href="Algebra.Bundles.html#2650" class="Function">band</a> <a id="2720" class="Keyword">public</a> <a id="2727" class="Keyword">using</a> <a id="2733" class="Symbol">(</a>rawMagma<a id="2742" class="Symbol">;</a> magma<a id="2749" class="Symbol">;</a> semigroup<a id="2760" class="Symbol">)</a>
+
+
+<a id="2764" class="Keyword">record</a> <a id="SelectiveMagma"></a><a id="2771" href="Algebra.Bundles.html#2771" class="Record">SelectiveMagma</a> <a id="2786" href="Algebra.Bundles.html#2786" class="Bound">c</a> <a id="2788" href="Algebra.Bundles.html#2788" class="Bound">ℓ</a> <a id="2790" class="Symbol">:</a> <a id="2792" class="PrimitiveType">Set</a> <a id="2796" class="Symbol">(</a><a id="2797" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="2801" class="Symbol">(</a><a id="2802" href="Algebra.Bundles.html#2786" class="Bound">c</a> <a id="2804" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="2806" href="Algebra.Bundles.html#2788" class="Bound">ℓ</a><a id="2807" class="Symbol">))</a> <a id="2810" class="Keyword">where</a>
+  <a id="2818" class="Keyword">infixl</a> <a id="2825" class="Number">7</a> <a id="2827" href="Algebra.Bundles.html#2924" class="Field Operator">_∙_</a>
+  <a id="2833" class="Keyword">infix</a>  <a id="2840" class="Number">4</a> <a id="2842" href="Algebra.Bundles.html#2887" class="Field Operator">_≈_</a>
+  <a id="2848" class="Keyword">field</a>
+    <a id="SelectiveMagma.Carrier"></a><a id="2858" href="Algebra.Bundles.html#2858" class="Field">Carrier</a>          <a id="2875" class="Symbol">:</a> <a id="2877" class="PrimitiveType">Set</a> <a id="2881" href="Algebra.Bundles.html#2786" class="Bound">c</a>
+    <a id="SelectiveMagma._≈_"></a><a id="2887" href="Algebra.Bundles.html#2887" class="Field Operator">_≈_</a>              <a id="2904" class="Symbol">:</a> <a id="2906" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="2910" href="Algebra.Bundles.html#2858" class="Field">Carrier</a> <a id="2918" href="Algebra.Bundles.html#2788" class="Bound">ℓ</a>
+    <a id="SelectiveMagma._∙_"></a><a id="2924" href="Algebra.Bundles.html#2924" class="Field Operator">_∙_</a>              <a id="2941" class="Symbol">:</a> <a id="2943" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="2947" href="Algebra.Bundles.html#2858" class="Field">Carrier</a>
+    <a id="SelectiveMagma.isSelectiveMagma"></a><a id="2959" href="Algebra.Bundles.html#2959" class="Field">isSelectiveMagma</a> <a id="2976" class="Symbol">:</a> <a id="2978" href="Algebra.Structures.html#2179" class="Record">IsSelectiveMagma</a> <a id="2995" href="Algebra.Bundles.html#2887" class="Field Operator">_≈_</a> <a id="2999" href="Algebra.Bundles.html#2924" class="Field Operator">_∙_</a>
+
+  <a id="3006" class="Keyword">open</a> <a id="3011" href="Algebra.Structures.html#2179" class="Module">IsSelectiveMagma</a> <a id="3028" href="Algebra.Bundles.html#2959" class="Field">isSelectiveMagma</a> <a id="3045" class="Keyword">public</a>
+
+  <a id="SelectiveMagma.magma"></a><a id="3055" href="Algebra.Bundles.html#3055" class="Function">magma</a> <a id="3061" class="Symbol">:</a> <a id="3063" href="Algebra.Bundles.html#912" class="Record">Magma</a> <a id="3069" href="Algebra.Bundles.html#2786" class="Bound">c</a> <a id="3071" href="Algebra.Bundles.html#2788" class="Bound">ℓ</a>
+  <a id="3075" href="Algebra.Bundles.html#3055" class="Function">magma</a> <a id="3081" class="Symbol">=</a> <a id="3083" class="Keyword">record</a> <a id="3090" class="Symbol">{</a> <a id="3092" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="3100" class="Symbol">=</a> <a id="3102" href="Algebra.Structures.html#2240" class="Function">isMagma</a> <a id="3110" class="Symbol">}</a>
+
+  <a id="3115" class="Keyword">open</a> <a id="3120" href="Algebra.Bundles.html#912" class="Module">Magma</a> <a id="3126" href="Algebra.Bundles.html#3055" class="Function">magma</a> <a id="3132" class="Keyword">public</a> <a id="3139" class="Keyword">using</a> <a id="3145" class="Symbol">(</a>rawMagma<a id="3154" class="Symbol">)</a>
+
+<a id="3157" class="Comment">------------------------------------------------------------------------</a>
+<a id="3230" class="Comment">-- Bundles with 1 binary operation &amp; 1 element</a>
+<a id="3277" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="3351" class="Comment">-- A raw monoid is a monoid without any laws.</a>
+
+<a id="3398" class="Keyword">record</a> <a id="RawMonoid"></a><a id="3405" href="Algebra.Bundles.html#3405" class="Record">RawMonoid</a> <a id="3415" href="Algebra.Bundles.html#3415" class="Bound">c</a> <a id="3417" href="Algebra.Bundles.html#3417" class="Bound">ℓ</a> <a id="3419" class="Symbol">:</a> <a id="3421" class="PrimitiveType">Set</a> <a id="3425" class="Symbol">(</a><a id="3426" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="3430" class="Symbol">(</a><a id="3431" href="Algebra.Bundles.html#3415" class="Bound">c</a> <a id="3433" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="3435" href="Algebra.Bundles.html#3417" class="Bound">ℓ</a><a id="3436" class="Symbol">))</a> <a id="3439" class="Keyword">where</a>
+  <a id="3447" class="Keyword">infixl</a> <a id="3454" class="Number">7</a> <a id="3456" href="Algebra.Bundles.html#3535" class="Field Operator">_∙_</a>
+  <a id="3462" class="Keyword">infix</a>  <a id="3469" class="Number">4</a> <a id="3471" href="Algebra.Bundles.html#3507" class="Field Operator">_≈_</a>
+  <a id="3477" class="Keyword">field</a>
+    <a id="RawMonoid.Carrier"></a><a id="3487" href="Algebra.Bundles.html#3487" class="Field">Carrier</a> <a id="3495" class="Symbol">:</a> <a id="3497" class="PrimitiveType">Set</a> <a id="3501" href="Algebra.Bundles.html#3415" class="Bound">c</a>
+    <a id="RawMonoid._≈_"></a><a id="3507" href="Algebra.Bundles.html#3507" class="Field Operator">_≈_</a>     <a id="3515" class="Symbol">:</a> <a id="3517" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="3521" href="Algebra.Bundles.html#3487" class="Field">Carrier</a> <a id="3529" href="Algebra.Bundles.html#3417" class="Bound">ℓ</a>
+    <a id="RawMonoid._∙_"></a><a id="3535" href="Algebra.Bundles.html#3535" class="Field Operator">_∙_</a>     <a id="3543" class="Symbol">:</a> <a id="3545" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="3549" href="Algebra.Bundles.html#3487" class="Field">Carrier</a>
+    <a id="RawMonoid.ε"></a><a id="3561" href="Algebra.Bundles.html#3561" class="Field">ε</a>       <a id="3569" class="Symbol">:</a> <a id="3571" href="Algebra.Bundles.html#3487" class="Field">Carrier</a>
+
+  <a id="RawMonoid.rawMagma"></a><a id="3582" href="Algebra.Bundles.html#3582" class="Function">rawMagma</a> <a id="3591" class="Symbol">:</a> <a id="3593" href="Algebra.Bundles.html#752" class="Record">RawMagma</a> <a id="3602" href="Algebra.Bundles.html#3415" class="Bound">c</a> <a id="3604" href="Algebra.Bundles.html#3417" class="Bound">ℓ</a>
+  <a id="3608" href="Algebra.Bundles.html#3582" class="Function">rawMagma</a> <a id="3617" class="Symbol">=</a> <a id="3619" class="Keyword">record</a>
+    <a id="3630" class="Symbol">{</a> <a id="3632" href="Algebra.Bundles.html#853" class="Field Operator">_≈_</a> <a id="3636" class="Symbol">=</a> <a id="3638" href="Algebra.Bundles.html#3507" class="Field Operator">_≈_</a>
+    <a id="3646" class="Symbol">;</a> <a id="3648" href="Algebra.Bundles.html#881" class="Field Operator">_∙_</a> <a id="3652" class="Symbol">=</a> <a id="3654" href="Algebra.Bundles.html#3535" class="Field Operator">_∙_</a>
+    <a id="3662" class="Symbol">}</a>
+
+
+<a id="3666" class="Keyword">record</a> <a id="Monoid"></a><a id="3673" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="3680" href="Algebra.Bundles.html#3680" class="Bound">c</a> <a id="3682" href="Algebra.Bundles.html#3682" class="Bound">ℓ</a> <a id="3684" class="Symbol">:</a> <a id="3686" class="PrimitiveType">Set</a> <a id="3690" class="Symbol">(</a><a id="3691" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="3695" class="Symbol">(</a><a id="3696" href="Algebra.Bundles.html#3680" class="Bound">c</a> <a id="3698" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="3700" href="Algebra.Bundles.html#3682" class="Bound">ℓ</a><a id="3701" class="Symbol">))</a> <a id="3704" class="Keyword">where</a>
+  <a id="3712" class="Keyword">infixl</a> <a id="3719" class="Number">7</a> <a id="3721" href="Algebra.Bundles.html#3802" class="Field Operator">_∙_</a>
+  <a id="3727" class="Keyword">infix</a>  <a id="3734" class="Number">4</a> <a id="3736" href="Algebra.Bundles.html#3773" class="Field Operator">_≈_</a>
+  <a id="3742" class="Keyword">field</a>
+    <a id="Monoid.Carrier"></a><a id="3752" href="Algebra.Bundles.html#3752" class="Field">Carrier</a>  <a id="3761" class="Symbol">:</a> <a id="3763" class="PrimitiveType">Set</a> <a id="3767" href="Algebra.Bundles.html#3680" class="Bound">c</a>
+    <a id="Monoid._≈_"></a><a id="3773" href="Algebra.Bundles.html#3773" class="Field Operator">_≈_</a>      <a id="3782" class="Symbol">:</a> <a id="3784" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="3788" href="Algebra.Bundles.html#3752" class="Field">Carrier</a> <a id="3796" href="Algebra.Bundles.html#3682" class="Bound">ℓ</a>
+    <a id="Monoid._∙_"></a><a id="3802" href="Algebra.Bundles.html#3802" class="Field Operator">_∙_</a>      <a id="3811" class="Symbol">:</a> <a id="3813" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="3817" href="Algebra.Bundles.html#3752" class="Field">Carrier</a>
+    <a id="Monoid.ε"></a><a id="3829" href="Algebra.Bundles.html#3829" class="Field">ε</a>        <a id="3838" class="Symbol">:</a> <a id="3840" href="Algebra.Bundles.html#3752" class="Field">Carrier</a>
+    <a id="Monoid.isMonoid"></a><a id="3852" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="3861" class="Symbol">:</a> <a id="3863" href="Algebra.Structures.html#2523" class="Record">IsMonoid</a> <a id="3872" href="Algebra.Bundles.html#3773" class="Field Operator">_≈_</a> <a id="3876" href="Algebra.Bundles.html#3802" class="Field Operator">_∙_</a> <a id="3880" href="Algebra.Bundles.html#3829" class="Field">ε</a>
+
+  <a id="3885" class="Keyword">open</a> <a id="3890" href="Algebra.Structures.html#2523" class="Module">IsMonoid</a> <a id="3899" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="3908" class="Keyword">public</a>
+
+  <a id="Monoid.semigroup"></a><a id="3918" href="Algebra.Bundles.html#3918" class="Function">semigroup</a> <a id="3928" class="Symbol">:</a> <a id="3930" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="3940" class="Symbol">_</a> <a id="3942" class="Symbol">_</a>
+  <a id="3946" href="Algebra.Bundles.html#3918" class="Function">semigroup</a> <a id="3956" class="Symbol">=</a> <a id="3958" class="Keyword">record</a> <a id="3965" class="Symbol">{</a> <a id="3967" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="3979" class="Symbol">=</a> <a id="3981" href="Algebra.Structures.html#2584" class="Function">isSemigroup</a> <a id="3993" class="Symbol">}</a>
+
+  <a id="3998" class="Keyword">open</a> <a id="4003" href="Algebra.Bundles.html#1202" class="Module">Semigroup</a> <a id="4013" href="Algebra.Bundles.html#3918" class="Function">semigroup</a> <a id="4023" class="Keyword">public</a> <a id="4030" class="Keyword">using</a> <a id="4036" class="Symbol">(</a>rawMagma<a id="4045" class="Symbol">;</a> magma<a id="4052" class="Symbol">)</a>
+
+  <a id="Monoid.rawMonoid"></a><a id="4057" href="Algebra.Bundles.html#4057" class="Function">rawMonoid</a> <a id="4067" class="Symbol">:</a> <a id="4069" href="Algebra.Bundles.html#3405" class="Record">RawMonoid</a> <a id="4079" class="Symbol">_</a> <a id="4081" class="Symbol">_</a>
+  <a id="4085" href="Algebra.Bundles.html#4057" class="Function">rawMonoid</a> <a id="4095" class="Symbol">=</a> <a id="4097" class="Keyword">record</a> <a id="4104" class="Symbol">{</a> <a id="4106" href="Algebra.Bundles.html#3507" class="Field Operator">_≈_</a> <a id="4110" class="Symbol">=</a> <a id="4112" href="Algebra.Bundles.html#3773" class="Field Operator">_≈_</a><a id="4115" class="Symbol">;</a> <a id="4117" href="Algebra.Bundles.html#3535" class="Field Operator">_∙_</a> <a id="4121" class="Symbol">=</a> <a id="4123" href="Algebra.Bundles.html#3802" class="Field Operator">_∙_</a><a id="4126" class="Symbol">;</a> <a id="4128" href="Algebra.Bundles.html#3561" class="Field">ε</a> <a id="4130" class="Symbol">=</a> <a id="4132" href="Algebra.Bundles.html#3829" class="Field">ε</a><a id="4133" class="Symbol">}</a>
+
+
+<a id="4137" class="Keyword">record</a> <a id="CommutativeMonoid"></a><a id="4144" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="4162" href="Algebra.Bundles.html#4162" class="Bound">c</a> <a id="4164" href="Algebra.Bundles.html#4164" class="Bound">ℓ</a> <a id="4166" class="Symbol">:</a> <a id="4168" class="PrimitiveType">Set</a> <a id="4172" class="Symbol">(</a><a id="4173" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="4177" class="Symbol">(</a><a id="4178" href="Algebra.Bundles.html#4162" class="Bound">c</a> <a id="4180" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="4182" href="Algebra.Bundles.html#4164" class="Bound">ℓ</a><a id="4183" class="Symbol">))</a> <a id="4186" class="Keyword">where</a>
+  <a id="4194" class="Keyword">infixl</a> <a id="4201" class="Number">7</a> <a id="4203" href="Algebra.Bundles.html#4306" class="Field Operator">_∙_</a>
+  <a id="4209" class="Keyword">infix</a>  <a id="4216" class="Number">4</a> <a id="4218" href="Algebra.Bundles.html#4266" class="Field Operator">_≈_</a>
+  <a id="4224" class="Keyword">field</a>
+    <a id="CommutativeMonoid.Carrier"></a><a id="4234" href="Algebra.Bundles.html#4234" class="Field">Carrier</a>             <a id="4254" class="Symbol">:</a> <a id="4256" class="PrimitiveType">Set</a> <a id="4260" href="Algebra.Bundles.html#4162" class="Bound">c</a>
+    <a id="CommutativeMonoid._≈_"></a><a id="4266" href="Algebra.Bundles.html#4266" class="Field Operator">_≈_</a>                 <a id="4286" class="Symbol">:</a> <a id="4288" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="4292" href="Algebra.Bundles.html#4234" class="Field">Carrier</a> <a id="4300" href="Algebra.Bundles.html#4164" class="Bound">ℓ</a>
+    <a id="CommutativeMonoid._∙_"></a><a id="4306" href="Algebra.Bundles.html#4306" class="Field Operator">_∙_</a>                 <a id="4326" class="Symbol">:</a> <a id="4328" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="4332" href="Algebra.Bundles.html#4234" class="Field">Carrier</a>
+    <a id="CommutativeMonoid.ε"></a><a id="4344" href="Algebra.Bundles.html#4344" class="Field">ε</a>                   <a id="4364" class="Symbol">:</a> <a id="4366" href="Algebra.Bundles.html#4234" class="Field">Carrier</a>
+    <a id="CommutativeMonoid.isCommutativeMonoid"></a><a id="4378" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="4398" class="Symbol">:</a> <a id="4400" href="Algebra.Structures.html#2814" class="Record">IsCommutativeMonoid</a> <a id="4420" href="Algebra.Bundles.html#4266" class="Field Operator">_≈_</a> <a id="4424" href="Algebra.Bundles.html#4306" class="Field Operator">_∙_</a> <a id="4428" href="Algebra.Bundles.html#4344" class="Field">ε</a>
+
+  <a id="4433" class="Keyword">open</a> <a id="4438" href="Algebra.Structures.html#2814" class="Module">IsCommutativeMonoid</a> <a id="4458" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="4478" class="Keyword">public</a>
+
+  <a id="CommutativeMonoid.monoid"></a><a id="4488" href="Algebra.Bundles.html#4488" class="Function">monoid</a> <a id="4495" class="Symbol">:</a> <a id="4497" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="4504" class="Symbol">_</a> <a id="4506" class="Symbol">_</a>
+  <a id="4510" href="Algebra.Bundles.html#4488" class="Function">monoid</a> <a id="4517" class="Symbol">=</a> <a id="4519" class="Keyword">record</a> <a id="4526" class="Symbol">{</a> <a id="4528" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="4537" class="Symbol">=</a> <a id="4539" href="Algebra.Structures.html#2886" class="Function">isMonoid</a> <a id="4548" class="Symbol">}</a>
+
+  <a id="4553" class="Keyword">open</a> <a id="4558" href="Algebra.Bundles.html#3673" class="Module">Monoid</a> <a id="4565" href="Algebra.Bundles.html#4488" class="Function">monoid</a> <a id="4572" class="Keyword">public</a> <a id="4579" class="Keyword">using</a> <a id="4585" class="Symbol">(</a>rawMagma<a id="4594" class="Symbol">;</a> magma<a id="4601" class="Symbol">;</a> semigroup<a id="4612" class="Symbol">;</a> rawMonoid<a id="4623" class="Symbol">)</a>
+
+  <a id="CommutativeMonoid.commutativeSemigroup"></a><a id="4628" href="Algebra.Bundles.html#4628" class="Function">commutativeSemigroup</a> <a id="4649" class="Symbol">:</a> <a id="4651" href="Algebra.Bundles.html#1909" class="Record">CommutativeSemigroup</a> <a id="4672" class="Symbol">_</a> <a id="4674" class="Symbol">_</a>
+  <a id="4678" href="Algebra.Bundles.html#4628" class="Function">commutativeSemigroup</a> <a id="4699" class="Symbol">=</a> <a id="4701" class="Keyword">record</a> <a id="4708" class="Symbol">{</a> <a id="4710" href="Algebra.Bundles.html#2124" class="Field">isCommutativeSemigroup</a> <a id="4733" class="Symbol">=</a> <a id="4735" href="Algebra.Structures.html#2975" class="Function">isCommutativeSemigroup</a> <a id="4758" class="Symbol">}</a>
+
+
+<a id="4762" class="Keyword">record</a> <a id="IdempotentCommutativeMonoid"></a><a id="4769" href="Algebra.Bundles.html#4769" class="Record">IdempotentCommutativeMonoid</a> <a id="4797" href="Algebra.Bundles.html#4797" class="Bound">c</a> <a id="4799" href="Algebra.Bundles.html#4799" class="Bound">ℓ</a> <a id="4801" class="Symbol">:</a> <a id="4803" class="PrimitiveType">Set</a> <a id="4807" class="Symbol">(</a><a id="4808" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="4812" class="Symbol">(</a><a id="4813" href="Algebra.Bundles.html#4797" class="Bound">c</a> <a id="4815" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="4817" href="Algebra.Bundles.html#4799" class="Bound">ℓ</a><a id="4818" class="Symbol">))</a> <a id="4821" class="Keyword">where</a>
+  <a id="4829" class="Keyword">infixl</a> <a id="4836" class="Number">7</a> <a id="4838" href="Algebra.Bundles.html#4961" class="Field Operator">_∙_</a>
+  <a id="4844" class="Keyword">infix</a>  <a id="4851" class="Number">4</a> <a id="4853" href="Algebra.Bundles.html#4911" class="Field Operator">_≈_</a>
+  <a id="4859" class="Keyword">field</a>
+    <a id="IdempotentCommutativeMonoid.Carrier"></a><a id="4869" href="Algebra.Bundles.html#4869" class="Field">Carrier</a>                       <a id="4899" class="Symbol">:</a> <a id="4901" class="PrimitiveType">Set</a> <a id="4905" href="Algebra.Bundles.html#4797" class="Bound">c</a>
+    <a id="IdempotentCommutativeMonoid._≈_"></a><a id="4911" href="Algebra.Bundles.html#4911" class="Field Operator">_≈_</a>                           <a id="4941" class="Symbol">:</a> <a id="4943" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="4947" href="Algebra.Bundles.html#4869" class="Field">Carrier</a> <a id="4955" href="Algebra.Bundles.html#4799" class="Bound">ℓ</a>
+    <a id="IdempotentCommutativeMonoid._∙_"></a><a id="4961" href="Algebra.Bundles.html#4961" class="Field Operator">_∙_</a>                           <a id="4991" class="Symbol">:</a> <a id="4993" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="4997" href="Algebra.Bundles.html#4869" class="Field">Carrier</a>
+    <a id="IdempotentCommutativeMonoid.ε"></a><a id="5009" href="Algebra.Bundles.html#5009" class="Field">ε</a>                             <a id="5039" class="Symbol">:</a> <a id="5041" href="Algebra.Bundles.html#4869" class="Field">Carrier</a>
+    <a id="IdempotentCommutativeMonoid.isIdempotentCommutativeMonoid"></a><a id="5053" href="Algebra.Bundles.html#5053" class="Field">isIdempotentCommutativeMonoid</a> <a id="5083" class="Symbol">:</a> <a id="5085" href="Algebra.Structures.html#3131" class="Record">IsIdempotentCommutativeMonoid</a> <a id="5115" href="Algebra.Bundles.html#4911" class="Field Operator">_≈_</a> <a id="5119" href="Algebra.Bundles.html#4961" class="Field Operator">_∙_</a> <a id="5123" href="Algebra.Bundles.html#5009" class="Field">ε</a>
+
+  <a id="5128" class="Keyword">open</a> <a id="5133" href="Algebra.Structures.html#3131" class="Module">IsIdempotentCommutativeMonoid</a> <a id="5163" href="Algebra.Bundles.html#5053" class="Field">isIdempotentCommutativeMonoid</a> <a id="5193" class="Keyword">public</a>
+
+  <a id="IdempotentCommutativeMonoid.commutativeMonoid"></a><a id="5203" href="Algebra.Bundles.html#5203" class="Function">commutativeMonoid</a> <a id="5221" class="Symbol">:</a> <a id="5223" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="5241" class="Symbol">_</a> <a id="5243" class="Symbol">_</a>
+  <a id="5247" href="Algebra.Bundles.html#5203" class="Function">commutativeMonoid</a> <a id="5265" class="Symbol">=</a> <a id="5267" class="Keyword">record</a> <a id="5274" class="Symbol">{</a> <a id="5276" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="5296" class="Symbol">=</a> <a id="5298" href="Algebra.Structures.html#3250" class="Function">isCommutativeMonoid</a> <a id="5318" class="Symbol">}</a>
+
+  <a id="5323" class="Keyword">open</a> <a id="5328" href="Algebra.Bundles.html#4144" class="Module">CommutativeMonoid</a> <a id="5346" href="Algebra.Bundles.html#5203" class="Function">commutativeMonoid</a> <a id="5364" class="Keyword">public</a>
+    <a id="5375" class="Keyword">using</a> <a id="5381" class="Symbol">(</a>rawMagma<a id="5390" class="Symbol">;</a> magma<a id="5397" class="Symbol">;</a> semigroup<a id="5408" class="Symbol">;</a> rawMonoid<a id="5419" class="Symbol">;</a> monoid<a id="5427" class="Symbol">)</a>
+
+
+<a id="5431" class="Comment">-- Idempotent commutative monoids are also known as bounded lattices.</a>
+<a id="5501" class="Comment">-- Note that the BoundedLattice necessarily uses the notation inherited</a>
+<a id="5573" class="Comment">-- from monoids rather than lattices.</a>
+
+<a id="BoundedLattice"></a><a id="5612" href="Algebra.Bundles.html#5612" class="Function">BoundedLattice</a> <a id="5627" class="Symbol">=</a> <a id="5629" href="Algebra.Bundles.html#4769" class="Record">IdempotentCommutativeMonoid</a>
+
+<a id="5658" class="Keyword">module</a> <a id="BoundedLattice"></a><a id="5665" href="Algebra.Bundles.html#5665" class="Module">BoundedLattice</a> <a id="5680" class="Symbol">{</a><a id="5681" href="Algebra.Bundles.html#5681" class="Bound">c</a> <a id="5683" href="Algebra.Bundles.html#5683" class="Bound">ℓ</a><a id="5684" class="Symbol">}</a> <a id="5686" class="Symbol">(</a><a id="5687" href="Algebra.Bundles.html#5687" class="Bound">idemCommMonoid</a> <a id="5702" class="Symbol">:</a> <a id="5704" href="Algebra.Bundles.html#4769" class="Record">IdempotentCommutativeMonoid</a> <a id="5732" href="Algebra.Bundles.html#5681" class="Bound">c</a> <a id="5734" href="Algebra.Bundles.html#5683" class="Bound">ℓ</a><a id="5735" class="Symbol">)</a> <a id="5737" class="Symbol">=</a>
+       <a id="5746" href="Algebra.Bundles.html#4769" class="Module">IdempotentCommutativeMonoid</a> <a id="5774" href="Algebra.Bundles.html#5687" class="Bound">idemCommMonoid</a>
+
+
+<a id="5791" class="Comment">------------------------------------------------------------------------</a>
+<a id="5864" class="Comment">-- Bundles with 1 binary operation, 1 unary operation &amp; 1 element</a>
+<a id="5930" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="6004" class="Keyword">record</a> <a id="RawGroup"></a><a id="6011" href="Algebra.Bundles.html#6011" class="Record">RawGroup</a> <a id="6020" href="Algebra.Bundles.html#6020" class="Bound">c</a> <a id="6022" href="Algebra.Bundles.html#6022" class="Bound">ℓ</a> <a id="6024" class="Symbol">:</a> <a id="6026" class="PrimitiveType">Set</a> <a id="6030" class="Symbol">(</a><a id="6031" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="6035" class="Symbol">(</a><a id="6036" href="Algebra.Bundles.html#6020" class="Bound">c</a> <a id="6038" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="6040" href="Algebra.Bundles.html#6022" class="Bound">ℓ</a><a id="6041" class="Symbol">))</a> <a id="6044" class="Keyword">where</a>
+  <a id="6052" class="Keyword">infix</a>  <a id="6059" class="Number">8</a> <a id="6061" href="Algebra.Bundles.html#6203" class="Field Operator">_⁻¹</a>
+  <a id="6067" class="Keyword">infixl</a> <a id="6074" class="Number">7</a> <a id="6076" href="Algebra.Bundles.html#6155" class="Field Operator">_∙_</a>
+  <a id="6082" class="Keyword">infix</a>  <a id="6089" class="Number">4</a> <a id="6091" href="Algebra.Bundles.html#6127" class="Field Operator">_≈_</a>
+  <a id="6097" class="Keyword">field</a>
+    <a id="RawGroup.Carrier"></a><a id="6107" href="Algebra.Bundles.html#6107" class="Field">Carrier</a> <a id="6115" class="Symbol">:</a> <a id="6117" class="PrimitiveType">Set</a> <a id="6121" href="Algebra.Bundles.html#6020" class="Bound">c</a>
+    <a id="RawGroup._≈_"></a><a id="6127" href="Algebra.Bundles.html#6127" class="Field Operator">_≈_</a>     <a id="6135" class="Symbol">:</a> <a id="6137" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="6141" href="Algebra.Bundles.html#6107" class="Field">Carrier</a> <a id="6149" href="Algebra.Bundles.html#6022" class="Bound">ℓ</a>
+    <a id="RawGroup._∙_"></a><a id="6155" href="Algebra.Bundles.html#6155" class="Field Operator">_∙_</a>     <a id="6163" class="Symbol">:</a> <a id="6165" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="6169" href="Algebra.Bundles.html#6107" class="Field">Carrier</a>
+    <a id="RawGroup.ε"></a><a id="6181" href="Algebra.Bundles.html#6181" class="Field">ε</a>       <a id="6189" class="Symbol">:</a> <a id="6191" href="Algebra.Bundles.html#6107" class="Field">Carrier</a>
+    <a id="RawGroup._⁻¹"></a><a id="6203" href="Algebra.Bundles.html#6203" class="Field Operator">_⁻¹</a>     <a id="6211" class="Symbol">:</a> <a id="6213" href="Algebra.Core.html#475" class="Function">Op₁</a> <a id="6217" href="Algebra.Bundles.html#6107" class="Field">Carrier</a>
+
+  <a id="RawGroup.rawMonoid"></a><a id="6228" href="Algebra.Bundles.html#6228" class="Function">rawMonoid</a> <a id="6238" class="Symbol">:</a> <a id="6240" href="Algebra.Bundles.html#3405" class="Record">RawMonoid</a> <a id="6250" href="Algebra.Bundles.html#6020" class="Bound">c</a> <a id="6252" href="Algebra.Bundles.html#6022" class="Bound">ℓ</a>
+  <a id="6256" href="Algebra.Bundles.html#6228" class="Function">rawMonoid</a> <a id="6266" class="Symbol">=</a> <a id="6268" class="Keyword">record</a>
+    <a id="6279" class="Symbol">{</a> <a id="6281" href="Algebra.Bundles.html#3507" class="Field Operator">_≈_</a> <a id="6285" class="Symbol">=</a> <a id="6287" href="Algebra.Bundles.html#6127" class="Field Operator">_≈_</a>
+    <a id="6295" class="Symbol">;</a> <a id="6297" href="Algebra.Bundles.html#3535" class="Field Operator">_∙_</a> <a id="6301" class="Symbol">=</a> <a id="6303" href="Algebra.Bundles.html#6155" class="Field Operator">_∙_</a>
+    <a id="6311" class="Symbol">;</a> <a id="6313" href="Algebra.Bundles.html#3561" class="Field">ε</a>   <a id="6317" class="Symbol">=</a> <a id="6319" href="Algebra.Bundles.html#6181" class="Field">ε</a>
+    <a id="6325" class="Symbol">}</a>
+
+  <a id="6330" class="Keyword">open</a> <a id="6335" href="Algebra.Bundles.html#3405" class="Module">RawMonoid</a> <a id="6345" href="Algebra.Bundles.html#6228" class="Function">rawMonoid</a> <a id="6355" class="Keyword">public</a>
+    <a id="6366" class="Keyword">using</a> <a id="6372" class="Symbol">(</a>rawMagma<a id="6381" class="Symbol">)</a>
+
+
+<a id="6385" class="Keyword">record</a> <a id="Group"></a><a id="6392" href="Algebra.Bundles.html#6392" class="Record">Group</a> <a id="6398" href="Algebra.Bundles.html#6398" class="Bound">c</a> <a id="6400" href="Algebra.Bundles.html#6400" class="Bound">ℓ</a> <a id="6402" class="Symbol">:</a> <a id="6404" class="PrimitiveType">Set</a> <a id="6408" class="Symbol">(</a><a id="6409" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="6413" class="Symbol">(</a><a id="6414" href="Algebra.Bundles.html#6398" class="Bound">c</a> <a id="6416" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="6418" href="Algebra.Bundles.html#6400" class="Bound">ℓ</a><a id="6419" class="Symbol">))</a> <a id="6422" class="Keyword">where</a>
+  <a id="6430" class="Keyword">infix</a>  <a id="6437" class="Number">8</a> <a id="6439" href="Algebra.Bundles.html#6581" class="Field Operator">_⁻¹</a>
+  <a id="6445" class="Keyword">infixl</a> <a id="6452" class="Number">7</a> <a id="6454" href="Algebra.Bundles.html#6533" class="Field Operator">_∙_</a>
+  <a id="6460" class="Keyword">infix</a>  <a id="6467" class="Number">4</a> <a id="6469" href="Algebra.Bundles.html#6505" class="Field Operator">_≈_</a>
+  <a id="6475" class="Keyword">field</a>
+    <a id="Group.Carrier"></a><a id="6485" href="Algebra.Bundles.html#6485" class="Field">Carrier</a> <a id="6493" class="Symbol">:</a> <a id="6495" class="PrimitiveType">Set</a> <a id="6499" href="Algebra.Bundles.html#6398" class="Bound">c</a>
+    <a id="Group._≈_"></a><a id="6505" href="Algebra.Bundles.html#6505" class="Field Operator">_≈_</a>     <a id="6513" class="Symbol">:</a> <a id="6515" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="6519" href="Algebra.Bundles.html#6485" class="Field">Carrier</a> <a id="6527" href="Algebra.Bundles.html#6400" class="Bound">ℓ</a>
+    <a id="Group._∙_"></a><a id="6533" href="Algebra.Bundles.html#6533" class="Field Operator">_∙_</a>     <a id="6541" class="Symbol">:</a> <a id="6543" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="6547" href="Algebra.Bundles.html#6485" class="Field">Carrier</a>
+    <a id="Group.ε"></a><a id="6559" href="Algebra.Bundles.html#6559" class="Field">ε</a>       <a id="6567" class="Symbol">:</a> <a id="6569" href="Algebra.Bundles.html#6485" class="Field">Carrier</a>
+    <a id="Group._⁻¹"></a><a id="6581" href="Algebra.Bundles.html#6581" class="Field Operator">_⁻¹</a>     <a id="6589" class="Symbol">:</a> <a id="6591" href="Algebra.Core.html#475" class="Function">Op₁</a> <a id="6595" href="Algebra.Bundles.html#6485" class="Field">Carrier</a>
+    <a id="Group.isGroup"></a><a id="6607" href="Algebra.Bundles.html#6607" class="Field">isGroup</a> <a id="6615" class="Symbol">:</a> <a id="6617" href="Algebra.Structures.html#4051" class="Record">IsGroup</a> <a id="6625" href="Algebra.Bundles.html#6505" class="Field Operator">_≈_</a> <a id="6629" href="Algebra.Bundles.html#6533" class="Field Operator">_∙_</a> <a id="6633" href="Algebra.Bundles.html#6559" class="Field">ε</a> <a id="6635" href="Algebra.Bundles.html#6581" class="Field Operator">_⁻¹</a>
+
+  <a id="6642" class="Keyword">open</a> <a id="6647" href="Algebra.Structures.html#4051" class="Module">IsGroup</a> <a id="6655" href="Algebra.Bundles.html#6607" class="Field">isGroup</a> <a id="6663" class="Keyword">public</a>
+
+  <a id="Group.rawGroup"></a><a id="6673" href="Algebra.Bundles.html#6673" class="Function">rawGroup</a> <a id="6682" class="Symbol">:</a> <a id="6684" href="Algebra.Bundles.html#6011" class="Record">RawGroup</a> <a id="6693" class="Symbol">_</a> <a id="6695" class="Symbol">_</a>
+  <a id="6699" href="Algebra.Bundles.html#6673" class="Function">rawGroup</a> <a id="6708" class="Symbol">=</a> <a id="6710" class="Keyword">record</a> <a id="6717" class="Symbol">{</a> <a id="6719" href="Algebra.Bundles.html#6127" class="Field Operator">_≈_</a> <a id="6723" class="Symbol">=</a> <a id="6725" href="Algebra.Bundles.html#6505" class="Field Operator">_≈_</a><a id="6728" class="Symbol">;</a> <a id="6730" href="Algebra.Bundles.html#6155" class="Field Operator">_∙_</a> <a id="6734" class="Symbol">=</a> <a id="6736" href="Algebra.Bundles.html#6533" class="Field Operator">_∙_</a><a id="6739" class="Symbol">;</a> <a id="6741" href="Algebra.Bundles.html#6181" class="Field">ε</a> <a id="6743" class="Symbol">=</a> <a id="6745" href="Algebra.Bundles.html#6559" class="Field">ε</a><a id="6746" class="Symbol">;</a> <a id="6748" href="Algebra.Bundles.html#6203" class="Field Operator">_⁻¹</a> <a id="6752" class="Symbol">=</a> <a id="6754" href="Algebra.Bundles.html#6581" class="Field Operator">_⁻¹</a><a id="6757" class="Symbol">}</a>
+
+  <a id="Group.monoid"></a><a id="6762" href="Algebra.Bundles.html#6762" class="Function">monoid</a> <a id="6769" class="Symbol">:</a> <a id="6771" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="6778" class="Symbol">_</a> <a id="6780" class="Symbol">_</a>
+  <a id="6784" href="Algebra.Bundles.html#6762" class="Function">monoid</a> <a id="6791" class="Symbol">=</a> <a id="6793" class="Keyword">record</a> <a id="6800" class="Symbol">{</a> <a id="6802" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="6811" class="Symbol">=</a> <a id="6813" href="Algebra.Structures.html#4127" class="Function">isMonoid</a> <a id="6822" class="Symbol">}</a>
+
+  <a id="6827" class="Keyword">open</a> <a id="6832" href="Algebra.Bundles.html#3673" class="Module">Monoid</a> <a id="6839" href="Algebra.Bundles.html#6762" class="Function">monoid</a> <a id="6846" class="Keyword">public</a> <a id="6853" class="Keyword">using</a> <a id="6859" class="Symbol">(</a>rawMagma<a id="6868" class="Symbol">;</a> magma<a id="6875" class="Symbol">;</a> semigroup<a id="6886" class="Symbol">;</a> rawMonoid<a id="6897" class="Symbol">)</a>
+
+<a id="6900" class="Keyword">record</a> <a id="AbelianGroup"></a><a id="6907" href="Algebra.Bundles.html#6907" class="Record">AbelianGroup</a> <a id="6920" href="Algebra.Bundles.html#6920" class="Bound">c</a> <a id="6922" href="Algebra.Bundles.html#6922" class="Bound">ℓ</a> <a id="6924" class="Symbol">:</a> <a id="6926" class="PrimitiveType">Set</a> <a id="6930" class="Symbol">(</a><a id="6931" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="6935" class="Symbol">(</a><a id="6936" href="Algebra.Bundles.html#6920" class="Bound">c</a> <a id="6938" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="6940" href="Algebra.Bundles.html#6922" class="Bound">ℓ</a><a id="6941" class="Symbol">))</a> <a id="6944" class="Keyword">where</a>
+  <a id="6952" class="Keyword">infix</a>  <a id="6959" class="Number">8</a> <a id="6961" href="Algebra.Bundles.html#7131" class="Field Operator">_⁻¹</a>
+  <a id="6967" class="Keyword">infixl</a> <a id="6974" class="Number">7</a> <a id="6976" href="Algebra.Bundles.html#7069" class="Field Operator">_∙_</a>
+  <a id="6982" class="Keyword">infix</a>  <a id="6989" class="Number">4</a> <a id="6991" href="Algebra.Bundles.html#7034" class="Field Operator">_≈_</a>
+  <a id="6997" class="Keyword">field</a>
+    <a id="AbelianGroup.Carrier"></a><a id="7007" href="Algebra.Bundles.html#7007" class="Field">Carrier</a>        <a id="7022" class="Symbol">:</a> <a id="7024" class="PrimitiveType">Set</a> <a id="7028" href="Algebra.Bundles.html#6920" class="Bound">c</a>
+    <a id="AbelianGroup._≈_"></a><a id="7034" href="Algebra.Bundles.html#7034" class="Field Operator">_≈_</a>            <a id="7049" class="Symbol">:</a> <a id="7051" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="7055" href="Algebra.Bundles.html#7007" class="Field">Carrier</a> <a id="7063" href="Algebra.Bundles.html#6922" class="Bound">ℓ</a>
+    <a id="AbelianGroup._∙_"></a><a id="7069" href="Algebra.Bundles.html#7069" class="Field Operator">_∙_</a>            <a id="7084" class="Symbol">:</a> <a id="7086" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="7090" href="Algebra.Bundles.html#7007" class="Field">Carrier</a>
+    <a id="AbelianGroup.ε"></a><a id="7102" href="Algebra.Bundles.html#7102" class="Field">ε</a>              <a id="7117" class="Symbol">:</a> <a id="7119" href="Algebra.Bundles.html#7007" class="Field">Carrier</a>
+    <a id="AbelianGroup._⁻¹"></a><a id="7131" href="Algebra.Bundles.html#7131" class="Field Operator">_⁻¹</a>            <a id="7146" class="Symbol">:</a> <a id="7148" href="Algebra.Core.html#475" class="Function">Op₁</a> <a id="7152" href="Algebra.Bundles.html#7007" class="Field">Carrier</a>
+    <a id="AbelianGroup.isAbelianGroup"></a><a id="7164" href="Algebra.Bundles.html#7164" class="Field">isAbelianGroup</a> <a id="7179" class="Symbol">:</a> <a id="7181" href="Algebra.Structures.html#4753" class="Record">IsAbelianGroup</a> <a id="7196" href="Algebra.Bundles.html#7034" class="Field Operator">_≈_</a> <a id="7200" href="Algebra.Bundles.html#7069" class="Field Operator">_∙_</a> <a id="7204" href="Algebra.Bundles.html#7102" class="Field">ε</a> <a id="7206" href="Algebra.Bundles.html#7131" class="Field Operator">_⁻¹</a>
+
+  <a id="7213" class="Keyword">open</a> <a id="7218" href="Algebra.Structures.html#4753" class="Module">IsAbelianGroup</a> <a id="7233" href="Algebra.Bundles.html#7164" class="Field">isAbelianGroup</a> <a id="7248" class="Keyword">public</a>
+
+  <a id="AbelianGroup.group"></a><a id="7258" href="Algebra.Bundles.html#7258" class="Function">group</a> <a id="7264" class="Symbol">:</a> <a id="7266" href="Algebra.Bundles.html#6392" class="Record">Group</a> <a id="7272" class="Symbol">_</a> <a id="7274" class="Symbol">_</a>
+  <a id="7278" href="Algebra.Bundles.html#7258" class="Function">group</a> <a id="7284" class="Symbol">=</a> <a id="7286" class="Keyword">record</a> <a id="7293" class="Symbol">{</a> <a id="7295" href="Algebra.Bundles.html#6607" class="Field">isGroup</a> <a id="7303" class="Symbol">=</a> <a id="7305" href="Algebra.Structures.html#4855" class="Function">isGroup</a> <a id="7313" class="Symbol">}</a>
+
+  <a id="7318" class="Keyword">open</a> <a id="7323" href="Algebra.Bundles.html#6392" class="Module">Group</a> <a id="7329" href="Algebra.Bundles.html#7258" class="Function">group</a> <a id="7335" class="Keyword">public</a>
+    <a id="7346" class="Keyword">using</a> <a id="7352" class="Symbol">(</a>rawMagma<a id="7361" class="Symbol">;</a> magma<a id="7368" class="Symbol">;</a> semigroup<a id="7379" class="Symbol">;</a> monoid<a id="7387" class="Symbol">;</a> rawMonoid<a id="7398" class="Symbol">;</a> rawGroup<a id="7408" class="Symbol">)</a>
+
+  <a id="AbelianGroup.commutativeMonoid"></a><a id="7413" href="Algebra.Bundles.html#7413" class="Function">commutativeMonoid</a> <a id="7431" class="Symbol">:</a> <a id="7433" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="7451" class="Symbol">_</a> <a id="7453" class="Symbol">_</a>
+  <a id="7457" href="Algebra.Bundles.html#7413" class="Function">commutativeMonoid</a> <a id="7475" class="Symbol">=</a> <a id="7477" class="Keyword">record</a> <a id="7484" class="Symbol">{</a> <a id="7486" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="7506" class="Symbol">=</a> <a id="7508" href="Algebra.Structures.html#4942" class="Function">isCommutativeMonoid</a> <a id="7528" class="Symbol">}</a>
+
+  <a id="7533" class="Keyword">open</a> <a id="7538" href="Algebra.Bundles.html#4144" class="Module">CommutativeMonoid</a> <a id="7556" href="Algebra.Bundles.html#7413" class="Function">commutativeMonoid</a> <a id="7574" class="Keyword">public</a>
+    <a id="7585" class="Keyword">using</a> <a id="7591" class="Symbol">(</a>commutativeSemigroup<a id="7612" class="Symbol">)</a>
+
+
+<a id="7616" class="Comment">------------------------------------------------------------------------</a>
+<a id="7689" class="Comment">-- Bundles with 2 binary operations</a>
+<a id="7725" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="7799" class="Keyword">record</a> <a id="Lattice"></a><a id="7806" href="Algebra.Bundles.html#7806" class="Record">Lattice</a> <a id="7814" href="Algebra.Bundles.html#7814" class="Bound">c</a> <a id="7816" href="Algebra.Bundles.html#7816" class="Bound">ℓ</a> <a id="7818" class="Symbol">:</a> <a id="7820" class="PrimitiveType">Set</a> <a id="7824" class="Symbol">(</a><a id="7825" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="7829" class="Symbol">(</a><a id="7830" href="Algebra.Bundles.html#7814" class="Bound">c</a> <a id="7832" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="7834" href="Algebra.Bundles.html#7816" class="Bound">ℓ</a><a id="7835" class="Symbol">))</a> <a id="7838" class="Keyword">where</a>
+  <a id="7846" class="Keyword">infixr</a> <a id="7853" class="Number">7</a> <a id="7855" href="Algebra.Bundles.html#7981" class="Field Operator">_∧_</a>
+  <a id="7861" class="Keyword">infixr</a> <a id="7868" class="Number">6</a> <a id="7870" href="Algebra.Bundles.html#7953" class="Field Operator">_∨_</a>
+  <a id="7876" class="Keyword">infix</a>  <a id="7883" class="Number">4</a> <a id="7885" href="Algebra.Bundles.html#7923" class="Field Operator">_≈_</a>
+  <a id="7891" class="Keyword">field</a>
+    <a id="Lattice.Carrier"></a><a id="7901" href="Algebra.Bundles.html#7901" class="Field">Carrier</a>   <a id="7911" class="Symbol">:</a> <a id="7913" class="PrimitiveType">Set</a> <a id="7917" href="Algebra.Bundles.html#7814" class="Bound">c</a>
+    <a id="Lattice._≈_"></a><a id="7923" href="Algebra.Bundles.html#7923" class="Field Operator">_≈_</a>       <a id="7933" class="Symbol">:</a> <a id="7935" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="7939" href="Algebra.Bundles.html#7901" class="Field">Carrier</a> <a id="7947" href="Algebra.Bundles.html#7816" class="Bound">ℓ</a>
+    <a id="Lattice._∨_"></a><a id="7953" href="Algebra.Bundles.html#7953" class="Field Operator">_∨_</a>       <a id="7963" class="Symbol">:</a> <a id="7965" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="7969" href="Algebra.Bundles.html#7901" class="Field">Carrier</a>
+    <a id="Lattice._∧_"></a><a id="7981" href="Algebra.Bundles.html#7981" class="Field Operator">_∧_</a>       <a id="7991" class="Symbol">:</a> <a id="7993" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="7997" href="Algebra.Bundles.html#7901" class="Field">Carrier</a>
+    <a id="Lattice.isLattice"></a><a id="8009" href="Algebra.Bundles.html#8009" class="Field">isLattice</a> <a id="8019" class="Symbol">:</a> <a id="8021" href="Algebra.Structures.html#5731" class="Record">IsLattice</a> <a id="8031" href="Algebra.Bundles.html#7923" class="Field Operator">_≈_</a> <a id="8035" href="Algebra.Bundles.html#7953" class="Field Operator">_∨_</a> <a id="8039" href="Algebra.Bundles.html#7981" class="Field Operator">_∧_</a>
+
+  <a id="8046" class="Keyword">open</a> <a id="8051" href="Algebra.Structures.html#5731" class="Module">IsLattice</a> <a id="8061" href="Algebra.Bundles.html#8009" class="Field">isLattice</a> <a id="8071" class="Keyword">public</a>
+
+  <a id="Lattice.setoid"></a><a id="8081" href="Algebra.Bundles.html#8081" class="Function">setoid</a> <a id="8088" class="Symbol">:</a> <a id="8090" href="Relation.Binary.Bundles.html#995" class="Record">Setoid</a> <a id="8097" class="Symbol">_</a> <a id="8099" class="Symbol">_</a>
+  <a id="8103" href="Algebra.Bundles.html#8081" class="Function">setoid</a> <a id="8110" class="Symbol">=</a> <a id="8112" class="Keyword">record</a> <a id="8119" class="Symbol">{</a> <a id="8121" href="Relation.Binary.Bundles.html#1118" class="Field">isEquivalence</a> <a id="8135" class="Symbol">=</a> <a id="8137" href="Algebra.Structures.html#5787" class="Function">isEquivalence</a> <a id="8151" class="Symbol">}</a>
+
+
+<a id="8155" class="Keyword">record</a> <a id="DistributiveLattice"></a><a id="8162" href="Algebra.Bundles.html#8162" class="Record">DistributiveLattice</a> <a id="8182" href="Algebra.Bundles.html#8182" class="Bound">c</a> <a id="8184" href="Algebra.Bundles.html#8184" class="Bound">ℓ</a> <a id="8186" class="Symbol">:</a> <a id="8188" class="PrimitiveType">Set</a> <a id="8192" class="Symbol">(</a><a id="8193" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="8197" class="Symbol">(</a><a id="8198" href="Algebra.Bundles.html#8182" class="Bound">c</a> <a id="8200" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="8202" href="Algebra.Bundles.html#8184" class="Bound">ℓ</a><a id="8203" class="Symbol">))</a> <a id="8206" class="Keyword">where</a>
+  <a id="8214" class="Keyword">infixr</a> <a id="8221" class="Number">7</a> <a id="8223" href="Algebra.Bundles.html#8385" class="Field Operator">_∧_</a>
+  <a id="8229" class="Keyword">infixr</a> <a id="8236" class="Number">6</a> <a id="8238" href="Algebra.Bundles.html#8345" class="Field Operator">_∨_</a>
+  <a id="8244" class="Keyword">infix</a>  <a id="8251" class="Number">4</a> <a id="8253" href="Algebra.Bundles.html#8303" class="Field Operator">_≈_</a>
+  <a id="8259" class="Keyword">field</a>
+    <a id="DistributiveLattice.Carrier"></a><a id="8269" href="Algebra.Bundles.html#8269" class="Field">Carrier</a>               <a id="8291" class="Symbol">:</a> <a id="8293" class="PrimitiveType">Set</a> <a id="8297" href="Algebra.Bundles.html#8182" class="Bound">c</a>
+    <a id="DistributiveLattice._≈_"></a><a id="8303" href="Algebra.Bundles.html#8303" class="Field Operator">_≈_</a>                   <a id="8325" class="Symbol">:</a> <a id="8327" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="8331" href="Algebra.Bundles.html#8269" class="Field">Carrier</a> <a id="8339" href="Algebra.Bundles.html#8184" class="Bound">ℓ</a>
+    <a id="DistributiveLattice._∨_"></a><a id="8345" href="Algebra.Bundles.html#8345" class="Field Operator">_∨_</a>                   <a id="8367" class="Symbol">:</a> <a id="8369" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="8373" href="Algebra.Bundles.html#8269" class="Field">Carrier</a>
+    <a id="DistributiveLattice._∧_"></a><a id="8385" href="Algebra.Bundles.html#8385" class="Field Operator">_∧_</a>                   <a id="8407" class="Symbol">:</a> <a id="8409" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="8413" href="Algebra.Bundles.html#8269" class="Field">Carrier</a>
+    <a id="DistributiveLattice.isDistributiveLattice"></a><a id="8425" href="Algebra.Bundles.html#8425" class="Field">isDistributiveLattice</a> <a id="8447" class="Symbol">:</a> <a id="8449" href="Algebra.Structures.html#6480" class="Record">IsDistributiveLattice</a> <a id="8471" href="Algebra.Bundles.html#8303" class="Field Operator">_≈_</a> <a id="8475" href="Algebra.Bundles.html#8345" class="Field Operator">_∨_</a> <a id="8479" href="Algebra.Bundles.html#8385" class="Field Operator">_∧_</a>
+
+  <a id="8486" class="Keyword">open</a> <a id="8491" href="Algebra.Structures.html#6480" class="Module">IsDistributiveLattice</a> <a id="8513" href="Algebra.Bundles.html#8425" class="Field">isDistributiveLattice</a> <a id="8535" class="Keyword">public</a>
+
+  <a id="DistributiveLattice.lattice"></a><a id="8545" href="Algebra.Bundles.html#8545" class="Function">lattice</a> <a id="8553" class="Symbol">:</a> <a id="8555" href="Algebra.Bundles.html#7806" class="Record">Lattice</a> <a id="8563" class="Symbol">_</a> <a id="8565" class="Symbol">_</a>
+  <a id="8569" href="Algebra.Bundles.html#8545" class="Function">lattice</a> <a id="8577" class="Symbol">=</a> <a id="8579" class="Keyword">record</a> <a id="8586" class="Symbol">{</a> <a id="8588" href="Algebra.Bundles.html#8009" class="Field">isLattice</a> <a id="8598" class="Symbol">=</a> <a id="8600" href="Algebra.Structures.html#6548" class="Function">isLattice</a> <a id="8610" class="Symbol">}</a>
+
+  <a id="8615" class="Keyword">open</a> <a id="8620" href="Algebra.Bundles.html#7806" class="Module">Lattice</a> <a id="8628" href="Algebra.Bundles.html#8545" class="Function">lattice</a> <a id="8636" class="Keyword">public</a> <a id="8643" class="Keyword">using</a> <a id="8649" class="Symbol">(</a>setoid<a id="8656" class="Symbol">)</a>
+
+
+<a id="8660" class="Comment">------------------------------------------------------------------------</a>
+<a id="8733" class="Comment">-- Bundles with 2 binary operations &amp; 1 element</a>
+<a id="8781" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="8855" class="Keyword">record</a> <a id="NearSemiring"></a><a id="8862" href="Algebra.Bundles.html#8862" class="Record">NearSemiring</a> <a id="8875" href="Algebra.Bundles.html#8875" class="Bound">c</a> <a id="8877" href="Algebra.Bundles.html#8877" class="Bound">ℓ</a> <a id="8879" class="Symbol">:</a> <a id="8881" class="PrimitiveType">Set</a> <a id="8885" class="Symbol">(</a><a id="8886" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="8890" class="Symbol">(</a><a id="8891" href="Algebra.Bundles.html#8875" class="Bound">c</a> <a id="8893" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="8895" href="Algebra.Bundles.html#8877" class="Bound">ℓ</a><a id="8896" class="Symbol">))</a> <a id="8899" class="Keyword">where</a>
+  <a id="8907" class="Keyword">infixl</a> <a id="8914" class="Number">7</a> <a id="8916" href="Algebra.Bundles.html#9057" class="Field Operator">_*_</a>
+  <a id="8922" class="Keyword">infixl</a> <a id="8929" class="Number">6</a> <a id="8931" href="Algebra.Bundles.html#9024" class="Field Operator">_+_</a>
+  <a id="8937" class="Keyword">infix</a>  <a id="8944" class="Number">4</a> <a id="8946" href="Algebra.Bundles.html#8989" class="Field Operator">_≈_</a>
+  <a id="8952" class="Keyword">field</a>
+    <a id="NearSemiring.Carrier"></a><a id="8962" href="Algebra.Bundles.html#8962" class="Field">Carrier</a>        <a id="8977" class="Symbol">:</a> <a id="8979" class="PrimitiveType">Set</a> <a id="8983" href="Algebra.Bundles.html#8875" class="Bound">c</a>
+    <a id="NearSemiring._≈_"></a><a id="8989" href="Algebra.Bundles.html#8989" class="Field Operator">_≈_</a>            <a id="9004" class="Symbol">:</a> <a id="9006" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="9010" href="Algebra.Bundles.html#8962" class="Field">Carrier</a> <a id="9018" href="Algebra.Bundles.html#8877" class="Bound">ℓ</a>
+    <a id="NearSemiring._+_"></a><a id="9024" href="Algebra.Bundles.html#9024" class="Field Operator">_+_</a>            <a id="9039" class="Symbol">:</a> <a id="9041" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="9045" href="Algebra.Bundles.html#8962" class="Field">Carrier</a>
+    <a id="NearSemiring._*_"></a><a id="9057" href="Algebra.Bundles.html#9057" class="Field Operator">_*_</a>            <a id="9072" class="Symbol">:</a> <a id="9074" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="9078" href="Algebra.Bundles.html#8962" class="Field">Carrier</a>
+    <a id="NearSemiring.0#"></a><a id="9090" href="Algebra.Bundles.html#9090" class="Field">0#</a>             <a id="9105" class="Symbol">:</a> <a id="9107" href="Algebra.Bundles.html#8962" class="Field">Carrier</a>
+    <a id="NearSemiring.isNearSemiring"></a><a id="9119" href="Algebra.Bundles.html#9119" class="Field">isNearSemiring</a> <a id="9134" class="Symbol">:</a> <a id="9136" href="Algebra.Structures.html#7016" class="Record">IsNearSemiring</a> <a id="9151" href="Algebra.Bundles.html#8989" class="Field Operator">_≈_</a> <a id="9155" href="Algebra.Bundles.html#9024" class="Field Operator">_+_</a> <a id="9159" href="Algebra.Bundles.html#9057" class="Field Operator">_*_</a> <a id="9163" href="Algebra.Bundles.html#9090" class="Field">0#</a>
+
+  <a id="9169" class="Keyword">open</a> <a id="9174" href="Algebra.Structures.html#7016" class="Module">IsNearSemiring</a> <a id="9189" href="Algebra.Bundles.html#9119" class="Field">isNearSemiring</a> <a id="9204" class="Keyword">public</a>
+
+  <a id="NearSemiring.+-monoid"></a><a id="9214" href="Algebra.Bundles.html#9214" class="Function">+-monoid</a> <a id="9223" class="Symbol">:</a> <a id="9225" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="9232" class="Symbol">_</a> <a id="9234" class="Symbol">_</a>
+  <a id="9238" href="Algebra.Bundles.html#9214" class="Function">+-monoid</a> <a id="9247" class="Symbol">=</a> <a id="9249" class="Keyword">record</a> <a id="9256" class="Symbol">{</a> <a id="9258" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="9267" class="Symbol">=</a> <a id="9269" href="Algebra.Structures.html#7086" class="Function">+-isMonoid</a> <a id="9280" class="Symbol">}</a>
+
+  <a id="9285" class="Keyword">open</a> <a id="9290" href="Algebra.Bundles.html#3673" class="Module">Monoid</a> <a id="9297" href="Algebra.Bundles.html#9214" class="Function">+-monoid</a> <a id="9306" class="Keyword">public</a>
+    <a id="9317" class="Keyword">using</a> <a id="9323" class="Symbol">()</a> <a id="9326" class="Keyword">renaming</a>
+    <a id="9339" class="Symbol">(</a> rawMagma  <a id="9351" class="Symbol">to</a> +-rawMagma
+    <a id="9369" class="Symbol">;</a> magma     <a id="9381" class="Symbol">to</a> +-magma
+    <a id="9396" class="Symbol">;</a> semigroup <a id="9408" class="Symbol">to</a> +-semigroup
+    <a id="9427" class="Symbol">;</a> rawMonoid <a id="9439" class="Symbol">to</a> +-rawMonoid
+    <a id="9458" class="Symbol">)</a>
+
+  <a id="NearSemiring.*-semigroup"></a><a id="9463" href="Algebra.Bundles.html#9463" class="Function">*-semigroup</a> <a id="9475" class="Symbol">:</a> <a id="9477" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="9487" class="Symbol">_</a> <a id="9489" class="Symbol">_</a>
+  <a id="9493" href="Algebra.Bundles.html#9463" class="Function">*-semigroup</a> <a id="9505" class="Symbol">=</a> <a id="9507" class="Keyword">record</a> <a id="9514" class="Symbol">{</a> <a id="9516" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="9528" class="Symbol">=</a> <a id="9530" href="Algebra.Structures.html#7120" class="Function">*-isSemigroup</a> <a id="9544" class="Symbol">}</a>
+
+  <a id="9549" class="Keyword">open</a> <a id="9554" href="Algebra.Bundles.html#1202" class="Module">Semigroup</a> <a id="9564" href="Algebra.Bundles.html#9463" class="Function">*-semigroup</a> <a id="9576" class="Keyword">public</a>
+    <a id="9587" class="Keyword">using</a> <a id="9593" class="Symbol">()</a> <a id="9596" class="Keyword">renaming</a>
+    <a id="9609" class="Symbol">(</a> rawMagma <a id="9620" class="Symbol">to</a> *-rawMagma
+    <a id="9638" class="Symbol">;</a> magma    <a id="9649" class="Symbol">to</a> *-magma
+    <a id="9664" class="Symbol">)</a>
+
+
+<a id="9668" class="Keyword">record</a> <a id="SemiringWithoutOne"></a><a id="9675" href="Algebra.Bundles.html#9675" class="Record">SemiringWithoutOne</a> <a id="9694" href="Algebra.Bundles.html#9694" class="Bound">c</a> <a id="9696" href="Algebra.Bundles.html#9696" class="Bound">ℓ</a> <a id="9698" class="Symbol">:</a> <a id="9700" class="PrimitiveType">Set</a> <a id="9704" class="Symbol">(</a><a id="9705" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="9709" class="Symbol">(</a><a id="9710" href="Algebra.Bundles.html#9694" class="Bound">c</a> <a id="9712" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="9714" href="Algebra.Bundles.html#9696" class="Bound">ℓ</a><a id="9715" class="Symbol">))</a> <a id="9718" class="Keyword">where</a>
+  <a id="9726" class="Keyword">infixl</a> <a id="9733" class="Number">7</a> <a id="9735" href="Algebra.Bundles.html#9894" class="Field Operator">_*_</a>
+  <a id="9741" class="Keyword">infixl</a> <a id="9748" class="Number">6</a> <a id="9750" href="Algebra.Bundles.html#9855" class="Field Operator">_+_</a>
+  <a id="9756" class="Keyword">infix</a>  <a id="9763" class="Number">4</a> <a id="9765" href="Algebra.Bundles.html#9814" class="Field Operator">_≈_</a>
+  <a id="9771" class="Keyword">field</a>
+    <a id="SemiringWithoutOne.Carrier"></a><a id="9781" href="Algebra.Bundles.html#9781" class="Field">Carrier</a>              <a id="9802" class="Symbol">:</a> <a id="9804" class="PrimitiveType">Set</a> <a id="9808" href="Algebra.Bundles.html#9694" class="Bound">c</a>
+    <a id="SemiringWithoutOne._≈_"></a><a id="9814" href="Algebra.Bundles.html#9814" class="Field Operator">_≈_</a>                  <a id="9835" class="Symbol">:</a> <a id="9837" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="9841" href="Algebra.Bundles.html#9781" class="Field">Carrier</a> <a id="9849" href="Algebra.Bundles.html#9696" class="Bound">ℓ</a>
+    <a id="SemiringWithoutOne._+_"></a><a id="9855" href="Algebra.Bundles.html#9855" class="Field Operator">_+_</a>                  <a id="9876" class="Symbol">:</a> <a id="9878" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="9882" href="Algebra.Bundles.html#9781" class="Field">Carrier</a>
+    <a id="SemiringWithoutOne._*_"></a><a id="9894" href="Algebra.Bundles.html#9894" class="Field Operator">_*_</a>                  <a id="9915" class="Symbol">:</a> <a id="9917" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="9921" href="Algebra.Bundles.html#9781" class="Field">Carrier</a>
+    <a id="SemiringWithoutOne.0#"></a><a id="9933" href="Algebra.Bundles.html#9933" class="Field">0#</a>                   <a id="9954" class="Symbol">:</a> <a id="9956" href="Algebra.Bundles.html#9781" class="Field">Carrier</a>
+    <a id="SemiringWithoutOne.isSemiringWithoutOne"></a><a id="9968" href="Algebra.Bundles.html#9968" class="Field">isSemiringWithoutOne</a> <a id="9989" class="Symbol">:</a> <a id="9991" href="Algebra.Structures.html#7771" class="Record">IsSemiringWithoutOne</a> <a id="10012" href="Algebra.Bundles.html#9814" class="Field Operator">_≈_</a> <a id="10016" href="Algebra.Bundles.html#9855" class="Field Operator">_+_</a> <a id="10020" href="Algebra.Bundles.html#9894" class="Field Operator">_*_</a> <a id="10024" href="Algebra.Bundles.html#9933" class="Field">0#</a>
+
+  <a id="10030" class="Keyword">open</a> <a id="10035" href="Algebra.Structures.html#7771" class="Module">IsSemiringWithoutOne</a> <a id="10056" href="Algebra.Bundles.html#9968" class="Field">isSemiringWithoutOne</a> <a id="10077" class="Keyword">public</a>
+
+  <a id="SemiringWithoutOne.nearSemiring"></a><a id="10087" href="Algebra.Bundles.html#10087" class="Function">nearSemiring</a> <a id="10100" class="Symbol">:</a> <a id="10102" href="Algebra.Bundles.html#8862" class="Record">NearSemiring</a> <a id="10115" class="Symbol">_</a> <a id="10117" class="Symbol">_</a>
+  <a id="10121" href="Algebra.Bundles.html#10087" class="Function">nearSemiring</a> <a id="10134" class="Symbol">=</a> <a id="10136" class="Keyword">record</a> <a id="10143" class="Symbol">{</a> <a id="10145" href="Algebra.Bundles.html#9119" class="Field">isNearSemiring</a> <a id="10160" class="Symbol">=</a> <a id="10162" href="Algebra.Structures.html#8348" class="Function">isNearSemiring</a> <a id="10177" class="Symbol">}</a>
+
+  <a id="10182" class="Keyword">open</a> <a id="10187" href="Algebra.Bundles.html#8862" class="Module">NearSemiring</a> <a id="10200" href="Algebra.Bundles.html#10087" class="Function">nearSemiring</a> <a id="10213" class="Keyword">public</a>
+    <a id="10224" class="Keyword">using</a>
+    <a id="10234" class="Symbol">(</a> +-rawMagma<a id="10246" class="Symbol">;</a> +-magma<a id="10255" class="Symbol">;</a> +-semigroup
+    <a id="10273" class="Symbol">;</a> +-rawMonoid<a id="10286" class="Symbol">;</a> +-monoid
+    <a id="10301" class="Symbol">;</a> *-rawMagma<a id="10313" class="Symbol">;</a> *-magma<a id="10322" class="Symbol">;</a> *-semigroup
+    <a id="10340" class="Symbol">)</a>
+
+  <a id="SemiringWithoutOne.+-commutativeMonoid"></a><a id="10345" href="Algebra.Bundles.html#10345" class="Function">+-commutativeMonoid</a> <a id="10365" class="Symbol">:</a> <a id="10367" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="10385" class="Symbol">_</a> <a id="10387" class="Symbol">_</a>
+  <a id="10391" href="Algebra.Bundles.html#10345" class="Function">+-commutativeMonoid</a> <a id="10411" class="Symbol">=</a> <a id="10413" class="Keyword">record</a> <a id="10420" class="Symbol">{</a> <a id="10422" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="10442" class="Symbol">=</a> <a id="10444" href="Algebra.Structures.html#7847" class="Function">+-isCommutativeMonoid</a> <a id="10466" class="Symbol">}</a>
+
+  <a id="10471" class="Keyword">open</a> <a id="10476" href="Algebra.Bundles.html#4144" class="Module">CommutativeMonoid</a> <a id="10494" href="Algebra.Bundles.html#10345" class="Function">+-commutativeMonoid</a> <a id="10514" class="Keyword">public</a>
+    <a id="10525" class="Keyword">using</a> <a id="10531" class="Symbol">()</a> <a id="10534" class="Keyword">renaming</a> <a id="10543" class="Symbol">(</a>commutativeSemigroup <a id="10565" class="Symbol">to</a> +-commutativeSemigroup<a id="10590" class="Symbol">)</a>
+
+
+<a id="10594" class="Keyword">record</a> <a id="CommutativeSemiringWithoutOne"></a><a id="10601" href="Algebra.Bundles.html#10601" class="Record">CommutativeSemiringWithoutOne</a> <a id="10631" href="Algebra.Bundles.html#10631" class="Bound">c</a> <a id="10633" href="Algebra.Bundles.html#10633" class="Bound">ℓ</a> <a id="10635" class="Symbol">:</a> <a id="10637" class="PrimitiveType">Set</a> <a id="10641" class="Symbol">(</a><a id="10642" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="10646" class="Symbol">(</a><a id="10647" href="Algebra.Bundles.html#10631" class="Bound">c</a> <a id="10649" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="10651" href="Algebra.Bundles.html#10633" class="Bound">ℓ</a><a id="10652" class="Symbol">))</a> <a id="10655" class="Keyword">where</a>
+  <a id="10663" class="Keyword">infixl</a> <a id="10670" class="Number">7</a> <a id="10672" href="Algebra.Bundles.html#10864" class="Field Operator">_*_</a>
+  <a id="10678" class="Keyword">infixl</a> <a id="10685" class="Number">6</a> <a id="10687" href="Algebra.Bundles.html#10814" class="Field Operator">_+_</a>
+  <a id="10693" class="Keyword">infix</a>  <a id="10700" class="Number">4</a> <a id="10702" href="Algebra.Bundles.html#10762" class="Field Operator">_≈_</a>
+  <a id="10708" class="Keyword">field</a>
+    <a id="CommutativeSemiringWithoutOne.Carrier"></a><a id="10718" href="Algebra.Bundles.html#10718" class="Field">Carrier</a>                         <a id="10750" class="Symbol">:</a> <a id="10752" class="PrimitiveType">Set</a> <a id="10756" href="Algebra.Bundles.html#10631" class="Bound">c</a>
+    <a id="CommutativeSemiringWithoutOne._≈_"></a><a id="10762" href="Algebra.Bundles.html#10762" class="Field Operator">_≈_</a>                             <a id="10794" class="Symbol">:</a> <a id="10796" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="10800" href="Algebra.Bundles.html#10718" class="Field">Carrier</a> <a id="10808" href="Algebra.Bundles.html#10633" class="Bound">ℓ</a>
+    <a id="CommutativeSemiringWithoutOne._+_"></a><a id="10814" href="Algebra.Bundles.html#10814" class="Field Operator">_+_</a>                             <a id="10846" class="Symbol">:</a> <a id="10848" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="10852" href="Algebra.Bundles.html#10718" class="Field">Carrier</a>
+    <a id="CommutativeSemiringWithoutOne._*_"></a><a id="10864" href="Algebra.Bundles.html#10864" class="Field Operator">_*_</a>                             <a id="10896" class="Symbol">:</a> <a id="10898" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="10902" href="Algebra.Bundles.html#10718" class="Field">Carrier</a>
+    <a id="CommutativeSemiringWithoutOne.0#"></a><a id="10914" href="Algebra.Bundles.html#10914" class="Field">0#</a>                              <a id="10946" class="Symbol">:</a> <a id="10948" href="Algebra.Bundles.html#10718" class="Field">Carrier</a>
+    <a id="CommutativeSemiringWithoutOne.isCommutativeSemiringWithoutOne"></a><a id="10960" href="Algebra.Bundles.html#10960" class="Field">isCommutativeSemiringWithoutOne</a> <a id="10992" class="Symbol">:</a>
+      <a id="11000" href="Algebra.Structures.html#8652" class="Record">IsCommutativeSemiringWithoutOne</a> <a id="11032" href="Algebra.Bundles.html#10762" class="Field Operator">_≈_</a> <a id="11036" href="Algebra.Bundles.html#10814" class="Field Operator">_+_</a> <a id="11040" href="Algebra.Bundles.html#10864" class="Field Operator">_*_</a> <a id="11044" href="Algebra.Bundles.html#10914" class="Field">0#</a>
+
+  <a id="11050" class="Keyword">open</a> <a id="11055" href="Algebra.Structures.html#8652" class="Module">IsCommutativeSemiringWithoutOne</a>
+         <a id="11096" href="Algebra.Bundles.html#10960" class="Field">isCommutativeSemiringWithoutOne</a> <a id="11128" class="Keyword">public</a>
+
+  <a id="CommutativeSemiringWithoutOne.semiringWithoutOne"></a><a id="11138" href="Algebra.Bundles.html#11138" class="Function">semiringWithoutOne</a> <a id="11157" class="Symbol">:</a> <a id="11159" href="Algebra.Bundles.html#9675" class="Record">SemiringWithoutOne</a> <a id="11178" class="Symbol">_</a> <a id="11180" class="Symbol">_</a>
+  <a id="11184" href="Algebra.Bundles.html#11138" class="Function">semiringWithoutOne</a> <a id="11203" class="Symbol">=</a>
+    <a id="11209" class="Keyword">record</a> <a id="11216" class="Symbol">{</a> <a id="11218" href="Algebra.Bundles.html#9968" class="Field">isSemiringWithoutOne</a> <a id="11239" class="Symbol">=</a> <a id="11241" href="Algebra.Structures.html#8748" class="Function">isSemiringWithoutOne</a> <a id="11262" class="Symbol">}</a>
+
+  <a id="11267" class="Keyword">open</a> <a id="11272" href="Algebra.Bundles.html#9675" class="Module">SemiringWithoutOne</a> <a id="11291" href="Algebra.Bundles.html#11138" class="Function">semiringWithoutOne</a> <a id="11310" class="Keyword">public</a>
+    <a id="11321" class="Keyword">using</a>
+    <a id="11331" class="Symbol">(</a> +-rawMagma<a id="11343" class="Symbol">;</a> +-magma<a id="11352" class="Symbol">;</a> +-semigroup<a id="11365" class="Symbol">;</a> +-commutativeSemigroup
+    <a id="11394" class="Symbol">;</a> *-rawMagma<a id="11406" class="Symbol">;</a> *-magma<a id="11415" class="Symbol">;</a> *-semigroup
+    <a id="11433" class="Symbol">;</a> +-rawMonoid<a id="11446" class="Symbol">;</a> +-monoid<a id="11456" class="Symbol">;</a> +-commutativeMonoid
+    <a id="11482" class="Symbol">;</a> nearSemiring
+    <a id="11501" class="Symbol">)</a>
+
+<a id="11504" class="Comment">------------------------------------------------------------------------</a>
+<a id="11577" class="Comment">-- Bundles with 2 binary operations &amp; 2 elements</a>
+<a id="11626" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="11700" class="Keyword">record</a> <a id="RawSemiring"></a><a id="11707" href="Algebra.Bundles.html#11707" class="Record">RawSemiring</a> <a id="11719" href="Algebra.Bundles.html#11719" class="Bound">c</a> <a id="11721" href="Algebra.Bundles.html#11721" class="Bound">ℓ</a> <a id="11723" class="Symbol">:</a> <a id="11725" class="PrimitiveType">Set</a> <a id="11729" class="Symbol">(</a><a id="11730" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="11734" class="Symbol">(</a><a id="11735" href="Algebra.Bundles.html#11719" class="Bound">c</a> <a id="11737" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="11739" href="Algebra.Bundles.html#11721" class="Bound">ℓ</a><a id="11740" class="Symbol">))</a> <a id="11743" class="Keyword">where</a>
+  <a id="11751" class="Keyword">infixl</a> <a id="11758" class="Number">7</a> <a id="11760" href="Algebra.Bundles.html#11889" class="Field Operator">_*_</a>
+  <a id="11766" class="Keyword">infixl</a> <a id="11773" class="Number">6</a> <a id="11775" href="Algebra.Bundles.html#11860" class="Field Operator">_+_</a>
+  <a id="11781" class="Keyword">infix</a>  <a id="11788" class="Number">4</a> <a id="11790" href="Algebra.Bundles.html#11829" class="Field Operator">_≈_</a>
+  <a id="11796" class="Keyword">field</a>
+    <a id="RawSemiring.Carrier"></a><a id="11806" href="Algebra.Bundles.html#11806" class="Field">Carrier</a>    <a id="11817" class="Symbol">:</a> <a id="11819" class="PrimitiveType">Set</a> <a id="11823" href="Algebra.Bundles.html#11719" class="Bound">c</a>
+    <a id="RawSemiring._≈_"></a><a id="11829" href="Algebra.Bundles.html#11829" class="Field Operator">_≈_</a>        <a id="11840" class="Symbol">:</a> <a id="11842" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="11846" href="Algebra.Bundles.html#11806" class="Field">Carrier</a> <a id="11854" href="Algebra.Bundles.html#11721" class="Bound">ℓ</a>
+    <a id="RawSemiring._+_"></a><a id="11860" href="Algebra.Bundles.html#11860" class="Field Operator">_+_</a>        <a id="11871" class="Symbol">:</a> <a id="11873" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="11877" href="Algebra.Bundles.html#11806" class="Field">Carrier</a>
+    <a id="RawSemiring._*_"></a><a id="11889" href="Algebra.Bundles.html#11889" class="Field Operator">_*_</a>        <a id="11900" class="Symbol">:</a> <a id="11902" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="11906" href="Algebra.Bundles.html#11806" class="Field">Carrier</a>
+    <a id="RawSemiring.0#"></a><a id="11918" href="Algebra.Bundles.html#11918" class="Field">0#</a>         <a id="11929" class="Symbol">:</a> <a id="11931" href="Algebra.Bundles.html#11806" class="Field">Carrier</a>
+    <a id="RawSemiring.1#"></a><a id="11943" href="Algebra.Bundles.html#11943" class="Field">1#</a>         <a id="11954" class="Symbol">:</a> <a id="11956" href="Algebra.Bundles.html#11806" class="Field">Carrier</a>
+
+
+<a id="11966" class="Keyword">record</a> <a id="SemiringWithoutAnnihilatingZero"></a><a id="11973" href="Algebra.Bundles.html#11973" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="12005" href="Algebra.Bundles.html#12005" class="Bound">c</a> <a id="12007" href="Algebra.Bundles.html#12007" class="Bound">ℓ</a> <a id="12009" class="Symbol">:</a> <a id="12011" class="PrimitiveType">Set</a> <a id="12015" class="Symbol">(</a><a id="12016" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="12020" class="Symbol">(</a><a id="12021" href="Algebra.Bundles.html#12005" class="Bound">c</a> <a id="12023" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="12025" href="Algebra.Bundles.html#12007" class="Bound">ℓ</a><a id="12026" class="Symbol">))</a> <a id="12029" class="Keyword">where</a>
+  <a id="12037" class="Keyword">infixl</a> <a id="12044" class="Number">7</a> <a id="12046" href="Algebra.Bundles.html#12244" class="Field Operator">_*_</a>
+  <a id="12052" class="Keyword">infixl</a> <a id="12059" class="Number">6</a> <a id="12061" href="Algebra.Bundles.html#12192" class="Field Operator">_+_</a>
+  <a id="12067" class="Keyword">infix</a>  <a id="12074" class="Number">4</a> <a id="12076" href="Algebra.Bundles.html#12138" class="Field Operator">_≈_</a>
+  <a id="12082" class="Keyword">field</a>
+    <a id="SemiringWithoutAnnihilatingZero.Carrier"></a><a id="12092" href="Algebra.Bundles.html#12092" class="Field">Carrier</a>                           <a id="12126" class="Symbol">:</a> <a id="12128" class="PrimitiveType">Set</a> <a id="12132" href="Algebra.Bundles.html#12005" class="Bound">c</a>
+    <a id="SemiringWithoutAnnihilatingZero._≈_"></a><a id="12138" href="Algebra.Bundles.html#12138" class="Field Operator">_≈_</a>                               <a id="12172" class="Symbol">:</a> <a id="12174" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="12178" href="Algebra.Bundles.html#12092" class="Field">Carrier</a> <a id="12186" href="Algebra.Bundles.html#12007" class="Bound">ℓ</a>
+    <a id="SemiringWithoutAnnihilatingZero._+_"></a><a id="12192" href="Algebra.Bundles.html#12192" class="Field Operator">_+_</a>                               <a id="12226" class="Symbol">:</a> <a id="12228" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="12232" href="Algebra.Bundles.html#12092" class="Field">Carrier</a>
+    <a id="SemiringWithoutAnnihilatingZero._*_"></a><a id="12244" href="Algebra.Bundles.html#12244" class="Field Operator">_*_</a>                               <a id="12278" class="Symbol">:</a> <a id="12280" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="12284" href="Algebra.Bundles.html#12092" class="Field">Carrier</a>
+    <a id="SemiringWithoutAnnihilatingZero.0#"></a><a id="12296" href="Algebra.Bundles.html#12296" class="Field">0#</a>                                <a id="12330" class="Symbol">:</a> <a id="12332" href="Algebra.Bundles.html#12092" class="Field">Carrier</a>
+    <a id="SemiringWithoutAnnihilatingZero.1#"></a><a id="12344" href="Algebra.Bundles.html#12344" class="Field">1#</a>                                <a id="12378" class="Symbol">:</a> <a id="12380" href="Algebra.Bundles.html#12092" class="Field">Carrier</a>
+    <a id="SemiringWithoutAnnihilatingZero.isSemiringWithoutAnnihilatingZero"></a><a id="12392" href="Algebra.Bundles.html#12392" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="12426" class="Symbol">:</a>
+      <a id="12434" href="Algebra.Structures.html#9105" class="Record">IsSemiringWithoutAnnihilatingZero</a> <a id="12468" href="Algebra.Bundles.html#12138" class="Field Operator">_≈_</a> <a id="12472" href="Algebra.Bundles.html#12192" class="Field Operator">_+_</a> <a id="12476" href="Algebra.Bundles.html#12244" class="Field Operator">_*_</a> <a id="12480" href="Algebra.Bundles.html#12296" class="Field">0#</a> <a id="12483" href="Algebra.Bundles.html#12344" class="Field">1#</a>
+
+  <a id="12489" class="Keyword">open</a> <a id="12494" href="Algebra.Structures.html#9105" class="Module">IsSemiringWithoutAnnihilatingZero</a>
+         <a id="12537" href="Algebra.Bundles.html#12392" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="12571" class="Keyword">public</a>
+
+  <a id="SemiringWithoutAnnihilatingZero.+-commutativeMonoid"></a><a id="12581" href="Algebra.Bundles.html#12581" class="Function">+-commutativeMonoid</a> <a id="12601" class="Symbol">:</a> <a id="12603" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="12621" class="Symbol">_</a> <a id="12623" class="Symbol">_</a>
+  <a id="12627" href="Algebra.Bundles.html#12581" class="Function">+-commutativeMonoid</a> <a id="12647" class="Symbol">=</a>
+    <a id="12653" class="Keyword">record</a> <a id="12660" class="Symbol">{</a> <a id="12662" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="12682" class="Symbol">=</a> <a id="12684" href="Algebra.Structures.html#9367" class="Function">+-isCommutativeMonoid</a> <a id="12706" class="Symbol">}</a>
+
+  <a id="12711" class="Keyword">open</a> <a id="12716" href="Algebra.Bundles.html#4144" class="Module">CommutativeMonoid</a> <a id="12734" href="Algebra.Bundles.html#12581" class="Function">+-commutativeMonoid</a> <a id="12754" class="Keyword">public</a>
+    <a id="12765" class="Keyword">using</a> <a id="12771" class="Symbol">()</a> <a id="12774" class="Keyword">renaming</a>
+    <a id="12787" class="Symbol">(</a> rawMagma             <a id="12810" class="Symbol">to</a> +-rawMagma
+    <a id="12828" class="Symbol">;</a> magma                <a id="12851" class="Symbol">to</a> +-magma
+    <a id="12866" class="Symbol">;</a> semigroup            <a id="12889" class="Symbol">to</a> +-semigroup
+    <a id="12908" class="Symbol">;</a> commutativeSemigroup <a id="12931" class="Symbol">to</a> +-commutativeSemigroup
+    <a id="12961" class="Symbol">;</a> rawMonoid            <a id="12984" class="Symbol">to</a> +-rawMonoid
+    <a id="13003" class="Symbol">;</a> monoid               <a id="13026" class="Symbol">to</a> +-monoid
+    <a id="13042" class="Symbol">)</a>
+
+  <a id="SemiringWithoutAnnihilatingZero.*-monoid"></a><a id="13047" href="Algebra.Bundles.html#13047" class="Function">*-monoid</a> <a id="13056" class="Symbol">:</a> <a id="13058" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="13065" class="Symbol">_</a> <a id="13067" class="Symbol">_</a>
+  <a id="13071" href="Algebra.Bundles.html#13047" class="Function">*-monoid</a> <a id="13080" class="Symbol">=</a> <a id="13082" class="Keyword">record</a> <a id="13089" class="Symbol">{</a> <a id="13091" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="13100" class="Symbol">=</a> <a id="13102" href="Algebra.Structures.html#9420" class="Function">*-isMonoid</a> <a id="13113" class="Symbol">}</a>
+
+  <a id="13118" class="Keyword">open</a> <a id="13123" href="Algebra.Bundles.html#3673" class="Module">Monoid</a> <a id="13130" href="Algebra.Bundles.html#13047" class="Function">*-monoid</a> <a id="13139" class="Keyword">public</a>
+    <a id="13150" class="Keyword">using</a> <a id="13156" class="Symbol">()</a>
+    <a id="13163" class="Keyword">renaming</a>
+    <a id="13176" class="Symbol">(</a> rawMagma  <a id="13188" class="Symbol">to</a> *-rawMagma
+    <a id="13206" class="Symbol">;</a> magma     <a id="13218" class="Symbol">to</a> *-magma
+    <a id="13233" class="Symbol">;</a> semigroup <a id="13245" class="Symbol">to</a> *-semigroup
+    <a id="13264" class="Symbol">;</a> rawMonoid <a id="13276" class="Symbol">to</a> *-rawMonoid
+    <a id="13295" class="Symbol">)</a>
+
+
+<a id="13299" class="Keyword">record</a> <a id="Semiring"></a><a id="13306" href="Algebra.Bundles.html#13306" class="Record">Semiring</a> <a id="13315" href="Algebra.Bundles.html#13315" class="Bound">c</a> <a id="13317" href="Algebra.Bundles.html#13317" class="Bound">ℓ</a> <a id="13319" class="Symbol">:</a> <a id="13321" class="PrimitiveType">Set</a> <a id="13325" class="Symbol">(</a><a id="13326" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="13330" class="Symbol">(</a><a id="13331" href="Algebra.Bundles.html#13315" class="Bound">c</a> <a id="13333" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="13335" href="Algebra.Bundles.html#13317" class="Bound">ℓ</a><a id="13336" class="Symbol">))</a> <a id="13339" class="Keyword">where</a>
+  <a id="13347" class="Keyword">infixl</a> <a id="13354" class="Number">7</a> <a id="13356" href="Algebra.Bundles.html#13485" class="Field Operator">_*_</a>
+  <a id="13362" class="Keyword">infixl</a> <a id="13369" class="Number">6</a> <a id="13371" href="Algebra.Bundles.html#13456" class="Field Operator">_+_</a>
+  <a id="13377" class="Keyword">infix</a>  <a id="13384" class="Number">4</a> <a id="13386" href="Algebra.Bundles.html#13425" class="Field Operator">_≈_</a>
+  <a id="13392" class="Keyword">field</a>
+    <a id="Semiring.Carrier"></a><a id="13402" href="Algebra.Bundles.html#13402" class="Field">Carrier</a>    <a id="13413" class="Symbol">:</a> <a id="13415" class="PrimitiveType">Set</a> <a id="13419" href="Algebra.Bundles.html#13315" class="Bound">c</a>
+    <a id="Semiring._≈_"></a><a id="13425" href="Algebra.Bundles.html#13425" class="Field Operator">_≈_</a>        <a id="13436" class="Symbol">:</a> <a id="13438" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="13442" href="Algebra.Bundles.html#13402" class="Field">Carrier</a> <a id="13450" href="Algebra.Bundles.html#13317" class="Bound">ℓ</a>
+    <a id="Semiring._+_"></a><a id="13456" href="Algebra.Bundles.html#13456" class="Field Operator">_+_</a>        <a id="13467" class="Symbol">:</a> <a id="13469" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="13473" href="Algebra.Bundles.html#13402" class="Field">Carrier</a>
+    <a id="Semiring._*_"></a><a id="13485" href="Algebra.Bundles.html#13485" class="Field Operator">_*_</a>        <a id="13496" class="Symbol">:</a> <a id="13498" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="13502" href="Algebra.Bundles.html#13402" class="Field">Carrier</a>
+    <a id="Semiring.0#"></a><a id="13514" href="Algebra.Bundles.html#13514" class="Field">0#</a>         <a id="13525" class="Symbol">:</a> <a id="13527" href="Algebra.Bundles.html#13402" class="Field">Carrier</a>
+    <a id="Semiring.1#"></a><a id="13539" href="Algebra.Bundles.html#13539" class="Field">1#</a>         <a id="13550" class="Symbol">:</a> <a id="13552" href="Algebra.Bundles.html#13402" class="Field">Carrier</a>
+    <a id="Semiring.isSemiring"></a><a id="13564" href="Algebra.Bundles.html#13564" class="Field">isSemiring</a> <a id="13575" class="Symbol">:</a> <a id="13577" href="Algebra.Structures.html#10578" class="Record">IsSemiring</a> <a id="13588" href="Algebra.Bundles.html#13425" class="Field Operator">_≈_</a> <a id="13592" href="Algebra.Bundles.html#13456" class="Field Operator">_+_</a> <a id="13596" href="Algebra.Bundles.html#13485" class="Field Operator">_*_</a> <a id="13600" href="Algebra.Bundles.html#13514" class="Field">0#</a> <a id="13603" href="Algebra.Bundles.html#13539" class="Field">1#</a>
+
+  <a id="13609" class="Keyword">open</a> <a id="13614" href="Algebra.Structures.html#10578" class="Module">IsSemiring</a> <a id="13625" href="Algebra.Bundles.html#13564" class="Field">isSemiring</a> <a id="13636" class="Keyword">public</a>
+
+  <a id="Semiring.rawSemiring"></a><a id="13646" href="Algebra.Bundles.html#13646" class="Function">rawSemiring</a> <a id="13658" class="Symbol">:</a> <a id="13660" href="Algebra.Bundles.html#11707" class="Record">RawSemiring</a> <a id="13672" class="Symbol">_</a> <a id="13674" class="Symbol">_</a>
+  <a id="13678" href="Algebra.Bundles.html#13646" class="Function">rawSemiring</a> <a id="13690" class="Symbol">=</a> <a id="13692" class="Keyword">record</a>
+    <a id="13703" class="Symbol">{</a> <a id="13705" href="Algebra.Bundles.html#11829" class="Field Operator">_≈_</a> <a id="13709" class="Symbol">=</a> <a id="13711" href="Algebra.Bundles.html#13425" class="Field Operator">_≈_</a>
+    <a id="13719" class="Symbol">;</a> <a id="13721" href="Algebra.Bundles.html#11860" class="Field Operator">_+_</a> <a id="13725" class="Symbol">=</a> <a id="13727" href="Algebra.Bundles.html#13456" class="Field Operator">_+_</a>
+    <a id="13735" class="Symbol">;</a> <a id="13737" href="Algebra.Bundles.html#11889" class="Field Operator">_*_</a> <a id="13741" class="Symbol">=</a> <a id="13743" href="Algebra.Bundles.html#13485" class="Field Operator">_*_</a>
+    <a id="13751" class="Symbol">;</a> <a id="13753" href="Algebra.Bundles.html#11918" class="Field">0#</a>  <a id="13757" class="Symbol">=</a> <a id="13759" href="Algebra.Bundles.html#13514" class="Field">0#</a>
+    <a id="13766" class="Symbol">;</a> <a id="13768" href="Algebra.Bundles.html#11943" class="Field">1#</a>  <a id="13772" class="Symbol">=</a> <a id="13774" href="Algebra.Bundles.html#13539" class="Field">1#</a>
+    <a id="13781" class="Symbol">}</a>
+
+  <a id="Semiring.semiringWithoutAnnihilatingZero"></a><a id="13786" href="Algebra.Bundles.html#13786" class="Function">semiringWithoutAnnihilatingZero</a> <a id="13818" class="Symbol">:</a> <a id="13820" href="Algebra.Bundles.html#11973" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="13852" class="Symbol">_</a> <a id="13854" class="Symbol">_</a>
+  <a id="13858" href="Algebra.Bundles.html#13786" class="Function">semiringWithoutAnnihilatingZero</a> <a id="13890" class="Symbol">=</a> <a id="13892" class="Keyword">record</a>
+    <a id="13903" class="Symbol">{</a> <a id="13905" href="Algebra.Bundles.html#12392" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="13939" class="Symbol">=</a>
+        <a id="13949" href="Algebra.Structures.html#10647" class="Function">isSemiringWithoutAnnihilatingZero</a>
+    <a id="13987" class="Symbol">}</a>
+
+  <a id="13992" class="Keyword">open</a> <a id="13997" href="Algebra.Bundles.html#11973" class="Module">SemiringWithoutAnnihilatingZero</a>
+         <a id="14038" href="Algebra.Bundles.html#13786" class="Function">semiringWithoutAnnihilatingZero</a> <a id="14070" class="Keyword">public</a>
+    <a id="14081" class="Keyword">using</a>
+    <a id="14091" class="Symbol">(</a> +-rawMagma<a id="14103" class="Symbol">;</a>  +-magma<a id="14113" class="Symbol">;</a>  +-semigroup<a id="14127" class="Symbol">;</a> +-commutativeSemigroup
+    <a id="14156" class="Symbol">;</a> *-rawMagma<a id="14168" class="Symbol">;</a>  *-magma<a id="14178" class="Symbol">;</a>  *-semigroup
+    <a id="14197" class="Symbol">;</a> +-rawMonoid<a id="14210" class="Symbol">;</a> +-monoid<a id="14220" class="Symbol">;</a> +-commutativeMonoid
+    <a id="14246" class="Symbol">;</a> *-rawMonoid<a id="14259" class="Symbol">;</a> *-monoid
+    <a id="14274" class="Symbol">)</a>
+
+  <a id="Semiring.semiringWithoutOne"></a><a id="14279" href="Algebra.Bundles.html#14279" class="Function">semiringWithoutOne</a> <a id="14298" class="Symbol">:</a> <a id="14300" href="Algebra.Bundles.html#9675" class="Record">SemiringWithoutOne</a> <a id="14319" class="Symbol">_</a> <a id="14321" class="Symbol">_</a>
+  <a id="14325" href="Algebra.Bundles.html#14279" class="Function">semiringWithoutOne</a> <a id="14344" class="Symbol">=</a>
+    <a id="14350" class="Keyword">record</a> <a id="14357" class="Symbol">{</a> <a id="14359" href="Algebra.Bundles.html#9968" class="Field">isSemiringWithoutOne</a> <a id="14380" class="Symbol">=</a> <a id="14382" href="Algebra.Structures.html#10849" class="Function">isSemiringWithoutOne</a> <a id="14403" class="Symbol">}</a>
+
+  <a id="14408" class="Keyword">open</a> <a id="14413" href="Algebra.Bundles.html#9675" class="Module">SemiringWithoutOne</a> <a id="14432" href="Algebra.Bundles.html#14279" class="Function">semiringWithoutOne</a> <a id="14451" class="Keyword">public</a>
+    <a id="14462" class="Keyword">using</a> <a id="14468" class="Symbol">(</a>nearSemiring<a id="14481" class="Symbol">)</a>
+
+
+<a id="14485" class="Keyword">record</a> <a id="CommutativeSemiring"></a><a id="14492" href="Algebra.Bundles.html#14492" class="Record">CommutativeSemiring</a> <a id="14512" href="Algebra.Bundles.html#14512" class="Bound">c</a> <a id="14514" href="Algebra.Bundles.html#14514" class="Bound">ℓ</a> <a id="14516" class="Symbol">:</a> <a id="14518" class="PrimitiveType">Set</a> <a id="14522" class="Symbol">(</a><a id="14523" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="14527" class="Symbol">(</a><a id="14528" href="Algebra.Bundles.html#14512" class="Bound">c</a> <a id="14530" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="14532" href="Algebra.Bundles.html#14514" class="Bound">ℓ</a><a id="14533" class="Symbol">))</a> <a id="14536" class="Keyword">where</a>
+  <a id="14544" class="Keyword">infixl</a> <a id="14551" class="Number">7</a> <a id="14553" href="Algebra.Bundles.html#14715" class="Field Operator">_*_</a>
+  <a id="14559" class="Keyword">infixl</a> <a id="14566" class="Number">6</a> <a id="14568" href="Algebra.Bundles.html#14675" class="Field Operator">_+_</a>
+  <a id="14574" class="Keyword">infix</a>  <a id="14581" class="Number">4</a> <a id="14583" href="Algebra.Bundles.html#14633" class="Field Operator">_≈_</a>
+  <a id="14589" class="Keyword">field</a>
+    <a id="CommutativeSemiring.Carrier"></a><a id="14599" href="Algebra.Bundles.html#14599" class="Field">Carrier</a>               <a id="14621" class="Symbol">:</a> <a id="14623" class="PrimitiveType">Set</a> <a id="14627" href="Algebra.Bundles.html#14512" class="Bound">c</a>
+    <a id="CommutativeSemiring._≈_"></a><a id="14633" href="Algebra.Bundles.html#14633" class="Field Operator">_≈_</a>                   <a id="14655" class="Symbol">:</a> <a id="14657" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="14661" href="Algebra.Bundles.html#14599" class="Field">Carrier</a> <a id="14669" href="Algebra.Bundles.html#14514" class="Bound">ℓ</a>
+    <a id="CommutativeSemiring._+_"></a><a id="14675" href="Algebra.Bundles.html#14675" class="Field Operator">_+_</a>                   <a id="14697" class="Symbol">:</a> <a id="14699" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="14703" href="Algebra.Bundles.html#14599" class="Field">Carrier</a>
+    <a id="CommutativeSemiring._*_"></a><a id="14715" href="Algebra.Bundles.html#14715" class="Field Operator">_*_</a>                   <a id="14737" class="Symbol">:</a> <a id="14739" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="14743" href="Algebra.Bundles.html#14599" class="Field">Carrier</a>
+    <a id="CommutativeSemiring.0#"></a><a id="14755" href="Algebra.Bundles.html#14755" class="Field">0#</a>                    <a id="14777" class="Symbol">:</a> <a id="14779" href="Algebra.Bundles.html#14599" class="Field">Carrier</a>
+    <a id="CommutativeSemiring.1#"></a><a id="14791" href="Algebra.Bundles.html#14791" class="Field">1#</a>                    <a id="14813" class="Symbol">:</a> <a id="14815" href="Algebra.Bundles.html#14599" class="Field">Carrier</a>
+    <a id="CommutativeSemiring.isCommutativeSemiring"></a><a id="14827" href="Algebra.Bundles.html#14827" class="Field">isCommutativeSemiring</a> <a id="14849" class="Symbol">:</a> <a id="14851" href="Algebra.Structures.html#11234" class="Record">IsCommutativeSemiring</a> <a id="14873" href="Algebra.Bundles.html#14633" class="Field Operator">_≈_</a> <a id="14877" href="Algebra.Bundles.html#14675" class="Field Operator">_+_</a> <a id="14881" href="Algebra.Bundles.html#14715" class="Field Operator">_*_</a> <a id="14885" href="Algebra.Bundles.html#14755" class="Field">0#</a> <a id="14888" href="Algebra.Bundles.html#14791" class="Field">1#</a>
+
+  <a id="14894" class="Keyword">open</a> <a id="14899" href="Algebra.Structures.html#11234" class="Module">IsCommutativeSemiring</a> <a id="14921" href="Algebra.Bundles.html#14827" class="Field">isCommutativeSemiring</a> <a id="14943" class="Keyword">public</a>
+
+  <a id="CommutativeSemiring.semiring"></a><a id="14953" href="Algebra.Bundles.html#14953" class="Function">semiring</a> <a id="14962" class="Symbol">:</a> <a id="14964" href="Algebra.Bundles.html#13306" class="Record">Semiring</a> <a id="14973" class="Symbol">_</a> <a id="14975" class="Symbol">_</a>
+  <a id="14979" href="Algebra.Bundles.html#14953" class="Function">semiring</a> <a id="14988" class="Symbol">=</a> <a id="14990" class="Keyword">record</a> <a id="14997" class="Symbol">{</a> <a id="14999" href="Algebra.Bundles.html#13564" class="Field">isSemiring</a> <a id="15010" class="Symbol">=</a> <a id="15012" href="Algebra.Structures.html#11314" class="Function">isSemiring</a> <a id="15023" class="Symbol">}</a>
+
+  <a id="15028" class="Keyword">open</a> <a id="15033" href="Algebra.Bundles.html#13306" class="Module">Semiring</a> <a id="15042" href="Algebra.Bundles.html#14953" class="Function">semiring</a> <a id="15051" class="Keyword">public</a>
+    <a id="15062" class="Keyword">using</a>
+    <a id="15072" class="Symbol">(</a> +-rawMagma<a id="15084" class="Symbol">;</a> +-magma<a id="15093" class="Symbol">;</a> +-semigroup<a id="15106" class="Symbol">;</a> +-commutativeSemigroup
+    <a id="15135" class="Symbol">;</a> *-rawMagma<a id="15147" class="Symbol">;</a> *-magma<a id="15156" class="Symbol">;</a> *-semigroup
+    <a id="15174" class="Symbol">;</a> +-rawMonoid<a id="15187" class="Symbol">;</a> +-monoid<a id="15197" class="Symbol">;</a> +-commutativeMonoid
+    <a id="15223" class="Symbol">;</a> *-rawMonoid<a id="15236" class="Symbol">;</a> *-monoid
+    <a id="15251" class="Symbol">;</a> nearSemiring<a id="15265" class="Symbol">;</a> semiringWithoutOne
+    <a id="15290" class="Symbol">;</a> semiringWithoutAnnihilatingZero
+    <a id="15328" class="Symbol">;</a> rawSemiring
+    <a id="15346" class="Symbol">)</a>
+
+  <a id="CommutativeSemiring.*-commutativeSemigroup"></a><a id="15351" href="Algebra.Bundles.html#15351" class="Function">*-commutativeSemigroup</a> <a id="15374" class="Symbol">:</a> <a id="15376" href="Algebra.Bundles.html#1909" class="Record">CommutativeSemigroup</a> <a id="15397" class="Symbol">_</a> <a id="15399" class="Symbol">_</a>
+  <a id="15403" href="Algebra.Bundles.html#15351" class="Function">*-commutativeSemigroup</a> <a id="15426" class="Symbol">=</a> <a id="15428" class="Keyword">record</a>
+    <a id="15439" class="Symbol">{</a> <a id="15441" href="Algebra.Bundles.html#2124" class="Field">isCommutativeSemigroup</a> <a id="15464" class="Symbol">=</a> <a id="15466" href="Algebra.Structures.html#11620" class="Function">*-isCommutativeSemigroup</a>
+    <a id="15495" class="Symbol">}</a>
+
+  <a id="CommutativeSemiring.*-commutativeMonoid"></a><a id="15500" href="Algebra.Bundles.html#15500" class="Function">*-commutativeMonoid</a> <a id="15520" class="Symbol">:</a> <a id="15522" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="15540" class="Symbol">_</a> <a id="15542" class="Symbol">_</a>
+  <a id="15546" href="Algebra.Bundles.html#15500" class="Function">*-commutativeMonoid</a> <a id="15566" class="Symbol">=</a> <a id="15568" class="Keyword">record</a>
+    <a id="15579" class="Symbol">{</a> <a id="15581" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="15601" class="Symbol">=</a> <a id="15603" href="Algebra.Structures.html#11778" class="Function">*-isCommutativeMonoid</a>
+    <a id="15629" class="Symbol">}</a>
+
+  <a id="CommutativeSemiring.commutativeSemiringWithoutOne"></a><a id="15634" href="Algebra.Bundles.html#15634" class="Function">commutativeSemiringWithoutOne</a> <a id="15664" class="Symbol">:</a> <a id="15666" href="Algebra.Bundles.html#10601" class="Record">CommutativeSemiringWithoutOne</a> <a id="15696" class="Symbol">_</a> <a id="15698" class="Symbol">_</a>
+  <a id="15702" href="Algebra.Bundles.html#15634" class="Function">commutativeSemiringWithoutOne</a> <a id="15732" class="Symbol">=</a> <a id="15734" class="Keyword">record</a>
+    <a id="15745" class="Symbol">{</a> <a id="15747" href="Algebra.Bundles.html#10960" class="Field">isCommutativeSemiringWithoutOne</a> <a id="15779" class="Symbol">=</a> <a id="15781" href="Algebra.Structures.html#11419" class="Function">isCommutativeSemiringWithoutOne</a>
+    <a id="15817" class="Symbol">}</a>
+
+
+<a id="15821" class="Comment">------------------------------------------------------------------------</a>
+<a id="15894" class="Comment">-- Bundles with 2 binary operations, 1 unary operation &amp; 2 elements</a>
+<a id="15962" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="16036" class="Comment">-- A raw ring is a ring without any laws.</a>
+
+<a id="16079" class="Keyword">record</a> <a id="RawRing"></a><a id="16086" href="Algebra.Bundles.html#16086" class="Record">RawRing</a> <a id="16094" href="Algebra.Bundles.html#16094" class="Bound">c</a> <a id="16096" href="Algebra.Bundles.html#16096" class="Bound">ℓ</a> <a id="16098" class="Symbol">:</a> <a id="16100" class="PrimitiveType">Set</a> <a id="16104" class="Symbol">(</a><a id="16105" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="16109" class="Symbol">(</a><a id="16110" href="Algebra.Bundles.html#16094" class="Bound">c</a> <a id="16112" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="16114" href="Algebra.Bundles.html#16096" class="Bound">ℓ</a><a id="16115" class="Symbol">))</a> <a id="16118" class="Keyword">where</a>
+  <a id="16126" class="Keyword">infix</a>  <a id="16133" class="Number">8</a> <a id="16135" href="Algebra.Bundles.html#16295" class="Field Operator">-_</a>
+  <a id="16140" class="Keyword">infixl</a> <a id="16147" class="Number">7</a> <a id="16149" href="Algebra.Bundles.html#16269" class="Field Operator">_*_</a>
+  <a id="16155" class="Keyword">infixl</a> <a id="16162" class="Number">6</a> <a id="16164" href="Algebra.Bundles.html#16243" class="Field Operator">_+_</a>
+  <a id="16170" class="Keyword">infix</a>  <a id="16177" class="Number">4</a> <a id="16179" href="Algebra.Bundles.html#16215" class="Field Operator">_≈_</a>
+  <a id="16185" class="Keyword">field</a>
+    <a id="RawRing.Carrier"></a><a id="16195" href="Algebra.Bundles.html#16195" class="Field">Carrier</a> <a id="16203" class="Symbol">:</a> <a id="16205" class="PrimitiveType">Set</a> <a id="16209" href="Algebra.Bundles.html#16094" class="Bound">c</a>
+    <a id="RawRing._≈_"></a><a id="16215" href="Algebra.Bundles.html#16215" class="Field Operator">_≈_</a>     <a id="16223" class="Symbol">:</a> <a id="16225" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="16229" href="Algebra.Bundles.html#16195" class="Field">Carrier</a> <a id="16237" href="Algebra.Bundles.html#16096" class="Bound">ℓ</a>
+    <a id="RawRing._+_"></a><a id="16243" href="Algebra.Bundles.html#16243" class="Field Operator">_+_</a>     <a id="16251" class="Symbol">:</a> <a id="16253" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="16257" href="Algebra.Bundles.html#16195" class="Field">Carrier</a>
+    <a id="RawRing._*_"></a><a id="16269" href="Algebra.Bundles.html#16269" class="Field Operator">_*_</a>     <a id="16277" class="Symbol">:</a> <a id="16279" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="16283" href="Algebra.Bundles.html#16195" class="Field">Carrier</a>
+    <a id="RawRing.-_"></a><a id="16295" href="Algebra.Bundles.html#16295" class="Field Operator">-_</a>      <a id="16303" class="Symbol">:</a> <a id="16305" href="Algebra.Core.html#475" class="Function">Op₁</a> <a id="16309" href="Algebra.Bundles.html#16195" class="Field">Carrier</a>
+    <a id="RawRing.0#"></a><a id="16321" href="Algebra.Bundles.html#16321" class="Field">0#</a>      <a id="16329" class="Symbol">:</a> <a id="16331" href="Algebra.Bundles.html#16195" class="Field">Carrier</a>
+    <a id="RawRing.1#"></a><a id="16343" href="Algebra.Bundles.html#16343" class="Field">1#</a>      <a id="16351" class="Symbol">:</a> <a id="16353" href="Algebra.Bundles.html#16195" class="Field">Carrier</a>
+
+  <a id="RawRing.+-rawGroup"></a><a id="16364" href="Algebra.Bundles.html#16364" class="Function">+-rawGroup</a> <a id="16375" class="Symbol">:</a> <a id="16377" href="Algebra.Bundles.html#6011" class="Record">RawGroup</a> <a id="16386" href="Algebra.Bundles.html#16094" class="Bound">c</a> <a id="16388" href="Algebra.Bundles.html#16096" class="Bound">ℓ</a>
+  <a id="16392" href="Algebra.Bundles.html#16364" class="Function">+-rawGroup</a> <a id="16403" class="Symbol">=</a> <a id="16405" class="Keyword">record</a>
+    <a id="16416" class="Symbol">{</a> <a id="16418" href="Algebra.Bundles.html#6127" class="Field Operator">_≈_</a> <a id="16422" class="Symbol">=</a> <a id="16424" href="Algebra.Bundles.html#16215" class="Field Operator">_≈_</a>
+    <a id="16432" class="Symbol">;</a> <a id="16434" href="Algebra.Bundles.html#6155" class="Field Operator">_∙_</a> <a id="16438" class="Symbol">=</a> <a id="16440" href="Algebra.Bundles.html#16243" class="Field Operator">_+_</a>
+    <a id="16448" class="Symbol">;</a> <a id="16450" href="Algebra.Bundles.html#6181" class="Field">ε</a>   <a id="16454" class="Symbol">=</a> <a id="16456" href="Algebra.Bundles.html#16321" class="Field">0#</a>
+    <a id="16463" class="Symbol">;</a> <a id="16465" href="Algebra.Bundles.html#6203" class="Field Operator">_⁻¹</a> <a id="16469" class="Symbol">=</a> <a id="16471" href="Algebra.Bundles.html#16295" class="Field Operator">-_</a>
+    <a id="16478" class="Symbol">}</a>
+
+  <a id="RawRing.*-rawMonoid"></a><a id="16483" href="Algebra.Bundles.html#16483" class="Function">*-rawMonoid</a> <a id="16495" class="Symbol">:</a> <a id="16497" href="Algebra.Bundles.html#3405" class="Record">RawMonoid</a> <a id="16507" href="Algebra.Bundles.html#16094" class="Bound">c</a> <a id="16509" href="Algebra.Bundles.html#16096" class="Bound">ℓ</a>
+  <a id="16513" href="Algebra.Bundles.html#16483" class="Function">*-rawMonoid</a> <a id="16525" class="Symbol">=</a> <a id="16527" class="Keyword">record</a>
+    <a id="16538" class="Symbol">{</a> <a id="16540" href="Algebra.Bundles.html#3507" class="Field Operator">_≈_</a>     <a id="16548" class="Symbol">=</a> <a id="16550" href="Algebra.Bundles.html#16215" class="Field Operator">_≈_</a>
+    <a id="16558" class="Symbol">;</a> <a id="16560" href="Algebra.Bundles.html#3535" class="Field Operator">_∙_</a>     <a id="16568" class="Symbol">=</a> <a id="16570" href="Algebra.Bundles.html#16269" class="Field Operator">_*_</a>
+    <a id="16578" class="Symbol">;</a> <a id="16580" href="Algebra.Bundles.html#3561" class="Field">ε</a>       <a id="16588" class="Symbol">=</a> <a id="16590" href="Algebra.Bundles.html#16343" class="Field">1#</a>
+    <a id="16597" class="Symbol">}</a>
+
+<a id="16600" class="Keyword">record</a> <a id="Ring"></a><a id="16607" href="Algebra.Bundles.html#16607" class="Record">Ring</a> <a id="16612" href="Algebra.Bundles.html#16612" class="Bound">c</a> <a id="16614" href="Algebra.Bundles.html#16614" class="Bound">ℓ</a> <a id="16616" class="Symbol">:</a> <a id="16618" class="PrimitiveType">Set</a> <a id="16622" class="Symbol">(</a><a id="16623" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="16627" class="Symbol">(</a><a id="16628" href="Algebra.Bundles.html#16612" class="Bound">c</a> <a id="16630" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="16632" href="Algebra.Bundles.html#16614" class="Bound">ℓ</a><a id="16633" class="Symbol">))</a> <a id="16636" class="Keyword">where</a>
+  <a id="16644" class="Keyword">infix</a>  <a id="16651" class="Number">8</a> <a id="16653" href="Algebra.Bundles.html#16813" class="Field Operator">-_</a>
+  <a id="16658" class="Keyword">infixl</a> <a id="16665" class="Number">7</a> <a id="16667" href="Algebra.Bundles.html#16787" class="Field Operator">_*_</a>
+  <a id="16673" class="Keyword">infixl</a> <a id="16680" class="Number">6</a> <a id="16682" href="Algebra.Bundles.html#16761" class="Field Operator">_+_</a>
+  <a id="16688" class="Keyword">infix</a>  <a id="16695" class="Number">4</a> <a id="16697" href="Algebra.Bundles.html#16733" class="Field Operator">_≈_</a>
+  <a id="16703" class="Keyword">field</a>
+    <a id="Ring.Carrier"></a><a id="16713" href="Algebra.Bundles.html#16713" class="Field">Carrier</a> <a id="16721" class="Symbol">:</a> <a id="16723" class="PrimitiveType">Set</a> <a id="16727" href="Algebra.Bundles.html#16612" class="Bound">c</a>
+    <a id="Ring._≈_"></a><a id="16733" href="Algebra.Bundles.html#16733" class="Field Operator">_≈_</a>     <a id="16741" class="Symbol">:</a> <a id="16743" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="16747" href="Algebra.Bundles.html#16713" class="Field">Carrier</a> <a id="16755" href="Algebra.Bundles.html#16614" class="Bound">ℓ</a>
+    <a id="Ring._+_"></a><a id="16761" href="Algebra.Bundles.html#16761" class="Field Operator">_+_</a>     <a id="16769" class="Symbol">:</a> <a id="16771" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="16775" href="Algebra.Bundles.html#16713" class="Field">Carrier</a>
+    <a id="Ring._*_"></a><a id="16787" href="Algebra.Bundles.html#16787" class="Field Operator">_*_</a>     <a id="16795" class="Symbol">:</a> <a id="16797" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="16801" href="Algebra.Bundles.html#16713" class="Field">Carrier</a>
+    <a id="Ring.-_"></a><a id="16813" href="Algebra.Bundles.html#16813" class="Field Operator">-_</a>      <a id="16821" class="Symbol">:</a> <a id="16823" href="Algebra.Core.html#475" class="Function">Op₁</a> <a id="16827" href="Algebra.Bundles.html#16713" class="Field">Carrier</a>
+    <a id="Ring.0#"></a><a id="16839" href="Algebra.Bundles.html#16839" class="Field">0#</a>      <a id="16847" class="Symbol">:</a> <a id="16849" href="Algebra.Bundles.html#16713" class="Field">Carrier</a>
+    <a id="Ring.1#"></a><a id="16861" href="Algebra.Bundles.html#16861" class="Field">1#</a>      <a id="16869" class="Symbol">:</a> <a id="16871" href="Algebra.Bundles.html#16713" class="Field">Carrier</a>
+    <a id="Ring.isRing"></a><a id="16883" href="Algebra.Bundles.html#16883" class="Field">isRing</a>  <a id="16891" class="Symbol">:</a> <a id="16893" href="Algebra.Structures.html#12145" class="Record">IsRing</a> <a id="16900" href="Algebra.Bundles.html#16733" class="Field Operator">_≈_</a> <a id="16904" href="Algebra.Bundles.html#16761" class="Field Operator">_+_</a> <a id="16908" href="Algebra.Bundles.html#16787" class="Field Operator">_*_</a> <a id="16912" href="Algebra.Bundles.html#16813" class="Field Operator">-_</a> <a id="16915" href="Algebra.Bundles.html#16839" class="Field">0#</a> <a id="16918" href="Algebra.Bundles.html#16861" class="Field">1#</a>
+
+  <a id="16924" class="Keyword">open</a> <a id="16929" href="Algebra.Structures.html#12145" class="Module">IsRing</a> <a id="16936" href="Algebra.Bundles.html#16883" class="Field">isRing</a> <a id="16943" class="Keyword">public</a>
+
+  <a id="Ring.+-abelianGroup"></a><a id="16953" href="Algebra.Bundles.html#16953" class="Function">+-abelianGroup</a> <a id="16968" class="Symbol">:</a> <a id="16970" href="Algebra.Bundles.html#6907" class="Record">AbelianGroup</a> <a id="16983" class="Symbol">_</a> <a id="16985" class="Symbol">_</a>
+  <a id="16989" href="Algebra.Bundles.html#16953" class="Function">+-abelianGroup</a> <a id="17004" class="Symbol">=</a> <a id="17006" class="Keyword">record</a> <a id="17013" class="Symbol">{</a> <a id="17015" href="Algebra.Bundles.html#7164" class="Field">isAbelianGroup</a> <a id="17030" class="Symbol">=</a> <a id="17032" href="Algebra.Structures.html#12223" class="Function">+-isAbelianGroup</a> <a id="17049" class="Symbol">}</a>
+
+  <a id="Ring.semiring"></a><a id="17054" href="Algebra.Bundles.html#17054" class="Function">semiring</a> <a id="17063" class="Symbol">:</a> <a id="17065" href="Algebra.Bundles.html#13306" class="Record">Semiring</a> <a id="17074" class="Symbol">_</a> <a id="17076" class="Symbol">_</a>
+  <a id="17080" href="Algebra.Bundles.html#17054" class="Function">semiring</a> <a id="17089" class="Symbol">=</a> <a id="17091" class="Keyword">record</a> <a id="17098" class="Symbol">{</a> <a id="17100" href="Algebra.Bundles.html#13564" class="Field">isSemiring</a> <a id="17111" class="Symbol">=</a> <a id="17113" href="Algebra.Structures.html#13935" class="Function">isSemiring</a> <a id="17124" class="Symbol">}</a>
+
+  <a id="17129" class="Keyword">open</a> <a id="17134" href="Algebra.Bundles.html#13306" class="Module">Semiring</a> <a id="17143" href="Algebra.Bundles.html#17054" class="Function">semiring</a> <a id="17152" class="Keyword">public</a>
+    <a id="17163" class="Keyword">using</a>
+    <a id="17173" class="Symbol">(</a> +-rawMagma<a id="17185" class="Symbol">;</a> +-magma<a id="17194" class="Symbol">;</a> +-semigroup<a id="17207" class="Symbol">;</a> +-commutativeSemigroup
+    <a id="17236" class="Symbol">;</a> *-rawMagma<a id="17248" class="Symbol">;</a> *-magma<a id="17257" class="Symbol">;</a> *-semigroup
+    <a id="17275" class="Symbol">;</a> +-rawMonoid<a id="17288" class="Symbol">;</a> +-monoid <a id="17299" class="Symbol">;</a> +-commutativeMonoid
+    <a id="17325" class="Symbol">;</a> *-rawMonoid<a id="17338" class="Symbol">;</a> *-monoid
+    <a id="17353" class="Symbol">;</a> nearSemiring<a id="17367" class="Symbol">;</a> semiringWithoutOne
+    <a id="17392" class="Symbol">;</a> semiringWithoutAnnihilatingZero
+    <a id="17430" class="Symbol">)</a>
+
+  <a id="17435" class="Keyword">open</a> <a id="17440" href="Algebra.Bundles.html#6907" class="Module">AbelianGroup</a> <a id="17453" href="Algebra.Bundles.html#16953" class="Function">+-abelianGroup</a> <a id="17468" class="Keyword">public</a>
+    <a id="17479" class="Keyword">using</a> <a id="17485" class="Symbol">()</a> <a id="17488" class="Keyword">renaming</a> <a id="17497" class="Symbol">(</a>group <a id="17504" class="Symbol">to</a> +-group<a id="17514" class="Symbol">)</a>
+
+  <a id="Ring.rawRing"></a><a id="17519" href="Algebra.Bundles.html#17519" class="Function">rawRing</a> <a id="17527" class="Symbol">:</a> <a id="17529" href="Algebra.Bundles.html#16086" class="Record">RawRing</a> <a id="17537" class="Symbol">_</a> <a id="17539" class="Symbol">_</a>
+  <a id="17543" href="Algebra.Bundles.html#17519" class="Function">rawRing</a> <a id="17551" class="Symbol">=</a> <a id="17553" class="Keyword">record</a>
+    <a id="17564" class="Symbol">{</a> <a id="17566" href="Algebra.Bundles.html#16215" class="Field Operator">_≈_</a> <a id="17570" class="Symbol">=</a> <a id="17572" href="Algebra.Bundles.html#16733" class="Field Operator">_≈_</a>
+    <a id="17580" class="Symbol">;</a> <a id="17582" href="Algebra.Bundles.html#16243" class="Field Operator">_+_</a> <a id="17586" class="Symbol">=</a> <a id="17588" href="Algebra.Bundles.html#16761" class="Field Operator">_+_</a>
+    <a id="17596" class="Symbol">;</a> <a id="17598" href="Algebra.Bundles.html#16269" class="Field Operator">_*_</a> <a id="17602" class="Symbol">=</a> <a id="17604" href="Algebra.Bundles.html#16787" class="Field Operator">_*_</a>
+    <a id="17612" class="Symbol">;</a> <a id="17614" href="Algebra.Bundles.html#16295" class="Field Operator">-_</a>  <a id="17618" class="Symbol">=</a> <a id="17620" href="Algebra.Bundles.html#16813" class="Field Operator">-_</a>
+    <a id="17627" class="Symbol">;</a> <a id="17629" href="Algebra.Bundles.html#16321" class="Field">0#</a>  <a id="17633" class="Symbol">=</a> <a id="17635" href="Algebra.Bundles.html#16839" class="Field">0#</a>
+    <a id="17642" class="Symbol">;</a> <a id="17644" href="Algebra.Bundles.html#16343" class="Field">1#</a>  <a id="17648" class="Symbol">=</a> <a id="17650" href="Algebra.Bundles.html#16861" class="Field">1#</a>
+    <a id="17657" class="Symbol">}</a>
+
+
+<a id="17661" class="Keyword">record</a> <a id="CommutativeRing"></a><a id="17668" href="Algebra.Bundles.html#17668" class="Record">CommutativeRing</a> <a id="17684" href="Algebra.Bundles.html#17684" class="Bound">c</a> <a id="17686" href="Algebra.Bundles.html#17686" class="Bound">ℓ</a> <a id="17688" class="Symbol">:</a> <a id="17690" class="PrimitiveType">Set</a> <a id="17694" class="Symbol">(</a><a id="17695" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="17699" class="Symbol">(</a><a id="17700" href="Algebra.Bundles.html#17684" class="Bound">c</a> <a id="17702" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="17704" href="Algebra.Bundles.html#17686" class="Bound">ℓ</a><a id="17705" class="Symbol">))</a> <a id="17708" class="Keyword">where</a>
+  <a id="17716" class="Keyword">infix</a>  <a id="17723" class="Number">8</a> <a id="17725" href="Algebra.Bundles.html#17925" class="Field Operator">-_</a>
+  <a id="17730" class="Keyword">infixl</a> <a id="17737" class="Number">7</a> <a id="17739" href="Algebra.Bundles.html#17889" class="Field Operator">_*_</a>
+  <a id="17745" class="Keyword">infixl</a> <a id="17752" class="Number">6</a> <a id="17754" href="Algebra.Bundles.html#17853" class="Field Operator">_+_</a>
+  <a id="17760" class="Keyword">infix</a>  <a id="17767" class="Number">4</a> <a id="17769" href="Algebra.Bundles.html#17815" class="Field Operator">_≈_</a>
+  <a id="17775" class="Keyword">field</a>
+    <a id="CommutativeRing.Carrier"></a><a id="17785" href="Algebra.Bundles.html#17785" class="Field">Carrier</a>           <a id="17803" class="Symbol">:</a> <a id="17805" class="PrimitiveType">Set</a> <a id="17809" href="Algebra.Bundles.html#17684" class="Bound">c</a>
+    <a id="CommutativeRing._≈_"></a><a id="17815" href="Algebra.Bundles.html#17815" class="Field Operator">_≈_</a>               <a id="17833" class="Symbol">:</a> <a id="17835" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="17839" href="Algebra.Bundles.html#17785" class="Field">Carrier</a> <a id="17847" href="Algebra.Bundles.html#17686" class="Bound">ℓ</a>
+    <a id="CommutativeRing._+_"></a><a id="17853" href="Algebra.Bundles.html#17853" class="Field Operator">_+_</a>               <a id="17871" class="Symbol">:</a> <a id="17873" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="17877" href="Algebra.Bundles.html#17785" class="Field">Carrier</a>
+    <a id="CommutativeRing._*_"></a><a id="17889" href="Algebra.Bundles.html#17889" class="Field Operator">_*_</a>               <a id="17907" class="Symbol">:</a> <a id="17909" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="17913" href="Algebra.Bundles.html#17785" class="Field">Carrier</a>
+    <a id="CommutativeRing.-_"></a><a id="17925" href="Algebra.Bundles.html#17925" class="Field Operator">-_</a>                <a id="17943" class="Symbol">:</a> <a id="17945" href="Algebra.Core.html#475" class="Function">Op₁</a> <a id="17949" href="Algebra.Bundles.html#17785" class="Field">Carrier</a>
+    <a id="CommutativeRing.0#"></a><a id="17961" href="Algebra.Bundles.html#17961" class="Field">0#</a>                <a id="17979" class="Symbol">:</a> <a id="17981" href="Algebra.Bundles.html#17785" class="Field">Carrier</a>
+    <a id="CommutativeRing.1#"></a><a id="17993" href="Algebra.Bundles.html#17993" class="Field">1#</a>                <a id="18011" class="Symbol">:</a> <a id="18013" href="Algebra.Bundles.html#17785" class="Field">Carrier</a>
+    <a id="CommutativeRing.isCommutativeRing"></a><a id="18025" href="Algebra.Bundles.html#18025" class="Field">isCommutativeRing</a> <a id="18043" class="Symbol">:</a> <a id="18045" href="Algebra.Structures.html#14214" class="Record">IsCommutativeRing</a> <a id="18063" href="Algebra.Bundles.html#17815" class="Field Operator">_≈_</a> <a id="18067" href="Algebra.Bundles.html#17853" class="Field Operator">_+_</a> <a id="18071" href="Algebra.Bundles.html#17889" class="Field Operator">_*_</a> <a id="18075" href="Algebra.Bundles.html#17925" class="Field Operator">-_</a> <a id="18078" href="Algebra.Bundles.html#17961" class="Field">0#</a> <a id="18081" href="Algebra.Bundles.html#17993" class="Field">1#</a>
+
+  <a id="18087" class="Keyword">open</a> <a id="18092" href="Algebra.Structures.html#14214" class="Module">IsCommutativeRing</a> <a id="18110" href="Algebra.Bundles.html#18025" class="Field">isCommutativeRing</a> <a id="18128" class="Keyword">public</a>
+
+  <a id="CommutativeRing.ring"></a><a id="18138" href="Algebra.Bundles.html#18138" class="Function">ring</a> <a id="18143" class="Symbol">:</a> <a id="18145" href="Algebra.Bundles.html#16607" class="Record">Ring</a> <a id="18150" class="Symbol">_</a> <a id="18152" class="Symbol">_</a>
+  <a id="18156" href="Algebra.Bundles.html#18138" class="Function">ring</a> <a id="18161" class="Symbol">=</a> <a id="18163" class="Keyword">record</a> <a id="18170" class="Symbol">{</a> <a id="18172" href="Algebra.Bundles.html#16883" class="Field">isRing</a> <a id="18179" class="Symbol">=</a> <a id="18181" href="Algebra.Structures.html#14311" class="Function">isRing</a> <a id="18188" class="Symbol">}</a>
+
+  <a id="CommutativeRing.commutativeSemiring"></a><a id="18193" href="Algebra.Bundles.html#18193" class="Function">commutativeSemiring</a> <a id="18213" class="Symbol">:</a> <a id="18215" href="Algebra.Bundles.html#14492" class="Record">CommutativeSemiring</a> <a id="18235" class="Symbol">_</a> <a id="18237" class="Symbol">_</a>
+  <a id="18241" href="Algebra.Bundles.html#18193" class="Function">commutativeSemiring</a> <a id="18261" class="Symbol">=</a>
+    <a id="18267" class="Keyword">record</a> <a id="18274" class="Symbol">{</a> <a id="18276" href="Algebra.Bundles.html#14827" class="Field">isCommutativeSemiring</a> <a id="18298" class="Symbol">=</a> <a id="18300" href="Algebra.Structures.html#14542" class="Function">isCommutativeSemiring</a> <a id="18322" class="Symbol">}</a>
+
+  <a id="18327" class="Keyword">open</a> <a id="18332" href="Algebra.Bundles.html#16607" class="Module">Ring</a> <a id="18337" href="Algebra.Bundles.html#18138" class="Function">ring</a> <a id="18342" class="Keyword">public</a> <a id="18349" class="Keyword">using</a> <a id="18355" class="Symbol">(</a>rawRing<a id="18363" class="Symbol">;</a> +-group<a id="18372" class="Symbol">;</a> +-abelianGroup<a id="18388" class="Symbol">)</a>
+  <a id="18392" class="Keyword">open</a> <a id="18397" href="Algebra.Bundles.html#14492" class="Module">CommutativeSemiring</a> <a id="18417" href="Algebra.Bundles.html#18193" class="Function">commutativeSemiring</a> <a id="18437" class="Keyword">public</a>
+    <a id="18448" class="Keyword">using</a>
+    <a id="18458" class="Symbol">(</a> +-rawMagma<a id="18470" class="Symbol">;</a> +-magma<a id="18479" class="Symbol">;</a> +-semigroup<a id="18492" class="Symbol">;</a> +-commutativeSemigroup
+    <a id="18521" class="Symbol">;</a> *-rawMagma<a id="18533" class="Symbol">;</a> *-magma<a id="18542" class="Symbol">;</a> *-semigroup<a id="18555" class="Symbol">;</a> *-commutativeSemigroup
+    <a id="18584" class="Symbol">;</a> +-rawMonoid<a id="18597" class="Symbol">;</a> +-monoid<a id="18607" class="Symbol">;</a> +-commutativeMonoid
+    <a id="18633" class="Symbol">;</a> *-rawMonoid<a id="18646" class="Symbol">;</a> *-monoid<a id="18656" class="Symbol">;</a> *-commutativeMonoid
+    <a id="18682" class="Symbol">;</a> nearSemiring<a id="18696" class="Symbol">;</a> semiringWithoutOne
+    <a id="18721" class="Symbol">;</a> semiringWithoutAnnihilatingZero<a id="18754" class="Symbol">;</a> semiring
+    <a id="18769" class="Symbol">;</a> commutativeSemiringWithoutOne
+    <a id="18805" class="Symbol">)</a>
+
+
+<a id="18809" class="Keyword">record</a> <a id="BooleanAlgebra"></a><a id="18816" href="Algebra.Bundles.html#18816" class="Record">BooleanAlgebra</a> <a id="18831" href="Algebra.Bundles.html#18831" class="Bound">c</a> <a id="18833" href="Algebra.Bundles.html#18833" class="Bound">ℓ</a> <a id="18835" class="Symbol">:</a> <a id="18837" class="PrimitiveType">Set</a> <a id="18841" class="Symbol">(</a><a id="18842" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="18846" class="Symbol">(</a><a id="18847" href="Algebra.Bundles.html#18831" class="Bound">c</a> <a id="18849" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="18851" href="Algebra.Bundles.html#18833" class="Bound">ℓ</a><a id="18852" class="Symbol">))</a> <a id="18855" class="Keyword">where</a>
+  <a id="18863" class="Keyword">infix</a>  <a id="18870" class="Number">8</a> <a id="18872" href="Algebra.Bundles.html#19068" class="Field Operator">¬_</a>
+  <a id="18877" class="Keyword">infixr</a> <a id="18884" class="Number">7</a> <a id="18886" href="Algebra.Bundles.html#19033" class="Field Operator">_∧_</a>
+  <a id="18892" class="Keyword">infixr</a> <a id="18899" class="Number">6</a> <a id="18901" href="Algebra.Bundles.html#18998" class="Field Operator">_∨_</a>
+  <a id="18907" class="Keyword">infix</a>  <a id="18914" class="Number">4</a> <a id="18916" href="Algebra.Bundles.html#18961" class="Field Operator">_≈_</a>
+  <a id="18922" class="Keyword">field</a>
+    <a id="BooleanAlgebra.Carrier"></a><a id="18932" href="Algebra.Bundles.html#18932" class="Field">Carrier</a>          <a id="18949" class="Symbol">:</a> <a id="18951" class="PrimitiveType">Set</a> <a id="18955" href="Algebra.Bundles.html#18831" class="Bound">c</a>
+    <a id="BooleanAlgebra._≈_"></a><a id="18961" href="Algebra.Bundles.html#18961" class="Field Operator">_≈_</a>              <a id="18978" class="Symbol">:</a> <a id="18980" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="18984" href="Algebra.Bundles.html#18932" class="Field">Carrier</a> <a id="18992" href="Algebra.Bundles.html#18833" class="Bound">ℓ</a>
+    <a id="BooleanAlgebra._∨_"></a><a id="18998" href="Algebra.Bundles.html#18998" class="Field Operator">_∨_</a>              <a id="19015" class="Symbol">:</a> <a id="19017" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="19021" href="Algebra.Bundles.html#18932" class="Field">Carrier</a>
+    <a id="BooleanAlgebra._∧_"></a><a id="19033" href="Algebra.Bundles.html#19033" class="Field Operator">_∧_</a>              <a id="19050" class="Symbol">:</a> <a id="19052" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="19056" href="Algebra.Bundles.html#18932" class="Field">Carrier</a>
+    <a id="BooleanAlgebra.¬_"></a><a id="19068" href="Algebra.Bundles.html#19068" class="Field Operator">¬_</a>               <a id="19085" class="Symbol">:</a> <a id="19087" href="Algebra.Core.html#475" class="Function">Op₁</a> <a id="19091" href="Algebra.Bundles.html#18932" class="Field">Carrier</a>
+    <a id="BooleanAlgebra.⊤"></a><a id="19103" href="Algebra.Bundles.html#19103" class="Field">⊤</a>                <a id="19120" class="Symbol">:</a> <a id="19122" href="Algebra.Bundles.html#18932" class="Field">Carrier</a>
+    <a id="BooleanAlgebra.⊥"></a><a id="19134" href="Algebra.Bundles.html#19134" class="Field">⊥</a>                <a id="19151" class="Symbol">:</a> <a id="19153" href="Algebra.Bundles.html#18932" class="Field">Carrier</a>
+    <a id="BooleanAlgebra.isBooleanAlgebra"></a><a id="19165" href="Algebra.Bundles.html#19165" class="Field">isBooleanAlgebra</a> <a id="19182" class="Symbol">:</a> <a id="19184" href="Algebra.Structures.html#14803" class="Record">IsBooleanAlgebra</a> <a id="19201" href="Algebra.Bundles.html#18961" class="Field Operator">_≈_</a> <a id="19205" href="Algebra.Bundles.html#18998" class="Field Operator">_∨_</a> <a id="19209" href="Algebra.Bundles.html#19033" class="Field Operator">_∧_</a> <a id="19213" href="Algebra.Bundles.html#19068" class="Field Operator">¬_</a> <a id="19216" href="Algebra.Bundles.html#19103" class="Field">⊤</a> <a id="19218" href="Algebra.Bundles.html#19134" class="Field">⊥</a>
+
+  <a id="19223" class="Keyword">open</a> <a id="19228" href="Algebra.Structures.html#14803" class="Module">IsBooleanAlgebra</a> <a id="19245" href="Algebra.Bundles.html#19165" class="Field">isBooleanAlgebra</a> <a id="19262" class="Keyword">public</a>
+
+  <a id="BooleanAlgebra.distributiveLattice"></a><a id="19272" href="Algebra.Bundles.html#19272" class="Function">distributiveLattice</a> <a id="19292" class="Symbol">:</a> <a id="19294" href="Algebra.Bundles.html#8162" class="Record">DistributiveLattice</a> <a id="19314" class="Symbol">_</a> <a id="19316" class="Symbol">_</a>
+  <a id="19320" href="Algebra.Bundles.html#19272" class="Function">distributiveLattice</a> <a id="19340" class="Symbol">=</a> <a id="19342" class="Keyword">record</a> <a id="19349" class="Symbol">{</a> <a id="19351" href="Algebra.Bundles.html#8425" class="Field">isDistributiveLattice</a> <a id="19373" class="Symbol">=</a> <a id="19375" href="Algebra.Structures.html#14897" class="Function">isDistributiveLattice</a> <a id="19397" class="Symbol">}</a>
+
+  <a id="19402" class="Keyword">open</a> <a id="19407" href="Algebra.Bundles.html#8162" class="Module">DistributiveLattice</a> <a id="19427" href="Algebra.Bundles.html#19272" class="Function">distributiveLattice</a> <a id="19447" class="Keyword">public</a>
+    <a id="19458" class="Keyword">using</a> <a id="19464" class="Symbol">(</a>setoid<a id="19471" class="Symbol">;</a> lattice<a id="19480" class="Symbol">)</a>
+
+
+<a id="19484" class="Comment">------------------------------------------------------------------------</a>
+<a id="19557" class="Comment">-- DEPRECATED NAMES</a>
+<a id="19577" class="Comment">------------------------------------------------------------------------</a>
+<a id="19650" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="19721" class="Comment">-- not guaranteed.</a>
+
+<a id="19741" class="Comment">-- Version 1.0</a>
+
+<a id="RawSemigroup"></a><a id="19757" href="Algebra.Bundles.html#19757" class="Function">RawSemigroup</a> <a id="19770" class="Symbol">=</a> <a id="19772" href="Algebra.Bundles.html#752" class="Record">RawMagma</a>
+<a id="19781" class="Symbol">{-#</a> <a id="19785" class="Keyword">WARNING_ON_USAGE</a> <a id="19802" class="Pragma">RawSemigroup</a>
+<a id="19815" class="String">&quot;Warning: RawSemigroup was deprecated in v1.0.
+Please use RawMagma instead.&quot;</a>
+<a id="19892" class="Symbol">#-}</a>
+</pre></body></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Unary.Unique.DecPropositional.Properties</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties of lists made up entirely of decidably unique elements</a>
+<a id="175" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="249" class="Symbol">{-#</a> <a id="253" class="Keyword">OPTIONS</a> <a id="261" class="Pragma">--without-K</a> <a id="273" class="Pragma">--safe</a> <a id="280" class="Symbol">#-}</a>
+
+<a id="285" class="Keyword">open</a> <a id="290" class="Keyword">import</a> <a id="297" href="Data.List.html" class="Module">Data.List</a>
+<a id="307" class="Keyword">import</a> <a id="314" href="Data.List.Relation.Unary.Unique.DecSetoid.Properties.html" class="Module">Data.List.Relation.Unary.Unique.DecSetoid.Properties</a> <a id="367" class="Symbol">as</a> <a id="370" class="Module">Setoid</a>
+<a id="377" class="Keyword">open</a> <a id="382" class="Keyword">import</a> <a id="389" href="Data.List.Relation.Unary.All.Properties.html" class="Module">Data.List.Relation.Unary.All.Properties</a> <a id="429" class="Keyword">using</a> <a id="435" class="Symbol">(</a><a id="436" href="Data.List.Relation.Unary.All.Properties.html#21563" class="Function">all-filter</a><a id="446" class="Symbol">)</a>
+<a id="448" class="Keyword">open</a> <a id="453" class="Keyword">import</a> <a id="460" href="Level.html" class="Module">Level</a>
+<a id="466" class="Keyword">open</a> <a id="471" class="Keyword">import</a> <a id="478" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="494" class="Keyword">using</a> <a id="500" class="Symbol">(</a><a id="501" href="Relation.Binary.Definitions.html#4883" class="Function">DecidableEquality</a><a id="518" class="Symbol">)</a>
+<a id="520" class="Keyword">open</a> <a id="525" class="Keyword">import</a> <a id="532" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="570" class="Keyword">using</a> <a id="576" class="Symbol">(</a><a id="577" href="Relation.Binary.PropositionalEquality.Properties.html#4103" class="Function">decSetoid</a><a id="586" class="Symbol">)</a>
+
+<a id="589" class="Keyword">module</a> <a id="596" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html" class="Module">Data.List.Relation.Unary.Unique.DecPropositional.Properties</a>
+  <a id="658" class="Symbol">{</a><a id="659" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#659" class="Bound">a</a><a id="660" class="Symbol">}</a> <a id="662" class="Symbol">{</a><a id="663" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#663" class="Bound">A</a> <a id="665" class="Symbol">:</a> <a id="667" class="PrimitiveType">Set</a> <a id="671" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#659" class="Bound">a</a><a id="672" class="Symbol">}</a> <a id="674" class="Symbol">(</a><a id="675" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#675" class="Bound Operator">_≟_</a> <a id="679" class="Symbol">:</a> <a id="681" href="Relation.Binary.Definitions.html#4883" class="Function">DecidableEquality</a> <a id="699" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#663" class="Bound">A</a><a id="700" class="Symbol">)</a> <a id="702" class="Keyword">where</a>
+
+<a id="709" class="Keyword">open</a> <a id="714" class="Keyword">import</a> <a id="721" href="Data.List.Relation.Unary.Unique.DecPropositional.html" class="Module">Data.List.Relation.Unary.Unique.DecPropositional</a> <a id="770" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#675" class="Bound Operator">_≟_</a>
+
+<a id="775" class="Comment">------------------------------------------------------------------------</a>
+<a id="848" class="Comment">-- Re-export propositional properties</a>
+
+<a id="887" class="Keyword">open</a> <a id="892" class="Keyword">import</a> <a id="899" href="Data.List.Relation.Unary.Unique.Propositional.Properties.html" class="Module">Data.List.Relation.Unary.Unique.Propositional.Properties</a> <a id="956" class="Keyword">public</a>
+
+<a id="964" class="Comment">------------------------------------------------------------------------</a>
+<a id="1037" class="Comment">-- deduplicate</a>
+
+<a id="deduplicate-!"></a><a id="1053" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#1053" class="Function">deduplicate-!</a> <a id="1067" class="Symbol">:</a> <a id="1069" class="Symbol">∀</a> <a id="1071" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#1071" class="Bound">xs</a> <a id="1074" class="Symbol">→</a> <a id="1076" href="Data.List.Relation.Unary.Unique.Setoid.html#719" class="Datatype">Unique</a> <a id="1083" class="Symbol">(</a><a id="1084" href="Data.List.Base.html#9017" class="Function">deduplicate</a> <a id="1096" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#675" class="Bound Operator">_≟_</a> <a id="1100" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#1071" class="Bound">xs</a><a id="1102" class="Symbol">)</a>
+<a id="1104" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#1053" class="Function">deduplicate-!</a> <a id="1118" class="Symbol">=</a> <a id="1120" href="Data.List.Relation.Unary.Unique.DecSetoid.Properties.html#856" class="Function">Setoid.deduplicate-!</a> <a id="1141" class="Symbol">(</a><a id="1142" href="Relation.Binary.PropositionalEquality.Properties.html#4103" class="Function">decSetoid</a> <a id="1152" href="Data.List.Relation.Unary.Unique.DecPropositional.Properties.html#675" class="Bound Operator">_≟_</a><a id="1155" class="Symbol">)</a>
+</pre></body></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Sort</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Functions and definitions for sorting lists</a>
+<a id="153" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="227" class="Comment">-- See `Data.List.Relation.Unary.Sorted` for the property of a list</a>
+<a id="295" class="Comment">-- being sorted.</a>
+
+<a id="313" class="Symbol">{-#</a> <a id="317" class="Keyword">OPTIONS</a> <a id="325" class="Pragma">--cubical-compatible</a> <a id="346" class="Pragma">--safe</a> <a id="353" class="Symbol">#-}</a>
+
+<a id="358" class="Keyword">open</a> <a id="363" class="Keyword">import</a> <a id="370" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="385" class="Keyword">using</a> <a id="391" class="Symbol">(</a><a id="392" href="Agda.Builtin.List.html#130" class="Datatype">List</a><a id="396" class="Symbol">)</a>
+<a id="398" class="Keyword">open</a> <a id="403" class="Keyword">import</a> <a id="410" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="426" class="Keyword">using</a> <a id="432" class="Symbol">(</a><a id="433" href="Relation.Binary.Bundles.html#6016" class="Record">DecTotalOrder</a><a id="446" class="Symbol">)</a>
+
+<a id="449" class="Keyword">module</a> <a id="456" href="Data.List.Sort.html" class="Module">Data.List.Sort</a>
+  <a id="473" class="Symbol">{</a><a id="474" href="Data.List.Sort.html#474" class="Bound">a</a> <a id="476" href="Data.List.Sort.html#476" class="Bound">ℓ₁</a> <a id="479" href="Data.List.Sort.html#479" class="Bound">ℓ₂</a><a id="481" class="Symbol">}</a> <a id="483" class="Symbol">(</a><a id="484" href="Data.List.Sort.html#484" class="Bound">O</a> <a id="486" class="Symbol">:</a> <a id="488" href="Relation.Binary.Bundles.html#6016" class="Record">DecTotalOrder</a> <a id="502" href="Data.List.Sort.html#474" class="Bound">a</a> <a id="504" href="Data.List.Sort.html#476" class="Bound">ℓ₁</a> <a id="507" href="Data.List.Sort.html#479" class="Bound">ℓ₂</a><a id="509" class="Symbol">)</a>
+  <a id="513" class="Keyword">where</a>
+
+<a id="520" class="Keyword">open</a> <a id="525" href="Relation.Binary.Bundles.html#6016" class="Module">DecTotalOrder</a> <a id="539" href="Data.List.Sort.html#484" class="Bound">O</a> <a id="541" class="Keyword">renaming</a> <a id="550" class="Symbol">(</a><a id="551" href="Relation.Binary.Bundles.html#6100" class="Field">Carrier</a> <a id="559" class="Symbol">to</a> <a id="562" class="Field">A</a><a id="563" class="Symbol">)</a>
+
+<a id="566" class="Comment">------------------------------------------------------------------------</a>
+<a id="639" class="Comment">-- Re-export core definitions</a>
+
+<a id="670" class="Keyword">open</a> <a id="675" class="Keyword">import</a> <a id="682" href="Data.List.Sort.Base.html" class="Module">Data.List.Sort.Base</a> <a id="702" href="Relation.Binary.Bundles.html#6344" class="Function">totalOrder</a> <a id="713" class="Keyword">public</a>
+  <a id="722" class="Keyword">using</a> <a id="728" class="Symbol">(</a><a id="729" href="Data.List.Sort.Base.html#771" class="Record">SortingAlgorithm</a><a id="745" class="Symbol">)</a>
+
+<a id="748" class="Comment">------------------------------------------------------------------------</a>
+<a id="821" class="Comment">-- An instance of a sorting algorithm</a>
+
+<a id="860" class="Keyword">open</a> <a id="865" class="Keyword">import</a> <a id="872" href="Data.List.Sort.MergeSort.html" class="Module">Data.List.Sort.MergeSort</a> <a id="897" href="Data.List.Sort.html#484" class="Bound">O</a> <a id="899" class="Keyword">using</a> <a id="905" class="Symbol">(</a><a id="906" href="Data.List.Sort.MergeSort.html#4518" class="Function">mergeSort</a><a id="915" class="Symbol">)</a>
+
+<a id="918" class="Keyword">abstract</a>
+  <a id="sortingAlgorithm"></a><a id="929" href="Data.List.Sort.html#929" class="Function">sortingAlgorithm</a> <a id="946" class="Symbol">:</a> <a id="948" href="Data.List.Sort.Base.html#771" class="Record">SortingAlgorithm</a>
+  <a id="967" href="Data.List.Sort.html#929" class="Function">sortingAlgorithm</a> <a id="984" class="Symbol">=</a> <a id="986" href="Data.List.Sort.MergeSort.html#4518" class="Function">mergeSort</a>
+
+<a id="997" class="Keyword">open</a> <a id="1002" href="Data.List.Sort.Base.html#771" class="Module">SortingAlgorithm</a> <a id="1019" href="Data.List.Sort.html#929" class="Function">sortingAlgorithm</a> <a id="1036" class="Keyword">public</a>
+  <a id="1045" class="Keyword">using</a>
+  <a id="1053" class="Symbol">(</a> <a id="1055" href="Data.List.Sort.Base.html#826" class="Field">sort</a>   <a id="1062" class="Comment">-- : List A → List A</a>
+  <a id="1085" class="Symbol">;</a> <a id="1087" href="Data.List.Sort.Base.html#914" class="Field">sort-↭</a> <a id="1094" class="Comment">-- : ∀ xs → sort xs ↭ xs</a>
+  <a id="1121" class="Symbol">;</a> <a id="1123" href="Data.List.Sort.Base.html#987" class="Field">sort-↗</a> <a id="1130" class="Comment">-- : ∀ xs → Sorted (sort xs)</a>
+  <a id="1161" class="Symbol">)</a>
+</pre></body></html>

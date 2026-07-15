@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Construct.NaturalChoice.Max</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The max operator derived from an arbitrary total order</a>
+<a id="164" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="238" class="Symbol">{-#</a> <a id="242" class="Keyword">OPTIONS</a> <a id="250" class="Pragma">--without-K</a> <a id="262" class="Pragma">--safe</a> <a id="269" class="Symbol">#-}</a>
+
+<a id="274" class="Keyword">open</a> <a id="279" class="Keyword">import</a> <a id="286" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="303" class="Keyword">module</a> <a id="310" href="Algebra.Construct.NaturalChoice.Max.html" class="Module">Algebra.Construct.NaturalChoice.Max</a>
+  <a id="348" class="Symbol">{</a><a id="349" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="351" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="354" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="356" class="Symbol">}</a> <a id="358" class="Symbol">(</a><a id="359" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a> <a id="370" class="Symbol">:</a> <a id="372" href="Relation.Binary.Bundles.html#5467" class="Record">TotalOrder</a> <a id="383" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="385" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="388" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="390" class="Symbol">)</a> <a id="392" class="Keyword">where</a>
+
+<a id="399" class="Keyword">open</a> <a id="404" class="Keyword">import</a> <a id="411" href="Algebra.Core.html" class="Module">Algebra.Core</a>
+<a id="424" class="Keyword">open</a> <a id="429" class="Keyword">import</a> <a id="436" href="Algebra.Definitions.html" class="Module">Algebra.Definitions</a>
+<a id="456" class="Keyword">open</a> <a id="461" class="Keyword">import</a> <a id="468" href="Algebra.Construct.NaturalChoice.Base.html" class="Module">Algebra.Construct.NaturalChoice.Base</a>
+<a id="505" class="Keyword">open</a> <a id="510" class="Keyword">import</a> <a id="517" href="Relation.Binary.Construct.Converse.html" class="Module">Relation.Binary.Construct.Converse</a> <a id="552" class="Keyword">using</a> <a id="558" class="Symbol">()</a>
+  <a id="563" class="Keyword">renaming</a> <a id="572" class="Symbol">(</a><a id="573" href="Relation.Binary.Construct.Converse.html#5475" class="Function">totalOrder</a> <a id="584" class="Symbol">to</a> <a id="587" class="Function">flip</a><a id="591" class="Symbol">)</a>
+
+<a id="594" class="Keyword">open</a> <a id="599" href="Relation.Binary.Bundles.html#5467" class="Module">TotalOrder</a> <a id="610" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a> <a id="621" class="Keyword">renaming</a> <a id="630" class="Symbol">(</a><a id="631" href="Relation.Binary.Bundles.html#5548" class="Field">Carrier</a> <a id="639" class="Symbol">to</a> <a id="642" class="Field">A</a><a id="643" class="Symbol">)</a>
+
+<a id="646" class="Comment">------------------------------------------------------------------------</a>
+<a id="719" class="Comment">-- Max is just min with a flipped order</a>
+
+<a id="760" class="Keyword">import</a> <a id="767" href="Algebra.Construct.NaturalChoice.Min.html" class="Module">Algebra.Construct.NaturalChoice.Min</a> <a id="803" class="Symbol">(</a><a id="804" href="Algebra.Construct.NaturalChoice.Max.html#587" class="Function">flip</a> <a id="809" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a><a id="819" class="Symbol">)</a> as <a id="Min"></a><a id="824" href="Algebra.Construct.NaturalChoice.Max.html#824" class="Module">Min</a>
+
+<a id="829" class="Keyword">infixl</a> <a id="836" class="Number">6</a> <a id="838" href="Algebra.Construct.NaturalChoice.Max.html#843" class="Function Operator">_⊔_</a>
+
+<a id="_⊔_"></a><a id="843" href="Algebra.Construct.NaturalChoice.Max.html#843" class="Function Operator">_⊔_</a> <a id="847" class="Symbol">:</a> <a id="849" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="853" href="Algebra.Construct.NaturalChoice.Max.html#642" class="Field">A</a>
+<a id="855" href="Algebra.Construct.NaturalChoice.Max.html#843" class="Function Operator">_⊔_</a> <a id="859" class="Symbol">=</a> <a id="861" href="Algebra.Construct.NaturalChoice.Min.html#809" class="Function Operator">Min._⊓_</a>
+
+<a id="870" class="Comment">------------------------------------------------------------------------</a>
+<a id="943" class="Comment">-- Properties</a>
+
+<a id="958" class="Keyword">open</a> <a id="963" href="Algebra.Construct.NaturalChoice.Max.html#824" class="Module">Min</a> <a id="967" class="Keyword">public</a> <a id="974" class="Keyword">using</a> <a id="980" class="Symbol">()</a>
+  <a id="985" class="Keyword">renaming</a>
+  <a id="996" class="Symbol">(</a> <a id="998" href="Algebra.Construct.NaturalChoice.Min.html#969" class="Function">x≤y⇒x⊓y≈x</a> <a id="1008" class="Symbol">to</a> <a id="1011" class="Function">x≤y⇒y⊔x≈y</a>
+  <a id="1023" class="Symbol">;</a> <a id="1025" href="Algebra.Construct.NaturalChoice.Min.html#1105" class="Function">x≤y⇒y⊓x≈x</a> <a id="1035" class="Symbol">to</a> <a id="1038" class="Function">x≤y⇒x⊔y≈y</a>
+  <a id="1050" class="Symbol">)</a>
+
+<a id="maxOperator"></a><a id="1053" href="Algebra.Construct.NaturalChoice.Max.html#1053" class="Function">maxOperator</a> <a id="1065" class="Symbol">:</a> <a id="1067" href="Algebra.Construct.NaturalChoice.Base.html#1147" class="Record">MaxOperator</a> <a id="1079" href="Relation.Binary.Bundles.html#5889" class="Function">totalPreorder</a>
+<a id="1093" href="Algebra.Construct.NaturalChoice.Max.html#1053" class="Function">maxOperator</a> <a id="1105" class="Symbol">=</a> <a id="1107" class="Keyword">record</a>
+  <a id="1116" class="Symbol">{</a> <a id="1118" href="Algebra.Construct.NaturalChoice.Base.html#1252" class="Field">x≤y⇒x⊔y≈y</a> <a id="1128" class="Symbol">=</a> <a id="1130" href="Algebra.Construct.NaturalChoice.Max.html#1038" class="Function">x≤y⇒x⊔y≈y</a>
+  <a id="1142" class="Symbol">;</a> <a id="1144" href="Algebra.Construct.NaturalChoice.Base.html#1298" class="Field">x≥y⇒x⊔y≈x</a> <a id="1154" class="Symbol">=</a> <a id="1156" href="Algebra.Construct.NaturalChoice.Max.html#1011" class="Function">x≤y⇒y⊔x≈y</a>
+  <a id="1168" class="Symbol">}</a>
+
+<a id="1171" class="Keyword">open</a> <a id="1176" class="Keyword">import</a> <a id="1183" href="Algebra.Construct.NaturalChoice.MaxOp.html" class="Module">Algebra.Construct.NaturalChoice.MaxOp</a> <a id="1221" href="Algebra.Construct.NaturalChoice.Max.html#1053" class="Function">maxOperator</a> <a id="1233" class="Keyword">public</a>
+</pre></body></html>

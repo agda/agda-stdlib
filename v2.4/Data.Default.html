@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Default</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- A way to specify that a function&#39;s argument takes a default value</a>
+<a id="175" class="Comment">-- if the argument is not passed explicitly.</a>
+<a id="220" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="294" class="Symbol">{-#</a> <a id="298" class="Keyword">OPTIONS</a> <a id="306" class="Pragma">--cubical-compatible</a> <a id="327" class="Pragma">--safe</a> <a id="334" class="Symbol">#-}</a>
+
+<a id="339" class="Keyword">module</a> <a id="346" href="Data.Default.html" class="Module">Data.Default</a> <a id="359" class="Keyword">where</a>
+
+<a id="366" class="Comment">-- An argument of type `WithDefault {a} {A} x` is an argument of type</a>
+<a id="436" class="Comment">-- `A` that happens to default to `x` if no other value is specified</a>
+<a id="505" class="Comment">-- (as long as the `default` instance is in scope)</a>
+
+<a id="557" class="Keyword">infixl</a> <a id="564" class="Number">0</a> <a id="566" href="Data.Default.html#640" class="InductiveConstructor Operator">_!</a>
+<a id="569" class="Keyword">record</a> <a id="WithDefault"></a><a id="576" href="Data.Default.html#576" class="Record">WithDefault</a> <a id="588" class="Symbol">{</a><a id="589" href="Data.Default.html#589" class="Bound">a</a><a id="590" class="Symbol">}</a> <a id="592" class="Symbol">{</a><a id="593" href="Data.Default.html#593" class="Bound">A</a> <a id="595" class="Symbol">:</a> <a id="597" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="601" href="Data.Default.html#589" class="Bound">a</a><a id="602" class="Symbol">}</a> <a id="604" class="Symbol">(</a><a id="605" href="Data.Default.html#605" class="Bound">x</a> <a id="607" class="Symbol">:</a> <a id="609" href="Data.Default.html#593" class="Bound">A</a><a id="610" class="Symbol">)</a> <a id="612" class="Symbol">:</a> <a id="614" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="618" href="Data.Default.html#589" class="Bound">a</a> <a id="620" class="Keyword">where</a>
+  <a id="628" class="Keyword">constructor</a> <a id="_!"></a><a id="640" href="Data.Default.html#640" class="InductiveConstructor Operator">_!</a>
+  <a id="645" class="Keyword">field</a> <a id="WithDefault.value"></a><a id="651" href="Data.Default.html#651" class="Field">value</a> <a id="657" class="Symbol">:</a> <a id="659" href="Data.Default.html#593" class="Bound">A</a>
+<a id="661" class="Keyword">open</a> <a id="666" href="Data.Default.html#576" class="Module">WithDefault</a> <a id="678" class="Keyword">public</a>
+
+<a id="686" class="Keyword">instance</a>
+  <a id="default"></a><a id="697" href="Data.Default.html#697" class="Function">default</a> <a id="705" class="Symbol">:</a> <a id="707" class="Symbol">∀</a> <a id="709" class="Symbol">{</a><a id="710" href="Data.Default.html#710" class="Bound">a</a><a id="711" class="Symbol">}</a> <a id="713" class="Symbol">{</a><a id="714" href="Data.Default.html#714" class="Bound">A</a> <a id="716" class="Symbol">:</a> <a id="718" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="722" href="Data.Default.html#710" class="Bound">a</a><a id="723" class="Symbol">}</a> <a id="725" class="Symbol">{</a><a id="726" href="Data.Default.html#726" class="Bound">x</a> <a id="728" class="Symbol">:</a> <a id="730" href="Data.Default.html#714" class="Bound">A</a><a id="731" class="Symbol">}</a> <a id="733" class="Symbol">→</a> <a id="735" href="Data.Default.html#576" class="Record">WithDefault</a> <a id="747" href="Data.Default.html#726" class="Bound">x</a>
+  <a id="751" href="Data.Default.html#697" class="Function">default</a> <a id="759" class="Symbol">{</a><a id="760" class="Argument">x</a> <a id="762" class="Symbol">=</a> <a id="764" href="Data.Default.html#764" class="Bound">x</a><a id="765" class="Symbol">}</a> <a id="767" class="Symbol">.</a><a id="768" href="Data.Default.html#651" class="Field">value</a> <a id="774" class="Symbol">=</a> <a id="776" href="Data.Default.html#764" class="Bound">x</a>
+
+<a id="779" class="Comment">-- See README.Data.Default for an example</a>
+</pre></body></html>

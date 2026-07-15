@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Word.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Machine words: basic type and conversion functions</a>
+<a id="160" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="234" class="Symbol">{-#</a> <a id="238" class="Keyword">OPTIONS</a> <a id="246" class="Pragma">--cubical-compatible</a> <a id="267" class="Pragma">--safe</a> <a id="274" class="Symbol">#-}</a>
+
+<a id="279" class="Keyword">module</a> <a id="286" href="Data.Word.Base.html" class="Module">Data.Word.Base</a> <a id="301" class="Keyword">where</a>
+
+<a id="308" class="Keyword">open</a> <a id="313" class="Keyword">import</a> <a id="320" href="Level.html" class="Module">Level</a> <a id="326" class="Keyword">using</a> <a id="332" class="Symbol">(</a><a id="333" href="Agda.Primitive.html#915" class="Primitive">zero</a><a id="337" class="Symbol">)</a>
+<a id="339" class="Keyword">import</a> <a id="346" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="360" class="Symbol">as</a> <a id="363" class="Module">ℕ</a>
+<a id="365" class="Keyword">open</a> <a id="370" class="Keyword">import</a> <a id="377" href="Function.Base.html" class="Module">Function.Base</a> <a id="391" class="Keyword">using</a> <a id="397" class="Symbol">(</a><a id="398" href="Function.Base.html#6209" class="Function Operator">_on_</a><a id="402" class="Symbol">)</a>
+<a id="404" class="Keyword">open</a> <a id="409" class="Keyword">import</a> <a id="416" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="437" class="Keyword">using</a> <a id="443" class="Symbol">(</a><a id="444" href="Relation.Binary.Core.html#896" class="Function">Rel</a><a id="447" class="Symbol">)</a>
+<a id="449" class="Keyword">open</a> <a id="454" class="Keyword">import</a> <a id="461" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="500" class="Comment">------------------------------------------------------------------------</a>
+<a id="573" class="Comment">-- Re-export built-ins publicly</a>
+
+<a id="606" class="Keyword">open</a> <a id="611" class="Keyword">import</a> <a id="618" href="Agda.Builtin.Word.html" class="Module">Agda.Builtin.Word</a> <a id="636" class="Keyword">public</a>
+  <a id="645" class="Keyword">using</a> <a id="651" class="Symbol">(</a><a id="652" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a><a id="658" class="Symbol">)</a>
+  <a id="662" class="Keyword">renaming</a>
+  <a id="673" class="Symbol">(</a> <a id="675" href="Agda.Builtin.Word.html#264" class="Primitive">primWord64ToNat</a>   <a id="693" class="Symbol">to</a> <a id="696" class="Primitive">toℕ</a>
+  <a id="702" class="Symbol">;</a> <a id="704" href="Agda.Builtin.Word.html#299" class="Primitive">primWord64FromNat</a> <a id="722" class="Symbol">to</a> <a id="725" class="Primitive">fromℕ</a>
+  <a id="733" class="Symbol">)</a>
+
+<a id="736" class="Keyword">infix</a> <a id="742" class="Number">4</a> <a id="744" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a>
+<a id="_≈_"></a><a id="748" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a> <a id="752" class="Symbol">:</a> <a id="754" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="758" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a> <a id="765" href="Agda.Primitive.html#915" class="Primitive">zero</a>
+<a id="770" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a> <a id="774" class="Symbol">=</a> <a id="776" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a> <a id="780" href="Function.Base.html#6209" class="Function Operator">on</a> <a id="783" href="Data.Word.Base.html#696" class="Primitive">toℕ</a>
+
+<a id="788" class="Keyword">infix</a> <a id="794" class="Number">4</a> <a id="796" href="Data.Word.Base.html#800" class="Function Operator">_&lt;_</a>
+<a id="_&lt;_"></a><a id="800" href="Data.Word.Base.html#800" class="Function Operator">_&lt;_</a> <a id="804" class="Symbol">:</a> <a id="806" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="810" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a> <a id="817" href="Agda.Primitive.html#915" class="Primitive">zero</a>
+<a id="822" href="Data.Word.Base.html#800" class="Function Operator">_&lt;_</a> <a id="826" class="Symbol">=</a> <a id="828" href="Data.Nat.Base.html#1801" class="Function Operator">ℕ._&lt;_</a> <a id="834" href="Function.Base.html#6209" class="Function Operator">on</a> <a id="837" href="Data.Word.Base.html#696" class="Primitive">toℕ</a>
+</pre></body></html>

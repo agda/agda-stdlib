@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Disjoint.DecPropositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Decidability of the disjoint relation over propositional equality.</a>
+<a id="176" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="250" class="Symbol">{-#</a> <a id="254" class="Keyword">OPTIONS</a> <a id="262" class="Pragma">--cubical-compatible</a> <a id="283" class="Pragma">--safe</a> <a id="290" class="Symbol">#-}</a>
+
+<a id="295" class="Keyword">open</a> <a id="300" class="Keyword">import</a> <a id="307" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a> <a id="335" class="Keyword">using</a> <a id="341" class="Symbol">(</a><a id="342" href="Relation.Binary.Definitions.html#6834" class="Function">DecidableEquality</a><a id="359" class="Symbol">)</a>
+
+<a id="362" class="Keyword">module</a> <a id="369" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html" class="Module">Data.List.Relation.Binary.Disjoint.DecPropositional</a>
+  <a id="423" class="Symbol">{</a><a id="424" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html#424" class="Bound">a</a><a id="425" class="Symbol">}</a> <a id="427" class="Symbol">{</a><a id="428" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html#428" class="Bound">A</a> <a id="430" class="Symbol">:</a> <a id="432" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="436" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html#424" class="Bound">a</a><a id="437" class="Symbol">}</a> <a id="439" class="Symbol">(</a><a id="440" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html#440" class="Bound Operator">_≟_</a> <a id="444" class="Symbol">:</a> <a id="446" href="Relation.Binary.Definitions.html#6834" class="Function">DecidableEquality</a> <a id="464" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html#428" class="Bound">A</a><a id="465" class="Symbol">)</a>
+  <a id="469" class="Keyword">where</a>
+
+<a id="476" class="Comment">------------------------------------------------------------------------</a>
+<a id="549" class="Comment">-- Re-export core definitions and operations</a>
+
+<a id="595" class="Keyword">open</a> <a id="600" class="Keyword">import</a> <a id="607" href="Data.List.Relation.Binary.Disjoint.Propositional.html" class="Module">Data.List.Relation.Binary.Disjoint.Propositional</a> <a id="656" class="Symbol">{</a><a id="657" class="Argument">A</a> <a id="659" class="Symbol">=</a> <a id="661" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html#428" class="Bound">A</a><a id="662" class="Symbol">}</a> <a id="664" class="Keyword">public</a>
+<a id="671" class="Keyword">open</a> <a id="676" class="Keyword">import</a> <a id="683" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a> <a id="732" class="Keyword">using</a> <a id="738" class="Symbol">(</a><a id="739" href="Relation.Binary.PropositionalEquality.Properties.html#5818" class="Function">decSetoid</a><a id="748" class="Symbol">)</a>
+<a id="750" class="Keyword">open</a> <a id="755" class="Keyword">import</a> <a id="762" href="Data.List.Relation.Binary.Disjoint.DecSetoid.html" class="Module">Data.List.Relation.Binary.Disjoint.DecSetoid</a> <a id="807" class="Symbol">(</a><a id="808" href="Relation.Binary.PropositionalEquality.Properties.html#5818" class="Function">decSetoid</a> <a id="818" href="Data.List.Relation.Binary.Disjoint.DecPropositional.html#440" class="Bound Operator">_≟_</a><a id="821" class="Symbol">)</a> <a id="823" class="Keyword">public</a>
+  <a id="832" class="Keyword">using</a> <a id="838" class="Symbol">(</a><a id="839" href="Data.List.Relation.Binary.Disjoint.DecSetoid.html#967" class="Function">disjoint?</a><a id="848" class="Symbol">)</a>
+</pre></body></html>

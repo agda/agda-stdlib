@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Reflection.TypeChecking.Monad.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for TC</a>
+<a id="136" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="210" class="Symbol">{-#</a> <a id="214" class="Keyword">OPTIONS</a> <a id="222" class="Pragma">--without-K</a> <a id="234" class="Pragma">--safe</a> <a id="241" class="Symbol">#-}</a>
+
+<a id="246" class="Keyword">module</a> <a id="253" href="Reflection.TypeChecking.Monad.Instances.html" class="Module">Reflection.TypeChecking.Monad.Instances</a> <a id="293" class="Keyword">where</a>
+
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Reflection.TypeChecking.Monad.Categorical.html" class="Module">Reflection.TypeChecking.Monad.Categorical</a>
+
+<a id="355" class="Keyword">instance</a>
+  <a id="tcFunctor"></a><a id="366" href="Reflection.TypeChecking.Monad.Instances.html#366" class="Function">tcFunctor</a> <a id="376" class="Symbol">=</a> <a id="378" href="Reflection.TypeChecking.Monad.Categorical.html#562" class="Function">functor</a>
+  <a id="tcApplicative"></a><a id="388" href="Reflection.TypeChecking.Monad.Instances.html#388" class="Function">tcApplicative</a> <a id="402" class="Symbol">=</a> <a id="404" href="Reflection.TypeChecking.Monad.Categorical.html#656" class="Function">applicative</a>
+  <a id="tcApplicativeZero"></a><a id="418" href="Reflection.TypeChecking.Monad.Instances.html#418" class="Function">tcApplicativeZero</a> <a id="436" class="Symbol">=</a> <a id="438" href="Reflection.TypeChecking.Monad.Categorical.html#796" class="Function">applicativeZero</a>
+  <a id="tcAlternative"></a><a id="456" href="Reflection.TypeChecking.Monad.Instances.html#456" class="Function">tcAlternative</a> <a id="470" class="Symbol">=</a> <a id="472" href="Reflection.TypeChecking.Monad.Categorical.html#931" class="Function">alternative</a>
+  <a id="tcMonad"></a><a id="486" href="Reflection.TypeChecking.Monad.Instances.html#486" class="Function">tcMonad</a> <a id="494" class="Symbol">=</a> <a id="496" href="Reflection.TypeChecking.Monad.Categorical.html#1061" class="Function">monad</a>
+  <a id="tcMonadZero"></a><a id="504" href="Reflection.TypeChecking.Monad.Instances.html#504" class="Function">tcMonadZero</a> <a id="516" class="Symbol">=</a> <a id="518" href="Reflection.TypeChecking.Monad.Categorical.html#1145" class="Function">monadZero</a>
+  <a id="tcMonadPlus"></a><a id="530" href="Reflection.TypeChecking.Monad.Instances.html#530" class="Function">tcMonadPlus</a> <a id="542" class="Symbol">=</a> <a id="544" href="Reflection.TypeChecking.Monad.Categorical.html#1267" class="Function">monadPlus</a>
+</pre></body></html>

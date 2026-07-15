@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Lattice.Construct.Zero</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instances of algebraic lattice structures where the carrier is ⊤.</a>
+<a id="175" class="Comment">-- In mathematics, this is usually called 0.</a>
+<a id="220" class="Comment">--</a>
+<a id="223" class="Comment">-- From monoids up, these are are zero-objects – i.e, both the initial</a>
+<a id="294" class="Comment">-- and the terminal object in the relevant category.</a>
+<a id="347" class="Comment">-- For structures without an identity element, we can&#39;t necessarily</a>
+<a id="415" class="Comment">-- produce a homomorphism out of 0, because there is an instance of such</a>
+<a id="488" class="Comment">-- a structure with an empty Carrier.</a>
+<a id="526" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="600" class="Symbol">{-#</a> <a id="604" class="Keyword">OPTIONS</a> <a id="612" class="Pragma">--cubical-compatible</a> <a id="633" class="Pragma">--safe</a> <a id="640" class="Symbol">#-}</a>
+
+<a id="645" class="Keyword">open</a> <a id="650" class="Keyword">import</a> <a id="657" href="Level.html" class="Module">Level</a> <a id="663" class="Keyword">using</a> <a id="669" class="Symbol">(</a><a id="670" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="675" class="Symbol">)</a>
+
+<a id="678" class="Keyword">module</a> <a id="685" href="Algebra.Lattice.Construct.Zero.html" class="Module">Algebra.Lattice.Construct.Zero</a> <a id="716" class="Symbol">{</a><a id="717" href="Algebra.Lattice.Construct.Zero.html#717" class="Bound">c</a> <a id="719" href="Algebra.Lattice.Construct.Zero.html#719" class="Bound">ℓ</a> <a id="721" class="Symbol">:</a> <a id="723" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="728" class="Symbol">}</a> <a id="730" class="Keyword">where</a>
+
+<a id="737" class="Keyword">open</a> <a id="742" class="Keyword">import</a> <a id="749" href="Algebra.Lattice.Bundles.html" class="Module">Algebra.Lattice.Bundles</a>
+<a id="773" class="Keyword">open</a> <a id="778" class="Keyword">import</a> <a id="785" href="Data.Unit.Polymorphic.html" class="Module">Data.Unit.Polymorphic</a>
+
+<a id="808" class="Comment">------------------------------------------------------------------------</a>
+<a id="881" class="Comment">-- Bundles</a>
+
+<a id="semilattice"></a><a id="893" href="Algebra.Lattice.Construct.Zero.html#893" class="Function">semilattice</a> <a id="905" class="Symbol">:</a> <a id="907" href="Algebra.Lattice.Bundles.html#1223" class="Record">Semilattice</a> <a id="919" href="Algebra.Lattice.Construct.Zero.html#717" class="Bound">c</a> <a id="921" href="Algebra.Lattice.Construct.Zero.html#719" class="Bound">ℓ</a>
+<a id="923" href="Algebra.Lattice.Construct.Zero.html#893" class="Function">semilattice</a> <a id="935" class="Symbol">=</a> <a id="937" class="Keyword">record</a> <a id="944" class="Symbol">{</a> <a id="946" href="Algebra.Lattice.Bundles.html#1307" class="Field">Carrier</a> <a id="954" class="Symbol">=</a> <a id="956" href="Data.Unit.Polymorphic.Base.html#489" class="Function">⊤</a> <a id="958" class="Symbol">;</a> <a id="960" href="Algebra.Lattice.Bundles.html#1333" class="Field Operator">_≈_</a> <a id="964" class="Symbol">=</a> <a id="966" class="Symbol">λ</a> <a id="968" href="Algebra.Lattice.Construct.Zero.html#968" class="Bound">_</a> <a id="970" href="Algebra.Lattice.Construct.Zero.html#970" class="Bound">_</a> <a id="972" class="Symbol">→</a> <a id="974" href="Data.Unit.Polymorphic.Base.html#489" class="Function">⊤</a> <a id="976" class="Symbol">}</a>
+</pre></body></html>

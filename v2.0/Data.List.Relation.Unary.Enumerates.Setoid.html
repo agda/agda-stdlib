@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Unary.Enumerates.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Lists which contain every element of a given type</a>
+<a id="159" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="233" class="Symbol">{-#</a> <a id="237" class="Keyword">OPTIONS</a> <a id="245" class="Pragma">--cubical-compatible</a> <a id="266" class="Pragma">--safe</a> <a id="273" class="Symbol">#-}</a>
+
+<a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="305" class="Keyword">using</a> <a id="311" class="Symbol">(</a><a id="312" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="316" class="Symbol">)</a>
+<a id="318" class="Keyword">open</a> <a id="323" class="Keyword">import</a> <a id="330" href="Level.html" class="Module">Level</a>
+<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="372" class="Keyword">using</a> <a id="378" class="Symbol">(</a><a id="379" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a><a id="385" class="Symbol">)</a>
+
+<a id="388" class="Keyword">module</a> <a id="395" href="Data.List.Relation.Unary.Enumerates.Setoid.html" class="Module">Data.List.Relation.Unary.Enumerates.Setoid</a>
+  <a id="440" class="Symbol">{</a><a id="441" href="Data.List.Relation.Unary.Enumerates.Setoid.html#441" class="Bound">a</a> <a id="443" href="Data.List.Relation.Unary.Enumerates.Setoid.html#443" class="Bound">ℓ</a><a id="444" class="Symbol">}</a> <a id="446" class="Symbol">(</a><a id="447" href="Data.List.Relation.Unary.Enumerates.Setoid.html#447" class="Bound">S</a> <a id="449" class="Symbol">:</a> <a id="451" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a> <a id="458" href="Data.List.Relation.Unary.Enumerates.Setoid.html#441" class="Bound">a</a> <a id="460" href="Data.List.Relation.Unary.Enumerates.Setoid.html#443" class="Bound">ℓ</a><a id="461" class="Symbol">)</a> <a id="463" class="Keyword">where</a>
+
+<a id="470" class="Keyword">open</a> <a id="475" href="Relation.Binary.Bundles.html#1080" class="Module">Setoid</a> <a id="482" href="Data.List.Relation.Unary.Enumerates.Setoid.html#447" class="Bound">S</a> <a id="484" class="Keyword">renaming</a> <a id="493" class="Symbol">(</a><a id="494" href="Relation.Binary.Bundles.html#1143" class="Field">Carrier</a> <a id="502" class="Symbol">to</a> <a id="505" class="Field">A</a><a id="506" class="Symbol">)</a>
+<a id="508" class="Keyword">open</a> <a id="513" class="Keyword">import</a> <a id="520" href="Data.List.Membership.Setoid.html" class="Module">Data.List.Membership.Setoid</a> <a id="548" href="Data.List.Relation.Unary.Enumerates.Setoid.html#447" class="Bound">S</a>
+
+<a id="551" class="Comment">------------------------------------------------------------------------</a>
+<a id="624" class="Comment">-- Definition</a>
+
+<a id="IsEnumeration"></a><a id="639" href="Data.List.Relation.Unary.Enumerates.Setoid.html#639" class="Function">IsEnumeration</a> <a id="653" class="Symbol">:</a> <a id="655" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="660" href="Data.List.Relation.Unary.Enumerates.Setoid.html#505" class="Field">A</a> <a id="662" class="Symbol">→</a> <a id="664" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="668" class="Symbol">(</a><a id="669" href="Data.List.Relation.Unary.Enumerates.Setoid.html#441" class="Bound">a</a> <a id="671" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="673" href="Data.List.Relation.Unary.Enumerates.Setoid.html#443" class="Bound">ℓ</a><a id="674" class="Symbol">)</a>
+<a id="676" href="Data.List.Relation.Unary.Enumerates.Setoid.html#639" class="Function">IsEnumeration</a> <a id="690" href="Data.List.Relation.Unary.Enumerates.Setoid.html#690" class="Bound">xs</a> <a id="693" class="Symbol">=</a> <a id="695" class="Symbol">∀</a> <a id="697" href="Data.List.Relation.Unary.Enumerates.Setoid.html#697" class="Bound">x</a> <a id="699" class="Symbol">→</a> <a id="701" href="Data.List.Relation.Unary.Enumerates.Setoid.html#697" class="Bound">x</a> <a id="703" href="Data.List.Membership.Setoid.html#950" class="Function Operator">∈</a> <a id="705" href="Data.List.Relation.Unary.Enumerates.Setoid.html#690" class="Bound">xs</a>
+</pre></body></html>

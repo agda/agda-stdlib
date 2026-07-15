@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.AVL.Sets</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Finite sets, based on AVL trees</a>
+<a id="141" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="215" class="Symbol">{-#</a> <a id="219" class="Keyword">OPTIONS</a> <a id="227" class="Pragma">--without-K</a> <a id="239" class="Pragma">--safe</a> <a id="246" class="Symbol">#-}</a>
+
+<a id="251" class="Keyword">open</a> <a id="256" class="Keyword">import</a> <a id="263" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="279" class="Keyword">using</a> <a id="285" class="Symbol">(</a><a id="286" href="Relation.Binary.Bundles.html#6313" class="Record">StrictTotalOrder</a><a id="302" class="Symbol">)</a>
+
+<a id="305" class="Keyword">module</a> <a id="312" href="Data.AVL.Sets.html" class="Module">Data.AVL.Sets</a>
+  <a id="328" class="Symbol">{</a><a id="329" href="Data.AVL.Sets.html#329" class="Bound">a</a> <a id="331" href="Data.AVL.Sets.html#331" class="Bound">ℓ₁</a> <a id="334" href="Data.AVL.Sets.html#334" class="Bound">ℓ₂</a><a id="336" class="Symbol">}</a> <a id="338" class="Symbol">(</a><a id="339" href="Data.AVL.Sets.html#339" class="Bound">strictTotalOrder</a> <a id="356" class="Symbol">:</a> <a id="358" href="Relation.Binary.Bundles.html#6313" class="Record">StrictTotalOrder</a> <a id="375" href="Data.AVL.Sets.html#329" class="Bound">a</a> <a id="377" href="Data.AVL.Sets.html#331" class="Bound">ℓ₁</a> <a id="380" href="Data.AVL.Sets.html#334" class="Bound">ℓ₂</a><a id="382" class="Symbol">)</a>
+  <a id="386" class="Keyword">where</a>
+
+<a id="393" class="Keyword">open</a> <a id="398" class="Keyword">import</a> <a id="405" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>
+<a id="420" class="Keyword">open</a> <a id="425" class="Keyword">import</a> <a id="432" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="447" class="Symbol">as</a> <a id="450" class="Module">List</a> <a id="455" class="Keyword">using</a> <a id="461" class="Symbol">(</a><a id="462" href="Agda.Builtin.List.html#148" class="Datatype">List</a><a id="466" class="Symbol">)</a>
+<a id="468" class="Keyword">open</a> <a id="473" class="Keyword">import</a> <a id="480" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="496" class="Symbol">as</a> <a id="499" class="Module">Maybe</a>
+<a id="505" class="Keyword">open</a> <a id="510" class="Keyword">import</a> <a id="517" href="Data.Product.html" class="Module">Data.Product</a> <a id="530" class="Symbol">as</a> <a id="533" class="Module">Prod</a> <a id="538" class="Keyword">using</a> <a id="544" class="Symbol">(</a><a id="545" href="Data.Product.html#1167" class="Function Operator">_×_</a><a id="548" class="Symbol">;</a> <a id="550" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,_</a><a id="553" class="Symbol">;</a> <a id="555" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a><a id="560" class="Symbol">)</a>
+<a id="562" class="Keyword">open</a> <a id="567" class="Keyword">import</a> <a id="574" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="584" class="Keyword">open</a> <a id="589" class="Keyword">import</a> <a id="596" href="Function.html" class="Module">Function</a>
+<a id="605" class="Keyword">open</a> <a id="610" class="Keyword">import</a> <a id="617" href="Level.html" class="Module">Level</a>
+
+<a id="624" class="Keyword">import</a> <a id="631" href="Data.AVL.html" class="Module">Data.AVL</a> <a id="640" href="Data.AVL.Sets.html#339" class="Bound">strictTotalOrder</a> <a id="657" class="Symbol">as</a> <a id="AVL"></a><a id="660" href="Data.AVL.Sets.html#660" class="Module">AVL</a>
+<a id="664" class="Keyword">open</a> <a id="669" href="Relation.Binary.Bundles.html#6313" class="Module">StrictTotalOrder</a> <a id="686" href="Data.AVL.Sets.html#339" class="Bound">strictTotalOrder</a> <a id="703" class="Keyword">renaming</a> <a id="712" class="Symbol">(</a>Carrier <a id="721" class="Symbol">to</a> A<a id="725" class="Symbol">)</a>
+
+<a id="728" class="Comment">------------------------------------------------------------------------</a>
+<a id="801" class="Comment">-- The set type (note that Set is a reserved word)</a>
+
+<a id="⟨Set⟩"></a><a id="853" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="859" class="Symbol">:</a> <a id="861" class="PrimitiveType">Set</a> <a id="865" class="Symbol">(</a><a id="866" href="Data.AVL.Sets.html#329" class="Bound">a</a> <a id="868" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="870" href="Data.AVL.Sets.html#334" class="Bound">ℓ₂</a><a id="872" class="Symbol">)</a>
+<a id="874" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="880" class="Symbol">=</a> <a id="882" href="Data.AVL.html#1436" class="Datatype">AVL.Tree</a> <a id="891" class="Symbol">(</a><a id="892" href="Data.AVL.Value.html#751" class="Function">AVL.const</a> <a id="902" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a><a id="903" class="Symbol">)</a>
+
+<a id="906" class="Comment">------------------------------------------------------------------------</a>
+<a id="979" class="Comment">-- Repackaged functions</a>
+
+<a id="empty"></a><a id="1004" href="Data.AVL.Sets.html#1004" class="Function">empty</a> <a id="1010" class="Symbol">:</a> <a id="1012" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a>
+<a id="1018" href="Data.AVL.Sets.html#1004" class="Function">empty</a> <a id="1024" class="Symbol">=</a> <a id="1026" href="Data.AVL.html#1606" class="Function">AVL.empty</a>
+
+<a id="singleton"></a><a id="1037" href="Data.AVL.Sets.html#1037" class="Function">singleton</a> <a id="1047" class="Symbol">:</a> <a id="1049" href="Data.AVL.Sets.html#724" class="Field">A</a> <a id="1051" class="Symbol">→</a> <a id="1053" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a>
+<a id="1059" href="Data.AVL.Sets.html#1037" class="Function">singleton</a> <a id="1069" href="Data.AVL.Sets.html#1069" class="Bound">k</a> <a id="1071" class="Symbol">=</a> <a id="1073" href="Data.AVL.html#1662" class="Function">AVL.singleton</a> <a id="1087" href="Data.AVL.Sets.html#1069" class="Bound">k</a> <a id="1089" class="Symbol">_</a>
+
+<a id="insert"></a><a id="1092" href="Data.AVL.Sets.html#1092" class="Function">insert</a> <a id="1099" class="Symbol">:</a> <a id="1101" href="Data.AVL.Sets.html#724" class="Field">A</a> <a id="1103" class="Symbol">→</a> <a id="1105" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="1111" class="Symbol">→</a> <a id="1113" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a>
+<a id="1119" href="Data.AVL.Sets.html#1092" class="Function">insert</a> <a id="1126" href="Data.AVL.Sets.html#1126" class="Bound">k</a> <a id="1128" class="Symbol">=</a> <a id="1130" href="Data.AVL.html#1763" class="Function">AVL.insert</a> <a id="1141" href="Data.AVL.Sets.html#1126" class="Bound">k</a> <a id="1143" class="Symbol">_</a>
+
+<a id="delete"></a><a id="1146" href="Data.AVL.Sets.html#1146" class="Function">delete</a> <a id="1153" class="Symbol">:</a> <a id="1155" href="Data.AVL.Sets.html#724" class="Field">A</a> <a id="1157" class="Symbol">→</a> <a id="1159" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="1165" class="Symbol">→</a> <a id="1167" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a>
+<a id="1173" href="Data.AVL.Sets.html#1146" class="Function">delete</a> <a id="1180" class="Symbol">=</a> <a id="1182" href="Data.AVL.html#2050" class="Function">AVL.delete</a>
+
+<a id="1194" class="Keyword">infix</a> <a id="1200" class="Number">4</a> <a id="1202" href="Data.AVL.Sets.html#1208" class="Function Operator">_∈?_</a>
+
+<a id="_∈?_"></a><a id="1208" href="Data.AVL.Sets.html#1208" class="Function Operator">_∈?_</a> <a id="1213" class="Symbol">:</a> <a id="1215" href="Data.AVL.Sets.html#724" class="Field">A</a> <a id="1217" class="Symbol">→</a> <a id="1219" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="1225" class="Symbol">→</a> <a id="1227" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a>
+<a id="1232" href="Data.AVL.Sets.html#1208" class="Function Operator">_∈?_</a> <a id="1237" class="Symbol">=</a> <a id="1239" href="Data.AVL.html#2535" class="Function Operator">AVL._∈?_</a>
+
+<a id="headTail"></a><a id="1249" href="Data.AVL.Sets.html#1249" class="Function">headTail</a> <a id="1258" class="Symbol">:</a> <a id="1260" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="1266" class="Symbol">→</a> <a id="1268" href="Data.Maybe.Base.html#838" class="Datatype">Maybe</a> <a id="1274" class="Symbol">(</a><a id="1275" href="Data.AVL.Sets.html#724" class="Field">A</a> <a id="1277" href="Data.Product.html#1167" class="Function Operator">×</a> <a id="1279" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a><a id="1284" class="Symbol">)</a>
+<a id="1286" href="Data.AVL.Sets.html#1249" class="Function">headTail</a> <a id="1295" href="Data.AVL.Sets.html#1295" class="Bound">s</a> <a id="1297" class="Symbol">=</a> <a id="1299" href="Data.Maybe.Base.html#2039" class="Function">Maybe.map</a> <a id="1309" class="Symbol">(</a><a id="1310" href="Data.Product.html#2574" class="Function">Prod.map₁</a> <a id="1320" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a><a id="1325" class="Symbol">)</a> <a id="1327" class="Symbol">(</a><a id="1328" href="Data.AVL.html#2597" class="Function">AVL.headTail</a> <a id="1341" href="Data.AVL.Sets.html#1295" class="Bound">s</a><a id="1342" class="Symbol">)</a>
+
+<a id="initLast"></a><a id="1345" href="Data.AVL.Sets.html#1345" class="Function">initLast</a> <a id="1354" class="Symbol">:</a> <a id="1356" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="1362" class="Symbol">→</a> <a id="1364" href="Data.Maybe.Base.html#838" class="Datatype">Maybe</a> <a id="1370" class="Symbol">(</a><a id="1371" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="1377" href="Data.Product.html#1167" class="Function Operator">×</a> <a id="1379" href="Data.AVL.Sets.html#724" class="Field">A</a><a id="1380" class="Symbol">)</a>
+<a id="1382" href="Data.AVL.Sets.html#1345" class="Function">initLast</a> <a id="1391" href="Data.AVL.Sets.html#1391" class="Bound">s</a> <a id="1393" class="Symbol">=</a> <a id="1395" href="Data.Maybe.Base.html#2039" class="Function">Maybe.map</a> <a id="1405" class="Symbol">(</a><a id="1406" href="Data.Product.html#2624" class="Function">Prod.map₂</a> <a id="1416" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a><a id="1421" class="Symbol">)</a> <a id="1423" class="Symbol">(</a><a id="1424" href="Data.AVL.html#2819" class="Function">AVL.initLast</a> <a id="1437" href="Data.AVL.Sets.html#1391" class="Bound">s</a><a id="1438" class="Symbol">)</a>
+
+<a id="fromList"></a><a id="1441" href="Data.AVL.Sets.html#1441" class="Function">fromList</a> <a id="1450" class="Symbol">:</a> <a id="1452" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="1457" href="Data.AVL.Sets.html#724" class="Field">A</a> <a id="1459" class="Symbol">→</a> <a id="1461" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a>
+<a id="1467" href="Data.AVL.Sets.html#1441" class="Function">fromList</a> <a id="1476" class="Symbol">=</a> <a id="1478" href="Data.AVL.html#3086" class="Function">AVL.fromList</a> <a id="1491" href="Function.Base.html#992" class="Function Operator">∘</a> <a id="1493" href="Data.List.Base.html#1497" class="Function">List.map</a> <a id="1502" class="Symbol">(</a><a id="1503" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="1506" class="Symbol">_)</a>
+
+<a id="toList"></a><a id="1510" href="Data.AVL.Sets.html#1510" class="Function">toList</a> <a id="1517" class="Symbol">:</a> <a id="1519" href="Data.AVL.Sets.html#853" class="Function">⟨Set⟩</a> <a id="1525" class="Symbol">→</a> <a id="1527" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="1532" href="Data.AVL.Sets.html#724" class="Field">A</a>
+<a id="1534" href="Data.AVL.Sets.html#1510" class="Function">toList</a> <a id="1541" class="Symbol">=</a> <a id="1543" href="Data.List.Base.html#1497" class="Function">List.map</a> <a id="1552" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a> <a id="1558" href="Function.Base.html#992" class="Function Operator">∘</a> <a id="1560" href="Data.AVL.html#3199" class="Function">AVL.toList</a>
+</pre></body></html>

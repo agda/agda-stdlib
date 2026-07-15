@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Bool</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Booleans</a>
+<a id="118" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="192" class="Symbol">{-#</a> <a id="196" class="Keyword">OPTIONS</a> <a id="204" class="Pragma">--without-K</a> <a id="216" class="Pragma">--safe</a> <a id="223" class="Symbol">#-}</a>
+
+<a id="228" class="Keyword">module</a> <a id="235" href="Data.Bool.html" class="Module">Data.Bool</a> <a id="245" class="Keyword">where</a>
+
+<a id="252" class="Keyword">open</a> <a id="257" class="Keyword">import</a> <a id="264" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="359" class="Symbol">as</a> <a id="362" class="Module">PropEq</a>
+  <a id="371" class="Keyword">using</a> <a id="377" class="Symbol">(</a><a id="378" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="381" class="Symbol">;</a> <a id="383" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="387" class="Symbol">)</a>
+
+<a id="390" class="Comment">------------------------------------------------------------------------</a>
+<a id="463" class="Comment">-- The boolean type and some operations</a>
+
+<a id="504" class="Keyword">open</a> <a id="509" class="Keyword">import</a> <a id="516" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="531" class="Keyword">public</a>
+
+<a id="539" class="Comment">------------------------------------------------------------------------</a>
+<a id="612" class="Comment">-- Publicly re-export queries</a>
+
+<a id="643" class="Keyword">open</a> <a id="648" class="Keyword">import</a> <a id="655" href="Data.Bool.Properties.html" class="Module">Data.Bool.Properties</a> <a id="676" class="Keyword">public</a>
+  <a id="685" class="Keyword">using</a> <a id="691" class="Symbol">(</a><a id="692" href="Data.Bool.Properties.html#1126" class="Function Operator">_≟_</a><a id="695" class="Symbol">;</a> <a id="697" href="Data.Bool.Properties.html#1964" class="Function Operator">_≤?_</a><a id="701" class="Symbol">;</a> <a id="703" href="Data.Bool.Properties.html#3761" class="Function Operator">_&lt;?_</a><a id="707" class="Symbol">)</a>
+
+
+<a id="711" class="Comment">------------------------------------------------------------------------</a>
+<a id="784" class="Comment">-- DEPRECATED NAMES</a>
+<a id="804" class="Comment">------------------------------------------------------------------------</a>
+<a id="877" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="948" class="Comment">-- not guaranteed.</a>
+
+<a id="968" class="Comment">-- Version 1.1</a>
+
+<a id="decSetoid"></a><a id="984" href="Data.Bool.html#984" class="Function">decSetoid</a> <a id="994" class="Symbol">=</a> <a id="996" href="Data.Bool.Properties.html#1302" class="Function">Data.Bool.Properties.≡-decSetoid</a>
+<a id="1029" class="Symbol">{-#</a> <a id="1033" class="Keyword">WARNING_ON_USAGE</a> <a id="1050" class="Pragma">decSetoid</a>
+<a id="1060" class="String">&quot;Warning: decSetoid was deprecated in v1.1.
+Please use ≡-decSetoid from Data.Bool.Properties instead.&quot;</a>
+<a id="1163" class="Symbol">#-}</a>
+</pre></body></html>

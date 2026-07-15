@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Membership.DecPropositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Decidable propositional membership over vectors</a>
+<a id="157" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="231" class="Symbol">{-#</a> <a id="235" class="Keyword">OPTIONS</a> <a id="243" class="Pragma">--cubical-compatible</a> <a id="264" class="Pragma">--safe</a> <a id="271" class="Symbol">#-}</a>
+
+<a id="276" class="Keyword">open</a> <a id="281" class="Keyword">import</a> <a id="288" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a> <a id="316" class="Keyword">using</a> <a id="322" class="Symbol">(</a><a id="323" href="Relation.Binary.Definitions.html#6834" class="Function">DecidableEquality</a><a id="340" class="Symbol">)</a>
+
+<a id="343" class="Keyword">module</a> <a id="350" href="Data.Vec.Membership.DecPropositional.html" class="Module">Data.Vec.Membership.DecPropositional</a>
+  <a id="389" class="Symbol">{</a><a id="390" href="Data.Vec.Membership.DecPropositional.html#390" class="Bound">a</a><a id="391" class="Symbol">}</a> <a id="393" class="Symbol">{</a><a id="394" href="Data.Vec.Membership.DecPropositional.html#394" class="Bound">A</a> <a id="396" class="Symbol">:</a> <a id="398" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="402" href="Data.Vec.Membership.DecPropositional.html#390" class="Bound">a</a><a id="403" class="Symbol">}</a> <a id="405" class="Symbol">(</a><a id="406" href="Data.Vec.Membership.DecPropositional.html#406" class="Bound Operator">_≟_</a> <a id="410" class="Symbol">:</a> <a id="412" href="Relation.Binary.Definitions.html#6834" class="Function">DecidableEquality</a> <a id="430" href="Data.Vec.Membership.DecPropositional.html#394" class="Bound">A</a><a id="431" class="Symbol">)</a> <a id="433" class="Keyword">where</a>
+
+<a id="440" class="Keyword">open</a> <a id="445" class="Keyword">import</a> <a id="452" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a> <a id="501" class="Keyword">using</a> <a id="507" class="Symbol">(</a><a id="508" href="Relation.Binary.PropositionalEquality.Properties.html#5818" class="Function">decSetoid</a><a id="517" class="Symbol">)</a>
+
+<a id="520" class="Comment">------------------------------------------------------------------------</a>
+<a id="593" class="Comment">-- Re-export contents of propositional membership</a>
+
+<a id="644" class="Keyword">open</a> <a id="649" class="Keyword">import</a> <a id="656" href="Data.Vec.Membership.Propositional.html" class="Module">Data.Vec.Membership.Propositional</a> <a id="690" class="Symbol">{</a><a id="691" class="Argument">A</a> <a id="693" class="Symbol">=</a> <a id="695" href="Data.Vec.Membership.DecPropositional.html#394" class="Bound">A</a><a id="696" class="Symbol">}</a> <a id="698" class="Keyword">public</a>
+<a id="705" class="Keyword">open</a> <a id="710" class="Keyword">import</a> <a id="717" href="Data.Vec.Membership.DecSetoid.html" class="Module">Data.Vec.Membership.DecSetoid</a> <a id="747" class="Symbol">(</a><a id="748" href="Relation.Binary.PropositionalEquality.Properties.html#5818" class="Function">decSetoid</a> <a id="758" href="Data.Vec.Membership.DecPropositional.html#406" class="Bound Operator">_≟_</a><a id="761" class="Symbol">)</a> <a id="763" class="Keyword">public</a>
+  <a id="772" class="Keyword">using</a> <a id="778" class="Symbol">(</a><a id="779" href="Data.Vec.Membership.DecSetoid.html#867" class="Function Operator">_∈?_</a><a id="783" class="Symbol">)</a>
+</pre></body></html>

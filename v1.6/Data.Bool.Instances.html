@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Bool.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instances for booleans</a>
+<a id="132" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="206" class="Symbol">{-#</a> <a id="210" class="Keyword">OPTIONS</a> <a id="218" class="Pragma">--without-K</a> <a id="230" class="Pragma">--safe</a> <a id="237" class="Symbol">#-}</a>
+
+<a id="242" class="Keyword">module</a> <a id="249" href="Data.Bool.Instances.html" class="Module">Data.Bool.Instances</a> <a id="269" class="Keyword">where</a>
+
+<a id="276" class="Keyword">open</a> <a id="281" class="Keyword">import</a> <a id="288" href="Data.Bool.Properties.html" class="Module">Data.Bool.Properties</a>
+<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+  <a id="372" class="Keyword">using</a> <a id="378" class="Symbol">(</a><a id="379" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a><a id="395" class="Symbol">)</a>
+
+<a id="398" class="Keyword">instance</a>
+  <a id="Bool-≡-isDecEquivalence"></a><a id="409" href="Data.Bool.Instances.html#409" class="Function">Bool-≡-isDecEquivalence</a> <a id="433" class="Symbol">=</a> <a id="435" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a> <a id="452" href="Data.Bool.Properties.html#1126" class="Function Operator">_≟_</a>
+  <a id="Bool-≤-isDecTotalOrder"></a><a id="458" href="Data.Bool.Instances.html#458" class="Function">Bool-≤-isDecTotalOrder</a> <a id="481" class="Symbol">=</a> <a id="483" href="Data.Bool.Properties.html#2644" class="Function">≤-isDecTotalOrder</a>
+</pre></body></html>

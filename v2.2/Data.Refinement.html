@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Refinement</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Refinement type: a value together with a proof irrelevant witness.</a>
+<a id="176" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="250" class="Symbol">{-#</a> <a id="254" class="Keyword">OPTIONS</a> <a id="262" class="Pragma">--cubical-compatible</a> <a id="283" class="Pragma">--safe</a> <a id="290" class="Symbol">#-}</a>
+
+<a id="295" class="Keyword">module</a> <a id="302" href="Data.Refinement.html" class="Module">Data.Refinement</a> <a id="318" class="Keyword">where</a>
+
+<a id="325" class="Comment">------------------------------------------------------------------------</a>
+<a id="398" class="Comment">-- Publicly re-export the contents of the base module</a>
+
+<a id="453" class="Keyword">open</a> <a id="458" class="Keyword">import</a> <a id="465" href="Data.Refinement.Base.html" class="Module">Data.Refinement.Base</a> <a id="486" class="Keyword">public</a>
+
+<a id="494" class="Comment">------------------------------------------------------------------------</a>
+<a id="567" class="Comment">-- Publicly re-export queries</a>
+
+<a id="598" class="Keyword">open</a> <a id="603" class="Keyword">import</a> <a id="610" href="Data.Refinement.Properties.html" class="Module">Data.Refinement.Properties</a> <a id="637" class="Keyword">public</a>
+  <a id="646" class="Keyword">using</a> <a id="652" class="Symbol">(</a><a id="653" href="Data.Refinement.Properties.html#732" class="Function">value-injective</a><a id="668" class="Symbol">;</a> <a id="670" href="Data.Refinement.Properties.html#865" class="Function Operator">_≟_</a><a id="673" class="Symbol">)</a>
+</pre></body></html>

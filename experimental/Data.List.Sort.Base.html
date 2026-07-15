@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Sort.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The core definition of a sorting algorithm</a>
+<a id="152" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--cubical-compatible</a> <a id="259" class="Pragma">--safe</a> <a id="266" class="Symbol">#-}</a>
+
+<a id="271" class="Keyword">open</a> <a id="276" class="Keyword">import</a> <a id="283" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="307" class="Keyword">using</a> <a id="313" class="Symbol">(</a><a id="314" href="Relation.Binary.Bundles.html#7577" class="Record">TotalOrder</a><a id="324" class="Symbol">)</a>
+
+<a id="327" class="Keyword">module</a> <a id="334" href="Data.List.Sort.Base.html" class="Module">Data.List.Sort.Base</a>
+  <a id="356" class="Symbol">{</a><a id="357" href="Data.List.Sort.Base.html#357" class="Bound">a</a> <a id="359" href="Data.List.Sort.Base.html#359" class="Bound">ℓ₁</a> <a id="362" href="Data.List.Sort.Base.html#362" class="Bound">ℓ₂</a><a id="364" class="Symbol">}</a> <a id="366" class="Symbol">(</a><a id="367" href="Data.List.Sort.Base.html#367" class="Bound">totalOrder</a> <a id="378" class="Symbol">:</a> <a id="380" href="Relation.Binary.Bundles.html#7577" class="Record">TotalOrder</a> <a id="391" href="Data.List.Sort.Base.html#357" class="Bound">a</a> <a id="393" href="Data.List.Sort.Base.html#359" class="Bound">ℓ₁</a> <a id="396" href="Data.List.Sort.Base.html#362" class="Bound">ℓ₂</a><a id="398" class="Symbol">)</a>
+  <a id="402" class="Keyword">where</a>
+
+<a id="409" class="Keyword">open</a> <a id="414" class="Keyword">import</a> <a id="421" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="436" class="Keyword">using</a> <a id="442" class="Symbol">(</a><a id="443" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="447" class="Symbol">)</a>
+<a id="449" class="Keyword">open</a> <a id="454" class="Keyword">import</a> <a id="461" href="Data.List.Relation.Binary.Permutation.Propositional.html" class="Module">Data.List.Relation.Binary.Permutation.Propositional</a>
+  <a id="515" class="Keyword">using</a> <a id="521" class="Symbol">(</a><a id="522" href="Data.List.Relation.Binary.Permutation.Propositional.html#1513" class="Datatype Operator">_↭_</a><a id="525" class="Symbol">;</a> <a id="527" href="Data.List.Relation.Binary.Permutation.Propositional.html#3489" class="Function">↭⇒↭ₛ</a><a id="531" class="Symbol">)</a>
+<a id="533" class="Keyword">import</a> <a id="540" href="Data.List.Relation.Binary.Permutation.Homogeneous.html" class="Module">Data.List.Relation.Binary.Permutation.Homogeneous</a> <a id="590" class="Symbol">as</a> <a id="593" class="Module">Homo</a>
+<a id="598" class="Keyword">open</a> <a id="603" class="Keyword">import</a> <a id="610" href="Level.html" class="Module">Level</a> <a id="616" class="Keyword">using</a> <a id="622" class="Symbol">(</a><a id="623" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="626" class="Symbol">)</a>
+
+<a id="629" class="Keyword">open</a> <a id="634" href="Relation.Binary.Bundles.html#7577" class="Module">TotalOrder</a> <a id="645" href="Data.List.Sort.Base.html#367" class="Bound">totalOrder</a> <a id="656" class="Keyword">renaming</a> <a id="665" class="Symbol">(</a><a id="666" href="Relation.Binary.Bundles.html#7658" class="Field">Carrier</a> <a id="674" class="Symbol">to</a> <a id="677" class="Field">A</a><a id="678" class="Symbol">)</a>
+<a id="680" class="Keyword">open</a> <a id="685" class="Keyword">import</a> <a id="692" href="Data.List.Relation.Unary.Sorted.TotalOrder.html" class="Module">Data.List.Relation.Unary.Sorted.TotalOrder</a> <a id="735" href="Data.List.Sort.Base.html#367" class="Bound">totalOrder</a>
+<a id="746" class="Keyword">import</a> <a id="753" href="Data.List.Relation.Binary.Permutation.Setoid.html" class="Module">Data.List.Relation.Binary.Permutation.Setoid</a> <a id="798" href="Relation.Binary.Bundles.html#2604" class="Function">Eq.setoid</a> <a id="808" class="Symbol">as</a> <a id="S"></a><a id="811" href="Data.List.Sort.Base.html#811" class="Module">S</a>
+
+<a id="814" class="Comment">------------------------------------------------------------------------</a>
+<a id="887" class="Comment">-- Definition of a sorting algorithm</a>
+
+<a id="925" class="Keyword">record</a> <a id="SortingAlgorithm"></a><a id="932" href="Data.List.Sort.Base.html#932" class="Record">SortingAlgorithm</a> <a id="949" class="Symbol">:</a> <a id="951" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="955" class="Symbol">(</a><a id="956" href="Data.List.Sort.Base.html#357" class="Bound">a</a> <a id="958" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="960" href="Data.List.Sort.Base.html#359" class="Bound">ℓ₁</a> <a id="963" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="965" href="Data.List.Sort.Base.html#362" class="Bound">ℓ₂</a><a id="967" class="Symbol">)</a> <a id="969" class="Keyword">where</a>
+  <a id="977" class="Keyword">field</a>
+    <a id="SortingAlgorithm.sort"></a><a id="987" href="Data.List.Sort.Base.html#987" class="Field">sort</a>   <a id="994" class="Symbol">:</a> <a id="996" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="1001" href="Data.List.Sort.Base.html#677" class="Field">A</a> <a id="1003" class="Symbol">→</a> <a id="1005" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="1010" href="Data.List.Sort.Base.html#677" class="Field">A</a>
+
+    <a id="1017" class="Comment">-- The output of `sort` is a propositional permutation of the input.</a>
+    <a id="1090" class="Comment">-- Note that the choice of using a propositional equality here</a>
+    <a id="1157" class="Comment">-- is very deliberate. A sorting algorithm should only be capable</a>
+    <a id="1227" class="Comment">-- of altering the order of the elements of the list, and should not</a>
+    <a id="1300" class="Comment">-- be capable of altering the elements themselves in any way.</a>
+    <a id="SortingAlgorithm.sort-↭"></a><a id="1366" href="Data.List.Sort.Base.html#1366" class="Field">sort-↭</a> <a id="1373" class="Symbol">:</a> <a id="1375" class="Symbol">∀</a> <a id="1377" href="Data.List.Sort.Base.html#1377" class="Bound">xs</a> <a id="1380" class="Symbol">→</a> <a id="1382" href="Data.List.Sort.Base.html#987" class="Field">sort</a> <a id="1387" href="Data.List.Sort.Base.html#1377" class="Bound">xs</a> <a id="1390" href="Data.List.Relation.Binary.Permutation.Propositional.html#1513" class="Datatype Operator">↭</a> <a id="1392" href="Data.List.Sort.Base.html#1377" class="Bound">xs</a>
+
+    <a id="1400" class="Comment">-- The output of `sort` is sorted.</a>
+    <a id="SortingAlgorithm.sort-↗"></a><a id="1439" href="Data.List.Sort.Base.html#1439" class="Field">sort-↗</a> <a id="1446" class="Symbol">:</a> <a id="1448" class="Symbol">∀</a> <a id="1450" href="Data.List.Sort.Base.html#1450" class="Bound">xs</a> <a id="1453" class="Symbol">→</a> <a id="1455" href="Data.List.Relation.Unary.Sorted.TotalOrder.html#784" class="Function">Sorted</a> <a id="1462" class="Symbol">(</a><a id="1463" href="Data.List.Sort.Base.html#987" class="Field">sort</a> <a id="1468" href="Data.List.Sort.Base.html#1450" class="Bound">xs</a><a id="1470" class="Symbol">)</a>
+
+  <a id="1475" class="Comment">-- Lists are also permutations under the setoid versions of</a>
+  <a id="1537" class="Comment">-- permutation.</a>
+  <a id="SortingAlgorithm.sort-↭ₛ"></a><a id="1555" href="Data.List.Sort.Base.html#1555" class="Function">sort-↭ₛ</a> <a id="1563" class="Symbol">:</a> <a id="1565" class="Symbol">∀</a> <a id="1567" href="Data.List.Sort.Base.html#1567" class="Bound">xs</a> <a id="1570" class="Symbol">→</a> <a id="1572" href="Data.List.Sort.Base.html#987" class="Field">sort</a> <a id="1577" href="Data.List.Sort.Base.html#1567" class="Bound">xs</a> <a id="1580" href="Data.List.Relation.Binary.Permutation.Setoid.html#1366" class="Function Operator">S.↭</a> <a id="1584" href="Data.List.Sort.Base.html#1567" class="Bound">xs</a>
+  <a id="1589" href="Data.List.Sort.Base.html#1555" class="Function">sort-↭ₛ</a> <a id="1597" href="Data.List.Sort.Base.html#1597" class="Bound">xs</a> <a id="1600" class="Symbol">=</a> <a id="1602" href="Data.List.Relation.Binary.Permutation.Homogeneous.html#2332" class="Function">Homo.map</a> <a id="1611" href="Relation.Binary.Structures.html#1719" class="Function">Eq.reflexive</a> <a id="1624" class="Symbol">(</a><a id="1625" href="Data.List.Relation.Binary.Permutation.Propositional.html#3489" class="Function">↭⇒↭ₛ</a> <a id="1630" class="Symbol">(</a><a id="1631" href="Data.List.Sort.Base.html#1366" class="Field">sort-↭</a> <a id="1638" href="Data.List.Sort.Base.html#1597" class="Bound">xs</a><a id="1640" class="Symbol">))</a>
+</pre></body></html>

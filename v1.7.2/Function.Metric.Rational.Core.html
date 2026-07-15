@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Function.Metric.Rational.Core</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Core definitions for metrics over ℕ</a>
+<a id="145" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="219" class="Symbol">{-#</a> <a id="223" class="Keyword">OPTIONS</a> <a id="231" class="Pragma">--cubical-compatible</a> <a id="252" class="Pragma">--safe</a> <a id="259" class="Symbol">#-}</a>
+
+<a id="264" class="Keyword">open</a> <a id="269" class="Keyword">import</a> <a id="276" href="Data.Rational.Base.html" class="Module">Data.Rational.Base</a> <a id="295" class="Keyword">using</a> <a id="301" class="Symbol">(</a><a id="302" href="Data.Rational.Base.html#1892" class="Record">ℚ</a><a id="303" class="Symbol">)</a>
+<a id="305" class="Keyword">import</a> <a id="312" href="Function.Metric.Core.html" class="Module">Function.Metric.Core</a> <a id="333" class="Symbol">as</a> <a id="336" class="Module">Base</a>
+
+<a id="342" class="Keyword">module</a> <a id="349" href="Function.Metric.Rational.Core.html" class="Module">Function.Metric.Rational.Core</a> <a id="379" class="Keyword">where</a>
+
+<a id="386" class="Comment">------------------------------------------------------------------------</a>
+<a id="459" class="Comment">-- Definition</a>
+
+<a id="DistanceFunction"></a><a id="474" href="Function.Metric.Rational.Core.html#474" class="Function">DistanceFunction</a> <a id="491" class="Symbol">:</a> <a id="493" class="Symbol">∀</a> <a id="495" class="Symbol">{</a><a id="496" href="Function.Metric.Rational.Core.html#496" class="Bound">a</a><a id="497" class="Symbol">}</a> <a id="499" class="Symbol">→</a> <a id="501" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="505" href="Function.Metric.Rational.Core.html#496" class="Bound">a</a> <a id="507" class="Symbol">→</a> <a id="509" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="513" href="Function.Metric.Rational.Core.html#496" class="Bound">a</a>
+<a id="515" href="Function.Metric.Rational.Core.html#474" class="Function">DistanceFunction</a> <a id="532" href="Function.Metric.Rational.Core.html#532" class="Bound">A</a> <a id="534" class="Symbol">=</a> <a id="536" href="Function.Metric.Core.html#451" class="Function">Base.DistanceFunction</a> <a id="558" href="Function.Metric.Rational.Core.html#532" class="Bound">A</a> <a id="560" href="Data.Rational.Base.html#1892" class="Record">ℚ</a>
+</pre></body></html>

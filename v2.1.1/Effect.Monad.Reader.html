@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Effect.Monad.Reader</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The reader monad</a>
+<a id="126" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="200" class="Symbol">{-#</a> <a id="204" class="Keyword">OPTIONS</a> <a id="212" class="Pragma">--cubical-compatible</a> <a id="233" class="Pragma">--safe</a> <a id="240" class="Symbol">#-}</a>
+
+<a id="245" class="Keyword">module</a> <a id="252" href="Effect.Monad.Reader.html" class="Module">Effect.Monad.Reader</a> <a id="272" class="Keyword">where</a>
+
+<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Effect.Functor.html" class="Module">Effect.Functor</a> <a id="306" class="Keyword">using</a> <a id="312" class="Symbol">(</a><a id="313" href="Effect.Functor.html#579" class="Record">RawFunctor</a><a id="323" class="Symbol">)</a>
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Effect.Applicative.html" class="Module">Effect.Applicative</a> <a id="356" class="Keyword">using</a> <a id="362" class="Symbol">(</a><a id="363" href="Effect.Applicative.html#979" class="Record">RawApplicative</a><a id="377" class="Symbol">)</a>
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Effect.Monad.html" class="Module">Effect.Monad</a> <a id="404" class="Keyword">using</a> <a id="410" class="Symbol">(</a><a id="411" href="Effect.Monad.html#779" class="Record">RawMonad</a><a id="419" class="Symbol">;</a> <a id="421" class="Keyword">module</a> <a id="428" href="Effect.Monad.html#1496" class="Module">Join</a><a id="432" class="Symbol">)</a>
+<a id="434" class="Keyword">open</a> <a id="439" class="Keyword">import</a> <a id="446" href="Effect.Monad.Identity.html" class="Module">Effect.Monad.Identity</a> <a id="468" class="Symbol">as</a> <a id="471" class="Module">Id</a> <a id="474" class="Keyword">using</a> <a id="480" class="Symbol">(</a><a id="481" href="Effect.Monad.Identity.html#658" class="Record">Identity</a><a id="489" class="Symbol">;</a> <a id="491" href="Effect.Monad.Identity.html#726" class="Field">runIdentity</a><a id="502" class="Symbol">)</a>
+<a id="504" class="Keyword">open</a> <a id="509" class="Keyword">import</a> <a id="516" href="Level.html" class="Module">Level</a> <a id="522" class="Keyword">using</a> <a id="528" class="Symbol">(</a><a id="529" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="534" class="Symbol">)</a>
+
+<a id="537" class="Keyword">import</a> <a id="544" href="Effect.Monad.Reader.Transformer.html" class="Module">Effect.Monad.Reader.Transformer</a> <a id="576" class="Symbol">as</a> <a id="579" class="Module">Trans</a>
+
+<a id="586" class="Keyword">private</a>
+  <a id="596" class="Keyword">variable</a>
+    <a id="609" href="Effect.Monad.Reader.html#609" class="Generalizable">r</a> <a id="611" class="Symbol">:</a> <a id="613" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="623" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a> <a id="625" href="Effect.Monad.Reader.html#625" class="Generalizable">A</a> <a id="627" class="Symbol">:</a> <a id="629" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="633" href="Effect.Monad.Reader.html#609" class="Generalizable">r</a>
+
+<a id="636" class="Comment">------------------------------------------------------------------------</a>
+<a id="709" class="Comment">-- Re-export the monad reader operations</a>
+
+<a id="751" class="Keyword">open</a> <a id="756" href="Effect.Monad.Reader.Transformer.html" class="Module">Trans</a> <a id="762" class="Keyword">public</a>
+  <a id="771" class="Keyword">using</a> <a id="777" class="Symbol">(</a><a id="778" href="Effect.Monad.Reader.Transformer.Base.html#589" class="Record">RawMonadReader</a><a id="792" class="Symbol">)</a>
+
+<a id="795" class="Comment">------------------------------------------------------------------------</a>
+<a id="868" class="Comment">-- Reader monad</a>
+
+<a id="Reader"></a><a id="885" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="892" class="Symbol">:</a> <a id="894" class="Symbol">(</a><a id="895" href="Effect.Monad.Reader.html#895" class="Bound">R</a> <a id="897" href="Effect.Monad.Reader.html#897" class="Bound">A</a> <a id="899" class="Symbol">:</a> <a id="901" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="905" href="Effect.Monad.Reader.html#609" class="Generalizable">r</a><a id="906" class="Symbol">)</a> <a id="908" class="Symbol">→</a> <a id="910" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="914" href="Effect.Monad.Reader.html#609" class="Generalizable">r</a>
+<a id="916" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="923" href="Effect.Monad.Reader.html#923" class="Bound">R</a> <a id="925" class="Symbol">=</a> <a id="927" href="Effect.Monad.Reader.Transformer.Base.html#871" class="Record">Trans.ReaderT</a> <a id="941" href="Effect.Monad.Reader.html#923" class="Bound">R</a> <a id="943" href="Effect.Monad.Identity.html#658" class="Record">Identity</a>
+
+<a id="runReader"></a><a id="953" href="Effect.Monad.Reader.html#953" class="Function">runReader</a> <a id="963" class="Symbol">:</a> <a id="965" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="972" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a> <a id="974" href="Effect.Monad.Reader.html#625" class="Generalizable">A</a> <a id="976" class="Symbol">→</a> <a id="978" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a> <a id="980" class="Symbol">→</a> <a id="982" href="Effect.Monad.Reader.html#625" class="Generalizable">A</a>
+<a id="984" href="Effect.Monad.Reader.html#953" class="Function">runReader</a> <a id="994" href="Effect.Monad.Reader.html#994" class="Bound">mr</a> <a id="997" href="Effect.Monad.Reader.html#997" class="Bound">r</a> <a id="999" class="Symbol">=</a> <a id="1001" href="Effect.Monad.Identity.html#726" class="Field">runIdentity</a> <a id="1013" class="Symbol">(</a><a id="1014" href="Effect.Monad.Reader.Transformer.Base.html#984" class="Field">Trans.runReaderT</a> <a id="1031" href="Effect.Monad.Reader.html#994" class="Bound">mr</a> <a id="1034" href="Effect.Monad.Reader.html#997" class="Bound">r</a><a id="1035" class="Symbol">)</a>
+
+<a id="1038" class="Comment">------------------------------------------------------------------------</a>
+<a id="1111" class="Comment">-- Structure</a>
+
+<a id="functor"></a><a id="1125" href="Effect.Monad.Reader.html#1125" class="Function">functor</a> <a id="1133" class="Symbol">:</a> <a id="1135" href="Effect.Functor.html#579" class="Record">RawFunctor</a> <a id="1146" class="Symbol">(</a><a id="1147" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="1154" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a><a id="1155" class="Symbol">)</a>
+<a id="1157" href="Effect.Monad.Reader.html#1125" class="Function">functor</a> <a id="1165" class="Symbol">=</a> <a id="1167" href="Effect.Monad.Reader.Transformer.html#1186" class="Function">Trans.functor</a> <a id="1181" href="Effect.Monad.Identity.html#764" class="Function">Id.functor</a>
+
+<a id="applicative"></a><a id="1193" href="Effect.Monad.Reader.html#1193" class="Function">applicative</a> <a id="1205" class="Symbol">:</a> <a id="1207" href="Effect.Applicative.html#979" class="Record">RawApplicative</a> <a id="1222" class="Symbol">(</a><a id="1223" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="1230" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a><a id="1231" class="Symbol">)</a>
+<a id="1233" href="Effect.Monad.Reader.html#1193" class="Function">applicative</a> <a id="1245" class="Symbol">=</a> <a id="1247" href="Effect.Monad.Reader.Transformer.html#1353" class="Function">Trans.applicative</a> <a id="1265" href="Effect.Monad.Identity.html#871" class="Function">Id.applicative</a>
+
+<a id="monad"></a><a id="1281" href="Effect.Monad.Reader.html#1281" class="Function">monad</a> <a id="1287" class="Symbol">:</a> <a id="1289" href="Effect.Monad.html#779" class="Record">RawMonad</a> <a id="1298" class="Symbol">(</a><a id="1299" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="1306" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a><a id="1307" class="Symbol">)</a>
+<a id="1309" href="Effect.Monad.Reader.html#1281" class="Function">monad</a> <a id="1315" class="Symbol">=</a> <a id="1317" href="Effect.Monad.Reader.Transformer.html#2425" class="Function">Trans.monad</a> <a id="1329" href="Effect.Monad.Identity.html#1051" class="Function">Id.monad</a>
+
+<a id="join"></a><a id="1339" href="Effect.Monad.Reader.html#1339" class="Function">join</a> <a id="1344" class="Symbol">:</a> <a id="1346" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="1353" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a> <a id="1355" class="Symbol">(</a><a id="1356" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="1363" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a> <a id="1365" href="Effect.Monad.Reader.html#625" class="Generalizable">A</a><a id="1366" class="Symbol">)</a> <a id="1368" class="Symbol">→</a> <a id="1370" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="1377" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a> <a id="1379" href="Effect.Monad.Reader.html#625" class="Generalizable">A</a>
+<a id="1381" href="Effect.Monad.Reader.html#1339" class="Function">join</a> <a id="1386" class="Symbol">=</a> <a id="1388" href="Effect.Monad.html#1565" class="Function">Join.join</a> <a id="1398" href="Effect.Monad.Reader.html#1281" class="Function">monad</a>
+
+<a id="1405" class="Comment">------------------------------------------------------------------------</a>
+<a id="1478" class="Comment">-- Reader monad specifics</a>
+
+<a id="monadReader"></a><a id="1505" href="Effect.Monad.Reader.html#1505" class="Function">monadReader</a> <a id="1517" class="Symbol">:</a> <a id="1519" href="Effect.Monad.Reader.Transformer.Base.html#589" class="Record">RawMonadReader</a> <a id="1534" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a> <a id="1536" class="Symbol">(</a><a id="1537" href="Effect.Monad.Reader.html#885" class="Function">Reader</a> <a id="1544" href="Effect.Monad.Reader.html#623" class="Generalizable">R</a><a id="1545" class="Symbol">)</a>
+<a id="1547" href="Effect.Monad.Reader.html#1505" class="Function">monadReader</a> <a id="1559" class="Symbol">=</a> <a id="1561" href="Effect.Monad.Reader.Transformer.html#3295" class="Function">Trans.monadReader</a> <a id="1579" href="Effect.Monad.Identity.html#1051" class="Function">Id.monad</a>
+</pre></body></html>

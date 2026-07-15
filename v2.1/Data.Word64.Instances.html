@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Word64.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instances for words</a>
+<a id="129" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="203" class="Symbol">{-#</a> <a id="207" class="Keyword">OPTIONS</a> <a id="215" class="Pragma">--cubical-compatible</a> <a id="236" class="Pragma">--safe</a> <a id="243" class="Symbol">#-}</a>
+
+<a id="248" class="Keyword">module</a> <a id="255" href="Data.Word64.Instances.html" class="Module">Data.Word64.Instances</a> <a id="277" class="Keyword">where</a>
+
+<a id="284" class="Keyword">open</a> <a id="289" class="Keyword">import</a> <a id="296" href="Data.Word64.Properties.html" class="Module">Data.Word64.Properties</a>
+<a id="319" class="Keyword">open</a> <a id="324" class="Keyword">import</a> <a id="331" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+  <a id="382" class="Keyword">using</a> <a id="388" class="Symbol">(</a><a id="389" href="Relation.Binary.PropositionalEquality.Properties.html#5532" class="Function">isDecEquivalence</a><a id="405" class="Symbol">)</a>
+
+<a id="408" class="Keyword">instance</a>
+  <a id="Word64-≡-isDecEquivalence"></a><a id="419" href="Data.Word64.Instances.html#419" class="Function">Word64-≡-isDecEquivalence</a> <a id="445" class="Symbol">=</a> <a id="447" href="Relation.Binary.PropositionalEquality.Properties.html#5532" class="Function">isDecEquivalence</a> <a id="464" href="Data.Word64.Properties.html#2202" class="Function Operator">_≟_</a>
+</pre></body></html>

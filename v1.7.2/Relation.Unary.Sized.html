@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Unary.Sized</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Indexed unary relations over sized types</a>
+<a id="150" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="224" class="Comment">-- Sized types live in the special sort `SizeUniv` and therefore are no</a>
+<a id="296" class="Comment">-- longer compatible with the ordinary combinators defined in</a>
+<a id="358" class="Comment">-- `Relation.Unary`.</a>
+
+<a id="380" class="Symbol">{-#</a> <a id="384" class="Keyword">OPTIONS</a> <a id="392" class="Pragma">--cubical-compatible</a> <a id="413" class="Pragma">--sized-types</a> <a id="427" class="Symbol">#-}</a>
+
+<a id="432" class="Keyword">module</a> <a id="439" href="Relation.Unary.Sized.html" class="Module">Relation.Unary.Sized</a>  <a id="461" class="Keyword">where</a>
+
+<a id="468" class="Keyword">open</a> <a id="473" class="Keyword">import</a> <a id="480" href="Level.html" class="Module">Level</a>
+<a id="486" class="Keyword">open</a> <a id="491" class="Keyword">import</a> <a id="498" href="Size.html" class="Module">Size</a>
+
+<a id="504" class="Keyword">private</a>
+  <a id="514" class="Keyword">variable</a>
+    <a id="527" href="Relation.Unary.Sized.html#527" class="Generalizable">ℓ</a> <a id="529" href="Relation.Unary.Sized.html#529" class="Generalizable">ℓ₁</a> <a id="532" href="Relation.Unary.Sized.html#532" class="Generalizable">ℓ₂</a> <a id="535" class="Symbol">:</a> <a id="537" href="Agda.Primitive.html#591" class="Postulate">Level</a>
+
+<a id="544" class="Keyword">infixr</a> <a id="551" class="Number">8</a> <a id="553" href="Relation.Unary.Sized.html#557" class="Function Operator">_⇒_</a>
+<a id="_⇒_"></a><a id="557" href="Relation.Unary.Sized.html#557" class="Function Operator">_⇒_</a> <a id="561" class="Symbol">:</a> <a id="563" href="Size.html#738" class="Function">SizedSet</a> <a id="572" href="Relation.Unary.Sized.html#529" class="Generalizable">ℓ₁</a> <a id="575" class="Symbol">→</a> <a id="577" href="Size.html#738" class="Function">SizedSet</a> <a id="586" href="Relation.Unary.Sized.html#532" class="Generalizable">ℓ₂</a> <a id="589" class="Symbol">→</a> <a id="591" href="Size.html#738" class="Function">SizedSet</a> <a id="600" class="Symbol">(</a><a id="601" href="Relation.Unary.Sized.html#529" class="Generalizable">ℓ₁</a> <a id="604" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="606" href="Relation.Unary.Sized.html#532" class="Generalizable">ℓ₂</a><a id="608" class="Symbol">)</a>
+<a id="610" href="Relation.Unary.Sized.html#610" class="Bound">F</a> <a id="612" href="Relation.Unary.Sized.html#557" class="Function Operator">⇒</a> <a id="614" href="Relation.Unary.Sized.html#614" class="Bound">G</a> <a id="616" class="Symbol">=</a> <a id="618" class="Symbol">λ</a> <a id="620" href="Relation.Unary.Sized.html#620" class="Bound">i</a> <a id="622" class="Symbol">→</a> <a id="624" href="Relation.Unary.Sized.html#610" class="Bound">F</a> <a id="626" href="Relation.Unary.Sized.html#620" class="Bound">i</a> <a id="628" class="Symbol">→</a> <a id="630" href="Relation.Unary.Sized.html#614" class="Bound">G</a> <a id="632" href="Relation.Unary.Sized.html#620" class="Bound">i</a>
+
+<a id="∀[_]"></a><a id="635" href="Relation.Unary.Sized.html#635" class="Function Operator">∀[_]</a> <a id="640" class="Symbol">:</a> <a id="642" href="Size.html#738" class="Function">SizedSet</a> <a id="651" href="Relation.Unary.Sized.html#527" class="Generalizable">ℓ</a> <a id="653" class="Symbol">→</a> <a id="655" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="659" href="Relation.Unary.Sized.html#527" class="Generalizable">ℓ</a>
+<a id="661" href="Relation.Unary.Sized.html#635" class="Function Operator">∀[</a> <a id="664" href="Relation.Unary.Sized.html#664" class="Bound">F</a> <a id="666" href="Relation.Unary.Sized.html#635" class="Function Operator">]</a> <a id="668" class="Symbol">=</a> <a id="670" class="Symbol">∀{</a><a id="672" href="Relation.Unary.Sized.html#672" class="Bound">i</a><a id="673" class="Symbol">}</a> <a id="675" class="Symbol">→</a> <a id="677" href="Relation.Unary.Sized.html#664" class="Bound">F</a> <a id="679" href="Relation.Unary.Sized.html#672" class="Bound">i</a>
+</pre></body></html>
