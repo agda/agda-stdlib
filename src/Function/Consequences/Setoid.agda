@@ -90,7 +90,7 @@ surjective⇒strictlySurjective =
 strictlySurjective⇒surjective : Congruent f →
                                 Strictly.Surjective ≈₂ f → Surjective f
 strictlySurjective⇒surjective =
-  Consequences.strictlySurjective⇒surjective ≈₂ T.trans
+  Consequences.strictlySurjective⇒surjective T.trans
 
 ------------------------------------------------------------------------
 -- Strictly.Inverseˡ
