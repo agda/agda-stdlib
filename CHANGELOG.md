@@ -152,6 +152,11 @@ Non-backwards compatible changes
   counterparts. Consider using `viaList` if you want a lawful lifting
   of `take` or `drop`.
 
+* [Issue #2319](https://github.com/agda/agda-stdlib/issues/2319)
+  The custom syntax for `swap` and `prep` steps in `PermutationReasoning`,
+  defined in `Data.List.Relation.Binary.Permutation.{Propositional|Setoid}`,
+  has been removed.
+
 Minor improvements
 ------------------
 
