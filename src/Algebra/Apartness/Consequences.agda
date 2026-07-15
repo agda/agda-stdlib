@@ -1,0 +1,40 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Lemmas relating algebraic definitions wrt an apartness.
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
+open import Relation.Binary.Core using (Rel)
+
+module Algebra.Apartness.Consequences
+  {a ℓ} {A : Set a} (_#_ : Rel A ℓ) where
+
+open import Algebra.Core using (Op₁; Op₂)
+open import Algebra.Apartness.Definitions _#_
+import Algebra.Definitions as Definitions
+open import Data.Product.Base using (_,_; proj₁; proj₂)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
+open import Function.Base using (flip)
+open import Function.Consequences using (contraInjective)
+open import Level using (Level)
+open import Relation.Binary.Consequences
+open import Relation.Binary.Definitions
+  using (Cotransitive; Tight; Irreflexive)
+
+private
+  variable
+    r : Level
+    f : Op₁ A
+    _∙_ : Op₂ A
+
+
+------------------------------------------------------------------------
+-- Cotransitive plus StronglyCongruent₂ implies StronglyExtensional
+
+cotransitive∧congruent⇒extensional : Cotransitive _#_ →
+  StronglyCongruent₂ _∙_ → StronglyExtensional _∙_
+cotransitive∧congruent⇒extensional
+  {_∙_ = _∙_} cotrans cong@(congˡ , congʳ) {y = y} {w = w} xy#wz
+  = Sum.map (congʳ y) (congˡ w) (cotrans xy#wz (w ∙ y))

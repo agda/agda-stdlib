@@ -302,6 +302,12 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Apartness.Consequences`, relationships between definitions, given
+  properties of a given apartness relation, notably `Cotransitive _#_`.
+
+* `Algebra.Apartness.Definitions`, properties of algebraic operations wrt
+  a given apartness relation `_#_`.
+
 * `Algebra.Apartness.Properties.HeytingField`, refactoring the existing
   `Algebra.Apartness.Properties.HeytingCommutativeRing`.
 
@@ -653,6 +659,7 @@ Additions to existing modules
 
   HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
   HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y)
+
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
     StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
