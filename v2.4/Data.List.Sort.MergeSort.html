@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Sort.MergeSort</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An implementation of merge sort along with proofs of correctness.</a>
+<a id="175" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="249" class="Comment">-- Unless you are need a particular property of MergeSort, you should</a>
+<a id="319" class="Comment">-- import and use the sorting algorithm from `Data.List.Sort` instead</a>
+<a id="389" class="Comment">-- of this file.</a>
+
+<a id="407" class="Symbol">{-#</a> <a id="411" class="Keyword">OPTIONS</a> <a id="419" class="Pragma">--cubical-compatible</a> <a id="440" class="Pragma">--safe</a> <a id="447" class="Symbol">#-}</a>
+
+<a id="452" class="Keyword">open</a> <a id="457" class="Keyword">import</a> <a id="464" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="488" class="Keyword">using</a> <a id="494" class="Symbol">(</a><a id="495" href="Relation.Binary.Bundles.html#8160" class="Record">DecTotalOrder</a><a id="508" class="Symbol">)</a>
+
+<a id="511" class="Keyword">module</a> <a id="518" href="Data.List.Sort.MergeSort.html" class="Module">Data.List.Sort.MergeSort</a>
+  <a id="545" class="Symbol">{</a><a id="546" href="Data.List.Sort.MergeSort.html#546" class="Bound">a</a> <a id="548" href="Data.List.Sort.MergeSort.html#548" class="Bound">ℓ₁</a> <a id="551" href="Data.List.Sort.MergeSort.html#551" class="Bound">ℓ₂</a><a id="553" class="Symbol">}</a> <a id="555" class="Symbol">(</a><a id="556" href="Data.List.Sort.MergeSort.html#556" class="Bound">O</a> <a id="558" class="Symbol">:</a> <a id="560" href="Relation.Binary.Bundles.html#8160" class="Record">DecTotalOrder</a> <a id="574" href="Data.List.Sort.MergeSort.html#546" class="Bound">a</a> <a id="576" href="Data.List.Sort.MergeSort.html#548" class="Bound">ℓ₁</a> <a id="579" href="Data.List.Sort.MergeSort.html#551" class="Bound">ℓ₂</a><a id="581" class="Symbol">)</a> <a id="583" class="Keyword">where</a>
+
+<a id="590" class="Keyword">open</a> <a id="595" class="Keyword">import</a> <a id="602" href="Data.List.Sort.MergeSort.Base.html" class="Module">Data.List.Sort.MergeSort.Base</a> <a id="632" href="Data.List.Sort.MergeSort.html#556" class="Bound">O</a> <a id="634" class="Keyword">public</a>
+<a id="641" class="Keyword">open</a> <a id="646" class="Keyword">import</a> <a id="653" href="Data.List.Sort.MergeSort.Properties.html" class="Module">Data.List.Sort.MergeSort.Properties</a> <a id="689" href="Data.List.Sort.MergeSort.html#556" class="Bound">O</a> <a id="691" class="Keyword">using</a> <a id="697" class="Symbol">(</a><a id="698" href="Data.List.Sort.MergeSort.Properties.html#3821" class="Function">mergeSort</a><a id="707" class="Symbol">)</a> <a id="709" class="Keyword">public</a>
+</pre></body></html>

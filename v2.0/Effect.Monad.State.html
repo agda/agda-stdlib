@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Effect.Monad.State</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The state monad</a>
+<a id="125" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="199" class="Symbol">{-#</a> <a id="203" class="Keyword">OPTIONS</a> <a id="211" class="Pragma">--cubical-compatible</a> <a id="232" class="Pragma">--safe</a> <a id="239" class="Symbol">#-}</a>
+
+
+<a id="245" class="Keyword">module</a> <a id="252" href="Effect.Monad.State.html" class="Module">Effect.Monad.State</a> <a id="271" class="Keyword">where</a>
+
+<a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="308" class="Keyword">using</a> <a id="314" class="Symbol">(</a><a id="315" href="Data.Product.Base.html#1618" class="Function Operator">_×_</a><a id="318" class="Symbol">)</a>
+<a id="320" class="Keyword">open</a> <a id="325" class="Keyword">import</a> <a id="332" href="Effect.Choice.html" class="Module">Effect.Choice</a>
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Effect.Empty.html" class="Module">Effect.Empty</a>
+<a id="371" class="Keyword">open</a> <a id="376" class="Keyword">import</a> <a id="383" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="398" class="Keyword">open</a> <a id="403" class="Keyword">import</a> <a id="410" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="429" class="Keyword">open</a> <a id="434" class="Keyword">import</a> <a id="441" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+<a id="454" class="Keyword">open</a> <a id="459" class="Keyword">import</a> <a id="466" href="Effect.Monad.Identity.html" class="Module">Effect.Monad.Identity</a> <a id="488" class="Symbol">as</a> <a id="491" class="Module">Id</a> <a id="494" class="Keyword">using</a> <a id="500" class="Symbol">(</a><a id="501" href="Effect.Monad.Identity.html#553" class="Record">Identity</a><a id="509" class="Symbol">;</a> <a id="511" href="Effect.Monad.Identity.html#621" class="Field">runIdentity</a><a id="522" class="Symbol">)</a>
+<a id="524" class="Keyword">open</a> <a id="529" class="Keyword">import</a> <a id="536" href="Function.Base.html" class="Module">Function.Base</a>
+<a id="550" class="Keyword">open</a> <a id="555" class="Keyword">import</a> <a id="562" href="Level.html" class="Module">Level</a>
+
+<a id="569" class="Keyword">import</a> <a id="576" href="Effect.Monad.State.Transformer.html" class="Module">Effect.Monad.State.Transformer</a> <a id="607" class="Symbol">as</a> <a id="610" class="Module">Trans</a>
+
+<a id="617" class="Keyword">private</a>
+  <a id="627" class="Keyword">variable</a>
+    <a id="640" href="Effect.Monad.State.html#640" class="Generalizable">s</a> <a id="642" class="Symbol">:</a> <a id="644" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="654" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="656" href="Effect.Monad.State.html#656" class="Generalizable">A</a> <a id="658" class="Symbol">:</a> <a id="660" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="664" href="Effect.Monad.State.html#640" class="Generalizable">s</a>
+
+<a id="667" class="Comment">------------------------------------------------------------------------</a>
+<a id="740" class="Comment">-- Re-export the state monad operations</a>
+
+<a id="781" class="Keyword">open</a> <a id="786" href="Effect.Monad.State.Transformer.html" class="Module">Trans</a> <a id="792" class="Keyword">public</a>
+  <a id="801" class="Keyword">using</a> <a id="807" class="Symbol">(</a><a id="808" href="Effect.Monad.State.Transformer.Base.html#760" class="Record">RawMonadState</a><a id="821" class="Symbol">)</a>
+
+<a id="824" class="Comment">------------------------------------------------------------------------</a>
+<a id="897" class="Comment">-- State monad</a>
+
+<a id="State"></a><a id="913" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="919" class="Symbol">:</a> <a id="921" class="Symbol">(</a><a id="922" href="Effect.Monad.State.html#922" class="Bound">S</a> <a id="924" class="Symbol">:</a> <a id="926" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="930" href="Effect.Monad.State.html#640" class="Generalizable">s</a><a id="931" class="Symbol">)</a> <a id="933" class="Symbol">(</a><a id="934" href="Effect.Monad.State.html#934" class="Bound">A</a> <a id="936" class="Symbol">:</a> <a id="938" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="942" href="Effect.Monad.State.html#640" class="Generalizable">s</a><a id="943" class="Symbol">)</a> <a id="945" class="Symbol">→</a> <a id="947" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="951" href="Effect.Monad.State.html#640" class="Generalizable">s</a>
+<a id="953" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="959" href="Effect.Monad.State.html#959" class="Bound">S</a> <a id="961" class="Symbol">=</a> <a id="963" href="Effect.Monad.State.Transformer.Base.html#1063" class="Record">Trans.StateT</a> <a id="976" href="Effect.Monad.State.html#959" class="Bound">S</a> <a id="978" href="Effect.Monad.Identity.html#553" class="Record">Identity</a>
+
+<a id="runState"></a><a id="988" href="Effect.Monad.State.html#988" class="Function">runState</a> <a id="997" class="Symbol">:</a> <a id="999" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1005" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1007" href="Effect.Monad.State.html#656" class="Generalizable">A</a> <a id="1009" class="Symbol">→</a> <a id="1011" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1013" class="Symbol">→</a> <a id="1015" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1017" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="1019" href="Effect.Monad.State.html#656" class="Generalizable">A</a>
+<a id="1021" href="Effect.Monad.State.html#988" class="Function">runState</a> <a id="1030" href="Effect.Monad.State.html#1030" class="Bound">ma</a> <a id="1033" href="Effect.Monad.State.html#1033" class="Bound">s</a> <a id="1035" class="Symbol">=</a> <a id="1037" href="Effect.Monad.Identity.html#621" class="Field">runIdentity</a> <a id="1049" class="Symbol">(</a><a id="1050" href="Effect.Monad.State.Transformer.Base.html#1193" class="Field">Trans.runStateT</a> <a id="1066" href="Effect.Monad.State.html#1030" class="Bound">ma</a> <a id="1069" href="Effect.Monad.State.html#1033" class="Bound">s</a><a id="1070" class="Symbol">)</a>
+
+<a id="evalState"></a><a id="1073" href="Effect.Monad.State.html#1073" class="Function">evalState</a> <a id="1083" class="Symbol">:</a> <a id="1085" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1091" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1093" href="Effect.Monad.State.html#656" class="Generalizable">A</a> <a id="1095" class="Symbol">→</a> <a id="1097" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1099" class="Symbol">→</a> <a id="1101" href="Effect.Monad.State.html#656" class="Generalizable">A</a>
+<a id="1103" href="Effect.Monad.State.html#1073" class="Function">evalState</a> <a id="1113" href="Effect.Monad.State.html#1113" class="Bound">ma</a> <a id="1116" href="Effect.Monad.State.html#1116" class="Bound">s</a> <a id="1118" class="Symbol">=</a> <a id="1120" href="Effect.Monad.Identity.html#621" class="Field">runIdentity</a> <a id="1132" class="Symbol">(</a><a id="1133" href="Effect.Monad.State.Transformer.Base.html#1239" class="Function">Trans.evalStateT</a> <a id="1150" href="Effect.Monad.Identity.html#659" class="Function">Id.functor</a> <a id="1161" href="Effect.Monad.State.html#1113" class="Bound">ma</a> <a id="1164" href="Effect.Monad.State.html#1116" class="Bound">s</a><a id="1165" class="Symbol">)</a>
+
+<a id="execState"></a><a id="1168" href="Effect.Monad.State.html#1168" class="Function">execState</a> <a id="1178" class="Symbol">:</a> <a id="1180" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1186" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1188" href="Effect.Monad.State.html#656" class="Generalizable">A</a> <a id="1190" class="Symbol">→</a> <a id="1192" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1194" class="Symbol">→</a> <a id="1196" href="Effect.Monad.State.html#654" class="Generalizable">S</a>
+<a id="1198" href="Effect.Monad.State.html#1168" class="Function">execState</a> <a id="1208" href="Effect.Monad.State.html#1208" class="Bound">ma</a> <a id="1211" href="Effect.Monad.State.html#1211" class="Bound">s</a> <a id="1213" class="Symbol">=</a> <a id="1215" href="Effect.Monad.Identity.html#621" class="Field">runIdentity</a> <a id="1227" class="Symbol">(</a><a id="1228" href="Effect.Monad.State.Transformer.Base.html#1361" class="Function">Trans.execStateT</a> <a id="1245" href="Effect.Monad.Identity.html#659" class="Function">Id.functor</a> <a id="1256" href="Effect.Monad.State.html#1208" class="Bound">ma</a> <a id="1259" href="Effect.Monad.State.html#1211" class="Bound">s</a><a id="1260" class="Symbol">)</a>
+
+<a id="1263" class="Comment">------------------------------------------------------------------------</a>
+<a id="1336" class="Comment">-- Structure</a>
+
+<a id="functor"></a><a id="1350" href="Effect.Monad.State.html#1350" class="Function">functor</a> <a id="1358" class="Symbol">:</a> <a id="1360" href="Effect.Functor.html#579" class="Record">RawFunctor</a> <a id="1371" class="Symbol">(</a><a id="1372" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1378" href="Effect.Monad.State.html#654" class="Generalizable">S</a><a id="1379" class="Symbol">)</a>
+<a id="1381" href="Effect.Monad.State.html#1350" class="Function">functor</a> <a id="1389" class="Symbol">=</a> <a id="1391" href="Effect.Monad.State.Transformer.html#1204" class="Function">Trans.functor</a> <a id="1405" href="Effect.Monad.Identity.html#659" class="Function">Id.functor</a>
+
+<a id="applicative"></a><a id="1417" href="Effect.Monad.State.html#1417" class="Function">applicative</a> <a id="1429" class="Symbol">:</a> <a id="1431" href="Effect.Applicative.html#984" class="Record">RawApplicative</a> <a id="1446" class="Symbol">(</a><a id="1447" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1453" href="Effect.Monad.State.html#654" class="Generalizable">S</a><a id="1454" class="Symbol">)</a>
+<a id="1456" href="Effect.Monad.State.html#1417" class="Function">applicative</a> <a id="1468" class="Symbol">=</a> <a id="1470" href="Effect.Monad.State.Transformer.html#1372" class="Function">Trans.applicative</a> <a id="1488" href="Effect.Monad.Identity.html#946" class="Function">Id.monad</a>
+
+<a id="monad"></a><a id="1498" href="Effect.Monad.State.html#1498" class="Function">monad</a> <a id="1504" class="Symbol">:</a> <a id="1506" href="Effect.Monad.html#779" class="Record">RawMonad</a> <a id="1515" class="Symbol">(</a><a id="1516" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1522" href="Effect.Monad.State.html#654" class="Generalizable">S</a><a id="1523" class="Symbol">)</a>
+<a id="1525" href="Effect.Monad.State.html#1498" class="Function">monad</a> <a id="1531" class="Symbol">=</a> <a id="1533" href="Effect.Monad.State.Transformer.html#2450" class="Function">Trans.monad</a> <a id="1545" href="Effect.Monad.Identity.html#946" class="Function">Id.monad</a>
+
+<a id="join"></a><a id="1555" href="Effect.Monad.State.html#1555" class="Function">join</a> <a id="1560" class="Symbol">:</a> <a id="1562" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1568" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1570" class="Symbol">(</a><a id="1571" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1577" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1579" href="Effect.Monad.State.html#656" class="Generalizable">A</a><a id="1580" class="Symbol">)</a> <a id="1582" class="Symbol">→</a> <a id="1584" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1590" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1592" href="Effect.Monad.State.html#656" class="Generalizable">A</a>
+<a id="1594" href="Effect.Monad.State.html#1555" class="Function">join</a> <a id="1599" class="Symbol">=</a> <a id="1601" href="Effect.Monad.html#1565" class="Function">Join.join</a> <a id="1611" href="Effect.Monad.State.html#1498" class="Function">monad</a>
+
+<a id="1618" class="Comment">------------------------------------------------------------------------</a>
+<a id="1691" class="Comment">-- State monad specifics</a>
+
+<a id="monadState"></a><a id="1717" href="Effect.Monad.State.html#1717" class="Function">monadState</a> <a id="1728" class="Symbol">:</a> <a id="1730" href="Effect.Monad.State.Transformer.Base.html#760" class="Record">RawMonadState</a> <a id="1744" href="Effect.Monad.State.html#654" class="Generalizable">S</a> <a id="1746" class="Symbol">(</a><a id="1747" href="Effect.Monad.State.html#913" class="Function">State</a> <a id="1753" href="Effect.Monad.State.html#654" class="Generalizable">S</a><a id="1754" class="Symbol">)</a>
+<a id="1756" href="Effect.Monad.State.html#1717" class="Function">monadState</a> <a id="1767" class="Symbol">=</a> <a id="1769" href="Effect.Monad.State.Transformer.html#3346" class="Function">Trans.monadState</a> <a id="1786" href="Effect.Monad.Identity.html#946" class="Function">Id.monad</a>
+</pre></body></html>

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.PseudoRandom.LCG.Unsafe</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Unsafe operations over linear congruential pseudo random generators</a>
+<a id="177" class="Comment">-- for natural numbers</a>
+<a id="200" class="Comment">-- /!\ NB: LCGs must not be used for cryptographic applications</a>
+<a id="264" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="338" class="Symbol">{-#</a> <a id="342" class="Keyword">OPTIONS</a> <a id="350" class="Pragma">--cubical-compatible</a> <a id="371" class="Pragma">--sized-types</a> <a id="385" class="Symbol">#-}</a>
+
+<a id="390" class="Keyword">open</a> <a id="395" class="Keyword">import</a> <a id="402" href="Codata.Sized.Stream.html" class="Module">Codata.Sized.Stream</a> <a id="422" class="Keyword">using</a> <a id="428" class="Symbol">(</a><a id="429" href="Codata.Sized.Stream.html#975" class="Datatype">Stream</a><a id="435" class="Symbol">;</a> <a id="437" href="Codata.Sized.Stream.html#1366" class="Function">unfold</a><a id="443" class="Symbol">)</a>
+<a id="445" class="Keyword">open</a> <a id="450" class="Keyword">import</a> <a id="457" href="Data.Nat.PseudoRandom.LCG.html" class="Module">Data.Nat.PseudoRandom.LCG</a>
+<a id="483" class="Keyword">open</a> <a id="488" class="Keyword">import</a> <a id="495" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="504" class="Keyword">using</a> <a id="510" class="Symbol">(</a><a id="511" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="512" class="Symbol">)</a>
+<a id="514" class="Keyword">open</a> <a id="519" class="Keyword">import</a> <a id="526" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="544" class="Keyword">using</a> <a id="550" class="Symbol">(</a><a id="551" href="Data.Product.Base.html#2000" class="Function Operator">&lt;_,_&gt;</a><a id="556" class="Symbol">)</a>
+<a id="558" class="Keyword">open</a> <a id="563" class="Keyword">import</a> <a id="570" href="Function.Base.html" class="Module">Function.Base</a> <a id="584" class="Keyword">using</a> <a id="590" class="Symbol">(</a><a id="591" href="Function.Base.html#704" class="Function">id</a><a id="593" class="Symbol">)</a>
+
+<a id="596" class="Keyword">module</a> <a id="603" href="Data.Nat.PseudoRandom.LCG.Unsafe.html" class="Module">Data.Nat.PseudoRandom.LCG.Unsafe</a> <a id="636" class="Keyword">where</a>
+
+<a id="643" class="Comment">------------------------------------------------------------------------</a>
+<a id="716" class="Comment">-- An infinite stream of random numbers</a>
+
+<a id="stream"></a><a id="757" href="Data.Nat.PseudoRandom.LCG.Unsafe.html#757" class="Function">stream</a> <a id="764" class="Symbol">:</a> <a id="766" href="Data.Nat.PseudoRandom.LCG.html#616" class="Record">Generator</a> <a id="776" class="Symbol">→</a> <a id="778" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="780" class="Symbol">→</a> <a id="782" href="Codata.Sized.Stream.html#975" class="Datatype">Stream</a> <a id="789" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="791" class="Symbol">_</a>
+<a id="793" href="Data.Nat.PseudoRandom.LCG.Unsafe.html#757" class="Function">stream</a> <a id="800" href="Data.Nat.PseudoRandom.LCG.Unsafe.html#800" class="Bound">gen</a> <a id="804" class="Symbol">=</a> <a id="806" href="Codata.Sized.Stream.html#1366" class="Function">unfold</a> <a id="813" href="Data.Product.Base.html#2000" class="Function Operator">&lt;</a> <a id="815" href="Data.Nat.PseudoRandom.LCG.html#761" class="Function">step</a> <a id="820" href="Data.Nat.PseudoRandom.LCG.Unsafe.html#800" class="Bound">gen</a> <a id="824" href="Data.Product.Base.html#2000" class="Function Operator">,</a> <a id="826" href="Function.Base.html#704" class="Function">id</a> <a id="829" href="Data.Product.Base.html#2000" class="Function Operator">&gt;</a>
+</pre></body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Debug.Trace</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An example showing how the Debug.Trace module can be used</a>
+<a id="167" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="241" class="Symbol">{-#</a> <a id="245" class="Keyword">OPTIONS</a> <a id="253" class="Pragma">--cubical-compatible</a> <a id="274" class="Pragma">--rewriting</a> <a id="286" class="Pragma">--guardedness</a> <a id="300" class="Symbol">#-}</a>
+
+<a id="305" class="Keyword">module</a> <a id="312" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a> <a id="331" class="Keyword">where</a>
+
+<a id="338" class="Comment">------------------------------------------------------------------------</a>
+<a id="411" class="Comment">-- Sometimes compiled code can contain bugs.</a>
+
+<a id="457" class="Comment">-- Whether caused by the compiler or present in the source code already, they</a>
+<a id="535" class="Comment">-- can be hard to track. A primitive debugging technique is to strategically</a>
+<a id="612" class="Comment">-- insert calls to tracing functions which will display their String argument</a>
+<a id="690" class="Comment">-- upon evaluation.</a>
+
+<a id="711" class="Keyword">open</a> <a id="716" class="Keyword">import</a> <a id="723" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="740" class="Keyword">using</a> <a id="746" class="Symbol">(</a><a id="747" href="Data.String.Base.html#2375" class="Function Operator">_++_</a><a id="751" class="Symbol">)</a>
+<a id="753" class="Keyword">open</a> <a id="758" class="Keyword">import</a> <a id="765" href="Debug.Trace.html" class="Module">Debug.Trace</a>
+
+<a id="778" class="Comment">-- We can for instance add tracing messages to make sure an invariant is</a>
+<a id="851" class="Comment">-- respected or check in which order evaluation takes place in the backend</a>
+<a id="926" class="Comment">-- (which can inform our decision to use, or not, strictness primitives).</a>
+
+<a id="1001" class="Comment">-- In the following example, we define a division operation on natural numbers</a>
+<a id="1080" class="Comment">-- using the original dividend as the termination measure. We:</a>
+
+<a id="1144" class="Comment">-- 1. check in the base case that when the fuel runs out then the updated dividend</a>
+<a id="1227" class="Comment">--    is already zero.</a>
+
+<a id="1251" class="Comment">-- 2. wrap the calls to _∸_ and go in respective calls to trace to see when all</a>
+<a id="1331" class="Comment">--    of these thunks are forced: are we building a big thunk in go&#39;s second</a>
+<a id="1408" class="Comment">--    argument or evaluating it as we go?</a>
+
+<a id="1451" class="Keyword">open</a> <a id="1456" class="Keyword">import</a> <a id="1463" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a>
+<a id="1479" class="Keyword">open</a> <a id="1484" class="Keyword">import</a> <a id="1491" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="1505" class="Keyword">open</a> <a id="1510" class="Keyword">import</a> <a id="1517" href="Data.Nat.Show.html" class="Module">Data.Nat.Show</a> <a id="1531" class="Keyword">using</a> <a id="1537" class="Symbol">(</a><a id="1538" href="Data.Nat.Show.html#1937" class="Function">show</a><a id="1542" class="Symbol">)</a>
+
+<a id="div"></a><a id="1545" href="README.Debug.Trace.html#1545" class="Function">div</a> <a id="1549" class="Symbol">:</a> <a id="1551" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1553" class="Symbol">→</a> <a id="1555" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1557" class="Symbol">→</a> <a id="1559" href="Agda.Builtin.Maybe.html#135" class="Datatype">Maybe</a> <a id="1565" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="1567" href="README.Debug.Trace.html#1545" class="Function">div</a> <a id="1571" href="README.Debug.Trace.html#1571" class="Bound">m</a> <a id="1573" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a> <a id="1578" class="Symbol">=</a> <a id="1580" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a>
+<a id="1588" href="README.Debug.Trace.html#1545" class="CatchallClause Function">div</a><a id="1591" class="CatchallClause"> </a><a id="1592" href="README.Debug.Trace.html#1592" class="CatchallClause Bound">m</a><a id="1593" class="CatchallClause"> </a><a id="1594" href="README.Debug.Trace.html#1594" class="CatchallClause Bound">n</a>    <a id="1599" class="Symbol">=</a> <a id="1601" href="Agda.Builtin.Maybe.html#173" class="InductiveConstructor">just</a> <a id="1606" class="Symbol">(</a><a id="1607" href="README.Debug.Trace.html#1670" class="Function">go</a> <a id="1610" href="README.Debug.Trace.html#1592" class="Bound">m</a> <a id="1612" href="README.Debug.Trace.html#1592" class="Bound">m</a><a id="1613" class="Symbol">)</a> <a id="1615" class="Keyword">where</a>
+
+  <a id="1624" class="Comment">-- invariants: m ≤ fuel</a>
+  <a id="1650" class="Comment">-- result : m / n</a>
+  <a id="1670" href="README.Debug.Trace.html#1670" class="Function">go</a> <a id="1673" class="Symbol">:</a> <a id="1675" class="Symbol">(</a><a id="1676" href="README.Debug.Trace.html#1676" class="Bound">fuel</a> <a id="1681" class="Symbol">:</a> <a id="1683" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="1684" class="Symbol">)</a> <a id="1686" class="Symbol">(</a><a id="1687" href="README.Debug.Trace.html#1687" class="Bound">m</a> <a id="1689" class="Symbol">:</a> <a id="1691" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="1692" class="Symbol">)</a> <a id="1694" class="Symbol">→</a> <a id="1696" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+  <a id="1700" href="README.Debug.Trace.html#1670" class="Function">go</a> <a id="1703" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>       <a id="1714" href="README.Debug.Trace.html#1714" class="Bound">m</a> <a id="1716" class="Symbol">=</a> <a id="1718" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="1724" class="Symbol">(</a><a id="1725" class="String">&quot;Invariant: &quot;</a> <a id="1739" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="1742" href="Data.Nat.Show.html#1937" class="Function">show</a> <a id="1747" href="README.Debug.Trace.html#1714" class="Bound">m</a> <a id="1749" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="1752" class="String">&quot; should be zero.&quot;</a><a id="1770" class="Symbol">)</a> <a id="1772" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>
+  <a id="1779" href="README.Debug.Trace.html#1670" class="Function">go</a> <a id="1782" class="Symbol">(</a><a id="1783" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1787" href="README.Debug.Trace.html#1787" class="Bound">fuel</a><a id="1791" class="Symbol">)</a> <a id="1793" href="README.Debug.Trace.html#1793" class="Bound">m</a> <a id="1795" class="Symbol">=</a>
+    <a id="1801" class="Keyword">let</a> <a id="1805" href="README.Debug.Trace.html#1805" class="Bound">m′</a> <a id="1808" class="Symbol">=</a> <a id="1810" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="1816" class="Symbol">(</a><a id="1817" class="String">&quot;Thunk for step &quot;</a> <a id="1835" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="1838" href="Data.Nat.Show.html#1937" class="Function">show</a> <a id="1843" href="README.Debug.Trace.html#1787" class="Bound">fuel</a> <a id="1848" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="1851" class="String">&quot; forced&quot;</a><a id="1860" class="Symbol">)</a> <a id="1862" class="Symbol">(</a><a id="1863" href="README.Debug.Trace.html#1793" class="Bound">m</a> <a id="1865" href="Data.Nat.Base.html#2883" class="Primitive Operator">∸</a> <a id="1867" href="README.Debug.Trace.html#1594" class="Bound">n</a><a id="1868" class="Symbol">)</a> <a id="1870" class="Keyword">in</a>
+    <a id="1877" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="1883" class="Symbol">(</a><a id="1884" class="String">&quot;Recursive call for step &quot;</a> <a id="1911" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="1914" href="Data.Nat.Show.html#1937" class="Function">show</a> <a id="1919" href="README.Debug.Trace.html#1787" class="Bound">fuel</a><a id="1923" class="Symbol">)</a> <a id="1925" class="Symbol">(</a><a id="1926" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1930" class="Symbol">(</a><a id="1931" href="README.Debug.Trace.html#1670" class="Function">go</a> <a id="1934" href="README.Debug.Trace.html#1787" class="Bound">fuel</a> <a id="1939" href="README.Debug.Trace.html#1805" class="Bound">m′</a><a id="1941" class="Symbol">))</a>
+
+<a id="1945" class="Comment">-- To observe the behaviour of this code, we need to compile it and run it.</a>
+<a id="2021" class="Comment">-- To run it, we need a main function. We define a very basic one: run div,</a>
+<a id="2097" class="Comment">-- and display its result if the run was successful.</a>
+
+<a id="2151" class="Comment">-- We add two calls to trace to see when div is evaluated and when the returned</a>
+<a id="2231" class="Comment">-- number is forced (by a call to show).</a>
+
+<a id="2273" class="Keyword">open</a> <a id="2278" class="Keyword">import</a> <a id="2285" href="Level.html" class="Module">Level</a> <a id="2291" class="Keyword">using</a> <a id="2297" class="Symbol">(</a><a id="2298" href="Level.html#521" class="Function">0ℓ</a><a id="2300" class="Symbol">)</a>
+<a id="2302" class="Keyword">open</a> <a id="2307" class="Keyword">import</a> <a id="2314" href="IO.html" class="Module">IO</a>
+
+<a id="main"></a><a id="2318" href="README.Debug.Trace.html#2318" class="Function">main</a> <a id="2323" class="Symbol">:</a> <a id="2325" href="IO.Base.html#2204" class="Function">Main</a>
+<a id="2330" href="README.Debug.Trace.html#2318" class="Function">main</a> <a id="2335" class="Symbol">=</a>
+  <a id="2339" class="Keyword">let</a> <a id="2343" href="README.Debug.Trace.html#2343" class="Bound">r</a> <a id="2345" class="Symbol">=</a> <a id="2347" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="2353" class="String">&quot;Call to div&quot;</a> <a id="2367" class="Symbol">(</a><a id="2368" href="README.Debug.Trace.html#1545" class="Function">div</a> <a id="2372" class="Number">4</a> <a id="2374" class="Number">2</a><a id="2375" class="Symbol">)</a>
+      <a id="2383" href="README.Debug.Trace.html#2383" class="Bound">j</a> <a id="2385" class="Symbol">=</a> <a id="2387" class="Symbol">λ</a> <a id="2389" href="README.Debug.Trace.html#2389" class="Bound">n</a> <a id="2391" class="Symbol">→</a> <a id="2393" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="2399" class="String">&quot;Forcing the result wrapped in just.&quot;</a> <a id="2437" class="Symbol">(</a><a id="2438" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="2447" class="Symbol">(</a><a id="2448" href="Data.Nat.Show.html#1937" class="Function">show</a> <a id="2453" href="README.Debug.Trace.html#2389" class="Bound">n</a><a id="2454" class="Symbol">))</a> <a id="2457" class="Keyword">in</a>
+  <a id="2462" href="IO.Base.html#1893" class="Function">run</a> <a id="2466" class="Symbol">(</a><a id="2467" href="Data.Maybe.Base.html#1563" class="Function">maybe′</a> <a id="2474" href="README.Debug.Trace.html#2383" class="Bound">j</a> <a id="2476" class="Symbol">(</a><a id="2477" href="IO.Base.html#997" class="InductiveConstructor">return</a> <a id="2484" class="Symbol">_)</a> <a id="2487" href="README.Debug.Trace.html#2343" class="Bound">r</a><a id="2488" class="Symbol">)</a>
+
+<a id="2491" class="Comment">-- We get the following trace where we can see that checking that the</a>
+<a id="2561" class="Comment">-- maybe-solution is just-headed does not force the natural number. Once forced,</a>
+<a id="2642" class="Comment">-- we observe that we indeed build a big thunk on go&#39;s second argument (all the</a>
+<a id="2722" class="Comment">-- recursive calls happen first and then we force the thunks one by one).</a>
+
+<a id="2797" class="Comment">-- Call to div</a>
+<a id="2812" class="Comment">-- Forcing the result wrapped in just.</a>
+<a id="2851" class="Comment">-- Recursive call for step 3</a>
+<a id="2880" class="Comment">-- Recursive call for step 2</a>
+<a id="2909" class="Comment">-- Recursive call for step 1</a>
+<a id="2938" class="Comment">-- Recursive call for step 0</a>
+<a id="2967" class="Comment">-- Thunk for step 0 forced</a>
+<a id="2994" class="Comment">-- Thunk for step 1 forced</a>
+<a id="3021" class="Comment">-- Thunk for step 2 forced</a>
+<a id="3048" class="Comment">-- Thunk for step 3 forced</a>
+<a id="3075" class="Comment">-- Invariant: 0 should be zero.</a>
+<a id="3107" class="Comment">-- 4</a>
+
+<a id="3113" class="Comment">-- We also notice that the result is incorrect: 4/2 is 2 and not 4. We quickly</a>
+<a id="3192" class="Comment">-- notice that (div m (suc n)) will perform m recursive calls no matter what.</a>
+<a id="3270" class="Comment">-- And at each call it will put add 1. We can fix this bug by adding a new first</a>
+<a id="3351" class="Comment">-- equation to go:</a>
+
+<a id="3371" class="Comment">-- go fuel zero = zero</a>
+
+<a id="3395" class="Comment">-- Running the example again we observe that because we now need to check</a>
+<a id="3469" class="Comment">-- whether go&#39;s second argument is zero, the function is more strict: we see</a>
+<a id="3546" class="Comment">-- that recursive calls and thunk forcings are interleaved.</a>
+
+<a id="3607" class="Comment">-- Call to div</a>
+<a id="3622" class="Comment">-- Forcing the result wrapped in just.</a>
+<a id="3661" class="Comment">-- Recursive call for step 3</a>
+<a id="3690" class="Comment">-- Thunk for step 3 forced</a>
+<a id="3717" class="Comment">-- Recursive call for step 2</a>
+<a id="3746" class="Comment">-- Thunk for step 2 forced</a>
+<a id="3773" class="Comment">-- 2</a>
+</pre></body></html>

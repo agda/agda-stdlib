@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Reflection.TCM.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for TC</a>
+<a id="136" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="210" class="Symbol">{-#</a> <a id="214" class="Keyword">OPTIONS</a> <a id="222" class="Pragma">--cubical-compatible</a> <a id="243" class="Pragma">--safe</a> <a id="250" class="Symbol">#-}</a>
+
+<a id="255" class="Keyword">module</a> <a id="262" href="Reflection.TCM.Instances.html" class="Module">Reflection.TCM.Instances</a> <a id="287" class="Keyword">where</a>
+
+<a id="294" class="Keyword">open</a> <a id="299" class="Keyword">import</a> <a id="306" href="Reflection.TCM.Effectful.html" class="Module">Reflection.TCM.Effectful</a>
+
+<a id="332" class="Keyword">instance</a>
+  <a id="tcFunctor"></a><a id="343" href="Reflection.TCM.Instances.html#343" class="Function">tcFunctor</a> <a id="353" class="Symbol">=</a> <a id="355" href="Reflection.TCM.Effectful.html#585" class="Function">functor</a>
+  <a id="tcApplicative"></a><a id="365" href="Reflection.TCM.Instances.html#365" class="Function">tcApplicative</a> <a id="379" class="Symbol">=</a> <a id="381" href="Reflection.TCM.Effectful.html#677" class="Function">applicative</a>
+  <a id="tcApplicativeZero"></a><a id="395" href="Reflection.TCM.Instances.html#395" class="Function">tcApplicativeZero</a> <a id="413" class="Symbol">=</a> <a id="415" href="Reflection.TCM.Effectful.html#905" class="Function">applicativeZero</a>
+  <a id="tcAlternative"></a><a id="433" href="Reflection.TCM.Instances.html#433" class="Function">tcAlternative</a> <a id="447" class="Symbol">=</a> <a id="449" href="Reflection.TCM.Effectful.html#1096" class="Function">alternative</a>
+  <a id="tcMonad"></a><a id="463" href="Reflection.TCM.Instances.html#463" class="Function">tcMonad</a> <a id="471" class="Symbol">=</a> <a id="473" href="Reflection.TCM.Effectful.html#1222" class="Function">monad</a>
+  <a id="tcMonadZero"></a><a id="481" href="Reflection.TCM.Instances.html#481" class="Function">tcMonadZero</a> <a id="493" class="Symbol">=</a> <a id="495" href="Reflection.TCM.Effectful.html#1319" class="Function">monadZero</a>
+  <a id="tcMonadPlus"></a><a id="507" href="Reflection.TCM.Instances.html#507" class="Function">tcMonadPlus</a> <a id="519" class="Symbol">=</a> <a id="521" href="Reflection.TCM.Effectful.html#1417" class="Function">monadPlus</a>
+</pre></body></html>

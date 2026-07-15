@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Solver.CommutativeMonoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Solver for equations in commutative monoids</a>
+<a id="153" class="Comment">--</a>
+<a id="156" class="Comment">-- Adapted from Algebra.Solver.Monoid</a>
+<a id="194" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="268" class="Symbol">{-#</a> <a id="272" class="Keyword">OPTIONS</a> <a id="280" class="Pragma">--cubical-compatible</a> <a id="301" class="Pragma">--safe</a> <a id="308" class="Symbol">#-}</a>
+
+<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="341" class="Keyword">using</a> <a id="347" class="Symbol">(</a><a id="348" href="Algebra.Bundles.html#7886" class="Record">CommutativeMonoid</a><a id="365" class="Symbol">)</a>
+
+<a id="368" class="Keyword">module</a> <a id="375" href="Algebra.Solver.CommutativeMonoid.html" class="Module">Algebra.Solver.CommutativeMonoid</a> <a id="408" class="Symbol">{</a><a id="409" href="Algebra.Solver.CommutativeMonoid.html#409" class="Bound">c</a> <a id="411" href="Algebra.Solver.CommutativeMonoid.html#411" class="Bound">ℓ</a><a id="412" class="Symbol">}</a> <a id="414" class="Symbol">(</a><a id="415" href="Algebra.Solver.CommutativeMonoid.html#415" class="Bound">M</a> <a id="417" class="Symbol">:</a> <a id="419" href="Algebra.Bundles.html#7886" class="Record">CommutativeMonoid</a> <a id="437" href="Algebra.Solver.CommutativeMonoid.html#409" class="Bound">c</a> <a id="439" href="Algebra.Solver.CommutativeMonoid.html#411" class="Bound">ℓ</a><a id="440" class="Symbol">)</a> <a id="442" class="Keyword">where</a>
+
+<a id="449" class="Keyword">import</a> <a id="456" href="Algebra.Solver.CommutativeMonoid.Normal.html" class="Module">Algebra.Solver.CommutativeMonoid.Normal</a> <a id="496" class="Symbol">as</a> <a id="499" class="Module">Normal</a>
+<a id="506" class="Keyword">import</a> <a id="513" href="Algebra.Solver.Monoid.Solver.html" class="Module">Algebra.Solver.Monoid.Solver</a> <a id="542" class="Symbol">as</a> <a id="545" class="Module">Solver</a>
+
+<a id="553" class="Keyword">open</a> <a id="558" href="Algebra.Bundles.html#7886" class="Module">CommutativeMonoid</a> <a id="576" href="Algebra.Solver.CommutativeMonoid.html#415" class="Bound">M</a> <a id="578" class="Keyword">using</a> <a id="584" class="Symbol">(</a><a id="585" href="Algebra.Bundles.html#8230" class="Function">monoid</a><a id="591" class="Symbol">)</a>
+
+<a id="594" class="Keyword">private</a>
+  <a id="604" class="Keyword">module</a> <a id="N"></a><a id="611" href="Algebra.Solver.CommutativeMonoid.html#611" class="Module">N</a> <a id="613" class="Symbol">=</a> <a id="615" href="Algebra.Solver.CommutativeMonoid.Normal.html" class="Module">Normal</a> <a id="622" href="Algebra.Solver.CommutativeMonoid.html#415" class="Bound">M</a>
+
+
+<a id="626" class="Comment">------------------------------------------------------------------------</a>
+<a id="699" class="Comment">-- Normal forms</a>
+
+<a id="716" class="Keyword">open</a> <a id="721" href="Algebra.Solver.CommutativeMonoid.html#611" class="Module">N</a> <a id="723" class="Keyword">public</a>
+  <a id="732" class="Keyword">renaming</a> <a id="741" class="Symbol">(</a><a id="742" href="Algebra.Solver.CommutativeMonoid.Normal.html#4061" class="Function">correct</a> <a id="750" class="Symbol">to</a> <a id="753" class="Function">normalise-correct</a><a id="770" class="Symbol">)</a>
+
+<a id="773" class="Comment">------------------------------------------------------------------------</a>
+<a id="846" class="Comment">-- Proof procedures</a>
+
+<a id="867" class="Keyword">open</a> <a id="872" href="Algebra.Solver.Monoid.Solver.html" class="Module">Solver</a> <a id="879" href="Algebra.Bundles.html#8230" class="Function">monoid</a> <a id="886" class="Symbol">(</a><a id="887" class="Keyword">record</a> <a id="894" class="Symbol">{</a> <a id="896" href="Algebra.Solver.CommutativeMonoid.html#611" class="Module">N</a> <a id="898" class="Symbol">})</a> <a id="901" class="Keyword">public</a>
+
+
+<a id="910" class="Comment">------------------------------------------------------------------------</a>
+<a id="983" class="Comment">-- DEPRECATED NAMES</a>
+<a id="1003" class="Comment">------------------------------------------------------------------------</a>
+<a id="1076" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="1147" class="Comment">-- not guaranteed.</a>
+
+<a id="1167" class="Comment">-- Version 2.2</a>
+
+<a id="1183" class="Symbol">{-#</a> <a id="1187" class="Keyword">WARNING_ON_USAGE</a> <a id="1204" class="Pragma">normalise-correct</a>
+<a id="1222" class="String">&quot;Warning: normalise-correct was deprecated in v2.2.
+Please use Algebra.Solver.CommutativeMonoid.Normal.correct instead.&quot;</a>
+<a id="1343" class="Symbol">#-}</a>
+</pre></body></html>

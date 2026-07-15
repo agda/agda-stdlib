@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.List.Fresh</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Example use case for a fresh list: sorted list</a>
+<a id="156" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="230" class="Symbol">{-#</a> <a id="234" class="Keyword">OPTIONS</a> <a id="242" class="Pragma">--sized-types</a> <a id="256" class="Symbol">#-}</a>
+
+<a id="261" class="Keyword">module</a> <a id="268" href="README.Data.List.Fresh.html" class="Module">README.Data.List.Fresh</a> <a id="291" class="Keyword">where</a>
+
+<a id="298" class="Keyword">open</a> <a id="303" class="Keyword">import</a> <a id="310" href="Data.Nat.html" class="Module">Data.Nat</a>
+<a id="319" class="Keyword">open</a> <a id="324" class="Keyword">import</a> <a id="331" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Data.List.Fresh.html" class="Module">Data.List.Fresh</a>
+<a id="374" class="Keyword">open</a> <a id="379" class="Keyword">import</a> <a id="386" href="Data.List.Relation.Unary.AllPairs.html" class="Module">Data.List.Relation.Unary.AllPairs</a> <a id="420" class="Symbol">as</a> <a id="423" class="Module">AllPairs</a> <a id="432" class="Keyword">using</a> <a id="438" class="Symbol">(</a><a id="439" href="Data.List.Relation.Unary.AllPairs.Core.html#950" class="Datatype">AllPairs</a><a id="447" class="Symbol">)</a>
+<a id="449" class="Keyword">open</a> <a id="454" class="Keyword">import</a> <a id="461" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="474" class="Keyword">open</a> <a id="479" class="Keyword">import</a> <a id="486" href="Relation.Nary.html" class="Module">Relation.Nary</a> <a id="500" class="Keyword">using</a> <a id="506" class="Symbol">(</a><a id="507" href="Relation.Nary.html#6532" class="Function Operator">⌊_⌋</a><a id="510" class="Symbol">;</a> <a id="512" href="Relation.Nary.html#6719" class="Function">fromWitness</a><a id="523" class="Symbol">)</a>
+
+<a id="526" class="Comment">-- A sorted list of natural numbers can be seen as a fresh list</a>
+<a id="590" class="Comment">-- where the notion of freshness is being smaller than all the</a>
+<a id="653" class="Comment">-- existing entries</a>
+
+<a id="SortedList"></a><a id="674" href="README.Data.List.Fresh.html#674" class="Function">SortedList</a> <a id="685" class="Symbol">:</a> <a id="687" href="Agda.Primitive.html#388" class="Primitive">Set</a>
+<a id="691" href="README.Data.List.Fresh.html#674" class="Function">SortedList</a> <a id="702" class="Symbol">=</a> <a id="704" href="Data.List.Fresh.html#1552" class="Datatype">List#</a> <a id="710" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="712" href="Data.Nat.Base.html#1654" class="Function Operator">_&lt;_</a>
+
+<a id="717" href="README.Data.List.Fresh.html#717" class="Function">_</a> <a id="719" class="Symbol">:</a> <a id="721" href="README.Data.List.Fresh.html#674" class="Function">SortedList</a>
+<a id="732" class="Symbol">_</a> <a id="734" class="Symbol">=</a> <a id="736" href="Data.List.Fresh.html#1652" class="InductiveConstructor">cons</a> <a id="741" class="Number">0</a> <a id="743" class="Symbol">(</a><a id="744" href="Data.List.Fresh.html#1652" class="InductiveConstructor">cons</a> <a id="749" class="Number">1</a> <a id="751" class="Symbol">(</a><a id="752" href="Data.List.Fresh.html#1652" class="InductiveConstructor">cons</a> <a id="757" class="Number">3</a> <a id="759" class="Symbol">(</a><a id="760" href="Data.List.Fresh.html#1652" class="InductiveConstructor">cons</a> <a id="765" class="Number">10</a> <a id="768" href="Data.List.Fresh.html#1635" class="InductiveConstructor">[]</a> <a id="771" class="Symbol">_)</a>
+      <a id="780" class="Symbol">(</a><a id="781" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="785" class="Symbol">(</a><a id="786" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="790" class="Symbol">(</a><a id="791" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="795" class="Symbol">(</a><a id="796" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="800" href="Data.Nat.Base.html#1567" class="InductiveConstructor">z≤n</a><a id="803" class="Symbol">)))</a> <a id="807" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="809" class="Symbol">_))</a>
+      <a id="819" class="Symbol">(</a><a id="820" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="824" class="Symbol">(</a><a id="825" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="829" href="Data.Nat.Base.html#1567" class="InductiveConstructor">z≤n</a><a id="832" class="Symbol">)</a> <a id="834" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="836" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="840" class="Symbol">(</a><a id="841" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="845" href="Data.Nat.Base.html#1567" class="InductiveConstructor">z≤n</a><a id="848" class="Symbol">)</a> <a id="850" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="852" class="Symbol">_))</a>
+      <a id="862" class="Symbol">(</a><a id="863" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="867" href="Data.Nat.Base.html#1567" class="InductiveConstructor">z≤n</a> <a id="871" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="873" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="877" href="Data.Nat.Base.html#1567" class="InductiveConstructor">z≤n</a> <a id="881" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="883" href="Data.Nat.Base.html#1609" class="InductiveConstructor">s≤s</a> <a id="887" href="Data.Nat.Base.html#1567" class="InductiveConstructor">z≤n</a> <a id="891" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="893" class="Symbol">_)</a>
+
+<a id="897" class="Comment">-- Clearly, writing these by hand can pretty quickly become quite cumbersome</a>
+<a id="974" class="Comment">-- Luckily, if the notion of freshness we are using is decidable, we can</a>
+<a id="1047" class="Comment">-- make most of the proofs inferrable by using the erasure of the relation</a>
+<a id="1122" class="Comment">-- rather than the relation itself!</a>
+
+<a id="1159" class="Comment">-- We call this new type *I*SortedList because all the proofs will be implicit.</a>
+
+<a id="ISortedList"></a><a id="1240" href="README.Data.List.Fresh.html#1240" class="Function">ISortedList</a> <a id="1252" class="Symbol">:</a> <a id="1254" href="Agda.Primitive.html#388" class="Primitive">Set</a>
+<a id="1258" href="README.Data.List.Fresh.html#1240" class="Function">ISortedList</a> <a id="1270" class="Symbol">=</a> <a id="1272" href="Data.List.Fresh.html#1552" class="Datatype">List#</a> <a id="1278" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1280" href="Relation.Nary.html#6532" class="Function Operator">⌊</a> <a id="1282" href="Data.Nat.Properties.html#10087" class="Function Operator">_&lt;?_</a> <a id="1287" href="Relation.Nary.html#6532" class="Function Operator">⌋</a>
+
+<a id="1290" class="Comment">-- The same example is now much shorter. It looks pretty much like a normal list</a>
+<a id="1371" class="Comment">-- except that we know for sure that it is well ordered.</a>
+
+<a id="ins"></a><a id="1429" href="README.Data.List.Fresh.html#1429" class="Function">ins</a> <a id="1433" class="Symbol">:</a> <a id="1435" href="README.Data.List.Fresh.html#1240" class="Function">ISortedList</a>
+<a id="1447" href="README.Data.List.Fresh.html#1429" class="Function">ins</a> <a id="1451" class="Symbol">=</a> <a id="1453" class="Number">0</a> <a id="1455" href="Data.List.Fresh.html#2054" class="InductiveConstructor Operator">∷#</a> <a id="1458" class="Number">1</a> <a id="1460" href="Data.List.Fresh.html#2054" class="InductiveConstructor Operator">∷#</a> <a id="1463" class="Number">3</a> <a id="1465" href="Data.List.Fresh.html#2054" class="InductiveConstructor Operator">∷#</a> <a id="1468" class="Number">10</a> <a id="1471" href="Data.List.Fresh.html#2054" class="InductiveConstructor Operator">∷#</a> <a id="1474" href="Data.List.Fresh.html#1635" class="InductiveConstructor">[]</a>
+
+<a id="1478" class="Comment">-- Indeed we can extract the support list together with a proof that it</a>
+<a id="1550" class="Comment">-- is ordered thanks to the combined action of toList converting a fresh</a>
+<a id="1623" class="Comment">-- list to a pair of a list and a proof and fromWitness which &quot;unerases&quot;</a>
+<a id="1696" class="Comment">-- a proof.</a>
+
+<a id="ns"></a><a id="1709" href="README.Data.List.Fresh.html#1709" class="Function">ns</a> <a id="1712" class="Symbol">:</a> <a id="1714" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="1719" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="1721" href="README.Data.List.Fresh.html#1709" class="Function">ns</a> <a id="1724" class="Symbol">=</a> <a id="1726" href="Agda.Builtin.Sigma.html#251" class="Field">proj₁</a> <a id="1732" class="Symbol">(</a><a id="1733" href="Data.List.Fresh.html#6158" class="Function">toList</a> <a id="1740" href="README.Data.List.Fresh.html#1429" class="Function">ins</a><a id="1743" class="Symbol">)</a>
+
+<a id="sorted"></a><a id="1746" href="README.Data.List.Fresh.html#1746" class="Function">sorted</a> <a id="1753" class="Symbol">:</a> <a id="1755" href="Data.List.Relation.Unary.AllPairs.Core.html#950" class="Datatype">AllPairs</a> <a id="1764" href="Data.Nat.Base.html#1654" class="Function Operator">_&lt;_</a> <a id="1768" href="README.Data.List.Fresh.html#1709" class="Function">ns</a>
+<a id="1771" href="README.Data.List.Fresh.html#1746" class="Function">sorted</a> <a id="1778" class="Symbol">=</a> <a id="1780" href="Data.List.Relation.Unary.AllPairs.html#1577" class="Function">AllPairs.map</a> <a id="1793" class="Symbol">(</a><a id="1794" href="Relation.Nary.html#6719" class="Function">fromWitness</a> <a id="1806" href="Data.Nat.Base.html#1654" class="Function Operator">_&lt;_</a> <a id="1810" href="Data.Nat.Properties.html#10087" class="Function Operator">_&lt;?_</a><a id="1814" class="Symbol">)</a> <a id="1816" class="Symbol">(</a><a id="1817" href="Agda.Builtin.Sigma.html#263" class="Field">proj₂</a> <a id="1823" class="Symbol">(</a><a id="1824" href="Data.List.Fresh.html#6158" class="Function">toList</a> <a id="1831" href="README.Data.List.Fresh.html#1429" class="Function">ins</a><a id="1834" class="Symbol">))</a>
+
+<a id="1838" class="Comment">-- See the following module for an applied use-case of fresh lists</a>
+<a id="1905" class="Keyword">open</a> <a id="1910" class="Keyword">import</a> <a id="1917" href="README.Data.Trie.NonDependent.html" class="Module">README.Data.Trie.NonDependent</a>
+</pre></body></html>

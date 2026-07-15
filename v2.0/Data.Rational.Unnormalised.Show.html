@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Rational.Unnormalised.Show</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Showing unnormalised rational numbers</a>
+<a id="147" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="221" class="Symbol">{-#</a> <a id="225" class="Keyword">OPTIONS</a> <a id="233" class="Pragma">--cubical-compatible</a> <a id="254" class="Pragma">--safe</a> <a id="261" class="Symbol">#-}</a>
+
+<a id="266" class="Keyword">module</a> <a id="273" href="Data.Rational.Unnormalised.Show.html" class="Module">Data.Rational.Unnormalised.Show</a> <a id="305" class="Keyword">where</a>
+
+<a id="312" class="Keyword">import</a> <a id="319" href="Data.Integer.Show.html" class="Module">Data.Integer.Show</a> <a id="337" class="Symbol">as</a> <a id="340" class="Module">ℤ</a>
+<a id="342" class="Keyword">open</a> <a id="347" class="Keyword">import</a> <a id="354" href="Data.Rational.Unnormalised.Base.html" class="Module">Data.Rational.Unnormalised.Base</a>
+<a id="386" class="Keyword">open</a> <a id="391" class="Keyword">import</a> <a id="398" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="415" class="Keyword">using</a> <a id="421" class="Symbol">(</a><a id="422" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="428" class="Symbol">;</a> <a id="430" href="Data.String.Base.html#2404" class="Function Operator">_++_</a><a id="434" class="Symbol">)</a>
+
+<a id="show"></a><a id="437" href="Data.Rational.Unnormalised.Show.html#437" class="Function">show</a> <a id="442" class="Symbol">:</a> <a id="444" href="Data.Rational.Unnormalised.Base.html#1369" class="Record">ℚᵘ</a> <a id="447" class="Symbol">→</a> <a id="449" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="456" href="Data.Rational.Unnormalised.Show.html#437" class="Function">show</a> <a id="461" href="Data.Rational.Unnormalised.Show.html#461" class="Bound">p</a> <a id="463" class="Symbol">=</a> <a id="465" href="Data.Integer.Show.html#615" class="Function">ℤ.show</a> <a id="472" class="Symbol">(</a><a id="473" href="Data.Rational.Unnormalised.Base.html#1871" class="Field Operator">↥</a> <a id="475" href="Data.Rational.Unnormalised.Show.html#461" class="Bound">p</a><a id="476" class="Symbol">)</a> <a id="478" href="Data.String.Base.html#2404" class="Function Operator">++</a> <a id="481" class="String">&quot;/&quot;</a> <a id="485" href="Data.String.Base.html#2404" class="Function Operator">++</a> <a id="488" href="Data.Integer.Show.html#615" class="Function">ℤ.show</a> <a id="495" class="Symbol">(</a><a id="496" href="Data.Rational.Unnormalised.Base.html#1894" class="Function Operator">↧</a> <a id="498" href="Data.Rational.Unnormalised.Show.html#461" class="Bound">p</a><a id="499" class="Symbol">)</a>
+</pre></body></html>

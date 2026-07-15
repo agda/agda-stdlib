@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Effect.Monad.Writer</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The writer monad</a>
+<a id="126" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="200" class="Symbol">{-#</a> <a id="204" class="Keyword">OPTIONS</a> <a id="212" class="Pragma">--cubical-compatible</a> <a id="233" class="Pragma">--safe</a> <a id="240" class="Symbol">#-}</a>
+
+<a id="245" class="Keyword">module</a> <a id="252" href="Effect.Monad.Writer.html" class="Module">Effect.Monad.Writer</a> <a id="272" class="Keyword">where</a>
+
+<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Algebra.html" class="Module">Algebra</a> <a id="299" class="Keyword">using</a> <a id="305" class="Symbol">(</a><a id="306" href="Algebra.Bundles.Raw.html#1105" class="Record">RawMonoid</a><a id="315" class="Symbol">)</a>
+<a id="317" class="Keyword">open</a> <a id="322" class="Keyword">import</a> <a id="329" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="347" class="Keyword">using</a> <a id="353" class="Symbol">(</a><a id="354" href="Data.Product.Base.html#1618" class="Function Operator">_×_</a><a id="357" class="Symbol">)</a>
+<a id="359" class="Keyword">open</a> <a id="364" class="Keyword">import</a> <a id="371" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="390" class="Keyword">open</a> <a id="395" class="Keyword">import</a> <a id="402" href="Effect.Choice.html" class="Module">Effect.Choice</a>
+<a id="416" class="Keyword">open</a> <a id="421" class="Keyword">import</a> <a id="428" href="Effect.Empty.html" class="Module">Effect.Empty</a>
+<a id="441" class="Keyword">open</a> <a id="446" class="Keyword">import</a> <a id="453" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="468" class="Keyword">open</a> <a id="473" class="Keyword">import</a> <a id="480" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+<a id="493" class="Keyword">open</a> <a id="498" class="Keyword">import</a> <a id="505" href="Effect.Monad.Identity.html" class="Module">Effect.Monad.Identity</a> <a id="527" class="Symbol">as</a> <a id="530" class="Module">Id</a> <a id="533" class="Keyword">using</a> <a id="539" class="Symbol">(</a><a id="540" href="Effect.Monad.Identity.html#553" class="Record">Identity</a><a id="548" class="Symbol">;</a> <a id="550" href="Effect.Monad.Identity.html#621" class="Field">runIdentity</a><a id="561" class="Symbol">)</a>
+<a id="563" class="Keyword">open</a> <a id="568" class="Keyword">import</a> <a id="575" href="Function.Base.html" class="Module">Function.Base</a> <a id="589" class="Keyword">using</a> <a id="595" class="Symbol">(</a><a id="596" href="Function.Base.html#3626" class="Function Operator">_∘′_</a><a id="600" class="Symbol">)</a>
+<a id="602" class="Keyword">open</a> <a id="607" class="Keyword">import</a> <a id="614" href="Level.html" class="Module">Level</a> <a id="620" class="Keyword">using</a> <a id="626" class="Symbol">(</a><a id="627" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="632" class="Symbol">)</a>
+
+<a id="635" class="Keyword">import</a> <a id="642" href="Effect.Monad.Writer.Transformer.html" class="Module">Effect.Monad.Writer.Transformer</a> <a id="674" class="Symbol">as</a> <a id="677" class="Module">Trans</a>
+
+<a id="684" class="Keyword">private</a>
+  <a id="694" class="Keyword">variable</a>
+    <a id="707" href="Effect.Monad.Writer.html#707" class="Generalizable">w</a> <a id="709" href="Effect.Monad.Writer.html#709" class="Generalizable">ℓ</a> <a id="711" class="Symbol">:</a> <a id="713" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="723" href="Effect.Monad.Writer.html#723" class="Generalizable">A</a> <a id="725" class="Symbol">:</a> <a id="727" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="731" href="Effect.Monad.Writer.html#707" class="Generalizable">w</a>
+    <a id="737" href="Effect.Monad.Writer.html#737" class="Generalizable">𝕎</a> <a id="739" class="Symbol">:</a> <a id="741" href="Algebra.Bundles.Raw.html#1105" class="Record">RawMonoid</a> <a id="751" href="Effect.Monad.Writer.html#707" class="Generalizable">w</a> <a id="753" href="Effect.Monad.Writer.html#709" class="Generalizable">ℓ</a>
+
+<a id="756" class="Comment">------------------------------------------------------------------------</a>
+<a id="829" class="Comment">-- Re-export the monad writer operations</a>
+
+<a id="871" class="Keyword">open</a> <a id="876" href="Effect.Monad.Writer.Transformer.html" class="Module">Trans</a> <a id="882" class="Keyword">public</a>
+  <a id="891" class="Keyword">using</a> <a id="897" class="Symbol">(</a><a id="898" href="Effect.Monad.Writer.Transformer.Base.html#821" class="Record">RawMonadWriter</a><a id="912" class="Symbol">)</a>
+
+<a id="915" class="Comment">------------------------------------------------------------------------</a>
+<a id="988" class="Comment">-- Writer monad</a>
+
+<a id="Writer"></a><a id="1005" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1012" class="Symbol">:</a> <a id="1014" class="Symbol">(</a><a id="1015" href="Effect.Monad.Writer.html#1015" class="Bound">𝕎</a> <a id="1017" class="Symbol">:</a> <a id="1019" href="Algebra.Bundles.Raw.html#1105" class="Record">RawMonoid</a> <a id="1029" href="Effect.Monad.Writer.html#707" class="Generalizable">w</a> <a id="1031" href="Effect.Monad.Writer.html#709" class="Generalizable">ℓ</a><a id="1032" class="Symbol">)</a> <a id="1034" class="Symbol">(</a><a id="1035" href="Effect.Monad.Writer.html#1035" class="Bound">A</a> <a id="1037" class="Symbol">:</a> <a id="1039" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1043" href="Effect.Monad.Writer.html#707" class="Generalizable">w</a><a id="1044" class="Symbol">)</a> <a id="1046" class="Symbol">→</a> <a id="1048" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1052" href="Effect.Monad.Writer.html#707" class="Generalizable">w</a>
+<a id="1054" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1061" href="Effect.Monad.Writer.html#1061" class="Bound">𝕎</a> <a id="1063" class="Symbol">=</a> <a id="1065" href="Effect.Monad.Writer.Transformer.Base.html#1230" class="Record">Trans.WriterT</a> <a id="1079" href="Effect.Monad.Writer.html#1061" class="Bound">𝕎</a> <a id="1081" href="Effect.Monad.Identity.html#553" class="Record">Identity</a>
+
+<a id="functor"></a><a id="1091" href="Effect.Monad.Writer.html#1091" class="Function">functor</a> <a id="1099" class="Symbol">:</a> <a id="1101" href="Effect.Functor.html#579" class="Record">RawFunctor</a> <a id="1112" class="Symbol">(</a><a id="1113" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1120" href="Effect.Monad.Writer.html#737" class="Generalizable">𝕎</a><a id="1121" class="Symbol">)</a>
+<a id="1123" href="Effect.Monad.Writer.html#1091" class="Function">functor</a> <a id="1131" class="Symbol">=</a> <a id="1133" href="Effect.Monad.Writer.Transformer.html#1084" class="Function">Trans.functor</a> <a id="1147" href="Effect.Monad.Identity.html#659" class="Function">Id.functor</a>
+
+<a id="1159" class="Keyword">module</a> <a id="1166" href="Effect.Monad.Writer.html#1166" class="Module">_</a> <a id="1168" class="Symbol">{</a><a id="1169" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a> <a id="1171" class="Symbol">:</a> <a id="1173" href="Algebra.Bundles.Raw.html#1105" class="Record">RawMonoid</a> <a id="1183" href="Effect.Monad.Writer.html#707" class="Generalizable">w</a> <a id="1185" href="Effect.Monad.Writer.html#709" class="Generalizable">ℓ</a><a id="1186" class="Symbol">}</a> <a id="1188" class="Keyword">where</a>
+
+  <a id="1197" class="Keyword">open</a> <a id="1202" href="Algebra.Bundles.Raw.html#1105" class="Module">RawMonoid</a> <a id="1212" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a> <a id="1214" class="Keyword">renaming</a> <a id="1223" class="Symbol">(</a><a id="1224" href="Algebra.Bundles.Raw.html#1187" class="Field">Carrier</a> <a id="1232" class="Symbol">to</a> <a id="1235" class="Field">W</a><a id="1236" class="Symbol">)</a>
+
+  <a id="1241" href="Effect.Monad.Writer.html#1241" class="Function">runWriter</a> <a id="1251" class="Symbol">:</a> <a id="1253" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1260" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a> <a id="1262" href="Effect.Monad.Writer.html#723" class="Generalizable">A</a> <a id="1264" class="Symbol">→</a> <a id="1266" href="Effect.Monad.Writer.html#1235" class="Field">W</a> <a id="1268" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="1270" href="Effect.Monad.Writer.html#723" class="Generalizable">A</a>
+  <a id="1274" href="Effect.Monad.Writer.html#1241" class="Function">runWriter</a> <a id="1284" href="Effect.Monad.Writer.html#1284" class="Bound">ma</a> <a id="1287" class="Symbol">=</a> <a id="1289" href="Effect.Monad.Identity.html#621" class="Field">runIdentity</a> <a id="1301" class="Symbol">(</a><a id="1302" href="Effect.Monad.Writer.Transformer.Base.html#1413" class="Field">Trans.runWriterT</a> <a id="1319" href="Effect.Monad.Writer.html#1284" class="Bound">ma</a> <a id="1322" href="Algebra.Bundles.Raw.html#1261" class="Field">ε</a><a id="1323" class="Symbol">)</a>
+
+  <a id="1328" href="Effect.Monad.Writer.html#1328" class="Function">applicative</a> <a id="1340" class="Symbol">:</a> <a id="1342" href="Effect.Applicative.html#984" class="Record">RawApplicative</a> <a id="1357" class="Symbol">(</a><a id="1358" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1365" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a><a id="1366" class="Symbol">)</a>
+  <a id="1370" href="Effect.Monad.Writer.html#1328" class="Function">applicative</a> <a id="1382" class="Symbol">=</a> <a id="1384" href="Effect.Monad.Writer.Transformer.html#1654" class="Function">Trans.applicative</a> <a id="1402" href="Effect.Monad.Identity.html#766" class="Function">Id.applicative</a>
+
+  <a id="1420" href="Effect.Monad.Writer.html#1420" class="Function">monad</a> <a id="1426" class="Symbol">:</a> <a id="1428" href="Effect.Monad.html#779" class="Record">RawMonad</a> <a id="1437" class="Symbol">(</a><a id="1438" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1445" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a><a id="1446" class="Symbol">)</a>
+  <a id="1450" href="Effect.Monad.Writer.html#1420" class="Function">monad</a> <a id="1456" class="Symbol">=</a> <a id="1458" href="Effect.Monad.Writer.Transformer.html#2537" class="Function">Trans.monad</a> <a id="1470" href="Effect.Monad.Identity.html#946" class="Function">Id.monad</a>
+
+  <a id="1482" href="Effect.Monad.Writer.html#1482" class="Function">join</a> <a id="1487" class="Symbol">:</a> <a id="1489" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1496" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a> <a id="1498" class="Symbol">(</a><a id="1499" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1506" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a> <a id="1508" href="Effect.Monad.Writer.html#723" class="Generalizable">A</a><a id="1509" class="Symbol">)</a> <a id="1511" class="Symbol">→</a> <a id="1513" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1520" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a> <a id="1522" href="Effect.Monad.Writer.html#723" class="Generalizable">A</a>
+  <a id="1526" href="Effect.Monad.Writer.html#1482" class="Function">join</a> <a id="1531" class="Symbol">=</a> <a id="1533" href="Effect.Monad.html#1565" class="Function">Join.join</a> <a id="1543" href="Effect.Monad.Writer.html#1420" class="Function">monad</a>
+
+  <a id="1552" class="Comment">----------------------------------------------------------------------</a>
+  <a id="1625" class="Comment">-- Writer monad specifics</a>
+
+  <a id="1654" href="Effect.Monad.Writer.html#1654" class="Function">monadWriter</a> <a id="1666" class="Symbol">:</a> <a id="1668" href="Effect.Monad.Writer.Transformer.Base.html#821" class="Record">RawMonadWriter</a> <a id="1683" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a> <a id="1685" class="Symbol">(</a><a id="1686" href="Effect.Monad.Writer.html#1005" class="Function">Writer</a> <a id="1693" href="Effect.Monad.Writer.html#1169" class="Bound">𝕎</a><a id="1694" class="Symbol">)</a>
+  <a id="1698" href="Effect.Monad.Writer.html#1654" class="Function">monadWriter</a> <a id="1710" class="Symbol">=</a> <a id="1712" href="Effect.Monad.Writer.Transformer.html#3453" class="Function">Trans.monadWriter</a> <a id="1730" href="Effect.Monad.Identity.html#946" class="Function">Id.monad</a>
+</pre></body></html>

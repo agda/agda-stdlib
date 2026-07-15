@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Int</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--cubical-compatible</a> <a id="34" class="Pragma">--safe</a> <a id="41" class="Pragma">--no-sized-types</a> <a id="58" class="Pragma">--no-guardedness</a> <a id="75" class="Symbol">#-}</a>
+
+<a id="80" class="Keyword">module</a> <a id="87" href="Agda.Builtin.Int.html" class="Module">Agda.Builtin.Int</a> <a id="104" class="Keyword">where</a>
+
+<a id="111" class="Keyword">open</a> <a id="116" class="Keyword">import</a> <a id="123" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="140" class="Keyword">open</a> <a id="145" class="Keyword">import</a> <a id="152" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a>
+
+<a id="173" class="Keyword">infix</a> <a id="179" class="Number">8</a> <a id="181" href="Agda.Builtin.Int.html#246" class="InductiveConstructor">pos</a>  <a id="186" class="Comment">-- Standard library uses this as +_</a>
+
+<a id="223" class="Keyword">data</a> <a id="Int"></a><a id="228" href="Agda.Builtin.Int.html#228" class="Datatype">Int</a> <a id="232" class="Symbol">:</a> <a id="234" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="238" class="Keyword">where</a>
+  <a id="Int.pos"></a><a id="246" href="Agda.Builtin.Int.html#246" class="InductiveConstructor">pos</a>    <a id="253" class="Symbol">:</a> <a id="255" class="Symbol">(</a><a id="256" href="Agda.Builtin.Int.html#256" class="Bound">n</a> <a id="258" class="Symbol">:</a> <a id="260" href="Agda.Builtin.Nat.html#186" class="Datatype">Nat</a><a id="263" class="Symbol">)</a> <a id="265" class="Symbol">→</a> <a id="267" href="Agda.Builtin.Int.html#228" class="Datatype">Int</a>
+  <a id="Int.negsuc"></a><a id="273" href="Agda.Builtin.Int.html#273" class="InductiveConstructor">negsuc</a> <a id="280" class="Symbol">:</a> <a id="282" class="Symbol">(</a><a id="283" href="Agda.Builtin.Int.html#283" class="Bound">n</a> <a id="285" class="Symbol">:</a> <a id="287" href="Agda.Builtin.Nat.html#186" class="Datatype">Nat</a><a id="290" class="Symbol">)</a> <a id="292" class="Symbol">→</a> <a id="294" href="Agda.Builtin.Int.html#228" class="Datatype">Int</a>
+
+<a id="299" class="Symbol">{-#</a> <a id="303" class="Keyword">BUILTIN</a> <a id="311" class="Keyword">INTEGER</a>       <a id="325" href="Agda.Builtin.Int.html#228" class="Datatype">Int</a>    <a id="332" class="Symbol">#-}</a>
+<a id="336" class="Symbol">{-#</a> <a id="340" class="Keyword">BUILTIN</a> <a id="348" class="Keyword">INTEGERPOS</a>    <a id="362" href="Agda.Builtin.Int.html#246" class="InductiveConstructor">pos</a>    <a id="369" class="Symbol">#-}</a>
+<a id="373" class="Symbol">{-#</a> <a id="377" class="Keyword">BUILTIN</a> <a id="385" class="Keyword">INTEGERNEGSUC</a> <a id="399" href="Agda.Builtin.Int.html#273" class="InductiveConstructor">negsuc</a> <a id="406" class="Symbol">#-}</a>
+
+<a id="411" class="Keyword">primitive</a> <a id="primShowInteger"></a><a id="421" href="Agda.Builtin.Int.html#421" class="Primitive">primShowInteger</a> <a id="437" class="Symbol">:</a> <a id="439" href="Agda.Builtin.Int.html#228" class="Datatype">Int</a> <a id="443" class="Symbol">→</a> <a id="445" href="Agda.Builtin.String.html#318" class="Postulate">String</a>
+</pre></body></html>

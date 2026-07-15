@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Solver.Monoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- A solver for equations over monoids</a>
+<a id="145" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="219" class="Symbol">{-#</a> <a id="223" class="Keyword">OPTIONS</a> <a id="231" class="Pragma">--cubical-compatible</a> <a id="252" class="Pragma">--safe</a> <a id="259" class="Symbol">#-}</a>
+
+<a id="264" class="Keyword">open</a> <a id="269" class="Keyword">import</a> <a id="276" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="292" class="Keyword">using</a> <a id="298" class="Symbol">(</a><a id="299" href="Algebra.Bundles.html#7315" class="Record">Monoid</a><a id="305" class="Symbol">)</a>
+
+<a id="308" class="Keyword">module</a> <a id="315" href="Algebra.Solver.Monoid.html" class="Module">Algebra.Solver.Monoid</a> <a id="337" class="Symbol">{</a><a id="338" href="Algebra.Solver.Monoid.html#338" class="Bound">c</a> <a id="340" href="Algebra.Solver.Monoid.html#340" class="Bound">ℓ</a><a id="341" class="Symbol">}</a> <a id="343" class="Symbol">(</a><a id="344" href="Algebra.Solver.Monoid.html#344" class="Bound">M</a> <a id="346" class="Symbol">:</a> <a id="348" href="Algebra.Bundles.html#7315" class="Record">Monoid</a> <a id="355" href="Algebra.Solver.Monoid.html#338" class="Bound">c</a> <a id="357" href="Algebra.Solver.Monoid.html#340" class="Bound">ℓ</a><a id="358" class="Symbol">)</a> <a id="360" class="Keyword">where</a>
+
+<a id="367" class="Keyword">import</a> <a id="374" href="Algebra.Solver.Monoid.Normal.html" class="Module">Algebra.Solver.Monoid.Normal</a> <a id="403" class="Symbol">as</a> <a id="406" class="Module">Normal</a>
+<a id="413" class="Keyword">import</a> <a id="420" href="Algebra.Solver.Monoid.Solver.html" class="Module">Algebra.Solver.Monoid.Solver</a> <a id="449" class="Symbol">as</a> <a id="452" class="Module">Solver</a>
+<a id="459" class="Keyword">open</a> <a id="464" class="Keyword">import</a> <a id="471" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="487" class="Symbol">as</a> <a id="490" class="Module">Maybe</a>
+  <a id="498" class="Keyword">using</a> <a id="504" class="Symbol">(</a><a id="505" href="Data.Maybe.Base.html#1732" class="Function">From-just</a><a id="514" class="Symbol">;</a> <a id="516" href="Data.Maybe.Base.html#1820" class="Function">from-just</a><a id="525" class="Symbol">)</a>
+<a id="527" class="Keyword">open</a> <a id="532" class="Keyword">import</a> <a id="539" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="557" class="Keyword">using</a> <a id="563" class="Symbol">(</a><a id="564" href="Data.Product.Base.html#1618" class="Function Operator">_×_</a><a id="567" class="Symbol">;</a> <a id="569" href="Data.Product.Base.html#3109" class="Function">uncurry</a><a id="576" class="Symbol">)</a>
+<a id="578" class="Keyword">open</a> <a id="583" class="Keyword">import</a> <a id="590" href="Function.Base.html" class="Module">Function.Base</a> <a id="604" class="Keyword">using</a> <a id="610" class="Symbol">(</a><a id="611" href="Function.Base.html#1115" class="Function Operator">_∘_</a><a id="614" class="Symbol">)</a>
+
+<a id="617" class="Keyword">private</a>
+  <a id="627" class="Keyword">module</a> <a id="N"></a><a id="634" href="Algebra.Solver.Monoid.html#634" class="Module">N</a> <a id="636" class="Symbol">=</a> <a id="638" href="Algebra.Solver.Monoid.Normal.html" class="Module">Normal</a> <a id="645" href="Algebra.Solver.Monoid.html#344" class="Bound">M</a>
+
+
+<a id="649" class="Comment">------------------------------------------------------------------------</a>
+<a id="722" class="Comment">-- Normal forms</a>
+
+<a id="739" class="Keyword">open</a> <a id="744" href="Algebra.Solver.Monoid.html#634" class="Module">N</a> <a id="746" class="Keyword">public</a>
+  <a id="755" class="Keyword">renaming</a> <a id="764" class="Symbol">(</a><a id="765" href="Algebra.Solver.Monoid.Normal.html#1798" class="Function">comp-correct</a> <a id="778" class="Symbol">to</a> <a id="781" class="Function">homomorphic</a><a id="792" class="Symbol">;</a> <a id="794" href="Algebra.Solver.Monoid.Normal.html#2265" class="Function">correct</a> <a id="802" class="Symbol">to</a> <a id="805" class="Function">normalise-correct</a><a id="822" class="Symbol">)</a>
+
+<a id="825" class="Comment">------------------------------------------------------------------------</a>
+<a id="898" class="Comment">-- Tactic</a>
+
+<a id="909" class="Keyword">open</a> <a id="914" href="Algebra.Solver.Monoid.Solver.html" class="Module">Solver</a> <a id="921" href="Algebra.Solver.Monoid.html#344" class="Bound">M</a> <a id="923" class="Symbol">(</a><a id="924" class="Keyword">record</a> <a id="931" class="Symbol">{</a> <a id="933" href="Algebra.Solver.Monoid.html#634" class="Module">N</a> <a id="935" class="Symbol">})</a> <a id="938" class="Keyword">public</a>
+  <a id="947" class="Keyword">hiding</a> <a id="954" class="Symbol">(</a><a id="955" href="Algebra.Solver.Monoid.Solver.html#1799" class="Function">prove</a><a id="960" class="Symbol">)</a>
+
+<a id="prove"></a><a id="963" href="Algebra.Solver.Monoid.html#963" class="Function">prove</a> <a id="969" class="Symbol">:</a> <a id="971" class="Symbol">∀</a> <a id="973" href="Algebra.Solver.Monoid.html#973" class="Bound">n</a> <a id="975" class="Symbol">(</a><a id="976" href="Algebra.Solver.Monoid.html#976" class="Bound">es</a> <a id="979" class="Symbol">:</a> <a id="981" href="Algebra.Solver.Monoid.Expression.html#884" class="Datatype">Expr</a> <a id="986" href="Algebra.Solver.Monoid.html#973" class="Bound">n</a> <a id="988" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="990" href="Algebra.Solver.Monoid.Expression.html#884" class="Datatype">Expr</a> <a id="995" href="Algebra.Solver.Monoid.html#973" class="Bound">n</a><a id="996" class="Symbol">)</a> <a id="998" class="Symbol">→</a> <a id="1000" href="Data.Maybe.Base.html#1732" class="Function">From-just</a> <a id="1010" class="Symbol">(</a><a id="1011" href="Data.Product.Base.html#3109" class="Function">uncurry</a> <a id="1019" href="Algebra.Solver.Monoid.Solver.html#1351" class="Function">prove′</a> <a id="1026" href="Algebra.Solver.Monoid.html#976" class="Bound">es</a><a id="1028" class="Symbol">)</a>
+<a id="1030" href="Algebra.Solver.Monoid.html#963" class="Function">prove</a> <a id="1036" class="Symbol">_</a> <a id="1038" class="Symbol">=</a> <a id="1040" href="Data.Maybe.Base.html#1820" class="Function">from-just</a> <a id="1050" href="Function.Base.html#1115" class="Function Operator">∘</a> <a id="1052" href="Data.Product.Base.html#3109" class="Function">uncurry</a> <a id="1060" href="Algebra.Solver.Monoid.Solver.html#1351" class="Function">prove′</a>
+
+
+<a id="1069" class="Comment">------------------------------------------------------------------------</a>
+<a id="1142" class="Comment">-- DEPRECATED NAMES</a>
+<a id="1162" class="Comment">------------------------------------------------------------------------</a>
+<a id="1235" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="1306" class="Comment">-- not guaranteed.</a>
+
+<a id="1326" class="Comment">-- Version 2.2</a>
+
+<a id="1342" class="Symbol">{-#</a> <a id="1346" class="Keyword">WARNING_ON_USAGE</a> <a id="1363" class="Pragma">homomorphic</a>
+<a id="1375" class="String">&quot;Warning: homomorphic was deprecated in v2.2.
+Please use Algebra.Solver.Monoid.Normal.comp-correct instead.&quot;</a>
+<a id="1484" class="Symbol">#-}</a>
+
+<a id="1489" class="Symbol">{-#</a> <a id="1493" class="Keyword">WARNING_ON_USAGE</a> <a id="1510" class="Pragma">normalise-correct</a>
+<a id="1528" class="String">&quot;Warning: normalise-correct was deprecated in v2.2.
+Please use Algebra.Solver.Monoid.Normal.correct instead.&quot;</a>
+<a id="1638" class="Symbol">#-}</a>
+</pre></body></html>

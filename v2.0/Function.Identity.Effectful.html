@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Function.Identity.Effectful</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An effectful view of the identity function</a>
+<a id="152" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--cubical-compatible</a> <a id="259" class="Pragma">--safe</a> <a id="266" class="Symbol">#-}</a>
+
+<a id="271" class="Keyword">module</a> <a id="278" href="Function.Identity.Effectful.html" class="Module">Function.Identity.Effectful</a> <a id="306" class="Keyword">where</a>
+
+<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="340" class="Keyword">open</a> <a id="345" class="Keyword">import</a> <a id="352" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="371" class="Keyword">open</a> <a id="376" class="Keyword">import</a> <a id="383" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+<a id="396" class="Keyword">open</a> <a id="401" class="Keyword">import</a> <a id="408" href="Effect.Comonad.html" class="Module">Effect.Comonad</a>
+<a id="423" class="Keyword">open</a> <a id="428" class="Keyword">import</a> <a id="435" href="Function.Base.html" class="Module">Function.Base</a> <a id="449" class="Keyword">using</a> <a id="455" class="Symbol">(</a><a id="456" href="Function.Base.html#704" class="Function">id</a><a id="458" class="Symbol">;</a> <a id="460" href="Function.Base.html#3626" class="Function Operator">_∘′_</a><a id="464" class="Symbol">;</a> <a id="466" href="Function.Base.html#3919" class="Function Operator">_|&gt;′_</a><a id="471" class="Symbol">;</a> <a id="473" href="Function.Base.html#3839" class="Function Operator">_$′_</a><a id="477" class="Symbol">;</a> <a id="479" href="Function.Base.html#1638" class="Function">flip</a><a id="483" class="Symbol">)</a>
+<a id="485" class="Keyword">open</a> <a id="490" class="Keyword">import</a> <a id="497" href="Level.html" class="Module">Level</a>
+
+<a id="504" class="Keyword">private</a>
+  <a id="514" class="Keyword">variable</a>
+    <a id="527" href="Function.Identity.Effectful.html#527" class="Generalizable">ℓ</a> <a id="529" class="Symbol">:</a> <a id="531" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+
+<a id="Identity"></a><a id="538" href="Function.Identity.Effectful.html#538" class="Function">Identity</a> <a id="547" class="Symbol">:</a> <a id="549" class="Symbol">(</a><a id="550" href="Function.Identity.Effectful.html#550" class="Bound">A</a> <a id="552" class="Symbol">:</a> <a id="554" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="558" href="Function.Identity.Effectful.html#527" class="Generalizable">ℓ</a><a id="559" class="Symbol">)</a> <a id="561" class="Symbol">→</a> <a id="563" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="567" href="Function.Identity.Effectful.html#527" class="Generalizable">ℓ</a>
+<a id="569" href="Function.Identity.Effectful.html#538" class="Function">Identity</a> <a id="578" href="Function.Identity.Effectful.html#578" class="Bound">A</a> <a id="580" class="Symbol">=</a> <a id="582" href="Function.Identity.Effectful.html#578" class="Bound">A</a>
+
+<a id="functor"></a><a id="585" href="Function.Identity.Effectful.html#585" class="Function">functor</a> <a id="593" class="Symbol">:</a> <a id="595" href="Effect.Functor.html#579" class="Record">RawFunctor</a> <a id="606" class="Symbol">{</a><a id="607" href="Function.Identity.Effectful.html#527" class="Generalizable">ℓ</a><a id="608" class="Symbol">}</a> <a id="610" href="Function.Identity.Effectful.html#538" class="Function">Identity</a>
+<a id="619" href="Function.Identity.Effectful.html#585" class="Function">functor</a> <a id="627" class="Symbol">=</a> <a id="629" class="Keyword">record</a>
+  <a id="638" class="Symbol">{</a> <a id="640" href="Effect.Functor.html#687" class="Field Operator">_&lt;$&gt;_</a> <a id="646" class="Symbol">=</a> <a id="648" href="Function.Base.html#704" class="Function">id</a>
+  <a id="653" class="Symbol">}</a>
+
+<a id="applicative"></a><a id="656" href="Function.Identity.Effectful.html#656" class="Function">applicative</a> <a id="668" class="Symbol">:</a> <a id="670" href="Effect.Applicative.html#984" class="Record">RawApplicative</a> <a id="685" class="Symbol">{</a><a id="686" href="Function.Identity.Effectful.html#527" class="Generalizable">ℓ</a><a id="687" class="Symbol">}</a> <a id="689" href="Function.Identity.Effectful.html#538" class="Function">Identity</a>
+<a id="698" href="Function.Identity.Effectful.html#656" class="Function">applicative</a> <a id="710" class="Symbol">=</a> <a id="712" class="Keyword">record</a>
+  <a id="721" class="Symbol">{</a> <a id="723" href="Effect.Applicative.html#1122" class="Field">rawFunctor</a> <a id="734" class="Symbol">=</a> <a id="736" href="Function.Identity.Effectful.html#585" class="Function">functor</a>
+  <a id="746" class="Symbol">;</a> <a id="748" href="Effect.Applicative.html#1152" class="Field">pure</a> <a id="753" class="Symbol">=</a> <a id="755" href="Function.Base.html#704" class="Function">id</a>
+  <a id="760" class="Symbol">;</a> <a id="762" href="Effect.Applicative.html#1171" class="Field Operator">_&lt;*&gt;_</a>  <a id="769" class="Symbol">=</a> <a id="771" href="Function.Base.html#3839" class="Function Operator">_$′_</a>
+  <a id="778" class="Symbol">}</a>
+
+<a id="monad"></a><a id="781" href="Function.Identity.Effectful.html#781" class="Function">monad</a> <a id="787" class="Symbol">:</a> <a id="789" href="Effect.Monad.html#779" class="Record">RawMonad</a> <a id="798" class="Symbol">{</a><a id="799" href="Function.Identity.Effectful.html#527" class="Generalizable">ℓ</a><a id="800" class="Symbol">}</a> <a id="802" href="Function.Identity.Effectful.html#538" class="Function">Identity</a>
+<a id="811" href="Function.Identity.Effectful.html#781" class="Function">monad</a> <a id="817" class="Symbol">=</a> <a id="819" class="Keyword">record</a>
+  <a id="828" class="Symbol">{</a> <a id="830" href="Effect.Monad.html#895" class="Field">rawApplicative</a> <a id="845" class="Symbol">=</a> <a id="847" href="Function.Identity.Effectful.html#656" class="Function">applicative</a>
+  <a id="861" class="Symbol">;</a> <a id="863" href="Effect.Monad.html#933" class="Field Operator">_&gt;&gt;=_</a>  <a id="870" class="Symbol">=</a> <a id="872" href="Function.Base.html#3919" class="Function Operator">_|&gt;′_</a>
+  <a id="880" class="Symbol">}</a>
+
+<a id="comonad"></a><a id="883" href="Function.Identity.Effectful.html#883" class="Function">comonad</a> <a id="891" class="Symbol">:</a> <a id="893" href="Effect.Comonad.html#485" class="Record">RawComonad</a> <a id="904" class="Symbol">{</a><a id="905" href="Function.Identity.Effectful.html#527" class="Generalizable">ℓ</a><a id="906" class="Symbol">}</a> <a id="908" href="Function.Identity.Effectful.html#538" class="Function">Identity</a>
+<a id="917" href="Function.Identity.Effectful.html#883" class="Function">comonad</a> <a id="925" class="Symbol">=</a> <a id="927" class="Keyword">record</a>
+  <a id="936" class="Symbol">{</a> <a id="938" href="Effect.Comonad.html#596" class="Field">extract</a> <a id="946" class="Symbol">=</a> <a id="948" href="Function.Base.html#704" class="Function">id</a>
+  <a id="953" class="Symbol">;</a> <a id="955" href="Effect.Comonad.html#618" class="Field">extend</a>  <a id="963" class="Symbol">=</a> <a id="965" href="Function.Base.html#3839" class="Function Operator">_$′_</a>
+  <a id="972" class="Symbol">}</a>
+</pre></body></html>

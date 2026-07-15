@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Reflection.Pattern</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Patterns used in the reflection machinery</a>
+<a id="151" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="225" class="Symbol">{-#</a> <a id="229" class="Keyword">OPTIONS</a> <a id="237" class="Pragma">--without-K</a> <a id="249" class="Pragma">--safe</a> <a id="256" class="Symbol">#-}</a>
+
+<a id="261" class="Keyword">module</a> <a id="268" href="Reflection.Pattern.html" class="Module">Reflection.Pattern</a> <a id="287" class="Keyword">where</a>
+
+<a id="294" class="Keyword">open</a> <a id="299" class="Keyword">import</a> <a id="306" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="321" class="Keyword">hiding</a> <a id="328" class="Symbol">(</a><a id="329" href="Data.List.Base.html#1810" class="Function Operator">_++_</a><a id="333" class="Symbol">)</a>
+<a id="335" class="Keyword">open</a> <a id="340" class="Keyword">import</a> <a id="347" href="Data.List.Properties.html" class="Module">Data.List.Properties</a>
+<a id="368" class="Keyword">import</a> <a id="375" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="384" class="Symbol">as</a> <a id="387" class="Module">Nat</a>
+<a id="391" class="Keyword">open</a> <a id="396" class="Keyword">import</a> <a id="403" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="416" class="Keyword">open</a> <a id="421" class="Keyword">import</a> <a id="428" href="Data.String.html" class="Module">Data.String</a> <a id="440" class="Symbol">as</a> <a id="443" class="Module">String</a> <a id="450" class="Keyword">using</a> <a id="456" class="Symbol">(</a><a id="457" href="Agda.Builtin.String.html#336" class="Postulate">String</a><a id="463" class="Symbol">;</a> <a id="465" href="Data.String.Base.html#2879" class="Function">braces</a><a id="471" class="Symbol">;</a> <a id="473" href="Data.String.Base.html#2826" class="Function">parens</a><a id="479" class="Symbol">;</a> <a id="481" href="Data.String.Base.html#2366" class="Function Operator">_++_</a><a id="485" class="Symbol">;</a> <a id="487" href="Data.String.Base.html#2999" class="Function Operator">_&lt;+&gt;_</a><a id="492" class="Symbol">)</a>
+<a id="494" class="Keyword">import</a> <a id="501" href="Reflection.Literal.html" class="Module">Reflection.Literal</a> <a id="520" class="Symbol">as</a> <a id="523" class="Module">Literal</a>
+<a id="531" class="Keyword">import</a> <a id="538" href="Reflection.Name.html" class="Module">Reflection.Name</a> <a id="554" class="Symbol">as</a> <a id="557" class="Module">Name</a>
+<a id="562" class="Keyword">open</a> <a id="567" class="Keyword">import</a> <a id="574" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="591" class="Keyword">open</a> <a id="596" class="Keyword">import</a> <a id="603" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="630" class="Symbol">as</a> <a id="633" class="Module">Dec</a>
+<a id="637" class="Keyword">open</a> <a id="642" class="Keyword">import</a> <a id="649" href="Relation.Nullary.Product.html" class="Module">Relation.Nullary.Product</a> <a id="674" class="Keyword">using</a> <a id="680" class="Symbol">(</a><a id="681" href="Relation.Nullary.Product.html#921" class="Function Operator">_×-dec_</a><a id="688" class="Symbol">)</a>
+<a id="690" class="Keyword">open</a> <a id="695" class="Keyword">import</a> <a id="702" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="718" class="Keyword">open</a> <a id="723" class="Keyword">import</a> <a id="730" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="769" class="Keyword">open</a> <a id="774" class="Keyword">import</a> <a id="781" href="Reflection.Argument.html" class="Module">Reflection.Argument</a>
+<a id="801" class="Keyword">open</a> <a id="806" class="Keyword">import</a> <a id="813" href="Reflection.Argument.Visibility.html" class="Module">Reflection.Argument.Visibility</a> <a id="844" class="Keyword">using</a> <a id="850" class="Symbol">(</a><a id="851" href="Agda.Builtin.Reflection.html#2738" class="Datatype">Visibility</a><a id="861" class="Symbol">);</a> <a id="864" class="Keyword">open</a> <a id="869" href="Agda.Builtin.Reflection.html#2738" class="Module">Visibility</a>
+<a id="880" class="Keyword">open</a> <a id="885" class="Keyword">import</a> <a id="892" href="Reflection.Argument.Relevance.html" class="Module">Reflection.Argument.Relevance</a> <a id="922" class="Keyword">using</a> <a id="928" class="Symbol">(</a><a id="929" href="Agda.Builtin.Reflection.html#2996" class="Datatype">Relevance</a><a id="938" class="Symbol">);</a> <a id="941" class="Keyword">open</a> <a id="946" href="Agda.Builtin.Reflection.html#2996" class="Module">Relevance</a>
+<a id="956" class="Keyword">open</a> <a id="961" class="Keyword">import</a> <a id="968" href="Reflection.Argument.Information.html" class="Module">Reflection.Argument.Information</a> <a id="1000" class="Keyword">using</a> <a id="1006" class="Symbol">(</a><a id="1007" href="Agda.Builtin.Reflection.html#3616" class="Datatype">ArgInfo</a><a id="1014" class="Symbol">);</a> <a id="1017" class="Keyword">open</a> <a id="1022" href="Agda.Builtin.Reflection.html#3616" class="Module">ArgInfo</a>
+
+<a id="1031" class="Comment">------------------------------------------------------------------------</a>
+<a id="1104" class="Comment">-- Re-exporting the builtin type and constructors</a>
+
+<a id="1155" class="Keyword">open</a> <a id="1160" class="Keyword">import</a> <a id="1167" href="Agda.Builtin.Reflection.html" class="Module">Agda.Builtin.Reflection</a> <a id="1191" class="Keyword">public</a> <a id="1198" class="Keyword">using</a> <a id="1204" class="Symbol">(</a><a id="1205" href="Agda.Builtin.Reflection.html#4726" class="Datatype">Pattern</a><a id="1212" class="Symbol">)</a>
+<a id="1214" class="Keyword">open</a> <a id="1219" href="Agda.Builtin.Reflection.html#4726" class="Module">Pattern</a> <a id="1227" class="Keyword">public</a>
+
+<a id="1235" class="Comment">------------------------------------------------------------------------</a>
+<a id="1308" class="Comment">-- Re-exporting definitions that used to be here</a>
+
+<a id="1358" class="Keyword">open</a> <a id="1363" class="Keyword">import</a> <a id="1370" href="Reflection.Term.html" class="Module">Reflection.Term</a>
+  <a id="1388" class="Keyword">using</a>    <a id="1397" class="Symbol">(</a> <a id="1399" href="Reflection.Term.html#15399" class="Function">proj-injective</a> <a id="1414" class="Symbol">)</a>
+  <a id="1418" class="Keyword">renaming</a> <a id="1427" class="Symbol">(</a> <a id="1429" href="Reflection.Term.html#14818" class="Function">pat-con-injective₁</a> <a id="1448" class="Symbol">to</a> <a id="1451" class="Function">con-injective₁</a>
+           <a id="1477" class="Symbol">;</a> <a id="1479" href="Reflection.Term.html#14936" class="Function">pat-con-injective₂</a> <a id="1498" class="Symbol">to</a> <a id="1501" class="Function">con-injective₂</a>
+           <a id="1527" class="Symbol">;</a> <a id="1529" href="Reflection.Term.html#15060" class="Function">pat-con-injective</a>  <a id="1548" class="Symbol">to</a> <a id="1551" class="Function">con-injective</a>
+           <a id="1576" class="Symbol">;</a> <a id="1578" href="Reflection.Term.html#15225" class="Function">pat-var-injective</a>  <a id="1597" class="Symbol">to</a> <a id="1600" class="Function">var-injective</a>
+           <a id="1625" class="Symbol">;</a> <a id="1627" href="Reflection.Term.html#15308" class="Function">pat-lit-injective</a>  <a id="1646" class="Symbol">to</a> <a id="1649" class="Function">lit-injective</a>
+           <a id="1674" class="Symbol">;</a> <a id="1676" href="Reflection.Term.html#4560" class="Function Operator">_≟-Patterns_</a>       <a id="1695" class="Symbol">to</a> <a id="1698" class="Function Operator">_≟s_</a>
+           <a id="1714" class="Symbol">;</a> <a id="1716" href="Reflection.Term.html#4610" class="Function Operator">_≟-Pattern_</a>        <a id="1735" class="Symbol">to</a> <a id="1738" class="Function Operator">_≟_</a>
+           <a id="1753" class="Symbol">)</a>
+  <a id="1757" class="Keyword">public</a>
+</pre></body></html>

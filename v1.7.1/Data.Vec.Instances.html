@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for Vec</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--without-K</a> <a id="235" class="Pragma">--safe</a> <a id="242" class="Symbol">#-}</a>
+
+<a id="247" class="Keyword">module</a> <a id="254" href="Data.Vec.Instances.html" class="Module">Data.Vec.Instances</a> <a id="273" class="Keyword">where</a>
+
+<a id="280" class="Keyword">open</a> <a id="285" class="Keyword">import</a> <a id="292" href="Data.Vec.Base.html" class="Module">Data.Vec.Base</a>
+<a id="306" class="Keyword">open</a> <a id="311" class="Keyword">import</a> <a id="318" href="Data.Vec.Categorical.html" class="Module">Data.Vec.Categorical</a>
+<a id="339" class="Keyword">open</a> <a id="344" class="Keyword">import</a> <a id="351" href="Data.Vec.Properties.html" class="Module">Data.Vec.Properties</a>
+  <a id="373" class="Keyword">using</a> <a id="379" class="Symbol">(</a><a id="380" href="Data.Vec.Properties.html#1780" class="Function">≡-dec</a><a id="385" class="Symbol">)</a>
+<a id="387" class="Keyword">open</a> <a id="392" class="Keyword">import</a> <a id="399" href="Level.html" class="Module">Level</a>
+<a id="405" class="Keyword">open</a> <a id="410" class="Keyword">import</a> <a id="417" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
+<a id="460" class="Keyword">open</a> <a id="465" class="Keyword">import</a> <a id="472" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+  <a id="523" class="Keyword">using</a> <a id="529" class="Symbol">(</a><a id="530" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a><a id="546" class="Symbol">)</a>
+<a id="548" class="Keyword">open</a> <a id="553" class="Keyword">import</a> <a id="560" href="Data.Vec.Relation.Binary.Equality.DecPropositional.html" class="Module">Data.Vec.Relation.Binary.Equality.DecPropositional</a>
+<a id="611" class="Keyword">open</a> <a id="616" class="Keyword">import</a> <a id="623" href="Relation.Binary.TypeClasses.html" class="Module">Relation.Binary.TypeClasses</a>
+
+<a id="652" class="Keyword">private</a>
+  <a id="662" class="Keyword">variable</a>
+    <a id="675" href="Data.Vec.Instances.html#675" class="Generalizable">a</a> <a id="677" class="Symbol">:</a> <a id="679" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="689" href="Data.Vec.Instances.html#689" class="Generalizable">A</a> <a id="691" class="Symbol">:</a> <a id="693" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="697" href="Data.Vec.Instances.html#675" class="Generalizable">a</a>
+
+<a id="700" class="Keyword">instance</a>
+  <a id="vecFunctor"></a><a id="711" href="Data.Vec.Instances.html#711" class="Function">vecFunctor</a> <a id="722" class="Symbol">=</a> <a id="724" href="Data.Vec.Categorical.html#799" class="Function">functor</a>
+  <a id="vecApplicative"></a><a id="734" href="Data.Vec.Instances.html#734" class="Function">vecApplicative</a> <a id="749" class="Symbol">=</a> <a id="751" href="Data.Vec.Categorical.html#884" class="Function">applicative</a>
+
+  <a id="Vec-≡-isDecEquivalence"></a><a id="766" href="Data.Vec.Instances.html#766" class="Function">Vec-≡-isDecEquivalence</a> <a id="789" class="Symbol">:</a> <a id="791" class="Symbol">{{</a><a id="793" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a> <a id="810" class="Symbol">{</a><a id="811" class="Argument">A</a> <a id="813" class="Symbol">=</a> <a id="815" href="Data.Vec.Instances.html#689" class="Generalizable">A</a><a id="816" class="Symbol">}</a> <a id="818" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="821" class="Symbol">}}</a> <a id="824" class="Symbol">→</a> <a id="826" class="Symbol">∀</a> <a id="828" class="Symbol">{</a><a id="829" href="Data.Vec.Instances.html#829" class="Bound">n</a><a id="830" class="Symbol">}</a> <a id="832" class="Symbol">→</a> <a id="834" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a> <a id="851" class="Symbol">{</a><a id="852" class="Argument">A</a> <a id="854" class="Symbol">=</a> <a id="856" href="Data.Vec.Base.html#998" class="Datatype">Vec</a> <a id="860" href="Data.Vec.Instances.html#689" class="Generalizable">A</a> <a id="862" href="Data.Vec.Instances.html#829" class="Bound">n</a><a id="863" class="Symbol">}</a> <a id="865" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+  <a id="871" href="Data.Vec.Instances.html#766" class="Function">Vec-≡-isDecEquivalence</a> <a id="894" class="Symbol">=</a> <a id="896" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a> <a id="913" class="Symbol">(</a><a id="914" href="Data.Vec.Properties.html#1780" class="Function">≡-dec</a> <a id="920" href="Relation.Binary.Structures.html#1921" class="Field Operator">_≟_</a><a id="923" class="Symbol">)</a>
+</pre></body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Construct.Initial</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instances of algebraic structures where the carrier is ⊥.</a>
+<a id="167" class="Comment">-- In mathematics, this is usually called 0.</a>
+<a id="212" class="Comment">--</a>
+<a id="215" class="Comment">-- From monoids up, these are zero-objects – i.e, the initial</a>
+<a id="277" class="Comment">-- object is the terminal object in the relevant category.</a>
+<a id="336" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="410" class="Symbol">{-#</a> <a id="414" class="Keyword">OPTIONS</a> <a id="422" class="Pragma">--cubical-compatible</a> <a id="443" class="Pragma">--safe</a> <a id="450" class="Symbol">#-}</a>
+
+<a id="455" class="Keyword">open</a> <a id="460" class="Keyword">import</a> <a id="467" href="Level.html" class="Module">Level</a> <a id="473" class="Keyword">using</a> <a id="479" class="Symbol">(</a><a id="480" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="485" class="Symbol">)</a>
+
+<a id="488" class="Keyword">module</a> <a id="495" href="Algebra.Construct.Initial.html" class="Module">Algebra.Construct.Initial</a> <a id="521" class="Symbol">{</a><a id="522" href="Algebra.Construct.Initial.html#522" class="Bound">c</a> <a id="524" href="Algebra.Construct.Initial.html#524" class="Bound">ℓ</a> <a id="526" class="Symbol">:</a> <a id="528" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="533" class="Symbol">}</a> <a id="535" class="Keyword">where</a>
+
+<a id="542" class="Keyword">open</a> <a id="547" class="Keyword">import</a> <a id="554" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>
+  <a id="572" class="Keyword">using</a> <a id="578" class="Symbol">(</a><a id="579" href="Algebra.Bundles.html#1141" class="Record">Magma</a><a id="584" class="Symbol">;</a> <a id="586" href="Algebra.Bundles.html#4139" class="Record">Semigroup</a><a id="595" class="Symbol">;</a> <a id="597" href="Algebra.Bundles.html#4502" class="Record">Band</a><a id="601" class="Symbol">)</a>
+<a id="603" class="Keyword">open</a> <a id="608" class="Keyword">import</a> <a id="615" href="Algebra.Bundles.Raw.html" class="Module">Algebra.Bundles.Raw</a>
+  <a id="637" class="Keyword">using</a> <a id="643" class="Symbol">(</a><a id="644" href="Algebra.Bundles.Raw.html#644" class="Record">RawMagma</a><a id="652" class="Symbol">)</a>
+<a id="654" class="Keyword">open</a> <a id="659" class="Keyword">import</a> <a id="666" href="Algebra.Core.html" class="Module">Algebra.Core</a> <a id="679" class="Keyword">using</a> <a id="685" class="Symbol">(</a><a id="686" href="Algebra.Core.html#527" class="Function">Op₂</a><a id="689" class="Symbol">)</a>
+<a id="691" class="Keyword">open</a> <a id="696" class="Keyword">import</a> <a id="703" href="Algebra.Definitions.html" class="Module">Algebra.Definitions</a> <a id="723" class="Keyword">using</a> <a id="729" class="Symbol">(</a><a id="730" href="Algebra.Definitions.html#1302" class="Function">Congruent₂</a><a id="740" class="Symbol">)</a>
+<a id="742" class="Keyword">open</a> <a id="747" class="Keyword">import</a> <a id="754" href="Algebra.Structures.html" class="Module">Algebra.Structures</a> <a id="773" class="Keyword">using</a> <a id="779" class="Symbol">(</a><a id="780" href="Algebra.Structures.html#1225" class="Record">IsMagma</a><a id="787" class="Symbol">;</a> <a id="789" href="Algebra.Structures.html#2897" class="Record">IsSemigroup</a><a id="800" class="Symbol">;</a> <a id="802" href="Algebra.Structures.html#3041" class="Record">IsBand</a><a id="808" class="Symbol">)</a>
+<a id="810" class="Keyword">open</a> <a id="815" class="Keyword">import</a> <a id="822" href="Data.Empty.Polymorphic.html" class="Module">Data.Empty.Polymorphic</a>
+<a id="845" class="Keyword">open</a> <a id="850" class="Keyword">import</a> <a id="857" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="878" class="Keyword">using</a> <a id="884" class="Symbol">(</a><a id="885" href="Relation.Binary.Core.html#896" class="Function">Rel</a><a id="888" class="Symbol">)</a>
+<a id="890" class="Keyword">open</a> <a id="895" class="Keyword">import</a> <a id="902" href="Relation.Binary.Structures.html" class="Module">Relation.Binary.Structures</a> <a id="929" class="Keyword">using</a> <a id="935" class="Symbol">(</a><a id="936" href="Relation.Binary.Structures.html#1550" class="Record">IsEquivalence</a><a id="949" class="Symbol">)</a>
+<a id="951" class="Keyword">open</a> <a id="956" class="Keyword">import</a> <a id="963" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a>
+  <a id="993" class="Keyword">using</a> <a id="999" class="Symbol">(</a><a id="1000" href="Relation.Binary.Definitions.html#1428" class="Function">Reflexive</a><a id="1009" class="Symbol">;</a> <a id="1011" href="Relation.Binary.Definitions.html#1587" class="Function">Symmetric</a><a id="1020" class="Symbol">;</a> <a id="1022" href="Relation.Binary.Definitions.html#2103" class="Function">Transitive</a><a id="1032" class="Symbol">)</a>
+
+
+<a id="1036" class="Comment">------------------------------------------------------------------------</a>
+<a id="1109" class="Comment">-- Re-export those algebras which are also terminal</a>
+
+<a id="1162" class="Keyword">open</a> <a id="1167" class="Keyword">import</a> <a id="1174" href="Algebra.Construct.Terminal.html" class="Module">Algebra.Construct.Terminal</a> <a id="1201" class="Symbol">{</a><a id="1202" href="Algebra.Construct.Initial.html#522" class="Bound">c</a><a id="1203" class="Symbol">}</a> <a id="1205" class="Symbol">{</a><a id="1206" href="Algebra.Construct.Initial.html#524" class="Bound">ℓ</a><a id="1207" class="Symbol">}</a> <a id="1209" class="Keyword">public</a>
+  <a id="1218" class="Keyword">hiding</a> <a id="1225" class="Symbol">(</a><a id="1226" href="Algebra.Construct.Terminal.html#988" class="Function">rawMagma</a><a id="1234" class="Symbol">;</a> <a id="1236" href="Algebra.Construct.Terminal.html#1337" class="Function">magma</a><a id="1241" class="Symbol">;</a> <a id="1243" href="Algebra.Construct.Terminal.html#1379" class="Function">semigroup</a><a id="1252" class="Symbol">;</a> <a id="1254" href="Algebra.Construct.Terminal.html#1433" class="Function">band</a><a id="1258" class="Symbol">)</a>
+
+<a id="1261" class="Comment">------------------------------------------------------------------------</a>
+<a id="1334" class="Comment">-- Gather all the functionality in one place</a>
+
+<a id="1380" class="Keyword">module</a> <a id="ℤero"></a><a id="1387" href="Algebra.Construct.Initial.html#1387" class="Module">ℤero</a> <a id="1392" class="Keyword">where</a>
+
+  <a id="1401" class="Keyword">infixl</a> <a id="1408" class="Number">7</a> <a id="1410" href="Algebra.Construct.Initial.html#1501" class="Function Operator">_∙_</a>
+  <a id="1416" class="Keyword">infix</a>  <a id="1423" class="Number">4</a> <a id="1425" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a>
+
+  <a id="ℤero.Carrier"></a><a id="1432" href="Algebra.Construct.Initial.html#1432" class="Function">Carrier</a> <a id="1440" class="Symbol">:</a> <a id="1442" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1446" href="Algebra.Construct.Initial.html#522" class="Bound">c</a>
+  <a id="1450" href="Algebra.Construct.Initial.html#1432" class="Function">Carrier</a> <a id="1458" class="Symbol">=</a> <a id="1460" href="Data.Empty.Polymorphic.html#340" class="Function">⊥</a>
+
+  <a id="ℤero._≈_"></a><a id="1465" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a>     <a id="1473" class="Symbol">:</a> <a id="1475" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1479" href="Algebra.Construct.Initial.html#1432" class="Function">Carrier</a> <a id="1487" href="Algebra.Construct.Initial.html#524" class="Bound">ℓ</a>
+  <a id="1491" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a> <a id="1495" class="Symbol">()</a>
+
+  <a id="ℤero._∙_"></a><a id="1501" href="Algebra.Construct.Initial.html#1501" class="Function Operator">_∙_</a>     <a id="1509" class="Symbol">:</a> <a id="1511" href="Algebra.Core.html#527" class="Function">Op₂</a> <a id="1515" href="Algebra.Construct.Initial.html#1432" class="Function">Carrier</a>
+  <a id="1525" href="Algebra.Construct.Initial.html#1501" class="Function Operator">_∙_</a> <a id="1529" class="Symbol">()</a>
+
+  <a id="ℤero.refl"></a><a id="1535" href="Algebra.Construct.Initial.html#1535" class="Function">refl</a> <a id="1540" class="Symbol">:</a> <a id="1542" href="Relation.Binary.Definitions.html#1428" class="Function">Reflexive</a> <a id="1552" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a>
+  <a id="1558" href="Algebra.Construct.Initial.html#1535" class="Function">refl</a> <a id="1563" class="Symbol">{</a><a id="1564" class="Argument">x</a> <a id="1566" class="Symbol">=</a> <a id="1568" class="Symbol">()}</a>
+
+  <a id="ℤero.sym"></a><a id="1575" href="Algebra.Construct.Initial.html#1575" class="Function">sym</a> <a id="1579" class="Symbol">:</a> <a id="1581" href="Relation.Binary.Definitions.html#1587" class="Function">Symmetric</a> <a id="1591" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a>
+  <a id="1597" href="Algebra.Construct.Initial.html#1575" class="Function">sym</a> <a id="1601" class="Symbol">{</a><a id="1602" class="Argument">x</a> <a id="1604" class="Symbol">=</a> <a id="1606" class="Symbol">()}</a>
+
+  <a id="ℤero.trans"></a><a id="1613" href="Algebra.Construct.Initial.html#1613" class="Function">trans</a> <a id="1619" class="Symbol">:</a> <a id="1621" href="Relation.Binary.Definitions.html#2103" class="Function">Transitive</a> <a id="1632" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a>
+  <a id="1638" href="Algebra.Construct.Initial.html#1613" class="Function">trans</a> <a id="1644" class="Symbol">{</a><a id="1645" class="Argument">i</a> <a id="1647" class="Symbol">=</a> <a id="1649" class="Symbol">()}</a>
+
+  <a id="ℤero.∙-cong"></a><a id="1656" href="Algebra.Construct.Initial.html#1656" class="Function">∙-cong</a> <a id="1663" class="Symbol">:</a> <a id="1665" href="Algebra.Definitions.html#1302" class="Function">Congruent₂</a> <a id="1676" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a> <a id="1680" href="Algebra.Construct.Initial.html#1501" class="Function Operator">_∙_</a>
+  <a id="1686" href="Algebra.Construct.Initial.html#1656" class="Function">∙-cong</a> <a id="1693" class="Symbol">{</a><a id="1694" class="Argument">x</a> <a id="1696" class="Symbol">=</a> <a id="1698" class="Symbol">()}</a>
+
+<a id="1703" class="Keyword">open</a> <a id="1708" href="Algebra.Construct.Initial.html#1387" class="Module">ℤero</a>
+
+<a id="1714" class="Comment">------------------------------------------------------------------------</a>
+<a id="1787" class="Comment">-- Raw bundles</a>
+
+<a id="rawMagma"></a><a id="1803" href="Algebra.Construct.Initial.html#1803" class="Function">rawMagma</a> <a id="1812" class="Symbol">:</a> <a id="1814" href="Algebra.Bundles.Raw.html#644" class="Record">RawMagma</a> <a id="1823" href="Algebra.Construct.Initial.html#522" class="Bound">c</a> <a id="1825" href="Algebra.Construct.Initial.html#524" class="Bound">ℓ</a>
+<a id="1827" href="Algebra.Construct.Initial.html#1803" class="Function">rawMagma</a> <a id="1836" class="Symbol">=</a> <a id="1838" class="Keyword">record</a> <a id="1845" class="Symbol">{</a> <a id="1847" href="Algebra.Construct.Initial.html#1387" class="Module">ℤero</a> <a id="1852" class="Symbol">}</a>
+
+<a id="1855" class="Comment">------------------------------------------------------------------------</a>
+<a id="1928" class="Comment">-- Structures</a>
+
+<a id="isEquivalence"></a><a id="1943" href="Algebra.Construct.Initial.html#1943" class="Function">isEquivalence</a> <a id="1957" class="Symbol">:</a> <a id="1959" href="Relation.Binary.Structures.html#1550" class="Record">IsEquivalence</a> <a id="1973" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a>
+<a id="1977" href="Algebra.Construct.Initial.html#1943" class="Function">isEquivalence</a> <a id="1991" class="Symbol">=</a> <a id="1993" class="Keyword">record</a> <a id="2000" class="Symbol">{</a> <a id="2002" href="Algebra.Construct.Initial.html#1387" class="Module">ℤero</a> <a id="2007" class="Symbol">}</a>
+
+<a id="isMagma"></a><a id="2010" href="Algebra.Construct.Initial.html#2010" class="Function">isMagma</a> <a id="2018" class="Symbol">:</a> <a id="2020" href="Algebra.Structures.html#1225" class="Record">IsMagma</a> <a id="2028" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a> <a id="2032" href="Algebra.Construct.Initial.html#1501" class="Function Operator">_∙_</a>
+<a id="2036" href="Algebra.Construct.Initial.html#2010" class="Function">isMagma</a> <a id="2044" class="Symbol">=</a> <a id="2046" class="Keyword">record</a> <a id="2053" class="Symbol">{</a> <a id="2055" href="Algebra.Structures.html#1277" class="Field">isEquivalence</a> <a id="2069" class="Symbol">=</a> <a id="2071" href="Algebra.Construct.Initial.html#1943" class="Function">isEquivalence</a> <a id="2085" class="Symbol">;</a> <a id="2087" href="Algebra.Structures.html#1315" class="Field">∙-cong</a> <a id="2094" class="Symbol">=</a> <a id="2096" href="Algebra.Construct.Initial.html#1656" class="Function">∙-cong</a> <a id="2103" class="Symbol">}</a>
+
+<a id="isSemigroup"></a><a id="2106" href="Algebra.Construct.Initial.html#2106" class="Function">isSemigroup</a> <a id="2118" class="Symbol">:</a> <a id="2120" href="Algebra.Structures.html#2897" class="Record">IsSemigroup</a> <a id="2132" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a> <a id="2136" href="Algebra.Construct.Initial.html#1501" class="Function Operator">_∙_</a>
+<a id="2140" href="Algebra.Construct.Initial.html#2106" class="Function">isSemigroup</a> <a id="2152" class="Symbol">=</a> <a id="2154" class="Keyword">record</a> <a id="2161" class="Symbol">{</a> <a id="2163" href="Algebra.Structures.html#2953" class="Field">isMagma</a> <a id="2171" class="Symbol">=</a> <a id="2173" href="Algebra.Construct.Initial.html#2010" class="Function">isMagma</a> <a id="2181" class="Symbol">;</a> <a id="2183" href="Algebra.Structures.html#2977" class="Field">assoc</a> <a id="2189" class="Symbol">=</a> <a id="2191" class="Symbol">λ</a> <a id="2193" class="Symbol">()</a> <a id="2196" class="Symbol">}</a>
+
+<a id="isBand"></a><a id="2199" href="Algebra.Construct.Initial.html#2199" class="Function">isBand</a> <a id="2206" class="Symbol">:</a> <a id="2208" href="Algebra.Structures.html#3041" class="Record">IsBand</a> <a id="2215" href="Algebra.Construct.Initial.html#1465" class="Function Operator">_≈_</a> <a id="2219" href="Algebra.Construct.Initial.html#1501" class="Function Operator">_∙_</a>
+<a id="2223" href="Algebra.Construct.Initial.html#2199" class="Function">isBand</a> <a id="2230" class="Symbol">=</a> <a id="2232" class="Keyword">record</a> <a id="2239" class="Symbol">{</a> <a id="2241" href="Algebra.Structures.html#3092" class="Field">isSemigroup</a> <a id="2253" class="Symbol">=</a> <a id="2255" href="Algebra.Construct.Initial.html#2106" class="Function">isSemigroup</a> <a id="2267" class="Symbol">;</a> <a id="2269" href="Algebra.Structures.html#3124" class="Field">idem</a> <a id="2274" class="Symbol">=</a> <a id="2276" class="Symbol">λ</a> <a id="2278" class="Symbol">()</a> <a id="2281" class="Symbol">}</a>
+
+<a id="2284" class="Comment">------------------------------------------------------------------------</a>
+<a id="2357" class="Comment">-- Bundles</a>
+
+<a id="magma"></a><a id="2369" href="Algebra.Construct.Initial.html#2369" class="Function">magma</a> <a id="2375" class="Symbol">:</a> <a id="2377" href="Algebra.Bundles.html#1141" class="Record">Magma</a> <a id="2383" href="Algebra.Construct.Initial.html#522" class="Bound">c</a> <a id="2385" href="Algebra.Construct.Initial.html#524" class="Bound">ℓ</a>
+<a id="2387" href="Algebra.Construct.Initial.html#2369" class="Function">magma</a> <a id="2393" class="Symbol">=</a> <a id="2395" class="Keyword">record</a> <a id="2402" class="Symbol">{</a> <a id="2404" href="Algebra.Bundles.html#1293" class="Field">isMagma</a> <a id="2412" class="Symbol">=</a> <a id="2414" href="Algebra.Construct.Initial.html#2010" class="Function">isMagma</a> <a id="2422" class="Symbol">}</a>
+
+<a id="semigroup"></a><a id="2425" href="Algebra.Construct.Initial.html#2425" class="Function">semigroup</a> <a id="2435" class="Symbol">:</a> <a id="2437" href="Algebra.Bundles.html#4139" class="Record">Semigroup</a> <a id="2447" href="Algebra.Construct.Initial.html#522" class="Bound">c</a> <a id="2449" href="Algebra.Construct.Initial.html#524" class="Bound">ℓ</a>
+<a id="2451" href="Algebra.Construct.Initial.html#2425" class="Function">semigroup</a> <a id="2461" class="Symbol">=</a> <a id="2463" class="Keyword">record</a> <a id="2470" class="Symbol">{</a> <a id="2472" href="Algebra.Bundles.html#4307" class="Field">isSemigroup</a> <a id="2484" class="Symbol">=</a> <a id="2486" href="Algebra.Construct.Initial.html#2106" class="Function">isSemigroup</a> <a id="2498" class="Symbol">}</a>
+
+<a id="band"></a><a id="2501" href="Algebra.Construct.Initial.html#2501" class="Function">band</a> <a id="2506" class="Symbol">:</a> <a id="2508" href="Algebra.Bundles.html#4502" class="Record">Band</a> <a id="2513" href="Algebra.Construct.Initial.html#522" class="Bound">c</a> <a id="2515" href="Algebra.Construct.Initial.html#524" class="Bound">ℓ</a>
+<a id="2517" href="Algebra.Construct.Initial.html#2501" class="Function">band</a> <a id="2522" class="Symbol">=</a> <a id="2524" class="Keyword">record</a> <a id="2531" class="Symbol">{</a> <a id="2533" href="Algebra.Bundles.html#4653" class="Field">isBand</a> <a id="2540" class="Symbol">=</a> <a id="2542" href="Algebra.Construct.Initial.html#2199" class="Function">isBand</a> <a id="2549" class="Symbol">}</a>
+
+</pre></body></html>

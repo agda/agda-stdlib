@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Ternary.Appending.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Appending of lists using setoid equality</a>
+<a id="150" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="224" class="Symbol">{-#</a> <a id="228" class="Keyword">OPTIONS</a> <a id="236" class="Pragma">--cubical-compatible</a> <a id="257" class="Pragma">--safe</a> <a id="264" class="Symbol">#-}</a>
+
+<a id="269" class="Keyword">open</a> <a id="274" class="Keyword">import</a> <a id="281" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="305" class="Keyword">using</a> <a id="311" class="Symbol">(</a><a id="312" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a><a id="318" class="Symbol">)</a>
+
+<a id="321" class="Keyword">module</a> <a id="328" href="Data.List.Relation.Ternary.Appending.Setoid.html" class="Module">Data.List.Relation.Ternary.Appending.Setoid</a>
+  <a id="374" class="Symbol">{</a><a id="375" href="Data.List.Relation.Ternary.Appending.Setoid.html#375" class="Bound">c</a> <a id="377" href="Data.List.Relation.Ternary.Appending.Setoid.html#377" class="Bound">ℓ</a><a id="378" class="Symbol">}</a> <a id="380" class="Symbol">(</a><a id="381" href="Data.List.Relation.Ternary.Appending.Setoid.html#381" class="Bound">S</a> <a id="383" class="Symbol">:</a> <a id="385" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a> <a id="392" href="Data.List.Relation.Ternary.Appending.Setoid.html#375" class="Bound">c</a> <a id="394" href="Data.List.Relation.Ternary.Appending.Setoid.html#377" class="Bound">ℓ</a><a id="395" class="Symbol">)</a>
+  <a id="399" class="Keyword">where</a>
+
+<a id="406" class="Keyword">open</a> <a id="411" class="Keyword">import</a> <a id="418" href="Level.html" class="Module">Level</a> <a id="424" class="Keyword">using</a> <a id="430" class="Symbol">(</a><a id="431" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="434" class="Symbol">)</a>
+<a id="436" class="Keyword">open</a> <a id="441" class="Keyword">import</a> <a id="448" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="463" class="Symbol">as</a> <a id="466" class="Module">List</a> <a id="471" class="Keyword">using</a> <a id="477" class="Symbol">(</a><a id="478" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="482" class="Symbol">)</a>
+<a id="484" class="Keyword">import</a> <a id="491" href="Data.List.Relation.Ternary.Appending.html" class="Module">Data.List.Relation.Ternary.Appending</a> <a id="528" class="Symbol">as</a> <a id="531" class="Module">General</a>
+<a id="539" class="Keyword">open</a> <a id="544" href="Relation.Binary.Bundles.html#1080" class="Module">Setoid</a> <a id="551" href="Data.List.Relation.Ternary.Appending.Setoid.html#381" class="Bound">S</a> <a id="553" class="Keyword">renaming</a> <a id="562" class="Symbol">(</a><a id="563" href="Relation.Binary.Bundles.html#1143" class="Field">Carrier</a> <a id="571" class="Symbol">to</a> <a id="574" class="Field">A</a><a id="575" class="Symbol">)</a>
+
+<a id="578" class="Comment">------------------------------------------------------------------------</a>
+<a id="651" class="Comment">-- Definition</a>
+
+<a id="Appending"></a><a id="666" href="Data.List.Relation.Ternary.Appending.Setoid.html#666" class="Function">Appending</a> <a id="676" class="Symbol">:</a> <a id="678" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="683" href="Data.List.Relation.Ternary.Appending.Setoid.html#574" class="Field">A</a> <a id="685" class="Symbol">→</a> <a id="687" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="692" href="Data.List.Relation.Ternary.Appending.Setoid.html#574" class="Field">A</a> <a id="694" class="Symbol">→</a> <a id="696" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="701" href="Data.List.Relation.Ternary.Appending.Setoid.html#574" class="Field">A</a> <a id="703" class="Symbol">→</a> <a id="705" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="709" class="Symbol">(</a><a id="710" href="Data.List.Relation.Ternary.Appending.Setoid.html#375" class="Bound">c</a> <a id="712" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="714" href="Data.List.Relation.Ternary.Appending.Setoid.html#377" class="Bound">ℓ</a><a id="715" class="Symbol">)</a>
+<a id="717" href="Data.List.Relation.Ternary.Appending.Setoid.html#666" class="Function">Appending</a> <a id="727" class="Symbol">=</a> <a id="729" href="Data.List.Relation.Ternary.Appending.html#1013" class="Datatype">General.Appending</a> <a id="747" href="Relation.Binary.Bundles.html#1169" class="Field Operator">_≈_</a> <a id="751" href="Relation.Binary.Bundles.html#1169" class="Field Operator">_≈_</a>
+
+<a id="756" class="Comment">------------------------------------------------------------------------</a>
+<a id="829" class="Comment">-- Re-export the basic combinators</a>
+
+<a id="865" class="Keyword">open</a> <a id="870" href="Data.List.Relation.Ternary.Appending.html" class="Module">General</a> <a id="878" class="Symbol">{</a><a id="879" class="Argument">A</a> <a id="881" class="Symbol">=</a> <a id="883" href="Data.List.Relation.Ternary.Appending.Setoid.html#574" class="Field">A</a><a id="884" class="Symbol">}</a> <a id="886" class="Symbol">{</a><a id="887" href="Data.List.Relation.Ternary.Appending.Setoid.html#574" class="Field">A</a><a id="888" class="Symbol">}</a> <a id="890" class="Symbol">{</a><a id="891" href="Data.List.Relation.Ternary.Appending.Setoid.html#574" class="Field">A</a><a id="892" class="Symbol">}</a> <a id="894" class="Keyword">public</a>
+  <a id="903" class="Keyword">hiding</a> <a id="910" class="Symbol">(</a><a id="911" href="Data.List.Relation.Ternary.Appending.html#1013" class="Datatype">Appending</a><a id="920" class="Symbol">)</a>
+</pre></body></html>

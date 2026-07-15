@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Fin.Subset.Induction</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Induction over Subset</a>
+<a id="131" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="205" class="Symbol">{-#</a> <a id="209" class="Keyword">OPTIONS</a> <a id="217" class="Pragma">--cubical-compatible</a> <a id="238" class="Pragma">--safe</a> <a id="245" class="Symbol">#-}</a>
+
+<a id="250" class="Keyword">module</a> <a id="257" href="Data.Fin.Subset.Induction.html" class="Module">Data.Fin.Subset.Induction</a> <a id="283" class="Keyword">where</a>
+
+<a id="290" class="Keyword">open</a> <a id="295" class="Keyword">import</a> <a id="302" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="316" class="Keyword">using</a> <a id="322" class="Symbol">(</a><a id="323" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="324" class="Symbol">)</a>
+<a id="326" class="Keyword">open</a> <a id="331" class="Keyword">import</a> <a id="338" href="Data.Nat.Induction.html" class="Module">Data.Nat.Induction</a> <a id="357" class="Keyword">using</a> <a id="363" class="Symbol">(</a><a id="364" href="Data.Nat.Induction.html#2311" class="Function">&lt;-wellFounded</a><a id="377" class="Symbol">)</a>
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Data.Fin.Subset.html" class="Module">Data.Fin.Subset</a> <a id="407" class="Keyword">using</a> <a id="413" class="Symbol">(</a><a id="414" href="Data.Fin.Subset.html#1217" class="Function">Subset</a><a id="420" class="Symbol">;</a> <a id="422" href="Data.Fin.Subset.html#1949" class="Function Operator">_⊂_</a><a id="425" class="Symbol">;</a> <a id="427" href="Data.Fin.Subset.html#2734" class="Function Operator">∣_∣</a><a id="430" class="Symbol">)</a>
+<a id="432" class="Keyword">open</a> <a id="437" class="Keyword">import</a> <a id="444" href="Data.Fin.Subset.Properties.html" class="Module">Data.Fin.Subset.Properties</a>
+<a id="471" class="Keyword">open</a> <a id="476" class="Keyword">import</a> <a id="483" href="Induction.html" class="Module">Induction</a>
+<a id="493" class="Keyword">open</a> <a id="498" class="Keyword">import</a> <a id="505" href="Induction.WellFounded.html" class="Module">Induction.WellFounded</a> <a id="527" class="Symbol">as</a> <a id="530" class="Module">WF</a>
+<a id="533" class="Keyword">import</a> <a id="540" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="569" class="Symbol">as</a> <a id="572" class="Module">On</a>
+
+<a id="576" class="Comment">------------------------------------------------------------------------</a>
+<a id="649" class="Comment">-- Re-export accessability</a>
+
+<a id="677" class="Keyword">open</a> <a id="682" href="Induction.WellFounded.html" class="Module">WF</a> <a id="685" class="Keyword">public</a> <a id="692" class="Keyword">using</a> <a id="698" class="Symbol">(</a><a id="699" href="Induction.WellFounded.html#1009" class="Datatype">Acc</a><a id="702" class="Symbol">;</a> <a id="704" href="Induction.WellFounded.html#1071" class="InductiveConstructor">acc</a><a id="707" class="Symbol">)</a>
+
+<a id="710" class="Comment">------------------------------------------------------------------------</a>
+<a id="783" class="Comment">-- Complete induction based on _⊂_</a>
+
+<a id="⊂-Rec"></a><a id="819" href="Data.Fin.Subset.Induction.html#819" class="Function">⊂-Rec</a> <a id="825" class="Symbol">:</a> <a id="827" class="Symbol">∀</a> <a id="829" class="Symbol">{</a><a id="830" href="Data.Fin.Subset.Induction.html#830" class="Bound">n</a> <a id="832" href="Data.Fin.Subset.Induction.html#832" class="Bound">ℓ</a><a id="833" class="Symbol">}</a> <a id="835" class="Symbol">→</a> <a id="837" href="Induction.html#769" class="Function">RecStruct</a> <a id="847" class="Symbol">(</a><a id="848" href="Data.Fin.Subset.html#1217" class="Function">Subset</a> <a id="855" href="Data.Fin.Subset.Induction.html#830" class="Bound">n</a><a id="856" class="Symbol">)</a> <a id="858" href="Data.Fin.Subset.Induction.html#832" class="Bound">ℓ</a> <a id="860" href="Data.Fin.Subset.Induction.html#832" class="Bound">ℓ</a>
+<a id="862" href="Data.Fin.Subset.Induction.html#819" class="Function">⊂-Rec</a> <a id="868" class="Symbol">=</a> <a id="870" href="Induction.WellFounded.html#803" class="Function">WfRec</a> <a id="876" href="Data.Fin.Subset.html#1949" class="Function Operator">_⊂_</a>
+
+<a id="⊂-wellFounded"></a><a id="881" href="Data.Fin.Subset.Induction.html#881" class="Function">⊂-wellFounded</a> <a id="895" class="Symbol">:</a> <a id="897" class="Symbol">∀</a> <a id="899" class="Symbol">{</a><a id="900" href="Data.Fin.Subset.Induction.html#900" class="Bound">n</a><a id="901" class="Symbol">}</a> <a id="903" class="Symbol">→</a> <a id="905" href="Induction.WellFounded.html#1257" class="Function">WellFounded</a> <a id="917" class="Symbol">{</a><a id="918" class="Argument">A</a> <a id="920" class="Symbol">=</a> <a id="922" href="Data.Fin.Subset.html#1217" class="Function">Subset</a> <a id="929" href="Data.Fin.Subset.Induction.html#900" class="Bound">n</a><a id="930" class="Symbol">}</a> <a id="932" href="Data.Fin.Subset.html#1949" class="Function Operator">_⊂_</a>
+<a id="936" href="Data.Fin.Subset.Induction.html#881" class="Function">⊂-wellFounded</a> <a id="950" class="Symbol">{</a><a id="951" href="Data.Fin.Subset.Induction.html#951" class="Bound">n</a><a id="952" class="Symbol">}</a> <a id="954" class="Symbol">=</a> <a id="956" href="Induction.WellFounded.html#4630" class="Function">Subrelation.wellFounded</a> <a id="980" href="Data.Fin.Subset.Properties.html#9680" class="Function">p⊂q⇒∣p∣&lt;∣q∣</a>
+  <a id="994" class="Symbol">(</a><a id="995" href="Relation.Binary.Construct.On.html#2292" class="Function">On.wellFounded</a> <a id="1010" href="Data.Fin.Subset.html#2734" class="Function Operator">∣_∣</a> <a id="1014" href="Data.Nat.Induction.html#2311" class="Function">&lt;-wellFounded</a><a id="1027" class="Symbol">)</a>
+</pre></body></html>

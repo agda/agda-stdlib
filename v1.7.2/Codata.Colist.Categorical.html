@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Colist.Categorical</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- A categorical view of Colist</a>
+<a id="138" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="212" class="Symbol">{-#</a> <a id="216" class="Keyword">OPTIONS</a> <a id="224" class="Pragma">--cubical-compatible</a> <a id="245" class="Pragma">--sized-types</a> <a id="259" class="Symbol">#-}</a>
+
+<a id="264" class="Keyword">module</a> <a id="271" href="Codata.Colist.Categorical.html" class="Module">Codata.Colist.Categorical</a> <a id="297" class="Keyword">where</a>
+
+<a id="304" class="Keyword">open</a> <a id="309" class="Keyword">import</a> <a id="316" href="Codata.Conat.html" class="Module">Codata.Conat</a> <a id="329" class="Keyword">using</a> <a id="335" class="Symbol">(</a><a id="336" href="Codata.Conat.html#608" class="Function">infinity</a><a id="344" class="Symbol">)</a>
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Codata.Colist.html" class="Module">Codata.Colist</a>
+<a id="372" class="Keyword">open</a> <a id="377" class="Keyword">import</a> <a id="384" href="Category.Functor.html" class="Module">Category.Functor</a>
+<a id="401" class="Keyword">open</a> <a id="406" class="Keyword">import</a> <a id="413" href="Category.Applicative.html" class="Module">Category.Applicative</a>
+
+<a id="functor"></a><a id="435" href="Codata.Colist.Categorical.html#435" class="Function">functor</a> <a id="443" class="Symbol">:</a> <a id="445" class="Symbol">∀</a> <a id="447" class="Symbol">{</a><a id="448" href="Codata.Colist.Categorical.html#448" class="Bound">ℓ</a> <a id="450" href="Codata.Colist.Categorical.html#450" class="Bound">i</a><a id="451" class="Symbol">}</a> <a id="453" class="Symbol">→</a> <a id="455" href="Category.Functor.html#508" class="Record">RawFunctor</a> <a id="466" class="Symbol">{</a><a id="467" href="Codata.Colist.Categorical.html#448" class="Bound">ℓ</a><a id="468" class="Symbol">}</a> <a id="470" class="Symbol">(λ</a> <a id="473" href="Codata.Colist.Categorical.html#473" class="Bound">A</a> <a id="475" class="Symbol">→</a> <a id="477" href="Codata.Colist.html#1290" class="Datatype">Colist</a> <a id="484" href="Codata.Colist.Categorical.html#473" class="Bound">A</a> <a id="486" href="Codata.Colist.Categorical.html#450" class="Bound">i</a><a id="487" class="Symbol">)</a>
+<a id="489" href="Codata.Colist.Categorical.html#435" class="Function">functor</a> <a id="497" class="Symbol">=</a> <a id="499" class="Keyword">record</a> <a id="506" class="Symbol">{</a> <a id="508" href="Category.Functor.html#617" class="Field Operator">_&lt;$&gt;_</a> <a id="514" class="Symbol">=</a> <a id="516" href="Codata.Colist.html#4489" class="Function">map</a> <a id="520" class="Symbol">}</a>
+
+<a id="applicative"></a><a id="523" href="Codata.Colist.Categorical.html#523" class="Function">applicative</a> <a id="535" class="Symbol">:</a> <a id="537" class="Symbol">∀</a> <a id="539" class="Symbol">{</a><a id="540" href="Codata.Colist.Categorical.html#540" class="Bound">ℓ</a> <a id="542" href="Codata.Colist.Categorical.html#542" class="Bound">i</a><a id="543" class="Symbol">}</a> <a id="545" class="Symbol">→</a> <a id="547" href="Category.Applicative.html#503" class="Function">RawApplicative</a> <a id="562" class="Symbol">{</a><a id="563" href="Codata.Colist.Categorical.html#540" class="Bound">ℓ</a><a id="564" class="Symbol">}</a> <a id="566" class="Symbol">(λ</a> <a id="569" href="Codata.Colist.Categorical.html#569" class="Bound">A</a> <a id="571" class="Symbol">→</a> <a id="573" href="Codata.Colist.html#1290" class="Datatype">Colist</a> <a id="580" href="Codata.Colist.Categorical.html#569" class="Bound">A</a> <a id="582" href="Codata.Colist.Categorical.html#542" class="Bound">i</a><a id="583" class="Symbol">)</a>
+<a id="585" href="Codata.Colist.Categorical.html#523" class="Function">applicative</a> <a id="597" class="Symbol">=</a> <a id="599" class="Keyword">record</a>
+  <a id="608" class="Symbol">{</a> <a id="610" href="Category.Applicative.Indexed.html#1012" class="Field">pure</a> <a id="615" class="Symbol">=</a> <a id="617" href="Codata.Colist.html#2041" class="Function">replicate</a> <a id="627" href="Codata.Conat.html#608" class="Function">infinity</a>
+  <a id="638" class="Symbol">;</a> <a id="640" href="Category.Applicative.Indexed.html#1043" class="Field Operator">_⊛_</a>  <a id="645" class="Symbol">=</a> <a id="647" href="Codata.Colist.html#5588" class="Function">ap</a>
+  <a id="652" class="Symbol">}</a>
+</pre></body></html>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.IO</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Simple examples of programs using IO</a>
+<a id="146" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="220" class="Symbol">{-#</a> <a id="224" class="Keyword">OPTIONS</a> <a id="232" class="Pragma">--guardedness</a> <a id="246" class="Symbol">#-}</a>
+
+<a id="251" class="Keyword">module</a> <a id="258" href="README.IO.html" class="Module">README.IO</a> <a id="268" class="Keyword">where</a>
+
+<a id="275" class="Keyword">open</a> <a id="280" class="Keyword">import</a> <a id="287" href="Level.html" class="Module">Level</a>
+<a id="293" class="Keyword">open</a> <a id="298" class="Keyword">import</a> <a id="305" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="319" class="Keyword">open</a> <a id="324" class="Keyword">import</a> <a id="331" href="Data.Nat.Show.html" class="Module">Data.Nat.Show</a> <a id="345" class="Keyword">using</a> <a id="351" class="Symbol">(</a><a id="352" href="Data.Nat.Show.html#1937" class="Function">show</a><a id="356" class="Symbol">)</a>
+<a id="358" class="Keyword">open</a> <a id="363" class="Keyword">import</a> <a id="370" href="Data.String.html" class="Module">Data.String</a> <a id="382" class="Keyword">using</a> <a id="388" class="Symbol">(</a><a id="389" href="Agda.Builtin.String.html#318" class="Postulate">String</a><a id="395" class="Symbol">;</a> <a id="397" href="Data.String.Base.html#2375" class="Function Operator">_++_</a><a id="401" class="Symbol">;</a> <a id="403" href="Data.String.html#2375" class="Function">lines</a><a id="408" class="Symbol">)</a>
+<a id="410" class="Keyword">open</a> <a id="415" class="Keyword">import</a> <a id="422" href="Data.Unit.Polymorphic.html" class="Module">Data.Unit.Polymorphic</a>
+<a id="444" class="Keyword">open</a> <a id="449" class="Keyword">import</a> <a id="456" href="IO.html" class="Module">IO</a>
+
+<a id="460" class="Comment">------------------------------------------------------------------------</a>
+<a id="533" class="Comment">-- Basic programs</a>
+<a id="551" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="625" class="Comment">------------------------------------------------------------------------</a>
+<a id="698" class="Comment">-- Hello World!</a>
+
+<a id="715" class="Comment">-- Minimal example of an IO program.</a>
+<a id="752" class="Comment">-- * The entrypoint of the executable is given type `Main`</a>
+<a id="811" class="Comment">-- * It is implemented using `run`, a function that converts a description</a>
+<a id="886" class="Comment">--   of an IO-computation into a computation that actually invokes the magic</a>
+<a id="963" class="Comment">--   primitives that will perform the side effects.</a>
+
+<a id="helloWorld"></a><a id="1016" href="README.IO.html#1016" class="Function">helloWorld</a> <a id="1027" class="Symbol">:</a> <a id="1029" href="IO.Base.html#2204" class="Function">Main</a>
+<a id="1034" href="README.IO.html#1016" class="Function">helloWorld</a> <a id="1045" class="Symbol">=</a> <a id="1047" href="IO.Base.html#1893" class="Function">run</a> <a id="1051" class="Symbol">(</a><a id="1052" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="1061" class="String">&quot;Hello World!&quot;</a><a id="1075" class="Symbol">)</a>
+
+<a id="1078" class="Comment">------------------------------------------------------------------------</a>
+<a id="1151" class="Comment">-- Hello {{name}}!</a>
+
+<a id="1171" class="Comment">-- We can of course write little auxiliary functions that may be used in</a>
+<a id="1244" class="Comment">-- larger IO programs. Here we are going to first write a function displaying</a>
+<a id="1322" class="Comment">-- &quot;Hello {{name}}!&quot; when {{name}} is passed as an argument.</a>
+
+<a id="1384" class="Comment">-- `IO` primitives whose sole purpose is generating side effects (e.g.</a>
+<a id="1455" class="Comment">-- printing a string on the screen) are typically given a level polymorphic</a>
+<a id="1531" class="Comment">-- type which means we may need to add explicit level annotations.</a>
+<a id="1598" class="Comment">-- Here we state that the `IO` computation will be at level zero (`0ℓ`).</a>
+
+<a id="sayHello"></a><a id="1672" href="README.IO.html#1672" class="Function">sayHello</a> <a id="1681" class="Symbol">:</a> <a id="1683" href="Agda.Builtin.String.html#318" class="Postulate">String</a> <a id="1690" class="Symbol">→</a> <a id="1692" href="IO.Base.html#926" class="Datatype">IO</a> <a id="1695" class="Symbol">{</a><a id="1696" href="Level.html#521" class="Function">0ℓ</a><a id="1698" class="Symbol">}</a> <a id="1700" href="Data.Unit.Polymorphic.Base.html#489" class="Function">⊤</a>
+<a id="1702" href="README.IO.html#1672" class="Function">sayHello</a> <a id="1711" href="README.IO.html#1711" class="Bound">name</a> <a id="1716" class="Symbol">=</a> <a id="1718" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="1727" class="Symbol">(</a><a id="1728" class="String">&quot;Hello &quot;</a> <a id="1737" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="1740" href="README.IO.html#1711" class="Bound">name</a> <a id="1745" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="1748" class="String">&quot;!&quot;</a><a id="1751" class="Symbol">)</a>
+
+<a id="1754" class="Comment">-- Functions can be sequenced using monadic combinators or `do` notations.</a>
+<a id="1829" class="Comment">-- The two following definitions are equivalent. They start by asking the</a>
+<a id="1903" class="Comment">-- user what their name is, listen for an answer and respond by saying hello</a>
+<a id="1980" class="Comment">-- using the `sayHello` auxiliary function we just defined.</a>
+
+<a id="helloName"></a><a id="2041" href="README.IO.html#2041" class="Function">helloName</a> <a id="2051" class="Symbol">:</a> <a id="2053" href="IO.Base.html#2204" class="Function">Main</a>
+<a id="2058" href="README.IO.html#2041" class="Function">helloName</a> <a id="2068" class="Symbol">=</a> <a id="2070" href="IO.Base.html#1893" class="Function">run</a> <a id="2074" class="Symbol">(</a><a id="2075" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="2084" class="String">&quot;What is your name?&quot;</a> <a id="2105" href="IO.Base.html#1484" class="Function Operator">&gt;&gt;</a> <a id="2108" href="IO.Finite.html#1045" class="Function">getLine</a> <a id="2116" href="IO.Base.html#1413" class="Function Operator">&gt;&gt;=</a> <a id="2120" href="README.IO.html#1672" class="Function">sayHello</a><a id="2128" class="Symbol">)</a>
+
+<a id="doHelloName"></a><a id="2131" href="README.IO.html#2131" class="Function">doHelloName</a> <a id="2143" class="Symbol">:</a> <a id="2145" href="IO.Base.html#2204" class="Function">Main</a>
+<a id="2150" href="README.IO.html#2131" class="Function">doHelloName</a> <a id="2162" class="Symbol">=</a> <a id="2164" href="IO.Base.html#1893" class="Function">run</a> <a id="2168" class="Keyword">do</a>
+  <a id="2173" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="2182" class="String">&quot;What is your name?&quot;</a>
+  <a id="2205" href="README.IO.html#2205" class="Bound">name</a> <a id="2210" href="IO.Base.html#1413" class="Function Operator">←</a> <a id="2212" href="IO.Finite.html#1045" class="Function">getLine</a>
+  <a id="2222" href="README.IO.html#1672" class="Function">sayHello</a> <a id="2231" href="README.IO.html#2205" class="Bound">name</a>
+
+<a id="2237" class="Comment">------------------------------------------------------------------------</a>
+<a id="2310" class="Comment">-- (Co)Recursive programs</a>
+<a id="2336" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="2410" class="Comment">------------------------------------------------------------------------</a>
+<a id="2483" class="Comment">-- NO GUARDEDNESS</a>
+
+<a id="2502" class="Comment">-- If you do not need to rely on guardedness for the function to be seen as</a>
+<a id="2578" class="Comment">-- terminating (for instance because it is structural in an inductive argument)</a>
+<a id="2658" class="Comment">-- then you can use `do` notations to write fairly readable programs.</a>
+
+<a id="2729" class="Comment">-- Countdown to explosion</a>
+<a id="countdown"></a><a id="2755" href="README.IO.html#2755" class="Function">countdown</a> <a id="2765" class="Symbol">:</a> <a id="2767" href="Agda.Builtin.Nat.html#186" class="Datatype">ℕ</a> <a id="2769" class="Symbol">→</a> <a id="2771" href="IO.Base.html#926" class="Datatype">IO</a> <a id="2774" class="Symbol">{</a><a id="2775" href="Level.html#521" class="Function">0ℓ</a><a id="2777" class="Symbol">}</a> <a id="2779" class="Symbol">_</a>
+<a id="2781" href="README.IO.html#2755" class="Function">countdown</a> <a id="2791" href="Agda.Builtin.Nat.html#204" class="InductiveConstructor">zero</a>      <a id="2801" class="Symbol">=</a> <a id="2803" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="2812" class="String">&quot;BOOM!&quot;</a>
+<a id="2820" href="README.IO.html#2755" class="Function">countdown</a> <a id="2830" href="README.IO.html#2830" class="Bound">m</a><a id="2831" class="Symbol">@(</a><a id="2833" href="Agda.Builtin.Nat.html#217" class="InductiveConstructor">suc</a> <a id="2837" href="README.IO.html#2837" class="Bound">n</a><a id="2838" class="Symbol">)</a> <a id="2840" class="Symbol">=</a> <a id="2842" class="Keyword">do</a>
+  <a id="2847" class="Keyword">let</a> <a id="2851" href="README.IO.html#2851" class="Bound">str</a> <a id="2855" class="Symbol">=</a> <a id="2857" href="Data.Nat.Show.html#1937" class="Function">show</a> <a id="2862" href="README.IO.html#2830" class="Bound">m</a>
+  <a id="2866" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="2875" href="README.IO.html#2851" class="Bound">str</a>
+  <a id="2881" href="README.IO.html#2755" class="Function">countdown</a> <a id="2891" href="README.IO.html#2837" class="Bound">n</a>
+
+<a id="2894" class="Comment">-- cat the content of a finite file</a>
+<a id="cat"></a><a id="2930" href="README.IO.html#2930" class="Function">cat</a> <a id="2934" class="Symbol">:</a> <a id="2936" href="Agda.Builtin.String.html#318" class="Postulate">String</a> <a id="2943" class="Symbol">→</a> <a id="2945" href="IO.Base.html#926" class="Datatype">IO</a> <a id="2948" class="Symbol">_</a>
+<a id="2950" href="README.IO.html#2930" class="Function">cat</a> <a id="2954" href="README.IO.html#2954" class="Bound">fp</a> <a id="2957" class="Symbol">=</a> <a id="2959" class="Keyword">do</a>
+  <a id="2964" href="README.IO.html#2964" class="Bound">content</a> <a id="2972" href="IO.Base.html#1413" class="Function Operator">←</a> <a id="2974" href="IO.html#2625" class="Function">readFiniteFile</a> <a id="2989" href="README.IO.html#2954" class="Bound">fp</a>
+  <a id="2994" class="Keyword">let</a> <a id="2998" href="README.IO.html#2998" class="Bound">ls</a> <a id="3001" class="Symbol">=</a> <a id="3003" href="Data.String.html#2375" class="Function">lines</a> <a id="3009" href="README.IO.html#2964" class="Bound">content</a>
+  <a id="3019" href="IO.html#1991" class="Function">List.mapM′</a> <a id="3030" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="3039" href="README.IO.html#2998" class="Bound">ls</a>
+
+<a id="3043" class="Keyword">open</a> <a id="3048" class="Keyword">import</a> <a id="3055" href="Codata.Musical.Notation.html" class="Module">Codata.Musical.Notation</a>
+<a id="3079" class="Keyword">open</a> <a id="3084" class="Keyword">import</a> <a id="3091" href="Codata.Musical.Colist.html" class="Module">Codata.Musical.Colist</a>
+<a id="3113" class="Keyword">open</a> <a id="3118" class="Keyword">import</a> <a id="3125" href="Data.Bool.html" class="Module">Data.Bool</a>
+<a id="3135" class="Keyword">open</a> <a id="3140" class="Keyword">import</a> <a id="3147" href="Data.Unit.Polymorphic.Base.html" class="Module">Data.Unit.Polymorphic.Base</a>
+
+<a id="3175" class="Comment">------------------------------------------------------------------------</a>
+<a id="3248" class="Comment">-- GUARDEDNESS</a>
+
+<a id="3264" class="Comment">-- If you are performing coinduction on a potentially infinite piece of codata</a>
+<a id="3343" class="Comment">-- then you need to rely on guardedness. That is to say that the coinductive</a>
+<a id="3420" class="Comment">-- call needs to be obviously under a coinductive constructor and guarded by a</a>
+<a id="3499" class="Comment">-- sharp (♯_).</a>
+<a id="3514" class="Comment">-- In this case you cannot use the convenient combinators that make `do`-notations</a>
+<a id="3597" class="Comment">-- and have to revert back to the underlying coinductive constructors.</a>
+
+
+<a id="3670" class="Comment">-- Whether a colist is finite is semi decidable: just let the user wait until</a>
+<a id="3748" class="Comment">-- you reach the end!</a>
+<a id="isFinite"></a><a id="3770" href="README.IO.html#3770" class="Function">isFinite</a> <a id="3779" class="Symbol">:</a> <a id="3781" class="Symbol">∀</a> <a id="3783" class="Symbol">{</a><a id="3784" href="README.IO.html#3784" class="Bound">a</a><a id="3785" class="Symbol">}</a> <a id="3787" class="Symbol">{</a><a id="3788" href="README.IO.html#3788" class="Bound">A</a> <a id="3790" class="Symbol">:</a> <a id="3792" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="3796" href="README.IO.html#3784" class="Bound">a</a><a id="3797" class="Symbol">}</a> <a id="3799" class="Symbol">→</a> <a id="3801" href="Codata.Musical.Colist.Base.html#879" class="Datatype">Colist</a> <a id="3808" href="README.IO.html#3788" class="Bound">A</a> <a id="3810" class="Symbol">→</a> <a id="3812" href="IO.Base.html#926" class="Datatype">IO</a> <a id="3815" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a>
+<a id="3820" href="README.IO.html#3770" class="Function">isFinite</a> <a id="3829" href="Codata.Musical.Colist.Base.html#914" class="InductiveConstructor">[]</a>       <a id="3838" class="Symbol">=</a> <a id="3840" href="IO.Base.html#997" class="InductiveConstructor">return</a> <a id="3847" href="Agda.Builtin.Bool.html#181" class="InductiveConstructor">true</a>
+<a id="3852" href="README.IO.html#3770" class="Function">isFinite</a> <a id="3861" class="Symbol">(</a><a id="3862" href="README.IO.html#3862" class="Bound">x</a> <a id="3864" href="Codata.Musical.Colist.Base.html#931" class="InductiveConstructor Operator">∷</a> <a id="3866" href="README.IO.html#3866" class="Bound">xs</a><a id="3868" class="Symbol">)</a> <a id="3870" class="Symbol">=</a> <a id="3872" href="IO.Base.html#1093" class="InductiveConstructor">seq</a> <a id="3876" class="Symbol">(</a><a id="3877" href="Agda.Builtin.Coinduction.html#212" class="CoinductiveConstructor Operator">♯</a> <a id="3879" href="IO.Base.html#997" class="InductiveConstructor">return</a> <a id="3886" href="Data.Unit.Polymorphic.Base.html#533" class="Function">tt</a><a id="3888" class="Symbol">)</a> <a id="3890" class="Symbol">(</a><a id="3891" href="Agda.Builtin.Coinduction.html#212" class="CoinductiveConstructor Operator">♯</a> <a id="3893" href="README.IO.html#3770" class="Function">isFinite</a> <a id="3902" class="Symbol">(</a><a id="3903" href="Agda.Builtin.Coinduction.html#247" class="Field">♭</a> <a id="3905" href="README.IO.html#3866" class="Bound">xs</a><a id="3907" class="Symbol">))</a>
+</pre></body></html>

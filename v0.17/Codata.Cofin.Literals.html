@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Cofin.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Conat Literals</a>
+<a id="124" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="198" class="Keyword">module</a> <a id="205" href="Codata.Cofin.Literals.html" class="Module">Codata.Cofin.Literals</a> <a id="227" class="Keyword">where</a>
+
+<a id="234" class="Keyword">open</a> <a id="239" class="Keyword">import</a> <a id="246" href="Data.Nat.html" class="Module">Data.Nat</a>
+<a id="255" class="Keyword">open</a> <a id="260" class="Keyword">import</a> <a id="267" href="Agda.Builtin.FromNat.html" class="Module">Agda.Builtin.FromNat</a>
+<a id="288" class="Keyword">open</a> <a id="293" class="Keyword">import</a> <a id="300" href="Codata.Conat.html" class="Module">Codata.Conat</a>
+<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Codata.Conat.Properties.html" class="Module">Codata.Conat.Properties</a>
+<a id="349" class="Keyword">open</a> <a id="354" class="Keyword">import</a> <a id="361" href="Codata.Cofin.html" class="Module">Codata.Cofin</a>
+<a id="374" class="Keyword">open</a> <a id="379" class="Keyword">import</a> <a id="386" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+
+<a id="number"></a><a id="414" href="Codata.Cofin.Literals.html#414" class="Function">number</a> <a id="421" class="Symbol">:</a> <a id="423" class="Symbol">∀</a> <a id="425" href="Codata.Cofin.Literals.html#425" class="Bound">n</a> <a id="427" class="Symbol">→</a> <a id="429" href="Agda.Builtin.FromNat.html#129" class="Record">Number</a> <a id="436" class="Symbol">(</a><a id="437" href="Codata.Cofin.html#846" class="Datatype">Cofin</a> <a id="443" href="Codata.Cofin.Literals.html#425" class="Bound">n</a><a id="444" class="Symbol">)</a>
+<a id="446" href="Codata.Cofin.Literals.html#414" class="Function">number</a> <a id="453" href="Codata.Cofin.Literals.html#453" class="Bound">n</a> <a id="455" class="Symbol">=</a> <a id="457" class="Keyword">record</a>
+  <a id="466" class="Symbol">{</a> <a id="468" href="Agda.Builtin.FromNat.html#185" class="Field">Constraint</a> <a id="479" class="Symbol">=</a> <a id="481" class="Symbol">λ</a> <a id="483" href="Codata.Cofin.Literals.html#483" class="Bound">k</a> <a id="485" class="Symbol">→</a> <a id="487" href="Relation.Nullary.Decidable.html#897" class="Function">True</a> <a id="492" class="Symbol">(</a><a id="493" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor">suc</a> <a id="497" href="Codata.Cofin.Literals.html#483" class="Bound">k</a> <a id="499" href="Codata.Conat.Properties.html#502" class="Function Operator">ℕ≤?</a> <a id="503" href="Codata.Cofin.Literals.html#453" class="Bound">n</a><a id="504" class="Symbol">)</a>
+  <a id="508" class="Symbol">;</a> <a id="510" href="Agda.Builtin.FromNat.html#214" class="Field">fromNat</a>    <a id="521" class="Symbol">=</a> <a id="523" class="Symbol">λ</a> <a id="525" href="Codata.Cofin.Literals.html#525" class="Bound">n</a> <a id="527" class="Symbol">{{</a><a id="529" href="Codata.Cofin.Literals.html#529" class="Bound">p</a><a id="530" class="Symbol">}}</a> <a id="533" class="Symbol">→</a> <a id="535" href="Codata.Cofin.html#1181" class="Function">fromℕ&lt;</a> <a id="542" class="Symbol">(</a><a id="543" href="Relation.Nullary.Decidable.html#1055" class="Function">toWitness</a> <a id="553" href="Codata.Cofin.Literals.html#529" class="Bound">p</a><a id="554" class="Symbol">)</a>
+  <a id="558" class="Symbol">}</a>
+
+</pre></body></html>

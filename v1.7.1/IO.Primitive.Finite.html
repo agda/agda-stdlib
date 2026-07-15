@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>IO.Primitive.Finite</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Primitive IO: simple bindings to Haskell types and functions</a>
+<a id="170" class="Comment">-- Everything is assumed to be finite</a>
+<a id="208" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="282" class="Symbol">{-#</a> <a id="286" class="Keyword">OPTIONS</a> <a id="294" class="Pragma">--without-K</a> <a id="306" class="Symbol">#-}</a>
+
+<a id="311" class="Keyword">module</a> <a id="318" href="IO.Primitive.Finite.html" class="Module">IO.Primitive.Finite</a> <a id="338" class="Keyword">where</a>
+
+<a id="345" class="Comment">-- NOTE: the contents of this module should be accessed via `IO` or</a>
+<a id="413" class="Comment">-- `IO.Finite`.</a>
+
+<a id="430" class="Keyword">open</a> <a id="435" class="Keyword">import</a> <a id="442" href="Agda.Builtin.IO.html" class="Module">Agda.Builtin.IO</a>
+<a id="458" class="Keyword">open</a> <a id="463" class="Keyword">import</a> <a id="470" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a>
+<a id="490" class="Keyword">open</a> <a id="495" class="Keyword">import</a> <a id="502" href="Agda.Builtin.Unit.html" class="Module">Agda.Builtin.Unit</a> <a id="520" class="Keyword">using</a> <a id="526" class="Symbol">()</a> <a id="529" class="Keyword">renaming</a> <a id="538" class="Symbol">(</a><a id="539" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a> <a id="541" class="Symbol">to</a> <a id="544" class="Record">Unit</a><a id="548" class="Symbol">)</a>
+
+<a id="551" class="Comment">------------------------------------------------------------------------</a>
+<a id="624" class="Comment">-- Simple lazy IO</a>
+
+<a id="643" class="Comment">-- Note that the functions below produce commands which, when</a>
+<a id="705" class="Comment">-- executed, may raise exceptions.</a>
+
+<a id="741" class="Comment">-- Note also that the semantics of these functions depends on the</a>
+<a id="807" class="Comment">-- version of the Haskell base library. If the version is 4.2.0.0 (or</a>
+<a id="877" class="Comment">-- later?), then the functions use the character encoding specified by</a>
+<a id="948" class="Comment">-- the locale. For older versions of the library (going back to at</a>
+<a id="1015" class="Comment">-- least version 3) the functions use ISO-8859-1.</a>
+
+<a id="1066" class="Keyword">postulate</a>
+  <a id="getLine"></a><a id="1078" href="IO.Primitive.Finite.html#1078" class="Postulate">getLine</a>     <a id="1090" class="Symbol">:</a> <a id="1092" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="1095" href="Agda.Builtin.String.html#336" class="Postulate">String</a>
+  <a id="readFile"></a><a id="1104" href="IO.Primitive.Finite.html#1104" class="Postulate">readFile</a>    <a id="1116" class="Symbol">:</a> <a id="1118" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="1125" class="Symbol">→</a> <a id="1127" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="1130" href="Agda.Builtin.String.html#336" class="Postulate">String</a>
+  <a id="writeFile"></a><a id="1139" href="IO.Primitive.Finite.html#1139" class="Postulate">writeFile</a>   <a id="1151" class="Symbol">:</a> <a id="1153" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="1160" class="Symbol">→</a> <a id="1162" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="1169" class="Symbol">→</a> <a id="1171" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="1174" href="IO.Primitive.Finite.html#544" class="Record">Unit</a>
+  <a id="appendFile"></a><a id="1181" href="IO.Primitive.Finite.html#1181" class="Postulate">appendFile</a>  <a id="1193" class="Symbol">:</a> <a id="1195" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="1202" class="Symbol">→</a> <a id="1204" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="1211" class="Symbol">→</a> <a id="1213" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="1216" href="IO.Primitive.Finite.html#544" class="Record">Unit</a>
+  <a id="putStr"></a><a id="1223" href="IO.Primitive.Finite.html#1223" class="Postulate">putStr</a>      <a id="1235" class="Symbol">:</a> <a id="1237" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="1244" class="Symbol">→</a> <a id="1246" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="1249" href="IO.Primitive.Finite.html#544" class="Record">Unit</a>
+  <a id="putStrLn"></a><a id="1256" href="IO.Primitive.Finite.html#1256" class="Postulate">putStrLn</a>    <a id="1268" class="Symbol">:</a> <a id="1270" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="1277" class="Symbol">→</a> <a id="1279" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="1282" href="IO.Primitive.Finite.html#544" class="Record">Unit</a>
+
+<a id="1288" class="Symbol">{-#</a> <a id="1292" class="Keyword">FOREIGN</a> <a id="1300" class="Pragma">GHC</a> <a id="1304" class="Pragma">import</a> <a id="1311" class="Pragma">qualified</a> <a id="1321" class="Pragma">Data.Text</a>    <a id="1334" class="Pragma">as</a> <a id="1337" class="Pragma">T</a>   <a id="1341" class="Symbol">#-}</a>
+<a id="1345" class="Symbol">{-#</a> <a id="1349" class="Keyword">FOREIGN</a> <a id="1357" class="Pragma">GHC</a> <a id="1361" class="Pragma">import</a> <a id="1368" class="Pragma">qualified</a> <a id="1378" class="Pragma">Data.Text.IO</a> <a id="1391" class="Pragma">as</a> <a id="1394" class="Pragma">TIO</a> <a id="1398" class="Symbol">#-}</a>
+<a id="1402" class="Symbol">{-#</a> <a id="1406" class="Keyword">FOREIGN</a> <a id="1414" class="Pragma">GHC</a> <a id="1418" class="Pragma">import</a> <a id="1425" class="Pragma">qualified</a> <a id="1435" class="Pragma">System.IO</a>           <a id="1455" class="Symbol">#-}</a>
+<a id="1459" class="Symbol">{-#</a> <a id="1463" class="Keyword">FOREIGN</a> <a id="1471" class="Pragma">GHC</a> <a id="1475" class="Pragma">import</a> <a id="1482" class="Pragma">qualified</a> <a id="1492" class="Pragma">Control.Exception</a>   <a id="1512" class="Symbol">#-}</a>
+
+<a id="1517" class="Symbol">{-#</a> <a id="1521" class="Keyword">FOREIGN</a> <a id="1529" class="Pragma">GHC</a>
+
+  <a id="1536" class="Pragma">--</a> <a id="1539" class="Pragma">Reads</a> <a id="1545" class="Pragma">a</a> <a id="1547" class="Pragma">finite</a> <a id="1554" class="Pragma">file.</a> <a id="1560" class="Pragma">Raises</a> <a id="1567" class="Pragma">an</a> <a id="1570" class="Pragma">exception</a> <a id="1580" class="Pragma">if</a> <a id="1583" class="Pragma">the</a> <a id="1587" class="Pragma">file</a> <a id="1592" class="Pragma">path</a> <a id="1597" class="Pragma">refers</a>
+  <a id="1606" class="Pragma">--</a> <a id="1609" class="Pragma">to</a> <a id="1612" class="Pragma">a</a> <a id="1614" class="Pragma">non-physical</a> <a id="1627" class="Pragma">file</a> <a id="1632" class="Pragma">(like</a> <a id="1638" class="Pragma">&quot;/dev/zero&quot;).</a>
+  <a id="1654" class="Pragma">readFiniteFile</a> <a id="1669" class="Pragma">::</a> <a id="1672" class="Pragma">T.Text</a> <a id="1679" class="Pragma">-&gt;</a> <a id="1682" class="Pragma">IO</a> <a id="1685" class="Pragma">T.Text</a>
+  <a id="1694" class="Pragma">readFiniteFile</a> <a id="1709" class="Pragma">f</a> <a id="1711" class="Pragma">=</a> <a id="1713" class="Pragma">do</a>
+    <a id="1720" class="Pragma">h</a> <a id="1722" class="Pragma">&lt;-</a> <a id="1725" class="Pragma">System.IO.openFile</a> <a id="1744" class="Pragma">(T.unpack</a> <a id="1754" class="Pragma">f)</a> <a id="1757" class="Pragma">System.IO.ReadMode</a>
+    <a id="1780" class="Pragma">Control.Exception.bracketOnError</a> <a id="1813" class="Pragma">(return</a> <a id="1821" class="Pragma">())</a> <a id="1825" class="Pragma">(\_</a> <a id="1829" class="Pragma">-&gt;</a> <a id="1832" class="Pragma">System.IO.hClose</a> <a id="1849" class="Pragma">h)</a>
+                                                 <a id="1901" class="Pragma">(\_</a> <a id="1905" class="Pragma">-&gt;</a> <a id="1908" class="Pragma">System.IO.hFileSize</a> <a id="1928" class="Pragma">h)</a>
+    <a id="1935" class="Pragma">TIO.hGetContents</a> <a id="1952" class="Pragma">h</a>
+
+<a id="1955" class="Symbol">#-}</a>
+
+<a id="1960" class="Symbol">{-#</a> <a id="1964" class="Keyword">COMPILE</a> <a id="1972" class="Keyword">GHC</a> <a id="1976" href="IO.Primitive.Finite.html#1078" class="Postulate">getLine</a>    <a id="1987" class="Pragma">=</a> <a id="1989" class="Pragma">TIO.getLine</a>               <a id="2015" class="Symbol">#-}</a>
+<a id="2019" class="Symbol">{-#</a> <a id="2023" class="Keyword">COMPILE</a> <a id="2031" class="Keyword">GHC</a> <a id="2035" href="IO.Primitive.Finite.html#1104" class="Postulate">readFile</a>   <a id="2046" class="Pragma">=</a> <a id="2048" class="Pragma">readFiniteFile</a>            <a id="2074" class="Symbol">#-}</a>
+<a id="2078" class="Symbol">{-#</a> <a id="2082" class="Keyword">COMPILE</a> <a id="2090" class="Keyword">GHC</a> <a id="2094" href="IO.Primitive.Finite.html#1139" class="Postulate">writeFile</a>  <a id="2105" class="Pragma">=</a> <a id="2107" class="Pragma">TIO.writeFile</a> <a id="2121" class="Pragma">.</a> <a id="2123" class="Pragma">T.unpack</a>  <a id="2133" class="Symbol">#-}</a>
+<a id="2137" class="Symbol">{-#</a> <a id="2141" class="Keyword">COMPILE</a> <a id="2149" class="Keyword">GHC</a> <a id="2153" href="IO.Primitive.Finite.html#1181" class="Postulate">appendFile</a> <a id="2164" class="Pragma">=</a> <a id="2166" class="Pragma">TIO.appendFile</a> <a id="2181" class="Pragma">.</a> <a id="2183" class="Pragma">T.unpack</a> <a id="2192" class="Symbol">#-}</a>
+<a id="2196" class="Symbol">{-#</a> <a id="2200" class="Keyword">COMPILE</a> <a id="2208" class="Keyword">GHC</a> <a id="2212" href="IO.Primitive.Finite.html#1223" class="Postulate">putStr</a>     <a id="2223" class="Pragma">=</a> <a id="2225" class="Pragma">TIO.putStr</a>                <a id="2251" class="Symbol">#-}</a>
+<a id="2255" class="Symbol">{-#</a> <a id="2259" class="Keyword">COMPILE</a> <a id="2267" class="Keyword">GHC</a> <a id="2271" href="IO.Primitive.Finite.html#1256" class="Postulate">putStrLn</a>   <a id="2282" class="Pragma">=</a> <a id="2284" class="Pragma">TIO.putStrLn</a>              <a id="2310" class="Symbol">#-}</a>
+
+<a id="2315" class="Symbol">{-#</a> <a id="2319" class="Keyword">COMPILE</a> <a id="2327" class="Keyword">UHC</a> <a id="2331" href="IO.Primitive.Finite.html#1104" class="Postulate">readFile</a> <a id="2340" class="Pragma">=</a> <a id="2342" class="Pragma">UHC.Agda.Builtins.primReadFiniteFile</a>  <a id="2380" class="Symbol">#-}</a>
+</pre></body></html>

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Reflection.External</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--cubical-compatible</a> <a id="34" class="Pragma">--safe</a> <a id="41" class="Pragma">--no-sized-types</a> <a id="58" class="Pragma">--no-guardedness</a> <a id="75" class="Pragma">--level-universe</a> <a id="92" class="Symbol">#-}</a>
+
+<a id="97" class="Keyword">module</a> <a id="104" href="Agda.Builtin.Reflection.External.html" class="Module">Agda.Builtin.Reflection.External</a> <a id="137" class="Keyword">where</a>
+
+<a id="144" class="Keyword">open</a> <a id="149" class="Keyword">import</a> <a id="156" href="Agda.Builtin.List.html" class="Module">Agda.Builtin.List</a>
+<a id="174" class="Keyword">open</a> <a id="179" class="Keyword">import</a> <a id="186" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="203" class="Keyword">open</a> <a id="208" class="Keyword">import</a> <a id="215" href="Agda.Builtin.Sigma.html" class="Module">Agda.Builtin.Sigma</a>
+<a id="234" class="Keyword">open</a> <a id="239" class="Keyword">import</a> <a id="246" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a>
+<a id="266" class="Keyword">open</a> <a id="271" class="Keyword">import</a> <a id="278" href="Agda.Builtin.Reflection.html" class="Module">Agda.Builtin.Reflection</a>
+
+<a id="303" class="Keyword">postulate</a>
+  <a id="execTC"></a><a id="315" href="Agda.Builtin.Reflection.External.html#315" class="Postulate">execTC</a> <a id="322" class="Symbol">:</a> <a id="324" href="Agda.Builtin.String.html#335" class="Postulate">String</a> <a id="331" class="Symbol">→</a> <a id="333" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="338" href="Agda.Builtin.String.html#335" class="Postulate">String</a> <a id="345" class="Symbol">→</a> <a id="347" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+         <a id="363" class="Symbol">→</a> <a id="365" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a> <a id="368" class="Symbol">(</a><a id="369" href="Agda.Builtin.Sigma.html#165" class="Record">Σ</a> <a id="371" href="Agda.Builtin.Nat.html#203" class="Datatype">Nat</a> <a id="375" class="Symbol">(λ</a> <a id="378" href="Agda.Builtin.Reflection.External.html#378" class="Bound">_</a> <a id="380" class="Symbol">→</a> <a id="382" href="Agda.Builtin.Sigma.html#165" class="Record">Σ</a> <a id="384" href="Agda.Builtin.String.html#335" class="Postulate">String</a> <a id="391" class="Symbol">(λ</a> <a id="394" href="Agda.Builtin.Reflection.External.html#394" class="Bound">_</a> <a id="396" class="Symbol">→</a> <a id="398" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="404" class="Symbol">)))</a>
+
+<a id="409" class="Symbol">{-#</a> <a id="413" class="Keyword">BUILTIN</a> <a id="421" class="Keyword">AGDATCMEXEC</a> <a id="433" href="Agda.Builtin.Reflection.External.html#315" class="Postulate">execTC</a> <a id="440" class="Symbol">#-}</a>
+
+<a id="445" class="Symbol">{-#</a> <a id="449" class="Keyword">COMPILE</a> <a id="457" class="Keyword">JS</a> <a id="460" href="Agda.Builtin.Reflection.External.html#315" class="Postulate">execTC</a> <a id="467" class="Pragma">=</a> <a id="469" class="Pragma">_</a> <a id="471" class="Pragma">=&gt;</a> <a id="474" class="Pragma">_</a> <a id="476" class="Pragma">=&gt;</a> <a id="479" class="Pragma">_</a> <a id="481" class="Pragma">=&gt;</a> <a id="484" class="Pragma">undefined</a> <a id="494" class="Symbol">#-}</a>
+</pre></body></html>

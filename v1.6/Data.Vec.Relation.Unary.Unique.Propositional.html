@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Relation.Unary.Unique.Propositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Vectors made up entirely of unique elements (propositional equality)</a>
+<a id="178" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="252" class="Symbol">{-#</a> <a id="256" class="Keyword">OPTIONS</a> <a id="264" class="Pragma">--without-K</a> <a id="276" class="Pragma">--safe</a> <a id="283" class="Symbol">#-}</a>
+
+<a id="288" class="Keyword">module</a> <a id="295" href="Data.Vec.Relation.Unary.Unique.Propositional.html" class="Module">Data.Vec.Relation.Unary.Unique.Propositional</a> <a id="340" class="Symbol">{</a><a id="341" href="Data.Vec.Relation.Unary.Unique.Propositional.html#341" class="Bound">a</a><a id="342" class="Symbol">}</a> <a id="344" class="Symbol">{</a><a id="345" href="Data.Vec.Relation.Unary.Unique.Propositional.html#345" class="Bound">A</a> <a id="347" class="Symbol">:</a> <a id="349" class="PrimitiveType">Set</a> <a id="353" href="Data.Vec.Relation.Unary.Unique.Propositional.html#341" class="Bound">a</a><a id="354" class="Symbol">}</a> <a id="356" class="Keyword">where</a>
+
+<a id="363" class="Keyword">open</a> <a id="368" class="Keyword">import</a> <a id="375" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="413" class="Keyword">using</a> <a id="419" class="Symbol">(</a><a id="420" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a><a id="426" class="Symbol">)</a>
+<a id="428" class="Keyword">open</a> <a id="433" class="Keyword">import</a> <a id="440" href="Data.Vec.Relation.Unary.Unique.Setoid.html" class="Module">Data.Vec.Relation.Unary.Unique.Setoid</a> <a id="478" class="Symbol">as</a> <a id="481" class="Module">SetoidUnique</a>
+
+<a id="495" class="Comment">------------------------------------------------------------------------</a>
+<a id="568" class="Comment">-- Re-export the contents of setoid uniqueness</a>
+
+<a id="616" class="Keyword">open</a> <a id="621" href="Data.Vec.Relation.Unary.Unique.Setoid.html" class="Module">SetoidUnique</a> <a id="634" class="Symbol">(</a><a id="635" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="642" href="Data.Vec.Relation.Unary.Unique.Propositional.html#345" class="Bound">A</a><a id="643" class="Symbol">)</a> <a id="645" class="Keyword">public</a>
+
+</pre></body></html>

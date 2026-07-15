@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Properties.CommutativeSemigroup.Divisibility</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties of divisibility over commutative semigroups</a>
+<a id="164" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="238" class="Symbol">{-#</a> <a id="242" class="Keyword">OPTIONS</a> <a id="250" class="Pragma">--without-K</a> <a id="262" class="Pragma">--safe</a> <a id="269" class="Symbol">#-}</a>
+
+<a id="274" class="Keyword">open</a> <a id="279" class="Keyword">import</a> <a id="286" href="Algebra.html" class="Module">Algebra</a> <a id="294" class="Keyword">using</a> <a id="300" class="Symbol">(</a><a id="301" href="Algebra.Bundles.html#2868" class="Record">CommutativeSemigroup</a><a id="321" class="Symbol">)</a>
+
+<a id="324" class="Keyword">module</a> <a id="331" href="Algebra.Properties.CommutativeSemigroup.Divisibility.html" class="Module">Algebra.Properties.CommutativeSemigroup.Divisibility</a>
+  <a id="386" class="Symbol">{</a><a id="387" href="Algebra.Properties.CommutativeSemigroup.Divisibility.html#387" class="Bound">a</a> <a id="389" href="Algebra.Properties.CommutativeSemigroup.Divisibility.html#389" class="Bound">ℓ</a><a id="390" class="Symbol">}</a> <a id="392" class="Symbol">(</a><a id="393" href="Algebra.Properties.CommutativeSemigroup.Divisibility.html#393" class="Bound">CM</a> <a id="396" class="Symbol">:</a> <a id="398" href="Algebra.Bundles.html#2868" class="Record">CommutativeSemigroup</a> <a id="419" href="Algebra.Properties.CommutativeSemigroup.Divisibility.html#387" class="Bound">a</a> <a id="421" href="Algebra.Properties.CommutativeSemigroup.Divisibility.html#389" class="Bound">ℓ</a><a id="422" class="Symbol">)</a>
+  <a id="426" class="Keyword">where</a>
+
+<a id="433" class="Keyword">open</a> <a id="438" href="Algebra.Bundles.html#2868" class="Module">CommutativeSemigroup</a> <a id="459" href="Algebra.Properties.CommutativeSemigroup.Divisibility.html#393" class="Bound">CM</a>
+
+<a id="463" class="Comment">------------------------------------------------------------------------------</a>
+<a id="542" class="Comment">-- Re-export the contents of divisibility over semigroups</a>
+
+<a id="601" class="Keyword">open</a> <a id="606" class="Keyword">import</a> <a id="613" href="Algebra.Properties.Semigroup.Divisibility.html" class="Module">Algebra.Properties.Semigroup.Divisibility</a> <a id="655" href="Algebra.Bundles.html#3204" class="Function">semigroup</a> <a id="665" class="Keyword">public</a>
+
+<a id="673" class="Comment">------------------------------------------------------------------------------</a>
+<a id="752" class="Comment">-- Re-export the contents of divisibility over commutative magmas</a>
+
+<a id="819" class="Keyword">open</a> <a id="824" class="Keyword">import</a> <a id="831" href="Algebra.Properties.CommutativeMagma.Divisibility.html" class="Module">Algebra.Properties.CommutativeMagma.Divisibility</a> <a id="880" href="Algebra.Bundles.html#3352" class="Function">commutativeMagma</a> <a id="897" class="Keyword">public</a>
+  <a id="906" class="Keyword">using</a> <a id="912" class="Symbol">(</a>x∣xy<a id="917" class="Symbol">;</a> xy≈z⇒x∣z<a id="927" class="Symbol">;</a> ∣-factors<a id="938" class="Symbol">;</a> ∣-factors-≈<a id="951" class="Symbol">)</a>
+</pre></body></html>

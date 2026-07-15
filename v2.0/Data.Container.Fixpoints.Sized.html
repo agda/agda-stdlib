@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Container.Fixpoints.Sized</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Sized fixpoints of containers, based on the work of Abbott and others</a>
+<a id="179" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="253" class="Symbol">{-#</a> <a id="257" class="Keyword">OPTIONS</a> <a id="265" class="Pragma">--cubical-compatible</a> <a id="286" class="Pragma">--sized-types</a> <a id="300" class="Symbol">#-}</a>
+
+<a id="305" class="Keyword">module</a> <a id="312" href="Data.Container.Fixpoints.Sized.html" class="Module">Data.Container.Fixpoints.Sized</a> <a id="343" class="Keyword">where</a>
+
+<a id="350" class="Keyword">open</a> <a id="355" class="Keyword">import</a> <a id="362" href="Level.html" class="Module">Level</a>
+<a id="368" class="Keyword">open</a> <a id="373" class="Keyword">import</a> <a id="380" href="Size.html" class="Module">Size</a>
+<a id="385" class="Keyword">open</a> <a id="390" class="Keyword">import</a> <a id="397" href="Codata.Sized.M.html" class="Module">Codata.Sized.M</a>
+<a id="412" class="Keyword">open</a> <a id="417" class="Keyword">import</a> <a id="424" href="Data.W.Sized.html" class="Module">Data.W.Sized</a>
+<a id="437" class="Keyword">open</a> <a id="442" class="Keyword">import</a> <a id="449" href="Data.Container.html" class="Module">Data.Container</a> <a id="464" class="Keyword">hiding</a> <a id="471" class="Symbol">(</a><a id="472" href="Data.Container.html#1529" class="Function">μ</a><a id="473" class="Symbol">)</a> <a id="475" class="Keyword">public</a>
+
+<a id="483" class="Keyword">private</a>
+  <a id="493" class="Keyword">variable</a>
+    <a id="506" href="Data.Container.Fixpoints.Sized.html#506" class="Generalizable">s</a> <a id="508" href="Data.Container.Fixpoints.Sized.html#508" class="Generalizable">p</a> <a id="510" class="Symbol">:</a> <a id="512" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+
+<a id="519" class="Comment">-- The sized least and greatest fixpoints of a container.</a>
+
+<a id="μ"></a><a id="578" href="Data.Container.Fixpoints.Sized.html#578" class="Function">μ</a> <a id="580" class="Symbol">:</a> <a id="582" href="Data.Container.Core.html#513" class="Record">Container</a> <a id="592" href="Data.Container.Fixpoints.Sized.html#506" class="Generalizable">s</a> <a id="594" href="Data.Container.Fixpoints.Sized.html#508" class="Generalizable">p</a> <a id="596" class="Symbol">→</a> <a id="598" href="Agda.Builtin.Size.html#213" class="Postulate">Size</a> <a id="603" class="Symbol">→</a> <a id="605" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="609" class="Symbol">(</a><a id="610" href="Data.Container.Fixpoints.Sized.html#506" class="Generalizable">s</a> <a id="612" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="614" href="Data.Container.Fixpoints.Sized.html#508" class="Generalizable">p</a><a id="615" class="Symbol">)</a>
+<a id="617" href="Data.Container.Fixpoints.Sized.html#578" class="Function">μ</a> <a id="619" class="Symbol">=</a> <a id="621" href="Data.W.Sized.html#861" class="Datatype">W</a>
+
+<a id="ν"></a><a id="624" href="Data.Container.Fixpoints.Sized.html#624" class="Function">ν</a> <a id="626" class="Symbol">:</a> <a id="628" href="Data.Container.Core.html#513" class="Record">Container</a> <a id="638" href="Data.Container.Fixpoints.Sized.html#506" class="Generalizable">s</a> <a id="640" href="Data.Container.Fixpoints.Sized.html#508" class="Generalizable">p</a> <a id="642" class="Symbol">→</a> <a id="644" href="Agda.Builtin.Size.html#213" class="Postulate">Size</a> <a id="649" class="Symbol">→</a> <a id="651" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="655" class="Symbol">(</a><a id="656" href="Data.Container.Fixpoints.Sized.html#506" class="Generalizable">s</a> <a id="658" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="660" href="Data.Container.Fixpoints.Sized.html#508" class="Generalizable">p</a><a id="661" class="Symbol">)</a>
+<a id="663" href="Data.Container.Fixpoints.Sized.html#624" class="Function">ν</a> <a id="665" class="Symbol">=</a> <a id="667" href="Codata.Sized.M.html#480" class="Datatype">M</a>
+</pre></body></html>

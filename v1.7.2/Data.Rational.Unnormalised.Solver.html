@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Rational.Unnormalised.Solver</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Automatic solvers for equations over rationals</a>
+<a id="156" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="230" class="Symbol">{-#</a> <a id="234" class="Keyword">OPTIONS</a> <a id="242" class="Pragma">--cubical-compatible</a> <a id="263" class="Pragma">--safe</a> <a id="270" class="Symbol">#-}</a>
+
+<a id="275" class="Keyword">module</a> <a id="282" href="Data.Rational.Unnormalised.Solver.html" class="Module">Data.Rational.Unnormalised.Solver</a> <a id="316" class="Keyword">where</a>
+
+<a id="323" class="Keyword">import</a> <a id="330" href="Algebra.Solver.Ring.Simple.html" class="Module">Algebra.Solver.Ring.Simple</a> <a id="357" class="Symbol">as</a> <a id="360" class="Module">Solver</a>
+<a id="367" class="Keyword">import</a> <a id="374" href="Algebra.Solver.Ring.AlmostCommutativeRing.html" class="Module">Algebra.Solver.Ring.AlmostCommutativeRing</a> <a id="416" class="Symbol">as</a> <a id="419" class="Module">ACR</a>
+<a id="423" class="Keyword">open</a> <a id="428" class="Keyword">import</a> <a id="435" href="Data.Rational.Unnormalised.Properties.html" class="Module">Data.Rational.Unnormalised.Properties</a> <a id="473" class="Keyword">using</a> <a id="479" class="Symbol">(</a><a id="480" href="Data.Rational.Unnormalised.Properties.html#3696" class="Function Operator">_≃?_</a><a id="484" class="Symbol">;</a> <a id="486" href="Data.Rational.Unnormalised.Properties.html#47501" class="Function">+-*-commutativeRing</a><a id="505" class="Symbol">)</a>
+
+<a id="508" class="Comment">------------------------------------------------------------------------</a>
+<a id="581" class="Comment">-- A module for automatically solving propositional equivalences</a>
+<a id="646" class="Comment">-- containing _+_ and _*_</a>
+
+<a id="673" class="Keyword">module</a> <a id="+-*-Solver"></a><a id="680" href="Data.Rational.Unnormalised.Solver.html#680" class="Module">+-*-Solver</a> <a id="691" class="Symbol">=</a>
+  <a id="695" href="Algebra.Solver.Ring.Simple.html" class="Module">Solver</a> <a id="702" class="Symbol">(</a><a id="703" href="Algebra.Solver.Ring.AlmostCommutativeRing.html#3675" class="Function">ACR.fromCommutativeRing</a> <a id="727" href="Data.Rational.Unnormalised.Properties.html#47501" class="Function">+-*-commutativeRing</a><a id="746" class="Symbol">)</a> <a id="748" href="Data.Rational.Unnormalised.Properties.html#3696" class="Function Operator">_≃?_</a>
+
+</pre></body></html>

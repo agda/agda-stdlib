@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Rational.Show</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Showing rational numbers</a>
+<a id="134" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="208" class="Symbol">{-#</a> <a id="212" class="Keyword">OPTIONS</a> <a id="220" class="Pragma">--cubical-compatible</a> <a id="241" class="Pragma">--safe</a> <a id="248" class="Symbol">#-}</a>
+
+<a id="253" class="Keyword">module</a> <a id="260" href="Data.Rational.Show.html" class="Module">Data.Rational.Show</a> <a id="279" class="Keyword">where</a>
+
+<a id="286" class="Keyword">import</a> <a id="293" href="Data.Integer.Show.html" class="Module">Data.Integer.Show</a> <a id="311" class="Symbol">as</a> <a id="314" class="Module">ℤ</a>
+<a id="316" class="Keyword">open</a> <a id="321" class="Keyword">import</a> <a id="328" href="Data.Rational.Base.html" class="Module">Data.Rational.Base</a>
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="376" class="Keyword">using</a> <a id="382" class="Symbol">(</a><a id="383" href="Agda.Builtin.String.html#318" class="Postulate">String</a><a id="389" class="Symbol">;</a> <a id="391" href="Data.String.Base.html#2375" class="Function Operator">_++_</a><a id="395" class="Symbol">)</a>
+
+<a id="show"></a><a id="398" href="Data.Rational.Show.html#398" class="Function">show</a> <a id="403" class="Symbol">:</a> <a id="405" href="Data.Rational.Base.html#1892" class="Record">ℚ</a> <a id="407" class="Symbol">→</a> <a id="409" href="Agda.Builtin.String.html#318" class="Postulate">String</a>
+<a id="416" href="Data.Rational.Show.html#398" class="Function">show</a> <a id="421" href="Data.Rational.Show.html#421" class="Bound">p</a> <a id="423" class="Symbol">=</a> <a id="425" href="Data.Integer.Show.html#615" class="Function">ℤ.show</a> <a id="432" class="Symbol">(</a><a id="433" href="Data.Rational.Base.html#2200" class="Field Operator">↥</a> <a id="435" href="Data.Rational.Show.html#421" class="Bound">p</a><a id="436" class="Symbol">)</a> <a id="438" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="441" class="String">&quot;/&quot;</a> <a id="445" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="448" href="Data.Integer.Show.html#615" class="Function">ℤ.show</a> <a id="455" class="Symbol">(</a><a id="456" href="Data.Rational.Base.html#2223" class="Function Operator">↧</a> <a id="458" href="Data.Rational.Show.html#421" class="Bound">p</a><a id="459" class="Symbol">)</a>
+</pre></body></html>

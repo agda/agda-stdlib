@@ -1,0 +1,776 @@
+<h1>Version 2.4</h1>
+<p>The library has been tested using Agda 2.8.0.</p>
+<h2>Highlights</h2>
+<h2>Bug-fixes</h2>
+<ul>
+<li>
+<p>Fix a type error in <code>README.Data.Fin.Relation.Unary.Top</code> within the
+definition of <code>&gt;-weakInduction</code>.</p>
+</li>
+<li>
+<p>Fix a typo in <code>Algebra.Morphism.Construct.DirectProduct</code>.</p>
+</li>
+<li>
+<p>Fix a typo in <code>Data.Rational.Properties</code>: <code>nonPos*nonPos⇒nonPos</code>
+erroneously named, corrected to <code>nonPos*nonPos⇒nonNeg</code>.</p>
+</li>
+<li>
+<p>Fix a typo in <code>Function.Construct.Constant</code>.</p>
+</li>
+<li>
+<p>Fix the warning for <code>Data.List.Base.all</code> referencing the wrong
+replacement <code>Data.Nat.ListAction.all</code>, corrected to
+<code>Data.Bool.ListAction.all</code>.</p>
+</li>
+</ul>
+<h2>Non-backwards compatible changes</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2>Minor improvements</h2>
+<ul>
+<li>
+<p>The function <code>Data.Irrelevant._&gt;&gt;=_</code> now has the correct type for a
+'bind' operation of a <code>Monad</code>, by moving the property
+<code>irrelevant-recompute</code> from <code>Relation.Nullary.Recomputable</code> to
+<code>Data.Irrelevant</code> as <code>recompute</code>, and re-exporting it from the
+former module with the old name.</p>
+</li>
+<li>
+<p>The function <code>Data.Nat.LCG.step</code> is now a manifest field of the
+record type <code>Generator</code>, as per the discussion on #2936 and upstream
+issues/PRs. This is consistent with a minimal API for such LCGs.</p>
+</li>
+<li>
+<p>The types of <code>Data.Vec.Base.{truncate|padRight}</code> have been weakened
+so that the argument of type <code>m ≤ n</code> is marked as irrelevant. This
+should be backwards compatible, but does change the intensional
+behaviour of these functions to be more eager, because no longer
+blocking on pattern matching on that argument. Corresponding changes
+have been made to the types of their properties (and their
+proofs). In particular, <code>truncate-irrelevant</code> is now deprecated,
+because definitionally trivial.</p>
+</li>
+<li>
+<p>The function <code>Data.Vec.Functional.map</code> is now marked with the
+<code>INLINE</code> pragma.  This is consistent with the inlining of
+<code>Function.Base._∘_</code> for which it is an alias, and should be
+backwards compatible, but does improve the behaviour of the
+termination checker for some <code>Vector</code>-defined operations.</p>
+</li>
+<li>
+<p>The type of <code>Relation.Nullary.Negation.Core.contradiction-irr</code> has
+been further weakened so that the negated hypothesis <code>¬ A</code> is marked
+as irrelevant. This is safe to do, in view of
+<code>Relation.Nullary.Recomputable.Properties.¬-recompute</code>.
+Furthermore, because the <em>eager</em> insertion of implicit arguments
+during type inference interacts badly with <code>contradiction</code>, we
+introduce an explicit name <code>contradiction′</code> for its <code>flip</code>ped
+version.</p>
+</li>
+<li>
+<p>More generally, <code>Relation.Nullary.Negation.Core</code> has been
+reorganised into two parts: the first concerns definitions and
+properties of negation considered as a connective in <em>minimal
+logic</em>; the second making actual use of <em>ex falso</em> in the form of
+<code>Data.Empty.⊥-elim</code>.</p>
+</li>
+<li>
+<p>Refactored usages of <code>+-∸-assoc 1</code> to <code>∸-suc</code> in: <code>agda README.Data.Fin.Relation.Unary.Top Algebra.Properties.Semiring.Binomial Data.Fin.Subset.Properties Data.Nat.Binary.Subtraction Data.Nat.Combinatorics </code> Moreover,
+these have been strengthened to take an irrelevant <code>m ≤ n</code> argument.</p>
+</li>
+<li>
+<p>In <code>Data.Vec.Relation.Binary.Pointwise.{Inductive,Extensional}</code>, the
+types of <code>refl</code>, <code>sym</code>, and <code>trans</code> have been weakened to allow
+relations of different levels to be used.</p>
+</li>
+<li>
+<p>The original <code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties</code>
+has been split up into smaller
+<code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.*</code>  modules
+that are reexported by <code>Properties</code>.</p>
+</li>
+</ul>
+<h2>Deprecated modules</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2>Deprecated names</h2>
+<ul>
+<li>
+<p>In <code>Algebra.Properties.CommutativeSemigroup</code>:</p>
+<pre><code class="language-agda">interchange  ↦   medial
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Properties.Monoid</code>:</p>
+<pre><code class="language-agda">ε-comm  ↦   ε-central
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Char.Properties</code>:</p>
+<pre><code class="language-agda">_==_ ↦ _≡ᵇ_
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Fin.Properties</code>:</p>
+<pre><code class="language-agda">¬∀⟶∃¬-smallest  ↦   ¬∀⇒∃¬-smallest
+¬∀⟶∃¬-          ↦   ¬∀⇒∃¬
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Irrelevant</code>:</p>
+<pre><code class="language-agda">λ∙⁻       : (.A → B) → Irrelevant A → B
+λ∙⁺       : (Irrelevant A → B) → .A → B
+recompute : Recomputable (Irrelevant A)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.List.Fresh.Membership.Setoid.Properties</code>:</p>
+<pre><code class="language-agda">≈-subst-∈   ↦   ∈-resp-≈
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.List.Fresh.Relation.Unary.Any</code>:</p>
+<pre><code class="language-agda">witness   ↦   satisfiable
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Rational.Properties</code>:</p>
+<pre><code class="language-agda">nonPos*nonPos⇒nonPos  ↦  nonPos*nonPos⇒nonNeg
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert</code>:</p>
+<pre><code class="language-agda">Any-insertWith-nothing  ↦  insertWith-nothing
+Any-insertWith-just     ↦  insertWith-just
+Any-insert-nothing      ↦  insert-nothing
+Any-insert-just         ↦  insert-just
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Vec.Properties</code>:</p>
+<pre><code class="language-agda">truncate-irrelevant  ↦  Relation.Binary.PropositionalEquality.Core.refl
+</code></pre>
+</li>
+<li>
+<p>In <code>Function.Base</code>:</p>
+<pre><code class="language-agda">λ∙ : (.(x : A) → B x) → ((x : A) → B x)
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Construct.Intersection</code>:</p>
+<pre><code class="language-agda">decidable     ↦   _∩?_
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Construct.Union</code>:</p>
+<pre><code class="language-agda">decidable     ↦   _∪?_
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Nullary.Decidable.Core</code>:</p>
+<pre><code class="language-agda">⊤-dec     ↦   ⊤?
+⊥-dec     ↦   ⊥?
+_×-dec_  ↦   _×?_
+_⊎-dec_  ↦   _⊎?_
+_→-dec_  ↦   _→?_
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Nullary.Negation</code>:</p>
+<pre><code class="language-agda">∃⟶¬∀¬  ↦   ∃⇒¬∀¬
+∀⟶¬∃¬  ↦   ∀⇒¬∃¬
+¬∃⟶∀¬  ↦   ¬∃⇒∀¬
+∀¬⟶¬∃  ↦   ∀¬⇒¬∃
+∃¬⟶¬∀  ↦   ∃¬⇒¬∀
+</code></pre>
+</li>
+</ul>
+<h2>New modules</h2>
+<ul>
+<li>
+<p><code>Algebra.Construct.Centre.X</code> for the definition of the centre of an
+algebra, where <code>X = {Semigroup|Monoid|Group|Ring}</code>, based on an
+underlying type defined in <code>Algebra.Construct.Centre.Centre</code>.</p>
+</li>
+<li>
+<p><code>Algebra.Construct.Sub.Group</code> for the definition of subgroups.</p>
+</li>
+<li>
+<p><code>Algebra.Module.Construct.Sub.Bimodule</code> for the definition of
+subbimodules.</p>
+</li>
+<li>
+<p><code>Algebra.Properties.BooleanRing</code>.</p>
+</li>
+<li>
+<p><code>Algebra.Properties.BooleanSemiring</code>.</p>
+</li>
+<li>
+<p><code>Algebra.Properties.CommutativeRing</code>.</p>
+</li>
+<li>
+<p><code>Algebra.Properties.Semiring</code>.</p>
+</li>
+<li>
+<p>A variation on <code>Fin</code> seen as a <code>Nat</code> refinement, with better runtime representation and performance.</p>
+<pre><code class="language-agda">Data.Nat.Bounded.Base
+</code></pre>
+</li>
+<li>
+<p><code>Data.List.Fresh.Membership.DecSetoid</code>.</p>
+</li>
+<li>
+<p>Various additions over non-empty lists:</p>
+<pre><code class="language-agda">Data.List.NonEmpty.Relation.Binary.Pointwise
+Data.List.NonEmpty.Relation.Unary.Any
+Data.List.NonEmpty.Membership.Propositional
+Data.List.NonEmpty.Membership.Setoid
+</code></pre>
+</li>
+<li>
+<p><code>Data.List.Relation.Binary.Permutation.Algorithmic{.Properties}</code> for
+the Choudhury and Fiore definition of permutation, and its
+equivalence with <code>Declarative</code> below.</p>
+</li>
+<li>
+<p><code>Data.List.Relation.Binary.Permutation.Declarative{.Properties}</code> for
+the least congruence on <code>List</code> making <code>_++_</code> commutative, and its
+equivalence with the <code>Setoid</code> definition.</p>
+</li>
+<li>
+<p>Added tactic ring solvers for rational numbers (issue #1879):</p>
+<pre><code class="language-agda">Data.Rational.Tactic.RingSolver
+Data.Rational.Unnormalised.Tactic.RingSolver
+</code></pre>
+</li>
+<li>
+<p>Refactoring of <code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties</code> as smaller modules:</p>
+<pre><code class="language-agda">Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup
+Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast
+Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete
+Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail
+Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert
+Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join
+Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas
+Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton
+</code></pre>
+</li>
+<li>
+<p><code>Effect.Monad.Random</code> and <code>Effect.Monad.Random.Instances</code> for an
+mtl-style randomness monad constraint.</p>
+</li>
+<li>
+<p><code>Relation.Binary.Morphism.Construct.On</code>: given a relation <code>_∼_</code> on
+<code>B</code>, and a function <code>f : A → B</code>, construct the canonical
+<code>IsRelMonomorphism</code> between <code>_∼_ on f</code> and <code>_∼_</code>, witnessed by <code>f</code>
+itself.</p>
+</li>
+</ul>
+<h2>Additions to existing modules</h2>
+<ul>
+<li>
+<p>In <code>Algebra.Bundles</code>:</p>
+<pre><code class="language-agda">record BooleanSemiring _ _ : Set _
+record BooleanRing _ _     : Set _
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Consequences.Propositional</code>:</p>
+<pre><code class="language-agda">binomial-expansion : Associative _∙_ → _◦_ DistributesOver _∙_ →
+  ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≡ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+identity⇒central   : Identity e _∙_ → Central _∙_ e
+zero⇒central       : Zero e _∙_ → Central _∙_ e
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Consequences.Setoid</code>:</p>
+<pre><code class="language-agda">sel⇒idem : Selective _∙_ → Idempotent _∙_
+binomial-expansion : Congruent₂ _∙_  → Associative _∙_ → _◦_ DistributesOver _∙_ →
+  ∀ w x y z → ((w ∙ x) ◦ (y ∙ z)) ≈ ((((w ◦ y) ∙ (w ◦ z)) ∙ (x ◦ y)) ∙ (x ◦ z))
+identity⇒central   : Identity e _∙_ → Central _∙_ e
+zero⇒central       : Zero e _∙_ → Central _∙_ e
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Definitions</code>:</p>
+<pre><code class="language-agda">Central : Op₂ A → A → Set _
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Definitions.RawMonoid</code> action of a Boolean on a RawMonoid:</p>
+<pre><code class="language-agda">_?&gt;₀_  : Bool → Carrier → Carrier
+_?&gt;_∙_ : Bool → Carrier → Carrier → Carrier
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Lattice.Properties.BooleanAlgebra.XorRing</code>:</p>
+<pre><code class="language-agda">⊕-∧-isBooleanRing : IsBooleanRing _⊕_ _∧_ id ⊥ ⊤
+⊕-∧-booleanRing   : BooleanRing _ _
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Module.Properties.LeftModule</code>:</p>
+<pre><code class="language-agda">-1#*ₗm≈-ᴹm : ∀ m → - 1# *ₗ m ≈ᴹ -ᴹ m
+-‿distrib-*ₗ : ∀ r m → - r *ₗ m ≈ᴹ -ᴹ (r *ₗ m)
+-ᴹ‿distrib-*ₗ : ∀ r m → r *ₗ (-ᴹ m) ≈ᴹ -ᴹ (r *ₗ m)
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Module.Properties.RightModule</code>:</p>
+<pre><code class="language-agda">-1#*ₗm≈-ᴹm : m*ᵣ-1#≈-ᴹm : ∀ m → m *ᵣ (- 1#) ≈ᴹ -ᴹ m
+-‿distrib-*ᵣ : ∀ m r → m *ᵣ (- r) ≈ᴹ -ᴹ (m *ᵣ r)
+-ᴹ‿distrib-*ᵣ : ∀ m r → (-ᴹ m) *ᵣ r ≈ᴹ -ᴹ (m *ᵣ r)
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Properties.Monoid.Mult</code> properties of the Boolean action on a RawMonoid:</p>
+<pre><code class="language-agda">?&gt;₀-homo-true  : true ?&gt;₀ x ≈ x
+?&gt;₀-assocˡ     : b ?&gt;₀ b′ ?&gt;₀ x ≈ (b ∧ b′) ?&gt;₀ x
+b?&gt;x∙y≈b?&gt;₀x+y : b ?&gt; x ∙ y ≈ (b ?&gt;₀ x) + y
+b?&gt;₀x≈b?&gt;x∙0   : b ?&gt;₀ x ≈ b ?&gt; x ∙ 0#
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Properties.RingWithoutOne</code>:</p>
+<pre><code class="language-agda">[-x][-y]≈xy : ∀ x y → - x * - y ≈ x * y
+</code></pre>
+</li>
+<li>
+<p>In <code>Algebra.Structures</code>: <code>agda record IsBooleanSemiring + * 0# 1# : Set _ record IsBooleanRing + * - 0# 1# : Set _ </code> NB. the
+latter is based on <code>IsCommutativeRing</code>, with the former on
+<code>IsSemiring</code>.</p>
+</li>
+<li>
+<p>In <code>Data.Bool.Properties</code>:</p>
+<pre><code class="language-agda">¬T-≡ : (¬ T x) ⇔ x ≡ false
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Fin.Permutation.Components</code>:</p>
+<pre><code class="language-agda">transpose[i,i,j]≡j  : (i j : Fin n) → transpose i i j ≡ j
+transpose[i,j,j]≡i  : (i j : Fin n) → transpose i j j ≡ i
+transpose[i,j,i]≡j  : (i j : Fin n) → transpose i j i ≡ j
+transpose-transpose : transpose i j k ≡ l → transpose j i l ≡ k
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Fin.Properties</code>:</p>
+<pre><code class="language-agda">≡-irrelevant : Irrelevant {A = Fin n} _≡_
+≟-≡          : (eq : i ≡ j) → (i ≟ j) ≡ yes eq
+≟-≡-refl     : (i : Fin n) → (i ≟ i) ≡ yes refl
+≟-≢          : (i≢j : i ≢ j) → (i ≟ j) ≡ no i≢j
+inject-&lt;     : inject j &lt; i
+
+record Least⟨_⟩ (P : Pred (Fin n) p) : Set p where
+  constructor least
+  field
+    witness : Fin n
+    example : P witness
+    minimal : ∀ {j} → .(j &lt; witness) → ¬ P j
+
+search-least⟨_⟩  : Decidable P → Π[ ∁ P ] ⊎ Least⟨ P ⟩
+search-least⟨¬_⟩ : Decidable P → Π[ P ] ⊎ Least⟨ ∁ P ⟩
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Integer.Base</code>:</p>
+<pre><code class="language-agda">_&lt;ᵇ_ : ℤ → ℤ → Bool
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Integer.Properties</code>:</p>
+<pre><code class="language-agda">&lt;ᵇ⇒&lt; : T (i &lt;ᵇ j) → i &lt; j
+&lt;⇒&lt;ᵇ : i &lt; j → T (i &lt;ᵇ j)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.List.Fresh</code>:</p>
+<pre><code class="language-agda">_#[_]_ : A → (R : Rel A r) → Pred (List# A R) _
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.List.Fresh.Membership.Setoid.Properties</code>:</p>
+<pre><code class="language-agda">∉-All[x≉] : x ∉ xs → All (x ≉_) xs
+All[x≉]-∉ : All (x ≉_) xs → x ∉ xs
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.List.NonEmpty.Relation.Unary.All</code>:</p>
+<pre><code class="language-agda">map : P ⊆ Q → All P xs → All Q xs
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.List.Properties</code>:</p>
+<pre><code class="language-agda">filter-map  : filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+filter-∩    : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Nat.Divisibility</code>:</p>
+<pre><code class="language-agda">∣m+n∣n⇒∣m : d ∣ m + n → d ∣ n → d ∣ m
+m∣n⇒m^o∣n^o : ∀ o → m ∣ n → m ^ o ∣ n ^ o
+n≤o⇒m^n∣m^o : ∀ m → .(n ≤ o) → m ^ n ∣ m ^ o
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Nat.DivMod</code>:</p>
+<pre><code class="language-agda">infix 4 _≡%[_]_ : ∀ m o .{{_ : NonZero o}} n → Set _
+m ≡%[ o ] n = m % o ≡ n % o
+
+infix 4 _≲%[_]_ _≅%[_]_ : ∀ m o n → Set _
+m ≲%[ o ] n = ∃ λ k → n ≡ m + k * o
+m ≅%[ o ] n = SymClosure _≲%[ o ]_ m n
+
+≲%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≲%[ o ]_ ⇒ _≡%[ o ]_
+≅%[o]⇒≡[o]% : .{{_ : NonZero o}} → _≅%[ o ]_ ⇒ _≡%[ o ]_
+≡[o]%⇒≲%[o] : .{{_ : NonZero o}} → m ≡%[ o ] n → m ≤ n → m ≲%[ o ] n
+≡[o]%⇒≅%[o] : .{{_ : NonZero o}} → _≡%[ o ]_ ⇒ _≅%[ o ]_
+
+≡%-suc-injective : .{{_ : NonZero o}} → Injective _≡%[ o ]_ _≡%[ o ]_ suc
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Nat.Logarithm</code></p>
+<pre><code class="language-agda">2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
+n≤2^⌈log₂n⌉ : ∀ n → n ≤ 2 ^ ⌈log₂ n ⌉
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Nat.Logarithm.Core</code></p>
+<pre><code class="language-agda">2^⌊log2n⌋≤n : ∀ n .{{_ : NonZero n}} → (acc : Acc _&lt;_ n) → 2 ^ (⌊log2⌋ n acc) ≤ n
+n≤2^⌈log2n⌉ : ∀ n → (acc : Acc _&lt;_ n) → n ≤ 2 ^ (⌈log2⌉ n acc)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Nat.ListAction.Properties</code></p>
+<pre><code class="language-agda">*-distribˡ-sum : ∀ m ns → m * sum ns ≡ sum (map (m *_) ns)
+*-distribʳ-sum : ∀ m ns → sum ns * m ≡ sum (map (_* m) ns)
+^-distribʳ-product : ∀ m ns → product ns ^ m ≡ product (map (_^ m) ns)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Nat.Properties</code>:</p>
+<pre><code class="language-agda">≟-≢   : (m≢n : m ≢ n) → (m ≟ n) ≡ no m≢n
+∸-suc : .(m ≤ n) → suc n ∸ m ≡ suc (n ∸ m)
+^-distribʳ-* : ∀ m n o → (n * o) ^ m ≡ n ^ m * o ^ m
+2*suc[n]≡2+n+n : ∀ n → 2 * (suc n) ≡ 2 + (n + n)
+m∸n+o≡m∸[n∸o] : ∀ {m n o} → .(n ≤ m) → .(o ≤ n) → (m ∸ n) + o ≡ m ∸ (n ∸ o)
+m∸n≤m⊔n : ∀ m n → m ∸ n ≤ m ⊔ n
+m⊔n∸[m∸n]≡n : ∀ m n → m ⊔ n ∸ (m ∸ n) ≡ n
+m⊔n≡m∸n+n : ∀ m n → m ⊔ n ≡ m ∸ n + n
+∣m-n∣≡m⊔n∸m⊓n : ∀ m n → ∣ m - n ∣ ≡ m ⊔ n ∸ m ⊓ n
+&lt;″⇒&lt; : _&lt;″_ ⇒ _&lt;_
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Product.Properties</code>:</p>
+<pre><code class="language-agda">swap-↔ : (A × B) ↔ (B × A)
+_,′-↔_ : A ↔ C → B ↔ D → (A × B) ↔ (C × D)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Rational.Base</code>:</p>
+<pre><code>_&lt;ᵇ_ : ℚ → ℚ → Bool
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Rational.Properties</code>:</p>
+<pre><code class="language-agda">&lt;ᵇ⇒&lt;          : T (p &lt;ᵇ q) → p &lt; q
+&lt;⇒&lt;ᵇ          : p &lt; q → T (p &lt;ᵇ q)
+≤⇒≯           : _≤_ ⇒ _≯_
+p*q≡0⇒p≡0∨q≡0 : p * q ≡ 0ℚ → p ≡ 0ℚ ⊎ q ≡ 0ℚ
+p*q≢0⇒p≢0     : p * q ≢ 0ℚ → p ≢ 0ℚ
+p*q≢0⇒q≢0     : p * q ≢ 0ℚ → q ≢ 0ℚ
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Rational.Show</code>:</p>
+<pre><code class="language-agda">atPrecision : (n : ℕ) → ℚ → ℤ × Vec ℕ n
+showAtPrecision : ℕ → ℚ → String
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Rational.Unnormalised.Base</code>:</p>
+<pre><code>_&lt;ᵇ_ : ℚᵘ → ℚᵘ → Bool
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Rational.Unnormalised.Properties</code>:</p>
+<pre><code class="language-agda">&lt;ᵇ⇒&lt;          : T (p &lt;ᵇ q) → p &lt; q
+&lt;⇒&lt;ᵇ          : p &lt; q → T (p &lt;ᵇ q)
+p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+p*q≄0⇒p≄0     : p * q ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+p*q≢0⇒q≢0     : p * q ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Rational.Unnormalised.Show</code>:</p>
+<pre><code class="language-agda">showAtPrecision : ℕ → ℚᵘ → String
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Height</code>:</p>
+<pre><code class="language-agda">0∼⊔ : 0 ∼ j ⊔ m → j ≡ m
+∼0⊔ : i ∼ 0 ⊔ m → i ≡ m
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Indexed</code>:</p>
+<pre><code class="language-agda">Tree⁺ Tree⁻ : (V : Value v) (l u : Key⁺) (h : ℕ) → Set _
+pattern leaf⁻ l&lt;u = _ , leaf l&lt;u
+pattern node⁰ʳ k₁ t₁ k₂ t₂ t₃ = node k₁ t₁ (node k₂ t₂ t₃ ∼0) ∼0
+pattern node⁰ˡ k₁ k₂ t₁ t₂ t₃ = node k₁ (node k₂ t₁ t₂ ∼0) t₃ ∼0
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Indexed.Relation.Unary.Any</code>:</p>
+<pre><code class="language-agda">infix 5 _#[_]_ _#_
+_#[_]_ : (k : Key) (P : Pred (K&amp; V) p) → Pred (Any P t) ℓ₁
+_#_    : Key → Pred (Any P t) ℓ₁
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Cast</code>:</p>
+<pre><code class="language-agda">castʳ⁺ : Any P lm → Any P (castʳ lm m&lt;u)
+castʳ⁻ : Any P (castʳ lm m&lt;u) → Any P lm
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Delete</code>:</p>
+<pre><code class="language-agda">delete⁺ : (t : Tree V l u h) (seg : l &lt; k &lt; u) →
+          (p : Any P t) → lookupKey p ≉ k →
+          Any P (proj₂ (delete k t seg))
+delete-tree⁻ : (t : Tree V l u h) (seg : l &lt; k &lt; u) →
+               Any P (proj₂ (delete k t seg)) →
+               Any P t
+delete-key-∈⁻ : (t : Tree V l u h) (seg : l &lt; k &lt; u) →
+                {kp : Key} →
+                Any ((kp ≈_) ∘′ key) (proj₂ (delete k t seg)) →
+                kp ≉ k
+delete-key⁻ : (t : Tree V l u h) (seg : l &lt; k &lt; u) →
+              (p : Any P (proj₂ (delete k t seg))) →
+              Any.lookupKey p ≉ k
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.HeadTail</code>:</p>
+<pre><code class="language-agda">headTail⁺ : (t : Tree V l u (1 + h)) →
+            let kv , _ , _ , t⁻ = headTail t in
+            Any P t → P kv ⊎ Any P t⁻
+headTail-head⁻ : (t : Tree V l u (suc h)) →
+                 P (proj₁ (headTail t)) → Any P t
+headTail-tail⁻ : (t : Tree V l u (1 + h)) →
+                 let _ , _ , _ , t⁻ = headTail t in
+                 Any P t⁻ → Any P t
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas</code>:</p>
+<pre><code class="language-agda">joinˡ⁻-here⁺ : (kv : K&amp; V) →
+               (l : Tree⁻ V l [ kv .key ] hˡ) →
+               (r : Tree V [ kv .key ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               P kv → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+joinˡ⁻-left⁺ : (kv : K&amp; V) →
+               (l : Tree⁻ V l [ kv .key ] hˡ) →
+               (r : Tree V [ kv .key ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               Any P (proj₂ l) → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+joinˡ⁻-right⁺ : (kv : K&amp; V) →
+                (l : Tree⁻ V l [ kv .key ] hˡ) →
+                (r : Tree V [ kv .key ] u hʳ) →
+                (bal : hˡ ∼ hʳ ⊔ h) →
+                Any P r → Any P (proj₂ (joinˡ⁻ hˡ kv l r bal))
+joinˡ⁻⁻ : (kv : K&amp; V) →
+          (l : Tree⁻ V l [ kv .key ] hˡ) →
+          (r : Tree V [ kv .key ] u hʳ) →
+          (bal : hˡ ∼ hʳ ⊔ h) →
+          Any P (proj₂ (joinˡ⁻ hˡ kv l r bal)) →
+          P kv ⊎ Any P (proj₂ l) ⊎ Any P r
+joinʳ⁻-here⁺ : (kv : K&amp; V) →
+               (l : Tree V l [ kv .key ] hˡ) →
+               (r : Tree⁻ V [ kv .key ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               P kv → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+joinʳ⁻-left⁺ : (kv : K&amp; V) →
+               (l : Tree V l [ kv .key ] hˡ) →
+               (r : Tree⁻ V [ kv .key ] u hʳ) →
+               (bal : hˡ ∼ hʳ ⊔ h) →
+               Any P l → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+joinʳ⁻-right⁺ : (kv : K&amp; V) →
+                (l : Tree V l [ kv .key ] hˡ) →
+                (r : Tree⁻ V [ kv .key ] u hʳ) →
+                (bal : hˡ ∼ hʳ ⊔ h) →
+                Any P (proj₂ r) → Any P (proj₂ (joinʳ⁻ hʳ kv l r bal))
+joinʳ⁻⁻ : (kv : K&amp; V) →
+          (l : Tree V l [ kv .key ] hˡ) →
+          (r : Tree⁻ V [ kv .key ] u hʳ) →
+          (bal : hˡ ∼ hʳ ⊔ h) →
+          Any P (proj₂ (joinʳ⁻ hʳ kv l r bal)) →
+          P kv ⊎ Any P l ⊎ Any P (proj₂ r)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Vec.Properties</code>:</p>
+<pre><code class="language-agda">map-removeAt : ∀ (f : A → B) (xs : Vec A (suc n)) (i : Fin (suc n)) →
+             map f (removeAt xs i) ≡ removeAt (map f xs) i
+
+updateAt-take : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                updateAt (take m xs) i f ≡ take m (updateAt xs
+                (inject≤ i (m≤m+n m n)) f)
+
+truncate-zipWith : (f : A → B → C) .(m≤n : m ≤ n) (xs : Vec A n)
+                   (ys : Vec B n) → truncate m≤n (zipWith f xs ys) ≡
+                   zipWith f (truncate m≤n xs) (truncate m≤n ys)
+
+truncate-zipWith-truncate : (f : A → B → C) .(m≤n : m ≤ n) .(n≤o : n
+                            ≤ o) (xs : Vec A o) (ys : Vec B n) →
+                            truncate m≤n (zipWith f (truncate n≤o
+                            xs) ys) ≡ zipWith f (truncate (≤-trans
+                            m≤n n≤o) xs) (truncate m≤n ys)
+
+truncate-updateAt : .(m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) (f : A
+                    → A) → updateAt (truncate m≤n xs) i f ≡ truncate
+                    m≤n (updateAt xs (inject≤ i m≤n) f)
+
+updateAt-truncate : (xs : Vec A (m + n)) (i : Fin m) (f : A → A) →
+                    updateAt (truncate (m≤m+n m n) xs) i f ≡
+                    truncate (m≤m+n m n) (updateAt xs (inject≤ i
+                    (m≤m+n m n)) f)
+
+map-truncate : (f : A → B) .(m≤n : m ≤ n) (xs : Vec A n) → map f
+               (truncate m≤n xs) ≡ truncate m≤n (map f xs)
+
+padRight-lookup : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) (i : Fin m)
+                  → lookup (padRight m≤n a xs) (inject≤ i m≤n) ≡
+                  lookup xs i
+
+padRight-map : (f : A → B) .(m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+               map f (padRight m≤n a xs) ≡ padRight m≤n (f a) (map f
+               xs)
+
+padRight-zipWith : (f : A → B → C) .(m≤n : m ≤ n) (a : A) (b : B)
+                   (xs : Vec A m) (ys : Vec B m) → zipWith f
+                   (padRight m≤n a xs) (padRight m≤n b ys) ≡
+                   padRight m≤n (f a b) (zipWith f xs ys)
+
+padRight-zipWith₁ : (f : A → B → C) .(o≤m : o ≤ m) .(m≤n : m ≤ n)
+                    (a : A) (b : B) (xs : Vec A m) (ys : Vec B o) →
+                    zipWith f (padRight m≤n a xs) (padRight (≤-trans
+                    o≤m m≤n) b ys) ≡ padRight m≤n (f a b) (zipWith f
+                    xs (padRight o≤m b ys))
+
+padRight-take : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡
+                m + o) → take m (cast n≡m+o (padRight m≤n a xs)) ≡
+                xs
+
+padRight-drop : .(m≤n : m ≤ n) (a : A) (xs : Vec A m) .(n≡m+o : n ≡
+                m + o) → drop m (cast n≡m+o (padRight m≤n a xs)) ≡
+                replicate o a
+
+padRight-updateAt : .(m≤n : m ≤ n) (x : A) (xs : Vec A m) (f : A → A) (i : Fin m) →
+                    updateAt (padRight m≤n x xs) (inject≤ i m≤n) f ≡
+                    padRight m≤n x (updateAt xs i f)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Vec.Relation.Binary.Pointwise.Inductive</code></p>
+<pre><code class="language-agda">irrelevant : ∀ {_∼_ : REL A B ℓ} {n m} → Irrelevant _∼_ → Irrelevant (Pointwise _∼_ {n} {m})
+antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} →
+          Antisym P Q R → Antisym (Pointwise P {m}) (Pointwise Q {n}) (Pointwise R)
+</code></pre>
+</li>
+<li>
+<p>In <code>Data.Vec.Relation.Binary.Pointwise.Extensional</code></p>
+<pre><code class="language-agda">antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {n} →
+          Antisym P Q R → Antisym (Pointwise P {n}) (Pointwise Q) (Pointwise R)
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Construct.Add.Extrema.NonStrict</code>:</p>
+<pre><code class="language-agda">≤±-respˡ-≡ : _≤±_ Respectsˡ _≡_
+≤±-respʳ-≡ : _≤±_ Respectsʳ _≡_
+≤±-resp-≡ : _≤±_ Respects₂ _≡_
+≤±-respˡ-≈± : _≤_ Respectsˡ _≈_ → _≤±_ Respectsˡ _≈±_
+≤±-respʳ-≈± : _≤_ Respectsʳ _≈_ → _≤±_ Respectsʳ _≈±_
+≤±-resp-≈± : _≤_ Respects₂ _≈_ → _≤±_ Respects₂ _≈±_
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Construct.Add.Infimum.NonStrict</code>:</p>
+<pre><code class="language-agda">≤₋-respˡ-≡ : _≤₋_ Respectsˡ _≡_
+≤₋-respʳ-≡ : _≤₋_ Respectsʳ _≡_
+≤₋-resp-≡ : _≤₋_ Respects₂ _≡_
+≤₋-respˡ-≈₋ : _≤_ Respectsˡ _≈_ → _≤₋_ Respectsˡ _≈₋_
+≤₋-respʳ-≈₋ : _≤_ Respectsʳ _≈_ → _≤₋_ Respectsʳ _≈₋_
+≤₋-resp-≈₋ : _≤_ Respects₂ _≈_ → _≤₋_ Respects₂ _≈₋_
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Construct.Add.Extrema.Supremum.NonStrict</code>:</p>
+<pre><code class="language-agda">≤⁺-respˡ-≡ : _≤⁺_ Respectsˡ _≡_
+≤⁺-respʳ-≡ : _≤⁺_ Respectsʳ _≡_
+≤⁺-resp-≡ : _≤⁺_ Respects₂ _≡_
+≤⁺-respˡ-≈⁺ : _≤_ Respectsˡ _≈_ → _≤⁺_ Respectsˡ _≈⁺_
+≤⁺-respʳ-≈⁺ : _≤_ Respectsʳ _≈_ → _≤⁺_ Respectsʳ _≈⁺_
+≤⁺-resp-≈⁺ : _≤_ Respects₂ _≈_ → _≤⁺_ Respects₂ _≈⁺_
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Construct.Closure.Symmetric</code>:</p>
+<pre><code class="language-agda">hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
+       ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
+on⁺  : ((SymClosure R) on g) ⇒ SymClosure (R on g)
+on⁻  : SymClosure (R on g) ⇒ ((SymClosure R) on g)
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Properties.Setoid</code>:</p>
+<pre><code class="language-agda">¬[x≉x] : .(x ≉ x) → Whatever
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Binary.Propositional.Equality.Core</code>:</p>
+<pre><code class="language-agda">≢-irrefl : Irreflexive {A = A} _≡_ _≢_
+¬[x≢x] : .(x ≢ x) → Whatever
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Nullary.Negation.Core</code></p>
+<pre><code class="language-agda">¬¬-η           : A → ¬ ¬ A
+contradiction′ : ¬ A → A → Whatever
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Unary</code></p>
+<pre><code class="language-agda">⟨_⟩⊢_ : (A → B) → Pred A ℓ → Pred B _
+[_]⊢_ : (A → B) → Pred A ℓ → Pred B _
+</code></pre>
+</li>
+<li>
+<p>In <code>Relation.Unary.Properties</code></p>
+<pre><code class="language-agda">_map-⊢_   : P ⊆ Q → f ⊢ P ⊆ f ⊢ Q
+map-⟨_⟩⊢_ : P ⊆ Q → ⟨ f ⟩⊢ P ⊆ ⟨ f ⟩⊢ Q
+map-[_]⊢_ : P ⊆ Q → [ f ]⊢ P ⊆ [ f ]⊢ Q
+⟨_⟩⊢⁻_    : ⟨ f ⟩⊢ P ⊆ Q → P ⊆ f ⊢ Q
+⟨_⟩⊢⁺_    : P ⊆ f ⊢ Q → ⟨ f ⟩⊢ P ⊆ Q
+[_]⊢⁻_    : Q ⊆ [ f ]⊢ P → f ⊢ Q ⊆ P
+[_]⊢⁺_    : f ⊢ Q ⊆ P → Q ⊆ [ f ]⊢ P
+¬∃⟨P⟩⇒Π[∁P] : ¬ ∃⟨ P ⟩ → Π[ ∁ P ]
+¬∃⟨P⟩⇒∀[∁P] : ¬ ∃⟨ P ⟩ → ∀[ ∁ P ]
+∃⟨∁P⟩⇒¬Π[P] : ∃⟨ ∁ P ⟩ → ¬ Π[ P ]
+∃⟨∁P⟩⇒¬∀[P] : ∃⟨ ∁ P ⟩ → ¬ ∀[ P ]
+Π[∁P]⇒¬∃[P] : Π[ ∁ P ] → ¬ ∃⟨ P ⟩
+∀[∁P]⇒¬∃[P] : ∀[ ∁ P ] → ¬ ∃⟨ P ⟩
+</code></pre>
+</li>
+<li>
+<p>In <code>System.Random</code>:</p>
+<pre><code class="language-agda">randomIO : IO Bool
+randomRIO : RandomRIO {A = Bool} _≤_
+</code></pre>
+</li>
+</ul>

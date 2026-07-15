@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foreign.Haskell</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Type(s) used (only) when calling out to Haskell via the FFI</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Keyword">module</a> <a id="250" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="266" class="Keyword">where</a>
+
+<a id="273" class="Comment">-- A unit type.</a>
+
+<a id="290" class="Keyword">data</a> <a id="Unit"></a><a id="295" href="Foreign.Haskell.html#295" class="Datatype">Unit</a> <a id="300" class="Symbol">:</a> <a id="302" class="PrimitiveType">Set</a> <a id="306" class="Keyword">where</a>
+  <a id="Unit.unit"></a><a id="314" href="Foreign.Haskell.html#314" class="InductiveConstructor">unit</a> <a id="319" class="Symbol">:</a> <a id="321" href="Foreign.Haskell.html#295" class="Datatype">Unit</a>
+
+<a id="327" class="Symbol">{-#</a> <a id="331" class="Keyword">COMPILE</a> GHC <a id="343" href="Foreign.Haskell.html#295" class="Datatype">Unit</a> = data () (()) <a id="363" class="Symbol">#-}</a>
+<a id="367" class="Symbol">{-#</a> <a id="371" class="Keyword">COMPILE</a> UHC <a id="383" href="Foreign.Haskell.html#295" class="Datatype">Unit</a> = data __UNIT__ (__UNIT__) <a id="415" class="Symbol">#-}</a>
+</pre></body></html>

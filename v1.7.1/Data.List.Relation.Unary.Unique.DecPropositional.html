@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Unary.Unique.DecPropositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Lists made up entirely of unique elements (setoid equality)</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Pragma">--without-K</a> <a id="267" class="Pragma">--safe</a> <a id="274" class="Symbol">#-}</a>
+
+<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="307" class="Keyword">using</a> <a id="313" class="Symbol">(</a><a id="314" href="Relation.Binary.Bundles.html#1391" class="Record">DecSetoid</a><a id="323" class="Symbol">;</a> <a id="325" href="Relation.Binary.Definitions.html#4883" class="Function">DecidableEquality</a><a id="342" class="Symbol">)</a>
+<a id="344" class="Keyword">open</a> <a id="349" class="Keyword">import</a> <a id="356" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="394" class="Keyword">using</a> <a id="400" class="Symbol">(</a><a id="401" href="Relation.Binary.PropositionalEquality.Properties.html#4103" class="Function">decSetoid</a><a id="410" class="Symbol">)</a>
+<a id="412" class="Keyword">import</a> <a id="419" href="Data.List.Relation.Unary.AllPairs.html" class="Module">Data.List.Relation.Unary.AllPairs</a> <a id="453" class="Symbol">as</a> <a id="456" class="Module">AllPairs</a>
+<a id="465" class="Keyword">open</a> <a id="470" class="Keyword">import</a> <a id="477" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="492" class="Keyword">using</a> <a id="498" class="Symbol">(</a><a id="499" href="Relation.Unary.html#3536" class="Function">Decidable</a><a id="508" class="Symbol">)</a>
+<a id="510" class="Keyword">open</a> <a id="515" class="Keyword">import</a> <a id="522" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a> <a id="548" class="Keyword">using</a> <a id="554" class="Symbol">(</a><a id="555" href="Relation.Nullary.Negation.Core.html#1355" class="Function">¬?</a><a id="557" class="Symbol">)</a>
+
+<a id="560" class="Keyword">module</a> <a id="567" href="Data.List.Relation.Unary.Unique.DecPropositional.html" class="Module">Data.List.Relation.Unary.Unique.DecPropositional</a>
+  <a id="618" class="Symbol">{</a><a id="619" href="Data.List.Relation.Unary.Unique.DecPropositional.html#619" class="Bound">a</a><a id="620" class="Symbol">}</a> <a id="622" class="Symbol">{</a><a id="623" href="Data.List.Relation.Unary.Unique.DecPropositional.html#623" class="Bound">A</a> <a id="625" class="Symbol">:</a> <a id="627" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="631" href="Data.List.Relation.Unary.Unique.DecPropositional.html#619" class="Bound">a</a><a id="632" class="Symbol">}</a> <a id="634" class="Symbol">(</a><a id="635" href="Data.List.Relation.Unary.Unique.DecPropositional.html#635" class="Bound Operator">_≟_</a> <a id="639" class="Symbol">:</a> <a id="641" href="Relation.Binary.Definitions.html#4883" class="Function">DecidableEquality</a> <a id="659" href="Data.List.Relation.Unary.Unique.DecPropositional.html#623" class="Bound">A</a><a id="660" class="Symbol">)</a> <a id="662" class="Keyword">where</a>
+
+<a id="669" class="Comment">------------------------------------------------------------------------</a>
+<a id="742" class="Comment">-- Re-export setoid definition</a>
+
+<a id="774" class="Keyword">open</a> <a id="779" class="Keyword">import</a> <a id="786" href="Data.List.Relation.Unary.Unique.DecSetoid.html" class="Module">Data.List.Relation.Unary.Unique.DecSetoid</a> <a id="828" class="Symbol">(</a><a id="829" href="Relation.Binary.PropositionalEquality.Properties.html#4103" class="Function">decSetoid</a> <a id="839" href="Data.List.Relation.Unary.Unique.DecPropositional.html#635" class="Bound Operator">_≟_</a><a id="842" class="Symbol">)</a> <a id="844" class="Keyword">public</a>
+</pre></body></html>

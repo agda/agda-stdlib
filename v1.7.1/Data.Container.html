@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Container</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Containers, based on the work of Abbott and others</a>
+<a id="160" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="234" class="Symbol">{-#</a> <a id="238" class="Keyword">OPTIONS</a> <a id="246" class="Pragma">--without-K</a> <a id="258" class="Pragma">--safe</a> <a id="265" class="Symbol">#-}</a>
+
+<a id="270" class="Keyword">open</a> <a id="275" class="Keyword">import</a> <a id="282" href="Level.html" class="Module">Level</a> <a id="288" class="Keyword">using</a> <a id="294" class="Symbol">(</a><a id="295" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="300" class="Symbol">;</a> <a id="302" href="Agda.Primitive.html#810" class="Primitive Operator">_⊔_</a><a id="305" class="Symbol">)</a>
+<a id="307" class="Keyword">open</a> <a id="312" class="Keyword">import</a> <a id="319" href="Data.W.html" class="Module">Data.W</a> <a id="326" class="Keyword">using</a> <a id="332" class="Symbol">(</a><a id="333" href="Data.W.html#755" class="Datatype">W</a><a id="334" class="Symbol">)</a>
+
+<a id="337" class="Keyword">module</a> <a id="344" href="Data.Container.html" class="Module">Data.Container</a> <a id="359" class="Keyword">where</a>
+
+<a id="366" class="Comment">------------------------------------------------------------------------</a>
+<a id="439" class="Comment">-- Re-exporting content to maintain backwards compatibility</a>
+
+<a id="500" class="Keyword">open</a> <a id="505" class="Keyword">import</a> <a id="512" href="Data.Container.Core.html" class="Module">Data.Container.Core</a> <a id="532" class="Keyword">public</a>
+<a id="539" class="Keyword">open</a> <a id="544" class="Keyword">import</a> <a id="551" href="Data.Container.Relation.Unary.Any.html" class="Module">Data.Container.Relation.Unary.Any</a>
+  <a id="587" class="Keyword">using</a> <a id="593" class="Symbol">(</a><a id="594" href="Data.Container.Relation.Unary.Any.html#531" class="Record">◇</a><a id="595" class="Symbol">)</a> <a id="597" class="Keyword">renaming</a> <a id="606" class="Symbol">(</a><a id="607" href="Data.Container.Relation.Unary.Any.html#840" class="Function">map</a> <a id="611" class="Symbol">to</a> <a id="614" class="Function">◇-map</a><a id="619" class="Symbol">)</a> <a id="621" class="Keyword">public</a>
+<a id="628" class="Keyword">open</a> <a id="633" class="Keyword">import</a> <a id="640" href="Data.Container.Relation.Unary.All.html" class="Module">Data.Container.Relation.Unary.All</a>
+  <a id="676" class="Keyword">using</a> <a id="682" class="Symbol">(</a><a id="683" href="Data.Container.Relation.Unary.All.html#543" class="Record">□</a><a id="684" class="Symbol">)</a> <a id="686" class="Keyword">renaming</a> <a id="695" class="Symbol">(</a><a id="696" href="Data.Container.Relation.Unary.All.html#850" class="Function">map</a> <a id="700" class="Symbol">to</a> <a id="703" class="Function">□-map</a><a id="708" class="Symbol">)</a> <a id="710" class="Keyword">public</a>
+<a id="717" class="Keyword">open</a> <a id="722" class="Keyword">import</a> <a id="729" href="Data.Container.Membership.html" class="Module">Data.Container.Membership</a>
+  <a id="757" class="Keyword">using</a> <a id="763" class="Symbol">(</a><a id="764" href="Data.Container.Membership.html#559" class="Function Operator">_∈_</a><a id="767" class="Symbol">)</a> <a id="769" class="Keyword">public</a>
+<a id="776" class="Keyword">open</a> <a id="781" class="Keyword">import</a> <a id="788" href="Data.Container.Relation.Binary.Pointwise.html" class="Module">Data.Container.Relation.Binary.Pointwise</a>
+  <a id="831" class="Keyword">using</a> <a id="837" class="Symbol">()</a> <a id="840" class="Keyword">renaming</a> <a id="849" class="Symbol">(</a><a id="850" href="Data.Container.Relation.Binary.Pointwise.html#714" class="Record">Pointwise</a> <a id="860" class="Symbol">to</a> <a id="863" class="Record">Eq</a><a id="865" class="Symbol">)</a> <a id="867" class="Keyword">public</a>
+<a id="874" class="Keyword">open</a> <a id="879" class="Keyword">import</a> <a id="886" href="Data.Container.Relation.Binary.Pointwise.Properties.html" class="Module">Data.Container.Relation.Binary.Pointwise.Properties</a>
+  <a id="940" class="Keyword">using</a> <a id="946" class="Symbol">(</a><a id="947" href="Data.Container.Relation.Binary.Pointwise.Properties.html#732" class="Function">refl</a><a id="951" class="Symbol">;</a> <a id="953" href="Data.Container.Relation.Binary.Pointwise.Properties.html#820" class="Function">sym</a><a id="956" class="Symbol">;</a> <a id="958" href="Data.Container.Relation.Binary.Pointwise.Properties.html#923" class="Function">trans</a><a id="963" class="Symbol">)</a> <a id="965" class="Keyword">public</a>
+<a id="972" class="Keyword">open</a> <a id="977" class="Keyword">import</a> <a id="984" href="Data.Container.Relation.Binary.Equality.Setoid.html" class="Module">Data.Container.Relation.Binary.Equality.Setoid</a>
+  <a id="1033" class="Keyword">using</a> <a id="1039" class="Symbol">(</a><a id="1040" href="Data.Container.Relation.Binary.Equality.Setoid.html#1153" class="Function">isEquivalence</a><a id="1053" class="Symbol">;</a> <a id="1055" href="Data.Container.Relation.Binary.Equality.Setoid.html#1277" class="Function">setoid</a><a id="1061" class="Symbol">)</a> <a id="1063" class="Keyword">public</a>
+<a id="1070" class="Keyword">open</a> <a id="1075" class="Keyword">import</a> <a id="1082" href="Data.Container.Properties.html" class="Module">Data.Container.Properties</a>
+  <a id="1110" class="Keyword">using</a> <a id="1116" class="Symbol">()</a> <a id="1119" class="Keyword">renaming</a> <a id="1128" class="Symbol">(</a><a id="1129" href="Data.Container.Properties.html#484" class="Function">map-identity</a> <a id="1142" class="Symbol">to</a> <a id="1145" class="Function">identity</a><a id="1153" class="Symbol">;</a> <a id="1155" href="Data.Container.Properties.html#604" class="Function">map-compose</a> <a id="1167" class="Symbol">to</a> <a id="1170" class="Function">composition</a><a id="1181" class="Symbol">)</a> <a id="1183" class="Keyword">public</a>
+<a id="1190" class="Keyword">open</a> <a id="1195" class="Keyword">import</a> <a id="1202" href="Data.Container.Related.html" class="Module">Data.Container.Related</a> <a id="1225" class="Keyword">public</a>
+
+<a id="1233" class="Keyword">module</a> <a id="Morphism"></a><a id="1240" href="Data.Container.html#1240" class="Module">Morphism</a> <a id="1249" class="Keyword">where</a>
+
+  <a id="1258" class="Keyword">open</a> <a id="1263" class="Keyword">import</a> <a id="1270" href="Data.Container.Morphism.Properties.html" class="Module">Data.Container.Morphism.Properties</a>
+    <a id="1309" class="Keyword">using</a> <a id="1315" class="Symbol">(</a><a id="1316" href="Data.Container.Morphism.Properties.html#1193" class="Function">Natural</a><a id="1323" class="Symbol">;</a> <a id="1325" href="Data.Container.Morphism.Properties.html#1704" class="Function">NT</a><a id="1327" class="Symbol">;</a> <a id="1329" href="Data.Container.Morphism.Properties.html#1509" class="Function">natural</a><a id="1336" class="Symbol">;</a> <a id="1338" href="Data.Container.Morphism.Properties.html#1978" class="Function">complete</a><a id="1346" class="Symbol">;</a> <a id="1348" href="Data.Container.Morphism.Properties.html#730" class="Function">id-correct</a><a id="1358" class="Symbol">;</a> <a id="1360" href="Data.Container.Morphism.Properties.html#954" class="Function">∘-correct</a><a id="1369" class="Symbol">)</a> <a id="1371" class="Keyword">public</a>
+
+  <a id="1381" class="Keyword">open</a> <a id="1386" class="Keyword">import</a> <a id="1393" href="Data.Container.Morphism.html" class="Module">Data.Container.Morphism</a>
+    <a id="1421" class="Keyword">using</a> <a id="1427" class="Symbol">(</a><a id="1428" href="Data.Container.Morphism.html#375" class="Function">id</a><a id="1430" class="Symbol">;</a> <a id="1432" href="Data.Container.Morphism.html#571" class="Function Operator">_∘_</a><a id="1435" class="Symbol">)</a> <a id="1437" class="Keyword">public</a>
+
+<a id="1445" class="Keyword">private</a>
+  <a id="1455" class="Keyword">variable</a>
+    <a id="1468" href="Data.Container.html#1468" class="Generalizable">s</a> <a id="1470" href="Data.Container.html#1470" class="Generalizable">p</a> <a id="1472" class="Symbol">:</a> <a id="1474" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+
+<a id="1481" class="Comment">-- The least fixpoint of a container.</a>
+
+<a id="μ"></a><a id="1520" href="Data.Container.html#1520" class="Function">μ</a> <a id="1522" class="Symbol">:</a> <a id="1524" href="Data.Container.Core.html#558" class="Record">Container</a> <a id="1534" href="Data.Container.html#1468" class="Generalizable">s</a> <a id="1536" href="Data.Container.html#1470" class="Generalizable">p</a> <a id="1538" class="Symbol">→</a> <a id="1540" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="1544" class="Symbol">(</a><a id="1545" href="Data.Container.html#1468" class="Generalizable">s</a> <a id="1547" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1549" href="Data.Container.html#1470" class="Generalizable">p</a><a id="1550" class="Symbol">)</a>
+<a id="1552" href="Data.Container.html#1520" class="Function">μ</a> <a id="1554" class="Symbol">=</a> <a id="1556" href="Data.W.html#755" class="Datatype">W</a>
+
+<a id="1559" class="Comment">-- The greatest fixpoint of a container can be found</a>
+<a id="1612" class="Comment">-- in `Data.Container.Fixpoints.Guarded` as it relies</a>
+<a id="1666" class="Comment">-- on the `guardedness` flag.</a>
+
+<a id="1697" class="Comment">-- You can find sized alternatives in `Data.Container.Fixpoints.Sized`</a>
+<a id="1768" class="Comment">-- as they rely on the unsafe flag `--sized-types`.</a>
+</pre></body></html>

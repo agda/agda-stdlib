@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.DifferenceNat</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Natural numbers with fast addition (for use together with</a>
+<a id="167" class="Comment">-- DifferenceVec)</a>
+<a id="185" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="259" class="Symbol">{-#</a> <a id="263" class="Keyword">OPTIONS</a> <a id="271" class="Pragma">--cubical-compatible</a> <a id="292" class="Pragma">--safe</a> <a id="299" class="Symbol">#-}</a>
+
+<a id="304" class="Keyword">module</a> <a id="311" href="Data.DifferenceNat.html" class="Module">Data.DifferenceNat</a> <a id="330" class="Keyword">where</a>
+
+<a id="337" class="Keyword">open</a> <a id="342" class="Keyword">import</a> <a id="349" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="363" class="Symbol">as</a> <a id="366" class="Module">N</a> <a id="368" class="Keyword">using</a> <a id="374" class="Symbol">(</a><a id="375" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="376" class="Symbol">)</a>
+<a id="378" class="Keyword">open</a> <a id="383" class="Keyword">import</a> <a id="390" href="Function.Base.html" class="Module">Function.Base</a> <a id="404" class="Keyword">using</a> <a id="410" class="Symbol">(</a><a id="411" href="Function.Base.html#4322" class="Function Operator">_⟨_⟩_</a><a id="416" class="Symbol">)</a>
+
+<a id="419" class="Keyword">infixl</a> <a id="426" class="Number">6</a> <a id="428" href="Data.DifferenceNat.html#556" class="Function Operator">_+_</a>
+
+<a id="Diffℕ"></a><a id="433" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a> <a id="439" class="Symbol">:</a> <a id="441" href="Agda.Primitive.html#388" class="Primitive">Set</a>
+<a id="445" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a> <a id="451" class="Symbol">=</a> <a id="453" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="455" class="Symbol">→</a> <a id="457" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+
+<a id="0#"></a><a id="460" href="Data.DifferenceNat.html#460" class="Function">0#</a> <a id="463" class="Symbol">:</a> <a id="465" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a>
+<a id="471" href="Data.DifferenceNat.html#460" class="Function">0#</a> <a id="474" class="Symbol">=</a> <a id="476" class="Symbol">λ</a> <a id="478" href="Data.DifferenceNat.html#478" class="Bound">k</a> <a id="480" class="Symbol">→</a> <a id="482" href="Data.DifferenceNat.html#478" class="Bound">k</a>
+
+<a id="suc"></a><a id="485" href="Data.DifferenceNat.html#485" class="Function">suc</a> <a id="489" class="Symbol">:</a> <a id="491" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a> <a id="497" class="Symbol">→</a> <a id="499" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a>
+<a id="505" href="Data.DifferenceNat.html#485" class="Function">suc</a> <a id="509" href="Data.DifferenceNat.html#509" class="Bound">n</a> <a id="511" class="Symbol">=</a> <a id="513" class="Symbol">λ</a> <a id="515" href="Data.DifferenceNat.html#515" class="Bound">k</a> <a id="517" class="Symbol">→</a> <a id="519" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">N.suc</a> <a id="525" class="Symbol">(</a><a id="526" href="Data.DifferenceNat.html#509" class="Bound">n</a> <a id="528" href="Data.DifferenceNat.html#515" class="Bound">k</a><a id="529" class="Symbol">)</a>
+
+<a id="1#"></a><a id="532" href="Data.DifferenceNat.html#532" class="Function">1#</a> <a id="535" class="Symbol">:</a> <a id="537" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a>
+<a id="543" href="Data.DifferenceNat.html#532" class="Function">1#</a> <a id="546" class="Symbol">=</a> <a id="548" href="Data.DifferenceNat.html#485" class="Function">suc</a> <a id="552" href="Data.DifferenceNat.html#460" class="Function">0#</a>
+
+<a id="_+_"></a><a id="556" href="Data.DifferenceNat.html#556" class="Function Operator">_+_</a> <a id="560" class="Symbol">:</a> <a id="562" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a> <a id="568" class="Symbol">→</a> <a id="570" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a> <a id="576" class="Symbol">→</a> <a id="578" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a>
+<a id="584" href="Data.DifferenceNat.html#584" class="Bound">m</a> <a id="586" href="Data.DifferenceNat.html#556" class="Function Operator">+</a> <a id="588" href="Data.DifferenceNat.html#588" class="Bound">n</a> <a id="590" class="Symbol">=</a> <a id="592" class="Symbol">λ</a> <a id="594" href="Data.DifferenceNat.html#594" class="Bound">k</a> <a id="596" class="Symbol">→</a> <a id="598" href="Data.DifferenceNat.html#584" class="Bound">m</a> <a id="600" class="Symbol">(</a><a id="601" href="Data.DifferenceNat.html#588" class="Bound">n</a> <a id="603" href="Data.DifferenceNat.html#594" class="Bound">k</a><a id="604" class="Symbol">)</a>
+
+<a id="toℕ"></a><a id="607" href="Data.DifferenceNat.html#607" class="Function">toℕ</a> <a id="611" class="Symbol">:</a> <a id="613" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a> <a id="619" class="Symbol">→</a> <a id="621" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="623" href="Data.DifferenceNat.html#607" class="Function">toℕ</a> <a id="627" href="Data.DifferenceNat.html#627" class="Bound">n</a> <a id="629" class="Symbol">=</a> <a id="631" href="Data.DifferenceNat.html#627" class="Bound">n</a> <a id="633" class="Number">0</a>
+
+<a id="636" class="Comment">-- fromℕ n is linear in the size of n.</a>
+
+<a id="fromℕ"></a><a id="676" href="Data.DifferenceNat.html#676" class="Function">fromℕ</a> <a id="682" class="Symbol">:</a> <a id="684" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="686" class="Symbol">→</a> <a id="688" href="Data.DifferenceNat.html#433" class="Function">Diffℕ</a>
+<a id="694" href="Data.DifferenceNat.html#676" class="Function">fromℕ</a> <a id="700" href="Data.DifferenceNat.html#700" class="Bound">n</a> <a id="702" class="Symbol">=</a> <a id="704" class="Symbol">λ</a> <a id="706" href="Data.DifferenceNat.html#706" class="Bound">k</a> <a id="708" class="Symbol">→</a> <a id="710" href="Data.DifferenceNat.html#700" class="Bound">n</a> <a id="712" href="Function.Base.html#4322" class="Function Operator">⟨</a> <a id="714" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">N._+_</a> <a id="720" href="Function.Base.html#4322" class="Function Operator">⟩</a> <a id="722" href="Data.DifferenceNat.html#706" class="Bound">k</a>
+</pre></body></html>

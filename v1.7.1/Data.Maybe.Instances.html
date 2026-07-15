@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Maybe.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for Maybe</a>
+<a id="139" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="213" class="Symbol">{-#</a> <a id="217" class="Keyword">OPTIONS</a> <a id="225" class="Pragma">--without-K</a> <a id="237" class="Pragma">--safe</a> <a id="244" class="Symbol">#-}</a>
+
+<a id="249" class="Keyword">module</a> <a id="256" href="Data.Maybe.Instances.html" class="Module">Data.Maybe.Instances</a> <a id="277" class="Keyword">where</a>
+
+<a id="284" class="Keyword">open</a> <a id="289" class="Keyword">import</a> <a id="296" href="Data.Maybe.Categorical.html" class="Module">Data.Maybe.Categorical</a>
+
+<a id="320" class="Keyword">instance</a>
+  <a id="maybeFunctor"></a><a id="331" href="Data.Maybe.Instances.html#331" class="Function">maybeFunctor</a> <a id="344" class="Symbol">=</a> <a id="346" href="Data.Maybe.Categorical.html#569" class="Function">functor</a>
+  <a id="maybeApplicative"></a><a id="356" href="Data.Maybe.Instances.html#356" class="Function">maybeApplicative</a> <a id="373" class="Symbol">=</a> <a id="375" href="Data.Maybe.Categorical.html#646" class="Function">applicative</a>
+  <a id="maybeApplicativeZero"></a><a id="389" href="Data.Maybe.Instances.html#389" class="Function">maybeApplicativeZero</a> <a id="410" class="Symbol">=</a> <a id="412" href="Data.Maybe.Categorical.html#772" class="Function">applicativeZero</a>
+  <a id="maybeAlternative"></a><a id="430" href="Data.Maybe.Instances.html#430" class="Function">maybeAlternative</a> <a id="447" class="Symbol">=</a> <a id="449" href="Data.Maybe.Categorical.html#913" class="Function">alternative</a>
+  <a id="maybeMonad"></a><a id="463" href="Data.Maybe.Instances.html#463" class="Function">maybeMonad</a> <a id="474" class="Symbol">=</a> <a id="476" href="Data.Maybe.Categorical.html#1423" class="Function">monad</a>
+  <a id="maybeMonadZero"></a><a id="484" href="Data.Maybe.Instances.html#484" class="Function">maybeMonadZero</a> <a id="499" class="Symbol">=</a> <a id="501" href="Data.Maybe.Categorical.html#1483" class="Function">monadZero</a>
+  <a id="maybeMonadPlus"></a><a id="513" href="Data.Maybe.Instances.html#513" class="Function">maybeMonadPlus</a> <a id="528" class="Symbol">=</a> <a id="530" href="Data.Maybe.Categorical.html#1616" class="Function">monadPlus</a>
+  <a id="maybeMonadT"></a><a id="542" href="Data.Maybe.Instances.html#542" class="Function">maybeMonadT</a> <a id="554" class="Symbol">=</a> <a id="556" class="Symbol">λ</a> <a id="558" class="Symbol">{</a><a id="559" href="Data.Maybe.Instances.html#559" class="Bound">ℓ</a><a id="560" class="Symbol">}</a> <a id="562" class="Symbol">{</a><a id="563" href="Data.Maybe.Instances.html#563" class="Bound">M</a><a id="564" class="Symbol">}</a> <a id="566" class="Symbol">{{</a><a id="568" href="Data.Maybe.Instances.html#568" class="Bound">inst</a><a id="572" class="Symbol">}}</a> <a id="575" class="Symbol">→</a> <a id="577" href="Data.Maybe.Categorical.html#1153" class="Function">monadT</a> <a id="584" class="Symbol">{</a><a id="585" href="Data.Maybe.Instances.html#559" class="Bound">ℓ</a><a id="586" class="Symbol">}</a> <a id="588" class="Symbol">{</a><a id="589" href="Data.Maybe.Instances.html#563" class="Bound">M</a><a id="590" class="Symbol">}</a> <a id="592" href="Data.Maybe.Instances.html#568" class="Bound">inst</a>
+</pre></body></html>

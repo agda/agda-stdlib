@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Axiom</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An explanation about the `Axiom` modules.</a>
+<a id="151" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="225" class="Keyword">module</a> <a id="232" href="README.Axiom.html" class="Module">README.Axiom</a> <a id="245" class="Keyword">where</a>
+
+<a id="252" class="Keyword">open</a> <a id="257" class="Keyword">import</a> <a id="264" href="Level.html" class="Module">Level</a> <a id="270" class="Keyword">using</a> <a id="276" class="Symbol">(</a><a id="277" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="282" class="Symbol">)</a>
+
+<a id="285" class="Keyword">private</a> <a id="293" class="Keyword">variable</a> <a id="302" href="README.Axiom.html#302" class="Generalizable">ℓ</a> <a id="304" class="Symbol">:</a> <a id="306" href="Agda.Primitive.html#408" class="Postulate">Level</a>
+
+<a id="313" class="Comment">------------------------------------------------------------------------</a>
+<a id="386" class="Comment">-- Introduction</a>
+
+<a id="403" class="Comment">-- Several rules that are used without thought in written mathematics</a>
+<a id="473" class="Comment">-- cannot be proved in Agda. The modules in the `Axiom` folder</a>
+<a id="536" class="Comment">-- provide types expressing some of these rules that users may want to</a>
+<a id="607" class="Comment">-- use even when they&#39;re not provable in Agda.</a>
+
+<a id="655" class="Comment">------------------------------------------------------------------------</a>
+<a id="728" class="Comment">-- Example: law of excluded middle</a>
+
+<a id="764" class="Comment">-- In classical logic the law of excluded middle states that for any</a>
+<a id="833" class="Comment">-- proposition `P` either `P` or `¬P` must hold. This is impossible</a>
+<a id="901" class="Comment">-- to prove in Agda because Agda is a constructive system and so any</a>
+<a id="970" class="Comment">-- proof of the excluded middle would have to build a term of either</a>
+<a id="1039" class="Comment">-- type `P` or `¬P`. This is clearly impossible without any knowledge</a>
+<a id="1109" class="Comment">-- of what proposition `P` is.</a>
+
+<a id="1141" class="Comment">-- The types for which `P` or `¬P` holds is called `Dec P` in the</a>
+<a id="1207" class="Comment">-- standard library (short for `Decidable`).</a>
+
+<a id="1253" class="Keyword">open</a> <a id="1258" class="Keyword">import</a> <a id="1265" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="1282" class="Keyword">using</a> <a id="1288" class="Symbol">(</a><a id="1289" href="Relation.Nullary.html#605" class="Datatype">Dec</a><a id="1292" class="Symbol">)</a>
+
+<a id="1295" class="Comment">-- The type of the proof of saying that excluded middle holds for</a>
+<a id="1361" class="Comment">-- all types at universe level ℓ is therefore:</a>
+<a id="1408" class="Comment">--</a>
+<a id="1411" class="Comment">--   ExcludedMiddle ℓ = ∀ {P : Set ℓ} → Dec P</a>
+<a id="1457" class="Comment">--</a>
+<a id="1460" class="Comment">-- and this type is exactly the one found in `Axiom.ExcludedMiddle`:</a>
+
+<a id="1530" class="Keyword">open</a> <a id="1535" class="Keyword">import</a> <a id="1542" href="Axiom.ExcludedMiddle.html" class="Module">Axiom.ExcludedMiddle</a>
+
+<a id="1564" class="Comment">-- There are two different ways that the axiom can be introduced into</a>
+<a id="1634" class="Comment">-- your Agda development. The first option is to postulate it:</a>
+
+<a id="1698" class="Keyword">postulate</a> <a id="excludedMiddle"></a><a id="1708" href="README.Axiom.html#1708" class="Postulate">excludedMiddle</a> <a id="1723" class="Symbol">:</a> <a id="1725" href="Axiom.ExcludedMiddle.html#572" class="Function">ExcludedMiddle</a> <a id="1740" href="README.Axiom.html#302" class="Generalizable">ℓ</a>
+
+<a id="1743" class="Comment">-- This has the advantage that it only needs to be postulated once</a>
+<a id="1810" class="Comment">-- and it can then be imported into many different modules as with any</a>
+<a id="1881" class="Comment">-- other proof. The downside is that the resulting Agda code will no</a>
+<a id="1950" class="Comment">-- longer type check under the --safe flag.</a>
+
+<a id="1995" class="Comment">-- The second approach is to pass it as a module parameter:</a>
+
+<a id="2056" class="Keyword">module</a> <a id="Proof"></a><a id="2063" href="README.Axiom.html#2063" class="Module">Proof</a> <a id="2069" class="Symbol">(</a><a id="2070" href="README.Axiom.html#2070" class="Bound">excludedMiddle</a> <a id="2085" class="Symbol">:</a> <a id="2087" href="Axiom.ExcludedMiddle.html#572" class="Function">ExcludedMiddle</a> <a id="2102" href="README.Axiom.html#302" class="Generalizable">ℓ</a><a id="2103" class="Symbol">)</a> <a id="2105" class="Keyword">where</a>
+
+<a id="2112" class="Comment">-- The advantage of this approach is that the resulting Agda</a>
+<a id="2173" class="Comment">-- development can still be type checked under the --safe flag.</a>
+<a id="2237" class="Comment">-- Intuitively the reason for this is that when postulating it</a>
+<a id="2300" class="Comment">-- you are telling Agda that excluded middle does hold (which is clearly</a>
+<a id="2373" class="Comment">-- untrue as discussed above). In contrast when passing it as a module</a>
+<a id="2444" class="Comment">-- parameter you are telling Agda that **if** excluded middle was true</a>
+<a id="2515" class="Comment">-- then the following proofs would hold, which is logically valid.</a>
+
+<a id="2583" class="Comment">-- The disadvantage of this approach is that it is now necessary to</a>
+<a id="2651" class="Comment">-- include the excluded middle assumption as a parameter in every module</a>
+<a id="2724" class="Comment">-- that you want to use it in. Additionally the modules can never</a>
+<a id="2790" class="Comment">-- be fully instantiated (without postulating excluded middle).</a>
+
+<a id="2855" class="Comment">------------------------------------------------------------------------</a>
+<a id="2928" class="Comment">-- Other axioms</a>
+
+<a id="2945" class="Comment">-- Double negation elimination</a>
+<a id="2976" class="Comment">--   (∀ P → ¬ ¬ P → P)</a>
+
+<a id="3000" class="Keyword">import</a> <a id="3007" href="Axiom.DoubleNegationElimination.html" class="Module">Axiom.DoubleNegationElimination</a>
+
+<a id="3040" class="Comment">-- Function extensionality</a>
+<a id="3067" class="Comment">--   (∀ f g → (∀ x → f x ≡ g x) → f ≡ g)</a>
+
+<a id="3109" class="Keyword">import</a> <a id="3116" href="Axiom.Extensionality.Propositional.html" class="Module">Axiom.Extensionality.Propositional</a>
+<a id="3151" class="Keyword">import</a> <a id="3158" href="Axiom.Extensionality.Heterogeneous.html" class="Module">Axiom.Extensionality.Heterogeneous</a>
+
+<a id="3194" class="Comment">-- Uniqueness of identity proofs (UIP)</a>
+<a id="3233" class="Comment">--  (∀ x y (p q : x ≡ y) → p ≡ q)</a>
+
+<a id="3268" class="Keyword">import</a> <a id="3275" href="Axiom.UniquenessOfIdentityProofs.html" class="Module">Axiom.UniquenessOfIdentityProofs</a>
+</pre></body></html>

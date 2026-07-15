@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Cofin.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Conat Literals</a>
+<a id="124" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="198" class="Symbol">{-#</a> <a id="202" class="Keyword">OPTIONS</a> <a id="210" class="Pragma">--without-K</a> <a id="222" class="Pragma">--sized-types</a> <a id="236" class="Symbol">#-}</a>
+
+<a id="241" class="Keyword">module</a> <a id="248" href="Codata.Cofin.Literals.html" class="Module">Codata.Cofin.Literals</a> <a id="270" class="Keyword">where</a>
+
+<a id="277" class="Keyword">open</a> <a id="282" class="Keyword">import</a> <a id="289" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="303" class="Keyword">open</a> <a id="308" class="Keyword">import</a> <a id="315" href="Agda.Builtin.FromNat.html" class="Module">Agda.Builtin.FromNat</a>
+<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Codata.Conat.html" class="Module">Codata.Conat</a>
+<a id="361" class="Keyword">open</a> <a id="366" class="Keyword">import</a> <a id="373" href="Codata.Conat.Properties.html" class="Module">Codata.Conat.Properties</a>
+<a id="397" class="Keyword">open</a> <a id="402" class="Keyword">import</a> <a id="409" href="Codata.Cofin.html" class="Module">Codata.Cofin</a>
+<a id="422" class="Keyword">open</a> <a id="427" class="Keyword">import</a> <a id="434" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+
+<a id="number"></a><a id="462" href="Codata.Cofin.Literals.html#462" class="Function">number</a> <a id="469" class="Symbol">:</a> <a id="471" class="Symbol">∀</a> <a id="473" href="Codata.Cofin.Literals.html#473" class="Bound">n</a> <a id="475" class="Symbol">→</a> <a id="477" href="Agda.Builtin.FromNat.html#197" class="Record">Number</a> <a id="484" class="Symbol">(</a><a id="485" href="Codata.Cofin.html#909" class="Datatype">Cofin</a> <a id="491" href="Codata.Cofin.Literals.html#473" class="Bound">n</a><a id="492" class="Symbol">)</a>
+<a id="494" href="Codata.Cofin.Literals.html#462" class="Function">number</a> <a id="501" href="Codata.Cofin.Literals.html#501" class="Bound">n</a> <a id="503" class="Symbol">=</a> <a id="505" class="Keyword">record</a>
+  <a id="514" class="Symbol">{</a> <a id="516" href="Agda.Builtin.FromNat.html#253" class="Field">Constraint</a> <a id="527" class="Symbol">=</a> <a id="529" class="Symbol">λ</a> <a id="531" href="Codata.Cofin.Literals.html#531" class="Bound">k</a> <a id="533" class="Symbol">→</a> <a id="535" href="Relation.Nullary.Decidable.Core.html#1365" class="Function">True</a> <a id="540" class="Symbol">(</a><a id="541" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="545" href="Codata.Cofin.Literals.html#531" class="Bound">k</a> <a id="547" href="Codata.Conat.Properties.html#753" class="Function Operator">ℕ≤?</a> <a id="551" href="Codata.Cofin.Literals.html#501" class="Bound">n</a><a id="552" class="Symbol">)</a>
+  <a id="556" class="Symbol">;</a> <a id="558" href="Agda.Builtin.FromNat.html#282" class="Field">fromNat</a>    <a id="569" class="Symbol">=</a> <a id="571" class="Symbol">λ</a> <a id="573" href="Codata.Cofin.Literals.html#573" class="Bound">n</a> <a id="575" class="Symbol">{{</a><a id="577" href="Codata.Cofin.Literals.html#577" class="Bound">p</a><a id="578" class="Symbol">}}</a> <a id="581" class="Symbol">→</a> <a id="583" href="Codata.Cofin.html#1244" class="Function">fromℕ&lt;</a> <a id="590" class="Symbol">(</a><a id="591" href="Relation.Nullary.Decidable.Core.html#1484" class="Function">toWitness</a> <a id="601" href="Codata.Cofin.Literals.html#577" class="Bound">p</a><a id="602" class="Symbol">)</a>
+  <a id="606" class="Symbol">}</a>
+</pre></body></html>

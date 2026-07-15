@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Sort.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The core definition of a sorting algorithm</a>
+<a id="152" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--cubical-compatible</a> <a id="259" class="Pragma">--safe</a> <a id="266" class="Symbol">#-}</a>
+
+<a id="271" class="Keyword">open</a> <a id="276" class="Keyword">import</a> <a id="283" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="298" class="Keyword">using</a> <a id="304" class="Symbol">(</a><a id="305" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="309" class="Symbol">)</a>
+<a id="311" class="Keyword">open</a> <a id="316" class="Keyword">import</a> <a id="323" href="Data.List.Relation.Binary.Permutation.Propositional.html" class="Module">Data.List.Relation.Binary.Permutation.Propositional</a>
+<a id="375" class="Keyword">open</a> <a id="380" class="Keyword">import</a> <a id="387" href="Level.html" class="Module">Level</a> <a id="393" class="Keyword">using</a> <a id="399" class="Symbol">(</a><a id="400" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="403" class="Symbol">)</a>
+<a id="405" class="Keyword">open</a> <a id="410" class="Keyword">import</a> <a id="417" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="433" class="Keyword">using</a> <a id="439" class="Symbol">(</a><a id="440" href="Relation.Binary.Bundles.html#5476" class="Record">TotalOrder</a><a id="450" class="Symbol">)</a>
+
+<a id="453" class="Keyword">module</a> <a id="460" href="Data.List.Sort.Base.html" class="Module">Data.List.Sort.Base</a>
+  <a id="482" class="Symbol">{</a><a id="483" href="Data.List.Sort.Base.html#483" class="Bound">a</a> <a id="485" href="Data.List.Sort.Base.html#485" class="Bound">ℓ₁</a> <a id="488" href="Data.List.Sort.Base.html#488" class="Bound">ℓ₂</a><a id="490" class="Symbol">}</a> <a id="492" class="Symbol">(</a><a id="493" href="Data.List.Sort.Base.html#493" class="Bound">totalOrder</a> <a id="504" class="Symbol">:</a> <a id="506" href="Relation.Binary.Bundles.html#5476" class="Record">TotalOrder</a> <a id="517" href="Data.List.Sort.Base.html#483" class="Bound">a</a> <a id="519" href="Data.List.Sort.Base.html#485" class="Bound">ℓ₁</a> <a id="522" href="Data.List.Sort.Base.html#488" class="Bound">ℓ₂</a><a id="524" class="Symbol">)</a>
+  <a id="528" class="Keyword">where</a>
+
+<a id="535" class="Keyword">open</a> <a id="540" href="Relation.Binary.Bundles.html#5476" class="Module">TotalOrder</a> <a id="551" href="Data.List.Sort.Base.html#493" class="Bound">totalOrder</a> <a id="562" class="Keyword">renaming</a> <a id="571" class="Symbol">(</a><a id="572" href="Relation.Binary.Bundles.html#5557" class="Field">Carrier</a> <a id="580" class="Symbol">to</a> <a id="583" class="Field">A</a><a id="584" class="Symbol">)</a>
+<a id="586" class="Keyword">open</a> <a id="591" class="Keyword">import</a> <a id="598" href="Data.List.Relation.Unary.Sorted.TotalOrder.html" class="Module">Data.List.Relation.Unary.Sorted.TotalOrder</a> <a id="641" href="Data.List.Sort.Base.html#493" class="Bound">totalOrder</a>
+
+<a id="653" class="Comment">------------------------------------------------------------------------</a>
+<a id="726" class="Comment">-- Definition of a sorting algorithm</a>
+
+<a id="764" class="Keyword">record</a> <a id="SortingAlgorithm"></a><a id="771" href="Data.List.Sort.Base.html#771" class="Record">SortingAlgorithm</a> <a id="788" class="Symbol">:</a> <a id="790" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="794" class="Symbol">(</a><a id="795" href="Data.List.Sort.Base.html#483" class="Bound">a</a> <a id="797" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="799" href="Data.List.Sort.Base.html#485" class="Bound">ℓ₁</a> <a id="802" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="804" href="Data.List.Sort.Base.html#488" class="Bound">ℓ₂</a><a id="806" class="Symbol">)</a> <a id="808" class="Keyword">where</a>
+  <a id="816" class="Keyword">field</a>
+    <a id="SortingAlgorithm.sort"></a><a id="826" href="Data.List.Sort.Base.html#826" class="Field">sort</a>   <a id="833" class="Symbol">:</a> <a id="835" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="840" href="Data.List.Sort.Base.html#583" class="Field">A</a> <a id="842" class="Symbol">→</a> <a id="844" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="849" href="Data.List.Sort.Base.html#583" class="Field">A</a>
+
+    <a id="856" class="Comment">-- The output of `sort` is a permutation of the input</a>
+    <a id="SortingAlgorithm.sort-↭"></a><a id="914" href="Data.List.Sort.Base.html#914" class="Field">sort-↭</a> <a id="921" class="Symbol">:</a> <a id="923" class="Symbol">∀</a> <a id="925" href="Data.List.Sort.Base.html#925" class="Bound">xs</a> <a id="928" class="Symbol">→</a> <a id="930" href="Data.List.Sort.Base.html#826" class="Field">sort</a> <a id="935" href="Data.List.Sort.Base.html#925" class="Bound">xs</a> <a id="938" href="Data.List.Relation.Binary.Permutation.Propositional.html#1050" class="Datatype Operator">↭</a> <a id="940" href="Data.List.Sort.Base.html#925" class="Bound">xs</a>
+
+    <a id="948" class="Comment">-- The output of `sort` is sorted.</a>
+    <a id="SortingAlgorithm.sort-↗"></a><a id="987" href="Data.List.Sort.Base.html#987" class="Field">sort-↗</a> <a id="994" class="Symbol">:</a> <a id="996" class="Symbol">∀</a> <a id="998" href="Data.List.Sort.Base.html#998" class="Bound">xs</a> <a id="1001" class="Symbol">→</a> <a id="1003" href="Data.List.Relation.Unary.Sorted.TotalOrder.html#763" class="Function">Sorted</a> <a id="1010" class="Symbol">(</a><a id="1011" href="Data.List.Sort.Base.html#826" class="Field">sort</a> <a id="1016" href="Data.List.Sort.Base.html#998" class="Bound">xs</a><a id="1018" class="Symbol">)</a>
+</pre></body></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foreign.Haskell.Pair</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The Pair type which calls out to Haskell via the FFI</a>
+<a id="162" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="236" class="Symbol">{-#</a> <a id="240" class="Keyword">OPTIONS</a> <a id="248" class="Pragma">--cubical-compatible</a> <a id="269" class="Symbol">#-}</a>
+
+<a id="274" class="Keyword">module</a> <a id="281" href="Foreign.Haskell.Pair.html" class="Module">Foreign.Haskell.Pair</a> <a id="302" class="Keyword">where</a>
+
+<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Level.html" class="Module">Level</a>
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="357" class="Keyword">using</a> <a id="363" class="Symbol">(</a><a id="364" href="Data.Product.Base.html#1618" class="Function Operator">_×_</a><a id="367" class="Symbol">;</a> <a id="369" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">_,_</a><a id="372" class="Symbol">)</a>
+
+<a id="375" class="Keyword">private</a>
+  <a id="385" class="Keyword">variable</a>
+    <a id="398" href="Foreign.Haskell.Pair.html#398" class="Generalizable">a</a> <a id="400" href="Foreign.Haskell.Pair.html#400" class="Generalizable">b</a> <a id="402" class="Symbol">:</a> <a id="404" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="414" href="Foreign.Haskell.Pair.html#414" class="Generalizable">A</a> <a id="416" class="Symbol">:</a> <a id="418" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="422" href="Foreign.Haskell.Pair.html#398" class="Generalizable">a</a>
+    <a id="428" href="Foreign.Haskell.Pair.html#428" class="Generalizable">B</a> <a id="430" class="Symbol">:</a> <a id="432" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="436" href="Foreign.Haskell.Pair.html#400" class="Generalizable">b</a>
+
+<a id="439" class="Comment">------------------------------------------------------------------------</a>
+<a id="512" class="Comment">-- Definition</a>
+
+<a id="527" class="Keyword">record</a> <a id="Pair"></a><a id="534" href="Foreign.Haskell.Pair.html#534" class="Record">Pair</a> <a id="539" class="Symbol">(</a><a id="540" href="Foreign.Haskell.Pair.html#540" class="Bound">A</a> <a id="542" class="Symbol">:</a> <a id="544" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="548" href="Foreign.Haskell.Pair.html#398" class="Generalizable">a</a><a id="549" class="Symbol">)</a> <a id="551" class="Symbol">(</a><a id="552" href="Foreign.Haskell.Pair.html#552" class="Bound">B</a> <a id="554" class="Symbol">:</a> <a id="556" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="560" href="Foreign.Haskell.Pair.html#400" class="Generalizable">b</a><a id="561" class="Symbol">)</a> <a id="563" class="Symbol">:</a> <a id="565" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="569" class="Symbol">(</a><a id="570" href="Foreign.Haskell.Pair.html#548" class="Bound">a</a> <a id="572" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="574" href="Foreign.Haskell.Pair.html#560" class="Bound">b</a><a id="575" class="Symbol">)</a> <a id="577" class="Keyword">where</a>
+  <a id="585" class="Keyword">constructor</a> <a id="_,_"></a><a id="597" href="Foreign.Haskell.Pair.html#597" class="InductiveConstructor Operator">_,_</a>
+  <a id="603" class="Keyword">field</a>  <a id="Pair.fst"></a><a id="610" href="Foreign.Haskell.Pair.html#610" class="Field">fst</a> <a id="614" class="Symbol">:</a> <a id="616" href="Foreign.Haskell.Pair.html#540" class="Bound">A</a>
+         <a id="Pair.snd"></a><a id="627" href="Foreign.Haskell.Pair.html#627" class="Field">snd</a> <a id="631" class="Symbol">:</a> <a id="633" href="Foreign.Haskell.Pair.html#552" class="Bound">B</a>
+<a id="635" class="Keyword">infixr</a> <a id="642" class="Number">4</a> <a id="644" href="Foreign.Haskell.Pair.html#597" class="InductiveConstructor Operator">_,_</a>
+<a id="648" class="Keyword">open</a> <a id="653" href="Foreign.Haskell.Pair.html#534" class="Module">Pair</a> <a id="658" class="Keyword">public</a>
+
+<a id="666" class="Symbol">{-#</a> <a id="670" class="Keyword">FOREIGN</a> <a id="678" class="Pragma">GHC</a> <a id="682" class="Pragma">type</a> <a id="687" class="Pragma">AgdaPair</a> <a id="696" class="Pragma">l1</a> <a id="699" class="Pragma">l2</a> <a id="702" class="Pragma">a</a> <a id="704" class="Pragma">b</a> <a id="706" class="Pragma">=</a> <a id="708" class="Pragma">(a</a> <a id="711" class="Pragma">,</a> <a id="713" class="Pragma">b)</a> <a id="716" class="Symbol">#-}</a>
+<a id="720" class="Symbol">{-#</a> <a id="724" class="Keyword">COMPILE</a> <a id="732" class="Keyword">GHC</a> <a id="736" href="Foreign.Haskell.Pair.html#534" class="Record">Pair</a> <a id="741" class="Pragma">=</a> <a id="743" class="Pragma">data</a> <a id="748" class="Pragma">MAlonzo.Code.Foreign.Haskell.Pair.AgdaPair</a> <a id="791" class="Pragma">((,))</a> <a id="797" class="Symbol">#-}</a>
+
+<a id="802" class="Comment">------------------------------------------------------------------------</a>
+<a id="875" class="Comment">-- Conversion</a>
+
+<a id="toForeign"></a><a id="890" href="Foreign.Haskell.Pair.html#890" class="Function">toForeign</a> <a id="900" class="Symbol">:</a> <a id="902" href="Foreign.Haskell.Pair.html#414" class="Generalizable">A</a> <a id="904" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="906" href="Foreign.Haskell.Pair.html#428" class="Generalizable">B</a> <a id="908" class="Symbol">→</a> <a id="910" href="Foreign.Haskell.Pair.html#534" class="Record">Pair</a> <a id="915" href="Foreign.Haskell.Pair.html#414" class="Generalizable">A</a> <a id="917" href="Foreign.Haskell.Pair.html#428" class="Generalizable">B</a>
+<a id="919" href="Foreign.Haskell.Pair.html#890" class="Function">toForeign</a> <a id="929" class="Symbol">(</a><a id="930" href="Foreign.Haskell.Pair.html#930" class="Bound">a</a> <a id="932" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="934" href="Foreign.Haskell.Pair.html#934" class="Bound">b</a><a id="935" class="Symbol">)</a> <a id="937" class="Symbol">=</a> <a id="939" class="Symbol">(</a><a id="940" href="Foreign.Haskell.Pair.html#930" class="Bound">a</a> <a id="942" href="Foreign.Haskell.Pair.html#597" class="InductiveConstructor Operator">,</a> <a id="944" href="Foreign.Haskell.Pair.html#934" class="Bound">b</a><a id="945" class="Symbol">)</a>
+<a id="947" class="Symbol">{-#</a> <a id="951" class="Keyword">WARNING_ON_USAGE</a> <a id="968" class="Pragma">toForeign</a>
+<a id="978" class="String">&quot;Warning: toForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead.&quot;</a>
+<a id="1072" class="Symbol">#-}</a>
+
+<a id="fromForeign"></a><a id="1077" href="Foreign.Haskell.Pair.html#1077" class="Function">fromForeign</a> <a id="1089" class="Symbol">:</a> <a id="1091" href="Foreign.Haskell.Pair.html#534" class="Record">Pair</a> <a id="1096" href="Foreign.Haskell.Pair.html#414" class="Generalizable">A</a> <a id="1098" href="Foreign.Haskell.Pair.html#428" class="Generalizable">B</a> <a id="1100" class="Symbol">→</a> <a id="1102" href="Foreign.Haskell.Pair.html#414" class="Generalizable">A</a> <a id="1104" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="1106" href="Foreign.Haskell.Pair.html#428" class="Generalizable">B</a>
+<a id="1108" href="Foreign.Haskell.Pair.html#1077" class="Function">fromForeign</a> <a id="1120" class="Symbol">(</a><a id="1121" href="Foreign.Haskell.Pair.html#1121" class="Bound">a</a> <a id="1123" href="Foreign.Haskell.Pair.html#597" class="InductiveConstructor Operator">,</a> <a id="1125" href="Foreign.Haskell.Pair.html#1125" class="Bound">b</a><a id="1126" class="Symbol">)</a> <a id="1128" class="Symbol">=</a> <a id="1130" class="Symbol">(</a><a id="1131" href="Foreign.Haskell.Pair.html#1121" class="Bound">a</a> <a id="1133" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="1135" href="Foreign.Haskell.Pair.html#1125" class="Bound">b</a><a id="1136" class="Symbol">)</a>
+<a id="1138" class="Symbol">{-#</a> <a id="1142" class="Keyword">WARNING_ON_USAGE</a> <a id="1159" class="Pragma">fromForeign</a>
+<a id="1171" class="String">&quot;Warning: fromForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead.&quot;</a>
+<a id="1267" class="Symbol">#-}</a>
+</pre></body></html>

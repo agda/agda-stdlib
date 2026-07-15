@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Size</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Sizes for Agda&#39;s sized types</a>
+<a id="138" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="212" class="Symbol">{-#</a> <a id="216" class="Keyword">OPTIONS</a> <a id="224" class="Pragma">--without-K</a> <a id="236" class="Pragma">--safe</a> <a id="243" class="Pragma">--sized-types</a> <a id="257" class="Symbol">#-}</a>
+
+<a id="262" class="Keyword">module</a> <a id="269" href="Size.html" class="Module">Size</a> <a id="274" class="Keyword">where</a>
+
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Agda.Builtin.Size.html" class="Module">Agda.Builtin.Size</a> <a id="311" class="Keyword">public</a>
+  <a id="320" class="Keyword">renaming</a> <a id="329" class="Symbol">(</a> <a id="331" href="Agda.Builtin.Size.html#175" class="Function">SizeU</a> <a id="337" class="Symbol">to</a> <a id="Builtin.Size.SizeU"></a><a id="340" href="Size.html#340" class="Function">SizeUniv</a> <a id="349" class="Symbol">)</a> <a id="351" class="Comment">--  sort SizeUniv</a>
+  <a id="371" class="Keyword">using</a>    <a id="380" class="Symbol">(</a> <a id="382" href="Agda.Builtin.Size.html#206" class="Postulate">Size</a>                <a id="402" class="Comment">--  Size   : SizeUniv</a>
+           <a id="435" class="Symbol">;</a> <a id="437" href="Agda.Builtin.Size.html#238" class="Postulate Operator">Size&lt;_</a>              <a id="457" class="Comment">--  Size&lt;_ : Size → SizeUniv</a>
+           <a id="497" class="Symbol">;</a> <a id="499" href="Agda.Builtin.Size.html#270" class="Postulate Operator">↑_</a>                  <a id="519" class="Comment">--  ↑_     : Size → Size</a>
+           <a id="555" class="Symbol">;</a> <a id="557" href="Agda.Builtin.Size.html#334" class="Postulate Operator">_⊔ˢ_</a>                <a id="577" class="Comment">--  _⊔ˢ_   : Size → Size → Size</a>
+           <a id="620" class="Symbol">;</a> <a id="622" href="Agda.Builtin.Size.html#302" class="Postulate">∞</a> <a id="624" class="Symbol">)</a>                 <a id="642" class="Comment">--  ∞      : Size</a>
+</pre></body></html>

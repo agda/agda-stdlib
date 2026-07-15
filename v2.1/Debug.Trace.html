@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Debug.Trace</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Printing Strings During Evaluation</a>
+<a id="144" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="218" class="Symbol">{-#</a> <a id="222" class="Keyword">OPTIONS</a> <a id="230" class="Pragma">--cubical-compatible</a> <a id="251" class="Pragma">--rewriting</a> <a id="263" class="Symbol">#-}</a>
+
+<a id="268" class="Comment">-- see README.Debug.Trace for a use-case</a>
+
+<a id="310" class="Keyword">module</a> <a id="317" href="Debug.Trace.html" class="Module">Debug.Trace</a> <a id="329" class="Keyword">where</a>
+
+<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a>
+<a id="368" class="Keyword">open</a> <a id="373" class="Keyword">import</a> <a id="380" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
+
+<a id="403" class="Comment">-- Postulating the `trace` function and explaining how to compile it</a>
+
+<a id="473" class="Keyword">postulate</a>
+  <a id="trace"></a><a id="485" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="491" class="Symbol">:</a> <a id="493" class="Symbol">∀</a> <a id="495" class="Symbol">{</a><a id="496" href="Debug.Trace.html#496" class="Bound">a</a><a id="497" class="Symbol">}</a> <a id="499" class="Symbol">{</a><a id="500" href="Debug.Trace.html#500" class="Bound">A</a> <a id="502" class="Symbol">:</a> <a id="504" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="508" href="Debug.Trace.html#496" class="Bound">a</a><a id="509" class="Symbol">}</a> <a id="511" class="Symbol">→</a> <a id="513" href="Agda.Builtin.String.html#335" class="Postulate">String</a> <a id="520" class="Symbol">→</a> <a id="522" href="Debug.Trace.html#500" class="Bound">A</a> <a id="524" class="Symbol">→</a> <a id="526" href="Debug.Trace.html#500" class="Bound">A</a>
+
+<a id="529" class="Symbol">{-#</a> <a id="533" class="Keyword">FOREIGN</a> <a id="541" class="Pragma">GHC</a> <a id="545" class="Pragma">import</a> <a id="552" class="Pragma">qualified</a> <a id="562" class="Pragma">Debug.Trace</a> <a id="574" class="Pragma">as</a> <a id="577" class="Pragma">Debug</a> <a id="583" class="Symbol">#-}</a>
+<a id="587" class="Symbol">{-#</a> <a id="591" class="Keyword">FOREIGN</a> <a id="599" class="Pragma">GHC</a> <a id="603" class="Pragma">import</a> <a id="610" class="Pragma">qualified</a> <a id="620" class="Pragma">Data.Text</a> <a id="630" class="Pragma">as</a> <a id="633" class="Pragma">Text</a> <a id="638" class="Symbol">#-}</a>
+<a id="642" class="Symbol">{-#</a> <a id="646" class="Keyword">COMPILE</a> <a id="654" class="Keyword">GHC</a> <a id="658" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="664" class="Pragma">=</a> <a id="666" class="Pragma">const</a> <a id="672" class="Pragma">(const</a> <a id="679" class="Pragma">(Debug.trace</a> <a id="692" class="Pragma">.</a> <a id="694" class="Pragma">Text.unpack))</a> <a id="708" class="Symbol">#-}</a>
+
+<a id="713" class="Comment">-- Because expressions involving postulates get stuck during evaluation,</a>
+<a id="786" class="Comment">-- we also postulate an equality characterising `trace`&#39;s behaviour. By</a>
+<a id="858" class="Comment">-- declaring it as a rewrite rule we internalise that evaluation rule.</a>
+
+<a id="930" class="Keyword">postulate</a>
+  <a id="trace-eq"></a><a id="942" href="Debug.Trace.html#942" class="Postulate">trace-eq</a> <a id="951" class="Symbol">:</a> <a id="953" class="Symbol">∀</a> <a id="955" class="Symbol">{</a><a id="956" href="Debug.Trace.html#956" class="Bound">a</a><a id="957" class="Symbol">}</a> <a id="959" class="Symbol">{</a><a id="960" href="Debug.Trace.html#960" class="Bound">A</a> <a id="962" class="Symbol">:</a> <a id="964" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="968" href="Debug.Trace.html#956" class="Bound">a</a><a id="969" class="Symbol">}</a> <a id="971" class="Symbol">(</a><a id="972" href="Debug.Trace.html#972" class="Bound">a</a> <a id="974" class="Symbol">:</a> <a id="976" href="Debug.Trace.html#960" class="Bound">A</a><a id="977" class="Symbol">)</a> <a id="979" href="Debug.Trace.html#979" class="Bound">str</a> <a id="983" class="Symbol">→</a> <a id="985" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="991" href="Debug.Trace.html#979" class="Bound">str</a> <a id="995" href="Debug.Trace.html#972" class="Bound">a</a> <a id="997" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="999" href="Debug.Trace.html#972" class="Bound">a</a>
+
+<a id="1002" class="Symbol">{-#</a> <a id="1006" class="Keyword">BUILTIN</a> <a id="1014" class="Keyword">REWRITE</a> <a id="1022" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a> <a id="1026" class="Symbol">#-}</a>
+<a id="1030" class="Symbol">{-#</a> <a id="1034" class="Keyword">REWRITE</a> <a id="1042" href="Debug.Trace.html#942" class="Postulate">trace-eq</a> <a id="1051" class="Symbol">#-}</a>
+
+<a id="1056" class="Comment">-- Specialised version of `trace` returning the traced message.</a>
+
+<a id="traceId"></a><a id="1121" href="Debug.Trace.html#1121" class="Function">traceId</a> <a id="1129" class="Symbol">:</a> <a id="1131" href="Agda.Builtin.String.html#335" class="Postulate">String</a> <a id="1138" class="Symbol">→</a> <a id="1140" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="1147" href="Debug.Trace.html#1121" class="Function">traceId</a> <a id="1155" href="Debug.Trace.html#1155" class="Bound">str</a> <a id="1159" class="Symbol">=</a> <a id="1161" href="Debug.Trace.html#485" class="Postulate">trace</a> <a id="1167" href="Debug.Trace.html#1155" class="Bound">str</a> <a id="1171" href="Debug.Trace.html#1155" class="Bound">str</a>
+</pre></body></html>

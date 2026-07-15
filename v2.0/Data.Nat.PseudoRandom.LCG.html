@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.PseudoRandom.LCG</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Linear congruential pseudo random generators for natural numbers</a>
+<a id="174" class="Comment">-- /!\ NB: LCGs must not be used for cryptographic applications</a>
+<a id="238" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="312" class="Symbol">{-#</a> <a id="316" class="Keyword">OPTIONS</a> <a id="324" class="Pragma">--cubical-compatible</a> <a id="345" class="Pragma">--safe</a> <a id="352" class="Symbol">#-}</a>
+
+<a id="357" class="Keyword">module</a> <a id="364" href="Data.Nat.PseudoRandom.LCG.html" class="Module">Data.Nat.PseudoRandom.LCG</a> <a id="390" class="Keyword">where</a>
+
+<a id="397" class="Keyword">open</a> <a id="402" class="Keyword">import</a> <a id="409" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="423" class="Keyword">open</a> <a id="428" class="Keyword">import</a> <a id="435" href="Data.Nat.DivMod.html" class="Module">Data.Nat.DivMod</a> <a id="451" class="Keyword">using</a> <a id="457" class="Symbol">(</a><a id="458" href="Data.Nat.Base.html#7279" class="Function Operator">_%_</a><a id="461" class="Symbol">)</a>
+<a id="463" class="Keyword">open</a> <a id="468" class="Keyword">import</a> <a id="475" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="490" class="Keyword">using</a> <a id="496" class="Symbol">(</a><a id="497" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="501" class="Symbol">;</a> <a id="503" href="Data.List.Base.html#7793" class="InductiveConstructor">[]</a><a id="505" class="Symbol">;</a> <a id="507" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">_∷_</a><a id="510" class="Symbol">)</a>
+
+<a id="513" class="Comment">------------------------------------------------------------------------</a>
+<a id="586" class="Comment">-- Type and generator</a>
+
+<a id="609" class="Keyword">record</a> <a id="Generator"></a><a id="616" href="Data.Nat.PseudoRandom.LCG.html#616" class="Record">Generator</a> <a id="626" class="Symbol">:</a> <a id="628" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="632" class="Keyword">where</a>
+  <a id="640" class="Keyword">field</a> <a id="Generator.multiplier"></a><a id="646" href="Data.Nat.PseudoRandom.LCG.html#646" class="Field">multiplier</a>     <a id="661" class="Symbol">:</a> <a id="663" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+        <a id="Generator.increment"></a><a id="673" href="Data.Nat.PseudoRandom.LCG.html#673" class="Field">increment</a>      <a id="688" class="Symbol">:</a> <a id="690" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+        <a id="Generator.modulus"></a><a id="700" href="Data.Nat.PseudoRandom.LCG.html#700" class="Field">modulus</a>        <a id="715" class="Symbol">:</a> <a id="717" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+        <a id="727" class="Symbol">.{{</a><a id="Generator.modulus≢0"></a><a id="730" href="Data.Nat.PseudoRandom.LCG.html#730" class="Field">modulus≢0</a><a id="739" class="Symbol">}}</a> <a id="742" class="Symbol">:</a> <a id="744" href="Data.Nat.Base.html#3260" class="Record">NonZero</a> <a id="752" href="Data.Nat.PseudoRandom.LCG.html#700" class="Field">modulus</a>
+
+<a id="step"></a><a id="761" href="Data.Nat.PseudoRandom.LCG.html#761" class="Function">step</a> <a id="766" class="Symbol">:</a> <a id="768" href="Data.Nat.PseudoRandom.LCG.html#616" class="Record">Generator</a> <a id="778" class="Symbol">→</a> <a id="780" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="782" class="Symbol">→</a> <a id="784" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="786" href="Data.Nat.PseudoRandom.LCG.html#761" class="Function">step</a> <a id="791" href="Data.Nat.PseudoRandom.LCG.html#791" class="Bound">gen</a> <a id="795" href="Data.Nat.PseudoRandom.LCG.html#795" class="Bound">x</a> <a id="797" class="Symbol">=</a>
+  <a id="801" class="Keyword">let</a> <a id="805" class="Keyword">open</a> <a id="810" href="Data.Nat.PseudoRandom.LCG.html#616" class="Module">Generator</a> <a id="820" href="Data.Nat.PseudoRandom.LCG.html#791" class="Bound">gen</a> <a id="824" class="Keyword">in</a>
+  <a id="829" class="Symbol">((</a><a id="831" href="Data.Nat.PseudoRandom.LCG.html#646" class="Function">multiplier</a> <a id="842" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">*</a> <a id="844" href="Data.Nat.PseudoRandom.LCG.html#795" class="Bound">x</a> <a id="846" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">+</a> <a id="848" href="Data.Nat.PseudoRandom.LCG.html#673" class="Function">increment</a><a id="857" class="Symbol">)</a> <a id="859" href="Data.Nat.Base.html#7279" class="Function Operator">%</a> <a id="861" href="Data.Nat.PseudoRandom.LCG.html#700" class="Function">modulus</a><a id="868" class="Symbol">)</a>
+
+<a id="list"></a><a id="871" href="Data.Nat.PseudoRandom.LCG.html#871" class="Function">list</a> <a id="876" class="Symbol">:</a> <a id="878" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="880" class="Symbol">→</a> <a id="882" href="Data.Nat.PseudoRandom.LCG.html#616" class="Record">Generator</a> <a id="892" class="Symbol">→</a> <a id="894" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="896" class="Symbol">→</a> <a id="898" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="903" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="905" href="Data.Nat.PseudoRandom.LCG.html#871" class="Function">list</a> <a id="910" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>    <a id="918" href="Data.Nat.PseudoRandom.LCG.html#918" class="Bound">gen</a> <a id="922" href="Data.Nat.PseudoRandom.LCG.html#922" class="Bound">x</a> <a id="924" class="Symbol">=</a> <a id="926" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a>
+<a id="929" href="Data.Nat.PseudoRandom.LCG.html#871" class="Function">list</a> <a id="934" class="Symbol">(</a><a id="935" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="939" href="Data.Nat.PseudoRandom.LCG.html#939" class="Bound">k</a><a id="940" class="Symbol">)</a> <a id="942" href="Data.Nat.PseudoRandom.LCG.html#942" class="Bound">gen</a> <a id="946" href="Data.Nat.PseudoRandom.LCG.html#946" class="Bound">x</a> <a id="948" class="Symbol">=</a> <a id="950" href="Data.Nat.PseudoRandom.LCG.html#946" class="Bound">x</a> <a id="952" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="954" href="Data.Nat.PseudoRandom.LCG.html#871" class="Function">list</a> <a id="959" href="Data.Nat.PseudoRandom.LCG.html#939" class="Bound">k</a> <a id="961" href="Data.Nat.PseudoRandom.LCG.html#942" class="Bound">gen</a> <a id="965" class="Symbol">(</a><a id="966" href="Data.Nat.PseudoRandom.LCG.html#761" class="Function">step</a> <a id="971" href="Data.Nat.PseudoRandom.LCG.html#942" class="Bound">gen</a> <a id="975" href="Data.Nat.PseudoRandom.LCG.html#946" class="Bound">x</a><a id="976" class="Symbol">)</a>
+
+<a id="979" class="Comment">------------------------------------------------------------------------</a>
+<a id="1052" class="Comment">-- Examples of parameters</a>
+<a id="1078" class="Comment">-- Taken from https://en.wikipedia.org/wiki/Linear_congruential_generator</a>
+
+<a id="1153" class="Comment">-- /!\ As explained in that wikipedia entry, none of these are claimed</a>
+<a id="1224" class="Comment">-- to be good parameters.</a>
+
+<a id="1251" class="Comment">-- Note also that if you need your output to have good properties you</a>
+<a id="1321" class="Comment">-- may need to postprocess the stream of values to only use some of the</a>
+<a id="1393" class="Comment">-- bits of the output!</a>
+
+<a id="glibc"></a><a id="1417" href="Data.Nat.PseudoRandom.LCG.html#1417" class="Function">glibc</a> <a id="1423" class="Symbol">:</a> <a id="1425" href="Data.Nat.PseudoRandom.LCG.html#616" class="Record">Generator</a>
+<a id="1435" href="Data.Nat.PseudoRandom.LCG.html#1417" class="Function">glibc</a> <a id="1441" class="Symbol">=</a> <a id="1443" class="Keyword">record</a>
+  <a id="1452" class="Symbol">{</a> <a id="1454" href="Data.Nat.PseudoRandom.LCG.html#646" class="Field">multiplier</a> <a id="1465" class="Symbol">=</a> <a id="1467" class="Number">1103515245</a>
+  <a id="1480" class="Symbol">;</a> <a id="1482" href="Data.Nat.PseudoRandom.LCG.html#673" class="Field">increment</a>  <a id="1493" class="Symbol">=</a> <a id="1495" class="Number">12345</a>
+  <a id="1503" class="Symbol">;</a> <a id="1505" href="Data.Nat.PseudoRandom.LCG.html#700" class="Field">modulus</a>    <a id="1516" class="Symbol">=</a> <a id="1518" class="Number">2</a> <a id="1520" href="Data.Nat.Base.html#6561" class="Function Operator">^</a> <a id="1522" class="Number">31</a>
+  <a id="1527" class="Symbol">}</a>
+
+<a id="random0"></a><a id="1530" href="Data.Nat.PseudoRandom.LCG.html#1530" class="Function">random0</a> <a id="1538" class="Symbol">:</a> <a id="1540" href="Data.Nat.PseudoRandom.LCG.html#616" class="Record">Generator</a>
+<a id="1550" href="Data.Nat.PseudoRandom.LCG.html#1530" class="Function">random0</a> <a id="1558" class="Symbol">=</a> <a id="1560" class="Keyword">record</a>
+  <a id="1569" class="Symbol">{</a> <a id="1571" href="Data.Nat.PseudoRandom.LCG.html#646" class="Field">multiplier</a> <a id="1582" class="Symbol">=</a> <a id="1584" class="Number">8121</a>
+  <a id="1591" class="Symbol">;</a> <a id="1593" href="Data.Nat.PseudoRandom.LCG.html#673" class="Field">increment</a>  <a id="1604" class="Symbol">=</a> <a id="1606" class="Number">28411</a>
+  <a id="1614" class="Symbol">;</a> <a id="1616" href="Data.Nat.PseudoRandom.LCG.html#700" class="Field">modulus</a>    <a id="1627" class="Symbol">=</a> <a id="1629" class="Number">134456</a>
+  <a id="1638" class="Symbol">}</a>
+</pre></body></html>
