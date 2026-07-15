@@ -352,7 +352,7 @@ jobs:
         with:
           name: ubuntu-html
           include-hidden-files: true
-          path: ${{ needs.init.outputs.AGDA_HTML_DIR }}
+          path: ./html/
 
   html-deploy:
     needs: [init, html-generate, test-stdlib-golden, test-stdlib]
