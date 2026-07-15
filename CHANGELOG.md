@@ -311,6 +311,8 @@ New modules
   Data.Tree.Rose.Show
   ```
 
+* `Effect.Monad.Partial` based on domain `Dom` and injection `dom`.
+
 Additions to existing modules
 -----------------------------
 
