@@ -65,6 +65,10 @@ Bug-fixes
   As a further knock-on consequence, module `Algebra.Properties.KleeneAlgebra`
   has been completely rewritten in order to accommodate the new axiomatisation.
 
+* Refactored `Function.Bundles` to export `equivalence`, `toFunction`, and
+  `fromFunction` from `*Inverse` with corresponding deprecations in
+  `Function.Properties.Inverse`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -236,6 +240,12 @@ Deprecated names
 * In `Function.Properties.Bijection`:
   ```agda
   sym-≡   ↦  sym
+  ```
+
+* In `Function.Properties.Inverse`:
+  ```agda
+  toFunction      ↦  Function.Bundles.Inverse.toFunction
+  fromFunction    ↦  Function.Bundles.Inverse.fromFunction
   ```
 
 * In `Function.Properties.Surjection`:
@@ -472,6 +482,13 @@ Additions to existing modules
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  ```
+
+* In `Function.Bundles.*Inverse`:
+  ```agda
+  toFunction   : Func From To
+  fromFunction : Func To From
+  equivalence  : Equivalence From To
   ```
 
 * In `Function.Bundles.LeftInverse`:
