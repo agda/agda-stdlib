@@ -17,7 +17,6 @@ open import Algebra.Bundles using (Magma; Semigroup; Band; CommutativeSemigroup;
 import Algebra.Construct.Pointwise as Lift
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (ℕ)
-open import Data.Vec.Functional
 open import Level using (Level; _⊔_)
 
 private
