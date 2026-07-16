@@ -10,7 +10,7 @@
 -- https://link.springer.com/chapter/10.1007/978-3-662-54434-1_21
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Functor.Naperian where
 
