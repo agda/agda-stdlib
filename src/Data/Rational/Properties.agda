@@ -1411,7 +1411,7 @@ module _ where
     { isCommutativeRing = isCommutativeRing
     ; isTightApartnessRelation = ≉-isTightApartnessRelation
     ; +-stronglyExtensional = +-stronglyExtensional
-    ; *-stronglyExtensional = {!*-stronglyExtensional!}
+    ; *-stronglyExtensional = *-stronglyExtensional
     }
 
   isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
