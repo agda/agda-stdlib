@@ -2,6 +2,8 @@
 -- The Agda standard library
 --
 -- Algebraic structures with an apartness relation
+-- Axiomatisation follows Troelstra and van Dalen,
+-- "Constructivity in Mathematics, Vol. II"
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -16,12 +18,12 @@ module Algebra.Apartness.Structures
   (_+_ _*_ : Op₂ Carrier) (-_ : Op₁ Carrier) (0# 1# : Carrier)
   where
 
-open import Level using (_⊔_; suc)
+open import Algebra.Apartness.Consequences _#_ using ()
+open import Algebra.Apartness.Definitions _#_ using (StronglyExtensional)
 open import Algebra.Definitions _≈_ using (Invertible)
 open import Algebra.Structures _≈_ using (IsCommutativeRing)
 open import Data.Product.Base using (proj₁; proj₂)
-open import Relation.Binary.Definitions
-  using (StronglyExtensional)
+open import Level using (_⊔_; suc)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsApartnessRelation; IsTightApartnessRelation)
 import Relation.Binary.Properties.ApartnessRelation as AR
@@ -32,8 +34,8 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isCommutativeRing        : IsCommutativeRing _+_ _*_ -_ 0# 1#
     isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
-    +-stronglyExtensional    : StronglyExtensional _#_ _+_
-    *-stronglyExtensional    : StronglyExtensional _#_ _*_
+    +-stronglyExtensional    : StronglyExtensional _+_
+    *-stronglyExtensional    : StronglyExtensional _*_
 
   open IsCommutativeRing isCommutativeRing public
   open IsTightApartnessRelation isTightApartnessRelation public
