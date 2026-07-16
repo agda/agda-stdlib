@@ -324,6 +324,13 @@ jobs:
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
 
+      # Only want to check for defunct READMEs in a PR
+      # Since on a push, there's no 'source of truth' to compare against with `.github/tooling/defunct-readme.sh`
+      # Either way, this is to catch easy mistakes before merging 
+      - name: Check READMEs
+        if: ${{ github.event_name == 'pull_request' }}
+        run: .github/tooling/defunct-readme.sh ${{ github.base_ref }}
+
       - name: Prepare HTML index
         run: |
           # Regenerating the Everything files without the deprecated modules
@@ -333,13 +340,6 @@ jobs:
           ${{ env.AGDA }} --safe EverythingSafe.agda
           ${{ env.AGDA }} Everything.agda
           ${{ env.AGDA }} index.agda
-
-      # Only want to check for defunct READMEs in a PR
-      # Since on a push, there's no 'source of truth' to compare against with `.github/tooling/defunct-readme.sh`
-      # Either way, this is to catch easy mistakes before merging 
-      - name: Check READMEs
-        if: ${{ github.event_name == 'pull_request' }}
-        run: .github/tooling/defunct-readme.sh ${{ github.base_ref }}
 
       # We start by retrieving the currently deployed docs
       # We remove the content that is in the directory we are going to populate
