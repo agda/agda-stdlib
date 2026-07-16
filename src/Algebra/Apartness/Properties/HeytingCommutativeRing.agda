@@ -24,7 +24,7 @@ open import Algebra.Properties.Ring ring using (x-0#≈x)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.3
+-- Version 3.0
 
 x-0≈x = x-0#≈x
 {-# WARNING_ON_USAGE x-0≈x
