@@ -25,7 +25,7 @@ open import Function.Base using (_on_)
 module _ (f : Op₁ A) where
 
   StronglyCongruent₁  : Set _
-  StronglyCongruent₁  = (_#_ on f) ⇒ _#_ 
+  StronglyCongruent₁  = (_#_ on f) ⇒ _#_
 
 module _ (_∙_ : Op₂ A) where
 
