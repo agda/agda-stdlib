@@ -480,6 +480,12 @@ Additions to existing modules
                     i / n + j / n ≡ (i ℤ.+ j) / n
   ```
 
+* In `Data.Sum.Relation.Binary.Pointwise`:
+  ```agda
+  elim : R =[ f ]⇒ T → S =[ g ]⇒ T →
+         Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
