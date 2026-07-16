@@ -28,12 +28,12 @@ open import Algebra.Properties.Ring ring using (x-0#≈x)
 
 x-0≈x = x-0#≈x
 {-# WARNING_ON_USAGE x-0≈x
-"Warning: x-0≈x was deprecated in v2.3.
+"Warning: x-0≈x was deprecated in v3.0.
 Please use Algebra.Properties.Ring.x-0#≈x instead."
 #-}
 
 open HeytingCommutativeRing heytingCommutativeRing public using (#-sym)
 {-# WARNING_ON_USAGE #-sym
-"Warning: #-sym was deprecated in v2.3.
+"Warning: #-sym was deprecated in v3.0.
 Please use Algebra.Apartness.Structures.IsHeytingCommutativeRing.#-sym instead."
 #-}
