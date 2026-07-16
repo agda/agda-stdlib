@@ -8,12 +8,13 @@
 
 module Relation.Unary.Properties where
 
-open import Data.Product.Base as Product using (_×_; _,_; -,_; swap; proj₁; zip′; curry)
+open import Data.Product.Base as Product
+  using (_×_; _,_; -,_; swap; proj₁; zip′; curry)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (id; _$_; _∘_; _∘₂_)
 open import Level using (Level)
-open import Relation.Binary.Core as Binary
+open import Relation.Binary.Core as Binary using (Rel)
 open import Relation.Binary.Definitions
   hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl; _≗_)
@@ -119,7 +120,7 @@ U-Universal = λ _ → _
 ⊂-respˡ-≐ (_ , R⊆Q) P⊂Q = ⊆-⊂-trans R⊆Q P⊂Q
 
 ⊂-resp-≐ : _Respects₂_ {A = Pred A ℓ} _⊂_ _≐_
-⊂-resp-≐ = ⊂-respʳ-≐ , ⊂-respˡ-≐
+⊂-resp-≐ = ⊂-respˡ-≐ , ⊂-respʳ-≐
 
 ⊂-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _⊂_
 ⊂-irrefl (_ , Q⊆P) (_ , Q⊈P) = Q⊈P Q⊆P
@@ -173,7 +174,7 @@ U-Universal = λ _ → _
 ⊂′-respˡ-≐′ (_ , R⊆Q) P⊂Q = ⊆′-⊂′-trans R⊆Q P⊂Q
 
 ⊂′-resp-≐′ : _Respects₂_ {A = Pred A ℓ₁} _⊂′_ _≐′_
-⊂′-resp-≐′ = ⊂′-respʳ-≐′ , ⊂′-respˡ-≐′
+⊂′-resp-≐′ = ⊂′-respˡ-≐′ , ⊂′-respʳ-≐′
 
 ⊂′-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _⊂′_
 ⊂′-irrefl (_ , Q⊆P) (_ , Q⊈P) = Q⊈P Q⊆P

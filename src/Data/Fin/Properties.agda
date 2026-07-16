@@ -413,7 +413,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 <-respʳ-≡ refl x≤y = x≤y
 
 <-resp₂-≡ : (_<_ {n}) Respects₂ _≡_
-<-resp₂-≡ = <-respʳ-≡ , <-respˡ-≡
+<-resp₂-≡ = <-respˡ-≡ , <-respʳ-≡
 
 <-irrelevant : Irrelevant (_<_ {m} {n})
 <-irrelevant = ℕ.<-irrelevant
