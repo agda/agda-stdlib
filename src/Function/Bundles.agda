@@ -254,6 +254,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; from-cong = from-cong
       }
 
+    open Equivalence equivalence public
+      using (toFunction; fromFunction)
+
     isSplitSurjection : IsSplitSurjection to
     isSplitSurjection = record
       { from = from
@@ -296,18 +299,21 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     open IsInjection isInjection public using (injective)
 
-    equivalence : Equivalence
-    equivalence = record
-      { to-cong   = to-cong
-      ; from-cong = from-cong
-      }
-
     injection : Injection From To
     injection = record
       { to = to
       ; cong = to-cong
       ; injective = injective
       }
+
+    equivalence : Equivalence
+    equivalence = record
+      { to-cong   = to-cong
+      ; from-cong = from-cong
+      }
+
+    open Equivalence equivalence public
+      using (toFunction; fromFunction)
 
 
   record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -338,8 +344,11 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; inverseʳ  = inverseʳ
       }
 
-    open LeftInverse leftInverse   public using (isLeftInverse; strictlyInverseˡ)
-    open RightInverse rightInverse public using (isRightInverse; strictlyInverseʳ)
+    open LeftInverse leftInverse   public
+      using (isLeftInverse; strictlyInverseˡ
+            ; equivalence; toFunction; fromFunction)
+    open RightInverse rightInverse public
+      using (isRightInverse; strictlyInverseʳ)
 
     isInverse : IsInverse to from
     isInverse = record

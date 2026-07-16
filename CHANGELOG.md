@@ -65,6 +65,10 @@ Bug-fixes
   As a further knock-on consequence, module `Algebra.Properties.KleeneAlgebra`
   has been completely rewritten in order to accommodate the new axiomatisation.
 
+* Refactored `Function.Bundles` to export `equivalence`, `toFunction`, and
+  `fromFunction` from `*Inverse` with corresponding deprecations in
+  `Function.Properties.Inverse`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -158,6 +162,11 @@ Non-backwards compatible changes
   counterparts. Consider using `viaList` if you want a lawful lifting
   of `take` or `drop`.
 
+* [Issue #2319](https://github.com/agda/agda-stdlib/issues/2319)
+  The custom syntax for `swap` and `prep` steps in `PermutationReasoning`,
+  defined in `Data.List.Relation.Binary.Permutation.{Propositional|Setoid}`,
+  has been removed.
+
 Minor improvements
 ------------------
 
@@ -248,6 +257,12 @@ Deprecated names
   sym-≡   ↦  sym
   ```
 
+* In `Function.Properties.Inverse`:
+  ```agda
+  toFunction      ↦  Function.Bundles.Inverse.toFunction
+  fromFunction    ↦  Function.Bundles.Inverse.fromFunction
+  ```
+
 * In `Function.Properties.Surjection`:
   ```agda
   injective⇒to⁻-cong   ↦  Function.Bundles.Bijection.from-cong
@@ -305,6 +320,9 @@ New modules
   Data.Tree.Rose.Properties
   Data.Tree.Rose.Show
   ```
+
+* `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
+  the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
 * `Function.Definitions.Strictly`, factoring out the former `Strictly*` definitions
   in `Function.Definitions`, now available as
@@ -394,7 +412,10 @@ Additions to existing modules
 
 * In `Data.DifferenceList.Properties`:
   ```agda
-  viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
+  fromList-++ : ∀ xs ys → fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
+  toList-++ : ListLike dxs → (dys : DiffList A) →
+              toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+  viaList⁺ : (f : List A → List B) → xs ∼ dxs → f xs ∼ viaList f dxs
   ```
 
 * In `Data.Integer.GCD`:
@@ -456,6 +477,12 @@ Additions to existing modules
   *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
+* In `Data.Product`:
+  ```agda
+  ∃!-≐ : P ≐ Q → ∃! _≈_ P → ∃! _≈_ Q
+  ∃!-⇔ : P ≐ Q → ∃! _≈_ P ⇔ ∃! _≈_ Q
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
@@ -484,6 +511,13 @@ Additions to existing modules
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  ```
+
+* In `Function.Bundles.*Inverse`:
+  ```agda
+  toFunction   : Func From To
+  fromFunction : Func To From
+  equivalence  : Equivalence From To
   ```
 
 * In `Function.Bundles.LeftInverse`:
@@ -588,4 +622,10 @@ Additions to existing modules
     StarLeftDestructive   : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  ```
+
+* In `Relation.Unary`:
+  ```agda
+  Unique         : Rel A ℓ₁ → Pred A ℓ₂ → Pred A _
+  Unique _≈_ P x = ∀ {z} → P z → z ≈ x
   ```
