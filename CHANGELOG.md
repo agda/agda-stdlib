@@ -541,6 +541,14 @@ Additions to existing modules
   ≄-apartnessRelation        : ApartnessRelation _ _ _
   ≄-isTightApartnessRelation : IsTightApartnessRelation _≃_ _≄_
   ≄-tightApartnessRelation   : TightApartnessRelation _ _ _
+  +-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≄_ (p +_)
+  +-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≄_ (_+ r)
+  +-stronglyCongruent   : StronglyCongruent₂ _≄_ _+_
+  +-stronglyExtensional : StronglyExtensional _≄_ _+_
+  *-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≄_ (p *_)
+  *-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≄_ (_* r)
+  *-stronglyCongruent   : StronglyCongruent₂ _≄_ _*_
+  *-stronglyExtensional : StronglyExtensional _≄_ _*_
   ```
 
 * In `Data.Vec.Properties`:

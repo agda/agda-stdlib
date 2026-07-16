@@ -9,15 +9,17 @@
 
 module Data.Rational.Unnormalised.Properties where
 
-open import Algebra.Definitions
-open import Algebra.Structures
-  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma
-        ; IsMonoid; IsCommutativeMonoid; IsGroup; IsAbelianGroup
-        ; IsRing; IsCommutativeRing)
-open import Algebra.Bundles
+open import Algebra.Apartness.Consequences
+open import Algebra.Apartness.Definitions
 open import Algebra.Apartness
   using (IsHeytingCommutativeRing; IsHeytingField
         ; HeytingCommutativeRing; HeytingField)
+open import Algebra.Bundles
+open import Algebra.Definitions
+open import Algebra.Structures
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma; IsMonoid
+        ; IsCommutativeMonoid; IsGroup; IsAbelianGroup; IsRing
+        ; IsCommutativeRing)
 open import Algebra.Lattice
   using (IsSemilattice; IsLattice; IsDistributiveLattice
         ; RawLattice; Semilattice; Lattice; DistributiveLattice)
@@ -42,7 +44,8 @@ import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
 open import Relation.Nullary.Decidable.Core as Dec using (yes; no)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contraposition)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder
@@ -56,7 +59,7 @@ open import Relation.Binary.Definitions
         ; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous
         ; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_
         ; tri≈; tri<; tri>; Monotonic₁; LeftMonotonic; RightMonotonic; Monotonic₂)
-import Relation.Binary.Consequences as BC
+import Relation.Binary.Consequences as Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Setoid as SetoidProperties
 import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
@@ -386,10 +389,10 @@ _≥?_ = flip _≤?_
 -- Other properties of _≤_
 
 mono⇒cong : ∀ {f} → Monotonic₁ _≤_ _≤_ f → Congruent₁ _≃_ f
-mono⇒cong = BC.mono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antisym
+mono⇒cong = Binary.mono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antisym
 
 antimono⇒cong : ∀ {f} → Monotonic₁ _≤_ _≥_ f → Congruent₁ _≃_ f
-antimono⇒cong = BC.antimono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antisym
+antimono⇒cong = Binary.antimono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antisym
 
 ------------------------------------------------------------------------
 -- Properties of _≤ᵇ_
@@ -822,6 +825,21 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 p+p≃0⇒p≃0 : ∀ p → p + p ≃ 0ℚᵘ → p ≃ 0ℚᵘ
 p+p≃0⇒p≃0 (mkℚᵘ ℤ.+0 _) (*≡* _) = *≡* refl
 
+-- Apartness
+
++-stronglyCongruentˡ : ∀ p → StronglyCongruent₁ _≄_ (p +_)
++-stronglyCongruentˡ p = contraposition (+-congʳ p)
+
++-stronglyCongruentʳ : ∀ r → StronglyCongruent₁ _≄_ (_+ r)
++-stronglyCongruentʳ r = contraposition (+-congˡ r)
+
++-stronglyCongruent : StronglyCongruent₂ _≄_ _+_
++-stronglyCongruent = +-stronglyCongruentˡ , +-stronglyCongruentʳ
+
++-stronglyExtensional : StronglyExtensional _≄_ _+_
++-stronglyExtensional =
+  cotransitive∧congruent⇒extensional _≄_ ≄-cotransitive +-stronglyCongruent
+
 ------------------------------------------------------------------------
 -- Properties of _+_ and -_
 
@@ -870,7 +888,7 @@ private
 
 +-mono-≤ : Monotonic₂ _≤_ _≤_ _≤_ _+_
 +-mono-≤ =
-  BC.monoˡ∧monoʳ⇒mono₂ _≤_ _≤_ _≤_ ≤-trans +-monoʳ-≤ +-monoˡ-≤
+  Binary.monoˡ∧monoʳ⇒mono₂ _≤_ _≤_ _≤_ ≤-trans +-monoʳ-≤ +-monoˡ-≤
 
 p≤q⇒p≤r+q : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
 p≤q⇒p≤r+q {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
@@ -1220,6 +1238,21 @@ p*q≢0⇒q≢0 {p} {q} pq≄0 q≃0 = pq≄0 $ begin-equality
   0ℚᵘ     ∎
   where open ≤-Reasoning
 
+-- Apartness
+
+*-stronglyCongruentˡ : ∀ p → StronglyCongruent₁ _≄_ (p *_)
+*-stronglyCongruentˡ p = contraposition (*-congˡ {x = p})
+
+*-stronglyCongruentʳ : ∀ r → StronglyCongruent₁ _≄_ (_* r)
+*-stronglyCongruentʳ r = contraposition (*-congʳ {x = r})
+
+*-stronglyCongruent : StronglyCongruent₂ _≄_ _*_
+*-stronglyCongruent = *-stronglyCongruentˡ , *-stronglyCongruentʳ
+
+*-stronglyExtensional : StronglyExtensional _≄_ _*_
+*-stronglyExtensional =
+  cotransitive∧congruent⇒extensional _≄_ ≄-cotransitive *-stronglyCongruent
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and -_
 
@@ -1444,8 +1477,8 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-isHeytingCommutativeRing = record
   { isCommutativeRing   = +-*-isCommutativeRing
   ; isTightApartnessRelation = ≄-isTightApartnessRelation
-  ; +-stronglyExtensional = ?
-  ; *-stronglyExtensional = ?
+  ; +-stronglyExtensional = +-stronglyExtensional
+  ; *-stronglyExtensional = *-stronglyExtensional
   }
 
 +-*-isHeytingField : IsHeytingField _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
