@@ -13,15 +13,11 @@ module Algebra.Apartness.Consequences
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Apartness.Definitions _#_
-import Algebra.Definitions as Definitions
-open import Data.Product.Base using (_,_; proj₁; proj₂)
-open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
-open import Function.Base using (flip)
-open import Function.Consequences using (contraInjective)
+open import Data.Product.Base using (_,_)
+import Data.Sum.Base as Sum
 open import Level using (Level)
-open import Relation.Binary.Consequences
 open import Relation.Binary.Definitions
-  using (Cotransitive; Tight; Irreflexive)
+  using (Cotransitive)
 
 private
   variable

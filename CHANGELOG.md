@@ -534,6 +534,14 @@ Additions to existing modules
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
+  +-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≢_ (p +_)
+  +-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≢_ (_+ r)
+  +-stronglyCongruent   : StronglyCongruent₂ _≢_ _+_
+  +-stronglyExtensional : StronglyExtensional _≢_ _+_
+  *-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≢_ (p *_)
+  *-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≢_ (_* r)
+  *-stronglyCongruent   : StronglyCongruent₂ _≢_ _*_
+  *-stronglyExtensional : StronglyExtensional _≢_ _*_
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
