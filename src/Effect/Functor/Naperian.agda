@@ -18,13 +18,12 @@ open import Effect.Functor using (RawFunctor)
 open import Effect.Applicative using (RawApplicative)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Function.Base using (_∘_; const)
 
 private
   variable
     a b c ℓ : Level
-    A : Set a
 
 -- From the paper:
 -- "Functor f is Naperian if there is a type p of ‘positions’ such that fa≃p→a;
@@ -38,38 +37,31 @@ module _ (F : Set a → Set b) c where
     field
       rawFunctor : RawFunctor F
       Log : Set c
-      index : F A → (Log → A)
-      tabulate : (Log → A) → F A
+      index : {A : Set a} → F A → (Log → A)
+      tabulate : {A : Set a} → (Log → A) → F A
     open RawFunctor rawFunctor public
 
   -- Full Naperian has the coherence conditions too.
 
   record Naperian (S : Setoid a ℓ) : Set (suc (a ⊔ c) ⊔ b ⊔ ℓ) where
+    private
+      open module S = Setoid S
     field
       rawNaperian : RawNaperian
-    open RawNaperian rawNaperian public
-    open module S = Setoid S
-    private
-      FS : Setoid b (c ⊔ ℓ)
-      FS = record
-        { _≈_ = λ (fx fy : F Carrier) → ∀ (l : Log) → index fx l ≈ index fy l
-        ; isEquivalence = record
-          { refl = λ _ → refl
-          ; sym = λ eq l → sym (eq l)
-          ; trans = λ i≈j j≈k l → trans (i≈j l) (j≈k l)
-          }
-        }
-      module FS = Setoid FS
+    open RawNaperian rawNaperian public    
+
     field
       index-tabulate   : (f : Log → Carrier) → ((l : Log) → index (tabulate f) l ≈ f l)
-      natural-tabulate : (f : Carrier → Carrier) (k : Log → Carrier) → (tabulate (f ∘ k)) FS.≈ (f <$> (tabulate k))
-      natural-index    : (l : Log) (f : Carrier → Carrier) (as : F Carrier) → (index (f <$> as) l) ≈ f (index as l)
+      natural-tabulate : (f : Carrier → Carrier) (k : Log → Carrier) (l : Log) →
+        index (tabulate (f ∘ k)) l ≈ index (f <$> (tabulate k)) l
+      natural-index    : (l : Log) (f : Carrier → Carrier) (as : F Carrier) →
+        index (f <$> as) l ≈ f (index as l)
     
-    tabulate-index : (fx : F Carrier) → tabulate (index fx) FS.≈ fx
+    tabulate-index : (fx : F Carrier) (l : Log) → index (tabulate (index fx)) l ≈ index fx l
     tabulate-index = index-tabulate ∘ index
-    
+   
   PropositionalNaperian : Set (suc (a ⊔ c) ⊔ b)
-  PropositionalNaperian = ∀ A → Naperian (≡.setoid A)
+  PropositionalNaperian = ∀ A → Naperian (setoid A)
 
   rawApplicative : RawNaperian → RawApplicative F
   rawApplicative rn =
