@@ -314,6 +314,15 @@ New modules
 * `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
   the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
+* New module defining Naperian functors, 'logarithms of containers' (Hancock/McBride)
+```
+Effect.Functor.Naperian
+```
+defining
+```agda
+  record RawNaperian (F : Set a → Set b) (c : Level) : Set _
+  record Naperian (F : Set a → Set b) (c : Level) (S : Setoid a ℓ) : Set _
+```
 Additions to existing modules
 -----------------------------
 
