@@ -48,7 +48,7 @@ module _ (F : Set a → Set b) c where
       open module S = Setoid S
     field
       rawNaperian : RawNaperian
-    open RawNaperian rawNaperian public    
+    open RawNaperian rawNaperian public
 
     field
       index-tabulate   : (f : Log → Carrier) → ((l : Log) → index (tabulate f) l ≈ f l)
@@ -56,10 +56,10 @@ module _ (F : Set a → Set b) c where
         index (tabulate (f ∘ k)) l ≈ index (f <$> (tabulate k)) l
       natural-index    : (l : Log) (f : Carrier → Carrier) (as : F Carrier) →
         index (f <$> as) l ≈ f (index as l)
-    
+
     tabulate-index : (fx : F Carrier) (l : Log) → index (tabulate (index fx)) l ≈ index fx l
     tabulate-index = index-tabulate ∘ index
-   
+
   PropositionalNaperian : Set (suc (a ⊔ c) ⊔ b)
   PropositionalNaperian = ∀ A → Naperian (setoid A)
 
@@ -67,7 +67,7 @@ module _ (F : Set a → Set b) c where
   rawApplicative rn =
     record
       { rawFunctor = rawFunctor
-      ; pure = tabulate ∘ const 
+      ; pure = tabulate ∘ const
       ; _<*>_ = λ a b → tabulate (λ i → (index a i) (index b i))
       }
       where
