@@ -9,9 +9,10 @@
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
 open import Data.Product.Base as Product
+   using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Function.Base using (id)
+open import Function.Base using (id; flip)
 open import Function.Bundles using (Inverse)
 open import Relation.Nullary.Decidable using (_×?_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
@@ -24,21 +25,52 @@ import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
-    a b ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
+    a b c d ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
     A B C D : Set a
     R S ≈₁ ≈₂ : Rel A ℓ₁
+
 
 ------------------------------------------------------------------------
 -- Definition
 
-Pointwise : REL A B ℓ₁ → REL C D ℓ₂ → REL (A × C) (B × D) (ℓ₁ ⊔ ℓ₂)
-Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
+infixr 4 _,_
 
+record Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
+                 (R₁ : REL A B ℓ₁) (R₂ : REL C D ℓ₂)
+                 (x : A × C) (y : B × D)
+                 : Set (a ⊔ b ⊔ c ⊔ d ⊔ ℓ₁ ⊔ ℓ₂) where
+  constructor _,_
+  field
+    proj₁ : R₁ (proj₁ x) (proj₁ y)
+    proj₂ : R₂ (proj₂ x) (proj₂ y)
+
+open Pointwise public
+
+Pointwise′ : REL A B ℓ₁ → REL C D ℓ₂ → REL (A × C) (B × D) (ℓ₁ ⊔ ℓ₂)
+Pointwise′ R S (a , c) (b , d) = (R a b) × (S c d)
+
+pointwise⇒pointwise′ : Pointwise R S ⇒ Pointwise′ R S
+proj₁ (pointwise⇒pointwise′ p) = proj₁ p
+proj₂ (pointwise⇒pointwise′ p) = proj₂ p
+
+pointwise′⇒pointwise : Pointwise′ R S ⇒ Pointwise R S
+proj₁ (pointwise′⇒pointwise p) = proj₁ p
+proj₂ (pointwise′⇒pointwise p) = proj₂ p
+
+------------------------------------------------------------------------
+-- Helper functions as drop-ins for those from Product
+
+map : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
+map f g (x , y) = f x , g y
+{-
+zip : Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
+zip f g (x , y) = f x , g y
+-}
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
 
 ×-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
-×-reflexive refl₁ refl₂ = Product.map refl₁ refl₂
+×-reflexive = map
 
 ×-refl : Reflexive R → Reflexive S → Reflexive (Pointwise R S)
 ×-refl refl₁ refl₂ = refl₁ , refl₂
@@ -52,14 +84,14 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ×-irreflexive₂ ir x≈y x<y = ir (proj₂ x≈y) (proj₂ x<y)
 
 ×-symmetric : Symmetric R → Symmetric S → Symmetric (Pointwise R S)
-×-symmetric sym₁ sym₂ = Product.map sym₁ sym₂
+×-symmetric {R = R} {S = S} sym₁ sym₂ = {!map sym₁ sym₂!}
 
 ×-transitive : Transitive R → Transitive S → Transitive (Pointwise R S)
-×-transitive trans₁ trans₂ = Product.zip trans₁ trans₂
+×-transitive trans₁ trans₂ = {!Product.zip trans₁ trans₂!}
 
 ×-antisymmetric : Antisymmetric ≈₁ R → Antisymmetric ≈₂ S →
                   Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise R S)
-×-antisymmetric antisym₁ antisym₂ = Product.zip antisym₁ antisym₂
+×-antisymmetric antisym₁ antisym₂ = {!Product.zip antisym₁ antisym₂!}
 
 ×-asymmetric₁ : Asymmetric R → Asymmetric (Pointwise R S)
 ×-asymmetric₁ asym₁ x<y y<x = asym₁ (proj₁ x<y) (proj₁ y<x)
@@ -69,15 +101,15 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 
 ×-respectsʳ : R Respectsʳ ≈₁ → S Respectsʳ ≈₂ →
              (Pointwise R S) Respectsʳ (Pointwise ≈₁ ≈₂)
-×-respectsʳ resp₁ resp₂ = Product.zip resp₁ resp₂
+×-respectsʳ resp₁ resp₂ = {!Product.zip resp₁ resp₂!}
 
 ×-respectsˡ : R Respectsˡ ≈₁ → S Respectsˡ ≈₂ →
              (Pointwise R S) Respectsˡ (Pointwise ≈₁ ≈₂)
-×-respectsˡ resp₁ resp₂ = Product.zip resp₁ resp₂
+×-respectsˡ resp₁ resp₂ = {!Product.zip resp₁ resp₂!}
 
 ×-respects₂ : R Respects₂ ≈₁ → S Respects₂ ≈₂ →
               (Pointwise R S) Respects₂ (Pointwise ≈₁ ≈₂)
-×-respects₂ = Product.zip ×-respectsʳ ×-respectsˡ
+×-respects₂ = {!Product.zip ×-respectsʳ ×-respectsˡ!}
 
 ×-total : Symmetric R → Total R → Total S → Total (Pointwise R S)
 ×-total sym₁ total₁ total₂ (x₁ , x₂) (y₁ , y₂)
@@ -88,7 +120,7 @@ Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 ... | inj₂ y₁∼x₁ | inj₁ x₂∼y₂ = inj₁ (sym₁ y₁∼x₁ , x₂∼y₂)
 
 ×-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
-×-decidable _≟₁_ _≟₂_ (x₁ , x₂) (y₁ , y₂) = (x₁ ≟₁ y₁) ×? (x₂ ≟₂ y₂)
+×-decidable _≟₁_ _≟₂_ (x₁ , x₂) (y₁ , y₂) = {!(x₁ ≟₁ y₁) ×? (x₂ ≟₂ y₂)!}
 
 ------------------------------------------------------------------------
 -- Structures can also be combined.
@@ -204,3 +236,4 @@ Pointwise-≡↔≡ = record
   ; from-cong  = ≡⇒≡×≡
   ; inverse    = ≡×≡⇒≡ , ≡⇒≡×≡
   }
+
