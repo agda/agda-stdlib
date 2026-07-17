@@ -18,7 +18,6 @@ module Algebra.Apartness.Structures
   (_+_ _*_ : Op₂ Carrier) (-_ : Op₁ Carrier) (0# 1# : Carrier)
   where
 
-open import Algebra.Apartness.Consequences _#_ using ()
 open import Algebra.Apartness.Definitions _#_ using (StronglyExtensional)
 open import Algebra.Definitions _≈_ using (Invertible)
 open import Algebra.Structures _≈_ using (IsCommutativeRing)
@@ -26,7 +25,7 @@ open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_; suc)
 open import Relation.Binary.Structures
   using (IsEquivalence; IsApartnessRelation; IsTightApartnessRelation)
-import Relation.Binary.Properties.ApartnessRelation as AR
+import Relation.Binary.Properties.ApartnessRelation as Apartness
 
 
 record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -48,7 +47,7 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
       )
 
   ¬#-isEquivalence : IsEquivalence _¬#_
-  ¬#-isEquivalence = AR.¬#-isEquivalence refl isApartnessRelation
+  ¬#-isEquivalence = Apartness.¬#-isEquivalence refl isApartnessRelation
 
 
 record IsHeytingField : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
