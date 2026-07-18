@@ -109,6 +109,12 @@ Non-backwards compatible changes
   refactoring, lemmas in `Algebra.Properties.CancellativeCommutativeSemiring` no
   longer require a `Decidable _≈_` hypothesis.
 
+* [issue #2174](https://github.com/agda/agda-stdlib/issues/2174)
+  In `Data.Product.Relation.Binary.Pointwise.NonDependent`, the main definition
+  `Pointwise` has been made a `record` type to improve type inference. The former
+  definition of `Pointwise` has been retained as `Pointwise′`, with back-and-forth
+  conversion functions deifned between them.
+
 * [issue #2471](https://github.com/agda/agda-stdlib/issues/2471)
   In `Relation.Binary.Definitions`, the left/right order of the components of
   `_Respects₂_` have been swapped. Previously the position of the `_Respectsˡ_`
@@ -170,6 +176,9 @@ Minor improvements
 * The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
   have been streamlined via pattern-matching on `refl`, rather than defined by
   delegation to `Function.Consequences.Setoid` and the use of `cong`.
+
+* The definition of `Data.Product.Relation.Binary.Pointwise.Dependent.POINTWISE`
+  now has the (correct) lower universe level, as with its `NonDependent` version.
 
 Deprecated modules
 ------------------
@@ -463,6 +472,14 @@ Additions to existing modules
   ```agda
   ∃!-≐ : P ≐ Q → ∃! _≈_ P → ∃! _≈_ Q
   ∃!-⇔ : P ≐ Q → ∃! _≈_ P ⇔ ∃! _≈_ Q
+  ```
+
+* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+  ```agda
+  Pointwise′ : REL A B ℓ₁ → REL C D ℓ₂ → REL (A × C) (B × D) (ℓ₁ ⊔ ℓ₂)
+  pointwise⇒pointwise′ : Pointwise R S ⇒ Pointwise′ R S
+  pointwise′⇒pointwise : Pointwise′ R S ⇒ Pointwise R S
+  map : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
   ```
 
 * In `Data.Rational.Properties`:
