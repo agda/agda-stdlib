@@ -12,7 +12,7 @@ module Data.Queue.Base where
 open import Agda.Builtin.Equality
 open import Level using (Level)
 open import Data.Bool
-open import Data.List.Base as List using (List; []; _∷_; reverse; _++_)
+open import Data.List.Base as List using (List; []; _∷_; reverse; _++_; length)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_)
@@ -54,6 +54,21 @@ dequeue (queue dq-hd [] eq) with reverse eq
 ... | [] = just (dq-hd , empty)
 ... | x ∷ req = just (dq-hd , queue x req [])
 dequeue (queue dq-hd (x ∷ xs) eq) = just (dq-hd , (queue x xs eq))
+
+------------------------------------------------------------------------
+--- Basic Functions
+
+isEmpty : Queue A → Bool
+isEmpty empty = true
+isEmpty _ = false
+
+size : Queue A → ℕ
+size empty = 0
+size (queue x xs ys) = 1 + length xs + length ys
+
+map : (A → B) → Queue A → Queue B
+map f empty = empty
+map f (queue x xs ys) = queue (f x) (List.map f xs) (List.map f ys)
 
 ------------------------------------------------------------------------
 --- Conversion to/from List
