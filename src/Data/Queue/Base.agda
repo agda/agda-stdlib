@@ -48,6 +48,10 @@ enqueue : Queue A → A → Queue A
 enqueue empty a = queue a [] []  
 enqueue (queue dq-hd dq-tail eq) a = queue dq-hd dq-tail (a ∷ eq)
 
+-- Create a queue with a single element
+singleton : A → Queue A
+singleton = enqueue empty
+
 dequeue : Queue A → Maybe (A × Queue A)
 dequeue empty = nothing
 dequeue (queue dq-hd [] eq) with reverse eq
