@@ -18,8 +18,8 @@ open import Data.Product using (_×_; _,_)
 
 private
   variable
-    l : Level
-    A B : Set l
+    a : Level
+    A B : Set a
 
 -- A Queue consists of a dequeue and enqueue list
 -- When enqueing (unless it is the first element), elements are cons'd
@@ -33,7 +33,7 @@ private
 -- To enforce this, the head of the dequeue list is taken
 -- seperately and a constructor for an empty queue is given.
 
-data Queue (A : Set l) : Set l where
+data Queue (A : Set a) : Set a where
   empty : Queue A
 
   -- dequeue-head → dequeue-list → enqueue-list
