@@ -89,6 +89,16 @@ Non-backwards compatible changes
   - `Function.Properties.Bijection.sym-≡` is now redundant as an instance of a fully
     general symmetry property `Function.Properties.Bijection.sym`, hence also deleted.
 
+* A further minor refactoring of the `Function` hierarchy restores the division of
+  `Function.Definitions`, with the relational/implicational definitions of `Injective`
+  etc. which are parametetrised on source/target 'equality' relations remaining as
+  `Definitions`, in line with `Algebra.Definitions` and `Algebra.Structures`, while
+  the former `Strictly*` properties, defined wrt a *single* relation, are factored out
+  as `Function.Definitions.Strictly`. The change is not backwards compatible, as both
+  the parametrisation of the modules has changed, and definitions `StrictlySurjective`
+  should now be imported *qualified* as eg `Strictly.Surjective` from an import
+  `import Function.Definitions.Strictly as Strictly`.
+
 * The notation for `Decidable` relations has been (partially) standardised: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
   - `_≈?_` (ditto.) for the fieldname of the general `IsDecEquivalence`
@@ -313,6 +323,14 @@ New modules
 
 * `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
   the AVL's operator `toList`: `toList⁺` and `toList⁻`.
+
+* `Function.Definitions.Strictly`, factoring out the former `Strictly*` definitions
+  in `Function.Definitions`, now available as
+  ```
+  Strictly.Surjective
+  Strictly.Inverseˡ
+  Strictly.Inverseʳ
+  ```
 
 Additions to existing modules
 -----------------------------
@@ -578,7 +596,8 @@ Additions to existing modules
 
 * In `Function.Structures.IsLeftInverse`:
   ```agda
-  surjective : Surjective _≈₁_ _≈₂_ to
+  surjective   : Surjective _≈₁_ _≈₂_ to
+  isSurjection : IsSurjection to
   ```
 
 * In `Function.Structures.IsRightInverse`:

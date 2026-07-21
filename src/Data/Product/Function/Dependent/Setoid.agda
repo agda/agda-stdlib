@@ -16,6 +16,8 @@ open import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
 open import Level using (Level)
 open import Function
 open import Function.Consequences.Setoid
+import Function.Definitions.Strictly as Strictly
+  using (Surjective; Inverseˡ; Inverseʳ)
 open import Function.Properties.Injection using (mkInjection)
 open import Function.Properties.Surjection using (mkSurjection; ↠⇒⇔)
 open import Function.Properties.Equivalence using (mkEquivalence; ⇔⇒⟶; ⇔⇒⟵)
@@ -175,7 +177,7 @@ module _ where
     from′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
     from′ (j , y) = from I↠J j , from A↠B (cast B (strictlyInverseˡ I↠J _) y)
 
-    strictlySurj : StrictlySurjective (Func.Eq₂._≈_ func) (Func.to func)
+    strictlySurj : Strictly.Surjective (Func.Eq₂._≈_ func) (Func.to func)
     strictlySurj (j , y) = from′ (j , y) ,
       strictlyInverseˡ I↠J j , IndexedSetoid.trans B (strictlyInverseˡ A↠B _) (cast-eq B (strictlyInverseˡ I↠J j))
 
@@ -199,7 +201,7 @@ module _ where
     equiv : Equivalence (I ×ₛ A) (J ×ₛ B)
     equiv = equivalence-↪ I↪J (RightInverse.equivalence A↪B)
 
-    strictlyInvʳ : StrictlyInverseʳ (_≈_ (I ×ₛ A)) (Equivalence.to equiv) (Equivalence.from equiv)
+    strictlyInvʳ : Strictly.Inverseʳ (_≈_ (I ×ₛ A)) (Equivalence.to equiv) (Equivalence.from equiv)
     strictlyInvʳ (i , x) = strictlyInverseʳ I↪J i , IndexedSetoid.trans A (strictlyInverseʳ A↪B _) (cast-eq A (strictlyInverseʳ I↪J i))
 
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) (Equivalence.to equiv) (Equivalence.from equiv)
@@ -249,7 +251,7 @@ module _ where
     from′-cong : Congruent (_≈_ (J ×ₛ B)) (_≈_ (I ×ₛ A)) from′
     from′-cong (≡.refl , x≈y) = from-cong I↔J ≡.refl , from-cong A↔B (cast-cong B (strictlyInverseˡ I↔J _) x≈y)
 
-    strictlyInvˡ : StrictlyInverseˡ (_≈_ (J ×ₛ B)) to′ from′
+    strictlyInvˡ : Strictly.Inverseˡ (_≈_ (J ×ₛ B)) to′ from′
     strictlyInvˡ (i , x) = strictlyInverseˡ I↔J i ,
         IndexedSetoid.trans B (strictlyInverseˡ A↔B _)
           (cast-eq B (strictlyInverseˡ I↔J i))
@@ -262,7 +264,7 @@ module _ where
           IndexedSetoid._≈_ A (from A↔B x) (from A↔B y)
     lem ≡.refl x≈y = from-cong A↔B x≈y
 
-    strictlyInvʳ : StrictlyInverseʳ (_≈_ (I ×ₛ A)) to′ from′
+    strictlyInvʳ : Strictly.Inverseʳ (_≈_ (I ×ₛ A)) to′ from′
     strictlyInvʳ (i , x) = strictlyInverseʳ I↔J i ,
       IndexedSetoid.trans A (lem (strictlyInverseʳ I↔J _) (cast-eq B (strictlyInverseˡ I↔J _))) (strictlyInverseʳ A↔B _)
 
