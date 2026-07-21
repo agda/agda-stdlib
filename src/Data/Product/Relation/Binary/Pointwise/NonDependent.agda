@@ -60,7 +60,7 @@ proj₂ (pointwise′⇒pointwise p) = proj₂ p
 -- Helper functions as drop-ins for those from Product
 
 map : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
-map f g (x , y) = f x , g y
+map f g xR×Sy = f (proj₁ xR×Sy) , g  (proj₂ xR×Sy)
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
@@ -80,7 +80,7 @@ map f g (x , y) = f x , g y
 ×-irreflexive₂ ir x≈y x<y = ir (proj₂ x≈y) (proj₂ x<y)
 
 ×-symmetric : Symmetric R → Symmetric S → Symmetric (Pointwise R S)
-×-symmetric {R = R} {S = S} sym₁ sym₂ (x₁Rx₂ , y₁Sy₂) = sym₁ x₁Rx₂ , sym₂ y₁Sy₂
+×-symmetric sym₁ sym₂ xR×Sy = map sym₁ sym₂ (proj₁ xR×Sy , proj₂ xR×Sy)
 
 ×-transitive : Transitive R → Transitive S → Transitive (Pointwise R S)
 ×-transitive trans₁ trans₂ (x₁Rx₂ , y₁Sy₂) (x₂Rx₃ , y₂Sy₃) =
