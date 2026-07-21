@@ -12,10 +12,10 @@ open import Data.Product.Base as Product
    using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Function.Base using (id)
+open import Function.Base using (id; _∘_)
 open import Function.Bundles using (Inverse)
 open import Relation.Nullary.Decidable.Core as Dec using (_×?_)
-open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Core using (REL; Rel; _⇒_; _=[_]⇒_)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; Poset; StrictPartialOrder)
 open import Relation.Binary.Definitions
@@ -27,7 +27,8 @@ private
   variable
     a b c d ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
     A B C D : Set a
-    R S ≈₁ ≈₂ : Rel A ℓ₁
+    R S T ≈₁ ≈₂ : Rel A ℓ₁
+    f g : A → B
 
 
 ------------------------------------------------------------------------
@@ -59,8 +60,12 @@ proj₂ (pointwise′⇒pointwise p) = proj₂ p
 ------------------------------------------------------------------------
 -- Helper functions as drop-ins for those from Product
 
+intro :  T =[ f ]⇒ R → T =[ g ]⇒ S → T =[ Product.< f , g > ]⇒ Pointwise R S
+intro T⇒R T⇒S p = T⇒R p , T⇒S p
+
 map : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
-map f g xR×Sy = f (proj₁ xR×Sy) , g  (proj₂ xR×Sy)
+map f g = intro (f ∘ proj₁) (g ∘ proj₂)
+--f (proj₁ xR×Sy) , g  (proj₂ xR×Sy)
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
@@ -80,7 +85,8 @@ map f g xR×Sy = f (proj₁ xR×Sy) , g  (proj₂ xR×Sy)
 ×-irreflexive₂ ir x≈y x<y = ir (proj₂ x≈y) (proj₂ x<y)
 
 ×-symmetric : Symmetric R → Symmetric S → Symmetric (Pointwise R S)
-×-symmetric sym₁ sym₂ xR×Sy = map sym₁ sym₂ (proj₁ xR×Sy , proj₂ xR×Sy)
+×-symmetric sym₁ sym₂ = intro (sym₁ ∘ proj₁) (sym₂ ∘ proj₂)
+-- map sym₁ sym₂ (proj₁ xR×Sy , proj₂ xR×Sy)
 
 ×-transitive : Transitive R → Transitive S → Transitive (Pointwise R S)
 ×-transitive trans₁ trans₂ (x₁Rx₂ , y₁Sy₂) (x₂Rx₃ , y₂Sy₃) =
