@@ -50,6 +50,10 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Apartness.Structures`, renamed `sym` from `IsApartnessRelation`
+  to `#-sym` in order to avoid overloaded projection. The field names
+  `irrefl` and `cotrans` are similarly renamed for the sake of consistency.
+
 * Removed unnecessary parameter `zero : Zero 0# *` from
   `Algebra.Structures.IsNonAssociativeRing`.
 
@@ -71,6 +75,24 @@ Bug-fixes
 
 Non-backwards compatible changes
 --------------------------------
+
+* [issue #2587](https://github.com/agda/agda-stdlib/issues/2587)
+  The definitions of `Algebra.Structures.IsHeyting*` and
+  `Algebra.Bundles.Heyting*` have been refactored, together
+  with that of `Relation.Binary.Definitions.Tight` on which they depend.
+  Specifically:
+  - `Tight _≈_ _#_` has been redefined as `∀ x y → ¬ x # y → x ≈ y`,
+    dropping the redundant second conjunct, because it is equivalent to
+    `Irreflexive _≈_ _#_`.
+  - new definitions: `(Is)TightApartnessRelation` structure/bundle, exploiting
+    the above redefinition.
+  - the definition of `IsHeytingCommutativeRing` now drops the properties of
+    invertibility, `#⇒invertible` and `invertible⇒#`, in favour of moving them
+    to `IsHeytingField`.
+  - both `Heyting*` algebraic structure/bundles have been redefined to base
+    off an underlying `TightApartnessRelation`.
+  - both also further require `_+_`/`_*_` to be `StronglyExtensional` wrt `_#_`,
+    definition introduced in `Algebra.Apartness.Definitions` below.
 
 * A major overhaul of the `Function` hierarchy sees the systematic development
   and use of the theory of the left inverse `from` to a given `Surjective` function
@@ -177,6 +199,12 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Apartness.Properties.HeytingCommutativeRing`:
+  ```agda
+  x-0≈x  ↦   Algebra.Properties.Ring.x-0#≈x
+  #-sym  ↦   Algebra.Apartness.Structures.IsHeytingCommutativeRing.#-sym
+  ```
+
 * In `Algebra.Definitions`:
   ```agda
   StarLeftExpansive     ↦  Relation.Binary.Definitions.KleeneAlgebra.StarLeftExpansive
@@ -277,6 +305,15 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Apartness.Consequences`, relationships between definitions, given
+  properties of a given apartness relation, notably `Cotransitive _#_`.
+
+* `Algebra.Apartness.Definitions`, properties of algebraic operations wrt
+  a given apartness relation `_#_`.
+
+* `Algebra.Apartness.Properties.HeytingField`, refactoring the existing
+  `Algebra.Apartness.Properties.HeytingCommutativeRing`.
+
 * `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
 
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
@@ -317,6 +354,18 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Apartness.Bundles.HeytingCommutativeRing`:
+  ```agda
+  TightApartnessRelation c ℓ₁ ℓ₂ : Set _
+  ```
+
+* In `Algebra.Apartness.Structures.IsHeytingCommutativeRing`:
+  ```agda
+  IsTightApartnessRelation _≈_ _#_ : Set _
+  +-stronglyExtensional : StronglyExtensional _#_ _+_
+  *-stronglyExtensional : StronglyExtensional _#_ _*_
+  ```
+
 * In `Algebra.Consequences.Base`:
   ```agda
   almost⇒exceptˡ : _AlmostLeftCancellative′_ _≈_ P _•_ →
@@ -347,6 +396,21 @@ Additions to existing modules
   Except_RightCancellative_    : (P : Pred A p) → Op₂ A → Set _
   ```
 
+* In `Algebra.Properties.AbelianGroup`:
+  ```agda
+  x-ε≈x : RightIdentity ε _-_
+  ```
+
+* In `Algebra.Properties.RingWithoutOne`:
+  ```agda
+  x-0#≈x : RightIdentity 0# _-_
+  ```
+
+* In `Algebra.Structures.IsKleeneAlgebra`:
+  ```agda
+  _≤_            : Rel A _
+  ```
+
 * In `Algebra.Properties.KleeneAlgebra`:
   ```agda
   ≤-reflexive    : _≈_ ⇒ _≤_
@@ -357,11 +421,6 @@ Additions to existing modules
   isPartialOrder : IsPartialOrder _≈_ _≤_
   preorder       : Preorder _ _
   poset          : Poset _ _
-  ```
-
-* In `Algebra.Structures.IsKleeneAlgebra`:
-  ```agda
-  _≤_            : Rel A _
   ```
 
 * In `Data.Bool.Properties`:
@@ -478,6 +537,29 @@ Additions to existing modules
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
+  +-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≢_ (p +_)
+  +-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≢_ (_+ r)
+  +-stronglyCongruent   : StronglyCongruent₂ _≢_ _+_
+  +-stronglyExtensional : StronglyExtensional _≢_ _+_
+  *-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≢_ (p *_)
+  *-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≢_ (_* r)
+  *-stronglyCongruent   : StronglyCongruent₂ _≢_ _*_
+  *-stronglyExtensional : StronglyExtensional _≢_ _*_
+  ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  ≄-apartnessRelation        : ApartnessRelation _ _ _
+  ≄-isTightApartnessRelation : IsTightApartnessRelation _≃_ _≄_
+  ≄-tightApartnessRelation   : TightApartnessRelation _ _ _
+  +-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≄_ (p +_)
+  +-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≄_ (_+ r)
+  +-stronglyCongruent   : StronglyCongruent₂ _≄_ _+_
+  +-stronglyExtensional : StronglyExtensional _≄_ _+_
+  *-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≄_ (p *_)
+  *-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≄_ (_* r)
+  *-stronglyCongruent   : StronglyCongruent₂ _≄_ _*_
+  *-stronglyExtensional : StronglyExtensional _≄_ _*_
   ```
 
 * In `Data.Sum.Relation.Binary.Pointwise`:
@@ -602,6 +684,7 @@ Additions to existing modules
 
   HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
   HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y)
+
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
     StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
@@ -610,6 +693,17 @@ Additions to existing modules
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
+
+* In `Relation.Binary.Properties.DecSetoid`:
+  ```agda
+  ≉-isTightApartnessRelation : IsTightApartnessRelation _≈_ _#_
+  ≉-tightApartnessRelation   : TightApartnessRelation _ _ _
+  ```
+  Additionally,
+  ```agda
+  ≉-tight : Tight _≈_ _≉_
+  ```
+  has been redefined to reflect the change in the definition of `Tight`.
 
 * In `Relation.Unary`:
   ```agda
