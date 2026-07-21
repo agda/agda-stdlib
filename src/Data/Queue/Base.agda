@@ -31,7 +31,7 @@ private
     A : Set a
     B : Set b
 
--- A Queue consists of a fron (dequeue) and back (enqueue) list
+-- A Queue consists of a front (dequeue) and back (enqueue) list
 -- When enqueing (unless it is the first element), elements are cons'd
 -- to the enqueue list.
 --
