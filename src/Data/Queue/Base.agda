@@ -5,7 +5,11 @@
 ------------------------------------------------------------------------
 {-# OPTIONS --without-K --safe #-}
 
--- Queues implemented with the usual two-list method
+-- Queues implemented with the two-list method described in
+-- "Purely Functional Data Structures", Chris Okasaki, 1996
+--
+-- Note that the weaker invariant is used here that only guarantees
+-- ammortized O(1) when the structure is used non-persistently.
 
 module Data.Queue.Base where
 
@@ -17,6 +21,7 @@ open import Data.List.Relation.Unary.All using (Null; [])
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_)
+open import Data.SnocList.Base using (List<; toList>)
 open import Function.Base using (id)
 open import Relation.Nullary using (¬_)
 
@@ -46,8 +51,6 @@ record Queue (A : Set a) : Set a where
 ------------------------------------------------------------------------
 -- Construction & Destruction
 
--- TODO: use record syntax instead of constructor in enqueue and dequeue?
-
 empty : Queue A
 empty = mkQ [] [] id
 
@@ -56,18 +59,32 @@ private
   ¬Null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
--- proofs seem somewhat ugly...
--- TODO: cleanup (before pushing!)
 enqueue : Queue A → A → Queue A
-enqueue (mkQ [] back inv) x = mkQ (x ∷ []) back λ _ → inv []
-enqueue (mkQ (dq-hd ∷ dq-tl) back inv) x = mkQ (dq-hd ∷ dq-tl) (x ∷ back) λ n → ⊥-elim (¬Null n)
+enqueue (mkQ [] back inv) x = record
+  { front = (x ∷ [])
+  ; back  = back
+  ; inv   = (λ _ → inv [])
+  }
+enqueue (mkQ (dq-hd ∷ dq-tl) back inv) x = record
+  { front = (dq-hd ∷ dq-tl)
+  ; back  = (x ∷ back)
+  ; inv   = λ n → ⊥-elim (¬Null n)
+  }
 
 dequeue : Queue A → Maybe (A × Queue A)
 dequeue (mkQ [] [] inv) = nothing
 -- shouldn't be possible?
 dequeue (mkQ [] (x ∷ back) inv) = nothing
-dequeue (mkQ (x ∷ []) back inv) = just (x , mkQ (reverse back) [] λ _ → [])
-dequeue (mkQ (x ∷ y ∷ front) back inv) = just (x , mkQ (y ∷ front) back (λ n → ⊥-elim (¬Null n)))
+dequeue (mkQ (x ∷ []) back inv) = just (x , record
+  { front = reverse back
+  ; back  = []
+  ; inv   = λ _ → []
+  })
+dequeue (mkQ (x ∷ y ∷ front) back inv) = just (x , record
+  { front = y ∷ front
+  ; back  = back
+  ; inv   = λ n → ⊥-elim (¬Null n)
+  })
 
 ------------------------------------------------------------------------
 --- Basic Functions
@@ -77,7 +94,7 @@ isEmpty (mkQ [] [] inv) = true
 isEmpty _ = false
 
 size : Queue A → ℕ
-size (mkQ front back inv) = (length front) + (length back)
+size q = (length (Queue.front q)) + (length (Queue.back q))
 
 -- map : (A → B) → Queue A → Queue B
 -- map f empty = empty
@@ -90,7 +107,7 @@ size (mkQ front back inv) = (length front) + (length back)
 -- becomes the head of the list (i.e. the first element of the queue
 -- becomes the last element of the list)
 toList : Queue A → List A
-toList (mkQ front back inv) = front ++ (reverse back)
+toList q = Queue.front q ++ (reverse (Queue.back q))
 
 -- Create a Queue from a List, such that the elements
 -- of the list would be dequeued starting from its first element
