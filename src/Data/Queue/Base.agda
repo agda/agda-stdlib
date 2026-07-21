@@ -57,9 +57,6 @@ private
   ¬Null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
-  cons-Null : {a : A} {as bs : List A} → (Null (a ∷ as) → Null bs) → Null as → Null bs
-  cons-Null hyp [] = {!!}
-
 -- proofs seem somewhat ugly...
 -- TODO: cleanup (before pushing!)
 enqueue : Queue A → A → Queue A
@@ -68,7 +65,8 @@ enqueue (mkQ (dq-hd ∷ dq-tl) back inv) x = mkQ (dq-hd ∷ dq-tl) (x ∷ back) 
 
 dequeue : Queue A → Maybe (A × Queue A)
 dequeue (mkQ [] [] inv) = nothing
-dequeue (mkQ [] (x ∷ back) inv) = {!!}
+-- shouldn't be possible?
+dequeue (mkQ [] (x ∷ back) inv) = nothing
 dequeue (mkQ (x ∷ []) back inv) = just (x , mkQ (reverse back) [] λ _ → [])
 dequeue (mkQ (x ∷ y ∷ front) back inv) = just (x , mkQ (y ∷ front) back (λ n → ⊥-elim (¬Null n)))
 
