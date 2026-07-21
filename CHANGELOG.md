@@ -85,11 +85,13 @@ Non-backwards compatible changes
     `Irreflexive _≈_ _#_`.
   - new definitions: `(Is)TightApartnessRelation` structure/bundle, exploiting
     the above redefinition.
-  - the definition of `HeytingCommutativeRing` now drops the properties of
-    invertibility, in favour of moving them to `HeytingField`.
+  - the definition of `IsHeytingCommutativeRing` now drops the properties of
+    invertibility, `#⇒invertible` and `invertible⇒#`, in favour of moving them
+    to `IsHeytingField`.
   - both `Heyting*` algebraic structure/bundles have been redefined to base
     off an underlying `TightApartnessRelation`.
-  - both also further require `_+_`/`_*_` to be `StronglyExtensional` wrt `_#_`.
+  - both also further require `_+_`/`_*_` to be `StronglyExtensional` wrt `_#_`,
+    definition introduced in `Algebra.Apartness.Definitions` below.
 
 * A major overhaul of the `Function` hierarchy sees the systematic development
   and use of the theory of the left inverse `from` to a given `Surjective` function
