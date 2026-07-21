@@ -9,14 +9,12 @@
 
 module Data.Queue.Base where
 
-open import Agda.Builtin.Equality
 open import Level using (Level)
-open import Data.Bool
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; reverse; _++_; length)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_)
-open import Function
 
 private
   variable
@@ -37,7 +35,7 @@ private
 
 data Queue (A : Set l) : Set l where
   empty : Queue A
-  
+
   -- dequeue-head → dequeue-list → enqueue-list
   queue : A → List A → List A → Queue A
 
@@ -45,7 +43,7 @@ data Queue (A : Set l) : Set l where
 -- Construction & Destruction
 
 enqueue : Queue A → A → Queue A
-enqueue empty a = queue a [] []  
+enqueue empty a = queue a [] []
 enqueue (queue dq-hd dq-tail eq) a = queue dq-hd dq-tail (a ∷ eq)
 
 dequeue : Queue A → Maybe (A × Queue A)
