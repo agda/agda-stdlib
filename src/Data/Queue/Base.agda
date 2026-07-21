@@ -19,7 +19,9 @@ open import Data.Product using (_×_; _,_)
 private
   variable
     a : Level
-    A B : Set a
+    b : Level
+    A : Set a
+    B : Set b
 
 -- A Queue consists of a dequeue and enqueue list
 -- When enqueing (unless it is the first element), elements are cons'd
