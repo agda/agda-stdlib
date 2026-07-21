@@ -76,7 +76,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-* The definitions of `Algebra.Structures.IsHeyting*` and
+* [issue #2587](https://github.com/agda/agda-stdlib/issues/2587)
+  The definitions of `Algebra.Structures.IsHeyting*` and
   `Algebra.Bundles.Heyting*` have been refactored, together
   with that of `Relation.Binary.Definitions.Tight` on which they depend.
   Specifically:
