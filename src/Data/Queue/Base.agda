@@ -22,8 +22,7 @@ open import Relation.Nullary using (¬_)
 
 private
   variable
-    a : Level
-    b : Level
+    a b : Level
     A : Set a
     B : Set b
 
