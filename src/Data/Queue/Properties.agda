@@ -32,40 +32,24 @@ private
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
 toList-fromList : {xs : List A}  → toList (fromList xs) ≡ xs
-toList-fromList {a} {A} {[]} =
-  begin
-    toList (fromList [])
-  ≡⟨⟩
-    toList (empty)
-  ≡⟨⟩
-    []
-  ∎
+toList-fromList {a} {A} {[]} = begin
+  toList (fromList []) ≡⟨⟩
+  toList (empty)       ≡⟨⟩
+  []                   ∎
 
-toList-fromList {a} {A} {x ∷ xs} =
-  begin
-    toList (fromList (x ∷ xs))
-  ≡⟨⟩
-    toList (mkQ (x ∷ xs) [] (λ _ → []))
-  ≡⟨⟩
-    (x ∷ xs) ++ (reverse [])
-  ≡⟨⟩
-    (x ∷ xs) ++ []
-  ≡⟨ ++-identityʳ (x ∷ xs) ⟩
-    (x ∷ xs)
-  ∎
+toList-fromList {a} {A} {x ∷ xs} = begin
+  toList (fromList (x ∷ xs))          ≡⟨⟩
+  toList (mkQ (x ∷ xs) [] (λ _ → [])) ≡⟨⟩
+  (x ∷ xs) ++ (reverse [])            ≡⟨⟩
+  (x ∷ xs) ++ []                      ≡⟨ ++-identityʳ (x ∷ xs) ⟩
+  (x ∷ xs)                            ∎
   
 -- enqueue increases size by 1
 enqueueSuc : (a : A) (q : Queue A) → (size (enqueue a q)) ≡ (suc (size q))
 enqueueSuc a (mkQ [] back inv) = refl
-enqueueSuc a (mkQ (x ∷ front) back inv) =
-  begin
-    size (enqueue a (mkQ (x ∷ front) back inv))
-  ≡⟨⟩
-    size (mkQ (x ∷ front) (a ∷ back) (λ n → ⊥-elim (¬Null n)))
-  ≡⟨⟩
-    length (x ∷ front) + length (a ∷ back)
-  ≡⟨⟩
-    length (x ∷ front) + suc (length back)
-  ≡⟨ +-suc (length (x ∷ front)) (length back) ⟩
-    suc (length (x ∷ front) + length back)
-  ∎
+enqueueSuc a (mkQ (x ∷ front) back inv) = begin
+  size (enqueue a (mkQ (x ∷ front) back inv))                ≡⟨⟩
+  size (mkQ (x ∷ front) (a ∷ back) (λ n → ⊥-elim (¬Null n))) ≡⟨⟩
+  length (x ∷ front) + length (a ∷ back)                     ≡⟨⟩
+  length (x ∷ front) + suc (length back) ≡⟨ +-suc (length (x ∷ front)) (length back) ⟩
+  suc (length (x ∷ front) + length back)                     ∎
