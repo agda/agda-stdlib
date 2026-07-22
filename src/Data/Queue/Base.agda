@@ -59,13 +59,13 @@ private
   ¬Null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
-enqueue : Queue A → A → Queue A
-enqueue (mkQ [] back inv) x = record
+enqueue : A → Queue A → Queue A
+enqueue x (mkQ [] back inv) = record
   { front = (x ∷ [])
   ; back  = back
   ; inv   = (λ _ → inv [])
   }
-enqueue (mkQ front@(_ ∷ _) back _) x = record
+enqueue x (mkQ front@(_ ∷ _) back _) = record
   { front = front
   ; back  = (x ∷ back)
   ; inv   = λ n → ⊥-elim (¬Null n)
@@ -73,7 +73,7 @@ enqueue (mkQ front@(_ ∷ _) back _) x = record
 
 -- Create a queue with a single element
 singleton : A → Queue A
-singleton = enqueue empty
+singleton x = enqueue x empty
 
 dequeue : Queue A → Maybe (A × Queue A)
 dequeue (mkQ [] [] inv) = nothing
