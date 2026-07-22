@@ -68,6 +68,6 @@ enqueueSuc a (mkQ (x ∷ front) back inv) =
     length (x ∷ front) + length (a ∷ back)
   ≡⟨⟩
     length (x ∷ front) + suc (length back)
-  ≡⟨ +-suc (length (x ∷ front)) (length back)⟩
+  ≡⟨ +-suc (length (x ∷ front)) (length back) ⟩
     suc (length (x ∷ front) + length back)
   ∎
