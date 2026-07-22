@@ -77,8 +77,7 @@ singleton = enqueue empty
 
 dequeue : Queue A → Maybe (A × Queue A)
 dequeue (mkQ [] [] inv) = nothing
--- shouldn't be possible?
-dequeue (mkQ [] (x ∷ back) inv) = nothing
+dequeue (mkQ [] (x ∷ back) inv) = ⊥-elim (¬Null (inv []))
 dequeue (mkQ (x ∷ []) back inv) = just (x , record
   { front = reverse back
   ; back  = []
