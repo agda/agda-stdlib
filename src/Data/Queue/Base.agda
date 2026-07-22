@@ -65,8 +65,8 @@ enqueue (mkQ [] back inv) x = record
   ; back  = back
   ; inv   = (λ _ → inv [])
   }
-enqueue (mkQ (dq-hd ∷ dq-tl) back inv) x = record
-  { front = (dq-hd ∷ dq-tl)
+enqueue (mkQ front@(_ ∷ _) back _) x = record
+  { front = front
   ; back  = (x ∷ back)
   ; inv   = λ n → ⊥-elim (¬Null n)
   }
