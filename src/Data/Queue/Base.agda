@@ -9,7 +9,7 @@
 -- "Purely Functional Data Structures", Chris Okasaki, 1996
 --
 -- Note that the weaker invariant is used here that only guarantees
--- ammortized O(1) when the structure is used non-persistently.
+-- amortized O(1) when the structure is used non-persistently.
 
 module Data.Queue.Base where
 
