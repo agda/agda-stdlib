@@ -20,7 +20,6 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary using (¬_)
 
-
 open ≡-Reasoning
 
 private
@@ -31,7 +30,6 @@ private
 
   ¬Null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
-
 
 toList-fromList : {xs : List A}  → toList (fromList xs) ≡ xs
 toList-fromList {a} {A} {[]} =
@@ -55,7 +53,7 @@ toList-fromList {a} {A} {x ∷ xs} =
   ≡⟨ ++-identityʳ (x ∷ xs) ⟩
     (x ∷ xs)
   ∎
-
+  
 -- enqueue increases size by 1
 enqueueSuc : (a : A) (q : Queue A) → (size (enqueue a q)) ≡ (suc (size q))
 enqueueSuc a (mkQ [] back inv) = refl
