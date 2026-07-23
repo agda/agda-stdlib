@@ -11,7 +11,7 @@
 -- Note that the weaker invariant is used here that only guarantees
 -- amortized O(1) when the structure is used non-persistently.
 
-module Data.Queue.Base where
+module Data.Queue.TwoList.Base where
 
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; true; false)

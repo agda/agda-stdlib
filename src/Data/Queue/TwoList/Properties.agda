@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Queue.Properties where
+module Data.Queue.TwoList.Properties where
 
 open import Level using (Level)
 open import Data.Empty using (⊥-elim)
@@ -15,7 +15,7 @@ open import Data.List.Properties using (++-identityʳ)
 open import Data.List.Relation.Unary.All using (Null; [])
 open import Data.Nat.Base using (suc; _+_)
 open import Data.Nat.Properties using (+-comm; +-suc)
-open import Data.Queue.Base
+open import Data.Queue.TwoList.Base
 open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary using (¬_)
@@ -43,7 +43,7 @@ toList-fromList {a} {A} {x ∷ xs} = begin
   (x ∷ xs) ++ (reverse [])            ≡⟨⟩
   (x ∷ xs) ++ []                      ≡⟨ ++-identityʳ (x ∷ xs) ⟩
   (x ∷ xs)                            ∎
-  
+
 -- enqueue increases size by 1
 enqueueSuc : (a : A) (q : Queue A) → (size (enqueue a q)) ≡ (suc (size q))
 enqueueSuc a (mkQ [] back inv) = refl

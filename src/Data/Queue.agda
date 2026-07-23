@@ -8,4 +8,4 @@
 
 module Data.Queue where
 
-open import Data.Queue.Base public
+open import Data.Queue.TwoList.Base public
