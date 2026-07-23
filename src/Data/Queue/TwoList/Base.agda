@@ -61,13 +61,13 @@ private
 
 enqueue : A → Queue A → Queue A
 enqueue x (mkQ [] back inv) = record
-  { front = (x ∷ [])
+  { front = x ∷ []
   ; back  = back
-  ; inv   = (λ _ → inv [])
+  ; inv   = λ _ → inv []
   }
 enqueue x (mkQ front@(_ ∷ _) back _) = record
   { front = front
-  ; back  = (x ∷ back)
+  ; back  = x ∷ back
   ; inv   = λ n → ⊥-elim (¬Null n)
   }
 
@@ -97,7 +97,7 @@ isEmpty (mkQ [] [] inv) = true
 isEmpty _ = false
 
 size : Queue A → ℕ
-size q = (length (Queue.front q)) + (length (Queue.back q))
+size q = length (Queue.front q) + length (Queue.back q)
 
 -- map : (A → B) → Queue A → Queue B
 -- map f empty = empty
@@ -116,4 +116,4 @@ toList q = Queue.front q ++ (reverse (Queue.back q))
 -- of the list would be dequeued starting from its first element
 -- (i.e. the first element of the list becomes the last element of the queue)
 fromList : List A → Queue A
-fromList list = mkQ list [] (λ _ → [])
+fromList list = mkQ list [] λ _ → []
