@@ -31,13 +31,13 @@ private
   ¬Null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
-toList-fromList : {xs : List A}  → toList (fromList xs) ≡ xs
-toList-fromList {a} {A} {[]} = begin
+toList-fromList : (xs : List A)  → toList (fromList xs) ≡ xs
+toList-fromList [] = begin
   toList (fromList []) ≡⟨⟩
   toList (empty)       ≡⟨⟩
   []                   ∎
 
-toList-fromList {a} {A} {x ∷ xs} = begin
+toList-fromList (x ∷ xs) = begin
   toList (fromList (x ∷ xs))          ≡⟨⟩
   toList (mkQ (x ∷ xs) [] (λ _ → [])) ≡⟨⟩
   (x ∷ xs) ++ (reverse [])            ≡⟨⟩
