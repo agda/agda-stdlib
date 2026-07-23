@@ -45,9 +45,9 @@ toList-fromList xs@(_ ∷ _) = begin
   xs                            ∎
 
 -- enqueue increases size by 1
-enqueueSuc : (a : A) (q : Queue A) → (size (enqueue a q)) ≡ (suc (size q))
-enqueueSuc a (mkQ [] back inv) = refl
-enqueueSuc a (mkQ (x ∷ front) back inv) = begin
+size-enqueue : (a : A) (q : Queue A) → (size (enqueue a q)) ≡ (suc (size q))
+size-enqueue a (mkQ [] back inv) = refl
+size-enqueue a (mkQ (x ∷ front) back inv) = begin
   size (enqueue a (mkQ (x ∷ front) back inv))                ≡⟨⟩
   size (mkQ (x ∷ front) (a ∷ back) (λ n → ⊥-elim (¬Null n))) ≡⟨⟩
   length (x ∷ front) + length (a ∷ back)                     ≡⟨⟩
