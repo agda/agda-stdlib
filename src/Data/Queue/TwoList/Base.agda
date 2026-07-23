@@ -115,4 +115,4 @@ toList q = Queue.front q ++ (reverse (Queue.back q))
 -- of the list would be dequeued starting from its first element
 -- (i.e. the first element of the list becomes the last element of the queue)
 fromList : List A → Queue A
-fromList list = mkQ list [] λ _ → []
+fromList xs = mkQ xs [] λ _ → []
