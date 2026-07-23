@@ -21,6 +21,7 @@ open import Data.List.Relation.Unary.All using (Null; [])
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_)
+open import Data.Queue.QueueSpec using (IsQueue)
 open import Data.SnocList.Base using (List<; toList>)
 open import Function.Base using (id)
 open import Relation.Nullary using (¬_)
@@ -116,3 +117,17 @@ toList q = Queue.front q ++ (reverse (Queue.back q))
 -- (i.e. the first element of the list becomes the last element of the queue)
 fromList : List A → Queue A
 fromList xs = mkQ xs [] λ _ → []
+
+------------------------------------------------------------------------
+--- TwoList Queue is a Queue
+
+instance
+  TwoListQueueIsQueue : IsQueue {a} Queue
+  TwoListQueueIsQueue = record
+                         { enqueue = enqueue
+                         ; dequeue = dequeue
+                         ; empty = empty
+                         ; size = size
+                         ; toList = toList
+                         ; fromList = fromList
+                         }
