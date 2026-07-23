@@ -37,12 +37,12 @@ toList-fromList [] = begin
   toList (empty)       ≡⟨⟩
   []                   ∎
 
-toList-fromList (x ∷ xs) = begin
-  toList (fromList (x ∷ xs))          ≡⟨⟩
-  toList (mkQ (x ∷ xs) [] (λ _ → [])) ≡⟨⟩
-  (x ∷ xs) ++ (reverse [])            ≡⟨⟩
-  (x ∷ xs) ++ []                      ≡⟨ ++-identityʳ (x ∷ xs) ⟩
-  (x ∷ xs)                            ∎
+toList-fromList xs@(_ ∷ _) = begin
+  toList (fromList xs)          ≡⟨⟩
+  toList (mkQ xs [] (λ _ → [])) ≡⟨⟩
+  xs ++ (reverse [])            ≡⟨⟩
+  xs ++ []                      ≡⟨ ++-identityʳ xs ⟩
+  xs                            ∎
 
 -- enqueue increases size by 1
 enqueueSuc : (a : A) (q : Queue A) → (size (enqueue a q)) ≡ (suc (size q))
