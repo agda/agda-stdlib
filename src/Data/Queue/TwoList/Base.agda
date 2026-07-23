@@ -16,7 +16,7 @@ module Data.Queue.TwoList.Base where
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Empty using (⊥-elim)
-open import Data.List.Base as List using (List; []; _∷_; reverse; _++_; length)
+open import Data.List.Base as List using (List; []; _∷_; reverse; _++_; length; null)
 open import Data.List.Relation.Unary.All using (Null; [])
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
@@ -93,8 +93,7 @@ dequeue (mkQ (x ∷ y ∷ front) back inv) = just (x , record
 --- Basic Functions
 
 isEmpty : Queue A → Bool
-isEmpty (mkQ [] [] inv) = true
-isEmpty _ = false
+isEmpty (mkQ front back inv) = null front
 
 size : Queue A → ℕ
 size q = length (Queue.front q) + length (Queue.back q)
