@@ -231,6 +231,11 @@ Deprecated names
   ^-monoid-morphism    ↦   ^-isMonoidHomomorphism
   ```
 
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties`:
+  ```agda
+  insertWith-just ↦ insertWith-just-update
+  ```
+
 * In `Effect.Monad.Partiality`:
   ```agda
   _≟-Kind_     ↦   _≡?-Kind_
@@ -484,6 +489,15 @@ Additions to existing modules
   ```agda
   elim : R =[ f ]⇒ T → S =[ g ]⇒ T →
          Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+  ```
+
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert`:
+  ```agda
+  insertWith-just-update : ∀ t l<k<u →
+                           (∀ k′ v → (eq : k ≈ k′) → P (k′ , v) →
+                            Q (k′ , respects eq (f (just (respects (sym eq) v))))) →
+                           (p : Any P t) → k ≈ lookupKey p →
+                           Any Q (proj₂ (insertWith k f t l<k<u))
   ```
 
 * In `Data.Vec.Properties`:

@@ -43,7 +43,6 @@ private
     t : Tree V l u h
 
 
-
 ----------------------------------------------------------------------
 -- lookup
 
@@ -66,6 +65,12 @@ lookup-rebuild (right p) q = right (lookup-rebuild p q)
 
 lookup-rebuild-accum : (p : Any P t) → Q (lookup p) → Any (Q ∩ P) t
 lookup-rebuild-accum p q = lookup-rebuild p (q , lookup-result p)
+
+lookup-lookup-rebuild : (p : Any P t) (q : Q (lookup p)) →
+                        lookup {P = Q} (lookup-rebuild p q) ≡ lookup p
+lookup-lookup-rebuild (here _)  _ = refl
+lookup-lookup-rebuild (left p)  q = lookup-lookup-rebuild p q
+lookup-lookup-rebuild (right p) q = lookup-lookup-rebuild p q
 
 
 ----------------------------------------------------------------------
