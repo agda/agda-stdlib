@@ -40,6 +40,18 @@ data Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
 ----------------------------------------------------------------------
 -- Functions
 
+-- General eliminator arising from initiality of `Pointwise`.
+--
+-- Ttype-theoreticaly/logically, `elim` is an inference rule for the
+-- consequence relation given by (indexed) inclusion between relations,
+-- describing what 'conclusion' T is derivable from what 'principal formula'
+-- `Pointwise R S` by appeal to the ancillary sequents witnessing that
+-- 'T follows from R' and 'T follows from S'.
+--
+-- Categorically, it expresses `Pointwise R S` as a suitably indexed
+-- generalisation of a coproduct, with elim generalising the usual
+-- arrow-out-of-a-colimit.
+
 module _ {f : A → C} {g : B → C}
          (T : Rel C ℓ) (R⇒T : R =[ f ]⇒ T) (S⇒T : S =[ g ]⇒ T)
          where
