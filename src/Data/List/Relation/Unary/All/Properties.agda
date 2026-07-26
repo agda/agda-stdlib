@@ -47,7 +47,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; _because_; ¬?; decidable-stable; dec-true)
 open import Relation.Unary
-  using (Decidable; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+  using (Decidable; Irrelevant; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
 
 private
@@ -61,6 +61,8 @@ private
     R : Pred C r
     x y : A
     xs ys : List A
+    Whatever : Set _
+
 
 ------------------------------------------------------------------------
 -- Re-export Core Properties
@@ -76,6 +78,16 @@ Null⇒null [] = _
 null⇒Null : T (null xs) → Null xs
 null⇒Null {xs = []   } _ = []
 null⇒Null {xs = _ ∷ _} ()
+
+null-∷ : Null (x ∷ xs) → Whatever
+null-∷ (() ∷ _)
+
+null? : Decidable (Null {A = A})
+null? []      = yes []
+null? (_ ∷ _) = no null-∷
+
+null-irrelevant : Irrelevant (Null {A = A})
+null-irrelevant [] [] = refl
 
 ------------------------------------------------------------------------
 -- Properties of the "points-to" relation _[_]=_

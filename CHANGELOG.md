@@ -423,6 +423,13 @@ Additions to existing modules
            ∃[ xs ] Appending as bs xs × Appending xs cs ds
   ```
 
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  null-∷          : Null (x ∷ xs) → Whatever
+  null?           : Decidable Null
+  null-irrelevant : Irrelevant Null
+  ```
+
 * In `Data.Nat.DivMod`:
   ```agda
   m<suc[m/n]*n : ∀ m n → m < suc (m / n) * n
