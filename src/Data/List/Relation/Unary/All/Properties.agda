@@ -400,12 +400,12 @@ concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
 unsnoc⁺ : All P xs → Maybe.All (All P ⟨×⟩ P) (unsnoc xs)
 unsnoc⁺ {xs = xs} pxs with initLast xs
 unsnoc⁺ {xs = .[]}        pxs | []       = nothing
-unsnoc⁺ {xs = .(xs ∷ʳ x)} pxs | xs ∷ʳ′ x = just (∷ʳ⁻ pxs)
+unsnoc⁺ {xs = .(xs ∷ʳ x)} pxs | xs ‵∷ʳ x = just (∷ʳ⁻ pxs)
 
 unsnoc⁻ : Maybe.All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
 unsnoc⁻ {xs = xs} pxs with initLast xs
 unsnoc⁻ {xs = .[]}        nothing           | []       = []
-unsnoc⁻ {xs = .(xs ∷ʳ x)} (just (pxs , px)) | xs ∷ʳ′ x = ∷ʳ⁺ pxs px
+unsnoc⁻ {xs = .(xs ∷ʳ x)} (just (pxs , px)) | xs ‵∷ʳ x = ∷ʳ⁺ pxs px
 
 ------------------------------------------------------------------------
 -- cartesianProductWith and cartesianProduct

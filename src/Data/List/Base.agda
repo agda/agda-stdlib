@@ -255,23 +255,23 @@ xs ∷ʳ x = xs ++ [ x ]
 
 -- Backwards initialisation
 
-infixl 5 _∷ʳ′_
+infixl 5 _‵∷ʳ_
 
 data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
-  _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+  _‵∷ʳ_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
 initLast : (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
-... | []       = [] ∷ʳ′ x
-... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
+... | []       = [] ‵∷ʳ x
+... | ys ‵∷ʳ y = (x ∷ ys) ‵∷ʳ y
 
 -- uncons, but from the right
 unsnoc : List A → Maybe (List A × A)
 unsnoc as with initLast as
 ... | []       = nothing
-... | xs ∷ʳ′ x = just (xs , x)
+... | xs ‵∷ʳ x = just (xs , x)
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
@@ -598,3 +598,13 @@ product = foldr ℕ._*_ 1
 "Warning: product was deprecated in v2.3.
 Please use Data.Nat.ListAction.product instead."
 #-}
+
+-- Version 3.0
+
+infixl 5 _∷ʳ′_
+pattern _∷ʳ′_ = _‵∷ʳ_
+{-# WARNING_ON_USAGE _∷ʳ′_
+"Warning: _∷ʳ′_ was deprecated in v3.0.
+Please use _‵∷ʳ_ instead."
+#-}
+
