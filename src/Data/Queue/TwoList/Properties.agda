@@ -56,7 +56,7 @@ size-enqueue {A = A} x q@(mkQ [] back inv) = begin
   where
     null[] : Null back → back ≡ []
     null[] [] = refl
-    
+
     back[] : back ≡ []
     back[] = null[] (inv [])
 
@@ -68,7 +68,7 @@ size-enqueue {A = A} x q@(mkQ [] back inv) = begin
       length back                     ≡⟨ cong length back[] ⟩
       length {A = A} []               ≡⟨⟩
       0                               ∎
-     
+
 size-enqueue a (mkQ (x ∷ front) back inv) = begin
   size (enqueue a (mkQ (x ∷ front) back inv))                ≡⟨⟩
   size (mkQ (x ∷ front) (a ∷ back) (λ n → ⊥-elim (¬Null n))) ≡⟨⟩
