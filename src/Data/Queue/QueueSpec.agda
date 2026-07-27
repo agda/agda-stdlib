@@ -12,7 +12,7 @@ open import Data.List.Base using (List)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product using (_×_; _,_)
-open import Level using (Level)
+open import Level using (Level; suc)
 
 private
   variable
