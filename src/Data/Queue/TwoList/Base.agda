@@ -21,10 +21,12 @@ open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties using (null⇒Null; Null⇒null)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (_×_; _,_; proj₂)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.SnocList.Base using (List<; toList>)
+open import Data.Unit.Base using (⊤)
 open import Function.Base using (id; const; _∘_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False)
 open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
@@ -63,7 +65,7 @@ record Queue (A : Set a) : Set a where
     inv : Null front → Null back
 
 ------------------------------------------------------------------------
---- Basic Functions
+--- Basic Functions/Relations/Operators
 
 Empty    : ∀ {A : Set a} → Pred (Queue A) a
 Empty {a} {A} q = Null (Queue.front q)
@@ -75,9 +77,6 @@ empty? (mkQ (x ∷ xs) back inv) .Relation.Nullary.proof = ofⁿ λ empty → �
 
 isEmpty : Queue A → Bool
 isEmpty q = null (Queue.front q)
-
-size : Queue A → ℕ
-size q = length (Queue.front q) + length (Queue.back q)
 
 ------------------------------------------------------------------------
 --- Smart Constructor
@@ -100,7 +99,6 @@ toList q = Queue.front q ++ (reverse (Queue.back q))
 -- (i.e. the first element of the list becomes the last element of the queue)
 fromList : List A → Queue A
 fromList xs = queue xs []
-
 
 ------------------------------------------------------------------------
 -- Construction & Destruction
@@ -125,13 +123,25 @@ singleton = fromList ∘ List.[_]
 -- map f empty = empty
 -- map f (queue x xs ys) = queue (f x) (List.map f xs) (List.map f ys)
 
+------------------------------------------------------------------------
+--- Relations
+
+-- NOTE: experimental. Still not entirely sure the best way to define this
+data _≈_ {A : Set a} : Queue A → Queue A → Set a where
+  empty-equal : ∀ {q q' : Queue A} → Empty q → Empty q' → q ≈ q'
+  enqueue-equal : ∀ {q q' : Queue A} {x : A} → q ≈ q' → (enqueue x q) ≈ (enqueue x q')
+  dequeue-equal : ∀ {q q' : Queue A} →
+                  .{{_ : False (empty? q)}} →
+                  .{{_ : False (empty? q')}} →
+                  q ≈ q'  →
+                  (proj₂ (dequeue q)) ≈ (proj₂ (dequeue q'))
 
 ------------------------------------------------------------------------
 --- TwoList Queue is a Queue
 
 TwoList-RawQueue : RawQueue {a} Queue
 TwoList-RawQueue = record
-  { _≈_      = {!!} 
+  { _≈_      = _≈_ 
   ; Empty    = Empty
   ; empty?   = empty?
   ; fromList = fromList

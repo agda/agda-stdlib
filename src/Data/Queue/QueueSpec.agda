@@ -17,7 +17,7 @@ open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
-open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False)
+open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False; does)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -32,14 +32,14 @@ private
 record RawQueue (Q : Set a → Set a) : Set (suc a) where
 
   field
-    _≈_      : ∀ {A : Set a} → Rel (Q A) a
+    _≈_ : ∀ {A : Set a} → Rel (Q A) a
     Empty    : ∀ {A : Set a} → Pred (Q A) a
     empty?   : Decidable (Empty {A = A})
     fromList : List A → Q A
     toList   : Q A → List A
     enqueue  : A → Q A → Q A
     dequeue  : (q : Q A) → .{{False (empty? q)}} → A × Q A
-      
+
   empty : Q A
   empty = fromList []
 
