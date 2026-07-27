@@ -32,7 +32,7 @@ private
 record RawQueue (Q : Set a → Set a) : Set (suc a) where
 
   field
-    _≈_ : ∀ {A : Set a} → Rel (Q A) a
+    _≈_      : ∀ {A : Set a} → Rel (Q A) a
     Empty    : ∀ {A : Set a} → Pred (Q A) a
     empty?   : Decidable (Empty {A = A})
     fromList : List A → Q A

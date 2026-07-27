@@ -26,6 +26,7 @@ open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.SnocList.Base using (List<; toList>)
 open import Data.Unit.Base using (⊤)
 open import Function.Base using (id; const; _∘_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False)
@@ -124,24 +125,19 @@ singleton = fromList ∘ List.[_]
 -- map f (queue x xs ys) = queue (f x) (List.map f xs) (List.map f ys)
 
 ------------------------------------------------------------------------
---- Relations
+-- Relations
 
--- NOTE: experimental. Still not entirely sure the best way to define this
-data _≈_ {A : Set a} : Queue A → Queue A → Set a where
-  empty-equal : ∀ {q q' : Queue A} → Empty q → Empty q' → q ≈ q'
-  enqueue-equal : ∀ {q q' : Queue A} {x : A} → q ≈ q' → (enqueue x q) ≈ (enqueue x q')
-  dequeue-equal : ∀ {q q' : Queue A} →
-                  .{{_ : False (empty? q)}} →
-                  .{{_ : False (empty? q')}} →
-                  q ≈ q'  →
-                  (proj₂ (dequeue q)) ≈ (proj₂ (dequeue q'))
+-- Under the property that toList returns a list in
+-- the order of dequeue
+_≈_ : ∀ {A : Set a} → Rel (Queue A) a
+q ≈ q' = (toList q) ≡ (toList q')
 
 ------------------------------------------------------------------------
 --- TwoList Queue is a Queue
 
 TwoList-RawQueue : RawQueue {a} Queue
 TwoList-RawQueue = record
-  { _≈_      = _≈_ 
+  { _≈_      = _≈_
   ; Empty    = Empty
   ; empty?   = empty?
   ; fromList = fromList
