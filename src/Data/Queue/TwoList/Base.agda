@@ -18,13 +18,17 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.List.Base as List using (List; []; _∷_; reverse; _++_; length; null)
 open import Data.List.Relation.Unary.All using (Null; []; _∷_)
+open import Data.List.Relation.Unary.All.Properties using (null⇒Null; Null⇒null)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_)
-open import Data.Queue.QueueSpec using (IsQueue)
+open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.SnocList.Base using (List<; toList>)
 open import Function.Base using (id; const)
 open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False)
+open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
+open import Relation.Unary using (Pred; Decidable)
 
 private
   variable
@@ -59,6 +63,23 @@ record Queue (A : Set a) : Set a where
     inv : Null front → Null back
 
 ------------------------------------------------------------------------
+--- Basic Functions
+
+Empty    : ∀ {A : Set a} → Pred (Queue A) a
+Empty {a} {A} q = Null (Queue.front q)
+
+empty? : Decidable (Empty {A = A})
+empty? (mkQ front back inv) .Relation.Nullary.does = null front
+empty? (mkQ [] back inv) .Relation.Nullary.proof = ofʸ []
+empty? (mkQ (x ∷ xs) back inv) .Relation.Nullary.proof = ofⁿ λ empty → ⊥-elim (¬Null empty)
+
+isEmpty : Queue A → Bool
+isEmpty q = null (Queue.front q)
+
+size : Queue A → ℕ
+size q = length (Queue.front q) + length (Queue.back q)
+
+------------------------------------------------------------------------
 -- Construction & Destruction
 
 queue : List A → List A → Queue A
@@ -73,24 +94,13 @@ enqueue x q with bs ← Queue.back q | Queue.front q
 ... | []            = queue (x ∷ []) []
 ... | front@(_ ∷ _) = queue front (x ∷ bs)
 
-dequeue : Queue A → Maybe (A × Queue A)
-dequeue q with Queue.front q
-... | []     = nothing
-... | x ∷ xs = just (x , queue xs (Queue.back q))
+dequeue : ∀ (q : Queue A) .{{_ : False (empty? q)}} → A × Queue A
+-- dequeue q with (x ∷ xs) ← (Queue.front q) = x , queue xs (Queue.back q)
+dequeue (mkQ (x ∷ xs) back inv) = x , (queue xs back)
 
 -- Create a queue with a single element
 singleton : A → Queue A
 singleton x = enqueue x empty
-
-------------------------------------------------------------------------
---- Basic Functions
-
--- empty? : Dec (Null f
-isEmpty : Queue A → Bool
-isEmpty q = null (Queue.front q)
-
-size : Queue A → ℕ
-size q = length (Queue.front q) + length (Queue.back q)
 
 -- map : (A → B) → Queue A → Queue B
 -- map f empty = empty
@@ -114,13 +124,13 @@ fromList xs = queue xs []
 ------------------------------------------------------------------------
 --- TwoList Queue is a Queue
 
-instance
-  TwoListQueueIsQueue : IsQueue {a} Queue
-  TwoListQueueIsQueue = record
-                         { enqueue = enqueue
-                         ; dequeue = dequeue
-                         ; empty = empty
-                         ; size = size
-                         ; toList = toList
-                         ; fromList = fromList
-                         }
+TwoList-RawQueue : RawQueue {a} Queue
+TwoList-RawQueue = record
+  { _≈_      = {!!} 
+  ; Empty    = Empty
+  ; empty?   = empty?
+  ; fromList = fromList
+  ; toList   = toList
+  ; enqueue  = enqueue
+  ; dequeue  = dequeue
+  }
