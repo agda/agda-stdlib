@@ -76,8 +76,7 @@ Null⇒null : Null xs → T (null xs)
 Null⇒null [] = _
 
 null⇒Null : T (null xs) → Null xs
-null⇒Null {xs = []   } _ = []
-null⇒Null {xs = _ ∷ _} ()
+null⇒Null {xs = []} _ = []
 
 null-∷ : Null (x ∷ xs) → Whatever
 null-∷ (() ∷ _)
