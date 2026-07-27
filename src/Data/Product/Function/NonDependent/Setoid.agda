@@ -5,13 +5,13 @@
 -- functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --allow-unsolved-metas #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Function.NonDependent.Setoid where
 
 open import Data.Product.Base as Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-  using (_,_; proj₁; proj₂; _×ₛ_)
+  using (_,_; proj₁; proj₂; _×ₛ_; intro; intro′)
 open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid)
 open import Function.Bundles
@@ -24,6 +24,7 @@ private
     a ℓ : Level
     A B C D : Setoid a ℓ
 
+
 ------------------------------------------------------------------------
 -- Combinators for equality preserving functions
 
@@ -34,9 +35,9 @@ proj₂ₛ : Func (A ×ₛ B) B
 proj₂ₛ = record { to = proj₂ ; cong = proj₂ }
 
 <_,_>ₛ : Func A B → Func A C → Func A (B ×ₛ C)
-< f , g >ₛ = record
+<_,_>ₛ {A = A} f g = record
   { to   = < to   f , to   g >
-  ; cong = {!< cong f , cong g >!}
+  ; cong = intro′ (Setoid._≈_ A) (cong f) (cong g)
   } where open Func
 
 swapₛ : Func (A ×ₛ B) (B ×ₛ A)

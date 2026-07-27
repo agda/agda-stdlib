@@ -12,7 +12,7 @@ open import Data.Product.Base as Product
    using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Function.Base using (id; _∘_)
+open import Function.Base using (id; _∘_; _on_; flip)
 open import Function.Bundles using (Inverse)
 open import Relation.Nullary.Decidable.Core as Dec using (_×?_)
 open import Relation.Binary.Core using (REL; Rel; _⇒_; _=[_]⇒_)
@@ -20,12 +20,13 @@ open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; Poset; StrictPartialOrder)
 open import Relation.Binary.Definitions
 open import Relation.Binary.Structures
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≗_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
-    a b c d ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
+    a b c d ℓ ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
     A B C D : Set a
     R S T ≈₁ ≈₂ : Rel A ℓ₁
     f g : A → B
@@ -60,12 +61,20 @@ proj₂ (pointwise′⇒pointwise p) = proj₂ p
 ------------------------------------------------------------------------
 -- Helper functions as drop-ins for those from Product
 
-intro :  T =[ f ]⇒ R → T =[ g ]⇒ S → T =[ Product.< f , g > ]⇒ Pointwise R S
-intro T⇒R T⇒S p = T⇒R p , T⇒S p
+module _ {f : C → A} {g : C → B}
+         (T : Rel C ℓ) (T⇒R : T =[ f ]⇒ R) (T⇒S : T =[ g ]⇒ S)
+         where
+
+  intro :  ∀ {h} → Product.< f , g > ≗ h →
+           T =[ h ]⇒ Pointwise R S
+  intro H p =
+    ≡.subst₂ (R on proj₁) (H _) (H _) (T⇒R p) , ≡.subst₂ (S on proj₂) (H _) (H _) (T⇒S p)
+
+  intro′ :  T =[ Product.< f , g > ]⇒ Pointwise R S
+  intro′ = intro λ _ → ≡.refl
 
 map : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
-map f g = intro (f ∘ proj₁) (g ∘ proj₂)
---f (proj₁ xR×Sy) , g  (proj₂ xR×Sy)
+map f g = intro′ (Pointwise _ _) (f ∘ proj₁) (g ∘ proj₂)
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
@@ -85,8 +94,8 @@ map f g = intro (f ∘ proj₁) (g ∘ proj₂)
 ×-irreflexive₂ ir x≈y x<y = ir (proj₂ x≈y) (proj₂ x<y)
 
 ×-symmetric : Symmetric R → Symmetric S → Symmetric (Pointwise R S)
-×-symmetric sym₁ sym₂ = intro (sym₁ ∘ proj₁) (sym₂ ∘ proj₂)
--- map sym₁ sym₂ (proj₁ xR×Sy , proj₂ xR×Sy)
+×-symmetric sym₁ sym₂ = intro (flip (Pointwise _ _)) (sym₁ ∘ proj₁) (sym₂ ∘ proj₂)
+  λ _ → ≡.refl
 
 ×-transitive : Transitive R → Transitive S → Transitive (Pointwise R S)
 ×-transitive trans₁ trans₂ (x₁Rx₂ , y₁Sy₂) (x₂Rx₃ , y₂Sy₃) =
