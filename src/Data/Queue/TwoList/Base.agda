@@ -17,7 +17,7 @@ open import Level using (Level)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.List.Base as List using (List; []; _∷_; reverse; _++_; length; null)
-open import Data.List.Relation.Unary.All using (Null; [])
+open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_)
@@ -38,9 +38,8 @@ private
   null-[] : ∀ {xs : List A} → Null xs → Null {A = A} []
   null-[] = const []
 
-  -- mckinna seems to have a better idea but currently doesnt type check
   null-∷ : ∀ {x} {xs ys : List A} → Null (x ∷ xs) → Null ys
-  null-∷ = λ x₁ → ⊥-elim (¬Null x₁)
+  null-∷ (()∷ _)
 
 -- A Queue consists of a front (dequeue) and back (enqueue) list
 -- When enqueing (unless it is the first element), elements are cons'd
@@ -86,6 +85,7 @@ singleton x = enqueue x empty
 ------------------------------------------------------------------------
 --- Basic Functions
 
+-- empty? : Dec (Null f
 isEmpty : Queue A → Bool
 isEmpty q = null (Queue.front q)
 
