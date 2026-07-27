@@ -24,7 +24,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.SnocList.Base using (List<; toList>)
-open import Function.Base using (id; const)
+open import Function.Base using (id; const; _∘_)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False)
 open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
@@ -80,31 +80,11 @@ size : Queue A → ℕ
 size q = length (Queue.front q) + length (Queue.back q)
 
 ------------------------------------------------------------------------
--- Construction & Destruction
+--- Smart Constructor
 
 queue : List A → List A → Queue A
 queue []         ys = mkQ (reverse ys) [] null-[]
 queue xs@(_ ∷ _) ys = mkQ xs ys null-∷
-
-empty : Queue A
-empty = queue [] []
-
-enqueue : A → Queue A → Queue A
-enqueue x q with bs ← Queue.back q | Queue.front q
-... | []            = queue (x ∷ []) []
-... | front@(_ ∷ _) = queue front (x ∷ bs)
-
-dequeue : ∀ (q : Queue A) .{{_ : False (empty? q)}} → A × Queue A
--- dequeue q with (x ∷ xs) ← (Queue.front q) = x , queue xs (Queue.back q)
-dequeue (mkQ (x ∷ xs) back inv) = x , (queue xs back)
-
--- Create a queue with a single element
-singleton : A → Queue A
-singleton x = enqueue x empty
-
--- map : (A → B) → Queue A → Queue B
--- map f empty = empty
--- map f (queue x xs ys) = queue (f x) (List.map f xs) (List.map f ys)
 
 ------------------------------------------------------------------------
 --- Conversion to/from List
@@ -120,6 +100,31 @@ toList q = Queue.front q ++ (reverse (Queue.back q))
 -- (i.e. the first element of the list becomes the last element of the queue)
 fromList : List A → Queue A
 fromList xs = queue xs []
+
+
+------------------------------------------------------------------------
+-- Construction & Destruction
+
+empty : Queue A
+empty = fromList []
+
+enqueue : A → Queue A → Queue A
+enqueue x q with bs ← Queue.back q | Queue.front q
+... | []            = queue (x ∷ []) []
+... | front@(_ ∷ _) = queue front (x ∷ bs)
+
+dequeue : ∀ (q : Queue A) .{{_ : False (empty? q)}} → A × Queue A
+-- dequeue q with (x ∷ xs) ← (Queue.front q) = x , queue xs (Queue.back q)
+dequeue (mkQ (x ∷ xs) back inv) = x , (queue xs back)
+
+-- Create a queue with a single element
+singleton : A → Queue A
+singleton = fromList ∘ List.[_]
+
+-- map : (A → B) → Queue A → Queue B
+-- map f empty = empty
+-- map f (queue x xs ys) = queue (f x) (List.map f xs) (List.map f ys)
+
 
 ------------------------------------------------------------------------
 --- TwoList Queue is a Queue
