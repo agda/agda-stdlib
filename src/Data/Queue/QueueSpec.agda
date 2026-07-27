@@ -21,7 +21,7 @@ private
     B : Set b
 
 -- Along these lines?
-record IsQueue (Queue : (Set a) → (Set a)) : (Set (Level.suc a)) where
+record IsQueue (Queue : Set a → Set a) : Set (suc a) where
   field
     enqueue : A → Queue A → Queue A
     dequeue : Queue A → Maybe (A × Queue A)
