@@ -94,8 +94,7 @@ map f g = intro′ (Pointwise _ _) (f ∘ proj₁) (g ∘ proj₂)
 ×-irreflexive₂ ir x≈y x<y = ir (proj₂ x≈y) (proj₂ x<y)
 
 ×-symmetric : Symmetric R → Symmetric S → Symmetric (Pointwise R S)
-×-symmetric sym₁ sym₂ = intro (flip (Pointwise _ _)) (sym₁ ∘ proj₁) (sym₂ ∘ proj₂)
-  λ _ → ≡.refl
+×-symmetric sym₁ sym₂ = intro′ (flip (Pointwise _ _)) (sym₁ ∘ proj₁) (sym₂ ∘ proj₂)
 
 ×-transitive : Transitive R → Transitive S → Transitive (Pointwise R S)
 ×-transitive trans₁ trans₂ (x₁Rx₂ , y₁Sy₂) (x₂Rx₃ , y₂Sy₃) =
