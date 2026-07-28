@@ -20,6 +20,8 @@ open import Data.Queue.TwoList.Base
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
+open import Relation.Binary.Definitions using (Reflexive)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Nullary using (¬_)
 
 open ≡-Reasoning
@@ -89,3 +91,13 @@ size-enqueue {A = A} x q@(mkQ front@(_ ∷ _) back inv) = begin
 size-empty : size (empty {a} {A}) ≡ 0
 size-empty = refl
 
+------------------------------------------------------------------------
+-- Properties of _≈_
+
+-- it becomes propositional equality on lists, so easy!
+≈-isEquivalence : IsEquivalence (_≈_ {A = A})
+≈-isEquivalence = record
+  { refl = refl
+  ; sym = sym
+  ; trans = trans
+  }
