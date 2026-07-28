@@ -77,22 +77,22 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
       ku′  = insertWith k f ku l<k<u′
       ih   = insertWith-nothing ku l<k<u′ pr (λ p → ¬p (right p))
 
-    insertWith-just-update : (t : Tree V l u h) (l<k<u : l < k < u) →
-                             (∀ k′ v → (eq : k ≈ k′) → P (k′ , v) →
-                              Q (k′ , respects eq (f (just (respects (sym eq) v))))) →
-                             (p : Any P t) → k ≈ lookupKey p →
-                             Any Q (proj₂ (insertWith k f t l<k<u))
-    insertWith-just-update (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p k≈p
+    insertWith-just : (t : Tree V l u h) (l<k<u : l < k < u) →
+                      (∀ k′ v → (eq : k ≈ k′) → P (k′ , v) →
+                         Q (k′ , respects eq (f (just (respects (sym eq) v))))) →
+                      (p : Any P t) → k ≈ lookupKey p →
+                      Any Q (proj₂ (insertWith k f t l<k<u))
+    insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p k≈p
       with p | compare k k′
     -- happy paths
     ... | here p   | tri≈ _ k≈k′ _ = here (pr k′ v k≈k′ p)
     ... | left lp  | tri< k<k′ _ _ =
-      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just-update lk l<k<u′ pr lp k≈p)
+      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just lk l<k<u′ pr lp k≈p)
       where
       l<k<u′ = l<k , [ k<k′ ]ᴿ
       lk′  = insertWith k f lk l<k<u′
     ... | right rp | tri> _ _ k>k′ =
-      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just-update ku l<k<u′ pr rp k≈p)
+      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just ku l<k<u′ pr rp k≈p)
       where
       l<k<u′ = [ k>k′ ]ᴿ , k<u
       ku′  = insertWith k f ku l<k<u′
@@ -139,7 +139,7 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
     insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , respects eq v)) →
                   Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t l<k<u))
-    insert-just pr p = insertWith-just-update k (F.const v) t l<k<u
+    insert-just pr p = insertWith-just k (F.const v) t l<k<u
       (λ k′ _ eq _ → pr k′ eq) p (lookup-result p)
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
@@ -224,28 +224,6 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
 -- Version 2.4
 
-module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
-
-  module _ (k : Key) (f : Maybe (Val k) → Val k) where
-
-    insertWith-just : (t : Tree V l u h) (l<k<u : l < k < u) →
-                      (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , respects eq (f (just (respects (sym eq) v))))) →
-                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t l<k<u))
-    insertWith-just {P = P} t l<k<u pr p =
-      insertWith-just-update k f {P = P′} {Q = P} t l<k<u
-        (λ k′ v eq _ → pr k′ v eq)
-        p′ k≈p′
-      where
-      P′ : Pred (K& V) 0ℓ
-      P′ _ = ⊤
-      p′ : Any P′ t
-      p′ = lookup-rebuild p tt
-      k≈p′ : k ≈ lookupKey p′
-      k≈p′ = subst (k ≈_)
-                   (≡.sym (cong key (lookup-lookup-rebuild p tt)))
-                   (lookup-result p)
-
-
 Any-insertWith-nothing = insertWith-nothing
 {-# WARNING_ON_USAGE Any-insertWith-nothing
 "Warning: Any-insertWith-nothing was deprecated in v2.4.
@@ -254,7 +232,7 @@ Please use insertWith-nothing instead."
 Any-insertWith-just = insertWith-just
 {-# WARNING_ON_USAGE Any-insertWith-just
 "Warning: Any-insertWith-just was deprecated in v2.4.
-Please use insertWith-just-update instead."
+Please use insertWith-just instead."
 #-}
 Any-insert-nothing = insert-nothing
 {-# WARNING_ON_USAGE Any-insert-nothing
@@ -265,9 +243,4 @@ Any-insert-just = insert-just
 {-# WARNING_ON_USAGE Any-insert-just
 "Warning: Any-insert-just was deprecated in v2.4.
 Please use insert-just instead."
-#-}
-
-{-# WARNING_ON_USAGE insertWith-just
-"Warning: insertWith-just was deprecated in v2.4.
-Please use insertWith-just-update instead."
 #-}
