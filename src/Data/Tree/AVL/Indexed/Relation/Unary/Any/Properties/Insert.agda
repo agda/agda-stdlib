@@ -28,7 +28,7 @@ open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
   using (lookup-result; lookup-bounded; lookup-rebuild;
-         lookup-rebuild-accum; lookup-lookup-rebuild)
+         lookup-rebuild-accum)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinˡ⁺-left⁺; joinʳ⁺-right⁺; joinˡ⁺-here⁺; joinʳ⁺-here⁺;
          joinʳ⁺-left⁺; joinˡ⁺-right⁺; joinˡ⁺⁻; joinʳ⁺⁻)
@@ -44,12 +44,12 @@ import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
 
 private
   variable
-    v p q : Level
+    v p : Level
     V : Value v
     l u : Key⁺
     h : ℕ
     P : Pred (K& V) p
-    Q : Pred (K& V) q
+    Q : Pred (K& V) p
 
 
 module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
