@@ -9,13 +9,16 @@
 module Data.Queue.QueueSpec where
 
 open import Data.Bool.Base using (Bool)
-open import Data.List.Base as List using (List; []; length)
+open import Data.List.Base as List using (List; []; length; _∷_)
+open import Data.List.Relation.Unary.All using (Null)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product.Base using (_×_)
+open import Data.Product.Base using (_×_; proj₁; proj₂)
 open import Function.Base using (_∘_)
 open import Level
-open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Core using (Rel; _=[_]⇒_)
+open import Relation.Binary.Definitions using (_Respects_)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False; does)
 open import Relation.Unary using (Pred; Decidable)
@@ -68,5 +71,14 @@ record IsQueue {Q : Set a → Set a} (rawQ : RawQueue Q) : Set (suc a) where
   open RawQueue rawQ
 
   field
-    empty-toList   : toList (empty {A = A}) ≡ []
-    fromList-empty : empty {A = A} ≈ fromList []
+    isEquivalence   : IsEquivalence (_≈_ {A = A})
+    ≈-resp-Empty    : Empty Respects (_≈_ {A = A})
+    ≈-=[toList]⇒-≡  : (_≈_ {A = A}) =[ toList ]⇒ _≡_
+    empty-toList    : ∀ {q : Q A} → Empty q → Null (toList q)
+    empty-fromList  : ∀ {xs : List A} → Null {A = A} xs → Empty (fromList xs)
+    toList-fromList : ∀ {q : Q A} {xs : List A} → q ≈ fromList xs → toList q ≡ xs
+    fromList-toList : ∀ {q : Q A} {xs : List A} → xs ≡ toList q → fromList xs ≈ q
+    toList-enqueue  : ∀ {q : Q A} {x : A} → toList (enqueue x q) ≡ toList q List.∷ʳ x
+    -- for some reason, let x , r = ... doesn't bind x and r??
+    toList-dequeue  : ∀ {q : Q A} → .{{i : False (empty? q)}} →
+                      let xr = dequeue q {{i}} in (toList q) ≡ (proj₁ xr) ∷ (toList (proj₂ xr))
