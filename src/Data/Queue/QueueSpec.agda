@@ -49,8 +49,8 @@ record RawQueue (Q : Set a → Set a) : Set (suc a) where
   pure    : A → Q A
   pure = fromList ∘ List.[_]
 
-  toℕ : Q A → ℕ
-  toℕ = length ∘ toList
+  size : Q A → ℕ
+  size = length ∘ toList
 
   to𝔹 : Q A → Bool
   to𝔹 = isYes ∘ empty?

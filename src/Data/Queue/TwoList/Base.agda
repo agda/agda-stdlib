@@ -135,13 +135,14 @@ q ≈ q' = (toList q) ≡ (toList q')
 ------------------------------------------------------------------------
 --- TwoList Queue is a Queue
 
-TwoList-RawQueue : RawQueue {a} Queue
-TwoList-RawQueue = record
-  { _≈_      = _≈_
-  ; Empty    = Empty
-  ; empty?   = empty?
-  ; fromList = fromList
-  ; toList   = toList
-  ; enqueue  = enqueue
-  ; dequeue  = dequeue
-  }
+instance
+  TwoList-RawQueue : RawQueue {a} Queue
+  TwoList-RawQueue = record
+    { _≈_      = _≈_
+    ; Empty    = Empty
+    ; empty?   = empty?
+    ; fromList = fromList
+    ; toList   = toList
+    ; enqueue  = enqueue
+    ; dequeue  = dequeue
+    }
