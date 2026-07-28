@@ -16,19 +16,16 @@ open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Unit.Base using (⊤; tt)
 open import Function.Base as F using (_∘′_)
-open import Level using (Level; 0ℓ)
+open import Level using (Level)
 open import Relation.Binary.Definitions using (tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; subst; cong)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto
-  using (lookup-result; lookup-bounded; lookup-rebuild;
-         lookup-rebuild-accum)
+  using (lookup-result; lookup-bounded; lookup-rebuild-accum)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto
   using (joinˡ⁺-left⁺; joinʳ⁺-right⁺; joinˡ⁺-here⁺; joinʳ⁺-here⁺;
          joinʳ⁺-left⁺; joinˡ⁺-right⁺; joinˡ⁺⁻; joinʳ⁺⁻)
