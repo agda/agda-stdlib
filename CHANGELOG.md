@@ -161,6 +161,10 @@ Non-backwards compatible changes
   `insertWith-just` is strengthened to prevent the possibility of `insertWith`
   ignoring the old value.
 
+* In `Data.Product.Relation.Binary.Pointwise.Dependent`, the universe level of
+  the `record POINTWISE` has been lowered to `ℓ₁ ⊔ ℓ₂` given the universe levels
+  `ℓ₁`, resp. `ℓ₂` of the argument relations `_R₁_`, resp. `_R₂_`.
+
 Minor improvements
 ------------------
 
@@ -170,7 +174,7 @@ Minor improvements
   subsequent imports by clients, as well as streamlined internals. Moreover,
   it now has the implicit parameters of its internal modules lifted out as
   global `variable`s.
-
+`
 * The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
   have been streamlined via pattern-matching on `refl`, rather than defined by
   delegation to `Function.Consequences.Setoid` and the use of `cong`.
