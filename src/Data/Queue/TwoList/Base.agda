@@ -114,7 +114,7 @@ enqueue x q with bs ← Queue.back q | Queue.front q
 
 dequeue : ∀ (q : Queue A) .{{_ : False (empty? q)}} → A × Queue A
 -- dequeue q with (x ∷ xs) ← (Queue.front q) = x , queue xs (Queue.back q)
-dequeue (mkQ (x ∷ xs) back inv) = x , (queue xs back)
+dequeue (mkQ (x ∷ xs) back _) = x , queue xs back
 
 -- Create a queue with a single element
 singleton : A → Queue A
