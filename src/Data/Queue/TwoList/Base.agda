@@ -93,7 +93,7 @@ isEmpty q = SnocList.null (Queue.front q)
 --- Smart Constructor
 
 queue : List< A → List A → Queue A
-queue []         ys = mkQ (fromList> (reverse ys)) [] null<-[]
+queue []          ys = mkQ (fromList> (reverse ys)) [] null<-[]
 queue xs@(_ <: _) ys = mkQ xs ys null-<:
 
 ------------------------------------------------------------------------

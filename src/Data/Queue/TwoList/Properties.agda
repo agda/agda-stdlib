@@ -53,22 +53,22 @@ private
 toList-fromList : ∀ {q : Queue A} {xs : List A} → q ≈ fromList xs → toList q ≡ xs
 toList-fromList {q = q} {xs = xs} q≈xs = begin
   toList q             ≡⟨ q≈xs ⟩
-  toList (fromList xs) ≡⟨ toList-fromList' {xs = xs} ⟩
+  toList (fromList xs) ≡⟨ toList-fromList' xs ⟩
   xs                   ∎
   where
-    toList-fromList' : ∀ {xs : List A} → toList (fromList xs) ≡ xs
-    toList-fromList' {xs = xs} = begin
-      toList (fromList xs)             ≡⟨⟩
-      toList (queue (fromList> xs) []) ≡⟨⟩
-      (Queue.back (queue (fromList> xs) [])) ++ (toList> (Queue.front (queue (fromList> xs) []))) ≡⟨ cong₂ _++_ (queue-back[] {xs = fromList> xs}) refl ⟩
+    -- TODO: can probably cleanup a little
+    toList-fromList' : ∀ (xs : List A) → toList (fromList xs) ≡ xs
+    toList-fromList' xs = begin
+      toList (fromList xs)                                     ≡⟨⟩
+      toList (queue (fromList> xs) [])                         ≡⟨ cong₂ _++_ (queue-back[] {xs = fromList> xs}) refl ⟩
       [] ++ (toList> (Queue.front (queue (fromList> xs) [])))  ≡⟨⟩
-      (toList> (Queue.front (queue (fromList> xs) []))) ≡⟨ cong toList> (queue-front {xs = fromList> xs}) ⟩
-      toList> (fromList> xs) ≡⟨ toList>-fromList> xs ⟩
-      xs ∎
-
+      toList> (Queue.front (queue (fromList> xs) []))          ≡⟨ cong toList> (queue-front {xs = fromList> xs}) ⟩
+      toList> (fromList> xs)                                   ≡⟨ toList>-fromList> xs ⟩
+      xs                                                       ∎
+      
 -- enqueue increases size by 1
 -- rewrite could make it cleaner, but are we trying to use that less?
-size-enqueue : (x : A) (q : Queue A) → (size (enqueue {a} x q)) ≡ (suc (size q))
+size-enqueue : (x : A) (q : Queue A) → size (enqueue {a} x q) ≡ suc (size q)
 size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
   size (queue ([] <: x) []) ≡⟨⟩
   length (x ∷ [])           ≡⟨⟩
@@ -87,13 +87,13 @@ size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
       size q              ≡⟨⟩
       length (toList q)   ≡⟨⟩
       length (back ++ []) ≡⟨ cong length (++-identityʳ back) ⟩
-      length (back)       ≡⟨ cong length back[] ⟩
+      length back         ≡⟨ cong length back[] ⟩
       length {a} {A} []   ≡⟨⟩
       0 ∎    
 
 size-enqueue {A = A} x q@(mkQ front@(_ <: _) back inv) = begin
   size (queue front (x ∷ back))              ≡⟨⟩
-  length ((x ∷ back) ++ (toList> front))     ≡⟨ length-++ (x ∷ back) ⟩
+  length (x ∷ back ++ toList> front)         ≡⟨ length-++ (x ∷ back) ⟩
   length (x ∷ back) + length (toList> front) ≡⟨⟩
   suc (length back) + length (toList> front) ≡⟨ +-comm (suc (length back)) (length (toList> front)) ⟩
   length (toList> front) + suc (length back) ≡⟨ +-suc (length (toList> front)) (length back)⟩
