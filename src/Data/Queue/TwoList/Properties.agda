@@ -4,7 +4,7 @@
 -- Queue-related properties
 ------------------------------------------------------------------------
 
--- {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Queue.TwoList.Properties where
 
@@ -23,7 +23,7 @@ open import Data.SnocList.Relation.Unary.All using (All<; Null<; []; _<:_)
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Relation.Binary.Definitions using (Reflexive)
+open import Relation.Binary.Definitions using (Reflexive; _Respects_)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Nullary using (¬_)
 
@@ -49,7 +49,7 @@ private
   queue-front : ∀ {xs : List< A} → (Queue.front (queue xs [])) ≡ xs
   queue-front {xs = []} = refl
   queue-front {xs = xs <: x} = refl
-  
+
 toList-fromList : ∀ {q : Queue A} {xs : List A} → q ≈ fromList xs → toList q ≡ xs
 toList-fromList {q = q} {xs = xs} q≈xs = begin
   toList q             ≡⟨ q≈xs ⟩
@@ -65,7 +65,7 @@ toList-fromList {q = q} {xs = xs} q≈xs = begin
       toList> (Queue.front (queue (fromList> xs) []))          ≡⟨ cong toList> (queue-front {xs = fromList> xs}) ⟩
       toList> (fromList> xs)                                   ≡⟨ toList>-fromList> xs ⟩
       xs                                                       ∎
-      
+
 -- enqueue increases size by 1
 -- rewrite could make it cleaner, but are we trying to use that less?
 size-enqueue : (x : A) (q : Queue A) → size (enqueue {a} x q) ≡ suc (size q)
@@ -89,7 +89,7 @@ size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
       length (back ++ []) ≡⟨ cong length (++-identityʳ back) ⟩
       length back         ≡⟨ cong length back[] ⟩
       length {a} {A} []   ≡⟨⟩
-      0 ∎    
+      0 ∎
 
 size-enqueue {A = A} x q@(mkQ front@(_ <: _) back inv) = begin
   size (queue front (x ∷ back))              ≡⟨⟩
@@ -117,3 +117,53 @@ size-empty = refl
   ; sym = sym
   ; trans = trans
   }
+
+toList-Empty : ∀ {x : Queue A} → Empty x → toList x ≡ []
+toList-Empty {x = x@(mkQ [] back inv)} [] = begin
+  toList (mkQ [] back inv)  ≡⟨⟩
+  back ++ [] ≡⟨ ++-identityʳ back ⟩
+  back ≡⟨ back[] ⟩
+  [] ∎
+  where
+    null[] : Null back → back ≡ []
+    null[] [] = refl
+
+    back[] : back ≡ []
+    back[] = null[] (inv [])
+
+toList-front : ∀ {xs : Queue A} → toList xs ≡ [] → Queue.front xs ≡ []
+toList-front {xs = xs@(mkQ front back inv)} xs≡[] = begin
+  {!!} ≡⟨⟩
+  {!!} ≡⟨⟩
+  {!!} ≡⟨⟩
+  {!!}
+
+null[] : ∀ {xs : List< A} → xs ≡ [] → Null< xs
+null[] = {!!}
+
+empty[] : ∀ {xs : Queue A} → (toList xs) ≡ [] → Empty xs
+empty[] {xs = xs} xs≡[] = null[] (toList-front {xs = xs} xs≡[])
+
+≈-resp-Empty : Empty Respects (_≈_ {A = A})
+≈-resp-Empty {x = x} {y = y} x≈y empty-x = empty[] {xs = y} (begin
+  toList y ≡⟨ sym x≈y ⟩
+  toList x ≡⟨ toList-Empty {x = x} empty-x ⟩
+  []       ∎
+  )
+
+------------------------------------------------------------------------
+-- TwoList Queue is a Queue!
+
+instance
+  TwoList-IsQueue : IsQueue {a} TwoList-RawQueue
+  TwoList-IsQueue = record
+    { isEquivalence = ≈-isEquivalence
+    ; ≈-resp-Empty = {!!}
+    ; ≈-=[toList]⇒-≡ = {!!}
+    ; empty-toList = {!!}
+    ; empty-fromList = {!!}
+    ; toList-fromList = {!!}
+    ; fromList-toList = {!!}
+    ; toList-enqueue = {!!}
+    ; toList-dequeue = {!!}
+    }
