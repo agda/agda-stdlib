@@ -270,7 +270,10 @@ New modules
   Data.Tree.Rose.Show
   ```
 
-* `Effect.Monad.Partial` based on domain `Dom` and injection `dom`.
+* [PR #2976](https://github.com/agda/agda-stdlib/pull/2796)
+  `Effect.Monad.Partial` based on domain `Dom` and injection `dom`.
+  See the extensive discussion, esp. comments from Reed Mullanix,
+  on the PR.
 
 Additions to existing modules
 -----------------------------
