@@ -74,7 +74,7 @@ size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
       length {a} {A} (reverse [])    ≡⟨⟩
       length {a} {A} []              ≡⟨⟩
       0                              ∎
-   
+
 size-enqueue {A = A} x q@(mkQ front@(_ ∷ _) back inv) = begin
   size (queue front (x ∷ back)) ≡⟨⟩
   length (front ++ (reverse ( x ∷ back)))    ≡⟨ length-++ front ⟩
