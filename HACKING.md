@@ -161,6 +161,7 @@ If a module cannot be made safe or needs the `--with-K` option then it should be
 split into a module which is compatible with these options and an auxiliary
 one which will either be called `SOME/PATH/Unsafe.agda` or `SOME/PATH/WithK.agda`
 or explicitly declared as either unsafe or needing K in `GenerateEverything.hs`
+in the lists `unsafeModules`, `withKModules`, and `sizedTypesModules`.
 
 7. [ Optional ] Run test suite locally
 --------------------------------------

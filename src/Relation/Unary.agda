@@ -14,6 +14,7 @@ open import Data.Product.Base using (_×_; _,_; Σ-syntax; ∃; uncurry; swap)
 open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base using (_∘_; _|>_)
 open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary as Nullary using (¬_; Dec; True)
 
@@ -197,6 +198,11 @@ Decidable P = ∀ x → Dec (P x)
 
 ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
 ⌊ P? ⌋ a = Lift _ (True (P? a))
+
+-- Uniqueness
+
+Unique : Rel A ℓ₁ → Pred A ℓ₂ → Pred A _
+Unique _≈_ P x = ∀ {z} → P z → z ≈ x
 
 ------------------------------------------------------------------------
 -- Operations on sets

@@ -95,34 +95,37 @@ module _ where
     (function (⇔⇒⟶ I⇔J) A⟶B)
     (function (⇔⇒⟵ I⇔J) B⟶A)
 
-  equivalence-↪ :
-    (I↪J : I ↪ J) →
-    (∀ {i} → Equivalence (A atₛ (RightInverse.from I↪J i)) (B atₛ i)) →
-    Equivalence (I ×ₛ A) (J ×ₛ B)
-  equivalence-↪ {A = A} {B = B} I↪J A⇔B =
-    equivalence (RightInverse.equivalence I↪J) A→B (fromFunction A⇔B)
-    where
-    A→B : ∀ {i} → Func (A atₛ i) (B atₛ (RightInverse.to I↪J i))
-    A→B = record
-      { to   = to      A⇔B ∘ cast      A (RightInverse.strictlyInverseʳ I↪J _)
-      ; cong = to-cong A⇔B ∘ cast-cong A (RightInverse.strictlyInverseʳ I↪J _)
-      }
+  module _ (I↪J : I ↪ J) where
 
-  equivalence-↠ :
-    (I↠J : I ↠ J) →
-    (∀ {x} → Equivalence (A atₛ x) (B atₛ (Surjection.to I↠J x))) →
-    Equivalence (I ×ₛ A) (J ×ₛ B)
-  equivalence-↠ {A = A} {B = B} I↠J A⇔B =
-    equivalence (↠⇒⇔ I↠J) B-to B-from
-    where
-    B-to : ∀ {x} → Func (A atₛ x) (B atₛ (Surjection.to I↠J x))
-    B-to = toFunction A⇔B
+    private module ItoJ = RightInverse I↪J
 
-    B-from : ∀ {y} → Func (B atₛ y) (A atₛ (Surjection.to⁻ I↠J y))
-    B-from = record
-      { to   = from      A⇔B ∘ cast      B (Surjection.to∘to⁻ I↠J _)
-      ; cong = from-cong A⇔B ∘ cast-cong B (Surjection.to∘to⁻ I↠J _)
-      }
+    equivalence-↪ : (∀ {i} → Equivalence (A atₛ (ItoJ.from i)) (B atₛ i)) →
+                    Equivalence (I ×ₛ A) (J ×ₛ B)
+    equivalence-↪ {A = A} {B = B} A⇔B =
+      equivalence ItoJ.equivalence A→B (fromFunction A⇔B)
+      where
+      A→B : ∀ {i} → Func (A atₛ i) (B atₛ (ItoJ.to i))
+      A→B = record
+        { to   = to      A⇔B ∘ cast      A (ItoJ.strictlyInverseʳ _)
+        ; cong = to-cong A⇔B ∘ cast-cong A (ItoJ.strictlyInverseʳ _)
+        }
+
+  module _ (I↠J : I ↠ J) where
+
+    private module ItoJ = Surjection I↠J
+
+    equivalence-↠ : (∀ {x} → Equivalence (A atₛ x) (B atₛ (ItoJ.to x))) →
+                    Equivalence (I ×ₛ A) (J ×ₛ B)
+    equivalence-↠ {A = A} {B = B} A⇔B = equivalence (↠⇒⇔ I↠J) B-to B-from
+      where
+      B-to : ∀ {x} → Func (A atₛ x) (B atₛ (ItoJ.to x))
+      B-to = toFunction A⇔B
+
+      B-from : ∀ {y} → Func (B atₛ y) (A atₛ (ItoJ.from y))
+      B-from = record
+        { to   = from      A⇔B ∘ cast      B (ItoJ.strictlyInverseˡ _)
+        ; cong = from-cong A⇔B ∘ cast-cong B (ItoJ.strictlyInverseˡ _)
+        }
 
 ------------------------------------------------------------------------
 -- Injections
@@ -169,12 +172,12 @@ module _ where
     func : Func (I ×ₛ A) (J ×ₛ B)
     func = function (Surjection.function I↠J) (Surjection.function A↠B)
 
-    to⁻′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
-    to⁻′ (j , y) = to⁻ I↠J j , to⁻ A↠B (cast B (Surjection.to∘to⁻ I↠J _) y)
+    from′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
+    from′ (j , y) = from I↠J j , from A↠B (cast B (strictlyInverseˡ I↠J _) y)
 
     strictlySurj : StrictlySurjective (Func.Eq₂._≈_ func) (Func.to func)
-    strictlySurj (j , y) = to⁻′ (j , y) ,
-      to∘to⁻ I↠J j , IndexedSetoid.trans B (to∘to⁻ A↠B _) (cast-eq B (to∘to⁻ I↠J j))
+    strictlySurj (j , y) = from′ (j , y) ,
+      strictlyInverseˡ I↠J j , IndexedSetoid.trans B (strictlyInverseˡ A↠B _) (cast-eq B (strictlyInverseˡ I↠J j))
 
     surj : Surjective (Func.Eq₁._≈_ func) (Func.Eq₂._≈_ func) (Func.to func)
     surj = strictlySurjective⇒surjective (I ×ₛ A) (J ×ₛ B) (Func.cong func) strictlySurj

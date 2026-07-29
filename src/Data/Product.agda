@@ -8,13 +8,19 @@
 
 module Data.Product where
 
+open import Function.Base using (_∘_)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Unary using (Pred; _≐_; _∩_; Unique)
+open import Relation.Unary.Properties using (≐-sym)
 
 private
   variable
     a b c ℓ p q r s : Level
     A B C : Set a
+
 
 ------------------------------------------------------------------------
 -- Definition of dependent products
@@ -48,11 +54,6 @@ zipWith _∙_ _∘_ _*_ (a , p) (b , q) = (a ∙ b) * (p ∘ q)
 ∄ : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
 ∄ P = ¬ ∃ P
 
--- Unique existence (parametrised by an underlying equality).
-
-∃! : {A : Set a} → (A → A → Set ℓ) → (A → Set b) → Set (a ⊔ b ⊔ ℓ)
-∃! _≈_ B = ∃ λ x → B x × (∀ {y} → B y → x ≈ y)
-
 -- Syntax
 
 infix 2 ∄-syntax
@@ -61,3 +62,17 @@ infix 2 ∄-syntax
 ∄-syntax = ∄
 
 syntax ∄-syntax (λ x → B) = ∄[ x ] B
+
+------------------------------------------------------------------------
+-- Unique existence (parameterised by an underlying equality).
+
+module _ (_≈_ : Rel A ℓ) where
+
+  ∃! : (P : Pred A p) → Set _
+  ∃! P = ∃ (P ∩ Unique _≈_ P)
+
+  ∃!-≐ : {P : Pred A p} {Q : Pred A q} → P ≐ Q → ∃! P → ∃! Q
+  ∃!-≐ (P⊆Q , Q⊆P) = map₂ (map P⊆Q (_∘ Q⊆P))
+
+  ∃!-⇔ : {P : Pred A p} {Q : Pred A q} → P ≐ Q → ∃! P ⇔ ∃! Q
+  ∃!-⇔ P≐Q = mk⇔ (∃!-≐ P≐Q) (∃!-≐ (≐-sym P≐Q))

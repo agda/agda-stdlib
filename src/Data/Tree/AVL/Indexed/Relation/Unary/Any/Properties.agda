@@ -20,3 +20,4 @@ open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.JoinLemmas sto p
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Join sto public
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Lookup sto public
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Singleton sto public
+open import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList sto public

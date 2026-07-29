@@ -18,6 +18,6 @@
 +      - agda-stdlib-utils.cabal
 +      - cabal.haskell-ci
 +      - "*.hs"
- jobs:
-   linux:
-     name: Haskell-CI - Linux - ${{ matrix.compiler }}
+   merge_group:
+     branches:
+       - master

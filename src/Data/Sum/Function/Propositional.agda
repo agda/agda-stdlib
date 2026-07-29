@@ -53,7 +53,7 @@ private
 infixr 1 _⊎-⟶_ _⊎-⇔_ _⊎-↣_ _⊎-↩_ _⊎-↪_ _⊎-↔_
 
 _⊎-⟶_ : A ⟶ B → C ⟶ D → (A ⊎ C) ⟶ (B ⊎ D)
-_⊎-⟶_ = liftViaInverse Compose.function Inv.toFunction _⊎-function_
+_⊎-⟶_ = liftViaInverse Compose.function Inverse.toFunction _⊎-function_
 
 
 _⊎-⇔_ : A ⇔ B → C ⇔ D → (A ⊎ C) ⇔ (B ⊎ D)
