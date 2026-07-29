@@ -14,11 +14,14 @@
 
 module Effect.Monad.Partial where
 
-open import Level using (Level; suc; zero;_⊔_)
-open import Data.Product using (_×_; Σ; Σ-syntax; _,_)
 open import Data.Empty.Polymorphic using (⊥-elim; ⊥)
+open import Data.Product.Base using (_×_; Σ; Σ-syntax; _,_)
+open import Data.Sum.Base using (_⊎_; [_,_]′)
 open import Data.Unit.Polymorphic using (⊤)
+
 open import Function.Base using (id)
+
+open import Level using (Level; suc; zero;_⊔_)
 
 private
   variable
@@ -37,7 +40,7 @@ record ↯ (A : Set a) (ℓ : Level) : Set (a ⊔ suc ℓ) where
 open ↯
 
 ------------------------------------------------------------------------
--- Arrow part: Functor, Applicative, Monad component definition
+-- Arrow part: Functor, Applicative, Alternative, Monad
 
 map : (A → B) → ↯ A ℓ → ↯ B ℓ
 map f a↯ .Dom = a↯ .Dom
@@ -51,6 +54,14 @@ ap : ↯ (A → B) ℓ → ↯ A ℓ' → ↯ B (ℓ ⊔ ℓ')
 ap a→b↯ a↯ .Dom = a→b↯ .Dom × a↯ .Dom
 ap a→b↯ a↯ .dom (f↓ , a↓) = a→b↯ .dom f↓ (a↯ .dom a↓)
 
+empty : ↯ A ℓ
+empty {ℓ = ℓ} .Dom = ⊥ {ℓ = ℓ}
+empty .dom = ⊥-elim
+
+_<|>_ : ↯ A ℓ → ↯ A ℓ' → ↯ A (ℓ ⊔ ℓ')
+(l↯ <|> r↯) .Dom = l↯ .Dom ⊎ r↯ .Dom
+(l↯ <|> r↯) .dom = [ l↯ .dom , r↯ .dom ]′
+
 bind : ↯ A ℓ → (A → ↯ B ℓ') → ↯ B (ℓ ⊔ ℓ')
 bind a↯ f .Dom = Σ[ a↓ ∈ a↯ .Dom ] f (a↯ .dom a↓) .Dom
 bind a↯ f .dom (a↓ , fa↓) = f (a↯ .dom a↓) .dom fa↓
@@ -62,10 +73,7 @@ bind a↯ f .dom (a↓ , fa↓) = f (a↯ .dom a↓) .dom fa↓
 always = pure
 
 -- the 'never defined' partial element
-
-never : ↯ A ℓ
-never {ℓ = ℓ} .Dom = ⊥ {ℓ = ℓ}
-never .dom = ⊥-elim
+never = empty
 
 -- The following definition lets you add an assumption that you will
 -- need to discharge later. This is very useful when programming in
