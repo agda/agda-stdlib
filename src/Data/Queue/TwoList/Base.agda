@@ -93,7 +93,7 @@ queue xs@(_ ∷ _) ys = mkQ xs ys null-∷
 -- becomes the head of the list (i.e. the first element of the queue
 -- becomes the last element of the list)
 toList : Queue A → List A
-toList q = Queue.front q ++ (reverse (Queue.back q))
+toList q = Queue.front q ++ reverse (Queue.back q)
 
 -- Create a Queue from a List, such that the elements
 -- of the list would be dequeued starting from its first element
@@ -113,7 +113,6 @@ enqueue x q with bs ← Queue.back q | Queue.front q
 ... | front@(_ ∷ _) = queue front (x ∷ bs)
 
 dequeue : ∀ (q : Queue A) .{{_ : False (empty? q)}} → A × Queue A
--- dequeue q with (x ∷ xs) ← (Queue.front q) = x , queue xs (Queue.back q)
 dequeue (mkQ (x ∷ xs) back _) = x , queue xs back
 
 -- Create a queue with a single element

@@ -33,10 +33,10 @@ private
     A : Set a
     B : Set b
 
-  ¬Null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
+  ¬Null : {a : A} {as : List A} → ¬ Null (a ∷ as)
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
-toList-fromList : (xs : List A)  → toList (fromList xs) ≡ xs
+toList-fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList-fromList [] = begin
   toList (fromList []) ≡⟨⟩
   toList (empty)       ≡⟨⟩
@@ -45,7 +45,7 @@ toList-fromList [] = begin
 toList-fromList xs@(_ ∷ _) = begin
   toList (fromList xs)          ≡⟨⟩
   toList (mkQ xs [] (λ _ → [])) ≡⟨⟩
-  xs ++ (reverse [])            ≡⟨⟩
+  xs ++ reverse []              ≡⟨⟩
   xs ++ []                      ≡⟨ ++-identityʳ xs ⟩
   xs                            ∎
 
@@ -54,9 +54,9 @@ toList-fromList xs@(_ ∷ _) = begin
 size-enqueue : (x : A) (q : Queue A) → (size (enqueue {a} x q)) ≡ (suc (size q))
 size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
   size (queue (x ∷ []) []) ≡⟨⟩
-  length (x ∷ []) ≡⟨⟩
-  suc 0 ≡⟨ cong suc (sym sizeq) ⟩
-  suc (size q) ∎
+  length (x ∷ [])          ≡⟨⟩
+  suc 0                    ≡⟨ cong suc (sym sizeq) ⟩
+  suc (size q)             ∎
   where
     null[] : Null back → back ≡ []
     null[] [] = refl
@@ -76,13 +76,13 @@ size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
       0                              ∎
 
 size-enqueue {A = A} x q@(mkQ front@(_ ∷ _) back inv) = begin
-  size (queue front (x ∷ back)) ≡⟨⟩
-  length (front ++ (reverse ( x ∷ back)))    ≡⟨ length-++ front ⟩
+  size (queue front (x ∷ back))              ≡⟨⟩
+  length (front ++ reverse (x ∷ back))       ≡⟨ length-++ front ⟩
   length front + length (reverse (x ∷ back)) ≡⟨ cong (_+_ (length front)) (length-reverse (x ∷ back)) ⟩
   length front + length (x ∷ back)           ≡⟨⟩
   length front + suc (length back)           ≡⟨ cong ((_+_ (length front)) ∘ suc) (sym (length-reverse back)) ⟩
   length front + suc (length (reverse back)) ≡⟨ +-suc (length front) (length (reverse back)) ⟩
-  suc (length front + length (reverse back)) ≡⟨ cong suc (sym (length-++ front {reverse (back)})) ⟩
+  suc (length front + length (reverse back)) ≡⟨ cong suc (sym (length-++ front {reverse back})) ⟩
   suc (length (front ++ (reverse back)))     ≡⟨⟩
   suc (length (toList q))                    ≡⟨⟩
   suc (size q)                               ∎
