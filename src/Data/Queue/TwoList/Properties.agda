@@ -118,31 +118,45 @@ size-empty = refl
   ; trans = trans
   }
 
-toList-Empty : ∀ {x : Queue A} → Empty x → toList x ≡ []
-toList-Empty {x = x@(mkQ [] back inv)} [] = begin
-  toList (mkQ [] back inv)  ≡⟨⟩
-  back ++ [] ≡⟨ ++-identityʳ back ⟩
-  back ≡⟨ back[] ⟩
-  [] ∎
-  where
-    null[] : Null back → back ≡ []
-    null[] [] = refl
+-- NOTE: *most* of these:
+--        A) Can be moved elsewhere (e.g. the null proofs that are repeated in TwoList.Base, etc...)
+--        B) Should be renamed
+private
+  toList-Empty : ∀ {x : Queue A} → Empty x → toList x ≡ []
+  toList-Empty {x = x@(mkQ [] back inv)} [] = begin
+    toList (mkQ [] back inv)  ≡⟨⟩
+    back ++ [] ≡⟨ ++-identityʳ back ⟩
+    back ≡⟨ back[] ⟩
+    [] ∎
+    where
+      null[] : Null back → back ≡ []
+      null[] [] = refl
 
-    back[] : back ≡ []
-    back[] = null[] (inv [])
+      back[] : back ≡ []
+      back[] = null[] (inv [])
 
-toList-front : ∀ {xs : Queue A} → toList xs ≡ [] → Queue.front xs ≡ []
-toList-front {xs = xs@(mkQ front back inv)} xs≡[] = begin
-  {!!} ≡⟨⟩
-  {!!} ≡⟨⟩
-  {!!} ≡⟨⟩
-  {!!}
+  ++-[] : ∀ {xs ys : List A} → (xs ++ ys) ≡ [] → ys ≡ []
+  ++-[] {xs = []} {ys = []} xs++ys≡[] = xs++ys≡[]
 
-null[] : ∀ {xs : List< A} → xs ≡ [] → Null< xs
-null[] = {!!}
+  ¬null< : {a : A} {as : List< A} → ¬ (Null< (as <: a))
+  ¬null< (() Data.SnocList.Relation.Unary.All.<: n)
 
-empty[] : ∀ {xs : Queue A} → (toList xs) ≡ [] → Empty xs
-empty[] {xs = xs} xs≡[] = null[] (toList-front {xs = xs} xs≡[])
+  null[] : ∀ {xs : List< A} → xs ≡ [] → Null< xs
+  null[] xs≡[] rewrite xs≡[] = []
+
+  ¬<>>[] : ∀ {x} {xs : List< A} {ys : List A} → xs SnocList.<>> (x ∷ ys) ≢ []
+  ¬<>>[] {xs = []} ()
+  ¬<>>[] {xs = xs <: x} wrong = ¬<>>[] {xs = xs} wrong
+
+  <>>[] : ∀ {xs : List< A} → xs SnocList.<>> [] ≡ [] → xs ≡ []
+  <>>[] {xs = []} xs<>>[]≡[] = refl
+  <>>[] {xs = (xs <: x)} xs<>>[]≡[] = ⊥-elim (¬<>>[] {x = x} {xs = xs} {ys = []} xs<>>[]≡[])
+
+  toList-front : ∀ {xs : Queue A} → toList xs ≡ [] → Queue.front xs ≡ []
+  toList-front {xs = xs@(mkQ front [] inv)} xs≡[] = <>>[] xs≡[]
+
+  empty[] : ∀ {xs : Queue A} → toList xs ≡ [] → Empty xs
+  empty[] {xs = xs} xs≡[] = null[] (toList-front {xs = xs} xs≡[])
 
 ≈-resp-Empty : Empty Respects (_≈_ {A = A})
 ≈-resp-Empty {x = x} {y = y} x≈y empty-x = empty[] {xs = y} (begin
@@ -151,19 +165,26 @@ empty[] {xs = xs} xs≡[] = null[] (toList-front {xs = xs} xs≡[])
   []       ∎
   )
 
+-- For some reason, gives unresolved implicits of
+--  _x.inv_750 : Null< (Queue.front x) → Null (Queue.back x)
+--  _y.inv_753 : Null< (Queue.front y) → Null (Queue.back y)
+-- But I'm too tired to trace it through and figure out why for today!
+-- ≈-resp-Empty' : Empty Respects (_≈_ {A = A})
+-- ≈-resp-Empty' = ≈-resp-Empty
+
 ------------------------------------------------------------------------
 -- TwoList Queue is a Queue!
 
-instance
-  TwoList-IsQueue : IsQueue {a} TwoList-RawQueue
-  TwoList-IsQueue = record
-    { isEquivalence = ≈-isEquivalence
-    ; ≈-resp-Empty = {!!}
-    ; ≈-=[toList]⇒-≡ = {!!}
-    ; empty-toList = {!!}
-    ; empty-fromList = {!!}
-    ; toList-fromList = {!!}
-    ; fromList-toList = {!!}
-    ; toList-enqueue = {!!}
-    ; toList-dequeue = {!!}
-    }
+-- instance
+--   TwoList-IsQueue : IsQueue {a} TwoList-RawQueue
+--   TwoList-IsQueue = record
+--     { isEquivalence = ≈-isEquivalence
+--     ; ≈-resp-Empty = ≈-resp-Empty
+--     ; ≈-=[toList]⇒-≡ = {!!}
+--     ; empty-toList = {!!}
+--     ; empty-fromList = {!!}
+--     ; toList-fromList = {!!}
+--     ; fromList-toList = {!!}
+--     ; toList-enqueue = {!!}
+--     ; toList-dequeue = {!!}
+--     }
