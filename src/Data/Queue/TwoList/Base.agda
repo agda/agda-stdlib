@@ -23,7 +23,8 @@ open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_; proj₂)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
-open import Data.SnocList.Base using (List<; toList>)
+open import Data.SnocList.Base as SnocList using (List<; toList>; fromList>; []; _<:_)
+open import Data.SnocList.Relation.Unary.All
 open import Data.Unit.Base using (⊤)
 open import Function.Base using (id; const; _∘_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
@@ -39,14 +40,23 @@ private
     A : Set a
     B : Set b
 
-  ¬Null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
-  ¬Null (() Data.List.Relation.Unary.All.∷ n)
+  ¬null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
+  ¬null (() Data.List.Relation.Unary.All.∷ n)
+
+  ¬null< : {a : A} {as : List< A} → ¬ (Null< (as <: a))
+  ¬null< (() Data.SnocList.Relation.Unary.All.<: n)
 
   null-[] : ∀ {xs : List A} → Null xs → Null {A = A} []
   null-[] = const []
 
+  null<-[] : ∀ {xs : List< A} → Null< xs → Null {A = A} []
+  null<-[] = const []
+
   null-∷ : ∀ {x} {xs ys : List A} → Null (x ∷ xs) → Null ys
   null-∷ (()∷ _)
+
+  null-<: : ∀ {x} {xs : List< A} {ys : List A} → Null< (xs <: x) → Null ys
+  null-<: (()<: _)
 
 -- A Queue consists of a front (dequeue) and back (enqueue) list
 -- When enqueing (unless it is the first element), elements are cons'd
@@ -61,45 +71,43 @@ private
 record Queue (A : Set a) : Set a where
   constructor mkQ
   field
-    front : List A
+    front : List< A
     back  : List A
-    inv : Null front → Null back
+    inv : Null< front → Null back
 
 ------------------------------------------------------------------------
 --- Basic Functions/Relations/Operators
 
 Empty    : ∀ {A : Set a} → Pred (Queue A) a
-Empty {a} {A} q = Null (Queue.front q)
+Empty {a} {A} q = Null< (Queue.front q)
 
 empty? : Decidable (Empty {A = A})
-empty? (mkQ front back inv) .Relation.Nullary.does = null front
+empty? (mkQ front back inv) .Relation.Nullary.does = SnocList.null front
 empty? (mkQ [] back inv) .Relation.Nullary.proof = ofʸ []
-empty? (mkQ (x ∷ xs) back inv) .Relation.Nullary.proof = ofⁿ λ empty → ⊥-elim (¬Null empty)
+empty? (mkQ (xs <: x) back inv) .Relation.Nullary.proof = ofⁿ (λ e → ⊥-elim (¬null< e))
 
 isEmpty : Queue A → Bool
-isEmpty q = null (Queue.front q)
+isEmpty q = SnocList.null (Queue.front q)
 
 ------------------------------------------------------------------------
 --- Smart Constructor
 
-queue : List A → List A → Queue A
-queue []         ys = mkQ (reverse ys) [] null-[]
-queue xs@(_ ∷ _) ys = mkQ xs ys null-∷
+queue : List< A → List A → Queue A
+queue []         ys = mkQ (fromList> (reverse ys)) [] null<-[]
+queue xs@(_ <: _) ys = mkQ xs ys null-<:
 
 ------------------------------------------------------------------------
 --- Conversion to/from List
 
--- Create a List from a Queue, such that the first that would be dequeued
--- becomes the head of the list (i.e. the first element of the queue
--- becomes the last element of the list)
+-- Create a List from a Queue, such that the last that would be dequeued
+-- becomes the head of the list
 toList : Queue A → List A
-toList q = Queue.front q ++ reverse (Queue.back q)
+toList q = (Queue.back q) ++ (toList> (Queue.front q))
 
 -- Create a Queue from a List, such that the elements
--- of the list would be dequeued starting from its first element
--- (i.e. the first element of the list becomes the last element of the queue)
+-- of the list would be dequeued starting from its last element
 fromList : List A → Queue A
-fromList xs = queue xs []
+fromList xs = queue (fromList> xs) []
 
 ------------------------------------------------------------------------
 -- Construction & Destruction
@@ -109,11 +117,11 @@ empty = fromList []
 
 enqueue : A → Queue A → Queue A
 enqueue x q with bs ← Queue.back q | Queue.front q
-... | []            = queue (x ∷ []) []
-... | front@(_ ∷ _) = queue front (x ∷ bs)
+... | []            = queue ([] <: x) []
+... | front@(_ <: _) = queue front (x ∷ bs)
 
 dequeue : ∀ (q : Queue A) .{{_ : False (empty? q)}} → A × Queue A
-dequeue (mkQ (x ∷ xs) back _) = x , queue xs back
+dequeue (mkQ (xs <: x) back _) = x , queue xs back
 
 -- Create a queue with a single element
 singleton : A → Queue A

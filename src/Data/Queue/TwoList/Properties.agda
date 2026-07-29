@@ -4,7 +4,7 @@
 -- Queue-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+-- {-# OPTIONS --without-K --safe #-}
 
 module Data.Queue.TwoList.Properties where
 
@@ -14,9 +14,12 @@ open import Data.List.Base
 open import Data.List.Properties using (++-identityʳ; length-++; length-reverse)
 open import Data.List.Relation.Unary.All using (Null; [])
 open import Data.Nat.Base using (suc; _+_)
-open import Data.Nat.Properties using (+-comm; +-suc)
+open import Data.Nat.Properties using (+-comm; +-suc; +-assoc)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.Queue.TwoList.Base
+open import Data.SnocList.Base as SnocList using (List<; []; _<:_; toList>; fromList>)
+open import Data.SnocList.Properties using (toList>-fromList>)
+open import Data.SnocList.Relation.Unary.All using (All<; Null<; []; _<:_)
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -33,30 +36,44 @@ private
     A : Set a
     B : Set b
 
-  ¬Null : {a : A} {as : List A} → ¬ Null (a ∷ as)
+  ¬Null : {x : A} {xs : List A} → ¬ Null (x ∷ xs)
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
-toList-fromList : (xs : List A) → toList (fromList xs) ≡ xs
-toList-fromList [] = begin
-  toList (fromList []) ≡⟨⟩
-  toList (empty)       ≡⟨⟩
-  []                   ∎
+  null-<: : ∀ {x} {xs : List< A} {ys : List A} → Null< (xs <: x) → Null ys
+  null-<: (()<: _)
 
-toList-fromList xs@(_ ∷ _) = begin
-  toList (fromList xs)          ≡⟨⟩
-  toList (mkQ xs [] (λ _ → [])) ≡⟨⟩
-  xs ++ reverse []              ≡⟨⟩
-  xs ++ []                      ≡⟨ ++-identityʳ xs ⟩
-  xs                            ∎
+  queue-back[] : ∀ {xs : List< A} → (Queue.back (queue xs [])) ≡ []
+  queue-back[] {xs = []} = refl
+  queue-back[] {xs = xs <: x} = refl
+
+  queue-front : ∀ {xs : List< A} → (Queue.front (queue xs [])) ≡ xs
+  queue-front {xs = []} = refl
+  queue-front {xs = xs <: x} = refl
+  
+toList-fromList : ∀ {q : Queue A} {xs : List A} → q ≈ fromList xs → toList q ≡ xs
+toList-fromList {q = q} {xs = xs} q≈xs = begin
+  toList q             ≡⟨ q≈xs ⟩
+  toList (fromList xs) ≡⟨ toList-fromList' {xs = xs} ⟩
+  xs                   ∎
+  where
+    toList-fromList' : ∀ {xs : List A} → toList (fromList xs) ≡ xs
+    toList-fromList' {xs = xs} = begin
+      toList (fromList xs)             ≡⟨⟩
+      toList (queue (fromList> xs) []) ≡⟨⟩
+      (Queue.back (queue (fromList> xs) [])) ++ (toList> (Queue.front (queue (fromList> xs) []))) ≡⟨ cong₂ _++_ (queue-back[] {xs = fromList> xs}) refl ⟩
+      [] ++ (toList> (Queue.front (queue (fromList> xs) [])))  ≡⟨⟩
+      (toList> (Queue.front (queue (fromList> xs) []))) ≡⟨ cong toList> (queue-front {xs = fromList> xs}) ⟩
+      toList> (fromList> xs) ≡⟨ toList>-fromList> xs ⟩
+      xs ∎
 
 -- enqueue increases size by 1
 -- rewrite could make it cleaner, but are we trying to use that less?
 size-enqueue : (x : A) (q : Queue A) → (size (enqueue {a} x q)) ≡ (suc (size q))
 size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
-  size (queue (x ∷ []) []) ≡⟨⟩
-  length (x ∷ [])          ≡⟨⟩
-  suc 0                    ≡⟨ cong suc (sym sizeq) ⟩
-  suc (size q)             ∎
+  size (queue ([] <: x) []) ≡⟨⟩
+  length (x ∷ [])           ≡⟨⟩
+  suc 0                     ≡⟨ cong suc (sym sizeq) ⟩
+  suc (size q)              ∎
   where
     null[] : Null back → back ≡ []
     null[] [] = refl
@@ -64,26 +81,25 @@ size-enqueue {a = a} {A = A} x q@(mkQ [] back inv) = begin
     back[] : back ≡ []
     back[] = null[] (inv [])
 
-    -- why does length need {a} and {A} after reverse back ↦ reverse []?
+    -- why does length need {a} and {A} after back ↦ []?
     sizeq : size q ≡ 0
     sizeq = begin
-      size q                         ≡⟨⟩
-      length (toList q)              ≡⟨⟩
-      length ([] ++ (reverse back))  ≡⟨⟩
-      length (reverse back)          ≡⟨ cong (length ∘ reverse) back[] ⟩
-      length {a} {A} (reverse [])    ≡⟨⟩
-      length {a} {A} []              ≡⟨⟩
-      0                              ∎
+      size q              ≡⟨⟩
+      length (toList q)   ≡⟨⟩
+      length (back ++ []) ≡⟨ cong length (++-identityʳ back) ⟩
+      length (back)       ≡⟨ cong length back[] ⟩
+      length {a} {A} []   ≡⟨⟩
+      0 ∎    
 
-size-enqueue {A = A} x q@(mkQ front@(_ ∷ _) back inv) = begin
+size-enqueue {A = A} x q@(mkQ front@(_ <: _) back inv) = begin
   size (queue front (x ∷ back))              ≡⟨⟩
-  length (front ++ reverse (x ∷ back))       ≡⟨ length-++ front ⟩
-  length front + length (reverse (x ∷ back)) ≡⟨ cong (_+_ (length front)) (length-reverse (x ∷ back)) ⟩
-  length front + length (x ∷ back)           ≡⟨⟩
-  length front + suc (length back)           ≡⟨ cong ((_+_ (length front)) ∘ suc) (sym (length-reverse back)) ⟩
-  length front + suc (length (reverse back)) ≡⟨ +-suc (length front) (length (reverse back)) ⟩
-  suc (length front + length (reverse back)) ≡⟨ cong suc (sym (length-++ front {reverse back})) ⟩
-  suc (length (front ++ (reverse back)))     ≡⟨⟩
+  length ((x ∷ back) ++ (toList> front))     ≡⟨ length-++ (x ∷ back) ⟩
+  length (x ∷ back) + length (toList> front) ≡⟨⟩
+  suc (length back) + length (toList> front) ≡⟨ +-comm (suc (length back)) (length (toList> front)) ⟩
+  length (toList> front) + suc (length back) ≡⟨ +-suc (length (toList> front)) (length back)⟩
+  suc (length (toList> front) + length back) ≡⟨ cong suc (+-comm (length (toList> front)) (length back)) ⟩
+  suc (length back + length (toList> front)) ≡⟨ cong suc (sym (length-++ back {toList> front})) ⟩
+  suc (length (back ++ (toList> front)))     ≡⟨⟩
   suc (length (toList q))                    ≡⟨⟩
   suc (size q)                               ∎
 
