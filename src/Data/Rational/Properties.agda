@@ -1074,6 +1074,18 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
   }
 
 ------------------------------------------------------------------------
+-- Properties of _+_ and _/_
+
+/-distribʳ-+ : ∀ d n m .{{_ : ℕ.NonZero d}} → (n ℤ.+ m) / d ≡ n / d + m / d
+/-distribʳ-+ d n m = toℚᵘ-injective (begin-equality
+  toℚᵘ ((n ℤ.+ m) / d) ≃⟨ toℚᵘ-/ᵘ-≃ (n ℤ.+ m) d ⟩
+  (n ℤ.+ m) /ᵘ d ≃⟨ ℚᵘ./-distribʳ-+ d n m ⟩
+  n /ᵘ d +ᵘ m /ᵘ d ≃⟨ ℚᵘ.+-cong (toℚᵘ-/ᵘ-≃ n d) (toℚᵘ-/ᵘ-≃ m d) ⟨
+  toℚᵘ (n / d) +ᵘ toℚᵘ (m / d) ≃⟨ toℚᵘ-homo-+ (n / d) (m / d) ⟨
+  toℚᵘ (n / d + m / d) ∎)
+  where open ℚᵘ.≤-Reasoning
+
+------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
 
 +-mono-≤ : Monotonic₂ _≤_ _≤_ _≤_ _+_
