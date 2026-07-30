@@ -26,11 +26,9 @@ private
     a : Level
     A : Set a
 
-record Show (A : Set a) :  Set a
-  where
-  constructor show′
-
-  field  showsPrecList :  Precedence → A → List Char → List Char
+record Show (A : Set a) :  Set a where
+  field
+    showsPrecList :  Precedence → A → List Char → List Char
 
   showPrecList : Precedence → A → List Char
   showPrecList prec x =  showsPrecList prec x []
