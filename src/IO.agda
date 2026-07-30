@@ -63,7 +63,7 @@ module Colist where
 
 module List where
 
-  open import Data.List.Base
+  open import Data.List.Base hiding (pure)
 
   sequence : List (IO A) → IO (List A)
   sequence []       = ⦇ [] ⦈
