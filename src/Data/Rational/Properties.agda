@@ -27,7 +27,7 @@ import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 import Algebra.Properties.Group as GroupProperties
 open import Data.Bool.Base using (T; true; false)
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
+open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_) renaming (∣_∣ to abs)
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
 open import Data.Integer.GCD using (gcd; gcd[i,j]≡0⇒i≡0; gcd[i,j]≡0⇒j≡0; gcd-zeroʳ)
@@ -45,7 +45,7 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   renaming
   ( ↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; ↧ₙ_ to ↧ₙᵘ_
   ; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_; _<_ to _<ᵘ_
-  ; _+_ to _+ᵘ_)
+  ; _+_ to _+ᵘ_; _*_ to _*ᵘ_; _/_ to _/ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
 import Data.Sign.Base as Sign
@@ -471,6 +471,28 @@ private
 
 ↧ᵘ-toℚᵘ : ∀ p → ↧ᵘ (toℚᵘ p) ≡ ↧ p
 ↧ᵘ-toℚᵘ p@record{} = refl
+
+toℚᵘ-/ᵘ-≡ : ∀ q → toℚᵘ q ≡ ↥ q /ᵘ ↧ₙ q
+toℚᵘ-/ᵘ-≡ q@record{} = refl
+
+toℚᵘ-/ᵘ-≃ : ∀ n d .{{_ : ℕ.NonZero d}} → toℚᵘ (n / d) ≃ᵘ n /ᵘ d
+toℚᵘ-/ᵘ-≃ n d = begin-equality
+  toℚᵘ (n / d)
+      ≡⟨ toℚᵘ-/ᵘ-≡ (n / d) ⟩
+  (↥ (n / d)) /ᵘ (↧ₙ (n / d))
+      ≃⟨ ℚᵘ.*-cancelʳ-/ (ℕ.gcd (abs n) d) ⟨
+  (↥ (n / d) ℤ.* gcd n (+ d)) /ᵘ (↧ₙ (n / d) ℕ.* (ℕ.gcd (abs n) d))
+      ≡⟨ ℚᵘ./-cong (↥-/ n d) (ℤ.+-injective (trans helper (↧-/ n d))) ⟩
+  n /ᵘ d ∎
+  where
+  open ℚᵘ.≤-Reasoning
+  instance
+    g≢0 : ℕ.NonZero (ℕ.gcd (abs n) d)
+    g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 (abs n) d (inj₂ (ℕ.≢-nonZero⁻¹ d)))
+    dg≢0 : ℕ.NonZero (↧ₙ (n / d) ℕ.* (ℕ.gcd (abs n) d))
+    dg≢0 = ℕ.m*n≢0 (↧ₙ (n / d)) (ℕ.gcd (abs n) d)
+    helper : + ((↧ₙ (n / d)) ℕ.* (ℕ.gcd (abs n) d)) ≡ (↧ (n / d)) ℤ.* (gcd n (+ d))
+    helper = ℤ.pos-* (↧ₙ (n / d)) (ℕ.gcd (abs n) d)
 
 toℚᵘ-injective : Injective _≡_ _≃ᵘ_ toℚᵘ
 toℚᵘ-injective {x@record{}} {y@record{}} (*≡* eq) = ≃⇒≡ (*≡* eq)
@@ -1455,6 +1477,16 @@ module _ where
      p≢0 = ℕ.m*n≢0⇒n≢0 r
      p*r≢0 : ℕ.NonZero (p ℕ.* r)
      p*r≢0 = ℕ.m*n≢0 p r
+
+n/d≡[n/a]*[a/d] : ∀ n d a .{{_ : ℕ.NonZero d}} .{{_ : ℕ.NonZero a}} →
+                  n / d ≡ (n / a) * (+ a / d)
+n/d≡[n/a]*[a/d] n d a = toℚᵘ-injective (begin-equality
+  toℚᵘ (n / d)                   ≃⟨ toℚᵘ-/ᵘ-≃ n d ⟩
+  n /ᵘ d                         ≃⟨ ℚᵘ.n/d≃[n/a]*[a/d] n d a ⟩
+  (n /ᵘ a) *ᵘ (+ a /ᵘ d)         ≃⟨ ℚᵘ.*-cong (toℚᵘ-/ᵘ-≃ n a) (toℚᵘ-/ᵘ-≃ (+ a) d) ⟨
+  toℚᵘ (n / a) *ᵘ toℚᵘ (+ a / d) ≃⟨ toℚᵘ-homo-* (n / a) (+ a / d) ⟨
+  toℚᵘ ((n / a) * (+ a / d))     ∎)
+  where open ℚᵘ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
