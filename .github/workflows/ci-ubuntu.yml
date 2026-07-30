@@ -179,6 +179,7 @@ jobs:
   test-stdlib:
     needs: init
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'push' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -217,6 +218,7 @@ jobs:
   test-stdlib-golden:
     needs: init
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'push' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -357,7 +359,17 @@ jobs:
   html-deploy:
     needs: [init, html-generate, test-stdlib-golden, test-stdlib]
     runs-on: ubuntu-latest
+    if: always()
     steps:
+
+        # if either test jobs are skipped, 'needs' would normally skip 
+        # this job.cancel-timeout-minutes.cancel-timeout-minutes. 
+        # adding `if: always()` guarantees this job will run, but now 
+        # checking the previous steps did in fact succeed has to be done manually
+      - name: Check Success
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
       - name: Checkout
         uses: actions/checkout@v5
 
