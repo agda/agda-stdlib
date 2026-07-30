@@ -1651,6 +1651,72 @@ neg*neg⇒pos p q = positive $ begin-strict
   where open ≤-Reasoning
 
 ------------------------------------------------------------------------
+-- Properties of _/_
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Properties of _/_ and _<_
+
+/-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
+/-monoˡ-< d {n} {m} n<m = toℚᵘ-cancel-< (begin-strict
+  toℚᵘ (n / d) ≃⟨ toℚᵘ-/ᵘ-≃ n d ⟩
+  n /ᵘ d       <⟨ ℚᵘ./-monoˡ-< d n<m ⟩
+  m /ᵘ d       ≃⟨ toℚᵘ-/ᵘ-≃ m d ⟨
+  toℚᵘ (m / d) ∎)
+  where open ℚᵘ.≤-Reasoning
+
+/-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
+                .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                d₁ ℕ.< d₂ → n / d₂ < n / d₁
+/-monoʳ-<-pos n {d₁} {d₂} d₁<d₂ = toℚᵘ-cancel-< (begin-strict
+  toℚᵘ (n / d₂) ≃⟨ toℚᵘ-/ᵘ-≃ n d₂ ⟩
+  n /ᵘ d₂       <⟨ ℚᵘ./-monoʳ-<-pos n d₁<d₂ ⟩
+  n /ᵘ d₁       ≃⟨ toℚᵘ-/ᵘ-≃ n d₁ ⟨
+  toℚᵘ (n / d₁) ∎)
+  where open ℚᵘ.≤-Reasoning
+
+/-monoʳ-<-neg : ∀ n {d₁ d₂} .{{_ : ℤ.Negative n}}
+                .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                d₁ ℕ.< d₂ → n / d₁ < n / d₂
+/-monoʳ-<-neg n {d₁} {d₂} d₁<d₂ = toℚᵘ-cancel-< (begin-strict
+  toℚᵘ (n / d₁) ≃⟨ toℚᵘ-/ᵘ-≃ n d₁ ⟩
+  n /ᵘ d₁       <⟨ ℚᵘ./-monoʳ-<-neg n d₁<d₂ ⟩
+  n /ᵘ d₂       ≃⟨ toℚᵘ-/ᵘ-≃ n d₂ ⟨
+  toℚᵘ (n / d₂) ∎)
+  where open ℚᵘ.≤-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of _/_ and _≤_
+
+/-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._≤_ _≤_ (_/ d)
+/-monoˡ-≤ d {n} {m} n≤m = toℚᵘ-cancel-≤ (begin
+  toℚᵘ (n / d) ≃⟨ toℚᵘ-/ᵘ-≃ n d ⟩
+  n /ᵘ d ≤⟨ ℚᵘ./-monoˡ-≤ d n≤m ⟩
+  m /ᵘ d ≃⟨ toℚᵘ-/ᵘ-≃ m d ⟨
+  toℚᵘ (m / d) ∎)
+  where open ℚᵘ.≤-Reasoning
+
+/-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℤ.NonNegative n}}
+                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                   d₁ ℕ.≤ d₂ → n / d₂ ≤ n / d₁
+/-monoʳ-≤-nonNeg n {d₁} {d₂} d₁≤d₂ = toℚᵘ-cancel-≤ (begin
+  toℚᵘ (n / d₂) ≃⟨ toℚᵘ-/ᵘ-≃ n d₂ ⟩
+  n /ᵘ d₂ ≤⟨ ℚᵘ./-monoʳ-≤-nonNeg n d₁≤d₂ ⟩
+  n /ᵘ d₁ ≃⟨ toℚᵘ-/ᵘ-≃ n d₁ ⟨
+  toℚᵘ (n / d₁) ∎)
+  where open ℚᵘ.≤-Reasoning
+
+/-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℤ.NonPositive n}}
+                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                   d₁ ℕ.≤ d₂ → n / d₁ ≤ n / d₂
+/-monoʳ-≤-nonPos n {d₁} {d₂} d₁≤d₂ = toℚᵘ-cancel-≤ (begin
+  toℚᵘ (n / d₁) ≃⟨ toℚᵘ-/ᵘ-≃ n d₁ ⟩
+  n /ᵘ d₁ ≤⟨ ℚᵘ./-monoʳ-≤-nonPos n d₁≤d₂ ⟩
+  n /ᵘ d₂ ≃⟨ toℚᵘ-/ᵘ-≃ n d₂ ⟨
+  toℚᵘ (n / d₂) ∎)
+  where open ℚᵘ.≤-Reasoning
+
+------------------------------------------------------------------------
 -- Properties of _⊓_
 ------------------------------------------------------------------------
 
