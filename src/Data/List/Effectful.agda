@@ -9,8 +9,8 @@
 module Data.List.Effectful where
 
 open import Data.Bool.Base using (false; true)
-open import Data.List.Base
-  using (List; map; [_]; ap; []; _∷_; _++_; concat; concatMap)
+open import Data.List.Base as List
+  using (List; map; ap; []; _∷_; _++_; concat; concatMap)
 open import Data.List.Properties
   using (++-identityʳ; ++-assoc; map-cong; concatMap-cong; map-concatMap
         ; concatMap-pure)
@@ -43,7 +43,7 @@ functor = record { _<$>_ = map }
 applicative : RawApplicative {ℓ} List
 applicative = record
   { rawFunctor = functor
-  ; pure = [_]
+  ; pure = List.pure
   ; _<*>_  = ap
   }
 
