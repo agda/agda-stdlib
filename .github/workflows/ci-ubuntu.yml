@@ -98,6 +98,8 @@ jobs:
               echo "AGDA_DEPLOY=true" >> "${GITHUB_OUTPUT}"
           fi
 
+          if [[ ]]
+
       ########################################################################
       ## CACHING
       ########################################################################
@@ -179,6 +181,7 @@ jobs:
   test-stdlib:
     needs: init
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'push' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -217,6 +220,7 @@ jobs:
   test-stdlib-golden:
     needs: init
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'push' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
