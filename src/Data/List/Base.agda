@@ -42,6 +42,8 @@ private
 open import Agda.Builtin.List public
   using (List; []; _∷_)
 
+pattern [_] x = x ∷ []
+
 ------------------------------------------------------------------------
 -- Operations for transforming lists
 
@@ -156,8 +158,8 @@ length = foldr (const suc) 0
 ------------------------------------------------------------------------
 -- Operations for constructing lists
 
-[_] : A → List A
-[ x ] = x ∷ []
+pure : A → List A
+pure = [_]
 
 fromMaybe : Maybe A → List A
 fromMaybe (just x) = [ x ]

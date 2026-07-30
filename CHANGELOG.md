@@ -147,6 +147,9 @@ Non-backwards compatible changes
   their definitions and signatures updated to use `IsMagmaHomomorphism` and
   `IsMonoidHomomorphism` respectively
 
+* In `Data.List.Base`: the function definition `[_]` has been turned into
+  a `pattern` synonym, with a companion function definition `pure` instead.
+
 * In `Data.List.DifferenceList.Base`: `take` and `drop` are deprecated
   because they do not have a lawful relationship to their `Data.List`
   counterparts. Consider using `viaList` if you want a lawful lifting
