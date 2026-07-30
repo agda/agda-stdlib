@@ -181,9 +181,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'push' }}
     steps:
-      - name: fail
-        run: exit 1
-
       - name: Checkout
         uses: actions/checkout@v5
 
@@ -305,7 +302,6 @@ jobs:
   html-generate:
     needs: init
     runs-on: ubuntu-latest
-    if: ${{ false }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
