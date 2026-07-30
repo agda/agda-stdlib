@@ -425,6 +425,25 @@ Additions to existing modules
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
+  toℚᵘ-/ᵘ-≡ : ∀ q → toℚᵘ q ≡ ↥ q /ᵘ ↧ₙ q
+  toℚᵘ-/ᵘ-≃ : ∀ n d .{{_ : ℕ.NonZero d}} → toℚᵘ (n / d) ≃ᵘ n /ᵘ d
+  n/d≡[n/a]*[a/d] : ∀ n d a .{{_ : ℕ.NonZero d}} .{{_ : ℕ.NonZero a}} →
+                  n / d ≡ (n / a) * (+ a / d)
+  /-distribʳ-+ : ∀ d n m .{{_ : ℕ.NonZero d}} → (n ℤ.+ m) / d ≡ n / d + m / d
+  /-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
+  /-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
+                .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                d₁ ℕ.< d₂ → n / d₂ < n / d₁
+  /-monoʳ-<-neg : ∀ n {d₁ d₂} .{{_ : ℤ.Negative n}}
+                .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                d₁ ℕ.< d₂ → n / d₁ < n / d₂
+  /-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._≤_ _≤_ (_/ d)
+  /-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℤ.NonNegative n}}
+                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                   d₁ ℕ.≤ d₂ → n / d₂ ≤ n / d₁
+  /-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℤ.NonPositive n}}
+                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                   d₁ ℕ.≤ d₂ → n / d₁ ≤ n / d₂
   ```
 
 * In `Data.Vec.Properties`:
