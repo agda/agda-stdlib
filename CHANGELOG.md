@@ -480,7 +480,7 @@ Additions to existing modules
   toℚᵘ-/ᵘ-≃ : ∀ n d .{{_ : ℕ.NonZero d}} → toℚᵘ (n / d) ≃ᵘ n /ᵘ d
   n/d≡[n/a]*[a/d] : ∀ n d a .{{_ : ℕ.NonZero d}} .{{_ : ℕ.NonZero a}} →
                   n / d ≡ (n / a) * (+ a / d)
-  /-distribʳ-+ : ∀ d n m .{{_ : ℕ.NonZero d}} → (n ℤ.+ m) / d ≡ n / d + m / d
+  /-distribʳ-+ : ∀ d n₁ n₂ .{{_ : ℕ.NonZero d}} → (n₁ ℤ.+ n₂) / d ≡ n₁ / d + n₂ / d
   /-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
   /-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
                 .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
@@ -503,7 +503,7 @@ Additions to existing modules
   n/d≡[n/1]*[1/d] : ∀ n d .{{_ : ℕ.NonZero d}} → n / d ≡ (n / 1) * (1ℤ / d)
   n/d≃[n/a]*[a/d] : ∀ n d a .{{_ : ℕ.NonZero d}} .{{_ : ℕ.NonZero a}} →
                     n / d ≃ (n / a) * (ℤ.+ a / d)
-  /-distribʳ-+ : ∀ d n m .{{_ : ℕ.NonZero d}} → (n ℤ.+ m) / d ≃ n / d + m / d
+  /-distribʳ-+ : ∀ d n₁ n₂ .{{_ : ℕ.NonZero d}} → (n₁ ℤ.+ n₂) / d ≃ n₁ / d + n₂ / d
   /-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
   /-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →

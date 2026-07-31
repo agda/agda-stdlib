@@ -1076,13 +1076,13 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
 ------------------------------------------------------------------------
 -- Properties of _+_ and _/_
 
-/-distribʳ-+ : ∀ d n m .{{_ : ℕ.NonZero d}} → (n ℤ.+ m) / d ≡ n / d + m / d
-/-distribʳ-+ d n m = toℚᵘ-injective (begin-equality
-  toℚᵘ ((n ℤ.+ m) / d)         ≃⟨ toℚᵘ-/ᵘ-≃ (n ℤ.+ m) d ⟩
-  (n ℤ.+ m) /ᵘ d               ≃⟨ ℚᵘ./-distribʳ-+ d n m ⟩
-  n /ᵘ d +ᵘ m /ᵘ d             ≃⟨ ℚᵘ.+-cong (toℚᵘ-/ᵘ-≃ n d) (toℚᵘ-/ᵘ-≃ m d) ⟨
-  toℚᵘ (n / d) +ᵘ toℚᵘ (m / d) ≃⟨ toℚᵘ-homo-+ (n / d) (m / d) ⟨
-  toℚᵘ (n / d + m / d)         ∎)
+/-distribʳ-+ : ∀ d n₁ n₂ .{{_ : ℕ.NonZero d}} → (n₁ ℤ.+ n₂) / d ≡ n₁ / d + n₂ / d
+/-distribʳ-+ d n₁ n₂ = toℚᵘ-injective (begin-equality
+  toℚᵘ ((n₁ ℤ.+ n₂) / d)         ≃⟨ toℚᵘ-/ᵘ-≃ (n₁ ℤ.+ n₂) d ⟩
+  (n₁ ℤ.+ n₂) /ᵘ d               ≃⟨ ℚᵘ./-distribʳ-+ d n₁ n₂ ⟩
+  n₁ /ᵘ d +ᵘ n₂ /ᵘ d             ≃⟨ ℚᵘ.+-cong (toℚᵘ-/ᵘ-≃ n₁ d) (toℚᵘ-/ᵘ-≃ n₂ d) ⟨
+  toℚᵘ (n₁ / d) +ᵘ toℚᵘ (n₂ / d) ≃⟨ toℚᵘ-homo-+ (n₁ / d) (n₂ / d) ⟨
+  toℚᵘ (n₁ / d + n₂ / d)         ∎)
   where open ℚᵘ.≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -1658,11 +1658,11 @@ neg*neg⇒pos p q = positive $ begin-strict
 -- Properties of _/_ and _<_
 
 /-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
-/-monoˡ-< d {n} {m} n<m = toℚᵘ-cancel-< (begin-strict
-  toℚᵘ (n / d) ≃⟨ toℚᵘ-/ᵘ-≃ n d ⟩
-  n /ᵘ d       <⟨ ℚᵘ./-monoˡ-< d n<m ⟩
-  m /ᵘ d       ≃⟨ toℚᵘ-/ᵘ-≃ m d ⟨
-  toℚᵘ (m / d) ∎)
+/-monoˡ-< d {n₁} {n₂} n₁<n₂ = toℚᵘ-cancel-< (begin-strict
+  toℚᵘ (n₁ / d) ≃⟨ toℚᵘ-/ᵘ-≃ n₁ d ⟩
+  n₁ /ᵘ d       <⟨ ℚᵘ./-monoˡ-< d n₁<n₂ ⟩
+  n₂ /ᵘ d       ≃⟨ toℚᵘ-/ᵘ-≃ n₂ d ⟨
+  toℚᵘ (n₂ / d) ∎)
   where open ℚᵘ.≤-Reasoning
 
 /-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
@@ -1689,11 +1689,11 @@ neg*neg⇒pos p q = positive $ begin-strict
 -- Properties of _/_ and _≤_
 
 /-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._≤_ _≤_ (_/ d)
-/-monoˡ-≤ d {n} {m} n≤m = toℚᵘ-cancel-≤ (begin
-  toℚᵘ (n / d) ≃⟨ toℚᵘ-/ᵘ-≃ n d ⟩
-  n /ᵘ d ≤⟨ ℚᵘ./-monoˡ-≤ d n≤m ⟩
-  m /ᵘ d ≃⟨ toℚᵘ-/ᵘ-≃ m d ⟨
-  toℚᵘ (m / d) ∎)
+/-monoˡ-≤ d {n₁} {n₂} n₁≤n₂ = toℚᵘ-cancel-≤ (begin
+  toℚᵘ (n₁ / d) ≃⟨ toℚᵘ-/ᵘ-≃ n₁ d ⟩
+  n₁ /ᵘ d ≤⟨ ℚᵘ./-monoˡ-≤ d n₁≤n₂ ⟩
+  n₂ /ᵘ d ≃⟨ toℚᵘ-/ᵘ-≃ n₂ d ⟨
+  toℚᵘ (n₂ / d) ∎)
   where open ℚᵘ.≤-Reasoning
 
 /-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℤ.NonNegative n}}
