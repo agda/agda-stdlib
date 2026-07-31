@@ -730,4 +730,9 @@ systematic for `Nary` relations in PR
 
 Where possible use `contradiction` between two explicit arguments rather
 than appealing to the lower-level `Data.Empty.⊥-elim`. This provides
-clearer documentation for readers of the code.
+clearer documentation for readers of the code. Alternative approaches can
+appeal to irrefutable `with`, typically as `... with () ← ...`.
+
+Likewise, explicit negation via `¬_` is preferable to implicational form
+as polymorphic/'Russell-Prawitz'-style definition using `_→ Whatever` for
+some `Level`-polymorphic `private variable Whatever : Set _`.
