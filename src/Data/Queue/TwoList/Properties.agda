@@ -9,7 +9,6 @@
 module Data.Queue.TwoList.Properties where
 
 open import Level using (Level)
-open import Data.Empty using (⊥-elim)
 open import Data.List.Base
 open import Data.List.Properties using (++-identityʳ; length-++; length-reverse)
 open import Data.List.Relation.Unary.All using (All; Null; [])

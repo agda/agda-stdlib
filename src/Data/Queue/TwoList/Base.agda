@@ -15,7 +15,6 @@ module Data.Queue.TwoList.Base where
 
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Empty using (⊥-elim)
 open import Data.List.Base as List using (List; []; _∷_; reverse; _++_; length; null)
 open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties using (null⇒Null; Null⇒null)
@@ -30,6 +29,7 @@ open import Function.Base using (id; const; _∘_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable.Core using (yes; no; isYes; False)
 open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
 open import Relation.Unary using (Pred; Decidable)
@@ -84,7 +84,7 @@ Empty {a} {A} q = Null< (Queue.front q)
 empty? : Decidable (Empty {A = A})
 empty? (mkQ front back inv) .Relation.Nullary.does = SnocList.null front
 empty? (mkQ [] back inv) .Relation.Nullary.proof = ofʸ []
-empty? (mkQ (xs <: x) back inv) .Relation.Nullary.proof = ofⁿ (λ e → ⊥-elim (¬null< e))
+empty? (mkQ (xs <: x) back inv) .Relation.Nullary.proof = ofⁿ λ null< → contradiction null< ¬null<
 
 isEmpty : Queue A → Bool
 isEmpty q = SnocList.null (Queue.front q)
