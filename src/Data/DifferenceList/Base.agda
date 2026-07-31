@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.DifferenceList.BaseSYNTAX where
+module Data.DifferenceList.Base where
 
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base using (ℕ)

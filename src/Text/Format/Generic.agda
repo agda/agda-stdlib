@@ -11,7 +11,7 @@ module Text.Format.Generic where
 open import Level using (0ℓ)
 open import Effect.Applicative
 open import Data.Char.Base using (Char)
-open import Data.List.Base as List hiding (sum; pure)
+open import Data.List.Base as List hiding (sum)
 open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base
 open import Data.Nat.ListAction using (sum)
