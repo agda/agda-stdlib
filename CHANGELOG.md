@@ -353,9 +353,55 @@ Additions to existing modules
   viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
   ```
 
+* In `Data.Integer.DivMod`:
+  ```agda
+  sn%d≡0⇒-[1+n]/ℕd≡-[1+n/d] : ∀ n d .{{_ : ℕ.NonZero d}} →
+                              ℕ.suc n ℕ.% d ≡ 0 → -[1+ n ] /ℕ d ≡ -[1+ n ℕ./ d ]
+  n<0⇒n/ℕd<0 : ∀ n d .{{_ : ℕ.NonZero d}} → n < 0ℤ → (n /ℕ d) < 0ℤ
+  0/ℕd≡0 : ∀ d .{{_ : ℕ.NonZero d}} → + 0 /ℕ d ≡ + 0
+  0/d≡0 : ∀ d .{{_ : NonZero d}} → + 0 / d ≡ + 0
+  n/ℕ1≡n : ∀ n → n /ℕ 1 ≡ n
+  n/1≡n : ∀ n → n / + 1 ≡ n
+  n/ℕd≡0⇒∣n∣<d : ∀ n d .{{_ : ℕ.NonZero d}} → n /ℕ d ≡ 0ℤ → ∣ n ∣ ℕ.< d
+  n/d≡0⇒n<∣d∣ : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → n < + ∣ d ∣
+  n/d≡0⇒nonNeg-n : ∀ n d .{{_ : NonZero d}} → n / d ≡ 0ℤ → NonNegative n
+  0≤n<d⇒n/ℕd≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : ℕ.NonZero d}} →
+                 n < + d → n /ℕ d ≡ 0ℤ
+  0≤n<∣d∣⇒n/d≡0 : ∀ n d .{{_ : NonNegative n }} .{{_ : NonZero d}} →
+                  n < + ∣ d ∣ → n / d ≡ 0ℤ
+  /ℕ-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ _≤_ _≤_ (_/ℕ d)
+  /ℕ-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
+                      .{{_ : NonNegative n}} → d₁ ℕ.≤ d₂ → n /ℕ d₂ ≤ n /ℕ d₁
+  /ℕ-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
+                      .{{_ : NonPositive n}} → d₁ ℕ.≤ d₂ → n /ℕ d₁ ≤ n /ℕ d₂
+  /-monoˡ-≤-pos : ∀ d .{{_ : NonZero d}} .{{_ : Positive d}} →
+                      Monotonic₁ _≤_ _≤_ (_/ d)
+  /-monoˡ-≤-neg : ∀ d .{{_ : NonZero d}} .{{_ : Negative d}} →
+                  Monotonic₁ _≤_ _≥_ (_/ d)
+  /-monoʳ-≤-nonNeg-eq-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                              .{{_ : NonNegative n}} → {sign d₁ ≡ sign d₂} →
+                              d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+  /-monoʳ-≤-nonPos-eq-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                              .{{_ : NonPositive n}} → {sign d₁ ≡ sign d₂} →
+                              d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+  /-monoʳ-≤-nonNeg-op-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                              .{{_ : NonNegative n}} →
+                              {sign d₁ ≡ opposite (sign d₂)} →
+                              d₁ ≤ d₂ → n / d₁ ≤ n / d₂
+  /-monoʳ-≤-nonPos-op-signs : ∀ n {d₁ d₂} .{{_ : NonZero d₁}} .{{_ : NonZero d₂}}
+                              .{{_ : NonPositive n}} →
+                              {sign d₁ ≡ opposite (sign d₂)} →
+                              d₁ ≤ d₂ → n / d₁ ≥ n / d₂
+  ```
+
 * In `Data.Integer.GCD`:
   ```agda
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
+  ```
+
+* In `Data.Integer.Properties`:
+  ```agda
+  i≤∣i∣ : ∀ i → i ≤ + ∣ i ∣
   ```
 
 * In `Data.List.Membership.Propositional.Properties`:
@@ -379,6 +425,11 @@ Additions to existing modules
 * In `Data.Nat.DivMod`:
   ```agda
   m<suc[m/n]*n : ∀ m n → m < suc (m / n) * n
+  %-pred-≡suc : ∀ m d k .{{_ : NonZero d}} → suc m % d ≡ suc k → m % d ≡ k
+  sn%d≡0⇒sn/d≡s[n/d] : ∀ n d .{{_ : NonZero d}} → suc n % d ≡ 0 →
+                       suc n / d ≡ suc (n / d)
+  sn%d>0⇒sn/d≡n/d : ∀ n d .{{_ : NonZero d}} →
+                    0 < suc n % d → suc n / d ≡ n / d
   ```
 
 * In `Data.Nat.GCD`:
@@ -441,6 +492,29 @@ Additions to existing modules
   /-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℤ.NonNegative n}}
                    .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
                    d₁ ℕ.≤ d₂ → n / d₂ ≤ n / d₁
+  /-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℤ.NonPositive n}}
+                   .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                   d₁ ℕ.≤ d₂ → n / d₁ ≤ n / d₂
+  ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  ↧ₙ[n/d]≡d : ∀ n d .{{_ : ℕ.NonZero d}} → ↧ₙ (n / d) ≡ d
+  n/d≡[n/1]*[1/d] : ∀ n d .{{_ : ℕ.NonZero d}} → n / d ≡ (n / 1) * (1ℤ / d)
+  n/d≃[n/a]*[a/d] : ∀ n d a .{{_ : ℕ.NonZero d}} .{{_ : ℕ.NonZero a}} →
+                    n / d ≃ (n / a) * (ℤ.+ a / d)
+  /-distribʳ-+ : ∀ d n m .{{_ : ℕ.NonZero d}} → (n ℤ.+ m) / d ≃ n / d + m / d
+  /-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
+  /-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
+                  .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                  d₁ ℕ.< d₂ → n / d₂ < n / d₁
+  /-monoʳ-<-neg : ∀ n {d₁ d₂} .{{_ : ℤ.Negative n}}
+                  .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                  d₁ ℕ.< d₂ → n / d₁ < n / d₂
+  /-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._≤_ _≤_ (_/ d)
+  /-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℤ.NonNegative n}}
+                     .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+                     d₁ ℕ.≤ d₂ → n / d₂ ≤ n / d₁
   /-monoʳ-≤-nonPos : ∀ n {d₁ d₂} .{{_ : ℤ.NonPositive n}}
                    .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
                    d₁ ℕ.≤ d₂ → n / d₁ ≤ n / d₂
