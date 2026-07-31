@@ -148,7 +148,9 @@ Non-backwards compatible changes
   `IsMonoidHomomorphism` respectively
 
 * In `Data.List.Base`: the function definition `[_]` has been turned into
-  a `pattern` synonym, with a companion function definition `pure` instead.
+  a `pattern` synonym, with a companion function definition `singleton` instead.
+  Similarly for `Data.List.NonEmpty.Base`, `Data.List.Fresh.NonEmpty`, and also
+  `Data.DifferenceList.Base`, where the notation `[_]` is introduced as `syntax`.
 
 * In `Data.List.DifferenceList.Base`: `take` and `drop` are deprecated
   because they do not have a lawful relationship to their `Data.List`

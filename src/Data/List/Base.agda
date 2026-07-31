@@ -158,8 +158,8 @@ length = foldr (const suc) 0
 ------------------------------------------------------------------------
 -- Operations for constructing lists
 
-pure : A → List A
-pure = [_]
+singleton : A → List A
+singleton = [_]
 
 fromMaybe : Maybe A → List A
 fromMaybe (just x) = [ x ]

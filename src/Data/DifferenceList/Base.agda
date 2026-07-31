@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.DifferenceList.Base where
+module Data.DifferenceList.BaseSYNTAX where
 
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base using (ℕ)
@@ -34,8 +34,11 @@ infixr 5 _∷_ _++_
 [] : DiffList A
 [] = id
 
-[_] : A → DiffList A
-[ x ] = x List.∷_
+singleton : A → DiffList A
+singleton = List._∷_
+
+singleton-syntax = singleton
+syntax singleton-syntax x = [ x ]
 
 _++_ : DiffList A → DiffList A → DiffList A
 _++_ = _∘′_
