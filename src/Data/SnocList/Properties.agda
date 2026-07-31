@@ -8,6 +8,7 @@
 
 module Data.SnocList.Properties where
 
+open import Data.Empty using (⊥-elim)
 open import Data.SnocList.Base
 open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -44,3 +45,11 @@ toList>-fromList> (x :> xs) = begin
   [] <>> (x :> toList> (fromList> xs)) ≡⟨ cong (λ e → [] <>> (x :> e)) (toList>-fromList> xs) ⟩
   [] <>> (x :> xs)                     ≡⟨⟩
   x :> xs                              ∎
+
+¬xs<>>ys≡[] : ∀ {x} {xs : List< A} {ys : List> A} → xs <>> (x :> ys) ≢ []
+¬xs<>>ys≡[] {xs = []} ()
+¬xs<>>ys≡[] {xs = xs <: x} wrong = ¬xs<>>ys≡[] {xs = xs} wrong
+
+xs<>>[]≡[] : ∀ {xs : List< A} → xs <>> [] ≡ [] → xs ≡ []
+xs<>>[]≡[] {xs = []} xs<>>[]≡[] = refl
+xs<>>[]≡[] {xs = (xs <: x)} xs<>>[]≡[] = ⊥-elim (¬xs<>>ys≡[] {xs = xs} {ys = []} xs<>>[]≡[])

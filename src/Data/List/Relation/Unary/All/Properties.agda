@@ -77,6 +77,12 @@ null⇒Null : T (null xs) → Null xs
 null⇒Null {xs = []   } _ = []
 null⇒Null {xs = _ ∷ _} ()
 
+nullxs→xs≡[] : Null xs → xs ≡ []
+nullxs→xs≡[] [] = refl
+
+xs≡[]→nullxs : xs ≡ [] → Null xs
+xs≡[]→nullxs xs≡[] rewrite xs≡[] = []
+
 ------------------------------------------------------------------------
 -- Properties of the "points-to" relation _[_]=_
 

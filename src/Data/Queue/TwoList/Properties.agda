@@ -13,14 +13,15 @@ open import Data.Empty using (⊥-elim)
 open import Data.List.Base
 open import Data.List.Properties using (++-identityʳ; length-++; length-reverse)
 open import Data.List.Relation.Unary.All using (All; Null; [])
-open import Data.List.Relation.Unary.All.Properties using (++⁺)
+open import Data.List.Relation.Unary.All.Properties using (++⁺; nullxs→xs≡[])
 open import Data.Nat.Base using (suc; _+_)
 open import Data.Nat.Properties using (+-comm; +-suc; +-assoc)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.Queue.TwoList.Base
 open import Data.SnocList.Base as SnocList using (List<; []; _<:_; toList>; fromList>)
-open import Data.SnocList.Properties using (toList>-fromList>)
+open import Data.SnocList.Properties using (toList>-fromList>; ¬xs<>>ys≡[]; xs<>>[]≡[])
 open import Data.SnocList.Relation.Unary.All using (All<; Null<; []; _<:_)
+open import Data.SnocList.Relation.Unary.All.Properties using (all<>>; all<>)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Core using (_=[_]⇒_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
@@ -42,9 +43,6 @@ private
   ¬Null : {x : A} {xs : List A} → ¬ Null (x ∷ xs)
   ¬Null (() Data.List.Relation.Unary.All.∷ n)
 
-  null-<: : ∀ {x} {xs : List< A} {ys : List A} → Null< (xs <: x) → Null ys
-  null-<: (()<: _)
-
   queue-back[] : ∀ {xs : List< A} → (Queue.back (queue xs [])) ≡ []
   queue-back[] {xs = []} = refl
   queue-back[] {xs = xs <: x} = refl
@@ -53,56 +51,22 @@ private
   queue-front {xs = []} = refl
   queue-front {xs = xs <: x} = refl
 
-  -- NOTE: *most* of these:
-  --        A) Can be moved elsewhere (e.g. the null proofs that are repeated in TwoList.Base, etc...)
-  --        B) Should be renamed
-  -- Also, (note to self) more time shoud be spent thinking about whether arguments should be implicit or not!
-  toList-Empty : ∀ {x : Queue A} → Empty x → toList x ≡ []
-  toList-Empty {x = x@(mkQ [] back inv)} [] = begin
-    toList (mkQ [] back inv)  ≡⟨⟩
-    back ++ [] ≡⟨ ++-identityʳ back ⟩
-    back ≡⟨ back[] ⟩
-    [] ∎
-    where
-      null[] : Null back → back ≡ []
-      null[] [] = refl
-
-      back[] : back ≡ []
-      back[] = null[] (inv [])
-
-  ++-[] : ∀ {xs ys : List A} → (xs ++ ys) ≡ [] → ys ≡ []
-  ++-[] {xs = []} {ys = []} xs++ys≡[] = xs++ys≡[]
-
-  ¬null< : {a : A} {as : List< A} → ¬ (Null< (as <: a))
-  ¬null< (() Data.SnocList.Relation.Unary.All.<: n)
-
-  null[] : ∀ {xs : List< A} → xs ≡ [] → Null< xs
-  null[] xs≡[] rewrite xs≡[] = []
-
-  ¬<>>[] : ∀ {x} {xs : List< A} {ys : List A} → xs SnocList.<>> (x ∷ ys) ≢ []
-  ¬<>>[] {xs = []} ()
-  ¬<>>[] {xs = xs <: x} wrong = ¬<>>[] {xs = xs} wrong
-
-  <>>[] : ∀ {xs : List< A} → xs SnocList.<>> [] ≡ [] → xs ≡ []
-  <>>[] {xs = []} xs<>>[]≡[] = refl
-  <>>[] {xs = (xs <: x)} xs<>>[]≡[] = ⊥-elim (¬<>>[] {xs = xs} {ys = []} xs<>>[]≡[])
-
-  toList-front : ∀ {xs : Queue A} → toList xs ≡ [] → Queue.front xs ≡ []
-  toList-front {xs = xs@(mkQ front [] inv)} xs≡[] = <>>[] xs≡[]
-
-  empty[] : ∀ {xs : Queue A} → toList xs ≡ [] → Empty xs
-  empty[] {xs = xs} xs≡[] = null[] (toList-front {xs = xs} xs≡[])
-
-  All<>> : ∀ {x} {xs : List< A} {ys : List A} {p : Pred A a} → All p ys → All< p xs → p x → All p (xs SnocList.<>> (x ∷ ys))
-  All<>> {xs = []} allys allxs px = px All.∷ allys
-  All<>> {x = a} {xs = xs <: x} {ys = ys} allys (px <: allxs) pa = All<>> (pa All.∷ allys) allxs px
-
-  All<> : ∀ {xs : List< A} {p : Pred A a} → All< p xs → All p (toList> xs)
-  All<> {xs = []} all< = []
-  All<> {xs = xs <: x} (px <: all<) = All<>> [] all< px
 
 ------------------------------------------------------------------------
 -- Properties of toList and fromList
+
+empty→toList≡[] : ∀ {x : Queue A} → Empty x → toList x ≡ []
+empty→toList≡[] {x = x@(mkQ [] back inv)} [] = begin
+  toList (mkQ [] back inv)  ≡⟨⟩
+  back ++ []                ≡⟨ ++-identityʳ back ⟩
+  back                      ≡⟨ nullxs→xs≡[] (inv []) ⟩
+  []                        ∎
+
+toList≡[]→front≡[] : ∀ {xs : Queue A} → toList xs ≡ [] → Queue.front xs ≡ []
+toList≡[]→front≡[] {xs = xs@(mkQ front [] inv)} xs≡[] = xs<>>[]≡[] xs≡[]
+
+toList≡[]→empty : ∀ {xs : Queue A} → toList xs ≡ [] → Empty xs
+toList≡[]→empty {xs = xs} xs≡[] rewrite (toList≡[]→front≡[] {xs = xs} xs≡[]) = []
 
 toList-fromList : ∀ {q : Queue A} {xs : List A} → q ≈ fromList xs → toList q ≡ xs
 toList-fromList {q = q} {xs = xs} q≈xs = begin
@@ -121,12 +85,7 @@ toList-fromList {q = q} {xs = xs} q≈xs = begin
       xs                                                       ∎
 
 empty-toList : ∀ {q : Queue A} → Empty q → Null (toList q)
-empty-toList {q = mkQ front back inv} emptyq = ++⁺ {xs = back} (inv emptyq) (All<> emptyq)
-
-empty-fromList  : ∀ {xs : List A} → Null {A = A} xs → Empty (fromList xs)
-empty-fromList nullxs = {!!}
-
-
+empty-toList {q = mkQ front back inv} emptyq = ++⁺ {xs = back} (inv emptyq) (all<> emptyq)
 
 ------------------------------------------------------------------------
 -- Properties relating to size
@@ -184,9 +143,9 @@ size-empty = refl
   }
 
 ≈-resp-Empty : Empty Respects (_≈_ {A = A})
-≈-resp-Empty {x = x} {y = y} x≈y empty-x = empty[] {xs = y} (begin
+≈-resp-Empty {x = x} {y = y} x≈y empty-x = toList≡[]→empty {xs = y} (begin
   toList y ≡⟨ sym x≈y ⟩
-  toList x ≡⟨ toList-Empty {x = x} empty-x ⟩
+  toList x ≡⟨ empty→toList≡[] {x = x} empty-x ⟩
   []       ∎
   )
 
