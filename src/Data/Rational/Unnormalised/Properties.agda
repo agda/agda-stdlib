@@ -1601,32 +1601,32 @@ n/d≃[n/a]*[a/d] n d a = let +a = ℤ.+ a in ≃-sym (begin-equality
 -- Properties of _/_ and _+_
 
 private
-  [n₁+n₂]/1≡n₁/1+n₂/1 : ∀ n₁ n₂ → (n₁ ℤ.+ n₂) / 1 ≡ n₁ / 1 + n₂ / 1
-  [n₁+n₂]/1≡n₁/1+n₂/1 n₁ n₂ = sym (begin
-    (n₁ ℤ.* 1ℤ ℤ.+ n₂ ℤ.* 1ℤ) / (1 ℕ.* 1)
-       ≡⟨ /-cong (cong₂ ℤ._+_ (ℤ.*-identityʳ n₁) (ℤ.*-identityʳ n₂))
+  [i+j]/1≡i/1+j/1 : ∀ i j → (i ℤ.+ j) / 1 ≡ i / 1 + j / 1
+  [i+j]/1≡i/1+j/1 i j = sym (begin
+    (i ℤ.* 1ℤ ℤ.+ j ℤ.* 1ℤ) / (1 ℕ.* 1)
+       ≡⟨ /-cong (cong₂ ℤ._+_ (ℤ.*-identityʳ i) (ℤ.*-identityʳ j))
                 (ℕ.*-identityʳ 1) ⟩
-    (n₁ ℤ.+ n₂) / 1 ∎)
+    (i ℤ.+ j) / 1 ∎)
     where open ≡-Reasoning
 
-/-distribʳ-+ : ∀ d n₁ n₂ .{{_ : ℕ.NonZero d}} → (n₁ ℤ.+ n₂) / d ≃ n₁ / d + n₂ / d
-/-distribʳ-+ d n₁ n₂ = begin
-  (n₁ ℤ.+ n₂) / d
-      ≡⟨ n/d≡[n/1]*[1/d] (n₁ ℤ.+ n₂) d ⟩
-  (n₁ ℤ.+ n₂) / 1 * (1ℤ / d)
-      ≡⟨ cong (_* (1ℤ / d)) ([n₁+n₂]/1≡n₁/1+n₂/1 n₁ n₂) ⟩
-  (n₁ / 1 + n₂ / 1) * (1ℤ / d)
-      ≈⟨ *-distribʳ-+ (1ℤ / d) (n₁ / 1) (n₂ / 1) ⟩
-  n₁ / 1 * (1ℤ / d) + n₂ / 1 * (1ℤ / d)
-      ≡⟨ cong₂ _+_ (n/d≡[n/1]*[1/d] n₁ d) (n/d≡[n/1]*[1/d] n₂ d) ⟨
-  n₁ / d + n₂ / d ∎
+/-distribʳ-+ : ∀ d i j .{{_ : ℕ.NonZero d}} → (i ℤ.+ j) / d ≃ i / d + j / d
+/-distribʳ-+ d i j = begin
+  (i ℤ.+ j) / d
+      ≡⟨ n/d≡[n/1]*[1/d] (i ℤ.+ j) d ⟩
+  (i ℤ.+ j) / 1 * (1ℤ / d)
+      ≡⟨ cong (_* (1ℤ / d)) ([i+j]/1≡i/1+j/1 i j) ⟩
+  (i / 1 + j / 1) * (1ℤ / d)
+      ≈⟨ *-distribʳ-+ (1ℤ / d) (i / 1) (j / 1) ⟩
+  i / 1 * (1ℤ / d) + j / 1 * (1ℤ / d)
+      ≡⟨ cong₂ _+_ (n/d≡[n/1]*[1/d] i d) (n/d≡[n/1]*[1/d] j d) ⟨
+  i / d + j / d ∎
   where open ≃-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _/_ and _<_
 
 /-monoˡ-< : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._<_ _<_ (_/ d)
-/-monoˡ-< d@(suc _) n₁<n₂ = *<* (ℤ.*-monoʳ-<-pos (ℤ.+ d) n₁<n₂)
+/-monoˡ-< d@(suc _) i<j = *<* (ℤ.*-monoʳ-<-pos (ℤ.+ d) i<j)
 
 /-monoʳ-<-pos : ∀ n {d₁ d₂} .{{_ : ℤ.Positive n}}
                 .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
@@ -1644,7 +1644,7 @@ private
 -- Properties of _/_ and _≤_
 
 /-monoˡ-≤ : ∀ d .{{_ : ℕ.NonZero d}} → Monotonic₁ ℤ._≤_ _≤_ (_/ d)
-/-monoˡ-≤ d@(suc _) n₁≤n₂ = *≤* (ℤ.*-monoʳ-≤-nonNeg (ℤ.+ d) n₁≤n₂)
+/-monoˡ-≤ d@(suc _) i≤j = *≤* (ℤ.*-monoʳ-≤-nonNeg (ℤ.+ d) i≤j)
 
 /-monoʳ-≤-nonNeg : ∀ n {d₁ d₂} .{{_ : ℤ.NonNegative n}}
                    .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
