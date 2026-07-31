@@ -22,6 +22,7 @@ open import Data.List.Relation.Binary.Pointwise
   using (Pointwise)
 open import Data.List.Relation.Binary.Lex.NonStrict
   using (Lex-≤; ≤-isDecTotalOrder)
+open import Data.Nat.Instances using (NatShow)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
@@ -30,7 +31,6 @@ open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Binary.TypeClasses
   using (IsDecTotalOrder; IsDecEquivalence; _≈?_)
 open import Text.Show
-open Show {{...}}
 
 private
   variable
@@ -64,13 +64,14 @@ instance
 ------------------------------------------------------------------------
 -- List show
 
+open Show {{...}}
+
 instance
   ListShow : {{ Show A }} → Show (List A)
-  ListShow .Show.showsPrecList prec [] str = '[' ∷ (']' ∷ str)
-  ListShow .Show.showsPrecList prec (x ∷ xs) str = '[' ∷ showsPrecList prec x (listShow' prec str xs)
+  ListShow .showsPrecList prec [] str = '[' ∷ (']' ∷ str)
+  ListShow .showsPrecList prec (x ∷ xs) str = '[' ∷ showsPrecList prec x (listShow' prec str xs)
     where
       -- after the first call, don't prepend '['
-      -- and don't call on [], hence head taken as its own argument
       listShow' : {{ Show A }} → Precedence → List Char → List A → List Char
       listShow' prec str = foldr (λ x str → ',' ∷ showsPrecList prec x str) (']' ∷ str)
 
@@ -78,6 +79,3 @@ instance
 private
   test[ℕ] : String
   test[ℕ] = show (5 ∷ 2 ∷ 12 ∷ 42 ∷ [])
-
-  meow : Set
-  meow = {!!}

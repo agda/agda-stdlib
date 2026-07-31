@@ -8,10 +8,21 @@
 
 module Data.Integer.Instances where
 
+open import Data.Integer.Base using (ℤ)
 open import Data.Integer.Properties using (_≡?_; ≤-isDecTotalOrder)
+open import Data.Integer.Show using () renaming (show to showℤ)
+open import Data.List.Base using (_++_)
+open import Data.String.Base using (toList)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
+
+open import Text.Show using (Show)
 
 instance
   ℤ-≡-isDecEquivalence = isDecEquivalence _≡?_
   ℤ-≤-isDecTotalOrder = ≤-isDecTotalOrder
+
+instance
+  open Show
+  IntShow : Show ℤ
+  IntShow .showsPrecList _ i str = toList (showℤ i) ++ str
