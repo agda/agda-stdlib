@@ -8,11 +8,12 @@
 
 module Data.SnocList.Relation.Unary.All.Properties where
 
-open import Data.List.Relation.Unary.All using (All; [])
+open import Data.List.Relation.Unary.All using (All; Null; [])
 open import Data.SnocList.Base using (_<>>_; List<; List>; _:>_; _<:_; toList>; [])
 open import Data.SnocList.Relation.Unary.All using (All<; _<:_; Null<)
+open import Function.Base using (const)
 open import Level using (Level)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 
 private
@@ -35,5 +36,8 @@ all<> {xs = xs <: x} (px <: all<) = all<>> [] all< px
 ------------------------------------------------------------------------
 -- Properites of Null<
 
-null-<: : {a : A} {as : List< A} → ¬ (Null< (as <: a))
-null-<: (() Data.SnocList.Relation.Unary.All.<: n)
+¬null-<: : {a : A} {as : List< A} → ¬ (Null< (as <: a))
+¬null-<: (() <: n)
+
+null-<:→nullxs : ∀ {x} {xs : List< A} {ys : List> A} → Null< (xs <: x) → Null ys
+null-<:→nullxs null-<: = contradiction null-<: ¬null-<:

@@ -24,6 +24,7 @@ open import Data.Product using (_×_; _,_; proj₂)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.SnocList.Base as SnocList using (List<; toList>; fromList>; []; _<:_)
 open import Data.SnocList.Relation.Unary.All
+open import Data.SnocList.Relation.Unary.All.Properties using (¬null-<:; null-<:→nullxs)
 open import Data.Unit.Base using (⊤)
 open import Function.Base using (id; const; _∘_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
@@ -39,24 +40,6 @@ private
     a b : Level
     A : Set a
     B : Set b
-
-  ¬null : {a : A} {as : List A} → ¬ (Null (a ∷ as))
-  ¬null (() Data.List.Relation.Unary.All.∷ n)
-
-  ¬null< : {a : A} {as : List< A} → ¬ (Null< (as <: a))
-  ¬null< (() Data.SnocList.Relation.Unary.All.<: n)
-
-  null-[] : ∀ {xs : List A} → Null xs → Null {A = A} []
-  null-[] = const []
-
-  null<-[] : ∀ {xs : List< A} → Null< xs → Null {A = A} []
-  null<-[] = const []
-
-  null-∷ : ∀ {x} {xs ys : List A} → Null (x ∷ xs) → Null ys
-  null-∷ (()∷ _)
-
-  null-<: : ∀ {x} {xs : List< A} {ys : List A} → Null< (xs <: x) → Null ys
-  null-<: (()<: _)
 
 -- A Queue consists of a front (dequeue) and back (enqueue) list
 -- When enqueing (unless it is the first element), elements are cons'd
@@ -84,7 +67,7 @@ Empty {a} {A} q = Null< (Queue.front q)
 empty? : Decidable (Empty {A = A})
 empty? (mkQ front back inv) .Relation.Nullary.does = SnocList.null front
 empty? (mkQ [] back inv) .Relation.Nullary.proof = ofʸ []
-empty? (mkQ (xs <: x) back inv) .Relation.Nullary.proof = ofⁿ λ null< → contradiction null< ¬null<
+empty? (mkQ (xs <: x) back inv) .Relation.Nullary.proof = ofⁿ λ null< → contradiction null< ¬null-<:
 
 isEmpty : Queue A → Bool
 isEmpty q = SnocList.null (Queue.front q)
@@ -93,8 +76,8 @@ isEmpty q = SnocList.null (Queue.front q)
 --- Smart Constructor
 
 queue : List< A → List A → Queue A
-queue []          ys = mkQ (fromList> (reverse ys)) [] null<-[]
-queue xs@(_ <: _) ys = mkQ xs ys null-<:
+queue []          ys = mkQ (fromList> (reverse ys)) [] (const [])
+queue xs@(_ <: _) ys = mkQ xs ys null-<:→nullxs
 
 ------------------------------------------------------------------------
 --- Conversion to/from List
