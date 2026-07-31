@@ -138,18 +138,3 @@ singleton = fromList ∘ List.[_]
 -- the order of dequeue
 _≈_ : ∀ {A : Set a} → Rel (Queue A) a
 q ≈ q' = (toList q) ≡ (toList q')
-
-------------------------------------------------------------------------
---- TwoList Queue is a Queue
-
-instance
-  TwoList-RawQueue : RawQueue {a} Queue
-  TwoList-RawQueue = record
-    { _≈_      = _≈_
-    ; Empty    = Empty
-    ; empty?   = empty?
-    ; fromList = fromList
-    ; toList   = toList
-    ; enqueue  = enqueue
-    ; dequeue  = dequeue
-    }

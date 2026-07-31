@@ -18,6 +18,7 @@ open import Data.Nat.Base using (suc; _+_)
 open import Data.Nat.Properties using (+-comm; +-suc; +-assoc)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.Queue.TwoList.Base
+open import Data.Queue.TwoList.Instances
 open import Data.SnocList.Base as SnocList using (List<; []; _<:_; toList>; fromList>)
 open import Data.SnocList.Properties using (toList>-fromList>; ¬xs<>>ys≡[]; xs<>>[]≡[])
 open import Data.SnocList.Relation.Unary.All using (All<; Null<; []; _<:_)
