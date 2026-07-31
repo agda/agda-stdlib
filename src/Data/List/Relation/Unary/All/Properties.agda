@@ -61,7 +61,6 @@ private
     R : Pred C r
     x y : A
     xs ys : List A
-    Whatever : Set _
 
 
 ------------------------------------------------------------------------
@@ -78,7 +77,7 @@ Null⇒null [] = _
 null⇒Null : T (null xs) → Null xs
 null⇒Null {xs = []} _ = []
 
-null-∷ : Null (x ∷ xs) → Whatever
+null-∷ : ¬ Null (x ∷ xs)
 null-∷ (() ∷ _)
 
 null? : Decidable (Null {A = A})

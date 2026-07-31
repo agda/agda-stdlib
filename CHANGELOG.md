@@ -425,7 +425,7 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  null-∷          : Null (x ∷ xs) → Whatever
+  null-∷          : ¬ Null (x ∷ xs)
   null?           : Decidable Null
   null-irrelevant : Irrelevant Null
   ```
