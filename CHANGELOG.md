@@ -474,8 +474,6 @@ Additions to existing modules
                 (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
   *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
-  i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
-                    i / n + j / n ≡ (i ℤ.+ j) / n
   toℚᵘ-/ᵘ-≡ : ∀ q → toℚᵘ q ≡ ↥ q /ᵘ ↧ₙ q
   toℚᵘ-/ᵘ-≃ : ∀ n d .{{_ : ℕ.NonZero d}} → toℚᵘ (n / d) ≃ᵘ n /ᵘ d
   n/d≡[n/a]*[a/d] : ∀ n d a .{{_ : ℕ.NonZero d}} .{{_ : ℕ.NonZero a}} →
