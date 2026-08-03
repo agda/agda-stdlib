@@ -77,15 +77,15 @@ Null⇒null [] = _
 null⇒Null : T (null xs) → Null xs
 null⇒Null {xs = []} _ = []
 
-null-∷ : ¬ Null (x ∷ xs)
-null-∷ (() ∷ _)
+¬Null-∷ : ¬ Null (x ∷ xs)
+¬Null-∷ (() ∷ _)
 
-null? : Decidable (Null {A = A})
-null? []      = yes []
-null? (_ ∷ _) = no null-∷
+Null? : Decidable (Null {A = A})
+Null? []      = yes []
+Null? (_ ∷ _) = no ¬Null-∷
 
-null-irrelevant : Irrelevant (Null {A = A})
-null-irrelevant [] [] = refl
+Null-irrelevant : Irrelevant (Null {A = A})
+Null-irrelevant [] [] = refl
 
 ------------------------------------------------------------------------
 -- Properties of the "points-to" relation _[_]=_
