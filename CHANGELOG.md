@@ -425,9 +425,9 @@ Additions to existing modules
 
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  null-∷          : ¬ Null (x ∷ xs)
-  null?           : Decidable Null
-  null-irrelevant : Irrelevant Null
+  ¬Null-∷         : ¬ Null (x ∷ xs)
+  Null?           : Decidable Null
+  Null-irrelevant : Irrelevant Null
   ```
 
 * In `Data.Nat.DivMod`:
