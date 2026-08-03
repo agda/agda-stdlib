@@ -152,6 +152,12 @@ Non-backwards compatible changes
   counterparts. Consider using `viaList` if you want a lawful lifting
   of `take` or `drop`.
 
+* [Issue #3089](https://github.com/agda/agda-stdlib/issues/3089)
+  The constructor names for the `Data.List.Base.InitLast` view of `List`,
+  and their associated definitions, have been renamed with a *prefix*
+  backtick, in line with existing conventions about 'quoted' syntax for
+  defined function symbols.
+
 * [Issue #2319](https://github.com/agda/agda-stdlib/issues/2319)
   The custom syntax for `swap` and `prep` steps in `PermutationReasoning`,
   defined in `Data.List.Relation.Binary.Permutation.{Propositional|Setoid}`,
@@ -218,6 +224,16 @@ Deprecated names
 * In `Data.Integer.GCD`:
   ```agda
   gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
+  ```
+
+* In `Data.List.Base`:
+  ```agda
+  pattern _∷ʳ′_ ↦ _‵∷ʳ_
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  pattern _∷ʳ′_ ↦ _‵∷ʳ_
   ```
 
 * In `Data.Nat.GCD`:
