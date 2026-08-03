@@ -42,7 +42,7 @@ data Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
 
 -- General eliminator arising from initiality of `Pointwise`.
 --
--- Ttype-theoreticaly/logically, `elim` is an inference rule for the
+-- Type-theoreticaly/logically, `elim` is an inference rule for the
 -- consequence relation given by (indexed) inclusion between relations,
 -- describing what 'conclusion' T is derivable from what 'principal formula'
 -- `Pointwise R S` by appeal to the ancillary sequents witnessing that
