@@ -22,6 +22,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open AbelianGroupProperties +-abelianGroup public
   renaming
   ( ε⁻¹≈ε            to -0#≈0#
+  ; x-ε≈x            to x-0#≈x
   ; ∙-cancelˡ        to +-cancelˡ
   ; ∙-cancelʳ        to +-cancelʳ
   ; ∙-cancel         to +-cancel
