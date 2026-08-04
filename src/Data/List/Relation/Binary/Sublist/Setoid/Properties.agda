@@ -12,10 +12,11 @@ open import Relation.Binary.Bundles using (Setoid)
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
-open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Base hiding (_∷ʳ_; lookup)
 open import Data.List.Properties using (++-identityʳ)
 open import Data.List.Relation.Unary.Any using (Any)
-open import Data.List.Relation.Unary.All using (All; tabulateₛ)
+open import Data.List.Relation.Unary.All
+  using (All; []; _∷_; tabulateₛ)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (ℕ; _≤_; _≥_)
 import Data.Nat.Properties as ℕ
@@ -23,7 +24,8 @@ open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
-open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
+open import Relation.Binary.Definitions
+  using (_Respects_) renaming (Decidable to Decidable₂)
 import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; cong; cong₂)
@@ -42,7 +44,8 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
 
-open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
+open Setoid S using (_≈_; trans)
+  renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym)
 open SetoidEquality S using (_≋_; ≋-refl; ≋-reflexive; ≋-setoid)
 open SetoidSublist S hiding (map)
 open SetoidProperties S using (≈-preorder)
@@ -105,6 +108,23 @@ module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) �
   ⊆-trans-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-trans-assoc ps qs rs)
   ⊆-trans-assoc [] [] [] = refl
 
+
+------------------------------------------------------------------------
+-- Relationships to other predicates
+
+module _ {P : Pred A p} (resp : P Respects _≈_) where
+
+-- All P is a contravariant functor from _⊆_ to Set.
+
+  All-resp-⊆ : (All P) Respects _⊇_
+  All-resp-⊆ []        []       = []
+  All-resp-⊆ (_  ∷ʳ p) (x ∷ xs) = All-resp-⊆ p xs
+  All-resp-⊆ (x≈y ∷ p) (x ∷ xs) = resp (≈-sym x≈y) x ∷ All-resp-⊆ p xs
+
+-- Any P is a covariant functor from _⊆_ to Set.
+
+  Any-resp-⊆ : (Any P) Respects _⊆_
+  Any-resp-⊆ = lookup resp
 
 ------------------------------------------------------------------------
 -- Reasoning over sublists

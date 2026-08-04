@@ -454,6 +454,17 @@ Additions to existing modules
   product-locate : ∀ ns → product ns ≡ 0 → 0 ∈ ns
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  lookup≗Any-resp-⊆ : lookup xs⊆ys ≗ Any-resp-⊆ {P = P} xs⊆ys
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  All-resp-⊆ : (P Respects _≈_) → (All P) Respects _⊇_
+  Any-resp-⊆ : (P Respects _≈_) → (Any P) Respects _⊆_
+  ```
+
 * In `Data.Nat.Properties`:
   ```agda
   m≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero m}} → NonZero (m + n)
