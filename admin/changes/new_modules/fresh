@@ -1,0 +1,5 @@
+Added a formalisation of fresh lists and their operations
+
+Data.List.Fresh
+Data.List.Fresh.Properties
+Data.List.Fresh.Relation.Unary.All
