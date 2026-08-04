@@ -78,7 +78,7 @@ record IsQueue {Q : Set a → Set a} (rawQ : RawQueue Q) : Set (suc a) where
     empty-fromList  : ∀ {xs : List A} → Null {A = A} xs → Empty (fromList xs)
     toList-fromList : ∀ {q : Q A} {xs : List A} → q ≈ fromList xs → toList q ≡ xs
     fromList-toList : ∀ {q : Q A} {xs : List A} → xs ≡ toList q → fromList xs ≈ q
-    toList-enqueue  : ∀ {q : Q A} {x : A} → toList (enqueue x q) ≡ toList q List.∷ʳ x
+    toList-enqueue  : ∀ {q : Q A} {x : A} → toList (enqueue x q) ≡ x ∷ toList q
     -- for some reason, let x , r = ... doesn't bind x and r??
     toList-dequeue  : ∀ {q : Q A} → .{{i : False (empty? q)}} →
-                      let xr = dequeue q {{i}} in toList q ≡ proj₁ xr ∷ toList (proj₂ xr)
+                      let xr = dequeue q {{i}} in toList q ≡  toList (proj₂ xr) List.∷ʳ proj₁ xr
