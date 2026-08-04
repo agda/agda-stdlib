@@ -12,12 +12,14 @@ module Function.Consequences.Propositional
   where
 
 open import Data.Product.Base using (_,_)
-open import Function.Definitions
-  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ
-        ; Surjective; Inverseˡ; Inverseʳ)
+import Function.Definitions as Definitions
+  using (Inverseˡ; Inverseʳ; Surjective)
+import Function.Definitions.Strictly as Strictly
+  using (Surjective; Inverseˡ; Inverseʳ)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid)
+open import Relation.Nullary.Negation.Core using (contraposition)
 
 
 ------------------------------------------------------------------------
@@ -33,22 +35,23 @@ open import Function.Consequences.Setoid (setoid A) (setoid B) public
 ------------------------------------------------------------------------
 -- Properties that rely on congruence
 
+open Definitions (_≡_ {A = A}) (_≡_ {A = B})
+
 private
   variable
     f : A → B
     f⁻¹ : B → A
 
 
-strictlySurjective⇒surjective : StrictlySurjective _≡_ f →
-                                 Surjective _≡_ _≡_ f
+strictlySurjective⇒surjective : Strictly.Surjective _≡_ f →
+                                Surjective f
 strictlySurjective⇒surjective surj y =
   let x , fx≡y = surj y in x , λ where refl → fx≡y
 
-strictlyInverseˡ⇒inverseˡ : ∀ f → StrictlyInverseˡ _≡_ f f⁻¹ →
-                            Inverseˡ _≡_ _≡_ f f⁻¹
+strictlyInverseˡ⇒inverseˡ : ∀ f → Strictly.Inverseˡ _≡_ f f⁻¹ →
+                            Inverseˡ f f⁻¹
 strictlyInverseˡ⇒inverseˡ _ inv refl = inv _
 
-strictlyInverseʳ⇒inverseʳ : ∀ f → StrictlyInverseʳ _≡_ f f⁻¹ →
-                            Inverseʳ _≡_ _≡_ f f⁻¹
+strictlyInverseʳ⇒inverseʳ : ∀ f → Strictly.Inverseʳ _≡_ f f⁻¹ →
+                            Inverseʳ f f⁻¹
 strictlyInverseʳ⇒inverseʳ _ inv refl = inv _
-

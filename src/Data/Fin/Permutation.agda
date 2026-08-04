@@ -23,7 +23,7 @@ open import Function.Bundles using (_↔_; Injection; Inverse; mk↔ₛ′)
 open import Function.Construct.Composition using (_↔-∘_)
 open import Function.Construct.Identity using (↔-id)
 open import Function.Construct.Symmetry using (↔-sym)
-open import Function.Definitions using (StrictlyInverseˡ; StrictlyInverseʳ)
+import Function.Definitions.Strictly as Strictly using (Inverseˡ; Inverseʳ)
 open import Function.Properties.Inverse using (↔⇒↣)
 open import Function.Base using (_∘_; _∘′_)
 open import Level using (0ℓ)
@@ -61,8 +61,8 @@ Permutation′ n = Permutation n n
 
 permutation : ∀ (f : Fin m → Fin n)
               (g : Fin n → Fin m) →
-              StrictlyInverseˡ _≡_ f g →
-              StrictlyInverseʳ _≡_ f g →
+              Strictly.Inverseˡ _≡_ f g →
+              Strictly.Inverseʳ _≡_ f g →
               Permutation m n
 permutation = mk↔ₛ′
 
@@ -166,7 +166,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
   from : Fin n → Fin m
   from j = punchOut {j = πˡ (punchIn (πʳ i) j)} from-punchOut
 
-  inverseʳ′ : StrictlyInverseʳ _≡_ to from
+  inverseʳ′ : Strictly.Inverseʳ _≡_ to from
   inverseʳ′ j = begin
     from (to j)                                                     ≡⟨⟩
     punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _ ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
@@ -174,7 +174,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
     punchOut {i = i} {punchIn i j}                                _ ≡⟨ punchOut-punchIn i ⟩
     j                                                               ∎
 
-  inverseˡ′ : StrictlyInverseˡ _≡_ to from
+  inverseˡ′ : Strictly.Inverseˡ _≡_ to from
   inverseˡ′ j = begin
     to (from j)                                                      ≡⟨⟩
     punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _ ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
@@ -201,11 +201,11 @@ lift₀ {m} {n} π = permutation to from inverseˡ′ inverseʳ′
   from 0F      = 0F
   from (suc i) = suc (π ⟨$⟩ˡ i)
 
-  inverseʳ′ : StrictlyInverseʳ _≡_ to from
+  inverseʳ′ : Strictly.Inverseʳ _≡_ to from
   inverseʳ′ 0F      = refl
   inverseʳ′ (suc j) = cong suc (inverseˡ π)
 
-  inverseˡ′ : StrictlyInverseˡ _≡_ to from
+  inverseˡ′ : Strictly.Inverseˡ _≡_ to from
   inverseˡ′ 0F      = refl
   inverseˡ′ (suc j) = cong suc (inverseʳ π)
 
@@ -227,7 +227,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
   ... | yes j≡k = i
   ... | no  j≢k = punchIn i (π ⟨$⟩ˡ punchOut j≢k)
 
-  inverseʳ′ : StrictlyInverseʳ _≡_ to from
+  inverseʳ′ : Strictly.Inverseʳ _≡_ to from
   inverseʳ′ k with i ≡? k
   ... | yes i≡k rewrite ≡?-≡-refl j = i≡k
   ... | no  i≢k
@@ -240,7 +240,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
     punchIn i (punchOut i≢k)                                               ≡⟨ punchIn-punchOut i≢k ⟩
     k                                                                      ∎
 
-  inverseˡ′ : StrictlyInverseˡ _≡_ to from
+  inverseˡ′ : Strictly.Inverseˡ _≡_ to from
   inverseˡ′ k with j ≡? k
   ... | yes j≡k rewrite ≡?-≡-refl i = j≡k
   ... | no  j≢k
