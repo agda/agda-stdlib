@@ -9,12 +9,13 @@
 module Data.Queue.TwoList.Properties where
 
 open import Level using (Level)
-open import Data.List.Base
+open import Data.List.Base using (List; _∷_; _∷ʳ_; _++_; length)
 open import Data.List.Properties using (++-identityʳ; length-++; length-reverse)
 open import Data.List.Relation.Unary.All using (All; Null; [])
 open import Data.List.Relation.Unary.All.Properties using (++⁺; nullxs→xs≡[])
 open import Data.Nat.Base using (suc; _+_)
 open import Data.Nat.Properties using (+-comm; +-suc; +-assoc)
+open import Data.Product.Base using (_×_; proj₁; proj₂)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.Queue.TwoList.Base
 open import Data.Queue.TwoList.Instances
@@ -28,7 +29,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Definitions using (Reflexive; _Respects_)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; False)
 open import Relation.Unary using (Pred)
 
 open ≡-Reasoning
@@ -86,6 +87,13 @@ toList-fromList {q = q} {xs = xs} q≈xs = begin
 
 empty-toList : ∀ {q : Queue A} → Empty q → Null (toList q)
 empty-toList {q = mkQ front back inv} emptyq = ++⁺ {xs = back} (inv emptyq) (all<> emptyq)
+
+toList-enqueue : ∀ {q : Queue A} {x : A} → toList (enqueue x q) ≡ x ∷ toList q
+toList-enqueue {q = mkQ [] back inv} {x} = begin
+  x ∷ []         ≡⟨⟩
+  x ∷ [] ++ []   ≡⟨ sym (cong (λ y → x ∷ y ++ []) (nullxs→xs≡[] (inv []))) ⟩
+  x ∷ back ++ [] ∎
+toList-enqueue {q = mkQ (front <: x) back inv} = refl
 
 ------------------------------------------------------------------------
 -- Properties relating to size
@@ -153,26 +161,22 @@ size-empty = refl
 ≈-=[toList]⇒-≡  : (_≈_ {A = A}) =[ toList ]⇒ _≡_
 ≈-=[toList]⇒-≡ x≈y = x≈y
 
--- For some reason, gives unresolved implicits of
---  _x.inv_750 : Null< (Queue.front x) → Null (Queue.back x)
---  _y.inv_753 : Null< (Queue.front y) → Null (Queue.back y)
--- But I'm too tired to trace it through and figure out why for today!
--- ≈-resp-Empty' : Empty Respects (_≈_ {A = A})
--- ≈-resp-Empty' = ≈-resp-Empty
-
 ------------------------------------------------------------------------
 -- TwoList Queue is a Queue!
 
+-- for some reason, unless manually passing some implicits, other implicits remain
+-- unsolved? This is also means that you can't assign fields with record syntax and
+-- have to use co-pattern matching. My knowledge of implicits isn't good enough to know
+-- why or if this indicates 'bad ergonomics'
+
 -- instance
 --   TwoList-IsQueue : IsQueue {a} TwoList-RawQueue
---   TwoList-IsQueue = record
---     { isEquivalence = ≈-isEquivalence
---     ; ≈-resp-Empty = ≈-resp-Empty
---     ; ≈-=[toList]⇒-≡ = {!!}
---     ; empty-toList = {!!}
---     ; empty-fromList = {!!}
---     ; toList-fromList = {!!}
---     ; fromList-toList = {!!}
---     ; toList-enqueue = {!!}
---     ; toList-dequeue = {!!}
---     }
+--   TwoList-IsQueue .IsQueue.isEquivalence = ≈-isEquivalence
+--   TwoList-IsQueue .IsQueue.≈-resp-Empty {x = x} {y} = ≈-resp-Empty {x = x} {y = y}
+--   TwoList-IsQueue .IsQueue.≈-=[toList]⇒-≡ {x = x} {y} = ≈-=[toList]⇒-≡ {x = x} {y = y}
+--   TwoList-IsQueue .IsQueue.empty-toList {q = q} = empty-toList {q = q}
+--   TwoList-IsQueue .IsQueue.empty-fromList = {!!}
+--   TwoList-IsQueue .IsQueue.toList-fromList = {!!}
+--   TwoList-IsQueue .IsQueue.fromList-toList = {!!}
+--   TwoList-IsQueue .IsQueue.toList-enqueue {q = q} = toList-enqueue {q = q}
+--   TwoList-IsQueue .IsQueue.toList-dequeue = {!!}
