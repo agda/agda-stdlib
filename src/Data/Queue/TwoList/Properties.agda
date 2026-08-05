@@ -49,7 +49,7 @@ private
   queue-back[] {xs = xs <: x} = refl
 
   queue[]xs→back≡[] : ∀ {xs : List A} → (Queue.back (queue [] xs)) ≡ []
-  queue[]xs→back≡[] = {!!}
+  queue[]xs→back≡[] = refl
 
   queue-front : ∀ {xs : List< A} → (Queue.front (queue xs [])) ≡ xs
   queue-front {xs = []} = refl
@@ -57,7 +57,6 @@ private
 
   queue[]xs→<xs : ∀ {xs : List A} → (Queue.front (queue [] xs)) ≡ (fromList> xs)
   queue[]xs→<xs = refl
-
 
 ------------------------------------------------------------------------
 -- Properties of toList and fromList
