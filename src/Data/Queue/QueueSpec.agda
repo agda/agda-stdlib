@@ -41,7 +41,7 @@ record RawQueue (Q : Set a → Set a) : Set (suc a) where
     fromList : List A → Q A
     toList   : Q A → List A
     enqueue  : A → Q A → Q A
-    dequeue  : (q : Q A) → .{{False (empty? q)}} → A × Q A
+    dequeue  : (q : Q A) → .{{False (empty? q)}} → Q A × A
 
   empty : Q A
   empty = fromList []
@@ -55,7 +55,7 @@ record RawQueue (Q : Set a → Set a) : Set (suc a) where
   to𝔹 : Q A → Bool
   to𝔹 = isYes ∘ empty?
 
-  dequeue′ : Q A → Maybe (A × Q A)
+  dequeue′ : Q A → Maybe (Q A × A)
   dequeue′ q with empty? q in eq
   ... | yes _ = nothing
   ... | no _  = just (dequeue q)
@@ -81,4 +81,4 @@ record IsQueue {Q : Set a → Set a} (rawQ : RawQueue Q) : Set (suc a) where
     toList-enqueue  : ∀ {q : Q A} {x : A} → toList (enqueue x q) ≡ x ∷ toList q
     -- for some reason, let x , r = ... doesn't bind x and r??
     toList-dequeue  : ∀ {q : Q A} → .{{i : False (empty? q)}} →
-                      let xr = dequeue q {{i}} in toList q ≡  toList (proj₂ xr) List.∷ʳ proj₁ xr
+                      let xr = dequeue q {{i}} in toList q ≡  toList (proj₁ xr) List.∷ʳ proj₂ xr
