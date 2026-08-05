@@ -184,14 +184,14 @@ size-empty = refl
 -- have to use co-pattern matching. My knowledge of implicits isn't good enough to know
 -- why or if this indicates 'bad ergonomics'
 
-instance
-  TwoList-IsQueue : IsQueue {a} TwoList-RawQueue
-  TwoList-IsQueue .IsQueue.isEquivalence = ≈-isEquivalence
-  TwoList-IsQueue .IsQueue.≈-resp-Empty {x = x} {y} = ≈-resp-Empty {x = x} {y = y}
-  TwoList-IsQueue .IsQueue.≈-=[toList]⇒-≡ {x = x} {y} = ≈-=[toList]⇒-≡ {x = x} {y = y}
-  TwoList-IsQueue .IsQueue.empty-toList {q = q} = empty-toList {q = q}
-  TwoList-IsQueue .IsQueue.empty-fromList = empty-fromList
-  TwoList-IsQueue .IsQueue.toList-fromList {q = q} = toList-fromList {q = q}
-  TwoList-IsQueue .IsQueue.fromList-toList {q = q} = fromList-toList {q = q}
-  TwoList-IsQueue .IsQueue.toList-enqueue {q = q} = toList-enqueue {q = q}
-  TwoList-IsQueue .IsQueue.toList-dequeue = {!!}
+-- instance
+--   TwoList-IsQueue : IsQueue {a} TwoList-RawQueue
+--   TwoList-IsQueue .IsQueue.isEquivalence = ≈-isEquivalence
+--   TwoList-IsQueue .IsQueue.≈-resp-Empty {x = x} {y} = ≈-resp-Empty {x = x} {y = y}
+--   TwoList-IsQueue .IsQueue.≈-=[toList]⇒-≡ {x = x} {y} = ≈-=[toList]⇒-≡ {x = x} {y = y}
+--   TwoList-IsQueue .IsQueue.empty-toList {q = q} = empty-toList {q = q}
+--   TwoList-IsQueue .IsQueue.empty-fromList = empty-fromList
+--   TwoList-IsQueue .IsQueue.toList-fromList {q = q} = toList-fromList {q = q}
+--   TwoList-IsQueue .IsQueue.fromList-toList {q = q} = fromList-toList {q = q}
+--   TwoList-IsQueue .IsQueue.toList-enqueue {q = q} = toList-enqueue {q = q}
+--   TwoList-IsQueue .IsQueue.toList-dequeue = {!!}
