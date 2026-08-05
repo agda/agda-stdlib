@@ -318,6 +318,11 @@ New modules
 * `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
   the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
+* [PR #2976](https://github.com/agda/agda-stdlib/pull/2796)
+  `Effect.Monad.Partial` based on domain `Dom` and injection `dom`.
+  See the extensive discussion, esp. comments from Reed Mullanix,
+  on the PR.
+
 Additions to existing modules
 -----------------------------
 
