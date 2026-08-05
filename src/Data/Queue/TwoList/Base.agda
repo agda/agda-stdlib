@@ -22,7 +22,7 @@ open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; _,_; proj₂)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
-open import Data.SnocList.Base as SnocList using (List<; toList>; fromList>; []; _<:_)
+open import Data.SnocList.Base as SnocList using (List<; toList>; fromList>; []; _<:_; _<><_)
 open import Data.SnocList.Relation.Unary.All
 open import Data.SnocList.Relation.Unary.All.Properties using (¬null-<:; null-<:→nullxs)
 open import Data.Unit.Base using (⊤)
@@ -76,7 +76,7 @@ isEmpty q = SnocList.null (Queue.front q)
 --- Smart Constructor
 
 queue : List< A → List A → Queue A
-queue []          ys = mkQ (fromList> (reverse ys)) [] (const [])
+queue []          ys = mkQ ([] <>< ys) [] (const [])
 queue xs@(_ <: _) ys = mkQ xs ys null-<:→nullxs
 
 ------------------------------------------------------------------------
