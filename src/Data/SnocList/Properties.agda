@@ -53,3 +53,19 @@ toList>-fromList> (x :> xs) = begin
 xs<>>[]≡[] : ∀ {xs : List< A} → xs <>> [] ≡ [] → xs ≡ []
 xs<>>[]≡[] {xs = []} xs<>>[]≡[] = refl
 xs<>>[]≡[] {xs = (xs <: x)} xs<>>[]≡[] = ⊥-elim (¬xs<>>ys≡[] {xs = xs} {ys = []} xs<>>[]≡[])
+
+-- ([] <: x <>< xs) <>> [] ≡ x :> xs
+[]<><xs<>>[]≡xs : ∀ {xs : List> A} → ([] <>< xs) <>> [] ≡ xs
+[]<><xs<>>[]≡xs {xs = []} = refl
+[]<><xs<>>[]≡xs {xs = x :> xs} = begin
+  ([] <: x <>< xs) <>> []   ≡⟨ aux {y = x} {ys = xs} ⟩
+  x :> (([] <>< xs) <>> []) ≡⟨ cong (_:>_ x) ([]<><xs<>>[]≡xs {xs = xs}) ⟩
+  x :> xs                   ∎
+  where
+    -- Goal: ([] <: y <>< ys) <>> [] ≡ y :> ([] <>< ys) <>> []
+    aux : ∀ {y} {ys : List> A} → ([] <: y <>< ys) <>> [] ≡ y :> (([] <>< ys) <>> [])
+    aux {y = y} {ys = ys} = begin
+      ([] <: y <>< ys) <>> []            ≡⟨ fish-and-chips ys ([] <: y) [] ⟩
+      ([] <: y) <>> (([] <>< ys) <>> []) ≡⟨⟩
+      [] <>> (y :> (([] <>< ys) <>> [])) ≡⟨⟩
+      y :> (([] <>< ys) <>> [])          ∎

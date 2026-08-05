@@ -19,8 +19,8 @@ open import Data.Product.Base using (_×_; proj₁; proj₂)
 open import Data.Queue.QueueSpec using (RawQueue; IsQueue)
 open import Data.Queue.TwoList.Base
 open import Data.Queue.TwoList.Instances
-open import Data.SnocList.Base as SnocList using (List<; []; _<:_; toList>; fromList>)
-open import Data.SnocList.Properties using (toList>-fromList>; ¬xs<>>ys≡[]; xs<>>[]≡[])
+open import Data.SnocList.Base as SnocList using (List<; []; _<:_; toList>; fromList>; _<><_; _<>>_)
+open import Data.SnocList.Properties
 open import Data.SnocList.Relation.Unary.All using (All<; Null<; []; _<:_)
 open import Data.SnocList.Relation.Unary.All.Properties using (all<>>; all<>)
 open import Function.Base using (_∘_)
@@ -90,6 +90,12 @@ toList-fromList {q = q} {xs = xs} q≈xs = begin
       toList> (Queue.front (queue [] xs))          ≡⟨⟩
       toList> (fromList> xs)                       ≡⟨ toList>-fromList> xs ⟩
       xs                                           ∎
+
+fromList-toList : ∀ {q : Queue A} {xs : List A} → xs ≡ toList q → fromList xs ≈ q
+fromList-toList {q = q} {xs} xs≈q = begin
+  ([] <>< xs) <>> []                   ≡⟨ []<><xs<>>[]≡xs {xs = xs} ⟩
+  xs                                   ≡⟨ xs≈q ⟩
+  Queue.back q ++ Queue.front q <>> [] ∎
 
 empty-toList : ∀ {q : Queue A} → Empty q → Null (toList q)
 empty-toList {q = mkQ front back inv} emptyq = ++⁺ {xs = back} (inv emptyq) (all<> emptyq)
