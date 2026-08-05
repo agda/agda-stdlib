@@ -29,7 +29,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Definitions using (Reflexive; _Respects_)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Nullary using (¬_; False)
+open import Relation.Nullary using (¬_; False; contradiction)
 open import Relation.Unary using (Pred)
 
 open ≡-Reasoning
@@ -48,9 +48,15 @@ private
   queue-back[] {xs = []} = refl
   queue-back[] {xs = xs <: x} = refl
 
+  queue[]xs→back≡[] : ∀ {xs : List A} → (Queue.back (queue [] xs)) ≡ []
+  queue[]xs→back≡[] = {!!}
+
   queue-front : ∀ {xs : List< A} → (Queue.front (queue xs [])) ≡ xs
   queue-front {xs = []} = refl
   queue-front {xs = xs <: x} = refl
+
+  queue[]xs→<xs : ∀ {xs : List A} → (Queue.front (queue [] xs)) ≡ (fromList> xs)
+  queue[]xs→<xs = refl
 
 
 ------------------------------------------------------------------------
@@ -78,15 +84,19 @@ toList-fromList {q = q} {xs = xs} q≈xs = begin
     -- TODO: can probably cleanup a little
     toList-fromList' : ∀ (xs : List A) → toList (fromList xs) ≡ xs
     toList-fromList' xs = begin
-      toList (fromList xs)                                     ≡⟨⟩
-      toList (queue (fromList> xs) [])                         ≡⟨ cong₂ _++_ (queue-back[] {xs = fromList> xs}) refl ⟩
-      [] ++ (toList> (Queue.front (queue (fromList> xs) [])))  ≡⟨⟩
-      toList> (Queue.front (queue (fromList> xs) []))          ≡⟨ cong toList> (queue-front {xs = fromList> xs}) ⟩
-      toList> (fromList> xs)                                   ≡⟨ toList>-fromList> xs ⟩
-      xs                                                       ∎
+      toList (fromList xs)                         ≡⟨⟩
+      toList (queue [] xs)                         ≡⟨ cong₂ _++_ (queue[]xs→back≡[] {xs = xs}) refl ⟩
+      [] ++ (toList> (Queue.front (queue [] xs)))  ≡⟨⟩
+      toList> (Queue.front (queue [] xs))          ≡⟨⟩
+      toList> (fromList> xs)                       ≡⟨ toList>-fromList> xs ⟩
+      xs                                           ∎
 
 empty-toList : ∀ {q : Queue A} → Empty q → Null (toList q)
 empty-toList {q = mkQ front back inv} emptyq = ++⁺ {xs = back} (inv emptyq) (all<> emptyq)
+
+empty-fromList  : ∀ {xs : List A} → Null xs → Empty (fromList xs)
+empty-fromList {xs = []} nullxs = []
+empty-fromList {xs = x ∷ xs} nullxs = contradiction nullxs ¬Null
 
 toList-enqueue : ∀ {q : Queue A} {x : A} → toList (enqueue x q) ≡ x ∷ toList q
 toList-enqueue {q = mkQ [] back inv} {x} = begin

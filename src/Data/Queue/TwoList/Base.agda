@@ -90,7 +90,7 @@ toList q = (Queue.back q) ++ (toList> (Queue.front q))
 -- Create a Queue from a List, such that the elements
 -- of the list would be dequeued starting from its last element
 fromList : List A → Queue A
-fromList xs = queue (fromList> xs) []
+fromList xs = queue [] xs
 
 ------------------------------------------------------------------------
 -- Construction & Destruction
