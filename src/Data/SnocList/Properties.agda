@@ -8,7 +8,10 @@
 
 module Data.SnocList.Properties where
 
+open import Algebra.Definitions as AlgebraicDefinitions using ()
 open import Data.Empty using (⊥-elim)
+open import Data.Nat.Base using (suc; _+_)
+open import Data.Product.Base using (_,_)
 open import Data.SnocList.Base
 open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -69,3 +72,25 @@ xs<>>[]≡[] {xs = (xs <: x)} xs<>>[]≡[] = ⊥-elim (¬xs<>>ys≡[] {xs = xs} 
       ([] <: y) <>> (([] <>< ys) <>> []) ≡⟨⟩
       [] <>> (y :> (([] <>< ys) <>> [])) ≡⟨⟩
       y :> (([] <>< ys) <>> [])          ∎
+
+------------------------------------------------------------------------
+-- Properties of ++
+
+length-++ : ∀ (xs : List< A) {ys} →
+            length (ys ++ xs) ≡ length xs + length ys
+length-++ []        = refl
+length-++ (xs <: x) = cong suc (length-++ xs)
+
+module _ {A : Set a} where
+
+  open AlgebraicDefinitions {A = List< A} _≡_
+
+  ++-identityˡ : LeftIdentity [] _++_
+  ++-identityˡ [] = refl
+  ++-identityˡ (xs <: x) = cong (_<: x) (++-identityˡ xs)
+
+  ++-identityʳ : RightIdentity [] _++_
+  ++-identityʳ xs = refl
+
+  ++-identity : Identity [] _++_
+  ++-identity = ++-identityˡ , ++-identityʳ
