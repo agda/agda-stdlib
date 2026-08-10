@@ -127,6 +127,19 @@ x≈y⇒x∙y⁻¹≈ε {x} {y} x≈y = begin
   y ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
   ε        ∎
 
+x≈ε⇒x⁻¹≈ε : ∀ {x} → x ≈ ε → x ⁻¹ ≈ ε
+x≈ε⇒x⁻¹≈ε {x} x≈ε = begin
+  x ⁻¹   ≈⟨ ⁻¹-cong x≈ε ⟩
+  ε ⁻¹   ≈⟨ ε⁻¹≈ε ⟩
+  ε ∎
+
+x⁻¹≈ε⇒x≈ε : ∀ {x} → x ⁻¹ ≈ ε → x ≈ ε
+x⁻¹≈ε⇒x≈ε {x} x⁻¹≈ε = begin
+  x       ≈⟨ ⁻¹-involutive x ⟨
+  x ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong x⁻¹≈ε ⟩
+  ε ⁻¹    ≈⟨  ε⁻¹≈ε ⟩
+  ε ∎
+
 ⁻¹-injective : Injective _≈_ _≈_ _⁻¹
 ⁻¹-injective = selfInverse⇒injective ⁻¹-selfInverse
 
