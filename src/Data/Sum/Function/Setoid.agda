@@ -18,7 +18,9 @@ open import Function.Bundles
   using (Func; Equivalence; Injection; Surjection; Bijection; LeftInverse
         ; RightInverse; Inverse)
 open import Function.Definitions
-  using (Injective; Surjective; Bijective; StrictlySurjective)
+  using (Injective; Surjective; Bijective)
+import Function.Definitions.Strictly as Strictly
+  using (Surjective)
 open import Level using (Level; _⊔_)
 
 private
@@ -60,9 +62,9 @@ swapₛ = [ inj₂ₛ , inj₁ₛ ]ₛ
 ⊎-injective f-inj g-inj {inj₂ x} {inj₂ y} (inj₂ x∼₂y) = inj₂ (g-inj x∼₂y)
 
 ⊎-strictlySurjective : ∀ {f : A → B} {g : C → D} →
-              StrictlySurjective ≈₁ f →
-              StrictlySurjective ≈₂ g →
-              StrictlySurjective (Pointwise ≈₁ ≈₂) (Sum.map f g)
+              Strictly.Surjective ≈₁ f →
+              Strictly.Surjective ≈₂ g →
+              Strictly.Surjective (Pointwise ≈₁ ≈₂) (Sum.map f g)
 ⊎-strictlySurjective f-sur g-sur =
   [ Product.map inj₁ inj₁ ∘ f-sur
   , Product.map inj₂ inj₂ ∘ g-sur
