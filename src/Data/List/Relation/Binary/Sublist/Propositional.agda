@@ -19,7 +19,7 @@ open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
 open import Relation.Binary.Definitions using (Antisymmetric)
 open import Relation.Binary.PropositionalEquality.Core
-  using (subst; _≡_; refl)
+  using (resp; _≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid; isEquivalence)
 open import Relation.Unary using (Pred)
@@ -40,7 +40,7 @@ open SetoidSublist (setoid A) public
 module _ {p} {P : Pred A p} where
 
   lookup : ∀ {xs ys} → xs ⊆ ys → Any P xs → Any P ys
-  lookup = SetoidSublist.lookup (setoid A) (subst _)
+  lookup = SetoidSublist.lookup (setoid A) (resp _)
 
 ------------------------------------------------------------------------
 -- Relational properties
