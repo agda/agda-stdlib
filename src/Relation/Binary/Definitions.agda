@@ -147,7 +147,7 @@ Cotransitive : Rel A ℓ → Set _
 Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
 
 Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
-Tight _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+Tight _≈_ _#_ = ∀ x y → ¬ x # y → x ≈ y
 
 -- Properties of order morphisms, aka order-preserving maps
 
