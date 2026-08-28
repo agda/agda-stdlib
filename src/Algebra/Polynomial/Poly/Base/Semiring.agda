@@ -4,75 +4,70 @@ module Algebra.Polynomial.Poly.Base.Semiring
   {ℓ₁ ℓ₂} (SR : Semiring ℓ₁ ℓ₂)
   where
 
-open import Data.Nat.Base as ℕ using (ℕ; suc; pred; _⊔_)
-import Data.Nat.Properties as ℕ
-open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Data.Vec.Relation.Unary.All using (All ; []; _∷_)
+open import Agda.Builtin.List using (List; []; _∷_)
+open import Data.List.Base as List
+open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
+open import Data.Nat.Base as ℕ using (ℕ; suc)
 import Level as L
-open import Relation.Binary.PropositionalEquality.Core using (cong)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; cong; module ≡-Reasoning)
 
 module SR = Semiring SR
 open SR
- renaming
-  ( Carrier to A
-  ; _≈_ to _≈A_
-  ; _+_ to _+A_
-  ; _*_ to _*A_
-  )
- using (0#; 1#)
+  renaming
+    ( Carrier to A
+    ; _≈_ to _≈A_
+    ; _+_ to _+A_
+    ; _*_ to _*A_
+    )
+   using (0#; 1#)
 
 infixl 7 _*_
 infix 7 _·_
 infixl 6 _+_
 infix 4 _≈_
 
-private
-  variable
-    m n k l : ℕ
-    a b c d : A
-
--- Polynomial of degree most n is represented as a vector of length n + 1
--- a₀ ∷ a₁ ∷ ⋯ ∷ aₙ ∷ [] represents the polynomial a₀ + a₁x + ⋯ + aₙxⁿ
-
-Poly : ℕ → Set ℓ₁
-Poly n = Vec A n
 
 private
   variable
-    p : Poly m
-    q : Poly n
-    r : Poly k
-    s : Poly l
+   a b : A
 
-zeros : (n : ℕ) → Poly n
-zeros n = Vec.replicate n (0#)
 
+-- Polynomial is represented as a list
+-- a₀ ∷ a₁ ∷ ⋯ ∷ aₙ ∶ [] represents the polynomial a₀ + a₁x + ⋯ + aₙxⁿ
+-- [] represents the zero polynomial 0
+
+Poly : Set ℓ₁
+Poly =  List A
+
+private
+  variable
+    p : Poly 
+    q : Poly
+    r : Poly
+   
 -- Scaling a polynomial by a
-_·_ : A → Poly n → Poly n
-a · p  = Vec.map (a *A_) p
+_·_ : A → Poly → Poly
+a · p = List.map (a *A_) p
 
--- Multiply a polynomial by x
-shift : Poly n → Poly (suc n)
+--  Multiply a polynomial by x
+shift : Poly → Poly
 shift p = 0# ∷ p
-
+  
 -- Multiply a polynomial by xⁿ
-shift-by-n : (n : ℕ) → Poly m → Poly (n ℕ.+ m)
+shift-by-n : (n : ℕ) → Poly → Poly
 shift-by-n 0 p = p
 shift-by-n (suc n) p = 0# ∷ shift-by-n n p
 
-IsZero : Poly n → Set (ℓ₁ L.⊔ ℓ₂) 
+IsZero : Poly → Set (ℓ₁ L.⊔ ℓ₂)
 IsZero = All (_≈A 0#)
 
 -- The representation of a polynomial is not unique
 -- because we allow coefficients to be zero
 -- We define an equivalence relation which takes this into account 
 
-data _≈_ : (Poly m) → (Poly n) → Set (ℓ₁ L.⊔ ℓ₂) where
-  []≈  : (q : Poly n) → IsZero q → [] ≈ q
-  ≈[]  : (p : Poly m) → IsZero p → p ≈ []
-  cons : (a ≈A b) → (p ≈ q) → (a ∷ p) ≈ (b ∷ q)
+data _≈_ : Poly → Poly → Set (ℓ₁ L.⊔ ℓ₂) where
+ []≈ : (q : Poly) → IsZero q → [] ≈ q
+ ≈[] : (p : Poly) → IsZero p → p ≈ []
+ cons : (a ≈A b) → (p ≈ q) → (a ∷ p) ≈ (b ∷ q)
 
 -- Properties of Polynomial Equality
 
@@ -114,34 +109,21 @@ consˡ a≈b = cons a≈b refl
 
 consʳ : p ≈ q → (a ∷ p) ≈ (a ∷ q)
 consʳ = cons SR.refl
-
+  
 ----------------------------------------------------------------
 -- Operations
 
 -- Addition
-_+_ : Poly m → Poly n → Poly (m ⊔ n)
+_+_ : Poly → Poly → Poly
 [] + [] = []
 [] + (a ∷ p) = a ∷ p
 (a ∷ p) + [] = a ∷ p
 (a ∷ p) + (b ∷ q) = (a +A b) ∷ (p + q)
 
-private
-  pred[n+sucm]≡n+m : ∀ n → ∀ m → pred (n ℕ.+ suc m) ≡ n ℕ.+ m
-  pred[n+sucm]≡n+m n m = begin
-    pred (n ℕ.+ suc m)  ≡⟨ cong pred (ℕ.+-comm n (suc m)) ⟩
-    pred (suc m ℕ.+ n)  ≡⟨ ℕ.+-comm m n ⟩
-    n ℕ.+ m             ∎
-    where open ≡-Reasoning
-    
-cast-lem : ∀ m → ∀ n → m ⊔ pred (n ℕ.+ suc m) ≡ (n ℕ.+ m)
-cast-lem m n = begin
-   m ⊔ pred (n ℕ.+ suc m)  ≡⟨ cong (m ⊔_) (pred[n+sucm]≡n+m n m) ⟩
-   m ⊔ (n ℕ.+ m)           ≡⟨ ℕ.m≤n⇒m⊔n≡n (ℕ.m≤n+m m n) ⟩
-   n ℕ.+ m                 ∎
-   where open ≡-Reasoning
-
 -- Multiplication
-_*_ : Poly n → Poly m → Poly (pred (n ℕ.+ m))
-_*_ {m = m} [] p  = zeros (pred m)
-_*_ {suc n} {m} (a ∷ p) q = Vec.cast (cast-lem m n) ((a · q) + (p * (0# ∷ q)))
+_*_ : Poly → Poly → Poly
+_*_ [] p = []
+_*_ (a ∷ p) q = (a · q) + (p * (0# ∷ q))
+
+
 
