@@ -157,6 +157,10 @@ Non-backwards compatible changes
   defined in `Data.List.Relation.Binary.Permutation.{Propositional|Setoid}`,
   has been removed.
 
+* In `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.Insert`:
+  `insertWith-just` is strengthened to prevent the possibility of `insertWith`
+  ignoring the old value.
+
 * In `Data.Product.Relation.Binary.Pointwise.Dependent`, the universe level of
   the `record POINTWISE` has been lowered to `ℓ₁ ⊔ ℓ₂` given the universe levels
   `ℓ₁`, resp. `ℓ₂` of the argument relations `_R₁_`, resp. `_R₂_`.
