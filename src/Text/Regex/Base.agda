@@ -26,7 +26,7 @@ open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 ------------------------------------------------------------------------
 -- Regular expressions on the alphabet A
 
-infix 10 [_] _─_
+infix 10 _─_
 data Range : Set a where
   [_] : (a : A)     → Range
   _─_ : (lb ub : A) → Range
@@ -34,7 +34,6 @@ data Range : Set a where
 infixr 5 _∣_
 infixr 6 _∙_
 infixl 7 _⋆
-infix 10 [^_]
 
 data Exp : Set a where
   ε    : Exp
