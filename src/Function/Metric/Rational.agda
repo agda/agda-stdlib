@@ -4,7 +4,7 @@
 -- Metrics with ℚ as the codomain of the metric function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Metric.Rational where
 

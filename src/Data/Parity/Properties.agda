@@ -4,7 +4,7 @@
 -- Some properties about parities
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Parity.Properties where
 
@@ -38,22 +38,22 @@ open import Algebra.Morphism.Structures
 ------------------------------------------------------------------------
 -- Equality
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality Parity
-1ℙ ≟ 1ℙ = yes refl
-1ℙ ≟ 0ℙ = no λ()
-0ℙ ≟ 1ℙ = no λ()
-0ℙ ≟ 0ℙ = yes refl
+_≡?_ : DecidableEquality Parity
+1ℙ ≡? 1ℙ = yes refl
+1ℙ ≡? 0ℙ = no λ()
+0ℙ ≡? 1ℙ = no λ()
+0ℙ ≡? 0ℙ = yes refl
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid Parity
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ≡-isDecEquivalence : IsDecEquivalence _≡_
-≡-isDecEquivalence = isDecEquivalence _≟_
+≡-isDecEquivalence = isDecEquivalence _≡?_
 
 ------------------------------------------------------------------------
 -- _⁻¹
@@ -424,7 +424,7 @@ toSign-isMagmaHomomorphism : IsMagmaHomomorphism ℙ.+-rawMagma 𝕊.*-rawMagma 
 toSign-isMagmaHomomorphism = record
   { isRelHomomorphism = record
     { cong = cong toSign }
-  ; homo = +-homo-*
+  ; ∙-homo = +-homo-*
   }
 
 toSign-isMagmaMonomorphism : IsMagmaMonomorphism ℙ.+-rawMagma 𝕊.*-rawMagma toSign
@@ -534,7 +534,7 @@ parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma p
 parity-isMagmaHomomorphism = record
   { isRelHomomorphism = record
     { cong = cong parity }
-  ; homo = +-homo-+
+  ; ∙-homo = +-homo-+
   }
 
 parity-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid ℙ.+-0-rawMonoid parity
@@ -554,3 +554,19 @@ parity-isSemiringHomomorphism = record
   { isNearSemiringHomomorphism = parity-isNearSemiringHomomorphism
   ; 1#-homo = refl
   }
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

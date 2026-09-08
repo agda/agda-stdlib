@@ -4,7 +4,7 @@
 -- Reflection utilities for Fin
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Reflection where
 

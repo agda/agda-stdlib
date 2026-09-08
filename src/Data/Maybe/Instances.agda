@@ -4,7 +4,7 @@
 -- Typeclass instances for Maybe
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.Instances where
 

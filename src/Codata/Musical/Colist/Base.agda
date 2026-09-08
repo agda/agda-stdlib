@@ -4,7 +4,7 @@
 -- Coinductive lists: base type and functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Colist.Base where
 

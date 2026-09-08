@@ -4,7 +4,7 @@
 -- Argument quantities used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.Argument.Quantity where
 
@@ -21,10 +21,27 @@ open Quantity public
 ------------------------------------------------------------------------
 -- Decidable equality
 
+infix 4 _≡?_
+
+_≡?_ : DecidableEquality Quantity
+quantity-ω ≡? quantity-ω = yes refl
+quantity-0 ≡? quantity-0 = yes refl
+quantity-ω ≡? quantity-0 = no λ()
+quantity-0 ≡? quantity-ω = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
 infix 4 _≟_
 
-_≟_ : DecidableEquality Quantity
-quantity-ω ≟ quantity-ω = yes refl
-quantity-0 ≟ quantity-0 = yes refl
-quantity-ω ≟ quantity-0 = no λ()
-quantity-0 ≟ quantity-ω = no λ()
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

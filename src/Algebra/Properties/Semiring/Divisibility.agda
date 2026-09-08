@@ -4,7 +4,7 @@
 -- Properties of divisibility over semirings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
 

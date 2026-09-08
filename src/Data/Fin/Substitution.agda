@@ -11,7 +11,7 @@
 -- of how this module can be used: a definition of substitution for
 -- the untyped λ-calculus.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Substitution where
 
@@ -104,7 +104,7 @@ record Application (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) : Set (ℓ�
   -- Application of multiple substitutions.
 
   _/✶_ : T₁ m → Subs T₂ m n → T₁ n
-  _/✶_ = Star.gfold Fun.id _ (flip _/_) {k = zero}
+  _/✶_ = Star.gfold Fun.id _ (flip _/_) {z = zero}
 
 -- A combination of the two records above.
 

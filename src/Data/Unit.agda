@@ -4,7 +4,7 @@
 -- The unit type, Level-monomorphic version
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit where
 
@@ -17,4 +17,4 @@ open import Data.Unit.Base public
 -- Re-export query operations
 
 open import Data.Unit.Properties public
-  using (_≟_)
+  using (_≡?_)

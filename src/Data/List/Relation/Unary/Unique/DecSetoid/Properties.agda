@@ -4,7 +4,7 @@
 -- Properties of lists made up entirely of decidably unique elements
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.List.Base using ([]; _∷_; deduplicate)
 import Data.List.Relation.Unary.Unique.DecSetoid as Unique
@@ -27,6 +27,6 @@ module _ (DS : DecSetoid a ℓ) where
   open DecSetoid DS renaming (setoid to S)
   open Unique DS
 
-  deduplicate-! : ∀ xs → Unique (deduplicate _≟_ xs)
+  deduplicate-! : ∀ xs → Unique (deduplicate _≈?_ xs)
   deduplicate-! []       = []
-  deduplicate-! (x ∷ xs) = all-filter _ (deduplicate _≟_ xs) ∷ filter⁺ S _ (deduplicate-! xs)
+  deduplicate-! (x ∷ xs) = all-filter _ (deduplicate _≈?_ xs) ∷ filter⁺ S _ (deduplicate-! xs)

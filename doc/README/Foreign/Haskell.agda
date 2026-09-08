@@ -92,12 +92,12 @@ main = run $ do
   content ← readFiniteFile "README/Foreign/Haskell.agda"
   let chars = toList content
   let cleanup = catMaybes ∘ List.map (λ c → if testChar c then just c else nothing)
-  let cleaned = dropWhile ('\n' ≟_) $ cleanup chars
+  let cleaned = dropWhile ('\n' ≡?_) $ cleanup chars
   case uncons cleaned of λ where
     nothing         → putStrLn "I cannot believe this file is filed with dashes only!"
     (just (c , cs)) → putStrLn $ unlines
                     $ ("First (non dash) character: " ++ Char.show c)
-                    ∷ ("Rest (dash free) of the line: " ++ fromList (takeWhile (¬? ∘ ('\n' ≟_)) cs))
+                    ∷ ("Rest (dash free) of the line: " ++ fromList (takeWhile (¬? ∘ ('\n' ≡?_)) cs))
                     ∷ []
 
 -- You can compile and run this test by writing:

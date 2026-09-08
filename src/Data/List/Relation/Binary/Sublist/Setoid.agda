@@ -6,7 +6,7 @@
 -- Preserving Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --postfix-projections #-}
 
 open import Relation.Binary.Core using (Rel)

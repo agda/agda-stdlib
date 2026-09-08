@@ -4,7 +4,7 @@
 -- Decidable setoid membership over vectors.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid)
 
@@ -26,4 +26,4 @@ open import Data.Vec.Membership.Setoid setoid public
 infix 4 _∈?_
 
 _∈?_ : ∀ x {n} (xs : Vec A n) → Dec (x ∈ xs)
-x ∈? xs = any? (x ≟_) xs
+x ∈? xs = any? (x ≈?_) xs

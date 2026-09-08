@@ -4,7 +4,7 @@
 -- Properties satisfied by posets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Poset; StrictPartialOrder)
 
@@ -114,7 +114,7 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤-dec⇒isDecPartialOrder : Decidable _≤_ → IsDecPartialOrder _≈_ _≤_
 ≤-dec⇒isDecPartialOrder _≤?_ = record
   { isPartialOrder = isPartialOrder
-  ; _≟_            = ≤-dec⇒≈-dec _≤?_
+  ; _≈?_           = ≤-dec⇒≈-dec _≤?_
   ; _≤?_           = _≤?_
   }
 

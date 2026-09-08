@@ -4,7 +4,7 @@
 -- Directory manipulation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module System.Directory where
 

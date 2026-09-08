@@ -5,7 +5,7 @@
 -- This is also refered to as "A is an h-proposition".
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Irrelevant where
 

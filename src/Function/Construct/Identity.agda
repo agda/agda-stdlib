@@ -4,7 +4,7 @@
 -- The identity function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Construct.Identity where
 
@@ -29,6 +29,7 @@ private
   variable
     a ℓ : Level
     A : Set a
+
 
 ------------------------------------------------------------------------
 -- Properties

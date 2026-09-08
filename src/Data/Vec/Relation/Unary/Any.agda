@@ -4,7 +4,7 @@
 -- Vectors where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Unary.Any {a} {A : Set a} where
 
@@ -15,7 +15,7 @@ open import Data.Vec.Base as Vec using (Vec; []; [_]; _∷_)
 open import Data.Product.Base as Product using (∃; _,_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
-open import Relation.Nullary.Decidable as Dec using (no; _⊎-dec_)
+open import Relation.Nullary.Decidable as Dec using (no; _⊎?_)
 open import Relation.Unary
 
 private
@@ -75,14 +75,8 @@ satisfied (there pxs) = satisfied pxs
 
 any? : Decidable P → ∀ {n} → Decidable (Any P {n})
 any? P? []       = no λ()
-any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any? P? xs)
+any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎? any? P? xs)
 
 satisfiable : Satisfiable P → ∀ {n} → Satisfiable (Any P {suc n})
 satisfiable (x , p) {zero}  = x ∷ [] , here p
 satisfiable (x , p) {suc n} = Product.map (x ∷_) there (satisfiable (x , p))
-
-any = any?
-{-# WARNING_ON_USAGE any
-"Warning: any was deprecated in v1.4.
-Please use any? instead."
-#-}

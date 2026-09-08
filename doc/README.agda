@@ -3,7 +3,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 2.4-dev
+-- The Agda standard library, version 2.4
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -278,8 +278,8 @@ import README.Text.Tabular
 -- For short descriptions of every library module, see Everything;
 -- to exclude unsafe modules, see EverythingSafe:
 
-import Everything
 import EverythingSafe
+import Everything
 
 -- Note that the Everything* modules are generated automatically. If
 -- you have downloaded the library from its Git repository and want
@@ -288,5 +288,4 @@ import EverythingSafe
 
 -- Note that all library sources are located under src or ffi. The
 -- modules README, README.* and Everything are not really part of the
--- library, so these modules are located in the top-level directory
--- instead.
+-- library, so these modules are located in the doc directory instead.

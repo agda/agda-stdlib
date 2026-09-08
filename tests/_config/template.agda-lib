@@ -1,0 +1,5 @@
+name: TEST_NAME
+include: .
+depend: standard-library
+flags:
+  --warning=noUnsupportedIndexedMatch

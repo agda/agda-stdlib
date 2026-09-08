@@ -4,7 +4,7 @@
 -- Argument relevance used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.Argument.Relevance where
 
@@ -21,10 +21,27 @@ open Relevance public
 ------------------------------------------------------------------------
 -- Decidable equality
 
+infix 4 _≡?_
+
+_≡?_ : DecidableEquality Relevance
+relevant   ≡? relevant   = yes refl
+irrelevant ≡? irrelevant = yes refl
+relevant   ≡? irrelevant = no λ()
+irrelevant ≡? relevant   = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
 infix 4 _≟_
 
-_≟_ : DecidableEquality Relevance
-relevant   ≟ relevant   = yes refl
-irrelevant ≟ irrelevant = yes refl
-relevant   ≟ irrelevant = no λ()
-irrelevant ≟ relevant   = no λ()
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

@@ -4,7 +4,7 @@
 -- Examples showing how the notion of Interleaving can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module README.Data.List.Relation.Ternary.Interleaving where
 

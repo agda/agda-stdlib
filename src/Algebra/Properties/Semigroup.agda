@@ -4,7 +4,7 @@
 -- Some theory for Semigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (Semigroup)
 

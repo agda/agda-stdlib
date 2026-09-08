@@ -4,7 +4,7 @@
 -- Relatedness for the function hierarchy
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Related.Propositional where
 

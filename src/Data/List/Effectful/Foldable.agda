@@ -4,7 +4,7 @@
 -- List is Foldable
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Effectful.Foldable where
 
@@ -72,7 +72,7 @@ module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record
         { cong = reflexive ∘ ≡.cong h }
-      ; homo = λ xs _ → ++-homo xs
+      ; ∙-homo = λ xs _ → ++-homo xs
       }
     ; ε-homo = []-homo
     }

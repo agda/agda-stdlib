@@ -4,7 +4,7 @@
 -- A pointwise lifting of a relation to incorporate an additional point.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Point
@@ -53,10 +53,10 @@ data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
 ≈∙-trans ≈-trans [ x≈y ] [ y≈z ] = [ ≈-trans x≈y y≈z ]
 
 ≈∙-dec : Decidable _≈_ → Decidable _≈∙_
-≈∙-dec _≟_ ∙     ∙     = yes ∙≈∙
-≈∙-dec _≟_ ∙     [ l ] = no (λ ())
-≈∙-dec _≟_ [ k ] ∙     = no (λ ())
-≈∙-dec _≟_ [ k ] [ l ] = Dec.map′ [_] [≈]-injective (k ≟ l)
+≈∙-dec _≈?_ ∙     ∙     = yes ∙≈∙
+≈∙-dec _≈?_ ∙     [ l ] = no λ()
+≈∙-dec _≈?_ [ k ] ∙     = no λ()
+≈∙-dec _≈?_ [ k ] [ l ] = Dec.map′ [_] [≈]-injective (k ≈? l)
 
 ≈∙-irrelevant : Irrelevant _≈_ → Irrelevant _≈∙_
 ≈∙-irrelevant ≈-irr ∙≈∙   ∙≈∙   = ≡.refl
@@ -79,5 +79,5 @@ data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
 ≈∙-isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence _≈∙_
 ≈∙-isDecEquivalence ≈-isDecEquivalence = record
   { isEquivalence = ≈∙-isEquivalence isEquivalence
-  ; _≟_           = ≈∙-dec _≟_
+  ; _≈?_          = ≈∙-dec _≈?_
   } where open IsDecEquivalence ≈-isDecEquivalence

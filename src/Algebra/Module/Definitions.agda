@@ -5,7 +5,7 @@
 -- (LeftDefs), right-scaling (RightDefs), and both (BiDefs).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Module.Definitions where
 

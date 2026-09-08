@@ -4,7 +4,7 @@
 -- Argument visibility used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.Argument.Visibility where
 
@@ -21,15 +21,31 @@ open Visibility public
 ------------------------------------------------------------------------
 -- Decidable equality
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality Visibility
-visible   ≟ visible   = yes refl
-hidden    ≟ hidden    = yes refl
-instance′ ≟ instance′ = yes refl
-visible   ≟ hidden    = no λ()
-visible   ≟ instance′ = no λ()
-hidden    ≟ visible   = no λ()
-hidden    ≟ instance′ = no λ()
-instance′ ≟ visible   = no λ()
-instance′ ≟ hidden    = no λ()
+_≡?_ : DecidableEquality Visibility
+visible   ≡? visible   = yes refl
+hidden    ≡? hidden    = yes refl
+instance′ ≡? instance′ = yes refl
+visible   ≡? hidden    = no λ()
+visible   ≡? instance′ = no λ()
+hidden    ≡? visible   = no λ()
+hidden    ≡? instance′ = no λ()
+instance′ ≡? visible   = no λ()
+instance′ ≡? hidden    = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

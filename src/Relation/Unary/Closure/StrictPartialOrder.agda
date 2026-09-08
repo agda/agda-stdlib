@@ -4,7 +4,7 @@
 -- Closures of a unary relation with respect to a strict partial order
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (StrictPartialOrder)
 

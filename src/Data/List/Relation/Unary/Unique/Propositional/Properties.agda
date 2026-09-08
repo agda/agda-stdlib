@@ -4,7 +4,7 @@
 -- Properties of unique lists (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Unique.Propositional.Properties where
 

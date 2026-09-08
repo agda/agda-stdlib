@@ -4,7 +4,7 @@
 -- Consequences of a monomorphism between left modules
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Module.Bundles.Raw using (RawLeftModule)
 open import Algebra.Module.Morphism.Structures using (IsLeftModuleMonomorphism)

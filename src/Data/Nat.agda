@@ -7,7 +7,7 @@
 -- See README.Data.Nat for examples of how to use and reason about
 -- naturals.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat where
 
@@ -24,7 +24,7 @@ open import Data.Nat.Properties public
   -- key values
   ( nonZero?
   -- equalities
-  ; _≟_ ; eq?
+  ; _≟_ ;_≡?_ ; eq?
   -- standard orders & their relationship
   ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
   ; ≤-<-connex ; ≥->-connex ; <-≤-connex ; >-≥-connex

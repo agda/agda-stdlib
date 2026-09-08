@@ -1,0 +1,34 @@
+TEST_NAME=runtests
+
+# Use the shared version numbers
+. ../../_config/version-numbers.sh
+
+# Specialise template agda-lib
+sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.agda-lib > "$TEST_NAME".agda-lib
+sed "s/TEST_NAME/$TEST_NAME/g" ../../_config/template.cabal > "$TEST_NAME".cabal
+
+# Set up clean logs directory
+rm -rf logs/
+mkdir logs
+
+# Use shared directories to avoid rechecking stdlib modules
+AGDA_BUILD_DIR=../../_config/_build
+CABAL_BUILD_DIR=../../_config/dist-newstyle
+
+mkdir -p "$AGDA_BUILD_DIR"
+ln -sf "$AGDA_BUILD_DIR" _build
+mkdir -p "$CABAL_BUILD_DIR"
+ln -sf "$CABAL_BUILD_DIR" dist-newstyle
+
+# Compile the Agda module and build the generated code
+$AGDA --library-file ../../_config/libraries --compile-dir=_build -c --ghc-dont-call-ghc Main.agda > logs/agda-build
+cabal build "$TEST_NAME" --with-compiler "$GHC_EXEC" > logs/cabal-build
+
+# Copy the executable to the test root directory
+cp $(find dist-newstyle/ -name "runtests" -type f) ../../
+
+# Clean up after ourselves
+rm "$TEST_NAME".agda-lib
+rm "$TEST_NAME".cabal
+rm _build
+rm dist-newstyle

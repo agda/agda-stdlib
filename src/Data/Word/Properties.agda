@@ -4,7 +4,7 @@
 -- This module is DEPRECATED. Please use Data.Word64.Properties instead
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Word.Properties where
 

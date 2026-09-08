@@ -4,7 +4,7 @@
 -- A delimited continuation monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Effect.Monad.Continuation where
 

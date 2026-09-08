@@ -4,7 +4,7 @@
 -- Conat Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Conat.Literals where
 

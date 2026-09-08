@@ -8,12 +8,12 @@
 -- propositional equality can usually be replaced with propositional
 -- equality.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Definitions using (DecidableEquality)
 
 module Data.List.Relation.Binary.Equality.DecPropositional
-  {a} {A : Set a} (_≟_ : DecidableEquality A) where
+  {a} {A : Set a} (_≈?_ : DecidableEquality A) where
 
 open import Data.List.Base using (List)
 open import Data.List.Properties using (≡-dec)
@@ -26,7 +26,7 @@ open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 -- equality
 
 open PropositionalEq public
-open DecSetoidEq (decSetoid _≟_) public
+open DecSetoidEq (decSetoid _≈?_) public
   using (_≋?_; ≋-isDecEquivalence; ≋-decSetoid)
 
 ------------------------------------------------------------------------
@@ -35,4 +35,4 @@ open DecSetoidEq (decSetoid _≟_) public
 infix 4 _≡?_
 
 _≡?_ : DecidableEquality (List A)
-_≡?_ = ≡-dec _≟_
+_≡?_ = ≡-dec _≈?_

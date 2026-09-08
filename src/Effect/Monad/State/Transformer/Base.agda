@@ -4,7 +4,7 @@
 -- Basic definition and functions on the state monad transformer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 
 module Effect.Monad.State.Transformer.Base where

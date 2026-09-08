@@ -4,7 +4,7 @@
 -- Exponentiation over a semiring optimised for tail-recursion.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
 

@@ -4,7 +4,7 @@
 -- Natural numbers defined using the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Star.Nat where
 

@@ -4,7 +4,7 @@
 -- Instances for signs
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sign.Instances where
 

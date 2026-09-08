@@ -11,7 +11,7 @@
 -- a structure with an empty Carrier.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level)
 

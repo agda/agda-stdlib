@@ -10,7 +10,7 @@
 -- This module should be removable if and when Agda issue
 -- https://github.com/agda/agda/issues/3210 is fixed
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
 

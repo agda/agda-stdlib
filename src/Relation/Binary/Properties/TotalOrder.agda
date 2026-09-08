@@ -4,7 +4,7 @@
 -- Properties satisfied by total orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (TotalOrder; DecTotalOrder)
 
@@ -27,11 +27,11 @@ import Relation.Binary.Properties.Poset poset as PosetProperties
 -- Total orders are almost decidable total orders
 
 decTotalOrder : Decidable _≈_ → DecTotalOrder _ _ _
-decTotalOrder ≟ = record
+decTotalOrder ≈? = record
   { isDecTotalOrder = record
     { isTotalOrder = isTotalOrder
-    ; _≟_          = ≟
-    ; _≤?_         = total∧dec⇒dec reflexive antisym total ≟
+    ; _≈?_         = ≈?
+    ; _≤?_         = total∧dec⇒dec reflexive antisym total ≈?
     }
   }
 

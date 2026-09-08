@@ -4,7 +4,7 @@
 -- Polymorphic versions of standard definitions in Relation.Unary
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.Polymorphic where
 

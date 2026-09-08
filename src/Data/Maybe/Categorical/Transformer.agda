@@ -5,7 +5,7 @@
 -- `Data.Maybe.Effectful.Transformer` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.Categorical.Transformer where
 

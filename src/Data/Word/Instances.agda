@@ -4,7 +4,7 @@
 -- This module is DEPRECATED. Please use Data.Word64.Instances instead
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Word.Instances where
 

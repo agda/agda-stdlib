@@ -7,7 +7,7 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Heterogeneous`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Indexed.Heterogeneous.Core
 

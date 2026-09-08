@@ -4,7 +4,7 @@
 -- Automatic solvers for equations over rationals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Rational.Unnormalised.Solver where
 

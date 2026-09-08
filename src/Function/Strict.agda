@@ -7,7 +7,7 @@
 -- The contents of this module is also accessible via the `Function`
 -- module.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Strict where
 

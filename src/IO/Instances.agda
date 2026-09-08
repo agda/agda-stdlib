@@ -4,7 +4,7 @@
 -- Typeclass instances for IO
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module IO.Instances where
 

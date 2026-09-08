@@ -4,7 +4,7 @@
 -- Choosing between elements based on the result of applying a function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Lattice.Construct.LiftedChoice where
 

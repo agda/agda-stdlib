@@ -4,7 +4,7 @@
 -- Divisibility
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Divisibility where
 
@@ -122,7 +122,7 @@ infix 4 _∣?_
 _∣?_ : Decidable _∣_
 zero  ∣? zero   = yes (divides-refl 0)
 zero  ∣? suc m  = no ((λ()) ∘′ ∣-antisym (divides-refl 0))
-n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≟ 0)
+n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≡? 0)
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
 ∣-isPreorder = record
@@ -190,12 +190,20 @@ n∣n = ∣-refl
 ∣m+n∣m⇒∣n : d ∣ m + n → d ∣ m → d ∣ n
 ∣m+n∣m⇒∣n {d} {m} {n} (divides p m+n≡p*d) (divides-refl q) =
   divides (p ∸ q) $ begin-equality
-    n             ≡⟨ m+n∸n≡m n m ⟨
-    n + m ∸ m     ≡⟨ cong (_∸ m) (+-comm n m) ⟩
+    n             ≡⟨ m+n∸m≡n m n ⟨
     m + n ∸ m     ≡⟨ cong (_∸ m) m+n≡p*d ⟩
     p * d ∸ q * d ≡⟨ *-distribʳ-∸ d p q ⟨
     (p ∸ q) * d   ∎
     where open ∣-Reasoning
+
+∣m+n∣n⇒∣m : d ∣ m + n → d ∣ n → d ∣ m
+∣m+n∣n⇒∣m {d} {m} {n} (divides p m+n≡p*d) (divides-refl q) =
+  divides (p ∸ q) $ begin-equality
+    m             ≡⟨ m+n∸n≡m m n ⟨
+    m + n ∸ n     ≡⟨ cong (_∸ q * d) m+n≡p*d ⟩
+    p * d ∸ q * d ≡⟨ *-distribʳ-∸ d p q ⟨
+    (p ∸ q) * d   ∎
+  where open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _*_
@@ -256,6 +264,16 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
     p * d + q * d ≡⟨ *-distribʳ-+ d p q ⟨
     (p + q) * d   ∎
   where open ∣-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of _∣_ and _^_
+
+m∣n⇒m^o∣n^o : ∀ {m n} o → m ∣ n → m ^ o ∣ n ^ o
+m∣n⇒m^o∣n^o o (divides-refl m/n) = divides (m/n ^ o) (^-distribʳ-* o m/n _)
+
+n≤o⇒m^n∣m^o : ∀ m {n o} → .(n ≤ o) → m ^ n ∣ m ^ o
+n≤o⇒m^n∣m^o m {zero} 0≤o = 1∣ _
+n≤o⇒m^n∣m^o m {suc _} {suc _} sn≤so = *-monoʳ-∣ m (n≤o⇒m^n∣m^o m (s≤s⁻¹ sn≤so))
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _/_

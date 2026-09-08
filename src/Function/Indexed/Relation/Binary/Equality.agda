@@ -4,7 +4,7 @@
 -- Function setoids and related constructions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Indexed.Relation.Binary.Equality where
 

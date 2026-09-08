@@ -4,7 +4,7 @@
 -- Various forms of induction for natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Induction where
 

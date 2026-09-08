@@ -5,7 +5,7 @@
 -- direct product construction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Algebra.Morphism.Construct.DirectProduct where
 
@@ -40,7 +40,7 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
     isMagmaHomomorphism : IsMagmaHomomorphism (rawMagma M N) M Product.proj₁
     isMagmaHomomorphism = record
       { isRelHomomorphism = RP.proj₁
-      ; homo              = λ _ _ → refl
+      ; ∙-homo              = λ _ _ → refl
       }
 
   module Proj₂ (refl : Reflexive N._≈_) where
@@ -48,7 +48,7 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
     isMagmaHomomorphism : IsMagmaHomomorphism (rawMagma M N) N Product.proj₂
     isMagmaHomomorphism = record
       { isRelHomomorphism = RP.proj₂
-      ; homo              = λ _ _ → refl
+      ; ∙-homo              = λ _ _ → refl
       }
 
   module Pair (P : RawMagma c ℓ₃) where
@@ -59,7 +59,7 @@ module Magma (M : RawMagma a ℓ₁) (N : RawMagma b ℓ₂) where
                           IsMagmaHomomorphism P (rawMagma M N) (Product.< f , g >)
     isMagmaHomomorphism F G = record
       { isRelHomomorphism = RP.< F.isRelHomomorphism , G.isRelHomomorphism >
-      ; homo              = λ x y → F.homo x y , G.homo x y
+      ; ∙-homo              = λ x y → F.homo x y , G.homo x y
       }
       where
         module F = IsMagmaHomomorphism F
@@ -133,7 +133,7 @@ module Monoid-Export {M : RawMonoid a ℓ₁} {N : RawMonoid b ℓ₂} where
     module N = RawMonoid N
 
   module _ {refl : Reflexive M._≈_} where
-    proj₁ = Proj₁.isMonoidHomomorphism M M refl
+    proj₁ = Proj₁.isMonoidHomomorphism M N refl
 
   module _ {refl : Reflexive N._≈_} where
     proj₂ = Proj₂.isMonoidHomomorphism M N refl

@@ -4,7 +4,7 @@
 -- Properties of refinement types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Refinement.Properties where
 
@@ -28,8 +28,24 @@ private
 value-injective : value v ≡ value w → v ≡ w
 value-injective refl = refl
 
-module _ (eq? : DecidableEquality A) where
+module _ (_≈?_ : DecidableEquality A) where
 
-  infix 4 _≟_
-  _≟_ : DecidableEquality [ x ∈ A ∣ P x ]
-  v ≟ w = Dec.map′ value-injective (cong value) (eq? (value v) (value w))
+  infix 4 _≡?_
+  _≡?_ : DecidableEquality [ x ∈ A ∣ P x ]
+  v ≡? w = Dec.map′ value-injective (cong value) (value v ≈? value w)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

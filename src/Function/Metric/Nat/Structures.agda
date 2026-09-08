@@ -4,7 +4,7 @@
 -- Core definitions for metrics over ℕ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Metric.Nat.Structures where
 

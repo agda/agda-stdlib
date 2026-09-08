@@ -4,7 +4,7 @@
 -- Induction over _<_ for ℕᵇ.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Induction where
 

@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous infix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Infix.Heterogeneous.Properties where
 
@@ -23,7 +23,7 @@ open import Data.Nat.Base using (zero; suc; _≤_)
 import Data.Nat.Properties as ℕ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (case_of_; _$′_)
-open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎-dec_)
+open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎?_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (REL; _⇒_)
@@ -99,17 +99,17 @@ module _ {c t} {C : Set c} {T : REL A C t} where
 
   antisym : Antisym R S T → Antisym (Infix R) (Infix S) (Pointwise T)
   antisym asym (here p) (here q) = Prefix.antisym asym p q
-  antisym asym {i = a ∷ as} {j = bs} p@(here _) (there q)
-    = contradiction (begin-strict
+  antisym asym {x = a ∷ as} {y = bs} p@(here _) (there q)
+   = contradiction (begin-strict
       length as <⟨ length-mono p ⟩
       length bs ≤⟨ length-mono q ⟩
       length as ∎) (ℕ.<-irrefl refl) where open ℕ.≤-Reasoning
-  antisym asym {i = as} {j = b ∷ bs} (there p) q@(here _)
+  antisym asym {x = as} {y = b ∷ bs} (there p) q@(here _)
     = contradiction (begin-strict
       length bs <⟨ length-mono q ⟩
       length as ≤⟨ length-mono p ⟩
       length bs ∎) (ℕ.<-irrefl refl) where open ℕ.≤-Reasoning
-  antisym asym {i = a ∷ as} {j = b ∷ bs} (there p) (there q)
+  antisym asym {x = a ∷ as} {y = b ∷ bs} (there p) (there q)
     = contradiction (begin-strict
       length as <⟨ length-mono p ⟩
       length bs <⟨ length-mono q ⟩
@@ -167,4 +167,4 @@ infix? R? [] [] = yes (here [])
 infix? R? (a ∷ as) [] = no (λ where (here ()))
 infix? R? as bbs@(_ ∷ bs) =
   map′ [ here , there ]′ ∷⁻
-  (Prefix.prefix? R? as bbs ⊎-dec infix? R? as bs)
+  (Prefix.prefix? R? as bbs ⊎? infix? R? as bs)

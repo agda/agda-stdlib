@@ -4,7 +4,7 @@
 -- Some algebraic structures defined over some other structure
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Module.Structures where
 

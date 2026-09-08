@@ -7,7 +7,7 @@
 -- Note that elements of Fin n can be seen as natural numbers in the
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Base where
 
@@ -17,9 +17,10 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl; cong; ¬[x≢x])
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -53,6 +54,17 @@ cast {zero}  {zero}  eq k       = k
 cast {suc m} {suc n} eq zero    = zero
 cast {suc m} {suc n} eq (suc k) = suc (cast (cong ℕ.pred eq) k)
 
+-- Tests showing that cast does compute on constructors
+
+module _ .(eqs : suc m ≡ suc n) where
+
+  _ : cast eqs zero ≡ zero
+  _ = refl
+
+  _ : .(eq : m ≡ n) (k : Fin m) →
+      cast eqs (suc k) ≡ suc (cast eq k)
+  _ = λ eq k → refl
+
 ------------------------------------------------------------------------
 -- Conversions
 
@@ -76,7 +88,7 @@ fromℕ<″ : ∀ m {n} → .(m ℕ.<″ n) → Fin n
 fromℕ<″ zero    {suc _} _    = zero
 fromℕ<″ (suc m) {suc _} m<″n = suc (fromℕ<″ m (ℕ.s<″s⁻¹ m<″n))
 
--- canonical liftings of i:Fin m to larger index
+-- Canonical liftings of i:Fin m to larger index
 
 -- injection on the left: "i" ↑ˡ n = "i" in Fin (m + n)
 infixl 5 _↑ˡ_
@@ -89,6 +101,7 @@ infixr 5 _↑ʳ_
 _↑ʳ_ : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
 zero    ↑ʳ i = i
 (suc n) ↑ʳ i = suc (n ↑ʳ i)
+
 
 -- reduce≥ "m + i" _ = "i".
 
@@ -117,7 +130,7 @@ inject≤ {n = suc _} (suc i) m≤n = suc (inject≤ i (ℕ.s≤s⁻¹ m≤n))
 -- lower₁ "i" _ = "i".
 
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
-lower₁ {zero}  zero    ne = contradiction refl ne
+lower₁ {zero}  zero    ne = ¬[x≢x] ne
 lower₁ {suc n} zero    _  = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
@@ -253,7 +266,7 @@ opposite {suc n} (suc i) = inject₁ (opposite i)
 -- McBride's "First-order unification by structural recursion".
 
 punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
-punchOut {_}     {zero}   {zero}  i≢j = contradiction refl i≢j
+punchOut {_}     {zero}   {zero}  i≢j = ¬[x≢x] i≢j
 punchOut {_}     {zero}   {suc j} _   = j
 punchOut {suc _} {suc i}  {zero}  _   = zero
 punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))

@@ -4,7 +4,7 @@
 -- Properties of Coprimality and Irreducibility for Semiring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
 

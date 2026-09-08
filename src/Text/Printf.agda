@@ -4,7 +4,7 @@
 -- Printf
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Text.Printf where
 

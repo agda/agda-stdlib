@@ -5,7 +5,7 @@
 -- of substitution for the untyped λ-calculus, along with some lemmas
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module README.Data.Fin.Substitution.UntypedLambda where
 

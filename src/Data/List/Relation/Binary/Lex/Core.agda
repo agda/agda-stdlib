@@ -4,7 +4,7 @@
 -- Lexicographic ordering of lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Lex.Core where
 

@@ -4,7 +4,7 @@
 -- An effectful view of IO
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module IO.Effectful where
 

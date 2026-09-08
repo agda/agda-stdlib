@@ -4,7 +4,7 @@
 -- The universe polymorphic unit type and the total relation on unit
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.Polymorphic where
 
@@ -16,4 +16,4 @@ open import Data.Unit.Polymorphic.Base public
 ------------------------------------------------------------------------
 -- Re-export query operations
 
-open import Data.Unit.Polymorphic.Properties public using (_≟_)
+open import Data.Unit.Polymorphic.Properties public using (_≟_; _≡?_)

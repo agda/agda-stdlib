@@ -5,7 +5,7 @@
 -- `Data.Vec.Recursive.Effectful` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Recursive.Categorical where
 

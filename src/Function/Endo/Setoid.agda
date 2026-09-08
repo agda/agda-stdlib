@@ -4,7 +4,7 @@
 -- Endomorphisms on a Setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -105,7 +105,7 @@ module _ (f : Endo) where
   ^-isMagmaHomomorphism : IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
   ^-isMagmaHomomorphism = record
     { isRelHomomorphism = record { cong = ^-cong₂ }
-    ; homo = ^-homo
+    ; ∙-homo = ^-homo
     }
 
   ^-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)

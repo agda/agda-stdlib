@@ -4,7 +4,7 @@
 -- Decidable semi-heterogeneous vector equality over setoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Binary.Structures using (IsDecEquivalence)
@@ -31,7 +31,7 @@ open Equality setoid public
 infix 4 _≋?_
 
 _≋?_ : ∀ {m n} → Decidable (_≋_ {m} {n})
-_≋?_ = PW.decidable _≟_
+_≋?_ = PW.decidable _≈?_
 
 ≋-isDecEquivalence : ∀ n → IsDecEquivalence (_≋_ {n})
 ≋-isDecEquivalence = PW.isDecEquivalence isDecEquivalence

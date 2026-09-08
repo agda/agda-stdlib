@@ -4,7 +4,7 @@
 -- Equality of unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.Relation.Binary.Equality where
 

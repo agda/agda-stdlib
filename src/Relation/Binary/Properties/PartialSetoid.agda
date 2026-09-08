@@ -4,7 +4,7 @@
 -- Additional properties for setoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (PartialSetoid)
 

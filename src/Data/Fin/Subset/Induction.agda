@@ -4,7 +4,7 @@
 -- Induction over Subset
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Subset.Induction where
 

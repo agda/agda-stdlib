@@ -4,7 +4,7 @@
 -- Properties satisfied by decidable total orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecTotalOrder; StrictTotalOrder)
 
@@ -94,5 +94,5 @@ open TotalOrderProperties public
   )
 
 ≮⇒≥ : ∀ {x y} → x ≮ y → y ≤ x
-≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≟_ reflexive total
+≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≈?_ reflexive total
 

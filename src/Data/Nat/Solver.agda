@@ -6,7 +6,7 @@
 
 -- See README.Data.Nat for examples of how to use this solver
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Solver where
 
@@ -19,4 +19,4 @@ open import Data.Nat.Properties
 -- containing _+_ and _*_
 
 module +-*-Solver =
-  Solver (ACR.fromCommutativeSemiring +-*-commutativeSemiring) _≟_
+  Solver (ACR.fromCommutativeSemiring +-*-commutativeSemiring) _≡?_

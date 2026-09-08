@@ -6,7 +6,7 @@
 
 -- For signed divisibility see `Data.Integer.Divisibility.Signed`
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Divisibility where
 

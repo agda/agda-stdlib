@@ -4,7 +4,7 @@
 -- Consequences of a monomomorphism between right semimodules
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Module.Bundles.Raw using (RawRightSemimodule)
 open import Algebra.Module.Morphism.Structures using (IsRightSemimoduleMonomorphism)

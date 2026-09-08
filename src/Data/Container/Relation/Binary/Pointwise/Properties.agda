@@ -4,7 +4,7 @@
 -- Properties of pointwise equality for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Relation.Binary.Pointwise.Properties where
 

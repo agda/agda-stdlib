@@ -4,7 +4,7 @@
 -- Vectors where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Unary.All where
 
@@ -17,7 +17,7 @@ open import Data.Vec.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.Vec.Membership.Setoid as SetoidMembership
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no)
+open import Relation.Nullary.Decidable as Dec using (_×?_; yes; no)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (_Respects_)
@@ -108,7 +108,7 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
 
 all? : ∀ {n} → Decidable P → Decidable (All P {n})
 all? P? []       = yes []
-all? P? (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (P? x ×-dec all? P? xs)
+all? P? (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (P? x ×? all? P? xs)
 
 universal : Universal P → ∀ {n} → Universal (All P {n})
 universal u []       = []
@@ -131,10 +131,3 @@ decide p∪q [] = inj₁ []
 decide p∪q (x ∷ xs) with p∪q x
 ... | inj₂ qx = inj₂ (here qx)
 ... | inj₁ px = Sum.map (px ∷_) there (decide p∪q xs)
-
-
-all = all?
-{-# WARNING_ON_USAGE all
-"Warning: all was deprecated in v1.4.
-Please use all? instead."
-#-}

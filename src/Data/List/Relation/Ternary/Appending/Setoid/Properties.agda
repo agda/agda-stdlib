@@ -4,7 +4,7 @@
 -- Properties of list appending
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -70,3 +70,8 @@ assoc→ :
   ∃[ xs ] Appending as bs xs × Appending xs cs ds →
   ∃[ ys ] Appending bs cs ys × Appending as ys ds
 assoc→ = Appendingₚ.assoc→ ≈⇒≈;≈ id ≈;≈⇒≈
+
+assoc← :
+  ∃[ ys ] Appending bs cs ys × Appending as ys ds →
+  ∃[ xs ] Appending as bs xs × Appending xs cs ds
+assoc← = Appendingₚ.assoc← ≈;≈⇒≈ id ≈⇒≈;≈

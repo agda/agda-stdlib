@@ -4,30 +4,30 @@
 -- Properties of unnormalized Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra.Definitions
 open import Algebra.Structures
-  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma; IsMonoid
-        ; IsCommutativeMonoid; IsGroup; IsAbelianGroup; IsRing
-        ; IsCommutativeRing)
+  using (IsMagma; IsSemigroup; IsBand; IsSelectiveMagma
+        ; IsMonoid; IsCommutativeMonoid; IsGroup; IsAbelianGroup
+        ; IsRing; IsCommutativeRing)
 open import Algebra.Bundles
 open import Algebra.Apartness
   using (IsHeytingCommutativeRing; IsHeytingField
         ; HeytingCommutativeRing; HeytingField)
 open import Algebra.Lattice
-  using (IsLattice; IsDistributiveLattice; IsSemilattice
-        ; Semilattice; Lattice; DistributiveLattice; RawLattice)
+  using (IsSemilattice; IsLattice; IsDistributiveLattice
+        ; RawLattice; Semilattice; Lattice; DistributiveLattice)
 import Algebra.Consequences.Setoid as Consequences
-open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
   using (MaxOperator; MinOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
   using (≤-refl; +-comm; +-identityʳ; +-assoc
@@ -37,7 +37,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
 open import Data.Product.Base using (_,_; proj₁; proj₂)
-open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
@@ -62,6 +62,7 @@ import Relation.Binary.Properties.Poset as PosetProperties
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
+open import Algebra.Consequences.Propositional {A = ℚᵘ}
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
 private
@@ -119,7 +120,7 @@ drop-*≡* (*≡* eq) = eq
 infix 4 _≃?_
 
 _≃?_ : Decidable _≃_
-p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
+p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≡? ↥ q ℤ.* ↧ p)
 
 0≄1 : 0ℚᵘ ≄ 1ℚᵘ
 0≄1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
@@ -146,7 +147,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 ≃-isDecEquivalence : IsDecEquivalence _≃_
 ≃-isDecEquivalence = record
   { isEquivalence = ≃-isEquivalence
-  ; _≟_           = _≃?_
+  ; _≈?_          = _≃?_
   }
 
 ≄-isApartnessRelation : IsApartnessRelation _≃_ _≄_
@@ -177,13 +178,18 @@ module ≃-Reasoning = ≈-Reasoning ≃-setoid
 
 p≃0⇒↥p≡0 : ∀ p → p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
 p≃0⇒↥p≡0 p (*≡* eq) = begin
-  ↥ p          ≡⟨ ℤ.*-identityʳ (↥ p) ⟨
+  ↥ p         ≡⟨ ℤ.*-identityʳ (↥ p) ⟨
   ↥ p ℤ.* 1ℤ  ≡⟨ eq ⟩
-  0ℤ           ∎
+  0ℤ          ∎
   where open ≡-Reasoning
 
 ↥p≡↥q≡0⇒p≃q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
 ↥p≡↥q≡0⇒p≃q p q ↥p≡0 ↥q≡0 = ≃-trans (↥p≡0⇒p≃0 p ↥p≡0) (≃-sym (↥p≡0⇒p≃0 _ ↥q≡0))
+
+0≃?-weak : (p : ℚᵘ) → Maybe (0ℚᵘ ≃ p)
+0≃?-weak p with ↥ p ℤ.≟ 0ℤ
+... | yes ↥p≡0 = just (≃-sym (↥p≡0⇒p≃0 p ↥p≡0))
+... | no  _    = nothing
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -276,7 +282,7 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
 ≤-respʳ-≃ x≈y z≤x = ≤-trans z≤x (≤-reflexive x≈y)
 
 ≤-resp₂-≃ : _≤_ Respects₂ _≃_
-≤-resp₂-≃ = ≤-respʳ-≃ , ≤-respˡ-≃
+≤-resp₂-≃ = ≤-respˡ-≃ , ≤-respʳ-≃
 
 infix 4 _≤?_ _≥?_
 
@@ -320,7 +326,7 @@ _≥?_ = flip _≤?_
 ≤-isDecTotalOrder : IsDecTotalOrder _≃_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≃?_
+  ; _≈?_         = _≃?_
   ; _≤?_         = _≤?_
   }
 
@@ -406,6 +412,16 @@ antimono⇒cong = BC.antimono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antis
 
 drop-*<* : p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
 drop-*<* (*<* pq<qp) = pq<qp
+
+------------------------------------------------------------------------
+-- Properties of _<ᵇ_
+------------------------------------------------------------------------
+
+<ᵇ⇒< : T (p <ᵇ q) → p < q
+<ᵇ⇒< = *<* ∘ ℤ.<ᵇ⇒<
+
+<⇒<ᵇ : p < q → T (p <ᵇ q)
+<⇒<ᵇ = ℤ.<⇒<ᵇ ∘ drop-*<*
 
 ------------------------------------------------------------------------
 -- Relationship between other operators
@@ -550,7 +566,7 @@ _>?_ = flip _<?_
   $ neg-mono-< (<-respʳ-≃ (-‿cong q≃r) (neg-mono-< q<p))
 
 <-resp-≃ : _<_ Respects₂ _≃_
-<-resp-≃ = <-respʳ-≃ , <-respˡ-≃
+<-resp-≃ = <-respˡ-≃ , <-respʳ-≃
 
 ------------------------------------------------------------------------
 -- Structures
@@ -560,7 +576,7 @@ _>?_ = flip _<?_
   { isEquivalence = isEquivalence
   ; irrefl        = <-irrefl-≡
   ; trans         = <-trans
-  ; <-resp-≈      = subst (_ <_) , subst (_< _)
+  ; <-resp-≈      = subst (_< _) , subst (_ <_)
   }
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≃_ _<_
@@ -764,7 +780,7 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-identityˡ p = ≃-reflexive (+-identityˡ-≡ p)
 
 +-identityʳ-≡ : RightIdentity _≡_ 0ℚᵘ _+_
-+-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ {e = 0ℚᵘ} +-identityˡ-≡
++-identityʳ-≡ = comm∧idˡ⇒idʳ +-comm-≡ +-identityˡ-≡
 
 +-identityʳ : RightIdentity _≃_ 0ℚᵘ _+_
 +-identityʳ p = ≃-reflexive (+-identityʳ-≡ p)
@@ -792,8 +808,8 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-inverse : Inverse _≃_ 0ℚᵘ -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
 
-+-cancelˡ : ∀ {r p q} → r + p ≃ r + q → p ≃ q
-+-cancelˡ {r} {p} {q} r+p≃r+q = begin-equality
++-cancelˡ : LeftCancellative _≃_ _+_
++-cancelˡ r p q r+p≃r+q = begin-equality
   p            ≃⟨ +-identityʳ p ⟨
   p + 0ℚᵘ      ≃⟨ +-congʳ p (+-inverseʳ r) ⟨
   p + (r - r)  ≃⟨ +-assoc p r (- r) ⟨
@@ -805,12 +821,8 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
   q + 0ℚᵘ      ≃⟨ +-identityʳ q ⟩
   q            ∎ where open ≤-Reasoning
 
-+-cancelʳ : ∀ {r p q} → p + r ≃ q + r → p ≃ q
-+-cancelʳ {r} {p} {q} p+r≃q+r = +-cancelˡ {r} $ begin-equality
-  r + p ≃⟨ +-comm r p ⟩
-  p + r ≃⟨ p+r≃q+r ⟩
-  q + r ≃⟨ +-comm q r ⟩
-  r + q ∎ where open ≤-Reasoning
++-cancelʳ : RightCancellative _≃_ _+_
++-cancelʳ = Consequences.comm∧cancelˡ⇒cancelʳ ≃-setoid +-comm +-cancelˡ
 
 p+p≃0⇒p≃0 : ∀ p → p + p ≃ 0ℚᵘ → p ≃ 0ℚᵘ
 p+p≃0⇒p≃0 (mkℚᵘ ℤ.+0 _) (*≡* _) = *≡* refl
@@ -1195,6 +1207,24 @@ invertible⇒≄ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≄1 (begin
 *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
+p*q≃0⇒p≃0∨q≃0 : p * q ≃ 0ℚᵘ → p ≃ 0ℚᵘ ⊎ q ≃ 0ℚᵘ
+p*q≃0⇒p≃0∨q≃0 {p@record{}} {q@record{}} p*q≃0 =
+  Sum.map (↥p≡0⇒p≃0 p) (↥p≡0⇒p≃0 q) (ℤ.i*j≡0⇒i≡0∨j≡0 _ (p≃0⇒↥p≡0 _ p*q≃0))
+
+p*q≄0⇒p≄0 : (p * q) ≄ 0ℚᵘ → p ≄ 0ℚᵘ
+p*q≄0⇒p≄0 {p} {q} pq≄0 p≃0 = pq≄0 $ begin-equality
+  p * q   ≃⟨ *-congʳ {q} p≃0 ⟩
+  0ℚᵘ * q ≃⟨ *-zeroˡ q ⟩
+  0ℚᵘ     ∎
+  where open ≤-Reasoning
+
+p*q≢0⇒q≢0 : (p * q) ≄ 0ℚᵘ → q ≄ 0ℚᵘ
+p*q≢0⇒q≢0 {p} {q} pq≄0 q≃0 = pq≄0 $ begin-equality
+  p * q   ≃⟨ *-congˡ {p} q≃0 ⟩
+  p * 0ℚᵘ ≃⟨ *-zeroʳ p ⟩
+  0ℚᵘ     ∎
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and -_
 
@@ -1542,24 +1572,24 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
 -- Basic specification in terms of _≤_
 
 p≤q⇒p⊔q≃q : p ≤ q → p ⊔ q ≃ q
-p≤q⇒p⊔q≃q {p@record{}} {q@record{}} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | _       = ≃-refl
-... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
+p≤q⇒p⊔q≃q {p@record{}} {q@record{}} p≤q with p ≤ᵇ q in eq
+... | true  = ≃-refl
+... | false = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym eq) λ())
 
 p≥q⇒p⊔q≃p : p ≥ q → p ⊔ q ≃ p
-p≥q⇒p⊔q≃p {p@record{}} {q@record{}} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | [ p≤q ] = ≤-antisym p≥q (≤ᵇ⇒≤ (subst T (sym p≤q) _))
-... | false | [ p≤q ] = ≃-refl
+p≥q⇒p⊔q≃p {p@record{}} {q@record{}} p≥q with p ≤ᵇ q in eq
+... | true  = ≤-antisym p≥q (≤ᵇ⇒≤ (subst T (sym eq) _))
+... | false = ≃-refl
 
 p≤q⇒p⊓q≃p : p ≤ q → p ⊓ q ≃ p
-p≤q⇒p⊓q≃p {p@record{}} {q@record{}} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | _       = ≃-refl
-... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
+p≤q⇒p⊓q≃p {p@record{}} {q@record{}} p≤q with p ≤ᵇ q in eq
+... | true  = ≃-refl
+... | false = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym eq) λ())
 
 p≥q⇒p⊓q≃q : p ≥ q → p ⊓ q ≃ q
-p≥q⇒p⊓q≃q {p@record{}} {q@record{}} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | [ p≤q ] = ≤-antisym (≤ᵇ⇒≤ (subst T (sym p≤q) _)) p≥q
-... | false | [ p≤q ] = ≃-refl
+p≥q⇒p⊓q≃q {p@record{}} {q@record{}} p≥q with p ≤ᵇ q in eq
+... | true  = ≤-antisym (≤ᵇ⇒≤ (subst T (sym eq) _)) p≥q
+... | false = ≃-refl
 
 ⊓-operator : MinOperator ≤-totalPreorder
 ⊓-operator = record
@@ -1911,14 +1941,6 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.5
-
-neg-mono-<-> = neg-mono-<
-{-# WARNING_ON_USAGE neg-mono-<->
-"Warning: neg-mono-<-> was deprecated in v1.5.
-Please use neg-mono-< instead."
-#-}
-
 -- Version 2.0
 
 ↥[p/q]≡p = ↥[n/d]≡n
@@ -1940,7 +1962,7 @@ Please use *-monoʳ-≤-nonNeg instead."
 *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-pos r@{mkℚᵘ +[1+ _ ] _} _ = *-monoˡ-≤-nonNeg r
 {-# WARNING_ON_USAGE *-monoˡ-≤-pos
-"Warning: *-monoˡ-≤-nonNeg was deprecated in v2.0.
+"Warning: *-monoˡ-≤-pos was deprecated in v2.0.
 Please use *-monoˡ-≤-nonNeg instead."
 #-}
 ≤-steps = p≤q⇒p≤r+q

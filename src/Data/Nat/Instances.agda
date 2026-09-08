@@ -4,14 +4,14 @@
 -- Instances for natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Instances where
 
-open import Data.Nat.Properties using (≤-isDecTotalOrder; _≟_)
+open import Data.Nat.Properties using (≤-isDecTotalOrder; _≡?_)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 
 instance
-  ℕ-≡-isDecEquivalence = isDecEquivalence _≟_
+  ℕ-≡-isDecEquivalence = isDecEquivalence _≡?_
   ℕ-≤-isDecTotalOrder = ≤-isDecTotalOrder

@@ -4,7 +4,7 @@
 -- Many properties which hold for `_∼_` also hold for `_∼_ on f`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.On where
 
@@ -100,7 +100,7 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} where
                      IsDecEquivalence (≈ on f)
   isDecEquivalence dec = record
     { isEquivalence = isEquivalence Dec.isEquivalence
-    ; _≟_           = decidable f ≈ Dec._≟_
+    ; _≈?_          = decidable f ≈ Dec._≈?_
     } where module Dec = IsDecEquivalence dec
 
 module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
@@ -123,7 +123,7 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
                       IsDecPartialOrder (≈ on f) (∼ on f)
   isDecPartialOrder dpo = record
     { isPartialOrder = isPartialOrder DPO.isPartialOrder
-    ; _≟_            = decidable f _ DPO._≟_
+    ; _≈?_           = decidable f _ DPO._≈?_
     ; _≤?_           = decidable f _ DPO._≤?_
     } where module DPO = IsDecPartialOrder dpo
 
@@ -147,7 +147,7 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
                     IsDecTotalOrder (≈ on f) (∼ on f)
   isDecTotalOrder dec = record
     { isTotalOrder = isTotalOrder Dec.isTotalOrder
-    ; _≟_          = decidable f ≈ Dec._≟_
+    ; _≈?_         = decidable f ≈ Dec._≈?_
     ; _≤?_         = decidable f ∼ Dec._≤?_
     } where module Dec = IsDecTotalOrder dec
 

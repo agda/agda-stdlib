@@ -57,7 +57,7 @@ subpalindromes str = let Chars = List Char in
   |> filter (λ cs → 2 ≤? length cs)        ∶ List Chars
   -- only keep the ones that are palindromes
   |> map < fromList , fromList ∘ reverse > ∶ List (String × String)
-  |> filter (uncurry String._≟_)           ∶ List (String × String)
+  |> filter (uncurry String._≡?_)           ∶ List (String × String)
   |> map proj₁                             ∶ List String
 
 -- Test cases

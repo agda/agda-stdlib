@@ -4,7 +4,7 @@
 -- ANSI escape codes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module System.Console.ANSI where
 

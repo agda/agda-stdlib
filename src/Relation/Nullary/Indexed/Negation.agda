@@ -4,7 +4,7 @@
 -- Properties of indexed negation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Indexed.Negation where
 

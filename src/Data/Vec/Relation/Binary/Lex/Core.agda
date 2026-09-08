@@ -4,12 +4,12 @@
 -- Lexicographic ordering of same-length vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Relation.Binary.Lex.Core {a} {A : Set a} where
 
 open import Data.Nat.Base using (ℕ; suc)
-import Data.Nat.Properties as ℕ using (_≟_; ≡-irrelevant)
+import Data.Nat.Properties as ℕ using (_≡?_; ≡-irrelevant)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
@@ -25,7 +25,7 @@ open import Relation.Binary.Structures using (IsPartialEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong)
 import Relation.Nullary as Nullary
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_; _⊎-dec_)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×?_; _⊎?_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
@@ -94,7 +94,7 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   ∷<∷-⇔ = mk⇔ [ flip this refl , uncurry next ] toSum
 
   module _ (≈-equiv : IsPartialEquivalence _≈_)
-           ((≺-respʳ-≈ , ≺-respˡ-≈) : _≺_ Respects₂ _≈_)
+           ((≺-respˡ-≈ , ≺-respʳ-≈) : _≺_ Respects₂ _≈_)
            (≺-trans : Transitive _≺_)
            (open IsPartialEquivalence ≈-equiv)
            where
@@ -131,14 +131,14 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     respectsʳ resp (x≈y ∷ xs≋ys) (next x≈z xs<zs) = next (trans x≈z x≈y) (respectsʳ resp xs≋ys xs<zs)
 
     respects₂ : _≺_ Respects₂ _≈_ → ∀ {n} → (_<ₗₑₓ_ {n} {n}) Respects₂ _≋_
-    respects₂ (≺-resp-≈ʳ , ≺-resp-≈ˡ) = respectsʳ ≺-resp-≈ʳ , respectsˡ ≺-resp-≈ˡ
+    respects₂ (≺-resp-≈ˡ , ≺-resp-≈ʳ) = respectsˡ ≺-resp-≈ˡ , respectsʳ ≺-resp-≈ʳ
 
   module _ (P? : Dec P) (_≈?_ : Decidable _≈_) (_≺?_ : Decidable _≺_) where
 
     decidable : ∀ {m n} → Decidable (_<ₗₑₓ_ {m} {n})
-    decidable {m} {n} xs ys with m ℕ.≟ n
+    decidable {m} {n} xs ys with m ℕ.≡? n
     decidable {_} {_} []       []       | yes refl = Dec.map P⇔[]<[] P?
-    decidable {_} {_} (x ∷ xs) (y ∷ ys) | yes refl = Dec.map ∷<∷-⇔ ((x ≺? y) ⊎-dec (x ≈? y) ×-dec (decidable xs ys))
+    decidable {_} {_} (x ∷ xs) (y ∷ ys) | yes refl = Dec.map ∷<∷-⇔ ((x ≺? y) ⊎? (x ≈? y) ×? (decidable xs ys))
     decidable {_} {_} _        _        | no  m≢n    = no (λ xs<ys → contradiction (length-equal xs<ys) m≢n)
 
   module _ (P-irrel  : Nullary.Irrelevant P)

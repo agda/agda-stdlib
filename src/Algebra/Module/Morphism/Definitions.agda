@@ -4,7 +4,7 @@
 -- Basic definitions for morphisms between module-like algebraic
 -- structures
 ------------------------------------------------------------------------
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel)
 
