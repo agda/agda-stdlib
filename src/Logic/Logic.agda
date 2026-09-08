@@ -22,32 +22,32 @@ record Logic
       -------------------
       (S A) ⊢ A
 
-    context :
+    context-elimination :
       ∀ {X X' : Struct} {A : Lang} →
       (C⟨ X ⟩ ⊢ A → C⟨ X' ⟩ ⊢ A) →
       X ⊢ A →
       ---------
       X' ⊢ A
 
-    semicolon--context-l :
+    left-semicolon-context-introduction :
       ∀ {X X' Y Y' Z : Struct} {A : Lang} →
       (C⟨ X ⟩ ⊢ A → C⟨ X' ⟩ ⊢ A) →
       ----------------------------------------
       (C⟨ Y ⨾ X ⟩ ⊢ A → C⟨ Y ⨾ X' ⟩ ⊢ A)
 
-    semicolon--context-r :
+    right-semicolon-context-introduction :
       ∀ {X X' Y : Struct} {A : Lang} →
       (C⟨ X ⟩ ⊢ A → C⟨ X' ⟩ ⊢ A) →
       ----------------------------------------
       (C⟨ X ⨾ Y ⟩ ⊢ A → C⟨ X' ⨾ Y ⟩ ⊢ A)
 
-    if-introduction :
+    ⇒-introduction :
       ∀ {X : Struct} {A B : Lang} →
       (X ⨾ (S A)) ⊢ B →
       -------------
       X ⊢ (A ⇒ B)
 
-    if-elimination :
+    ⇒-elimination :
       ∀ {X Y : Struct} {A B : Lang} →
       X ⊢ (A ⇒ B) →
       Y ⊢ A →
@@ -55,7 +55,7 @@ record Logic
       (X ⨾ Y) ⊢ B
 
 -- proof from page 23
-chain-ifs :
+deduction-to-implication-transitivity :
   ∀ (Lang : Set) (Struct : Set) (S : Lang → Struct)
   (_⊢_ : Struct → Lang → Set)
   (C⟨_⟩ : Struct → Struct)
@@ -68,7 +68,7 @@ chain-ifs :
   (S (B ⇒ C)) ⊢ (A ⇒ C)
 
 
-chain-ifs Lang Struct S _⊢_ C⟨_⟩ _⨾_ _⇒_ x y =  Logic.if-introduction x(Logic.if-elimination x (Logic.hypothesis x) y)
+deduction-to-implication-transitivity Lang Struct S _⊢_ C⟨_⟩ _⨾_ _⇒_ x y =  Logic.⇒-introduction x(Logic.⇒-elimination x (Logic.hypothesis x) y)
 
 -- Lemma 2.22 (Uniqueness of conditionals)
 conditional-unique :
