@@ -137,8 +137,6 @@ P ≐′ Q = (P ⊆′ Q) × (Q ⊆′ P)
 ------------------------------------------------------------------------
 -- Properties of sets
 
-infix 10 Satisfiable Universal IUniversal
-
 -- Emptiness - no element satisfies P.
 
 Empty : Pred A ℓ → Set _
