@@ -24,7 +24,7 @@ git diff --diff-filter DR --name-status $1 \
     | awk '{print $2}' \
     | grep '^doc/README/' \
     | while read -r file; do
-    echo "$file was deleted, scanning for references"
+    echo -e "\e[1m$file\e[0m was deleted, scanning for references"
    
     # remove 'doc/' and '.agda, replace / with .
     module=${file#"doc/"}
@@ -43,12 +43,14 @@ git diff --diff-filter DR --name-status $1 \
     #         "-- see README.A for some notes. :-)"
     #      or "-- see README.A"
     # but not "-- see README.A.Some.Sub.Module"
-    grep -r -E ".*$module([^\.].*)?$" | while read -r ref; do
-        echo "ERROR: file referenced: $ref" >&2
+    grep -r -E ".*$module([^\.].*)?$" --exclude-dir='.git' | while read -r ref; do
+        echo -e "\e[31mERROR: file referenced: \e[1m$ref\e[0m" >&2
         exit 1
     done
 
     if [[ $? == 1 ]]; then
         exit 1
     fi
+
+    echo -e "\e[32mNo references found!\e[0m"
 done
