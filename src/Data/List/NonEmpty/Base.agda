@@ -40,6 +40,8 @@ record List⁺ (A : Set a) : Set a where
     head : A
     tail : List A
 
+pattern [_] x = x ∷ []
+
 open List⁺ public
 
 ------------------------------------------------------------------------
@@ -48,8 +50,8 @@ open List⁺ public
 uncons : List⁺ A → A × List A
 uncons (hd ∷ tl) = hd , tl
 
-[_] : A → List⁺ A
-[ x ] = x ∷ []
+singleton : A → List⁺ A
+singleton = [_]
 
 infixr 5 _∷⁺_
 

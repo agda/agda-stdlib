@@ -10,7 +10,8 @@ module Data.Tree.Binary where
 
 open import Level using (Level; _⊔_)
 open import Data.List.Base using (List)
-open import Data.DifferenceList as DiffList using (DiffList; []; _∷_; _∷ʳ_; _++_; [_])
+open import Data.DifferenceList as DiffList
+  using (DiffList; []; _∷_; _∷ʳ_; _++_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Function.Base
 
@@ -80,7 +81,7 @@ module Suffix where
 module Leaves where
 
   toDiffList : Tree N L → DiffList L
-  toDiffList (leaf x)     = [ x ]
+  toDiffList (leaf x)     = DiffList.[ x ]
   toDiffList (node l m r) = toDiffList l ++ toDiffList r
 
   toList : Tree N L → List L
