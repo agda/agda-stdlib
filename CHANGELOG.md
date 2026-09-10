@@ -318,6 +318,9 @@ New modules
 * `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
   the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
+* `Data.Queue` adds an interface (`Data.Queue.QueueSpec`) for Queues, alongside
+   an implementation (`Data.Queue.TwoList.Base`)
+
 Additions to existing modules
 -----------------------------
 

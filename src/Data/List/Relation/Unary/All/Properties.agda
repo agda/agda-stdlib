@@ -87,6 +87,12 @@ Null? (_ ∷ _) = no ¬Null-∷
 Null-irrelevant : Irrelevant (Null {A = A})
 Null-irrelevant [] [] = refl
 
+nullxs→xs≡[] : Null xs → xs ≡ []
+nullxs→xs≡[] [] = refl
+
+xs≡[]→nullxs : xs ≡ [] → Null xs
+xs≡[]→nullxs xs≡[] rewrite xs≡[] = []
+
 ------------------------------------------------------------------------
 -- Properties of the "points-to" relation _[_]=_
 
