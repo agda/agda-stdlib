@@ -728,6 +728,10 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   ∣ i ∣ ℕ.+ ∣   j ∣        ∎
   where open ℕ.≤-Reasoning
 
+i≤∣i∣ : ∀ i → i ≤ + ∣ i ∣
+i≤∣i∣ (+ i) = ≤-reflexive (sym (0≤i⇒+∣i∣≡i (+≤+ z≤n)))
+i≤∣i∣ -[1+ i ] = -≤+
+
 ------------------------------------------------------------------------
 -- Properties of sign and _◃_
 
