@@ -503,6 +503,11 @@ Additions to existing modules
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
+* In `Data.Vec.Relation.Unary.Unique.Setoid`:
+  ```
+  unique? : Decidable _≈_ → Decidable Unique
+  ```
+
 * In `Function.Bundles.Bijection`:
   ```agda
   from             : B → A
