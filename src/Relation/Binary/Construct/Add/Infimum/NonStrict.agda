@@ -48,8 +48,8 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 [≤]-injective [ p ] = p
 
 ≤₋-refl : Reflexive _≤_ → Reflexive _≤₋_
-≤₋-refl ≤-refl {[ x ]} = [ ≤-refl ]
 ≤₋-refl ≤-refl {⊥₋} = ⊥₋≤ ⊥₋
+≤₋-refl ≤-refl {[ x ]} = [ ≤-refl ]
 
 ≤₋-trans : Transitive _≤_ → Transitive _≤₋_
 ≤₋-trans ≤-trans (⊥₋≤ l) q     = ⊥₋≤ _
