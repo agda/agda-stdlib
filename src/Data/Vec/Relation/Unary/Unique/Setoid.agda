@@ -16,8 +16,10 @@ open Setoid S renaming (Carrier to A)
 open import Data.Vec.Base
 import Data.Vec.Relation.Unary.AllPairs as AllPairsM
 open import Level using (_⊔_)
-open import Relation.Unary using (Pred)
+import Relation.Binary.Definitions as B
+open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Decidable.Core using (¬?)
 
 
 ------------------------------------------------------------------------
@@ -32,3 +34,6 @@ open import Data.Vec.Relation.Unary.AllPairs.Core Distinct public
 
 open import Data.Vec.Relation.Unary.AllPairs {R = Distinct} public
      using (head; tail)
+
+unique? : ∀ {n} → B.Decidable _≈_ → U.Decidable (Unique {n})
+unique? _≈?_ = AllPairsM.allPairs? λ x y → ¬? (x ≈? y)
