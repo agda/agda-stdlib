@@ -114,6 +114,11 @@ antisym : ∀ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} {R : REL A B ℓ} {m n} 
 antisym asym []            []            = []
 antisym asym (x∼y ∷ xs∼ys) (y∼x ∷ ys∼xs) = asym x∼y y∼x ∷ antisym asym xs∼ys ys∼xs
 
+antisym-≡ : ∀ {P : Rel A ℓ₁} {Q : Rel A ℓ₂} {n}
+          → Antisym P Q _≡_ → Antisym (Pointwise P {n}) (Pointwise Q {n}) _≡_
+antisym-≡ asym [] [] = ≡.refl
+antisym-≡ asym (x∼y ∷ xs∼ys) (y∼x ∷ ys∼xs) = ≡.cong₂ _∷_ (asym x∼y y∼x) (antisym-≡ asym xs∼ys ys∼xs)
+
 decidable : ∀ {_∼_ : REL A B ℓ} →
             Decidable _∼_ → ∀ {m n} → Decidable (Pointwise _∼_ {m} {n})
 decidable dec []       []       = yes []
