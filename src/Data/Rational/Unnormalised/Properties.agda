@@ -26,13 +26,13 @@ open import Algebra.Construct.NaturalChoice.Base
   using (MaxOperator; MinOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
-open import Data.Bool.Base using (T; true; false)
+open import Data.Bool.Base using (T; true; false; not)
+open import Data.Bool.Properties using (if-cong; T-to-≡; ≡-to-T; T-not-to-≡; ≡-to-T-not)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
-  using (≤-refl; +-comm; +-identityʳ; +-assoc
-        ; *-identityʳ; *-comm; *-assoc; *-suc)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
+import Data.Integer.DivMod as ℤ
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
@@ -41,8 +41,6 @@ open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary.Decidable.Core as Dec using (yes; no)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder
@@ -61,6 +59,10 @@ open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
+open import Relation.Nullary.Decidable.Core as Dec using (yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Reflects
+  using (Reflects; fromEquivalence; reflects-false; reflects-refute)
 
 open import Algebra.Consequences.Propositional {A = ℚᵘ}
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
@@ -406,6 +408,15 @@ antimono⇒cong = BC.antimono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antis
 ≤⇒≤ᵇ : p ≤ q → T (p ≤ᵇ q)
 ≤⇒≤ᵇ = ℤ.≤⇒≤ᵇ ∘ drop-*≤*
 
+≤ᵇ-reflects-≤ : ∀ p q → Reflects (p ≤ q) (p ≤ᵇ q)
+≤ᵇ-reflects-≤ p q = fromEquivalence ≤ᵇ⇒≤ ≤⇒≤ᵇ
+
+≰ᵇ⇒≰ : T (not (p ≤ᵇ q)) → p ≰ q
+≰ᵇ⇒≰ {p} {q} p≰ᵇq = reflects-false (≤ᵇ-reflects-≤ p q) (T-not-to-≡ p≰ᵇq)
+
+≰⇒≰ᵇ : p ≰ q → T (not (p ≤ᵇ q))
+≰⇒≰ᵇ {p} {q} p≰q = ≡-to-T-not (reflects-refute (≤ᵇ-reflects-≤ p q) p≰q)
+
 ------------------------------------------------------------------------
 -- Properties of _<_
 ------------------------------------------------------------------------
@@ -422,6 +433,15 @@ drop-*<* (*<* pq<qp) = pq<qp
 
 <⇒<ᵇ : p < q → T (p <ᵇ q)
 <⇒<ᵇ = ℤ.<⇒<ᵇ ∘ drop-*<*
+
+<ᵇ-reflects-< : ∀ p q → Reflects (p < q) (p <ᵇ q)
+<ᵇ-reflects-< p q = fromEquivalence <ᵇ⇒< <⇒<ᵇ
+
+≮ᵇ⇒≮ : T (not (p <ᵇ q)) → p ≮ q
+≮ᵇ⇒≮ {p} {q} p≮ᵇq = reflects-false (<ᵇ-reflects-< p q) (T-not-to-≡ p≮ᵇq)
+
+≮⇒≮ᵇ : p ≮ q → T (not (p <ᵇ q))
+≮⇒≮ᵇ {p} {q} p≮q = ≡-to-T-not (reflects-refute (<ᵇ-reflects-< p q) p≮q)
 
 ------------------------------------------------------------------------
 -- Relationship between other operators
@@ -937,6 +957,13 @@ nonNeg+nonNeg⇒nonNeg p q = nonNegative
   (p + (- q + q)) - r ≃⟨ +-congˡ (- r) (+-congʳ p (+-inverseˡ q)) ⟩
   (p + 0ℚᵘ) - r       ≃⟨ +-congˡ (- r) (+-identityʳ p) ⟩
   p - r               ∎ where open ≤-Reasoning
+
+neg-distrib-minus : ∀ p q → - (p - q) ≡ q - p
+neg-distrib-minus p q = begin
+  - (p - q)     ≡⟨ neg-distrib-+ p (- q) ⟩
+  - p + - (- q) ≡⟨ cong (- p +_) (neg-involutive-≡ q) ⟩
+  - p + q       ≡⟨ +-comm-≡ (- p) q ⟩
+  q + - p       ∎ where open ≡-Reasoning
 
 p≃q⇒p-q≃0 : ∀ p q → p ≃ q → p - q ≃ 0ℚᵘ
 p≃q⇒p-q≃0 p q p≃q = begin-equality
@@ -1567,6 +1594,23 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
     1/q≥0 = pos⇒nonNeg 1/q {{1/pos⇒pos q}}
 
 ------------------------------------------------------------------------
+-- Properties of _/_
+
+/-cancelʳ-< : ∀ {i} {j} d .{{_ : ℕ.NonZero d}} → i / d < j / d → i ℤ.< j
+/-cancelʳ-< {i} {j} d@(suc _) (*<* i*d<j*d) = begin-strict
+  i           ≡⟨ ↥[n/d]≡n i d ⟨
+  (↥ (i / d)) <⟨ ℤ.*-cancelʳ-<-nonNeg (ℤ.+ d) i*d<j*d ⟩
+  (↥ (j / d)) ≡⟨ ↥[n/d]≡n j d ⟩
+  j           ∎ where open ℤ.≤-Reasoning
+
+/-cancelʳ-≤ : ∀ {i} {j} d .{{_ : ℕ.NonZero d}} → i / d ≤ j / d → i ℤ.≤ j
+/-cancelʳ-≤ {i} {j} d@(suc _) (*≤* i*d≤i*d) = begin
+  i           ≡⟨ ↥[n/d]≡n i d ⟨
+  (↥ (i / d)) ≤⟨ ℤ.*-cancelʳ-≤-pos _ _(ℤ.+ d) i*d≤i*d ⟩
+  (↥ (j / d)) ≡⟨ ↥[n/d]≡n j d ⟩
+  j           ∎ where open ℤ.≤-Reasoning
+
+------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
 ------------------------------------------------------------------------
 -- Basic specification in terms of _≤_
@@ -1909,6 +1953,18 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
   ∣ p ∣ + ∣   q ∣  ∎
   where open ≤-Reasoning
 
+∣p-q∣≤∣p-r∣+∣r-q∣ : ∀ p q r → ∣ p - q ∣ ≤ ∣ p - r ∣ + ∣ r - q ∣
+∣p-q∣≤∣p-r∣+∣r-q∣ p q r = begin
+  ∣ p - q ∣             ≃⟨ ∣-∣-cong (+-minus-telescope p r q) ⟨
+  ∣ (p - r) + (r - q) ∣ ≤⟨ ∣p+q∣≤∣p∣+∣q∣ (p - r) (r - q) ⟩
+  ∣ p - r ∣ + ∣ r - q ∣ ∎ where open ≤-Reasoning
+
+∣p-q∣≡∣q-p∣ : ∀ p q → ∣ p - q ∣ ≡ ∣ q - p ∣
+∣p-q∣≡∣q-p∣ p q = begin
+  ∣ p - q ∣     ≡⟨ ∣-p∣≡∣p∣ (p - q) ⟨
+  ∣ - (p - q) ∣ ≡⟨ cong ∣_∣ (neg-distrib-minus p q) ⟩
+  ∣ q - p ∣     ∎ where open ≡-Reasoning
+
 ∣p*q∣≡∣p∣*∣q∣ : ∀ p q → ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
 ∣p*q∣≡∣p∣*∣q∣ p@record{} q@record{} = begin
   ∣ p * q ∣                                           ≡⟨⟩
@@ -1934,6 +1990,275 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣-∣-nonNeg (mkℚᵘ +0       _) = _
 ∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
 
+-q≤p≤q⇒∣p∣≤q : ∀ {p q} → - q ≤ p → p ≤ q → ∣ p ∣ ≤ q
+-q≤p≤q⇒∣p∣≤q {p} {q} -q≤p p≤q with ∣p∣≡p∨∣p∣≡-p p
+... | inj₁ ∣p∣≡p  =  ≤-respˡ-≃ (≃-reflexive (sym ∣p∣≡p)) p≤q
+... | inj₂ ∣p∣≡-p = begin
+  ∣ p ∣   ≡⟨ ∣p∣≡-p ⟩
+  - p     ≤⟨ neg-mono-≤ -q≤p ⟩
+  - (- q) ≡⟨ neg-involutive-≡ q ⟩
+  q       ∎ where open ≤-Reasoning
+
+-q<p<q⇒∣p∣<q : ∀ {p q} → - q < p → p < q → ∣ p ∣ < q
+-q<p<q⇒∣p∣<q {p} {q} -q<p p<q with ∣p∣≡p∨∣p∣≡-p p
+... | inj₁ ∣p∣≡p  =  <-respˡ-≃ (≃-reflexive (sym ∣p∣≡p)) p<q
+... | inj₂ ∣p∣≡-p = begin-strict
+  ∣ p ∣   ≡⟨ ∣p∣≡-p ⟩
+  - p     <⟨ neg-mono-< -q<p ⟩
+  - (- q) ≡⟨ neg-involutive-≡ q ⟩
+  q       ∎ where open ≤-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of Rounding functions
+
+floor-cong : ∀ {p} {q} → p ≃ q → ⌊ p ⌋ ≡ ⌊ q ⌋
+floor-cong {p@record{}} {q@record{}} (*≡* ↥p↧q≡↥q↧p) = begin
+  ↥ p ℤ./ ↧ p                     ≡⟨ ℤ.*-cancelʳ-/ (↥ p) (↧ q) (↧ p) ⟨
+  (↥ p ℤ.* ↧ q) ℤ./ (↧ p ℤ.* ↧ q) ≡⟨ cong (ℤ._/ (↧ p ℤ.* ↧ q)) ↥p↧q≡↥q↧p ⟩
+  (↥ q ℤ.* ↧ p) ℤ./ (↧ p ℤ.* ↧ q) ≡⟨ cong (ℤ._/ (↧ p ℤ.* ↧ q)) (ℤ.*-comm (↥ q) _)⟩
+  (↧ p ℤ.* ↥ q) ℤ./ (↧ p ℤ.* ↧ q) ≡⟨ ℤ.*-cancelˡ-/ (↧ p) (↥ q) (↧ q) ⟩
+  ↥ q ℤ./ ↧ q ∎ where open ≡-Reasoning
+
+ceiling-cong : ∀ {p} {q} → p ≃ q → ⌈ p ⌉ ≡ ⌈ q ⌉
+ceiling-cong {p@record{}} {q@record{}} eq = cong ℤ.-_ (floor-cong (-‿cong eq))
+
+round-cong : ∀ {p} {q} → p ≃ q → round p ≡ round q
+round-cong {p@record{}} {q@record{}} eq with p ≤ᵇ 0ℚᵘ in leq
+... | false = begin
+  ⌊ p + ½ ⌋ ≡⟨ floor-cong (+-congˡ ½ eq) ⟩
+  ⌊ q + ½ ⌋ ≡⟨ if-cong q≤ᵇ0≡false ⟨
+  round q   ∎
+  where
+    open ≡-Reasoning
+    0<q : 0ℚᵘ < q
+    0<q = <-respʳ-≃ eq ((≰⇒> ∘ ≰ᵇ⇒≰ ∘ ≡-to-T-not) leq)
+    q≤ᵇ0≡false : (q ≤ᵇ 0ℚᵘ) ≡ false
+    q≤ᵇ0≡false = T-not-to-≡ (≰⇒≰ᵇ (<⇒≱ 0<q))
+... | true = begin
+  ⌈ p - ½ ⌉ ≡⟨ ceiling-cong (+-congˡ (- ½) eq) ⟩
+  ⌈ q - ½ ⌉ ≡⟨ if-cong q≤ᵇ0≡true ⟨
+  round q   ∎
+  where
+    open ≡-Reasoning
+    q≤0 : q ≤ 0ℚᵘ
+    q≤0 =  ≤-respˡ-≃ eq (≤ᵇ⇒≤ (≡-to-T leq))
+    q≤ᵇ0≡true : (q ≤ᵇ 0ℚᵘ) ≡ true
+    q≤ᵇ0≡true = T-to-≡ (≤⇒≤ᵇ q≤0)
+
+⌊i/1⌋≡i : ∀ i → ⌊ i / 1 ⌋ ≡ i
+⌊i/1⌋≡i i = ℤ.i/1≡i i
+
+⌈i/1⌉≡i : ∀ i → ⌈ i / 1 ⌉ ≡ i
+⌈i/1⌉≡i i = trans (cong ℤ.-_ (⌊i/1⌋≡i (ℤ.- i))) (ℤ.neg-involutive i)
+
+⌊-q⌋≡-⌈q⌉ : ∀ q → ⌊ - q ⌋ ≡ ℤ.- ⌈ q ⌉
+⌊-q⌋≡-⌈q⌉ q@record{} = sym (ℤ.neg-involutive ⌊ - q ⌋)
+
+⌈-q⌉≡-⌊q⌋ : ∀ q → ⌈ - q ⌉ ≡ ℤ.- ⌊ q ⌋
+⌈-q⌉≡-⌊q⌋ q@record{} = cong (λ x → ℤ.- ⌊ x ⌋) (neg-involutive-≡ q)
+
+private
+  q>0⇒round[-q]≡round[q] : ∀ {q} → q > 0ℚᵘ → round (- q) ≡ ℤ.- round q
+  q>0⇒round[-q]≡round[q] {q} q>0 = begin
+    round (- q)   ≡⟨ if-cong -q≤0 ⟩
+    ⌈ - q - ½ ⌉   ≡⟨ cong ceiling (neg-distrib-+ q ½) ⟨
+    ⌈ - (q + ½) ⌉ ≡⟨ ⌈-q⌉≡-⌊q⌋ (q + ½) ⟩
+    ℤ.- ⌊ q + ½ ⌋ ≡⟨ cong ℤ.-_ (if-cong q≥0) ⟨
+    ℤ.- round q   ∎
+    where
+    open ≡-Reasoning
+    -q≤0 : (- q ≤ᵇ 0ℚᵘ) ≡ true
+    -q≤0 = T-to-≡ (≤⇒≤ᵇ (<⇒≤ (neg-mono-< q>0)))
+    q≥0 : (q ≤ᵇ 0ℚᵘ) ≡ false
+    q≥0 = T-not-to-≡ (≰⇒≰ᵇ (<⇒≱ q>0))
+
+round[-q]≡-round[q] : ∀ q → round (- q) ≡ ℤ.- (round q)
+round[-q]≡-round[q] q@record{} with <-cmp q 0ℚᵘ
+... | tri< a ¬b ¬c = begin
+  round (- q)           ≡⟨ ℤ.neg-involutive (round (- q)) ⟨
+  ℤ.- (ℤ.- round (- q)) ≡⟨ cong ℤ.-_ (q>0⇒round[-q]≡round[q] (neg-mono-< a)) ⟨
+  ℤ.- round (- (- q))   ≡⟨ cong (ℤ.-_ ∘ round) (neg-involutive-≡ q) ⟩
+  ℤ.- round q           ∎ where open ≡-Reasoning
+... | tri≈ ¬a b ¬c = begin
+  round (- q) ≡⟨ round-cong (-‿cong b) ⟩
+  ℤ.- 0ℤ      ≡⟨ cong ℤ.-_ (round-cong b) ⟨
+  ℤ.- round q ∎ where open ≡-Reasoning
+... | tri> ¬a ¬b c = q>0⇒round[-q]≡round[q] c
+
+------------------------------------------------------------------------
+-- Bounds of ⌊_⌋ and ⌈_⌉
+
+⌊q⌋≤q : ∀ q → ⌊ q ⌋ / 1 ≤ q
+⌊q⌋≤q q@record{} = *≤* (begin
+  ⌊ q ⌋ ℤ.* (↧ q)           ≤⟨ ℤ.[n/d]*d≤n (↥ q) (↧ q) ⟩
+  (↥ q)                     ≡⟨ ℤ.*-identityʳ (↥ q) ⟨
+  (↥ q) ℤ.* (↧ (⌊ q ⌋ / 1)) ∎) where open ℤ.≤-Reasoning
+
+q<⌊q⌋+1 : ∀ q → q < ⌊ q ⌋ / 1 + 1ℚᵘ
+q<⌊q⌋+1 q@record{} = let n = ↥ q; d = ↧ q in *<* ( begin-strict
+  n ℤ.* 1ℤ                      ≡⟨ ℤ.*-identityʳ n ⟩
+  n                             ≡⟨ ℤ.a≡a%n+[a/n]*n n d  ⟩
+  ℤ.+ (n ℤ.% d) ℤ.+ ⌊ q ⌋ ℤ.* d <⟨ ℤ.+-monoˡ-< (⌊ q ⌋ ℤ.* d) (ℤ.+<+ (ℤ.n%d<d n d)) ⟩
+  d ℤ.+ ⌊ q ⌋ ℤ.* d             ≡⟨ i+j*i≡[j*1+1]i d ⌊ q ⌋ ⟩
+  ↥ (⌊ q ⌋ / 1 + 1ℚᵘ) ℤ.* d     ∎)
+  where
+    open ℤ.≤-Reasoning
+    i+j*i≡[j*1+1]i : ∀ i j → i ℤ.+ j ℤ.* i ≡ (j ℤ.* 1ℤ ℤ.+ 1ℤ) ℤ.* i
+    i+j*i≡[j*1+1]i i j rewrite ℤ.*-identityʳ j = begin-equality
+      i ℤ.+ j ℤ.* i        ≡⟨ cong (ℤ._+ j ℤ.* i) (ℤ.*-identityˡ i) ⟨
+      1ℤ ℤ.* i ℤ.+ j ℤ.* i ≡⟨ ℤ.*-distribʳ-+ i 1ℤ j ⟨
+      (1ℤ ℤ.+ j) ℤ.* i     ≡⟨ cong (ℤ._* i) (ℤ.+-comm 1ℤ j) ⟩
+      (j ℤ.+ 1ℤ) ℤ.* i     ∎
+
+q≤⌈q⌉ : ∀ q → q ≤ ⌈ q ⌉ / 1
+q≤⌈q⌉ q@record{} = begin
+  q         ≡⟨ neg-involutive-≡ q ⟨
+  - (- q)   ≤⟨ neg-mono-≤ (⌊q⌋≤q (- q)) ⟩
+  ⌈ q ⌉ / 1 ∎ where open ≤-Reasoning
+
+⌈q⌉-1<q : ∀ q → ⌈ q ⌉ / 1 - 1ℚᵘ < q
+⌈q⌉-1<q q@record{} = neg-cancel-< (begin-strict
+  - q                       <⟨ q<⌊q⌋+1 (- q) ⟩
+  ⌊ - q ⌋ / 1 + 1ℚᵘ         ≡⟨ neg-involutive-≡ (⌊ - q ⌋ / 1 + 1ℚᵘ) ⟨
+  - (- (⌊ - q ⌋ / 1 + 1ℚᵘ)) ≡⟨ cong -_ (neg-distrib-+ (⌊ - q ⌋ / 1) 1ℚᵘ) ⟩
+  - (⌈ q ⌉ / 1 - 1ℚᵘ)       ∎) where open ≤-Reasoning
+
+⌈q⌉≤⌊q⌋+1 : ∀ q → ⌈ q ⌉ ℤ.≤ ⌊ q ⌋ ℤ.+ 1ℤ
+⌈q⌉≤⌊q⌋+1 q = begin
+  ⌈ q ⌉                ≡⟨ \\-leftDividesˡ 1ℤ ⌈ q ⌉ ⟨
+  ℤ.suc (ℤ.pred ⌈ q ⌉) ≡⟨ cong ℤ.suc (ℤ.+-comm (ℤ.- 1ℤ) ⌈ q ⌉) ⟩
+  ℤ.suc (⌈ q ⌉ ℤ.- 1ℤ) ≤⟨ ℤ.i<j⇒suc[i]≤j ⌈q⌉-1<⌊q⌋+1 ⟩
+  ⌊ q ⌋ ℤ.+ 1ℤ         ∎
+  where
+  open ℤ.≤-Reasoning
+  open import Algebra.Properties.AbelianGroup ℤ.+-0-abelianGroup
+  ⌈q⌉-1<⌊q⌋+1 : ⌈ q ⌉ ℤ.- 1ℤ ℤ.< ⌊ q ⌋ ℤ.+ 1ℤ
+  ⌈q⌉-1<⌊q⌋+1 = begin-strict
+    ⌈ q ⌉ ℤ.- 1ℤ               ≡⟨ cong₂ ℤ._-_ (ℤ.*-identityʳ ⌈ q ⌉)
+                                              (ℤ.*-identityʳ 1ℤ) ⟨
+    ⌈ q ⌉ ℤ.* 1ℤ ℤ.- 1ℤ ℤ.* 1ℤ <⟨ /-cancelʳ-< 1 (<-trans (⌈q⌉-1<q q) (q<⌊q⌋+1 q)) ⟩
+    ⌊ q ⌋ ℤ.* 1ℤ ℤ.+ 1ℤ ℤ.* 1ℤ ≡⟨ cong₂ ℤ._+_ (ℤ.*-identityʳ ⌊ q ⌋)
+                                              (ℤ.*-identityʳ 1ℤ) ⟩
+    ⌊ q ⌋ ℤ.+ 1ℤ               ∎
+
+------------------------------------------------------------------------
+-- Approximation errors of ⌊_⌋ ⌈_⌉ and round(_)
+
+∣q-⌊q⌋∣<1 : ∀ q → ∣ q - ⌊ q ⌋ / 1 ∣ < 1ℚᵘ
+∣q-⌊q⌋∣<1 q = -q<p<q⇒∣p∣<q -1<q-⌊q⌋ q-⌊q⌋<1
+  where
+  open ≤-Reasoning
+  open import Algebra.Properties.AbelianGroup +-0-abelianGroup
+  -1<q-⌊q⌋ : - 1ℚᵘ < q - ⌊ q ⌋ / 1
+  -1<q-⌊q⌋ = let ⌊q⌋ = ⌊ q ⌋ / 1 in begin-strict
+    - 1ℚᵘ     <⟨ *<* ℤ.-<+ ⟩
+    0ℚᵘ       ≃⟨ +-inverseʳ ⌊q⌋ ⟨
+    ⌊q⌋ - ⌊q⌋ ≤⟨ +-monoˡ-≤ _ (⌊q⌋≤q q) ⟩
+    q - ⌊q⌋   ∎
+
+  q-⌊q⌋<1 : q - ⌊ q ⌋ / 1 < 1ℚᵘ
+  q-⌊q⌋<1 = let ⌊q⌋ = ⌊ q ⌋ / 1 in begin-strict
+    q - ⌊q⌋         <⟨ +-monoˡ-< _ (q<⌊q⌋+1 q) ⟩
+    ⌊q⌋ + 1ℚᵘ - ⌊q⌋ ≃⟨ xyx⁻¹≈y ⌊q⌋ 1ℚᵘ ⟩
+    1ℚᵘ             ∎
+
+∣q-⌈q⌉∣<1 : ∀ q → ∣ q - ⌈ q ⌉ / 1 ∣ < 1ℚᵘ
+∣q-⌈q⌉∣<1 q@record{} = let ⌊-q⌋ = ⌊ - q ⌋ / 1 in begin-strict
+  ∣ q - ⌈ q ⌉ / 1 ∣ ≡⟨ cong (λ x → ∣ q + x / 1 ∣) (⌊-q⌋≡-⌈q⌉ q) ⟨
+  ∣ q + ⌊-q⌋ ∣      ≡⟨ ∣-p∣≡∣p∣ (q + ⌊-q⌋) ⟨
+  ∣ - (q + ⌊-q⌋) ∣  ≡⟨ cong ∣_∣ (neg-distrib-+ q ⌊-q⌋) ⟩
+  ∣ - q - ⌊-q⌋ ∣    <⟨ ∣q-⌊q⌋∣<1 (- q) ⟩
+  1ℚᵘ               ∎ where open ≤-Reasoning
+
+∣q-round[q]∣≤½ : ∀ q → ∣ q - (round q) / 1 ∣ ≤ ½
+∣q-round[q]∣≤½ q = -q≤p≤q⇒∣p∣≤q -½≤q-round[q] (q-round[q]≤½ q)
+  where
+    open ≤-Reasoning
+    open import Algebra.Properties.AbelianGroup +-0-abelianGroup
+    q-round[q]≤½ : ∀ q → q - round q / 1 ≤ ½
+    q-round[q]≤½ q with q ≤ᵇ 0ℚᵘ
+    ... | false = let ⌊q+½⌋ = ⌊ q + ½ ⌋ / 1 in begin
+      q - ⌊q+½⌋               ≃⟨ +-congˡ _ (//-rightDividesʳ ½ q) ⟨
+      q + ½ - ½ - ⌊q+½⌋       <⟨ +-monoˡ-< _ (+-monoˡ-< _ (q<⌊q⌋+1 (q + ½))) ⟩
+      ⌊q+½⌋ + 1ℚᵘ - ½ - ⌊q+½⌋ ≃⟨ +-congˡ (- ⌊q+½⌋) (+-assoc ⌊q+½⌋ 1ℚᵘ (- ½)) ⟩
+      ⌊q+½⌋ + ½ - ⌊q+½⌋       ≃⟨ xyx⁻¹≈y ⌊q+½⌋ ½ ⟩
+      ½                       ∎
+    ... | true = begin
+      q - ⌈ q - ½ ⌉ / 1      ≡⟨ cong (λ x → q + x / 1) (⌊-q⌋≡-⌈q⌉ (q - ½)) ⟨
+      q + ⌊ - (q - ½) ⌋ / 1  ≤⟨ +-monoʳ-≤ q (⌊q⌋≤q (- (q - ½))) ⟩
+      q - (q - ½)            ≃⟨ +-congʳ q (⁻¹-anti-homo‿- q ½) ⟩
+      q + (½ - q)            ≡⟨ +-assoc-≡ q ½ (- q) ⟨
+      q + ½ - q              ≃⟨ xyx⁻¹≈y q ½ ⟩
+      ½                      ∎
+    -½≤q-round[q] : - ½ ≤ q - round q / 1
+    -½≤q-round[q] = begin
+      - ½ ≤⟨ neg-mono-≤ (q-round[q]≤½ (- q)) ⟩
+      - (- q - round (- q) / 1)
+          ≡⟨ neg-distrib-+ (- q) _ ⟩
+      - (- q) - (- (round (- q) / 1))
+          ≡⟨ cong₂ _+_ (neg-involutive-≡ q) (neg-involutive-≡ _)  ⟩
+      q + round (- q) / 1
+          ≡⟨ cong ((q +_) ∘ (_/ 1)) (round[-q]≡-round[q] q) ⟩
+      q + ℤ.- round q / 1 ∎
+
+i≤q⇒i≤⌊q⌋ : ∀ i q → i / 1 ≤ q → i ℤ.≤ ⌊ q ⌋
+i≤q⇒i≤⌊q⌋ i q i/1≤q = begin
+  i                    ≤⟨ ℤ.i<j⇒i≤pred[j] i<s⌊q⌋ ⟩
+  ℤ.pred (ℤ.suc ⌊ q ⌋) ≡⟨ ℤ.pred-suc ⌊ q ⌋ ⟩
+  ⌊ q ⌋                ∎
+  where
+  open ℤ.≤-Reasoning
+  i<s⌊q⌋ : i ℤ.< ℤ.suc ⌊ q ⌋
+  i<s⌊q⌋ = begin-strict
+    i                          <⟨ /-cancelʳ-< 1 (≤-<-trans i/1≤q (q<⌊q⌋+1 q)) ⟩
+    ⌊ q ⌋ ℤ.* 1ℤ ℤ.+ 1ℤ ℤ.* 1ℤ ≡⟨ cong₂ ℤ._+_ (ℤ.*-identityʳ ⌊ q ⌋)
+                                              (ℤ.*-identityʳ 1ℤ) ⟩
+    ⌊ q ⌋ ℤ.+ 1ℤ               ≡⟨ ℤ.+-comm ⌊ q ⌋ 1ℤ ⟩
+    ℤ.suc ⌊ q ⌋                ∎
+
+q≤i⇒⌈q⌉≤i : ∀ i q → q ≤ i / 1 → ⌈ q ⌉ ℤ.≤ i
+q≤i⇒⌈q⌉≤i i q q≤i/1 = begin
+  ⌈ q ⌉                ≡⟨ ℤ.suc-pred ⌈ q ⌉ ⟨
+  ℤ.suc (ℤ.pred ⌈ q ⌉) ≤⟨ ℤ.i<j⇒suc[i]≤j p⌊q⌋<i ⟩
+  i                    ∎
+  where
+  open ℤ.≤-Reasoning
+  p⌊q⌋<i : ℤ.pred ⌈ q ⌉ ℤ.< i
+  p⌊q⌋<i = begin-strict
+    ℤ.pred ⌈ q ⌉                     ≡⟨ ℤ.+-comm (ℤ.- 1ℤ) ⌈ q ⌉ ⟩
+    ⌈ q ⌉ ℤ.- 1ℤ                     ≡⟨ cong₂ ℤ._+_ (ℤ.*-identityʳ ⌈ q ⌉)
+                                                    (ℤ.*-identityʳ (ℤ.- 1ℤ)) ⟨
+    ⌈ q ⌉ ℤ.* 1ℤ ℤ.+ (ℤ.- 1ℤ) ℤ.* 1ℤ <⟨ /-cancelʳ-< 1 (<-≤-trans (⌈q⌉-1<q q) q≤i/1) ⟩
+    i                                ∎
+
+∣q-round[q]∣≤∣q-i∣ : ∀ q i → ∣ q - (round q) / 1 ∣ ≤ ∣ q - i / 1 ∣
+∣q-round[q]∣≤∣q-i∣ q@record{} i with ∣ q - i / 1 ∣ <ᵇ ½ in ∣q-i∣<½?
+... | false = ≤-trans (∣q-round[q]∣≤½ q) ½≤∣q-i∣
+  where
+    ½≤∣q-i∣ : ½ ≤ ∣ q - i / 1 ∣
+    ½≤∣q-i∣ = ≮⇒≥ (≮ᵇ⇒≮ (≡-to-T-not ∣q-i∣<½?))
+... | true = ≤-reflexive-≡ (cong (λ x → ∣ q - x / 1 ∣) round[q]≡i)
+  where
+    ∣q-i∣<½ : ∣ q - i / 1 ∣ < ½
+    ∣q-i∣<½ = <ᵇ⇒< (≡-to-T ∣q-i∣<½?)
+    ∣round[q]-i∣<1ℚᵘ : ∣ (round q) / 1 - i / 1 ∣ < 1ℚᵘ
+    ∣round[q]-i∣<1ℚᵘ = let round[q] = round q / 1 in begin-strict
+      ∣ round[q] - i / 1 ∣             ≤⟨ ∣p-q∣≤∣p-r∣+∣r-q∣ (round[q]) (i / 1) q ⟩
+      ∣ round[q] - q ∣ + ∣ q - i / 1 ∣ <⟨ +-monoʳ-< ∣ round[q] - q ∣ ∣q-i∣<½ ⟩
+      ∣ round[q] - q ∣ + ½             ≡⟨ cong (_+ ½) (∣p-q∣≡∣q-p∣ (round[q]) q) ⟩
+      ∣ q - round[q] ∣ + ½             ≤⟨ +-monoˡ-≤ ½ (∣q-round[q]∣≤½ q) ⟩
+      ½ + ½                            ≃⟨ *≡* refl ⟩
+      1ℚᵘ                              ∎ where open ≤-Reasoning
+    ∣round[q]-i∣<1ℕ : ℤ.∣ round q ℤ.- i ∣ ℕ.< 1
+    ∣round[q]-i∣<1ℕ = begin-strict
+      ℤ.∣ round q ℤ.- i ∣ ≡⟨ cong₂ (λ x y → ℤ.∣ x ℤ.+ y ∣)
+                                   (ℤ.*-identityʳ (round q))
+                                   (ℤ.*-identityʳ (ℤ.- i)) ⟨
+      ℤ.∣ round q ℤ.* 1ℤ ℤ.+ ℤ.- i ℤ.* 1ℤ ∣
+                          <⟨ ℤ.+<+⁻¹ (/-cancelʳ-< 1 ∣round[q]-i∣<1ℚᵘ) ⟩
+      1                   ∎ where open ℕ.≤-Reasoning
+    round[q]≡i : round q ≡ i
+    round[q]≡i = ℤ.∣i-j∣≡0⇒i≡j (ℕ.n<1⇒n≡0 ∣round[q]-i∣<1ℕ)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
