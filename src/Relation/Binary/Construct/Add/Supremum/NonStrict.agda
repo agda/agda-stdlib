@@ -20,7 +20,7 @@ open import Data.Sum.Base as Sum
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Maximum; Transitive; Total; Decidable; Irrelevant; Antisymmetric
+  using (Maximum; Reflexive; Transitive; Total; Decidable; Irrelevant; Antisymmetric
         ; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 import Relation.Nullary.Decidable.Core as Dec using (map′)
 open import Relation.Binary.PropositionalEquality.Core
@@ -45,6 +45,10 @@ data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
 
 [≤]-injective : ∀ {k l} → [ k ] ≤⁺ [ l ] → k ≤ l
 [≤]-injective [ p ] = p
+
+≤⁺-refl : Reflexive _≤_ → Reflexive _≤⁺_
+≤⁺-refl ≤-refl {[ _ ]} = [ ≤-refl ]
+≤⁺-refl ≤-refl {⊤⁺} = ⊤⁺ ≤⊤⁺
 
 ≤⁺-trans : Transitive _≤_ → Transitive _≤⁺_
 ≤⁺-trans ≤-trans [ p ] [ q ]   = [ ≤-trans p q ]

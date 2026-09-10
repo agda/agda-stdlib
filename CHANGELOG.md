@@ -606,6 +606,21 @@ Additions to existing modules
   from-injective   : Injective _≈₂_ _≈₁_ from
   ```
 
+* In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
+  ```agda
+  ≤±-refl : Reflexive _≤_ → Reflexive _≤±_
+  ```
+
+* In `Relation.Binary.Construct.Add.Infimum.NonStrict`:
+  ```agda
+  ≤₋-refl : Reflexive _≤_ → Reflexive _≤₋_
+  ```
+
+* In `Relation.Binary.Construct.Add.Supremum.NonStrict`:
+  ```agda
+  ≤⁺-refl : Reflexive _≤_ → Reflexive _≤⁺_
+  ```
+
 * In `Relation.Binary.Definitions`:
   ```agda
   HalfLeftAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
