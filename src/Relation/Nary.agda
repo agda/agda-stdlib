@@ -59,8 +59,6 @@ quantₙ : (∀ {i l} {I : Set i} → (I → Set l) → Set (i ⊔ l)) →
 quantₙ Q zero     f = f
 quantₙ Q (suc n)  f = Q (λ x → quantₙ Q n (f x))
 
-infix 5 ∃⟨_⟩ Π[_] ∀[_]
-
 -- existential quantifier
 
 ∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
