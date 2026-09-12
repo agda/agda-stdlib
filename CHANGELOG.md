@@ -318,6 +318,9 @@ New modules
 * `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
   the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
+* `Data.Vec.Recursive.Relation.Binary.Pointwise` for point wise relations of
+  recursive vectors.
+
 Additions to existing modules
 -----------------------------
 
