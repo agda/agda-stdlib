@@ -21,6 +21,7 @@ open import Data.Maybe.Base using (maybe′)
 open import Data.Product.Base using (uncurry)
 open import Data.String.Base using (String; fromList; replicate)
 open import Function.Base using (_∘_; _∘′_; _$_)
+open import Reflection.AST.Fixity using (Precedence) public
 
 open import Effect.Monad using (RawMonad)
 import Data.List.Effectful as List
@@ -137,3 +138,23 @@ commaSep = foldDoc (λ d e → d <> comma <+> e)
 
 newline : Doc
 newline = flush empty
+
+------------------------------------------------------------------------
+-- Pretty class
+
+private
+  variable
+    a : Level.Level
+
+-- The output of a Pretty instance is assumed
+-- to only ever be for humans, whereas Write (Text.Write)
+-- is designed to produce parseable output
+record Pretty (A : Set a) : Set a where
+  field
+    pPrintPrec : Precedence → A → Doc
+
+  pPrint : A → Doc
+  pPrint = pPrintPrec Precedence.unrelated
+
+  pretty : A → String
+  pretty = render ∘ pPrint
