@@ -16,8 +16,8 @@
 
 module Data.Vec.Recursive where
 
-open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred)
-open import Data.Nat.Properties using (+-comm; *-comm)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred; 2+)
+open import Data.Nat.Properties using (+-comm; *-comm; suc-injective)
 open import Data.Empty.Polymorphic using (⊥)
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Fin.Properties using (1↔⊤; *↔×)
@@ -30,11 +30,17 @@ open import Data.Unit.Polymorphic.Properties using (⊤↔⊤*)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function.Base using (_∘′_; _∘_; id; const)
 open import Function.Bundles using (_↔_; mk↔ₛ′; mk↔)
+open import Function.Nary.NonDependent.Base
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
 open import Level using (Level; lift)
 open import Relation.Unary using (IUniversal; Universal; _⇒_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; trans; cong; subst)
 open import Relation.Binary.Structures using (IsEquivalence)
+
+
+import Data.Product.Nary.NonDependent as Productₙ hiding (zipWith)
+
+open Productₙ using (HomoProduct; Projₙ; projₙ; removeₙ)
 
 private
   variable
@@ -47,12 +53,8 @@ private
 -- Types and patterns
 
 infix 8 _^_
-_^_ : Set a → ℕ → Set a
-A ^ 0    = ⊤
-A ^ 1    = A
-A ^ (suc n@(suc _)) = A × A ^ n
-
-pattern [] = lift tt
+_^_ : Set a → (n : ℕ) → Set (lconst n a)
+A ^ n = HomoProduct n A
 
 infix 3 _∈[_]_
 _∈[_]_ : {A : Set a} → A → ∀ n → A ^ n → Set a

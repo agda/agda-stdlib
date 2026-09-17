@@ -15,7 +15,7 @@ module Function.Nary.NonDependent.Base where
 ------------------------------------------------------------------------
 
 open import Level using (Level; 0ℓ; _⊔_)
-open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Function.Base using (_∘′_; _$′_; const; flip)
@@ -104,6 +104,10 @@ lreplicate n ℓ = ltabulate n (const ℓ)
 lconst : ℕ → Level → Level
 lconst l n = ⨆ l (lreplicate l n)
 
+lappend : ∀ m n → Levels m → Levels n → Levels (m + n)
+lappend zero    _ _          ln = ln
+lappend (suc m) n (ℓm , ℓms) ln = ℓm , lappend m n ℓms ln
+
 ------------------------------------------------------------------------
 -- Operations on Sets
 
@@ -132,6 +136,11 @@ stabulate (suc n) f g = g zero , stabulate n (f ∘′ suc) (λ u → g (suc u))
 
 sreplicate : ∀ n {a} → Set a → Sets n (lreplicate n a)
 sreplicate n A = stabulate n (const _) (const A)
+
+sappend : ∀ m n {ℓm : Levels m} {ℓn : Levels n} →
+          Sets m ℓm → Sets n ℓn → Sets (m + n) (lappend m n ℓm ℓn)
+sappend zero    _ _          sn = sn
+sappend (suc m) n (ℓm , ℓms) sn = ℓm , sappend m n ℓms sn
 
 ------------------------------------------------------------------------
 -- Operations on Functions
