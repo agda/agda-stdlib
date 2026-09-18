@@ -46,6 +46,7 @@ private
     l u : Key⁺
     h : ℕ
     P : Pred (K& V) p
+    Q : Pred (K& V) p
 
 
 module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) where
@@ -74,55 +75,57 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
       ih   = insertWith-nothing ku l<k<u′ pr (λ p → ¬p (right p))
 
     insertWith-just : (t : Tree V l u h) (l<k<u : l < k < u) →
-                      (pr : ∀ k′ v → (eq : k ≈ k′) → P (k′ , respects eq (f (just (respects (sym eq) v))))) →
-                      Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insertWith k f t l<k<u))
-    insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p
+                      (∀ k′ v → (eq : k ≈ k′) → P (k′ , v) →
+                         Q (k′ , respects eq (f (just (respects (sym eq) v))))) →
+                      (p : Any P t) → k ≈ lookupKey p →
+                      Any Q (proj₂ (insertWith k f t l<k<u))
+    insertWith-just (node kv@(k′ , v) lk ku bal) (l<k , k<u) pr p k≈p
       with p | compare k k′
     -- happy paths
-    ... | here _   | tri≈ _ k≈k′ _ = here (pr k′ v k≈k′)
+    ... | here p   | tri≈ _ k≈k′ _ = here (pr k′ v k≈k′ p)
     ... | left lp  | tri< k<k′ _ _ =
-      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just lk l<k<u′ pr lp)
+      joinˡ⁺-left⁺ kv lk′ ku bal (insertWith-just lk l<k<u′ pr lp k≈p)
       where
       l<k<u′ = l<k , [ k<k′ ]ᴿ
       lk′  = insertWith k f lk l<k<u′
     ... | right rp | tri> _ _ k>k′ =
-      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just ku l<k<u′ pr rp)
+      joinʳ⁺-right⁺ kv lk ku′ bal (insertWith-just ku l<k<u′ pr rp k≈p)
       where
       l<k<u′ = [ k>k′ ]ᴿ , k<u
       ku′  = insertWith k f ku l<k<u′
 
     -- impossible cases
-    ... | here eq  | tri< k<k′ _ _ = begin-contradiction
+    ... | here _   | tri< k<k′ _ _ = begin-contradiction
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
-      [ k′ ] ≈⟨ [ sym eq ]ᴱ ⟩
+      [ k′ ] ≈⟨ [ sym k≈p ]ᴱ ⟩
       [ k  ] ∎
-    ... | here eq  | tri> _ _ k>k′ = begin-contradiction
-      [ k  ] ≈⟨ [ eq ]ᴱ ⟩
+    ... | here _   | tri> _ _ k>k′ = begin-contradiction
+      [ k  ] ≈⟨ [ k≈p ]ᴱ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
     ... | left lp  | tri≈ _ k≈k′ _ = begin-contradiction
-      let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
-      [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
+      let k″ = Any.lookup lp .key; (_ , k″<k′) = lookup-bounded lp in
+      [ k  ] ≈⟨ [ k≈p ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] ≈⟨ [ sym k≈k′ ]ᴱ ⟩
       [ k  ] ∎
     ... | left lp  | tri> _ _ k>k′ = begin-contradiction
-      let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
-      [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
+      let k″ = Any.lookup lp .key; (_ , k″<k′) = lookup-bounded lp in
+      [ k  ] ≈⟨ [ k≈p ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
     ... | right rp | tri< k<k′ _ _ = begin-contradiction
-      let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
+      let k″ = Any.lookup rp .key; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
       [ k′ ] <⟨ k′<k″ ⟩
-      [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
+      [ k″ ] ≈⟨ [ sym k≈p ]ᴱ ⟩
       [ k  ] ∎
     ... | right rp | tri≈ _ k≈k′ _ = begin-contradiction
-      let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
+      let k″ = Any.lookup rp .key; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] ≈⟨ [ k≈k′ ]ᴱ ⟩
       [ k′ ] <⟨ k′<k″ ⟩
-      [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
+      [ k″ ] ≈⟨ [ sym k≈p ]ᴱ ⟩
       [ k  ] ∎
 
   module _ (k : Key) (v : Val k) (t : Tree V l u h) (l<k<u : l < k < u) where
@@ -133,7 +136,8 @@ module _ {V : Value v} (open Value V using (respects) renaming (family to Val)) 
 
     insert-just : (pr : ∀ k′ → (eq : k ≈ k′) → P (k′ , respects eq v)) →
                   Any ((k ≈_) ∘′ key) t → Any P (proj₂ (insert k v t l<k<u))
-    insert-just pr = insertWith-just k (F.const v) t l<k<u (λ k′ _ → pr k′)
+    insert-just pr p = insertWith-just k (F.const v) t l<k<u
+      (λ k′ _ eq _ → pr k′ eq) p (lookup-result p)
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
