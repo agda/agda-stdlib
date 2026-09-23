@@ -22,7 +22,7 @@ open import Algebra.Morphism.Structures
         ; IsNearSemiringHomomorphism; IsSemiringHomomorphism
         ; IsRingHomomorphism)
 open import Data.Product.Base using (_,_)
-open import Function.Definitions using (StrictlySurjective)
+import Function.Definitions.Strictly as Strictly using (Surjective)
 
 open import Algebra.Construct.Terminal {c} {ℓ}
 
@@ -40,7 +40,7 @@ one _ = _
 ------------------------------------------------------------------------
 -- Basic properties
 
-strictlySurjective : A → StrictlySurjective 𝕆ne._≈_ one
+strictlySurjective : A → Strictly.Surjective 𝕆ne._≈_ one
 strictlySurjective x _ = x , _
 
 ------------------------------------------------------------------------
