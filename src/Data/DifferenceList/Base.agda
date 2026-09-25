@@ -34,8 +34,11 @@ infixr 5 _∷_ _++_
 [] : DiffList A
 [] = id
 
-[_] : A → DiffList A
-[ x ] = x List.∷_
+singleton : A → DiffList A
+singleton = List._∷_
+
+singleton-syntax = singleton
+syntax singleton-syntax x = [ x ]
 
 _++_ : DiffList A → DiffList A → DiffList A
 _++_ = _∘′_

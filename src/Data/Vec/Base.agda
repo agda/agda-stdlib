@@ -37,6 +37,8 @@ data Vec (A : Set a) : ℕ → Set a where
   []  : Vec A zero
   _∷_ : ∀ (x : A) (xs : Vec A n) → Vec A (suc n)
 
+pattern [_] x = x ∷ []
+
 infix 4 _[_]=_
 
 data _[_]=_ {A : Set a} : Vec A n → Fin n → A → Set a where
@@ -240,8 +242,8 @@ countᵇ p = count (T? ∘ p)
 ------------------------------------------------------------------------
 -- Operations for building vectors
 
-[_] : A → Vec A 1
-[ x ] = x ∷ []
+singleton : A → Vec A 1
+singleton = [_]
 
 replicate : (n : ℕ) → A → Vec A n
 replicate zero    x = []
