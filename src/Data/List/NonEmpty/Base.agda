@@ -201,21 +201,21 @@ xs ⁺∷ʳ x = toList xs ∷ʳ x
 
 -- A snoc-view of non-empty lists.
 
-infixl 5 _∷ʳ′_
+infixl 5 _‵∷ʳ_
 
 data SnocView {A : Set a} : List⁺ A → Set a where
-  _∷ʳ′_ : (xs : List A) (x : A) → SnocView (xs ∷ʳ x)
+  _‵∷ʳ_ : (xs : List A) (x : A) → SnocView (xs ∷ʳ x)
 
 snocView : (xs : List⁺ A) → SnocView xs
 snocView (x ∷ xs)              with List.initLast xs
-snocView (x ∷ .[])             | []            = []       ∷ʳ′ x
-snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
+snocView (x ∷ .[])             | []            = []       ‵∷ʳ x
+snocView (x ∷ .(xs List.∷ʳ y)) | xs List.‵∷ʳ y = (x ∷ xs) ‵∷ʳ y
 
 -- The last element in the list.
 
 private
   last′ : ∀ {l} → SnocView {A = A} l → A
-  last′ (_ ∷ʳ′ y) = y
+  last′ (_ ‵∷ʳ y) = y
 
 last : List⁺ A → A
 last = last′ ∘ snocView
@@ -336,3 +336,19 @@ private
                [ 2 ] ∷
                []
   wordsBy-≡1 = refl
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infixl 5 _∷ʳ′_
+pattern _∷ʳ′_ = _‵∷ʳ_
+{-# WARNING_ON_USAGE _∷ʳ′_
+"Warning: _∷ʳ′_ was deprecated in v3.0.
+Please use _‵∷ʳ_ instead."
+#-}
