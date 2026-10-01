@@ -192,7 +192,7 @@ module PolynomialRingMorphism
     (⟦ a ⟧ +B β *B 0#) *B (⟦ b ⟧ +B β *B eval β p)
       ∎
 
-  eval-shift : (β : CR.Carrier B) → (p : Poly) → eval β (A0# ∷ p) ≈B β *B eval β p
+  eval-shift : (β : CR.Carrier B) → (p : Poly) → eval β (shift p) ≈B β *B eval β p
   eval-shift β p = begin
     ⟦ A0# ⟧ +B β *B eval β p
       ≈⟨ B.+-congʳ (MonHomo.ε-homo (+-monoidHom f)) ⟩
