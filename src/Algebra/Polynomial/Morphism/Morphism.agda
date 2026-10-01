@@ -1,5 +1,3 @@
--- Polynomial Morphisms
--- open import Algebra.Bundles using (CommutativeRing)
 open import Algebra.Bundles
   renaming (CommutativeRing to CR)
   

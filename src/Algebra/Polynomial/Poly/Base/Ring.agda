@@ -4,7 +4,7 @@ module Algebra.Polynomial.Poly.Base.Ring
   {ℓ₁ ℓ₂} (R : Ring ℓ₁ ℓ₂)
   where
   
-open import Algebra.Polynomial.Poly.Properties.Semiring (Ring.semiring R) public
+open import Algebra.Polynomial.Poly.Base.Semiring (Ring.semiring R) public
 open import Data.List.Base as List using (List; []; _∷_)
 
 module R = Ring R

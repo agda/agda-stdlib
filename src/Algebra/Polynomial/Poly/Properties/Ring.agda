@@ -98,7 +98,7 @@ p+[-p]IsZero {p = a ∷ p} = R.-‿inverseʳ a ∷ p+[-p]IsZero
 ---------------------------------------------------------------
 -- Additive bundles
 
-rawRing : Algebra.Bundles.Raw.RawRing _ _
+rawRing : RawRing _ _
 rawRing = record
   { Carrier = Poly
   ; _≈_ = _≈_
