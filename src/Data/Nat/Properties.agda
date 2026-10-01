@@ -673,6 +673,10 @@ m+n≡0⇒m≡0 zero eq = refl
 m+n≡0⇒n≡0 : ∀ m {n} → m + n ≡ 0 → n ≡ 0
 m+n≡0⇒n≡0 m {n} m+n≡0 = m+n≡0⇒m≡0 n (trans (+-comm n m) (m+n≡0))
 
+n+1≡suc[n+0] : (n + 1) ≡ suc (n + 0)
+n+1≡suc[n+0] {0} = refl
+n+1≡suc[n+0] {suc n} = cong suc n+1≡suc[n+0]
+
 ------------------------------------------------------------------------
 -- Properties of _+_ and _≤_/_<_
 
