@@ -293,6 +293,9 @@ New modules
   - `Data.DifferenceList.Base`
   - `Data.DifferenceList.Properties`
 
+* `Data.Product.Nary.NonDependent.Properties` for properties of
+  nondependent heterogeneous N-ary products.
+
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
   or type accumulators that need to be reversed in the base case.
@@ -476,6 +479,18 @@ Additions to existing modules
   ∃!-⇔ : P ≐ Q → ∃! _≈_ P ⇔ ∃! _≈_ Q
   ```
 
+* In `Data.Product.Nary.NonDependent`:
+  ```agda
+  append⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product⊤ m as → Product⊤ n bs → Product⊤ (m + n) (sappend m n as bs)
+  append : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product m as → Product n bs → Product (m + n) (sappend m n as bs)
+  splitAt⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+           Product⊤ (m + n) (sappend m n as bs) → (Product⊤ m as) × (Product⊤ n bs)
+  splitAt : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product (m + n) (sappend m n as bs) → Product m as × Product n bs
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
@@ -572,6 +587,13 @@ Additions to existing modules
   ```agda
   isBijection : IsBijection ≈₁ ≈₂ to → IsBijection ≈₂ ≈₁ from
   bijection   : Bijection R S → Bijection S R
+  ```
+
+* In `Function.Nary.NonDependent.Base`:
+  ```agda
+  lappend : ∀ m n → Levels m → Levels n → Levels (m + n)
+  sappend : ∀ m n {ℓm : Levels m} {ℓn : Levels n} →
+          Sets m ℓm → Sets n ℓn → Sets (m + n) (lappend m n ℓm ℓn)
   ```
 
 * In `Function.Properties.Bijection`:
