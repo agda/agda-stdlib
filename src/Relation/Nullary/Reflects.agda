@@ -121,3 +121,17 @@ det (ofⁿ ¬a) (ofⁿ  _) = refl
 
 T-reflects-elim : ∀ {a b} → Reflects (T a) b → b ≡ a
 T-reflects-elim {a} r = det r (T-reflects a)
+
+reflects-true : ∀ {b} → Reflects A b → b ≡ true → A
+reflects-true (ofʸ a) eq = a
+
+reflects-false : ∀ {b} → Reflects A b → b ≡ false → ¬ A
+reflects-false (ofⁿ ¬a) eq = ¬a
+
+reflects-proof : ∀ {b} → Reflects A b → A → b ≡ true
+reflects-proof (ofʸ a₁) a = refl
+reflects-proof (ofⁿ ¬a) a = contradiction a ¬a
+
+reflects-refute : ∀ {b} → Reflects A b → ¬ A → b ≡ false
+reflects-refute (ofʸ a) ¬a = contradiction a ¬a
+reflects-refute (ofⁿ ¬a₁) ¬a = refl

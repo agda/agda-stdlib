@@ -36,12 +36,12 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong₂; sym; _≢_; subst; subst₂; resp₂; trans)
+  using (_≡_; refl; cong; cong₂; sym; _≢_; ≢-sym; subst; subst₂; resp₂; trans)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
 open import Relation.Nullary.Decidable.Core using (yes; no)
 import Relation.Nullary.Reflects as Reflects
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contraposition)
 import Relation.Nullary.Decidable as Dec
 
 open import Algebra.Definitions {A = ℤ} _≡_
@@ -407,8 +407,15 @@ nonPositive⁻¹ -[1+ n ] = -≤+
 nonNegative⁻¹ : ∀ i → .{{NonNegative i}} → i ≥ 0ℤ
 nonNegative⁻¹ (+ n) = +≤+ z≤n
 
+nonZero⁻¹ : ∀ i → .{{NonZero i}} → i ≢ 0ℤ
+nonZero⁻¹ (+ n) = contraposition +-injective (ℕ.≢-nonZero⁻¹ n)
+nonZero⁻¹ -[1+ n ] ()
+
 negative<positive : ∀ i j → .{{Negative i}} → .{{Positive j}} → i < j
 negative<positive i j = <-trans (negative⁻¹ i) (positive⁻¹ j)
+
+nonNeg∧nonZero⇒Pos : ∀ i → .{{NonNegative i}} → .{{NonZero i}} → Positive i
+nonNeg∧nonZero⇒Pos i = positive (≤∧≢⇒< (nonNegative⁻¹ i) (≢-sym (nonZero⁻¹ i)))
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -1169,6 +1176,9 @@ i-j≡0⇒i≡j i j i-j≡0 = begin
   0ℤ + j        ≡⟨  +-identityˡ j ⟩
   j             ∎ where open ≡-Reasoning
 
+∣i-j∣≡0⇒i≡j : ∀ {i} {j} → ∣ i - j ∣ ≡ 0 → i ≡ j
+∣i-j∣≡0⇒i≡j {i} {j} eq = i-j≡0⇒i≡j i j (∣i∣≡0⇒i≡0 eq)
+
 i≤j⇒i-k≤j : ∀ k .{{_ : NonNegative k}} → i ≤ j → i - k ≤ j
 i≤j⇒i-k≤j {i}         +0       i≤j rewrite +-identityʳ i = i≤j
 i≤j⇒i-k≤j {+ m}       +[1+ n ] i≤j = ≤-trans (m⊖n≤m m (suc n)) i≤j
@@ -1633,6 +1643,12 @@ i*j≡0⇒i≡0∨j≡0 i p with ℕ.m*n≡0⇒m≡0∨n≡0 ∣ i ∣ (abs-cong
 i*j≢0 : ∀ i j .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
 i*j≢0 i j rewrite abs-* i j = ℕ.m*n≢0 ∣ i ∣ ∣ j ∣
 
+i*j≢0⇒i≢0 : ∀ i {j} .{{_ : NonZero (i * j)}} → NonZero i
+i*j≢0⇒i≢0 i {j} rewrite abs-* i j = ℕ.m*n≢0⇒m≢0 ∣ i ∣
+
+i*j≢0⇒j≢0 : ∀ i {j} .{{_ : NonZero (i * j)}} → NonZero j
+i*j≢0⇒j≢0 i {j} rewrite abs-* i j = ℕ.m*n≢0⇒n≢0 ∣ i ∣
+
 ------------------------------------------------------------------------
 -- Properties of _^_
 ------------------------------------------------------------------------
@@ -1825,6 +1841,15 @@ neg-distribʳ-* i j = begin
 
 *-cancelʳ-<-neg : ∀ n → i * -[1+ n ] < j * -[1+ n ] → i > j
 *-cancelʳ-<-neg {i} {j} n = *-cancelʳ-<-nonPos -[1+ n ]
+
+------------------------------------------------------------------------
+-- Properties of _*_ and Positive/NonPositive/Negative/NonNegative
+
+i≥0∧j≥0⇒i*j≥0 : ∀ i j → .{{NonNegative i}} → .{{NonNegative j}} → NonNegative (i * j)
+i≥0∧j≥0⇒i*j≥0 i j = nonNegative (*-monoʳ-≤-nonNeg j (nonNegative⁻¹ i))
+
+i>0∧j<0⇒i*j<0 : ∀ i j → .{{Positive i}} → .{{Negative j}} → Negative (i * j)
+i>0∧j<0⇒i*j<0 i j = negative (*-monoʳ-<-neg j (positive⁻¹ i))
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and ∣_∣
