@@ -14,14 +14,17 @@ open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
 open import Effect.Applicative as App using (RawApplicative)
 open import Effect.Functor as Fun using (RawFunctor)
+open import Effect.Functor.Naperian as Nap using (RawNaperian; PropositionalNaperian)
 open import Effect.Monad using (RawMonad; module Join; RawMonadT; mkRawMonad)
 import Function.Identity.Effectful as Id
 open import Function.Base using (flip; _∘_)
-open import Level using (Level)
+open import Level using (Level; 0ℓ)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality
 
 private
   variable
-    a : Level
+    a b : Level
     A : Set a
     n : ℕ
 
@@ -33,8 +36,24 @@ functor = record
   { _<$>_ = map
   }
 
-applicative : RawApplicative (λ (A : Set a) → Vec A n)
-applicative {n = n} = record
+rawNaperian : RawNaperian (λ (A : Set a) → Vec A n) 0ℓ
+rawNaperian {n = n} = record
+  { rawFunctor = functor
+  ; Log = Fin n
+  ; index = lookup
+  ; tabulate = tabulate
+  }
+
+naperian : PropositionalNaperian (λ (A : Set a) → Vec A n) 0ℓ
+naperian A = record
+  { rawNaperian = rawNaperian
+  ; index-tabulate = lookup∘tabulate
+  ; natural-tabulate = λ f k l → cong (flip lookup l) (tabulate-∘ f k)
+  ; natural-index = lookup-map
+  }
+
+rawApplicative : RawApplicative (λ (A : Set a) → Vec A n)
+rawApplicative {n = n} = record
   { rawFunctor = functor
   ; pure = replicate n
   ; _<*>_  = Vec._⊛_
@@ -42,7 +61,7 @@ applicative {n = n} = record
 
 monad : RawMonad (λ (A : Set a) → Vec A n)
 monad = record
-  { rawApplicative = applicative
+  { rawApplicative = rawApplicative
   ; _>>=_ = DiagonalBind._>>=_
   }
 
@@ -67,10 +86,9 @@ module TraversableA {f g F} (App : RawApplicative {f} {g} F) where
   forA = flip mapA
 
 module TraversableM {m n M} (Mon : RawMonad {m} {n} M) where
-
   open RawMonad Mon
 
-  open TraversableA rawApplicative public
+  open TraversableA (RawMonad.rawApplicative Mon) public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
@@ -90,7 +108,7 @@ lookup-functor-morphism i = record
 
 -- lookup is an applicative functor morphism.
 
-lookup-morphism : (i : Fin n) → App.Morphism (applicative {a}) Id.applicative
+lookup-morphism : (i : Fin n) → App.Morphism (rawApplicative {a}) Id.applicative
 lookup-morphism i = record
   { functorMorphism = lookup-functor-morphism i
   ; op-pure = lookup-replicate i
