@@ -175,6 +175,13 @@ Minor improvements
   have been streamlined via pattern-matching on `refl`, rather than defined by
   delegation to `Function.Consequences.Setoid` and the use of `cong`.
 
+* [Issue #3016](https://github.com/agda/agda-stdlib/issues/3016)
+  `Data.List.Relation.Binary.Permutation.Setoid.Properties.foldr-commMonoid`
+  now moves to `Data.List.Effectful.Foldable`, where it better belongs, for
+  the sake both of the dependency graph, and of incorporating the refactoring
+  of that module to make use of the addition of `Data.List.Base.foldMap` and
+  its properties.
+
 Deprecated modules
 ------------------
 
@@ -218,6 +225,11 @@ Deprecated names
 * In `Data.Integer.GCD`:
   ```agda
   gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  foldr-commMonoid  ↦  Data.List.Effectful.Foldable.foldr-congruent
   ```
 
 * In `Data.Nat.GCD`:
@@ -409,6 +421,20 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  foldMap : (B → B → B) → B → (A → B) → List A → B
+  ```
+
+* In `Data.List.Effectful.Foldable`:
+  for `CM : CommutativeMonoid`, `S : Setoid`, `F: Func S CM.setoid`,
+  ```agda
+  foldMap-congruent : Congruent _↭ₛ_ CM._≈_ (foldMap CM.rawMonoid F.to)
+  foldr-congruent   : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
+  ```
+  where `_↭ₛ_` is the `Permutation` relation on `S`, and `_↭ₘ_` the `Permutation`
+  relation on `CM.setoid`.
+
 * In `Data.List.Membership.Propositional.Properties`:
   ```agda
   foldl-selective : Selective _≡_ _•_ → ∀ e xs →
@@ -420,6 +446,10 @@ Additions to existing modules
   foldl-selective : Selective _≈_ _•_ → ∀ e xs →
                     (foldl _•_ e xs ≈ e) ⊎ (foldl _•_ e xs ∈ xs)
    ```
+* In `Data.List.Properties`:
+  ```agda
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr _∙_ ε (map f)
+  ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
