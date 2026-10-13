@@ -493,8 +493,10 @@ Additions to existing modules
 
 * In `Data.Sum.Relation.Binary.Pointwise`:
   ```agda
-  elim : R =[ f ]⇒ T → S =[ g ]⇒ T →
-         Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+  elim  : R =[ f ]⇒ T → S =[ g ]⇒ T → Sum.[ f , g ]′ ≗ h →
+          Pointwise R S =[ h ]⇒ T
+  elim′ : R =[ f ]⇒ T → S =[ g ]⇒ T →
+          Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
   ```
 
 * In `Data.Vec.Properties`:

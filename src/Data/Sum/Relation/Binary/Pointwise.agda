@@ -17,7 +17,8 @@ open import Function.Bundles using (Inverse; mk↔)
 open import Relation.Nullary.Decidable.Core as Dec using (yes; no; map′)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≗_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
@@ -39,16 +40,33 @@ data Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
 ----------------------------------------------------------------------
 -- Functions
 
-elim : ∀ {f : A → C} {g : B → C} →
-       R =[ f ]⇒ T → S =[ g ]⇒ T →
-       Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
-elim R⇒T S⇒T (inj₁ xRy) = R⇒T xRy
-elim R⇒T S⇒T (inj₂ xSy) = S⇒T xSy
+-- General eliminator arising from initiality of `Pointwise`.
+--
+-- Type-theoreticaly/logically, `elim` is an inference rule for the
+-- consequence relation given by (indexed) inclusion between relations,
+-- describing what 'conclusion' T is derivable from what 'principal formula'
+-- `Pointwise R S` by appeal to the ancillary sequents witnessing that
+-- 'T follows from R' and 'T follows from S'.
+--
+-- Categorically, it expresses `Pointwise R S` as a suitably indexed
+-- generalisation of a coproduct, with elim generalising the usual
+-- arrow-out-of-a-colimit.
+
+module _ {f : A → C} {g : B → C}
+         (T : Rel C ℓ) (R⇒T : R =[ f ]⇒ T) (S⇒T : S =[ g ]⇒ T)
+         where
+
+  elim : ∀ {h} → Sum.[ f , g ]′ ≗ h → Pointwise R S =[ h ]⇒ T
+  elim H (inj₁ xRy) = ≡.subst₂ T (H (inj₁ _)) (H (inj₁ _)) (R⇒T xRy)
+  elim H (inj₂ xSy) = ≡.subst₂ T (H (inj₂ _)) (H (inj₂ _)) (S⇒T xSy)
+
+  elim′ : Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+  elim′ = elim λ _ → ≡.refl
 
 map : ∀ {f : A → C} {g : B → D} →
       R =[ f ]⇒ T → S =[ g ]⇒ U →
       Pointwise R S =[ Sum.map f g ]⇒ Pointwise T U
-map R⇒T S⇒U = elim {T = Pointwise _ _} (inj₁ ∘ R⇒T) (inj₂ ∘ S⇒U)
+map R⇒T S⇒U = elim′ (Pointwise _ _) (inj₁ ∘ R⇒T) (inj₂ ∘ S⇒U)
 
 ------------------------------------------------------------------------
 -- Relational properties
