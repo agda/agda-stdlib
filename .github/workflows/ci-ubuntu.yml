@@ -85,11 +85,11 @@ jobs:
           if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
               || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
-            echo "AGDA_COMMIT=tags/v2.9.0" >> "${GITHUB_OUTPUT}";
+            echo "AGDA_COMMIT=tags/v2.9.0-rc1" >> "${GITHUB_OUTPUT}";
             echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_OUTPUT}"
           else
             # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.9.0" >> "${GITHUB_OUTPUT}";
+            echo "AGDA_COMMIT=tags/v2.9.0-rc1" >> "${GITHUB_OUTPUT}";
             echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_OUTPUT}"
           fi
 
