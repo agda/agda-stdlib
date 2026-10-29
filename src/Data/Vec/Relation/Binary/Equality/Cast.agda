@@ -128,7 +128,7 @@ module CastReasoning where
   -- convenient syntax for ‘equational’ reasoning
 
   infix 1 begin_
-  infixr 2 step-≃-⟩ step-≃-⟨ step-≂-⟩ step-≂-⟨ step-≈-⟩ step-≈-⟨ _≈⟨⟩_ ≈-cong
+  infixr 2 step-≃-⟩ step-≃-⟨ step-≂-⟩ step-≂-⟨ step-≈-⟩ step-≈-⟨ _≈⟨⟩_
   infix 3 _∎
 
   syntax step-≃-⟩ xs ys≡zs xs≈ys  = xs ≃⟨ xs≈ys ⟩ ys≡zs
