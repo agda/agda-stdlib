@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Irrelevant.Unsafe</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Unsafe properties of the proof irrelevance modality</a>
+<a id="161" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="235" class="Symbol">{-#</a> <a id="239" class="Keyword">OPTIONS</a> <a id="247" class="Pragma">--without-K</a> <a id="259" class="Pragma">--irrelevant-projections</a> <a id="284" class="Symbol">#-}</a>
+
+<a id="289" class="Keyword">module</a> <a id="296" href="Data.Irrelevant.Unsafe.html" class="Module">Data.Irrelevant.Unsafe</a> <a id="319" class="Keyword">where</a>
+
+<a id="326" class="Keyword">open</a> <a id="331" class="Keyword">import</a> <a id="338" href="Data.Irrelevant.html" class="Module">Data.Irrelevant</a> <a id="354" class="Keyword">hiding</a> <a id="361" class="Symbol">(</a><a id="362" href="Data.Irrelevant.html#1483" class="Function Operator">_&gt;&gt;=_</a><a id="367" class="Symbol">)</a>
+<a id="369" class="Keyword">open</a> <a id="374" class="Keyword">import</a> <a id="381" href="Level.html" class="Module">Level</a> <a id="387" class="Keyword">using</a> <a id="393" class="Symbol">(</a><a id="394" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="399" class="Symbol">)</a>
+
+<a id="402" class="Keyword">private</a>
+  <a id="412" class="Keyword">variable</a>
+    <a id="425" href="Data.Irrelevant.Unsafe.html#425" class="Generalizable">a</a> <a id="427" href="Data.Irrelevant.Unsafe.html#427" class="Generalizable">b</a> <a id="429" class="Symbol">:</a> <a id="431" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="441" href="Data.Irrelevant.Unsafe.html#441" class="Generalizable">A</a> <a id="443" class="Symbol">:</a> <a id="445" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="449" href="Data.Irrelevant.Unsafe.html#425" class="Generalizable">a</a>
+    <a id="455" href="Data.Irrelevant.Unsafe.html#455" class="Generalizable">B</a> <a id="457" class="Symbol">:</a> <a id="459" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="463" href="Data.Irrelevant.Unsafe.html#427" class="Generalizable">b</a>
+
+
+<a id="467" class="Comment">------------------------------------------------------------------------</a>
+<a id="540" class="Comment">-- Irrelevant types are Recomputable</a>
+
+<a id="578" class="Keyword">open</a> <a id="583" class="Keyword">import</a> <a id="590" href="Relation.Nullary.Recomputable.Unsafe.html" class="Module">Relation.Nullary.Recomputable.Unsafe</a> <a id="627" class="Keyword">public</a>
+  <a id="636" class="Keyword">using</a> <a id="642" class="Symbol">()</a> <a id="645" class="Keyword">renaming</a> <a id="654" class="Symbol">(</a><a id="655" href="Relation.Nullary.Recomputable.Unsafe.html#729" class="Function">irrelevant-recompute</a> <a id="676" class="Symbol">to</a> <a id="679" class="Function">recompute</a><a id="688" class="Symbol">)</a>
+
+<a id="691" class="Comment">------------------------------------------------------------------------</a>
+<a id="764" class="Comment">-- Algebraic structure: Monadic bind and join</a>
+
+<a id="join"></a><a id="811" href="Data.Irrelevant.Unsafe.html#811" class="Function">join</a> <a id="816" class="Symbol">:</a> <a id="818" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="829" class="Symbol">(</a><a id="830" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="841" href="Data.Irrelevant.Unsafe.html#441" class="Generalizable">A</a><a id="842" class="Symbol">)</a> <a id="844" class="Symbol">→</a> <a id="846" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="857" href="Data.Irrelevant.Unsafe.html#441" class="Generalizable">A</a>
+<a id="859" href="Data.Irrelevant.Unsafe.html#811" class="Function">join</a> <a id="864" class="Symbol">=</a> <a id="866" href="Data.Irrelevant.Unsafe.html#679" class="Function">recompute</a> <a id="876" href="Data.Irrelevant.html#981" class="Function Operator">$⁺_</a>
+
+<a id="881" class="Keyword">infixl</a> <a id="888" class="Number">1</a> <a id="890" href="Data.Irrelevant.Unsafe.html#896" class="Function Operator">_&gt;&gt;=_</a>
+<a id="_&gt;&gt;=_"></a><a id="896" href="Data.Irrelevant.Unsafe.html#896" class="Function Operator">_&gt;&gt;=_</a> <a id="902" class="Symbol">:</a> <a id="904" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="915" href="Data.Irrelevant.Unsafe.html#441" class="Generalizable">A</a> <a id="917" class="Symbol">→</a> <a id="919" class="Symbol">(</a><a id="920" href="Data.Irrelevant.Unsafe.html#441" class="Generalizable">A</a> <a id="922" class="Symbol">→</a> <a id="924" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="935" href="Data.Irrelevant.Unsafe.html#455" class="Generalizable">B</a><a id="936" class="Symbol">)</a> <a id="938" class="Symbol">→</a> <a id="940" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="951" href="Data.Irrelevant.Unsafe.html#455" class="Generalizable">B</a>
+<a id="953" href="Data.Irrelevant.html#767" class="InductiveConstructor Operator">[</a> <a id="955" href="Data.Irrelevant.Unsafe.html#955" class="Bound">a</a> <a id="957" href="Data.Irrelevant.html#767" class="InductiveConstructor Operator">]</a> <a id="959" href="Data.Irrelevant.Unsafe.html#896" class="Function Operator">&gt;&gt;=</a> <a id="963" href="Data.Irrelevant.Unsafe.html#963" class="Bound">f</a> <a id="965" class="Symbol">=</a> <a id="967" href="Data.Irrelevant.Unsafe.html#679" class="Function">recompute</a> <a id="977" class="Symbol">(</a><a id="978" href="Data.Irrelevant.Unsafe.html#963" class="Bound">f</a> <a id="980" href="Data.Irrelevant.Unsafe.html#955" class="Bound">a</a><a id="981" class="Symbol">)</a>
+</pre></body></html>

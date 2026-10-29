@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Nullary.Recomputable.Unsafe</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Irrelevant types are Recomputable</a>
+<a id="143" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="217" class="Symbol">{-#</a> <a id="221" class="Keyword">OPTIONS</a> <a id="229" class="Pragma">--without-K</a> <a id="241" class="Pragma">--irrelevant-projections</a> <a id="266" class="Symbol">#-}</a>
+
+<a id="271" class="Keyword">module</a> <a id="278" href="Relation.Nullary.Recomputable.Unsafe.html" class="Module">Relation.Nullary.Recomputable.Unsafe</a> <a id="315" class="Keyword">where</a>
+
+<a id="322" class="Keyword">open</a> <a id="327" class="Keyword">import</a> <a id="334" href="Data.Irrelevant.html" class="Module">Data.Irrelevant</a> <a id="350" class="Keyword">using</a> <a id="356" class="Symbol">(</a><a id="357" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a><a id="367" class="Symbol">;</a> <a id="369" href="Data.Irrelevant.html#780" class="Field">irrelevant</a><a id="379" class="Symbol">)</a>
+<a id="381" class="Keyword">open</a> <a id="386" class="Keyword">import</a> <a id="393" href="Level.html" class="Module">Level</a> <a id="399" class="Keyword">using</a> <a id="405" class="Symbol">(</a><a id="406" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="411" class="Symbol">)</a>
+
+<a id="414" class="Keyword">private</a>
+  <a id="424" class="Keyword">variable</a>
+    <a id="437" href="Relation.Nullary.Recomputable.Unsafe.html#437" class="Generalizable">a</a> <a id="439" class="Symbol">:</a> <a id="441" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="451" href="Relation.Nullary.Recomputable.Unsafe.html#451" class="Generalizable">A</a> <a id="453" class="Symbol">:</a> <a id="455" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="459" href="Relation.Nullary.Recomputable.Unsafe.html#437" class="Generalizable">a</a>
+
+
+<a id="463" class="Comment">------------------------------------------------------------------------</a>
+<a id="536" class="Comment">-- Re-export</a>
+
+<a id="550" class="Keyword">open</a> <a id="555" class="Keyword">import</a> <a id="562" href="Relation.Nullary.Recomputable.html" class="Module">Relation.Nullary.Recomputable</a> <a id="592" class="Keyword">public</a>
+
+<a id="600" class="Comment">------------------------------------------------------------------------</a>
+<a id="673" class="Comment">-- Constructions</a>
+
+<a id="691" class="Comment">-- Irrelevant types are Recomputable</a>
+
+<a id="irrelevant-recompute"></a><a id="729" href="Relation.Nullary.Recomputable.Unsafe.html#729" class="Function">irrelevant-recompute</a> <a id="750" class="Symbol">:</a> <a id="752" href="Relation.Nullary.Recomputable.Core.html#976" class="Function">Recomputable</a> <a id="765" class="Symbol">(</a><a id="766" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="777" href="Relation.Nullary.Recomputable.Unsafe.html#451" class="Generalizable">A</a><a id="778" class="Symbol">)</a>
+<a id="780" href="Data.Irrelevant.html#780" class="Field">irrelevant</a> <a id="791" class="Symbol">(</a><a id="792" href="Relation.Nullary.Recomputable.Unsafe.html#729" class="Function">irrelevant-recompute</a> <a id="813" href="Relation.Nullary.Recomputable.Unsafe.html#813" class="Bound">a</a><a id="814" class="Symbol">)</a> <a id="816" class="Symbol">=</a> <a id="818" href="Data.Irrelevant.html#780" class="Field">irrelevant</a> <a id="829" href="Relation.Nullary.Recomputable.Unsafe.html#813" class="Bound">a</a>
+</pre></body></html>
