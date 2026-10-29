@@ -618,11 +618,7 @@ id-is-foldr : id {A = List A} ≗ foldr _∷_ []
 id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
 
 ++-is-foldr : (xs ys : List A) → xs ++ ys ≡ foldr _∷_ ys xs
-++-is-foldr xs ys = begin
-  xs ++ ys                ≡⟨ cong (_++ ys) (id-is-foldr xs) ⟩
-  foldr _∷_ [] xs ++ ys   ≡⟨ foldr-fusion (_++ ys) [] (λ _ _ → refl) xs ⟩
-  foldr _∷_ ([] ++ ys) xs ≡⟨⟩
-  foldr _∷_ ys xs         ∎
+++-is-foldr xs ys = foldr-universal (_++ ys) _∷_ ys refl (λ _ _ → refl) xs
 
 foldr-++ : ∀ (f : A → B → B) x ys zs →
            foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
@@ -630,10 +626,7 @@ foldr-++ f x []       zs = refl
 foldr-++ f x (y ∷ ys) zs = cong (f y) (foldr-++ f x ys zs)
 
 map-is-foldr : {f : A → B} → map f ≗ foldr (λ x ys → f x ∷ ys) []
-map-is-foldr {f = f} xs = begin
-  map f xs                        ≡⟨ cong (map f) (id-is-foldr xs) ⟩
-  map f (foldr _∷_ [] xs)         ≡⟨ foldr-fusion (map f) [] (λ _ _ → refl) xs ⟩
-  foldr (λ x ys → f x ∷ ys) [] xs ∎
+map-is-foldr {f = f} = foldr-universal (map f) (λ x ys → f x ∷ ys) [] refl λ _ _ → refl
 
 foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
            foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
