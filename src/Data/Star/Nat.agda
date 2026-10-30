@@ -10,10 +10,16 @@ module Data.Star.Nat where
 
 open import Data.Unit.Base using (tt)
 open import Function.Base using (const)
+open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
     using (Star; ε; _◅_; gmap; map; _◅◅_; _▻▻_; _⋆)
 open import Relation.Binary.Construct.Always using (Always)
+
+private
+  variable
+    ℓ t : Level
+    I : Set ℓ
 
 -- Natural numbers.
 
@@ -30,7 +36,7 @@ suc = _◅_ _
 
 -- The length of a star-list.
 
-length : ∀ {i t} {I : Set i} {T : Rel I t} {i j} → Star T i j → ℕ
+length : {T : Rel I t} → ∀ {i j} → Star T i j → ℕ
 length = gmap (const _) (const _)
 
 -- Arithmetic.
