@@ -16,24 +16,24 @@ import Relation.Binary.Construct.On as On
 
 private
   variable
-    a ℓ ℓ₁ ℓ₂ : Level
+    a ℓ : Level
     A B C : Set a
     R S : Rel A ℓ
 
 ------------------------------------------------------------------------
 -- Definition
 
-data SymClosure {A : Set a} (R : Rel A ℓ) (a b : A) : Set ℓ where
-  fwd : R a b → SymClosure R a b
-  bwd : R b a → SymClosure R a b
+data SymClosure (R : Rel A ℓ) (x y : A) : Set ℓ where
+  fwd : R x y → SymClosure R x y
+  bwd : R y x → SymClosure R x y
 
 ------------------------------------------------------------------------
 -- Properties
 
 -- Symmetric closures are symmetric.
 symmetric : (R : Rel A ℓ) → Symmetric (SymClosure R)
-symmetric _ (fwd aRb) = bwd aRb
-symmetric _ (bwd bRa) = fwd bRa
+symmetric _ (fwd xRy) = bwd xRy
+symmetric _ (bwd yRx) = fwd yRx
 
 ------------------------------------------------------------------------
 -- Operations
@@ -41,8 +41,8 @@ symmetric _ (bwd bRa) = fwd bRa
 -- A generalised variant of `map` where *both* index types can change.
 hmap : ∀ (g : C → A) (f : C → B) → (R on g) ⇒ (S on f) →
        ((SymClosure R) on g) ⇒ ((SymClosure S) on f)
-hmap _ _ g*R⇒f*S (fwd aRb) = fwd (g*R⇒f*S aRb)
-hmap _ _ g*R⇒f*S (bwd bRa) = bwd (g*R⇒f*S bRa)
+hmap _ _ g*R⇒f*S (fwd xRy) = fwd (g*R⇒f*S xRy)
+hmap _ _ g*R⇒f*S (bwd yRx) = bwd (g*R⇒f*S yRx)
 
 -- Hence: SymClosure commutes with `on`
 on⁺ : (g : B → A) → ((SymClosure R) on g) ⇒ SymClosure (R on g)
@@ -59,7 +59,7 @@ map : R ⇒ S → SymClosure R ⇒ SymClosure S
 map = gmap id
 
 fold : Symmetric S → R ⇒ S → SymClosure R ⇒ S
-fold S-sym R⇒S (fwd aRb) = R⇒S aRb
+fold S-sym R⇒S (fwd xRy) = R⇒S xRy
 fold S-sym R⇒S (bwd bRa) = S-sym (R⇒S bRa)
 
 -- A generalised variant of `fold`.

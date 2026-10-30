@@ -1,7 +1,7 @@
 Version 3.0
 ===========
 
-The library has been tested using Agda 2.8.0.
+The library has been tested using Agda 2.8.0 and Agda 2.9.0.
 
 Highlights
 ----------
@@ -64,6 +64,12 @@ Bug-fixes
 
   As a further knock-on consequence, module `Algebra.Properties.KleeneAlgebra`
   has been completely rewritten in order to accommodate the new axiomatisation.
+
+* [issue #3128](https://github.com/agda/agda-stdlib/issues/3128)
+  `Data.Sum.Effectful.Left.Transformer.choice` corrected to choose between its
+  two arguments, rather than simply copy its first argument. The PR fixing this
+  also systematically makes better use of `variable`s, incorporating upstream
+  changes to avoid name shadowing in argument telescopes.
 
 * Refactored `Function.Bundles` to export `equivalence`, `toFunction`, and
   `fromFunction` from `*Inverse` with corresponding deprecations in
