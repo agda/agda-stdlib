@@ -161,6 +161,13 @@ Non-backwards compatible changes
   the `record POINTWISE` has been lowered to `ℓ₁ ⊔ ℓ₂` given the universe levels
   `ℓ₁`, resp. `ℓ₂` of the argument relations `_R₁_`, resp. `_R₂_`.
 
+* [Issue #3127](https://github.com/agda/agda-stdlib/pull/3127)
+  Following an upstream breaking change prompted by a proof of false
+  ([Agda Issue #8557](https://github.com/agda/agda/issues/8557),
+  `Irrelevant` cannot be proved to be a monad within `--safe` anymore.
+  Correspondingly, the relevant definitions have been moved to the new
+  module `Data.Irrelevant.Unsafe`.
+
 Minor improvements
 ------------------
 
@@ -218,6 +225,12 @@ Deprecated names
 * In `Data.Integer.GCD`:
   ```agda
   gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
+  ```
+
+* In `Data.Irrelevant`:
+  ```agda
+  λ∙⁻ ↦ _$⁺_
+  λ∙⁺ ↦ _$⁻_
   ```
 
 * In `Data.Nat.GCD`:
