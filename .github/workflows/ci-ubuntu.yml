@@ -85,11 +85,11 @@ jobs:
           if [[ '${{ github.ref }}' == 'refs/heads/experimental' \
               || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
-            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_OUTPUT}";
+            echo "AGDA_COMMIT=tags/v2.9.0-rc2" >> "${GITHUB_OUTPUT}";
             echo "AGDA_HTML_DIR=html/experimental" >> "${GITHUB_OUTPUT}"
           else
             # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.8.0" >> "${GITHUB_OUTPUT}";
+            echo "AGDA_COMMIT=tags/v2.9.0-rc2" >> "${GITHUB_OUTPUT}";
             echo "AGDA_HTML_DIR=html/master" >> "${GITHUB_OUTPUT}"
           fi
 
@@ -134,7 +134,7 @@ jobs:
         run: |
           echo ~/.cabal/bin >> "${GITHUB_PATH}"
           echo ${{ steps.install-ghc-cabal.outputs.ghc-path }} >> "${GITHUB_PATH}"
-          
+
       - name: Output PATH
         id: path
         run: echo "BIN_PATH=$PATH" >> "${GITHUB_OUTPUT}"
@@ -164,7 +164,7 @@ jobs:
           include-hidden-files: true
           name: ubuntu-cabal-dir
           path: ~/.cabal/
-      
+
       - name: Upload GHC directory
         uses: actions/upload-artifact@v4
         with:
@@ -200,7 +200,7 @@ jobs:
         run: |
           sudo chmod -R 777 ~/.cabal/bin/
           sudo chmod -R 777 ${{ needs.init.outputs.GHC_PATH }}
-            
+
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
 
@@ -210,7 +210,7 @@ jobs:
           cabal run GenerateEverything -- --include-deprecated
           ${{ env.AGDA }} -WnoUserWarning --safe EverythingSafe.agda
           ${{ env.AGDA }} -WnoUserWarning Everything.agda
-      
+
 
   ########################################################################
   ## GOLDEN TESTING
@@ -234,7 +234,7 @@ jobs:
         with:
           name: ubuntu-ghc-dir
           path: ${{ needs.init.outputs.GHC_PATH }}
-      
+
       - name: Set permissions
         run: |
           sudo chmod -R 777 ~/.cabal/bin/
@@ -242,7 +242,7 @@ jobs:
 
       - name: Cabal update
         run: cabal update
-            
+
       - name: Set PATH
         run: echo "${{ needs.init.outputs.BIN_PATH }}" >> ${GITHUB_PATH}
 
@@ -253,7 +253,7 @@ jobs:
         with:
           path: ./tests/_config/dist-newstyle/
           key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache-${{ github.sha }}
-          restore-keys: | 
+          restore-keys: |
             ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-golden-cache
 
         # compute a hash to be compared against after running golden tests
@@ -273,10 +273,10 @@ jobs:
           { printf "NEW_CACHE_HASH=" && echo ${{ hashFiles('tests/_config/dist-newstyle/build/**/*') }} ; } >> ${GITHUB_OUTPUT}
 
       - name: Report hashes
-        run: | 
-          if ${{ steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH }}; then 
+        run: |
+          if ${{ steps.cache-hash.outputs.CACHE_HASH == steps.new-cache-hash.outputs.NEW_CACHE_HASH }}; then
             echo "Hashes are equal"
-          else 
+          else
             echo "Hashes are not equal"
           fi
 
@@ -285,7 +285,7 @@ jobs:
 
           printf "New hash: "
           echo ${{ steps.new-cache-hash.outputs.NEW_CACHE_HASH }}
-      
+
       # cache the files built during golden testing, but only on master and if dist-newstyle has changed to prevent the cache overfilling too quickly
       - name: Save cache
         if: github.ref_name == 'master' && steps.cache-hash.outputs.CACHE_HASH != steps.new-cache-hash.outputs.NEW_CACHE_HASH
@@ -362,9 +362,9 @@ jobs:
     if: always()
     steps:
 
-        # if either test jobs are skipped, 'needs' would normally skip 
-        # this job.cancel-timeout-minutes.cancel-timeout-minutes. 
-        # adding `if: always()` guarantees this job will run, but now 
+        # if either test jobs are skipped, 'needs' would normally skip
+        # this job.cancel-timeout-minutes.cancel-timeout-minutes.
+        # adding `if: always()` guarantees this job will run, but now
         # checking the previous steps did in fact succeed has to be done manually
       - name: Check Success
         if: ${{ contains(needs.*.result, 'failure') }}
