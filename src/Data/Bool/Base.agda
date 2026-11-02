@@ -8,8 +8,8 @@
 
 module Data.Bool.Base where
 
-open import Data.Unit.Base using (⊤)
-open import Data.Empty using (⊥)
+open import Data.Unit.Base using (⊤ₚ)
+open import Data.Empty using (⊥ₚ)
 open import Level using (Level)
 
 private
@@ -57,13 +57,13 @@ true  xor b = not b
 false xor b = b
 
 ------------------------------------------------------------------------
--- Conversion to Set
+-- Conversion to Prop
 
 -- A function mapping true to an inhabited type and false to an empty
 -- type.
-T : Bool → Set
-T true  = ⊤
-T false = ⊥
+T : Bool → Prop
+T true  = ⊤ₚ
+T false = ⊥ₚ
 
 ------------------------------------------------------------------------
 -- Other operations
