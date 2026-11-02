@@ -44,8 +44,8 @@ open Irrelevant public
 
 -- Irrelevant types are Recomputable
 
-recompute : Recomputable (Irrelevant A)
-irrelevant (recompute [ a ]) = a
+-- recompute : Recomputable (Irrelevant A)
+-- recompute [ a ] .irrelevant = a
 
 ------------------------------------------------------------------------
 -- Algebraic structure: Functor, Appplicative and Monad
@@ -60,9 +60,9 @@ infixl 4 _<*>_
 _<*>_ : Irrelevant (A → B) → Irrelevant A → Irrelevant B
 [ f ] <*> [ a ] = [ f a ]
 
-infixl 1 _>>=_
-_>>=_ : Irrelevant A → (A → Irrelevant B) → Irrelevant B
-[ a ] >>= f = recompute (f a)
+-- infixl 1 _>>=_
+-- _>>=_ : Irrelevant A → (A → Irrelevant B) → Irrelevant B
+-- [ a ] >>= f = recompute (f a)
 
 ------------------------------------------------------------------------
 -- Other functions

@@ -266,7 +266,7 @@ module _
       syntax step-≈-⟨ x yRz y≈x = x ≈⟨ y≈x ⟨ yRz
 
       -- Deprecated
-      infixr 2 step-≈ step-≈˘
+      infixr 2 step-≈˘
       step-≈ = step-≈-⟩
       {-# WARNING_ON_USAGE step-≈
       "Warning: step-≈ was deprecated in v2.0.
@@ -290,7 +290,7 @@ module _
 
 
       -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
-      infixr 2 step-≋ step-≋˘
+      infixr 2 step-≋˘
       step-≋ = step-≋-⟩
       {-# WARNING_ON_USAGE step-≋
       "Warning: step-≋ was deprecated in v2.0.
@@ -322,7 +322,7 @@ module _
       syntax step-#-⟨ x yRz y#x = x #⟨ y#x ⟨ yRz
 
       -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
-      infixr 2 step-# step-#˘
+      infixr 2 step-#˘
       step-# = step-#-⟩
       {-# WARNING_ON_USAGE step-#
       "Warning: step-# was deprecated in v2.0.
@@ -364,7 +364,7 @@ module _
 
 
       -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
-      infixr 2 step-↭ step-↭˘
+      infixr 2 step-↭˘
       step-↭ = forward
       {-# WARNING_ON_USAGE step-↭
       "Warning: step-↭ was deprecated in v2.0.
@@ -404,7 +404,7 @@ module ≡-syntax
 
 
   -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
-  infixr 2 step-≡ step-≡˘
+  infixr 2 step-≡˘
   step-≡ = step-≡-⟩
   {-# WARNING_ON_USAGE step-≡
   "Warning: step-≡ was deprecated in v2.0.
@@ -442,4 +442,3 @@ module end-syntax
 
   _∎ : ∀ x → R x x
   x ∎ = reflexive
-

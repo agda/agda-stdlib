@@ -14,7 +14,7 @@ Use Data.Irrelevant instead."
 #-}
 
 open import Data.Irrelevant public
-  using ([_]; map; pure; _<*>_; _>>=_; zipWith)
+  using ([_]; map; pure; _<*>_; zipWith)
   renaming
   ( Irrelevant to Erased
   ; irrelevant to erased
