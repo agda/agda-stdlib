@@ -8,7 +8,7 @@
 
 module Data.List.Instances where
 
-open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_; _++_; foldr; concatMap; [_])
 open import Data.List.Effectful
   using (functor; applicative; applicativeZero; alternative; monad
         ; monadZero; monadPlus)
@@ -22,13 +22,17 @@ open import Data.List.Relation.Binary.Pointwise
   using (Pointwise)
 open import Data.List.Relation.Binary.Lex.NonStrict
   using (Lex-≤; ≤-isDecTotalOrder)
+open import Data.Nat.Instances using (NatWrite)
+open import Data.String.Base using (toList)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 open import Relation.Binary.TypeClasses
   using (IsDecTotalOrder; IsDecEquivalence; _≈?_)
+open import Reflection.AST.Fixity using (related)
+open import Text.Write
 
 private
   variable
@@ -58,3 +62,25 @@ instance
                              → {{IsDecTotalOrder _≈_ _≼_}}
                              → IsDecTotalOrder (Pointwise _≈_) (Lex-≤ _≈_ _≼_)
   List-Lex-≤-isDecTotalOrder {{≼-isDecTotalOrder}} = ≤-isDecTotalOrder ≼-isDecTotalOrder
+
+------------------------------------------------------------------------
+-- List write
+
+open Write {{...}}
+
+instance
+  ListWrite : {{ Write A }} → Write (List A)
+  ListWrite .writesPrecList prec xs str = writeParens prec (related 5.0) (elemsWrite xs) ++ str
+    where
+      elemsWrite : {{ Write A }} → List A → List String
+      elemsWrite [] = [ "[]" ]
+      elemsWrite (x ∷ xs) = writesPrecList (related 5.0) x (" ∷ " ∷ elemsWrite xs)
+
+private
+  test[ℕ] : (write (5 ∷ 2 ∷ 12 ∷ 42 ∷ [])) ≡
+                  "5 ∷ 2 ∷ 12 ∷ 42 ∷ []"
+  test[ℕ] = refl
+
+  test[[ℕ]] : (write ((1 ∷ 2 ∷ 3 ∷ []) ∷ (99 ∷ 88 ∷ 77 ∷ []) ∷ [])) ≡
+                    "(1 ∷ 2 ∷ 3 ∷ []) ∷ (99 ∷ 88 ∷ 77 ∷ []) ∷ []"
+  test[[ℕ]] = refl

@@ -50,6 +50,9 @@ unsafeModules = map modToFile
   , "Data.Bytestring.IO"
   , "Data.Bytestring.IO.Primitive"
   , "Data.Bytestring.Primitive"
+  , "Data.List.Unsafe.Instances"
+  , "Data.Maybe.Unsafe.Instances"
+  , "Data.Nat.Unsafe.Instances"
   , "Data.Word8.Base"
   , "Data.Word8.Literals"
   , "Data.Word8.Primitive"
@@ -109,6 +112,9 @@ isUnsafeModule fp =
 withKModules :: [FilePath]
 withKModules = map modToFile
   [ "Axiom.Extensionality.Heterogeneous"
+  , "Data.List.Unsafe.Instances"
+  , "Data.Maybe.Unsafe.Instances"
+  , "Data.Nat.Unsafe.Instances"
   , "Data.Star.BoundedVec"
   , "Data.Star.Decoration"
   , "Data.Star.Environment"
