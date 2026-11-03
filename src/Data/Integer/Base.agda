@@ -37,8 +37,8 @@ open import Agda.Builtin.Int public
   using ()
   renaming
   ( Int    to ℤ
-  ; pos    to +_      -- "+ n"      stands for "n"
-  ; negsuc to -[1+_]  -- "-[1+ n ]" stands for "- (1 + n)"
+  ; pos    to infix 8 +_  -- "+ n"      stands for "n"
+  ; negsuc to -[1+_]      -- "-[1+ n ]" stands for "- (1 + n)"
   )
 
 -- Some additional patterns that provide symmetry around 0
@@ -349,4 +349,3 @@ i % j = i %ℕ ∣ j ∣
   ; 0# = 0ℤ
   ; 1# = 1ℤ
   }
-

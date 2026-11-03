@@ -19,7 +19,7 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder
         ; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Decidable; Transitive; Minimum; Maximum; Total; Irrelevant
+  using (Decidable; Reflexive; Transitive; Minimum; Maximum; Total; Irrelevant
         ; Antisymmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Construct.Add.Extrema using (⊥±; ⊤±; [_])
 import Relation.Nullary.Construct.Add.Infimum as I using (⊥₋; [_])
@@ -62,6 +62,11 @@ _≤⊤± : ∀ k → k ≤± ⊤±
 
 [≤]-injective : ∀ {k l} → [ k ] ≤± [ l ] → k ≤ l
 [≤]-injective = Inf.[≤]-injective ∘′ Sup.[≤]-injective
+
+≤±-refl : Reflexive _≤_ → Reflexive _≤±_
+≤±-refl ≤-refl {⊥±} = ⊥±≤⊥±
+≤±-refl ≤-refl {[ x ]} = [ ≤-refl ]
+≤±-refl ≤-refl {⊤±} = ⊤±≤⊤±
 
 ≤±-trans : Transitive _≤_ → Transitive _≤±_
 ≤±-trans = Sup.≤⁺-trans ∘′ Inf.≤₋-trans

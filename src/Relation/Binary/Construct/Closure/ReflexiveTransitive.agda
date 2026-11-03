@@ -12,7 +12,12 @@ open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
 open import Relation.Binary.Definitions
   using (Transitive; Trans; Sym; TransFlip; Reflexive)
 open import Function.Base
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
+
+private
+  variable
+    ℓ t : Level
+    I : Set ℓ
 
 infixr 5 _◅_
 
@@ -40,7 +45,7 @@ _◅◅_ : ∀ {i t} {I : Set i} {T : Rel I t} → Transitive (Star T)
 
 infixl 5 _▻_
 
-_▻_ : ∀ {i t} {I : Set i} {T : Rel I t} {i j k} →
+_▻_ : ∀ {T : Rel I t} {i j k} →
       Star T j k → T i j → Star T i k
 _▻_ = flip _◅_
 
@@ -48,7 +53,7 @@ _▻_ = flip _◅_
 
 infixr 5 _▻▻_
 
-_▻▻_ : ∀ {i t} {I : Set i} {T : Rel I t} {i j k} →
+_▻▻_ : ∀ {T : Rel I t} {i j k} →
        Star T j k → Star T i j → Star T i k
 _▻▻_ = flip _◅◅_
 
