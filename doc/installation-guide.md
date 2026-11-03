@@ -38,14 +38,7 @@ Use version v2.4 of the standard library with Agda v2.8.0. You can find the corr
    tar -zxvf agda-stdlib.tar.gz
    ```
 
-4. [ OPTIONAL ] If using [cabal](https://www.haskell.org/cabal/) then run
-   the commands to install via cabal:
-   ```
-   cd agda-stdlib-2.4
-   cabal install
-   ```
-
-5. Locate the file `$AGDA_DIR/libraries` where `$AGDA_DIR` on Ubuntu/MacOS
+4. Locate the file `$AGDA_DIR/libraries` where `$AGDA_DIR` on Ubuntu/macOS
    can be found by running `agda --print-agda-app-dir`.
 
    Full details, including the various possible locations that `$AGDA_DIR`
@@ -54,7 +47,7 @@ Use version v2.4 of the standard library with Agda v2.8.0. You can find the corr
    Note that the `$AGDA_DIR` directory and the `libraries` file within it,
    may not exist and you may have to create them.
 
-6. Register the standard library with Agda's package system by adding
+5. Register the standard library with Agda's package system by adding
    the following line to `$AGDA_DIR/libraries`:
    ```
    $HERE/agda-stdlib-2.4/standard-library.agda-lib
@@ -76,3 +69,26 @@ Now, the standard library is ready to be used either:
   ```
   standard-library
   ```
+
+## **[ OPTIONAL ]** Install the Documentation (including `README.agda`)
+
+> _Note: the documentation is available at <https://agda.github.io/agda-stdlib/>.
+If you installed Agda and the standard library from the package manager of your platform,
+most of the time the documentation is already included._
+
+The top-level modules `doc/Everything.agda`, `doc/EverythingSafe.agda` and the HTML renderings
+are not included in the downloaded ZIP archive. To build them locally, make sure both `agda`
+and [`cabal`](https://www.haskell.org/cabal/) are available in the path and run
+
+```sh
+cabal update
+cd agda-stdlib-2.4
+cabal run GenerateEverything -- --out-dir doc
+(cd doc && agda --html README.agda)
+```
+
+Finally, to interact with `doc/README.agda`, register the documentation
+with Agda's package system by adding the following line to `$AGDA_DIR/libraries`:
+```
+$HERE/agda-stdlib-2.4/doc/standard-library-doc.agda-lib
+```
