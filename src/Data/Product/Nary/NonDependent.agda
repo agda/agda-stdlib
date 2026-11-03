@@ -18,7 +18,7 @@ open import Level using (Level)
 open import Data.Product.Base as Prod
 import Data.Product.Properties as Prodₚ
 open import Data.Sum.Base using (_⊎_)
-open import Data.Nat.Base using (ℕ; zero; suc; pred; 2+; _+_)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; _+_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Unit.Base using (⊤)
 open import Function.Base using (const; _∘′_; _∘_; _∘₂_; _-⟨_⟩-_)
