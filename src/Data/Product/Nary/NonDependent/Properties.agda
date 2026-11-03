@@ -69,5 +69,7 @@ splitAt-append-identity m n {as = as} {bs} pa pb = begin
     map (toProduct m) (toProduct n) (toProduct⊤ m pa , toProduct⊤ n pb)
   ≡⟨ ≡×≡⇒≡ (strictlyInverseˡ (Product⊤↔Product m) pa , strictlyInverseˡ (Product⊤↔Product n) pb) ⟩
     pa , pb
-  ∎ where eq = splitAt⊤-append⊤-identity m n (toProduct⊤ m pa) (toProduct⊤ n pb)
-          open Inverse
+  ∎
+  where
+    eq = splitAt⊤-append⊤-identity m n (toProduct⊤ m pa) (toProduct⊤ n pb)
+    open Inverse
