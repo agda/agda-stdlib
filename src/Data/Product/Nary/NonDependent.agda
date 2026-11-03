@@ -18,10 +18,10 @@ open import Level using (Level)
 open import Data.Product.Base as Prod
 import Data.Product.Properties as Prodₚ
 open import Data.Sum.Base using (_⊎_)
-open import Data.Nat.Base using (ℕ; zero; suc; pred)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; 2+; _+_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Unit.Base using (⊤)
-open import Function.Base using (const; _∘′_; _∘_)
+open import Function.Base using (const; _∘′_; _∘_; _∘₂_; _-⟨_⟩-_)
 open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×?_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
@@ -192,6 +192,44 @@ zipWith 0               f _        _        = _
 zipWith 1               f v        w        = f zero v w
 zipWith (suc n@(suc _)) f (v , vs) (w , ws) =
   f zero v w , zipWith n (λ k → f (suc k)) vs ws
+
+------------------------------------------------------------------------
+-- building
+
+append⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product⊤ m as → Product⊤ n bs → Product⊤ (m + n) (sappend m n as bs)
+append⊤ 0       _ _        bs = bs
+append⊤ (suc m) n (a , as) bs = a , append⊤ m n as bs
+
+append : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product m as → Product n bs → Product (m + n) (sappend m n as bs)
+append m n = toProduct (m + n) ∘₂ (toProduct⊤ m -⟨ append⊤ m n ⟩- toProduct⊤ n)
+-- append 0      n       _ bs = bs
+-- append 1      0       a  _  = a
+-- append 1      (suc n) a  bs = a , bs
+-- append (2+ m) 0       as _  = {!!}
+-- append (2+ m) (suc n) as bs = {!!}
+
+------------------------------------------------------------------------
+-- associativity
+
+splitAt⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+           Product⊤ (m + n) (sappend m n as bs) → (Product⊤ m as) × (Product⊤ n bs)
+splitAt⊤ zero    n       p = _ , p
+splitAt⊤ (suc m) n  (a , p) =
+  let (x , y) = splitAt⊤ m n p in (a , x) , y
+
+splitAt : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product (m + n) (sappend m n as bs) → Product m as × Product n bs
+splitAt m n = map (toProduct m) (toProduct n) ∘ splitAt⊤ m n ∘ toProduct⊤ (m + n)
+
+-- splitAt 0       n       bs = _ , bs
+-- splitAt (suc 0) 0       as = as , _
+-- splitAt (suc 0) (suc n) p  = p
+-- splitAt (2+ m)  0       (a , p) =
+--   let x , _ = splitAt (suc m) 0 p in (a , x) , _
+-- splitAt (2+ m)  (suc n) (a , p) =
+--   let x , y = splitAt (suc m) (suc n) p in (a , x) , y
 
 ------------------------------------------------------------------------
 -- removal of the k-th component
