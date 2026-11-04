@@ -537,6 +537,11 @@ Additions to existing modules
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
+* In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
+  ```agda
+  antisym-≡ : Antisym P Q _≡_ → Antisym (Pointwise P) (Pointwise Q) _≡_
+  ```
+
 * In `Data.Vec.Relation.Unary.Unique.Setoid`:
   ```
   unique? : Decidable _≈_ → Decidable Unique
