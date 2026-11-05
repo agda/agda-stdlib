@@ -517,12 +517,33 @@ Additions to existing modules
   n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
   -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
                 ℤ.- i / n ≡ - (i / n)
+  >⇒≢ : _>_ ⇒ _≢_
+  ≰⇒≮ : _≰_ ⇒ _≮_
+  <⇒≱ : _<_ ⇒ _≱_
+  ≤∧≢⇒< : p ≤ q → p ≢ q → p < q
+  ≤∧≮⇒≡ : p ≤ q → p ≮ q → p ≡ q
+  ≤-<-connex : Connex _≤_ _<_
+  ≥->-connex : Connex _≥_ _>_
+  <-≤-connex : Connex _<_ _≤_
+  >-≥-connex : Connex _>_ _≥_
   *-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
                 (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
   *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
+  pos⊓pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p ⊓ q)
+  nonNeg⊓nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p ⊓ q)
+  nonPos⊓⇒nonPos : ∀ p .{{_ : NonPositive p}} q → NonPositive (p ⊓ q)
+  ⊓nonPos⇒nonPos : ∀ p q .{{_ : NonPositive q}} → NonPositive (p ⊓ q)
+  neg⊓⇒neg : ∀ p .{{_ : Negative p}} q → Negative (p ⊓ q)
+  ⊓neg⇒neg : ∀ p q .{{_ : Negative q}} → Negative (p ⊓ q)
+  pos⊔⇒pos : ∀ p .{{_ : Positive p}} q → Positive (p ⊔ q)
+  ⊔pos⇒pos : ∀ p q .{{_ : Positive q}} → Positive (p ⊔ q)
+  nonNeg⊔⇒nonNeg : ∀ p .{{_ : NonNegative p}} q → NonNegative (p ⊔ q)
+  ⊔nonNeg⇒nonNeg : ∀ p q .{{_ : NonNegative q}} → NonNegative (p ⊔ q)
+  nonPos⊔nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p ⊔ q)
+  neg⊔neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p ⊔ q)
   ```
 
 * In `Data.Sum.Relation.Binary.Pointwise`:
