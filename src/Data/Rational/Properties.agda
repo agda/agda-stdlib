@@ -569,15 +569,6 @@ _≥?_ = flip _≤?_
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant (*≤* p≤q₁) (*≤* p≤q₂) = cong *≤* (ℤ.≤-irrelevant p≤q₁ p≤q₂)
 
-≤-respʳ-≡ : _≤_ Respectsʳ _≡_
-≤-respʳ-≡ = subst (_ ≤_)
-
-≤-respˡ-≡ : _≤_ Respectsˡ _≡_
-≤-respˡ-≡ = subst (_≤ _)
-
-≤-resp-≡ : _≤_ Respects₂ _≡_
-≤-resp-≡ = ≤-respˡ-≡ , ≤-respʳ-≡
-
 ------------------------------------------------------------------------
 -- Structures
 

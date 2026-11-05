@@ -517,9 +517,6 @@ Additions to existing modules
   n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
   -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
                 ℤ.- i / n ≡ - (i / n)
-  ≤-respʳ-≡ : _≤_ Respectsʳ _≡_
-  ≤-respˡ-≡ : _≤_ Respectsˡ _≡_
-  ≤-resp-≡ : _≤_ Respects₂ _≡_
   >⇒≢ : _>_ ⇒ _≢_
   ≰⇒≮ : _≰_ ⇒ _≮_
   <⇒≱ : _<_ ⇒ _≱_
