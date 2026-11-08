@@ -127,7 +127,7 @@ fromCommutativeRing CR = record
   { isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
       ; -‿cong                = -‿cong
-      ; -‿*-distribˡ          = λ x y → sym (-‿distribˡ-* x y)
+      ; -‿*-distribˡ          = -‿distribˡ-*
       ; -‿+-comm              = ⁻¹-∙-comm
       }
   }
