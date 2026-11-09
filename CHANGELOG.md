@@ -167,12 +167,24 @@ Non-backwards compatible changes
   the `record POINTWISE` has been lowered to `ℓ₁ ⊔ ℓ₂` given the universe levels
   `ℓ₁`, resp. `ℓ₂` of the argument relations `_R₁_`, resp. `_R₂_`.
 
-* [Issue #3127](https://github.com/agda/agda-stdlib/pull/3127)
+* [PR #3127](https://github.com/agda/agda-stdlib/pull/3127)
   Following an upstream breaking change prompted by a proof of false
   ([Agda Issue #8557](https://github.com/agda/agda/issues/8557),
   `Irrelevant` cannot be proved to be a monad within `--safe` anymore.
   Correspondingly, the relevant definitions have been moved to the new
   module `Data.Irrelevant.Unsafe`.
+
+* Other upstream changes for compatibility with v2.9.0:
+  - ([Agda Issue #1438](https://github.com/agda/agda/issues/1438)
+    Closed operators (esp. for the sake of `syntax` declarations) no
+    longer admit fixity declarations.
+  - ([Agda Issue #3128](https://github.com/agda/agda/issues/3128)
+    Name shadowing in telescopes will now raise a warning, so existing
+    instances of this phenomenon have been renamed/restructured.
+  - ([Agda Issue #8533](https://github.com/agda/agda/issues/8533)
+    Eta-equality is no longer inferred for `record`s, so should be
+    explicitly declared when desired (default is: `no-eta-equality`)
+
 
 Minor improvements
 ------------------
