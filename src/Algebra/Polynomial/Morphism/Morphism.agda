@@ -240,7 +240,7 @@ module PolynomialRingMorphism
     eval β (-P (a ∷ p)) 
       ≈⟨ B.+-congˡ (B.*-congˡ (eval-inverse-homomorphic β p)) ⟩
     ⟦ -A a ⟧ +B β *B (-B (eval β p))
-      ≈⟨ B.+-congˡ (-‿distribʳ-* (CR.ring B) β (eval β p)) ⟨
+      ≈⟨ B.+-congˡ (B.-‿distribʳ-* β (eval β p)) ⟨
     ⟦ -A a ⟧ +B -B (β *B eval β p)
       ≈⟨ B.+-congʳ (RingHomo.-‿homo f a) ⟩
     -B ⟦ a ⟧ +B -B (β *B eval β p)
