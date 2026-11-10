@@ -1,7 +1,7 @@
 Version 3.0
 ===========
 
-The library has been tested using Agda 2.8.0.
+The library has been tested using Agda 2.8.0 and Agda 2.9.0.
 
 Highlights
 ----------
@@ -65,8 +65,35 @@ Bug-fixes
   As a further knock-on consequence, module `Algebra.Properties.KleeneAlgebra`
   has been completely rewritten in order to accommodate the new axiomatisation.
 
+* [issue #3128](https://github.com/agda/agda-stdlib/issues/3128)
+  `Data.Sum.Effectful.Left.Transformer.choice` corrected to choose between its
+  two arguments, rather than simply copy its first argument. The PR fixing this
+  also systematically makes better use of `variable`s, incorporating upstream
+  changes to avoid name shadowing in argument telescopes.
+
+* Refactored `Function.Bundles` to export `equivalence`, `toFunction`, and
+  `fromFunction` from `*Inverse` with corresponding deprecations in
+  `Function.Properties.Inverse`.
+
 Non-backwards compatible changes
 --------------------------------
+
+* A major overhaul of the `Function` hierarchy sees the systematic development
+  and use of the theory of the left inverse `from` to a given `Surjective` function
+  `to`, as a consequence of which we can achieve full symmetry of `Bijection`, in
+  `Function.Properties.Bijection`/`Function.Construct.Symmetry`, rather than the
+  restricted versions considered to date. NB. this is non-backwards compatible
+  because the types of various properties are now sharper, and some previous lemmas
+  are no longer present, due to the complexity their deprecation would entail.
+  Specifically:
+  - `Function.Construct.Symmetry.isBijection` no longer requires the hypothesis
+    `Congruent ≈₂ ≈₁ f⁻¹` for `f⁻¹ = B.from`.
+  - `Function.Construct.Symmetry.isBijection-≡` is now redundant, as an instance
+    of the above lemma, so has been deleted.
+  - Similarly, `Function.Construct.Symmetry.bijection` no longer requires a `Congruent`
+    hypothesis, and `Function.Construct.Symmetry.bijection-≡` is now redundant/deleted.
+  - `Function.Properties.Bijection.sym-≡` is now redundant as an instance of a fully
+    general symmetry property `Function.Properties.Bijection.sym`, hence also deleted.
 
 * The notation for `Decidable` relations has been (partially) standardised: thus
   - `_≡?_` (at `infix 4`) for `DecidableEquality`
@@ -105,6 +132,11 @@ Non-backwards compatible changes
   `Algebra.*`, the field name of the basic homomorphism property `homo` in
   `Algebra.Morphism.Structures.IsMagmaHomomorphism` has been renamed to `∙-homo`.
 
+* [issue #2581](https://github.com/agda/agda-stdlib/issues/2581)
+  The definition of `Adjoint` in `Relation.Binary.Definitions` has been altered
+  to be the conjunction of two universally quantified `Half*Adjoint` properties,
+  rather than to be a universally quantified conjunction, for better compatibility
+  with `Function.Definitions`.
 
 * [Issue #3022](https://github.com/agda/agda-stdlib/issues/3022)
   The previous development of rose trees has been refactored to make
@@ -126,6 +158,22 @@ Non-backwards compatible changes
   counterparts. Consider using `viaList` if you want a lawful lifting
   of `take` or `drop`.
 
+* [Issue #2319](https://github.com/agda/agda-stdlib/issues/2319)
+  The custom syntax for `swap` and `prep` steps in `PermutationReasoning`,
+  defined in `Data.List.Relation.Binary.Permutation.{Propositional|Setoid}`,
+  has been removed.
+
+* In `Data.Product.Relation.Binary.Pointwise.Dependent`, the universe level of
+  the `record POINTWISE` has been lowered to `ℓ₁ ⊔ ℓ₂` given the universe levels
+  `ℓ₁`, resp. `ℓ₂` of the argument relations `_R₁_`, resp. `_R₂_`.
+
+* [Issue #3127](https://github.com/agda/agda-stdlib/pull/3127)
+  Following an upstream breaking change prompted by a proof of false
+  ([Agda Issue #8557](https://github.com/agda/agda/issues/8557),
+  `Irrelevant` cannot be proved to be a monad within `--safe` anymore.
+  Correspondingly, the relevant definitions have been moved to the new
+  module `Data.Irrelevant.Unsafe`.
+
 Minor improvements
 ------------------
 
@@ -135,6 +183,10 @@ Minor improvements
   subsequent imports by clients, as well as streamlined internals. Moreover,
   it now has the implicit parameters of its internal modules lifted out as
   global `variable`s.
+`
+* The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
+  have been streamlined via pattern-matching on `refl`, rather than defined by
+  delegation to `Function.Consequences.Setoid` and the use of `cong`.
 
 * [Issue #3016](https://github.com/agda/agda-stdlib/issues/3016)
   `Data.List.Relation.Binary.Permutation.Setoid.Properties.foldr-commMonoid`
@@ -188,6 +240,12 @@ Deprecated names
   gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
   ```
 
+* In `Data.Irrelevant`:
+  ```agda
+  λ∙⁻ ↦ _$⁺_
+  λ∙⁺ ↦ _$⁻_
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   foldr-commMonoid  ↦  Data.List.Effectful.Foldable.foldr-congruent
@@ -211,6 +269,28 @@ Deprecated names
 * In `Effect.Monad.Partiality`:
   ```agda
   _≟-Kind_     ↦   _≡?-Kind_
+  ```
+
+* In `Function.Bundles.Surjection`:
+  ```agda
+  to⁻      ↦  Function.Structures.IsSurjection.from
+  to∘to⁻   ↦  Function.Structures.IsSurjection.strictlyInverseˡ
+  ```
+
+* In `Function.Properties.Bijection`:
+  ```agda
+  sym-≡   ↦  sym
+  ```
+
+* In `Function.Properties.Inverse`:
+  ```agda
+  toFunction      ↦  Function.Bundles.Inverse.toFunction
+  fromFunction    ↦  Function.Bundles.Inverse.fromFunction
+  ```
+
+* In `Function.Properties.Surjection`:
+  ```agda
+  injective⇒to⁻-cong   ↦  Function.Bundles.Bijection.from-cong
   ```
 
 * In `Reflection.AST.AlphaEquality`:
@@ -244,6 +324,9 @@ New modules
   - `Data.DifferenceList.Base`
   - `Data.DifferenceList.Properties`
 
+* `Data.Product.Nary.NonDependent.Properties` for properties of
+  nondependent heterogeneous N-ary products.
+
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
   or type accumulators that need to be reversed in the base case.
@@ -265,6 +348,9 @@ New modules
   Data.Tree.Rose.Properties
   Data.Tree.Rose.Show
   ```
+
+* `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
+  the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
 Additions to existing modules
 -----------------------------
@@ -346,7 +432,10 @@ Additions to existing modules
 
 * In `Data.DifferenceList.Properties`:
   ```agda
-  viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
+  fromList-++ : ∀ xs ys → fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
+  toList-++ : ListLike dxs → (dys : DiffList A) →
+              toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+  viaList⁺ : (f : List A → List B) → xs ∼ dxs → f xs ∼ viaList f dxs
   ```
 
 * In `Data.Integer.GCD`:
@@ -390,6 +479,13 @@ Additions to existing modules
            ∃[ xs ] Appending as bs xs × Appending xs cs ds
   ```
 
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  ¬Null-∷         : ¬ Null (x ∷ xs)
+  Null?           : Decidable Null
+  Null-irrelevant : Irrelevant Null
+  ```
+
 * In `Data.Nat.DivMod`:
   ```agda
   m<suc[m/n]*n : ∀ m n → m < suc (m / n) * n
@@ -426,6 +522,24 @@ Additions to existing modules
   *-almostCancelʳ-≡ : AlmostRightCancellative 0 _*_
   ```
 
+* In `Data.Product`:
+  ```agda
+  ∃!-≐ : P ≐ Q → ∃! _≈_ P → ∃! _≈_ Q
+  ∃!-⇔ : P ≐ Q → ∃! _≈_ P ⇔ ∃! _≈_ Q
+  ```
+
+* In `Data.Product.Nary.NonDependent`:
+  ```agda
+  append⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product⊤ m as → Product⊤ n bs → Product⊤ (m + n) (sappend m n as bs)
+  append : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product m as → Product n bs → Product (m + n) (sappend m n as bs)
+  splitAt⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+           Product⊤ (m + n) (sappend m n as bs) → (Product⊤ m as) × (Product⊤ n bs)
+  splitAt : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product (m + n) (sappend m n as bs) → Product m as × Product n bs
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
@@ -441,14 +555,160 @@ Additions to existing modules
                     i / n + j / n ≡ (i ℤ.+ j) / n
   ```
 
+* In `Data.Sum.Relation.Binary.Pointwise`:
+  ```agda
+  elim : R =[ f ]⇒ T → S =[ g ]⇒ T →
+         Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
   ```
 
+* In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
+  ```agda
+  antisym-≡ : Antisym P Q _≡_ → Antisym (Pointwise P) (Pointwise Q) _≡_
+  ```
+
+* In `Data.Vec.Relation.Unary.Unique.Setoid`:
+  ```
+  unique? : Decidable _≈_ → Decidable Unique
+  ```
+
+* In `Function.Bundles.Bijection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  ```
+
+* In `Function.Bundles.*Inverse`:
+  ```agda
+  toFunction   : Func From To
+  fromFunction : Func To From
+  equivalence  : Equivalence From To
+  ```
+
+* In `Function.Bundles.LeftInverse`:
+  ```agda
+  surjective       : Surjective _≈₁_ _≈₂_ to
+  surjection       : Surjection From To
+  ```
+
+* In `Function.Bundles.RightInverse`:
+  ```agda
+  isInjection      : IsInjection to
+  injective        : Injective _≈₁_ _≈₂_ to
+  injection        : Injection From To
+  ```
+
+* In `Function.Bundles.Surjection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  ```
+
+* In `Function.Consequences`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : Symmetric ≈₁ → Symmetric ≈₂ →
+                              HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Symmetric ≈₁ → Symmetric ≈₂ →
+                              Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+  ```
+
+  * In `Function.Consequences.Setoid`:
+  ```agda
+  inverseˡ⇒halfLeftAdjoint  : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+  halfLeftAdjoint⇒inverseˡ  : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
+  inverseʳ⇒halfRightAdjoint : Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+  halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
+  inverseᵇ⇒adjoint          : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+  adjoint⇒inverseᵇ          : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
+  ```
+
+* In `Function.Construct.Symmetry`:
+  ```agda
+  isBijection : IsBijection ≈₁ ≈₂ to → IsBijection ≈₂ ≈₁ from
+  bijection   : Bijection R S → Bijection S R
+  ```
+
+* In `Function.Nary.NonDependent.Base`:
+  ```agda
+  lappend : ∀ m n → Levels m → Levels n → Levels (m + n)
+  sappend : ∀ m n {ℓm : Levels m} {ℓn : Levels n} →
+          Sets m ℓm → Sets n ℓn → Sets (m + n) (lappend m n ℓm ℓn)
+  ```
+
+* In `Function.Properties.Bijection`:
+  ```agda
+  sym : Bijection S T → Bijection T S
+  ```
+
+* In `Function.Structures.IsBijection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  inverseʳ         : Inverseʳ _≈₁_ _≈₂_ to from
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  from-cong        : Congruent _≈₂_ _≈₁_ from
+  from-injective   : Injective _≈₂_ _≈₁_ from
+  from-surjective  : Surjective _≈₂_ _≈₁_ from
+  from-bijective   : Bijective _≈₂_ _≈₁_ from
+  ```
+
+* In `Function.Structures.IsLeftInverse`:
+  ```agda
+  surjective : Surjective _≈₁_ _≈₂_ to
+  ```
+
+* In `Function.Structures.IsRightInverse`:
+  ```agda
+  injective   : Injective _≈₁_ _≈₂_ to
+  isInjection : IsInjection to
+  ```
+
+* In `Function.Structures.IsSurjection`:
+  ```agda
+  from             : B → A
+  inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  from-injective   : Injective _≈₂_ _≈₁_ from
+  ```
+
+* In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
+  ```agda
+  ≤±-refl : Reflexive _≤_ → Reflexive _≤±_
+  ```
+
+* In `Relation.Binary.Construct.Add.Infimum.NonStrict`:
+  ```agda
+  ≤₋-refl : Reflexive _≤_ → Reflexive _≤₋_
+  ```
+
+* In `Relation.Binary.Construct.Add.Supremum.NonStrict`:
+  ```agda
+  ≤⁺-refl : Reflexive _≤_ → Reflexive _≤⁺_
+  ```
+
 * In `Relation.Binary.Definitions`:
   ```agda
+  HalfLeftAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+  HalfLeftAdjoint _≤_ _⊑_ f g = ∀ {x y} → (x ≤ g y → f x ⊑ y)
+
+  HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+  HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y)
   module KleeneAlgebra (_≤_ : Rel A ℓ₁) where
     StarLeftExpansive     : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightExpansive    : ∀ (e : A) (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
@@ -456,4 +716,10 @@ Additions to existing modules
     StarLeftDestructive   : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarRightDestructive  : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
+  ```
+
+* In `Relation.Unary`:
+  ```agda
+  Unique         : Rel A ℓ₁ → Pred A ℓ₂ → Pred A _
+  Unique _≈_ P x = ∀ {z} → P z → z ≈ x
   ```

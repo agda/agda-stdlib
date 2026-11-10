@@ -39,11 +39,16 @@ data Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
 ----------------------------------------------------------------------
 -- Functions
 
+elim : ∀ {f : A → C} {g : B → C} →
+       R =[ f ]⇒ T → S =[ g ]⇒ T →
+       Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+elim R⇒T S⇒T (inj₁ xRy) = R⇒T xRy
+elim R⇒T S⇒T (inj₂ xSy) = S⇒T xSy
+
 map : ∀ {f : A → C} {g : B → D} →
       R =[ f ]⇒ T → S =[ g ]⇒ U →
       Pointwise R S =[ Sum.map f g ]⇒ Pointwise T U
-map R⇒T _ (inj₁ x) = inj₁ (R⇒T x)
-map _ S⇒U (inj₂ x) = inj₂ (S⇒U x)
+map R⇒T S⇒U = elim {T = Pointwise _ _} (inj₁ ∘ R⇒T) (inj₂ ∘ S⇒U)
 
 ------------------------------------------------------------------------
 -- Relational properties

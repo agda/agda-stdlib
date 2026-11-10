@@ -85,7 +85,10 @@ automate most of this.
 
 * As a rule of thumb, there should only be one named module per file. Anonymous
   modules are fine, but named internal modules should either be opened publicly
-  immediately or split out into a separate file.
+  immediately or split out into a separate file. There should be *no* internal
+  modules exported publicly with *single-letter* names; such modules are, of
+  course very useful (and much used) in `private`/`where` blocks to help with
+  local namespace management.
 
 * Module parameters should be put on a single line if they fit.
 
@@ -727,4 +730,9 @@ systematic for `Nary` relations in PR
 
 Where possible use `contradiction` between two explicit arguments rather
 than appealing to the lower-level `Data.Empty.⊥-elim`. This provides
-clearer documentation for readers of the code.
+clearer documentation for readers of the code. Alternative approaches can
+appeal to irrefutable `with`, typically as `... with () ← ...`.
+
+Likewise, explicit negation via `¬_` is preferable to implicational form
+as polymorphic/'Russell-Prawitz'-style definition using `_→ Whatever` for
+some `Level`-polymorphic `private variable Whatever : Set _`.

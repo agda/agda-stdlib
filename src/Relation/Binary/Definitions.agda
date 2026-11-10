@@ -175,8 +175,14 @@ AntitonicMonotonic _≤_ = Monotonic₂ (flip _≤_)
 Antitonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
 Antitonic₂ _≤_ _⊑_ = Monotonic₂ (flip _≤_) (flip _⊑_)
 
+HalfLeftAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+HalfLeftAdjoint _≤_ _⊑_ f g = ∀ {x y} → x ≤ g y → f x ⊑ y
+
+HalfRightAdjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+HalfRightAdjoint _≤_ _⊑_ f g = ∀ {x y} → f x ⊑ y → x ≤ g y
+
 Adjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
-Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
+Adjoint _≤_ _⊑_ f g = HalfLeftAdjoint _≤_ _⊑_ f g × HalfRightAdjoint _≤_ _⊑_ f g
 
 -- Definitions for the Kleene Algebra ordering
 

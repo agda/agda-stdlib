@@ -317,3 +317,9 @@ Pointwise-≡⇒≡ (≡.refl ∷ xs∼ys) = ≡.cong (_ ∷_) (Pointwise-≡⇒
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
 Pointwise-≡↔≡ = mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡
+
+-- if two relations P and Q are antisymmetric with respect to _≡_, then so are
+-- Pointwise P and Pointwise Q.
+antisym-≡ : ∀ {P : Rel A ℓ₁} {Q : Rel A ℓ₂} {n}
+          → Antisym P Q _≡_ → Antisym (Pointwise P {n}) (Pointwise Q {n}) _≡_
+antisym-≡ asym ps qs = Pointwise-≡⇒≡ (antisym asym ps qs)

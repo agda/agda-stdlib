@@ -10,9 +10,10 @@ module Data.DifferenceList.Properties where
 
 open import Data.DifferenceList.Base
   using (DiffList; fromList; toList; viaList; []; _∷_; [_]; _++_; _∷ʳ_; map)
-open import Data.List as List using (List)
+open import Data.List.Base as List using (List)
 open import Data.List.Properties using (++-assoc; ++-identityʳ)
-open import Function using (_∘′_; id; flip)
+open import Data.Product.Base using (Σ; _,_)
+open import Function.Base using (_∘′_; id; flip)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; _≗_; module ≡-Reasoning)
@@ -24,8 +25,8 @@ private
     a b : Level
     A : Set a
     B : Set b
-    xs xs₁ xs₂ : List A
-    ys ys₁ ys₂ : DiffList A
+    xs ys : List A
+    dxs dys : DiffList A
 
 
 ------------------------------------------------------------------------
@@ -33,7 +34,10 @@ private
 
 infix 4 _∼_
 _∼_ : List A → DiffList A → Set _
-xs ∼ ys = fromList xs ≗ ys
+xs ∼ dxs = fromList xs ≗ dxs
+
+ListLike : DiffList A → Set _
+ListLike {A = A} dxs = Σ (List A) (_∼ dxs)
 
 ------------------------------------------------------------------------
 -- Properties of fromList and toList
@@ -44,18 +48,30 @@ xs ∼ ys = fromList xs ≗ ys
 toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList∘fromList = ++-identityʳ
 
-toList⁺ : xs ∼ ys → xs ≡ toList ys
-toList⁺ {xs = xs} {ys} xs∼ys = begin
-  xs                  ≡⟨ ++-identityʳ xs ⟨
-  xs List.++ List.[]  ≡⟨ xs∼ys List.[] ⟩
-  ys List.[]          ≡⟨⟩
-  toList ys           ∎
+toList⁺ : xs ∼ dxs → xs ≡ toList dxs
+toList⁺ {xs = xs} {dxs} xs∼dxs = begin
+  xs                    ≡⟨ toList∘fromList xs ⟨
+  toList (fromList xs)  ≡⟨ xs∼dxs List.[] ⟩
+  toList dxs            ∎
 
-viaList⁺ : (f : List A → List B) → xs ∼ ys → f xs ∼ viaList f ys
-viaList⁺ {xs = xs} {ys = ys} f xs∼ys k = begin
-  fromList (f xs)          k ≡⟨ cong (flip fromList _ ∘′ f) (toList⁺ xs∼ys) ⟩
-  fromList (f (toList ys)) k ≡⟨⟩
-  viaList f ys             k ∎
+fromList-++ : (xs ys : List A) →
+              fromList (xs List.++ ys) ≗ fromList xs ++ fromList ys
+fromList-++ = ++-assoc
+
+toList-++ : ListLike dxs → (dys : DiffList A) →
+            toList dxs List.++ toList dys ≡ toList (dxs ++ dys)
+toList-++ {dxs = dxs} (xs , xs∼dxs) dys = begin
+  toList dxs List.++ toList dys  ≡⟨ cong (List._++ toList dys) (toList⁺ xs∼dxs) ⟨
+  xs List.++ toList dys          ≡⟨⟩
+  fromList xs (toList dys)       ≡⟨ xs∼dxs (toList dys) ⟩
+  dxs (toList dys)               ≡⟨⟩
+  toList (dxs ++ dys)            ∎
+
+viaList⁺ : (f : List A → List B) → xs ∼ dxs → f xs ∼ viaList f dxs
+viaList⁺ {xs = xs} {dxs = dxs} f xs∼dxs k = begin
+  fromList (f xs)           k  ≡⟨ cong (flip fromList _ ∘′ f) (toList⁺ xs∼dxs) ⟩
+  fromList (f (toList dxs)) k  ≡⟨⟩
+  viaList f dxs             k  ∎
 
 ------------------------------------------------------------------------
 -- Properties of operations that preserve _∼_
@@ -66,24 +82,20 @@ viaList⁺ {xs = xs} {ys = ys} f xs∼ys k = begin
 [_]⁺ : (x : A) → List.[ x ] ∼ [ x ]
 [_]⁺ _ _ = refl
 
-++⁺ : xs₁ ∼ ys₁ → xs₂ ∼ ys₂ → xs₁ List.++ xs₂ ∼ ys₁ ++ ys₂
-++⁺ {xs₁ = xs₁} {ys₁ = ys₁} {xs₂ = xs₂} {ys₂ = ys₂}
-    xs₁∼ys₁ xs₂∼ys₂ k = begin
-  (xs₁ List.++ xs₂) List.++ k  ≡⟨ ++-assoc xs₁ xs₂ k ⟩
-  xs₁ List.++ (xs₂ List.++ k)  ≡⟨ cong (xs₁ List.++_) (xs₂∼ys₂ k) ⟩
-  xs₁ List.++ ys₂ k            ≡⟨ xs₁∼ys₁ (ys₂ k) ⟩
-  ys₁ (ys₂ k)                  ≡⟨⟩
-  (ys₁ ++ ys₂) k               ∎
+++⁺ : xs ∼ dxs → ys ∼ dys → xs List.++ ys ∼ dxs ++ dys
+++⁺ {xs = xs} {dxs = dxs} {ys = ys} {dys = dys} xs∼dxs ys∼dys k = begin
+  fromList (xs List.++ ys) k      ≡⟨ fromList-++ xs ys k ⟩
+  (fromList xs ++ fromList ys) k  ≡⟨⟩
+  fromList xs (fromList ys k)     ≡⟨ cong (fromList xs) (ys∼dys k) ⟩
+  fromList xs (dys k)             ≡⟨ xs∼dxs (dys k) ⟩
+  dxs (dys k)                     ≡⟨⟩
+  (dxs ++ dys) k                  ∎
 
-∷⁺ : (x : A) → xs ∼ ys → x List.∷ xs ∼ x ∷ ys
-∷⁺ {xs = xs} {ys} x xs~ys k = cong (x List.∷_) (xs~ys k)
+∷⁺ : (x : A) → xs ∼ dxs → x List.∷ xs ∼ x ∷ dxs
+∷⁺ x = ++⁺ [ x ]⁺
 
-++-∷⁺ : (x : A) → xs₁ ∼ ys₁ → xs₂ ∼ ys₂ →
-        xs₁ List.++ x List.∷ xs₂ ∼ ys₁ ++ x ∷ ys₂
-++-∷⁺ x xs₁∼ys₁ xs₂∼ys₂ = ++⁺ xs₁∼ys₁ (∷⁺ x xs₂∼ys₂)
+∷ʳ⁺ : (x : A) → xs ∼ dxs → xs List.∷ʳ x ∼ dxs ∷ʳ x
+∷ʳ⁺ x xs∼dxs = ++⁺ xs∼dxs [ x ]⁺
 
-∷ʳ⁺ : (x : A) → xs ∼ ys → xs List.∷ʳ x ∼ ys ∷ʳ x
-∷ʳ⁺ {xs = xs} {ys} x xs∼ys k = ++⁺ xs∼ys [ x ]⁺ k
-
-map⁺ : (f : A → B) → xs ∼ ys → List.map f xs ∼ map f ys
+map⁺ : (f : A → B) → xs ∼ dxs → List.map f xs ∼ map f dxs
 map⁺ f = viaList⁺ _

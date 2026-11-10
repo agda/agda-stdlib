@@ -83,11 +83,11 @@ symmetric (d , m) .edit = Edit.symmetric d
 symmetric (d , m) .minimal = λ c d′ → m c (Edit.symmetric d′)
 
 -- The relation is indeed unique
-unique : Unique {A = List A} Dist
-unique _ _ _ _ (dk , mk) (dl , ml) = ≤-antisym (mk _ dl) (ml _ dk)
+unique : Unique Dist
+unique _ _ _ (dk , mk) (dl , ml) = ≤-antisym (ml _ dk) (mk _ dl)
 
 -- And it respects the triangle inequality
-triangle : Triangle {A = List A} Dist
+triangle : Triangle Dist
 triangle _ _ _ _ _ _ (dlm , _) (dmr , _) (dlr , mlr)
   = let (m , dlr′ , m≤) = Edit.compose dlm dmr in
   ≤-trans (mlr m dlr′) m≤
