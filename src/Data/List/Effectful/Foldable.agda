@@ -136,9 +136,11 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
 
   open Permutation CM.setoid renaming (_↭_ to _↭ₘ_)
 
-  foldr-congruent : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
-  foldr-congruent {x = xs} {y = ys}
-    rewrite ≡.sym (map-id xs) | ≡.sym (map-id ys)
-    rewrite ≡.sym (foldMap≗foldr∘map _∙_ ε id xs) | ≡.sym (foldMap≗foldr∘map _∙_ ε id ys)
-    rewrite map-id xs | map-id ys
-    = foldMap-congruent $ Identity.function CM.setoid
+  foldr-congruent : Congruent _↭ₘ_ CM._≈_ k
+  foldr-congruent {x = xs} {y = ys} xs↭ₘys = begin
+    k xs                       ≡⟨ ≡.cong k (map-id xs) ⟨
+    k (List.map id xs)         ≡⟨ foldMap≗foldr∘map _∙_ ε id xs ⟨
+    foldMap CM.rawMonoid id xs ≈⟨ foldMap-congruent (Identity.function CM.setoid) xs↭ₘys ⟩
+    foldMap CM.rawMonoid id ys ≡⟨ foldMap≗foldr∘map _∙_ ε id ys ⟩
+    k (List.map id ys)         ≡⟨ ≡.cong k (map-id ys) ⟩
+    k ys ∎
