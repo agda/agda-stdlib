@@ -5,21 +5,20 @@ module Algebra.Polynomial.Poly.Base.Semiring
   where
 
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding ([_])
 open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
 open import Data.Nat.Base as ℕ using (ℕ; suc)
 import Level as L
+open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Construct.Add.Infimum
+  using (_₋; ⊥₋; [_])
+  
 
-module SR = Semiring SR
-open SR
-  renaming
-    ( Carrier to A
-    ; _≈_ to _≈A_
-    ; _+_ to _+A_
-    ; _*_ to _*A_
-    )
-   using (0#; 1#)
-
+module A = Semiring SR
+open A
+ using ()
+ renaming (Carrier to A)
+ 
 infixl 7 _*_
 infix 7 _·_
 infixl 6 _+_
@@ -29,7 +28,6 @@ infix 4 _≈_
 private
   variable
    a b : A
-
 
 -- Polynomial is represented as a list
 -- a₀ ∷ a₁ ∷ ⋯ ∷ aₙ ∶ [] represents the polynomial a₀ + a₁x + ⋯ + aₙxⁿ
@@ -43,73 +41,36 @@ private
     p : Poly 
     q : Poly
     r : Poly
-   
+
+0# : Poly
+0# = []
+
+1# : Poly
+1# = A.1# ∷ []
+
 -- Scaling a polynomial by a
 _·_ : A → Poly → Poly
-a · p = List.map (a *A_) p
-
---  Multiply a polynomial by x
-shift : Poly → Poly
-shift p = 0# ∷ p
+a · p = List.map (a A.*_) p
   
 -- Multiply a polynomial by xⁿ
-shift-by-n : (n : ℕ) → Poly → Poly
-shift-by-n 0 p = p
-shift-by-n (suc n) p = 0# ∷ shift-by-n n p
+shift : (n : ℕ) → Poly → Poly
+shift 0 p = p
+shift (suc n) p = A.0# ∷ shift n p
 
 IsZero : Poly → Set (ℓ₁ L.⊔ ℓ₂)
-IsZero = All (_≈A 0#)
+IsZero = All (A._≈ A.0#)
 
 -- The representation of a polynomial is not unique
 -- because we allow coefficients to be zero
--- We define an equivalence relation which takes this into account 
+-- We define an equivalence relation which takes this into account
 
 data _≈_ : Poly → Poly → Set (ℓ₁ L.⊔ ℓ₂) where
  []≈ : (q : Poly) → IsZero q → [] ≈ q
  ≈[] : (p : Poly) → IsZero p → p ≈ []
- cons : (a ≈A b) → (p ≈ q) → (a ∷ p) ≈ (b ∷ q)
+ cons : (a A.≈ b) → (p ≈ q) → (a ∷ p) ≈ (b ∷ q)
 
--- Properties of Polynomial Equality
 
-zeros-unique : IsZero p → IsZero q → p ≈ q
-zeros-unique [] [] = []≈ [] []
-zeros-unique [] (a≈0 ∷ p≈0) = []≈ (_ ∷ _) (a≈0 ∷ p≈0)
-zeros-unique (a≈0 ∷ p≈0) [] = ≈[] (_ ∷ _) (a≈0 ∷ p≈0)
-zeros-unique (a≈0 ∷ p≈0) (b≈0 ∷ q≈0)
-  = cons (SR.trans a≈0 (SR.sym b≈0)) (zeros-unique p≈0 q≈0)
 
-IsZero-cong : IsZero p → p ≈ q → IsZero q
-IsZero-cong [] ([]≈ q q≈0) = q≈0
-IsZero-cong [] (≈[] p p≈0) = p≈0
-IsZero-cong (a≈0 ∷ p≈0) (≈[] a∷p a∷p≈0) = []
-IsZero-cong (a≈0 ∷ p≈0) (cons a≈b p≈q)
-  = (SR.trans (SR.sym a≈b) a≈0) ∷ IsZero-cong p≈0 p≈q
-
--- _≈_ is an equivalence relation
-
-refl : p ≈ p
-refl {p = []} = []≈ [] []
-refl {p = a ∷ p} = cons SR.refl refl
-
-sym : p ≈ q → q ≈ p
-sym ([]≈ q q≈0) = ≈[] q q≈0
-sym (≈[] p p≈0) = []≈ p p≈0
-sym (cons a≈b p≈q) = cons (SR.sym a≈b) (sym p≈q)
-
-trans : p ≈ q → q ≈ r → p ≈ r
-trans {r = r} ([]≈ q q≈0) q≈r = []≈ r (IsZero-cong q≈0 q≈r) 
-trans (≈[] p p≈0) q≈r = zeros-unique p≈0 (IsZero-cong [] q≈r)
-trans (cons a≈b p≈q) (≈[] q q≈0)
-  = ≈[] _ (IsZero-cong q≈0 (sym (cons a≈b p≈q)))
-trans (cons a≈b p≈q) (cons b≈c q≈r)
-  = cons (SR.trans a≈b b≈c) (trans p≈q q≈r)
-
-consˡ : (a ≈A b) → (a ∷ p) ≈ (b ∷ p)
-consˡ a≈b = cons a≈b refl
-
-consʳ : p ≈ q → (a ∷ p) ≈ (a ∷ q)
-consʳ = cons SR.refl
-  
 ----------------------------------------------------------------
 -- Operations
 
@@ -118,12 +79,43 @@ _+_ : Poly → Poly → Poly
 [] + [] = []
 [] + (a ∷ p) = a ∷ p
 (a ∷ p) + [] = a ∷ p
-(a ∷ p) + (b ∷ q) = (a +A b) ∷ (p + q)
+(a ∷ p) + (b ∷ q) = (a A.+ b) ∷ (p + q)
 
 -- Multiplication
 _*_ : Poly → Poly → Poly
 _*_ [] p = []
-_*_ (a ∷ p) q = (a · q) + (p * (0# ∷ q))
+_*_ (a ∷ p) q = (a · q) + (p * (shift 1 q))
+
+-- define a canonical inclusion homomorphism from R to R[x])
+inject : A.Carrier → Poly
+inject r = r ∷ []
+
+
+------------------------------------------------------
+-- Degree function and polynomial normalization
+
+module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
+
+-- true degree function of a polynomial
+  degree : Poly → ℕ ₋
+  degree [] = ⊥₋
+  degree (a ∷ p) with degree p
+  ... | [ n ] = [ suc n ]
+  ... | ⊥₋ with a ≟0
+  ...   | yes _ = ⊥₋
+  ...   | no  _ = [ 0 ]
+
+-- normalization operation for a polynomial
+  normalize : Poly → Poly
+  normalize [] = []
+  normalize (a ∷ p) with normalize p
+  ... | b ∷ q = a ∷ b ∷ q
+  ... | [] with a ≟0
+  ...   | yes _ = []
+  ...   | no _ = a ∷ []
+
+ 
+
 
 
 

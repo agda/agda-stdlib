@@ -9,7 +9,6 @@ open import Data.List.Base as List using (List)
 
 module R = Ring R
 
-
 -- Polynomial subtraction
 -_ : Poly → Poly
 - p = List.map R.-_ p
