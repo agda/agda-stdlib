@@ -15,7 +15,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_; foldr)
 open import Data.List.Properties using (map-id; foldMap≗foldr∘map)
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 open import Data.List.Relation.Binary.Pointwise as Pointwise
-  using (Pointwise)
+  using (Pointwise) hiding (module Pointwise)
 open import Effect.Foldable using (RawFoldableWithDefaults; RawFoldable)
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Bundles using (Func)
@@ -93,6 +93,10 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
   private
     open module CM = CommutativeMonoid commutativeMonoid
       using (_∙_; ε; setoid; ∙-cong; ∙-congˡ; ∙-congʳ; assoc; comm)
+    k = foldr _∙_ ε
+    _≋_ = Pointwise CM._≈_
+    k-cong-≋ : ∀ {ws zs} → ws ≋ zs → k ws CM.≈ k zs
+    k-cong-≋ = Pointwise.foldr⁺ ∙-cong CM.refl
   open ≈-Reasoning setoid
 
 -- foldMap
@@ -100,6 +104,7 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
   module _ {S : Setoid c r} (F : Func S setoid) where
 
     open Permutation S renaming (_↭_ to _↭ₛ_)
+    open Pointwise using (map⁺; map)
     private
       open module S = Setoid S
       open module F = Func F
@@ -108,10 +113,11 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
 
     foldMap-congruent : Congruent _↭ₛ_ CM._≈_ h
 
-    foldMap-congruent (refl {xs} {ys} xs≋ys)
-      rewrite foldMap≗foldr∘map _∙_ ε f xs | foldMap≗foldr∘map _∙_ ε f ys
-      = Pointwise.foldr⁺ {R = CM._≈_} ∙-cong (CM.refl {x = ε}) $
-          (Pointwise.map⁺ f f (Pointwise.map F.cong xs≋ys))
+    foldMap-congruent (refl {xs} {ys} xs≋ys) = begin
+      h xs              ≡⟨ foldMap≗foldr∘map _∙_ ε f xs ⟩
+      k (List.map f xs) ≈⟨ k-cong-≋ (map⁺ f f (map F.cong xs≋ys))  ⟩
+      k (List.map f ys) ≡⟨ foldMap≗foldr∘map _∙_ ε f ys ⟨
+      h ys              ∎
 
     foldMap-congruent (prep x≈y xs↭ys)    = ∙-cong (F.cong x≈y) (foldMap-congruent xs↭ys)
 
