@@ -9,9 +9,6 @@ open import Data.List.Base as List using (List)
 
 module R = Ring R
 
-private
-  variable
-    p : Poly 
 
 -- Polynomial subtraction
 -_ : Poly → Poly
