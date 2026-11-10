@@ -38,9 +38,7 @@ Poly =  List A
 
 private
   variable
-    p : Poly 
-    q : Poly
-    r : Poly
+    p q r : Poly
 
 0# : Poly
 0# = []
