@@ -11,7 +11,7 @@ open import Algebra.Consequences.Setoid using (comm∧assoc⇒middleFour)
 import Algebra.Definitions as Def
 open import Algebra.Polynomial.Poly.Base.Semiring SR
   using ( Poly; _+_; _*_; _·_; shift; _≈_; IsZero
-        ; inject; []≈ ; ≈[]; cons; 0#; 1#; degree)
+        ; inject; []≈ ; ≈[]; cons; 0#; 1#; degree; normalize)
 open import Algebra.Structures
   using ( IsMagma; IsSemigroup; IsCommutativeSemigroup; IsMonoid
         ; IsSemiring; IsCommutativeMonoid)
@@ -568,6 +568,25 @@ module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
   ...   | no _    | no  _    = Eq.refl
   ...   | yes a≈0 | no  ¬b≈0 = contradiction (A.trans (A.sym a≈b) a≈0) ¬b≈0
   ...   | no ¬a≈0 | yes  b≈0 = contradiction (A.trans a≈b b≈0) ¬a≈0
+
+  normalizep≈p : (p : Poly) → (normalize _≟0  p) ≈ p
+  normalizep≈p [] = refl
+  normalizep≈p (a ∷ p) with normalize _≟0 p | normalizep≈p p
+  ... | b ∷ q    | ih = consʳ ih
+  ... | []       | ih with a ≟0
+  ...   | yes a≈0    = []≈ (a ∷ p) (a≈0 ∷ p≈[]⇒IsZero (sym ih))
+  ...   | no _       = consʳ ih
+
+  degree-normalize : (p : Poly) → degree _≟0 (normalize _≟0 p) ≡ degree _≟0 p
+  degree-normalize p = deg-cong (normalizep≈p p)
+
+  IsZero⇒normalize≡[] : ∀ {p} → IsZero p → normalize _≟0 p ≡ []
+  IsZero⇒normalize≡[] {p = 0#} [] = Eq.refl
+  IsZero⇒normalize≡[] {p = a ∷ p} (a≈0 ∷ p≈0) with
+    normalize _≟0 p | IsZero⇒normalize≡[] p≈0
+  ...   | []        | ih with a ≟0
+  ...                   | yes _   = Eq.refl
+  ...                   | no ¬a≈0 = contradiction a≈0 ¬a≈0
 
 --------------------------------------------------------------
 -- Algebraic properties of addition

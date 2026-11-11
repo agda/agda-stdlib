@@ -94,7 +94,8 @@ inject r = r ∷ []
 
 module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
 
--- true degree function of a polynomial
+-- Degree of a polynomial is its highest exponent with a
+-- non-zero coefficient
   degree : Poly → ℕ ₋
   degree [] = ⊥₋
   degree (a ∷ p) with degree p
@@ -103,7 +104,7 @@ module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
   ...   | yes _ = ⊥₋
   ...   | no  _ = [ 0 ]
 
--- normalization operation for a polynomial
+-- Remove trailing zero coefficient
   normalize : Poly → Poly
   normalize [] = []
   normalize (a ∷ p) with normalize p
