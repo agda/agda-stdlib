@@ -542,26 +542,26 @@ shiftp≈x*p (a ∷ p) = begin
 
 module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
 
-  IsZero⇒deg≡⊥₋ : ∀ {p} → IsZero p → degree _≟0 p ≡ ⊥₋
-  IsZero⇒deg≡⊥₋ [] = Eq.refl
-  IsZero⇒deg≡⊥₋ {a ∷ p} (a≈0 ∷ p≈0) 
-    rewrite IsZero⇒deg≡⊥₋ p≈0 with a ≟0
+  IsZero⇒degree≡⊥₋ : ∀ {p} → IsZero p → degree _≟0 p ≡ ⊥₋
+  IsZero⇒degree≡⊥₋ [] = Eq.refl
+  IsZero⇒degree≡⊥₋ {a ∷ p} (a≈0 ∷ p≈0) 
+    rewrite IsZero⇒degree≡⊥₋ p≈0 with a ≟0
   ... | yes _   = Eq.refl
   ... | no ¬a≈0 = contradiction a≈0 ¬a≈0
 
-  deg≡⊥₋⇒IsZero : ∀ {p} → degree _≟0 p ≡ ⊥₋ → IsZero p
-  deg≡⊥₋⇒IsZero {[]} eq = []
-  deg≡⊥₋⇒IsZero {a ∷ p} eq with degree _≟0 p in taildeg
+  degree≡⊥₋⇒IsZero : ∀ {p} → degree _≟0 p ≡ ⊥₋ → IsZero p
+  degree≡⊥₋⇒IsZero {[]} eq = []
+  degree≡⊥₋⇒IsZero {a ∷ p} eq with degree _≟0 p in taildegree
   ... | [ n ] with () <- eq
   ... | ⊥₋ with a ≟0
-  ...   | yes a≈0 = a≈0 ∷ deg≡⊥₋⇒IsZero {p} taildeg
+  ...   | yes a≈0 = a≈0 ∷ degree≡⊥₋⇒IsZero {p} taildegree
   ...   | no _ with () <- eq
 
-  deg-cong : ∀ {p q} → p ≈ q → degree _≟0 p ≡ degree _≟0 q
-  deg-cong ([]≈ q []≈q) = Eq.sym (IsZero⇒deg≡⊥₋ []≈q)
-  deg-cong (≈[] p p≈[]) = IsZero⇒deg≡⊥₋ p≈[]
-  deg-cong {a ∷ p} {b ∷ q} (cons a≈b p≈q)
-    rewrite deg-cong p≈q with degree _≟0 q
+  degree-cong : ∀ {p q} → p ≈ q → degree _≟0 p ≡ degree _≟0 q
+  degree-cong ([]≈ q []≈q) = Eq.sym (IsZero⇒degree≡⊥₋ []≈q)
+  degree-cong (≈[] p p≈[]) = IsZero⇒degree≡⊥₋ p≈[]
+  degree-cong {a ∷ p} {b ∷ q} (cons a≈b p≈q)
+    rewrite degree-cong p≈q with degree _≟0 q
   ... | [ n ] = Eq.refl
   ... | ⊥₋ with a ≟0 | b ≟0
   ...   | yes _   | yes _    = Eq.refl
@@ -578,7 +578,7 @@ module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
   ...   | no _       = consʳ ih
 
   degree-normalize : (p : Poly) → degree _≟0 (normalize _≟0 p) ≡ degree _≟0 p
-  degree-normalize p = deg-cong (normalizep≈p p)
+  degree-normalize p = degree-cong (normalizep≈p p)
 
   IsZero⇒normalize≡[] : ∀ {p} → IsZero p → normalize _≟0 p ≡ []
   IsZero⇒normalize≡[] {p = 0#} [] = Eq.refl
