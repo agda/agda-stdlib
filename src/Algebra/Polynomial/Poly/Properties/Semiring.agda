@@ -577,9 +577,6 @@ module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
   ...   | yes a≈0    = []≈ (a ∷ p) (a≈0 ∷ p≈[]⇒IsZero (sym ih))
   ...   | no _       = consʳ ih
 
-  degree-normalize : (p : Poly) → degree _≟0 (normalize _≟0 p) ≡ degree _≟0 p
-  degree-normalize p = degree-cong (normalizep≈p p)
-
   IsZero⇒normalize≡[] : ∀ {p} → IsZero p → normalize _≟0 p ≡ []
   IsZero⇒normalize≡[] {p = 0#} [] = Eq.refl
   IsZero⇒normalize≡[] {p = a ∷ p} (a≈0 ∷ p≈0) with
@@ -587,6 +584,17 @@ module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
   ...   | []        | ih with a ≟0
   ...                   | yes _   = Eq.refl
   ...                   | no ¬a≈0 = contradiction a≈0 ¬a≈0
+
+  normalize-cong : (p q : Poly) → p ≈ q → normalize _≟0 p ≈ normalize _≟0 q
+  normalize-cong p q p≈q = begin
+    normalize _≟0 p
+      ≈⟨ normalizep≈p p ⟩
+    p
+      ≈⟨ p≈q ⟩
+    q
+      ≈⟨ normalizep≈p q ⟨
+    normalize _≟0 q
+      ∎
 
 --------------------------------------------------------------
 -- Algebraic properties of addition
