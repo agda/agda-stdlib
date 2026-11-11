@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.Linked.Properties where
 
 open import Data.Bool.Base using (true; false)
-open import Data.List.Base hiding (any)
+open import Data.List.Base
 open import Data.List.Relation.Unary.AllPairs as AllPairs
   using (AllPairs; []; _∷_)
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
