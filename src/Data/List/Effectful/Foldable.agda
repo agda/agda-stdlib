@@ -11,6 +11,7 @@ module Data.List.Effectful.Foldable where
 open import Algebra.Bundles using (Monoid; CommutativeMonoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
 open import Algebra.Morphism.Structures using (IsMonoidHomomorphism)
+open import Algebra.Properties.CommutativeSemigroup using (x∙yz≈y∙xz)
 open import Data.List.Base as List using (List; []; _∷_; _++_; foldr)
 open import Data.List.Properties using (map-id; foldMap≗foldr∘map)
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
@@ -92,26 +93,25 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
 
   private
     open module CM = CommutativeMonoid commutativeMonoid
-      using (_∙_; ε; setoid; ∙-cong; ∙-congˡ; ∙-congʳ; assoc; comm)
+      using (_∙_; ε; _≈_; ∙-cong)
+    _≋_ = Pointwise _≈_
     k = foldr _∙_ ε
-    _≋_ = Pointwise CM._≈_
-    k-cong-≋ : ∀ {ws zs} → ws ≋ zs → k ws CM.≈ k zs
+    k-cong-≋ : ∀ {ws zs} → ws ≋ zs → k ws ≈ k zs
     k-cong-≋ = Pointwise.foldr⁺ ∙-cong CM.refl
-  open ≈-Reasoning setoid
+  open ≈-Reasoning CM.setoid
 
 -- foldMap
 
-  module _ {S : Setoid c r} (F : Func S setoid) where
+  module _ {S : Setoid c r} (F : Func S CM.setoid) where
 
     open Permutation S renaming (_↭_ to _↭ₛ_)
     open Pointwise using (map⁺; map)
     private
-      open module S = Setoid S
-      open module F = Func F
+      module F = Func F
       f = F.to
       h = foldMap CM.rawMonoid f
 
-    foldMap-congruent : Congruent _↭ₛ_ CM._≈_ h
+    foldMap-congruent : Congruent _↭ₛ_ _≈_ h
 
     foldMap-congruent (refl {xs} {ys} xs≋ys) = begin
       h xs              ≡⟨ foldMap≗foldr∘map _∙_ ε f xs ⟩
@@ -122,11 +122,8 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
     foldMap-congruent (prep x≈y xs↭ys)    = ∙-cong (F.cong x≈y) (foldMap-congruent xs↭ys)
 
     foldMap-congruent (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
-      f x ∙ (f y ∙ h xs)    ≈⟨ ∙-congˡ (∙-congˡ (foldMap-congruent xs↭ys)) ⟩
-      f x ∙ (f y ∙ h ys)    ≈⟨ assoc (f x) (f y) (h ys) ⟨
-      (f x ∙ f y) ∙ h ys    ≈⟨ ∙-congʳ (comm (f x) (f y)) ⟩
-      (f y ∙ f x) ∙ h ys    ≈⟨ ∙-congʳ (∙-cong (F.cong y≈y′) (F.cong x≈x′)) ⟩
-      (f y′ ∙ f x′) ∙ h ys  ≈⟨ assoc (f y′) (f x′) (h ys)  ⟩
+      f x ∙ (f y ∙ h xs)    ≈⟨ x∙yz≈y∙xz CM.commutativeSemigroup (f x) (f y) (h xs) ⟩
+      f y ∙ (f x ∙ h xs)    ≈⟨ ∙-cong (F.cong y≈y′) (∙-cong (F.cong x≈x′) (foldMap-congruent xs↭ys)) ⟩
       f y′ ∙ (f x′ ∙ h ys)  ∎
 
     foldMap-congruent (trans xs↭ys ys↭zs) =
@@ -136,7 +133,7 @@ module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
 
   open Permutation CM.setoid renaming (_↭_ to _↭ₘ_)
 
-  foldr-congruent : Congruent _↭ₘ_ CM._≈_ k
+  foldr-congruent : Congruent _↭ₘ_ _≈_ k
   foldr-congruent {x = xs} {y = ys} xs↭ₘys = begin
     k xs                       ≡⟨ ≡.cong k (map-id xs) ⟨
     k (List.map id xs)         ≡⟨ foldMap≗foldr∘map _∙_ ε id xs ⟨
