@@ -11,7 +11,7 @@ module Data.Bool.ListAction.Properties where
 open import Data.Bool.Base
 open import Data.Bool.Properties
 open import Data.Bool.ListAction
-open import Data.List.Base hiding (and; or; all; any)
+open import Data.List.Base
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Binary.Permutation.Propositional using (_↭_; ↭⇒↭ₛ)
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as ↭
