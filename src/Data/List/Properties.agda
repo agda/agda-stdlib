@@ -637,6 +637,12 @@ foldr-map : ∀ (f : A → B → B) (g : C → A) x xs → foldr f x (map g xs) 
 foldr-map f g x []       = refl
 foldr-map f g x (y ∷ xs) = cong (f (g y)) (foldr-map f g x xs)
 
+module _ (_∙_ : B → B → B) (ε : B) (f : A → B) where
+
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr _∙_ ε ∘ List.map f
+  foldMap≗foldr∘map []       = refl
+  foldMap≗foldr∘map (x ∷ xs) = cong (f x ∙_) (foldMap≗foldr∘map xs)
+
 -- Interaction with predicates
 
 module _ {P : Pred A p} {f : A → A → A} where

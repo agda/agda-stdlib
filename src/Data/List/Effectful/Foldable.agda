@@ -8,18 +8,28 @@
 
 module Data.List.Effectful.Foldable where
 
-open import Algebra.Bundles using (Monoid)
+open import Algebra.Bundles using (Monoid; CommutativeMonoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
 open import Algebra.Morphism.Structures using (IsMonoidHomomorphism)
-open import Data.List.Base as List using (List; []; _∷_; _++_)
+open import Algebra.Properties.CommutativeSemigroup using (x∙yz≈y∙xz)
+open import Data.List.Base as List using (List; []; _∷_; _++_; foldr)
+open import Data.List.Properties using (map-id; foldMap≗foldr∘map)
+import Data.List.Relation.Binary.Permutation.Setoid as Permutation
+open import Data.List.Relation.Binary.Pointwise as Pointwise
+  using (Pointwise) hiding (module Pointwise)
 open import Effect.Foldable using (RawFoldableWithDefaults; RawFoldable)
-open import Function.Base using (_∘_; id)
+open import Function.Base using (_∘_; id; _$_)
+open import Function.Bundles using (Func)
+import Function.Construct.Identity as Identity using (function)
+open import Function.Definitions using (Congruent)
 open import Level using (Level)
-import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; cong)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
-    a c ℓ : Level
+    a c r ℓ : Level
     A : Set a
 
 ------------------------------------------------------------------------
@@ -30,8 +40,7 @@ module _ (M : RawMonoid c ℓ) where
   open RawMonoid M
 
   foldMap : (A → Carrier) → List A → Carrier
-  foldMap f []       = ε
-  foldMap f (x ∷ xs) = f x ∙ foldMap f xs
+  foldMap = List.foldMap _∙_ ε
 
 ------------------------------------------------------------------------
 -- Basic implementation using supplied defaults
@@ -51,7 +60,7 @@ foldable = record
   }
 
 ------------------------------------------------------------------------
--- Properties
+-- foldMap gives rise to a Monoid homomorphism
 
 module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
 
@@ -76,3 +85,59 @@ module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
       }
     ; ε-homo = []-homo
     }
+
+------------------------------------------------------------------------
+-- for Commutative Monoids, foldMap and foldr respect Permutation
+
+module _ (commutativeMonoid : CommutativeMonoid c ℓ) where
+
+  private
+    open module CM = CommutativeMonoid commutativeMonoid
+      using (_∙_; ε; _≈_; ∙-cong)
+    _≋_ = Pointwise _≈_
+    k = foldr _∙_ ε
+    k-cong-≋ : ∀ {ws zs} → ws ≋ zs → k ws ≈ k zs
+    k-cong-≋ = Pointwise.foldr⁺ ∙-cong CM.refl
+  open ≈-Reasoning CM.setoid
+
+-- foldMap
+
+  module _ {S : Setoid c r} (F : Func S CM.setoid) where
+
+    open Permutation S renaming (_↭_ to _↭ₛ_)
+    open Pointwise using (map⁺; map)
+    private
+      module F = Func F
+      f = F.to
+      h = foldMap CM.rawMonoid f
+
+    foldMap-congruent : Congruent _↭ₛ_ _≈_ h
+
+    foldMap-congruent (refl {xs} {ys} xs≋ys) = begin
+      h xs              ≡⟨ foldMap≗foldr∘map _∙_ ε f xs ⟩
+      k (List.map f xs) ≈⟨ k-cong-≋ (map⁺ f f (map F.cong xs≋ys))  ⟩
+      k (List.map f ys) ≡⟨ foldMap≗foldr∘map _∙_ ε f ys ⟨
+      h ys              ∎
+
+    foldMap-congruent (prep x≈y xs↭ys)    = ∙-cong (F.cong x≈y) (foldMap-congruent xs↭ys)
+
+    foldMap-congruent (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
+      f x ∙ (f y ∙ h xs)    ≈⟨ x∙yz≈y∙xz CM.commutativeSemigroup (f x) (f y) (h xs) ⟩
+      f y ∙ (f x ∙ h xs)    ≈⟨ ∙-cong (F.cong y≈y′) (∙-cong (F.cong x≈x′) (foldMap-congruent xs↭ys)) ⟩
+      f y′ ∙ (f x′ ∙ h ys)  ∎
+
+    foldMap-congruent (trans xs↭ys ys↭zs) =
+      CM.trans (foldMap-congruent xs↭ys) (foldMap-congruent ys↭zs)
+
+-- foldr
+
+  open Permutation CM.setoid renaming (_↭_ to _↭ₘ_)
+
+  foldr-congruent : Congruent _↭ₘ_ _≈_ k
+  foldr-congruent {x = xs} {y = ys} xs↭ₘys = begin
+    k xs                       ≡⟨ ≡.cong k (map-id xs) ⟨
+    k (List.map id xs)         ≡⟨ foldMap≗foldr∘map _∙_ ε id xs ⟨
+    foldMap CM.rawMonoid id xs ≈⟨ foldMap-congruent (Identity.function CM.setoid) xs↭ₘys ⟩
+    foldMap CM.rawMonoid id ys ≡⟨ foldMap≗foldr∘map _∙_ ε id ys ⟩
+    k (List.map id ys)         ≡⟨ ≡.cong k (map-id ys) ⟩
+    k ys ∎

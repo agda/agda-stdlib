@@ -34,8 +34,6 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Binary.PropositionalEquality.Properties using (module ≡-Reasoning)
 open import Relation.Nullary
 
-import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutation
-
 private
   variable
     a b p : Level
