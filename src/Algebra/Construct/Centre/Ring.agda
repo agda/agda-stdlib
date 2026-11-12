@@ -59,9 +59,9 @@ domain = record
   - g = record
     { ι       = X.- ι g
     ; central = λ r → begin
-      X.- ι g X.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟨
+      X.- ι g X.* r   ≈⟨ -‿distribˡ-* (ι g) r ⟩
       X.- (ι g X.* r) ≈⟨ X.-‿cong (Centre.central g r) ⟩
-      X.- (r X.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟩
+      X.- (r X.* ι g) ≈⟨ -‿distribʳ-* r (ι g) ⟨
       r  X.* X.- ι g  ∎
     }
   0# : Centre
