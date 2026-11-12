@@ -174,6 +174,11 @@ Non-backwards compatible changes
   Correspondingly, the relevant definitions have been moved to the new
   module `Data.Irrelevant.Unsafe`.
 
+* [Issue #2553](https://github.com/agda/agda-stdlib/issues/2553)
+  The operations `Data.List.Base.{sum|product|and|or|all|any}` have been
+  removed in favour of the corresponding definitions and properties under
+  `Data.Nat.ListAction` and `Data.Bool.ListAction`.
+
 Minor improvements
 ------------------
 
