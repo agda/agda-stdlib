@@ -676,10 +676,10 @@ toℚᵘ-isOrderMonomorphism-< = record
 <⇒≱ : _<_ ⇒ _≱_
 <⇒≱ p<q p≥q = ≤⇒≯ p≥q p<q
 
-≤∧≢⇒< : ∀ {p q} → p ≤ q → p ≢ q → p < q
+≤∧≢⇒< : p ≤ q → p ≢ q → p < q
 ≤∧≢⇒< (*≤* p≤q) p≢q = *<* (ℤ.≤∧≢⇒< p≤q (p≢q ∘ ≃⇒≡ ∘ *≡*))
 
-≤∧≮⇒≡ : ∀ {p q} → p ≤ q → p ≮ q → p ≡ q
+≤∧≮⇒≡ : p ≤ q → p ≮ q → p ≡ q
 ≤∧≮⇒≡ (*≤* p≤q) p≮q = ≃⇒≡ (*≡* (ℤ.≤∧≮⇒≡ p≤q (p≮q ∘ *<*)))
 
 <-irrefl : Irreflexive _≡_ _<_
