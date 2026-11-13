@@ -1,15 +1,13 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Instantiates the ring solver, using the integral numbers as the
+-- Instantiates the ring solver, using the integers as the
 -- coefficient ring
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra using (RawRing; CommutativeRing )
-import Algebra.Properties.Semiring.Mult as SemiringMultiplication
-open import Data.Maybe.Base using (Maybe; just; nothing; map)
+open import Algebra.Bundles using (RawRing; Ring; CommutativeRing )
 
 module Algebra.Solver.Ring.IntegralCoefficients
   {r₁ r₂} (R : CommutativeRing r₁ r₂)
@@ -17,10 +15,10 @@ module Algebra.Solver.Ring.IntegralCoefficients
   where
 
 open import Algebra.Solver.Ring.AlmostCommutativeRing
-open import Algebra.Bundles using (Ring)
+import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Integer using (ℤ; +_; +0; +[1+_]; -[1+_]; _⊖_; _◃_) renaming (_+_ to _ℤ+_; _-_ to _ℤ-_; -_ to ℤ-_; _*_ to _ℤ*_)
 open import Data.Integer.Properties as ℤ using (+-*-ring; _≡?_)
-open import Data.Maybe using (Maybe; map)
+open import Data.Maybe.Base using (Maybe; just; nothing; map)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Sign.Base using (Sign)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -41,8 +39,8 @@ private
   ⊖-homo : ∀ a b → ⟦ a ⊖ b ⟧ ≈ ⟦ a ⟧ₙ - ⟦ b ⟧ₙ
   ⊖-homo ℕ.zero ℕ.zero = begin
     ⟦ ℕ.zero ⊖ ℕ.zero ⟧ ≡⟨⟩
-    0#                  ≈˘⟨ +-identityʳ _ ⟩
-    0# + 0#             ≈˘⟨ +-congˡ -0#≈0# ⟩
+    0#                  ≈⟨ +-identityʳ _ ⟨
+    0# + 0#             ≈⟨ +-congˡ -0#≈0# ⟨
     0# - 0#             ∎
   ⊖-homo ℕ.zero (suc b) = begin
     ⟦ ℕ.zero ⊖ suc b ⟧       ≡⟨⟩

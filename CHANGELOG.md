@@ -303,7 +303,7 @@ New modules
 * `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
 
 * `Algebra.Solver.Ring.IntegralCoefficients` for a generic solver for rings with integral
-  coefficient.
+  coefficients.
 
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
   of consecutive elements of a stream are related.
