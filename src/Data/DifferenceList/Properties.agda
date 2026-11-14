@@ -9,7 +9,7 @@
 module Data.DifferenceList.Properties where
 
 open import Data.DifferenceList.Base
-  using (DiffList; fromList; toList; viaList; []; _∷_; [_]; _++_; _∷ʳ_; map)
+  using (DiffList; fromList; toList; viaList; []; _∷_; singleton-syntax; _++_; _∷ʳ_; map)
 open import Data.List.Base as List using (List)
 open import Data.List.Properties using (++-assoc; ++-identityʳ)
 open import Data.Product.Base using (Σ; _,_)

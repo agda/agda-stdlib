@@ -35,6 +35,7 @@ open import IO.Handle public
 module Colist where
 
   open import Codata.Musical.Colist.Base
+    using (Colist; []; _∷_; map)
 
   sequence : Colist (IO A) → IO (Colist A)
   sequence []       = pure []
@@ -64,6 +65,7 @@ module Colist where
 module List where
 
   open import Data.List.Base
+    using (List; []; _∷_; map)
 
   sequence : List (IO A) → IO (List A)
   sequence []       = ⦇ [] ⦈

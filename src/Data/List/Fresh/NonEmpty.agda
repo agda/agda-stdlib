@@ -33,6 +33,8 @@ record List#⁺ (A : Set a) (R : Rel A r) : Set (a ⊔ r) where
     tail : List# A R
     {rel} : fresh A R head tail
 
+pattern [_] x = x ∷#⁺ []
+
 open List#⁺
 
 ------------------------------------------------------------------------
@@ -41,8 +43,8 @@ open List#⁺
 uncons : List#⁺ A R → A × List# A R
 uncons (x ∷#⁺ xs) = x , xs
 
-[_] : A → List#⁺ A R
-[ x ] = x ∷#⁺ []
+singleton : A → List#⁺ A R
+singleton = [_]
 
 length : List#⁺ A R → ℕ
 length (x ∷#⁺ xs) = suc (List#.length xs)
