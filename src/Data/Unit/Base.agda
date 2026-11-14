@@ -19,3 +19,9 @@ module Data.Unit.Base where
 
 open import Agda.Builtin.Unit public
   using (⊤; tt)
+
+------------------------------------------------------------------------
+-- A propositional variant of ⊤
+
+record ⊤ₚ : Prop where
+  instance constructor tt
