@@ -23,6 +23,6 @@ open import Algebra.Properties.RingWithoutOne ringWithoutOne public
 
 -1*x≈-x : ∀ x → - 1# * x ≈ - x
 -1*x≈-x x = begin
-  - 1# * x    ≈⟨ -‿distribˡ-* 1# x ⟨
+  - 1# * x    ≈⟨ -‿distribˡ-* 1# x ⟩
   - (1# * x)  ≈⟨ -‿cong ( *-identityˡ x ) ⟩
   - x         ∎
