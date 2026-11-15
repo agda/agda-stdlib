@@ -3,18 +3,19 @@
 --
 -- Booleans: conjunction and disjunction of lists
 --
--- Issue #2553: this is a compatibility stub module,
--- ahead of a more thorough refactoring in terms of
--- `Data.List.Effectful.Foldable.foldmap`.
+-- Refactored in terms of `Data.List.Effectful.Foldable.foldmap`.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.ListAction where
 
-open import Data.Bool.Base using (Bool; _∧_; _∨_; true; false)
-open import Data.List.Base using (List; map; foldr)
-open import Function.Base using (_∘_)
+open import Algebra.Bundles using (Monoid)
+open import Data.Bool.Base using (Bool)
+open import Data.Bool.Properties using (∧-monoid; ∨-monoid)
+open import Data.List.Base using (List)
+open import Data.List.Effectful.Foldable using (foldMap)
+open import Function.Base using (id)
 open import Level using (Level)
 
 private
@@ -26,15 +27,17 @@ private
 ------------------------------------------------------------------------
 -- Definitions
 
-and : List Bool → Bool
-and = foldr _∧_ true
-
-or : List Bool → Bool
-or = foldr _∨_ false
-
 any : (A → Bool) → List A → Bool
-any p = or ∘ map p
+any = foldMap rawMonoid
+  where open Monoid ∨-monoid using (rawMonoid)
 
 all : (A → Bool) → List A → Bool
-all p = and ∘ map p
+all = foldMap rawMonoid
+  where open Monoid ∧-monoid using (rawMonoid)
+
+and : List Bool → Bool
+and = all id
+
+or : List Bool → Bool
+or = any id
 
