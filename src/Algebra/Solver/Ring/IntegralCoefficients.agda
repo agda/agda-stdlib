@@ -149,7 +149,7 @@ private
     ⟦ ℤ.- + (a ℕ.* suc b) ⟧     ≈⟨ -‿homo (+ (a ℕ.* suc b)) ⟩
     - ⟦ + (a ℕ.* suc b) ⟧      ≡⟨⟩
     - ⟦ a ℕ.* suc b ⟧ₙ         ≈⟨ -‿cong (*-homoₙ a (suc b)) ⟩
-    - (⟦ a ⟧ₙ * ⟦ suc b ⟧ₙ)    ≈⟨ -‿distribʳ-* ⟦ a ⟧ₙ ⟦ suc b ⟧ₙ ⟩
+    - (⟦ a ⟧ₙ * ⟦ suc b ⟧ₙ)    ≈⟨ -‿distribʳ-* ⟦ a ⟧ₙ ⟦ suc b ⟧ₙ ⟨
     ⟦ a ⟧ₙ * - ⟦ suc b ⟧ₙ      ≡⟨⟩
     ⟦ + a ⟧ * ⟦ -[1+ b ] ⟧     ∎
   *-homo (-[1+ a ]) (+ b) = begin
