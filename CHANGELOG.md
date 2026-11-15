@@ -174,6 +174,11 @@ Non-backwards compatible changes
   Correspondingly, the relevant definitions have been moved to the new
   module `Data.Irrelevant.Unsafe`.
 
+* [Issue #2807](https://github.com/agda/agda-stdlib/issues/2807)
+  The orientation of the equations `-‿distribˡ-*` and `-‿distribʳ-*` in
+  `Algebra.Properties.RingWithoutOne` has been flipped, streamlining
+  their use throughout the library.
+
 Minor improvements
 ------------------
 
