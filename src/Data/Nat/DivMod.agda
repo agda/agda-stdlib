@@ -306,7 +306,7 @@ m∣n⇒o%n%m≡o%m : ∀ m n o .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ 
                 o % n % m ≡ o % m
 m∣n⇒o%n%m≡o%m m n@.(p * m) o (divides-refl p) = begin-equality
   o % n % m                ≡⟨⟩
-  o % pm % m               ≡⟨ %-congˡ (m%n≡m∸m/n*n o pm) ⟩
+  o % pm % m               ≡⟨ %-congˡ {o = m} (m%n≡m∸m/n*n o pm) ⟩
   (o ∸ o / pm * pm) % m    ≡⟨ cong (λ # → (o ∸ #) % m) (*-assoc (o / pm) p m) ⟨
   (o ∸ o / pm * p * m) % m ≡⟨ m*n≤o⇒[o∸m*n]%n≡o%n (o / pm * p) lem ⟩
   o % m                    ∎
@@ -327,7 +327,7 @@ m*n/m*o≡n/o m n o = helper (<-wellFounded n)
   helper : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
   helper {n} (acc rec) with <-≤-connex n o
   ... | inj₁ n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m n<o)) (sym (m<n⇒m/n≡0 n<o))
-    where instance _ = m*n≢0⇒m≢0 m
+    where instance _ = m*n≢0⇒m≢0 m {o}
   ... | inj₂ n≥o = begin-equality
     (m * n) / (m * o)             ≡⟨ m/n≡1+[m∸n]/n (*-monoʳ-≤ m n≥o) ⟩
     1 + (m * n ∸ m * o) / (m * o) ≡⟨ cong (suc ∘ (_/ (m * o))) (*-distribˡ-∸ m n o) ⟨
@@ -339,7 +339,7 @@ m*n/m*o≡n/o m n o = helper (<-wellFounded n)
 m*n/o*n≡m/o : ∀ m n o .{{_ : NonZero o}} .{{_ : NonZero (o * n)}} →
               m * n / (o * n) ≡ m / o
 m*n/o*n≡m/o m n o = begin-equality
-  m * n / (o * n) ≡⟨ /-congˡ (*-comm m n) ⟩
+  m * n / (o * n) ≡⟨ /-congˡ {o = o * n} (*-comm m n) ⟩
   n * m / (o * n) ≡⟨ /-congʳ (*-comm o n) ⟩
   n * m / (n * o) ≡⟨ m*n/m*o≡n/o n m o ⟩
   m / o           ∎
@@ -363,7 +363,7 @@ m<n*o⇒m/o<n {m} {suc n@(suc _)} {o} m<n*o = pred-cancel-< $ begin-strict
 [m∸n*o]/o≡m/o∸n : ∀ m n o .{{_ : NonZero o}} → (m ∸ n * o) / o ≡ m / o ∸ n
 [m∸n*o]/o≡m/o∸n m zero    o = refl
 [m∸n*o]/o≡m/o∸n m (suc n) o = begin-equality
-  (m ∸ (o + n * o)) / o ≡⟨ /-congˡ (∸-+-assoc m o (n * o)) ⟨
+  (m ∸ (o + n * o)) / o ≡⟨ /-congˡ {o = o} (∸-+-assoc m o (n * o)) ⟨
   (m ∸ o ∸ n * o) / o   ≡⟨ [m∸n*o]/o≡m/o∸n (m ∸ o) n o ⟩
   (m ∸ o) / o ∸ n       ≡⟨ cong (_∸ n) ([m∸n]/n≡m/n∸1 m o) ⟩
   m / o ∸ 1 ∸ n         ≡⟨ ∸-+-assoc (m / o) 1 n ⟩
@@ -372,10 +372,10 @@ m<n*o⇒m/o<n {m} {suc n@(suc _)} {o} m<n*o = pred-cancel-< $ begin-strict
 m/n/o≡m/[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}}
                 .{{_ : NonZero (n * o)}} → m / n / o ≡ m / (n * o)
 m/n/o≡m/[n*o] m n o = begin-equality
-  m / n / o                             ≡⟨ /-congˡ {o = o} (/-congˡ (m≡m%n+[m/n]*n m n*o)) ⟩
-  (m % n*o + m / n*o * n*o) / n / o     ≡⟨ /-congˡ (+-distrib-/-∣ʳ (m % n*o) lem₁) ⟩
+  m / n / o                             ≡⟨ /-congˡ {o = o} (/-congˡ {o = n} (m≡m%n+[m/n]*n m n*o)) ⟩
+  (m % n*o + m / n*o * n*o) / n / o     ≡⟨ /-congˡ {o = o} (+-distrib-/-∣ʳ (m % n*o) lem₁) ⟩
   (m % n*o / n + m / n*o * n*o / n) / o ≡⟨ cong (λ # → (m % n*o / n + #) / o) lem₂ ⟩
-  (m % n*o / n + m / n*o * o) / o       ≡⟨ +-distrib-/-∣ʳ (m % n*o / n) (divides-refl (m / n*o)) ⟩
+  (m % n*o / n + m / n*o * o) / o       ≡⟨ +-distrib-/-∣ʳ (m % n*o / n) {d = o} (divides-refl (m / n*o)) ⟩
   m % n*o / n / o + m / n*o * o / o     ≡⟨ cong (m % n*o / n / o +_) (m*n/n≡m (m / n*o) o) ⟩
   m % n*o / n / o + m / n*o             ≡⟨ cong (_+ m / n*o) (m<n⇒m/n≡0 (m<n*o⇒m/o<n {n = o} lem₃)) ⟩
   m / n*o                               ∎
@@ -392,7 +392,7 @@ m/n/o≡m/[n*o] m n o = begin-equality
   lem₂ : m / n*o * n*o / n ≡ m / n*o * o
   lem₂ = begin-equality
     m / n*o * n*o / n   ≡⟨ cong (λ # → m / n*o * # / n) (*-comm n o) ⟩
-    m / n*o * o*n / n   ≡⟨ /-congˡ (*-assoc (m / n*o) o n) ⟨
+    m / n*o * o*n / n   ≡⟨ /-congˡ {o = n} (*-assoc (m / n*o) o n) ⟨
     m / n*o * o * n / n ≡⟨ m*n/n≡m (m / n*o * o) n ⟩
     m / n*o * o         ∎
 
@@ -414,7 +414,7 @@ m/n/o≡m/[n*o] m n o = begin-equality
 /-*-interchange {o} {p} {m@.(q * o)} {n@.(r * p)} (divides-refl q) (divides-refl r)
   = begin-equality
   (m * n) / (o * p) ≡⟨⟩
-  q * o * (r * p) / (o * p) ≡⟨ /-congˡ ([m*n]*[o*p]≡[m*o]*[n*p] q o r p) ⟩
+  q * o * (r * p) / (o * p) ≡⟨ /-congˡ {o = o * p} ([m*n]*[o*p]≡[m*o]*[n*p] q o r p) ⟩
   q * r * (o * p) / (o * p) ≡⟨ m*n/n≡m (q * r) (o * p) ⟩
   q * r                     ≡⟨ cong₂ _*_ (m*n/n≡m q o) (m*n/n≡m r p) ⟨
   (q * o / o) * (r * p / p) ≡⟨⟩
@@ -431,7 +431,7 @@ m*n/m!≡n/[m∸1]! m′@(suc m) n = m*n/m*o≡n/o m′ n (m !)
 m%[n*o]/o≡m/o%n : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} →
                   {{_ : NonZero (n * o)}} → m % (n * o) / o ≡ m / o % n
 m%[n*o]/o≡m/o%n m n o = begin-equality
-  m % (n * o) / o                   ≡⟨ /-congˡ (m%n≡m∸m/n*n m (n * o)) ⟩
+  m % (n * o) / o                   ≡⟨ /-congˡ {o = o} (m%n≡m∸m/n*n m (n * o)) ⟩
   (m ∸ (m / (n * o) * (n * o))) / o ≡⟨ cong (λ # → (m ∸ #) / o) (*-assoc (m / (n * o)) n o) ⟨
   (m ∸ (m / (n * o) * n * o)) / o   ≡⟨ [m∸n*o]/o≡m/o∸n m (m / (n * o) * n) o ⟩
   m / o ∸ m / (n * o) * n           ≡⟨ cong (λ # → m / o ∸ # * n) (/-congʳ (*-comm n o)) ⟩
