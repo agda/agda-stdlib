@@ -179,6 +179,11 @@ Non-backwards compatible changes
   removed in favour of the corresponding definitions and properties under
   `Data.Nat.ListAction` and `Data.Bool.ListAction`.
 
+* [Issue #2807](https://github.com/agda/agda-stdlib/issues/2807)
+  The orientation of the equations `-‿distribˡ-*` and `-‿distribʳ-*` in
+  `Algebra.Properties.RingWithoutOne` has been flipped, streamlining
+  their use throughout the library.
+
 Minor improvements
 ------------------
 
@@ -192,6 +197,13 @@ Minor improvements
 * The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
   have been streamlined via pattern-matching on `refl`, rather than defined by
   delegation to `Function.Consequences.Setoid` and the use of `cong`.
+
+* [Issue #3016](https://github.com/agda/agda-stdlib/issues/3016)
+  `Data.List.Relation.Binary.Permutation.Setoid.Properties.foldr-commMonoid`
+  now moves to `Data.List.Effectful.Foldable`, where it better belongs, for
+  the sake both of the dependency graph, and of incorporating the refactoring
+  of that module to make use of the addition of `Data.List.Base.foldMap` and
+  its properties.
 
 Deprecated modules
 ------------------
@@ -242,6 +254,11 @@ Deprecated names
   ```agda
   λ∙⁻ ↦ _$⁺_
   λ∙⁺ ↦ _$⁻_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  foldr-commMonoid  ↦  Data.List.Effectful.Foldable.foldr-congruent
   ```
 
 * In `Data.Nat.GCD`:
@@ -306,6 +323,9 @@ New modules
 -----------
 
 * `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
+
+* `Algebra.Solver.Ring.IntegralCoefficients` for a generic solver for rings with integral
+  coefficients.
 
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
   of consecutive elements of a stream are related.
@@ -436,6 +456,20 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  foldMap : (B → B → B) → B → (A → B) → List A → B
+  ```
+
+* In `Data.List.Effectful.Foldable`:
+  for `CM : CommutativeMonoid`, `S : Setoid`, `F: Func S CM.setoid`,
+  ```agda
+  foldMap-congruent : Congruent _↭ₛ_ CM._≈_ (foldMap CM.rawMonoid F.to)
+  foldr-congruent   : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
+  ```
+  where `_↭ₛ_` is the `Permutation` relation on `S`, and `_↭ₘ_` the `Permutation`
+  relation on `CM.setoid`.
+
 * In `Data.List.Membership.Propositional.Properties`:
   ```agda
   foldl-selective : Selective _≡_ _•_ → ∀ e xs →
@@ -447,6 +481,10 @@ Additions to existing modules
   foldl-selective : Selective _≈_ _•_ → ∀ e xs →
                     (foldl _•_ e xs ≈ e) ⊎ (foldl _•_ e xs ∈ xs)
    ```
+* In `Data.List.Properties`:
+  ```agda
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr _∙_ ε (map f)
+  ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
@@ -522,12 +560,33 @@ Additions to existing modules
   n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
   -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
                 ℤ.- i / n ≡ - (i / n)
+  >⇒≢ : _>_ ⇒ _≢_
+  ≰⇒≮ : _≰_ ⇒ _≮_
+  <⇒≱ : _<_ ⇒ _≱_
+  ≤∧≢⇒< : p ≤ q → p ≢ q → p < q
+  ≤∧≮⇒≡ : p ≤ q → p ≮ q → p ≡ q
+  ≤-<-connex : Connex _≤_ _<_
+  ≥->-connex : Connex _≥_ _>_
+  <-≤-connex : Connex _<_ _≤_
+  >-≥-connex : Connex _>_ _≥_
   *-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
                 (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
   *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
+  pos⊓pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p ⊓ q)
+  nonNeg⊓nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p ⊓ q)
+  nonPos⊓⇒nonPos : ∀ p .{{_ : NonPositive p}} q → NonPositive (p ⊓ q)
+  ⊓nonPos⇒nonPos : ∀ p q .{{_ : NonPositive q}} → NonPositive (p ⊓ q)
+  neg⊓⇒neg : ∀ p .{{_ : Negative p}} q → Negative (p ⊓ q)
+  ⊓neg⇒neg : ∀ p q .{{_ : Negative q}} → Negative (p ⊓ q)
+  pos⊔⇒pos : ∀ p .{{_ : Positive p}} q → Positive (p ⊔ q)
+  ⊔pos⇒pos : ∀ p q .{{_ : Positive q}} → Positive (p ⊔ q)
+  nonNeg⊔⇒nonNeg : ∀ p .{{_ : NonNegative p}} q → NonNegative (p ⊔ q)
+  ⊔nonNeg⇒nonNeg : ∀ p q .{{_ : NonNegative q}} → NonNegative (p ⊔ q)
+  nonPos⊔nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p ⊔ q)
+  neg⊔neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p ⊔ q)
   ```
 
 * In `Data.Sum.Relation.Binary.Pointwise`:
