@@ -1,0 +1,11 @@
+### A breaking change is made to Agda
+
+1. The Agda developers are responsible for updating the branch `agda-master` to work with the changes.
+
+### An Agda release is made
+
+1. Merge `agda-master` into the latest release branch `vX-release` where `X` is the latest Agda standard library release.
+
+2. Make a new release of the standard library bumping the minor version number.
+
+3. Merge `agda-master` into `master`.
