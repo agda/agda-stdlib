@@ -562,48 +562,4 @@ Please use Data.List.Scans.Base.scanr instead.&quot;</a>
 <a id="16488" class="String">&quot;Warning: scanl was deprecated in v2.1.
 Please use Data.List.Scans.Base.scanl instead.&quot;</a>
 <a id="16576" class="Symbol">#-}</a>
-
-<a id="16581" class="Comment">-- Version 2.3</a>
-
-<a id="and"></a><a id="16597" href="Data.List.Base.html#16597" class="Function">and</a> <a id="16601" class="Symbol">:</a> <a id="16603" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="16608" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a> <a id="16613" class="Symbol">→</a> <a id="16615" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
-<a id="16620" href="Data.List.Base.html#16597" class="Function">and</a> <a id="16624" class="Symbol">=</a> <a id="16626" href="Data.List.Base.html#4279" class="Function">foldr</a> <a id="16632" href="Data.Bool.Base.html#996" class="Function Operator">_∧_</a> <a id="16636" href="Agda.Builtin.Bool.html#198" class="InductiveConstructor">true</a>
-
-<a id="all"></a><a id="16642" href="Data.List.Base.html#16642" class="Function">all</a> <a id="16646" class="Symbol">:</a> <a id="16648" class="Symbol">(</a><a id="16649" href="Data.List.Base.html#1308" class="Generalizable">A</a> <a id="16651" class="Symbol">→</a> <a id="16653" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a><a id="16657" class="Symbol">)</a> <a id="16659" class="Symbol">→</a> <a id="16661" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="16666" href="Data.List.Base.html#1308" class="Generalizable">A</a> <a id="16668" class="Symbol">→</a> <a id="16670" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
-<a id="16675" href="Data.List.Base.html#16642" class="Function">all</a> <a id="16679" href="Data.List.Base.html#16679" class="Bound">p</a> <a id="16681" class="Symbol">=</a> <a id="16683" href="Data.List.Base.html#16597" class="Function">and</a> <a id="16687" href="Function.Base.html#1125" class="Function Operator">∘</a> <a id="16689" href="Data.List.Base.html#1603" class="Function">map</a> <a id="16693" href="Data.List.Base.html#16679" class="Bound">p</a>
-<a id="16695" class="Symbol">{-#</a> <a id="16699" class="Keyword">WARNING_ON_USAGE</a> <a id="16716" class="Pragma">and</a>
-<a id="16720" class="String">&quot;Warning: and was deprecated in v2.3.
-Please use Data.Bool.ListAction.and instead.&quot;</a>
-<a id="16804" class="Symbol">#-}</a>
-<a id="16808" class="Symbol">{-#</a> <a id="16812" class="Keyword">WARNING_ON_USAGE</a> <a id="16829" class="Pragma">all</a>
-<a id="16833" class="String">&quot;Warning: all was deprecated in v2.3.
-Please use Data.Bool.ListAction.all instead.&quot;</a>
-<a id="16917" class="Symbol">#-}</a>
-
-<a id="or"></a><a id="16922" href="Data.List.Base.html#16922" class="Function">or</a> <a id="16925" class="Symbol">:</a> <a id="16927" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="16932" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a> <a id="16937" class="Symbol">→</a> <a id="16939" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
-<a id="16944" href="Data.List.Base.html#16922" class="Function">or</a> <a id="16947" class="Symbol">=</a> <a id="16949" href="Data.List.Base.html#4279" class="Function">foldr</a> <a id="16955" href="Data.Bool.Base.html#1054" class="Function Operator">_∨_</a> <a id="16959" href="Agda.Builtin.Bool.html#192" class="InductiveConstructor">false</a>
-
-<a id="any"></a><a id="16966" href="Data.List.Base.html#16966" class="Function">any</a> <a id="16970" class="Symbol">:</a> <a id="16972" class="Symbol">(</a><a id="16973" href="Data.List.Base.html#1308" class="Generalizable">A</a> <a id="16975" class="Symbol">→</a> <a id="16977" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a><a id="16981" class="Symbol">)</a> <a id="16983" class="Symbol">→</a> <a id="16985" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="16990" href="Data.List.Base.html#1308" class="Generalizable">A</a> <a id="16992" class="Symbol">→</a> <a id="16994" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
-<a id="16999" href="Data.List.Base.html#16966" class="Function">any</a> <a id="17003" href="Data.List.Base.html#17003" class="Bound">p</a> <a id="17005" class="Symbol">=</a> <a id="17007" href="Data.List.Base.html#16922" class="Function">or</a> <a id="17010" href="Function.Base.html#1125" class="Function Operator">∘</a> <a id="17012" href="Data.List.Base.html#1603" class="Function">map</a> <a id="17016" href="Data.List.Base.html#17003" class="Bound">p</a>
-<a id="17018" class="Symbol">{-#</a> <a id="17022" class="Keyword">WARNING_ON_USAGE</a> <a id="17039" class="Pragma">or</a>
-<a id="17042" class="String">&quot;Warning: or was deprecated in v2.3.
-Please use Data.Bool.ListAction.or instead.&quot;</a>
-<a id="17124" class="Symbol">#-}</a>
-<a id="17128" class="Symbol">{-#</a> <a id="17132" class="Keyword">WARNING_ON_USAGE</a> <a id="17149" class="Pragma">any</a>
-<a id="17153" class="String">&quot;Warning: any was deprecated in v2.3.
-Please use Data.Bool.ListAction.any instead.&quot;</a>
-<a id="17237" class="Symbol">#-}</a>
-
-<a id="sum"></a><a id="17242" href="Data.List.Base.html#17242" class="Function">sum</a> <a id="17246" class="Symbol">:</a> <a id="17248" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="17253" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="17255" class="Symbol">→</a> <a id="17257" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
-<a id="17259" href="Data.List.Base.html#17242" class="Function">sum</a> <a id="17263" class="Symbol">=</a> <a id="17265" href="Data.List.Base.html#4279" class="Function">foldr</a> <a id="17271" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">ℕ._+_</a> <a id="17277" class="Number">0</a>
-<a id="17279" class="Symbol">{-#</a> <a id="17283" class="Keyword">WARNING_ON_USAGE</a> <a id="17300" class="Pragma">sum</a>
-<a id="17304" class="String">&quot;Warning: sum was deprecated in v2.3.
-Please use Data.Nat.ListAction.sum instead.&quot;</a>
-<a id="17387" class="Symbol">#-}</a>
-
-<a id="product"></a><a id="17392" href="Data.List.Base.html#17392" class="Function">product</a> <a id="17400" class="Symbol">:</a> <a id="17402" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="17407" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="17409" class="Symbol">→</a> <a id="17411" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
-<a id="17413" href="Data.List.Base.html#17392" class="Function">product</a> <a id="17421" class="Symbol">=</a> <a id="17423" href="Data.List.Base.html#4279" class="Function">foldr</a> <a id="17429" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">ℕ._*_</a> <a id="17435" class="Number">1</a>
-<a id="17437" class="Symbol">{-#</a> <a id="17441" class="Keyword">WARNING_ON_USAGE</a> <a id="17458" class="Pragma">product</a>
-<a id="17466" class="String">&quot;Warning: product was deprecated in v2.3.
-Please use Data.Nat.ListAction.product instead.&quot;</a>
-<a id="17557" class="Symbol">#-}</a>
 </pre></body></html>
