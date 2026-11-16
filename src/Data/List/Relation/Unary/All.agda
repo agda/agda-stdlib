@@ -4,7 +4,7 @@
 -- Lists where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.All where
 
@@ -234,17 +234,3 @@ decide p∪q (x ∷ xs) with p∪q x
 
 search : Decidable P → ∀ xs → All (∁ P) xs ⊎ Any P xs
 search P? = decide (Sum.swap ∘ Dec.toSum ∘ P?)
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.4
-
-all = all?
-{-# WARNING_ON_USAGE all
-"Warning: all was deprecated in v1.4.
-Please use all? instead."
-#-}

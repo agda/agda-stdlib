@@ -4,7 +4,7 @@
 -- Properties of the unit type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.Properties where
 
@@ -34,16 +34,16 @@ open import Relation.Nullary.Irrelevant using (Irrelevant)
 ------------------------------------------------------------------------
 -- Equality
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality ⊤
-_ ≟ _ = yes refl
+_≡?_ : DecidableEquality ⊤
+_ ≡? _ = yes refl
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ⊤
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid = decSetoid _≡?_
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -79,8 +79,8 @@ _ ≟ _ = yes refl
 ≡-isDecTotalOrder : IsDecTotalOrder _≡_ _≡_
 ≡-isDecTotalOrder = record
   { isTotalOrder = ≡-isTotalOrder
-  ; _≟_          = _≟_
-  ; _≤?_         = _≟_
+  ; _≈?_         = _≡?_
+  ; _≤?_         = _≡?_
   }
 
 ------------------------------------------------------------------------
@@ -96,3 +96,18 @@ _ ≟ _ = yes refl
   { isDecTotalOrder = ≡-isDecTotalOrder
   }
 
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

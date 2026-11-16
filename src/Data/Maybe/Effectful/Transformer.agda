@@ -4,7 +4,7 @@
 -- An effectful view of Maybe
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.Effectful.Transformer where
 

@@ -12,7 +12,7 @@
 -- Credited by Conor McBride as originally due to James McKinna
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Unary.Sufficient where
 

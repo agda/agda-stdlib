@@ -4,7 +4,7 @@
 -- The lifting of a non-strict order to incorporate new extrema
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Extrema
@@ -19,8 +19,8 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder
         ; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Decidable; Transitive; Minimum; Maximum; Total; Irrelevant
-        ; Antisymmetric)
+  using (Decidable; Reflexive; Transitive; Minimum; Maximum; Total; Irrelevant
+        ; Antisymmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Construct.Add.Extrema using (⊥±; ⊤±; [_])
 import Relation.Nullary.Construct.Add.Infimum as I using (⊥₋; [_])
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
@@ -63,6 +63,11 @@ _≤⊤± : ∀ k → k ≤± ⊤±
 [≤]-injective : ∀ {k l} → [ k ] ≤± [ l ] → k ≤ l
 [≤]-injective = Inf.[≤]-injective ∘′ Sup.[≤]-injective
 
+≤±-refl : Reflexive _≤_ → Reflexive _≤±_
+≤±-refl ≤-refl {⊥±} = ⊥±≤⊥±
+≤±-refl ≤-refl {[ x ]} = [ ≤-refl ]
+≤±-refl ≤-refl {⊤±} = ⊤±≤⊤±
+
 ≤±-trans : Transitive _≤_ → Transitive _≤±_
 ≤±-trans = Sup.≤⁺-trans ∘′ Inf.≤₋-trans
 
@@ -90,6 +95,15 @@ _≤⊤± : ∀ k → k ≤± ⊤±
 ≤±-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤±_
 ≤±-antisym-≡ = Sup.≤⁺-antisym-≡ ∘′ Inf.≤₋-antisym-≡
 
+≤±-respˡ-≡ : _≤±_ Respectsˡ _≡_
+≤±-respˡ-≡ = Sup.≤⁺-respˡ-≡
+
+≤±-respʳ-≡ : _≤±_ Respectsʳ _≡_
+≤±-respʳ-≡ = Sup.≤⁺-respʳ-≡
+
+≤±-resp-≡ : _≤±_ Respects₂ _≡_
+≤±-resp-≡ = Sup.≤⁺-resp-≡
+
 ------------------------------------------------------------------------
 -- Relational properties + setoid equality
 
@@ -102,6 +116,15 @@ module _ {e} {_≈_ : Rel A e} where
 
   ≤±-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈±_ _≤±_
   ≤±-antisym = Sup.≤⁺-antisym ∘′ Inf.≤₋-antisym
+
+  ≤±-respˡ-≈± : _≤_ Respectsˡ _≈_ → _≤±_ Respectsˡ _≈±_
+  ≤±-respˡ-≈± = Sup.≤⁺-respˡ-≈⁺ ∘′ Inf.≤₋-respˡ-≈₋
+
+  ≤±-respʳ-≈± : _≤_ Respectsʳ _≈_ → _≤±_ Respectsʳ _≈±_
+  ≤±-respʳ-≈± = Sup.≤⁺-respʳ-≈⁺ ∘′ Inf.≤₋-respʳ-≈₋
+
+  ≤±-resp-≈± : _≤_ Respects₂ _≈_ → _≤±_ Respects₂ _≈±_
+  ≤±-resp-≈± = Sup.≤⁺-resp-≈⁺ ∘′ Inf.≤₋-resp-≈₋
 
 ------------------------------------------------------------------------
 -- Structures + propositional equality

@@ -4,7 +4,7 @@
 -- Empty type, judgementally proof irrelevant, Level-monomorphic
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Empty where
 

@@ -5,7 +5,7 @@
 -- imported qualified.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Properties.Equivalence where
 
@@ -25,6 +25,7 @@ private
     a b c ℓ ℓ₁ ℓ₂ ℓ₃ : Level
     A B : Set a
     S T : Setoid a ℓ
+
 
 ------------------------------------------------------------------------
 -- Constructors

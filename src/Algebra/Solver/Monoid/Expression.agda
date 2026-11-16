@@ -4,7 +4,7 @@
 -- A solver for equations over monoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles.Raw using (RawMonoid)
 
@@ -52,14 +52,14 @@ Env n = Vec Carrier n
 -- API for normal expressions
 
 record NormalAPI a : Set (suc a ⊔ c ⊔ ℓ) where
-  infix 5 _≟_
+  infix 4 _≡?_
 
   field
 
 -- The type of normal forms.
     Normal    : ℕ → Set a
 -- We can decide if two normal forms are /syntactically/ equal.
-    _≟_       : DecidableEquality (Normal n)
+    _≡?_      : DecidableEquality (Normal n)
 -- A normaliser.
     normalise : Expr n → Normal n
 -- The semantics of a normal form.

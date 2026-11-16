@@ -6,7 +6,7 @@
 -- Freely adapted from PR #1287 by Maciej Piechotka (@uzytkownik)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
 

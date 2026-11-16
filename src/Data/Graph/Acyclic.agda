@@ -8,7 +8,7 @@
 -- Erwig's FGL. Note that this representation does not aim to be
 -- efficient.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Graph.Acyclic where
 
@@ -17,7 +17,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _<′_)
 open import Data.Nat.Induction using (<′-rec; <′-Rec)
 import Data.Nat.Properties as ℕ using (≤⇒≤′)
 open import Data.Fin as Fin
-  using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite)
+  using (Fin; Fin′; zero; suc; #_; toℕ; _≡?_; opposite)
   renaming (_ℕ-ℕ_ to _-_)
 open import Data.Fin.Properties as Fin using (nℕ-ℕi≤n)
 open import Data.Product.Base as Prod using (∃; _×_; _,_)
@@ -239,7 +239,7 @@ preds (c & g) (suc i) =
             (List.map (Prod.map suc id) $ preds g i)
   where
   p : ∀ {e} {E : Set e} {n} (i : Fin n) → E × Fin n → Maybe (Fin′ (suc i) × E)
-  p i (e , j) = Maybe.map (λ{ refl → zero , e }) (dec⇒weaklyDec _≟_ i j)
+  p i (e , j) = Maybe.map (λ{ refl → zero , e }) (dec⇒weaklyDec _≡?_ i j)
 
 private
 

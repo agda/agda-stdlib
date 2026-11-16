@@ -8,7 +8,7 @@
 -- import and use the sorting algorithm from `Data.List.Sort` instead
 -- of this file.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (DecTotalOrder)
 

@@ -9,7 +9,7 @@
 -- Cf. Data.Refinement for a use case
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Irrelevant where
 
@@ -29,6 +29,19 @@ record Irrelevant (A : Set a) : Set a where
   constructor [_]
   field .irrelevant : A
 open Irrelevant public
+
+------------------------------------------------------------------------
+-- Relationship with the . modality: wrapped/unwrapped application
+
+infixr -1 _$⁺_ _$⁻_
+
+_$⁺_ : (.A → B) → Irrelevant A → B
+f $⁺ [ a ] = f a
+{-# INLINE _$⁺_ #-}
+
+_$⁻_ : (Irrelevant A → B) → .A → B
+f $⁻ a = f [ a ]
+{-# INLINE _$⁻_ #-}
 
 ------------------------------------------------------------------------
 -- Algebraic structure: Functor, Appplicative and Monad-like

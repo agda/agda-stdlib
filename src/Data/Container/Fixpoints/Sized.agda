@@ -4,7 +4,7 @@
 -- Sized fixpoints of containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Data.Container.Fixpoints.Sized where
 

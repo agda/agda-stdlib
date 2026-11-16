@@ -1,0 +1,24 @@
+standard-library
+ ├ Agda
+ │  ├ Haskell
+ │  │  ├ Haskell (bootstrap)
+ │  │  └ C
+ │  ├ cabal
+ │  │  └ Haskell
+ │  │     ├ Haskell (bootstrap)
+ │  │     └ C
+ │  ├ alex
+ │  │  └ Haskell
+ │  │     ├ Haskell (bootstrap)
+ │  │     └ C
+ │  └ happy
+ │     └ Haskell
+ │        ├ Haskell (bootstrap)
+ │        └ C
+ ├ cabal
+ │  └ Haskell
+ │     ├ Haskell (bootstrap)
+ │     └ C
+ └ Haskell
+    ├ Haskell (bootstrap)
+    └ C

@@ -4,7 +4,7 @@
 -- Order properties of the subset relations _⊆_ and _⊂_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.Relation.Binary.Subset where
 

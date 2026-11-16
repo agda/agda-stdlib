@@ -4,7 +4,7 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Binary.Pointwise where
 
@@ -39,11 +39,16 @@ data Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
 ----------------------------------------------------------------------
 -- Functions
 
+elim : ∀ {f : A → C} {g : B → C} →
+       R =[ f ]⇒ T → S =[ g ]⇒ T →
+       Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+elim R⇒T S⇒T (inj₁ xRy) = R⇒T xRy
+elim R⇒T S⇒T (inj₂ xSy) = S⇒T xSy
+
 map : ∀ {f : A → C} {g : B → D} →
       R =[ f ]⇒ T → S =[ g ]⇒ U →
       Pointwise R S =[ Sum.map f g ]⇒ Pointwise T U
-map R⇒T _ (inj₁ x) = inj₁ (R⇒T x)
-map _ S⇒U (inj₂ x) = inj₂ (S⇒U x)
+map R⇒T S⇒U = elim {T = Pointwise _ _} (inj₁ ∘ R⇒T) (inj₂ ∘ S⇒U)
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -79,10 +84,10 @@ drop-inj₂ (inj₂ x) = x
 ⊎-substitutive subst₁ subst₂ P (inj₂ x) = subst₂ (P ∘ inj₂) x
 
 ⊎-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
-⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x ≟₁ y)
-⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
-⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
-⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
+⊎-decidable _R?_ _S?_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x R? y)
+⊎-decidable _R?_ _S?_ (inj₁ x) (inj₂ y) = no λ()
+⊎-decidable _R?_ _S?_ (inj₂ x) (inj₁ y) = no λ()
+⊎-decidable _R?_ _S?_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x S? y)
 
 ⊎-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S →
               (Pointwise ≈₁ ≈₂) ⇒ (Pointwise R S)
@@ -124,7 +129,7 @@ drop-inj₂ (inj₂ x) = x
 
 ⊎-respects₂ : R Respects₂ ≈₁ → S Respects₂ ≈₂ →
               (Pointwise R S) Respects₂ (Pointwise ≈₁ ≈₂)
-⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
+⊎-respects₂ (l₁ , r₁) (l₂ , r₂) = ⊎-respectsˡ l₁ l₂ , ⊎-respectsʳ r₁ r₂
 
 ------------------------------------------------------------------------
 -- Structures
@@ -142,7 +147,7 @@ drop-inj₂ (inj₂ x) = x
 ⊎-isDecEquivalence eq₁ eq₂ = record
   { isEquivalence =
       ⊎-isEquivalence (isEquivalence eq₁) (isEquivalence eq₂)
-  ; _≟_           = ⊎-decidable (_≟_ eq₁) (_≟_ eq₂)
+  ; _≈?_          = ⊎-decidable (_≈?_ eq₁) (_≈?_ eq₂)
   } where open IsDecEquivalence
 
 ⊎-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →

@@ -4,7 +4,7 @@
 -- List scans: definitions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Scans.Base where
 

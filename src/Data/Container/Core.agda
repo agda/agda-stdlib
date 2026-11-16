@@ -4,7 +4,7 @@
 -- Containers core
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Core where
 

@@ -4,7 +4,7 @@
 -- Homomorphism proofs for negation over polynomials
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 

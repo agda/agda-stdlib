@@ -4,7 +4,7 @@
 -- Typeclass instances for products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Instances where
 
@@ -24,4 +24,4 @@ private
 
 instance
   Σ-≡-isDecEquivalence : ∀ {B : A → Set b} {{_ : IsDecEquivalence {A = A} _≡_}} {{_ : ∀ {a} → IsDecEquivalence {A = B a} _≡_}} → IsDecEquivalence {A = Σ A B} _≡_
-  Σ-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_ _≟_)
+  Σ-≡-isDecEquivalence = isDecEquivalence (≡-dec _≈?_ _≈?_)

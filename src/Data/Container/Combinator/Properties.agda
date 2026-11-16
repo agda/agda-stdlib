@@ -4,7 +4,7 @@
 -- Correctness proofs for container combinators
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Combinator.Properties where
 

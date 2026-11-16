@@ -4,7 +4,7 @@
 -- Almost commutative rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Tactic.RingSolver.Core.AlmostCommutativeRing where
 
@@ -94,7 +94,7 @@ record _-Raw-AlmostCommutative⟶_
     module T = AlmostCommutativeRing To
   open Morphism.Definitions F.Carrier T.Carrier T._≈_
   field
-    ⟦_⟧    : Morphism
+    ⟦_⟧    : F.Carrier → T.Carrier
     +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
     *-homo : Homomorphic₂ ⟦_⟧ F._*_ T._*_
     -‿homo : Homomorphic₁ ⟦_⟧ (F.-_)  (T.-_)
@@ -137,7 +137,7 @@ fromCommutativeRing CR 0≟_ = record
   { isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
       ; -‿cong                = -‿cong
-      ; -‿*-distribˡ          = λ x y → sym (-‿distribˡ-* x y)
+      ; -‿*-distribˡ          = -‿distribˡ-*
       ; -‿+-comm              = ⁻¹-∙-comm
       }
   ; 0≟_ = 0≟_

@@ -5,7 +5,7 @@
 -- coefficient "ring"
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (RawRing; CommutativeSemiring )
 import Algebra.Properties.Semiring.Mult as SemiringMultiplication

@@ -4,7 +4,7 @@
 -- Rational numbers in non-reduced form.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Rational.Unnormalised.Base where
 
@@ -100,12 +100,15 @@ _≯_ : Rel ℚᵘ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
--- Boolean ordering
+-- Boolean orderings, non-strict and strict
 
-infix 4 _≤ᵇ_
+infix 4 _≤ᵇ_ _<ᵇ_
 
 _≤ᵇ_ : ℚᵘ → ℚᵘ → Bool
 p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
+
+_<ᵇ_ : ℚᵘ → ℚᵘ → Bool
+p <ᵇ q = (↥ p ℤ.* ↧ q) ℤ.<ᵇ (↥ q ℤ.* ↧ p)
 
 ------------------------------------------------------------------------
 -- Constructing rationals

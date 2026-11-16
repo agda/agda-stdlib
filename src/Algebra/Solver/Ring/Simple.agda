@@ -5,7 +5,7 @@
 -- decidable equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Solver.Ring.AlmostCommutativeRing using
   (AlmostCommutativeRing; -raw-almostCommutative⟶)

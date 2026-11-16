@@ -4,7 +4,7 @@
 -- Lists defined in terms of the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Star.List where
 

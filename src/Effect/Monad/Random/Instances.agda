@@ -4,7 +4,7 @@
 -- Typeclass instances for the IO monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Effect.Monad.Random.Instances where
 

@@ -4,7 +4,7 @@
 -- Sublist-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Sublist.Propositional.Properties where
 

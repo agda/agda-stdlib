@@ -5,7 +5,7 @@
 -- Data.Container.Relation.Unary.Any directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Any where
 

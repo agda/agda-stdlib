@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous prefix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Prefix.Heterogeneous.Properties where
 
@@ -26,7 +26,7 @@ open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Definitions
   using (Trans; Antisym; Irrelevant; Decidable)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl; cong₂)
+  using (_≡_; _≢_; refl; cong₂; ¬[x≢x])
 open import Relation.Nullary.Decidable.Core as Dec
   using (_×?_; yes; no; _because_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
@@ -160,7 +160,7 @@ replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
 
 replicate⁻ : ∀ {m n a b} → m ≢ 0 →
              Prefix R (replicate m a) (replicate n b) → R a b
-replicate⁻ {m = zero}  {n}     m≢0 r  = contradiction refl m≢0
+replicate⁻ {m = zero}  {n}     m≢0 r  = ¬[x≢x] m≢0
 replicate⁻ {m = suc m} {suc n} m≢0 rs = Prefix.head rs
 
 ------------------------------------------------------------------------

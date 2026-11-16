@@ -4,7 +4,7 @@
 -- Pointwise lifting of binary relations to sigma types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Relation.Binary.Pointwise.Dependent where
 
@@ -30,7 +30,7 @@ record POINTWISE {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
                  {A₂ : Set a₂} (B₂ : A₂ → Set b₂)
                  (_R₁_ : REL A₁ A₂ ℓ₁) (_R₂_ : IREL B₁ B₂ ℓ₂)
                  (xy₁ : Σ A₁ B₁) (xy₂ : Σ A₂ B₂)
-                 : Set (a₁ ⊔ a₂ ⊔ b₁ ⊔ b₂ ⊔ ℓ₁ ⊔ ℓ₂) where
+                 : Set (ℓ₁ ⊔ ℓ₂) where
   constructor _,_
   field
     proj₁ : (proj₁ xy₁) R₁ (proj₁ xy₂)

@@ -27,6 +27,7 @@ GenerateEverything
 Haskell
 html
 log
+logs/
 MAlonzo
 output
 runtests

@@ -34,7 +34,7 @@ import Data.List.Membership.DecPropositional as DecPropMembership
 -- propositional equality over `ℕ` and it is also decidable. Therefore
 -- the module `DecPropMembership` should be opened as follows:
 
-open DecPropMembership ℕ._≟_
+open DecPropMembership ℕ._≡?_
 
 -- As membership is just an instance of `Any` we also need to import
 -- the constructors `here` and `there`. (See issue #553 on Github for
@@ -66,7 +66,7 @@ import Data.List.Membership.Propositional.Properties as PropProperties
 -- following the first `∈` refers to lists of type `List ℕ` whereas
 -- the second `∈` refers to lists of type `List Char`.
 
-open DecPropMembership Char._≟_ renaming (_∈_ to _∈ᶜ_)
+open DecPropMembership Char._≡?_ renaming (_∈_ to _∈ᶜ_)
 open SetoidProperties using (∈-map⁺)
 
 lem₂ : {v : ℕ} {xs : List ℕ} → v ∈ xs → fromℕ v ∈ᶜ map fromℕ xs

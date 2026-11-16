@@ -4,7 +4,7 @@
 -- Fancy display functions for List-based tables
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Text.Tabular.List where
 

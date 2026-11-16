@@ -4,7 +4,7 @@
 -- Some theory for commutative semigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (CommutativeSemigroup)
 

@@ -5,7 +5,7 @@
 -- preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Construct.NaturalChoice.Base
   using (MaxOperator; MaxOp⇒MinOp)

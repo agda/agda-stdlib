@@ -7,7 +7,7 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Homogeneous`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Indexed.Homogeneous.Core
 
@@ -69,12 +69,18 @@ record IsIndexedEquivalence : Set (i ⊔ a ⊔ ℓ) where
 
 
 record IsIndexedDecEquivalence : Set (i ⊔ a ⊔ ℓ) where
-  infix 4 _≟ᵢ_
+  infix 4 _≟ᵢ_ _≈ᵢ?_
   field
-    _≟ᵢ_           : Decidable A _≈ᵢ_
+    _≈ᵢ?_          : Decidable A _≈ᵢ_
     isEquivalenceᵢ : IsIndexedEquivalence
 
   open IsIndexedEquivalence isEquivalenceᵢ public
+
+  _≟ᵢ_ = _≈ᵢ?_
+  {-# WARNING_ON_USAGE _≟ᵢ_
+  "Warning: _≟ᵢ_ was deprecated in v3.0.
+  Please use _≈ᵢ?_ instead."
+  #-}
 
 
 ------------------------------------------------------------------------
@@ -119,7 +125,7 @@ record IsIndexedPreorder {ℓ₂} (_∼ᵢ_ : IRel A ℓ₂)
   ∼-respʳ-≈ x≈y z∼x i = ∼ᵢ-respʳ-≈ᵢ (x≈y i) (z∼x i)
 
   ∼-resp-≈ : (Lift A _∼ᵢ_) B.Respects₂ (Lift A _≈ᵢ_)
-  ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
+  ∼-resp-≈ = ∼-respˡ-≈ , ∼-respʳ-≈
 
   isPreorder : B.IsPreorder (Lift A _≈ᵢ_) (Lift A _∼ᵢ_)
   isPreorder = record

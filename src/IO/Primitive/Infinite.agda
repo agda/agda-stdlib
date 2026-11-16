@@ -5,7 +5,7 @@
 -- manipulating potentially infinite objects
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module IO.Primitive.Infinite where
 

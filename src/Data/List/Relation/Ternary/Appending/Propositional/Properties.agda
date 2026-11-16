@@ -4,7 +4,7 @@
 -- Properties of list appending
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Ternary.Appending.Propositional.Properties {a} {A : Set a} where
 

@@ -4,7 +4,7 @@
 -- de Bruijn-aware generic traversal of reflected terms.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Effect.Applicative using (RawApplicative)
 
@@ -27,7 +27,7 @@ open RawApplicative AppF
 -- compute the length of the context everytime it's needed.
 record Cxt : Set where
   constructor _,_
-  pattern
+  no-eta-equality; pattern
   field
     len     : ℕ
     context : List (String × Arg Term)

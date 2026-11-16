@@ -4,7 +4,7 @@
 -- Properties of declarative definition of permutation
 -------------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 

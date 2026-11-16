@@ -4,7 +4,7 @@
 -- The min operator derived from an arbitrary total preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (TotalOrder)
 

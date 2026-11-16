@@ -4,7 +4,7 @@
 -- IO handles: simple bindings to Haskell types and functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module IO.Handle where
 

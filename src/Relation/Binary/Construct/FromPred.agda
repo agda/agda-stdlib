@@ -5,7 +5,7 @@
 -- made that this preorder is unique.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid; Preorder)

@@ -18,7 +18,7 @@
 -- It is a good alternative to Data.Product.Effectful when the notion
 -- of warnings does not have a neutral element (e.g. List⁺).
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level; _⊔_)
 open import Algebra.Bundles using (Semigroup)

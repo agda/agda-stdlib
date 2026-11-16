@@ -4,7 +4,7 @@
 -- Refinement type: a value together with a proof irrelevant witness.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Refinement where
 
@@ -17,4 +17,4 @@ open import Data.Refinement.Base public
 -- Publicly re-export queries
 
 open import Data.Refinement.Properties public
-  using (value-injective; _≟_)
+  using (value-injective; _≟_; _≡?_)

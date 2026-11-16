@@ -5,7 +5,7 @@
 -- natural order.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core using (Op₂)
 open import Data.Product.Base using (_,_; _×_)
@@ -88,10 +88,10 @@ respˡ magma {x} {y} {z} y≈z y≤x = begin
   where open module M = IsMagma magma; open ≈-Reasoning M.setoid
 
 resp₂ : IsMagma _∙_ →  _≤_ Respects₂ _≈_
-resp₂ magma = respʳ magma , respˡ magma
+resp₂ magma = respˡ magma , respʳ magma
 
 dec : Decidable _≈_ → Decidable _≤_
-dec _≟_ x y = x ≟ (y ∙ x)
+dec _≈?_ x y = x ≈? (y ∙ x)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -113,10 +113,10 @@ isPartialOrder semilattice = record
 
 isDecPartialOrder : IsSemilattice _∙_ → Decidable _≈_ →
                     IsDecPartialOrder _≈_ _≤_
-isDecPartialOrder semilattice _≟_ = record
+isDecPartialOrder semilattice _≈?_ = record
   { isPartialOrder = isPartialOrder semilattice
-  ; _≟_            = _≟_
-  ; _≤?_           = dec _≟_
+  ; _≈?_           = _≈?_
+  ; _≤?_           = dec _≈?_
   }
 
 isTotalOrder : IsSemilattice _∙_ → Selective _∙_ → IsTotalOrder _≈_ _≤_
@@ -128,10 +128,10 @@ isTotalOrder latt sel  = record
 
 isDecTotalOrder : IsSemilattice _∙_ → Selective _∙_ →
                   Decidable _≈_ → IsDecTotalOrder _≈_ _≤_
-isDecTotalOrder latt sel _≟_ = record
+isDecTotalOrder latt sel _≈?_ = record
   { isTotalOrder = isTotalOrder latt sel
-  ; _≟_          = _≟_
-  ; _≤?_         = dec _≟_
+  ; _≈?_         = _≈?_
+  ; _≤?_         = dec _≈?_
   }
 
 ------------------------------------------------------------------------

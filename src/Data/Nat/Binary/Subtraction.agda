@@ -4,7 +4,7 @@
 -- Subtraction on Bin and some of its properties.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Subtraction where
 
@@ -112,8 +112,7 @@ toℕ-homo-∸ 1+[2 x ] 1+[2 y ] = begin
   where open ≡-Reasoning
 
 fromℕ-homo-∸ : ∀ m n → fromℕ (m ℕ.∸ n) ≡ (fromℕ m) ∸ (fromℕ n)
-fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕ.∸-magma
-  (cong fromℕ) toℕ-inverseᵇ toℕ-homo-∸
+fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕ.∸-magma toℕ-inverseᵇ toℕ-homo-∸
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_

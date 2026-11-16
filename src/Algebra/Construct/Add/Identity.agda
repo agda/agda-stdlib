@@ -5,7 +5,7 @@
 -- identity element
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Construct.Add.Identity where
 

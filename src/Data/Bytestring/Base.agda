@@ -5,7 +5,7 @@
 -- Note that these functions do not perform bound checks.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Data.Bytestring.Base where
 

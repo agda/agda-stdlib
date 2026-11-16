@@ -4,20 +4,20 @@
 -- The lifting of a non-strict order to incorporate a new infimum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Infimum
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 
-
 module Relation.Binary.Construct.Add.Infimum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
+open import Data.Product.Base as Product using (_,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
 import Relation.Binary.PropositionalEquality.Properties as ≡
   using (isEquivalence)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
@@ -27,7 +27,8 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder
         ; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Minimum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
+  using (Minimum; Reflexive; Transitive; Total; Decidable; Irrelevant; Antisymmetric
+        ; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Construct.Add.Infimum using (⊥₋; [_]; _₋; ≡-dec)
 open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 import Relation.Nullary.Decidable.Core as Dec using (map′)
@@ -45,6 +46,10 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 
 [≤]-injective : ∀ {k l} → [ k ] ≤₋ [ l ] → k ≤ l
 [≤]-injective [ p ] = p
+
+≤₋-refl : Reflexive _≤_ → Reflexive _≤₋_
+≤₋-refl ≤-refl {⊥₋} = ⊥₋≤ ⊥₋
+≤₋-refl ≤-refl {[ x ]} = [ ≤-refl ]
 
 ≤₋-trans : Transitive _≤_ → Transitive _≤₋_
 ≤₋-trans ≤-trans (⊥₋≤ l) q     = ⊥₋≤ _
@@ -78,6 +83,15 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 ≤₋-antisym-≡ antisym (⊥₋≤ _) (⊥₋≤ _) = refl
 ≤₋-antisym-≡ antisym [ p ] [ q ]     = cong [_] (antisym p q)
 
+≤₋-respˡ-≡ : _≤₋_ Respectsˡ _≡_
+≤₋-respˡ-≡ = subst (_≤₋ _)
+
+≤₋-respʳ-≡ : _≤₋_ Respectsʳ _≡_
+≤₋-respʳ-≡ = subst (_ ≤₋_)
+
+≤₋-resp-≡ : _≤₋_ Respects₂ _≡_
+≤₋-resp-≡ = ≤₋-respˡ-≡ , ≤₋-respʳ-≡
+
 ------------------------------------------------------------------------
 -- Relational properties + setoid equality
 
@@ -92,6 +106,18 @@ module _ {e} {_≈_ : Rel A e} where
   ≤₋-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈₋_ _≤₋_
   ≤₋-antisym ≤≥⇒≈ (⊥₋≤ _) (⊥₋≤ _) = ⊥₋≈⊥₋
   ≤₋-antisym ≤≥⇒≈ [ p ] [ q ] = [ ≤≥⇒≈ p q ]
+
+  ≤₋-respˡ-≈₋ : _≤_ Respectsˡ _≈_ → _≤₋_ Respectsˡ _≈₋_
+  ≤₋-respˡ-≈₋ ≤-respˡ-≈ [ p ] [ q ] = [ ≤-respˡ-≈ p q ]
+  ≤₋-respˡ-≈₋ ≤-respˡ-≈ ⊥₋≈⊥₋ q = q
+
+  ≤₋-respʳ-≈₋ : _≤_ Respectsʳ _≈_ → _≤₋_ Respectsʳ _≈₋_
+  ≤₋-respʳ-≈₋ ≤-respʳ-≈ [ _ ] (⊥₋≤ l) = ⊥₋≤ [ _ ]
+  ≤₋-respʳ-≈₋ ≤-respʳ-≈ [ p ] [ q ] = [ ≤-respʳ-≈ p q ]
+  ≤₋-respʳ-≈₋ ≤-respʳ-≈ ⊥₋≈⊥₋ q = q
+
+  ≤₋-resp-≈₋ : _≤_ Respects₂ _≈_ → _≤₋_ Respects₂ _≈₋_
+  ≤₋-resp-≈₋ = Product.map ≤₋-respˡ-≈₋ ≤₋-respʳ-≈₋
 
 ------------------------------------------------------------------------
 -- Structures + propositional equality
@@ -112,7 +138,7 @@ module _ {e} {_≈_ : Rel A e} where
 ≤₋-isDecPartialOrder-≡ : IsDecPartialOrder _≡_ _≤_ → IsDecPartialOrder _≡_ _≤₋_
 ≤₋-isDecPartialOrder-≡ ≤-isDecPartialOrder = record
   { isPartialOrder = ≤₋-isPartialOrder-≡ isPartialOrder
-  ; _≟_            = ≡-dec _≟_
+  ; _≈?_           = ≡-dec _≈?_
   ; _≤?_           = ≤₋-dec _≤?_
   } where open IsDecPartialOrder ≤-isDecPartialOrder
 
@@ -125,7 +151,7 @@ module _ {e} {_≈_ : Rel A e} where
 ≤₋-isDecTotalOrder-≡ : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤₋_
 ≤₋-isDecTotalOrder-≡ ≤-isDecTotalOrder = record
   { isTotalOrder = ≤₋-isTotalOrder-≡ isTotalOrder
-  ; _≟_          = ≡-dec _≟_
+  ; _≈?_         = ≡-dec _≈?_
   ; _≤?_         = ≤₋-dec _≤?_
   } where open IsDecTotalOrder ≤-isDecTotalOrder
 
@@ -152,7 +178,7 @@ module _ {e} {_≈_ : Rel A e} where
   ≤₋-isDecPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecPartialOrder _≈₋_ _≤₋_
   ≤₋-isDecPartialOrder ≤-isDecPartialOrder = record
     { isPartialOrder = ≤₋-isPartialOrder isPartialOrder
-    ; _≟_            = ≈₋-dec _≟_
+    ; _≈?_           = ≈₋-dec _≈?_
     ; _≤?_           = ≤₋-dec _≤?_
     } where open IsDecPartialOrder ≤-isDecPartialOrder
 
@@ -165,6 +191,6 @@ module _ {e} {_≈_ : Rel A e} where
   ≤₋-isDecTotalOrder : IsDecTotalOrder _≈_ _≤_ → IsDecTotalOrder _≈₋_ _≤₋_
   ≤₋-isDecTotalOrder ≤-isDecTotalOrder = record
     { isTotalOrder = ≤₋-isTotalOrder isTotalOrder
-    ; _≟_          = ≈₋-dec _≟_
+    ; _≈?_         = ≈₋-dec _≈?_
     ; _≤?_         = ≤₋-dec _≤?_
     } where open IsDecTotalOrder ≤-isDecTotalOrder

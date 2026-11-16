@@ -4,7 +4,7 @@
 -- Composition of functional properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Construct.Composition where
 
@@ -26,6 +26,7 @@ private
   variable
     a b c ℓ₁ ℓ₂ ℓ₃ : Level
     A B C : Set a
+
 
 ------------------------------------------------------------------------
 -- Properties

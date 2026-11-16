@@ -4,7 +4,7 @@
 -- Argument information used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.Argument.Information where
 
@@ -47,11 +47,27 @@ arg-info-injective₂ refl = refl
 arg-info-injective : arg-info v m ≡ arg-info v′ m′ → v ≡ v′ × m ≡ m′
 arg-info-injective = < arg-info-injective₁ , arg-info-injective₂ >
 
-infix 4 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality ArgInfo
-arg-info v m ≟ arg-info v′ m′ =
+_≡?_ : DecidableEquality ArgInfo
+arg-info v m ≡? arg-info v′ m′ =
   map′
     (uncurry (cong₂ arg-info))
     arg-info-injective
-    (v Visibility.≟ v′ ×? m Modality.≟ m′)
+    (v Visibility.≡? v′ ×? m Modality.≡? m′)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
+#-}

@@ -4,7 +4,7 @@
 -- Refinement type: a value together with a proof irrelevant witness.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Refinement.Base where
 
@@ -35,7 +35,6 @@ open Refinement public
 -- It is attached to Refinement-syntax, to make it easy to import
 -- Data.Refinement without the special syntax.
 
-infix 2 Refinement-syntax
 Refinement-syntax = Refinement
 syntax Refinement-syntax A (λ x → P) = [ x ∈ A ∣ P ]
 

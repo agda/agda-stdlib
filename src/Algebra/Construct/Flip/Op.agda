@@ -5,7 +5,7 @@
 -- algebraic properties.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Construct.Flip.Op where
 
@@ -270,7 +270,6 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
     ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
     ; *-identity = identity r.*-identity
     ; distrib = distributes r.distrib
-    ; zero = zero r.zero
     }
     where module r = IsNonAssociativeRing r
 

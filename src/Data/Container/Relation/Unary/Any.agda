@@ -4,7 +4,7 @@
 -- Any (◇) for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Relation.Unary.Any where
 

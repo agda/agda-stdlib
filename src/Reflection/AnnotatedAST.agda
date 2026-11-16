@@ -3,10 +3,10 @@
 --
 -- Annotated reflected syntax.
 --
--- NOTE: This file does not check under --cubical-compatible due to
+-- NOTE: This file does not check under --without-K due to
 --       restrictions in the termination checker. In particular
 --       recursive functions over a universe of types is not supported
---       by --cubical-compatible.
+--       by --without-K.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --with-K #-}

@@ -5,7 +5,7 @@
 -- `Algebra.Lattice.Properties.Semilattice` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Lattice
 

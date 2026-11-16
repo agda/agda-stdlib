@@ -6,7 +6,7 @@
 -- Adapted from Algebra.Solver.Monoid.Normal
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (CommutativeMonoid)
 
@@ -57,10 +57,10 @@ Normal n = Vec ℕ n
 
 -- We can decide if two normal forms are /syntactically/ equal.
 
-infix 5 _≟_
+infix 4 _≡?_
 
-_≟_ : DecidableEquality (Normal n)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
+_≡?_ : DecidableEquality (Normal n)
+nf₁ ≡? nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≡?_ nf₁ nf₂)
   where open Pointwise using (Pointwise-≡↔≡; decidable)
 
 ------------------------------------------------------------------------
@@ -161,4 +161,13 @@ sg-correct = singleton-correct
 {-# WARNING_ON_USAGE sg-correct
 "Warning: sg-correct was deprecated in v2.2.
 Please use singleton-correct instead."
+#-}
+
+-- Version 3.0
+
+infix 4 _≟_
+_≟_ = _≡?_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v3.0.
+Please use _≡?_ instead."
 #-}

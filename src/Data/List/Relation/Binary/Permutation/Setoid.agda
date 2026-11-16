@@ -4,7 +4,7 @@
 -- A definition for the permutation relation using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -135,20 +135,3 @@ module PermutationReasoning where
 
   open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
   open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (↭-go ∘′ ↭-reflexive-≋) ≋-sym public
-
-  -- Some extra combinators that allow us to skip certain elements
-
-  infixr 2 step-swap step-prep
-
-  -- Skip reasoning on the first element
-  step-prep : ∀ x xs {ys zs : List A} → (x ∷ ys) IsRelatedTo zs →
-              xs ↭ ys → (x ∷ xs) IsRelatedTo zs
-  step-prep x xs rel xs↭ys = ↭-go (↭-prep x xs↭ys) rel
-
-  -- Skip reasoning about the first two elements
-  step-swap : ∀ x y xs {ys zs : List A} → (y ∷ x ∷ ys) IsRelatedTo zs →
-              xs ↭ ys → (x ∷ y ∷ xs) IsRelatedTo zs
-  step-swap x y xs rel xs↭ys = ↭-go (↭-swap x y xs↭ys) rel
-
-  syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
-  syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z

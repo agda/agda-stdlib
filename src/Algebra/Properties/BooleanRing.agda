@@ -4,7 +4,7 @@
 -- Some basic properties of Boolean Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles
   using (CommutativeRing; BooleanSemiring; BooleanRing)

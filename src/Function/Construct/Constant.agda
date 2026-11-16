@@ -4,7 +4,7 @@
 -- The constant function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Construct.Constant where
 
@@ -21,6 +21,7 @@ private
   variable
     a b ℓ₁ ℓ₂ : Level
     A B : Set a
+
 
 ------------------------------------------------------------------------
 -- Properties

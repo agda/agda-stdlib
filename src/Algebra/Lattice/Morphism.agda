@@ -4,7 +4,7 @@
 -- Morphisms between algebraic lattice structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Lattice.Morphism where
 

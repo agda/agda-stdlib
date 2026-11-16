@@ -4,7 +4,7 @@
 -- Instances for parities
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Parity.Instances where
 

@@ -4,7 +4,7 @@
 -- The identity morphism for binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Morphism.Construct.Identity where
 

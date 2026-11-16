@@ -6,7 +6,7 @@
 
 -- The contents of this module should be accessed via `Function.Metric`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Metric.Bundles  where
 

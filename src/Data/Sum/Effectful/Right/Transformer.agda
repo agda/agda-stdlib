@@ -4,7 +4,7 @@
 -- An effectful view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level
 
@@ -60,7 +60,7 @@ empty M a = record
 
 choice : RawApplicative M → RawChoice (SumᵣT M)
 choice M = record
-  { _<|>_ = λ ma₁ ma₁ → mkSumᵣT ([ const ∘ inj₁ , flip const ]′ <$> runSumᵣT ma₁ <*> runSumᵣT ma₁)
+  { _<|>_ = λ ma₁ ma₂ → mkSumᵣT ([ const ∘ inj₁ , flip const ]′ <$> runSumᵣT ma₁ <*> runSumᵣT ma₂)
   } where open RawApplicative M
 
 applicativeZero : RawApplicative M → B → RawApplicativeZero (SumᵣT M)

@@ -4,7 +4,7 @@
 -- The Thunk wrappers for sized codata, copredicates and corelations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Sized.Thunk where
 

@@ -4,7 +4,7 @@
 -- Byte Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Data.Word8.Literals where
 

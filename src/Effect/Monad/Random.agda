@@ -4,7 +4,7 @@
 -- The Random monad class
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Effect.Monad.Random where
 

@@ -7,7 +7,7 @@
 -- Note that the lemmas below could be generalised to work with other
 -- equalities than _≡_.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 {-# OPTIONS --warning=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
@@ -28,7 +28,7 @@ open import Data.Maybe.Relation.Unary.Any using (just) renaming (Any to MAny)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product.Base as Product
-  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
+  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; swap; <_,_>)
 import Data.Product.Relation.Unary.All as Product using (All)
 open import Data.Sum using (_⊎_; inj₁; inj₂; isInj₁; isInj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -47,7 +47,7 @@ open import Relation.Nullary.Negation.Core using (contradiction; ¬_)
 open import Relation.Nullary.Decidable as Decidable
   using (isYes; map′; ⌊_⌋; ¬?; _×-dec_; dec-true; dec-false)
 open import Relation.Unary using (Pred; Decidable; ∁; _≐_)
-open import Relation.Unary.Properties using (∁?)
+open import Relation.Unary.Properties using (∁?; _∩?_)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
 open ≡-Reasoning
@@ -76,13 +76,13 @@ private
 ∷-injectiveʳ refl = refl
 
 ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y List.∷ ys)
-∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+∷-dec x≡?y xs≡?ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≡?y ×-dec xs≡?ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) []       = no λ()
-≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≟ y) (≡-dec _≟_ xs ys)
+≡-dec _≈?_ []       []       = yes refl
+≡-dec _≈?_ (x ∷ xs) []       = no λ()
+≡-dec _≈?_ []       (y ∷ ys) = no λ()
+≡-dec _≈?_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≈? y) (≡-dec _≈?_ xs ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -269,7 +269,7 @@ module _ (A : Set a) where
     { isRelHomomorphism = record
       { cong = cong length
       }
-    ; homo = λ xs ys → length-++ xs {ys}
+    ; ∙-homo = λ xs ys → length-++ xs {ys}
     }
 
   length-isMonoidHomomorphism : IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
@@ -618,11 +618,7 @@ id-is-foldr : id {A = List A} ≗ foldr _∷_ []
 id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
 
 ++-is-foldr : (xs ys : List A) → xs ++ ys ≡ foldr _∷_ ys xs
-++-is-foldr xs ys = begin
-  xs ++ ys                ≡⟨ cong (_++ ys) (id-is-foldr xs) ⟩
-  foldr _∷_ [] xs ++ ys   ≡⟨ foldr-fusion (_++ ys) [] (λ _ _ → refl) xs ⟩
-  foldr _∷_ ([] ++ ys) xs ≡⟨⟩
-  foldr _∷_ ys xs         ∎
+++-is-foldr xs ys = foldr-universal (_++ ys) _∷_ ys refl (λ _ _ → refl) xs
 
 foldr-++ : ∀ (f : A → B → B) x ys zs →
            foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
@@ -630,10 +626,7 @@ foldr-++ f x []       zs = refl
 foldr-++ f x (y ∷ ys) zs = cong (f y) (foldr-++ f x ys zs)
 
 map-is-foldr : {f : A → B} → map f ≗ foldr (λ x ys → f x ∷ ys) []
-map-is-foldr {f = f} xs = begin
-  map f xs                        ≡⟨ cong (map f) (id-is-foldr xs) ⟩
-  map f (foldr _∷_ [] xs)         ≡⟨ foldr-fusion (map f) [] (λ _ _ → refl) xs ⟩
-  foldr (λ x ys → f x ∷ ys) [] xs ∎
+map-is-foldr {f = f} = foldr-universal (map f) (λ x ys → f x ∷ ys) [] refl λ _ _ → refl
 
 foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
            foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
@@ -643,6 +636,12 @@ foldr-∷ʳ f x y (z ∷ ys) = cong (f z) (foldr-∷ʳ f x y ys)
 foldr-map : ∀ (f : A → B → B) (g : C → A) x xs → foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
 foldr-map f g x []       = refl
 foldr-map f g x (y ∷ xs) = cong (f (g y)) (foldr-map f g x xs)
+
+module _ (_∙_ : B → B → B) (ε : B) (f : A → B) where
+
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr _∙_ ε ∘ List.map f
+  foldMap≗foldr∘map []       = refl
+  foldMap≗foldr∘map (x ∷ xs) = cong (f x ∙_) (foldMap≗foldr∘map xs)
 
 -- Interaction with predicates
 
@@ -1258,6 +1257,12 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | true  = cong (x ∷_) ih
   ... | false = ih
 
+  filter-map : (f : B → A) → filter P? ∘ map f ≗ map f ∘ filter (P? ∘ f)
+  filter-map f [] = refl
+  filter-map f (x ∷ xs) with ih ← filter-map f xs | does (P? (f x))
+  ... | true  = cong (f x ∷_) ih
+  ... | false = ih
+
 module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
 
   filter-≐ : P ≐ Q → filter P? ≗ filter Q?
@@ -1265,6 +1270,25 @@ module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) whe
   filter-≐ P≐Q (x ∷ xs) with P? x
   ... | yes P[x] = trans (cong (x ∷_) (filter-≐ P≐Q xs)) (sym (filter-accept Q? (proj₁ P≐Q P[x])))
   ... | no ¬P[x] = trans (filter-≐ P≐Q xs) (sym (filter-reject Q? (¬P[x] ∘ proj₂ P≐Q)))
+
+  filter-∩ : filter (P? ∩? Q?) ≗ filter P? ∘ filter Q?
+  filter-∩ [] = refl
+  filter-∩ (x ∷ xs) with ih ← filter-∩ xs | P? x | Q? x
+  ... | yes P[x] | yes _  = trans (cong (x ∷_) ih) (sym (filter-accept P? P[x]))
+  ... | no ¬P[x] | yes _  = trans ih (sym (filter-reject P? ¬P[x]))
+  ... | yes _    | no  _  = ih
+  ... | no  _    | no  _  = ih
+
+
+module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) (Q? : Decidable Q) where
+
+  filter-swap : filter P? ∘ filter Q? ≗ filter Q? ∘ filter P?
+  filter-swap xs =  begin
+    filter P? (filter Q? xs)   ≡⟨ filter-∩ P? Q? xs ⟨
+    filter (P? ∩? Q?) xs       ≡⟨ filter-≐ (P? ∩? Q?) (Q? ∩? P?) (swap , swap) xs ⟩
+    filter (Q? ∩? P?) xs       ≡⟨ filter-∩ Q? P? xs ⟩
+    filter Q? (filter P? xs)   ∎
+
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
@@ -1677,51 +1701,4 @@ concat-[-] = concat-map-[_]
 {-# WARNING_ON_USAGE concat-[-]
 "Warning: concat-[-] was deprecated in v2.2.
 Please use concat-map-[_] instead."
-#-}
-
--- Version 2.3
-
-sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
-sum-++ []       ys = refl
-sum-++ (x ∷ xs) ys = begin
-  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++ xs ys) ⟩
-  x + (sum xs + sum ys)  ≡⟨ +-assoc x _ _ ⟨
-  (x + sum xs) + sum ys  ∎
-{-# WARNING_ON_USAGE sum-++
-"Warning: sum-++ was deprecated in v2.3.
-Please use Data.Nat.ListAction.Properties.sum-++ instead."
-#-}
-sum-++-commute = sum-++
-{-# WARNING_ON_USAGE sum-++-commute
-"Warning: sum-++-commute was deprecated in v2.0.
-Please use Data.Nat.ListAction.Properties.sum-++ instead."
-#-}
-
-open import Data.List.Membership.Propositional using (_∈_)
-open import Data.Nat.Divisibility using (_∣_; m∣m*n; ∣n⇒∣m*n)
-
-∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
-∈⇒∣product {ns = n ∷ ns} (here  refl) = m∣m*n (product ns)
-∈⇒∣product {ns = m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
-{-# WARNING_ON_USAGE ∈⇒∣product
-"Warning: ∈⇒∣product was deprecated in v2.3.
-Please use Data.Nat.ListAction.Properties.∈⇒∣product instead."
-#-}
-
-product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
-product≢0 [] = _
-product≢0 {n ∷ ns} (n≢0 ∷ ns≢0) = m*n≢0 n (product ns) {{n≢0}} {{product≢0 ns≢0}}
-{-# WARNING_ON_USAGE product≢0
-"Warning: product≢0 was deprecated in v2.3.
-Please use Data.Nat.ListAction.Properties.product≢0 instead."
-#-}
-
-∈⇒≤product : ∀ {n ns} → All NonZero ns → n ∈ ns → n ≤ product ns
-∈⇒≤product {ns = n ∷ ns} (_ ∷ ns≢0) (here refl) =
-  m≤m*n n (product ns) {{product≢0 ns≢0}}
-∈⇒≤product {ns = n ∷ _} (n≢0 ∷ ns≢0) (there n∈ns) =
-  m≤n⇒m≤o*n n {{n≢0}} (∈⇒≤product ns≢0 n∈ns)
-{-# WARNING_ON_USAGE ∈⇒≤product
-"Warning: ∈⇒≤product was deprecated in v2.3.
-Please use Data.Nat.ListAction.Properties.∈⇒≤product instead."
 #-}

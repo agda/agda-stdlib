@@ -4,7 +4,7 @@
 -- Arguments used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection.AST.Argument where
 
@@ -86,7 +86,7 @@ unArg (arg i a) = a
 
 unArg-dec : {arg1 arg2 : Arg A} → Dec (unArg arg1 ≡ unArg arg2) → Dec (arg1 ≡ arg2)
 unArg-dec {arg1 = arg i x} {arg j y} arg1≟arg2 =
-  map′ (uncurry (cong₂ arg)) arg-injective (i Information.≟ j ×? arg1≟arg2)
+  map′ (uncurry (cong₂ arg)) arg-injective (i Information.≡? j ×? arg1≟arg2)
 
 ≡-dec : DecidableEquality A → DecidableEquality (Arg A)
-≡-dec _≟_ x y = unArg-dec (unArg x ≟ unArg y)
+≡-dec _≡?_ x y = unArg-dec (unArg x ≡? unArg y)

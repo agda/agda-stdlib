@@ -4,7 +4,7 @@
 -- Properties of permutation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 
@@ -15,7 +15,7 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (ℕ; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (-,_)
-open import Data.List.Base as List hiding (sum; product)
+open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -33,8 +33,6 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Binary.PropositionalEquality.Properties using (module ≡-Reasoning)
 open import Relation.Nullary
-
-import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutation
 
 private
   variable

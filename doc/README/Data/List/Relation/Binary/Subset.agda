@@ -22,10 +22,10 @@ module README.Data.List.Relation.Binary.Subset where
 
 -- Decidable equality over Strings
 open import Data.String.Base using (String)
-open import Data.String.Properties using (_≟_)
+open import Data.String.Properties using (_≡?_)
 
 -- Open the decidable membership module using Decidable ≡ over Strings
-open import Data.List.Membership.DecPropositional _≟_
+open import Data.List.Membership.DecPropositional _≡?_
 
 
 -- Simple cases are inductive proofs

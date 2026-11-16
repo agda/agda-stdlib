@@ -4,7 +4,7 @@
 -- Boolean algebra expressions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Lattice using (BooleanAlgebra; isBooleanAlgebraʳ;
   isDistributiveLatticeʳʲᵐ)

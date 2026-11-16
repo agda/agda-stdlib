@@ -8,7 +8,7 @@
 -- object is *also* the initial object in the relevant category.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level using (Level)
 
@@ -58,7 +58,7 @@ module ℤero where
   sym {x = ()}
 
   trans : Transitive _≈_
-  trans {i = ()}
+  trans {x = ()}
 
   ∙-cong : Congruent₂ _≈_ _∙_
   ∙-cong {x = ()}
@@ -81,7 +81,7 @@ rawMagma = record { ℤero }
 -- Structures
 
 isEquivalence : IsEquivalence _≈_
-isEquivalence = record { refl = refl; sym = sym; trans = λ where {i = ()} }
+isEquivalence = record { refl = refl; sym = sym; trans = λ where {x = ()} }
 
 isMagma : IsMagma _≈_ _∙_
 isMagma = record { isEquivalence = isEquivalence ; ∙-cong = λ where {x = ()} }

@@ -4,7 +4,7 @@
 -- Properties of divisibility over semigroups
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semigroup)
 

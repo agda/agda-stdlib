@@ -5,7 +5,7 @@
 -- preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Construct.NaturalChoice.Base using (MinOperator; MaxOperator)
 open import Relation.Binary.Bundles using (TotalPreorder)

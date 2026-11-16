@@ -4,7 +4,7 @@
 -- Bytes: showing bit patterns
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Data.Word8.Show where
 

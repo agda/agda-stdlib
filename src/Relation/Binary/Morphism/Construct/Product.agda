@@ -5,7 +5,7 @@
 -- non-dependent product construction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --cubical-compatible #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Relation.Binary.Morphism.Construct.Product where
 

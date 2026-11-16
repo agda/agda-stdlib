@@ -7,7 +7,7 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Homogeneous`.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous.Bundles where
 

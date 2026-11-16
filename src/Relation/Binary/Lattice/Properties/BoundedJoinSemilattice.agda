@@ -4,7 +4,7 @@
 -- Properties satisfied by bounded join semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Lattice
 

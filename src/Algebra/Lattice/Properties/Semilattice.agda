@@ -4,7 +4,7 @@
 -- Some derivable properties of semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Lattice.Bundles using (Semilattice)
 

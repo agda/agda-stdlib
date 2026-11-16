@@ -4,7 +4,7 @@
 -- Lists where every pair of elements are related (symmetrically)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 

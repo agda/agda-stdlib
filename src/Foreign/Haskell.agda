@@ -4,7 +4,7 @@
 -- Type(s) used (only) when calling out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --without-K #-}
 
 module Foreign.Haskell where
 

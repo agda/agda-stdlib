@@ -1,0 +1,2 @@
+. ../../_config/config.sh
+goldenTest "$1" "sizedtree"

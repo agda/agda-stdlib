@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Binary.Pointwise where
 
@@ -65,7 +65,7 @@ isEquivalence eq = record
 isDecEquivalence : IsDecEquivalence R → IsDecEquivalence (Pointwise R)
 isDecEquivalence eq = record
   { isEquivalence = isEquivalence DE.isEquivalence
-  ; _≟_           = decidable     DE._≟_
+  ; _≈?_          = decidable     DE._≈?_
   } where module DE = IsDecEquivalence eq
 
 isPreorder : IsPreorder R S → IsPreorder (Pointwise R) (Pointwise S)
@@ -124,8 +124,8 @@ Any-resp-Pointwise resp (x∼y ∷ xs) (there pxs) =
 AllPairs-resp-Pointwise : R Respects₂ S →
                           (AllPairs R) Respects (Pointwise S)
 AllPairs-resp-Pointwise _                    []         []         = []
-AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
-  All-resp-Pointwise respₗ xs (All.map (respᵣ x∼y) px) ∷
+AllPairs-resp-Pointwise resp@(respˡ , respʳ) (x∼y ∷ xs) (px ∷ pxs) =
+  All-resp-Pointwise respʳ xs (All.map (respˡ x∼y) px) ∷
   (AllPairs-resp-Pointwise resp xs pxs)
 
 ------------------------------------------------------------------------
@@ -214,10 +214,10 @@ map⁻ {xs = _ ∷ _} {_ ∷ _} f g (r ∷ rs) = r ∷ map⁻ f g rs
 ------------------------------------------------------------------------
 -- foldr
 
-foldr⁺ : ∀ {_•_ : Op₂ A} {_◦_ : Op₂ B} →
-         (∀ {w x y z} → R w x → R y z → R (w • y) (x ◦ z)) →
+foldr⁺ : ∀ {_∙_ : Op₂ A} {_◦_ : Op₂ B} →
+         (∀ {w x y z} → R w x → R y z → R (w ∙ y) (x ◦ z)) →
          ∀ {e f} → R e f → Pointwise R xs ys →
-         R (foldr _•_ e xs) (foldr _◦_ f ys)
+         R (foldr _∙_ e xs) (foldr _◦_ f ys)
 foldr⁺ _    e~f []            = e~f
 foldr⁺ pres e~f (x~y ∷ xs~ys) = pres x~y (foldr⁺ pres e~f xs~ys)
 

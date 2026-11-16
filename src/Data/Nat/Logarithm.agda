@@ -4,7 +4,7 @@
 -- Logarithm base 2 and respective properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Logarithm where
 
@@ -41,6 +41,9 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 ⌊log₂[2^n]⌋≡n : ∀ n → ⌊log₂ (2 ^ n) ⌋ ≡ n
 ⌊log₂[2^n]⌋≡n n = ⌊log2⌋2^n≡n n
 
+2^⌊log₂n⌋≤n : ∀ n .{{ _ : NonZero n }} → 2 ^ ⌊log₂ n ⌋ ≤ n
+2^⌊log₂n⌋≤n n = 2^⌊log2n⌋≤n n (<-wellFounded n)
+
 ------------------------------------------------------------------------
 -- Properties of ⌈log₂_⌉
 
@@ -55,3 +58,6 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ⌈log₂2^n⌉≡n : ∀ n → ⌈log₂ (2 ^ n) ⌉ ≡ n
 ⌈log₂2^n⌉≡n n = ⌈log2⌉2^n≡n n
+
+n≤2^⌈log₂n⌉ : ∀ n → n ≤ 2 ^ ⌈log₂ n ⌉
+n≤2^⌈log₂n⌉ n = n≤2^⌈log2n⌉ n (<-wellFounded n)

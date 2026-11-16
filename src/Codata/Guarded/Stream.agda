@@ -4,7 +4,7 @@
 -- Infinite streams defined as coinductive records
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe --guardedness #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Codata.Guarded.Stream where
 

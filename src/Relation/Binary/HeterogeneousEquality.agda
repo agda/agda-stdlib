@@ -198,7 +198,7 @@ decSetoid dec = record
   { _≈_              = λ x y → x ≅ y
   ; isDecEquivalence = record
       { isEquivalence = isEquivalence
-      ; _≟_           = dec
+      ; _≈?_           = dec
       }
   }
 

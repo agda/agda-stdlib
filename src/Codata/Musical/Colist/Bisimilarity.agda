@@ -4,7 +4,7 @@
 -- Pointwise equality of colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Colist.Bisimilarity where
 

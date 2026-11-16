@@ -4,7 +4,7 @@
 -- Some basic properties of Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (Ring)
 
@@ -41,6 +41,6 @@ open import Algebra.Properties.RingWithoutOne ringWithoutOne public
 
 -1*x≈-x : ∀ x → - 1# * x ≈ - x
 -1*x≈-x x = begin
-  - 1# * x    ≈⟨ -‿distribˡ-* 1# x ⟨
+  - 1# * x    ≈⟨ -‿distribˡ-* 1# x ⟩
   - (1# * x)  ≈⟨ -‿cong ( *-identityˡ x ) ⟩
   - x         ∎

@@ -19,7 +19,7 @@
 -- of e.g. sorting algorithms which transpose at arbitary positions.
 -------------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
