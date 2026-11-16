@@ -8,28 +8,11 @@ Highlights
 
 * Certain functions incompatible with the updated semantics of irrelevant
   record fields have been removed.
-* Fixity declarations which have no effect have been removed.
 
-Bug-fixes
----------
+* Fixity declarations which have no effect have been removed.
 
 Non-backwards compatible changes
 --------------------------------
 
 * In `Data.Irrelevant`:
   * `_>>=_` has been removed.
-
-Minor improvements
-------------------
-
-Deprecated modules
-------------------
-
-Deprecated names
-----------------
-
-New modules
------------
-
-Additions to existing modules
------------------------------
