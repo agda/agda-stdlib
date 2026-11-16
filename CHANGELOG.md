@@ -184,6 +184,9 @@ Non-backwards compatible changes
   `Algebra.Properties.RingWithoutOne` has been flipped, streamlining
   their use throughout the library.
 
+* The lemma `Algebra.Morphism.Consequences.homomorphic₂-inv` has been
+  simplified to remove the `Congruent` hypothesis.
+
 Minor improvements
 ------------------
 
