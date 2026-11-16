@@ -159,14 +159,14 @@ jobs:
           cd ..
 
       - name: Upload Cabal directory
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           include-hidden-files: true
           name: ubuntu-cabal-dir
           path: ~/.cabal/
 
       - name: Upload GHC directory
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           include-hidden-files: true
           name: ubuntu-ghc-dir
@@ -182,16 +182,16 @@ jobs:
     if: ${{ github.event_name != 'push' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Download Cabal directory
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-cabal-dir
           path: ~/.cabal/
 
       - name: Download GHC directory
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-ghc-dir
           path: ${{ needs.init.outputs.GHC_PATH }}
@@ -221,16 +221,16 @@ jobs:
     if: ${{ github.event_name != 'push' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Download Cabal directory
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-cabal-dir
           path: ~/.cabal/
 
       - name: Download GHC directory
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-ghc-dir
           path: ${{ needs.init.outputs.GHC_PATH }}
@@ -304,16 +304,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Download Cabal directory
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-cabal-dir
           path: ~/.cabal/
 
       - name: Download GHC directory
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-ghc-dir
           path: ${{ needs.init.outputs.GHC_PATH }}
@@ -350,7 +350,7 @@ jobs:
           ./landing.sh
 
       - name: Upload HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ubuntu-html
           include-hidden-files: true
@@ -359,7 +359,8 @@ jobs:
   html-deploy:
     needs: [init, html-generate, test-stdlib-golden, test-stdlib]
     runs-on: ubuntu-latest
-    if: always()
+    # Only deploy HTML pages for the main repository
+    if: always() && github.repository == 'agda/agda-stdlib'
     steps:
 
         # if either test jobs are skipped, 'needs' would normally skip
@@ -371,10 +372,10 @@ jobs:
         run: exit 1
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Download HTML
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-html
           path: ./html/
