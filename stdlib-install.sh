@@ -99,6 +99,7 @@ logHappy "Agda directory: $AGDA_DIR"
 
 if [ -z "${STDLIB_VERSION-}" ]; then
   case "$AGDA_VERSION" in
+    "2.9.0")   STDLIB_VERSION="2.4.1" ;;
     "2.8.0")   STDLIB_VERSION="2.3" ;;
     "2.7.0.1") STDLIB_VERSION="2.3" ;;
     "2.7.0")   STDLIB_VERSION="2.2" ;;
