@@ -82,6 +82,9 @@ contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 [A⊎B]⇒[¬A⇒B] : A ⊎ B → ¬ A → B
 [A⊎B]⇒[¬A⇒B] = [ contradiction , const ]
 
+[¬A⊎B]⇒[A⇒B] : ¬ A ⊎ B → A → B
+[¬A⊎B]⇒[A⇒B] = [ contradiction′ , const ]
+
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
 stable ¬[¬¬a→a] = ¬[¬¬a→a] (contradiction (¬[¬¬a→a] ∘ const))

@@ -758,6 +758,7 @@ Additions to existing modules
 * In `Relation.Nullary.Negation.Core`:
   ```agda
   [A⊎B]⇒[¬A⇒B] : A ⊎ B → ¬ A → B
+  [¬A⊎B]⇒[A⇒B] : ¬ A ⊎ B → A → B
   ```
 
 * In `Relation.Unary`:
