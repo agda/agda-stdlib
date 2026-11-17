@@ -755,6 +755,11 @@ Additions to existing modules
     StarDestructive       : ∀ (_+_ _*_ : Fun₂ A) (_⋆ : Fun₁ A) → Set _
   ```
 
+* In `Relation.Nullary.Negation.Core`:
+  ```agda
+  [A⊎B]⇒[¬A⇒B] : A ⊎ B → ¬ A → B
+  ```
+
 * In `Relation.Unary`:
   ```agda
   Unique         : Rel A ℓ₁ → Pred A ℓ₂ → Pred A _
