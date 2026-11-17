@@ -8,7 +8,6 @@ procedure should be followed:
 * Update the version to `X.Y` in:
   - `agda-stdlib-utils.cabal`
   - `standard-library.agda-lib`
-  - `CITATION.cff`
   - `CHANGELOG.md`
   - `README.md`
   - `doc/installation-guide.md`
