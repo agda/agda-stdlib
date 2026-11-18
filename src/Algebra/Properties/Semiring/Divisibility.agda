@@ -22,7 +22,7 @@ open import Algebra.Properties.Monoid.Divisibility *-monoid public
 ------------------------------------------------------------------------
 -- Divisibility properties specific to semirings.
 
-infixr 8 _∣0
+infixl 8 _∣0
 
 _∣0 : ∀ x → x ∣ 0#
 x ∣0 = 0# , zeroˡ x
