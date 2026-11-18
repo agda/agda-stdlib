@@ -43,7 +43,7 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ------------------------------------------------------------------------
 -- An alternative mathematical-style syntax for sumₜ
 
-infixl 10 sum-syntax sum⁺-syntax
+infixr 10 sum-syntax sum⁺-syntax
 
 sum-syntax : ∀ n → Vector Carrier n → Carrier
 sum-syntax _ = sum
