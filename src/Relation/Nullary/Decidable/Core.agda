@@ -20,7 +20,7 @@ open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product.Base using (_×_)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]; map₂; swap)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Irrelevant using (Irrelevant)
 open import Relation.Nullary.Recomputable.Core as Recomputable
@@ -136,8 +136,13 @@ toSum ( true because  [p]) = inj₁ (invert  [p])
 toSum (false because [¬p]) = inj₂ (invert [¬p])
 
 fromSum : A ⊎ ¬ A → Dec A
-fromSum (inj₁ p)  = yes p
-fromSum (inj₂ ¬p) = no ¬p
+fromSum = [ yes , no ]
+
+[¬A⇒B]⇒[A⊎B] : Dec A → (¬ A → B) → A ⊎ B
+[¬A⇒B]⇒[A⊎B] dec h = map₂ h $ toSum dec
+
+[A⇒B]⇒[¬A⊎B] : Dec A → (A → B) → ¬ A ⊎ B
+[A⇒B]⇒[¬A⊎B] dec h = map₂ h $ swap (toSum dec)
 
 ------------------------------------------------------------------------
 -- Relationship with booleans
