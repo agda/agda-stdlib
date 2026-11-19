@@ -8,8 +8,6 @@
 
 module Data.Empty where
 
-open import Data.Irrelevant using (Irrelevant)
-
 ------------------------------------------------------------------------
 -- Definition
 
@@ -20,15 +18,16 @@ open import Data.Irrelevant using (Irrelevant)
 private
   data Empty : Set where
 
--- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant
--- field) so that Agda can judgementally declare that all proofs of ⊥
--- are equal to each other. In particular this means that all functions
--- returning a proof of ⊥ are equal.
+-- ⊥ is defined a record with a single irrelevant so that Agda can judgementally
+-- declare that all proofs of ⊥ are equal to each other. In particular this
+-- means that all functions returning a proof of ⊥ are equal.
 
-⊥ : Set
-⊥ = Irrelevant Empty
+data ⊥ₚ : Prop where
 
-{-# DISPLAY Irrelevant Empty = ⊥ #-}
+-- TOOD: make a generic Prop → Set record
+record ⊥ : Set where
+  constructor [_]
+  field bot : ⊥ₚ
 
 ------------------------------------------------------------------------
 -- Functions
