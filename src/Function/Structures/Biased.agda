@@ -19,8 +19,9 @@ module Function.Structures.Biased {a b ℓ₁ ℓ₂}
 
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base using (_∘_; id)
-open import Function.Definitions
-  using (StrictlySurjective; StrictlyInverseˡ; StrictlyInverseʳ; Congruent)
+import Function.Definitions as Definitions using (Congruent)
+import Function.Definitions.Strictly as Strictly
+  using (Surjective; Inverseˡ; Inverseʳ)
 open import Function.Consequences.Setoid
   using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ
         ; strictlyInverseʳ⇒inverseʳ)
@@ -37,7 +38,7 @@ open import Function.Structures _≈₁_ _≈₂_
 record IsStrictSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isCongruent : IsCongruent f
-    strictlySurjective : StrictlySurjective _≈₂_ f
+    strictlySurjective : Strictly.Surjective _≈₂_ f
 
   open IsCongruent isCongruent public
 
@@ -58,7 +59,7 @@ open IsStrictSurjection public
 record IsStrictBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isInjection : IsInjection f
-    strictlySurjective  : StrictlySurjective _≈₂_ f
+    strictlySurjective  : Strictly.Surjective _≈₂_ f
 
   isBijection : IsBijection f
   isBijection = record
@@ -77,8 +78,8 @@ open IsStrictBijection public
 record IsStrictLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isCongruent  : IsCongruent to
-    from-cong    : Congruent _≈₂_ _≈₁_ from
-    strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+    from-cong    : Definitions.Congruent _≈₂_ _≈₁_ from
+    strictlyInverseˡ : Strictly.Inverseˡ _≈₂_ to from
 
   isLeftInverse : IsLeftInverse to from
   isLeftInverse = record
@@ -98,8 +99,8 @@ open IsStrictLeftInverse public
 record IsStrictRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isCongruent : IsCongruent to
-    from-cong   : Congruent _≈₂_ _≈₁_ from
-    strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+    from-cong   : Definitions.Congruent _≈₂_ _≈₁_ from
+    strictlyInverseʳ : Strictly.Inverseʳ _≈₁_ to from
 
   isRightInverse : IsRightInverse to from
   isRightInverse = record
@@ -119,7 +120,7 @@ open IsStrictRightInverse public
 record IsStrictInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isLeftInverse : IsLeftInverse to from
-    strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+    strictlyInverseʳ : Strictly.Inverseʳ _≈₁_ to from
 
   isInverse : IsInverse to from
   isInverse = record

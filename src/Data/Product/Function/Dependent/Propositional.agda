@@ -23,7 +23,8 @@ open import Function.Properties.Inverse.HalfAdjointEquivalence
   using (↔⇒≃; _≃_; ≃⇒↔)
 open import Function.Consequences.Propositional
   using (inverseʳ⇒injective; strictlySurjective⇒surjective)
-open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective; StrictlySurjective)
+open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective)
+import Function.Definitions.Strictly as Strictly using (Surjective)
 open import Function.Bundles
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -200,7 +201,7 @@ module _ where
     from′ : Σ J B → Σ I A
     from′ = map (from I↠J) (from A↠B ∘ backcast)
 
-    strictlySurjective′ : StrictlySurjective _≡_ to′
+    strictlySurjective′ : Strictly.Surjective _≡_ to′
     strictlySurjective′ (x , y) = from′ (x , y) , Σ-≡,≡→≡
       ( strictlyInverseˡ I↠J x
       , (begin

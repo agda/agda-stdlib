@@ -15,12 +15,13 @@ module Function.Consequences.Setoid
   (T : Setoid b ℓ₂)
   where
 
-open import Function.Definitions
+import Function.Consequences as Consequences
+import Function.Definitions as Definitions
+import Function.Definitions.Strictly as Strictly
 open import Relation.Binary.Definitions
   using (HalfLeftAdjoint; HalfRightAdjoint; Adjoint)
 open import Relation.Nullary.Negation.Core using (¬_)
 
-import Function.Consequences as C
 
 private
   open module S = Setoid S using () renaming (Carrier to A; _≈_ to ≈₁; sym to sym₁)
@@ -29,85 +30,86 @@ private
   variable
     f : A → B
     f⁻¹ : B → A
+    x y : A
+
+
+
+open Definitions ≈₁ ≈₂
 
 
 ------------------------------------------------------------------------
 -- Injective
 
-contraInjective : Injective ≈₁ ≈₂ f →
+contraInjective : Injective f →
                   ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
-contraInjective = C.contraInjective ≈₂
+contraInjective = Consequences.contraInjective ≈₂
 
 ------------------------------------------------------------------------
 -- Inverseˡ
 
-inverseˡ⇒surjective : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Surjective ≈₁ ≈₂ f
-inverseˡ⇒surjective = C.inverseˡ⇒surjective ≈₂
+inverseˡ⇒surjective : Inverseˡ f f⁻¹ → Surjective f
+inverseˡ⇒surjective = Consequences.inverseˡ⇒surjective ≈₂
 
-inverseˡ⇒halfLeftAdjoint : Inverseˡ ≈₁ ≈₂ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
-inverseˡ⇒halfLeftAdjoint = C.inverseˡ⇒halfLeftAdjoint ≈₁ ≈₂
+inverseˡ⇒halfLeftAdjoint : Inverseˡ f f⁻¹ → HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹
+inverseˡ⇒halfLeftAdjoint = Consequences.inverseˡ⇒halfLeftAdjoint ≈₁ ≈₂
 
-halfLeftAdjoint⇒inverseˡ : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₁ ≈₂ f f⁻¹
-halfLeftAdjoint⇒inverseˡ = C.halfLeftAdjoint⇒inverseˡ ≈₁ ≈₂
+halfLeftAdjoint⇒inverseˡ : HalfLeftAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseˡ f f⁻¹
+halfLeftAdjoint⇒inverseˡ = Consequences.halfLeftAdjoint⇒inverseˡ ≈₁ ≈₂
 
 ------------------------------------------------------------------------
 -- Inverseʳ
 
-inverseʳ⇒injective : ∀ f → Inverseʳ ≈₁ ≈₂ f f⁻¹ → Injective ≈₁ ≈₂ f
-inverseʳ⇒injective f = C.inverseʳ⇒injective ≈₂ f T.refl S.sym S.trans
+inverseʳ⇒injective : ∀ f → Inverseʳ f f⁻¹ → Injective f
+inverseʳ⇒injective f = Consequences.inverseʳ⇒injective ≈₂ f T.refl S.sym S.trans
 
-inverseʳ⇒halfRightAdjoint : Inverseʳ ≈₁ ≈₂ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
-inverseʳ⇒halfRightAdjoint = C.inverseʳ⇒halfRightAdjoint ≈₁ ≈₂ sym₁ sym₂
+inverseʳ⇒halfRightAdjoint : Inverseʳ f f⁻¹ → HalfRightAdjoint ≈₁ ≈₂ f f⁻¹
+inverseʳ⇒halfRightAdjoint = Consequences.inverseʳ⇒halfRightAdjoint ≈₁ ≈₂ sym₁ sym₂
 
-halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₁ ≈₂ f f⁻¹
-halfRightAdjoint⇒inverseʳ = C.halfRightAdjoint⇒inverseʳ ≈₁ ≈₂ sym₁ sym₂
+halfRightAdjoint⇒inverseʳ : HalfRightAdjoint ≈₁ ≈₂ f f⁻¹ → Inverseʳ f f⁻¹
+halfRightAdjoint⇒inverseʳ = Consequences.halfRightAdjoint⇒inverseʳ ≈₁ ≈₂ sym₁ sym₂
 
 ------------------------------------------------------------------------
 -- Inverseᵇ
 
-inverseᵇ⇒bijective : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Bijective ≈₁ ≈₂ f
-inverseᵇ⇒bijective = C.inverseᵇ⇒bijective ≈₂ T.refl S.sym S.trans
+inverseᵇ⇒bijective : Inverseᵇ f f⁻¹ → Bijective f
+inverseᵇ⇒bijective = Consequences.inverseᵇ⇒bijective ≈₂ T.refl S.sym S.trans
 
-inverseᵇ⇒adjoint : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
-inverseᵇ⇒adjoint = C.inverseᵇ⇒adjoint ≈₁ ≈₂ sym₁ sym₂
+inverseᵇ⇒adjoint : Inverseᵇ f f⁻¹ → Adjoint ≈₁ ≈₂ f f⁻¹
+inverseᵇ⇒adjoint = Consequences.inverseᵇ⇒adjoint ≈₁ ≈₂ sym₁ sym₂
 
-adjoint⇒inverseᵇ : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹
-adjoint⇒inverseᵇ = C.adjoint⇒inverseᵇ ≈₁ ≈₂ sym₁ sym₂
+adjoint⇒inverseᵇ : Adjoint ≈₁ ≈₂ f f⁻¹ → Inverseᵇ f f⁻¹
+adjoint⇒inverseᵇ = Consequences.adjoint⇒inverseᵇ ≈₁ ≈₂ sym₁ sym₂
 
 ------------------------------------------------------------------------
--- StrictlySurjective
+-- Strictly.Surjective
 
-surjective⇒strictlySurjective : Surjective ≈₁ ≈₂ f →
-                                 StrictlySurjective ≈₂ f
+surjective⇒strictlySurjective : Surjective f → Strictly.Surjective ≈₂ f
 surjective⇒strictlySurjective =
-  C.surjective⇒strictlySurjective ≈₂ S.refl
+  Consequences.surjective⇒strictlySurjective ≈₂ S.refl
 
-strictlySurjective⇒surjective : Congruent ≈₁ ≈₂ f →
-                                 StrictlySurjective ≈₂ f →
-                                 Surjective ≈₁ ≈₂ f
+strictlySurjective⇒surjective : Congruent f →
+                                Strictly.Surjective ≈₂ f → Surjective f
 strictlySurjective⇒surjective =
-  C.strictlySurjective⇒surjective T.trans
+  Consequences.strictlySurjective⇒surjective T.trans
 
 ------------------------------------------------------------------------
--- StrictlyInverseˡ
+-- Strictly.Inverseˡ
 
-inverseˡ⇒strictlyInverseˡ : Inverseˡ ≈₁ ≈₂ f f⁻¹ →
-                            StrictlyInverseˡ ≈₂ f f⁻¹
-inverseˡ⇒strictlyInverseˡ = C.inverseˡ⇒strictlyInverseˡ ≈₁ ≈₂ S.refl
+inverseˡ⇒strictlyInverseˡ : Inverseˡ f f⁻¹ →
+                            Strictly.Inverseˡ ≈₂ f f⁻¹
+inverseˡ⇒strictlyInverseˡ = Consequences.inverseˡ⇒strictlyInverseˡ ≈₁ ≈₂ S.refl
 
-strictlyInverseˡ⇒inverseˡ : Congruent ≈₁ ≈₂ f →
-                            StrictlyInverseˡ ≈₂ f f⁻¹ →
-                            Inverseˡ ≈₁ ≈₂ f f⁻¹
-strictlyInverseˡ⇒inverseˡ = C.strictlyInverseˡ⇒inverseˡ T.trans
+strictlyInverseˡ⇒inverseˡ : Congruent f →
+                            Strictly.Inverseˡ ≈₂ f f⁻¹ → Inverseˡ f f⁻¹
+strictlyInverseˡ⇒inverseˡ = Consequences.strictlyInverseˡ⇒inverseˡ T.trans
 
 ------------------------------------------------------------------------
--- StrictlyInverseʳ
+-- Strictly.Inverseʳ
 
-inverseʳ⇒strictlyInverseʳ : Inverseʳ ≈₁ ≈₂ f f⁻¹ →
-                            StrictlyInverseʳ ≈₁ f f⁻¹
-inverseʳ⇒strictlyInverseʳ = C.inverseʳ⇒strictlyInverseʳ ≈₁ ≈₂ T.refl
+inverseʳ⇒strictlyInverseʳ : Inverseʳ f f⁻¹ →
+                            Strictly.Inverseʳ ≈₁ f f⁻¹
+inverseʳ⇒strictlyInverseʳ = Consequences.inverseʳ⇒strictlyInverseʳ ≈₁ ≈₂ T.refl
 
-strictlyInverseʳ⇒inverseʳ : Congruent ≈₂ ≈₁ f⁻¹ →
-                            StrictlyInverseʳ ≈₁ f f⁻¹ →
-                            Inverseʳ ≈₁ ≈₂ f f⁻¹
-strictlyInverseʳ⇒inverseʳ = C.strictlyInverseʳ⇒inverseʳ S.trans
+strictlyInverseʳ⇒inverseʳ : Definitions.Congruent ≈₂ ≈₁ f⁻¹ →
+                            Strictly.Inverseʳ ≈₁ f f⁻¹ → Inverseʳ f f⁻¹
+strictlyInverseʳ⇒inverseʳ = Consequences.strictlyInverseʳ⇒inverseʳ S.trans
