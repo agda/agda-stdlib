@@ -11,7 +11,7 @@ open import Algebra.Consequences.Setoid using (comm∧assoc⇒middleFour)
 import Algebra.Definitions as Def
 open import Algebra.Polynomial.Poly.Base.Semiring SR
   using ( Poly; _+_; _*_; _·_; shift; _≈_; IsZero
-        ; inject; []≈ ; ≈[]; cons; 0#; 1#; degree-cons; degree; normalize)
+        ; inject; []≈ ; ≈[]; cons; 0#; 1#; degree; normalize)
 open import Algebra.Structures
   using ( IsMagma; IsSemigroup; IsCommutativeSemigroup; IsMonoid
         ; IsSemiring; IsCommutativeMonoid)
@@ -546,47 +546,29 @@ module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
   open Eq.≡-Reasoning using (step-≡-⟩)
     renaming (begin_ to begin≡_; _∎ to _∎≡)
 
-  cons-degree-zero : ∀ {a} → a A.≈ A.0# → degree-cons _≟0 a ⊥₋ ≡ ⊥₋
-  cons-degree-zero {a} a≈0 with a ≟0
-  ... | yes _ = Eq.refl
-  ... | no ¬a≈0 = contradiction a≈0 ¬a≈0
-
   IsZero⇒degree≡⊥₋ : ∀ {p} → IsZero p → degree _≟0 p ≡ ⊥₋
   IsZero⇒degree≡⊥₋ [] = Eq.refl
-  IsZero⇒degree≡⊥₋ {a ∷ p} (a≈0 ∷ p≈0) = begin≡
-    degree _≟0 (a ∷ p)
-      ≡⟨ Eq.cong (degree-cons _≟0 a) (IsZero⇒degree≡⊥₋ p≈0) ⟩
-    degree-cons _≟0 a ⊥₋
-      ≡⟨ cons-degree-zero a≈0 ⟩
-    ⊥₋
-      ∎≡
-      
+  IsZero⇒degree≡⊥₋ {a ∷ p} (a≈0 ∷ p≈0) with degree _≟0 p | IsZero⇒degree≡⊥₋ p≈0
+  ... | ⊥₋ | _ with a ≟0
+  ... | yes q = Eq.refl
+  ... | no ¬a≈0 = contradiction a≈0 ¬a≈0
+
   degree≡⊥₋⇒IsZero : ∀ {p} → degree _≟0 p ≡ ⊥₋ → IsZero p
   degree≡⊥₋⇒IsZero {[]} eq = []
-  degree≡⊥₋⇒IsZero {a ∷ p} eq with degree _≟0 p in taildegree
-  ... | [ n ] with () <- eq
+  degree≡⊥₋⇒IsZero {a ∷ p} eq with degree _≟0 p in eq'
   ... | ⊥₋ with a ≟0
-  ...   | yes a≈0 = a≈0 ∷ degree≡⊥₋⇒IsZero {p} taildegree
-  ...   | no _ with () <- eq
-
-  degree-cons-cong : ∀ {a b} → a A.≈ b → (k : ℕ ₋) → degree-cons _≟0 a k ≡ degree-cons _≟0 b k
-  degree-cons-cong a≈b [ n ] = Eq.refl
-  degree-cons-cong {a} {b} a≈b ⊥₋
-    with a ≟0 | b ≟0
-  ... | yes _   | yes _    = Eq.refl
-  ... | no _    | no _     = Eq.refl
-  ... | yes a≈0 | no ¬b≈0 = contradiction (A.trans (A.sym a≈b) a≈0) ¬b≈0
-  ... | no ¬a≈0 | yes b≈0 = contradiction (A.trans a≈b b≈0) ¬a≈0
+  ... | yes a≈0 = a≈0 ∷ degree≡⊥₋⇒IsZero {p} eq'
 
   degree-cong : ∀ {p q} → p ≈ q → degree _≟0 p ≡ degree _≟0 q
   degree-cong ([]≈ q []≈q) = Eq.sym (IsZero⇒degree≡⊥₋ []≈q)
   degree-cong (≈[] p p≈[]) = IsZero⇒degree≡⊥₋ p≈[]
-  degree-cong {a ∷ p} {b ∷ q} (cons a≈b p≈q) = begin≡
-     degree _≟0 (a ∷ p)
-      ≡⟨ Eq.cong (degree-cons _≟0 a) (degree-cong p≈q) ⟩
-    degree-cons _≟0 a (degree _≟0 q)
-      ≡⟨ degree-cons-cong a≈b (degree _≟0 q) ⟩
-    degree _≟0 (b ∷ q) ∎≡
+  degree-cong {a ∷ p} {b ∷ q} (cons a≈b p≈q) with degree _≟0 p | {degree _≟0 q} | degree-cong p≈q
+  ... | [_] x | Eq.refl = Eq.refl
+  ... | ⊥₋    | Eq.refl with a ≟0 | b ≟0
+  ... | yes a≈0 | yes b≈0 = Eq.refl
+  ... | no ¬a≈0 | no ¬b≈0 = Eq.refl
+  ... | yes a≈0 | no ¬b≈0 = contradiction (A.trans (A.sym a≈b) a≈0) ¬b≈0
+  ... | no ¬a≈0 | yes b≈0 = contradiction (A.trans a≈b b≈0) ¬a≈0
     
   normalizep≈p : (p : Poly) → (normalize _≟0  p) ≈ p
   normalizep≈p [] = refl

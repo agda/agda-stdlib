@@ -94,18 +94,16 @@ inject r = r ∷ []
 
 module _ (_≟0 : ∀ a → Dec (a A.≈ A.0#)) where
 
--- Degree of a polynomial after prepending a coefficient
-  degree-cons : A → ℕ ₋ → ℕ ₋
-  degree-cons a [ n ] = [ suc n ]
-  degree-cons a ⊥₋ with a ≟0
-  ... | yes _ = ⊥₋
-  ... | no  _ = [ 0 ]
 
 -- Degree of a polynomial is its highest exponent with a
 -- non-zero coefficient
   degree : Poly → ℕ ₋
   degree [] = ⊥₋
-  degree (a ∷ p) = degree-cons a (degree p)
+  degree (a ∷ p) with degree p
+  ... | [ n ] = [ suc n ]
+  ... | ⊥₋ with a ≟0
+  ...   | yes _ = ⊥₋
+  ...   | no  _ = [ 0 ]
 
 -- Remove trailing zero coefficient
   normalize : Poly → Poly
