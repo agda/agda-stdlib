@@ -19,6 +19,7 @@ open import IO.Base using (IO; lift; lift!; _<$>_; _>>=_; pure)
 import IO.Effectful as IO
 open import Level using (0ℓ; suc; _⊔_; lift)
 open import Relation.Binary.Core using (Rel)
+open import Relation.Nullary.Negation.Core using (contradiction-irr)
 
 ------------------------------------------------------------------------
 -- Ranged generation shall return proofs
@@ -143,7 +144,7 @@ module Fin where
 module Bool where
 
   open import Data.Bool.Base as Bool using (true; false; _≤_)
-  open import Data.Bool.Properties using (≤-refl; ≤-minimum; ≤-maximum)
+  open import Data.Bool.Properties using (¬t≤f; ≤-refl; ≤-minimum; ≤-maximum)
 
   randomIO : IO Bool
   randomIO = lookup (true ∷ false ∷ []) <$> Fin.randomIO
@@ -154,6 +155,7 @@ module Bool where
     b ← randomIO
     pure (b ∈[ ≤-minimum b , ≤-maximum b ])
   randomRIO true true lo≤hi = pure (true ∈[ ≤-refl , ≤-refl ])
+  randomRIO true false lo≤hi = contradiction-irr lo≤hi ¬t≤f
 
 module List {a} {A : Set a} (rIO : IO A)  where
 
