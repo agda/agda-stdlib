@@ -9,6 +9,8 @@
 
 module Data.Rational.Properties where
 
+open import Algebra.Apartness.Consequences
+open import Algebra.Apartness.Definitions
 open import Algebra.Apartness
   using (IsHeytingCommutativeRing; IsHeytingField
         ; HeytingCommutativeRing; HeytingField)
@@ -67,7 +69,8 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax using (module ≃-syntax)
 open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; contraposition)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -1384,17 +1387,46 @@ p*q≢0⇒q≢0 {p} {q} pq≢0 q≡0 = pq≢0 $ begin
 
 module _ where
   open CommutativeRing +-*-commutativeRing
-    using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
+    using (+-group; zeroˡ; +-congˡ; +-congʳ; *-congˡ; *-congʳ; isCommutativeRing)
 
   open GroupProperties +-group
   open DecSetoidProperties ≡-decSetoid
+    using (≉-isTightApartnessRelation)
+    renaming (≉-cotrans to ≢-cotransitive)
+
+  -- NB *section* (p +_) clashes with ℤ.+_!!!
+  +-stronglyCongruentˡ : ∀ p → StronglyCongruent₁ _≢_ λ # → p + #
+  +-stronglyCongruentˡ p = contraposition (+-congˡ {x = p})
+
+  +-stronglyCongruentʳ : ∀ r → StronglyCongruent₁ _≢_ (_+ r)
+  +-stronglyCongruentʳ r = contraposition (+-congʳ {x = r})
+
+  +-stronglyCongruent : StronglyCongruent₂ _≢_ _+_
+  +-stronglyCongruent = +-stronglyCongruentˡ , +-stronglyCongruentʳ
+
+  +-stronglyExtensional : StronglyExtensional _≢_ _+_
+  +-stronglyExtensional =
+    cotransitive∧congruent⇒extensional _≢_ ≢-cotransitive +-stronglyCongruent
+
+  *-stronglyCongruentˡ : ∀ p → StronglyCongruent₁ _≢_ (p *_)
+  *-stronglyCongruentˡ p = contraposition (*-congˡ {x = p})
+
+  *-stronglyCongruentʳ : ∀ r → StronglyCongruent₁ _≢_ (_* r)
+  *-stronglyCongruentʳ r = contraposition (*-congʳ {x = r})
+
+  *-stronglyCongruent : StronglyCongruent₂ _≢_ _*_
+  *-stronglyCongruent = *-stronglyCongruentˡ , *-stronglyCongruentʳ
+
+  *-stronglyExtensional : StronglyExtensional _≢_ _*_
+  *-stronglyExtensional =
+    cotransitive∧congruent⇒extensional _≢_ ≢-cotransitive *-stronglyCongruent
 
   #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
   #⇒invertible {p} {q} p≢q = let r = p - q in 1/ r , *-inverseˡ r , *-inverseʳ r
     where instance _ = ≢-nonZero (p≢q ∘ (x∙y⁻¹≈ε⇒x≈y p q))
 
   invertible⇒# : Invertible 1ℚ _*_ (p - q) → p ≢ q
-  invertible⇒# {p} {q} (1/[p-q] , _ , [p-q]/[p-q]≡1) p≡q = contradiction 1≡0 1≢0
+  invertible⇒# {p} {q} (1/[p-q] , _ , [p-q]/[p-q]≡1) p≡q = 1≢0 1≡0
     where
     open ≈-Reasoning ≡-setoid
     1≡0 : 1ℚ ≡ 0ℚ
@@ -1407,15 +1439,16 @@ module _ where
   isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
   isHeytingCommutativeRing = record
     { isCommutativeRing = isCommutativeRing
-    ; isApartnessRelation = ≉-isApartnessRelation
-    ; #⇒invertible = #⇒invertible
-    ; invertible⇒# = invertible⇒#
+    ; isTightApartnessRelation = ≉-isTightApartnessRelation
+    ; +-stronglyExtensional = +-stronglyExtensional
+    ; *-stronglyExtensional = *-stronglyExtensional
     }
 
   isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
   isHeytingField = record
     { isHeytingCommutativeRing = isHeytingCommutativeRing
-    ; tight = ≉-tight
+    ; #⇒invertible = #⇒invertible
+    ; invertible⇒# = invertible⇒#
     }
 
   heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
