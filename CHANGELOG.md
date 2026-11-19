@@ -325,6 +325,12 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Construct.Add.Negatives.CommutativeMonoid` and
+  `Algebra.Construct.Add.Negatives.Semiring` for the group completion of a
+  commutative monoid and the ring completion of a semiring,
+  respectively, including isomorphisms when the input is already an
+  abelian group or ring.
+
 * `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
 
 * `Algebra.Solver.Ring.IntegralCoefficients` for a generic solver for rings with integral
