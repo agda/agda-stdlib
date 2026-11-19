@@ -853,9 +853,21 @@ T-≡ : ∀ {x} → T x ⇔ x ≡ true
 T-≡ {false} = mk⇔ (λ ())       (λ ())
 T-≡ {true}  = mk⇔ (const refl) (const _)
 
+T-to-≡ : ∀ {x} → T x → x ≡ true
+T-to-≡ = Equivalence.to T-≡
+
+≡-to-T : ∀ {x} → x ≡ true → T x
+≡-to-T = Equivalence.from T-≡
+
 T-not-≡ : ∀ {x} → T (not x) ⇔ x ≡ false
 T-not-≡ {false} = mk⇔ (const refl) (const _)
 T-not-≡ {true}  = mk⇔ (λ ())       (λ ())
+
+T-not-to-≡ : ∀ {x} → T (not x) → x ≡ false
+T-not-to-≡ = Equivalence.to T-not-≡
+
+≡-to-T-not : ∀ {x} → x ≡ false → T (not x)
+≡-to-T-not = Equivalence.from T-not-≡
 
 T-∧ : ∀ {x y} → T (x ∧ y) ⇔ (T x × T y)
 T-∧ {true}  {true}  = mk⇔ (const (_ , _)) (const _)

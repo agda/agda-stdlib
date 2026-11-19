@@ -450,6 +450,11 @@ m%n*o≡m*o%[n*o] m n o = begin-equality
   m * o ∸ m * o / (n * o) * (n * o) ≡⟨ m%n≡m∸m/n*n (m * o) (n * o) ⟨
   m * o % (n * o)                   ∎
 
+m*n%o≡m*n%[m*o] : ∀ m n o .{{_ : NonZero o}} .{{_ : NonZero (m * o)}} →
+                  m * (n % o) ≡ (m * n) % (m * o)
+m*n%o≡m*n%[m*o] m n o rewrite *-comm m (n % o) | *-comm m n | *-comm m o
+  = m%n*o≡m*o%[n*o] n o m
+
 [m*n+o]%[p*n]≡[m*n]%[p*n]+o : ∀ m {n o} p .{{_ : NonZero (p * n)}} → o < n →
                               (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
 [m*n+o]%[p*n]≡[m*n]%[p*n]+o m {n} {o} p@(suc p-1) o<n = begin-equality
