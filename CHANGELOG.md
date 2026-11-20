@@ -368,6 +368,10 @@ New modules
 * `Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties.ToList` adds properties of
   the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
+* `Relation.Binary.Lattice.Properties.BooleanAlgebra` is currently a stub,
+  exporting only the unelrying `HeytingAlgebra` properties. Clearly more is
+  required downstream!
+
 Additions to existing modules
 -----------------------------
 
@@ -416,6 +420,12 @@ Additions to existing modules
 * In `Algebra.Structures.IsKleeneAlgebra`:
   ```agda
   _≤_            : Rel A _
+  ```
+
+* In `Data.Bool.Base`:
+  ```agda
+  infixr 5 _⇒_
+  _⇒_ : Bool → Bool → Bool
   ```
 
 * In `Data.Bool.Properties`:
