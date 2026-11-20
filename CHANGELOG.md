@@ -432,6 +432,13 @@ Additions to existing modules
   ```agda
   ∨-monoid : Monoid 0ℓ 0ℓ
   ∧-monoid : Monoid 0ℓ 0ℓ
+
+  ⇒-defn : ∀ x y → x ⇒ y ≡ not x ∨ y
+  ⇒⊥≡not : ∀ x → x ⇒ false ≡ not x
+
+  ⇒-half-left-adjoint  : ∀ z → HalfLeftAdjoint _≤_ _≤_ (z ∧_) (z ⇒_)
+  ⇒-half-right-adjoint : ∀ z → HalfRightAdjoint _≤_ _≤_ (z ∧_)(z ⇒_)
+  ⇒-adjoint            : ∀ z → Adjoint _≤_ _≤_ (z ∧_) (z ⇒_)
   ```
 
 * In `Data.Char.Base`:
