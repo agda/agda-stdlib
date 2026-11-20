@@ -18,19 +18,19 @@ sh -c "$(curl --proto '=https' --tlsv1.2 -s https://raw.githubusercontent.com/ag
 
 ## Manual installation
 
-Use version v2.4 of the standard library with Agda v2.8.0. You can find the correct version of the library to use for different Agda versions on the [Agda Wiki](https://wiki.portal.chalmers.se/agda/Libraries/StandardLibrary).
+Use version v2.4.1 of the standard library with Agda v2.9.0. You can find the correct version of the library to use for different Agda versions on the [Agda Wiki](https://wiki.portal.chalmers.se/agda/Libraries/StandardLibrary).
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where
    you would like to install the library.
 
-2. Download the tarball of v2.4 of the standard library. This can either be
+2. Download the tarball of v2.4.1 of the standard library. This can either be
    done manually by visiting the Github repository for the library, or via the
    command line as follows:
    ```
-   wget -O agda-stdlib.tar.gz https://github.com/agda/agda-stdlib/archive/v2.4.tar.gz
+   wget -O agda-stdlib.tar.gz https://github.com/agda/agda-stdlib/archive/v2.4.1.tar.gz
    ```
    Note that you can replace `wget` with other popular tools such as `curl` and that
-   you can replace `2.4` with any other version of the library you desire.
+   you can replace `2.4.1` with any other version of the library you desire.
 
 3. Extract the standard library from the tarball. Again this can either be
    done manually or via the command line as follows:
@@ -50,7 +50,7 @@ Use version v2.4 of the standard library with Agda v2.8.0. You can find the corr
 5. Register the standard library with Agda's package system by adding
    the following line to `$AGDA_DIR/libraries`:
    ```
-   $HERE/agda-stdlib-2.4/standard-library.agda-lib
+   $HERE/agda-stdlib-2.4.1/standard-library.agda-lib
    ```
 
 Now, the standard library is ready to be used either:
@@ -82,7 +82,7 @@ and [`cabal`](https://www.haskell.org/cabal/) are available in the path and run
 
 ```sh
 cabal update
-cd agda-stdlib-2.4
+cd agda-stdlib-2.4.1
 cabal run GenerateEverything -- --out-dir doc
 (cd doc && agda --html README.agda)
 ```
@@ -90,5 +90,5 @@ cabal run GenerateEverything -- --out-dir doc
 Finally, to interact with `doc/README.agda`, register the documentation
 with Agda's package system by adding the following line to `$AGDA_DIR/libraries`:
 ```
-$HERE/agda-stdlib-2.4/doc/standard-library-doc.agda-lib
+$HERE/agda-stdlib-2.4.1/doc/standard-library-doc.agda-lib
 ```
