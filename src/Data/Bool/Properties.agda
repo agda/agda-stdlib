@@ -856,7 +856,7 @@ if-cong₂ _ refl refl = refl
 ⇒-half-left-adjoint false x≤z⇒y = ≤-minimum _
 ⇒-half-left-adjoint true  x≤z⇒y = x≤z⇒y
 
-⇒-half-right-adjoint : ∀ z → HalfRightAdjoint _≤_ _≤_ (z ∧_)(z ⇒_)
+⇒-half-right-adjoint : ∀ z → HalfRightAdjoint _≤_ _≤_ (z ∧_) (z ⇒_)
 ⇒-half-right-adjoint false z∧x≤y = ≤-maximum _
 ⇒-half-right-adjoint true  z∧x≤y = z∧x≤y
 
