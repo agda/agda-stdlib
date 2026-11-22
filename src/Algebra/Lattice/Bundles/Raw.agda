@@ -8,7 +8,7 @@
 
 module Algebra.Lattice.Bundles.Raw where
 
-open import Algebra.Core using (Op₂)
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Bundles.Raw using (RawMagma)
 open import Level using (suc; _⊔_)
 open import Relation.Binary.Core using (Rel)
@@ -31,3 +31,64 @@ record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open RawMagma ∨-rawMagma public
     using (_≉_)
+
+record RawBoundedLattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infixr 6 _∨_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∧_     : Op₂ Carrier
+    _∨_     : Op₂ Carrier
+    ⊥       : Carrier
+    ⊤       : Carrier
+
+  rawLattice : RawLattice c ℓ
+  rawLattice = record { _≈_ = _≈_ ; _∧_ = _∧_ ; _∨_ = _∨_ }
+
+  open RawLattice rawLattice public
+
+record RawHeytingAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infixr 6 _∨_
+  infixr 5 _⇨_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∧_     : Op₂ Carrier
+    _∨_     : Op₂ Carrier
+    _⇨_     : Op₂ Carrier
+    ⊥       : Carrier
+    ⊤       : Carrier
+
+  rawBoundedLattice : RawBoundedLattice c ℓ
+  rawBoundedLattice = record { _≈_ = _≈_ ; _∧_ = _∧_ ; _∨_ = _∨_ ; ⊥ = ⊥; ⊤ = ⊤ }
+
+  open RawBoundedLattice rawBoundedLattice public
+
+record RawBooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infixr 6 _∨_
+  infix  8 ¬_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∧_     : Op₂ Carrier
+    _∨_     : Op₂ Carrier
+    ¬_      : Op₁ Carrier
+    ⊥       : Carrier
+    ⊤       : Carrier
+
+  infixr 5 _⇨_
+  _⇨_ : Op₂ Carrier
+  x ⇨ y = ¬ x ∨ y
+
+  rawHeytingAlgebra : RawHeytingAlgebra c ℓ
+  rawHeytingAlgebra = record { _≈_ = _≈_ ; _∧_ = _∧_ ; _∨_ = _∨_ ; _⇨_ = _⇨_; ⊥ = ⊥; ⊤ = ⊤ }
+
+  open RawHeytingAlgebra rawHeytingAlgebra public
+    hiding (_⇨_)
+
