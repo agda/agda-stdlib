@@ -100,7 +100,9 @@ logHappy "Agda directory: $AGDA_DIR"
 if [ -z "${STDLIB_VERSION-}" ]; then
   case "$AGDA_VERSION" in
     "2.9.0")   STDLIB_VERSION="2.4.1" ;;
-    "2.8.0")   STDLIB_VERSION="2.3" ;;
+    "2.8.0.2") STDLIB_VERSION="2.4" ;;
+    "2.8.0.1") STDLIB_VERSION="2.4" ;;
+    "2.8.0")   STDLIB_VERSION="2.4" ;;
     "2.7.0.1") STDLIB_VERSION="2.3" ;;
     "2.7.0")   STDLIB_VERSION="2.2" ;;
     "2.6.4.3") STDLIB_VERSION="2.1" ;;
@@ -111,7 +113,7 @@ if [ -z "${STDLIB_VERSION-}" ]; then
     "2.6.2.2") STDLIB_VERSION="1.7.1" ;;
     "2.6.2.1") STDLIB_VERSION="1.7.1" ;;
     "2.6.1")   STDLIB_VERSION="1.7.1" ;;
-    *)         STDLIB_VERSION="experimental" ;;
+    *)         STDLIB_VERSION="agda-master" ;;
   esac
 fi
 
@@ -119,7 +121,7 @@ logHappy "Standard library version: $STDLIB_VERSION"
 
 case "$STDLIB_VERSION" in
   "master")       STDLIB_TAG="refs/heads/master" ;;
-  "experimental") STDLIB_TAG="refs/heads/experimental" ;;
+  "agda-master")  STDLIB_TAG="refs/heads/agda-master" ;;
   *)              STDLIB_TAG="v$STDLIB_VERSION" ;;
 esac
 
