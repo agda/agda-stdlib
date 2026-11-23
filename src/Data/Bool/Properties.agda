@@ -14,9 +14,9 @@ open import Algebra.Bundles
 open import Algebra.Lattice.Bundles
   using (Lattice; DistributiveLattice; BooleanAlgebra; Semilattice)
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
-open import Data.Bool.Base
-  using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; T; _≤_; _<_
-        ; ≤-reflexive; b≤b; f≤t; f<t)
+open import Data.Bool.Base as 𝔹
+  using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; T
+        ; _≤_; _<_; b≤b; f≤t; f<t)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
@@ -77,6 +77,10 @@ false ≡? true  = no λ()
 ------------------------------------------------------------------------
 -- Properties of _≤_
 
+-- re-export constructor as property
+
+open 𝔹 public using (≤-reflexive)
+
 ¬t≤f : ¬ true ≤ false
 ¬t≤f (≤-reflexive ())
 
@@ -91,7 +95,7 @@ false ≡? true  = no λ()
 
 ≤-antisym : Antisymmetric _≡_ _≤_
 ≤-antisym (≤-reflexive eq) _ = eq
-≤-antisym f≤t (≤-reflexive ())
+≤-antisym f≤t t≤f = contradiction t≤f ¬t≤f
 
 ≤-minimum : Minimum _≤_ false
 ≤-minimum false = b≤b
