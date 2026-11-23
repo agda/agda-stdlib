@@ -75,6 +75,9 @@ Bug-fixes
   `fromFunction` from `*Inverse` with corresponding deprecations in
   `Function.Properties.Inverse`.
 
+* [issue #3155](https://github.com/agda/agda-stdlib/issues/3155)
+  Exposed the `≡-syntax` combinators for `Relation.Binary.Reasoning.MultiSetoid`.
+
 Non-backwards compatible changes
 --------------------------------
 

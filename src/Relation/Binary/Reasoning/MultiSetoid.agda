@@ -71,6 +71,6 @@ module _ (S : Setoid a ℓ) where
 module _ {S : Setoid a ℓ} where
   open Setoid S
 
-  open ≡-syntax (IsRelatedTo S) (≡-go S)
+  open ≡-syntax (IsRelatedTo S) (≡-go S) public
   open ≈-syntax (IsRelatedTo S) (IsRelatedTo S) (≈-go S) sym public
   open end-syntax (IsRelatedTo S) (end S) public
