@@ -123,6 +123,13 @@ merge R? x∷xs@(x ∷ xs) y∷ys@(y ∷ ys) = if does (R? x y)
 ------------------------------------------------------------------------
 -- Operations for reducing lists
 
+foldMap : (B → B → B) → B → (A → B) → List A → B
+foldMap _∙_ ε f = go
+  module FoldMap where
+  go : List _ → _
+  go []       = ε
+  go (x ∷ xs) = (f x) ∙ (go xs)
+
 foldr : (A → B → B) → B → List A → B
 foldr c n []       = n
 foldr c n (x ∷ xs) = c x (foldr c n xs)
@@ -553,48 +560,4 @@ scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 {-# WARNING_ON_USAGE scanl
 "Warning: scanl was deprecated in v2.1.
 Please use Data.List.Scans.Base.scanl instead."
-#-}
-
--- Version 2.3
-
-and : List Bool → Bool
-and = foldr _∧_ true
-
-all : (A → Bool) → List A → Bool
-all p = and ∘ map p
-{-# WARNING_ON_USAGE and
-"Warning: and was deprecated in v2.3.
-Please use Data.Bool.ListAction.and instead."
-#-}
-{-# WARNING_ON_USAGE all
-"Warning: all was deprecated in v2.3.
-Please use Data.Bool.ListAction.all instead."
-#-}
-
-or : List Bool → Bool
-or = foldr _∨_ false
-
-any : (A → Bool) → List A → Bool
-any p = or ∘ map p
-{-# WARNING_ON_USAGE or
-"Warning: or was deprecated in v2.3.
-Please use Data.Bool.ListAction.or instead."
-#-}
-{-# WARNING_ON_USAGE any
-"Warning: any was deprecated in v2.3.
-Please use Data.Bool.ListAction.any instead."
-#-}
-
-sum : List ℕ → ℕ
-sum = foldr ℕ._+_ 0
-{-# WARNING_ON_USAGE sum
-"Warning: sum was deprecated in v2.3.
-Please use Data.Nat.ListAction.sum instead."
-#-}
-
-product : List ℕ → ℕ
-product = foldr ℕ._*_ 1
-{-# WARNING_ON_USAGE product
-"Warning: product was deprecated in v2.3.
-Please use Data.Nat.ListAction.product instead."
 #-}

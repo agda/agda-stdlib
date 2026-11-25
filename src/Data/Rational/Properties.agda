@@ -53,13 +53,14 @@ open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Congruent; Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
+open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.Morphism.Structures
   using (IsRelHomomorphism; IsRelMonomorphism
         ; IsOrderHomomorphism; IsOrderMonomorphism)
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
 import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong₂; sym; trans; _≢_; subst; subst₂; resp₂)
+  using (_≡_; refl; cong; cong₂; sym; trans; _≢_; subst; subst₂; resp₂; ≢-sym)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid; decSetoid; module ≡-Reasoning; isEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -663,8 +664,23 @@ toℚᵘ-isOrderMonomorphism-< = record
 <⇒≢ : _<_ ⇒ _≢_
 <⇒≢ (*<* p<q) = ℤ.<⇒≢ p<q ∘ drop-*≡* ∘ ≡⇒≃
 
+>⇒≢ : _>_ ⇒ _≢_
+>⇒≢ = ≢-sym ∘ <⇒≢
+
 ≤⇒≯ : _≤_ ⇒ _≯_
 ≤⇒≯ (*≤* p≤q) (*<* q<p) = ℤ.≤⇒≯ p≤q q<p
+
+≰⇒≮ : _≰_ ⇒ _≮_
+≰⇒≮ p≰q p<q = p≰q (<⇒≤ p<q)
+
+<⇒≱ : _<_ ⇒ _≱_
+<⇒≱ p<q p≥q = ≤⇒≯ p≥q p<q
+
+≤∧≢⇒< : p ≤ q → p ≢ q → p < q
+≤∧≢⇒< (*≤* p≤q) p≢q = *<* (ℤ.≤∧≢⇒< p≤q (p≢q ∘ ≃⇒≡ ∘ *≡*))
+
+≤∧≮⇒≡ : p ≤ q → p ≮ q → p ≡ q
+≤∧≮⇒≡ (*≤* p≤q) p≮q = ≃⇒≡ (*≡* (ℤ.≤∧≮⇒≡ p≤q (p≮q ∘ *<*)))
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl refl (*<* p<p) = ℤ.<-irrefl refl p<p
@@ -720,6 +736,20 @@ toℚᵘ-isOrderMonomorphism-< = record
 
 <-trans : Transitive _<_
 <-trans p<q = ≤-<-trans (<⇒≤ p<q)
+
+≤-<-connex : Connex _≤_ _<_
+≤-<-connex p q with p ≤? q
+... | yes p≤q = inj₁ p≤q
+... | no  p≰q = inj₂ (≰⇒> p≰q)
+
+≥->-connex : Connex _≥_ _>_
+≥->-connex = flip ≤-<-connex
+
+<-≤-connex : Connex _<_ _≤_
+<-≤-connex = flip-Connex ≤-<-connex
+
+>-≥-connex : Connex _>_ _≥_
+>-≥-connex = flip-Connex ≥->-connex
 
 infix 4 _<?_ _>?_
 
@@ -1803,6 +1833,46 @@ antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong
 antimono-≤-distrib-⊔ : ∀ {f} → Monotonic₁ _≤_ _≥_ f →
                        ∀ p q → f (p ⊔ q) ≡ f p ⊓ f q
 antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
+
+pos⊓pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p ⊓ q)
+pos⊓pos⇒pos p q with ⊓-sel p q
+... | inj₁ eq = positive (<-respʳ-≡ (sym eq) (positive⁻¹ p))
+... | inj₂ eq = positive (<-respʳ-≡ (sym eq) (positive⁻¹ q))
+
+nonNeg⊓nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p ⊓ q)
+nonNeg⊓nonNeg⇒nonNeg p q = nonNegative (⊓-glb (nonNegative⁻¹ p) (nonNegative⁻¹ q))
+
+nonPos⊓⇒nonPos : ∀ p .{{_ : NonPositive p}} q → NonPositive (p ⊓ q)
+nonPos⊓⇒nonPos p q = nonPositive (≤-trans (p⊓q≤p p q) (nonPositive⁻¹ p))
+
+⊓nonPos⇒nonPos : ∀ p q .{{_ : NonPositive q}} → NonPositive (p ⊓ q)
+⊓nonPos⇒nonPos p q = nonPositive (≤-trans (p⊓q≤q p q) (nonPositive⁻¹ q))
+
+neg⊓⇒neg : ∀ p .{{_ : Negative p}} q → Negative (p ⊓ q)
+neg⊓⇒neg p q = negative (≤-<-trans (p⊓q≤p p q) (negative⁻¹ p))
+
+⊓neg⇒neg : ∀ p q .{{_ : Negative q}} → Negative (p ⊓ q)
+⊓neg⇒neg p q = negative (≤-<-trans (p⊓q≤q p q) (negative⁻¹ q))
+
+pos⊔⇒pos : ∀ p .{{_ : Positive p}} q → Positive (p ⊔ q)
+pos⊔⇒pos p q = positive (<-≤-trans (positive⁻¹ p) (p≤p⊔q p q))
+
+⊔pos⇒pos : ∀ p q .{{_ : Positive q}} → Positive (p ⊔ q)
+⊔pos⇒pos p q = positive (<-≤-trans (positive⁻¹ q) (p≤q⊔p p q))
+
+nonNeg⊔⇒nonNeg : ∀ p .{{_ : NonNegative p}} q → NonNegative (p ⊔ q)
+nonNeg⊔⇒nonNeg p q = nonNegative (≤-trans (nonNegative⁻¹ p) (p≤p⊔q p q))
+
+⊔nonNeg⇒nonNeg : ∀ p q .{{_ : NonNegative q}} → NonNegative (p ⊔ q)
+⊔nonNeg⇒nonNeg p q = nonNegative (≤-trans (nonNegative⁻¹ q) (p≤q⊔p p q))
+
+nonPos⊔nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p ⊔ q)
+nonPos⊔nonPos⇒nonPos p q = nonPositive (⊔-lub (nonPositive⁻¹ p) (nonPositive⁻¹ q))
+
+neg⊔neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p ⊔ q)
+neg⊔neg⇒neg p q with ⊔-sel p q
+... | inj₁ eq = negative (<-respˡ-≡ (sym eq) (negative⁻¹ p))
+... | inj₂ eq = negative (<-respˡ-≡ (sym eq) (negative⁻¹ q))
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _*_

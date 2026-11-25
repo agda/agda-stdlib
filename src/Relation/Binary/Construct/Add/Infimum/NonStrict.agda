@@ -27,7 +27,7 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder
         ; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Minimum; Transitive; Total; Decidable; Irrelevant; Antisymmetric
+  using (Minimum; Reflexive; Transitive; Total; Decidable; Irrelevant; Antisymmetric
         ; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Construct.Add.Infimum using (⊥₋; [_]; _₋; ≡-dec)
 open import Relation.Nullary.Decidable.Core using (yes; no; map′)
@@ -46,6 +46,10 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 
 [≤]-injective : ∀ {k l} → [ k ] ≤₋ [ l ] → k ≤ l
 [≤]-injective [ p ] = p
+
+≤₋-refl : Reflexive _≤_ → Reflexive _≤₋_
+≤₋-refl ≤-refl {⊥₋} = ⊥₋≤ ⊥₋
+≤₋-refl ≤-refl {[ x ]} = [ ≤-refl ]
 
 ≤₋-trans : Transitive _≤_ → Transitive _≤₋_
 ≤₋-trans ≤-trans (⊥₋≤ l) q     = ⊥₋≤ _

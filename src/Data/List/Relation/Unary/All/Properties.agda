@@ -13,7 +13,7 @@ open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.ListAction using (all)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (lookup; updateAt; and; or; all; any)
+open import Data.List.Base as List hiding (lookup; updateAt)
 open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
   using (there-injective-≢∈; ∈-filter⁻)
@@ -47,7 +47,7 @@ open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; _because_; ¬?; decidable-stable; dec-true)
 open import Relation.Unary
-  using (Decidable; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+  using (Decidable; Irrelevant; Pred; ∁; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
 
 private
@@ -62,6 +62,7 @@ private
     x y : A
     xs ys : List A
 
+
 ------------------------------------------------------------------------
 -- Re-export Core Properties
 
@@ -74,8 +75,17 @@ Null⇒null : Null xs → T (null xs)
 Null⇒null [] = _
 
 null⇒Null : T (null xs) → Null xs
-null⇒Null {xs = []   } _ = []
-null⇒Null {xs = _ ∷ _} ()
+null⇒Null {xs = []} _ = []
+
+¬Null-∷ : ¬ Null (x ∷ xs)
+¬Null-∷ (() ∷ _)
+
+Null? : Decidable (Null {A = A})
+Null? []      = yes []
+Null? (_ ∷ _) = no ¬Null-∷
+
+Null-irrelevant : Irrelevant (Null {A = A})
+Null-irrelevant [] [] = refl
 
 ------------------------------------------------------------------------
 -- Properties of the "points-to" relation _[_]=_

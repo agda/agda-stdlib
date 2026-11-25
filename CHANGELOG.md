@@ -1,7 +1,7 @@
 Version 3.0
 ===========
 
-The library has been tested using Agda 2.8.0.
+The library has been tested using Agda 2.8.0 and Agda 2.9.0.
 
 Highlights
 ----------
@@ -64,6 +64,12 @@ Bug-fixes
 
   As a further knock-on consequence, module `Algebra.Properties.KleeneAlgebra`
   has been completely rewritten in order to accommodate the new axiomatisation.
+
+* [issue #3128](https://github.com/agda/agda-stdlib/issues/3128)
+  `Data.Sum.Effectful.Left.Transformer.choice` corrected to choose between its
+  two arguments, rather than simply copy its first argument. The PR fixing this
+  also systematically makes better use of `variable`s, incorporating upstream
+  changes to avoid name shadowing in argument telescopes.
 
 * Refactored `Function.Bundles` to export `equivalence`, `toFunction`, and
   `fromFunction` from `*Inverse` with corresponding deprecations in
@@ -165,6 +171,26 @@ Non-backwards compatible changes
   the `record POINTWISE` has been lowered to `ℓ₁ ⊔ ℓ₂` given the universe levels
   `ℓ₁`, resp. `ℓ₂` of the argument relations `_R₁_`, resp. `_R₂_`.
 
+* [Issue #3127](https://github.com/agda/agda-stdlib/pull/3127)
+  Following an upstream breaking change prompted by a proof of false
+  ([Agda Issue #8557](https://github.com/agda/agda/issues/8557),
+  `Irrelevant` cannot be proved to be a monad within `--safe` anymore.
+  Correspondingly, the relevant definitions have been moved to the new
+  module `Data.Irrelevant.Unsafe`.
+
+* [Issue #2553](https://github.com/agda/agda-stdlib/issues/2553)
+  The operations `Data.List.Base.{sum|product|and|or|all|any}` have been
+  removed in favour of the corresponding definitions and properties under
+  `Data.Nat.ListAction` and `Data.Bool.ListAction`.
+
+* [Issue #2807](https://github.com/agda/agda-stdlib/issues/2807)
+  The orientation of the equations `-‿distribˡ-*` and `-‿distribʳ-*` in
+  `Algebra.Properties.RingWithoutOne` has been flipped, streamlining
+  their use throughout the library.
+
+* The lemma `Algebra.Morphism.Consequences.homomorphic₂-inv` has been
+  simplified to remove the `Congruent` hypothesis.
+
 Minor improvements
 ------------------
 
@@ -178,6 +204,13 @@ Minor improvements
 * The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
   have been streamlined via pattern-matching on `refl`, rather than defined by
   delegation to `Function.Consequences.Setoid` and the use of `cong`.
+
+* [Issue #3016](https://github.com/agda/agda-stdlib/issues/3016)
+  `Data.List.Relation.Binary.Permutation.Setoid.Properties.foldr-commMonoid`
+  now moves to `Data.List.Effectful.Foldable`, where it better belongs, for
+  the sake both of the dependency graph, and of incorporating the refactoring
+  of that module to make use of the addition of `Data.List.Base.foldMap` and
+  its properties.
 
 Deprecated modules
 ------------------
@@ -222,6 +255,17 @@ Deprecated names
 * In `Data.Integer.GCD`:
   ```agda
   gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
+  ```
+
+* In `Data.Irrelevant`:
+  ```agda
+  λ∙⁻ ↦ _$⁺_
+  λ∙⁺ ↦ _$⁻_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  foldr-commMonoid  ↦  Data.List.Effectful.Foldable.foldr-congruent
   ```
 
 * In `Data.Nat.GCD`:
@@ -287,6 +331,9 @@ New modules
 
 * `Algebra.Properties.KleeneAlgebra` has been completely rewritten.
 
+* `Algebra.Solver.Ring.IntegralCoefficients` for a generic solver for rings with integral
+  coefficients.
+
 * `Codata.Guarded.Stream.Relation.Unary.Linked` for a proof that each pair
   of consecutive elements of a stream are related.
 
@@ -296,6 +343,9 @@ New modules
 * `Data.DifferenceList` has been refactored to reexport the contents of two new modules:
   - `Data.DifferenceList.Base`
   - `Data.DifferenceList.Properties`
+
+* `Data.Product.Nary.NonDependent.Properties` for properties of
+  nondependent heterogeneous N-ary products.
 
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
@@ -413,6 +463,20 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  foldMap : (B → B → B) → B → (A → B) → List A → B
+  ```
+
+* In `Data.List.Effectful.Foldable`:
+  for `CM : CommutativeMonoid`, `S : Setoid`, `F: Func S CM.setoid`,
+  ```agda
+  foldMap-congruent : Congruent _↭ₛ_ CM._≈_ (foldMap CM.rawMonoid F.to)
+  foldr-congruent   : Congruent _↭ₘ_ CM._≈_ (foldr _∙_ ε)
+  ```
+  where `_↭ₛ_` is the `Permutation` relation on `S`, and `_↭ₘ_` the `Permutation`
+  relation on `CM.setoid`.
+
 * In `Data.List.Membership.Propositional.Properties`:
   ```agda
   foldl-selective : Selective _≡_ _•_ → ∀ e xs →
@@ -424,11 +488,22 @@ Additions to existing modules
   foldl-selective : Selective _≈_ _•_ → ∀ e xs →
                     (foldl _•_ e xs ≈ e) ⊎ (foldl _•_ e xs ∈ xs)
    ```
+* In `Data.List.Properties`:
+  ```agda
+  foldMap≗foldr∘map : foldMap _∙_ ε f ≗ foldr _∙_ ε (map f)
+  ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
   assoc← : ∃[ ys ] Appending bs cs ys × Appending as ys ds →
            ∃[ xs ] Appending as bs xs × Appending xs cs ds
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  ¬Null-∷         : ¬ Null (x ∷ xs)
+  Null?           : Decidable Null
+  Null-irrelevant : Irrelevant Null
   ```
 
 * In `Data.Nat.DivMod`:
@@ -473,6 +548,18 @@ Additions to existing modules
   ∃!-⇔ : P ≐ Q → ∃! _≈_ P ⇔ ∃! _≈_ Q
   ```
 
+* In `Data.Product.Nary.NonDependent`:
+  ```agda
+  append⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product⊤ m as → Product⊤ n bs → Product⊤ (m + n) (sappend m n as bs)
+  append : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product m as → Product n bs → Product (m + n) (sappend m n as bs)
+  splitAt⊤ : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+           Product⊤ (m + n) (sappend m n as bs) → (Product⊤ m as) × (Product⊤ n bs)
+  splitAt : ∀ m n {lsa lsb} {as : Sets m lsa} {bs : Sets n lsb} →
+          Product (m + n) (sappend m n as bs) → Product m as × Product n bs
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   ↥[i/1]≡i  : (i : ℤ) → ↥ (i / 1) ≡ i
@@ -480,24 +567,57 @@ Additions to existing modules
   n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
   -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
                 ℤ.- i / n ≡ - (i / n)
+  >⇒≢ : _>_ ⇒ _≢_
+  ≰⇒≮ : _≰_ ⇒ _≮_
+  <⇒≱ : _<_ ⇒ _≱_
+  ≤∧≢⇒< : p ≤ q → p ≢ q → p < q
+  ≤∧≮⇒≡ : p ≤ q → p ≮ q → p ≡ q
+  ≤-<-connex : Connex _≤_ _<_
+  ≥->-connex : Connex _≥_ _>_
+  <-≤-connex : Connex _<_ _≤_
+  >-≥-connex : Connex _>_ _≥_
   *-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
                 (+ p ℤ.* q) / (p ℕ.* r) ≡ q / r
   *-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
                 (q ℤ.* + p) / (r ℕ.* p) ≡ q / r
   i/n+j/n≡[i+j]/n : ∀ (i j : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n }} →
                     i / n + j / n ≡ (i ℤ.+ j) / n
+  pos⊓pos⇒pos : ∀ p .{{_ : Positive p}} q .{{_ : Positive q}} → Positive (p ⊓ q)
+  nonNeg⊓nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} q .{{_ : NonNegative q}} → NonNegative (p ⊓ q)
+  nonPos⊓⇒nonPos : ∀ p .{{_ : NonPositive p}} q → NonPositive (p ⊓ q)
+  ⊓nonPos⇒nonPos : ∀ p q .{{_ : NonPositive q}} → NonPositive (p ⊓ q)
+  neg⊓⇒neg : ∀ p .{{_ : Negative p}} q → Negative (p ⊓ q)
+  ⊓neg⇒neg : ∀ p q .{{_ : Negative q}} → Negative (p ⊓ q)
+  pos⊔⇒pos : ∀ p .{{_ : Positive p}} q → Positive (p ⊔ q)
+  ⊔pos⇒pos : ∀ p q .{{_ : Positive q}} → Positive (p ⊔ q)
+  nonNeg⊔⇒nonNeg : ∀ p .{{_ : NonNegative p}} q → NonNegative (p ⊔ q)
+  ⊔nonNeg⇒nonNeg : ∀ p q .{{_ : NonNegative q}} → NonNegative (p ⊔ q)
+  nonPos⊔nonPos⇒nonPos : ∀ p .{{_ : NonPositive p}} q .{{_ : NonPositive q}} → NonPositive (p ⊔ q)
+  neg⊔neg⇒neg : ∀ p .{{_ : Negative p}} q .{{_ : Negative q}} → Negative (p ⊔ q)
   ```
 
 * In `Data.Sum.Relation.Binary.Pointwise`:
   ```agda
-  elim : R =[ f ]⇒ T → S =[ g ]⇒ T →
-         Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
+  elim  : R =[ f ]⇒ T → S =[ g ]⇒ T → Sum.[ f , g ]′ ≗ h →
+          Pointwise R S =[ h ]⇒ T
+  elim′ : R =[ f ]⇒ T → S =[ g ]⇒ T →
+          Pointwise R S =[ Sum.[ f , g ]′ ]⇒ T
   ```
 
 * In `Data.Vec.Properties`:
   ```agda
   lookup-head : (xs : Vec A (suc n)) → lookup xs zero ≡ head xs
   lookup-tail : (xs : Vec A (suc n)) → lookup xs (suc i) ≡ lookup (tail xs) i
+  ```
+
+* In `Data.Vec.Relation.Binary.Pointwise.Inductive`:
+  ```agda
+  antisym-≡ : Antisym P Q _≡_ → Antisym (Pointwise P) (Pointwise Q) _≡_
+  ```
+
+* In `Data.Vec.Relation.Unary.Unique.Setoid`:
+  ```
+  unique? : Decidable _≈_ → Decidable Unique
   ```
 
 * In `Function.Bundles.Bijection`:
@@ -566,6 +686,13 @@ Additions to existing modules
   bijection   : Bijection R S → Bijection S R
   ```
 
+* In `Function.Nary.NonDependent.Base`:
+  ```agda
+  lappend : ∀ m n → Levels m → Levels n → Levels (m + n)
+  sappend : ∀ m n {ℓm : Levels m} {ℓn : Levels n} →
+          Sets m ℓm → Sets n ℓn → Sets (m + n) (lappend m n ℓm ℓn)
+  ```
+
 * In `Function.Properties.Bijection`:
   ```agda
   sym : Bijection S T → Bijection T S
@@ -601,6 +728,21 @@ Additions to existing modules
   inverseˡ         : Inverseˡ _≈₁_ _≈₂_ to from
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   from-injective   : Injective _≈₂_ _≈₁_ from
+  ```
+
+* In `Relation.Binary.Construct.Add.Extrema.NonStrict`:
+  ```agda
+  ≤±-refl : Reflexive _≤_ → Reflexive _≤±_
+  ```
+
+* In `Relation.Binary.Construct.Add.Infimum.NonStrict`:
+  ```agda
+  ≤₋-refl : Reflexive _≤_ → Reflexive _≤₋_
+  ```
+
+* In `Relation.Binary.Construct.Add.Supremum.NonStrict`:
+  ```agda
+  ≤⁺-refl : Reflexive _≤_ → Reflexive _≤⁺_
   ```
 
 * In `Relation.Binary.Definitions`:
