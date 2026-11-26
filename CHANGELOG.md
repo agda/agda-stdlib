@@ -609,6 +609,8 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
+  nonZero-irrelevant : Irrelevant NonZero
+  nonTrivial-irrelevant : Irrelevant NonTrivial
   m≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero m}} → NonZero (m + n)
   n≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
   m≢0∧n≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
