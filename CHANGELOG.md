@@ -387,6 +387,11 @@ New modules
 * `Data.Product.Nary.NonDependent.Properties` for properties of
   nondependent heterogeneous N-ary products.
 
+* `Data.Rational.ListAction` for sums and products of lists of rational numbers.
+
+* `Data.Rational.ListAction.Properties` for the properties of sums and products
+  of lists of rational numbers.
+
 * A new type of lists that grow on the right.
   This is typically useful to model contexts of typing rules
   or type accumulators that need to be reversed in the base case.
