@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Construct.Centre.Monoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Definition of the centre of an Monoid</a>
+<a id="147" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="221" class="Symbol">{-#</a> <a id="225" class="Keyword">OPTIONS</a> <a id="233" class="Pragma">--safe</a> <a id="240" class="Pragma">--cubical-compatible</a> <a id="261" class="Symbol">#-}</a>
+
+<a id="266" class="Keyword">open</a> <a id="271" class="Keyword">import</a> <a id="278" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>
+  <a id="296" class="Keyword">using</a> <a id="302" class="Symbol">(</a><a id="303" href="Algebra.Bundles.html#7315" class="Record">Monoid</a><a id="309" class="Symbol">;</a> <a id="311" href="Algebra.Bundles.html#7886" class="Record">CommutativeMonoid</a><a id="328" class="Symbol">;</a> <a id="330" href="Algebra.Bundles.Raw.html#1205" class="Record">RawMagma</a><a id="338" class="Symbol">;</a> <a id="340" href="Algebra.Bundles.Raw.html#1721" class="Record">RawMonoid</a><a id="349" class="Symbol">)</a>
+
+<a id="352" class="Keyword">module</a> <a id="359" href="Algebra.Construct.Centre.Monoid.html" class="Module">Algebra.Construct.Centre.Monoid</a>
+  <a id="393" class="Symbol">{</a><a id="394" href="Algebra.Construct.Centre.Monoid.html#394" class="Bound">c</a> <a id="396" href="Algebra.Construct.Centre.Monoid.html#396" class="Bound">ℓ</a><a id="397" class="Symbol">}</a> <a id="399" class="Symbol">(</a><a id="400" href="Algebra.Construct.Centre.Monoid.html#400" class="Bound">monoid</a> <a id="407" class="Symbol">:</a> <a id="409" href="Algebra.Bundles.html#7315" class="Record">Monoid</a> <a id="416" href="Algebra.Construct.Centre.Monoid.html#394" class="Bound">c</a> <a id="418" href="Algebra.Construct.Centre.Monoid.html#396" class="Bound">ℓ</a><a id="419" class="Symbol">)</a>
+  <a id="423" class="Keyword">where</a>
+
+<a id="430" class="Keyword">open</a> <a id="435" class="Keyword">import</a> <a id="442" href="Algebra.Morphism.Structures.html" class="Module">Algebra.Morphism.Structures</a> <a id="470" class="Keyword">using</a> <a id="476" class="Symbol">(</a><a id="477" href="Algebra.Morphism.Structures.html#4714" class="Record">IsMonoidMonomorphism</a><a id="497" class="Symbol">)</a>
+<a id="499" class="Keyword">open</a> <a id="504" class="Keyword">import</a> <a id="511" href="Algebra.Morphism.MonoidMonomorphism.html" class="Module">Algebra.Morphism.MonoidMonomorphism</a> <a id="547" class="Keyword">using</a> <a id="553" class="Symbol">(</a><a id="554" href="Algebra.Morphism.MonoidMonomorphism.html#2918" class="Function">isMonoid</a><a id="562" class="Symbol">)</a>
+<a id="564" class="Keyword">open</a> <a id="569" class="Keyword">import</a> <a id="576" href="Function.Base.html" class="Module">Function.Base</a> <a id="590" class="Keyword">using</a> <a id="596" class="Symbol">(</a><a id="597" href="Function.Base.html#704" class="Function">id</a><a id="599" class="Symbol">)</a>
+
+<a id="602" class="Keyword">open</a> <a id="607" class="Keyword">import</a> <a id="614" href="Algebra.Properties.Monoid.html" class="Module">Algebra.Properties.Monoid</a> <a id="640" href="Algebra.Construct.Centre.Monoid.html#400" class="Bound">monoid</a> <a id="647" class="Keyword">using</a> <a id="653" class="Symbol">(</a><a id="654" href="Algebra.Properties.Monoid.html#1250" class="Function">ε-central</a><a id="663" class="Symbol">)</a>
+
+<a id="666" class="Keyword">private</a>
+  <a id="676" class="Keyword">module</a> <a id="X"></a><a id="683" href="Algebra.Construct.Centre.Monoid.html#683" class="Module">X</a> <a id="685" class="Symbol">=</a> <a id="687" href="Algebra.Bundles.html#7315" class="Module">Monoid</a> <a id="694" href="Algebra.Construct.Centre.Monoid.html#400" class="Bound">monoid</a>
+
+
+<a id="703" class="Comment">------------------------------------------------------------------------</a>
+<a id="776" class="Comment">-- Definition</a>
+
+<a id="791" class="Comment">-- Re-export the underlying sub-Semigroup</a>
+
+<a id="834" class="Keyword">open</a> <a id="839" class="Keyword">import</a> <a id="846" href="Algebra.Construct.Centre.Semigroup.html" class="Module">Algebra.Construct.Centre.Semigroup</a> <a id="881" href="Algebra.Bundles.html#7560" class="Function">X.semigroup</a> <a id="893" class="Symbol">as</a> <a id="Z"></a><a id="896" href="Algebra.Construct.Centre.Monoid.html#896" class="Module">Z</a> <a id="898" class="Keyword">public</a>
+  <a id="907" class="Keyword">using</a> <a id="913" class="Symbol">(</a><a id="914" href="Algebra.Construct.Centre.Centre.html#728" class="Record">Centre</a><a id="920" class="Symbol">;</a> <a id="922" href="Algebra.Construct.Centre.Centre.html#767" class="Field">ι</a><a id="923" class="Symbol">;</a> <a id="925" href="Algebra.Construct.Centre.Centre.html#846" class="Function">∙-comm</a><a id="931" class="Symbol">)</a>
+
+<a id="934" class="Comment">-- Now, can define a sub-Monoid</a>
+
+<a id="domain"></a><a id="967" href="Algebra.Construct.Centre.Monoid.html#967" class="Function">domain</a> <a id="974" class="Symbol">:</a> <a id="976" href="Algebra.Bundles.Raw.html#1721" class="Record">RawMonoid</a> <a id="986" class="Symbol">_</a> <a id="988" class="Symbol">_</a>
+<a id="990" href="Algebra.Construct.Centre.Monoid.html#967" class="Function">domain</a> <a id="997" class="Symbol">=</a> <a id="999" class="Keyword">record</a> <a id="1006" class="Symbol">{</a> <a id="1008" href="Algebra.Construct.Centre.Monoid.html#1008" class="Module">RawMagma</a> <a id="1017" href="Algebra.Construct.Centre.Semigroup.html#1085" class="Function">Z.domain</a><a id="1025" class="Symbol">;</a> <a id="1027" href="Algebra.Bundles.Raw.html#1877" class="Field">ε</a> <a id="1029" class="Symbol">=</a> <a id="1031" href="Algebra.Construct.Centre.Monoid.html#1045" class="Function">ε</a> <a id="1033" class="Symbol">}</a>
+  <a id="1037" class="Keyword">where</a>
+  <a id="1045" href="Algebra.Construct.Centre.Monoid.html#1045" class="Function">ε</a> <a id="1047" class="Symbol">:</a> <a id="1049" href="Algebra.Construct.Centre.Centre.html#728" class="Record">Centre</a>
+  <a id="1058" href="Algebra.Construct.Centre.Monoid.html#1045" class="Function">ε</a> <a id="1060" class="Symbol">=</a> <a id="1062" class="Keyword">record</a>
+    <a id="1073" class="Symbol">{</a> <a id="1075" href="Algebra.Construct.Centre.Centre.html#767" class="Field">ι</a> <a id="1077" class="Symbol">=</a> <a id="1079" href="Algebra.Bundles.html#7471" class="Field">X.ε</a>
+    <a id="1087" class="Symbol">;</a> <a id="1089" href="Algebra.Construct.Centre.Centre.html#789" class="Field">central</a> <a id="1097" class="Symbol">=</a> <a id="1099" href="Algebra.Properties.Monoid.html#1250" class="Function">ε-central</a>
+    <a id="1113" class="Symbol">}</a>
+
+<a id="isMonoidMonomorphism"></a><a id="1116" href="Algebra.Construct.Centre.Monoid.html#1116" class="Function">isMonoidMonomorphism</a> <a id="1137" class="Symbol">:</a> <a id="1139" href="Algebra.Morphism.Structures.html#4714" class="Record">IsMonoidMonomorphism</a> <a id="1160" href="Algebra.Construct.Centre.Monoid.html#967" class="Function">domain</a> <a id="1167" href="Algebra.Bundles.html#7708" class="Function">X.rawMonoid</a> <a id="1179" href="Algebra.Construct.Centre.Centre.html#767" class="Field">ι</a>
+<a id="1181" href="Algebra.Construct.Centre.Monoid.html#1116" class="Function">isMonoidMonomorphism</a> <a id="1202" class="Symbol">=</a> <a id="1204" class="Keyword">record</a>
+  <a id="1213" class="Symbol">{</a> <a id="1215" href="Algebra.Morphism.Structures.html#4791" class="Field">isMonoidHomomorphism</a> <a id="1236" class="Symbol">=</a> <a id="1238" class="Keyword">record</a>
+    <a id="1249" class="Symbol">{</a> <a id="1251" href="Algebra.Morphism.Structures.html#4549" class="Field">isMagmaHomomorphism</a> <a id="1271" class="Symbol">=</a> <a id="1273" href="Algebra.Morphism.Structures.html#3188" class="Function">Z.isMagmaHomomorphism</a>
+    <a id="1299" class="Symbol">;</a> <a id="1301" href="Algebra.Morphism.Structures.html#4601" class="Field">ε-homo</a> <a id="1308" class="Symbol">=</a> <a id="1310" href="Relation.Binary.Structures.html#1641" class="Function">X.refl</a>
+    <a id="1321" class="Symbol">}</a>
+  <a id="1325" class="Symbol">;</a> <a id="1327" href="Algebra.Morphism.Structures.html#4845" class="Field">injective</a> <a id="1337" class="Symbol">=</a> <a id="1339" href="Function.Base.html#704" class="Function">id</a>
+  <a id="1344" class="Symbol">}</a>
+
+<a id="1347" class="Comment">-- Public export of the sub-X-homomorphisms</a>
+
+<a id="1392" class="Keyword">open</a> <a id="1397" href="Algebra.Morphism.Structures.html#4714" class="Module">IsMonoidMonomorphism</a> <a id="1418" href="Algebra.Construct.Centre.Monoid.html#1116" class="Function">isMonoidMonomorphism</a> <a id="1439" class="Keyword">public</a>
+  <a id="1448" class="Keyword">using</a> <a id="1454" class="Symbol">(</a><a id="1455" href="Algebra.Morphism.Structures.html#4791" class="Field">isMonoidHomomorphism</a><a id="1475" class="Symbol">;</a> <a id="1477" href="Algebra.Morphism.Structures.html#4549" class="Function">isMagmaHomomorphism</a><a id="1496" class="Symbol">)</a>
+
+<a id="1499" class="Comment">-- And hence a CommutativeMonoid</a>
+
+<a id="commutativeMonoid"></a><a id="1533" href="Algebra.Construct.Centre.Monoid.html#1533" class="Function">commutativeMonoid</a> <a id="1551" class="Symbol">:</a> <a id="1553" href="Algebra.Bundles.html#7886" class="Record">CommutativeMonoid</a> <a id="1571" class="Symbol">_</a> <a id="1573" class="Symbol">_</a>
+<a id="1575" href="Algebra.Construct.Centre.Monoid.html#1533" class="Function">commutativeMonoid</a> <a id="1593" class="Symbol">=</a> <a id="1595" class="Keyword">record</a>
+  <a id="1604" class="Symbol">{</a> <a id="1606" href="Algebra.Bundles.html#8120" class="Field">isCommutativeMonoid</a> <a id="1626" class="Symbol">=</a> <a id="1628" class="Keyword">record</a>
+    <a id="1639" class="Symbol">{</a> <a id="1641" href="Algebra.Structures.html#5291" class="Field">isMonoid</a> <a id="1650" class="Symbol">=</a> <a id="1652" href="Algebra.Morphism.MonoidMonomorphism.html#2918" class="Function">isMonoid</a> <a id="1661" href="Algebra.Construct.Centre.Monoid.html#1116" class="Function">isMonoidMonomorphism</a> <a id="1682" href="Algebra.Bundles.html#7494" class="Field">X.isMonoid</a>
+    <a id="1697" class="Symbol">;</a> <a id="1699" href="Algebra.Structures.html#5319" class="Field">comm</a> <a id="1704" class="Symbol">=</a> <a id="1706" href="Algebra.Construct.Centre.Centre.html#846" class="Function">∙-comm</a>
+    <a id="1717" class="Symbol">}</a>
+  <a id="1721" class="Symbol">}</a>
+
+<a id="1724" class="Comment">-- Public export of the sub-X-structures/bundles</a>
+
+<a id="1774" class="Keyword">open</a> <a id="1779" href="Algebra.Bundles.html#7886" class="Module">CommutativeMonoid</a> <a id="1797" href="Algebra.Construct.Centre.Monoid.html#1533" class="Function">commutativeMonoid</a> <a id="1815" class="Keyword">public</a>
+  <a id="1824" class="Keyword">using</a> <a id="1830" class="Symbol">(</a><a id="1831" href="Algebra.Bundles.html#8120" class="Field">isCommutativeMonoid</a><a id="1850" class="Symbol">;</a> <a id="1852" href="Algebra.Structures.html#5291" class="Function">isMonoid</a>
+        <a id="1869" class="Symbol">;</a> <a id="1871" href="Algebra.Structures.html#5380" class="Function">isCommutativeSemigroup</a><a id="1893" class="Symbol">;</a> <a id="1895" href="Algebra.Structures.html#4870" class="Function">isSemigroup</a>
+        <a id="1915" class="Symbol">;</a> <a id="1917" href="Algebra.Structures.html#3835" class="Function">isCommutativeMagma</a><a id="1935" class="Symbol">;</a> <a id="1937" href="Algebra.Structures.html#3420" class="Function">isMagma</a>
+        <a id="1953" class="Symbol">;</a> <a id="1955" href="Algebra.Bundles.html#8230" class="Function">monoid</a>
+        <a id="1970" class="Symbol">;</a> <a id="1972" href="Algebra.Bundles.html#8392" class="Function">commutativeSemigroup</a><a id="1992" class="Symbol">;</a> <a id="1994" href="Algebra.Bundles.html#7560" class="Function">semigroup</a>
+        <a id="2012" class="Symbol">;</a> <a id="2014" href="Algebra.Bundles.html#5965" class="Function">commutativeMagma</a><a id="2030" class="Symbol">;</a> <a id="2032" href="Algebra.Bundles.html#5000" class="Function">magma</a>
+        <a id="2046" class="Symbol">)</a>
+
+<a id="2049" class="Comment">-- Public export of the bundle</a>
+
+<a id="Z[_]"></a><a id="2081" href="Algebra.Construct.Centre.Monoid.html#2081" class="Function Operator">Z[_]</a> <a id="2086" class="Symbol">=</a> <a id="2088" href="Algebra.Construct.Centre.Monoid.html#1533" class="Function">commutativeMonoid</a>
+</pre></body></html>
