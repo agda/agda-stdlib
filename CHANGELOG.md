@@ -291,6 +291,18 @@ Deprecated names
   ^-monoid-morphism    ↦   ^-isMonoidHomomorphism
   ```
 
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  positive? : Decidable Positive
+  positive-irrelevant : Irrelevant Positive
+  nonPositive? : Decidable NonPositive
+  nonPositive-irrelevant : Irrelevant NonPositive
+  negative? : Decidable Negative
+  negative-irrelevant : Irrelevant Negative
+  nonNegative? : Decidable NonNegative
+  nonNegative-irrelevant : Irrelevant NonNegative
+  ```
+
 * In `Effect.Monad.Partiality`:
   ```agda
   _≟-Kind_     ↦   _≡?-Kind_
