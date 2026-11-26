@@ -1,0 +1,24 @@
+The `agda-master` branch contains the compatibility changes required for type-checking the latest stable release of standard library against the development version of Agda.
+This guide details the procedure for updating it as the Agda repo evolves.
+
+### When a breaking change is made to Agda
+
+_Responsibility_: Agda developers
+
+1. Update the branch `agda-master` to work with the changes.
+
+### When a release of Agda is made
+
+_Responsibility_: Standard Library maintainers
+
+1. Merge `agda-master` into the latest release branch `vX-release` where `X` is the latest Agda standard library release.
+
+2. Make a new release of the standard library bumping the minor version number.
+
+3. Merge `agda-master` into `master`.
+
+### When a release of Agda standard-library is made
+
+_Responsibility_: Standard Library maintainers
+
+1. Merge `master` into `agda-master`.
