@@ -253,6 +253,18 @@ Deprecated names
   gcd[0,0]≡0 ↦ gcd[i,i]≡∣i∣
   ```
 
+* In `Data.Integer.Properites`:
+  ```agda
+  positive? : Decidable Positive
+  positive-irrelevant : Irrelevant Positive
+  nonPositive? : Decidable NonPositive
+  nonPositive-irrelevant : Irrelevant NonPositive
+  negative? : Decidable Negative
+  negative-irrelevant : Irrelevant Negative
+  nonNegative? : Decidable NonNegative
+  nonNegative-irrelevant : Irrelevant NonNegative
+  ```
+
 * In `Data.Irrelevant`:
   ```agda
   λ∙⁻ ↦ _$⁺_

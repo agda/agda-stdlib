@@ -14,6 +14,7 @@ open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
+open import Data.Bool.Properties using (T-irrelevant)
 open import Data.Integer.Base renaming (suc to sucℤ)
 open import Data.Integer.Properties.NatLemmas
 open import Data.Nat.Base as ℕ
@@ -43,6 +44,7 @@ open import Relation.Nullary.Decidable.Core using (yes; no)
 import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 import Relation.Nullary.Decidable as Dec
+import Relation.Unary as U
 
 open import Algebra.Definitions {A = ℤ} _≡_
 open import Algebra.Consequences.Propositional {A = ℤ}
@@ -82,6 +84,34 @@ _≡?_ : DecidableEquality ℤ
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≡?_
+
+------------------------------------------------------------------------
+-- Properties of Positive/NonPositive/Negative/NonNegative
+------------------------------------------------------------------------
+
+positive? : U.Decidable Positive
+positive? i = Dec.map′ (λ z → record { pos = z }) Positive.pos (Dec.T? (0ℤ <ᵇ i))
+
+positive-irrelevant : U.Irrelevant Positive
+positive-irrelevant _ _ = cong (λ z → record { pos = z }) (T-irrelevant _ _)
+
+nonPositive? : U.Decidable NonPositive
+nonPositive? i = Dec.map′ (λ z → record { nonPos = z }) NonPositive.nonPos (Dec.T? (i ≤ᵇ 0ℤ))
+
+nonPositive-irrelevant : U.Irrelevant NonPositive
+nonPositive-irrelevant _ _ = cong (λ z → record { nonPos = z }) (T-irrelevant _ _)
+
+negative? : U.Decidable Negative
+negative? i = Dec.map′ (λ z → record { neg = z }) Negative.neg (Dec.T? (i <ᵇ 0ℤ))
+
+negative-irrelevant : U.Irrelevant Negative
+negative-irrelevant _ _ = cong (λ z → record { neg = z }) (T-irrelevant _ _)
+
+nonNegative? : U.Decidable NonNegative
+nonNegative? i = Dec.map′ (λ z → record { nonNeg = z }) NonNegative.nonNeg (Dec.T? (0ℤ ≤ᵇ i))
+
+nonNegative-irrelevant : U.Irrelevant NonNegative
+nonNegative-irrelevant _ _ = cong (λ z → record { nonNeg = z }) (T-irrelevant _ _)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
