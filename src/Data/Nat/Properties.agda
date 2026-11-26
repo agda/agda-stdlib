@@ -77,7 +77,7 @@ nonZero? zero    = no NonZero.nonZero
 nonZero? (suc n) = yes _
 
 nonZero-irrelevant : U.Irrelevant NonZero
-nonZero-irrelevant _ _ = cong (λ z → record { nonZero = z }) (T-irrelevant _ _)
+nonZero-irrelevant _ _ = cong NonZero.constructor (T-irrelevant _ _)
 
 ------------------------------------------------------------------------
 -- Properties of NonTrivial
@@ -89,7 +89,7 @@ nonTrivial? 1      = no λ()
 nonTrivial? (2+ n) = yes _
 
 nonTrivial-irrelevant : U.Irrelevant NonTrivial
-nonTrivial-irrelevant _ _ = cong (λ z → record { nonTrivial = z }) (T-irrelevant _ _)
+nonTrivial-irrelevant _ _ = cong NonTrivial.constructor (T-irrelevant _ _)
 
 ------------------------------------------------------------------------
 -- Properties of _≡_

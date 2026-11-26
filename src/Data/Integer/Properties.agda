@@ -90,28 +90,28 @@ _≡?_ : DecidableEquality ℤ
 ------------------------------------------------------------------------
 
 positive? : U.Decidable Positive
-positive? i = Dec.map′ (λ z → record { pos = z }) Positive.pos (Dec.T? (0ℤ <ᵇ i))
+positive? i = Dec.map′ Positive.constructor Positive.pos (Dec.T? (0ℤ <ᵇ i))
 
 positive-irrelevant : U.Irrelevant Positive
-positive-irrelevant _ _ = cong (λ z → record { pos = z }) (T-irrelevant _ _)
+positive-irrelevant _ _ = cong Positive.constructor (T-irrelevant _ _)
 
 nonPositive? : U.Decidable NonPositive
-nonPositive? i = Dec.map′ (λ z → record { nonPos = z }) NonPositive.nonPos (Dec.T? (i ≤ᵇ 0ℤ))
+nonPositive? i = Dec.map′ NonPositive.constructor NonPositive.nonPos (Dec.T? (i ≤ᵇ 0ℤ))
 
 nonPositive-irrelevant : U.Irrelevant NonPositive
-nonPositive-irrelevant _ _ = cong (λ z → record { nonPos = z }) (T-irrelevant _ _)
+nonPositive-irrelevant _ _ = cong NonPositive.constructor (T-irrelevant _ _)
 
 negative? : U.Decidable Negative
-negative? i = Dec.map′ (λ z → record { neg = z }) Negative.neg (Dec.T? (i <ᵇ 0ℤ))
+negative? i = Dec.map′ Negative.constructor Negative.neg (Dec.T? (i <ᵇ 0ℤ))
 
 negative-irrelevant : U.Irrelevant Negative
-negative-irrelevant _ _ = cong (λ z → record { neg = z }) (T-irrelevant _ _)
+negative-irrelevant _ _ = cong Negative.constructor (T-irrelevant _ _)
 
 nonNegative? : U.Decidable NonNegative
-nonNegative? i = Dec.map′ (λ z → record { nonNeg = z }) NonNegative.nonNeg (Dec.T? (0ℤ ≤ᵇ i))
+nonNegative? i = Dec.map′ NonNegative.constructor NonNegative.nonNeg (Dec.T? (0ℤ ≤ᵇ i))
 
 nonNegative-irrelevant : U.Irrelevant NonNegative
-nonNegative-irrelevant _ _ = cong (λ z → record { nonNeg = z }) (T-irrelevant _ _)
+nonNegative-irrelevant _ _ = cong NonNegative.constructor (T-irrelevant _ _)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
