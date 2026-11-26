@@ -525,6 +525,18 @@ Additions to existing modules
   gcd[i,i]≡∣i∣ : ∀ i → gcd i i ≡ + ∣i∣
   ```
 
+* In `Data.Integer.Properites`:
+  ```agda
+  positive? : Decidable Positive
+  positive-irrelevant : Irrelevant Positive
+  nonPositive? : Decidable NonPositive
+  nonPositive-irrelevant : Irrelevant NonPositive
+  negative? : Decidable Negative
+  negative-irrelevant : Irrelevant Negative
+  nonNegative? : Decidable NonNegative
+  nonNegative-irrelevant : Irrelevant NonNegative
+  ```
+
 * In `Data.List.Base`:
   ```agda
   foldMap : (B → B → B) → B → (A → B) → List A → B
@@ -597,6 +609,8 @@ Additions to existing modules
 
 * In `Data.Nat.Properties`:
   ```agda
+  nonZero-irrelevant : Irrelevant NonZero
+  nonTrivial-irrelevant : Irrelevant NonTrivial
   m≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero m}} → NonZero (m + n)
   n≢0⇒m+n≢0     : ∀ m n .{{_ : NonZero n}} → NonZero (m + n)
   m≢0∧n≢0⇒m+n≢0 : ∀ m .{{_ : NonZero m}} n .{{_ : NonZero n}} → NonZero (m + n)
@@ -629,6 +643,14 @@ Additions to existing modules
   n/n≡1 : ∀ (n : ℕ) .{{_ : ℕ.NonZero n}} → + n / n ≡ 1ℚ
   -i/n≡-[i/n] : ∀ (i : ℤ) (n : ℕ) .{{_ : ℕ.NonZero n}} →
                 ℤ.- i / n ≡ - (i / n)
+  positive? : Decidable Positive
+  positive-irrelevant : Irrelevant Positive
+  nonPositive? : Decidable NonPositive
+  nonPositive-irrelevant : Irrelevant NonPositive
+  negative? : Decidable Negative
+  negative-irrelevant : Irrelevant Negative
+  nonNegative? : Decidable NonNegative
+  nonNegative-irrelevant : Irrelevant NonNegative
   >⇒≢ : _>_ ⇒ _≢_
   ≰⇒≮ : _≰_ ⇒ _≮_
   <⇒≱ : _<_ ⇒ _≱_
@@ -659,6 +681,14 @@ Additions to existing modules
   ≄-apartnessRelation        : ApartnessRelation _ _ _
   ≄-isTightApartnessRelation : IsTightApartnessRelation _≃_ _≄_
   ≄-tightApartnessRelation   : TightApartnessRelation _ _ _
+  positive? : Decidable Positive
+  positive-irrelevant : Irrelevant Positive
+  nonPositive? : Decidable NonPositive
+  nonPositive-irrelevant : Irrelevant NonPositive
+  negative? : Decidable Negative
+  negative-irrelevant : Irrelevant Negative
+  nonNegative? : Decidable NonNegative
+  nonNegative-irrelevant : Irrelevant NonNegative
   +-stronglyCongruentˡ  : ∀ p → StronglyCongruent₁ _≄_ (p +_)
   +-stronglyCongruentʳ  : ∀ r → StronglyCongruent₁ _≄_ (_+ r)
   +-stronglyCongruent   : StronglyCongruent₂ _≄_ _+_

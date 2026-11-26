@@ -71,6 +71,8 @@ open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; contraposition)
+import Relation.Unary as U
+
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -205,6 +207,30 @@ p≡0⇒↥p≡0 p refl = refl
 ------------------------------------------------------------------------
 -- Basic properties of sign predicates
 ------------------------------------------------------------------------
+
+positive? : U.Decidable Positive
+positive? p = ℤ.positive? (↥ᵘ toℚᵘ p)
+
+positive-irrelevant : U.Irrelevant Positive
+positive-irrelevant = ℤ.positive-irrelevant
+
+nonPositive? : U.Decidable NonPositive
+nonPositive? p = ℤ.nonPositive? (↥ᵘ toℚᵘ p)
+
+nonPositive-irrelevant : U.Irrelevant NonPositive
+nonPositive-irrelevant = ℤ.nonPositive-irrelevant
+
+negative? : U.Decidable Negative
+negative? p = ℤ.negative? (↥ᵘ toℚᵘ p)
+
+negative-irrelevant : U.Irrelevant Negative
+negative-irrelevant = ℤ.negative-irrelevant
+
+nonNegative? : U.Decidable NonNegative
+nonNegative? p = ℤ.nonNegative? (↥ᵘ toℚᵘ p)
+
+nonNegative-irrelevant : U.Irrelevant NonNegative
+nonNegative-irrelevant = ℤ.nonNegative-irrelevant
 
 nonNeg≢neg : ∀ p q → .{{NonNegative p}} → .{{Negative q}} → p ≢ q
 nonNeg≢neg (mkℚ (+ _) _ _) (mkℚ -[1+ _ ] _ _) ()

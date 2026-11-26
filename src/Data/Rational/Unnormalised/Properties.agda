@@ -66,6 +66,7 @@ import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
 import Relation.Binary.Properties.Poset as PosetProperties
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
+import Relation.Unary as U
 
 open import Algebra.Consequences.Propositional {A = ℚᵘ}
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
@@ -655,15 +656,39 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Properties of sign predicates
 
+positive? : U.Decidable Positive
+positive? p = ℤ.positive? (↥ p)
+
+positive-irrelevant : U.Irrelevant Positive
+positive-irrelevant = ℤ.positive-irrelevant
+
 positive⁻¹ : ∀ p → .{{Positive p}} → p > 0ℚᵘ
 positive⁻¹ (mkℚᵘ +[1+ n ] _) = *<* (ℤ.+<+ ℕ.z<s)
+
+nonNegative? : U.Decidable NonNegative
+nonNegative? p = ℤ.nonNegative? (↥ p)
+
+nonNegative-irrelevant : U.Irrelevant NonNegative
+nonNegative-irrelevant = ℤ.nonNegative-irrelevant
 
 nonNegative⁻¹ : ∀ p → .{{NonNegative p}} → p ≥ 0ℚᵘ
 nonNegative⁻¹ (mkℚᵘ +0       _) = *≤* (ℤ.+≤+ ℕ.z≤n)
 nonNegative⁻¹ (mkℚᵘ +[1+ n ] _) = *≤* (ℤ.+≤+ ℕ.z≤n)
 
+negative? : U.Decidable Negative
+negative? p = ℤ.negative? (↥ p)
+
+negative-irrelevant : U.Irrelevant Negative
+negative-irrelevant = ℤ.negative-irrelevant
+
 negative⁻¹ : ∀ p → .{{Negative p}} → p < 0ℚᵘ
 negative⁻¹ (mkℚᵘ -[1+ n ] _) = *<* ℤ.-<+
+
+nonPositive? : U.Decidable NonPositive
+nonPositive? p = ℤ.nonPositive? (↥ p)
+
+nonPositive-irrelevant : U.Irrelevant NonPositive
+nonPositive-irrelevant = ℤ.nonPositive-irrelevant
 
 nonPositive⁻¹ : ∀ p → .{{NonPositive p}} → p ≤ 0ℚᵘ
 nonPositive⁻¹ (mkℚᵘ +0       _) = *≤* (ℤ.+≤+ ℕ.z≤n)
