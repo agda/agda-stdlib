@@ -85,6 +85,13 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* [issue #1905](https://github.com/agda/agda-stdlib/issues/1905)
+  The definition of `Algebra.Bundles.BoundedLattice` as a synonym for
+  `IdempotentCommutativeMonoid` has been removed. The bundled definitions
+  `BoundedMeetSemilattice` and `BoundedJoinSemilattice` have been retained
+  under `Algebra.Lattice.Bundles`, along with `(Is)BoundedLattice` under
+  `Relation.Binary.Lattice.{Structures|Bundles}`.
+
 * [issue #2587](https://github.com/agda/agda-stdlib/issues/2587)
   The definitions of `Algebra.Structures.IsHeyting*` and
   `Algebra.Bundles.Heyting*` have been refactored, together
