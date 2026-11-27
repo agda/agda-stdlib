@@ -457,6 +457,13 @@ Additions to existing modules
   Except_RightCancellative_    : (P : Pred A p) → Op₂ A → Set _
   ```
 
+* In `Algebra.Lattice.Bundles.Raw`:
+  ```agda
+  record RawBoundedLattice c ℓ : Set (suc (c ⊔ ℓ))
+  record RawHeytingAlgebra c ℓ : Set (suc (c ⊔ ℓ))
+  record RawBooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * In `Algebra.Properties.AbelianGroup`:
   ```agda
   x-ε≈x : RightIdentity ε _-_
