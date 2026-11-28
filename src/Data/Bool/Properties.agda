@@ -7,15 +7,16 @@
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Properties where
+
 open import Algebra.Bundles
   using (Magma; Semigroup; Band; Monoid; CommutativeMonoid
         ; IdempotentCommutativeMonoid; CommutativeSemiring; CommutativeRing)
 open import Algebra.Lattice.Bundles
   using (Lattice; DistributiveLattice; BooleanAlgebra; Semilattice)
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
-open import Data.Bool.Base
-  using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; T; _≤_; _<_
-        ; b≤b; f≤t; f<t)
+open import Data.Bool.Base as 𝔹
+  using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; T
+        ; _≤_; _<_; b≤b; f≤t; f<t)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
@@ -76,20 +77,25 @@ false ≡? true  = no λ()
 ------------------------------------------------------------------------
 -- Properties of _≤_
 
+-- re-export constructor as property
+
+open 𝔹 public using (≤-reflexive)
+
+¬t≤f : ¬ true ≤ false
+¬t≤f (≤-reflexive ())
+
 -- Relational properties
 
-≤-reflexive : _≡_ ⇒ _≤_
-≤-reflexive refl = b≤b
-
 ≤-refl : Reflexive _≤_
-≤-refl = ≤-reflexive refl
+≤-refl = b≤b
 
 ≤-trans : Transitive _≤_
 ≤-trans b≤b p   = p
 ≤-trans f≤t b≤b = f≤t
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym b≤b _ = refl
+≤-antisym (≤-reflexive eq) _ = eq
+≤-antisym f≤t t≤f = contradiction t≤f ¬t≤f
 
 ≤-minimum : Minimum _≤_ false
 ≤-minimum false = b≤b
@@ -107,7 +113,7 @@ infix 4 _≤?_
 
 _≤?_ : Decidable _≤_
 false ≤? b     = yes (≤-minimum b)
-true  ≤? false = no λ ()
+true  ≤? false = no ¬t≤f
 true  ≤? true  = yes b≤b
 
 ≤-irrelevant : Irrelevant _≤_

@@ -225,7 +225,14 @@ Minor improvements
   subsequent imports by clients, as well as streamlined internals. Moreover,
   it now has the implicit parameters of its internal modules lifted out as
   global `variable`s.
-`
+
+* [Issue #2519](https://github.com/agda/agda-stdlib/issues/2519) The definition
+  of `Data.Bool.Base._≤_` has been refactored to have an explicit `≤-reflexive`
+  constructor, with `b≤b` redefined as a `pattern` synonym. This follows the
+  design principle that, under the `--without-K` flag, `data` definitions should
+  not have repeated indices, and thereby avoid potential stuck unification during
+  pattern matching (example due to Shu-Hung You).
+
 * The definitions in `Function.Consequences.Propositional` of the form `strictlyX⇒X`
   have been streamlined via pattern-matching on `refl`, rather than defined by
   delegation to `Function.Consequences.Setoid` and the use of `cong`.
@@ -486,6 +493,7 @@ Additions to existing modules
 
 * In `Data.Bool.Properties`:
   ```agda
+  ¬t≤f     : ¬ true ≤ false
   ∨-monoid : Monoid 0ℓ 0ℓ
   ∧-monoid : Monoid 0ℓ 0ℓ
   ```

@@ -8,6 +8,7 @@
 
 module Data.Bool.Base where
 
+open import Agda.Builtin.Equality using (_≡_; refl)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty using (⊥)
 open import Level using (Level)
@@ -29,7 +30,9 @@ infix 4 _≤_ _<_
 
 data _≤_ : Bool → Bool → Set where
   f≤t : false ≤ true
-  b≤b : ∀ {b} → b ≤ b
+  ≤-reflexive : ∀ {b c} → b ≡ c → b ≤ c
+
+pattern b≤b = ≤-reflexive refl
 
 data _<_ : Bool → Bool → Set where
   f<t : false < true
