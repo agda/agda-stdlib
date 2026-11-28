@@ -12,7 +12,6 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty using (⊥)
 open import Level using (Level)
-import Relation.Binary.Core as Binary using (_⇒_)
 
 private
   variable
@@ -31,7 +30,7 @@ infix 4 _≤_ _<_
 
 data _≤_ : Bool → Bool → Set where
   f≤t : false ≤ true
-  ≤-reflexive : _≡_ Binary.⇒ _≤_
+  ≤-reflexive : ∀ {b c} → b ≡ c → b ≤ c
 
 pattern b≤b = ≤-reflexive refl
 
