@@ -413,8 +413,7 @@ New modules
   the AVL's operator `toList`: `toList⁺` and `toList⁻`.
 
 * `Relation.Binary.Lattice.Properties.BooleanAlgebra` is currently a stub,
-  exporting only the underlying `HeytingAlgebra` properties. Clearly more is
-  required downstream!
+  exporting only the underlying `HeytingAlgebra` properties.
 
 Additions to existing modules
 -----------------------------
@@ -504,8 +503,8 @@ Additions to existing modules
   ∨-monoid : Monoid 0ℓ 0ℓ
   ∧-monoid : Monoid 0ℓ 0ℓ
 
-  ⇒-defn : ∀ x y → x ⇒ y ≡ not x ∨ y
-  ⇒⊥≡not : ∀ x → x ⇒ false ≡ not x
+  x⇨y≡not[x]∨y : ∀ x y → x ⇒ y ≡ not x ∨ y
+  x⇒⊥≡not[x]   : ∀ x → x ⇒ false ≡ not x
 
   ⇒-half-left-adjoint  : ∀ z → HalfLeftAdjoint _≤_ _≤_ (z ∧_) (z ⇒_)
   ⇒-half-right-adjoint : ∀ z → HalfRightAdjoint _≤_ _≤_ (z ∧_)(z ⇒_)

@@ -76,4 +76,4 @@ if false then t else f = f
 
 infixr 5 _⇨_
 _⇨_ : Bool → Bool → Bool
-x ⇨ y = if x then y else true
+_⇨_ = if_then_else true

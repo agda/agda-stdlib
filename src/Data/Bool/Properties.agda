@@ -7,6 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Properties where
+
 open import Algebra.Bundles
   using (Magma; Semigroup; Band; Monoid; CommutativeMonoid
         ; IdempotentCommutativeMonoid; CommutativeSemiring; CommutativeRing)
@@ -843,14 +844,13 @@ if-cong₂ _ refl refl = refl
 
 ------------------------------------------------------------------------
 -- Properties of _⇨_
+x⇨y≡not[x]∨y : ∀ x y → x ⇨ y ≡ not x ∨ y
+x⇨y≡not[x]∨y false y = refl
+x⇨y≡not[x]∨y true y = refl
 
-⇨-defn : ∀ x y → x ⇨ y ≡ not x ∨ y
-⇨-defn false y = refl
-⇨-defn true y = refl
-
-⇨⊥≡not : ∀ x → x ⇨ false ≡ not x
-⇨⊥≡not false = refl
-⇨⊥≡not true = refl
+x⇨⊥≡not[x] : ∀ x → x ⇨ false ≡ not x
+x⇨⊥≡not[x] false = refl
+x⇨⊥≡not[x] true = refl
 
 ⇨-half-left-adjoint : ∀ z → HalfLeftAdjoint _≤_ _≤_ (z ∧_) (z ⇨_)
 ⇨-half-left-adjoint false x≤z⇨y = ≤-minimum _
