@@ -19,6 +19,7 @@ open import Reflection.AST.Argument as Argument public
   using (Arg; arg; Args; vArg; hArg; iArg; defaultModality)
 open import Reflection.AST.Definition as Definition  public
   using (Definition)
+open import Reflection.AST.Fixity as Fixity public
 open import Reflection.AST.Meta as Meta public
   using (Meta)
 open import Reflection.AST.Name as Name public
@@ -46,14 +47,3 @@ open Term.Term public
 open Visibility.Visibility public
 
 open import Reflection.AST.Show public
-
-------------------------------------------------------------------------
--- Fixity
-
-open Builtin public
-  using (non-assoc; related; unrelated; fixity)
-  renaming
-  ( left-assoc      to assocˡ
-  ; right-assoc     to assocʳ
-  ; primQNameFixity to getFixity
-  )
