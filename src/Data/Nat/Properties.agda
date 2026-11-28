@@ -23,7 +23,7 @@ import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Bool.Properties using (T?)
+open import Data.Bool.Properties using (T?; T-irrelevant)
 open import Data.Nat.Base
 open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; _⊎_; [_,_]′)
@@ -76,6 +76,9 @@ nonZero? : U.Decidable NonZero
 nonZero? zero    = no NonZero.nonZero
 nonZero? (suc n) = yes _
 
+nonZero-irrelevant : U.Irrelevant NonZero
+nonZero-irrelevant _ _ = cong NonZero.constructor (T-irrelevant _ _)
+
 ------------------------------------------------------------------------
 -- Properties of NonTrivial
 ------------------------------------------------------------------------
@@ -84,6 +87,9 @@ nonTrivial? : U.Decidable NonTrivial
 nonTrivial? 0      = no λ()
 nonTrivial? 1      = no λ()
 nonTrivial? (2+ n) = yes _
+
+nonTrivial-irrelevant : U.Irrelevant NonTrivial
+nonTrivial-irrelevant _ _ = cong NonTrivial.constructor (T-irrelevant _ _)
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
