@@ -7,6 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Properties where
+
 open import Algebra.Bundles
   using (Magma; Semigroup; Band; Monoid; CommutativeMonoid
         ; IdempotentCommutativeMonoid; CommutativeSemiring; CommutativeRing)
@@ -14,8 +15,8 @@ open import Algebra.Lattice.Bundles
   using (Lattice; DistributiveLattice; BooleanAlgebra; Semilattice)
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
-  using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; T; _≤_; _<_
-        ; b≤b; f≤t; f<t)
+  using (Bool; true; false; not; _∧_; _∨_; _xor_ ; if_then_else_; _⇨_
+        ; T; _≤_; _<_; b≤b; f≤t; f<t)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
@@ -34,7 +35,8 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Definitions
   using (Decidable; DecidableEquality ; Reflexive; Transitive; Antisymmetric
         ; Minimum; Maximum; Total; Irrelevant ; Irreflexive; Asymmetric; Trans
-        ; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
+        ; Trichotomous; tri≈; tri<; tri>; _Respects₂_
+        ; HalfLeftAdjoint; HalfRightAdjoint; Adjoint)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym; cong; cong₂; subst; trans; _≢_; ¬[x≢x])
 open import Relation.Binary.PropositionalEquality.Properties
@@ -839,6 +841,27 @@ if-cong₂ : ∀ b {x y z w : A} → x ≡ z → y ≡ w →
            (if b then x else y)
          ≡ (if b then z else w)
 if-cong₂ _ refl refl = refl
+
+------------------------------------------------------------------------
+-- Properties of _⇨_
+x⇨y≡not[x]∨y : ∀ x y → x ⇨ y ≡ not x ∨ y
+x⇨y≡not[x]∨y false y = refl
+x⇨y≡not[x]∨y true y = refl
+
+x⇨⊥≡not[x] : ∀ x → x ⇨ false ≡ not x
+x⇨⊥≡not[x] false = refl
+x⇨⊥≡not[x] true = refl
+
+⇨-half-left-adjoint : ∀ z → HalfLeftAdjoint _≤_ _≤_ (z ∧_) (z ⇨_)
+⇨-half-left-adjoint false x≤z⇨y = ≤-minimum _
+⇨-half-left-adjoint true  x≤z⇨y = x≤z⇨y
+
+⇨-half-right-adjoint : ∀ z → HalfRightAdjoint _≤_ _≤_ (z ∧_) (z ⇨_)
+⇨-half-right-adjoint false z∧x≤y = ≤-maximum _
+⇨-half-right-adjoint true  z∧x≤y = z∧x≤y
+
+⇨-adjoint : ∀ z → Adjoint _≤_ _≤_ (z ∧_) (z ⇨_)
+⇨-adjoint z = ⇨-half-left-adjoint z , ⇨-half-right-adjoint z
 
 ------------------------------------------------------------------------
 -- Properties of T
